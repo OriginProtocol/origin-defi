@@ -1,11 +1,19 @@
 const config = {
-  stories: ['../src/lib/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: ['@storybook/addon-essentials'],
   framework: {
     name: '@storybook/react-vite',
     options: {
       builder: {
-        viteConfigPath: '',
+        viteConfigPath: `${__dirname}/../../../shared/storybook/vite.config.ts`,
+      },
+    },
+  },
+  typescript: {
+    check: true,
+    checkOptions: {
+      typescript: {
+        configFile: `${__dirname}/../tsconfig.storybook.json`,
       },
     },
   },

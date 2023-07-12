@@ -1,1 +1,3 @@
-export * from './lib/shared-storybook';
+import preview from './decorators';
+
+export default preview;
