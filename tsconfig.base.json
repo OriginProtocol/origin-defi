@@ -1,0 +1,27 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "lib": ["es2020", "dom"],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@origin/defi/oeth": ["libs/defi/oeth/src/index.ts"],
+      "@origin/defi/ousd": ["libs/defi/ousd/src/index.ts"],
+      "@origin/shared/data-access": ["libs/shared/data-access/src/index.ts"],
+      "@origin/shared/storybook": ["libs/shared/storybook/src/index.ts"],
+      "@origin/shared/theme": ["libs/shared/theme/src/index.ts"]
+    }
+  },
+  "exclude": ["node_modules", "tmp"]
+}
