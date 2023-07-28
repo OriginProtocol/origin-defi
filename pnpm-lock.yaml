@@ -113,8 +113,8 @@ devDependencies:
     specifier: ^11.2.7
     version: 11.2.7
   danger-plugin-danger-github-notion:
-    specifier: 0.0.0-development
-    version: 0.0.0-development
+    specifier: 0.0.1
+    version: 0.0.1
   eslint:
     specifier: ~8.15.0
     version: 8.15.0
@@ -6419,8 +6419,8 @@ packages:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
 
-  /danger-plugin-danger-github-notion@0.0.0-development:
-    resolution: {integrity: sha512-wrlUz0KLOE0QTrV0+1GJlm2Rn1kxTetIrU9Sdc4eH5MMjl0Z6Vd0bO0bWVPa2dDwVCT9bONF2ohSMTjq3KihXQ==}
+  /danger-plugin-danger-github-notion@0.0.1:
+    resolution: {integrity: sha512-yYI3Ew4jOLlx35/OWssfxJYjmMoWtxmJU+YhNcdBzQU6fxbFwYiLSWlua9k1SlDOzayvdUWuwPKQFzCmWRv1Bg==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@notionhq/client': 2.2.9
