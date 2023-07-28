@@ -1,6 +1,6 @@
 import dangerGithubNotion from 'danger-plugin-danger-github-notion';
 
 dangerGithubNotion({
-  dbTasksId: '00c83143-d518-49a1-9a6c-99ca369a0ce6',
+  dbTasksId: 'e53909e5-e202-4c3f-9b45-0c63b8f6dd8e',
   taskPrefix: 'TAS',
 });
