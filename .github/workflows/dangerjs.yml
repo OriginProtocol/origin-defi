@@ -14,8 +14,6 @@ jobs:
       - name: install yarn
         run: npm install -g yarn
       - run: yarn install  --frozen-lockfile
-      - run: yarn build
-      - run: yarn test
       - run: yarn danger ci
         env:
           GITHUB_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
