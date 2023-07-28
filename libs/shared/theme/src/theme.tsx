@@ -59,6 +59,9 @@ export const theme = extendTheme({
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
+          minHeight: 0,
+          paddingBlock: theme.spacing(1),
+          paddingInline: theme.spacing(2.5),
           '&.Mui-selected': {
             zIndex: 2,
             color: theme.palette.primary.contrastText,
@@ -71,12 +74,27 @@ export const theme = extendTheme({
         root: ({ theme }) => ({
           backgroundColor: theme.palette.background.paper,
           borderRadius: theme.shape.borderRadius * 5,
+          minHeight: 0,
         }),
         indicator: ({ theme }) => ({
           height: '100%',
           background: theme.palette.background.gradient2,
           zIndex: 1,
           borderRadius: theme.shape.borderRadius * 5,
+          '&:after': {
+            content: '""',
+            position: 'absolute',
+            height: '94%',
+            width: '96%',
+            backgroundColor: 'rgba(0, 0, 0, 0.667)',
+            borderRadius: theme.shape.borderRadius * 5,
+            left: 0,
+            right: 0,
+            top: 0,
+            bottom: 0,
+            margin: 'auto',
+            zIndex: 3,
+          },
         }),
       },
     },
@@ -118,37 +136,35 @@ export const theme = extendTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          position: 'static'
-        }
-      }
+          position: 'static',
+        },
+      },
     },
     MuiFormLabel: {
       styleOverrides: {
         root: {
-          '&.MuiInputLabel-root':{
+          '&.MuiInputLabel-root': {
             position: 'static',
             transform: 'none',
             transformOrigin: 'none',
             fontSize: '0.75rem',
-            marginBlockEnd: '0.25rem'
-          }
-        }
-      }
+            marginBlockEnd: '0.25rem',
+          },
+        },
+      },
     },
     MuiInputBase: {
       styleOverrides: {
-        root: ({theme})=>({
-          borderRadius:  40,
+        root: ({ theme }) => ({
+          borderRadius: 40,
           border: '1px solid',
-          borderColor:theme.palette.info.main,
+          borderColor: theme.palette.info.main,
           fontSize: '1rem',
           backgroundColor: theme.palette.background.default,
           width: 'auto',
           padding: '7px 12px',
-      
-          
-        })
-      }
-    }
+        }),
+      },
+    },
   },
 });
