@@ -1,6 +1,6 @@
 // placeholder component until we actually start migration
 import { Box, Button, Container, Stack } from '@mui/material';
-import { APY, TopNav } from '@origin/defi/oeth';
+import { APY, Portfolio, Swap, SwapRoute, TopNav } from '@origin/defi/oeth';
 import { useIntl } from 'react-intl';
 
 export function OethRoot() {
@@ -20,16 +20,17 @@ export function OethRoot() {
         <Box
           sx={{
             display: 'grid',
-            gridTemplateColumns: { xs: '1f', md: '1fr 2fr' },
+            gridTemplateColumns: { xs: '1fr', md: '1fr 1.75fr' },
             gap: 3,
           }}
         >
           <APY />
 
-          {/* <Portfolio /> */}
+          <Portfolio />
         </Box>
-        <Stack gap={3}>
-          {/* <Swap /> */}
+        <Stack gap={3} mt={3}>
+          <Swap />
+          <SwapRoute />
           <Button
             fullWidth
             variant="contained"

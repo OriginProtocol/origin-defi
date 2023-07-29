@@ -18,6 +18,7 @@
     "paths": {
       "@origin/defi/oeth": ["libs/defi/oeth/src/index.ts"],
       "@origin/defi/ousd": ["libs/defi/ousd/src/index.ts"],
+      "@origin/shared/components": ["libs/shared/components/src/index.ts"],
       "@origin/shared/data-access": ["libs/shared/data-access/src/index.ts"],
       "@origin/shared/storybook": ["libs/shared/storybook/src/index.ts"],
       "@origin/shared/theme": ["libs/shared/theme/src/index.ts"]

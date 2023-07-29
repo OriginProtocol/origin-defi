@@ -35,6 +35,9 @@ export const theme = extendTheme({
           gradient1: 'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
           gradient2: 'linear-gradient(90deg,#b361e6 -28.99%,#6a36fc 144.97%)',
         },
+        action: {
+          hoverOpacity: 0.1,
+        },
       },
     },
   },
@@ -162,8 +165,12 @@ export const theme = extendTheme({
           fontSize: '1rem',
           backgroundColor: theme.palette.background.default,
           width: 'auto',
-          padding: '7px 12px',
+          paddingBlock: theme.spacing(0.5),
+          paddingInline: theme.spacing(1.5),
         }),
+        input: {
+          padding: 0,
+        },
       },
     },
   },
