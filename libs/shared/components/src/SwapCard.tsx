@@ -1,20 +1,44 @@
-import { Box, Button, InputBase, Typography } from '@mui/material';
+import {
+  Box,
+  IconButton,
+  InputBase,
+  Typography,
+  debounce,
+} from '@mui/material';
 import { Card, cardStyles } from './Card';
 import { SwapItem } from './SwapItem';
+import { useState } from 'react';
 
 interface Props {
   title: string | React.ReactNode;
   baseTokenName: string;
   baseTokenIcon: string;
+  baseTokenValue: string;
   exchangeTokenName: string;
   exchangeTokenIcon: string;
+  exchangeTokenQuantity: string;
+  exchangeTokenValue: string;
   exchangeTokenNode?: React.ReactNode;
+  onValueChange: (value: string) => void;
+  onSwap: () => void;
 }
 
-export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIcon, exchangeTokenNode, exchangeTokenName }: Props) {
-//   TODO swap logic
-    return (
-    <Card title={title} sxCardContent={{ padding: 0 }}>
+export function SwapCard({
+  title,
+  baseTokenIcon,
+  baseTokenName,
+  exchangeTokenIcon,
+  exchangeTokenNode,
+  exchangeTokenName,
+  baseTokenValue,
+  exchangeTokenQuantity,
+  exchangeTokenValue,
+  onValueChange,
+  onSwap,
+}: Props) {
+  const [isSwapped, setSwapState] = useState(false);
+  return (
+    <Card title={title} sxCardContent={{ padding: 0, position: 'relative' }}>
       <Box
         sx={{
           backgroundColor: 'grey.900',
@@ -30,7 +54,6 @@ export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIco
           }}
         >
           <Box sx={{ width: '100%' }}>
-            {/* TODO on change handler */}
             <InputBase
               placeholder="0.00"
               type="numeric"
@@ -44,10 +67,11 @@ export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIco
                 fontSize: '2.5rem',
                 color: 'primary.contrastText',
               }}
+              onChange={debounce((e) => onValueChange(e.target.value), 350)}
             />
-            {/* TODO value should a prop */}
-            <Typography sx={{ fontSize: '1.25rem', color: 'primary.main' }}>
-              $0.00
+
+            <Typography sx={{ fontSize: '1.25rem' }}>
+              {baseTokenValue}
             </Typography>
           </Box>
           <Box
@@ -57,7 +81,11 @@ export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIco
               justifyContent: 'right',
             }}
           >
-            <SwapItem name={baseTokenName} icon={baseTokenIcon} />
+            <SwapItem
+              name={baseTokenName}
+              icon={baseTokenIcon}
+              {...(isSwapped ? { additionalNode: exchangeTokenNode } : {})}
+            />
           </Box>
         </Box>
       </Box>
@@ -71,15 +99,18 @@ export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIco
         >
           <Box sx={{ width: '100%' }}>
             <Typography
-            // TODO color grey when 0 and white when value is selected
-              sx={{ fontSize: '2.5rem', color: 'primary.contrastText' }}
+              sx={{
+                fontSize: '2.5rem',
+                color:
+                  parseInt(exchangeTokenQuantity) === 0
+                    ? 'text.main'
+                    : 'primary.contrastText',
+              }}
             >
-                {/* TODO value should be a prop */}
-              0.00
+              {exchangeTokenQuantity}
             </Typography>
-            <Typography sx={{ fontSize: '1.25rem', color: 'primary.main' }}>
-                {/* TODO value should be a prop */}
-              $0.00
+            <Typography sx={{ fontSize: '1.25rem' }}>
+              {exchangeTokenValue}
             </Typography>
           </Box>
           <Box
@@ -89,24 +120,39 @@ export function SwapCard({ title, baseTokenIcon, baseTokenName, exchangeTokenIco
               justifyContent: 'right',
             }}
           >
-            <SwapItem name={exchangeTokenName} icon={exchangeTokenIcon} />
+            <SwapItem
+              name={exchangeTokenName}
+              icon={exchangeTokenIcon}
+              {...(!isSwapped ? { additionalNode: exchangeTokenNode } : {})}
+            />
           </Box>
         </Box>
       </Box>
-      {/* TODO swap button */}
-      {/* <IconButton
+      <IconButton
+        onClick={() => {
+          setSwapState((prev) => !prev);
+          onSwap();
+        }}
         sx={{
           position: 'absolute',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -24%)',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          margin: 'auto',
           zIndex: 2,
-          p: 3,
+          width: '3rem',
+          height: '3rem',
+          transform: 'translateY(-12%)',
           backgroundColor: (theme) => theme.palette.divider,
+          '&:hover': {
+            // TODO check this color to come from the theme
+            backgroundColor: 'rgba(0, 0, 0, 0.667)',
+          },
         }}
       >
         <img src="https://app.oeth.com/images/splitarrow.svg" />
-      </IconButton> */}
+      </IconButton>
     </Card>
   );
 }

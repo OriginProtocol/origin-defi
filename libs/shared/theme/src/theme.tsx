@@ -4,11 +4,15 @@ declare module '@mui/material/styles' {
   interface TypeBackground {
     gradient1: string;
     gradient2: string;
+    gradient3: string;
+    gradientSuccess: string;
   }
 
   interface TypeBackgroundOptions {
     gradient1: string;
     gradient2: string;
+    gradient3: string;
+    gradientSuccess: string;
   }
 
   interface Shape {
@@ -32,11 +36,19 @@ export const theme = extendTheme({
         background: {
           paper: 'rgb(30, 31, 37)',
           default: '#141519',
+
           gradient1: 'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
           gradient2: 'linear-gradient(90deg,#b361e6 -28.99%,#6a36fc 144.97%)',
+          gradient3:
+            'linear-gradient(90deg, rgb(179, 97, 230) 20.29%, rgb(106, 54, 252) 79.06%)',
+          gradientSuccess:
+            'linear-gradient(97.67deg, rgb(102, 254, 144) -10.09%, rgb(102, 217, 254) 120.99%)',
         },
         action: {
           hoverOpacity: 0.1,
+        },
+        text: {
+          primary: 'rgb(130, 134, 153)',
         },
       },
     },
@@ -175,3 +187,5 @@ export const theme = extendTheme({
     },
   },
 });
+
+export type Theme = typeof theme;

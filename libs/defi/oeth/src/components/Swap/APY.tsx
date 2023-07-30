@@ -32,8 +32,15 @@ export function APY() {
           )}
         </MenuItem>
       </Menu>
-      <Card title="APY">
-        <Box sx={{ display: 'grid', alignItems: 'center', height: '100%' }}>
+      <Card
+        title="APY"
+        sxCardContent={{
+          display: 'grid',
+          alignItems: 'center',
+          height: 'calc(100% - 100px)',
+        }}
+      >
+        <Box>
           <Typography color="primary">
             {intl.formatMessage(
               { defaultMessage: '{days} day trailing' },

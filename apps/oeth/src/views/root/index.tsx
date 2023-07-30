@@ -30,7 +30,6 @@ export function OethRoot() {
         </Box>
         <Stack gap={3} mt={3}>
           <Swap />
-          <SwapRoute />
           <Button
             fullWidth
             variant="contained"

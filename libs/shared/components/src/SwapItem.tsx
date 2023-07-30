@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 
 interface Props {
   icon: string;
@@ -6,7 +6,7 @@ interface Props {
   additionalNode?: React.ReactNode;
 }
 
-export function SwapItem({ icon, name }: Props) {
+export function SwapItem({ icon, name, additionalNode: Component }: Props) {
   return (
     <Stack
       direction="row"
@@ -20,8 +20,13 @@ export function SwapItem({ icon, name }: Props) {
         padding: 1,
       }}
     >
-      <img src={icon} />
+      <Box
+        component="img"
+        src={icon}
+        sx={{ width: '1.5rem', height: 'auto' }}
+      />
       {name}
+      {Component ? Component : undefined}
     </Stack>
   );
 }

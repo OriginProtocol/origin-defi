@@ -5,6 +5,8 @@ import {
   SxProps,
 } from '@mui/material';
 
+import type { Theme } from '@origin/shared/theme';
+
 export const cardStyles = {
   paddingBlock: 3.5,
   paddingInline: 5,
@@ -13,12 +15,20 @@ export const cardStyles = {
 interface Props {
   title: string | React.ReactNode;
   children: React.ReactNode;
-  sxCardContent?: SxProps;
+  sxCardContent?: SxProps<Theme>;
+  sxCardTitle?: SxProps<Theme>;
+  sx?: SxProps<Theme>;
 }
 
-export function Card({ title, children, sxCardContent }: Props) {
+export function Card({
+  title,
+  children,
+  sxCardContent,
+  sxCardTitle,
+  sx,
+}: Props) {
   return (
-    <MuiCard sx={{ padding: 0, borderRadius: 1 }}>
+    <MuiCard sx={{ padding: 0, borderRadius: 1, ...(sx as SxProps) }}>
       <CardHeader
         title={title}
         sx={{
@@ -28,16 +38,16 @@ export function Card({ title, children, sxCardContent }: Props) {
           '& .MuiCardHeader-title': {
             fontSize: (theme) => theme.typography.pxToRem(14),
           },
+          ...(sxCardTitle as SxProps),
         }}
       ></CardHeader>
       <CardContent
         sx={{
-          paddingBlock: 3.5,
-          paddingInline: 5,
           '&:last-child': {
-            paddingBottom: 0,
+            paddingBottom: 3.5,
           },
-          ...sxCardContent,
+          padding: (theme) => theme.spacing(3.5, 5),
+          ...(sxCardContent as SxProps),
         }}
       >
         {children}
