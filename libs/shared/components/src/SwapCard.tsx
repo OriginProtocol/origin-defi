@@ -13,11 +13,11 @@ interface Props {
   title: string | React.ReactNode;
   baseTokenName: string;
   baseTokenIcon: string;
-  baseTokenValue: string;
+  baseTokenValue?: string;
   exchangeTokenName: string;
   exchangeTokenIcon: string;
   exchangeTokenQuantity: string;
-  exchangeTokenValue: string;
+  exchangeTokenValue?: string;
   exchangeTokenNode?: React.ReactNode;
   onValueChange: (value: string) => void;
   onSwap: () => void;
@@ -69,10 +69,11 @@ export function SwapCard({
               }}
               onChange={debounce((e) => onValueChange(e.target.value), 350)}
             />
-
-            <Typography sx={{ fontSize: '1.25rem' }}>
-              {baseTokenValue}
-            </Typography>
+            {baseTokenValue !== undefined ? (
+              <Typography sx={{ fontSize: '1.25rem' }}>
+                {baseTokenValue}
+              </Typography>
+            ) : undefined}
           </Box>
           <Box
             sx={{
@@ -109,9 +110,11 @@ export function SwapCard({
             >
               {exchangeTokenQuantity}
             </Typography>
-            <Typography sx={{ fontSize: '1.25rem' }}>
-              {exchangeTokenValue}
-            </Typography>
+            {exchangeTokenValue !== undefined ? (
+              <Typography sx={{ fontSize: '1.25rem' }}>
+                {exchangeTokenValue}
+              </Typography>
+            ) : undefined}
           </Box>
           <Box
             sx={{

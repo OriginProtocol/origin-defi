@@ -84,7 +84,7 @@ export function Swap() {
             justifyContent="space-between"
             alignItems="center"
           >
-            Swap
+            {intl.formatMessage({ defaultMessage: 'Swap' })}
             <IconButton onClick={(e) => setAnchorEl(e.currentTarget)}>
               <img src="https://app.oeth.com/images/settings-icon.svg" />
             </IconButton>

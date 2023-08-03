@@ -5,8 +5,8 @@ interface Props {
   title: string;
   balanceText: string;
   balanceValue: string;
-  lifetimeEarningsText: string;
-  lifetimeEarningsValue: string;
+  valueText: string;
+  value: string;
   pendingYieldText: string;
   pendingYieldValue: string;
   logoSrc: string;
@@ -16,8 +16,8 @@ export function PortfolioCard({
   title,
   balanceText,
   balanceValue,
-  lifetimeEarningsText,
-  lifetimeEarningsValue,
+  valueText,
+  value,
   pendingYieldText,
   pendingYieldValue,
   logoSrc,
@@ -27,6 +27,9 @@ export function PortfolioCard({
       title={title}
       sxCardContent={{
         padding: 0,
+        '&:last-child': {
+          paddingBottom: 0,
+        },
       }}
     >
       <Box
@@ -75,9 +78,9 @@ export function PortfolioCard({
             }}
           >
             <Typography color="primary">
-              {lifetimeEarningsText}
+              {valueText}
               <br />
-              {lifetimeEarningsValue}
+              {value}
             </Typography>
           </Box>
           <Box>

@@ -10,10 +10,10 @@ export function Portfolio() {
       balanceValue={intl.formatNumber(0)}
       pendingYieldText={intl.formatMessage({ defaultMessage: 'Pending yield' })}
       pendingYieldValue={intl.formatNumber(0)}
-      lifetimeEarningsText={intl.formatMessage({
+      valueText={intl.formatMessage({
         defaultMessage: 'Lifetime earnings',
       })}
-      lifetimeEarningsValue={intl.formatNumber(0)}
+      value={intl.formatNumber(0)}
       logoSrc="https://app.oeth.com/images/oeth.svg"
     ></PortfolioCard>
   );

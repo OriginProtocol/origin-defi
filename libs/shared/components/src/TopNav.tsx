@@ -2,19 +2,25 @@ import {
   Box,
   Button,
   Link as MuiLink,
-  Tabs,
-  Tab,
   SxProps,
+  Tab,
+  Tabs,
 } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 interface Props {
+  tabs: {
+    name: string;
+    onClick: () => void;
+  }[];
+  logo: string;
+  initialRoute?: string;
   sx?: SxProps;
 }
 
-export function TopNav({ sx }: Props) {
-  const [value, setValue] = useState(0);
+export function TopNav({ sx, tabs, logo, initialRoute }: Props) {
+  const [value, setValue] = useState(initialRoute ?? 0);
   return (
     <Box
       component="nav"
@@ -50,10 +56,7 @@ export function TopNav({ sx }: Props) {
           },
         })}
       >
-        <img
-          src="https://app.oeth.com/images/origin-ether-logo.svg"
-          alt="OETH logo"
-        />
+        <img src={logo} />
       </Box>
       <Box
         sx={{
@@ -87,9 +90,17 @@ export function TopNav({ sx }: Props) {
             },
           }}
         >
-          <Tab label="Swap" />
-          <Tab label="Wrap" />
-          <Tab label="History" />
+          {tabs.map((tab) => (
+            <Tab
+              key={tab.name}
+              label={tab.name}
+              onClick={(e) => {
+                e.preventDefault();
+                tab.onClick();
+              }}
+              component="a"
+            />
+          ))}
         </Tabs>
       </Box>
       <Box

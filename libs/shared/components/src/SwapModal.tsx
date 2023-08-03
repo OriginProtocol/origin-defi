@@ -67,6 +67,9 @@ export function SwapModal({
               gridTemplateColumns: '2rem 4fr 1fr',
               gap: 2,
               alignItems: 'center',
+              '&:hover': {
+                opacity: 0.8,
+              },
             }}
             onClick={() => {
               onSelection({
