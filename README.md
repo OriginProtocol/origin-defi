@@ -29,8 +29,6 @@ nx run-many -t <target1> <target2>
 
 ..or add `-p` to filter specific projects
 
-test
-
 ```
 nx run-many -t <target1> <target2> -p <proj1> <proj2>
 ```
