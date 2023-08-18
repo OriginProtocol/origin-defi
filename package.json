@@ -45,7 +45,7 @@
     "@vitest/ui": "~0.32.0",
     "babel-plugin-formatjs": "^10.5.3",
     "danger": "^11.2.7",
-    "danger-plugin-danger-github-notion": "0.0.1",
+    "danger-plugin-github-notion": "^0.0.1",
     "eslint": "~8.15.0",
     "eslint-config-prettier": "8.1.0",
     "eslint-plugin-cypress": "^2.10.3",
