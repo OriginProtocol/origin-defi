@@ -112,8 +112,8 @@ devDependencies:
   danger:
     specifier: ^11.2.7
     version: 11.2.7
-  danger-plugin-danger-github-notion:
-    specifier: 0.0.1
+  danger-plugin-github-notion:
+    specifier: ^0.0.1
     version: 0.0.1
   eslint:
     specifier: ~8.15.0
@@ -2443,8 +2443,8 @@ packages:
       fastq: 1.15.0
     dev: true
 
-  /@notionhq/client@2.2.9:
-    resolution: {integrity: sha512-g/JKWTELNhe4SdJj5nBXNGB0tkOkOlOH81QSa3oG1855QWiRhOv/ti6LeWNWEPR3BettNztDv5zC/I05wDkFtg==}
+  /@notionhq/client@2.2.11:
+    resolution: {integrity: sha512-yTKeVu0fB9PtlK9eQwN6y+MEq0J0vu1MPP7j5bme9+KTenH4OTcOAx/70+LgvN4Z4RSsymQxdXrtcLHMFN9ZuA==}
     engines: {node: '>=12'}
     dependencies:
       '@types/node-fetch': 2.6.4
@@ -6419,11 +6419,11 @@ packages:
     resolution: {integrity: sha512-sdQSFB7+llfUcQHUQO3+B8ERRj0Oa4w9POWMI/puGtuf7gFywGmkaLCElnudfTiKZV+NvHqL0ifzdrI8Ro7ESA==}
     dev: true
 
-  /danger-plugin-danger-github-notion@0.0.1:
-    resolution: {integrity: sha512-yYI3Ew4jOLlx35/OWssfxJYjmMoWtxmJU+YhNcdBzQU6fxbFwYiLSWlua9k1SlDOzayvdUWuwPKQFzCmWRv1Bg==}
+  /danger-plugin-github-notion@0.0.1:
+    resolution: {integrity: sha512-J1mG1WrFjSaQAhHSEcny+d9iWVDievblYQLr87SC8GI2/TTDbKXamfGwE/XWAe3EVHx51iX84ZmcxZgpQ+hCrA==}
     engines: {node: '>=18.0.0'}
     dependencies:
-      '@notionhq/client': 2.2.9
+      '@notionhq/client': 2.2.11
       octokit: 3.1.0
     optionalDependencies:
       esdoc: 1.1.0
