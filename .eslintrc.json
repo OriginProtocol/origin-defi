@@ -1,10 +1,17 @@
 {
   "root": true,
   "ignorePatterns": ["**/*"],
-  "plugins": ["@nx"],
+  "plugins": [
+    "@nx",
+    "formatjs",
+    "unused-imports",
+    "simple-import-sort",
+    "prettier"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
+      "extends": ["plugin:react/recommended", "plugin:prettier/recommended"],
       "rules": {
         "@nx/enforce-module-boundaries": [
           "error",
@@ -18,7 +25,41 @@
               }
             ]
           }
-        ]
+        ],
+        "react/react-in-jsx-scope": "off",
+        // Unused imports rules
+        "unused-imports/no-unused-imports": "error",
+        "unused-imports/no-unused-vars": "warn",
+
+        // Import ordering rules
+        "simple-import-sort/imports": [
+          "warn",
+          {
+            "groups": [
+              // Side effect imports
+              ["^\\u0000"],
+              // React Package(s) comes first as seperate group
+              ["^react(-dom(/client)?)?$"],
+              // All other imports
+              ["^@?\\w"],
+              ["^((?!\\u0000$)|/.*|$)"],
+              ["^\\."],
+              // Type imports: keep these last!
+              ["^@?\\w.*\\u0000$"],
+              ["^.*\\u0000$"],
+              ["^\\..*\\u0000$"]
+            ]
+          }
+        ],
+
+        // import types rules
+        "@typescript-eslint/consistent-type-imports": "error",
+
+        // FormatJS rules
+        "formatjs/enforce-default-message": ["error", "literal"],
+        "formatjs/no-id": "error",
+        "formatjs/no-multiple-whitespaces": "error",
+        "formatjs/no-offset": "error"
       }
     },
     {
