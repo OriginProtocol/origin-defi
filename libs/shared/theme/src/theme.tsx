@@ -1,14 +1,26 @@
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
+import {
+  alpha,
+  experimental_extendTheme as extendTheme,
+} from '@mui/material/styles';
+import shadows from '@mui/material/styles/shadows';
 
 declare module '@mui/material/styles' {
   interface TypeBackground {
     gradient1: string;
     gradient2: string;
+    gradient3: string;
+    gradientSuccess: string;
+    gradientHover: string;
+    gradientHoverActionButton: string;
   }
 
   interface TypeBackgroundOptions {
     gradient1: string;
     gradient2: string;
+    gradient3: string;
+    gradientSuccess: string;
+    gradientHover: string;
+    gradientHoverActionButton: string;
   }
 
   interface Shape {
@@ -25,25 +37,74 @@ export const theme = extendTheme({
     dark: {
       palette: {
         primary: {
-          main: 'rgb(130, 134, 153)',
-          contrastText: '#fff',
+          main: '#8c66fc',
+          dark: '#0274f1',
+          light: '#b361e6',
+          contrastText: '#FAFBFB',
         },
-        divider: '#141519',
+        divider: '#101113',
         background: {
-          paper: 'rgb(30, 31, 37)',
-          default: '#141519',
+          paper: '#1E1F25',
+          default: '#101113',
+          // TODO cleanup these gradients after theme is properly configured -> gradients can be generated based on css vars
           gradient1: 'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
-          gradient2: 'linear-gradient(90deg,#b361e6 -28.99%,#6a36fc 144.97%)',
+          gradient2: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+          gradient3:
+            'linear-gradient(90deg, rgb(179, 97, 230) 20.29%, rgb(106, 54, 252) 79.06%)',
+          gradientSuccess:
+            'linear-gradient(97.67deg, rgb(102, 254, 144) -10.09%, rgb(102, 217, 254) 120.99%)',
+          gradientHover:
+            'linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), #1E1F25',
+          gradientHoverActionButton:
+            'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+        },
+        action: {
+          hoverOpacity: 0.1,
+          disabledOpacity: 0.3,
+        },
+        text: {
+          primary: '#828699',
+          secondary: '#BABDCC',
+        },
+        grey: {
+          200: '#B5BECA',
+          400: '#515466',
+          500: '#252833',
+          700: '#141519',
+          800: '#282A32',
+          900: '#18191C',
+        },
+        warning: {
+          main: '#FFDC86',
+        },
+        error: {
+          main: '#FF8686',
         },
       },
     },
   },
   typography: {
-    fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+    fontFamily: 'Inter, Sailec, Helvetica, Arial, sans-serif',
+    body1: {
+      fontSize: '0.875rem',
+      lineHeight: '1.4375rem',
+    },
+    body2: {
+      fontSize: '0.75rem',
+      fontWeight: 400,
+      lineHeight: '1.25rem',
+    },
   },
   shape: {
-    borderRadius: 11,
+    borderRadius: 4,
   },
+  shadows: [
+    // @ts-expect-error remove one box shadow
+    ...shadows.slice(0, -2),
+    '0px 6px 12px 0px rgba(0, 0, 0, 0.20)',
+    'rgba(0, 0, 0, 0.25) 0px 4px 4px 0px',
+    '0px 1.7955275774002075px 5.32008171081543px 0px rgba(0, 0, 0, 0.03), 0px 6.030803203582764px 17.869047164916992px 0px rgba(0, 0, 0, 0.04), 0px 27px 80px 0px rgba(0, 0, 0, 0.07)',
+  ],
   components: {
     MuiButton: {
       styleOverrides: {
@@ -54,29 +115,51 @@ export const theme = extendTheme({
           color: theme.palette.primary.contrastText,
           background: theme.palette.background.gradient1,
         }),
+        containedSecondary: ({ theme }) => ({
+          color: theme.palette.primary.contrastText,
+          background: alpha(theme.palette.common.white, 0.1),
+          boxShadow: 'none',
+          '&:hover': {
+            background: theme.palette.background.paper,
+          },
+        }),
+      },
+      defaultProps: {
+        disableTouchRipple: true,
+      },
+    },
+    MuiIconButton: {
+      defaultProps: {
+        disableTouchRipple: true,
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
       },
     },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
+          minHeight: 0,
+          paddingBlock: theme.spacing(1),
+          paddingInline: theme.spacing(2.5),
           '&.Mui-selected': {
-            zIndex: 2,
             color: theme.palette.primary.contrastText,
           },
         }),
       },
+      defaultProps: {
+        disableRipple: true,
+        disableTouchRipple: true,
+      },
     },
     MuiTabs: {
       styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: theme.shape.borderRadius * 5,
-        }),
         indicator: ({ theme }) => ({
-          height: '100%',
           background: theme.palette.background.gradient2,
-          zIndex: 1,
-          borderRadius: theme.shape.borderRadius * 5,
         }),
       },
     },
@@ -93,7 +176,7 @@ export const theme = extendTheme({
         root: ({ theme }) => ({
           '&.Mui-selected': {
             backgroundColor: 'transparent',
-            color: theme.palette.primary.main,
+            color: theme.palette.text.secondary,
             '&:hover': {
               backgroundColor: theme.palette.grey[800],
             },
@@ -118,37 +201,103 @@ export const theme = extendTheme({
     MuiFormControl: {
       styleOverrides: {
         root: {
-          position: 'static'
-        }
-      }
+          position: 'static',
+        },
+      },
     },
     MuiFormLabel: {
       styleOverrides: {
-        root: {
-          '&.MuiInputLabel-root':{
+        root: ({ theme }) => ({
+          '&.MuiInputLabel-root': {
             position: 'static',
             transform: 'none',
-            transformOrigin: 'none',
-            fontSize: '0.75rem',
-            marginBlockEnd: '0.25rem'
-          }
-        }
-      }
+            transformOrigin: 'initial',
+            fontSize: theme.typography.pxToRem(14),
+            marginBlockEnd: '0.5rem',
+            color: `${theme.palette.text.primary}`,
+          },
+        }),
+      },
     },
     MuiInputBase: {
       styleOverrides: {
-        root: ({theme})=>({
-          borderRadius:  40,
+        root: ({ theme }) => ({
+          borderRadius: 20,
           border: '1px solid',
-          borderColor:theme.palette.info.main,
-          fontSize: '1rem',
+          borderColor: theme.palette.info.main,
           backgroundColor: theme.palette.background.default,
           width: 'auto',
-          padding: '7px 12px',
-      
-          
-        })
-      }
-    }
+          paddingBlock: theme.spacing(0.5),
+          paddingInline: theme.spacing(1.5),
+
+          '& .MuiInputBase-input': {
+            color: theme.palette.text.primary,
+            fontSize: theme.typography.pxToRem(14),
+          },
+        }),
+        input: ({ theme }) => ({
+          padding: theme.spacing(0.5),
+        }),
+      },
+    },
+    MuiAccordion: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+          backgroundColor: theme.palette.grey[900],
+          border: '1px solid',
+          borderColor: alpha(theme.palette.grey[200], 0.2),
+          boxShadow: 'none',
+          '&:before': {
+            height: 0,
+          },
+        }),
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          paddingInline: theme.spacing(5),
+          paddingBlock: theme.spacing(3),
+          color: theme.palette.primary.contrastText,
+        }),
+        head: ({ theme }) => ({
+          color: theme.palette.text.secondary,
+        }),
+      },
+    },
+    MuiPaginationItem: {
+      styleOverrides: {
+        outlined: ({ theme }) => ({
+          borderColor: theme.palette.divider,
+          '&.Mui-selected': {
+            color: theme.palette.primary.contrastText,
+            background: theme.palette.background.paper,
+          },
+        }),
+      },
+    },
+    MuiPopover: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          boxShadow: theme.shadows[23],
+          backgroundImage: 'none',
+          borderRadius: theme.shape.borderRadius * 2.5,
+          background: 'transparent',
+        }),
+        paper: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiSkeleton: {
+      styleOverrides: {
+        text: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius * 22,
+        }),
+      },
+    },
   },
 });
+
+export type Theme = typeof theme;

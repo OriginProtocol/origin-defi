@@ -1,1 +1,1 @@
-export * from './components/defi-oeth';
+export * from './views';
