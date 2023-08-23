@@ -1,0 +1,61 @@
+export const routes = [
+  {
+    type: 'swap',
+    name: 'Mint via Oeth zapper',
+    quantity: 150,
+    value: 284389.5,
+    rate: 1,
+    transactionCost: 89.25,
+    icon: 'https://app.oeth.com/images/oeth.svg',
+  },
+  {
+    type: 'swap',
+    name: 'Curve',
+    quantity: 149.2832,
+    value: 282128.93,
+    rate: 0.9995,
+    transactionCost: 12.35,
+    icon: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+  },
+  {
+    type: 'swap',
+    name: 'Maverick',
+    rate: 0.9796,
+    quantity: 148.74226,
+    value: 277106.84,
+    transactionCost: 46.47,
+    icon: '/images/maverick.png',
+  },
+  {
+    type: 'swap',
+    name: 'Uniswap',
+    rate: 0.9796,
+    value: 277106.84,
+    quantity: 148.74226,
+    transactionCost: 46.47,
+    icon: '/images/uniswap.png',
+  },
+];
+
+export const redeemRoutes = [
+  {
+    type: 'redeem',
+    name: 'Redeem via OETH vault',
+    rate: 1,
+    value: 284389.5,
+    quantity: 150,
+    transactionCost: 89.25,
+    waitTime: '3 days',
+    icon: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+  },
+  {
+    type: 'redeem',
+    name: 'Redeem via OETH vault',
+    rate: 1,
+    value: 284389.5,
+    quantity: 150,
+    transactionCost: 89.25,
+    waitTime: '1 min',
+    icon: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+  },
+];

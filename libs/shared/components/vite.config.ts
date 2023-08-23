@@ -6,23 +6,13 @@ import svgr from 'vite-plugin-svgr';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
+  cacheDir: '../../../node_modules/.vite/shared-components',
+
   plugins: [
     svgr(),
-    react({
-      babel: {
-        plugins: [
-          [
-            'formatjs',
-            {
-              idInterpolationPattern: '[sha512:contenthash:base64:6]',
-              ast: true,
-            },
-          ],
-        ],
-      },
-    }),
+    react(),
     viteTsConfigPaths({
-      root: '../../',
+      root: '../../../',
     }),
   ],
 
@@ -30,8 +20,17 @@ export default defineConfig({
   // worker: {
   //  plugins: [
   //    viteTsConfigPaths({
-  //      root: '../../',
+  //      root: '../../../',
   //    }),
   //  ],
   // },
+
+  test: {
+    globals: true,
+    cache: {
+      dir: '../../../node_modules/.vitest',
+    },
+    environment: 'jsdom',
+    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+  },
 });

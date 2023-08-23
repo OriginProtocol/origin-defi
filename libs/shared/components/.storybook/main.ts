@@ -1,18 +1,17 @@
 import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: ['../../../**/*.stories.@(js|jsx|ts|tsx|mdx)'],
+  stories: ['../src/**/*.stories.@(js|jsx|ts|tsx|mdx)'],
   addons: [
     '@storybook/addon-essentials',
     'storybook-addon-pseudo-states',
     '@storybook/addon-interactions',
   ],
-  staticDirs: [{ from: '../../assets/files', to: '/images' }],
   framework: {
     name: '@storybook/react-vite',
     options: {
       builder: {
-        viteConfigPath: `${__dirname}/../vite.config.ts`,
+        viteConfigPath: `${__dirname}../../../storybook/vite.config.ts`,
       },
     },
   },
