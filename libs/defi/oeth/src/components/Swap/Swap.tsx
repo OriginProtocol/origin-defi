@@ -104,7 +104,9 @@ export function Swap() {
         }
       >
         <SwapRoute routes={[]} isLoading={false} />
-        <ActionButton onClick={() => console.log('test')}>Swap</ActionButton>
+        <ActionButton onClick={() => console.log('test')}>
+          {intl.formatMessage({ defaultMessage: 'Swap' })}
+        </ActionButton>
       </SwapCard>
       <TokenListModal
         handleClose={handleCloseSelectionModal}

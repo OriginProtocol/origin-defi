@@ -1,9 +1,8 @@
 import { Button, Stack } from '@mui/material';
-import { Card } from '@origin/shared/components';
+import { ActionButton, Card } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { APY, PortfolioSwap } from '../components';
-import { ConnectWallet } from '../components/shared';
 
 export function WrapView() {
   const intl = useIntl();
@@ -48,7 +47,9 @@ export function WrapView() {
           </Button>
         </Card>
         <PortfolioSwap />
-        <ConnectWallet />
+        <ActionButton onClick={() => console.log('test')}>
+          {intl.formatMessage({ defaultMessage: 'Connect' })}
+        </ActionButton>
       </Stack>
     </>
   );
