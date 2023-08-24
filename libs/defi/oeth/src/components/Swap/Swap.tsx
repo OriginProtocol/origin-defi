@@ -25,13 +25,13 @@ export function Swap() {
   }>({
     baseToken: {
       abbreviation: 'OETH',
-      imgSrc: 'https://app.oeth.com/images/currency/oeth-icon-small.svg',
+      imgSrc: '/images/currency/oeth-icon-small.svg',
       quantity: 0,
       value: 0,
     },
     exchangeCurrency: {
       abbreviation: 'ETH',
-      imgSrc: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+      imgSrc: '/images/currency/eth-icon-small.svg',
       quantity: 0,
       value: 0,
     },
@@ -130,7 +130,7 @@ export function Swap() {
           {
             name: intl.formatMessage({ defaultMessage: 'Wrapped Ether' }),
             abbreviation: intl.formatMessage({ defaultMessage: 'WETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/weth-icon-small.png',
+            imgSrc: '/images/currency/weth-icon-small.png',
             value: 0,
             quantity: 0,
           },
@@ -139,29 +139,28 @@ export function Swap() {
               defaultMessage: 'Liquid Staked Ether 2.0',
             }),
             abbreviation: intl.formatMessage({ defaultMessage: 'stETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
+            imgSrc: '/images/currency/steth-icon-small.svg',
             value: 0,
             quantity: 0,
           },
           {
             name: intl.formatMessage({ defaultMessage: 'Rocket Pool ETH' }),
             abbreviation: intl.formatMessage({ defaultMessage: 'rETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/reth-icon-small.png',
+            imgSrc: '/images/currency/reth-icon-small.png',
             value: 0,
             quantity: 0,
           },
           {
             name: intl.formatMessage({ defaultMessage: 'Frax Ether' }),
             abbreviation: intl.formatMessage({ defaultMessage: 'frxETH' }),
-            imgSrc:
-              'https://app.oeth.com/images/currency/frxeth-icon-small.svg',
+            imgSrc: '/images/currency/frxeth-icon-small.svg',
             value: 0,
             quantity: 0,
           },
           {
             name: intl.formatMessage({ defaultMessage: 'ETH' }),
             abbreviation: intl.formatMessage({ defaultMessage: 'ETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+            imgSrc: '/images/currency/eth-icon-small.svg',
             value: 0,
             quantity: 0,
           },

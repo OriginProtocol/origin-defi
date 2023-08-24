@@ -14,7 +14,7 @@ const meta: Meta<typeof Input> = {
     baseTokenBalance: 250,
     baseTokenValue: 0,
     baseTokenName: 'stETH',
-    baseTokenIcon: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    baseTokenIcon: '/images/currency/steth-icon-small.svg',
     onValueChange: () => null,
   },
   render: (args) => (

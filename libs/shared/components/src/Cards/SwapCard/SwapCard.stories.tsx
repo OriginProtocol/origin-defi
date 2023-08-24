@@ -9,13 +9,12 @@ const meta: Meta<typeof SwapCard> = {
   title: 'Swap Card/Card',
   args: {
     title: 'Swap',
-    baseTokenIcon: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+    baseTokenIcon: '/images/currency/eth-icon-small.svg',
     baseTokenName: 'ETH',
     baseTokenValue: 0,
     exchangeTokenValue: 0,
     exchangeTokenQuantity: 0,
-    exchangeTokenIcon:
-      'https://app.oeth.com/images/currency/oeth-icon-small.svg',
+    exchangeTokenIcon: '/images/currency/oeth-icon-small.svg',
     exchangeTokenName: 'OETH',
   },
   render: (args) => (

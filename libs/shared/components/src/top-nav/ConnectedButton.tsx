@@ -51,7 +51,7 @@ export function ConnectedButton({
       >
         <Box
           component={'img'}
-          src="	https://app.oeth.com/images/wallet-image.svg"
+          src="	/images/wallet-image.svg"
           sx={{
             width: (theme) => theme.spacing(3),
             height: (theme) => theme.spacing(3),

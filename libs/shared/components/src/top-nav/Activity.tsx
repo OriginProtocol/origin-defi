@@ -45,7 +45,7 @@ export function Activity({ transactions }: Props) {
         data-testid="activity-button"
         onClick={(e) => setAnchor(e.currentTarget)}
       >
-        <Icon src="https://app.oeth.com/images/activity.svg" />
+        <Icon src="/images/activity.svg" />
       </IconButton>
       <Popover
         open={!!anchor}

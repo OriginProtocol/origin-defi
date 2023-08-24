@@ -13,8 +13,7 @@ const meta: Meta<typeof Output> = {
     exchangeTokenQuantity: 0,
     exchangeTokenValue: 0,
     exchangeTokenName: 'OETH',
-    exchangeTokenIcon:
-      '	https://app.oeth.com/images/currency/oeth-icon-small.svg',
+    exchangeTokenIcon: '	/images/currency/oeth-icon-small.svg',
     exchangeTokenBalance: 0,
   },
   render: (args) => (

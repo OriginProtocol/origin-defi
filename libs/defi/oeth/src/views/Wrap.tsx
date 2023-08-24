@@ -13,7 +13,7 @@ export function WrapView() {
         balance={0}
         pendingYield={0}
         earnings={0}
-        tokenIcon="	https://app.oeth.com/images/currency/woeth-icon-small.svg"
+        tokenIcon="	/images/currency/woeth-icon-small.svg"
       />
 
       <Stack gap={3} mt={3}>
@@ -43,7 +43,7 @@ export function WrapView() {
             }}
           >
             Learn more
-            <img src="https://app.oeth.com/images/external-link-white.svg" />
+            <img src="/images/external-link-white.svg" />
           </Button>
         </Card>
         <PortfolioSwap />

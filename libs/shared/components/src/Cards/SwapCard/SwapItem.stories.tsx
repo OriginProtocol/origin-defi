@@ -7,7 +7,7 @@ const meta: Meta<typeof SwapItem> = {
   title: 'Swap Card/Swap Item',
   args: {
     name: 'ETH',
-    icon: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
+    icon: '/images/currency/eth-icon-small.svg',
   },
 };
 
@@ -33,10 +33,10 @@ export const Hover: StoryObj<typeof SwapItem> = {
 export const Mix: StoryObj<typeof SwapItem> = {
   args: {
     icon: [
-      'https://app.oeth.com/images/currency/weth-icon-small.png',
-      'https://app.oeth.com/images/currency/reth-icon-small.png',
-      'https://app.oeth.com/images/currency/steth-icon-small.svg',
-      'https://app.oeth.com/images/currency/frxeth-icon-small.svg',
+      '/images/currency/weth-icon-small.png',
+      '/images/currency/reth-icon-small.png',
+      '/images/currency/steth-icon-small.svg',
+      '/images/currency/frxeth-icon-small.svg',
     ],
     name: 'LST Mix',
   },
