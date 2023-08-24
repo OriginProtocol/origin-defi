@@ -12,9 +12,9 @@ import {
 } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { LinkIcon } from '../LinkIcon/LinkIcon';
+import { LinkIcon } from '../LinkIcon';
+import { MiddleTruncated } from '../MiddleTruncated';
 import { Icon } from './Icon';
-import { UserId } from './UserId';
 import { styles } from './utils';
 
 import type { ButtonProps, SxProps, Theme } from '@mui/material';
@@ -36,6 +36,7 @@ export function ConnectedButton({
   const theme = useTheme();
   const intl = useIntl();
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
+
   return (
     <>
       <ConnectButton
@@ -57,7 +58,7 @@ export function ConnectedButton({
             height: (theme) => theme.spacing(3),
           }}
         />
-        <UserId userId={userId} />
+        <MiddleTruncated>{userId}</MiddleTruncated>
       </ConnectButton>
       <Popover
         open={!!anchor}
@@ -124,7 +125,7 @@ export function ConnectedButton({
             color="primary.contrastText"
           >
             <Icon src={walletIcon} />
-            <UserId userId={userId} />
+            <MiddleTruncated>{userId}</MiddleTruncated>
             <LinkIcon url={`https://etherscan.io/address/${userId}`} />
           </Stack>
           <Divider />
@@ -151,17 +152,11 @@ export function ConnectedButton({
   );
 }
 
-interface ConnectButtonProps extends ButtonProps {
+export type ConnectButtonProps = {
   connected: boolean;
-}
+} & ButtonProps;
 
-export function ConnectButton({
-  onClick,
-  children,
-  connected,
-  sx,
-  ...rest
-}: ConnectButtonProps) {
+export function ConnectButton({ connected, ...rest }: ConnectButtonProps) {
   return (
     <Button
       sx={
@@ -171,7 +166,6 @@ export function ConnectButton({
           display: 'flex',
           alignItems: 'center',
           paddingInline: { xs: 1, sm: 3 },
-          paddingInlineStart: { xs: 1, sm: 1 },
           paddingBlock: 1,
           borderRadius: 25,
           background: (theme) =>
@@ -196,7 +190,7 @@ export function ConnectButton({
           },
           minWidth: 0,
           gap: 1.5,
-          ...sx,
+          ...rest?.sx,
         } as SxProps<Theme>
       }
       disableElevation
@@ -204,11 +198,8 @@ export function ConnectButton({
       disableTouchRipple
       disableFocusRipple
       variant="text"
-      onClick={onClick}
       data-testid="connect-button"
       {...rest}
-    >
-      {children}
-    </Button>
+    />
   );
 }
