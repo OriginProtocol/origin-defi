@@ -20,6 +20,15 @@ export default defineConfig({
     host: 'localhost',
   },
 
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+      supported: {
+        bigint: true,
+      },
+    },
+  },
+
   plugins: [
     svgr(),
     react({
