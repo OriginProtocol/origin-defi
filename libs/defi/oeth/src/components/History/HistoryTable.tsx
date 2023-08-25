@@ -1,27 +1,12 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 
-import {
-  Box,
-  Pagination,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from '@mui/material';
-import { LinkIcon, quantityFormat } from '@origin/shared/components';
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
+import { Box, Stack } from '@mui/material';
+import { DataTable, LinkIcon, quantityFormat } from '@origin/shared/components';
+import { createColumnHelper } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 
-import type { ColumnFilter, ColumnFiltersState } from '@tanstack/react-table';
+import type { DataTableRef } from '@origin/shared/components';
+import type { ColumnFilter } from '@tanstack/react-table';
 
 type Filter = 'swap' | 'yield' | 'received' | 'sent';
 
@@ -31,6 +16,7 @@ export interface HistoryRow {
   change: number;
   balance: number;
   link: string;
+  [key: string]: unknown;
 }
 
 interface Props {
@@ -41,9 +27,10 @@ interface Props {
 
 const columnHelper = createColumnHelper<HistoryRow>();
 
-export function HistoryTable({ rows, filter }: Props) {
+export function HistoryTable({ rows, filter, isLoading }: Props) {
   const intl = useIntl();
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const ref = useRef<DataTableRef>(null);
+
   const columns = useMemo(
     () => [
       columnHelper.accessor('date', {
@@ -93,74 +80,18 @@ export function HistoryTable({ rows, filter }: Props) {
     [intl],
   );
 
-  const table = useReactTable({
-    data: rows,
-    columns,
-    state: {
-      pagination: {
-        pageSize: 20,
-        pageIndex: 0,
-      },
-      columnFilters,
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    onColumnFiltersChange: setColumnFilters,
-    // add when we do server side pagination
-    // manualPagination: true,
-    pageCount: rows.length / 3,
-    // add when we do server side pagination
-    // onPaginationChange: setPagination
-  });
-
   useEffect(() => {
-    table.getColumn('type')?.setFilterValue(filter);
-  }, [filter, table]);
+    ref?.current?.setFilter(filter, 'type');
+  }, [filter]);
+
   return (
-    <Stack gap={2}>
-      <Table>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableCell key={header.id}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  sx={{
-                    ...(cell.column.columnDef.id === 'type'
-                      ? { '&:first-letter': { textTransform: 'uppercase' } }
-                      : {}),
-                  }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Pagination
-        count={table.getPageCount()}
-        shape="rounded"
-        variant="outlined"
-        hidePrevButton
-        hideNextButton
-        onChange={(_, page) => table.setPageIndex(page)}
-      />
-    </Stack>
+    <DataTable
+      ref={ref}
+      rows={rows}
+      // @ts-expect-error typescript doesn't like my generic prop for whatever reason
+      columns={columns}
+      pageCount={rows.length / 3}
+      isLoading={isLoading}
+    />
   );
 }
