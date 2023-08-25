@@ -5,10 +5,11 @@ import type { SxProps, Theme } from '@mui/material';
 export const styles: SxProps<Theme> = {
   backgroundColor: 'background.paper',
   borderRadius: 25,
-  paddingBlock: 1,
+  paddingBlock: 0.75,
   paddingInline: { xs: 2, md: 3 },
   color: 'primary.contrastText',
-  boxShadow: (theme) => theme.shadows['24'],
+  boxSizing: 'border-box',
+  lineHeight: '1rem',
 };
 
 export const messages = {

@@ -41,6 +41,7 @@ export function Output({
         backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
         ...cardStyles,
         paddingBlock: 3.0625,
+        boxSizing: 'border-box',
       }}
     >
       <Box sx={styles}>
@@ -53,8 +54,9 @@ export function Output({
               fontWeight: 700,
               fontStyle: 'normal',
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+              flex: 1,
+              alignSelf: 'end',
               lineHeight: '1.5rem',
-              marginBlockStart: 0.4,
               color: (theme) =>
                 exchangeTokenQuantity === 0
                   ? theme.palette.text.secondary
@@ -71,7 +73,9 @@ export function Output({
           {...(!isSwapped ? { additionalNode: exchangeTokenNode } : {})}
           sx={{ justifySelf: 'end' }}
         />
+      </Box>
 
+      <Box sx={{ ...styles, marginBlockStart: 0.5 }}>
         {exchangeTokenValue !== undefined ? (
           isLoading ? (
             <Loader width={28} />

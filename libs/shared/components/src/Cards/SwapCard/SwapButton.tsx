@@ -18,16 +18,17 @@ export function SwapButton({ onClick, sx, ...rest }: Props) {
         zIndex: 2,
         width: { md: '3rem', xs: '2rem' },
         height: { md: '3rem', xs: '2rem' },
-        fill: (theme) => theme.palette.background.paper,
         strokeWidth: (theme) => theme.typography.pxToRem(2),
         stroke: (theme) => theme.palette.grey[700],
         transform: { xs: 'translateY(-20%)', md: 'translateY(-8%)' },
-        backgroundColor: (theme) => theme.palette.divider,
+        border: '1px solid',
+        borderColor: 'divider',
+        backgroundColor: (theme) => theme.palette.background.paper,
         '& img': {
           transition: (theme) => theme.transitions.create('transform'),
         },
         '&:hover': {
-          backgroundColor: (theme) => theme.palette.background.default,
+          backgroundColor: (theme) => theme.palette.background.paper,
           '& img': {
             transform: 'rotate(-180deg)',
           },

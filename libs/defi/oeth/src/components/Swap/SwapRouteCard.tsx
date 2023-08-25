@@ -62,7 +62,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
             <Stack
               direction="row"
               alignItems="center"
-              gap={1}
+              gap={0.5}
               sx={{ position: 'relative' }}
             >
               <Box
