@@ -1,6 +1,11 @@
 import { erc20ABI } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
+import OETH from './abis/OETHProxy.json';
+import OUSD from './abis/OUSDProxy.json';
+import WOETH from './abis/WOETHProxy.json';
+import WOUSD from './abis/WOUSDProxy.json';
+
 export const tokens = {
   mainnet: {
     ETH: {
@@ -62,7 +67,7 @@ export const tokens = {
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: OETH,
       name: 'Origin Ether',
       icon: '/images/tokens/OETH.svg',
       decimals: 18,
@@ -71,7 +76,7 @@ export const tokens = {
     WOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: WOETH,
       name: 'Wrapped Origin Ether',
       icon: '/images/tokens/WOETH.svg',
       decimals: 18,
@@ -80,7 +85,7 @@ export const tokens = {
     OUSD: {
       address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: OUSD,
       name: 'Origin Dollar',
       icon: '/images/tokens/OUSD.svg',
       decimals: 18,
@@ -89,11 +94,38 @@ export const tokens = {
     WOUSD: {
       address: '0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: WOUSD,
       name: 'WrappedOrigin Dollar',
       icon: '/images/tokens/WOUSD.svg',
       decimals: 18,
       symbol: 'WOUSD',
+    },
+    OGN: {
+      address: '0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Origin Token',
+      icon: '/images/tokens/OGN.svg',
+      decimals: 18,
+      symbol: 'OGN',
+    },
+    OGV: {
+      address: '0x9c354503C38481a7A7a51629142963F98eCC12D0',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Origin Dollar Governance',
+      icon: '/images/tokens/OGV.svg',
+      decimals: 18,
+      symbol: 'OGV',
+    },
+    veOGV: {
+      address: '0x0C4576Ca1c365868E162554AF8e385dc3e7C66D9',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Staked Origin Dollar Governance',
+      icon: '/images/tokens/OGV.svg',
+      decimals: 18,
+      symbol: 'veOGV',
     },
     // 1-inch LP
     stETH: {

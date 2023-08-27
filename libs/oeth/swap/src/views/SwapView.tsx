@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, IconButton, Stack } from '@mui/material';
+import { alpha, Box, IconButton, Stack } from '@mui/material';
 import { Card, TokenInput } from '@origin/shared/components';
 import { TokenSelectModal, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -9,11 +9,18 @@ import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
 import { GasPopover } from '../components/GasPopover';
+import { SwapRoute } from '../components/SwapRoute';
 import { swapTokens } from '../constants';
 import { SwapProvider, useSwapState } from '../state';
 
 import type { IconButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+
+export const SwapView = () => (
+  <SwapProvider>
+    <SwapViewWrapped />
+  </SwapProvider>
+);
 
 function SwapViewWrapped() {
   const intl = useIntl();
@@ -98,6 +105,38 @@ function SwapViewWrapped() {
             tokenPriceUsd={prices?.[tokenIn.symbol]}
             isPriceLoading={isPriceLoading}
             isConnected={isConnected}
+            sx={{
+              backgroundColor: 'grey.900',
+              padding: 2.875,
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              borderEndStartRadius: 0,
+              borderEndEndRadius: 0,
+              '&:hover, &:focus-within': {
+                borderColor: 'transparent',
+                borderStartStartRadius: (theme) => theme.shape.borderRadius,
+                borderStartEndRadius: (theme) => theme.shape.borderRadius,
+              },
+              '&:hover': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${
+                    theme.palette.grey[900]
+                  }) padding-box,
+                    linear-gradient(90deg, ${alpha(
+                      theme.palette.primary.main,
+                      0.4,
+                    )} 0%, ${alpha(
+                      theme.palette.primary.dark,
+                      0.4,
+                    )} 100%) border-box;`,
+              },
+              '&:focus-within': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
+                   linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
+              },
+            }}
           />
           <TokenInput
             amount={amountOut}
@@ -112,9 +151,20 @@ function SwapViewWrapped() {
             isPriceLoading={isPriceLoading}
             inputProps={{ readOnly: true }}
             isConnected={isConnected}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderTop: 0,
+              borderRadius: 1,
+              borderStartStartRadius: 0,
+              borderStartEndRadius: 0,
+              backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
+              padding: 2.875,
+            }}
           />
           <SwapButton onClick={handleExchangeTokens} />
         </Box>
+        <SwapRoute routes={[]} isLoading={false} />
       </Card>
       <TokenSelectModal
         open={!isNilOrEmpty(tokenModal)}
@@ -129,12 +179,6 @@ function SwapViewWrapped() {
   );
 }
 
-export const SwapView = () => (
-  <SwapProvider>
-    <SwapViewWrapped />
-  </SwapProvider>
-);
-
 function SwapButton(props: IconButtonProps) {
   return (
     <IconButton
@@ -145,14 +189,13 @@ function SwapButton(props: IconButtonProps) {
         left: 0,
         right: 0,
         bottom: 0,
-        margin: 'auto',
-        zIndex: 2,
         width: { md: '3rem', xs: '2rem' },
         height: { md: '3rem', xs: '2rem' },
+        margin: 'auto',
+        zIndex: 2,
         fill: (theme) => theme.palette.background.paper,
         strokeWidth: (theme) => theme.typography.pxToRem(2),
         stroke: (theme) => theme.palette.grey[700],
-        transform: { xs: 'translateY(-20%)', md: 'translateY(-8%)' },
         backgroundColor: (theme) => theme.palette.divider,
         '& img': {
           transition: (theme) => theme.transitions.create('transform'),

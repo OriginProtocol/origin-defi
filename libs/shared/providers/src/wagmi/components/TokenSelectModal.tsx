@@ -55,7 +55,7 @@ export const TokenSelectModal = ({
       >
         {tokens.map((token) => (
           <TokenListItem
-            key={token.address}
+            key={token.address || 'eth'}
             token={token}
             onClick={() => {
               onSelectToken(token);

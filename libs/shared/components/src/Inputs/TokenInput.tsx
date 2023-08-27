@@ -89,7 +89,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         </Stack>
         <Stack alignItems="flex-end" justifyContent="flex-end">
           {isConnected && (
-            <Stack direction="row" alignItems="center">
+            <Stack direction="row" alignItems="center" gap={0.5}>
               {isBalanceLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -105,7 +105,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                       color="inherit"
                       size="small"
                       disabled={bal === 0}
-                      sx={(theme) => theme.typography.body2}
+                      sx={(theme) => ({
+                        ...theme.typography.body2,
+                        minWidth: 0,
+                        margin: 0,
+                        padding: 0,
+                      })}
                     >
                       {intl.formatMessage({ defaultMessage: 'MAX' })}
                     </Button>
@@ -120,6 +125,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     );
   },
 );
+
 TokenInput.displayName = 'TokenInput';
 
 type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
