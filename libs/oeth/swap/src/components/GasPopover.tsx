@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import {
   alpha,
   Box,
   Button,
-  debounce,
   FormControl,
   FormHelperText,
   IconButton,
@@ -15,12 +14,16 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { isNumber } from 'lodash';
+import { produce } from 'immer';
 import { useIntl } from 'react-intl';
+import { useFeeData } from 'wagmi';
+
+import { useSwapState } from '../state';
 
 import type { Theme } from '@mui/material';
+import type { ChangeEvent } from 'react';
 
-const defaultPriceTolerance = 0.01;
+const defaultSlippage = 0.01;
 
 const gridStyles = {
   display: 'grid',
@@ -30,20 +33,14 @@ const gridStyles = {
   alignItems: 'center',
 };
 
-interface Props {
-  gasPrice: number;
-  onPriceToleranceChange: (value: number) => void;
-}
-
-export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
+export function GasPopover() {
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [priceTolerance, setPriceTolerance] = useState(defaultPriceTolerance);
+  const [{ slippage }, setSwapState] = useSwapState();
+  const { data: feeData } = useFeeData({ formatUnits: 'gwei' });
 
-  useEffect(() => {
-    onPriceToleranceChange(priceTolerance);
-  }, [priceTolerance, onPriceToleranceChange]);
+  const handleSlippageChange = (evt: ChangeEvent<HTMLInputElement>) => {};
 
   return (
     <>
@@ -89,13 +86,13 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
       >
         <Stack gap={2} sx={{ '--origin-blue': '#0074F0' }}>
           <FormControl variant="standard">
-            <InputLabel htmlFor="tolerance" shrink>
-              {intl.formatMessage({ defaultMessage: 'Price tolerance' })}
+            <InputLabel htmlFor="slippage" shrink>
+              {intl.formatMessage({ defaultMessage: 'Slippage' })}
             </InputLabel>
             <Box sx={gridStyles}>
               <InputBase
-                id="tolerance"
-                defaultValue={priceTolerance}
+                id="slippage"
+                value={slippage}
                 fullWidth
                 sx={{
                   borderColor: 'var(--origin-blue)',
@@ -111,11 +108,7 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
                     },
                   },
                 }}
-                onChange={debounce((e) => {
-                  if (isNumber(parseFloat(e.target.value))) {
-                    setPriceTolerance(Number(e.target.value));
-                  }
-                }, 300)}
+                onChange={handleSlippageChange}
                 endAdornment={
                   <InputAdornment
                     position="end"
@@ -139,13 +132,19 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
                   },
                 }}
                 fullWidth
-                disabled={priceTolerance === defaultPriceTolerance}
-                onClick={() => setPriceTolerance(defaultPriceTolerance)}
+                disabled={slippage === defaultSlippage}
+                onClick={() => {
+                  setSwapState(
+                    produce((draft) => {
+                      draft.slippage = defaultSlippage;
+                    }),
+                  );
+                }}
               >
                 {intl.formatMessage({ defaultMessage: 'Auto' })}
               </Button>
             </Box>
-            {priceTolerance > 1 ? (
+            {slippage > 1 ? (
               <FormHelperText
                 sx={{
                   gridColumn: 'span 2',
@@ -169,7 +168,11 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
             <Box sx={gridStyles}>
               <InputBase
                 id="gas"
-                defaultValue={gasPrice}
+                readOnly
+                defaultValue={intl.formatNumber(
+                  parseFloat(feeData?.formatted.gasPrice),
+                  { maximumFractionDigits: 4 },
+                )}
                 fullWidth
                 sx={{
                   borderColor: 'var(--origin-blue)',

@@ -3,11 +3,11 @@ import { formatUnits, parseUnits } from 'viem';
 const DEFAULT_DECIMALS = 18;
 
 export class BigDecimal {
-  exact: bigint;
+  value: bigint;
   decimals: number;
 
   constructor(num: bigint, decimals = DEFAULT_DECIMALS) {
-    this.exact = num ? (typeof num === 'bigint' ? num : BigInt(num)) : 0n;
+    this.value = num ? (typeof num === 'bigint' ? num : BigInt(num)) : 0n;
     this.decimals = decimals;
   }
 
@@ -34,7 +34,7 @@ export class BigDecimal {
   }
 
   get string(): string {
-    return formatUnits(this.exact, this.decimals);
+    return formatUnits(this.value, this.decimals);
   }
 
   get simple(): number {
@@ -48,7 +48,7 @@ export class BigDecimal {
   toJSON(): string {
     return JSON.stringify({
       decimals: this.decimals,
-      exact: this.exact.toString(),
+      value: this.value.toString(),
     });
   }
 
@@ -67,42 +67,42 @@ export class BigDecimal {
   }
 
   add(other: BigDecimal) {
-    this.exact += other.exact;
+    this.value += other.value;
   }
 
   sub(other: BigDecimal) {
-    this.exact -= other.exact;
+    this.value -= other.value;
   }
 
   mul(other: BigDecimal) {
-    this.exact *= other.exact;
+    this.value *= other.value;
   }
 
   div(other: BigDecimal) {
-    this.exact /= other.exact;
+    this.value /= other.value;
   }
 
   eq(other: BigDecimal): boolean {
-    return this.exact === other.exact;
+    return this.value === other.value;
   }
 
   gt(other: BigDecimal): boolean {
-    return this.exact > other.exact;
+    return this.value > other.value;
   }
 
   gte(other: BigDecimal): boolean {
-    return this.exact >= other.exact;
+    return this.value >= other.value;
   }
 
   lt(other: BigDecimal): boolean {
-    return this.exact < other.exact;
+    return this.value < other.value;
   }
 
   lte(other: BigDecimal): boolean {
-    return this.exact <= other.exact;
+    return this.value <= other.value;
   }
 
-  eq0(): boolean {
-    return this.exact === 0n;
+  isZero(): boolean {
+    return this.value === 0n;
   }
 }

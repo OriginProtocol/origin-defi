@@ -28,6 +28,7 @@
           }
         ],
         "react/react-in-jsx-scope": "off",
+        "no-empty": ["error", { "allowEmptyCatch": true }],
         // Unused imports rules
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [

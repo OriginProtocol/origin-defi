@@ -11,7 +11,9 @@ import {
   Typography,
 } from '@mui/material';
 import { Icon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { useAccount, useBalance } from 'wagmi';
 
 const days = [7, 30];
 
@@ -19,10 +21,16 @@ export function ApyHeader() {
   const intl = useIntl();
   const [selectedPeriod, setSelectedPeriod] = useState(30);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const { address } = useAccount();
+  const { data: oethBalance } = useBalance({
+    address,
+    token: tokens.mainnet.OUSD.address,
+    watch: true,
+  });
 
-  function handleClose() {
+  const handleClose = () => {
     setAnchorEl(null);
-  }
+  };
 
   return (
     <>
@@ -138,7 +146,9 @@ export function ApyHeader() {
           <ValueContainer
             icon="https://app.oeth.com/images/oeth.svg"
             text={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-            value={intl.formatNumber(0, { minimumFractionDigits: 4 })}
+            value={intl.formatNumber(Number(oethBalance?.formatted ?? 0), {
+              minimumFractionDigits: 4,
+            })}
           />
           <Box
             sx={{

@@ -38,6 +38,9 @@
       "@origin/shared/components": [
         "libs/shared/components/src/index.ts"
       ],
+      "@origin/shared/contracts": [
+        "libs/shared/contracts/src/index.ts"
+      ],
       "@origin/shared/data-access": [
         "libs/shared/data-access/src/index.ts"
       ],

@@ -1,4 +1,5 @@
 export * from './Cards';
+export * from './Inputs';
 export * from './LinkIcon';
 export * from './Loader';
 export * from './MiddleTruncated';

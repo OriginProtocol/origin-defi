@@ -1,81 +1,66 @@
 import { useState } from 'react';
 
-import { Stack } from '@mui/material';
-import {
-  ActionButton,
-  DropdownIcon,
-  SwapCard,
-  TokenListModal,
-} from '@origin/shared/components';
-import random from 'lodash/random';
+import { Box, IconButton, Stack } from '@mui/material';
+import { Card, TokenInput } from '@origin/shared/components';
+import { TokenSelectModal, usePrices } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { produce } from 'immer';
 import { useIntl } from 'react-intl';
+import { useAccount, useBalance } from 'wagmi';
 
 import { GasPopover } from '../components/GasPopover';
-import { SwapRoute } from '../components/SwapRoute';
+import { swapTokens } from '../constants';
+import { SwapProvider, useSwapState } from '../state';
 
-import type { Option } from '@origin/shared/components';
+import type { IconButtonProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
-export function SwapView() {
+function SwapViewWrapped() {
   const intl = useIntl();
-  const [isSelectionModalOpen, setSelectionModal] = useState(false);
-  const [values, setValues] = useState<{
-    baseToken: Omit<Option, 'name'>;
-    exchangeCurrency: Omit<Option, 'name'>;
-  }>({
-    baseToken: {
-      abbreviation: 'OETH',
-      imgSrc: 'https://app.oeth.com/images/currency/oeth-icon-small.svg',
-      quantity: 0,
-      value: 0,
-    },
-    exchangeCurrency: {
-      abbreviation: 'ETH',
-      imgSrc: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
-      quantity: 0,
-      value: 0,
-    },
+  const { address, isConnected } = useAccount();
+  const [tokenModal, setTokenModal] = useState<'tokenIn' | 'tokenOut' | null>(
+    null,
+  );
+  const [{ amountIn, amountOut, tokenIn, tokenOut }, setSwapState] =
+    useSwapState();
+  const { data: prices, isLoading: isPriceLoading } = usePrices();
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
+    address,
+    token: tokenIn.address,
+  });
+  const { data: balTokenOut, isLoading: isBalTokenOutLoading } = useBalance({
+    address,
+    token: tokenOut.address,
   });
 
-  function handleCloseSelectionModal() {
-    setSelectionModal(false);
-  }
+  const handleCloseSelectionModal = () => {
+    setTokenModal(null);
+  };
 
-  function handleValueChange(value: string) {
-    const number = parseInt(value) || 0;
-    setValues((prev) => ({
-      baseToken: {
-        ...prev.baseToken,
-        quantity: number,
-        value: number * random(18500, 19000, true),
-      },
-      exchangeCurrency: {
-        ...prev.exchangeCurrency,
-        quantity: number * random(number - 0.5, number, true),
-        value: number * random(18500, 19000, true),
-      },
-    }));
-  }
+  const handleSelectToken = (value: Token) => {
+    setSwapState(
+      produce((draft) => {
+        draft[tokenModal] = value;
+      }),
+    );
+  };
 
-  function swapTokens() {
-    setValues((prev) => ({
-      baseToken: {
-        ...prev.exchangeCurrency,
-        quantity: prev.baseToken.quantity,
-        value: prev.baseToken.quantity * random(18500, 19000),
-      },
-      exchangeCurrency: {
-        ...prev.baseToken,
-        quantity:
-          prev.baseToken.quantity *
-          random(prev.baseToken.quantity - 0.5, prev.baseToken.quantity, true),
-        value: prev.baseToken.quantity * random(18500, 19000, true),
-      },
-    }));
-  }
+  const handleExchangeTokens = () => {
+    setSwapState(
+      produce((draft) => {
+        draft.amountIn = 0n;
+        draft.amountOut = 0n;
+        const oldTokenOut = draft.tokenOut;
+        draft.tokenOut = draft.tokenIn;
+        draft.tokenIn = oldTokenOut;
+      }),
+    );
+  };
 
   return (
     <>
-      <SwapCard
+      <Card
+        sxCardTitle={{ padding: { xs: 2, md: 3 } }}
         title={
           <Stack
             direction="row"
@@ -83,89 +68,111 @@ export function SwapView() {
             alignItems="center"
           >
             {intl.formatMessage({ defaultMessage: 'Swap' })}
-            <GasPopover
-              gasPrice={21}
-              onPriceToleranceChange={(tolerance) => null}
-            />
+            <GasPopover />
           </Stack>
         }
-        onSwap={swapTokens}
-        onValueChange={handleValueChange}
-        baseTokenIcon={values.baseToken.imgSrc}
-        baseTokenName={values.baseToken.abbreviation as string}
-        baseTokenValue={values.baseToken.value}
-        exchangeTokenName={values.exchangeCurrency.abbreviation as string}
-        exchangeTokenIcon={values.exchangeCurrency.imgSrc}
-        exchangeTokenQuantity={values.exchangeCurrency.quantity}
-        exchangeTokenValue={values.exchangeCurrency.value}
-        exchangeTokenNode={
-          <DropdownIcon onClick={() => setSelectionModal(true)} />
-        }
       >
-        <SwapRoute routes={[]} isLoading={false} />
-        <ActionButton onClick={() => console.log('test')}>
-          {intl.formatMessage({ defaultMessage: 'Swap' })}
-        </ActionButton>
-      </SwapCard>
-      <TokenListModal
-        handleClose={handleCloseSelectionModal}
-        isOpen={isSelectionModalOpen}
-        onSelection={(option) =>
-          setValues((prev) => ({
-            ...prev,
-            exchangeCurrency: {
-              value: prev.baseToken.quantity * random(18500, 19000, true),
-              quantity: random(
-                prev.baseToken.quantity - 0.5,
-                prev.baseToken.quantity,
-              ),
-              abbreviation: option.name,
-              imgSrc: option.imgSrc,
-            },
-          }))
+        <Box
+          sx={{
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'divider',
+            position: 'relative',
+          }}
+        >
+          <TokenInput
+            amount={amountIn}
+            onAmountChange={(val) => {
+              setSwapState(
+                produce((draft) => {
+                  draft.amountIn = val;
+                }),
+              );
+            }}
+            balance={balTokenIn?.value}
+            isBalanceLoading={isBalTokenInLoading}
+            token={tokenIn}
+            onTokenClick={() => {
+              setTokenModal('tokenIn');
+            }}
+            tokenPriceUsd={prices?.[tokenIn.symbol]}
+            isPriceLoading={isPriceLoading}
+            isConnected={isConnected}
+          />
+          <TokenInput
+            amount={amountOut}
+            balance={balTokenOut?.value}
+            isBalanceLoading={isBalTokenOutLoading}
+            disableMaxClick
+            token={tokenOut}
+            onTokenClick={() => {
+              setTokenModal('tokenOut');
+            }}
+            tokenPriceUsd={prices?.[tokenOut.symbol]}
+            isPriceLoading={isPriceLoading}
+            inputProps={{ readOnly: true }}
+            isConnected={isConnected}
+          />
+          <SwapButton onClick={handleExchangeTokens} />
+        </Box>
+      </Card>
+      <TokenSelectModal
+        open={!isNilOrEmpty(tokenModal)}
+        onClose={handleCloseSelectionModal}
+        tokens={swapTokens}
+        onSelectToken={handleSelectToken}
+        selectedTokenSymbol={
+          tokenModal === 'tokenIn' ? tokenIn.symbol : tokenOut.symbol
         }
-        selected={values.exchangeCurrency.abbreviation}
-        options={[
-          {
-            name: intl.formatMessage({ defaultMessage: 'Wrapped Ether' }),
-            abbreviation: intl.formatMessage({ defaultMessage: 'WETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/weth-icon-small.png',
-            value: 0,
-            quantity: 0,
-          },
-          {
-            name: intl.formatMessage({
-              defaultMessage: 'Liquid Staked Ether 2.0',
-            }),
-            abbreviation: intl.formatMessage({ defaultMessage: 'stETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
-            value: 0,
-            quantity: 0,
-          },
-          {
-            name: intl.formatMessage({ defaultMessage: 'Rocket Pool ETH' }),
-            abbreviation: intl.formatMessage({ defaultMessage: 'rETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/reth-icon-small.png',
-            value: 0,
-            quantity: 0,
-          },
-          {
-            name: intl.formatMessage({ defaultMessage: 'Frax Ether' }),
-            abbreviation: intl.formatMessage({ defaultMessage: 'frxETH' }),
-            imgSrc:
-              'https://app.oeth.com/images/currency/frxeth-icon-small.svg',
-            value: 0,
-            quantity: 0,
-          },
-          {
-            name: intl.formatMessage({ defaultMessage: 'ETH' }),
-            abbreviation: intl.formatMessage({ defaultMessage: 'ETH' }),
-            imgSrc: 'https://app.oeth.com/images/currency/eth-icon-small.svg',
-            value: 0,
-            quantity: 0,
-          },
-        ]}
       />
     </>
+  );
+}
+
+export const SwapView = () => (
+  <SwapProvider>
+    <SwapViewWrapped />
+  </SwapProvider>
+);
+
+function SwapButton(props: IconButtonProps) {
+  return (
+    <IconButton
+      {...props}
+      sx={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        margin: 'auto',
+        zIndex: 2,
+        width: { md: '3rem', xs: '2rem' },
+        height: { md: '3rem', xs: '2rem' },
+        fill: (theme) => theme.palette.background.paper,
+        strokeWidth: (theme) => theme.typography.pxToRem(2),
+        stroke: (theme) => theme.palette.grey[700],
+        transform: { xs: 'translateY(-20%)', md: 'translateY(-8%)' },
+        backgroundColor: (theme) => theme.palette.divider,
+        '& img': {
+          transition: (theme) => theme.transitions.create('transform'),
+        },
+        '&:hover': {
+          backgroundColor: (theme) => theme.palette.background.default,
+          '& img': {
+            transform: 'rotate(-180deg)',
+          },
+        },
+        ...props?.sx,
+      }}
+    >
+      <Box
+        component="img"
+        src="https://app.oeth.com/images/splitarrow.svg"
+        sx={{
+          height: { md: 'auto', xs: '1.25rem' },
+        }}
+      />
+    </IconButton>
   );
 }

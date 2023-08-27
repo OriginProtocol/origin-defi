@@ -15,13 +15,6 @@ const truncate: SxProps<Theme> = {
   textOverflow: 'ellipsis',
 };
 
-const Text = (props: TypographyProps) => (
-  <Typography
-    {...props}
-    sx={{ color: 'inherit', fontSize: 'inherit', ...props?.sx }}
-  />
-);
-
 export const MiddleTruncated = ({
   children,
   textProps,
@@ -36,9 +29,9 @@ export const MiddleTruncated = ({
         {...rest}
         sx={{ display: 'flex', flexWrap: 'nowrap', minWidth: 0, ...rest?.sx }}
       >
-        <Text {...textProps} sx={{ ...truncate, ...textProps?.sx }}>
+        <Typography {...textProps} sx={{ ...truncate, ...textProps?.sx }}>
           {children}
-        </Text>
+        </Typography>
       </Box>
     );
   }
@@ -54,11 +47,11 @@ export const MiddleTruncated = ({
       {...rest}
       sx={{ display: 'flex', flexWrap: 'nowrap', minWidth: 0, ...rest?.sx }}
     >
-      <Text {...textProps} sx={{ ...truncate, ...textProps?.sx }}>
+      <Typography {...textProps} sx={{ ...truncate, ...textProps?.sx }}>
         {partStart}
-      </Text>
-      {breakspace && <Text {...textProps}>&nbsp;</Text>}
-      <Text {...textProps}>{partEnd}</Text>
+      </Typography>
+      {breakspace && <Typography {...textProps}>&nbsp;</Typography>}
+      <Typography {...textProps}>{partEnd}</Typography>
     </Box>
   );
 };

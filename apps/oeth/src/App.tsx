@@ -2,12 +2,17 @@ import { Container, Stack } from '@mui/material';
 import { HistoryView } from '@origin/oeth/history';
 import { SwapView } from '@origin/oeth/swap';
 import { WrapView } from '@origin/oeth/wrap';
+import { usePrices } from '@origin/shared/providers';
 import { Route, Routes } from 'react-router-dom';
 
 import { ApyHeader } from './components/ApyHeader';
 import { Topnav } from './components/Topnav';
 
 export function App() {
+  const { data } = usePrices();
+
+  console.log('data', data);
+
   return (
     <Stack>
       <Topnav />
