@@ -93,4 +93,4 @@ export const contracts = {
       name: 'oracleRouter',
     },
   },
-};
+} as const;
