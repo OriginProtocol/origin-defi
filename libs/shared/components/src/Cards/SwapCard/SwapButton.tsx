@@ -38,7 +38,7 @@ export function SwapButton({ onClick, sx, ...rest }: Props) {
     >
       <Box
         component="img"
-        src="https://app.oeth.com/images/splitarrow.svg"
+        src="/images/splitarrow.svg"
         sx={{
           height: { md: 'auto', xs: '1.25rem' },
         }}

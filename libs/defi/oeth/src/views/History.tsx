@@ -8,7 +8,7 @@ export function HistoryView() {
         balance={0}
         pendingYield={0}
         earnings={0}
-        tokenIcon="https://app.oeth.com/images/oeth.svg"
+        tokenIcon="/images/oeth.svg"
       />
       <HistoryCard />
     </>

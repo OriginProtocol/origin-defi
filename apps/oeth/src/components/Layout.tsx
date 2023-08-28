@@ -9,7 +9,7 @@ export function Layout() {
   return (
     <>
       <TopNav
-        logo="https://app.oeth.com/images/origin-ether-logo.svg"
+        logo="/images/origin-ether-logo.svg"
         tabs={[
           intl.formatMessage({ defaultMessage: 'Swap' }),
           intl.formatMessage({ defaultMessage: 'Wrap' }),

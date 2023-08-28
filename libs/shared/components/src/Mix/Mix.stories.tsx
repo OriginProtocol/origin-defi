@@ -7,10 +7,10 @@ const meta: Meta<typeof Mix> = {
   title: 'Shared components/Mix',
   args: {
     imgSrc: [
-      'https://app.oeth.com/images/currency/weth-icon-small.png',
-      'https://app.oeth.com/images/currency/reth-icon-small.png',
-      'https://app.oeth.com/images/currency/steth-icon-small.svg',
-      'https://app.oeth.com/images/currency/frxeth-icon-small.svg',
+      '/images/currency/weth-icon-small.png',
+      '/images/currency/reth-icon-small.png',
+      '/images/currency/steth-icon-small.svg',
+      '/images/currency/frxeth-icon-small.svg',
     ],
   },
 };

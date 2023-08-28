@@ -9,12 +9,12 @@ export function PortfolioSwap() {
   const [values, setValues] = useState({
     baseToken: {
       abbreviation: 'OETH',
-      imgSrc: 'https://app.oeth.com/images/currency/oeth-icon-small.svg',
+      imgSrc: '/images/currency/oeth-icon-small.svg',
       quantity: 0,
     },
     exchangeCurrency: {
       abbreviation: 'wOETH',
-      imgSrc: 'https://app.oeth.com/images/currency/woeth-icon-small.svg',
+      imgSrc: '/images/currency/woeth-icon-small.svg',
       quantity: 0,
     },
   });

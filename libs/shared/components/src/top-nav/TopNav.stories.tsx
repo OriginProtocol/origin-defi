@@ -4,7 +4,7 @@ import { TopNav } from './TopNav';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-const logo = 'https://app.oeth.com/images/origin-ether-logo.svg';
+const logo = '/images/origin-ether-logo.svg';
 const tabs = ['Swap', 'Wrap', 'History'];
 
 const connected = {
@@ -14,38 +14,38 @@ const connected = {
   connected: true,
   ipfsLink: 'https://oeth.on.fleek.co/',
   userId: '0x65b033bcc4d7f74255bbde2f69966e85',
-  walletIcon: 'https://app.oeth.com/images/walletconnect-icon.svg',
+  walletIcon: '/images/walletconnect-icon.svg',
   transactions: [],
   values: [
     {
       token: 'eth',
       quantity: 18639.418285,
-      tokenIcon: 'https://app.oeth.com/images/eth.svg',
+      tokenIcon: '/images/eth.svg',
     },
     {
       token: 'weth',
       quantity: 1639.418285,
-      tokenIcon: 'https://app.oeth.com/images/weth.png',
+      tokenIcon: '/images/weth.png',
     },
     {
       token: 'reth',
       quantity: 639.418285,
-      tokenIcon: 'https://app.oeth.com/images/reth.png',
+      tokenIcon: '/images/reth.png',
     },
     {
       token: 'frxeth',
       quantity: 39.418,
-      tokenIcon: '	https://app.oeth.com/images/frxeth.svg',
+      tokenIcon: '	/images/frxeth.svg',
     },
     {
       token: 'sfrxeth',
       quantity: 23639.415,
-      tokenIcon: '	https://app.oeth.com/images/sfrxeth.svg',
+      tokenIcon: '	/images/sfrxeth.svg',
     },
     {
       token: 'steth',
       quantity: 2639.415,
-      tokenIcon: '	https://app.oeth.com/images/steth.svg',
+      tokenIcon: '	/images/steth.svg',
     },
   ],
 } as const;

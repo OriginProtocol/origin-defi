@@ -131,10 +131,7 @@ export function APY({
                 top: '-2px',
               }}
             >
-              <Box
-                component={'img'}
-                src={`https://app.oeth.com/images/downarrow.svg`}
-              />
+              <Box component={'img'} src={`/images/downarrow.svg`} />
             </IconButton>
           </Stack>
         </Box>

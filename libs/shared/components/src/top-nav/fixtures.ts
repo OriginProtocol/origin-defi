@@ -27,21 +27,21 @@ export const transactions = [
     type: 'rebase',
     status: 'success',
     url: faker.internet.url(),
-    tokenIcon: 'https://app.oeth.com/images/oeth.svg',
+    tokenIcon: '/images/oeth.svg',
   },
   {
     token: 'OETH',
     type: 'rebase',
     status: 'pending',
     url: faker.internet.url(),
-    tokenIcon: 'https://app.oeth.com/images/oeth.svg',
+    tokenIcon: '/images/oeth.svg',
   },
   {
     token: 'OETH',
     type: 'rebase',
     status: 'failed',
     url: faker.internet.url(),
-    tokenIcon: 'https://app.oeth.com/images/oeth.svg',
+    tokenIcon: '/images/oeth.svg',
   },
   {
     baseToken: 'stETH',
@@ -51,8 +51,8 @@ export const transactions = [
     url: faker.internet.url(),
     exchangeToken: 'OETH',
     exchangeTokenQuantity: 4.815,
-    exchangeTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    baseTokenIcon: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    exchangeTokenIcon: '/images/oeth.svg',
+    baseTokenIcon: '/images/currency/steth-icon-small.svg',
   },
   {
     baseToken: 'stETH',
@@ -62,8 +62,8 @@ export const transactions = [
     url: faker.internet.url(),
     exchangeToken: 'OETH',
     exchangeTokenQuantity: 4.815,
-    exchangeTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    baseTokenIcon: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    exchangeTokenIcon: '/images/oeth.svg',
+    baseTokenIcon: '/images/currency/steth-icon-small.svg',
   },
   {
     baseToken: 'stETH',
@@ -73,8 +73,8 @@ export const transactions = [
     url: faker.internet.url(),
     exchangeToken: 'OETH',
     exchangeTokenQuantity: 4.815,
-    exchangeTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    baseTokenIcon: 'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    exchangeTokenIcon: '/images/oeth.svg',
+    baseTokenIcon: '/images/currency/steth-icon-small.svg',
   },
   {
     exchangeToken: 'stETH',
@@ -84,9 +84,8 @@ export const transactions = [
     url: faker.internet.url(),
     baseToken: 'OETH',
     baseTokenQuantity: 4.815,
-    baseTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    exchangeTokenIcon:
-      'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    baseTokenIcon: '/images/oeth.svg',
+    exchangeTokenIcon: '/images/currency/steth-icon-small.svg',
   },
   {
     exchangeToken: 'stETH',
@@ -96,9 +95,8 @@ export const transactions = [
     url: faker.internet.url(),
     baseToken: 'OETH',
     baseTokenQuantity: 4.815,
-    baseTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    exchangeTokenIcon:
-      'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    baseTokenIcon: '/images/oeth.svg',
+    exchangeTokenIcon: '/images/currency/steth-icon-small.svg',
   },
   {
     exchangeToken: 'stETH',
@@ -108,8 +106,7 @@ export const transactions = [
     url: faker.internet.url(),
     baseToken: 'OETH',
     baseTokenQuantity: 4.815,
-    baseTokenIcon: 'https://app.oeth.com/images/oeth.svg',
-    exchangeTokenIcon:
-      'https://app.oeth.com/images/currency/steth-icon-small.svg',
+    baseTokenIcon: '/images/oeth.svg',
+    exchangeTokenIcon: '/images/currency/steth-icon-small.svg',
   },
 ];
