@@ -50,7 +50,7 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
         onClick={(e) => setAnchorEl(e.currentTarget)}
         data-testid="gas-popover-button"
       >
-        <img src="https://app.oeth.com/images/settings-icon.svg" />
+        <img src="/images/settings-icon.svg" />
       </IconButton>
       <Popover
         open={!!anchorEl}

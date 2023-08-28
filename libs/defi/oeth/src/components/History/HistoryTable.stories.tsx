@@ -1,31 +1,14 @@
 import { useState } from 'react';
 
-import { faker } from '@faker-js/faker';
 import { Container, Stack, Typography } from '@mui/material';
 import { within } from '@storybook/testing-library';
 
+import { rows } from './fixtures';
 import { HistoryFilterButton } from './HistoryButton';
 import { HistoryTable } from './HistoryTable';
 
 import type { Meta, StoryObj } from '@storybook/react';
 import type { ColumnFilter } from '@tanstack/react-table';
-
-import type { HistoryRow } from './HistoryTable';
-
-const rows = faker.helpers.multiple<HistoryRow>(
-  () => ({
-    date: faker.date.recent({ days: 35 }),
-    balance: faker.number.float({
-      min: 10000,
-      max: 10000000000,
-      precision: 10,
-    }),
-    change: faker.number.float({ min: -10, max: 25 }),
-    type: faker.helpers.arrayElement(['swap', 'received', 'sent', 'yield']),
-    link: faker.internet.url(),
-  }),
-  { count: 150 },
-);
 
 const WithFilters = () => {
   const [filter, setFilter] = useState<ColumnFilter>({ id: 'type', value: [] });
@@ -70,6 +53,7 @@ const WithFilters = () => {
           ))}
         </Stack>
       </Stack>
+      {/* @ts-expect-error type mismatch with fixtures */}
       <HistoryTable rows={rows} isLoading={false} filter={filter} />
     </Stack>
   );
@@ -80,6 +64,7 @@ const meta: Meta<typeof HistoryTable> = {
   title: 'History/History table',
   args: {
     isLoading: false,
+    // @ts-expect-error type mismatch
     rows,
   },
   render: (args) => (

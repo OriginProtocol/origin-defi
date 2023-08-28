@@ -79,7 +79,6 @@ const PaletteElem = ({
         <Typography
           noWrap
           sx={{
-            color: 'text.secondary',
             fontSize: 13,
             lineHeight: '19px',
             color: 'primary.contrastText',
