@@ -21,9 +21,8 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
         paddingBlockStart: 3,
         boxShadow: 'none',
         cursor: 'pointer',
-        border: '1px solid',
+        border: (theme) => `1px solid ${theme.palette.grey[800]}`,
         borderRadius: 1,
-        borderColor: (theme) => theme.palette.grey[800],
         ...(selected === index
           ? {
               background: `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,

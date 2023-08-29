@@ -1,7 +1,6 @@
 import { alpha, Box, Button } from '@mui/material';
 
-import type { ButtonProps, SxProps } from '@mui/material';
-import type { Theme } from '@origin/shared/theme';
+import type { BoxProps, ButtonProps } from '@mui/material';
 
 interface Props extends ButtonProps {
   circle?: boolean;
@@ -42,7 +41,7 @@ export function HistoryFilterButton({
       {circle ? (
         <Circle
           sx={{
-            background: (theme: Theme) =>
+            background: (theme) =>
               selected
                 ? theme.palette.background.gradient3
                 : theme.palette.background.paper,
@@ -53,7 +52,7 @@ export function HistoryFilterButton({
   );
 }
 
-function Circle({ sx }: { sx: SxProps }) {
+function Circle(props: BoxProps) {
   return (
     <Box
       sx={{
@@ -61,7 +60,7 @@ function Circle({ sx }: { sx: SxProps }) {
         height: '0.5rem',
         width: '0.5rem',
         borderRadius: '100%',
-        ...sx,
+        ...props,
       }}
     />
   );

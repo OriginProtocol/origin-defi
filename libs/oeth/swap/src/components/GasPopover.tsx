@@ -170,7 +170,7 @@ export function GasPopover() {
                 id="gas"
                 readOnly
                 defaultValue={intl.formatNumber(
-                  parseFloat(feeData?.formatted.gasPrice),
+                  parseFloat(feeData?.formatted.gasPrice ?? '0'),
                   { maximumFractionDigits: 4 },
                 )}
                 fullWidth

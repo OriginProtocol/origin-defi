@@ -17,7 +17,6 @@ export function SwapInfo() {
       }
       componentsProps={{
         tooltip: {
-          // @ts-expect-error type error in MUI
           sx: {
             paddingInline: 2,
             paddingBlock: 1.5,
