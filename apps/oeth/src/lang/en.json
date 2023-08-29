@@ -1,8 +1,146 @@
 {
+  "+U6ozc": {
+    "defaultMessage": "Type"
+  },
+  "+vVZ/G": {
+    "defaultMessage": "Connect"
+  },
+  "/23BOU": {
+    "defaultMessage": "Pending yield"
+  },
+  "0fR+fE": {
+    "defaultMessage": "Route"
+  },
+  "52pR3B": {
+    "defaultMessage": "Swap via {name}"
+  },
+  "67ACiw": {
+    "defaultMessage": "Liquid Staked Ether 2.0"
+  },
+  "BY343C": {
+    "defaultMessage": "Change"
+  },
+  "CcqmCh": {
+    "defaultMessage": "OETH Balance"
+  },
+  "JCo6tU": {
+    "defaultMessage": "WETH"
+  },
+  "JrepQU": {
+    "defaultMessage": "Gas:"
+  },
+  "NXI/XL": {
+    "defaultMessage": "Auto"
+  },
+  "O1F5Cx": {
+    "defaultMessage": "Connect your wallet to see your history"
+  },
+  "P7PLVj": {
+    "defaultMessage": "Date"
+  },
+  "PzlMqG": {
+    "defaultMessage": "Best"
+  },
+  "QDdmJX": {
+    "defaultMessage": "Swap for {name}"
+  },
+  "SSCpzG": {
+    "defaultMessage": "Wrapped wOETH is a non-rebasing tokenized vault that appreciates in value instead of growing in number."
+  },
+  "TE51b7": {
+    "defaultMessage": "Export CSV"
+  },
+  "U0+mZs": {
+    "defaultMessage": "Frax Ether"
+  },
+  "V/q7w4": {
+    "defaultMessage": "Finding the best route..."
+  },
+  "VNvqEh": {
+    "defaultMessage": "stETH"
+  },
+  "WwtFYK": {
+    "defaultMessage": "frxETH"
+  },
+  "YnftYz": {
+    "defaultMessage": "Wait time:"
+  },
+  "ZmLuI/": {
+    "defaultMessage": "Rate:"
+  },
+  "ZrmBE1": {
+    "defaultMessage": "{days} day trailing APY"
+  },
+  "aA9zvD": {
+    "defaultMessage": "The best swap route factors in the best price after transaction costs"
+  },
+  "aWpBzj": {
+    "defaultMessage": "Show more"
+  },
+  "c0b5XV": {
+    "defaultMessage": "Rate"
+  },
+  "cOB9Jx": {
+    "defaultMessage": "Yield"
+  },
+  "djJp6c": {
+    "defaultMessage": "History"
+  },
+  "eTeBsj": {
+    "defaultMessage": "Price tolerance"
+  },
+  "gcuDcH": {
+    "defaultMessage": "Sent"
+  },
+  "hMFTdI": {
+    "defaultMessage": "Gas Price"
+  },
+  "i8dYu2": {
+    "defaultMessage": "GWEI"
+  },
+  "kZcqo0": {
+    "defaultMessage": "%"
+  },
+  "mt0/Cd": {
+    "defaultMessage": "Waiting time:"
+  },
+  "om9WOe": {
+    "defaultMessage": "rETH"
+  },
+  "pg4o1k": {
+    "defaultMessage": "Rocket Pool ETH"
+  },
+  "qIoHXA": {
+    "defaultMessage": "Lifetime earnings"
+  },
+  "qY1iOf": {
+    "defaultMessage": "{days} day trailing"
+  },
+  "r7kiOG": {
+    "defaultMessage": "Wrap"
+  },
+  "s8BnAC": {
+    "defaultMessage": "Swap"
+  },
+  "s8UwDT": {
+    "defaultMessage": "Wrapped Ether"
+  },
+  "sGU9Dr": {
+    "defaultMessage": "ETH"
+  },
+  "tio9Gt": {
+    "defaultMessage": "IPFS"
+  },
+  "xZIm6b": {
+    "defaultMessage": "Your transaction may be frontrun"
+  },
   "xomxyH": {
     "defaultMessage": "Welcome to DefiOeth!"
   },
-  "y6cogA": {
-    "defaultMessage": "test OEth"
+  "z/wUXE": {
+    "defaultMessage": "Received"
+  },
+  "zbaTLV": {
+    "defaultMessage": "View on IPFS"
   }
 }
