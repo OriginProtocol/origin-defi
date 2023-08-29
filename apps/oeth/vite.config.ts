@@ -20,6 +20,15 @@ export default defineConfig({
     host: 'localhost',
   },
 
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+      supported: {
+        bigint: true,
+      },
+    },
+  },
+
   plugins: [
     svgr(),
     react({
@@ -41,7 +50,7 @@ export default defineConfig({
     viteStaticCopy({
       targets: [
         {
-          src: path.resolve(__dirname, '../../libs/shared/assets/files/*'),
+          src: path.resolve(__dirname, '../../libs/shared/assets/files/**/*'),
           dest: './images',
         },
       ],

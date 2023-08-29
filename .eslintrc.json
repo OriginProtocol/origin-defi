@@ -6,6 +6,7 @@
     "formatjs",
     "unused-imports",
     "simple-import-sort",
+    "import",
     "prettier"
   ],
   "overrides": [
@@ -27,24 +28,29 @@
           }
         ],
         "react/react-in-jsx-scope": "off",
+        "no-empty": ["error", { "allowEmptyCatch": true }],
         // Unused imports rules
         "unused-imports/no-unused-imports": "error",
-        "unused-imports/no-unused-vars": "warn",
+        "unused-imports/no-unused-vars": [
+          "warn",
+          {
+            "varsIgnorePattern": "^_",
+            "args": "none",
+            "argsIgnorePattern": "^_",
+            "ignoreRestSiblings": true
+          }
+        ],
 
         // Import ordering rules
         "simple-import-sort/imports": [
           "warn",
           {
             "groups": [
-              // Side effect imports
               ["^\\u0000"],
-              // React Package(s) comes first as seperate group
               ["^react(-dom(/client)?)?$"],
-              // All other imports
               ["^@?\\w"],
               ["^((?!\\u0000$)|/.*|$)"],
               ["^\\."],
-              // Type imports: keep these last!
               ["^@?\\w.*\\u0000$"],
               ["^.*\\u0000$"],
               ["^\\..*\\u0000$"]
@@ -54,6 +60,7 @@
 
         // import types rules
         "@typescript-eslint/consistent-type-imports": "error",
+        "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
 
         // FormatJS rules
         "formatjs/enforce-default-message": ["error", "literal"],

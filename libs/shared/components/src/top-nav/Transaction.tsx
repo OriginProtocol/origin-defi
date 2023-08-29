@@ -2,7 +2,7 @@ import { keyframes } from '@emotion/react';
 import { Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { LinkIcon } from '../LinkIcon/LinkIcon';
+import { LinkIcon } from '../LinkIcon';
 import { Icon } from './Icon';
 import { messages } from './utils';
 
