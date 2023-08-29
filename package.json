@@ -5,7 +5,8 @@
   "scripts": {
     "build-storybook": "nx build-storybook  shared-storybook --verbose",
     "storybook": "nx storybook shared-storybook",
-    "oeth": "nx serve oeth"
+    "oeth": "nx serve oeth",
+    "ousd": "nx serve ousd"
   },
   "private": true,
   "dependencies": {
