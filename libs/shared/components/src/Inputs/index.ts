@@ -1,2 +1,2 @@
-export * from './BigintInput';
+export * from './BigIntInput';
 export * from './TokenInput';

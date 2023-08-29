@@ -125,10 +125,7 @@ export function ApyHeader() {
                 top: '-2px',
               }}
             >
-              <Box
-                component={'img'}
-                src={`https://app.oeth.com/images/downarrow.svg`}
-              />
+              <Box component="img" src={`/images/downarrow.svg`} />
             </IconButton>
           </Stack>
         </Box>
@@ -144,7 +141,7 @@ export function ApyHeader() {
           direction="row"
         >
           <ValueContainer
-            icon="https://app.oeth.com/images/oeth.svg"
+            icon="/images/tokens/OETH.svg"
             text={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
             value={intl.formatNumber(Number(oethBalance?.formatted ?? 0), {
               minimumFractionDigits: 4,

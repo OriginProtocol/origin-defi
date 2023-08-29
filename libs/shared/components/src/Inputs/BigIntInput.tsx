@@ -15,7 +15,7 @@ export type BigintInputProps = {
   isError?: boolean;
 } & Omit<InputBaseProps, 'value' | 'onChange' | 'inputRef'>;
 
-export const BigintInput = forwardRef<HTMLInputElement, BigintInputProps>(
+export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
   ({ value, decimals = 18, isLoading, isError, onChange, ...rest }, ref) => {
     const [strVal, setStrVal] = useState(formatUnits(value, decimals));
 
@@ -103,4 +103,4 @@ export const BigintInput = forwardRef<HTMLInputElement, BigintInputProps>(
   },
 );
 
-BigintInput.displayName = 'BigintInput';
+BigIntInput.displayName = 'BigIntInput';

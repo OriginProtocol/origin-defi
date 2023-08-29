@@ -4,12 +4,12 @@ import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import { BigintInput } from './BigintInput';
+import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-import type { BigintInputProps } from './BigintInput';
+import type { BigintInputProps } from './BigIntInput';
 
 export type TokenInputProps = {
   amount: bigint;
@@ -68,7 +68,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     return (
       <Stack direction="row" {...rest}>
         <Stack flexGrow={1} justifyContent="center" gap={1}>
-          <BigintInput
+          <BigIntInput
             {...inputProps}
             value={amount}
             decimals={decimals}
