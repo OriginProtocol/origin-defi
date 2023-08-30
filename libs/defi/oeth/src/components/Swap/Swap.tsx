@@ -7,7 +7,6 @@ import {
   SwapCard,
   TokenListModal,
 } from '@origin/shared/components';
-import random from 'lodash/random';
 import { useIntl } from 'react-intl';
 
 import { GasPopover } from './GasPopover';
@@ -47,12 +46,12 @@ export function Swap() {
       baseToken: {
         ...prev.baseToken,
         quantity: number,
-        value: number * random(18500, 19000, true),
+        value: number * 18500,
       },
       exchangeCurrency: {
         ...prev.exchangeCurrency,
-        quantity: number * random(number - 0.5, number, true),
-        value: number * random(18500, 19000, true),
+        quantity: number * number - 0.5,
+        value: number * 19000,
       },
     }));
   }
@@ -62,14 +61,12 @@ export function Swap() {
       baseToken: {
         ...prev.exchangeCurrency,
         quantity: prev.baseToken.quantity,
-        value: prev.baseToken.quantity * random(18500, 19000),
+        value: prev.baseToken.quantity * 18500,
       },
       exchangeCurrency: {
         ...prev.baseToken,
-        quantity:
-          prev.baseToken.quantity *
-          random(prev.baseToken.quantity - 0.5, prev.baseToken.quantity, true),
-        value: prev.baseToken.quantity * random(18500, 19000, true),
+        quantity: prev.baseToken.quantity * (prev.baseToken.quantity - 0.5),
+        value: prev.baseToken.quantity * 19000,
       },
     }));
   }
@@ -115,11 +112,8 @@ export function Swap() {
           setValues((prev) => ({
             ...prev,
             exchangeCurrency: {
-              value: prev.baseToken.quantity * random(18500, 19000, true),
-              quantity: random(
-                prev.baseToken.quantity - 0.5,
-                prev.baseToken.quantity,
-              ),
+              value: prev.baseToken.quantity * 18500,
+              quantity: prev.baseToken.quantity - 0.5,
               abbreviation: option.name,
               imgSrc: option.imgSrc,
             },

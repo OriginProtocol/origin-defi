@@ -1,5 +1,4 @@
 import { Dialog, MenuList } from '@mui/material';
-import { eq } from 'lodash';
 
 import { TokenListItem } from './TokenListItem';
 
@@ -66,7 +65,7 @@ export function TokenListModal({
               onSelection(option);
               handleClose();
             }}
-            selected={eq(selected, option.abbreviation)}
+            selected={selected === option.abbreviation}
           />
         ))}
       </MenuList>
