@@ -1,11 +1,6 @@
 import { erc20ABI } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import OETH from './abis/OETHProxy.json';
-import OUSD from './abis/OUSDProxy.json';
-import WOETH from './abis/WOETHProxy.json';
-import WOUSD from './abis/WOUSDProxy.json';
-
 export const tokens = {
   mainnet: {
     ETH: {
@@ -67,7 +62,7 @@ export const tokens = {
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',
       chainId: mainnet.id,
-      abi: OETH,
+      abi: erc20ABI,
       name: 'Origin Ether',
       icon: '/images/tokens/OETH.svg',
       decimals: 18,
@@ -76,7 +71,7 @@ export const tokens = {
     WOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
       chainId: mainnet.id,
-      abi: WOETH,
+      abi: erc20ABI,
       name: 'Wrapped Origin Ether',
       icon: '/images/tokens/WOETH.svg',
       decimals: 18,
@@ -85,7 +80,7 @@ export const tokens = {
     OUSD: {
       address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',
       chainId: mainnet.id,
-      abi: OUSD,
+      abi: erc20ABI,
       name: 'Origin Dollar',
       icon: '/images/tokens/OUSD.svg',
       decimals: 18,
@@ -94,7 +89,7 @@ export const tokens = {
     WOUSD: {
       address: '0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62',
       chainId: mainnet.id,
-      abi: WOUSD,
+      abi: erc20ABI,
       name: 'WrappedOrigin Dollar',
       icon: '/images/tokens/WOUSD.svg',
       decimals: 18,
