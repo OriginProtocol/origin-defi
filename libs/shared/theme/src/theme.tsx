@@ -99,6 +99,33 @@ export const theme = extendTheme({
       defaultProps: {
         disableTouchRipple: true,
       },
+      variants: [
+        {
+          props: { variant: 'action' },
+          style: ({ theme }) => ({
+            background: theme.palette.background.gradient1,
+            color: theme.palette.primary.contrastText,
+            paddingBlock: 16,
+            fontSize: theme.typography.pxToRem(20),
+            lineHeight: '2rem',
+            borderRadius: theme.shape.borderRadius * 2,
+            fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+            fontWeight: 400,
+            fontStyle: 'normal',
+            boxShadow: theme.shadows[24],
+            '&:hover': {
+              background: theme.palette.background.gradientHoverActionButton,
+              opacity: 1,
+            },
+            '&:disabled': {
+              background:
+                'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
+              opacity: 0.3,
+              color: theme.palette.primary.contrastText,
+            },
+          }),
+        },
+      ],
     },
     MuiIconButton: {
       defaultProps: {
