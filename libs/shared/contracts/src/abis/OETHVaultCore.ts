@@ -1,5 +1,5 @@
 // DO NOT EDIT - GENERATED
-export const VaultCoreABI = [
+export const OETHVaultCoreABI = [
   {
     anonymous: false,
     inputs: [
@@ -482,6 +482,20 @@ export const VaultCoreABI = [
     inputs: [],
     name: 'priceProvider',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitMint',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitRedeem',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },

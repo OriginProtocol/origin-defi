@@ -1,5 +1,5 @@
 // DO NOT EDIT - GENERATED
-export const VaultCoreABI = [
+export const OETHVaultAdminABI = [
   {
     anonymous: false,
     inputs: [
@@ -326,10 +326,9 @@ export const VaultCoreABI = [
     name: 'YieldDistribution',
     type: 'event',
   },
-  { stateMutability: 'payable', type: 'fallback' },
   {
-    inputs: [],
-    name: 'allocate',
+    inputs: [{ internalType: 'address', name: '_addr', type: 'address' }],
+    name: 'approveStrategy',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -349,30 +348,16 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
-    name: 'burnForStrategy',
+    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+    name: 'cacheDecimals',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
-    name: 'calculateRedeemOutputs',
-    outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
-    stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
     name: 'capitalPaused',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
-    name: 'checkBalance',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -384,31 +369,14 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'getAllAssets',
-    outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getAllStrategies',
-    outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getAssetCount',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getStrategyCount',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
+    inputs: [
+      { internalType: 'address', name: '_strategyToAddress', type: 'address' },
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    name: 'depositToStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -426,35 +394,10 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
-    name: 'isSupportedAsset',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'maxSupplyDiff',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
-      { internalType: 'uint256', name: '_minimumOusdAmount', type: 'uint256' },
-    ],
-    name: 'mint',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
-    name: 'mintForStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -480,14 +423,37 @@ export const VaultCoreABI = [
   },
   {
     inputs: [],
+    name: 'pauseCapital',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'pauseRebase',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'priceProvider',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'rebase',
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_strategyFromAddress',
+        type: 'address',
+      },
+      { internalType: 'address', name: '_strategyToAddress', type: 'address' },
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    name: 'reallocate',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -507,25 +473,6 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
-      { internalType: 'uint256', name: '_minimumUnitAmount', type: 'uint256' },
-    ],
-    name: 'redeem',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: '_minimumUnitAmount', type: 'uint256' },
-    ],
-    name: 'redeemAll',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [],
     name: 'redeemFeeBps',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -533,8 +480,112 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'address', name: '_addr', type: 'address' }],
+    name: 'removeStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [{ internalType: 'address', name: 'newImpl', type: 'address' }],
     name: 'setAdminImpl',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_asset', type: 'address' },
+      { internalType: 'address', name: '_strategy', type: 'address' },
+    ],
+    name: 'setAssetDefaultStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
+    name: 'setAutoAllocateThreshold',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_maxSupplyDiff', type: 'uint256' },
+    ],
+    name: 'setMaxSupplyDiff',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
+    name: 'setNetOusdMintForStrategyThreshold',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_ousdMetaStrategy', type: 'address' },
+    ],
+    name: 'setOusdMetaStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_priceProvider', type: 'address' },
+    ],
+    name: 'setPriceProvider',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
+    name: 'setRebaseThreshold',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_redeemFeeBps', type: 'uint256' },
+    ],
+    name: 'setRedeemFeeBps',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
+    name: 'setStrategistAddr',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
+    name: 'setTrusteeAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_basis', type: 'uint256' }],
+    name: 'setTrusteeFeeBps',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_vaultBuffer', type: 'uint256' },
+    ],
+    name: 'setVaultBuffer',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -547,10 +598,13 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'totalValue',
-    outputs: [{ internalType: 'uint256', name: 'value', type: 'uint256' }],
-    stateMutability: 'view',
+    inputs: [
+      { internalType: 'address', name: '_asset', type: 'address' },
+      { internalType: 'uint8', name: '_unitConversion', type: 'uint8' },
+    ],
+    name: 'supportAsset',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -558,6 +612,16 @@ export const VaultCoreABI = [
       { internalType: 'address', name: '_newGovernor', type: 'address' },
     ],
     name: 'transferGovernance',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_asset', type: 'address' },
+      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+    ],
+    name: 'transferToken',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -578,9 +642,54 @@ export const VaultCoreABI = [
   },
   {
     inputs: [],
+    name: 'unpauseCapital',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'unpauseRebase',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'vaultBuffer',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'withdrawAllFromStrategies',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_strategyAddr', type: 'address' },
+    ],
+    name: 'withdrawAllFromStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'address',
+        name: '_strategyFromAddress',
+        type: 'address',
+      },
+      { internalType: 'address[]', name: '_assets', type: 'address[]' },
+      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+    ],
+    name: 'withdrawFromStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
 ] as const;

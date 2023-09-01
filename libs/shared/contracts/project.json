@@ -15,6 +15,16 @@
           "libs/shared/contracts/**/*.{ts,tsx,js,jsx}"
         ]
       }
+    },
+    "generate-abis": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "ts-node libs/shared/contracts/src/generateABIs.ts",
+          "npx prettier ./libs/shared/contracts/src/abis --write"
+        ],
+        "parallel": false
+      }
     }
   }
 }
