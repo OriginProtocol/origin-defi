@@ -2,19 +2,32 @@ import { useEffect, useState } from 'react';
 
 import curve from '@curvefi/api';
 import { createContainer } from 'react-tracked';
-import { useAccount, useNetwork } from 'wagmi';
+import { mainnet, useAccount, useNetwork } from 'wagmi';
 
-import { getEthersSigner } from '../wagmi';
+import { getEthersProvider, getEthersSigner } from '../wagmi';
+
+export type CurveProviderProps = { alchemyApiKey: string };
 
 export const { Provider: CurveProvider, useTrackedState: useCurve } =
-  createContainer(() => {
+  createContainer(({ alchemyApiKey }: CurveProviderProps) => {
     const [state, setState] = useState(null);
     const { isConnected } = useAccount();
     const { chain } = useNetwork();
 
     useEffect(() => {
       const initPublic = async () => {
-        await curve.init('JsonRpc', {}, {});
+        const ethersProvider = getEthersProvider({
+          chainId: chain?.id ?? mainnet.id,
+        });
+        await curve.init(
+          'Alchemy',
+          {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            externalProvider: ethersProvider as any,
+            apiKey: alchemyApiKey,
+          },
+          {},
+        );
         setState(curve);
       };
 
@@ -24,9 +37,12 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
         });
 
         await curve.init(
-          'Web3',
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          { externalProvider: ethersSigner.provider as any },
+          'Alchemy',
+          {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            externalProvider: ethersSigner as any,
+            apiKey: alchemyApiKey,
+          },
           {},
         );
         setState(curve);
@@ -37,7 +53,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
       } else {
         initPublic();
       }
-    }, [chain?.id, isConnected]);
+    }, [alchemyApiKey, chain?.id, isConnected]);
 
     return [state, setState];
   });

@@ -16,13 +16,12 @@ import { goerli, localhost, mainnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
-const VITE_WALLET_CONNECT_PROJECT_ID = import.meta.env
-  .VITE_WALLET_CONNECT_PROJECT_ID;
-const VITE_ALCHEMY_ID = import.meta.env.VITE_ALCHEMY_ID;
-
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, goerli, localhost],
-  [alchemyProvider({ apiKey: VITE_ALCHEMY_ID }), publicProvider()],
+  [
+    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
+    publicProvider(),
+  ],
 );
 
 const connectors = connectorsForWallets([
@@ -32,12 +31,15 @@ const connectors = connectorsForWallets([
       metaMaskWallet({
         chains,
         shimDisconnect: true,
-        projectId: VITE_WALLET_CONNECT_PROJECT_ID,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
-      ledgerWallet({ chains, projectId: VITE_WALLET_CONNECT_PROJECT_ID }),
+      ledgerWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
       walletConnectWallet({
         chains,
-        projectId: VITE_WALLET_CONNECT_PROJECT_ID,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
       coinbaseWallet({ appName: 'mStable', chains }),
     ],
@@ -47,10 +49,19 @@ const connectors = connectorsForWallets([
     wallets: [
       injectedWallet({ chains, shimDisconnect: true }),
       safeWallet({ chains }),
-      rainbowWallet({ chains, projectId: VITE_WALLET_CONNECT_PROJECT_ID }),
+      rainbowWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
       braveWallet({ chains, shimDisconnect: true }),
-      argentWallet({ chains, projectId: VITE_WALLET_CONNECT_PROJECT_ID }),
-      imTokenWallet({ chains, projectId: VITE_WALLET_CONNECT_PROJECT_ID }),
+      argentWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
+      imTokenWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
     ],
   },
 ]);
