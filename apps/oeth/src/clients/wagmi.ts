@@ -13,16 +13,16 @@ import {
 } from '@rainbow-me/rainbowkit/wallets';
 import { configureChains, createConfig } from 'wagmi';
 import { goerli, localhost, mainnet } from 'wagmi/chains';
-import { infuraProvider } from 'wagmi/providers/infura';
+import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 const VITE_WALLET_CONNECT_PROJECT_ID = import.meta.env
   .VITE_WALLET_CONNECT_PROJECT_ID;
-const VITE_INFURA_ID = import.meta.env.VITE_INFURA_ID;
+const VITE_ALCHEMY_ID = import.meta.env.VITE_ALCHEMY_ID;
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, goerli, localhost],
-  [infuraProvider({ apiKey: VITE_INFURA_ID }), publicProvider()],
+  [alchemyProvider({ apiKey: VITE_ALCHEMY_ID }), publicProvider()],
 );
 
 const connectors = connectorsForWallets([
