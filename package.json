@@ -6,7 +6,8 @@
     "build-storybook": "nx build-storybook  shared-storybook --verbose",
     "storybook": "nx storybook shared-storybook",
     "oeth": "nx serve oeth",
-    "ousd": "nx serve ousd"
+    "ousd": "nx serve ousd",
+    "generate-abis": "nx generate-abis shared-contracts"
   },
   "private": true,
   "dependencies": {
