@@ -6,7 +6,7 @@ export type SwapAction =
   | 'swap-curve'
   | 'swap-zapper'
   | 'mint-vault'
-  | 'redeem-mix'
+  | 'redeem-vault'
   | 'wrap-oeth'
   | 'unwrap-woeth';
 

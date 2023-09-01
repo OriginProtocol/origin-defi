@@ -74,7 +74,7 @@ export const swapRoutes = [
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: MIX_TOKEN,
-    action: 'redeem-mix',
+    action: 'redeem-vault',
   },
   {
     tokenIn: tokens.mainnet.OETH,
