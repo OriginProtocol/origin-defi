@@ -5,28 +5,35 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
 
-import type { Token } from '@origin/shared/contracts';
+import { swapActions } from './actions';
+import { getAvailableRoutes } from './utils';
+
+import type { SwapState } from './types';
 
 export const { Provider: SwapProvider, useTracked: useSwapState } =
   createContainer(() => {
-    const [state, setState] = useState({
+    const [state, setState] = useState<SwapState>({
       amountIn: 0n,
-      tokenIn: tokens.mainnet.ETH as Token,
+      tokenIn: tokens.mainnet.ETH,
       amountOut: 0n,
-      tokenOut: tokens.mainnet.OETH as Token,
+      tokenOut: tokens.mainnet.OETH,
       slippage: 0.01,
+      swapRoute: getAvailableRoutes(tokens.mainnet.ETH, tokens.mainnet.OETH)[0],
     });
 
     useDebouncedEffect(
-      () => {
+      async () => {
+        const estimatedAmout = await swapActions[
+          state.swapRoute.action
+        ].estimateAmount(state);
         setState(
           produce((draft) => {
-            draft.amountOut = draft.amountIn;
+            draft.amountOut = estimatedAmout;
           }),
         );
       },
       [state.amountIn],
-      1e3,
+      800,
     );
 
     return [state, setState];

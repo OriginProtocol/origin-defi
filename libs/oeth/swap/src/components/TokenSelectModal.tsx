@@ -7,24 +7,26 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { usePrices } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
-
-import { usePrices } from '../../prices';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
+export type TokenOption = {
+  isSwappable: boolean;
+  isSelected: boolean;
+} & Token;
+
 export type TokenSelectModalProps = {
-  tokens: Token[];
+  tokens: TokenOption[];
   onSelectToken: (value: Token) => void;
-  selectedTokenSymbol?: string;
 } & DialogProps;
 
 export const TokenSelectModal = ({
   tokens,
   onSelectToken,
-  selectedTokenSymbol,
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
@@ -53,15 +55,14 @@ export const TokenSelectModal = ({
           padding: 0,
         }}
       >
-        {tokens.map((token) => (
+        {tokens.map((token, i) => (
           <TokenListItem
-            key={token.address || 'eth'}
+            key={`token-${token.address || 'eth'}-${i}`}
             token={token}
             onClick={() => {
-              onSelectToken(token);
               onClose({}, 'backdropClick');
+              onSelectToken(token);
             }}
-            selected={selectedTokenSymbol === token.symbol}
           />
         ))}
       </MenuList>
@@ -70,11 +71,10 @@ export const TokenSelectModal = ({
 };
 
 type TokenListItemProps = {
-  token: Token;
-  selected: boolean;
+  token: TokenOption;
 } & MenuItemProps;
 
-function TokenListItem({ token, selected, ...rest }: TokenListItemProps) {
+function TokenListItem({ token, ...rest }: TokenListItemProps) {
   const intl = useIntl();
   const { address } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
@@ -89,7 +89,7 @@ function TokenListItem({ token, selected, ...rest }: TokenListItemProps) {
   return (
     <MenuItem
       {...rest}
-      disabled={selected}
+      disabled={token.isSelected}
       sx={{
         display: 'flex',
         paddingInline: 2,
@@ -98,6 +98,7 @@ function TokenListItem({ token, selected, ...rest }: TokenListItemProps) {
         gap: 1.5,
         alignItems: 'center',
         background: (theme) => theme.palette.background.paper,
+
         borderRadius: 1,
         '&:hover': {
           background: (theme) => theme.palette.grey[700],
@@ -112,7 +113,15 @@ function TokenListItem({ token, selected, ...rest }: TokenListItemProps) {
           sx={{ width: '2rem', height: '2rem' }}
         />
         <Box>
-          <Typography color="primary.contrastText">{token?.name}</Typography>
+          <Typography
+            sx={(theme) => ({
+              color: token.isSwappable
+                ? theme.palette.primary.contrastText
+                : theme.palette.warning.main,
+            })}
+          >
+            {token?.name}
+          </Typography>
           <Typography
             color="text.primary"
             variant="body2"

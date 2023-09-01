@@ -8,11 +8,13 @@ import type { HexAddress } from '@origin/shared/utils';
 type AddressLabelProps = {
   address: HexAddress;
   enableEnsName?: boolean;
+  monospace?: boolean;
 } & Omit<MiddleTruncatedProps, 'children'>;
 
 export const AddressLabel = ({
   address,
   enableEnsName = false,
+  monospace = false,
   ...rest
 }: AddressLabelProps) => {
   const { data: ensName, isLoading: isEnsNameLoading } = useEnsName({
@@ -21,16 +23,18 @@ export const AddressLabel = ({
     chainId: mainnet.id,
   });
 
+  const fontFamily = monospace ? 'monospace' : 'inherit';
+
   return enableEnsName ? (
     isEnsNameLoading ? (
       <Skeleton sx={{ minWidth: 100, ...rest?.sx }} />
     ) : (
-      <MiddleTruncated textProps={{ fontFamily: 'monospace', ...rest }}>
+      <MiddleTruncated textProps={{ fontFamily, ...rest }}>
         {ensName ?? address}
       </MiddleTruncated>
     )
   ) : (
-    <MiddleTruncated textProps={{ fontFamily: 'monospace', ...rest }}>
+    <MiddleTruncated textProps={{ fontFamily, ...rest }}>
       {address}
     </MiddleTruncated>
   );

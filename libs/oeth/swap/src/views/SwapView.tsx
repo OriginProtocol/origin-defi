@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { alpha, Box, IconButton, Stack } from '@mui/material';
 import { Card, TokenInput } from '@origin/shared/components';
-import { TokenSelectModal, usePrices } from '@origin/shared/providers';
+import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
@@ -10,11 +10,19 @@ import { useAccount, useBalance } from 'wagmi';
 
 import { GasPopover } from '../components/GasPopover';
 import { SwapRoute } from '../components/SwapRoute';
-import { swapTokens } from '../constants';
+import { TokenSelectModal } from '../components/TokenSelectModal';
+import {
+  useHandleSwap,
+  useHandleTokenChange,
+  useHandleTokenFlip,
+  useTokenOptions,
+} from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
 
 import type { IconButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+
+import type { TokenSource } from '../types';
 
 export const SwapView = () => (
   <SwapProvider>
@@ -25,11 +33,10 @@ export const SwapView = () => (
 function SwapViewWrapped() {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const [tokenModal, setTokenModal] = useState<'tokenIn' | 'tokenOut' | null>(
-    null,
-  );
+  const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [{ amountIn, amountOut, tokenIn, tokenOut }, setSwapState] =
     useSwapState();
+  const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
@@ -39,35 +46,23 @@ function SwapViewWrapped() {
     address,
     token: tokenOut.address,
   });
+  const handleTokenChange = useHandleTokenChange();
+  const handleTokenFlip = useHandleTokenFlip();
+  const handleSwap = useHandleSwap();
 
   const handleCloseSelectionModal = () => {
-    setTokenModal(null);
+    setTokenSource(null);
   };
 
   const handleSelectToken = (value: Token) => {
-    setSwapState(
-      produce((draft) => {
-        draft[tokenModal] = value;
-      }),
-    );
-  };
-
-  const handleExchangeTokens = () => {
-    setSwapState(
-      produce((draft) => {
-        draft.amountIn = 0n;
-        draft.amountOut = 0n;
-        const oldTokenOut = draft.tokenOut;
-        draft.tokenOut = draft.tokenIn;
-        draft.tokenIn = oldTokenOut;
-      }),
-    );
+    handleTokenChange(tokenSource, value);
   };
 
   return (
     <>
       <Card
         sxCardTitle={{ padding: { xs: 2, md: 3 } }}
+        sxCardContent={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         title={
           <Stack
             direction="row"
@@ -100,7 +95,7 @@ function SwapViewWrapped() {
             isBalanceLoading={isBalTokenInLoading}
             token={tokenIn}
             onTokenClick={() => {
-              setTokenModal('tokenIn');
+              setTokenSource('tokenIn');
             }}
             tokenPriceUsd={prices?.[tokenIn.symbol]}
             isPriceLoading={isPriceLoading}
@@ -145,7 +140,7 @@ function SwapViewWrapped() {
             disableMaxClick
             token={tokenOut}
             onTokenClick={() => {
-              setTokenModal('tokenOut');
+              setTokenSource('tokenOut');
             }}
             tokenPriceUsd={prices?.[tokenOut.symbol]}
             isPriceLoading={isPriceLoading}
@@ -162,18 +157,18 @@ function SwapViewWrapped() {
               padding: 2.875,
             }}
           />
-          <SwapButton onClick={handleExchangeTokens} />
+          <SwapButton onClick={handleTokenFlip} />
         </Box>
         <SwapRoute routes={[]} isLoading={false} />
+        <ConnectedButton variant="action" fullWidth onClick={handleSwap}>
+          {intl.formatMessage({ defaultMessage: 'Swap' })}
+        </ConnectedButton>
       </Card>
       <TokenSelectModal
-        open={!isNilOrEmpty(tokenModal)}
+        open={!isNilOrEmpty(tokenSource)}
         onClose={handleCloseSelectionModal}
-        tokens={swapTokens}
+        tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
         onSelectToken={handleSelectToken}
-        selectedTokenSymbol={
-          tokenModal === 'tokenIn' ? tokenIn.symbol : tokenOut.symbol
-        }
       />
     </>
   );
@@ -206,12 +201,15 @@ function SwapButton(props: IconButtonProps) {
             transform: 'rotate(-180deg)',
           },
         },
+        '.Mui-disabled': {
+          backgroundColor: 'red',
+        },
         ...props?.sx,
       }}
     >
       <Box
         component="img"
-        src="https://app.oeth.com/images/splitarrow.svg"
+        src="/images/splitarrow.svg"
         sx={{
           height: { md: 'auto', xs: '1.25rem' },
         }}
