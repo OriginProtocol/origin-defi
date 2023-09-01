@@ -4,7 +4,11 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 
 import { useSwapState } from './state';
-import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
+import {
+  getAllAvailableTokens,
+  getAvailableRoutes,
+  getAvailableTokensForSource,
+} from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
@@ -79,6 +83,10 @@ export const useHandleTokenChange = () => {
               state.tokenIn = availableTokensIn[0];
             }
           }
+          state.swapRoute = getAvailableRoutes(
+            state.tokenIn,
+            state.tokenOut,
+          )[0];
         }),
       );
     },
@@ -103,11 +111,11 @@ export const useHandleTokenFlip = () => {
 };
 
 export const useHandleSwap = () => {
-  const [{ tokenIn, tokenOut, amountIn, swapRoute }] = useSwapState();
+  const [{ swapRoute }] = useSwapState();
 
   return useCallback(async () => {
     if (isNilOrEmpty(swapRoute)) {
       return;
     }
-  }, [amountIn, swapRoute, tokenIn, tokenOut]);
+  }, [swapRoute]);
 };

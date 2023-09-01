@@ -5,10 +5,10 @@ import redeemMix from './redeemMix';
 import type { SwapAction, SwapApi } from '../types';
 
 export const swapActions: Record<SwapAction, SwapApi> = {
-  'swap-curve': { ...defaultApi, ...mintVault },
-  'swap-zapper': { ...defaultApi, ...redeemMix },
-  'mint-vault': { ...defaultApi },
-  'redeem-mix': { ...defaultApi },
+  'swap-curve': { ...defaultApi },
+  'swap-zapper': { ...defaultApi },
+  'mint-vault': { ...defaultApi, ...mintVault },
+  'redeem-mix': { ...defaultApi, ...redeemMix },
   'wrap-oeth': { ...defaultApi },
   'unwrap-woeth': { ...defaultApi },
 };
