@@ -1,11 +1,14 @@
+import defaultApi from './defaultApi';
 import mintVault from './mintVault';
 import redeemMix from './redeemMix';
 
-export const swapActions = {
-  'swap-curve': mintVault,
-  'swap-zapper': redeemMix,
-  'mint-vault': redeemMix,
-  'redeem-mix': redeemMix,
-  'wrap-oeth': redeemMix,
-  'unwrap-woeth': redeemMix,
+import type { SwapAction, SwapApi } from '../types';
+
+export const swapActions: Record<SwapAction, SwapApi> = {
+  'swap-curve': { ...defaultApi, ...mintVault },
+  'swap-zapper': { ...defaultApi, ...redeemMix },
+  'mint-vault': { ...defaultApi },
+  'redeem-mix': { ...defaultApi },
+  'wrap-oeth': { ...defaultApi },
+  'unwrap-woeth': { ...defaultApi },
 };

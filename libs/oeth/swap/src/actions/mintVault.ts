@@ -3,13 +3,9 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { readContract } from '@wagmi/core';
 import { readContracts } from 'wagmi';
 
-import type { SwapState } from '../types';
+import type { SwapApi, SwapState } from '../types';
 
-const estimateAmount = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-}: Pick<SwapState, 'tokenIn' | 'tokenOut' | 'amountIn'>) => {
+const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -26,13 +22,9 @@ const estimateAmount = async ({
   return amountIn;
 };
 
-const estimateRoutes = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-}: Pick<SwapState, 'tokenIn' | 'tokenOut' | 'amountIn'>) => {
+const estimateRoutes = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
   if (amountIn === 0n) {
-    return;
+    return [];
   }
 
   const data = await readContracts({
@@ -45,15 +37,13 @@ const estimateRoutes = async ({
       },
     ],
   });
+
   console.log(data);
+
+  return [];
 };
 
-const swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  swapRoute,
-}: Pick<SwapState, 'tokenIn' | 'tokenOut' | 'amountIn' | 'swapRoute'>) => {
+const swap = async ({ tokenIn, tokenOut, amountIn, swapRoute }: SwapState) => {
   if (amountIn === 0n || isNilOrEmpty(swapRoute)) {
     return;
   }
@@ -63,4 +53,4 @@ export default {
   estimateAmount,
   estimateRoutes,
   swap,
-};
+} as Partial<SwapApi>;

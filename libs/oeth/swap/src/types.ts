@@ -10,6 +10,12 @@ export type SwapAction =
   | 'wrap-oeth'
   | 'unwrap-woeth';
 
+export type SwapApi = {
+  estimateAmount: (state: SwapState) => Promise<bigint>;
+  estimateRoutes: (state: SwapState) => Promise<SwapRoute[]>;
+  swap: (state: SwapState) => Promise<void>;
+};
+
 export type SwapRoute = {
   tokenIn: Token;
   tokenOut: Token;
