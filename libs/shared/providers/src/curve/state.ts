@@ -26,7 +26,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             externalProvider: ethersProvider as any,
             apiKey: alchemyApiKey,
           },
-          {},
+          { chainId: chain?.id ?? mainnet.id },
         );
         setState(curve);
       };
@@ -43,7 +43,9 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             externalProvider: ethersSigner as any,
             apiKey: alchemyApiKey,
           },
-          {},
+          {
+            chainId: chain.id,
+          },
         );
         setState(curve);
       };
