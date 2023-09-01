@@ -8,6 +8,7 @@ import {
   CssBaseline,
   Experimental_CssVarsProvider as CssVarsProvider,
 } from '@mui/material';
+import { CurveProvider } from '@origin/shared/providers';
 import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
@@ -33,6 +34,7 @@ root.render(
       [CssVarsProvider, { theme: theme, defaultMode: 'dark' }],
       [WagmiConfig, { config: wagmiConfig }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
+      [CurveProvider, { alchemyApiKey: import.meta.env.VITE_ALCHEMY_ID }],
     ],
     <>
       <CssBaseline />
