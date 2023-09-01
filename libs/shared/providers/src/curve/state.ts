@@ -28,6 +28,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
           },
           { chainId: chain?.id ?? mainnet.id },
         );
+        await curve.factory.fetchPools();
         setState(curve);
       };
 
@@ -47,6 +48,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             chainId: chain.id,
           },
         );
+        await curve.factory.fetchPools();
         setState(curve);
       };
 

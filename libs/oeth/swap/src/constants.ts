@@ -48,12 +48,12 @@ export const swapRoutes = [
   {
     tokenIn: tokens.mainnet.rETH,
     tokenOut: tokens.mainnet.OETH,
-    action: 'mint-vault',
+    action: 'swap-curve',
   },
   {
     tokenIn: tokens.mainnet.rETH,
     tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.frxETH,
