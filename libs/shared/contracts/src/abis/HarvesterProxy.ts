@@ -1,14 +1,6 @@
 // DO NOT EDIT - GENERATED
 export const HarvesterProxyABI = [
   {
-    inputs: [
-      { internalType: 'address', name: '_vault', type: 'address' },
-      { internalType: 'address', name: '_usdtAddress', type: 'address' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -50,76 +42,22 @@ export const HarvesterProxyABI = [
     anonymous: false,
     inputs: [
       {
-        indexed: false,
+        indexed: true,
         internalType: 'address',
-        name: '_tokenAddress',
+        name: 'implementation',
         type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint16',
-        name: '_allowedSlippageBps',
-        type: 'uint16',
-      },
-      {
-        indexed: false,
-        internalType: 'uint16',
-        name: '_harvestRewardBps',
-        type: 'uint16',
-      },
-      {
-        indexed: false,
-        internalType: 'address',
-        name: '_uniswapV2CompatibleAddr',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'uint256',
-        name: '_liquidationLimit',
-        type: 'uint256',
-      },
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: '_doSwapRewardToken',
-        type: 'bool',
       },
     ],
-    name: 'RewardTokenConfigUpdated',
+    name: 'Upgraded',
     type: 'event',
   },
+  { stateMutability: 'payable', type: 'fallback' },
   {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: '_address',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'bool',
-        name: '_isSupported',
-        type: 'bool',
-      },
-    ],
-    name: 'SupportedStrategyUpdate',
-    type: 'event',
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: false,
-        internalType: 'address',
-        name: '_address',
-        type: 'address',
-      },
-    ],
-    name: 'UniswapUpdated',
-    type: 'event',
+    inputs: [],
+    name: 'admin',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
   },
   {
     inputs: [],
@@ -136,45 +74,21 @@ export const HarvesterProxyABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_strategyAddr', type: 'address' },
-    ],
-    name: 'harvest',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
     inputs: [],
-    name: 'harvest',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'harvestAndSwap',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'implementation',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'address', name: '_strategyAddr', type: 'address' },
+      { internalType: 'address', name: '_logic', type: 'address' },
+      { internalType: 'address', name: '_initGovernor', type: 'address' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
     ],
-    name: 'harvestAndSwap',
+    name: 'initialize',
     outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_strategyAddr', type: 'address' },
-      { internalType: 'address', name: '_rewardTo', type: 'address' },
-    ],
-    name: 'harvestAndSwap',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
     type: 'function',
   },
   {
@@ -182,92 +96,6 @@ export const HarvesterProxyABI = [
     name: 'isGovernor',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
     stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'rewardProceedsAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
-    name: 'rewardTokenConfigs',
-    outputs: [
-      { internalType: 'uint16', name: 'allowedSlippageBps', type: 'uint16' },
-      { internalType: 'uint16', name: 'harvestRewardBps', type: 'uint16' },
-      {
-        internalType: 'address',
-        name: 'uniswapV2CompatibleAddr',
-        type: 'address',
-      },
-      { internalType: 'bool', name: 'doSwapRewardToken', type: 'bool' },
-      { internalType: 'uint256', name: 'liquidationLimit', type: 'uint256' },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_tokenAddress', type: 'address' },
-      { internalType: 'uint16', name: '_allowedSlippageBps', type: 'uint16' },
-      { internalType: 'uint16', name: '_harvestRewardBps', type: 'uint16' },
-      {
-        internalType: 'address',
-        name: '_uniswapV2CompatibleAddr',
-        type: 'address',
-      },
-      { internalType: 'uint256', name: '_liquidationLimit', type: 'uint256' },
-      { internalType: 'bool', name: '_doSwapRewardToken', type: 'bool' },
-    ],
-    name: 'setRewardTokenConfig',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_rewardProceedsAddress',
-        type: 'address',
-      },
-    ],
-    name: 'setRewardsProceedsAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_strategyAddress', type: 'address' },
-      { internalType: 'bool', name: '_isSupported', type: 'bool' },
-    ],
-    name: 'setSupportedStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '', type: 'address' }],
-    name: 'supportedStrategies',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'swap',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '_swapToken', type: 'address' }],
-    name: 'swapRewardToken',
-    outputs: [],
-    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -281,26 +109,21 @@ export const HarvesterProxyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
     ],
-    name: 'transferToken',
+    name: 'upgradeTo',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'usdtAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'vaultAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
+    inputs: [
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
 ] as const;

@@ -10,12 +10,12 @@ export const ChainlinkOracleABI = [
     type: 'function',
   },
   {
-    constant: false,
+    constant: true,
     inputs: [{ internalType: 'string', name: 'symbol', type: 'string' }],
     name: 'tokEthPrice',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     payable: false,
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -92,6 +92,31 @@ export const ChainlinkOracleABI = [
     payable: false,
     stateMutability: 'nonpayable',
     type: 'constructor',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_feed',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'string',
+        name: '_symbol',
+        type: 'string',
+      },
+      {
+        indexed: false,
+        internalType: 'bool',
+        name: '_directToUsd',
+        type: 'bool',
+      },
+    ],
+    name: 'FeedRegistered',
+    type: 'event',
   },
   {
     anonymous: false,

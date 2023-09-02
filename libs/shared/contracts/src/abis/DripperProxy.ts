@@ -1,14 +1,6 @@
 // DO NOT EDIT - GENERATED
 export const DripperProxyABI = [
   {
-    inputs: [
-      { internalType: 'address', name: '_vault', type: 'address' },
-      { internalType: 'address', name: '_token', type: 'address' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
-  {
     anonymous: false,
     inputs: [
       {
@@ -47,9 +39,23 @@ export const DripperProxyABI = [
     type: 'event',
   },
   {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'implementation',
+        type: 'address',
+      },
+    ],
+    name: 'Upgraded',
+    type: 'event',
+  },
+  { stateMutability: 'payable', type: 'fallback' },
+  {
     inputs: [],
-    name: 'availableFunds',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'admin',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -62,37 +68,6 @@ export const DripperProxyABI = [
   },
   {
     inputs: [],
-    name: 'collect',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'collectAndRebase',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'drip',
-    outputs: [
-      { internalType: 'uint64', name: 'lastCollect', type: 'uint64' },
-      { internalType: 'uint192', name: 'perBlock', type: 'uint192' },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'dripDuration',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'governor',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
@@ -100,18 +75,27 @@ export const DripperProxyABI = [
   },
   {
     inputs: [],
-    name: 'isGovernor',
-    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    name: 'implementation',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [
-      { internalType: 'uint256', name: '_durationSeconds', type: 'uint256' },
+      { internalType: 'address', name: '_logic', type: 'address' },
+      { internalType: 'address', name: '_initGovernor', type: 'address' },
+      { internalType: 'bytes', name: '_data', type: 'bytes' },
     ],
-    name: 'setDripDuration',
+    name: 'initialize',
     outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'payable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'isGovernor',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -125,12 +109,21 @@ export const DripperProxyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
     ],
-    name: 'transferToken',
+    name: 'upgradeTo',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'newImplementation', type: 'address' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
+    ],
+    name: 'upgradeToAndCall',
+    outputs: [],
+    stateMutability: 'payable',
     type: 'function',
   },
 ] as const;

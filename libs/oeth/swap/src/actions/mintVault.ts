@@ -13,7 +13,7 @@ const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
   const data = await readContract({
     address: contracts.mainnet.vault.address,
     abi: contracts.mainnet.vault.abi,
-    functionName: 'priceUnitMint',
+    functionName: '',
     args: [tokenOut.address ?? tokens.mainnet.WETH.address],
   });
 
