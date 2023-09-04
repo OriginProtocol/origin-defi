@@ -49,13 +49,11 @@ export function Input({
         borderColor: 'divider',
         borderRadius: 1,
         borderBottomColor: 'transparent',
-        borderEndStartRadius: 0,
-        borderEndEndRadius: 0,
-        paddingBlock: 2.875,
-        boxSizing: 'border-box',
+        boxShadow: 'none',
+        paddingBlock: 2.5,
+        paddingBlockEnd: 2.625,
         '&:hover, &:focus-within': {
           borderColor: 'transparent',
-          borderRadius: 1,
         },
         '&:hover': {
           background: (theme) =>
@@ -94,7 +92,7 @@ export function Input({
             boxSizing: 'border-box',
             '& .MuiInputBase-input': {
               padding: 0,
-              lineHeight: '1.5rem',
+              lineHeight: '1.875rem',
               boxSizing: 'border-box',
               fontStyle: 'normal',
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
@@ -118,11 +116,12 @@ export function Input({
             name={baseTokenName}
             icon={baseTokenIcon}
             {...(isSwapped ? { additionalNode: exchangeTokenNode } : {})}
+            sx={!baseTokenBalance ? { transform: 'translateY(50%)' } : {}}
           />
         </Stack>
       </Box>
 
-      <Box sx={{ ...styles, marginBlockStart: 0.5 }}>
+      <Box sx={{ ...styles, marginBlockStart: 1 }}>
         {baseTokenValue !== undefined ? (
           isLoading ? (
             <Loader width={50} />
@@ -130,7 +129,11 @@ export function Input({
             <Typography
               color="text.secondary"
               variant="body1"
-              sx={{ fontWeight: 400, fontStyle: 'normal' }}
+              sx={{
+                fontWeight: 400,
+                fontStyle: 'normal',
+                lineHeight: '1.5rem',
+              }}
             >
               {intl.formatNumber(baseTokenValue, currencyFormat)}
             </Typography>
@@ -144,6 +147,7 @@ export function Input({
             fontWeight: 400,
             fontStyle: 'normal',
             visibility: baseTokenBalance === undefined ? 'hidden' : 'visible',
+            lineHeight: '1.5rem',
           }}
         >
           {intl.formatMessage(

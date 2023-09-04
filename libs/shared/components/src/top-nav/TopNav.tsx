@@ -47,8 +47,10 @@ export function TopNav({
       component="nav"
       sx={{
         display: 'grid',
-        borderBlockEnd: { xs: 'none', md: '1px solid' },
-        borderColor: 'background.paper',
+        borderBlockEnd: {
+          xs: 'none',
+          md: '1px solid var(--mui-palette-background-paper)',
+        },
         gap: { xs: 1, md: 10 },
         alignItems: 'center',
         backgroundColor: 'divider',
@@ -223,7 +225,7 @@ export function TopNav({
           display: { xs: 'block', md: 'none' },
           gridColumn: 'span 2',
           gridRowStart: 1,
-          borderColor: 'background.paper',
+          borderColor: (theme) => theme.palette.background.paper,
           position: 'relative',
           width: 'calc(100% + 1.5rem)',
           bottom: '-3.75rem',

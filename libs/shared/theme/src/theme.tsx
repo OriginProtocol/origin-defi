@@ -65,6 +65,7 @@ export const theme = extendTheme({
       fontSize: '0.75rem',
       fontWeight: 400,
       lineHeight: '1.25rem',
+      fontStyle: 'normal',
     },
   },
   shape: {

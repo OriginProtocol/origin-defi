@@ -58,7 +58,7 @@ export function APY({ value, balance, pendingYield, earnings }: Props) {
       <Stack
         direction="row"
         flexWrap="wrap"
-        gap={{ xs: 1, md: 2 }}
+        gap={{ xs: 1, md: 1.75 }}
         sx={{ width: '100%' }}
       >
         <Box
@@ -70,10 +70,11 @@ export function APY({ value, balance, pendingYield, earnings }: Props) {
             borderColor: 'grey.800',
             flexBasis: {
               xs: '100%',
-              md: '25%',
+              md: '9.4rem',
             },
             display: 'grid',
             placeContent: 'center',
+            boxSizing: 'border-box',
           }}
         >
           <Typography
@@ -110,7 +111,6 @@ export function APY({ value, balance, pendingYield, earnings }: Props) {
               })}
             </Typography>
             <IconButton
-              disableRipple
               onClick={(e) => setAnchorEl(e.currentTarget)}
               sx={{
                 backgroundColor: (theme) =>
@@ -145,7 +145,7 @@ export function APY({ value, balance, pendingYield, earnings }: Props) {
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,
@@ -162,7 +162,7 @@ export function APY({ value, balance, pendingYield, earnings }: Props) {
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,

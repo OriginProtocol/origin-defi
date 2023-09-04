@@ -62,8 +62,10 @@ export function SwapCard({
     <Card
       title={title}
       sxCardTitle={{
+        padding: 0,
         paddingInline: { xs: 2, md: 3 },
-        paddingBlock: 2.271,
+        paddingTop: 1.438,
+        paddingBottom: 1.438,
       }}
     >
       <Box

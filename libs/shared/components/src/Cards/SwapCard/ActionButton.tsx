@@ -16,7 +16,7 @@ export function ActionButton({ sx, children, ...rest }: Props) {
         lineHeight: '2rem',
         borderRadius: 2,
         fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-        fontWeight: 400,
+        fontWeight: 500,
         fontStyle: 'normal',
         boxShadow: (theme) => theme.shadows[24],
         '&:hover': {
