@@ -1,5 +1,21 @@
-import { QueryClient } from '@tanstack/react-query';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import axios from 'axios';
 
-export const queryClient = new QueryClient({
-  defaultOptions: { queries: { staleTime: 1000 * 60 * 20 } },
+export const axiosInstance = axios.create({
+  baseURL: 'https://squid.subsquid.io/origin-squid/v/v2',
 });
+
+export const graphqlClient =
+  <_, TVariables>(query: string, variables?: TVariables) =>
+  async () => {
+    const res = await axiosInstance({
+      url: '/graphql',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: { query, variables },
+    });
+
+    return res.data['errors']?.[0] || res.data['data'];
+  };
