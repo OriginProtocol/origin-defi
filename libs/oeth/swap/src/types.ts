@@ -4,7 +4,8 @@ export type TokenSource = 'tokenIn' | 'tokenOut';
 
 export type SwapAction =
   | 'swap-curve'
-  | 'swap-zapper'
+  | 'swap-zapper-eth'
+  | 'swap-zapper-sfrxeth'
   | 'mint-vault'
   | 'redeem-vault'
   | 'wrap-oeth'

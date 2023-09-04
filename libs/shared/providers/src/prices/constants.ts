@@ -10,6 +10,7 @@ export const coingeckoTokenIds: Record<SupportedToken, string> = {
   USDT: 'tether',
   TUSD: 'true-usd',
   OETH: 'origin-ether',
+  WOETH: 'origin-ether',
   OUSD: 'origin-dollar',
   stETH: 'staked-ether',
   rETH: 'rocket-pool-eth',

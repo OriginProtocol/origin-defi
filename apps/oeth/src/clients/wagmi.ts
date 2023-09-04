@@ -41,7 +41,7 @@ const connectors = connectorsForWallets([
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
-      coinbaseWallet({ appName: 'mStable', chains }),
+      coinbaseWallet({ appName: 'origin', chains }),
     ],
   },
   {

@@ -23,7 +23,7 @@ export const swapRoutes = [
   {
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
-    action: 'swap-zapper',
+    action: 'swap-zapper-eth',
   },
   {
     tokenIn: tokens.mainnet.WETH,
@@ -68,7 +68,7 @@ export const swapRoutes = [
   {
     tokenIn: tokens.mainnet.sfrxETH,
     tokenOut: tokens.mainnet.OETH,
-    action: 'swap-zapper',
+    action: 'swap-zapper-sfrxeth',
   },
   // Redeem
   {
