@@ -25,6 +25,13 @@
         "command": "ts-node --esm libs/shared/contracts/scripts/generateAbisTs.mts",
         "parallel": false
       }
+    },
+    "generate-contracts": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "ts-node --esm libs/shared/contracts/scripts/generateContracts.mts",
+        "parallel": false
+      }
     }
   }
 }

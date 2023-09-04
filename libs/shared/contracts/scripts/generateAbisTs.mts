@@ -2,6 +2,17 @@ import fse from 'fs-extra';
 import path from 'path';
 import * as prettier from 'prettier';
 
+/**
+ * The generateABITsFiles function is a Node.js script that automates the generation of TypeScript 
+ * files from JSON ABI files. It reads JSON ABI files from an input directory, converts them into 
+ * format, and writes the resulting TypeScript files to an output directory. This function is 
+ * designed to be used in a build or development environment to keep ABI information in sync with 
+ * smart contract changes.
+ * 
+ * INPUT_DIR: The directory where JSON ABI files are located.
+ * OUTPUT_DIR: The directory where the generated TypeScript ABI files will be written. 
+ */
+
 const INPUT_DIR = './libs/shared/contracts/abi-json';
 const OUTPUT_DIR = './libs/shared/contracts/src/abis';
 

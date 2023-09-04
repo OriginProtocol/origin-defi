@@ -12952,11 +12952,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_addr",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_addr", "type": "address" }
           ],
           "name": "approveStrategy",
           "outputs": [],
@@ -12965,19 +12961,11 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "name": "assetDefaultStrategies",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -12986,22 +12974,14 @@
           "inputs": [],
           "name": "autoAllocateThreshold",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_asset",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_asset", "type": "address" }
           ],
           "name": "cacheDecimals",
           "outputs": [],
@@ -13011,13 +12991,7 @@
         {
           "inputs": [],
           "name": "capitalPaused",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
           "stateMutability": "view",
           "type": "function"
         },
@@ -13055,11 +13029,7 @@
           "inputs": [],
           "name": "governor",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13071,11 +13041,7 @@
               "name": "_priceProvider",
               "type": "address"
             },
-            {
-              "internalType": "address",
-              "name": "_ousd",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_ousd", "type": "address" }
           ],
           "name": "initialize",
           "outputs": [],
@@ -13085,13 +13051,7 @@
         {
           "inputs": [],
           "name": "isGovernor",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
           "stateMutability": "view",
           "type": "function"
         },
@@ -13099,11 +13059,7 @@
           "inputs": [],
           "name": "maxSupplyDiff",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13112,11 +13068,7 @@
           "inputs": [],
           "name": "netOusdMintForStrategyThreshold",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13125,11 +13077,7 @@
           "inputs": [],
           "name": "netOusdMintedForStrategy",
           "outputs": [
-            {
-              "internalType": "int256",
-              "name": "",
-              "type": "int256"
-            }
+            { "internalType": "int256", "name": "", "type": "int256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13138,11 +13086,7 @@
           "inputs": [],
           "name": "ousdMetaStrategy",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13165,11 +13109,7 @@
           "inputs": [],
           "name": "priceProvider",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13205,13 +13145,7 @@
         {
           "inputs": [],
           "name": "rebasePaused",
-          "outputs": [
-            {
-              "internalType": "bool",
-              "name": "",
-              "type": "bool"
-            }
-          ],
+          "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
           "stateMutability": "view",
           "type": "function"
         },
@@ -13219,11 +13153,7 @@
           "inputs": [],
           "name": "rebaseThreshold",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13232,22 +13162,14 @@
           "inputs": [],
           "name": "redeemFeeBps",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_addr",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_addr", "type": "address" }
           ],
           "name": "removeStrategy",
           "outputs": [],
@@ -13256,11 +13178,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "newImpl",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "newImpl", "type": "address" }
           ],
           "name": "setAdminImpl",
           "outputs": [],
@@ -13269,11 +13187,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_asset",
-              "type": "address"
-            },
+            { "internalType": "address", "name": "_asset", "type": "address" },
             {
               "internalType": "address",
               "name": "_strategy",
@@ -13378,11 +13292,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_address",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_address", "type": "address" }
           ],
           "name": "setStrategistAddr",
           "outputs": [],
@@ -13391,11 +13301,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_address",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "_address", "type": "address" }
           ],
           "name": "setTrusteeAddress",
           "outputs": [],
@@ -13404,11 +13310,7 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "uint256",
-              "name": "_basis",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "_basis", "type": "uint256" }
           ],
           "name": "setTrusteeFeeBps",
           "outputs": [],
@@ -13432,22 +13334,14 @@
           "inputs": [],
           "name": "strategistAddr",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_asset",
-              "type": "address"
-            },
+            { "internalType": "address", "name": "_asset", "type": "address" },
             {
               "internalType": "uint8",
               "name": "_unitConversion",
@@ -13474,16 +13368,8 @@
         },
         {
           "inputs": [
-            {
-              "internalType": "address",
-              "name": "_asset",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "_amount",
-              "type": "uint256"
-            }
+            { "internalType": "address", "name": "_asset", "type": "address" },
+            { "internalType": "uint256", "name": "_amount", "type": "uint256" }
           ],
           "name": "transferToken",
           "outputs": [],
@@ -13494,11 +13380,7 @@
           "inputs": [],
           "name": "trusteeAddress",
           "outputs": [
-            {
-              "internalType": "address",
-              "name": "",
-              "type": "address"
-            }
+            { "internalType": "address", "name": "", "type": "address" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13507,11 +13389,7 @@
           "inputs": [],
           "name": "trusteeFeeBps",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
@@ -13534,11 +13412,7 @@
           "inputs": [],
           "name": "vaultBuffer",
           "outputs": [
-            {
-              "internalType": "uint256",
-              "name": "",
-              "type": "uint256"
-            }
+            { "internalType": "uint256", "name": "", "type": "uint256" }
           ],
           "stateMutability": "view",
           "type": "function"
