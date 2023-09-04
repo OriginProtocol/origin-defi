@@ -73,8 +73,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             value={amount}
             decimals={decimals}
             onChange={onAmountChange}
+            isLoading={isAmountLoading}
             ref={ref}
           />
+
           {isPriceLoading ? (
             <Skeleton width={30} />
           ) : tokenPriceUsd > 0 ? (

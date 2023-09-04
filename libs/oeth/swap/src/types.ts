@@ -27,6 +27,9 @@ export type SwapState = {
   tokenIn: Token;
   amountOut: bigint;
   tokenOut: Token;
+  isAmountOutLoading: boolean;
+  isPriceOutLoading: boolean;
+  isBalanceOutLoading: boolean;
   slippage: number;
   swapRoute: SwapRoute | null;
 };

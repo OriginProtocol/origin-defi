@@ -15,6 +15,17 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
     const { chain } = useNetwork();
 
     useEffect(() => {
+      const initPools = async () => {
+        await Promise.allSettled([
+          curve.factory.fetchPools(),
+          curve.crvUSDFactory.fetchPools(),
+          curve.EYWAFactory.fetchPools(),
+          curve.cryptoFactory.fetchPools(),
+          curve.tricryptoFactory.fetchPools(),
+        ]);
+        console.log('CURVE-JS POOLS INITIALIZED');
+      };
+
       const initPublic = async () => {
         const ethersProvider = getEthersProvider({
           chainId: chain?.id ?? mainnet.id,
@@ -28,7 +39,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
           },
           { chainId: chain?.id ?? mainnet.id },
         );
-        await curve.factory.fetchPools();
+        await initPools();
         setState(curve);
       };
 
@@ -48,7 +59,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             chainId: chain.id,
           },
         );
-        await curve.factory.fetchPools();
+        await initPools();
         setState(curve);
       };
 

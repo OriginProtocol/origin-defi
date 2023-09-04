@@ -17,6 +17,9 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenIn: tokens.mainnet.ETH,
       amountOut: 0n,
       tokenOut: tokens.mainnet.OETH,
+      isAmountOutLoading: false,
+      isPriceOutLoading: false,
+      isBalanceOutLoading: false,
       slippage: 0.01,
       swapRoute: getAvailableRoutes(tokens.mainnet.ETH, tokens.mainnet.OETH)[0],
     });
@@ -29,6 +32,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         setState(
           produce((draft) => {
             draft.amountOut = estimatedAmout;
+            draft.isAmountOutLoading = false;
+            draft.isPriceOutLoading = false;
           }),
         );
       },

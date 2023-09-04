@@ -14,6 +14,24 @@ import type { Token } from '@origin/shared/contracts';
 
 import type { TokenSource } from './types';
 
+export const useHandleAmountInChange = () => {
+  const [, setSwapState] = useSwapState();
+
+  return useCallback(
+    (amount: bigint) => {
+      setSwapState(
+        produce((state) => {
+          state.amountIn = amount;
+          state.amountOut = 0n;
+          state.isAmountOutLoading = true;
+          state.isPriceOutLoading = true;
+        }),
+      );
+    },
+    [setSwapState],
+  );
+};
+
 export const useTokenOptions = () => {
   const [{ tokenIn, tokenOut }] = useSwapState();
   const tokensIn = getAllAvailableTokens('tokenIn');
@@ -83,6 +101,9 @@ export const useHandleTokenChange = () => {
               state.tokenIn = availableTokensIn[0];
             }
           }
+          state.amountIn = 0n;
+          state.amountOut = 0n;
+          // TODO compute best route
           state.swapRoute = getAvailableRoutes(
             state.tokenIn,
             state.tokenOut,

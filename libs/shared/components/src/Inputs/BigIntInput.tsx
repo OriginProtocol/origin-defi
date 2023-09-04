@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react';
 
 import { InputBase } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { formatUnits, parseUnits } from 'viem';
 
@@ -55,7 +56,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       }
     };
 
-    return (
+    return isLoading ? (
+      <Skeleton width={100} height={24} />
+    ) : (
       <InputBase
         inputRef={ref}
         inputMode="decimal"

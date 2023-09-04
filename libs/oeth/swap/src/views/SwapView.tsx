@@ -4,7 +4,6 @@ import { alpha, Box, IconButton, Stack } from '@mui/material';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -12,6 +11,7 @@ import { GasPopover } from '../components/GasPopover';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import {
+  useHandleAmountInChange,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
@@ -34,8 +34,17 @@ function SwapViewWrapped() {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
-  const [{ amountIn, amountOut, tokenIn, tokenOut }, setSwapState] =
-    useSwapState();
+  const [
+    {
+      amountIn,
+      amountOut,
+      tokenIn,
+      tokenOut,
+      isAmountOutLoading,
+      isPriceOutLoading,
+      isBalanceOutLoading,
+    },
+  ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
@@ -46,6 +55,7 @@ function SwapViewWrapped() {
     address,
     token: tokenOut.address,
   });
+  const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
   const handleSwap = useHandleSwap();
@@ -84,13 +94,7 @@ function SwapViewWrapped() {
         >
           <TokenInput
             amount={amountIn}
-            onAmountChange={(val) => {
-              setSwapState(
-                produce((draft) => {
-                  draft.amountIn = val;
-                }),
-              );
-            }}
+            onAmountChange={handleAmountInChange}
             balance={balTokenIn?.value}
             isBalanceLoading={isBalTokenInLoading}
             token={tokenIn}
@@ -136,14 +140,15 @@ function SwapViewWrapped() {
           <TokenInput
             amount={amountOut}
             balance={balTokenOut?.value}
-            isBalanceLoading={isBalTokenOutLoading}
+            isAmountLoading={isAmountOutLoading}
+            isBalanceLoading={isBalanceOutLoading || isBalTokenOutLoading}
             disableMaxClick
             token={tokenOut}
             onTokenClick={() => {
               setTokenSource('tokenOut');
             }}
             tokenPriceUsd={prices?.[tokenOut.symbol]}
-            isPriceLoading={isPriceLoading}
+            isPriceLoading={isPriceOutLoading || isPriceLoading}
             inputProps={{ readOnly: true }}
             isConnected={isConnected}
             sx={{
