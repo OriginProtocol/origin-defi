@@ -18,13 +18,13 @@ import {
 import { isNumber } from 'lodash';
 import { useIntl } from 'react-intl';
 
-import type { Theme } from '@mui/material';
+import type { SxProps } from '@mui/material';
 
 const defaultPriceTolerance = 0.01;
 
 const gridStyles = {
   display: 'grid',
-  gridTemplateColumns: (theme: Theme) => `1.5fr 1fr`,
+  gridTemplateColumns: `1.5fr 1fr`,
   gap: 1,
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -33,9 +33,10 @@ const gridStyles = {
 interface Props {
   gasPrice: number;
   onPriceToleranceChange: (value: number) => void;
+  sx?: SxProps;
 }
 
-export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
+export function GasPopover({ gasPrice, onPriceToleranceChange, sx }: Props) {
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -49,6 +50,7 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
         data-testid="gas-popover-button"
+        sx={{ ...sx }}
       >
         <img src="/images/settings-icon.svg" />
       </IconButton>
