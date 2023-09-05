@@ -10,10 +10,19 @@ const estimateAmount: EstimateAmount = async (tokenIn, tokenOut, amountIn) => {
     return 0n;
   }
 
+  console.time('curve getBestRouteAndOutput');
   const routes = await curve.router.getBestRouteAndOutput(
     tokenIn?.address ?? ETH,
     tokenOut?.address ?? ETH,
     formatUnits(amountIn, tokenIn.decimals),
+  );
+  console.timeEnd('curve getBestRouteAndOutput');
+  console.log(
+    `curve found ${routes.route.length} routes: ${JSON.stringify(
+      routes.route,
+      null,
+      2,
+    )}`,
   );
 
   return parseUnits(routes.output, tokenOut.decimals);
