@@ -47,7 +47,7 @@ export const usePrices = (
         const oethAmount = await readContract({
           address: contracts.mainnet.WOETH.address,
           abi: contracts.mainnet.WOETH.abi,
-          functionName: 'previewDeposit',
+          functionName: 'previewRedeem',
           args: [parseUnits('1', toks.mainnet.WOETH.decimals)],
         });
 
