@@ -3,12 +3,12 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 const config: CodegenConfig = {
   generates: {
     'libs/shared/data-access/src/generated/graphql.ts': {
-      schema: 'https://squid.subsquid.io/origin-squid/v/v2/graphql',
+      schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
     },
     '.': {
-      schema: 'https://squid.subsquid.io/origin-squid/v/v2/graphql',
+      schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       preset: 'near-operation-file',
       presetConfig: {
