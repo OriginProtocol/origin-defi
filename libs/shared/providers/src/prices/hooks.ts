@@ -1,6 +1,10 @@
+import { contracts } from '@origin/shared/contracts';
+import { tokens as toks } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
+import { readContract } from '@wagmi/core';
 import axios from 'axios';
+import { formatUnits, parseUnits } from 'viem';
 
 import { coingeckoApiEndpoint, coingeckoTokenIds } from './constants';
 
@@ -31,13 +35,31 @@ export const usePrices = (
           .join('%2C')}&vs_currencies=usd`,
       );
 
-      return tokens.reduce(
+      let prices = tokens.reduce(
         (acc, curr) => ({
           ...acc,
           [curr]: res?.data?.[coingeckoTokenIds[curr]]?.usd ?? 0,
         }),
         {},
       );
+
+      if (tokens.includes('WOETH')) {
+        const oethAmount = await readContract({
+          address: contracts.mainnet.WOETH.address,
+          abi: contracts.mainnet.WOETH.abi,
+          functionName: 'previewDeposit',
+          args: [parseUnits('1', toks.mainnet.WOETH.decimals)],
+        });
+
+        prices = {
+          ...prices,
+          WOETH:
+            +formatUnits(oethAmount, toks.mainnet.WOETH.decimals) *
+            prices['WOETH'],
+        };
+      }
+
+      return prices;
     },
     ...options,
   });
