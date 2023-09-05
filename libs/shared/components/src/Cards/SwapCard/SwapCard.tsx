@@ -59,7 +59,13 @@ export function SwapCard({
 }: Props) {
   const [isSwapped, setSwapState] = useState(false);
   return (
-    <Card title={title} sxCardTitle={{ padding: { xs: 2, md: 3 } }}>
+    <Card
+      title={title}
+      sxCardTitle={{
+        paddingInline: { xs: 2, md: 3 },
+        paddingBlock: 2.271,
+      }}
+    >
       <Box
         sx={{
           borderRadius: 1,

@@ -8,7 +8,6 @@ const meta: Meta<typeof APY> = {
   component: APY,
   title: 'OETH/APY',
   args: {
-    tokenIcon: '	/images/oeth.svg',
     value: 8.71,
     balance: 250.1937,
     pendingYield: 0.0023,

@@ -48,13 +48,14 @@ export function Input({
         border: '1px solid',
         borderColor: 'divider',
         borderRadius: 1,
+        borderBottomColor: 'transparent',
         borderEndStartRadius: 0,
         borderEndEndRadius: 0,
         paddingBlock: 2.875,
+        boxSizing: 'border-box',
         '&:hover, &:focus-within': {
           borderColor: 'transparent',
-          borderStartStartRadius: (theme) => theme.shape.borderRadius,
-          borderStartEndRadius: (theme) => theme.shape.borderRadius,
+          borderRadius: 1,
         },
         '&:hover': {
           background: (theme) =>
@@ -80,9 +81,9 @@ export function Input({
         <InputBase
           placeholder="0.00"
           type="numeric"
-          fullWidth
           value={value}
           sx={{
+            flex: 1,
             border: 'none',
             backgroundColor: 'transparent',
             borderRadius: 0,
@@ -91,8 +92,6 @@ export function Input({
             alignSelf: 'end',
             borderImageWidth: 0,
             boxSizing: 'border-box',
-            position: 'relative',
-            bottom: '-4px',
             '& .MuiInputBase-input': {
               padding: 0,
               lineHeight: '1.5rem',
@@ -114,17 +113,16 @@ export function Input({
           }}
           data-testid="swap-input"
         />
-        <Stack
-          flexDirection="row-reverse"
-          sx={baseTokenBalance === undefined ? { gridRow: 'span 2' } : {}}
-        >
+        <Stack flexDirection="row-reverse">
           <SwapItem
             name={baseTokenName}
             icon={baseTokenIcon}
             {...(isSwapped ? { additionalNode: exchangeTokenNode } : {})}
           />
         </Stack>
+      </Box>
 
+      <Box sx={{ ...styles, marginBlockStart: 0.5 }}>
         {baseTokenValue !== undefined ? (
           isLoading ? (
             <Loader width={50} />
@@ -138,39 +136,23 @@ export function Input({
             </Typography>
           )
         ) : undefined}
-
-        {baseTokenBalance ? (
-          <Stack
-            component={Typography}
-            direction="row"
-            gap={1}
-            alignItems="center"
-            color="text.secondary"
-            variant="body1"
-            sx={{
-              justifySelf: 'flex-end',
-              fontWeight: 400,
-              fontStyle: 'normal',
-            }}
-          >
-            {intl.formatMessage(
-              { defaultMessage: 'Balance: {number}' },
-              { number: intl.formatNumber(baseTokenBalance, currencyFormat) },
-            )}
-            {/* <Box
-              component="span"
-              sx={{
-                display: 'block',
-                paddingBlock: 0.25,
-                paddingInline: 0.5,
-                borderRadius: 1,
-                background: (theme) => alpha(theme.palette.common.white, 0.1),
-              }}
-            >
-              max
-            </Box> */}
-          </Stack>
-        ) : undefined}
+        <Typography
+          color="text.secondary"
+          variant="body1"
+          sx={{
+            justifySelf: 'flex-end',
+            fontWeight: 400,
+            fontStyle: 'normal',
+            visibility: baseTokenBalance === undefined ? 'hidden' : 'visible',
+          }}
+        >
+          {intl.formatMessage(
+            { defaultMessage: 'Balance: {number}' },
+            {
+              number: intl.formatNumber(baseTokenBalance || 0, currencyFormat),
+            },
+          )}
+        </Typography>
       </Box>
     </Box>
   );

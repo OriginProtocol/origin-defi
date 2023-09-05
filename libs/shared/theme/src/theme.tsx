@@ -139,6 +139,13 @@ export const theme = extendTheme({
         },
       },
     },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -159,6 +166,10 @@ export const theme = extendTheme({
       styleOverrides: {
         indicator: ({ theme }) => ({
           background: theme.palette.background.gradient2,
+          transition: theme.transitions.create('all', {
+            duration: theme.transitions.duration.shortest,
+            easing: theme.transitions.easing.easeInOut,
+          }),
         }),
       },
     },
@@ -245,11 +256,12 @@ export const theme = extendTheme({
           borderRadius: theme.shape.borderRadius,
           backgroundColor: theme.palette.grey[900],
           border: '1px solid',
-          borderColor: alpha(theme.palette.grey[200], 0.2),
+          borderColor: theme.palette.grey[800],
           boxShadow: 'none',
           '&:before': {
             height: 0,
           },
+          backgroundImage: 'none',
         }),
       },
     },

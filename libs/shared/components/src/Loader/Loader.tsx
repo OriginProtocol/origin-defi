@@ -8,7 +8,7 @@ export function Loader({ sx, ...rest }: Props) {
   return (
     <Skeleton
       sx={{ backgroundColor: 'grey.900', borderRadius: 22, ...sx }}
-      variant="text"
+      variant="rectangular"
       animation="wave"
       {...rest}
     />

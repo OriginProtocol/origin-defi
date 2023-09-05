@@ -31,6 +31,7 @@ export function SwapItem({ icon, name, additionalNode: Component, sx }: Props) {
         fontStyle: 'normal',
         cursor: 'pointer',
         fontWeight: 500,
+        boxSizing: 'border-box',
         position: 'relative',
         ':hover': {
           background: (theme) =>
