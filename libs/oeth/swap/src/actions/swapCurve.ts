@@ -1,14 +1,11 @@
 import curve from '@curvefi/api';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { formatUnits, parseUnits } from 'viem';
 
-import { getAvailableRoutes } from '../utils';
-
-import type { SwapApi, SwapState } from '../types';
+import type { EstimateAmount, EstimateRoute } from '../types';
 
 const ETH = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
-const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateAmount: EstimateAmount = async (tokenIn, tokenOut, amountIn) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -22,22 +19,22 @@ const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
   return parseUnits(routes.output, tokenOut.decimals);
 };
 
-const estimateRoutes = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateRoute: EstimateRoute = async (
+  tokenIn,
+  tokenOut,
+  amountIn,
+  route,
+) => {
   if (amountIn === 0n) {
-    return [];
+    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
   }
 
-  return getAvailableRoutes(tokenIn, tokenOut);
-};
+  const estimatedAmount = await estimateAmount(tokenIn, tokenOut, amountIn);
 
-const swap = async ({ tokenIn, tokenOut, amountIn, swapRoute }: SwapState) => {
-  if (amountIn === 0n || isNilOrEmpty(swapRoute)) {
-    return;
-  }
+  return { ...route, estimatedAmount, gas: 0n, rate: 0 };
 };
 
 export default {
   estimateAmount,
-  estimateRoutes,
-  swap,
-} as Partial<SwapApi>;
+  estimateRoute,
+};

@@ -11,10 +11,37 @@ export type SwapAction =
   | 'wrap-oeth'
   | 'unwrap-woeth';
 
+export type EstimateAmount = (
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+) => Promise<bigint>;
+
+export type EstimateGas = (
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+) => Promise<bigint>;
+
+export type EstimateRoute = (
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+  route: SwapRoute,
+) => Promise<EstimatedSwapRoute>;
+
+export type Swap = (
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+  route: EstimatedSwapRoute,
+) => Promise<void>;
+
 export type SwapApi = {
-  estimateAmount: (state: SwapState) => Promise<bigint>;
-  estimateRoutes: (state: SwapState) => Promise<SwapRoute[]>;
-  swap: (state: SwapState) => Promise<void>;
+  estimateAmount: EstimateAmount;
+  estimateGas: EstimateGas;
+  estimateRoute: EstimateRoute;
+  swap: Swap;
 };
 
 export type SwapRoute = {
@@ -22,6 +49,12 @@ export type SwapRoute = {
   tokenOut: Token;
   action: SwapAction;
 };
+
+export type EstimatedSwapRoute = {
+  estimatedAmount: bigint;
+  rate: number;
+  gas: bigint;
+} & SwapRoute;
 
 export type SwapState = {
   amountIn: bigint;
@@ -32,5 +65,5 @@ export type SwapState = {
   isPriceOutLoading: boolean;
   isBalanceOutLoading: boolean;
   slippage: number;
-  swapRoute: SwapRoute | null;
+  swapRoutes: EstimatedSwapRoute[];
 };

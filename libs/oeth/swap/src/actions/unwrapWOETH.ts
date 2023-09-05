@@ -1,12 +1,14 @@
-import { contracts } from '@origin/shared/contracts';
+import { contracts, whales } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { readContract } from '@wagmi/core';
+import { getAccount, getPublicClient, readContract } from '@wagmi/core';
 
-import { getAvailableRoutes } from '../utils';
+import type { EstimateAmount, EstimateGas, EstimateRoute } from '../types';
 
-import type { SwapApi, SwapState } from '../types';
-
-const estimateAmount = async ({ amountIn }: SwapState) => {
+const estimateAmount: EstimateAmount = async (
+  _tokenIn,
+  _tokenOut,
+  amountIn,
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -21,22 +23,67 @@ const estimateAmount = async ({ amountIn }: SwapState) => {
   return data;
 };
 
-const estimateRoutes = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateGas: EstimateGas = async (_tokenIn, _tokenOut, amountIn) => {
+  let gasEstimate = 0n;
+  let isError = false;
+
+  const publicClient = getPublicClient();
+
   if (amountIn === 0n) {
-    return [];
+    return gasEstimate;
   }
 
-  return getAvailableRoutes(tokenIn, tokenOut);
+  const { address } = getAccount();
+
+  if (!isNilOrEmpty(address)) {
+    try {
+      gasEstimate = await publicClient.estimateContractGas({
+        address: contracts.mainnet.WOETH.address,
+        abi: contracts.mainnet.WOETH.abi,
+        functionName: 'redeem',
+        args: [amountIn, address, address],
+        account: address,
+      });
+    } catch {
+      isError = true;
+    }
+  }
+
+  if (isError) {
+    try {
+      gasEstimate = await publicClient.estimateContractGas({
+        address: contracts.mainnet.WOETH.address,
+        abi: contracts.mainnet.WOETH.abi,
+        functionName: 'redeem',
+        args: [amountIn, whales.mainnet.WOETH, whales.mainnet.WOETH],
+        account: whales.mainnet.WOETH,
+      });
+    } catch {}
+  }
+
+  return gasEstimate;
 };
 
-const swap = async ({ tokenIn, tokenOut, amountIn, swapRoute }: SwapState) => {
-  if (amountIn === 0n || isNilOrEmpty(swapRoute)) {
-    return;
+const estimateRoute: EstimateRoute = async (
+  tokenIn,
+  tokenOut,
+  amountIn,
+  route,
+) => {
+  if (amountIn === 0n) {
+    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
   }
+
+  const [estimatedAmount, gas] = await Promise.all([
+    estimateAmount(tokenIn, tokenOut, amountIn),
+    estimateGas(tokenIn, tokenOut, amountIn),
+  ]);
+
+  return { ...route, estimatedAmount, gas, rate: 0 };
 };
 
 export default {
   estimateAmount,
-  estimateRoutes,
-  swap,
-} as SwapApi;
+  estimateGas,
+  estimateRoute,
+};

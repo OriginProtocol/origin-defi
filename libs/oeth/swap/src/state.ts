@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { queryClient } from '@origin/oeth/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { produce } from 'immer';
@@ -21,17 +22,44 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       isPriceOutLoading: false,
       isBalanceOutLoading: false,
       slippage: 0.01,
-      swapRoute: getAvailableRoutes(tokens.mainnet.ETH, tokens.mainnet.OETH)[0],
+      swapRoutes: [],
     });
 
     useDebouncedEffect(
       async () => {
-        const estimatedAmout = await swapActions[
-          state.swapRoute.action
-        ].estimateAmount(state);
+        const routes = await Promise.all(
+          getAvailableRoutes(state.tokenIn, state.tokenOut).map((route) =>
+            queryClient.fetchQuery({
+              queryKey: [
+                'estimateRoute',
+                state.tokenIn,
+                state.tokenOut,
+                route.action,
+                state.amountIn.toString(),
+              ] as const,
+              queryFn: async ({ queryKey: [, tokenIn, tokenOut, action] }) =>
+                swapActions[action].estimateRoute(
+                  tokenIn,
+                  tokenOut,
+                  state.amountIn,
+                  route,
+                ),
+            }),
+          ),
+        );
+
+        const sortedRoutes = routes.sort((a, b) =>
+          a.estimatedAmount < b.estimatedAmount
+            ? 1
+            : a.estimatedAmount > b.estimatedAmount
+            ? -1
+            : 0,
+        );
+
         setState(
           produce((draft) => {
-            draft.amountOut = estimatedAmout;
+            draft.swapRoutes = sortedRoutes;
+            draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
             draft.isAmountOutLoading = false;
             draft.isPriceOutLoading = false;
           }),

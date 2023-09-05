@@ -1,6 +1,6 @@
-import type { SwapApi, SwapState } from '../types';
+import type { EstimateAmount } from '../types';
 
-const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateAmount: EstimateAmount = async (tokenIn, tokenOut, amountIn) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -10,4 +10,4 @@ const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
 
 export default {
   estimateAmount,
-} as Partial<SwapApi>;
+};

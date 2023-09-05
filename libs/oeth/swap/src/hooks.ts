@@ -4,11 +4,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 
 import { useSwapState } from './state';
-import {
-  getAllAvailableTokens,
-  getAvailableRoutes,
-  getAvailableTokensForSource,
-} from './utils';
+import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
@@ -103,11 +99,7 @@ export const useHandleTokenChange = () => {
           }
           state.amountIn = 0n;
           state.amountOut = 0n;
-          // TODO compute best route
-          state.swapRoute = getAvailableRoutes(
-            state.tokenIn,
-            state.tokenOut,
-          )[0];
+          state.swapRoutes = [];
         }),
       );
     },
@@ -132,11 +124,11 @@ export const useHandleTokenFlip = () => {
 };
 
 export const useHandleSwap = () => {
-  const [{ swapRoute }] = useSwapState();
+  const [{ swapRoutes }] = useSwapState();
 
   return useCallback(async () => {
-    if (isNilOrEmpty(swapRoute)) {
+    if (isNilOrEmpty(swapRoutes)) {
       return;
     }
-  }, [swapRoute]);
+  }, [swapRoutes]);
 };

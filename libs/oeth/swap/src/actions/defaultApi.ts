@@ -1,10 +1,17 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
 
-import { getAvailableRoutes } from '../utils';
+import type {
+  EstimateAmount,
+  EstimateGas,
+  EstimateRoute,
+  Swap,
+} from '../types';
 
-import type { SwapApi, SwapState } from '../types';
-
-const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateAmount: EstimateAmount = async (
+  _tokenIn,
+  _tokenOut,
+  amountIn,
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -12,22 +19,38 @@ const estimateAmount = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
   return amountIn;
 };
 
-const estimateRoutes = async ({ tokenIn, tokenOut, amountIn }: SwapState) => {
+const estimateGas: EstimateGas = async (_tokenIn, _tokenOut, amountIn) => {
   if (amountIn === 0n) {
-    return [];
+    return 0n;
   }
 
-  return getAvailableRoutes(tokenIn, tokenOut);
+  return 0n;
 };
 
-const swap = async ({ tokenIn, tokenOut, amountIn, swapRoute }: SwapState) => {
-  if (amountIn === 0n || isNilOrEmpty(swapRoute)) {
+const estimateRoute: EstimateRoute = async (
+  tokenIn,
+  tokenOut,
+  amountIn,
+  route,
+) => {
+  if (amountIn === 0n) {
+    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+  }
+
+  const estimatedAmount = await estimateAmount(tokenIn, tokenOut, amountIn);
+
+  return { ...route, estimatedAmount, gas: 0n, rate: 0 };
+};
+
+const swap: Swap = async (_tokenIn, _tokenOut, amountIn, route) => {
+  if (amountIn === 0n || isNilOrEmpty(route)) {
     return;
   }
 };
 
 export default {
   estimateAmount,
-  estimateRoutes,
+  estimateGas,
+  estimateRoute,
   swap,
-} as SwapApi;
+};
