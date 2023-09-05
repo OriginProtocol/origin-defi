@@ -44,9 +44,6 @@
       "@origin/shared/contracts": [
         "libs/shared/contracts/src/index.ts"
       ],
-      "@origin/shared/data-access": [
-        "libs/shared/data-access/src/index.ts"
-      ],
       "@origin/shared/providers": [
         "libs/shared/providers/src/index.ts"
       ],

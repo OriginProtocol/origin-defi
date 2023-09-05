@@ -2,13 +2,13 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://squid.subsquid.io/origin-squid/v/v4',
+  baseURL: import.meta.env.VITE_SUBSQUID_URL,
 });
 
 export const graphqlClient =
-  <_, TVariables>(query: string, variables?: TVariables) =>
+  <TData, TVariables>(query: string, variables?: TVariables) =>
   async () => {
-    const res = await axiosInstance({
+    const res = await axiosInstance<TData>({
       url: '/graphql',
       method: 'POST',
       headers: {
@@ -17,5 +17,5 @@ export const graphqlClient =
       data: { query, variables },
     });
 
-    return res.data['errors']?.[0] || res.data['data'];
+    return res.data['data'];
   };

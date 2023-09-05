@@ -2,24 +2,24 @@ import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
   generates: {
-    'libs/shared/data-access/src/generated/graphql.ts': {
+    'libs/oeth/shared/src/generated/graphql.ts': {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
     },
-    '.': {
+    'libs/oeth/': {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.tsx',
-        baseTypesPath: '~@origin/shared/data-access',
+        baseTypesPath: '~@origin/oeth/shared',
       },
       hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
         fetcher: {
-          func: '@origin/shared/data-access#graphqlClient',
+          func: '@origin/oeth/shared#graphqlClient',
         },
       },
     },

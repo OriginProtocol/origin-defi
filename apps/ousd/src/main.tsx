@@ -5,9 +5,7 @@ import {
   CssBaseline,
   Experimental_CssVarsProvider as CssVarsProvider,
 } from '@mui/material';
-import { queryClient } from '@origin/shared/data-access';
 import { theme } from '@origin/shared/theme';
-import { QueryClientProvider } from '@tanstack/react-query';
 import { IntlProvider } from 'react-intl';
 
 import { OUSDRoot } from './components';
@@ -19,12 +17,10 @@ const root = ReactDOM.createRoot(
 root.render(
   <StrictMode>
     <IntlProvider messages={en} locale="en" defaultLocale="en">
-      <QueryClientProvider client={queryClient}>
-        <CssVarsProvider theme={theme} defaultMode="dark">
-          <CssBaseline />
-          <OUSDRoot />
-        </CssVarsProvider>
-      </QueryClientProvider>
+      <CssVarsProvider theme={theme} defaultMode="dark">
+        <CssBaseline />
+        <OUSDRoot />
+      </CssVarsProvider>
     </IntlProvider>
   </StrictMode>,
 );
