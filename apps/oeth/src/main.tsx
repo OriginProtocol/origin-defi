@@ -8,6 +8,7 @@ import {
   CssBaseline,
   Experimental_CssVarsProvider as CssVarsProvider,
 } from '@mui/material';
+import { chains, queryClient, wagmiConfig } from '@origin/oeth/shared';
 import { CurveProvider } from '@origin/shared/providers';
 import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
@@ -18,7 +19,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { WagmiConfig } from 'wagmi';
 
 import { App } from './App';
-import { chains, queryClient, wagmiConfig } from './clients';
 import { en } from './lang';
 
 const root = ReactDOM.createRoot(
