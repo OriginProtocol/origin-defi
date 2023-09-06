@@ -25,8 +25,10 @@ export function Topnav(props: BoxProps) {
       component="nav"
       sx={{
         display: 'grid',
-        borderBlockEnd: { xs: 'none', md: '1px solid' },
-        borderColor: 'background.paper',
+        borderBlockEnd: {
+          xs: 'none',
+          md: '1px solid var(--mui-palette-background-paper)',
+        },
         gap: { xs: 1, md: 10 },
         alignItems: 'center',
         backgroundColor: 'divider',
@@ -41,10 +43,6 @@ export function Topnav(props: BoxProps) {
         gridTemplateColumns: {
           xs: '1fr 1fr',
           md: 'auto 1fr auto',
-        },
-        rowGap: {
-          xs: 1.5,
-          md: 0,
         },
         ...props?.sx,
       }}
@@ -82,6 +80,10 @@ export function Topnav(props: BoxProps) {
           gridColumn: {
             xs: 'span 2',
             md: 'span 1',
+          },
+          marginBlockStart: {
+            xs: 4,
+            md: 0,
           },
           backgroundColor: 'transparent',
           minHeight: 0,
@@ -146,8 +148,9 @@ export function Topnav(props: BoxProps) {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
+          alignItems: 'stretch',
           gap: { xs: 1, md: 2 },
-          '& > a': {
+          '& > a, & > *': {
             fontSize: {
               xs: '0.75rem',
               md: '1rem',
@@ -161,11 +164,6 @@ export function Topnav(props: BoxProps) {
           href="https://oeth.on.fleek.co/"
           target="_blank"
           sx={{
-            backgroundColor: 'background.paper',
-            borderRadius: 25,
-            paddingBlock: 1,
-            color: 'primary.contrastText',
-            boxShadow: (theme) => theme.shadows['24'],
             display: 'grid',
             placeContent: 'center',
             paddingInline: {
@@ -198,9 +196,11 @@ export function Topnav(props: BoxProps) {
           display: { xs: 'block', md: 'none' },
           gridColumn: 'span 2',
           gridRowStart: 1,
-          borderColor: 'background.paper',
+          borderColor: (theme) => theme.palette.background.paper,
           position: 'relative',
-          bottom: '-4rem',
+          width: 'calc(100% + 1.5rem)',
+          bottom: '-3.75rem',
+          left: '-0.75rem',
         }}
       />
     </Box>
