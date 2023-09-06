@@ -15,14 +15,14 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.3",
-    "@rainbow-me/rainbowkit": "^1.0.9",
+    "@rainbow-me/rainbowkit": "^1.0.10",
     "@react-hookz/web": "^23.1.0",
     "@tanstack/react-query": "^4.32.6",
     "@tanstack/react-table": "^8.9.3",
-    "@wagmi/core": "^1.3.9",
+    "@wagmi/core": "^1.4.1",
     "axios": "^1.4.0",
-    "graphql": "^16.8.0",
     "ethers": "^6.7.1",
+    "graphql": "^16.8.0",
     "immer": "^10.0.2",
     "ramda": "^0.29.0",
     "react": "18.2.0",
@@ -31,8 +31,8 @@
     "react-router-dom": "6.14.2",
     "react-tracked": "^1.7.11",
     "tslib": "^2.6.1",
-    "viem": "^1.7.0",
-    "wagmi": "^1.3.10"
+    "viem": "^1.10.3",
+    "wagmi": "^1.4.1"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.14.5",

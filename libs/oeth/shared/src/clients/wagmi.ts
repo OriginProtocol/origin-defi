@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   argentWallet,
@@ -14,14 +16,26 @@ import {
 import { configureChains, createConfig } from 'wagmi';
 import { goerli, localhost, mainnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
+
+const providers = [
+  ...(isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
+    ? []
+    : [
+        jsonRpcProvider({
+          rpc: () => ({
+            http: import.meta.env.VITE_CUSTOM_RPC,
+          }),
+        }),
+      ]),
+  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
+  publicProvider(),
+];
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet, goerli, localhost],
-  [
-    alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
-    publicProvider(),
-  ],
+  providers as any,
 );
 
 const connectors = connectorsForWallets([
