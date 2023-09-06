@@ -42,6 +42,7 @@ export function SwapRoute({ isLoading = false, routes }: Props) {
         border: '1px solid',
         borderColor: (theme) => theme.palette.background.default,
         backgroundColor: 'grey.900',
+        borderRadius: 1,
       }}
       title={
         isLoading ? (

@@ -82,11 +82,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
           paddingInline: 0,
           borderImageWidth: 0,
           boxSizing: 'border-box',
-          position: 'relative',
-          bottom: '-4px',
           '& .MuiInputBase-input': {
             padding: 0,
-            lineHeight: '1.5rem',
+            lineHeight: '1.875rem',
             boxSizing: 'border-box',
             fontStyle: 'normal',
             fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',

@@ -90,7 +90,6 @@ export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
             height: '1px',
             borderBlockEnd: '1px solid',
             display: 'block',
-            borderColor: 'grey.800',
           },
         }}
       >

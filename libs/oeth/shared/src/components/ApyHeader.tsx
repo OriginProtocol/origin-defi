@@ -60,7 +60,7 @@ export function ApyHeader() {
       <Stack
         direction="row"
         flexWrap="wrap"
-        gap={{ xs: 1, md: 2 }}
+        gap={{ xs: 1, md: 1.75 }}
         sx={{ width: '100%' }}
       >
         <Box
@@ -72,10 +72,11 @@ export function ApyHeader() {
             borderColor: 'grey.800',
             flexBasis: {
               xs: '100%',
-              md: '25%',
+              md: '9.4rem',
             },
             display: 'grid',
             placeContent: 'center',
+            boxSizing: 'border-box',
           }}
         >
           <Typography
@@ -120,12 +121,13 @@ export function ApyHeader() {
                 marginInlineStart: 1,
                 alignSelf: 'center',
                 position: 'relative',
-                height: '26px',
+                height: '1rem',
+                width: '1rem',
                 borderRadius: '100%',
                 top: '-2px',
               }}
             >
-              <Box component="img" src={`/images/downarrow.svg`} />
+              <Box component="img" src={`/images/downarrow.png`} />
             </IconButton>
           </Stack>
         </Box>
@@ -141,7 +143,6 @@ export function ApyHeader() {
           direction="row"
         >
           <ValueContainer
-            icon="/images/tokens/OETH.svg"
             text={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
             value={intl.formatNumber(Number(oethBalance?.formatted ?? 0), {
               minimumFractionDigits: 4,
@@ -149,7 +150,7 @@ export function ApyHeader() {
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,
@@ -166,7 +167,7 @@ export function ApyHeader() {
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,

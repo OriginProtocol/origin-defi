@@ -1,15 +1,19 @@
 import { forwardRef } from 'react';
 
-import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import { alpha, Box, IconButton, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
+import { currencyFormat } from '../Cards';
+import { Loader } from '../Loader';
 import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { BigintInputProps } from './BigIntInput';
+
+const styles = { display: 'flex', justifyContent: 'space-between', gap: 2.5 };
 
 export type TokenInputProps = {
   amount: bigint;
@@ -56,18 +60,18 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
 
-    const handleMaxClick = () => {
-      if (onAmountChange) {
-        onAmountChange(balance);
-      }
-    };
+    // const handleMaxClick = () => {
+    //   if (onAmountChange) {
+    //     onAmountChange(balance);
+    //   }
+    // };
 
     const bal = +formatUnits(balance, decimals);
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
 
     return (
-      <Stack direction="row" {...rest}>
-        <Stack flexGrow={1} justifyContent="center" gap={1}>
+      <Stack {...rest}>
+        <Box sx={styles}>
           <BigIntInput
             {...inputProps}
             value={amount}
@@ -75,12 +79,29 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             onChange={onAmountChange}
             isLoading={isAmountLoading}
             ref={ref}
+            sx={{ flex: 1 }}
           />
-
+          <Stack flexDirection="row-reverse">
+            <TokenButton
+              token={token}
+              onClick={onTokenClick}
+              sx={!isConnected ? { transform: 'translateY(50%)' } : {}}
+            />
+          </Stack>
+        </Box>
+        <Box sx={{ ...styles, marginBlockStart: 1 }}>
           {isPriceLoading ? (
-            <Skeleton width={30} />
-          ) : tokenPriceUsd > 0 ? (
-            <Typography variant="body2">
+            <Loader width={50} />
+          ) : tokenPriceUsd !== undefined ? (
+            <Typography
+              color="text.secondary"
+              variant="body1"
+              sx={{
+                fontWeight: 400,
+                fontStyle: 'normal',
+                lineHeight: '1.5rem',
+              }}
+            >
               {intl.formatNumber(amountUsd, {
                 style: 'currency',
                 currency: 'usd',
@@ -88,41 +109,31 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               })}
             </Typography>
           ) : null}
-        </Stack>
-        <Stack alignItems="flex-end" justifyContent="flex-end">
-          {isConnected && (
-            <Stack direction="row" alignItems="center" gap={0.5}>
-              {isBalanceLoading ? (
-                <Skeleton width={60} />
-              ) : (
-                <>
-                  <Typography variant="body2">
-                    {intl.formatNumber(bal, { maximumFractionDigits: 4 })}&nbsp;
-                    {token.symbol}
-                  </Typography>
-                  {!disableMaxClick && (
-                    <Button
-                      variant="text"
-                      onClick={handleMaxClick}
-                      color="inherit"
-                      size="small"
-                      disabled={bal === 0}
-                      sx={(theme) => ({
-                        ...theme.typography.body2,
-                        minWidth: 0,
-                        margin: 0,
-                        padding: 0,
-                      })}
-                    >
-                      {intl.formatMessage({ defaultMessage: 'MAX' })}
-                    </Button>
-                  )}
-                </>
-              )}
-            </Stack>
-          )}
-          <TokenButton token={token} onClick={onTokenClick} />
-        </Stack>
+          {isConnected ? (
+            isBalanceLoading ? (
+              <Loader width={28} />
+            ) : (
+              <Typography
+                color="text.secondary"
+                variant="body1"
+                sx={{
+                  justifySelf: 'flex-end',
+                  fontWeight: 400,
+                  fontStyle: 'normal',
+                  visibility: balance === undefined ? 'hidden' : 'visible',
+                  lineHeight: '1.5rem',
+                }}
+              >
+                {intl.formatMessage(
+                  { defaultMessage: 'Balance: {number}' },
+                  {
+                    number: intl.formatNumber(bal || 0, currencyFormat),
+                  },
+                )}
+              </Typography>
+            )
+          ) : undefined}
+        </Box>
       </Stack>
     );
   },
@@ -132,29 +143,30 @@ TokenInput.displayName = 'TokenInput';
 
 type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
 
-function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
+function TokenButton({ token, isDisabled, sx, ...rest }: TokenButtonProps) {
   return (
     <Stack
       direction="row"
       alignItems="center"
-      justifyContent="space-between"
       role="button"
+      gap={1}
       sx={{
-        minWidth: 115,
+        width: 'fit-content',
         maxHeight: '2rem',
         borderRadius: 20,
         fontSize: '1rem',
         color: 'primary.contrastText',
         fontFamily: 'Inter',
         paddingInlineStart: 0.25,
-        paddingInlineEnd: isDisabled ? 2 : 1,
+        paddingInlineEnd: !isDisabled ? 1 : 2,
         border: '1px solid transparent',
         paddingBlock: 0.25,
         background: (theme) => alpha(theme.palette.common.white, 0.1),
         fontStyle: 'normal',
         cursor: 'pointer',
         fontWeight: 500,
-        gap: 1,
+        boxSizing: 'border-box',
+        position: 'relative',
         ':hover': {
           background: (theme) =>
             `linear-gradient(#3B3C3E, #3B3C3E) padding-box, linear-gradient(90deg, ${alpha(
@@ -162,19 +174,31 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
               0.4,
             )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
         },
-        ...rest?.sx,
+        ...sx,
       }}
       {...rest}
     >
-      <Stack direction="row" alignItems="center" gap={1}>
-        <Box
-          component="img"
-          src={token.icon}
-          sx={{ width: '1.75rem', height: 'auto' }}
-        />
-        <Typography variant="inherit">{token.symbol}</Typography>
-      </Stack>
-      {!isDisabled && <Box component="img" src="/images/dropdown.svg" />}
+      <Box
+        component="img"
+        src={token.icon}
+        sx={{ width: '1.75rem', height: 'auto' }}
+      />
+      <Typography variant="inherit">{token.symbol}</Typography>
+
+      {!isDisabled && (
+        <IconButton
+          sx={{
+            maxHeight: '1.375rem',
+            maxWidth: '1.375rem',
+            padding: 0,
+
+            backgroundColor: 'transparent',
+          }}
+          disableRipple
+        >
+          <Box component="img" src="/images/dropdown.svg" />
+        </IconButton>
+      )}
     </Stack>
   );
 }

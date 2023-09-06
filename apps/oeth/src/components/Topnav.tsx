@@ -7,6 +7,7 @@ import {
   Link as MuiLink,
   Tab,
   Tabs,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { OpenAccountModalButton } from '@origin/shared/providers';
@@ -17,6 +18,7 @@ import type { BoxProps } from '@mui/material';
 
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const intl = useIntl();
   const [value, setValue] = useState(0);
 
@@ -164,6 +166,8 @@ export function Topnav(props: BoxProps) {
           href="https://oeth.on.fleek.co/"
           target="_blank"
           sx={{
+            borderRadius: 25,
+            paddingBlock: 0.75,
             display: 'grid',
             placeContent: 'center',
             paddingInline: {
@@ -183,9 +187,12 @@ export function Topnav(props: BoxProps) {
               background: (theme) => theme.palette.background.paper,
               backgroundImage: 'none',
             },
+            color: 'primary.contrastText',
+            boxSizing: 'border-box',
+            lineHeight: '1rem',
           }}
         >
-          {theme.breakpoints.down('md')
+          {isSmall
             ? intl.formatMessage({ defaultMessage: 'IPFS' })
             : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
         </MuiLink>

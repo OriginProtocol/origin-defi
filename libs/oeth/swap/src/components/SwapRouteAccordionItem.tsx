@@ -30,20 +30,7 @@ export function SwapRouteAccordionItem({
         borderColor: 'grey.800',
         paddingInline: 2,
         paddingBlock: 1,
-        ':hover': {
-          borderColor: 'transparent',
-          background: (theme) =>
-            `linear-gradient(${theme.palette.grey[800]}, ${
-              theme.palette.grey[800]
-            }) padding-box,
-              linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.4,
-              )} 0%, ${alpha(
-                theme.palette.primary.dark,
-                0.4,
-              )} 100%) border-box;`,
-        },
+
         ...(selected === index
           ? {
               borderColor: 'transparent',
@@ -51,7 +38,22 @@ export function SwapRouteAccordionItem({
                 `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
               linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
-          : {}),
+          : {
+              ':hover': {
+                borderColor: 'transparent',
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[800]}, ${
+                    theme.palette.grey[800]
+                  }) padding-box,
+              linear-gradient(90deg, ${alpha(
+                theme.palette.primary.main,
+                0.4,
+              )} 0%, ${alpha(
+                theme.palette.primary.dark,
+                0.4,
+              )} 100%) border-box;`,
+              },
+            }),
       }}
       onClick={() => onSelect(index)}
       role="button"
@@ -65,7 +67,7 @@ export function SwapRouteAccordionItem({
         <Stack
           direction="row"
           alignItems="center"
-          gap={2}
+          gap={1}
           sx={{ flex: { xs: '0 0 100%', md: 1 } }}
         >
           <Box

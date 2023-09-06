@@ -19,10 +19,19 @@ import {
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
 
-import type { IconButtonProps } from '@mui/material';
+import type { IconButtonProps, Theme } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { TokenSource } from '../types';
+
+const commonStyles = {
+  paddingBlock: 2.5,
+  paddingBlockStart: 2.625,
+  paddingInline: 2,
+  border: '1px solid',
+  borderColor: 'divider',
+  borderRadius: 1,
+};
 
 export const SwapView = () => (
   <SwapProvider>
@@ -71,7 +80,11 @@ function SwapViewWrapped() {
   return (
     <>
       <Card
-        sxCardTitle={{ padding: { xs: 2, md: 3 } }}
+        sxCardTitle={{
+          padding: 0,
+          paddingInline: { xs: 2, md: 3 },
+          paddingY: 1.438,
+        }}
         sxCardContent={{ display: 'flex', flexDirection: 'column', gap: 2 }}
         title={
           <Stack
@@ -80,7 +93,14 @@ function SwapViewWrapped() {
             alignItems="center"
           >
             {intl.formatMessage({ defaultMessage: 'Swap' })}
-            <GasPopover />
+            <GasPopover
+              buttonProps={{
+                sx: {
+                  position: 'relative',
+                  right: (theme: Theme) => theme.spacing(-0.75),
+                },
+              }}
+            />
           </Stack>
         }
       >
@@ -105,35 +125,30 @@ function SwapViewWrapped() {
             isPriceLoading={isPriceLoading}
             isConnected={isConnected}
             sx={{
+              ...commonStyles,
               backgroundColor: 'grey.900',
-              padding: 2.875,
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              borderEndStartRadius: 0,
-              borderEndEndRadius: 0,
+
+              borderBottomColor: 'transparent',
               '&:hover, &:focus-within': {
                 borderColor: 'transparent',
-                borderStartStartRadius: (theme) => theme.shape.borderRadius,
-                borderStartEndRadius: (theme) => theme.shape.borderRadius,
               },
               '&:hover': {
                 background: (theme) =>
                   `linear-gradient(${theme.palette.grey[900]}, ${
                     theme.palette.grey[900]
                   }) padding-box,
-                    linear-gradient(90deg, ${alpha(
-                      theme.palette.primary.main,
-                      0.4,
-                    )} 0%, ${alpha(
-                      theme.palette.primary.dark,
-                      0.4,
-                    )} 100%) border-box;`,
+              linear-gradient(90deg, ${alpha(
+                theme.palette.primary.main,
+                0.4,
+              )} 0%, ${alpha(
+                theme.palette.primary.dark,
+                0.4,
+              )} 100%) border-box;`,
               },
               '&:focus-within': {
                 background: (theme) =>
                   `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
-                   linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
+             linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
               },
             }}
           />
@@ -152,14 +167,10 @@ function SwapViewWrapped() {
             inputProps={{ readOnly: true }}
             isConnected={isConnected}
             sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              borderTop: 0,
-              borderRadius: 1,
+              ...commonStyles,
               borderStartStartRadius: 0,
               borderStartEndRadius: 0,
               backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
-              padding: 2.875,
             }}
           />
           <SwapButton onClick={handleTokenFlip} />

@@ -111,7 +111,7 @@ export const theme = extendTheme({
             lineHeight: '2rem',
             borderRadius: theme.shape.borderRadius * 2,
             fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-            fontWeight: 400,
+            fontWeight: 500,
             fontStyle: 'normal',
             boxShadow: theme.shadows[24],
             '&:hover': {
