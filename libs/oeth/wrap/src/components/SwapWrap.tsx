@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { SwapCard } from '@origin/shared/components';
-import random from 'lodash/random';
 import { useIntl } from 'react-intl';
 
 export function PortfolioSwap() {
@@ -28,7 +27,7 @@ export function PortfolioSwap() {
       },
       exchangeCurrency: {
         ...prev.exchangeCurrency,
-        quantity: number * random(number - 0.5, number, true),
+        quantity: number * number - 0.5,
       },
     }));
   }
@@ -41,9 +40,7 @@ export function PortfolioSwap() {
       },
       exchangeCurrency: {
         ...prev.baseToken,
-        quantity:
-          prev.baseToken.quantity *
-          random(prev.baseToken.quantity - 0.5, prev.baseToken.quantity, true),
+        quantity: prev.baseToken.quantity * prev.baseToken.quantity - 0.5,
       },
     }));
   }

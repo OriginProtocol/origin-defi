@@ -15,7 +15,6 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { isNumber } from 'lodash';
 import { useIntl } from 'react-intl';
 
 import type { Theme } from '@mui/material';
@@ -108,9 +107,9 @@ export function GasPopover({ gasPrice, onPriceToleranceChange }: Props) {
                   },
                 }}
                 onChange={debounce((e) => {
-                  if (isNumber(parseFloat(e.target.value))) {
-                    setPriceTolerance(e.target.value);
-                  }
+                  try {
+                    setPriceTolerance(parseFloat(e.target.value));
+                  } catch {}
                 }, 300)}
                 endAdornment={
                   <InputAdornment
