@@ -5,9 +5,8 @@
   "scripts": {
     "build-storybook": "nx build-storybook  shared-storybook --verbose",
     "storybook": "nx storybook shared-storybook",
-    "oeth": "nx serve oeth",
-    "ousd": "nx serve ousd",
-    "generate-abis": "nx generate-abis shared-contracts"
+    "oeth": "pnpm nx serve oeth",
+    "ousd": "pnpm nx serve ousd"
   },
   "private": true,
   "dependencies": {
@@ -31,7 +30,7 @@
     "react-router-dom": "6.14.2",
     "react-tracked": "^1.7.11",
     "tslib": "^2.6.1",
-    "viem": "^1.10.3",
+    "viem": "^1.10.4",
     "wagmi": "^1.4.1"
   },
   "devDependencies": {
