@@ -1,5 +1,5 @@
 // DO NOT EDIT - GENERATED
-export const VaultValueCheckerABI = [
+export const OETHVaultValueCheckerABI = [
   {
     inputs: [
       { internalType: 'address', name: '_vault', type: 'address' },

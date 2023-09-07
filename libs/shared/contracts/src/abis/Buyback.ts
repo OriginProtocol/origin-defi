@@ -1,18 +1,6 @@
 // DO NOT EDIT - GENERATED
 export const BuybackABI = [
-  {
-    inputs: [
-      { internalType: 'address', name: '_uniswapAddr', type: 'address' },
-      { internalType: 'address', name: '_strategistAddr', type: 'address' },
-      { internalType: 'address', name: '_ousd', type: 'address' },
-      { internalType: 'address', name: '_ogv', type: 'address' },
-      { internalType: 'address', name: '_usdt', type: 'address' },
-      { internalType: 'address', name: '_weth9', type: 'address' },
-      { internalType: 'address', name: '_rewardsSource', type: 'address' },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'constructor',
-  },
+  { inputs: [], stateMutability: 'nonpayable', type: 'constructor' },
   {
     anonymous: false,
     inputs: [
@@ -38,6 +26,50 @@ export const BuybackABI = [
       {
         indexed: true,
         internalType: 'address',
+        name: 'token',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'swapAmountIn',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'swapAmountOut',
+        type: 'uint256',
+      },
+    ],
+    name: 'OUSDSwapped',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'receiver',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: 'amountSent',
+        type: 'uint256',
+      },
+    ],
+    name: 'OUSDTransferred',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
         name: 'previousGovernor',
         type: 'address',
       },
@@ -49,6 +81,19 @@ export const BuybackABI = [
       },
     ],
     name: 'PendingGovernorshipTransfer',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_address',
+        type: 'address',
+      },
+    ],
+    name: 'RewardsSourceUpdated',
     type: 'event',
   },
   {
@@ -69,6 +114,32 @@ export const BuybackABI = [
     inputs: [
       {
         indexed: false,
+        internalType: 'uint256',
+        name: '_bps',
+        type: 'uint256',
+      },
+    ],
+    name: 'TreasuryBpsUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_address',
+        type: 'address',
+      },
+    ],
+    name: 'TreasuryManagerUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: 'address',
         name: '_address',
         type: 'address',
@@ -85,6 +156,16 @@ export const BuybackABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'uint256', name: 'ousdAmount', type: 'uint256' },
+      { internalType: 'uint256', name: 'minOGVExpected', type: 'uint256' },
+    ],
+    name: 'distributeAndSwap',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'governor',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
@@ -92,9 +173,44 @@ export const BuybackABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'address', name: '_uniswapAddr', type: 'address' },
+      { internalType: 'address', name: '_strategistAddr', type: 'address' },
+      {
+        internalType: 'address',
+        name: '_treasuryManagerAddr',
+        type: 'address',
+      },
+      { internalType: 'address', name: '_ousd', type: 'address' },
+      { internalType: 'address', name: '_ogv', type: 'address' },
+      { internalType: 'address', name: '_usdt', type: 'address' },
+      { internalType: 'address', name: '_weth9', type: 'address' },
+      { internalType: 'address', name: '_rewardsSource', type: 'address' },
+      { internalType: 'uint256', name: '_treasuryBps', type: 'uint256' },
+    ],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'isGovernor',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'ogv',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'ousd',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -107,7 +223,28 @@ export const BuybackABI = [
   },
   {
     inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
+    name: 'setRewardsSource',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
     name: 'setStrategistAddr',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_bps', type: 'uint256' }],
+    name: 'setTreasuryBps',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
+    name: 'setTreasuryManager',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -135,16 +272,6 @@ export const BuybackABI = [
   },
   {
     inputs: [
-      { internalType: 'uint256', name: 'ousdAmount', type: 'uint256' },
-      { internalType: 'uint256', name: 'minExpected', type: 'uint256' },
-    ],
-    name: 'swapNow',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
       { internalType: 'address', name: '_newGovernor', type: 'address' },
     ],
     name: 'transferGovernance',
@@ -164,8 +291,36 @@ export const BuybackABI = [
   },
   {
     inputs: [],
+    name: 'treasuryBps',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'treasuryManager',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'uniswapAddr',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'usdt',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'weth9',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
