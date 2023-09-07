@@ -1,18 +1,25 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
 import curve from '@curvefi/api';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { createContainer } from 'react-tracked';
 import { mainnet, useAccount, useNetwork } from 'wagmi';
 
-import { getEthersProvider, getEthersSigner } from '../wagmi';
+import { useEthersProvider, useEthersSigner } from '../wagmi';
 
-export type CurveProviderProps = { alchemyApiKey: string };
+export type CurveProviderProps = {
+  alchemyApiKey: string;
+  customRpcUrl?: string;
+};
 
 export const { Provider: CurveProvider, useTrackedState: useCurve } =
-  createContainer(({ alchemyApiKey }: CurveProviderProps) => {
+  createContainer(({ alchemyApiKey, customRpcUrl }: CurveProviderProps) => {
     const [state, setState] = useState(null);
     const { isConnected } = useAccount();
     const { chain } = useNetwork();
+    const provider = useEthersProvider();
+    const signer = useEthersSigner();
 
     useEffect(() => {
       const initPools = async () => {
@@ -23,44 +30,61 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
           curve.cryptoFactory.fetchPools(),
           curve.tricryptoFactory.fetchPools(),
         ]);
-        console.log('CURVE-JS POOLS INITIALIZED');
       };
 
       const initPublic = async () => {
-        const ethersProvider = getEthersProvider({
-          chainId: chain?.id ?? mainnet.id,
-        });
-        await curve.init(
-          'Alchemy',
-          {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            externalProvider: ethersProvider as any,
-            apiKey: alchemyApiKey,
-          },
-          { chainId: chain?.id ?? mainnet.id },
-        );
+        if (isNilOrEmpty(customRpcUrl)) {
+          await curve.init(
+            'Alchemy',
+            {
+              externalProvider: provider as any,
+              apiKey: alchemyApiKey,
+            },
+            { chainId: chain?.id ?? mainnet.id },
+          );
+        } else {
+          await curve.init(
+            'JsonRpc',
+            {
+              externalProvider: provider as any,
+              url: customRpcUrl,
+            },
+            {
+              chainId: chain?.id ?? mainnet.id,
+            },
+          );
+        }
+
         await initPools();
         setState(curve);
+        console.log('CURVE-JS public provider initialized');
       };
 
       const initWallet = async () => {
-        const ethersSigner = await getEthersSigner({
-          chainId: chain.id,
-        });
-
-        await curve.init(
-          'Alchemy',
-          {
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            externalProvider: ethersSigner as any,
-            apiKey: alchemyApiKey,
-          },
-          {
-            chainId: chain.id,
-          },
-        );
+        if (isNilOrEmpty(customRpcUrl)) {
+          await curve.init(
+            'Alchemy',
+            {
+              externalProvider: signer as any,
+              apiKey: alchemyApiKey,
+            },
+            { chainId: chain?.id ?? mainnet.id },
+          );
+        } else {
+          await curve.init(
+            'JsonRpc',
+            {
+              externalProvider: signer as any,
+              url: customRpcUrl,
+            },
+            {
+              chainId: chain?.id ?? mainnet.id,
+            },
+          );
+        }
         await initPools();
         setState(curve);
+        console.log('CURVE-JS WALLET PROVIDER INITIALIZED');
       };
 
       if (isConnected) {
@@ -68,7 +92,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
       } else {
         initPublic();
       }
-    }, [alchemyApiKey, chain?.id, isConnected]);
+    }, [alchemyApiKey, chain?.id, customRpcUrl, isConnected, provider, signer]);
 
     return [state, setState];
   });

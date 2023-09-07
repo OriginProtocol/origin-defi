@@ -14,7 +14,7 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { configureChains, createConfig } from 'wagmi';
-import { goerli, localhost, mainnet } from 'wagmi/chains';
+import { mainnet } from 'wagmi/chains';
 import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { publicProvider } from 'wagmi/providers/public';
@@ -34,8 +34,9 @@ const providers = [
 ];
 
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet, goerli, localhost],
+  [mainnet],
   providers as any,
+  { stallTimeout: 1000 },
 );
 
 const connectors = connectorsForWallets([
