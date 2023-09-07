@@ -1,26 +1,37 @@
-import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography } from '@mui/material';
 import { currencyFormat, quantityFormat } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
+import { usePrices } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 
+import { routeActionLabel, routeActionLogos } from '../constants';
 import { SwapInfo } from './SwapInfo';
 
-import type { Route } from './SwapRoute';
+import type { EstimatedSwapRoute } from '../types';
 
-interface Props {
-  route: Route;
-  selected: number;
-  index: number;
-  onSelect: (index: number) => void;
-}
+export type SwapRouteAccordionItemProps = {
+  route: EstimatedSwapRoute;
+  isSelected: boolean;
+  onSelect: (route: EstimatedSwapRoute) => void;
+};
 
 export function SwapRouteAccordionItem({
   route,
-  selected,
-  index,
+  isSelected,
   onSelect,
-}: Props) {
-  const theme = useTheme();
+}: SwapRouteAccordionItemProps) {
   const intl = useIntl();
+  const { data: prices } = usePrices();
+
+  const estimatedAmount = +formatUnits(
+    route.estimatedAmount,
+    route.tokenOut.decimals,
+  );
+  const convertedAmount =
+    (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
+  const gas = +formatUnits(route.gas, tokens.mainnet.ETH.decimals);
+
   return (
     <Box
       sx={{
@@ -30,12 +41,21 @@ export function SwapRouteAccordionItem({
         borderColor: 'grey.800',
         paddingInline: 2,
         paddingBlock: 1,
-        ':hover': {
-          borderColor: 'transparent',
-          background: (theme) =>
-            `linear-gradient(${theme.palette.grey[800]}, ${
-              theme.palette.grey[800]
-            }) padding-box,
+
+        ...(isSelected
+          ? {
+              borderColor: 'transparent',
+              background: (theme) =>
+                `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
+              linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+            }
+          : {
+              ':hover': {
+                borderColor: 'transparent',
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[800]}, ${
+                    theme.palette.grey[800]
+                  }) padding-box,
               linear-gradient(90deg, ${alpha(
                 theme.palette.primary.main,
                 0.4,
@@ -43,17 +63,10 @@ export function SwapRouteAccordionItem({
                 theme.palette.primary.dark,
                 0.4,
               )} 100%) border-box;`,
-        },
-        ...(selected === index
-          ? {
-              borderColor: 'transparent',
-              background: (theme) =>
-                `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
-              linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-            }
-          : {}),
+              },
+            }),
       }}
-      onClick={() => onSelect(index)}
+      onClick={() => onSelect(route)}
       role="button"
     >
       <Stack
@@ -65,12 +78,12 @@ export function SwapRouteAccordionItem({
         <Stack
           direction="row"
           alignItems="center"
-          gap={2}
+          gap={1}
           sx={{ flex: { xs: '0 0 100%', md: 1 } }}
         >
           <Box
             component="img"
-            src={route.icon as string}
+            src={routeActionLogos[route.action]}
             sx={{
               height: (theme) => theme.typography.pxToRem(24),
               width: (theme) => theme.typography.pxToRem(24),
@@ -78,41 +91,33 @@ export function SwapRouteAccordionItem({
           />
           <Box>
             <Typography color="primary.contrastText" variant="body2">
-              {intl.formatNumber(route.quantity, quantityFormat)}
+              {intl.formatNumber(estimatedAmount, quantityFormat)}
               &nbsp;
               <Box component="span" color="text.secondary">
-                ({intl.formatNumber(route.value, currencyFormat)})
+                ({intl.formatNumber(convertedAmount, currencyFormat)})
               </Box>
             </Typography>
             <Typography color="primary.contrastText" variant="body2">
-              {route.type === 'swap'
-                ? intl.formatMessage(
-                    { defaultMessage: 'Swap via {name}' },
-                    { name: route.name },
-                  )
-                : intl.formatMessage(
-                    { defaultMessage: 'Swap for {name}' },
-                    { name: route.name },
-                  )}
+              {intl.formatMessage(routeActionLabel[route.action])}
             </Typography>
           </Box>
         </Stack>
         <Box
-          sx={{
+          sx={(theme) => ({
             '& p': { textAlign: { xs: 'left', md: 'right' } },
             [theme.breakpoints.down('md')]: {
               display: 'flex',
               justifyContent: 'space-between',
               width: '100%',
             },
-          }}
+          })}
         >
           <Typography
             variant="body2"
             color="text.secondary"
             sx={{ display: 'flex', alignItems: 'center' }}
           >
-            Rate&nbsp;
+            {intl.formatMessage({ defaultMessage: 'Rate' })}&nbsp;
             <SwapInfo />
             &nbsp;
             <Box component="span" color="primary.contrastText">
@@ -121,9 +126,9 @@ export function SwapRouteAccordionItem({
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
-            Est gas:&nbsp;
+            {intl.formatMessage({ defaultMessage: 'Est gas' })}&nbsp;
             <Box component="span" color="primary.contrastText">
-              ~{intl.formatNumber(route.transactionCost, currencyFormat)}
+              ~{intl.formatNumber(gas, currencyFormat)}
             </Box>
           </Typography>
         </Box>

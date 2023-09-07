@@ -7,6 +7,7 @@ import {
   Link as MuiLink,
   Tab,
   Tabs,
+  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useIntl } from 'react-intl';
@@ -38,6 +39,7 @@ export function TopNav({
   ...rest
 }: Props) {
   const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const intl = useIntl();
   const [value, setValue] = useState(selected);
   return (
@@ -45,8 +47,10 @@ export function TopNav({
       component="nav"
       sx={{
         display: 'grid',
-        borderBlockEnd: { xs: 'none', md: '1px solid' },
-        borderColor: 'background.paper',
+        borderBlockEnd: {
+          xs: 'none',
+          md: '1px solid var(--mui-palette-background-paper)',
+        },
         gap: { xs: 1, md: 10 },
         alignItems: 'center',
         backgroundColor: 'divider',
@@ -61,10 +65,6 @@ export function TopNav({
         gridTemplateColumns: {
           xs: '1fr 1fr',
           md: 'auto 1fr auto',
-        },
-        rowGap: {
-          xs: 1.5,
-          md: 0,
         },
         ...sx,
       }}
@@ -99,6 +99,10 @@ export function TopNav({
           gridColumn: {
             xs: 'span 2',
             md: 'span 1',
+          },
+          marginBlockStart: {
+            xs: 4,
+            md: 0,
           },
           backgroundColor: 'transparent',
           minHeight: 0,
@@ -159,8 +163,9 @@ export function TopNav({
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
+          alignItems: 'stretch',
           gap: { xs: 1, md: 2 },
-          '& > a': {
+          '& > a, & > *': {
             fontSize: {
               xs: '0.75rem',
               md: '1rem',
@@ -196,7 +201,7 @@ export function TopNav({
             },
           }}
         >
-          {theme.breakpoints.down('md')
+          {isSmall
             ? intl.formatMessage({ defaultMessage: 'IPFS' })
             : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
         </MuiLink>
@@ -220,9 +225,11 @@ export function TopNav({
           display: { xs: 'block', md: 'none' },
           gridColumn: 'span 2',
           gridRowStart: 1,
-          borderColor: 'background.paper',
+          borderColor: (theme) => theme.palette.background.paper,
           position: 'relative',
-          bottom: '-4rem',
+          width: 'calc(100% + 1.5rem)',
+          bottom: '-3.75rem',
+          left: '-0.75rem',
         }}
       />
     </Box>

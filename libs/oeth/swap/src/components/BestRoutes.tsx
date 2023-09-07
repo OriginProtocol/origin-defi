@@ -1,16 +1,16 @@
 import { Box } from '@mui/material';
 
+import { useHandleSelectSwapRoute } from '../hooks';
+import { useSwapState } from '../state';
+import { routeEq } from '../utils';
 import { SwapRouteCard } from './SwapRouteCard';
 
-import type { Route } from './SwapRoute';
+import type { BoxProps } from '@mui/material';
 
-interface Props {
-  routes: Route[];
-  selected: number;
-  onSelect: (index: number) => void;
-}
+export function BestRoutes(props: BoxProps) {
+  const [{ swapRoutes, selectedSwapRoute }] = useSwapState();
+  const handleSelectSwapRoute = useHandleSelectSwapRoute();
 
-export function BestRoutes({ routes, selected, onSelect }: Props) {
   return (
     <Box
       sx={{
@@ -19,12 +19,12 @@ export function BestRoutes({ routes, selected, onSelect }: Props) {
         display: 'grid',
       }}
     >
-      {routes.slice(0, 2).map((route, index) => (
+      {swapRoutes.slice(0, 2).map((route, index) => (
         <SwapRouteCard
-          index={index}
-          key={index}
-          selected={selected}
-          onSelect={(index) => onSelect(index)}
+          key={`bestRoute-${index}`}
+          isSelected={routeEq(selectedSwapRoute, route)}
+          isBest={index === 0}
+          onSelect={handleSelectSwapRoute}
           route={route}
         />
       ))}

@@ -1,18 +1,18 @@
 /// <reference types="vitest" />
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import { defineConfig } from 'vite';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ousd',
 
   server: {
-    port: 4200,
+    port: 4201,
     host: 'localhost',
   },
 
   preview: {
-    port: 4300,
+    port: 4301,
     host: 'localhost',
   },
 

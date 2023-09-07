@@ -31,7 +31,6 @@ export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
           backgroundColor: 'grey.900',
           paddingInline: 2,
           paddingBlock: 1,
-          borderColor: 'grey.800',
         },
 
         ...sx,
@@ -91,7 +90,6 @@ export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
             height: '1px',
             borderBlockEnd: '1px solid',
             display: 'block',
-            borderColor: 'grey.800',
           },
         }}
       >

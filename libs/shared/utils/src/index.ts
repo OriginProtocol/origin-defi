@@ -1,3 +1,4 @@
+export * from './addresses';
 export * from './BigDecimal';
 export * from './composeContext';
 export * from './formatters';

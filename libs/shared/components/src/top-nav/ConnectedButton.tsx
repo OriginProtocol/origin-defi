@@ -101,7 +101,7 @@ export function ConnectedButton({
               sx={{
                 borderRadius: 7,
                 paddingInline: 2.375,
-                paddingBlock: 0.5,
+                paddingBlock: 1.25,
                 fontSize: '0.75rem',
                 lineHeight: '0.75rem',
                 '&:hover': {
@@ -166,7 +166,7 @@ export function ConnectButton({ connected, ...rest }: ConnectButtonProps) {
           display: 'flex',
           alignItems: 'center',
           paddingInline: { xs: 1, sm: 3 },
-          paddingBlock: 1,
+          paddingInlineStart: { xs: 1, sm: connected ? 1 : 3 },
           borderRadius: 25,
           background: (theme) =>
             connected

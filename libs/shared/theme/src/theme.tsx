@@ -65,6 +65,7 @@ export const theme = extendTheme({
       fontSize: '0.75rem',
       fontWeight: 400,
       lineHeight: '1.25rem',
+      fontStyle: 'normal',
     },
   },
   shape: {
@@ -99,6 +100,33 @@ export const theme = extendTheme({
       defaultProps: {
         disableTouchRipple: true,
       },
+      variants: [
+        {
+          props: { variant: 'action' },
+          style: ({ theme }) => ({
+            background: theme.palette.background.gradient1,
+            color: theme.palette.primary.contrastText,
+            paddingBlock: 16,
+            fontSize: theme.typography.pxToRem(20),
+            lineHeight: '2rem',
+            borderRadius: theme.shape.borderRadius * 2,
+            fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+            fontWeight: 500,
+            fontStyle: 'normal',
+            boxShadow: theme.shadows[24],
+            '&:hover': {
+              background: theme.palette.background.gradientHoverActionButton,
+              opacity: 1,
+            },
+            '&:disabled': {
+              background:
+                'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
+              opacity: 0.3,
+              color: theme.palette.primary.contrastText,
+            },
+          }),
+        },
+      ],
     },
     MuiIconButton: {
       defaultProps: {
@@ -106,6 +134,13 @@ export const theme = extendTheme({
       },
     },
     MuiCard: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
+    MuiPaper: {
       styleOverrides: {
         root: {
           backgroundImage: 'none',
@@ -132,6 +167,10 @@ export const theme = extendTheme({
       styleOverrides: {
         indicator: ({ theme }) => ({
           background: theme.palette.background.gradient2,
+          transition: theme.transitions.create('all', {
+            duration: theme.transitions.duration.shortest,
+            easing: theme.transitions.easing.easeInOut,
+          }),
         }),
       },
     },
@@ -218,11 +257,12 @@ export const theme = extendTheme({
           borderRadius: theme.shape.borderRadius,
           backgroundColor: theme.palette.grey[900],
           border: '1px solid',
-          borderColor: alpha(theme.palette.grey[200], 0.2),
+          borderColor: theme.palette.grey[800],
           boxShadow: 'none',
           '&:before': {
             height: 0,
           },
+          backgroundImage: 'none',
         }),
       },
     },

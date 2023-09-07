@@ -34,13 +34,15 @@ export function Output({
       sx={{
         border: '1px solid',
         borderColor: 'divider',
-        borderTop: 0,
+        borderTopColor: 'transparent',
         borderRadius: 1,
         borderStartStartRadius: 0,
         borderStartEndRadius: 0,
         backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
         ...cardStyles,
-        paddingBlock: 3.0625,
+        paddingBlock: 2.5,
+        paddingBlockEnd: 2.625,
+        boxShadow: 'none',
       }}
     >
       <Box sx={styles}>
@@ -53,8 +55,9 @@ export function Output({
               fontWeight: 700,
               fontStyle: 'normal',
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-              lineHeight: '1.5rem',
-              marginBlockStart: 0.4,
+              flex: 1,
+              alignSelf: 'end',
+              lineHeight: '1.875rem',
               color: (theme) =>
                 exchangeTokenQuantity === 0
                   ? theme.palette.text.secondary
@@ -69,14 +72,19 @@ export function Output({
           name={exchangeTokenName}
           icon={exchangeTokenIcon}
           {...(!isSwapped ? { additionalNode: exchangeTokenNode } : {})}
-          sx={{ justifySelf: 'end' }}
+          sx={{
+            justifySelf: 'end',
+            ...(!exchangeTokenBalance ? { transform: 'translateY(50%)' } : {}),
+          }}
         />
+      </Box>
 
+      <Box sx={{ ...styles, marginBlockStart: 1 }}>
         {exchangeTokenValue !== undefined ? (
           isLoading ? (
             <Loader width={28} />
           ) : (
-            <Typography variant="body1" color="grey.200" lineHeight="1.3129rem">
+            <Typography variant="body1" color="grey.200" lineHeight="1.5rem">
               {intl.formatNumber(exchangeTokenValue, currencyFormat)}
             </Typography>
           )
@@ -91,7 +99,7 @@ export function Output({
               }}
               variant="body1"
               color="grey.200"
-              lineHeight="1.3129rem"
+              lineHeight="1.5rem"
             >
               {intl.formatMessage(
                 { defaultMessage: 'Balance: {number}' },

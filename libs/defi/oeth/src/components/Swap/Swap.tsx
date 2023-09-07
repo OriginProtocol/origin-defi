@@ -12,6 +12,7 @@ import { useIntl } from 'react-intl';
 import { GasPopover } from './GasPopover';
 import { SwapRoute } from './SwapRoute';
 
+import type { Theme } from '@mui/material';
 import type { Option } from '@origin/shared/components';
 
 export function Swap() {
@@ -84,6 +85,11 @@ export function Swap() {
             <GasPopover
               gasPrice={21}
               onPriceToleranceChange={(tolerance) => null}
+              // @ts-expect-error type mistmatch
+              sx={{
+                position: 'relative',
+                right: (theme: Theme) => theme.spacing(-0.75),
+              }}
             />
           </Stack>
         }

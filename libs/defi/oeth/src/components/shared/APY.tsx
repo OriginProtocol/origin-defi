@@ -10,26 +10,18 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Icon } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 const days = [7, 30];
 
 interface Props {
   value: number;
-  tokenIcon: string;
   balance: number;
   pendingYield: number;
   earnings: number;
 }
 
-export function APY({
-  value,
-  tokenIcon,
-  balance,
-  pendingYield,
-  earnings,
-}: Props) {
+export function APY({ value, balance, pendingYield, earnings }: Props) {
   const intl = useIntl();
   const [selectedPeriod, setSelectedPeriod] = useState(30);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -66,7 +58,7 @@ export function APY({
       <Stack
         direction="row"
         flexWrap="wrap"
-        gap={{ xs: 1, md: 2 }}
+        gap={{ xs: 1, md: 1.75 }}
         sx={{ width: '100%' }}
       >
         <Box
@@ -78,10 +70,11 @@ export function APY({
             borderColor: 'grey.800',
             flexBasis: {
               xs: '100%',
-              md: '25%',
+              md: '9.4rem',
             },
             display: 'grid',
             placeContent: 'center',
+            boxSizing: 'border-box',
           }}
         >
           <Typography
@@ -118,7 +111,6 @@ export function APY({
               })}
             </Typography>
             <IconButton
-              disableRipple
               onClick={(e) => setAnchorEl(e.currentTarget)}
               sx={{
                 backgroundColor: (theme) =>
@@ -126,12 +118,13 @@ export function APY({
                 marginInlineStart: 1,
                 alignSelf: 'center',
                 position: 'relative',
-                height: '26px',
+                height: '1rem',
+                width: '1rem',
                 borderRadius: '100%',
                 top: '-2px',
               }}
             >
-              <Box component={'img'} src={`/images/downarrow.svg`} />
+              <Box component={'img'} src={`/images/downarrow.png`} />
             </IconButton>
           </Stack>
         </Box>
@@ -147,13 +140,12 @@ export function APY({
           direction="row"
         >
           <ValueContainer
-            icon={tokenIcon}
             text={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
             value={intl.formatNumber(balance, { minimumFractionDigits: 4 })}
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,
@@ -170,7 +162,7 @@ export function APY({
           />
           <Box
             sx={{
-              flex: { xs: 0.5, md: 1 },
+              flex: { xs: 0.5, md: 0.25 },
               display: 'flex',
               justifyContent: 'center',
               paddingBlock: 0.75,
@@ -191,7 +183,6 @@ export function APY({
 function ValueContainer({
   text,
   value,
-  icon,
 }: {
   text: string;
   value: string;
@@ -219,17 +210,6 @@ function ValueContainer({
           },
         }}
       >
-        {icon ? (
-          <Icon
-            sx={{
-              width: '0.75rem',
-              height: '0.75rem',
-              marginInlineEnd: 0.5,
-            }}
-            src={icon}
-          />
-        ) : undefined}
-
         {value}
       </Stack>
     </Box>

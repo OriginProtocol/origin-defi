@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useState } from 'react';
 
 import { InputBase } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { formatUnits, parseUnits } from 'viem';
 
@@ -55,7 +56,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       }
     };
 
-    return (
+    return isLoading ? (
+      <Skeleton width={100} height={24} />
+    ) : (
       <InputBase
         inputRef={ref}
         inputMode="decimal"
@@ -79,11 +82,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
           paddingInline: 0,
           borderImageWidth: 0,
           boxSizing: 'border-box',
-          position: 'relative',
-          bottom: '-4px',
           '& .MuiInputBase-input': {
             padding: 0,
-            lineHeight: '1.5rem',
+            lineHeight: '1.875rem',
             boxSizing: 'border-box',
             fontStyle: 'normal',
             fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',

@@ -20,20 +20,24 @@ import { useFeeData } from 'wagmi';
 
 import { useSwapState } from '../state';
 
-import type { Theme } from '@mui/material';
+import type { IconButtonProps } from '@mui/material';
 import type { ChangeEvent } from 'react';
 
 const defaultSlippage = 0.01;
 
 const gridStyles = {
   display: 'grid',
-  gridTemplateColumns: (theme: Theme) => `1.5fr 1fr`,
+  ridTemplateColumns: `1.5fr 1fr`,
   gap: 1,
   justifyContent: 'space-between',
   alignItems: 'center',
 };
 
-export function GasPopover() {
+interface Props {
+  buttonProps?: IconButtonProps;
+}
+
+export function GasPopover({ buttonProps }: Props) {
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -47,6 +51,7 @@ export function GasPopover() {
       <IconButton
         onClick={(e) => setAnchorEl(e.currentTarget)}
         data-testid="gas-popover-button"
+        {...buttonProps}
       >
         <img
           src="https://app.oeth.com/images/settings-icon.svg"

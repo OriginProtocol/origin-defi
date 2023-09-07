@@ -8,23 +8,21 @@ import {
 } from '@mui/material';
 import { useIntl } from 'react-intl';
 
+import { useHandleSelectSwapRoute } from '../hooks';
+import { useSwapState } from '../state';
+import { routeEq } from '../utils';
 import { SwapRouteAccordionItem } from './SwapRouteAccordionItem';
 
-import type { SxProps } from '@mui/material';
+import type { AccordionProps } from '@mui/material';
 
-import type { Route } from './SwapRoute';
-
-interface Props {
-  routes: Route[];
-  selected: number;
-  onSelect: (index: number) => void;
-  sx?: SxProps;
-}
-
-export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
+export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
   const intl = useIntl();
+  const [{ swapRoutes, selectedSwapRoute }] = useSwapState();
+  const handleSelectSwapRoute = useHandleSelectSwapRoute();
+
   return (
     <Accordion
+      {...props}
       sx={{
         '&.MuiPaper-root': {
           padding: 0,
@@ -33,8 +31,7 @@ export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
           paddingBlock: 1,
           borderColor: 'grey.800',
         },
-
-        ...sx,
+        ...props?.sx,
       }}
       disableGutters
     >
@@ -96,13 +93,12 @@ export function SwapRouteAccordion({ routes, selected, onSelect, sx }: Props) {
         }}
       >
         <Stack gap={0.25} mt={1.5}>
-          {routes.slice(2).map((route, index) => (
+          {swapRoutes.slice(2).map((route, index) => (
             <SwapRouteAccordionItem
-              key={index}
+              key={`route-${index}`}
               route={route}
-              index={index + 2}
-              selected={selected}
-              onSelect={onSelect}
+              isSelected={routeEq(selectedSwapRoute, route)}
+              onSelect={handleSelectSwapRoute}
             />
           ))}
         </Stack>

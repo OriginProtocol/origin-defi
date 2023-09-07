@@ -29,6 +29,9 @@
       "@origin/oeth/history": [
         "libs/oeth/history/src/index.ts"
       ],
+      "@origin/oeth/shared": [
+        "libs/oeth/shared/src/index.ts"
+      ],
       "@origin/oeth/swap": [
         "libs/oeth/swap/src/index.ts"
       ],
@@ -40,9 +43,6 @@
       ],
       "@origin/shared/contracts": [
         "libs/shared/contracts/src/index.ts"
-      ],
-      "@origin/shared/data-access": [
-        "libs/shared/data-access/src/index.ts"
       ],
       "@origin/shared/providers": [
         "libs/shared/providers/src/index.ts"

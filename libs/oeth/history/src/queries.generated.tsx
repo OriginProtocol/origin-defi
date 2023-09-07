@@ -1,7 +1,7 @@
-import { graphqlClient } from '@origin/shared/data-access';
+import { graphqlClient } from '@origin/oeth/shared';
 import { useQuery } from '@tanstack/react-query';
 
-import type * as Types from '@origin/shared/data-access';
+import type * as Types from '@origin/oeth/shared';
 import type { UseQueryOptions } from '@tanstack/react-query';
 export type DummyQueryVariables = Types.Exact<{ [key: string]: never }>;
 

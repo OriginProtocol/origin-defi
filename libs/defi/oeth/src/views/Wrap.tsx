@@ -8,13 +8,7 @@ export function WrapView() {
   const intl = useIntl();
   return (
     <>
-      <APY
-        value={6.71}
-        balance={0}
-        pendingYield={0}
-        earnings={0}
-        tokenIcon="	/images/currency/woeth-icon-small.svg"
-      />
+      <APY value={6.71} balance={0} pendingYield={0} earnings={0} />
 
       <Stack gap={3} mt={3}>
         <Card
