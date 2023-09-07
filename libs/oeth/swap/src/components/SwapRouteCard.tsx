@@ -1,18 +1,38 @@
 import { alpha, Box, Card, CardHeader, Stack, Typography } from '@mui/material';
-import { currencyFormat } from '@origin/shared/components';
+import { currencyFormat, quantityFormat } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
+import { usePrices } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 
-import type { Route } from './SwapRoute';
+import { routeActionLabel, routeActionLogos } from '../constants';
 
-interface Props {
-  index: number;
-  selected: number;
-  onSelect: (index: number) => void;
-  route: Route;
-}
+import type { EstimatedSwapRoute } from '../types';
 
-export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
+export type SwapRouteCardProps = {
+  isSelected: boolean;
+  isBest: boolean;
+  onSelect: (route: EstimatedSwapRoute) => void;
+  route: EstimatedSwapRoute;
+};
+
+export function SwapRouteCard({
+  isSelected,
+  isBest,
+  onSelect,
+  route,
+}: SwapRouteCardProps) {
   const intl = useIntl();
+  const { data: prices } = usePrices();
+
+  const estimatedAmount = +formatUnits(
+    route.estimatedAmount,
+    route.tokenOut.decimals,
+  );
+  const convertedAmount =
+    (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
+  const gas = +formatUnits(route.gas, tokens.mainnet.ETH.decimals);
+
   return (
     <Card
       sx={{
@@ -23,7 +43,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
         cursor: 'pointer',
         border: (theme) => `1px solid ${theme.palette.grey[800]}`,
         borderRadius: 1,
-        ...(selected === index
+        ...(isSelected
           ? {
               background: `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
              linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
@@ -46,7 +66,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
             }),
       }}
       role="button"
-      onClick={() => onSelect(index)}
+      onClick={() => onSelect(route)}
     >
       <CardHeader
         sx={{
@@ -65,14 +85,14 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
             >
               <Box
                 component="img"
-                src={route.icon as string}
+                src={routeActionLogos[route.action]}
                 sx={{
                   height: '1rem',
                   width: '1rem',
                 }}
               ></Box>
               <Typography color="primary.contrastText" variant="body1">
-                {route.quantity}&nbsp;
+                {intl.formatNumber(estimatedAmount, quantityFormat)}&nbsp;
                 <Typography
                   color="text.secondary"
                   variant="body2"
@@ -84,11 +104,11 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
                     },
                   }}
                 >
-                  ({intl.formatNumber(route.value, currencyFormat)})
+                  ({intl.formatNumber(convertedAmount, currencyFormat)})
                 </Typography>
               </Typography>
 
-              {index === 0 ? (
+              {isBest ? (
                 <Box
                   sx={{
                     position: 'absolute',
@@ -117,7 +137,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
                 },
               }}
             >
-              ({intl.formatNumber(route.value, currencyFormat)})
+              ({intl.formatNumber(estimatedAmount, quantityFormat)})
             </Typography>
           </>
         }
@@ -128,7 +148,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
         variant="body2"
         sx={{ marginBlock: { xs: 1.5, md: 1 } }}
       >
-        {route.name}
+        {intl.formatMessage(routeActionLabel[route.action])}
       </Typography>
       <Stack gap={0.5}>
         <Stack
@@ -158,10 +178,10 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
             })}
           </span>
           <Box component="span" color="primary.contrastText">
-            ~{intl.formatNumber(route.transactionCost, currencyFormat)}
+            ~{intl.formatNumber(gas, currencyFormat)}
           </Box>
         </Stack>
-        {route.type === 'redeem' ? (
+        {/*route.type === 'redeem' ? (
           <Stack
             component={Typography}
             direction="row"
@@ -174,8 +194,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
               {intl.formatMessage({
                 defaultMessage: 'Wait time:',
               })}
-            </span>
-            {/* TODO better logic for coloring -> prob time should come as a ms duration and getting it formated */}
+            </span>            
             <Box
               component="span"
               color={
@@ -187,7 +206,7 @@ export function SwapRouteCard({ index, selected, onSelect, route }: Props) {
               ~{route.waitTime}
             </Box>
           </Stack>
-        ) : undefined}
+        ) : undefined */}
       </Stack>
     </Card>
   );

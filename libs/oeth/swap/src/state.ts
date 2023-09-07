@@ -23,10 +23,16 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       isBalanceOutLoading: false,
       slippage: 0.01,
       swapRoutes: [],
+      selectedSwapRoute: null,
+      isSwapRoutesLoading: false,
     });
 
     useDebouncedEffect(
       async () => {
+        if (state.amountIn === 0n) {
+          return;
+        }
+
         const routes = await Promise.all(
           getAvailableRoutes(state.tokenIn, state.tokenOut).map((route) =>
             queryClient.fetchQuery({
@@ -36,13 +42,17 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                 state.tokenOut,
                 route.action,
                 state.amountIn.toString(),
+                state.slippage,
               ] as const,
-              queryFn: async ({ queryKey: [, tokenIn, tokenOut, action] }) =>
+              queryFn: async ({
+                queryKey: [, tokenIn, tokenOut, action, , slippage],
+              }) =>
                 swapActions[action].estimateRoute(
                   tokenIn,
                   tokenOut,
                   state.amountIn,
                   route,
+                  slippage,
                 ),
             }),
           ),
@@ -59,9 +69,11 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         setState(
           produce((draft) => {
             draft.swapRoutes = sortedRoutes;
+            draft.selectedSwapRoute = sortedRoutes[0];
             draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
             draft.isAmountOutLoading = false;
             draft.isPriceOutLoading = false;
+            draft.isSwapRoutesLoading = false;
           }),
         );
       },

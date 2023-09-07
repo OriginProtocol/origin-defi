@@ -59,10 +59,12 @@ function SwapViewWrapped() {
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
     token: tokenIn.address,
+    watch: true,
   });
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } = useBalance({
     address,
     token: tokenOut.address,
+    watch: true,
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
@@ -175,7 +177,7 @@ function SwapViewWrapped() {
           />
           <SwapButton onClick={handleTokenFlip} />
         </Box>
-        <SwapRoute routes={[]} isLoading={false} />
+        <SwapRoute />
         <ConnectedButton variant="action" fullWidth onClick={handleSwap}>
           {intl.formatMessage({ defaultMessage: 'Swap' })}
         </ConnectedButton>

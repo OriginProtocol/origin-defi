@@ -1,5 +1,3 @@
-import { isNilOrEmpty } from '@origin/shared/utils';
-
 import type {
   EstimateAmount,
   EstimateGas,
@@ -12,17 +10,18 @@ const estimateAmount: EstimateAmount = async (
   _tokenOut,
   amountIn,
 ) => {
-  if (amountIn === 0n) {
-    return 0n;
-  }
+  console.log('Amount estimation not implemented');
 
   return amountIn;
 };
 
-const estimateGas: EstimateGas = async (_tokenIn, _tokenOut, amountIn) => {
-  if (amountIn === 0n) {
-    return 0n;
-  }
+const estimateGas: EstimateGas = async (
+  _tokenIn,
+  _tokenOut,
+  _amountIn,
+  _slippage,
+) => {
+  console.log('Gas estimation not implemented');
 
   return 0n;
 };
@@ -32,20 +31,22 @@ const estimateRoute: EstimateRoute = async (
   tokenOut,
   amountIn,
   route,
+  slippage,
 ) => {
   if (amountIn === 0n) {
     return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
   }
 
-  const estimatedAmount = await estimateAmount(tokenIn, tokenOut, amountIn);
+  const [estimatedAmount, gas] = await Promise.all([
+    estimateAmount(tokenIn, tokenOut, amountIn),
+    estimateGas(tokenIn, tokenOut, amountIn, slippage),
+  ]);
 
-  return { ...route, estimatedAmount, gas: 0n, rate: 0 };
+  return { ...route, estimatedAmount, gas, rate: 0 };
 };
 
-const swap: Swap = async (_tokenIn, _tokenOut, amountIn, route) => {
-  if (amountIn === 0n || isNilOrEmpty(route)) {
-    return;
-  }
+const swap: Swap = async (_tokenIn, _tokenOut, _amountIn, _route) => {
+  console.log('Route swap operation not implemented');
 };
 
 export default {

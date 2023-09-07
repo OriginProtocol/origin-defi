@@ -5,7 +5,7 @@ import { swapRoutes } from './constants';
 
 import type { Token } from '@origin/shared/contracts';
 
-import type { TokenSource } from './types';
+import type { SwapRoute, TokenSource } from './types';
 
 export const getAllAvailableTokens = (source: TokenSource) => {
   if (isNilOrEmpty(source)) {
@@ -47,5 +47,17 @@ export const getAvailableRoutes = (tokenIn: Token, tokenOut: Token) => {
     (r) =>
       r.tokenIn.symbol === tokenIn.symbol &&
       r.tokenOut.symbol === tokenOut.symbol,
+  );
+};
+
+export const routeEq = (a: SwapRoute, b: SwapRoute) => {
+  if (isNilOrEmpty(a) || isNilOrEmpty(b)) {
+    return false;
+  }
+
+  return (
+    a.tokenIn.symbol === b.tokenIn.symbol &&
+    a.tokenOut.symbol === b.tokenOut.symbol &&
+    a.action === b.action
   );
 };

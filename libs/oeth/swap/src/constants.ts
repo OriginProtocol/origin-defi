@@ -1,7 +1,11 @@
 import { tokens } from '@origin/shared/contracts';
+import { defineMessage } from 'react-intl';
 import { erc20ABI, mainnet } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
+import type { MessageDescriptor } from 'react-intl';
+
+import type { SwapAction } from './types';
 
 export const MIX_TOKEN: Token = {
   address: undefined,
@@ -11,6 +15,26 @@ export const MIX_TOKEN: Token = {
   name: 'Redeem Mix',
   symbol: 'MIX_TOKEN',
   icon: '/images/backed-graphic.svg',
+};
+
+export const routeActionLogos: Record<SwapAction, string> = {
+  'mint-vault': '/images/protocols/origin.svg',
+  'redeem-vault': '/images/protocols/origin.svg',
+  'swap-curve': '/images/protocols/curve.webp',
+  'swap-zapper-eth': '/images/protocols/zapper.svg',
+  'swap-zapper-sfrxeth': '/images/protocols/zapper.svg',
+  'unwrap-woeth': '/images/protocols/origin.svg',
+  'wrap-oeth': '/images/protocols/origin.svg',
+};
+
+export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
+  'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
+  'redeem-vault': defineMessage({ defaultMessage: 'Redeem with Vault' }),
+  'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),
+  'swap-zapper-eth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
+  'swap-zapper-sfrxeth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
+  'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap with Origin' }),
+  'wrap-oeth': defineMessage({ defaultMessage: 'Wrap with Origin' }),
 };
 
 export const swapRoutes = [

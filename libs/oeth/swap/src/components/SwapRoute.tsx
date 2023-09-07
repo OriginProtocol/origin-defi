@@ -1,12 +1,15 @@
-import { useState } from 'react';
-
 import { Skeleton, Stack, Typography } from '@mui/material';
 import { Card, cardStyles } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { useSwapState } from '../state';
 import { BestRoutes } from './BestRoutes';
 import { SwapInfo } from './SwapInfo';
 import { SwapRouteAccordion } from './SwapRouteAccordion';
+
+import type { CardProps } from '@mui/material';
+
+import type { EstimatedSwapRoute } from '../types';
 
 interface Swap {
   type: 'swap';
@@ -26,26 +29,29 @@ export type Route = {
   transactionCost: number;
 } & (Swap | Redeem);
 
-interface Props {
+export type SwapRouteProps = {
   isLoading: boolean;
-  routes: Route[];
-}
+  routes: EstimatedSwapRoute[];
+};
 
-export function SwapRoute({ isLoading = false, routes }: Props) {
+export function SwapRoute(props: Omit<CardProps, 'children'>) {
   const intl = useIntl();
-  const [selectedRoute, setSelectedRoute] = useState(0);
+  const [{ swapRoutes, isSwapRoutesLoading }] = useSwapState();
 
-  const hasContent = routes.length > 0;
+  const hasContent = swapRoutes.length > 0;
+
   return (
     <Card
+      {...props}
       sx={{
         border: '1px solid',
         borderColor: (theme) => theme.palette.background.default,
         backgroundColor: 'grey.900',
         borderRadius: 1,
+        ...props?.sx,
       }}
       title={
-        isLoading ? (
+        isSwapRoutesLoading ? (
           <Typography
             color="primary.contrastText"
             sx={{
@@ -95,17 +101,8 @@ export function SwapRoute({ isLoading = false, routes }: Props) {
     >
       {hasContent ? (
         <>
-          <BestRoutes
-            routes={routes}
-            selected={selectedRoute}
-            onSelect={(index) => setSelectedRoute(index)}
-          />
-          <SwapRouteAccordion
-            routes={routes}
-            selected={selectedRoute}
-            onSelect={(index) => setSelectedRoute(index)}
-            sx={{ mt: 2 }}
-          />
+          <BestRoutes />
+          <SwapRouteAccordion sx={{ mt: 2 }} />
         </>
       ) : undefined}
     </Card>

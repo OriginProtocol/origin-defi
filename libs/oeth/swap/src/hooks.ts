@@ -3,12 +3,13 @@ import { useCallback, useMemo } from 'react';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 
+import { swapActions } from './actions';
 import { useSwapState } from './state';
 import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
-import type { TokenSource } from './types';
+import type { EstimatedSwapRoute, TokenSource } from './types';
 
 export const useHandleAmountInChange = () => {
   const [, setSwapState] = useSwapState();
@@ -21,6 +22,7 @@ export const useHandleAmountInChange = () => {
           state.amountOut = 0n;
           state.isAmountOutLoading = true;
           state.isPriceOutLoading = true;
+          state.isSwapRoutesLoading = true;
         }),
       );
     },
@@ -123,12 +125,35 @@ export const useHandleTokenFlip = () => {
   }, [setSwapState]);
 };
 
+export const useHandleSelectSwapRoute = () => {
+  const [, setSwapState] = useSwapState();
+
+  return useCallback(
+    (route: EstimatedSwapRoute) => {
+      setSwapState(
+        produce((draft) => {
+          draft.selectedSwapRoute = route;
+          draft.amountOut = route.estimatedAmount;
+        }),
+      );
+    },
+    [setSwapState],
+  );
+};
+
 export const useHandleSwap = () => {
-  const [{ swapRoutes }] = useSwapState();
+  const [{ tokenIn, tokenOut, amountIn, selectedSwapRoute }] = useSwapState();
 
   return useCallback(async () => {
-    if (isNilOrEmpty(swapRoutes)) {
+    if (isNilOrEmpty(selectedSwapRoute)) {
       return;
     }
-  }, [swapRoutes]);
+
+    await swapActions[selectedSwapRoute.action].swap(
+      tokenIn,
+      tokenOut,
+      amountIn,
+      selectedSwapRoute,
+    );
+  }, [amountIn, selectedSwapRoute, tokenIn, tokenOut]);
 };

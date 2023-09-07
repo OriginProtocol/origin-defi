@@ -1,8 +1,21 @@
 import { contracts, whales } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { getAccount, getPublicClient, readContract } from '@wagmi/core';
+import {
+  getAccount,
+  getPublicClient,
+  prepareWriteContract,
+  readContract,
+  waitForTransaction,
+  writeContract,
+} from '@wagmi/core';
+import { formatUnits } from 'viem';
 
-import type { EstimateAmount, EstimateGas, EstimateRoute } from '../types';
+import type {
+  EstimateAmount,
+  EstimateGas,
+  EstimateRoute,
+  Swap,
+} from '../types';
 
 const estimateAmount: EstimateAmount = async (
   _tokenIn,
@@ -23,9 +36,13 @@ const estimateAmount: EstimateAmount = async (
   return data;
 };
 
-const estimateGas: EstimateGas = async (_tokenIn, _tokenOut, amountIn) => {
+const estimateGas: EstimateGas = async (
+  _tokenIn,
+  _tokenOut,
+  amountIn,
+  _slippage,
+) => {
   let gasEstimate = 0n;
-  let isError = false;
 
   const publicClient = getPublicClient();
 
@@ -44,22 +61,20 @@ const estimateGas: EstimateGas = async (_tokenIn, _tokenOut, amountIn) => {
         args: [amountIn, address, address],
         account: address,
       });
-    } catch {
-      isError = true;
-    }
-  }
 
-  if (isError) {
-    try {
-      gasEstimate = await publicClient.estimateContractGas({
-        address: contracts.mainnet.WOETH.address,
-        abi: contracts.mainnet.WOETH.abi,
-        functionName: 'redeem',
-        args: [amountIn, whales.mainnet.WOETH, whales.mainnet.WOETH],
-        account: whales.mainnet.WOETH,
-      });
+      return gasEstimate;
     } catch {}
   }
+
+  try {
+    gasEstimate = await publicClient.estimateContractGas({
+      address: contracts.mainnet.WOETH.address,
+      abi: contracts.mainnet.WOETH.abi,
+      functionName: 'redeem',
+      args: [amountIn, whales.mainnet.WOETH, whales.mainnet.WOETH],
+      account: whales.mainnet.WOETH,
+    });
+  } catch {}
 
   return gasEstimate;
 };
@@ -69,6 +84,7 @@ const estimateRoute: EstimateRoute = async (
   tokenOut,
   amountIn,
   route,
+  slippage,
 ) => {
   if (amountIn === 0n) {
     return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
@@ -76,14 +92,46 @@ const estimateRoute: EstimateRoute = async (
 
   const [estimatedAmount, gas] = await Promise.all([
     estimateAmount(tokenIn, tokenOut, amountIn),
-    estimateGas(tokenIn, tokenOut, amountIn),
+    estimateGas(tokenIn, tokenOut, amountIn, slippage),
   ]);
 
-  return { ...route, estimatedAmount, gas, rate: 0 };
+  return {
+    ...route,
+    estimatedAmount,
+    gas,
+    rate:
+      +formatUnits(amountIn, tokenIn.decimals) /
+      +formatUnits(estimatedAmount, tokenOut.decimals),
+  };
+};
+
+const swap: Swap = async (_tokenIn, _tokenOut, amountIn, _route) => {
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
+    return;
+  }
+
+  try {
+    const { request } = await prepareWriteContract({
+      address: contracts.mainnet.WOETH.address,
+      abi: contracts.mainnet.WOETH.abi,
+      functionName: 'redeem',
+      args: [amountIn, address, address],
+    });
+    const { hash } = await writeContract(request);
+    await waitForTransaction({ hash });
+    // TODO trigger notification
+    console.log('unwrap woeth done!');
+  } catch (e) {
+    // TODO trigger notification
+    console.log(`unwrap woeth error!\n${e.message}`);
+  }
 };
 
 export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  swap,
 };
