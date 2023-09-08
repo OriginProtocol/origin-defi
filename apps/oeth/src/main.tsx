@@ -4,11 +4,13 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
+import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
 import {
-  CssBaseline,
-  Experimental_CssVarsProvider as CssVarsProvider,
-} from '@mui/material';
-import { chains, queryClient, wagmiConfig } from '@origin/oeth/shared';
+  chains,
+  getRouter,
+  queryClient,
+  wagmiConfig,
+} from '@origin/oeth/shared';
 import { CurveProvider } from '@origin/shared/providers';
 import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
@@ -16,11 +18,11 @@ import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
 import { IntlProvider } from 'react-intl';
-import { BrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router-dom';
 import { WagmiConfig } from 'wagmi';
 
-import { App } from './App';
 import { en } from './lang';
+import { routes } from './routes';
 
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
@@ -33,7 +35,6 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages: en, locale: 'en', defaultLocale: 'en' }],
-      [BrowserRouter],
       [QueryClientProvider, { client: queryClient }],
       [CssVarsProvider, { theme: theme, defaultMode: 'dark' }],
       [WagmiConfig, { config: wagmiConfig }],
@@ -46,9 +47,6 @@ root.render(
         },
       ],
     ],
-    <>
-      <CssBaseline />
-      <App />
-    </>,
+    <RouterProvider router={getRouter(routes)} />,
   ),
 );
