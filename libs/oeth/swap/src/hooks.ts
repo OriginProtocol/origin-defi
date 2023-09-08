@@ -102,6 +102,7 @@ export const useHandleTokenChange = () => {
           state.amountIn = 0n;
           state.amountOut = 0n;
           state.swapRoutes = [];
+          state.selectedSwapRoute = null;
         }),
       );
     },
@@ -114,12 +115,14 @@ export const useHandleTokenFlip = () => {
 
   return useCallback(() => {
     setSwapState(
-      produce((draft) => {
-        draft.amountIn = 0n;
-        draft.amountOut = 0n;
-        const oldTokenOut = draft.tokenOut;
-        draft.tokenOut = draft.tokenIn;
-        draft.tokenIn = oldTokenOut;
+      produce((state) => {
+        state.amountIn = 0n;
+        state.amountOut = 0n;
+        const oldTokenOut = state.tokenOut;
+        state.tokenOut = state.tokenIn;
+        state.tokenIn = oldTokenOut;
+        state.swapRoutes = [];
+        state.selectedSwapRoute = null;
       }),
     );
   }, [setSwapState]);
@@ -131,9 +134,9 @@ export const useHandleSelectSwapRoute = () => {
   return useCallback(
     (route: EstimatedSwapRoute) => {
       setSwapState(
-        produce((draft) => {
-          draft.selectedSwapRoute = route;
-          draft.amountOut = route.estimatedAmount;
+        produce((state) => {
+          state.selectedSwapRoute = route;
+          state.amountOut = route.estimatedAmount;
         }),
       );
     },
@@ -142,7 +145,9 @@ export const useHandleSelectSwapRoute = () => {
 };
 
 export const useHandleSwap = () => {
-  const [{ tokenIn, tokenOut, amountIn, selectedSwapRoute }] = useSwapState();
+  const [
+    { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
+  ] = useSwapState();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute)) {
@@ -154,6 +159,8 @@ export const useHandleSwap = () => {
       tokenOut,
       amountIn,
       selectedSwapRoute,
+      slippage,
+      amountOut,
     );
-  }, [amountIn, selectedSwapRoute, tokenIn, tokenOut]);
+  }, [amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut]);
 };

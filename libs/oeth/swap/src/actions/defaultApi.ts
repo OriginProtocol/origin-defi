@@ -45,7 +45,13 @@ const estimateRoute: EstimateRoute = async (
   return { ...route, estimatedAmount, gas, rate: 0 };
 };
 
-const swap: Swap = async (_tokenIn, _tokenOut, _amountIn, _route) => {
+const swap: Swap = async (
+  _tokenIn,
+  _tokenOut,
+  _amountIn,
+  _route,
+  _slippage,
+) => {
   console.log('Route swap operation not implemented');
 };
 
