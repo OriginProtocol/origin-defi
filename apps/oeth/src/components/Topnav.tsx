@@ -108,7 +108,6 @@ export function Topnav(props: BoxProps) {
       >
         {[
           intl.formatMessage({ defaultMessage: 'Swap' }),
-          intl.formatMessage({ defaultMessage: 'Wrap' }),
           intl.formatMessage({ defaultMessage: 'History' }),
         ].map((tab) => (
           <Tab
