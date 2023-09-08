@@ -22,6 +22,7 @@ export type EstimateGas = (
   tokenOut: Token,
   amountIn: bigint,
   slippage: number,
+  amountOut?: bigint,
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
@@ -37,6 +38,8 @@ export type Swap = (
   tokenOut: Token,
   amountIn: bigint,
   route: EstimatedSwapRoute,
+  slippage: number,
+  amountOut?: bigint,
 ) => Promise<void>;
 
 export type SwapApi = {
