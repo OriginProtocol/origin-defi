@@ -20,12 +20,6 @@
     "strict": false,
     "baseUrl": ".",
     "paths": {
-      "@origin/defi/oeth": [
-        "libs/defi/oeth/src/index.ts"
-      ],
-      "@origin/defi/ousd": [
-        "libs/defi/ousd/src/index.ts"
-      ],
       "@origin/oeth/history": [
         "libs/oeth/history/src/index.ts"
       ],
@@ -34,9 +28,6 @@
       ],
       "@origin/oeth/swap": [
         "libs/oeth/swap/src/index.ts"
-      ],
-      "@origin/oeth/wrap": [
-        "libs/oeth/wrap/src/index.ts"
       ],
       "@origin/shared/components": [
         "libs/shared/components/src/index.ts"
