@@ -23,6 +23,7 @@ import type { IconButtonProps, Theme } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { TokenSource } from '../types';
+import { ApyHeader } from '@origin/oeth/shared';
 
 const commonStyles = {
   paddingBlock: 2.5,
@@ -81,7 +82,9 @@ function SwapViewWrapped() {
 
   return (
     <>
+      <ApyHeader />
       <Card
+        sx={{ mt: 3 }}
         sxCardTitle={{
           padding: 0,
           paddingInline: { xs: 2, md: 3 },

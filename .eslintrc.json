@@ -27,6 +27,7 @@
             ]
           }
         ],
+        "@typescript-eslint/no-explicit-any": false,
         "react/react-in-jsx-scope": "off",
         "no-empty": ["error", { "allowEmptyCatch": true }],
         // Unused imports rules

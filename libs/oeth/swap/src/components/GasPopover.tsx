@@ -89,7 +89,7 @@ export function GasPopover({ buttonProps }: Props) {
           },
         }}
       >
-        <Stack gap={2} sx={{ '--origin-blue': '#0074F0' }}>
+        <Stack gap={2}>
           <FormControl variant="standard">
             <InputLabel htmlFor="slippage" shrink>
               {intl.formatMessage({ defaultMessage: 'Slippage' })}
@@ -100,8 +100,9 @@ export function GasPopover({ buttonProps }: Props) {
                 value={slippage}
                 fullWidth
                 sx={{
-                  borderColor: 'var(--origin-blue)',
-                  backgroundColor: alpha('#0074F0', 0.05),
+                  borderColor: (theme) => theme.palette.secondary.main,
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 0.05),
                   paddingInlineEnd: 2,
                   '& .MuiInputBase-input': {
                     textAlign: 'right',
@@ -180,12 +181,13 @@ export function GasPopover({ buttonProps }: Props) {
                 )}
                 fullWidth
                 sx={{
-                  borderColor: 'var(--origin-blue)',
-                  backgroundColor: alpha('#0074F0', 0.05),
+                  borderColor: (theme) => theme.palette.secondary.main,
+                  backgroundColor: (theme) =>
+                    alpha(theme.palette.secondary.main, 0.05),
                   paddingInlineEnd: 2,
                   '& .MuiInputBase-input': {
                     textAlign: 'right',
-                    borderColor: 'var(--origin-blue)',
+                    borderColor: (theme) => theme.palette.secondary.main,
                     color: 'primary.contrastText',
                     '&::placeholder': {
                       color: 'text.primary',
