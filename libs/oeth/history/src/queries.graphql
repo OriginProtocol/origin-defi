@@ -1,5 +1,42 @@
-query Dummy {
-  squidStatus {
-    height
+query HistoryTable($addressId: String!, $offset: Int!) {
+  addressById(id: $addressId) {
+    balance
+    earned
+    isContract
+    rebasingOption
+    lastUpdated
+    history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
+      type
+      value
+      txHash
+      timestamp
+      balance
+    }
+  }
+}
+
+query HistoryTableWithFilters(
+  $addressId: String!
+  $offset: Int!
+  $filters: [String!]
+) {
+  addressById(id: $addressId) {
+    balance
+    earned
+    isContract
+    rebasingOption
+    lastUpdated
+    history(
+      limit: 20
+      orderBy: timestamp_DESC
+      offset: $offset
+      where: { type_in: $filters }
+    ) {
+      type
+      value
+      txHash
+      timestamp
+      balance
+    }
   }
 }

@@ -1,10 +1,11 @@
 import { HistoryCard } from '../components/HistoryCard';
-import { useDummyQuery } from '../queries.generated';
+import { APYContainer } from '../components/APYContainer';
 
 export function HistoryView() {
-  const { data } = useDummyQuery();
-
-  console.log(data);
-
-  return <HistoryCard />;
+  return (
+    <>
+      <APYContainer />
+      <HistoryCard />
+    </>
+  );
 }

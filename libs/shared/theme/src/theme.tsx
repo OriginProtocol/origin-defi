@@ -14,6 +14,9 @@ export const theme = extendTheme({
           light: '#b361e6',
           contrastText: '#FAFBFB',
         },
+        secondary: {
+          main: '#0074F0',
+        },
         divider: '#101113',
         background: {
           paper: '#1E1F25',
@@ -268,10 +271,15 @@ export const theme = extendTheme({
     },
     MuiTableCell: {
       styleOverrides: {
+        // @ts-expect-errors stop acting like it wouldn't work TS
         root: ({ theme }) => ({
-          paddingInline: theme.spacing(5),
-          paddingBlock: theme.spacing(3),
+          paddingInline: { xs: theme.spacing(2), md: theme.spacing(3) },
+          paddingBlock: theme.spacing(2),
           color: theme.palette.primary.contrastText,
+          fontSize: theme.typography.pxToRem(14),
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: theme.typography.pxToRem(23),
         }),
         head: ({ theme }) => ({
           color: theme.palette.text.secondary,
