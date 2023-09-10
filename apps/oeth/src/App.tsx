@@ -1,37 +1,34 @@
-import { Container, Stack } from '@mui/material';
-import { HistoryView } from '@origin/oeth/history';
+import { Container, CssBaseline, Stack } from '@mui/material';
 import { ApyHeader } from '@origin/oeth/shared';
-import { SwapView } from '@origin/oeth/swap';
-import { Route, Routes } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
 
-export function App() {
+export const App = () => {
   return (
-    <Stack>
-      <Topnav />
-      <Container
-        sx={{
-          mt: {
-            xs: 3,
-            md: 5,
-            paddingInline: {
-              xs: 2,
-              md: 0,
+    <>
+      <CssBaseline />
+      <Stack>
+        <Topnav />
+        <Container
+          sx={{
+            mt: {
+              xs: 3,
+              md: 5,
+              paddingInline: {
+                xs: 2,
+                md: 0,
+              },
             },
-          },
-        }}
-        maxWidth="sm"
-      >
-        <ApyHeader />
-        <Stack mt={3}>
-          <Routes>
-            <Route index element={<SwapView />} />
-            <Route path="history" element={<HistoryView />} />
-            <Route path="swap" element={<SwapView />} />
-          </Routes>
-        </Stack>
-      </Container>
-    </Stack>
+          }}
+          maxWidth="sm"
+        >
+          <ApyHeader />
+          <Stack mt={3}>
+            <Outlet />
+          </Stack>
+        </Container>
+      </Stack>
+    </>
   );
-}
+};
