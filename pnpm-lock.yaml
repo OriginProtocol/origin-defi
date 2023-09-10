@@ -35,9 +35,6 @@ dependencies:
   axios:
     specifier: ^1.4.0
     version: 1.4.0
-  ethers:
-    specifier: ^6.7.1
-    version: 6.7.1
   graphql:
     specifier: ^16.8.0
     version: 16.8.0

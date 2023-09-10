@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { queryClient } from '@origin/oeth/shared';
 import { tokens } from '@origin/shared/contracts';
+import { useCurve } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
@@ -26,10 +27,21 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       selectedSwapRoute: null,
       isSwapRoutesLoading: false,
     });
+    const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
     useDebouncedEffect(
       async () => {
         if (state.amountIn === 0n) {
+          setState(
+            produce((draft) => {
+              draft.swapRoutes = [];
+              draft.selectedSwapRoute = null;
+              draft.amountOut = 0n;
+              draft.isAmountOutLoading = false;
+              draft.isPriceOutLoading = false;
+              draft.isSwapRoutesLoading = false;
+            }),
+          );
           return;
         }
 
@@ -47,13 +59,18 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               queryFn: async ({
                 queryKey: [, tokenIn, tokenOut, action, , slippage],
               }) =>
-                swapActions[action].estimateRoute(
+                swapActions[action].estimateRoute({
                   tokenIn,
                   tokenOut,
-                  state.amountIn,
+                  amountIn: state.amountIn,
+                  amountOut: state.amountOut,
                   route,
                   slippage,
-                ),
+                  curve: {
+                    CurveRegistryExchange,
+                    OethPoolUnderlyings,
+                  },
+                }),
             }),
           ),
         );
@@ -78,7 +95,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         );
       },
       [state.amountIn],
-      800,
+      state.amountIn === 0n ? 0 : 800,
     );
 
     return [state, setState];

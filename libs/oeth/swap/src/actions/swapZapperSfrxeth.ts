@@ -18,7 +18,7 @@ import type {
   Swap,
 } from '../types';
 
-const estimateAmount: EstimateAmount = async (_tokenIn, tokenOut, amountIn) => {
+const estimateAmount: EstimateAmount = async ({ tokenOut, amountIn }) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -49,30 +49,24 @@ const estimateAmount: EstimateAmount = async (_tokenIn, tokenOut, amountIn) => {
   );
 };
 
-const estimateGas: EstimateGas = async (
-  _tokenIn,
-  _tokenOut,
-  amountIn,
-  _slippage,
-  _amountOut,
-) => {
+const estimateGas: EstimateGas = async () => {
   return 90000n;
 };
 
-const estimateRoute: EstimateRoute = async (
+const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
   amountIn,
   route,
   slippage,
-) => {
+}) => {
   if (amountIn === 0n) {
     return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
   }
 
   const [estimatedAmount, gas] = await Promise.all([
-    estimateAmount(tokenIn, tokenOut, amountIn),
-    estimateGas(tokenIn, tokenOut, amountIn, slippage),
+    estimateAmount({ tokenIn, tokenOut, amountIn }),
+    estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
   ]);
 
   return {
@@ -85,14 +79,13 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const swap: Swap = async (
+const swap: Swap = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  _route,
   slippage,
   amountOut,
-) => {
+}) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {

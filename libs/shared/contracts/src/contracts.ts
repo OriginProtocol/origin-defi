@@ -1,5 +1,6 @@
 import { mainnet } from 'wagmi/chains';
 
+import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurvePoolABI } from './abis/CurvePool';
 import { OETHABI } from './abis/OETH';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
@@ -10,10 +11,16 @@ import { WOETHABI } from './abis/WOETH';
 export const contracts = {
   mainnet: {
     curveOethPool: {
-      address: '0x94b17476a93b3262d87b9a326965d1e91f9c13e7',
+      address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
       abi: CurvePoolABI,
       name: 'curveOethPool',
+    },
+    CurveAddressProvider: {
+      address: '0x0000000022d53366457f9d5e68ec105046fc4383',
+      chainId: mainnet.id,
+      abi: CurveAddressProviderABI,
+      name: 'CurveAddressProvider',
     },
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',

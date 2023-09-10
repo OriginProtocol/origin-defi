@@ -1,4 +1,5 @@
-import type { Token } from '@origin/shared/contracts';
+import type { Contract, Token } from '@origin/shared/contracts';
+import type { HexAddress } from '@origin/shared/utils';
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
@@ -11,35 +12,55 @@ export type SwapAction =
   | 'wrap-oeth'
   | 'unwrap-woeth';
 
+type Args = {
+  tokenIn: Token;
+  tokenOut: Token;
+  amountIn: bigint;
+  amountOut?: bigint;
+  slippage: number;
+  route: SwapRoute;
+  estimatedRoute: EstimatedSwapRoute;
+  curve?: {
+    CurveRegistryExchange: Contract;
+    OethPoolUnderlyings: HexAddress[];
+  };
+};
+
 export type EstimateAmount = (
-  tokenIn: Token,
-  tokenOut: Token,
-  amountIn: bigint,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
-  tokenIn: Token,
-  tokenOut: Token,
-  amountIn: bigint,
-  slippage: number,
-  amountOut?: bigint,
+  args: Pick<
+    Args,
+    'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'curve'
+  >,
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
-  tokenIn: Token,
-  tokenOut: Token,
-  amountIn: bigint,
-  route: SwapRoute,
-  slippage: number,
+  args: Pick<
+    Args,
+    | 'tokenIn'
+    | 'tokenOut'
+    | 'amountIn'
+    | 'amountOut'
+    | 'slippage'
+    | 'route'
+    | 'curve'
+  >,
 ) => Promise<EstimatedSwapRoute>;
 
 export type Swap = (
-  tokenIn: Token,
-  tokenOut: Token,
-  amountIn: bigint,
-  route: EstimatedSwapRoute,
-  slippage: number,
-  amountOut?: bigint,
+  args: Pick<
+    Args,
+    | 'tokenIn'
+    | 'tokenOut'
+    | 'amountIn'
+    | 'amountOut'
+    | 'slippage'
+    | 'estimatedRoute'
+    | 'curve'
+  >,
 ) => Promise<void>;
 
 export type SwapApi = {

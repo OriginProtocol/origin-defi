@@ -34,13 +34,7 @@ root.render(
       [CssVarsProvider, { theme: theme, defaultMode: 'dark' }],
       [WagmiConfig, { config: wagmiConfig }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
-      [
-        CurveProvider,
-        {
-          alchemyApiKey: import.meta.env.VITE_ALCHEMY_ID,
-          customRpcUrl: import.meta.env.VITE_CUSTOM_RPC,
-        },
-      ],
+      [CurveProvider],
     ],
     <RouterProvider router={createHashRouter(routes)} />,
   ),
