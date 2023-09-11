@@ -36,7 +36,6 @@ const providers = [
 export const { chains, publicClient, webSocketPublicClient } = configureChains(
   [mainnet],
   providers as any,
-  { stallTimeout: 1000 },
 );
 
 const connectors = connectorsForWallets([

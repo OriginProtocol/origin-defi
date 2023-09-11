@@ -50,7 +50,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             } as const;
           }),
         );
-        console.log('Curve registry exchange initialized', data);
+        console.log('Curve registry exchange initialized');
       }
     }, [data]);
 
@@ -68,7 +68,7 @@ export const { Provider: CurveProvider, useTrackedState: useCurve } =
             draft.OethPoolUnderlyings = res as unknown as HexAddress[];
           }),
         );
-        console.log('Curve OETH Pool initialized', res);
+        console.log('Curve OETH Pool initialized');
       };
 
       if (!isNilOrEmpty(data?.[1]?.result)) {
