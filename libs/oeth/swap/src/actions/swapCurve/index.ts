@@ -117,7 +117,11 @@ const estimateGas: EstimateGas = async ({
 
       return gasEstimate;
     } catch (e) {
-      console.error(`swap curve OETHPool gas estimate error!\n${e.message}`);
+      console.error(
+        `swap curve OETHPool gas estimate error, returning fix estimate!\n${e.message}`,
+      );
+
+      return 180000n;
     }
   }
 
@@ -143,8 +147,10 @@ const estimateGas: EstimateGas = async ({
     });
   } catch (e) {
     console.error(
-      `swap curve exchange multiple gas estimate error!\n${e.message}`,
+      `swap curve exchange multiple gas estimate error, returning fix estimate! \n${e.message}`,
     );
+
+    return 350000n;
   }
 
   return gasEstimate;
