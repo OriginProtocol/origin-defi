@@ -1,3 +1,4 @@
+import { contracts } from '@origin/shared/contracts';
 import { ETH_ADDRESS_CURVE, isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
@@ -7,16 +8,16 @@ import {
   waitForTransaction,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, parseUnits } from 'viem';
-
-import { curveRoutes } from './curveRoutes';
+import { formatUnits, isAddressEqual, parseUnits } from 'viem';
 
 import type {
   EstimateAmount,
   EstimateGas,
   EstimateRoute,
   Swap,
-} from '../../types';
+} from '../types';
+
+const DEFAULT_GAS = 180000n;
 
 const estimateAmount: EstimateAmount = async ({
   tokenIn,
@@ -24,22 +25,20 @@ const estimateAmount: EstimateAmount = async ({
   amountIn,
   curve,
 }) => {
-  if (amountIn === 0n || isNilOrEmpty(curve?.CurveRegistryExchange)) {
+  if (amountIn === 0n) {
     return 0n;
-  }
-
-  const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut.symbol];
-
-  if (isNilOrEmpty(curveConfig)) {
-    // TODO return or throw
-    console.error('No curve route found, verify exchange mapping');
   }
 
   const amountOut = await readContract({
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
-    functionName: 'get_exchange_multiple_amount',
-    args: [curveConfig.routes, curveConfig.swapParams, amountIn],
+    functionName: 'get_exchange_amount',
+    args: [
+      contracts.mainnet.curveOethPool.address,
+      tokenIn.address ?? ETH_ADDRESS_CURVE,
+      tokenOut.address ?? ETH_ADDRESS_CURVE,
+      amountIn,
+    ],
   });
 
   return amountOut as unknown as bigint;
@@ -70,35 +69,34 @@ const estimateGas: EstimateGas = async ({
     tokenOut.decimals,
   );
 
-  const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut.symbol];
-
-  if (isNilOrEmpty(curveConfig)) {
-    // TODO return or throw
-    console.error(
-      `No curve route found, verify exchange mapping ${tokenIn.symbol} -> ${tokenOut.symbol}`,
-    );
-  }
-
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: curve.CurveRegistryExchange.address,
-      abi: curve.CurveRegistryExchange.abi,
-      functionName: 'exchange_multiple',
+      address: contracts.mainnet.curveOethPool.address,
+      abi: contracts.mainnet.curveOethPool.abi,
+      functionName: 'exchange',
       args: [
-        curveConfig.routes,
-        curveConfig.swapParams,
+        BigInt(
+          curve.OethPoolUnderlyings.findIndex((t) =>
+            isAddressEqual(t, tokenIn.address ?? ETH_ADDRESS_CURVE),
+          ),
+        ),
+        BigInt(
+          curve.OethPoolUnderlyings.findIndex((t) =>
+            isAddressEqual(t, tokenOut.address ?? ETH_ADDRESS_CURVE),
+          ),
+        ),
         amountIn,
         minAmountOut,
       ],
+      ...(isNilOrEmpty(tokenOut.address) && { value: amountIn }),
       account: address ?? ETH_ADDRESS_CURVE,
-      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
     });
   } catch (e) {
     console.error(
-      `swap curve exchange multiple gas estimate error, returning fix estimate! \n${e.message}`,
+      `swap curve OETHPool gas estimate error, returning fix estimate!\n${e.message}`,
     );
 
-    gasEstimate = 350000n;
+    gasEstimate = DEFAULT_GAS;
   }
 
   return gasEstimate;
@@ -161,35 +159,37 @@ const swap: Swap = async ({
     tokenOut.decimals,
   );
 
-  const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut?.symbol];
-
-  if (isNilOrEmpty(curveConfig)) {
-    // TODO return or throw
-    console.error(
-      `No curve route found, verify exchange mapping ${tokenIn.symbol} -> ${tokenOut.symbol}`,
-    );
-  }
-
   try {
     const { request } = await prepareWriteContract({
-      address: curve.CurveRegistryExchange.address,
-      abi: curve.CurveRegistryExchange.abi,
-      functionName: 'exchange_multiple',
+      address: contracts.mainnet.curveOethPool.address,
+      abi: contracts.mainnet.curveOethPool.abi,
+      functionName: 'exchange',
       args: [
-        curveConfig.routes,
-        curveConfig.swapParams,
+        BigInt(
+          curve.OethPoolUnderlyings.findIndex((t) =>
+            isAddressEqual(t, tokenIn.address ?? ETH_ADDRESS_CURVE),
+          ),
+        ),
+        BigInt(
+          curve.OethPoolUnderlyings.findIndex((t) =>
+            isAddressEqual(t, tokenOut.address ?? ETH_ADDRESS_CURVE),
+          ),
+        ),
         amountIn,
         minAmountOut,
       ],
-      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
+      ...(isNilOrEmpty(tokenOut.address) && { value: amountIn }),
     });
     const { hash } = await writeContract(request);
     await waitForTransaction({ hash });
 
     // TODO trigger notification
-    console.log('swap curve exchange multiple done!');
+    console.log('swap curve OETHPool done!');
+    return;
   } catch (e) {
-    console.error(`swap curve exchange multiple error!\n${e.message}`);
+    // TODO trigger notification
+    console.error(`swap curve OETHPool error!\n${e.message}`);
+    return;
   }
 };
 

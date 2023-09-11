@@ -33,6 +33,28 @@ import { ETH_ADDRESS_CURVE } from '@origin/shared/utils';
 */
 
 export const curveRoutes = {
+  // ETH -> OETH Mint
+  ETH: {
+    OETH: {
+      routes: [
+        ETH_ADDRESS_CURVE,
+        contracts.mainnet.curveOethPool.address,
+        tokens.mainnet.OETH.address,
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+      ],
+      swapParams: [
+        [0n, 1n, 1n],
+        [0n, 0n, 0n],
+        [0n, 0n, 0n],
+        [0n, 0n, 0n],
+      ],
+    },
+  },
   // stETH -> OETH Mint
   stETH: {
     OETH: {
@@ -131,6 +153,26 @@ export const curveRoutes = {
   },
   // OETH Redeem
   OETH: {
+    // OETH -> ETH
+    ETH: {
+      routes: [
+        tokens.mainnet.OETH.address,
+        contracts.mainnet.curveOethPool.address,
+        ETH_ADDRESS_CURVE,
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+        '0x0000000000000000000000000000000000000000',
+      ],
+      swapParams: [
+        [1n, 0n, 1n],
+        [0n, 0n, 0n],
+        [0n, 0n, 0n],
+        [0n, 0n, 0n],
+      ],
+    },
     // OETH -> frxETH
     frxETH: {
       routes: [
