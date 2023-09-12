@@ -60,6 +60,13 @@ export const theme = extendTheme({
   },
   typography: {
     fontFamily: 'Inter, Sailec, Helvetica, Arial, sans-serif',
+    h3: {
+      fontFamily: 'Sailec',
+      fontSize: '1.5rem',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '2rem',
+    },
     body1: {
       fontSize: '0.875rem',
       lineHeight: '1.4375rem',
