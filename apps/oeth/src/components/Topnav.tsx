@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   alpha,
   Box,
@@ -12,7 +10,9 @@ import {
 } from '@mui/material';
 import { OpenAccountModalButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import { routes } from '../routes';
 
 import type { BoxProps } from '@mui/material';
 
@@ -20,7 +20,8 @@ export function Topnav(props: BoxProps) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const intl = useIntl();
-  const [value, setValue] = useState(0);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <Box
@@ -65,15 +66,14 @@ export function Topnav(props: BoxProps) {
             },
           },
         })}
-        onClick={() => setValue(0)}
       >
-        <img
-          src="https://app.oeth.com/images/origin-ether-logo.svg"
-          alt="Origin logo"
-        />
+        <img src="/images/origin-ether-logo.svg" alt="Origin logo" />
       </Box>
       <Tabs
-        onChange={(_, value) => setValue(value)}
+        value={location.pathname}
+        onChange={(_, value) => {
+          navigate(value);
+        }}
         sx={{
           order: {
             xs: 2,
@@ -104,17 +104,12 @@ export function Topnav(props: BoxProps) {
             },
           },
         }}
-        value={value}
       >
-        {[
-          intl.formatMessage({ defaultMessage: 'Swap' }),
-          intl.formatMessage({ defaultMessage: 'History' }),
-        ].map((tab) => (
+        {routes[0].children.map((route) => (
           <Tab
-            key={tab}
-            component={Link}
-            label={tab}
-            to={`/${tab.toLowerCase()}`}
+            key={route?.path ?? '/'}
+            value={route?.path ?? '/'}
+            label={intl.formatMessage(route.handle.label)}
             sx={{
               fontSize: {
                 xs: '0.875rem',
@@ -141,7 +136,7 @@ export function Topnav(props: BoxProps) {
                 zIndex: 2,
               },
             }}
-          ></Tab>
+          />
         ))}
       </Tabs>
 
