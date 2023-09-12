@@ -5,6 +5,7 @@ export type TokenSource = 'tokenIn' | 'tokenOut';
 
 export type SwapAction =
   | 'swap-curve'
+  | 'swap-curve-eth'
   | 'swap-zapper-eth'
   | 'swap-zapper-sfrxeth'
   | 'mint-vault'

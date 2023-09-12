@@ -88,7 +88,7 @@ const estimateGas: EstimateGas = async ({
         amountIn,
         minAmountOut,
       ],
-      ...(isNilOrEmpty(tokenOut.address) && { value: amountIn }),
+      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
       account: address ?? ETH_ADDRESS_CURVE,
     });
   } catch (e) {
@@ -178,7 +178,7 @@ const swap: Swap = async ({
         amountIn,
         minAmountOut,
       ],
-      ...(isNilOrEmpty(tokenOut.address) && { value: amountIn }),
+      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
     });
     const { hash } = await writeContract(request);
     await waitForTransaction({ hash });
