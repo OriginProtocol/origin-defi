@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
+import { useCurve } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 
@@ -19,10 +20,9 @@ export const useHandleAmountInChange = () => {
       setSwapState(
         produce((state) => {
           state.amountIn = amount;
-          state.amountOut = 0n;
-          state.isAmountOutLoading = true;
-          state.isPriceOutLoading = true;
-          state.isSwapRoutesLoading = true;
+          state.isAmountOutLoading = amount !== 0n;
+          state.isPriceOutLoading = amount !== 0n;
+          state.isSwapRoutesLoading = amount !== 0n;
         }),
       );
     },
@@ -148,19 +148,29 @@ export const useHandleSwap = () => {
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
   ] = useSwapState();
+  const curve = useCurve();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute)) {
       return;
     }
 
-    await swapActions[selectedSwapRoute.action].swap(
+    await swapActions[selectedSwapRoute.action].swap({
       tokenIn,
       tokenOut,
       amountIn,
-      selectedSwapRoute,
+      estimatedRoute: selectedSwapRoute,
       slippage,
       amountOut,
-    );
-  }, [amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut]);
+      curve,
+    });
+  }, [
+    amountIn,
+    amountOut,
+    curve,
+    selectedSwapRoute,
+    slippage,
+    tokenIn,
+    tokenOut,
+  ]);
 };

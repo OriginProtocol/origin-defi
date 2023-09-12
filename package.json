@@ -20,7 +20,6 @@
     "@tanstack/react-table": "^8.9.3",
     "@wagmi/core": "^1.4.1",
     "axios": "^1.4.0",
-    "ethers": "^6.7.1",
     "graphql": "^16.8.0",
     "immer": "^10.0.2",
     "ramda": "^0.29.0",

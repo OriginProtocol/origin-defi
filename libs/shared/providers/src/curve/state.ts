@@ -1,98 +1,80 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
 
-import curve from '@curvefi/api';
+import { contracts } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { readContract } from '@wagmi/core';
+import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
-import { mainnet, useAccount, useNetwork } from 'wagmi';
+import { mainnet, useContractReads } from 'wagmi';
 
-import { useEthersProvider, useEthersSigner } from '../wagmi';
+import { CurveFactoryABI } from './abis/CurveFactory';
+import { CurveRegistryExchangeABI } from './abis/CurveRegistryExchange';
 
-export type CurveProviderProps = {
-  alchemyApiKey: string;
-  customRpcUrl?: string;
-};
+import type { HexAddress } from '@origin/shared/utils';
+
+import type { CurveState } from './types';
 
 export const { Provider: CurveProvider, useTrackedState: useCurve } =
-  createContainer(({ alchemyApiKey, customRpcUrl }: CurveProviderProps) => {
-    const [state, setState] = useState(null);
-    const { isConnected } = useAccount();
-    const { chain } = useNetwork();
-    const provider = useEthersProvider();
-    const signer = useEthersSigner();
+  createContainer(() => {
+    const [state, setState] = useState<CurveState>({
+      CurveRegistryExchange: null,
+      OethPoolUnderlyings: [],
+    });
+
+    const { data } = useContractReads({
+      contracts: [
+        {
+          address: contracts.mainnet.CurveAddressProvider.address,
+          abi: contracts.mainnet.CurveAddressProvider.abi,
+          functionName: 'get_address',
+          args: [2n],
+        },
+        {
+          address: contracts.mainnet.CurveAddressProvider.address,
+          abi: contracts.mainnet.CurveAddressProvider.abi,
+          functionName: 'get_address',
+          args: [3n],
+        },
+      ],
+    });
 
     useEffect(() => {
-      const initPools = async () => {
-        await Promise.allSettled([
-          curve.factory.fetchPools(),
-          curve.crvUSDFactory.fetchPools(),
-          curve.EYWAFactory.fetchPools(),
-          curve.cryptoFactory.fetchPools(),
-          curve.tricryptoFactory.fetchPools(),
-        ]);
-      };
-
-      const initPublic = async () => {
-        if (isNilOrEmpty(customRpcUrl)) {
-          await curve.init(
-            'Alchemy',
-            {
-              externalProvider: provider as any,
-              apiKey: alchemyApiKey,
-            },
-            { chainId: chain?.id ?? mainnet.id },
-          );
-        } else {
-          await curve.init(
-            'JsonRpc',
-            {
-              externalProvider: provider as any,
-              url: customRpcUrl,
-            },
-            {
-              chainId: chain?.id ?? mainnet.id,
-            },
-          );
-        }
-
-        await initPools();
-        setState(curve);
-        console.log('CURVE-JS public provider initialized');
-      };
-
-      const initWallet = async () => {
-        if (isNilOrEmpty(customRpcUrl)) {
-          await curve.init(
-            'Alchemy',
-            {
-              externalProvider: signer as any,
-              apiKey: alchemyApiKey,
-            },
-            { chainId: chain?.id ?? mainnet.id },
-          );
-        } else {
-          await curve.init(
-            'JsonRpc',
-            {
-              externalProvider: signer as any,
-              url: customRpcUrl,
-            },
-            {
-              chainId: chain?.id ?? mainnet.id,
-            },
-          );
-        }
-        await initPools();
-        setState(curve);
-        console.log('CURVE-JS WALLET PROVIDER INITIALIZED');
-      };
-
-      if (isConnected) {
-        initWallet();
-      } else {
-        initPublic();
+      if (!isNilOrEmpty(data?.[0]?.result)) {
+        setState(
+          produce((draft) => {
+            draft.CurveRegistryExchange = {
+              address: data[0].result,
+              chainId: mainnet.id,
+              abi: CurveRegistryExchangeABI,
+              name: 'CurveRegistryExchange',
+            } as const;
+          }),
+        );
+        console.log('Curve registry exchange initialized');
       }
-    }, [alchemyApiKey, chain?.id, customRpcUrl, isConnected, provider, signer]);
+    }, [data]);
+
+    useEffect(() => {
+      const getUnderlyings = async () => {
+        const res = await readContract({
+          address: data[1].result,
+          abi: CurveFactoryABI,
+          functionName: 'get_coins',
+          args: [contracts.mainnet.curveOethPool.address],
+        });
+
+        setState(
+          produce((draft) => {
+            draft.OethPoolUnderlyings = res as unknown as HexAddress[];
+          }),
+        );
+        console.log('Curve OETH Pool initialized');
+      };
+
+      if (!isNilOrEmpty(data?.[1]?.result)) {
+        getUnderlyings();
+      }
+    }, [data]);
 
     return [state, setState];
   });

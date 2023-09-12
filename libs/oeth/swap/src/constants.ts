@@ -21,6 +21,7 @@ export const routeActionLogos: Record<SwapAction, string> = {
   'mint-vault': '/images/protocols/origin.svg',
   'redeem-vault': '/images/protocols/origin.svg',
   'swap-curve': '/images/protocols/curve.webp',
+  'swap-curve-eth': '/images/protocols/curve.webp',
   'swap-zapper-eth': '/images/protocols/zapper.svg',
   'swap-zapper-sfrxeth': '/images/protocols/zapper.svg',
   'unwrap-woeth': '/images/protocols/origin.svg',
@@ -31,6 +32,7 @@ export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
   'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
   'redeem-vault': defineMessage({ defaultMessage: 'Redeem with Vault' }),
   'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),
+  'swap-curve-eth': defineMessage({ defaultMessage: 'Swap with CurvePool' }),
   'swap-zapper-eth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
   'swap-zapper-sfrxeth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
   'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap with Origin' }),
@@ -43,6 +45,11 @@ export const swapRoutes = [
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-curve',
+  },
+  {
+    tokenIn: tokens.mainnet.ETH,
+    tokenOut: tokens.mainnet.OETH,
+    action: 'swap-curve-eth',
   },
   {
     tokenIn: tokens.mainnet.ETH,
@@ -125,6 +132,11 @@ export const swapRoutes = [
     tokenOut: tokens.mainnet.ETH,
     action: 'swap-curve',
   },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: tokens.mainnet.ETH,
+  //   action: 'swap-curve-eth',
+  // },
   // Wrap
   {
     tokenIn: tokens.mainnet.OETH,

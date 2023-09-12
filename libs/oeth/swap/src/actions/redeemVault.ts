@@ -22,11 +22,7 @@ import type {
   Swap,
 } from '../types';
 
-const estimateAmount: EstimateAmount = async (
-  _tokenIn,
-  _tokenOut,
-  amountIn,
-) => {
+const estimateAmount: EstimateAmount = async ({ amountIn }) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -71,13 +67,12 @@ const estimateAmount: EstimateAmount = async (
   }, 0n);
 };
 
-const estimateGas: EstimateGas = async (
-  _tokenIn,
+const estimateGas: EstimateGas = async ({
   tokenOut,
   amountIn,
   slippage,
   amountOut,
-) => {
+}) => {
   let gasEstimate = 0n;
 
   if (amountIn === 0n) {
@@ -108,25 +103,25 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const estimateRoute: EstimateRoute = async (
+const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
   amountIn,
   route,
   slippage,
-) => {
+}) => {
   if (amountIn === 0n) {
     return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
   }
 
-  const estimatedAmount = await estimateAmount(tokenIn, tokenOut, amountIn);
-  const gas = await estimateGas(
+  const estimatedAmount = await estimateAmount({ tokenIn, tokenOut, amountIn });
+  const gas = await estimateGas({
     tokenIn,
     tokenOut,
     amountIn,
     slippage,
-    estimatedAmount,
-  );
+    amountOut: estimatedAmount,
+  });
 
   return {
     ...route,
@@ -138,14 +133,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const swap: Swap = async (
-  _tokenIn,
-  tokenOut,
-  amountIn,
-  _route,
-  slippage,
-  amountOut,
-) => {
+const swap: Swap = async ({ tokenOut, amountIn, slippage, amountOut }) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {

@@ -15,7 +15,7 @@ export const tokens = {
       symbol: 'ETH',
     },
     WETH: {
-      address: '0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2',
+      address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       chainId: mainnet.id,
       abi: erc20ABI,
       name: 'Wrapped Ether',
@@ -146,7 +146,7 @@ export const tokens = {
     },
     // Frax
     frxETH: {
-      address: '0x5e8422345238f34275888049021821e8e08caa1f',
+      address: '0x5E8422345238F34275888049021821E8E08CAa1f',
       chainId: mainnet.id,
       abi: erc20ABI,
       name: 'Frax Ether',
