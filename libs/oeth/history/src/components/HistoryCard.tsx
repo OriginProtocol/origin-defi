@@ -3,6 +3,10 @@ import { useState } from 'react';
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
+import { graphqlClient } from '@origin/oeth/shared';
+import { useQuery } from '@tanstack/react-query';
+import { isAddressEqual } from 'viem';
+import { useAccount } from 'wagmi';
 import {
   HistoryTableDocument,
   HistoryTableQuery,
@@ -11,32 +15,35 @@ import {
 import { ExportData } from './ExportData';
 import { HistoryFilters } from './Filters';
 import { HistoryTable } from './HistoryTable';
-import { graphqlClient } from '@origin/oeth/shared';
-import { useQuery } from '@tanstack/react-query';
 
 const PAGE_SIZE = 20;
 
 export function HistoryCard() {
   const [page, setPage] = useState(0);
   const [filters, setFilters] = useState<string[]>([]);
-  const [isConnected, setConnectionState] = useState(true);
+  const { address, isConnected } = useAccount();
+
   const { data, isFetching } = useQuery(
-    ['history-table', filters, page],
+    ['history-table', address, filters, page],
     () => {
       return graphqlClient<
         HistoryTableQuery,
-        { addressId: string; filters?: string[] }
+        { addressId: string; filters?: string[]; offset: number }
       >(
         filters.length ? HistoryTableWithFiltersDocument : HistoryTableDocument,
         {
-          // add the address id here
-          addressId: '',
+          addressId: address.toLowerCase(),
           filters: filters.length ? filters : undefined,
           offset: page * PAGE_SIZE,
         },
       )();
     },
-    { enabled: isConnected },
+
+    {
+      enabled:
+        isConnected &&
+        isAddressEqual(address, address.toLowerCase() as `0x${string}`),
+    },
   );
 
   const intl = useIntl();
@@ -77,7 +84,7 @@ export function HistoryCard() {
               defaultMessage: 'Connect your wallet to see your history',
             })}
           </Typography>
-          <Button onClick={() => setConnectionState(true)}>Connect</Button>
+          <Button onClick={() => console.log('test')}>Connect</Button>
         </Box>
       )}
     </Box>

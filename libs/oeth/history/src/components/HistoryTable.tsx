@@ -22,6 +22,7 @@ import { useIntl } from 'react-intl';
 import type { HistoryTableQuery } from '../queries.generated';
 import usePagination from '@mui/material/usePagination/usePagination';
 import { HistoryFilterButton } from './HistoryButton';
+import { HistoryCell } from './HistoryCell';
 
 export type Rows = HistoryTableQuery['addressById']['history'];
 
@@ -48,12 +49,12 @@ export function HistoryTable({
     () => [
       columnHelper.accessor('type', {
         cell: (info) => (
-          <>
-            {info.getValue()}&nbsp;
-            <Box component="span" color="text.secondary">
-              {intl.formatDate(new Date(info.row.original.timestamp))}
-            </Box>
-          </>
+          <HistoryCell
+            // @ts-expect-error type-mismatch
+            type={info.getValue()}
+            timestamp={info.row.original.timestamp}
+            transactionHash={info.row.original.txHash}
+          />
         ),
         header: intl.formatMessage({ defaultMessage: 'Type' }),
         enableColumnFilter: true,

@@ -3,8 +3,20 @@ import { valueFormat } from '@origin/shared/components';
 import { theme } from '@origin/shared/theme';
 import React from 'react';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
+import { useHistoryTableQuery } from '../queries.generated';
+import { isAddressEqual } from 'viem';
 
 export function APYContainer() {
+  const { address, isConnected } = useAccount();
+  const { data } = useHistoryTableQuery(
+    { addressId: address.toLowerCase(), offset: 0 },
+    {
+      enabled:
+        isConnected &&
+        isAddressEqual(address, address.toLowerCase() as `0x${string}`),
+    },
+  );
   const intl = useIntl();
   return (
     <Stack
@@ -18,11 +30,11 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-        value={250.1937}
+        value={data?.addressById?.balance ?? 0}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
-        label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
+        label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
         value={0.0023}
       />
       <Divider orientation="vertical" flexItem />
@@ -30,7 +42,7 @@ export function APYContainer() {
         label={intl.formatMessage({
           defaultMessage: 'Lifetime earnings (OETH)',
         })}
-        value={15.1937}
+        value={data?.addressById?.earned ?? 0}
       />
     </Stack>
   );
