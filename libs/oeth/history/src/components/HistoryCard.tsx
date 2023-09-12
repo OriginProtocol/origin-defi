@@ -32,7 +32,7 @@ export function HistoryCard() {
       >(
         filters.length ? HistoryTableWithFiltersDocument : HistoryTableDocument,
         {
-          addressId: address.toLowerCase(),
+          addressId: address?.toLowerCase(),
           filters: filters.length ? filters : undefined,
           offset: page * PAGE_SIZE,
         },
@@ -42,7 +42,7 @@ export function HistoryCard() {
     {
       enabled:
         isConnected &&
-        isAddressEqual(address, address.toLowerCase() as `0x${string}`),
+        isAddressEqual(address, address?.toLowerCase() as `0x${string}`),
     },
   );
 

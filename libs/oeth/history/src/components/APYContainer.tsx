@@ -10,11 +10,11 @@ import { isAddressEqual } from 'viem';
 export function APYContainer() {
   const { address, isConnected } = useAccount();
   const { data } = useHistoryTableQuery(
-    { addressId: address.toLowerCase(), offset: 0 },
+    { addressId: address?.toLowerCase(), offset: 0 },
     {
       enabled:
         isConnected &&
-        isAddressEqual(address, address.toLowerCase() as `0x${string}`),
+        isAddressEqual(address, address?.toLowerCase() as `0x${string}`),
     },
   );
   const intl = useIntl();
