@@ -6,9 +6,13 @@
     "build-storybook": "nx build-storybook  shared-storybook --verbose",
     "storybook": "nx storybook shared-storybook",
     "oeth": "pnpm nx serve oeth",
-    "ousd": "pnpm nx serve ousd"
+    "ousd": "pnpm nx serve ousd",
+    "prepare": "husky install"
   },
   "private": true,
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mdx}": "eslint --cache --fix"
+  },
   "dependencies": {
     "@curvefi/api": "^2.46.1",
     "@emotion/react": "^11.11.1",
@@ -85,7 +89,9 @@
     "eslint-plugin-simple-import-sort": "^10.0.0",
     "eslint-plugin-unused-imports": "^3.0.0",
     "fs-extra": "^11.1.1",
+    "husky": "^8.0.0",
     "jsdom": "~22.1.0",
+    "lint-staged": "^14.0.1",
     "nx": "16.6.0",
     "prettier": "^3.0.1",
     "storybook-addon-pseudo-states": "^2.1.0",

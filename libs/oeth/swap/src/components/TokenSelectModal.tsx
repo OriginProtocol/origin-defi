@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { usePrices } from '@origin/shared/providers';
+import { currencyFormat, formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -141,18 +142,11 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           {isBalanceLoading ? (
             <Skeleton width={30} />
           ) : (
-            intl.formatNumber(bal, {
-              minimumFractionDigits: 0,
-              maximumFractionDigits: 4,
-            })
+            formatAmount(balance.value, balance.decimals)
           )}
         </Typography>
         <Typography color="text.secondary" variant="body2">
-          {intl.formatNumber(balUsd, {
-            style: 'currency',
-            currency: 'USD',
-            minimumFractionDigits: 2,
-          })}
+          {intl.formatNumber(balUsd, currencyFormat)}
         </Typography>
       </Box>
     </MenuItem>

@@ -1,10 +1,10 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, IconButton, Stack, Typography } from '@mui/material';
+import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import { currencyFormat } from '../Cards';
 import { Loader } from '../Loader';
 import { BigIntInput } from './BigIntInput';
 
@@ -60,13 +60,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
 
-    // const handleMaxClick = () => {
-    //   if (onAmountChange) {
-    //     onAmountChange(balance);
-    //   }
-    // };
-
-    const bal = +formatUnits(balance, decimals);
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
 
     return (
@@ -127,7 +120,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 {intl.formatMessage(
                   { defaultMessage: 'Balance: {number}' },
                   {
-                    number: intl.formatNumber(bal || 0, currencyFormat),
+                    number: formatAmount(balance, decimals),
                   },
                 )}
               </Typography>

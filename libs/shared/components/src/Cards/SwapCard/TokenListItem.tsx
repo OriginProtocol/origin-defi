@@ -1,8 +1,8 @@
 import { Box, MenuItem, Stack, Typography } from '@mui/material';
+import { currencyFormat, quantityFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import { Mix } from '../../Mix';
-import { currencyFormat, quantityFormat } from './SwapCard';
 
 import type { Option } from './TokenListModal';
 
