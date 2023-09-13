@@ -1,73 +1,79 @@
 import { useState } from 'react';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
-import { Card } from '@origin/shared/components';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { HistoryFilterButton } from './HistoryButton';
+import { graphqlClient } from '@origin/oeth/shared';
+import { useQuery } from '@tanstack/react-query';
+import { useAccount } from 'wagmi';
+import {
+  HistoryTableDocument,
+  HistoryTableQuery,
+  HistoryTableWithFiltersDocument,
+} from '../queries.generated';
+import { ExportData } from './ExportData';
+import { HistoryFilters } from './Filters';
 import { HistoryTable } from './HistoryTable';
 
-import type { ColumnFilter } from '@tanstack/react-table';
+const PAGE_SIZE = 20;
 
 export function HistoryCard() {
-  const [isConnected, setConnectionState] = useState(false);
-  const intl = useIntl();
-  const [filter, setFilter] = useState<ColumnFilter>({
-    id: 'type',
-    value: [],
-  });
+  const [page, setPage] = useState(0);
+  const [filters, setFilters] = useState<string[]>([]);
+  const { address, isConnected } = useAccount();
 
-  function filterRows(value: string) {
-    setFilter((prev) => {
-      if ((prev.value as string[]).includes(value)) {
-        return {
-          ...prev,
-          value: [...(prev.value as string[]).filter((val) => val !== value)],
-        };
-      } else {
-        return {
-          ...prev,
-          value: [...(prev.value as string[]), value],
-        };
-      }
-    });
-  }
+  const { data, isFetching } = useQuery(
+    ['history-table', address, filters, page],
+    () => {
+      return graphqlClient<
+        HistoryTableQuery,
+        { addressId: string; filters?: string[]; offset: number }
+      >(
+        filters.length ? HistoryTableWithFiltersDocument : HistoryTableDocument,
+        {
+          addressId: address?.toLowerCase(),
+          filters: filters.length ? filters : undefined,
+          offset: page * PAGE_SIZE,
+        },
+      )();
+    },
+
+    {
+      enabled: isConnected,
+    },
+  );
+
+  const intl = useIntl();
+
   return (
-    <Card
-      sx={{ mt: 3 }}
-      title={
-        <Stack
-          direction="row"
-          sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-        >
-          <Typography color="primary.contrastText">History</Typography>
-          <Stack direction="row" gap={2} sx={{ marginInline: 'auto' }}>
-            {[
-              intl.formatMessage({ defaultMessage: 'Received' }),
-              intl.formatMessage({ defaultMessage: 'Sent' }),
-              intl.formatMessage({ defaultMessage: 'Swap' }),
-              intl.formatMessage({ defaultMessage: 'Yield' }),
-            ].map((label) => (
-              <HistoryFilterButton
-                key={label}
-                circle
-                selected={(filter.value as string[]).includes(
-                  label.toLowerCase(),
-                )}
-                onClick={() => filterRows(label.toLowerCase())}
-              >
-                {label}
-              </HistoryFilterButton>
-            ))}
-          </Stack>
-          <HistoryFilterButton>
-            {intl.formatMessage({ defaultMessage: 'Export CSV' })}
-          </HistoryFilterButton>
+    <Box sx={{ borderRadius: 1, backgroundColor: 'background.paper', mt: 3 }}>
+      <Stack
+        sx={{
+          paddingInline: { xs: 2, sm: 3 },
+          paddingBlock: { xs: 1.75, md: 2.75 },
+        }}
+        direction="row"
+        alignItems="center"
+        justifyContent="space-between"
+      >
+        <Typography color="primary.contrastText">
+          {intl.formatMessage({ defaultMessage: 'OETH transactions' })}
+        </Typography>
+        <Stack direction="row" gap={1}>
+          <HistoryFilters onChange={(values) => setFilters(values)} />
+          <ExportData data={data?.addressById?.history} />
         </Stack>
-      }
-    >
+      </Stack>
+      <Divider />
       {isConnected ? (
-        <HistoryTable rows={[]} isLoading={false} filter={filter} />
+        <HistoryTable
+          rows={data?.addressById?.history || []}
+          isLoading={isFetching}
+          hasNextPage={data?.addressById?.history?.length === PAGE_SIZE}
+          hasPreviousPage={page > 0}
+          page={page}
+          setPage={(page) => setPage(page)}
+        />
       ) : (
         <Box sx={{ height: '15rem', display: 'grid', placeContent: 'center' }}>
           <Typography>
@@ -75,9 +81,9 @@ export function HistoryCard() {
               defaultMessage: 'Connect your wallet to see your history',
             })}
           </Typography>
-          <Button onClick={() => setConnectionState(true)}>Connect</Button>
+          <Button onClick={() => console.log('test')}>Connect</Button>
         </Box>
       )}
-    </Card>
+    </Box>
   );
 }

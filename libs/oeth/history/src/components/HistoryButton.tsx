@@ -1,6 +1,6 @@
-import { alpha, Box, Button } from '@mui/material';
+import { alpha, Button } from '@mui/material';
 
-import type { BoxProps, ButtonProps } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
 
 interface Props extends ButtonProps {
   circle?: boolean;
@@ -19,18 +19,22 @@ export function HistoryFilterButton({
     <Button
       variant="contained"
       onClick={onClick}
+      disableRipple
       sx={{
         background: (theme) => alpha(theme.palette.common.white, 0.1),
-        color: selected ? 'primary.contrastText' : 'text.primary',
         display: 'flex',
         alignItems: 'center',
         backgroundImage: 'none',
-        gap: 1.5,
-        borderRadius: 14,
+        gap: 1,
+        borderRadius: 8,
         paddingInline: 2,
         paddingBlock: 0.5,
         fontSize: (theme) => theme.typography.pxToRem(12),
-        '&:hover': {
+        color: 'primary.contrastText',
+        fontWeight: 500,
+        fontStyle: 'normal',
+        lineHeight: (theme) => theme.typography.pxToRem(20),
+        ':hover': {
           background: (theme) => alpha(theme.palette.common.white, 0.1),
         },
         ...sx,
@@ -38,30 +42,6 @@ export function HistoryFilterButton({
       {...rest}
     >
       {children}
-      {circle ? (
-        <Circle
-          sx={{
-            background: (theme) =>
-              selected
-                ? theme.palette.background.gradient3
-                : theme.palette.background.paper,
-          }}
-        />
-      ) : undefined}
     </Button>
-  );
-}
-
-function Circle(props: BoxProps) {
-  return (
-    <Box
-      sx={{
-        backgroundColor: (theme) => theme.palette.background.default,
-        height: '0.5rem',
-        width: '0.5rem',
-        borderRadius: '100%',
-        ...props,
-      }}
-    />
   );
 }

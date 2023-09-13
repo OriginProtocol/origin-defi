@@ -1,8 +1,10 @@
 import { Container, CssBaseline, Stack } from '@mui/material';
-import { ApyHeader } from '@origin/oeth/shared';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
+import { registerChart } from '@origin/shared/providers';
+
+registerChart();
 
 export const App = () => {
   return (
@@ -23,7 +25,6 @@ export const App = () => {
           }}
           maxWidth="sm"
         >
-          <ApyHeader />
           <Stack mt={3}>
             <Outlet />
           </Stack>
