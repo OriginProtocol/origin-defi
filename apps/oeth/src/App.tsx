@@ -2,6 +2,9 @@ import { Container, CssBaseline, Stack } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
+import { registerChart } from '@origin/shared/providers';
+
+registerChart();
 
 export const App = () => {
   return (

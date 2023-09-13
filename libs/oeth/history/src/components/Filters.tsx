@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
   Box,
@@ -40,6 +40,16 @@ export function HistoryFilters({ onChange }: Props) {
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+  function selection(e: React.ChangeEvent<HTMLInputElement>, label: string) {
+    setSelectedTypes((prev) => {
+      if (e.target.checked) {
+        return [...prev, label];
+      } else {
+        return prev.filter((val) => val !== label);
+      }
+    });
+  }
 
   return (
     <>
@@ -129,15 +139,7 @@ export function HistoryFilters({ onChange }: Props) {
                   fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
                 },
               }}
-              onChange={(e) =>
-                setSelectedTypes((prev) => {
-                  if (e.target.checked) {
-                    return [...prev, label];
-                  } else {
-                    return prev.filter((val) => val !== label);
-                  }
-                })
-              }
+              onChange={(e) => selection(e, label)}
             />
           </Stack>
         ))}

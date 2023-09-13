@@ -278,9 +278,8 @@ export const theme = extendTheme({
     },
     MuiTableCell: {
       styleOverrides: {
-        // @ts-expect-errors stop acting like it wouldn't work TS
         root: ({ theme }) => ({
-          paddingInline: { xs: theme.spacing(2), md: theme.spacing(3) },
+          paddingInline: theme.spacing(3),
           paddingBlock: theme.spacing(2),
           color: theme.palette.primary.contrastText,
           fontSize: theme.typography.pxToRem(14),

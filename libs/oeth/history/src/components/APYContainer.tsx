@@ -1,20 +1,15 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 import { valueFormat } from '@origin/shared/components';
-import { theme } from '@origin/shared/theme';
-import React from 'react';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 import { useHistoryTableQuery } from '../queries.generated';
-import { isAddressEqual } from 'viem';
 
 export function APYContainer() {
   const { address, isConnected } = useAccount();
   const { data } = useHistoryTableQuery(
     { addressId: address?.toLowerCase(), offset: 0 },
     {
-      enabled:
-        isConnected &&
-        isAddressEqual(address, address?.toLowerCase() as `0x${string}`),
+      enabled: isConnected,
     },
   );
   const intl = useIntl();

@@ -5,7 +5,6 @@ import { useIntl } from 'react-intl';
 
 import { graphqlClient } from '@origin/oeth/shared';
 import { useQuery } from '@tanstack/react-query';
-import { isAddressEqual } from 'viem';
 import { useAccount } from 'wagmi';
 import {
   HistoryTableDocument,
@@ -40,9 +39,7 @@ export function HistoryCard() {
     },
 
     {
-      enabled:
-        isConnected &&
-        isAddressEqual(address, address?.toLowerCase() as `0x${string}`),
+      enabled: isConnected,
     },
   );
 

@@ -119,7 +119,9 @@ export function HistoryTable({
 
   return (
     <Stack gap={2}>
-      <Table>
+      <Table
+        sx={{ '& .MuiTableCell-root': { paddingInline: { xs: 2, md: 3 } } }}
+      >
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow

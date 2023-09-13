@@ -2,16 +2,8 @@ import { Box, Stack, Typography, useTheme } from '@mui/material';
 import { Card } from '@origin/shared/components';
 import React, { useLayoutEffect, useRef } from 'react';
 import { useIntl } from 'react-intl';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  LineElement,
-  PointElement,
-} from 'chart.js';
-import { Line } from 'react-chartjs-2';
 
-ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement);
+import { Line } from 'react-chartjs-2';
 
 interface Props {
   apyPercent: number;
