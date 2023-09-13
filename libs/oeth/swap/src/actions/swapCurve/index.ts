@@ -1,5 +1,6 @@
 import { ETH_ADDRESS_CURVE, isNilOrEmpty } from '@origin/shared/utils';
 import {
+  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -149,8 +150,41 @@ const swap: Swap = async ({
   slippage,
   curve,
 }) => {
-  if (amountIn === 0n) {
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
     return;
+  }
+
+  if (!isNilOrEmpty(tokenIn.address) && !isNilOrEmpty(tokenOut.address)) {
+    const allowance = await readContract({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'allowance',
+      args: [address, curve.CurveRegistryExchange.address],
+    });
+
+    if (allowance < amountIn) {
+      try {
+        const { request } = await prepareWriteContract({
+          address: tokenIn.address,
+          abi: erc20ABI,
+          functionName: 'approve',
+          args: [curve.CurveRegistryExchange.address, amountIn],
+        });
+        const { hash } = await writeContract(request);
+        await waitForTransaction({ hash });
+
+        // TODO trigger notification
+        console.log(`swap curve exchange multiple approval done!`);
+      } catch (e) {
+        // TODO trigger notification
+        console.error(
+          `swap curve exchange multiple approval error!\n${e.message}`,
+        );
+        return;
+      }
+    }
   }
 
   const minAmountOut = parseUnits(
