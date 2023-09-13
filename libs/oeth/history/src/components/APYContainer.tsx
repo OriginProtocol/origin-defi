@@ -1,7 +1,8 @@
 import { Divider, Stack, Typography } from '@mui/material';
-import { valueFormat } from '@origin/shared/components';
+import { valueFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
+
 import { useHistoryTableQuery } from '../queries.generated';
 
 export function APYContainer() {

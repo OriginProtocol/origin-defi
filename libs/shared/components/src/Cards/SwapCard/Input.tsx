@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import { alpha, Box, InputBase, Stack, Typography } from '@mui/material';
+import { currencyFormat } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '../../Loader';
 import { cardStyles } from '../Card';
-import { currencyFormat } from './SwapCard';
 import { SwapItem } from './SwapItem';
 import { styles } from './utils';
 

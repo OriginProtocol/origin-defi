@@ -7,21 +7,6 @@ import { Input } from './Input';
 import { Output } from './Output';
 import { SwapButton } from './SwapButton';
 
-import type { FormatNumberOptions } from 'react-intl';
-
-export const valueFormat: FormatNumberOptions = {
-  minimumFractionDigits: 2,
-};
-export const currencyFormat: FormatNumberOptions = {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
-};
-export const quantityFormat: FormatNumberOptions = {
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 4,
-};
-
 interface Props {
   title: string | React.ReactNode;
   baseTokenName: string;

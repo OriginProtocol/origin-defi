@@ -1,9 +1,9 @@
 import { alpha, Box, Typography } from '@mui/material';
+import { currencyFormat, valueFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '../../Loader';
 import { cardStyles } from '../Card';
-import { currencyFormat, valueFormat } from './SwapCard';
 import { SwapItem } from './SwapItem';
 import { styles } from './utils';
 

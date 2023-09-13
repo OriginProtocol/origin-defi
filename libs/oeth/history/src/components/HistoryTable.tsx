@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 
 import {
   Box,
-  Button,
   Stack,
   Table,
   TableBody,
@@ -10,7 +9,8 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { LinkIcon, quantityFormat } from '@origin/shared/components';
+import { LinkIcon } from '@origin/shared/components';
+import { quantityFormat } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -19,10 +19,10 @@ import {
 } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 
-import type { HistoryTableQuery } from '../queries.generated';
-import usePagination from '@mui/material/usePagination/usePagination';
 import { HistoryFilterButton } from './HistoryButton';
 import { HistoryCell } from './HistoryCell';
+
+import type { HistoryTableQuery } from '../queries.generated';
 
 export type Rows = HistoryTableQuery['addressById']['history'];
 
