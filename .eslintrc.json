@@ -14,6 +14,7 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["plugin:react/recommended", "plugin:prettier/recommended"],
       "rules": {
+        // Nx rules
         "@nx/enforce-module-boundaries": [
           "error",
           {
@@ -27,9 +28,13 @@
             ]
           }
         ],
-        "@typescript-eslint/no-explicit-any": false,
+
+        // React rules
         "react/react-in-jsx-scope": "off",
+
+        // General rules
         "no-empty": ["error", { "allowEmptyCatch": true }],
+
         // Unused imports rules
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
@@ -74,6 +79,13 @@
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {}
+    },
+    {
+      "files": ["*.generated.ts", "*.generated.tsx"],
+      "extends": ["plugin:@nx/typescript"],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off"
+      }
     },
     {
       "files": ["*.js", "*.jsx"],

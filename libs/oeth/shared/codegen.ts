@@ -6,6 +6,7 @@ const config: CodegenConfig = {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
+      hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
     },
     'libs/oeth/': {
       schema: process.env.VITE_SUBSQUID_URL,
