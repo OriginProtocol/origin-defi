@@ -1,10 +1,4 @@
-import {
-  Alert,
-  AlertTitle,
-  IconButton,
-  SvgIcon,
-  Typography,
-} from '@mui/material';
+import { Alert, AlertTitle, Box, IconButton, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntervalEffect } from '@react-hookz/web';
 
@@ -56,20 +50,12 @@ export const NotificationSnack = ({
         ...AlertProps?.sx,
       }}
       action={
-        <IconButton size="small" aria-label="close" onClick={handleCloseClick}>
-          <SvgIcon>
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="18"
-              height="17"
-              viewBox="0 0 18 17"
-            >
-              <g fillRule="evenodd">
-                <path d="M-2 8L20 8 20 9 -2 9z" transform="rotate(-45 9 8.5)" />
-                <path d="M-2 8L20 8 20 9 -2 9z" transform="rotate(45 9 8.5)" />
-              </g>
-            </svg>
-          </SvgIcon>
+        <IconButton
+          aria-label="close"
+          onClick={handleCloseClick}
+          sx={{ maxHeight: '1.375rem', maxWidth: '1.375rem' }}
+        >
+          <Box component="img" src={`/images/close.svg`} />
         </IconButton>
       }
     >
