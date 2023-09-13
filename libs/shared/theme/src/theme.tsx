@@ -14,6 +14,9 @@ export const theme = extendTheme({
           light: '#b361e6',
           contrastText: '#FAFBFB',
         },
+        secondary: {
+          main: '#0074F0',
+        },
         divider: '#101113',
         background: {
           paper: '#1E1F25',
@@ -57,6 +60,13 @@ export const theme = extendTheme({
   },
   typography: {
     fontFamily: 'Inter, Sailec, Helvetica, Arial, sans-serif',
+    h3: {
+      fontFamily: 'Sailec',
+      fontSize: '1.5rem',
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: '2rem',
+    },
     body1: {
       fontSize: '0.875rem',
       lineHeight: '1.4375rem',
@@ -269,9 +279,13 @@ export const theme = extendTheme({
     MuiTableCell: {
       styleOverrides: {
         root: ({ theme }) => ({
-          paddingInline: theme.spacing(5),
-          paddingBlock: theme.spacing(3),
+          paddingInline: theme.spacing(3),
+          paddingBlock: theme.spacing(2),
           color: theme.palette.primary.contrastText,
+          fontSize: theme.typography.pxToRem(14),
+          fontStyle: 'normal',
+          fontWeight: 400,
+          lineHeight: theme.typography.pxToRem(23),
         }),
         head: ({ theme }) => ({
           color: theme.palette.text.secondary,

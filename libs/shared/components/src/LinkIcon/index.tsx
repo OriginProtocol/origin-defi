@@ -1,13 +1,15 @@
 import { Box, Link } from '@mui/material';
 
-interface Props {
+import type { LinkProps, SxProps } from '@mui/material';
+
+interface Props extends LinkProps {
   url: string;
   size?: string;
 }
 
-export function LinkIcon({ url, size = '0.875rem' }: Props) {
+export function LinkIcon({ url, size = '0.875rem', ...rest }: Props) {
   return (
-    <Link href={url}>
+    <Link href={url} {...rest}>
       <Box
         component="img"
         src="/images/link-icon-purple.svg"
