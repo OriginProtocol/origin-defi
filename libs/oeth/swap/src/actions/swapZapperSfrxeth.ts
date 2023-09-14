@@ -3,16 +3,20 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
+  getPublicClient,
   prepareWriteContract,
   readContract,
   readContracts,
   waitForTransaction,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, parseUnits } from 'viem';
+import { formatUnits, maxUint256, parseUnits } from 'viem';
 
 import type {
+  Allowance,
+  Approve,
   EstimateAmount,
+  EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
   Swap,
@@ -53,43 +57,15 @@ const estimateGas: EstimateGas = async () => {
   return 90000n;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
-  if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
-  }
-
-  const [estimatedAmount, gas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-  ]);
-
-  return {
-    ...route,
-    estimatedAmount,
-    gas,
-    rate:
-      +formatUnits(amountIn, tokenIn.decimals) /
-      +formatUnits(estimatedAmount, tokenOut.decimals),
-  };
-};
-
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-}) => {
+const allowance: Allowance = async ({ tokenIn, tokenOut, amountIn }) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
-    return;
+    return 0n;
+  }
+
+  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+    return maxUint256;
   }
 
   const allowance = await readContract({
@@ -99,24 +75,146 @@ const swap: Swap = async ({
     args: [address, contracts.mainnet.OETHZapper.address],
   });
 
-  if (allowance < amountIn) {
-    try {
-      const { request } = await prepareWriteContract({
-        address: tokenIn.address,
-        abi: erc20ABI,
-        functionName: 'approve',
-        args: [contracts.mainnet.OETHZapper.address, amountIn],
-      });
-      const { hash } = await writeContract(request);
-      await waitForTransaction({ hash });
+  return allowance;
+};
 
-      // TODO trigger notification
-      console.log(`swap zapper sfrxEth approval done!`);
-    } catch (e) {
-      // TODO trigger notification
-      console.error(`swap zapper sfrxEth error!\n${e.message}`);
-      return;
+const estimateApprovalGas: EstimateApprovalGas = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+}) => {
+  let approvalEstimate = 0n;
+  const { address } = getAccount();
+
+  if (
+    amountIn === 0n ||
+    isNilOrEmpty(address) ||
+    isNilOrEmpty(tokenIn.address) ||
+    isNilOrEmpty(tokenOut.address)
+  ) {
+    return approvalEstimate;
+  }
+
+  const publicClient = getPublicClient();
+
+  try {
+    approvalEstimate = await publicClient.estimateContractGas({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.OETHZapper.address, amountIn],
+      account: address,
+    });
+  } catch {
+    approvalEstimate = 64000n;
+  }
+
+  return approvalEstimate;
+};
+
+const estimateRoute: EstimateRoute = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+  route,
+  slippage,
+}) => {
+  if (amountIn === 0n) {
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      approvedAmount: 0n,
+      approvalGas: 0n,
+    };
+  }
+
+  const [estimatedAmount, gas, approvedAmount, approvalGas] = await Promise.all(
+    [
+      estimateAmount({ tokenIn, tokenOut, amountIn }),
+      estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
+      allowance({ tokenIn, tokenOut, amountIn }),
+      estimateApprovalGas({ tokenIn, tokenOut, amountIn }),
+    ],
+  );
+
+  return {
+    ...route,
+    estimatedAmount,
+    gas,
+    approvalGas,
+    approvedAmount,
+    rate:
+      +formatUnits(amountIn, tokenIn.decimals) /
+      +formatUnits(estimatedAmount, tokenOut.decimals),
+  };
+};
+
+const approve: Approve = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
+  if (
+    (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) &&
+    onSuccess
+  ) {
+    console.log(`swap zapper does not require approval!`);
+    onSuccess(null);
+  }
+
+  try {
+    const { request } = await prepareWriteContract({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.OETHZapper.address, amountIn],
+    });
+    const { hash } = await writeContract(request);
+    const txReceipt = await waitForTransaction({ hash });
+
+    console.log(`swap zapper approval done!`);
+    if (onSuccess) {
+      await onSuccess(txReceipt);
     }
+  } catch (e) {
+    console.error(`swap zapper approval error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Swap Zapper approval');
+    } else if (onError) {
+      await onError('Swap Zapper approval');
+    }
+  }
+};
+
+const swap: Swap = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+  slippage,
+  amountOut,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
+    return;
+  }
+
+  const approved = await allowance({ tokenIn, tokenOut, amountIn });
+
+  if (approved < amountIn) {
+    console.error(`swap zapper is not approved`);
+    if (onError) {
+      await onError('Swap Zapper is not approved');
+    }
+    return;
   }
 
   const minAmountOut = parseUnits(
@@ -135,13 +233,19 @@ const swap: Swap = async ({
       args: [amountIn, minAmountOut],
     });
     const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
+    const txReceipt = await waitForTransaction({ hash });
 
-    // TODO trigger notification
     console.log('swap zapper sfrxEth done!');
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
   } catch (e) {
-    // TODO trigger notification
     console.error(`swap zapper sfrxEth error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Swap Zapper');
+    } else if (onError) {
+      await onError('Swap Zapper');
+    }
   }
 };
 
@@ -149,5 +253,8 @@ export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };

@@ -46,11 +46,11 @@ export const swapRoutes = [
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-curve',
   },
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve-eth',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.ETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'swap-curve-eth',
+  // },
   {
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
@@ -102,11 +102,11 @@ export const swapRoutes = [
     action: 'swap-zapper-sfrxeth',
   },
   // Redeem
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: MIX_TOKEN,
-    action: 'redeem-vault',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: MIX_TOKEN,
+  //   action: 'redeem-vault',
+  // },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,

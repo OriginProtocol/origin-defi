@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { alpha, Box, IconButton, Stack } from '@mui/material';
+import { alpha, Box, Button, IconButton, Stack } from '@mui/material';
 import { ApyHeader } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
@@ -13,6 +13,7 @@ import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import {
   useHandleAmountInChange,
+  useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
@@ -53,6 +54,7 @@ function SwapViewWrapped() {
       isAmountOutLoading,
       isPriceOutLoading,
       isBalanceOutLoading,
+      selectedSwapRoute,
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
@@ -70,6 +72,7 @@ function SwapViewWrapped() {
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
+  const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
 
   const handleCloseSelectionModal = () => {
@@ -79,6 +82,12 @@ function SwapViewWrapped() {
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
   };
+
+  const needsApproval =
+    isConnected &&
+    amountIn > 0n &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    selectedSwapRoute?.approvedAmount < amountIn;
 
   return (
     <>
@@ -181,6 +190,11 @@ function SwapViewWrapped() {
           <SwapButton onClick={handleTokenFlip} />
         </Box>
         <SwapRoute />
+        {needsApproval && (
+          <Button variant="action" fullWidth onClick={handleApprove}>
+            {intl.formatMessage({ defaultMessage: 'Approve' })}
+          </Button>
+        )}
         <ConnectedButton variant="action" fullWidth onClick={handleSwap}>
           {intl.formatMessage({ defaultMessage: 'Swap' })}
         </ConnectedButton>

@@ -23,7 +23,27 @@ const defaultApi: SwapApi = {
   estimateRoute: async ({ amountIn, route }) => {
     console.log('Route estimation not implemented');
 
-    return { ...route, estimatedAmount: amountIn, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: amountIn,
+      approvedAmount: 0n,
+      approvalGas: 0n,
+      gas: 0n,
+      rate: 0,
+    };
+  },
+  allowance: async () => {
+    console.log('Allowance not implemented');
+
+    return 0n;
+  },
+  estimateApprovalGas: async () => {
+    console.log('Gas approval estimation not implemented');
+
+    return 0n;
+  },
+  approve: async () => {
+    console.log('Approve operation not implemented');
   },
   swap: async () => {
     console.log('Route swap operation not implemented');

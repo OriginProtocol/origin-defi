@@ -144,6 +144,24 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
+export const useHandleApprove = () => {
+  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }] = useSwapState();
+  const curve = useCurve();
+
+  return useCallback(async () => {
+    if (isNilOrEmpty(selectedSwapRoute)) {
+      return;
+    }
+
+    await swapActions[selectedSwapRoute.action].approve({
+      tokenIn,
+      tokenOut,
+      amountIn,
+      curve,
+    });
+  }, [amountIn, curve, selectedSwapRoute, tokenIn, tokenOut]);
+};
+
 export const useHandleSwap = () => {
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },

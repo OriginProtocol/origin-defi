@@ -22,10 +22,12 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       isAmountOutLoading: false,
       isPriceOutLoading: false,
       isBalanceOutLoading: false,
-      slippage: 0.01,
       swapRoutes: [],
       selectedSwapRoute: null,
       isSwapRoutesLoading: false,
+      isApproved: false,
+      isApprovalLoading: false,
+      slippage: 0.01,
     });
     const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
@@ -40,6 +42,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               draft.isAmountOutLoading = false;
               draft.isPriceOutLoading = false;
               draft.isSwapRoutesLoading = false;
+              draft.isApproved = false;
+              draft.isApprovalLoading = false;
             }),
           );
           return;
