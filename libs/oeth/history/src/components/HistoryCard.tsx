@@ -1,19 +1,20 @@
 import { useState } from 'react';
 
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import { useIntl } from 'react-intl';
-
 import { graphqlClient } from '@origin/oeth/shared';
 import { useQuery } from '@tanstack/react-query';
+import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
+
 import {
   HistoryTableDocument,
-  HistoryTableQuery,
   HistoryTableWithFiltersDocument,
 } from '../queries.generated';
 import { ExportData } from './ExportData';
 import { HistoryFilters } from './Filters';
 import { HistoryTable } from './HistoryTable';
+
+import type { HistoryTableQuery } from '../queries.generated';
 
 const PAGE_SIZE = 20;
 

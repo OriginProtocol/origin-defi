@@ -1,10 +1,11 @@
-import React, { useCallback, useMemo, useRef } from 'react';
+import React, { useCallback, useRef } from 'react';
 
 import { Box, Link } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
-import { Rows } from './HistoryTable';
+
+import type { Rows } from './HistoryTable';
 
 interface Props {
   data?: Rows;

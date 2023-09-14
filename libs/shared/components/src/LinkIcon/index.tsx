@@ -1,6 +1,6 @@
 import { Box, Link } from '@mui/material';
 
-import type { LinkProps, SxProps } from '@mui/material';
+import type { LinkProps } from '@mui/material';
 
 interface Props extends LinkProps {
   url: string;
