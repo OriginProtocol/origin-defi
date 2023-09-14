@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* You can add global styles to this file, and also import other style files */
+
+body {
+  @apply bg-off-black text-off-white antialiased;
+}
+
+.btn {
+  @apply rounded-full bg-blue-gradient hover:bg-blue-gradient-light leading-tight transition-[background-image] ease-in-out duration-200;
+}
+
+.btn-secondary {
+  @apply rounded-full bg-gray-900;
+}
