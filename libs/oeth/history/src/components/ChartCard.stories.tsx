@@ -1,6 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
-import { ChartCard } from './ChartCard';
 import { Container } from '@mui/material';
+
+import { ChartCard } from './ChartCard';
+
+import type { Meta, StoryObj } from '@storybook/react';
 
 const meta: Meta<typeof ChartCard> = {
   component: ChartCard,

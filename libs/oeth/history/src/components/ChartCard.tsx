@@ -1,9 +1,9 @@
-import { Box, Stack, Typography, useTheme } from '@mui/material';
-import { Card } from '@origin/shared/components';
-import React, { useLayoutEffect, useRef } from 'react';
-import { useIntl } from 'react-intl';
+import React from 'react';
 
+import { Stack, Typography, useTheme } from '@mui/material';
+import { Card } from '@origin/shared/components';
 import { Line } from 'react-chartjs-2';
+import { useIntl } from 'react-intl';
 
 interface Props {
   apyPercent: number;

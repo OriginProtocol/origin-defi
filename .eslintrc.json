@@ -81,7 +81,7 @@
       "rules": {}
     },
     {
-      "files": ["*.generated.ts", "*.generated.tsx"],
+      "files": ["*.generated.ts", "*.generated.tsx", "graphql.ts"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
         "@typescript-eslint/no-explicit-any": "off"

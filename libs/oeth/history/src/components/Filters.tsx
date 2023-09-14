@@ -1,18 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Button,
   Checkbox,
   Divider,
-  FormControlLabel,
   FormLabel,
-  MenuItem,
-  MenuList,
   Popover,
   Stack,
   Typography,
-  alpha,
   useTheme,
 } from '@mui/material';
 import {
