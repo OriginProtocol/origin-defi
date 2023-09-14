@@ -56,7 +56,7 @@ export type EstimateRoute = (
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
-  args?: Pick<Args, 'amountIn' | 'tokenIn' | 'tokenOut' | 'curve'>,
+  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'curve'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (

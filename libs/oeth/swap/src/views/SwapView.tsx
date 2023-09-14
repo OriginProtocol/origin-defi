@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { alpha, Box, Button, IconButton, Stack } from '@mui/material';
 import { ApyHeader } from '@origin/oeth/shared';
@@ -17,6 +17,7 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
+  useSelectedSwapRouteAllowance,
   useTokenOptions,
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
@@ -59,6 +60,7 @@ function SwapViewWrapped() {
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
+  const { data: allowance } = useSelectedSwapRouteAllowance();
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
     token: tokenIn.address,
@@ -75,6 +77,16 @@ function SwapViewWrapped() {
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
 
+  const needsApproval = useMemo(
+    () =>
+      isConnected &&
+      amountIn > 0n &&
+      !isNilOrEmpty(selectedSwapRoute) &&
+      selectedSwapRoute?.approvedAmount < amountIn &&
+      allowance < amountIn,
+    [allowance, amountIn, isConnected, selectedSwapRoute],
+  );
+
   const handleCloseSelectionModal = () => {
     setTokenSource(null);
   };
@@ -82,12 +94,6 @@ function SwapViewWrapped() {
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
   };
-
-  const needsApproval =
-    isConnected &&
-    amountIn > 0n &&
-    !isNilOrEmpty(selectedSwapRoute) &&
-    selectedSwapRoute?.approvedAmount < amountIn;
 
   return (
     <>

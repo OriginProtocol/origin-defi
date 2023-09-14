@@ -74,10 +74,10 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ tokenIn, amountIn }) => {
+const allowance: Allowance = async ({ tokenIn }) => {
   const { address } = getAccount();
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (isNilOrEmpty(address)) {
     return 0n;
   }
 
@@ -139,7 +139,7 @@ const estimateRoute: EstimateRoute = async ({
     [
       estimateAmount({ tokenIn, tokenOut, amountIn }),
       estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-      allowance({ tokenIn, tokenOut, amountIn }),
+      allowance({ tokenIn, tokenOut }),
       estimateApprovalGas({ tokenIn, tokenOut, amountIn }),
     ],
   );
@@ -201,7 +201,7 @@ const swap: Swap = async ({
     return;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut, amountIn });
+  const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
     console.error(`wrap oeth is not approved`);

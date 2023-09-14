@@ -54,22 +54,20 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             queryClient.fetchQuery({
               queryKey: [
                 'estimateRoute',
-                state.tokenIn,
-                state.tokenOut,
+                state.tokenIn.symbol,
+                state.tokenOut.symbol,
                 route.action,
-                state.amountIn.toString(),
                 state.slippage,
+                state.amountIn.toString(),
               ] as const,
-              queryFn: async ({
-                queryKey: [, tokenIn, tokenOut, action, , slippage],
-              }) =>
-                swapActions[action].estimateRoute({
-                  tokenIn,
-                  tokenOut,
+              queryFn: async () =>
+                swapActions[route.action].estimateRoute({
+                  tokenIn: route.tokenIn,
+                  tokenOut: route.tokenOut,
                   amountIn: state.amountIn,
                   amountOut: state.amountOut,
                   route,
-                  slippage,
+                  slippage: state.slippage,
                   curve: {
                     CurveRegistryExchange,
                     OethPoolUnderlyings,

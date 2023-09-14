@@ -140,7 +140,7 @@ const estimateRoute: EstimateRoute = async ({
       tokenOut,
       amountIn,
     }),
-    allowance({ amountIn, tokenIn, tokenOut }),
+    allowance({ tokenIn, tokenOut }),
     estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
   const gas = await estimateGas({

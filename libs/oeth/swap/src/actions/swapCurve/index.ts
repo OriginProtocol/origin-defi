@@ -109,14 +109,10 @@ const estimateGas: EstimateGas = async ({
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+const allowance: Allowance = async ({ tokenIn, tokenOut, curve }) => {
   const { address } = getAccount();
 
-  if (
-    amountIn === 0n ||
-    isNilOrEmpty(address) ||
-    isNilOrEmpty(curve?.CurveRegistryExchange)
-  ) {
+  if (isNilOrEmpty(address) || isNilOrEmpty(curve?.CurveRegistryExchange)) {
     return 0n;
   }
 
@@ -187,7 +183,7 @@ const estimateRoute: EstimateRoute = async ({
       amountIn,
       curve,
     }),
-    allowance({ amountIn, tokenIn, tokenOut, curve }),
+    allowance({ tokenIn, tokenOut, curve }),
     estimateApprovalGas({ amountIn, tokenIn, tokenOut, curve }),
   ]);
   const gas = await estimateGas({
@@ -260,7 +256,7 @@ const swap: Swap = async ({
     return;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut, amountIn, curve });
+  const approved = await allowance({ tokenIn, tokenOut, curve });
 
   if (approved < amountIn) {
     console.error(`swap curve exchange multiple is not approved`);

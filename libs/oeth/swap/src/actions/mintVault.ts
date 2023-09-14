@@ -120,10 +120,10 @@ const estimateGas: EstimateGas = async ({
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ tokenIn, amountIn }) => {
+const allowance: Allowance = async ({ tokenIn }) => {
   const { address } = getAccount();
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (isNilOrEmpty(address)) {
     return 0n;
   }
 
@@ -183,7 +183,7 @@ const estimateRoute: EstimateRoute = async ({
 
   const [estimatedAmount, approvedAmount, approvalGas] = await Promise.all([
     estimateAmount({ tokenIn, tokenOut, amountIn }),
-    allowance({ amountIn, tokenIn, tokenOut }),
+    allowance({ tokenIn, tokenOut }),
     estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
   const gas = await estimateGas({
@@ -253,7 +253,7 @@ const swap: Swap = async ({
     return;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut, amountIn });
+  const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
     console.error(`mint vault is not approved`);

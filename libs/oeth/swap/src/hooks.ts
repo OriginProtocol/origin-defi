@@ -1,8 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { useCurve } from '@origin/shared/providers';
+import { useCurve, usePushNotification } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
+import { useIntl } from 'react-intl';
 
 import { swapActions } from './actions';
 import { useSwapState } from './state';
@@ -144,9 +146,34 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
-export const useHandleApprove = () => {
-  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }] = useSwapState();
+export const useSelectedSwapRouteAllowance = () => {
+  const [{ selectedSwapRoute }] = useSwapState();
   const curve = useCurve();
+
+  return useQuery({
+    queryKey: [
+      'allowance',
+      selectedSwapRoute?.tokenIn.symbol,
+      selectedSwapRoute?.tokenOut.symbol,
+      selectedSwapRoute?.action,
+    ],
+    queryFn: () =>
+      swapActions[selectedSwapRoute.action].allowance({
+        tokenIn: selectedSwapRoute.tokenIn,
+        tokenOut: selectedSwapRoute.tokenOut,
+        curve,
+      }),
+    enabled: !isNilOrEmpty(selectedSwapRoute),
+    placeholderData: 0n,
+  });
+};
+
+export const useHandleApprove = () => {
+  const intl = useIntl();
+  const curve = useCurve();
+  const queryClient = useQueryClient();
+  const pushNotification = usePushNotification();
+  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }] = useSwapState();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute)) {
@@ -158,15 +185,52 @@ export const useHandleApprove = () => {
       tokenOut,
       amountIn,
       curve,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            'allowance',
+            selectedSwapRoute?.tokenIn.symbol,
+            selectedSwapRoute?.tokenOut.symbol,
+            selectedSwapRoute?.action,
+          ],
+        });
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval complete' }),
+          severity: 'success',
+        });
+      },
+      onError: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval failed' }),
+          severity: 'error',
+        });
+      },
+      onReject: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          severity: 'info',
+        });
+      },
     });
-  }, [amountIn, curve, selectedSwapRoute, tokenIn, tokenOut]);
+  }, [
+    amountIn,
+    curve,
+    intl,
+    pushNotification,
+    queryClient,
+    selectedSwapRoute,
+    tokenIn,
+    tokenOut,
+  ]);
 };
 
 export const useHandleSwap = () => {
+  const intl = useIntl();
+  const curve = useCurve();
+  const pushNotification = usePushNotification();
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
   ] = useSwapState();
-  const curve = useCurve();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute)) {
@@ -181,11 +245,32 @@ export const useHandleSwap = () => {
       slippage,
       amountOut,
       curve,
+      onSuccess: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
+          severity: 'success',
+        });
+      },
+      onError: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap failed' }),
+          severity: 'error',
+        });
+      },
+      onReject: () => {
+        console.log('REJECT');
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          severity: 'info',
+        });
+      },
     });
   }, [
     amountIn,
     amountOut,
     curve,
+    intl,
+    pushNotification,
     selectedSwapRoute,
     slippage,
     tokenIn,
