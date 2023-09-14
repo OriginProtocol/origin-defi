@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { alpha, Box, IconButton, Stack } from '@mui/material';
+import { ApyHeader } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -23,7 +24,6 @@ import type { IconButtonProps, Theme } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { TokenSource } from '../types';
-import { ApyHeader } from '@origin/oeth/shared';
 
 const commonStyles = {
   paddingBlock: 2.5,

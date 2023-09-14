@@ -1,6 +1,13 @@
-import { registerChart } from '@origin/shared/providers';
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+} from 'chart.js';
+
 import preview from './decorators';
 
-registerChart();
+ChartJS.register(CategoryScale, LinearScale, LineElement, PointElement);
 
 export default preview;

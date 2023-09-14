@@ -1,16 +1,12 @@
-import { Stack, Typography } from '@mui/material';
 import React from 'react';
-import { TransactionIcon } from './TransactionIcon';
+
+import { Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useTransaction } from 'wagmi';
-import {
-  decodeAbiParameters,
-  getAbiItem,
-  parseTransaction,
-  serializeTransaction,
-} from 'viem';
-import { contracts, tokens } from '@origin/shared/contracts';
-import { omit } from 'ramda';
+
+import { TransactionIcon } from './TransactionIcon';
+
+import type { HexAddress } from '@origin/shared/utils';
 
 interface Props {
   timestamp: string;
@@ -20,8 +16,11 @@ interface Props {
 
 export function HistoryCell(props: Props) {
   const intl = useIntl();
-  // @ts-expect-error whatever
-  const { data } = useTransaction({ hash: props.transactionHash });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { data } = useTransaction({
+    hash: props.transactionHash as unknown as HexAddress,
+  });
 
   return (
     <Stack direction="row" alignItems="center" gap={1.5}>

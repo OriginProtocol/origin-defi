@@ -87,7 +87,7 @@ export function TopNav({
         })}
         onClick={() => setValue(0)}
       >
-        <img src={logo} />
+        <img src={logo} alt="origin-logo" />
       </Box>
       <Tabs
         onChange={(_, value) => setValue(value)}
