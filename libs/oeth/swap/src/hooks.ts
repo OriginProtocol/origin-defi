@@ -227,6 +227,7 @@ export const useHandleApprove = () => {
 export const useHandleSwap = () => {
   const intl = useIntl();
   const curve = useCurve();
+  const queryClient = useQueryClient();
   const pushNotification = usePushNotification();
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
@@ -246,6 +247,14 @@ export const useHandleSwap = () => {
       amountOut,
       curve,
       onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            'allowance',
+            selectedSwapRoute?.tokenIn.symbol,
+            selectedSwapRoute?.tokenOut.symbol,
+            selectedSwapRoute?.action,
+          ],
+        });
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
           severity: 'success',
@@ -271,6 +280,7 @@ export const useHandleSwap = () => {
     curve,
     intl,
     pushNotification,
+    queryClient,
     selectedSwapRoute,
     slippage,
     tokenIn,
