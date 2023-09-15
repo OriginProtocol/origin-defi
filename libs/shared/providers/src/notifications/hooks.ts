@@ -1,9 +1,9 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { produce } from 'immer';
 import { descend, prop, propEq, take } from 'ramda';
 
-import { useSelector, useUpdate } from './state';
+import { useTracked } from './state';
 
 import type { AlertColor } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -18,11 +18,11 @@ type NotificationOptions = {
 };
 
 export const usePushNotification = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(
     (options: NotificationOptions) => {
-      update(
+      setState(
         produce((state) => {
           state.notifications.unshift({
             severity: 'info',
@@ -36,101 +36,108 @@ export const usePushNotification = () => {
         }),
       );
     },
-    [update],
+    [setState],
   );
 };
 
 export const useSetNotificationInvisible = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(
     (id: string) => {
-      update(
+      setState(
         produce((state) => {
-          const idx = state.notifications.findIndex(propEq('id', id));
+          const idx = state.notifications.findIndex(propEq(id, 'id'));
           if (idx > -1) {
             state.notifications[idx].visible = false;
           }
         }),
       );
     },
-    [update],
+    [setState],
   );
 };
 
 export const useSetNotificationRead = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(
     (id: string) => {
-      update(
+      setState(
         produce((state) => {
-          const idx = state.notifications.findIndex(propEq('id', id));
+          const idx = state.notifications.findIndex(propEq(id, 'id'));
           if (idx > -1) {
             state.notifications[idx].read = true;
           }
         }),
       );
     },
-    [update],
+    [setState],
   );
 };
 
 export const useMarkAllNotificationsAsRead = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(() => {
-    update(
+    setState(
       produce((state) => {
         state.notifications.forEach(
           (notification) => (notification.read = true),
         );
       }),
     );
-  }, [update]);
+  }, [setState]);
 };
 
 export const useDeleteNotification = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(
     (id: string) => {
-      update(
+      setState(
         produce((state) => {
-          const idx = state.notifications.findIndex(propEq('id', id));
+          const idx = state.notifications.findIndex(propEq(id, 'id'));
           if (idx > -1) {
             state.notifications.splice(idx, 1);
           }
         }),
       );
     },
-    [update],
+    [setState],
   );
 };
 
 export const useClearAllNotifications = () => {
-  const update = useUpdate();
+  const [, setState] = useTracked();
 
   return useCallback(() => {
-    update(
+    setState(
       produce((state) => {
         state.notifications = [];
       }),
     );
-  }, [update]);
+  }, [setState]);
 };
 
-export const useVisibleNotifications = () =>
-  useSelector((state) =>
-    take(
-      state.maxVisible,
-      state.notifications
-        .filter(prop('visible'))
-        .sort(descend(prop('createdOn'))),
-    ),
-  );
+export const useVisibleNotifications = () => {
+  const [{ notifications, maxVisible }] = useTracked();
 
-export const useUnreadNotificationsCount = () =>
-  useSelector((state) =>
-    state.notifications.reduce((acc, curr) => acc + (curr.read ? 0 : 1), 0),
+  return useMemo(
+    () =>
+      take(
+        maxVisible,
+        notifications.filter(prop('visible')).sort(descend(prop('createdOn'))),
+      ),
+    [maxVisible, notifications],
   );
+};
+
+export const useUnreadNotificationsCount = () => {
+  const [{ notifications }] = useTracked();
+
+  return useMemo(
+    () => notifications.reduce((acc, curr) => acc + (curr.read ? 0 : 1), 0),
+    [notifications],
+  );
+};

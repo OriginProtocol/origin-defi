@@ -1,5 +1,6 @@
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
+import type { TransactionReceipt } from 'viem';
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
@@ -25,6 +26,9 @@ type Args = {
     CurveRegistryExchange: Contract;
     OethPoolUnderlyings: HexAddress[];
   };
+  onSuccess?: (txReceipt: TransactionReceipt) => void | Promise<void>;
+  onError?: (msg: string) => void | Promise<void>;
+  onReject?: (msg: string) => void | Promise<void>;
 };
 
 export type EstimateAmount = (
@@ -51,6 +55,27 @@ export type EstimateRoute = (
   >,
 ) => Promise<EstimatedSwapRoute>;
 
+export type Allowance = (
+  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'curve'>,
+) => Promise<bigint>;
+
+export type EstimateApprovalGas = (
+  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+) => Promise<bigint>;
+
+export type Approve = (
+  args: Pick<
+    Args,
+    | 'tokenIn'
+    | 'tokenOut'
+    | 'amountIn'
+    | 'curve'
+    | 'onSuccess'
+    | 'onError'
+    | 'onReject'
+  >,
+) => Promise<void>;
+
 export type Swap = (
   args: Pick<
     Args,
@@ -61,6 +86,9 @@ export type Swap = (
     | 'slippage'
     | 'estimatedRoute'
     | 'curve'
+    | 'onSuccess'
+    | 'onError'
+    | 'onReject'
   >,
 ) => Promise<void>;
 
@@ -68,6 +96,9 @@ export type SwapApi = {
   estimateAmount: EstimateAmount;
   estimateGas: EstimateGas;
   estimateRoute: EstimateRoute;
+  allowance: Allowance;
+  estimateApprovalGas: EstimateApprovalGas;
+  approve: Approve;
   swap: Swap;
 };
 
@@ -79,8 +110,10 @@ export type SwapRoute = {
 
 export type EstimatedSwapRoute = {
   estimatedAmount: bigint;
+  approvedAmount: bigint;
   rate: number;
   gas: bigint;
+  approvalGas: bigint;
 } & SwapRoute;
 
 export type SwapState = {
@@ -91,8 +124,10 @@ export type SwapState = {
   isAmountOutLoading: boolean;
   isPriceOutLoading: boolean;
   isBalanceOutLoading: boolean;
-  slippage: number;
   swapRoutes: EstimatedSwapRoute[];
   selectedSwapRoute: EstimatedSwapRoute | null;
   isSwapRoutesLoading: boolean;
+  isApproved: boolean;
+  isApprovalLoading: boolean;
+  slippage: number;
 };

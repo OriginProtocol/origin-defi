@@ -12,9 +12,8 @@ type NotificationsState = {
   autoHideDuration: number | null;
 };
 
-export const { Provider, useSelector, useUpdate, useTrackedState } =
-  createContainer<
-    NotificationsState,
-    Dispatch<SetStateAction<NotificationsState>>,
-    { initialState: NotificationsState }
-  >(({ initialState }) => useState(initialState));
+export const { Provider, useTracked } = createContainer<
+  NotificationsState,
+  Dispatch<SetStateAction<NotificationsState>>,
+  { initialState: NotificationsState }
+>(({ initialState }) => useState(initialState));

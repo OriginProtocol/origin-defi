@@ -13,7 +13,14 @@ import {
 } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
 
-import type { EstimateGas, EstimateRoute, Swap } from '../types';
+import type {
+  Allowance,
+  Approve,
+  EstimateApprovalGas,
+  EstimateGas,
+  EstimateRoute,
+  Swap,
+} from '../types';
 import type { EstimateAmount } from '../types';
 
 const estimateAmount: EstimateAmount = async ({
@@ -107,11 +114,53 @@ const estimateGas: EstimateGas = async ({
       gasEstimate = 510000n;
     }
   } catch (e) {
-    // TODO trigger notification
     console.error(`mint vault gas estimate error!\n${e.message}`);
   }
 
   return gasEstimate;
+};
+
+const allowance: Allowance = async ({ tokenIn }) => {
+  const { address } = getAccount();
+
+  if (isNilOrEmpty(address)) {
+    return 0n;
+  }
+
+  const allowance = await readContract({
+    address: tokenIn.address,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [address, contracts.mainnet.OETHVaultCore.address],
+  });
+
+  return allowance;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async ({
+  tokenIn,
+  amountIn,
+}) => {
+  let approvalEstimate = 0n;
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
+    return approvalEstimate;
+  }
+
+  const publicClient = getPublicClient();
+
+  try {
+    approvalEstimate = await publicClient.estimateContractGas({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+      account: address,
+    });
+  } catch {}
+
+  return approvalEstimate;
 };
 
 const estimateRoute: EstimateRoute = async ({
@@ -122,10 +171,21 @@ const estimateRoute: EstimateRoute = async ({
   slippage,
 }) => {
   if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      approvedAmount: 0n,
+      approvalGas: 0n,
+    };
   }
 
-  const estimatedAmount = await estimateAmount({ tokenIn, tokenOut, amountIn });
+  const [estimatedAmount, approvedAmount, approvalGas] = await Promise.all([
+    estimateAmount({ tokenIn, tokenOut, amountIn }),
+    allowance({ tokenIn, tokenOut }),
+    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
+  ]);
   const gas = await estimateGas({
     tokenIn,
     tokenOut,
@@ -138,10 +198,43 @@ const estimateRoute: EstimateRoute = async ({
     ...route,
     estimatedAmount,
     gas,
+    approvalGas,
+    approvedAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),
   };
+};
+
+const approve: Approve = async ({
+  tokenIn,
+  amountIn,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
+  try {
+    const { request } = await prepareWriteContract({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+    });
+    const { hash } = await writeContract(request);
+    const txReceipt = await waitForTransaction({ hash });
+
+    console.log(`mint vault approval done!`);
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
+  } catch (e) {
+    console.error(`mint vault approval error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Mint vault approval');
+    } else if (onError) {
+      await onError('Mint vault approval');
+    }
+  }
 };
 
 const swap: Swap = async ({
@@ -150,6 +243,9 @@ const swap: Swap = async ({
   amountIn,
   slippage,
   amountOut,
+  onSuccess,
+  onError,
+  onReject,
 }) => {
   const { address } = getAccount();
 
@@ -157,31 +253,14 @@ const swap: Swap = async ({
     return;
   }
 
-  const allowance = await readContract({
-    address: tokenIn.address,
-    abi: erc20ABI,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.OETHVaultCore.address],
-  });
+  const approved = await allowance({ tokenIn, tokenOut });
 
-  if (allowance < amountIn) {
-    try {
-      const { request } = await prepareWriteContract({
-        address: tokenIn.address,
-        abi: erc20ABI,
-        functionName: 'approve',
-        args: [contracts.mainnet.OETHVaultCore.address, amountIn],
-      });
-      const { hash } = await writeContract(request);
-      await waitForTransaction({ hash });
-
-      // TODO trigger notification
-      console.log(`mint vault approval done!`);
-    } catch (e) {
-      // TODO trigger notification
-      console.error(`mint vault approval error!\n${e.message}`);
-      return;
+  if (approved < amountIn) {
+    console.error(`mint vault is not approved`);
+    if (onError) {
+      await onError('Mint vault is not approved');
     }
+    return;
   }
 
   const minAmountOut = parseUnits(
@@ -200,13 +279,19 @@ const swap: Swap = async ({
       args: [tokenIn.address, amountIn, minAmountOut],
     });
     const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
+    const txReceipt = await waitForTransaction({ hash });
 
-    // TODO trigger notification
     console.log('mint vault done!');
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
   } catch (e) {
-    // TODO trigger notification
     console.error(`mint vault error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Mint vault swap');
+    } else if (onError) {
+      await onError('Mint vault swap');
+    }
   }
 };
 
@@ -214,5 +299,8 @@ export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };

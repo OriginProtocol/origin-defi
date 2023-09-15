@@ -1,6 +1,7 @@
 import { contracts, whales } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
+  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -11,7 +12,10 @@ import {
 import { formatUnits } from 'viem';
 
 import type {
+  Allowance,
+  Approve,
   EstimateAmount,
+  EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
   Swap,
@@ -70,6 +74,49 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   return gasEstimate;
 };
 
+const allowance: Allowance = async ({ tokenIn }) => {
+  const { address } = getAccount();
+
+  if (isNilOrEmpty(address)) {
+    return 0n;
+  }
+
+  const allowance = await readContract({
+    address: tokenIn.address,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [address, contracts.mainnet.WOETH.address],
+  });
+
+  return allowance;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async ({
+  tokenIn,
+  amountIn,
+}) => {
+  let approvalEstimate = 0n;
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
+    return approvalEstimate;
+  }
+
+  const publicClient = getPublicClient();
+
+  try {
+    approvalEstimate = await publicClient.estimateContractGas({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.WOETH.address, amountIn],
+      account: address,
+    });
+  } catch {}
+
+  return approvalEstimate;
+};
+
 const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
@@ -78,56 +125,90 @@ const estimateRoute: EstimateRoute = async ({
   slippage,
 }) => {
   if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      approvedAmount: 0n,
+      approvalGas: 0n,
+    };
   }
 
-  const [estimatedAmount, gas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-  ]);
+  const [estimatedAmount, gas, approvedAmount, approvalGas] = await Promise.all(
+    [
+      estimateAmount({ tokenIn, tokenOut, amountIn }),
+      estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
+      allowance({ tokenIn, tokenOut }),
+      estimateApprovalGas({ tokenIn, tokenOut, amountIn }),
+    ],
+  );
 
   return {
     ...route,
     estimatedAmount,
     gas,
+    approvalGas,
+    approvedAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),
   };
 };
 
-const swap: Swap = async ({ amountIn }) => {
+const approve: Approve = async ({
+  tokenIn,
+  amountIn,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
+  try {
+    const { request } = await prepareWriteContract({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.WOETH.address, amountIn],
+    });
+    const { hash } = await writeContract(request);
+    const txReceipt = await waitForTransaction({ hash });
+
+    console.log(`wrap oeth approval done!`);
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
+  } catch (e) {
+    console.error(`wrap oeth approval error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Wrap OETH approval');
+    } else if (onError) {
+      await onError('Wrap OETH approval');
+    }
+  }
+};
+
+const swap: Swap = async ({
+  tokenIn,
+  tokenOut,
+  amountIn,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return;
   }
 
-  const allowance = await readContract({
-    address: contracts.mainnet.OETH.address,
-    abi: contracts.mainnet.OETH.abi,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.WOETH.address],
-  });
+  const approved = await allowance({ tokenIn, tokenOut });
 
-  if (allowance < amountIn) {
-    try {
-      const { request } = await prepareWriteContract({
-        address: contracts.mainnet.OETH.address,
-        abi: contracts.mainnet.OETH.abi,
-        functionName: 'approve',
-        args: [contracts.mainnet.WOETH.address, amountIn],
-      });
-      const { hash } = await writeContract(request);
-      await waitForTransaction({ hash });
-
-      // TODO trigger notification
-      console.log(`wrap woeth approval done!`);
-    } catch (e) {
-      // TODO trigger notification
-      console.error(`wrap oeth approval error!\n${e.message}`);
-      return;
+  if (approved < amountIn) {
+    console.error(`wrap oeth is not approved`);
+    if (onError) {
+      await onError('Wrap OETH is not approved');
     }
+    return;
   }
 
   try {
@@ -138,13 +219,19 @@ const swap: Swap = async ({ amountIn }) => {
       args: [amountIn, address],
     });
     const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
+    const txReceipt = await waitForTransaction({ hash });
 
-    // TODO trigger notification
     console.log('wrap oeth done!');
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
   } catch (e) {
-    // TODO trigger notification
     console.error(`wrap oeth error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Wrap OETH');
+    } else if (onError) {
+      await onError('Wrap OETH');
+    }
   }
 };
 
@@ -152,5 +239,8 @@ export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };

@@ -11,12 +11,15 @@ import {
   waitForTransaction,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, parseUnits } from 'viem';
+import { formatUnits, maxUint256, parseUnits } from 'viem';
 
 import { MIX_TOKEN } from '../constants';
 
 import type {
+  Allowance,
+  Approve,
   EstimateAmount,
+  EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
   Swap,
@@ -103,6 +106,16 @@ const estimateGas: EstimateGas = async ({
   return gasEstimate;
 };
 
+const allowance: Allowance = async () => {
+  // Redeem OETH does not require approval
+  return maxUint256;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async () => {
+  // Redeem OETH does not require approval
+  return 0n;
+};
+
 const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
@@ -111,10 +124,25 @@ const estimateRoute: EstimateRoute = async ({
   slippage,
 }) => {
   if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      approvedAmount: 0n,
+      approvalGas: 0n,
+    };
   }
 
-  const estimatedAmount = await estimateAmount({ tokenIn, tokenOut, amountIn });
+  const [estimatedAmount, approvedAmount, approvalGas] = await Promise.all([
+    estimateAmount({
+      tokenIn,
+      tokenOut,
+      amountIn,
+    }),
+    allowance({ tokenIn, tokenOut }),
+    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
+  ]);
   const gas = await estimateGas({
     tokenIn,
     tokenOut,
@@ -127,13 +155,30 @@ const estimateRoute: EstimateRoute = async ({
     ...route,
     estimatedAmount,
     gas,
+    approvalGas,
+    approvedAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),
   };
 };
 
-const swap: Swap = async ({ tokenOut, amountIn, slippage, amountOut }) => {
+const approve: Approve = async ({ onSuccess }) => {
+  // Redeem OETH does not require approval
+  if (onSuccess) {
+    await onSuccess(null);
+  }
+};
+
+const swap: Swap = async ({
+  tokenOut,
+  amountIn,
+  slippage,
+  amountOut,
+  onSuccess,
+  onError,
+  onReject,
+}) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
@@ -156,13 +201,19 @@ const swap: Swap = async ({ tokenOut, amountIn, slippage, amountOut }) => {
       args: [amountIn, minAmountOut],
     });
     const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
+    const txReceipt = await waitForTransaction({ hash });
 
-    // TODO trigger notification
     console.log('redeem vault done!');
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
   } catch (e) {
-    // TODO trigger notification
     console.error(`redeem vault error!\n${e.message}`);
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Redeem OETH');
+    } else if (onError) {
+      await onError('Redeem OETH');
+    }
   }
 };
 
@@ -170,5 +221,8 @@ export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };
