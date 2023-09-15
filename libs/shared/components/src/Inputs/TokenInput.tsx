@@ -70,6 +70,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             value={amount}
             decimals={decimals}
             onChange={onAmountChange}
+            disabled={isAmountDisabled}
             isLoading={isAmountLoading}
             ref={ref}
             sx={{ flex: 1 }}

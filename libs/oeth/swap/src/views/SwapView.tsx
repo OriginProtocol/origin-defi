@@ -1,6 +1,14 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
-import { alpha, Box, Button, IconButton, Stack } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Button,
+  CircularProgress,
+  Collapse,
+  IconButton,
+  Stack,
+} from '@mui/material';
 import { ApyHeader } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
@@ -11,6 +19,7 @@ import { useAccount, useBalance } from 'wagmi';
 import { GasPopover } from '../components/GasPopover';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
+import { routeActionLabel } from '../constants';
 import {
   useHandleAmountInChange,
   useHandleApprove,
@@ -52,10 +61,10 @@ function SwapViewWrapped() {
       amountOut,
       tokenIn,
       tokenOut,
-      isAmountOutLoading,
-      isPriceOutLoading,
-      isBalanceOutLoading,
       selectedSwapRoute,
+      isSwapLoading,
+      isSwapRoutesLoading,
+      isApprovalLoading,
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
@@ -77,16 +86,6 @@ function SwapViewWrapped() {
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
 
-  const needsApproval = useMemo(
-    () =>
-      isConnected &&
-      amountIn > 0n &&
-      !isNilOrEmpty(selectedSwapRoute) &&
-      selectedSwapRoute?.approvedAmount < amountIn &&
-      allowance < amountIn,
-    [allowance, amountIn, isConnected, selectedSwapRoute],
-  );
-
   const handleCloseSelectionModal = () => {
     setTokenSource(null);
   };
@@ -94,6 +93,42 @@ function SwapViewWrapped() {
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
   };
+
+  const needsApproval =
+    isConnected &&
+    amountIn > 0n &&
+    !isBalTokenInLoading &&
+    balTokenIn.value >= amountIn &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    selectedSwapRoute?.approvedAmount < amountIn &&
+    allowance < amountIn;
+
+  const swapButtonLabel =
+    amountIn === 0n
+      ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
+      : amountIn > balTokenIn?.value
+      ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+      : !isNilOrEmpty(selectedSwapRoute)
+      ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
+      : '';
+
+  const amountInInputDisabled = isSwapLoading || isApprovalLoading;
+
+  const approveButtonDisabled =
+    isNilOrEmpty(selectedSwapRoute) ||
+    isApprovalLoading ||
+    amountIn > balTokenIn?.value;
+
+  const swapButtonDisabled =
+    needsApproval ||
+    isNilOrEmpty(selectedSwapRoute) ||
+    isBalTokenInLoading ||
+    amountIn > balTokenIn?.value ||
+    amountIn === 0n;
+
+  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
+
+  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
 
   return (
     <>
@@ -144,6 +179,7 @@ function SwapViewWrapped() {
             tokenPriceUsd={prices?.[tokenIn.symbol]}
             isPriceLoading={isPriceLoading}
             isConnected={isConnected}
+            isAmountDisabled={amountInInputDisabled}
             sx={{
               ...commonStyles,
               backgroundColor: 'grey.900',
@@ -175,15 +211,15 @@ function SwapViewWrapped() {
           <TokenInput
             amount={amountOut}
             balance={balTokenOut?.value}
-            isAmountLoading={isAmountOutLoading}
-            isBalanceLoading={isBalanceOutLoading || isBalTokenOutLoading}
+            isAmountLoading={isSwapRoutesLoading}
+            isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
             disableMaxClick
             token={tokenOut}
             onTokenClick={() => {
               setTokenSource('tokenOut');
             }}
             tokenPriceUsd={prices?.[tokenOut.symbol]}
-            isPriceLoading={isPriceOutLoading || isPriceLoading}
+            isPriceLoading={isSwapRoutesLoading || isPriceLoading}
             inputProps={{ readOnly: true }}
             isConnected={isConnected}
             sx={{
@@ -196,13 +232,31 @@ function SwapViewWrapped() {
           <SwapButton onClick={handleTokenFlip} />
         </Box>
         <SwapRoute />
-        {needsApproval && (
-          <Button variant="action" fullWidth onClick={handleApprove}>
-            {intl.formatMessage({ defaultMessage: 'Approve' })}
+        <Collapse in={needsApproval}>
+          <Button
+            variant="action"
+            fullWidth
+            disabled={approveButtonDisabled}
+            onClick={handleApprove}
+          >
+            {approveButtonLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : (
+              intl.formatMessage({ defaultMessage: 'Approve' })
+            )}
           </Button>
-        )}
-        <ConnectedButton variant="action" fullWidth onClick={handleSwap}>
-          {intl.formatMessage({ defaultMessage: 'Swap' })}
+        </Collapse>
+        <ConnectedButton
+          variant="action"
+          fullWidth
+          disabled={swapButtonDisabled}
+          onClick={handleSwap}
+        >
+          {swapButtonLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : (
+            swapButtonLabel
+          )}
         </ConnectedButton>
       </Card>
       <TokenSelectModal

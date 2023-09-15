@@ -142,7 +142,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           {isBalanceLoading ? (
             <Skeleton width={30} />
           ) : (
-            formatAmount(balance.value, balance.decimals)
+            formatAmount(balance?.value, balance?.decimals)
           )}
         </Typography>
         <Typography color="text.secondary" variant="body2">
