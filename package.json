@@ -15,7 +15,6 @@
     "*.{js,jsx,ts,tsx,mdx}": "eslint --cache --fix"
   },
   "dependencies": {
-    "@curvefi/api": "^2.46.6",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/material": "^5.14.9",
