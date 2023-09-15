@@ -116,7 +116,7 @@ const allowance: Allowance = async ({ tokenIn, tokenOut, curve }) => {
     return 0n;
   }
 
-  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+  if (isNilOrEmpty(tokenIn.address)) {
     return maxUint256;
   }
 
