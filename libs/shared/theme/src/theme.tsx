@@ -317,9 +317,13 @@ export const theme = extendTheme({
       },
     },
     MuiSkeleton: {
+      defaultProps: {
+        animation: 'wave',
+      },
       styleOverrides: {
         text: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 22,
+          backgroundColor: 'grey.900',
         }),
       },
     },

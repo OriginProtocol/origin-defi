@@ -166,6 +166,21 @@ export const useSelectedSwapRouteAllowance = () => {
   });
 };
 
+export const useHandleSlippageChange = () => {
+  const [, setSwapState] = useSwapState();
+
+  return useCallback(
+    (value: number) => {
+      setSwapState(
+        produce((state) => {
+          state.slippage = value;
+        }),
+      );
+    },
+    [setSwapState],
+  );
+};
+
 export const useHandleApprove = () => {
   const intl = useIntl();
   const curve = useCurve();

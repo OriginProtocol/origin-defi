@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { queryClient } from '@origin/oeth/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useCurve } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
 
@@ -27,6 +27,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       isApprovalLoading: false,
       isSwapLoading: false,
     });
+    const queryClient = useQueryClient();
     const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
     useDebouncedEffect(

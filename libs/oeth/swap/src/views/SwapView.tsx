@@ -8,21 +8,22 @@ import {
   Collapse,
   IconButton,
   Stack,
+  Typography,
 } from '@mui/material';
-import { ApyHeader } from '@origin/oeth/shared';
+import { ApyHeader, GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
-import { GasPopover } from '../components/GasPopover';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import { routeActionLabel } from '../constants';
 import {
   useHandleAmountInChange,
   useHandleApprove,
+  useHandleSlippageChange,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
@@ -45,6 +46,31 @@ const commonStyles = {
   borderRadius: 1,
 };
 
+const tokenInputStyles = {
+  border: 'none',
+  backgroundColor: 'transparent',
+  borderRadius: 0,
+  paddingBlock: 0,
+  paddingInline: 0,
+  borderImageWidth: 0,
+  boxSizing: 'border-box',
+  '& .MuiInputBase-input': {
+    padding: 0,
+    lineHeight: '1.875rem',
+    boxSizing: 'border-box',
+    fontStyle: 'normal',
+    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+    fontSize: '1.5rem',
+    fontWeight: 700,
+    height: '1.5rem',
+    color: 'primary.contrastText',
+    '&::placeholder': {
+      color: 'text.secondary',
+      opacity: 1,
+    },
+  },
+};
+
 export const SwapView = () => (
   <SwapProvider>
     <SwapViewWrapped />
@@ -62,6 +88,7 @@ function SwapViewWrapped() {
       tokenIn,
       tokenOut,
       selectedSwapRoute,
+      slippage,
       isSwapLoading,
       isSwapRoutesLoading,
       isApprovalLoading,
@@ -80,6 +107,7 @@ function SwapViewWrapped() {
     token: tokenOut.address,
     watch: true,
   });
+  const handleSlippageChange = useHandleSlippageChange();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -102,7 +130,6 @@ function SwapViewWrapped() {
     !isNilOrEmpty(selectedSwapRoute) &&
     selectedSwapRoute?.approvedAmount < amountIn &&
     allowance < amountIn;
-
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
@@ -111,24 +138,20 @@ function SwapViewWrapped() {
       : !isNilOrEmpty(selectedSwapRoute)
       ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
       : '';
-
+  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
+  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
-
   const approveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
-    isApprovalLoading ||
+    approveButtonLoading ||
     amountIn > balTokenIn?.value;
-
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
     isBalTokenInLoading ||
+    swapButtonLoading ||
     amountIn > balTokenIn?.value ||
     amountIn === 0n;
-
-  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
-
-  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
 
   return (
     <>
@@ -147,8 +170,12 @@ function SwapViewWrapped() {
             justifyContent="space-between"
             alignItems="center"
           >
-            {intl.formatMessage({ defaultMessage: 'Swap' })}
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Swap' })}
+            </Typography>
             <GasPopover
+              slippage={slippage}
+              onSlippageChange={handleSlippageChange}
               buttonProps={{
                 sx: {
                   position: 'relative',
@@ -180,10 +207,10 @@ function SwapViewWrapped() {
             isPriceLoading={isPriceLoading}
             isConnected={isConnected}
             isAmountDisabled={amountInInputDisabled}
+            inputProps={{ sx: tokenInputStyles }}
             sx={{
               ...commonStyles,
               backgroundColor: 'grey.900',
-
               borderBottomColor: 'transparent',
               '&:hover, &:focus-within': {
                 borderColor: 'transparent',
@@ -213,15 +240,14 @@ function SwapViewWrapped() {
             balance={balTokenOut?.value}
             isAmountLoading={isSwapRoutesLoading}
             isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
-            disableMaxClick
             token={tokenOut}
             onTokenClick={() => {
               setTokenSource('tokenOut');
             }}
             tokenPriceUsd={prices?.[tokenOut.symbol]}
             isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-            inputProps={{ readOnly: true }}
             isConnected={isConnected}
+            inputProps={{ readOnly: true, sx: tokenInputStyles }}
             sx={{
               ...commonStyles,
               borderStartStartRadius: 0,
@@ -229,7 +255,7 @@ function SwapViewWrapped() {
               backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
             }}
           />
-          <SwapButton onClick={handleTokenFlip} />
+          <ArrowButton onClick={handleTokenFlip} />
         </Box>
         <SwapRoute />
         <Collapse in={needsApproval}>
@@ -269,7 +295,7 @@ function SwapViewWrapped() {
   );
 }
 
-function SwapButton(props: IconButtonProps) {
+function ArrowButton(props: IconButtonProps) {
   return (
     <IconButton
       {...props}
@@ -295,9 +321,6 @@ function SwapButton(props: IconButtonProps) {
           '& img': {
             transform: 'rotate(-180deg)',
           },
-        },
-        '.Mui-disabled': {
-          backgroundColor: 'red',
         },
         ...props?.sx,
       }}

@@ -5,7 +5,7 @@ import { mainnet } from 'wagmi/chains';
 
 import type { LinkProps } from '@mui/material';
 
-export type ChainScanLinkProps = {
+export type BlockExplorerLinkProps = {
   hash?: string;
   blockExplorer?: {
     name: string;
@@ -13,15 +13,15 @@ export type ChainScanLinkProps = {
   };
 } & Omit<LinkProps, 'href'>;
 
-export const ChainScanLink = ({
+export const BlockExplorerLink = ({
   hash,
   blockExplorer,
   ...rest
-}: ChainScanLinkProps) => {
+}: BlockExplorerLinkProps) => {
   const intl = useIntl();
   const { chain, chains } = useNetwork();
 
-  const base =
+  const baseUrl =
     blockExplorer?.url ??
     chain?.blockExplorers?.default?.url ??
     chains[0].blockExplorers.default.url ??
@@ -35,7 +35,7 @@ export const ChainScanLink = ({
   return (
     <Link
       {...rest}
-      href={`${base}/tx/${hash ?? ''}`}
+      href={`${baseUrl}/tx/${hash ?? ''}`}
       target="_blank"
       rel="noopener noreferrer"
     >
