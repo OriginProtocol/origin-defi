@@ -17,7 +17,7 @@ import { MiddleTruncated } from '../MiddleTruncated';
 import { Icon } from './Icon';
 import { styles } from './utils';
 
-import type { ButtonProps, SxProps, Theme } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
 
 import type { Connected } from './types';
 
@@ -156,18 +156,16 @@ export type ConnectButtonProps = {
   connected: boolean;
 } & ButtonProps;
 
-export function ConnectButton({ connected, ...rest }: ConnectButtonProps) {
+export function ConnectButton({ connected, sx, ...rest }: ConnectButtonProps) {
   return (
     <Button
-      sx={
+      sx={Object.assign(
         {
           ...styles,
-          cursor: 'pointer',
           display: 'flex',
           alignItems: 'center',
           paddingInline: { xs: 1, sm: 3 },
           paddingInlineStart: { xs: 1, sm: connected ? 1 : 3 },
-          borderRadius: 25,
           background: (theme) =>
             connected
               ? `linear-gradient(0deg, ${alpha(
@@ -190,9 +188,9 @@ export function ConnectButton({ connected, ...rest }: ConnectButtonProps) {
           },
           minWidth: 0,
           gap: 1.5,
-          ...rest?.sx,
-        } as SxProps<Theme>
-      }
+        },
+        sx || {},
+      )}
       disableElevation
       disableRipple
       disableTouchRipple

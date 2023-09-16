@@ -7,9 +7,15 @@ interface Props extends LinkProps {
   size?: string;
 }
 
-export function LinkIcon({ url, size = '0.875rem', ...rest }: Props) {
+export function LinkIcon({
+  url,
+  size = '0.875rem',
+  target = '_blank',
+  rel = 'noopener noreferrer nofollow',
+  ...rest
+}: Props) {
   return (
-    <Link href={url} {...rest}>
+    <Link href={url} target={target} rel={rel} {...rest}>
       <Box
         component="img"
         src="/images/link-icon-purple.svg"

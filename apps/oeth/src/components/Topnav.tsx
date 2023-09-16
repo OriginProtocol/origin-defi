@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   alpha,
   Box,
@@ -8,9 +10,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { AccountDetails } from '@origin/oeth/shared';
 import { OpenAccountModalButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';
 
@@ -22,6 +26,9 @@ export function Topnav(props: BoxProps) {
   const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isConnected } = useAccount();
+  const [accountModalAnchor, setAccountModalAnchor] =
+    useState<HTMLButtonElement | null>(null);
 
   return (
     <Box
@@ -190,7 +197,17 @@ export function Topnav(props: BoxProps) {
             ? intl.formatMessage({ defaultMessage: 'IPFS' })
             : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
         </MuiLink>
-        <OpenAccountModalButton />
+        <OpenAccountModalButton
+          onClick={(e) => {
+            if (isConnected) {
+              setAccountModalAnchor(e.currentTarget);
+            }
+          }}
+        />
+        <AccountDetails
+          anchor={accountModalAnchor}
+          setAnchor={setAccountModalAnchor}
+        />
       </Box>
       <Divider
         sx={{
