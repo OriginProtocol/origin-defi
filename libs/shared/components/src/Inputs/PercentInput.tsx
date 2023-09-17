@@ -12,12 +12,6 @@ export type PercentInputProps = {
   onChange?: (value: number) => void;
 } & Omit<InputBaseProps, 'value' | 'onChange' | 'inputRef'>;
 
-const formatPercent = (value: number, precision: number) =>
-  Intl.NumberFormat('en', {
-    useGrouping: false,
-    maximumFractionDigits: precision,
-  }).format(value * 100);
-
 export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
   ({ value, precision = 4, onChange, ...rest }, ref) => {
     const [strVal, setStrVal] = useState(formatPercent(value, precision));
@@ -82,3 +76,10 @@ export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
 );
 
 PercentInput.displayName = 'PercentInput';
+
+function formatPercent(value: number, precision: number) {
+  return Intl.NumberFormat('en', {
+    useGrouping: false,
+    maximumFractionDigits: precision,
+  }).format(value * 100);
+}
