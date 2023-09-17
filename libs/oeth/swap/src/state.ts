@@ -75,13 +75,16 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           ),
         );
 
-        const sortedRoutes = routes.sort((a, b) =>
-          a.estimatedAmount < b.estimatedAmount
-            ? 1
-            : a.estimatedAmount > b.estimatedAmount
-            ? -1
-            : 0,
-        );
+        const sortedRoutes = routes.sort((a, b) => {
+          const valA =
+            a.estimatedAmount -
+            (a.gas + (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
+          const valB =
+            b.estimatedAmount -
+            (b.gas + (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
+
+          return valA < valB ? 1 : valA > valB ? -1 : 0;
+        });
 
         setState(
           produce((draft) => {

@@ -8,8 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { tokens } from '@origin/shared/contracts';
-import { usePrices } from '@origin/shared/providers';
+import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
   formatAmount,
@@ -19,6 +18,8 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { routeActionLabel, routeActionLogos } from '../constants';
+import { useSwapRouteAllowance } from '../hooks';
+import { useSwapState } from '../state';
 
 import type { CardProps } from '@mui/material';
 
@@ -41,7 +42,14 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
+  const [{ amountIn }] = useSwapState();
   const { data: prices } = usePrices();
+  const { data: swapGasPrice, isLoading: swapGasPriceLoading } = useGasPrice(
+    route.gas,
+  );
+  const { data: approvalGasPrice, isLoading: approvalGasPriceLoading } =
+    useGasPrice(route.approvalGas);
+  const { data: allowance } = useSwapRouteAllowance(route);
 
   const estimatedAmount = +formatUnits(
     route.estimatedAmount,
@@ -49,7 +57,11 @@ export function SwapRouteCard({
   );
   const convertedAmount =
     (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
-  const gas = +formatUnits(route.gas, tokens.mainnet.ETH.decimals);
+  const isGasLoading =
+    isLoading || swapGasPriceLoading || approvalGasPriceLoading;
+  const gasPrice =
+    swapGasPrice?.gasCostUsd +
+    (allowance < amountIn ? approvalGasPrice?.gasCostUsd : 0);
 
   return (
     <Card
@@ -186,10 +198,10 @@ export function SwapRouteCard({
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
           <Typography color="primary.contrastText" variant="body2">
-            {isLoading ? (
+            {isGasLoading ? (
               <Skeleton width={60} />
             ) : (
-              `~${intl.formatNumber(gas, currencyFormat)}`
+              `~${intl.formatNumber(gasPrice, currencyFormat)}`
             )}
           </Typography>
         </Stack>
