@@ -13,7 +13,7 @@ import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
-import type { EstimatedSwapRoute, TokenSource } from './types';
+import type { EstimatedSwapRoute, SwapRoute, TokenSource } from './types';
 
 export const useHandleAmountInChange = () => {
   const [, setSwapState] = useSwapState();
@@ -145,24 +145,23 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
-export const useSelectedSwapRouteAllowance = () => {
-  const [{ selectedSwapRoute }] = useSwapState();
+export const useSwapRouteAllowance = (route: SwapRoute) => {
   const curve = useCurve();
 
   return useQuery({
     queryKey: [
       'swap_allowance',
-      selectedSwapRoute?.tokenIn.symbol,
-      selectedSwapRoute?.tokenOut.symbol,
-      selectedSwapRoute?.action,
+      route?.tokenIn.symbol,
+      route?.tokenOut.symbol,
+      route?.action,
     ],
     queryFn: () =>
-      swapActions[selectedSwapRoute.action].allowance({
-        tokenIn: selectedSwapRoute.tokenIn,
-        tokenOut: selectedSwapRoute.tokenOut,
+      swapActions[route.action].allowance({
+        tokenIn: route.tokenIn,
+        tokenOut: route.tokenOut,
         curve,
       }),
-    enabled: !isNilOrEmpty(selectedSwapRoute),
+    enabled: !isNilOrEmpty(route),
     placeholderData: 0n,
   });
 };

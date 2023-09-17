@@ -27,7 +27,7 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
-  useSelectedSwapRouteAllowance,
+  useSwapRouteAllowance,
   useTokenOptions,
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
@@ -96,7 +96,7 @@ function SwapViewWrapped() {
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
-  const { data: allowance } = useSelectedSwapRouteAllowance();
+  const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
     token: tokenIn.address,
@@ -130,7 +130,7 @@ function SwapViewWrapped() {
     !isBalTokenInLoading &&
     balTokenIn.value >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
-    selectedSwapRoute?.approvedAmount < amountIn &&
+    selectedSwapRoute?.allowanceAmount < amountIn &&
     allowance < amountIn;
   const swapButtonLabel =
     amountIn === 0n
