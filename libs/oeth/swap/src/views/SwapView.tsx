@@ -101,11 +101,13 @@ function SwapViewWrapped() {
     address,
     token: tokenIn.address,
     watch: true,
+    scopeKey: 'swap_balance',
   });
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } = useBalance({
     address,
     token: tokenOut.address,
     watch: true,
+    scopeKey: 'swap_balance',
   });
   const handleSlippageChange = useHandleSlippageChange();
   const handleAmountInChange = useHandleAmountInChange();

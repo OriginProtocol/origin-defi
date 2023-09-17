@@ -66,6 +66,7 @@ function RedeemViewWrapped() {
     address,
     token: tokens.mainnet.OETH.address,
     watch: true,
+    scopeKey: 'redeem_balance',
   });
   const handleSlippageChange = useHandleSlippageChange();
   const handleAmountInChange = useHandleAmountInChange();

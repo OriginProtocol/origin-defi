@@ -14,7 +14,7 @@ import {
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useQueryClient } from 'wagmi';
 
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
@@ -55,6 +55,7 @@ export const useHandleRedeem = () => {
   const pushNotification = usePushNotification();
   const { address } = useAccount();
   const [{ amountIn, amountOut, slippage }, setRedeemState] = useRedeemState();
+  const wagmiClient = useQueryClient();
 
   return useCallback(async () => {
     if (amountIn === 0n || isNilOrEmpty(address)) {
@@ -86,6 +87,7 @@ export const useHandleRedeem = () => {
       const txReceipt = await waitForTransaction({ hash });
 
       console.log('redeem vault done!');
+      wagmiClient.invalidateQueries({ queryKey: ['redeem_balance'] });
       pushNotification({
         title: intl.formatMessage({ defaultMessage: 'Redeem complete' }),
         severity: 'success',
@@ -119,5 +121,6 @@ export const useHandleRedeem = () => {
     pushNotification,
     setRedeemState,
     slippage,
+    wagmiClient,
   ]);
 };

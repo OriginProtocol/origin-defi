@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 
 import { contracts, tokens, whales } from '@origin/shared/contracts';
+import { usePushNotification } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAccount, getPublicClient, readContract } from '@wagmi/core';
 import { produce } from 'immer';
+import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
 import { formatUnits, isAddressEqual, parseUnits } from 'viem';
 
@@ -25,7 +27,9 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
       isEstimateLoading: false,
       isRedeemLoading: false,
     });
+    const intl = useIntl();
     const queryClient = useQueryClient();
+    const pushNotification = usePushNotification();
 
     const { data: splitAddresses } = useQuery({
       queryKey: ['assetsDecimals'],
@@ -69,16 +73,38 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
           return;
         }
 
-        const splitEstimates = await queryClient.fetchQuery({
-          queryKey: ['splitEstimates', state.amountIn.toString()],
-          queryFn: () =>
-            readContract({
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
-              functionName: 'calculateRedeemOutputs',
-              args: [state.amountIn],
+        let splitEstimates;
+        try {
+          splitEstimates = await queryClient.fetchQuery({
+            queryKey: ['splitEstimates', state.amountIn.toString()],
+            queryFn: () =>
+              readContract({
+                address: contracts.mainnet.OETHVaultCore.address,
+                abi: contracts.mainnet.OETHVaultCore.abi,
+                functionName: 'calculateRedeemOutputs',
+                args: [state.amountIn],
+              }),
+          });
+        } catch (e) {
+          console.error(`redeem vault estimate amount error.\n${e.message}`);
+          setState(
+            produce((draft) => {
+              draft.amountIn = 0n;
+              draft.amountOut = 0n;
+              draft.split = [];
+              draft.isEstimateLoading = false;
             }),
-        });
+          );
+          pushNotification({
+            title: intl.formatMessage({
+              defaultMessage: 'Error while estimating',
+            }),
+            message: e.shortMessage,
+            severity: 'error',
+          });
+
+          return;
+        }
 
         const total = splitEstimates.reduce((acc, curr, i) => {
           if (state.split[i].token.decimals !== MIX_TOKEN.decimals) {

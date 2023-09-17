@@ -5,6 +5,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
+import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
 
 import { swapActions } from './actions';
 import { useSwapState } from './state';
@@ -150,7 +151,7 @@ export const useSelectedSwapRouteAllowance = () => {
 
   return useQuery({
     queryKey: [
-      'allowance',
+      'swap_allowance',
       selectedSwapRoute?.tokenIn.symbol,
       selectedSwapRoute?.tokenOut.symbol,
       selectedSwapRoute?.action,
@@ -183,14 +184,16 @@ export const useHandleSlippageChange = () => {
 
 export const useHandleApprove = () => {
   const intl = useIntl();
+  const { address } = useAccount();
   const curve = useCurve();
   const queryClient = useQueryClient();
+  const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
   const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }, setSwapState] =
     useSwapState();
 
   return useCallback(async () => {
-    if (isNilOrEmpty(selectedSwapRoute)) {
+    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
       return;
     }
 
@@ -205,13 +208,11 @@ export const useHandleApprove = () => {
       amountIn,
       curve,
       onSuccess: () => {
+        wagmiClient.invalidateQueries({
+          queryKey: ['swap_balance'],
+        });
         queryClient.invalidateQueries({
-          queryKey: [
-            'allowance',
-            selectedSwapRoute?.tokenIn.symbol,
-            selectedSwapRoute?.tokenOut.symbol,
-            selectedSwapRoute?.action,
-          ],
+          queryKey: ['swap_allowance'],
         });
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval complete' }),
@@ -247,6 +248,7 @@ export const useHandleApprove = () => {
       },
     });
   }, [
+    address,
     amountIn,
     curve,
     intl,
@@ -256,13 +258,16 @@ export const useHandleApprove = () => {
     setSwapState,
     tokenIn,
     tokenOut,
+    wagmiClient,
   ]);
 };
 
 export const useHandleSwap = () => {
   const intl = useIntl();
+  const { address } = useAccount();
   const curve = useCurve();
   const queryClient = useQueryClient();
+  const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
@@ -270,7 +275,7 @@ export const useHandleSwap = () => {
   ] = useSwapState();
 
   return useCallback(async () => {
-    if (isNilOrEmpty(selectedSwapRoute)) {
+    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
       return;
     }
 
@@ -288,13 +293,11 @@ export const useHandleSwap = () => {
       amountOut,
       curve,
       onSuccess: () => {
+        wagmiClient.invalidateQueries({
+          queryKey: ['swap_balance'],
+        });
         queryClient.invalidateQueries({
-          queryKey: [
-            'allowance',
-            selectedSwapRoute?.tokenIn.symbol,
-            selectedSwapRoute?.tokenOut.symbol,
-            selectedSwapRoute?.action,
-          ],
+          queryKey: ['swap_allowance'],
         });
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
@@ -330,6 +333,7 @@ export const useHandleSwap = () => {
       },
     });
   }, [
+    address,
     amountIn,
     amountOut,
     curve,
@@ -341,5 +345,6 @@ export const useHandleSwap = () => {
     slippage,
     tokenIn,
     tokenOut,
+    wagmiClient,
   ]);
 };
