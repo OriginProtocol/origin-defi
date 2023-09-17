@@ -1,5 +1,6 @@
 import { mainnet } from 'wagmi/chains';
 
+import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurvePoolABI } from './abis/CurvePool';
 import { OETHABI } from './abis/OETH';
@@ -51,6 +52,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: OETHZapperABI,
       name: 'zapper',
+    },
+    ChainlinkOracle: {
+      address: '0x017aD99900b9581Cd40C815990890EE9F0858246',
+      chainId: mainnet.id,
+      abi: ChainlinkOracleABI,
+      name: 'ChainlinkOracle',
     },
   },
 } as const;
