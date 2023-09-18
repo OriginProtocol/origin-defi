@@ -19,15 +19,13 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenIn: tokens.mainnet.ETH,
       amountOut: 0n,
       tokenOut: tokens.mainnet.OETH,
-      isAmountOutLoading: false,
-      isPriceOutLoading: false,
-      isBalanceOutLoading: false,
       swapRoutes: [],
       selectedSwapRoute: null,
+      slippage: 0.01,
       isSwapRoutesLoading: false,
       isApproved: false,
       isApprovalLoading: false,
-      slippage: 0.01,
+      isSwapLoading: false,
     });
     const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
@@ -39,11 +37,10 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               draft.swapRoutes = [];
               draft.selectedSwapRoute = null;
               draft.amountOut = 0n;
-              draft.isAmountOutLoading = false;
-              draft.isPriceOutLoading = false;
               draft.isSwapRoutesLoading = false;
               draft.isApproved = false;
               draft.isApprovalLoading = false;
+              draft.isSwapLoading = false;
             }),
           );
           return;
@@ -90,8 +87,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             draft.swapRoutes = sortedRoutes;
             draft.selectedSwapRoute = sortedRoutes[0];
             draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
-            draft.isAmountOutLoading = false;
-            draft.isPriceOutLoading = false;
             draft.isSwapRoutesLoading = false;
           }),
         );

@@ -121,13 +121,11 @@ export type SwapState = {
   tokenIn: Token;
   amountOut: bigint;
   tokenOut: Token;
-  isAmountOutLoading: boolean;
-  isPriceOutLoading: boolean;
-  isBalanceOutLoading: boolean;
   swapRoutes: EstimatedSwapRoute[];
   selectedSwapRoute: EstimatedSwapRoute | null;
+  slippage: number;
   isSwapRoutesLoading: boolean;
   isApproved: boolean;
   isApprovalLoading: boolean;
-  slippage: number;
+  isSwapLoading: boolean;
 };

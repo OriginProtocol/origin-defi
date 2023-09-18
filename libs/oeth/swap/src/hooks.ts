@@ -22,8 +22,6 @@ export const useHandleAmountInChange = () => {
       setSwapState(
         produce((state) => {
           state.amountIn = amount;
-          state.isAmountOutLoading = amount !== 0n;
-          state.isPriceOutLoading = amount !== 0n;
           state.isSwapRoutesLoading = amount !== 0n;
         }),
       );
@@ -173,13 +171,19 @@ export const useHandleApprove = () => {
   const curve = useCurve();
   const queryClient = useQueryClient();
   const pushNotification = usePushNotification();
-  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }] = useSwapState();
+  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }, setSwapState] =
+    useSwapState();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute)) {
       return;
     }
 
+    setSwapState(
+      produce((draft) => {
+        draft.isApprovalLoading = true;
+      }),
+    );
     await swapActions[selectedSwapRoute.action].approve({
       tokenIn,
       tokenOut,
@@ -198,18 +202,33 @@ export const useHandleApprove = () => {
           title: intl.formatMessage({ defaultMessage: 'Approval complete' }),
           severity: 'success',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
       },
       onError: () => {
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval failed' }),
           severity: 'error',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
       },
       onReject: () => {
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
           severity: 'info',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
       },
     });
   }, [
@@ -219,6 +238,7 @@ export const useHandleApprove = () => {
     pushNotification,
     queryClient,
     selectedSwapRoute,
+    setSwapState,
     tokenIn,
     tokenOut,
   ]);
@@ -231,6 +251,7 @@ export const useHandleSwap = () => {
   const pushNotification = usePushNotification();
   const [
     { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
+    setSwapState,
   ] = useSwapState();
 
   return useCallback(async () => {
@@ -238,6 +259,11 @@ export const useHandleSwap = () => {
       return;
     }
 
+    setSwapState(
+      produce((draft) => {
+        draft.isSwapLoading = true;
+      }),
+    );
     await swapActions[selectedSwapRoute.action].swap({
       tokenIn,
       tokenOut,
@@ -259,19 +285,33 @@ export const useHandleSwap = () => {
           title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
           severity: 'success',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
       },
       onError: () => {
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap failed' }),
           severity: 'error',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
       },
       onReject: () => {
-        console.log('REJECT');
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
           severity: 'info',
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
       },
     });
   }, [
@@ -282,6 +322,7 @@ export const useHandleSwap = () => {
     pushNotification,
     queryClient,
     selectedSwapRoute,
+    setSwapState,
     slippage,
     tokenIn,
     tokenOut,
