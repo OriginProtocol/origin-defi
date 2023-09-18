@@ -1,4 +1,5 @@
 import { HistoryView } from '@origin/oeth/history';
+import { RedeemView } from '@origin/oeth/redeem';
 import { SwapView } from '@origin/oeth/swap';
 import { defineMessage } from 'react-intl';
 
@@ -15,6 +16,11 @@ export const routes: RouteObject[] = [
         index: true,
         Component: SwapView,
         handle: { label: defineMessage({ defaultMessage: 'Swap' }) },
+      },
+      {
+        path: '/redeem',
+        Component: RedeemView,
+        handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
       },
       {
         path: '/history',

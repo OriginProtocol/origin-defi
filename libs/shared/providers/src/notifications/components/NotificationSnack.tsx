@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, Box, IconButton, Typography } from '@mui/material';
+import { Alert, AlertTitle, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntervalEffect } from '@react-hookz/web';
 
@@ -49,15 +49,7 @@ export const NotificationSnack = ({
         maxWidth: { sm: 400, md: 500, lg: 600, xl: 700 },
         ...AlertProps?.sx,
       }}
-      action={
-        <IconButton
-          aria-label="close"
-          onClick={handleCloseClick}
-          sx={{ maxHeight: '1.375rem', maxWidth: '1.375rem' }}
-        >
-          <Box component="img" src={`/images/close.svg`} />
-        </IconButton>
-      }
+      onClose={handleCloseClick}
     >
       {!isNilOrEmpty(title) && (
         <AlertTitle {...AlertTitleProps}>{title}</AlertTitle>

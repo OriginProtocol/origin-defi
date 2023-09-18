@@ -1,19 +1,27 @@
 import { forwardRef } from 'react';
 
-import { alpha, Box, IconButton, Stack, Typography } from '@mui/material';
-import { formatAmount } from '@origin/shared/utils';
+import {
+  alpha,
+  Box,
+  IconButton,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
+import {
+  currencyFormat,
+  formatAmount,
+  isNilOrEmpty,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import { Loader } from '../Loader';
 import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { BigintInputProps } from './BigIntInput';
-
-const styles = { display: 'flex', justifyContent: 'space-between', gap: 2.5 };
 
 export type TokenInputProps = {
   amount: bigint;
@@ -25,9 +33,9 @@ export type TokenInputProps = {
   isConnected: boolean;
   balance?: bigint;
   isBalanceLoading?: boolean;
-  disableMaxClick?: boolean;
   token: Token;
-  onTokenClick: () => void;
+  onTokenClick?: () => void;
+  isTokenClickDisabled?: boolean;
   tokenPriceUsd?: number;
   isPriceLoading?: boolean;
   inputProps?: Omit<
@@ -48,9 +56,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isConnected,
       balance = 0n,
       isBalanceLoading,
-      disableMaxClick,
       token,
       onTokenClick,
+      isTokenClickDisabled,
       tokenPriceUsd = 0,
       isPriceLoading,
       inputProps,
@@ -64,7 +72,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 
     return (
       <Stack {...rest}>
-        <Box sx={styles}>
+        <Box
+          sx={{ display: 'flex', justifyContent: 'space-between', gap: 2.5 }}
+        >
           <BigIntInput
             {...inputProps}
             value={amount}
@@ -73,20 +83,25 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             disabled={isAmountDisabled}
             isLoading={isAmountLoading}
             ref={ref}
-            sx={{ flex: 1 }}
           />
-          <Stack flexDirection="row-reverse">
-            <TokenButton
-              token={token}
-              onClick={onTokenClick}
-              sx={!isConnected ? { transform: 'translateY(50%)' } : {}}
-            />
-          </Stack>
+          <TokenButton
+            token={token}
+            onClick={onTokenClick}
+            isDisabled={isTokenClickDisabled}
+            sx={!isConnected ? { transform: 'translateY(50%)' } : {}}
+          />
         </Box>
-        <Box sx={{ ...styles, marginBlockStart: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 2.5,
+            marginBlockStart: 1,
+          }}
+        >
           {isPriceLoading ? (
-            <Loader width={50} />
-          ) : tokenPriceUsd !== undefined ? (
+            <Skeleton width={50} />
+          ) : !isNilOrEmpty(tokenPriceUsd) ? (
             <Typography
               color="text.secondary"
               variant="body1"
@@ -96,16 +111,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 lineHeight: '1.5rem',
               }}
             >
-              {intl.formatNumber(amountUsd, {
-                style: 'currency',
-                currency: 'usd',
-                maximumFractionDigits: 4,
-              })}
+              {intl.formatNumber(amountUsd, currencyFormat)}
             </Typography>
           ) : null}
           {isConnected ? (
             isBalanceLoading ? (
-              <Loader width={28} />
+              <Skeleton width={28} />
             ) : (
               <Typography
                 color="text.secondary"

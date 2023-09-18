@@ -1,5 +1,5 @@
 export * from './addresses';
-export * from './BigDecimal';
+export * from './BigInt';
 export * from './composeContext';
 export * from './formatters';
 export * from './isNilOrEmpty';

@@ -10,7 +10,6 @@ export type SwapAction =
   | 'swap-zapper-eth'
   | 'swap-zapper-sfrxeth'
   | 'mint-vault'
-  | 'redeem-vault'
   | 'wrap-oeth'
   | 'unwrap-woeth';
 

@@ -60,44 +60,19 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       <Skeleton width={100} height={24} />
     ) : (
       <InputBase
-        inputRef={ref}
-        inputMode="decimal"
         spellCheck="false"
         autoComplete="off"
         autoCorrect="off"
+        placeholder="0"
+        {...rest}
+        inputRef={ref}
+        inputMode="decimal"
+        value={strVal}
+        onChange={handleChange}
         inputProps={{
           pattern: `[0-9]*(.[0-9]{0,${decimals}})`,
           minLength: 0,
-          maxLength: 69,
-        }}
-        value={strVal}
-        onChange={handleChange}
-        placeholder="0"
-        {...rest}
-        sx={{
-          border: 'none',
-          backgroundColor: 'transparent',
-          borderRadius: 0,
-          paddingBlock: 0,
-          paddingInline: 0,
-          borderImageWidth: 0,
-          boxSizing: 'border-box',
-          '& .MuiInputBase-input': {
-            padding: 0,
-            lineHeight: '1.875rem',
-            boxSizing: 'border-box',
-            fontStyle: 'normal',
-            fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-            fontSize: '1.5rem',
-            fontWeight: 700,
-            height: '1.5rem',
-            color: 'primary.contrastText',
-            '&::placeholder': {
-              color: 'text.secondary',
-              opacity: 1,
-            },
-          },
-          ...rest?.sx,
+          maxLength: 30,
         }}
       />
     );

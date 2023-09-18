@@ -1,5 +1,4 @@
 import mintVault from './mintVault';
-import redeemVault from './redeemVault';
 import swapCurve from './swapCurve';
 import swapCurveEth from './swapCurveEth';
 import swapZapperEth from './swapZapperEth';
@@ -56,7 +55,6 @@ export const swapActions: Record<SwapAction, SwapApi> = {
   'swap-zapper-eth': { ...defaultApi, ...swapZapperEth },
   'swap-zapper-sfrxeth': { ...defaultApi, ...swapZapperSfrxeth },
   'mint-vault': { ...defaultApi, ...mintVault },
-  'redeem-vault': { ...defaultApi, ...redeemVault },
   'wrap-oeth': { ...defaultApi, ...wrapOETH },
   'unwrap-woeth': { ...defaultApi, ...unwrapWOETH },
 };

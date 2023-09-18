@@ -14,16 +14,14 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { produce } from 'immer';
+import { PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { useFeeData } from 'wagmi';
 
-import { useSwapState } from '../state';
-
 import type { IconButtonProps } from '@mui/material';
-import type { ChangeEvent } from 'react';
 
-const defaultSlippage = 0.01;
+const DEFAULT_SLIPPAGE = 0.01;
+const WARNING_THRESHOLD = 0.05;
 
 const gridStyles = {
   display: 'grid',
@@ -33,18 +31,21 @@ const gridStyles = {
   alignItems: 'center',
 };
 
-interface Props {
+export type GasPopoverProps = {
   buttonProps?: IconButtonProps;
-}
+  slippage: number;
+  onSlippageChange: (value: number) => void;
+};
 
-export function GasPopover({ buttonProps }: Props) {
+export function GasPopover({
+  buttonProps,
+  slippage,
+  onSlippageChange,
+}: GasPopoverProps) {
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const [{ slippage }, setSwapState] = useSwapState();
   const { data: feeData } = useFeeData({ formatUnits: 'gwei' });
-
-  const handleSlippageChange = (evt: ChangeEvent<HTMLInputElement>) => {};
 
   return (
     <>
@@ -95,9 +96,9 @@ export function GasPopover({ buttonProps }: Props) {
               {intl.formatMessage({ defaultMessage: 'Slippage' })}
             </InputLabel>
             <Box sx={gridStyles}>
-              <InputBase
-                id="slippage"
+              <PercentInput
                 value={slippage}
+                onChange={onSlippageChange}
                 fullWidth
                 sx={{
                   borderColor: (theme) => theme.palette.secondary.main,
@@ -114,15 +115,6 @@ export function GasPopover({ buttonProps }: Props) {
                     },
                   },
                 }}
-                onChange={handleSlippageChange}
-                endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{ color: 'primary.contrastText', ml: 0 }}
-                  >
-                    {intl.formatMessage({ defaultMessage: '%' })}
-                  </InputAdornment>
-                }
               />
 
               <Button
@@ -138,19 +130,15 @@ export function GasPopover({ buttonProps }: Props) {
                   },
                 }}
                 fullWidth
-                disabled={slippage === defaultSlippage}
+                disabled={slippage === DEFAULT_SLIPPAGE}
                 onClick={() => {
-                  setSwapState(
-                    produce((draft) => {
-                      draft.slippage = defaultSlippage;
-                    }),
-                  );
+                  onSlippageChange(DEFAULT_SLIPPAGE);
                 }}
               >
                 {intl.formatMessage({ defaultMessage: 'Auto' })}
               </Button>
             </Box>
-            {slippage > 1 ? (
+            {slippage > WARNING_THRESHOLD ? (
               <FormHelperText
                 sx={{
                   gridColumn: 'span 2',
