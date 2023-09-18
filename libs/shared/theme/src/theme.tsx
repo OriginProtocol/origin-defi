@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import {
   alpha,
   experimental_extendTheme as extendTheme,
@@ -89,6 +90,32 @@ export const theme = extendTheme({
     '0px 1.7955275774002075px 5.32008171081543px 0px rgba(0, 0, 0, 0.03), 0px 6.030803203582764px 17.869047164916992px 0px rgba(0, 0, 0, 0.04), 0px 27px 80px 0px rgba(0, 0, 0, 0.07)',
   ],
   components: {
+    MuiAlert: {
+      defaultProps: {
+        variant: 'standard',
+        iconMapping: {
+          error: (
+            <Box component="img" src="/images/failed.svg" sx={{ width: 20 }} />
+          ),
+          info: (
+            <Box component="img" src="/images/pending.svg" sx={{ width: 20 }} />
+          ),
+          success: (
+            <Box component="img" src="/images/success.svg" sx={{ width: 20 }} />
+          ),
+          warning: (
+            <Box component="img" src="/images/failed.svg" sx={{ width: 20 }} />
+          ),
+        },
+      },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.palette.grey['900'],
+          color: theme.palette.primary.contrastText,
+          '&&&': { border: 'none' },
+        }),
+      },
+    },
     MuiButton: {
       styleOverrides: {
         root: {
@@ -317,9 +344,13 @@ export const theme = extendTheme({
       },
     },
     MuiSkeleton: {
+      defaultProps: {
+        animation: 'wave',
+      },
       styleOverrides: {
         text: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 22,
+          backgroundColor: 'grey.900',
         }),
       },
     },

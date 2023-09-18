@@ -1,4 +1,4 @@
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { Collapse, Skeleton, Stack, Typography } from '@mui/material';
 import { Card, cardStyles } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
@@ -8,31 +8,6 @@ import { SwapInfo } from './SwapInfo';
 import { SwapRouteAccordion } from './SwapRouteAccordion';
 
 import type { CardProps } from '@mui/material';
-
-import type { EstimatedSwapRoute } from '../types';
-
-interface Swap {
-  type: 'swap';
-}
-export interface Redeem {
-  type: 'redeem';
-  tokenAbbreviation: string;
-  waitTime: string;
-}
-
-export type Route = {
-  name: string;
-  icon: string | string[];
-  quantity: number;
-  value: number;
-  rate: number;
-  transactionCost: number;
-} & (Swap | Redeem);
-
-export type SwapRouteProps = {
-  isLoading: boolean;
-  routes: EstimatedSwapRoute[];
-};
 
 export function SwapRoute(props: Omit<CardProps, 'children'>) {
   const intl = useIntl();
@@ -52,27 +27,26 @@ export function SwapRoute(props: Omit<CardProps, 'children'>) {
       }}
       title={
         isSwapRoutesLoading ? (
-          <Typography
-            color="primary.contrastText"
-            sx={{
-              fontSize: (theme) => theme.typography.pxToRem(12),
-              display: 'flex',
-              alignItems: 'center',
-            }}
+          <Stack
+            direction="row"
+            alignItems="center"
+            gap={1}
+            sx={(theme) => ({ color: theme.palette.primary.contrastText })}
           >
             <Skeleton
               variant="circular"
               width="0.5rem"
               height="0.5rem"
               sx={{
-                mr: 1.5,
                 backgroundColor: (theme) => theme.palette.primary.contrastText,
               }}
             />
-            {intl.formatMessage({
-              defaultMessage: 'Finding the best route...',
-            })}
-          </Typography>
+            <Typography variant="body2">
+              {intl.formatMessage({
+                defaultMessage: 'Finding the best route...',
+              })}
+            </Typography>
+          </Stack>
         ) : (
           <Stack
             direction="row"
@@ -99,12 +73,10 @@ export function SwapRoute(props: Omit<CardProps, 'children'>) {
             }),
       }}
     >
-      {hasContent ? (
-        <>
-          <BestRoutes />
-          <SwapRouteAccordion sx={{ mt: 2 }} />
-        </>
-      ) : undefined}
+      <Collapse in={hasContent}>
+        <BestRoutes />
+        {swapRoutes.length > 2 && <SwapRouteAccordion sx={{ mt: 2 }} />}
+      </Collapse>
     </Card>
   );
 }

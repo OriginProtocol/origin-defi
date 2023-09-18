@@ -8,13 +8,13 @@ export const cardStyles = {
   paddingInline: 2,
 } as const;
 
-interface Props {
+export type CardProps = {
   title: string | React.ReactNode;
   children: React.ReactNode;
   sxCardContent?: SxProps<Theme>;
   sxCardTitle?: SxProps<Theme>;
   sx?: SxProps<Theme>;
-}
+};
 
 export function Card({
   title,
@@ -22,7 +22,7 @@ export function Card({
   sxCardContent,
   sxCardTitle,
   sx,
-}: Props) {
+}: CardProps) {
   return (
     <MuiCard sx={{ padding: 0, borderRadius: 2, ...(sx as SxProps) }}>
       <CardHeader

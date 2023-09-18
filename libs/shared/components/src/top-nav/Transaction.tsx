@@ -9,10 +9,7 @@ import { messages } from './utils';
 import type { Approval, Rebase, Redeem, Swap, Transaction } from './types';
 
 const spin = keyframes`
-  0 {
-    transform: rotate(0deg);
-  }
-  100% {
+  to {
     transform: rotate(360deg);
   }
 `;

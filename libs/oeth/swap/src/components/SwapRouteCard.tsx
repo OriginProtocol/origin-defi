@@ -1,29 +1,55 @@
-import { alpha, Box, Card, CardHeader, Stack, Typography } from '@mui/material';
-import { tokens } from '@origin/shared/contracts';
-import { usePrices } from '@origin/shared/providers';
-import { currencyFormat, quantityFormat } from '@origin/shared/utils';
+import {
+  alpha,
+  Box,
+  Card,
+  CardHeader,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { useGasPrice, usePrices } from '@origin/shared/providers';
+import {
+  currencyFormat,
+  formatAmount,
+  quantityFormat,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { routeActionLabel, routeActionLogos } from '../constants';
+import { useSwapRouteAllowance } from '../hooks';
+import { useSwapState } from '../state';
+
+import type { CardProps } from '@mui/material';
 
 import type { EstimatedSwapRoute } from '../types';
 
 export type SwapRouteCardProps = {
   isSelected: boolean;
   isBest: boolean;
+  isLoading: boolean;
   onSelect: (route: EstimatedSwapRoute) => void;
   route: EstimatedSwapRoute;
-};
+} & Omit<CardProps, 'onSelect'>;
 
 export function SwapRouteCard({
   isSelected,
   isBest,
+  isLoading,
   onSelect,
   route,
+  ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
+  const [{ amountIn }] = useSwapState();
   const { data: prices } = usePrices();
+  const { data: swapGasPrice, isLoading: swapGasPriceLoading } = useGasPrice(
+    route.gas,
+  );
+  const { data: approvalGasPrice, isLoading: approvalGasPriceLoading } =
+    useGasPrice(route.approvalGas);
+  const { data: allowance } = useSwapRouteAllowance(route);
 
   const estimatedAmount = +formatUnits(
     route.estimatedAmount,
@@ -31,10 +57,15 @@ export function SwapRouteCard({
   );
   const convertedAmount =
     (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
-  const gas = +formatUnits(route.gas, tokens.mainnet.ETH.decimals);
+  const isGasLoading =
+    isLoading || swapGasPriceLoading || approvalGasPriceLoading;
+  const gasPrice =
+    swapGasPrice?.gasCostUsd +
+    (allowance < amountIn ? approvalGasPrice?.gasCostUsd : 0);
 
   return (
     <Card
+      {...rest}
       sx={{
         paddingInline: 1.5,
         paddingBlockEnd: 2,
@@ -43,6 +74,7 @@ export function SwapRouteCard({
         cursor: 'pointer',
         border: (theme) => `1px solid ${theme.palette.grey[800]}`,
         borderRadius: 1,
+        height: 1,
         ...(isSelected
           ? {
               background: `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
@@ -64,6 +96,7 @@ export function SwapRouteCard({
              )} 100%) border-box;`,
               },
             }),
+        ...rest?.sx,
       }}
       role="button"
       onClick={() => onSelect(route)}
@@ -71,75 +104,58 @@ export function SwapRouteCard({
       <CardHeader
         sx={{
           padding: 0,
-          '& .MuiCardHeader-title': {
-            lineHeight: '0.85rem',
-          },
         }}
         title={
-          <>
-            <Stack
-              direction="row"
-              alignItems="center"
-              gap={0.5}
-              sx={{ position: 'relative' }}
-            >
-              <Box
-                component="img"
-                src={routeActionLogos[route.action]}
-                sx={{
-                  height: '1rem',
-                  width: '1rem',
-                }}
-              ></Box>
-              <Typography color="primary.contrastText" variant="body1">
-                {intl.formatNumber(estimatedAmount, quantityFormat)}&nbsp;
-                <Typography
-                  color="text.secondary"
-                  variant="body2"
-                  component="span"
-                  sx={{
-                    display: {
-                      xs: 'none',
-                      md: 'inline-block',
-                    },
-                  }}
-                >
-                  ({intl.formatNumber(convertedAmount, currencyFormat)})
-                </Typography>
-              </Typography>
-
-              {isBest ? (
+          <Grid2 container spacing={0.5} position="relative">
+            <Grid2 display="flex" alignItems="center">
+              {isLoading ? (
+                <Skeleton variant="circular" width={16} height={16} />
+              ) : (
                 <Box
-                  sx={{
-                    position: 'absolute',
-                    borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                    background: (theme) => theme.palette.background.gradient1,
-                    color: 'primary.contrastText',
-                    fontSize: (theme) => theme.typography.pxToRem(12),
-                    top: (theme) => theme.spacing(-3),
-                    right: (theme) => theme.spacing(-2),
-                    paddingInline: 1,
-                  }}
-                >
-                  {intl.formatMessage({ defaultMessage: 'Best' })}
-                </Box>
-              ) : undefined}
-            </Stack>
+                  component="img"
+                  src={routeActionLogos[route.action]}
+                  height={16}
+                  width={16}
+                  mr={0.5}
+                />
+              )}
+            </Grid2>
+            <Grid2 display="flex" alignItems="center">
+              <Typography color="primary.contrastText" variant="body1">
+                {isLoading ? (
+                  <Skeleton width={100} />
+                ) : (
+                  formatAmount(route.estimatedAmount, route.tokenOut.decimals)
+                )}
+              </Typography>
+            </Grid2>
+            <Grid2 display="flex" alignItems="center">
+              <Typography color="text.secondary" variant="body2" noWrap>
+                {isLoading ? (
+                  <Skeleton width={60} />
+                ) : (
+                  `(${intl.formatNumber(convertedAmount, currencyFormat)})`
+                )}
+              </Typography>
+            </Grid2>
 
-            <Typography
-              color="text.secondary"
-              variant="body2"
-              component="span"
-              sx={{
-                display: {
-                  xs: 'inline-block',
-                  md: 'none',
-                },
-              }}
-            >
-              ({intl.formatNumber(estimatedAmount, quantityFormat)})
-            </Typography>
-          </>
+            {isBest && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+                  background: (theme) => theme.palette.background.gradient1,
+                  color: 'primary.contrastText',
+                  fontSize: (theme) => theme.typography.pxToRem(12),
+                  top: (theme) => theme.spacing(-3),
+                  right: (theme) => theme.spacing(-2),
+                  paddingInline: 1,
+                }}
+              >
+                {intl.formatMessage({ defaultMessage: 'Best' })}
+              </Box>
+            )}
+          </Grid2>
         }
       ></CardHeader>
 
@@ -148,65 +164,47 @@ export function SwapRouteCard({
         variant="body2"
         sx={{ marginBlock: { xs: 1.5, md: 1 } }}
       >
-        {intl.formatMessage(routeActionLabel[route.action])}
+        {isLoading ? (
+          <Skeleton width={80} />
+        ) : (
+          intl.formatMessage(routeActionLabel[route.action])
+        )}
       </Typography>
       <Stack gap={0.5}>
         <Stack
-          component={Typography}
           direction="row"
           gap={1}
           justifyContent="space-between"
-          variant="body2"
           color="text.secondary"
         >
-          <span>{intl.formatMessage({ defaultMessage: 'Rate:' })}</span>
-          <Box component="span" color="primary.contrastText">
-            1:{route.rate}
-          </Box>
+          <Typography variant="body2">
+            {intl.formatMessage({ defaultMessage: 'Rate:' })}
+          </Typography>
+          <Typography color="primary.contrastText" variant="body2">
+            {isLoading ? (
+              <Skeleton width={60} />
+            ) : (
+              `1:${intl.formatNumber(route.rate, quantityFormat)}`
+            )}
+          </Typography>
         </Stack>
         <Stack
-          component={Typography}
           direction="row"
           gap={1}
           justifyContent="space-between"
-          variant="body2"
           color="text.secondary"
         >
-          <span>
-            {intl.formatMessage({
-              defaultMessage: 'Gas:',
-            })}
-          </span>
-          <Box component="span" color="primary.contrastText">
-            ~{intl.formatNumber(gas, currencyFormat)}
-          </Box>
+          <Typography variant="body2">
+            {intl.formatMessage({ defaultMessage: 'Gas:' })}
+          </Typography>
+          <Typography color="primary.contrastText" variant="body2">
+            {isGasLoading ? (
+              <Skeleton width={60} />
+            ) : (
+              `~${intl.formatNumber(gasPrice, currencyFormat)}`
+            )}
+          </Typography>
         </Stack>
-        {/*route.type === 'redeem' ? (
-          <Stack
-            component={Typography}
-            direction="row"
-            gap={1}
-            justifyContent="space-between"
-            variant="body2"
-            color="text.secondary"
-          >
-            <span>
-              {intl.formatMessage({
-                defaultMessage: 'Wait time:',
-              })}
-            </span>            
-            <Box
-              component="span"
-              color={
-                route.waitTime === '1 min'
-                  ? 'primary.contrastText'
-                  : 'error.main'
-              }
-            >
-              ~{route.waitTime}
-            </Box>
-          </Stack>
-        ) : undefined */}
       </Stack>
     </Card>
   );

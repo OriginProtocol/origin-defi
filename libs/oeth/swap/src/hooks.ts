@@ -1,8 +1,11 @@
 import { useCallback, useMemo } from 'react';
 
-import { useCurve } from '@origin/shared/providers';
+import { useCurve, usePushNotification } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
+import { useIntl } from 'react-intl';
+import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
 
 import { swapActions } from './actions';
 import { useSwapState } from './state';
@@ -10,7 +13,7 @@ import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
-import type { EstimatedSwapRoute, TokenSource } from './types';
+import type { EstimatedSwapRoute, SwapRoute, TokenSource } from './types';
 
 export const useHandleAmountInChange = () => {
   const [, setSwapState] = useSwapState();
@@ -20,8 +23,6 @@ export const useHandleAmountInChange = () => {
       setSwapState(
         produce((state) => {
           state.amountIn = amount;
-          state.isAmountOutLoading = amount !== 0n;
-          state.isPriceOutLoading = amount !== 0n;
           state.isSwapRoutesLoading = amount !== 0n;
         }),
       );
@@ -144,17 +145,144 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
-export const useHandleSwap = () => {
-  const [
-    { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
-  ] = useSwapState();
+export const useSwapRouteAllowance = (route: SwapRoute) => {
   const curve = useCurve();
 
+  return useQuery({
+    queryKey: [
+      'swap_allowance',
+      route?.tokenIn.symbol,
+      route?.tokenOut.symbol,
+      route?.action,
+    ],
+    queryFn: () =>
+      swapActions[route.action].allowance({
+        tokenIn: route.tokenIn,
+        tokenOut: route.tokenOut,
+        curve,
+      }),
+    enabled: !isNilOrEmpty(route),
+    placeholderData: 0n,
+  });
+};
+
+export const useHandleSlippageChange = () => {
+  const [, setSwapState] = useSwapState();
+
+  return useCallback(
+    (value: number) => {
+      setSwapState(
+        produce((state) => {
+          state.slippage = value;
+        }),
+      );
+    },
+    [setSwapState],
+  );
+};
+
+export const useHandleApprove = () => {
+  const intl = useIntl();
+  const { address } = useAccount();
+  const curve = useCurve();
+  const queryClient = useQueryClient();
+  const wagmiClient = useWagmiClient();
+  const pushNotification = usePushNotification();
+  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }, setSwapState] =
+    useSwapState();
+
   return useCallback(async () => {
-    if (isNilOrEmpty(selectedSwapRoute)) {
+    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
       return;
     }
 
+    setSwapState(
+      produce((draft) => {
+        draft.isApprovalLoading = true;
+      }),
+    );
+    await swapActions[selectedSwapRoute.action].approve({
+      tokenIn,
+      tokenOut,
+      amountIn,
+      curve,
+      onSuccess: () => {
+        wagmiClient.invalidateQueries({
+          queryKey: ['swap_balance'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['swap_allowance'],
+        });
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval complete' }),
+          severity: 'success',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
+      },
+      onError: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval failed' }),
+          severity: 'error',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
+      },
+      onReject: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          severity: 'info',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
+      },
+    });
+  }, [
+    address,
+    amountIn,
+    curve,
+    intl,
+    pushNotification,
+    queryClient,
+    selectedSwapRoute,
+    setSwapState,
+    tokenIn,
+    tokenOut,
+    wagmiClient,
+  ]);
+};
+
+export const useHandleSwap = () => {
+  const intl = useIntl();
+  const { address } = useAccount();
+  const curve = useCurve();
+  const queryClient = useQueryClient();
+  const wagmiClient = useWagmiClient();
+  const pushNotification = usePushNotification();
+  const [
+    { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
+    setSwapState,
+  ] = useSwapState();
+
+  return useCallback(async () => {
+    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
+      return;
+    }
+
+    setSwapState(
+      produce((draft) => {
+        draft.isSwapLoading = true;
+      }),
+    );
     await swapActions[selectedSwapRoute.action].swap({
       tokenIn,
       tokenOut,
@@ -163,14 +291,59 @@ export const useHandleSwap = () => {
       slippage,
       amountOut,
       curve,
+      onSuccess: () => {
+        wagmiClient.invalidateQueries({
+          queryKey: ['swap_balance'],
+        });
+        queryClient.invalidateQueries({
+          queryKey: ['swap_allowance'],
+        });
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
+          severity: 'success',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
+      },
+      onError: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap failed' }),
+          severity: 'error',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
+      },
+      onReject: () => {
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          severity: 'info',
+        });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
+      },
     });
   }, [
+    address,
     amountIn,
     amountOut,
     curve,
+    intl,
+    pushNotification,
+    queryClient,
     selectedSwapRoute,
+    setSwapState,
     slippage,
     tokenIn,
     tokenOut,
+    wagmiClient,
   ]);
 };

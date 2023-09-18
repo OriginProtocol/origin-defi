@@ -1,5 +1,4 @@
 import mintVault from './mintVault';
-import redeemVault from './redeemVault';
 import swapCurve from './swapCurve';
 import swapCurveEth from './swapCurveEth';
 import swapZapperEth from './swapZapperEth';
@@ -23,7 +22,27 @@ const defaultApi: SwapApi = {
   estimateRoute: async ({ amountIn, route }) => {
     console.log('Route estimation not implemented');
 
-    return { ...route, estimatedAmount: amountIn, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: amountIn,
+      allowanceAmount: 0n,
+      approvalGas: 0n,
+      gas: 0n,
+      rate: 0,
+    };
+  },
+  allowance: async () => {
+    console.log('Allowance not implemented');
+
+    return 0n;
+  },
+  estimateApprovalGas: async () => {
+    console.log('Gas approval estimation not implemented');
+
+    return 0n;
+  },
+  approve: async () => {
+    console.log('Approve operation not implemented');
   },
   swap: async () => {
     console.log('Route swap operation not implemented');
@@ -36,7 +55,6 @@ export const swapActions: Record<SwapAction, SwapApi> = {
   'swap-zapper-eth': { ...defaultApi, ...swapZapperEth },
   'swap-zapper-sfrxeth': { ...defaultApi, ...swapZapperSfrxeth },
   'mint-vault': { ...defaultApi, ...mintVault },
-  'redeem-vault': { ...defaultApi, ...redeemVault },
   'wrap-oeth': { ...defaultApi, ...wrapOETH },
   'unwrap-woeth': { ...defaultApi, ...unwrapWOETH },
 };

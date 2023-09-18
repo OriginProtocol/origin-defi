@@ -1,21 +1,33 @@
 import { useState } from 'react';
 
-import { alpha, Box, IconButton, Stack } from '@mui/material';
-import { ApyHeader } from '@origin/oeth/shared';
+import {
+  alpha,
+  Box,
+  Button,
+  CircularProgress,
+  Collapse,
+  IconButton,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { ApyHeader, GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
-import { GasPopover } from '../components/GasPopover';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
+import { routeActionLabel } from '../constants';
 import {
   useHandleAmountInChange,
+  useHandleApprove,
+  useHandleSlippageChange,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
+  useSwapRouteAllowance,
   useTokenOptions,
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
@@ -34,6 +46,31 @@ const commonStyles = {
   borderRadius: 1,
 };
 
+const tokenInputStyles = {
+  border: 'none',
+  backgroundColor: 'transparent',
+  borderRadius: 0,
+  paddingBlock: 0,
+  paddingInline: 0,
+  borderImageWidth: 0,
+  boxSizing: 'border-box',
+  '& .MuiInputBase-input': {
+    padding: 0,
+    lineHeight: '1.875rem',
+    boxSizing: 'border-box',
+    fontStyle: 'normal',
+    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+    fontSize: '1.5rem',
+    fontWeight: 700,
+    height: '1.5rem',
+    color: 'primary.contrastText',
+    '&::placeholder': {
+      color: 'text.secondary',
+      opacity: 1,
+    },
+  },
+};
+
 export const SwapView = () => (
   <SwapProvider>
     <SwapViewWrapped />
@@ -50,26 +87,33 @@ function SwapViewWrapped() {
       amountOut,
       tokenIn,
       tokenOut,
-      isAmountOutLoading,
-      isPriceOutLoading,
-      isBalanceOutLoading,
+      selectedSwapRoute,
+      slippage,
+      isSwapLoading,
+      isSwapRoutesLoading,
+      isApprovalLoading,
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
+  const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
     token: tokenIn.address,
     watch: true,
+    scopeKey: 'swap_balance',
   });
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } = useBalance({
     address,
     token: tokenOut.address,
     watch: true,
+    scopeKey: 'swap_balance',
   });
+  const handleSlippageChange = useHandleSlippageChange();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
+  const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
 
   const handleCloseSelectionModal = () => {
@@ -79,6 +123,37 @@ function SwapViewWrapped() {
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
   };
+
+  const needsApproval =
+    isConnected &&
+    amountIn > 0n &&
+    !isBalTokenInLoading &&
+    balTokenIn.value >= amountIn &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    selectedSwapRoute?.allowanceAmount < amountIn &&
+    allowance < amountIn;
+  const swapButtonLabel =
+    amountIn === 0n
+      ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
+      : amountIn > balTokenIn?.value
+      ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+      : !isNilOrEmpty(selectedSwapRoute)
+      ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
+      : '';
+  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
+  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
+  const amountInInputDisabled = isSwapLoading || isApprovalLoading;
+  const approveButtonDisabled =
+    isNilOrEmpty(selectedSwapRoute) ||
+    approveButtonLoading ||
+    amountIn > balTokenIn?.value;
+  const swapButtonDisabled =
+    needsApproval ||
+    isNilOrEmpty(selectedSwapRoute) ||
+    isBalTokenInLoading ||
+    swapButtonLoading ||
+    amountIn > balTokenIn?.value ||
+    amountIn === 0n;
 
   return (
     <>
@@ -97,8 +172,12 @@ function SwapViewWrapped() {
             justifyContent="space-between"
             alignItems="center"
           >
-            {intl.formatMessage({ defaultMessage: 'Swap' })}
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Swap' })}
+            </Typography>
             <GasPopover
+              slippage={slippage}
+              onSlippageChange={handleSlippageChange}
               buttonProps={{
                 sx: {
                   position: 'relative',
@@ -129,10 +208,11 @@ function SwapViewWrapped() {
             tokenPriceUsd={prices?.[tokenIn.symbol]}
             isPriceLoading={isPriceLoading}
             isConnected={isConnected}
+            isAmountDisabled={amountInInputDisabled}
+            inputProps={{ sx: tokenInputStyles }}
             sx={{
               ...commonStyles,
               backgroundColor: 'grey.900',
-
               borderBottomColor: 'transparent',
               '&:hover, &:focus-within': {
                 borderColor: 'transparent',
@@ -160,17 +240,16 @@ function SwapViewWrapped() {
           <TokenInput
             amount={amountOut}
             balance={balTokenOut?.value}
-            isAmountLoading={isAmountOutLoading}
-            isBalanceLoading={isBalanceOutLoading || isBalTokenOutLoading}
-            disableMaxClick
+            isAmountLoading={isSwapRoutesLoading}
+            isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
             token={tokenOut}
             onTokenClick={() => {
               setTokenSource('tokenOut');
             }}
             tokenPriceUsd={prices?.[tokenOut.symbol]}
-            isPriceLoading={isPriceOutLoading || isPriceLoading}
-            inputProps={{ readOnly: true }}
+            isPriceLoading={isSwapRoutesLoading || isPriceLoading}
             isConnected={isConnected}
+            inputProps={{ readOnly: true, sx: tokenInputStyles }}
             sx={{
               ...commonStyles,
               borderStartStartRadius: 0,
@@ -178,11 +257,34 @@ function SwapViewWrapped() {
               backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
             }}
           />
-          <SwapButton onClick={handleTokenFlip} />
+          <ArrowButton onClick={handleTokenFlip} />
         </Box>
         <SwapRoute />
-        <ConnectedButton variant="action" fullWidth onClick={handleSwap}>
-          {intl.formatMessage({ defaultMessage: 'Swap' })}
+        <Collapse in={needsApproval}>
+          <Button
+            variant="action"
+            fullWidth
+            disabled={approveButtonDisabled}
+            onClick={handleApprove}
+          >
+            {approveButtonLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : (
+              intl.formatMessage({ defaultMessage: 'Approve' })
+            )}
+          </Button>
+        </Collapse>
+        <ConnectedButton
+          variant="action"
+          fullWidth
+          disabled={swapButtonDisabled}
+          onClick={handleSwap}
+        >
+          {swapButtonLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : (
+            swapButtonLabel
+          )}
         </ConnectedButton>
       </Card>
       <TokenSelectModal
@@ -195,7 +297,7 @@ function SwapViewWrapped() {
   );
 }
 
-function SwapButton(props: IconButtonProps) {
+function ArrowButton(props: IconButtonProps) {
   return (
     <IconButton
       {...props}
@@ -221,9 +323,6 @@ function SwapButton(props: IconButtonProps) {
           '& img': {
             transform: 'rotate(-180deg)',
           },
-        },
-        '.Mui-disabled': {
-          backgroundColor: 'red',
         },
         ...props?.sx,
       }}

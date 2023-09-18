@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { queryClient } from '@origin/oeth/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useCurve } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
 
@@ -19,14 +19,15 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenIn: tokens.mainnet.ETH,
       amountOut: 0n,
       tokenOut: tokens.mainnet.OETH,
-      isAmountOutLoading: false,
-      isPriceOutLoading: false,
-      isBalanceOutLoading: false,
-      slippage: 0.01,
       swapRoutes: [],
       selectedSwapRoute: null,
+      slippage: 0.01,
       isSwapRoutesLoading: false,
+      isApproved: false,
+      isApprovalLoading: false,
+      isSwapLoading: false,
     });
+    const queryClient = useQueryClient();
     const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
     useDebouncedEffect(
@@ -37,9 +38,10 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               draft.swapRoutes = [];
               draft.selectedSwapRoute = null;
               draft.amountOut = 0n;
-              draft.isAmountOutLoading = false;
-              draft.isPriceOutLoading = false;
               draft.isSwapRoutesLoading = false;
+              draft.isApproved = false;
+              draft.isApprovalLoading = false;
+              draft.isSwapLoading = false;
             }),
           );
           return;
@@ -50,22 +52,20 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             queryClient.fetchQuery({
               queryKey: [
                 'estimateRoute',
-                state.tokenIn,
-                state.tokenOut,
+                state.tokenIn.symbol,
+                state.tokenOut.symbol,
                 route.action,
-                state.amountIn.toString(),
                 state.slippage,
+                state.amountIn.toString(),
               ] as const,
-              queryFn: async ({
-                queryKey: [, tokenIn, tokenOut, action, , slippage],
-              }) =>
-                swapActions[action].estimateRoute({
-                  tokenIn,
-                  tokenOut,
+              queryFn: async () =>
+                swapActions[route.action].estimateRoute({
+                  tokenIn: route.tokenIn,
+                  tokenOut: route.tokenOut,
                   amountIn: state.amountIn,
                   amountOut: state.amountOut,
                   route,
-                  slippage,
+                  slippage: state.slippage,
                   curve: {
                     CurveRegistryExchange,
                     OethPoolUnderlyings,
@@ -75,21 +75,22 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           ),
         );
 
-        const sortedRoutes = routes.sort((a, b) =>
-          a.estimatedAmount < b.estimatedAmount
-            ? 1
-            : a.estimatedAmount > b.estimatedAmount
-            ? -1
-            : 0,
-        );
+        const sortedRoutes = routes.sort((a, b) => {
+          const valA =
+            a.estimatedAmount -
+            (a.gas + (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
+          const valB =
+            b.estimatedAmount -
+            (b.gas + (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
+
+          return valA < valB ? 1 : valA > valB ? -1 : 0;
+        });
 
         setState(
           produce((draft) => {
             draft.swapRoutes = sortedRoutes;
             draft.selectedSwapRoute = sortedRoutes[0];
             draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
-            draft.isAmountOutLoading = false;
-            draft.isPriceOutLoading = false;
             draft.isSwapRoutesLoading = false;
           }),
         );

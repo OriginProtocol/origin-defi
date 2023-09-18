@@ -8,16 +8,17 @@ import {
   waitForTransaction,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, isAddressEqual, parseUnits } from 'viem';
+import { formatUnits, isAddressEqual, maxUint256, parseUnits } from 'viem';
 
 import type {
+  Allowance,
+  Approve,
   EstimateAmount,
+  EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
   Swap,
 } from '../types';
-
-const DEFAULT_GAS = 180000n;
 
 const estimateAmount: EstimateAmount = async ({
   tokenIn,
@@ -96,10 +97,20 @@ const estimateGas: EstimateGas = async ({
       `swap curve OETHPool gas estimate error, returning fix estimate!\n${e.message}`,
     );
 
-    gasEstimate = DEFAULT_GAS;
+    gasEstimate = 180000n;
   }
 
   return gasEstimate;
+};
+
+const allowance: Allowance = async () => {
+  // ETH doesn't need approval
+  return maxUint256;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async () => {
+  // ETH doesn't need approval
+  return 0n;
 };
 
 const estimateRoute: EstimateRoute = async ({
@@ -111,15 +122,26 @@ const estimateRoute: EstimateRoute = async ({
   curve,
 }) => {
   if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      allowanceAmount: 0n,
+      approvalGas: 0n,
+    };
   }
 
-  const estimatedAmount = await estimateAmount({
-    tokenIn,
-    tokenOut,
-    amountIn,
-    curve,
-  });
+  const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
+    estimateAmount({
+      tokenIn,
+      tokenOut,
+      amountIn,
+      curve,
+    }),
+    allowance(),
+    estimateApprovalGas(),
+  ]);
   const gas = await estimateGas({
     tokenIn,
     tokenOut,
@@ -133,10 +155,19 @@ const estimateRoute: EstimateRoute = async ({
     ...route,
     estimatedAmount,
     gas,
+    approvalGas,
+    allowanceAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),
   };
+};
+
+const approve: Approve = async ({ onSuccess }) => {
+  // ETH doesn't need approval
+  if (onSuccess) {
+    await onSuccess(null);
+  }
 };
 
 const swap: Swap = async ({
@@ -146,6 +177,9 @@ const swap: Swap = async ({
   amountOut,
   slippage,
   curve,
+  onSuccess,
+  onError,
+  onReject,
 }) => {
   if (amountIn === 0n) {
     return;
@@ -181,20 +215,28 @@ const swap: Swap = async ({
       ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
     });
     const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
+    const txReceipt = await waitForTransaction({ hash });
 
-    // TODO trigger notification
     console.log('swap curve OETHPool done!');
-    return;
+    if (onSuccess) {
+      await onSuccess(txReceipt);
+    }
   } catch (e) {
-    // TODO trigger notification
     console.error(`swap curve OETHPool error!\n${e.message}`);
-    return;
+    if (e?.code === 'ACTION_REJECTED' && onReject) {
+      await onReject('Swap Curve exchange');
+    } else if (onError) {
+      await onError('Swap Curve exchange');
+    }
   }
 };
 
 export default {
   estimateAmount,
+  estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };

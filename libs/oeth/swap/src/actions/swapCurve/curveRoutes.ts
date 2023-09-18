@@ -59,7 +59,7 @@ export const curveRoutes = {
   stETH: {
     OETH: {
       routes: [
-        tokens.mainnet.stETH,
+        tokens.mainnet.stETH.address,
         '0x21E27a5E5513D6e65C4f830167390997aA84843a',
         ETH_ADDRESS_CURVE,
         contracts.mainnet.curveOethPool.address,

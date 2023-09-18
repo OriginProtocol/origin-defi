@@ -23,6 +23,9 @@
       "@origin/oeth/history": [
         "libs/oeth/history/src/index.ts"
       ],
+      "@origin/oeth/redeem": [
+        "libs/oeth/redeem/src/index.ts"
+      ],
       "@origin/oeth/shared": [
         "libs/oeth/shared/src/index.ts"
       ],

@@ -1,4 +1,4 @@
 export * from './AddressLabel';
-export * from './ChainScanLink';
+export * from './BlockExplorerLink';
 export * from './ConnectedButton';
 export * from './OpenAccountModalButton';

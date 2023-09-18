@@ -8,10 +8,13 @@ import {
   waitForTransaction,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { formatUnits, maxUint256 } from 'viem';
 
 import type {
+  Allowance,
+  Approve,
   EstimateAmount,
+  EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
   Swap,
@@ -70,6 +73,16 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   return gasEstimate;
 };
 
+const allowance: Allowance = async () => {
+  // Unwrap WOETH does not require approval
+  return maxUint256;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async () => {
+  // Unwrap WOETH does not require approval
+  return 0n;
+};
+
 const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
@@ -78,22 +91,41 @@ const estimateRoute: EstimateRoute = async ({
   slippage,
 }) => {
   if (amountIn === 0n) {
-    return { ...route, estimatedAmount: 0n, gas: 0n, rate: 0 };
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      allowanceAmount: 0n,
+      approvalGas: 0n,
+    };
   }
 
-  const [estimatedAmount, gas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-  ]);
+  const [estimatedAmount, gas, allowanceAmount, approvalGas] =
+    await Promise.all([
+      estimateAmount({ tokenIn, tokenOut, amountIn }),
+      estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
+      allowance(),
+      estimateApprovalGas(),
+    ]);
 
   return {
     ...route,
     estimatedAmount,
     gas,
+    approvalGas,
+    allowanceAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),
   };
+};
+
+const approve: Approve = async ({ onSuccess }) => {
+  // Unwrap WOETH does not require approval
+  if (onSuccess) {
+    await onSuccess(null);
+  }
 };
 
 const swap: Swap = async ({ amountIn }) => {
@@ -124,5 +156,8 @@ export default {
   estimateAmount,
   estimateGas,
   estimateRoute,
+  allowance,
+  estimateApprovalGas,
+  approve,
   swap,
 };
