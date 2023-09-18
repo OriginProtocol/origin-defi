@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 
 import { Link } from 'react-router-dom';
 
@@ -7,12 +6,17 @@ import Logo from '../assets/logo.svg';
 import OGVIcon from '../assets/ogv.svg';
 import veOGVIcon from '../assets/ve-ogv.svg';
 import { StateContext } from '../components/AppState';
-import { CaretDown, ExternalLink, Profile, Sync } from '../components/Icons';
-import { StakeModal } from '../components/StakeModal';
+import { ExternalLink, Profile, Sync } from '../components/Icons';
+import { MyLockups } from '../components/MyLockups';
+import { NumberSpinner } from '../components/NumberSpinner';
+import { ExtendStakeModal, StakeModal } from '../components/StakeModal';
+import { Toaster } from '../components/Toaster';
 
 export function App() {
+  const { state } = useContext(StateContext);
   return (
     <>
+      <Toaster />
       <Nav />
       <div className="container mx-auto max-w-6xl">
         <Heading />
@@ -21,7 +25,7 @@ export function App() {
         <div className="flex gap-6 mb-32">
           <div className="flex-1 flex flex-col gap-6">
             <MyStake />
-            <MyLockups />
+            <MyLockups lockups={state.lockups} />
           </div>
           <div className="flex flex-col gap-6 w-[375px]">
             <RewardsToCollect />
@@ -29,6 +33,8 @@ export function App() {
           </div>
         </div>
       </div>
+      <StakeModal />
+      <ExtendStakeModal />
     </>
   );
 }
@@ -118,31 +124,59 @@ const Stats = () => (
     <div className="w-px bg-gray-900" />
     <div className="flex flex-col items-start gap-3 pr-8">
       <div className="text-gray-500">Voting addresses</div>
-      <div className="font-bold text-3xl">1,462</div>
+      <div className="font-bold text-3xl">
+        <NumberSpinner num={1462} slow spinAtStart />
+      </div>
     </div>
   </div>
 );
 
 const MyStake = () => {
   const { state, setState } = useContext(StateContext);
+
+  const totalLocked = state.lockups.reduce((m, l) => {
+    return m + l.tokens;
+  }, 0);
+
   return (
     <div className="bg-gray-900 rounded-lg p-6 flex justify-between items-center">
       <div className="flex flex-col items-start gap-3">
         <div className="text-gray-500 text-sm">My stake</div>
         <div className="flex items-center gap-3">
           <img src={OGVIcon} alt="OGV" />
-          <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
+          {!state.lockups.length ? (
+            <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
+          ) : (
+            <div className="text-2xl font-bold">
+              {totalLocked.toLocaleString()}
+            </div>
+          )}
         </div>
       </div>
       <div className="mt-2 flex flex-col items-start gap-3">
         <div className="text-gray-500 text-sm">Wallet balance</div>
         <div className="flex items-center gap-3">
           <img src={OGVIcon} alt="OGV" />
-          <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
-          <button className="ml-4 border-blue-600 border border-px rounded-full text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1">
-            Get OGV
-            <ExternalLink />
-          </button>
+          {state.connected && state.walletBalance ? (
+            <div className="text-2xl font-bold">
+              {state.walletBalance.toLocaleString()}
+            </div>
+          ) : (
+            <>
+              <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
+              <button
+                className="ml-4 border-blue-600 border border-px rounded-full text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1"
+                onClick={() => {
+                  if (state.connected) {
+                    setState({ walletBalance: 2000000 });
+                  }
+                }}
+              >
+                Get OGV
+                <ExternalLink />
+              </button>
+            </>
+          )}
         </div>
       </div>
       <div className="py-1">
@@ -162,79 +196,6 @@ const MyStake = () => {
           </button>
         )}
       </div>
-      <StakeModal />
-    </div>
-  );
-};
-
-const MyLockups = () => {
-  const { state, setState } = useContext(StateContext);
-  return (
-    <div className="bg-gray-900 rounded-lg text-sm">
-      <div
-        className="p-6 border-b border-off-black"
-        onClick={() => setState({ lockups: !state.lockups })}
-      >
-        My lockups
-      </div>
-      <div className="grid grid-cols-[auto,auto,auto,max-content] border-b border-off-black ">
-        <div className="text-gray-500 pl-6 py-4">OGV</div>
-        <div className="text-gray-500 py-4 text-center">Time remaining</div>
-        <div className="text-gray-500 py-4 text-center">Lockup ends</div>
-        <div className="text-gray-500 px-6 py-4 text-center">Voting power</div>
-        {!state.lockups ? null : (
-          <>
-            <LockupRow />
-            <LockupRow />
-            <LockupRow />
-          </>
-        )}
-      </div>
-      {state.lockups ? null : (
-        <div className="p-6 text-center text-gray-500">No lockups to show</div>
-      )}
-    </div>
-  );
-};
-
-const LockupRow = () => {
-  const [open, setOpen] = useState(false);
-  const rowClassBase =
-    'flex items-center border-t border-off-black py-4 transition duration-150 ease-in-out';
-  const rowClass = open
-    ? `${rowClassBase} bg-white/3`
-    : `${rowClassBase} group-hover:bg-white/3`;
-  return (
-    <div
-      className="contents cursor-pointer group"
-      onClick={() => setOpen(!open)}
-    >
-      <div className={`${rowClass} pl-6`}>
-        <img src={OGVIcon} alt="veOGV" />
-        2,000,000
-      </div>
-      <div className={`${rowClass} justify-center`}>48 months</div>
-      <div className={`${rowClass} justify-center`}>Sept 30, 2026</div>
-      <div className={`${rowClass} gap-2 justify-center px-6`}>
-        <img src={veOGVIcon} alt="veOGV" />
-        2,000,000
-        <button className="text-blue-500">
-          <CaretDown className={open ? 'rotate-180' : ''} />
-        </button>
-      </div>
-      {!open ? null : (
-        <div className="col-span-4 px-6 pb-4 flex justify-end gap-2 bg-white/3">
-          <button className="border-blue-600/50 bg-gray-900 border border-px rounded-full text-xs px-4 py-2 leading-tight text-gray-500/50">
-            Pending
-          </button>
-          <button className="border-blue-600/50 bg-gray-900 border border-px rounded-full text-xs px-4 py-2 leading-tight text-gray-500/50">
-            Unstake
-          </button>
-          <button className="text-blue-500 ml-6">
-            <ExternalLink size={18} />
-          </button>
-        </div>
-      )}
     </div>
   );
 };
@@ -255,17 +216,28 @@ const RewardsToCollect = () => (
   </div>
 );
 
-const VotingPower = () => (
-  <div className="bg-gray-900 rounded-lg text-sm text-gray-500 py-8 px-6">
-    <div className="leading-loose">My voting power</div>
-    <div className="flex justify-between items-center text-2xl mt-2">
-      <div>0.00</div>
-      <div className="flex items-center text-off-white gap-2 text-xl">
-        <img src={veOGVIcon} alt="veOGV" />
-        veOGV
+const VotingPower = () => {
+  const { state } = useContext(StateContext);
+
+  const totalVotingPower = state.lockups.reduce((m, l) => {
+    return m + l.votingPower;
+  }, 0);
+  return (
+    <div className="bg-gray-900 rounded-lg text-sm py-8 px-6">
+      <div className="leading-loose text-gray-500">My voting power</div>
+      <div className="flex justify-between items-center text-2xl mt-2">
+        <div>
+          {totalVotingPower.toLocaleString(undefined, {
+            maximumFractionDigits: 0,
+          })}
+        </div>
+        <div className="flex items-center text-off-white gap-2 text-xl">
+          <img src={veOGVIcon} alt="veOGV" />
+          veOGV
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default App;

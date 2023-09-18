@@ -23,19 +23,30 @@ export interface Toast {
   type: string;
 }
 
+export interface Lockup {
+  id: number;
+  tokens: number;
+  endsAt: number;
+  votingPower: number;
+}
+
 export interface IAppState {
   connected: boolean;
   stakeModal: boolean;
-  lockups: boolean;
+  extendStakeModal: number | null;
+  lockups: Lockup[];
   toasts: Toast[];
   toast?: string;
+  walletBalance: number;
 }
 
 export const initialState: IAppState = {
   connected: false,
-  lockups: false,
+  lockups: [],
   toasts: [],
   stakeModal: false,
+  extendStakeModal: null,
+  walletBalance: 0,
 };
 
 interface StateContextProps {

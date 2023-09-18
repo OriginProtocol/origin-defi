@@ -14,3 +14,7 @@ body {
 .btn-secondary {
   @apply rounded-full bg-gray-900;
 }
+
+.btn-outline {
+  @apply border-blue-600 bg-gray-900 border rounded-full leading-tight hover:bg-blue-600 hover:text-off-black transition-all duration-150 ease-in-out cursor-pointer;
+}
