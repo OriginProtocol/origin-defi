@@ -109,7 +109,7 @@ export type SwapRoute = {
 
 export type EstimatedSwapRoute = {
   estimatedAmount: bigint;
-  approvedAmount: bigint;
+  allowanceAmount: bigint;
   rate: number;
   gas: bigint;
   approvalGas: bigint;

@@ -127,12 +127,12 @@ const estimateRoute: EstimateRoute = async ({
       estimatedAmount: 0n,
       gas: 0n,
       rate: 0,
-      approvedAmount: 0n,
+      allowanceAmount: 0n,
       approvalGas: 0n,
     };
   }
 
-  const [estimatedAmount, approvedAmount, approvalGas] = await Promise.all([
+  const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
     estimateAmount({
       tokenIn,
       tokenOut,
@@ -156,7 +156,7 @@ const estimateRoute: EstimateRoute = async ({
     estimatedAmount,
     gas,
     approvalGas,
-    approvedAmount,
+    allowanceAmount,
     rate:
       +formatUnits(amountIn, tokenIn.decimals) /
       +formatUnits(estimatedAmount, tokenOut.decimals),

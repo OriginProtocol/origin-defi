@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { tokens } from '@origin/shared/contracts';
-import { usePrices } from '@origin/shared/providers';
+import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
   formatAmount,
@@ -26,11 +26,11 @@ export function RouteCard(props: Omit<CardProps, 'onSelect'>) {
   const intl = useIntl();
   const { data: prices } = usePrices();
   const [{ amountOut, gas, rate, isEstimateLoading }] = useRedeemState();
+  const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
 
   const estimatedAmount = +formatUnits(amountOut, MIX_TOKEN.decimals);
   const convertedAmount =
     (prices?.[tokens.mainnet.WETH.symbol] ?? 1) * estimatedAmount;
-  const gasAmount = +formatUnits(gas, tokens.mainnet.ETH.decimals);
 
   return (
     <Card
@@ -141,10 +141,10 @@ export function RouteCard(props: Omit<CardProps, 'onSelect'>) {
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
           <Typography color="primary.contrastText" variant="body2">
-            {isEstimateLoading ? (
+            {isEstimateLoading || gasPriceLoading ? (
               <Skeleton width={60} />
             ) : (
-              `~${intl.formatNumber(gasAmount, currencyFormat)}`
+              `~${intl.formatNumber(gasPrice?.gasCostUsd, currencyFormat)}`
             )}
           </Typography>
         </Stack>

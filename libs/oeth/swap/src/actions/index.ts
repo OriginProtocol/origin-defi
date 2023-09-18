@@ -25,7 +25,7 @@ const defaultApi: SwapApi = {
     return {
       ...route,
       estimatedAmount: amountIn,
-      approvedAmount: 0n,
+      allowanceAmount: 0n,
       approvalGas: 0n,
       gas: 0n,
       rate: 0,
