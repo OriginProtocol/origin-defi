@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useTransaction } from 'wagmi';
