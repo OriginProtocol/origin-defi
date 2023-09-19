@@ -1,7 +1,12 @@
+import '@rainbow-me/rainbowkit/styles.css';
+
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
+import { chains, wagmiConfig } from '@origin/oeth/shared';
+import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
+import { WagmiConfig } from 'wagmi';
 
 import { App, Governance, Staking } from './app/app';
 import { StateProvider } from './components/AppState';
@@ -30,7 +35,11 @@ const router = createHashRouter([
 root.render(
   <StrictMode>
     <StateProvider>
-      <RouterProvider router={router} />
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains} theme={darkTheme()}>
+          <RouterProvider router={router} />
+        </RainbowKitProvider>
+      </WagmiConfig>
     </StateProvider>
   </StrictMode>,
 );

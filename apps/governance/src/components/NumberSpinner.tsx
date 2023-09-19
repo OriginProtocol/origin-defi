@@ -31,6 +31,7 @@ export const NumberSpinner = ({
         char.match(/[0-9]/) ? (
           <CharSpinner
             key={idx}
+            idx={idx}
             num={num}
             slow={slow}
             char={Number(char)}
@@ -51,19 +52,25 @@ const CharSpinner = ({
   down,
   slow,
   spinAtStart,
+  idx,
 }: {
   num: number;
   char: number;
   down?: boolean;
   slow?: boolean;
   spinAtStart?: boolean;
+  idx: number;
 }) => {
   const [y, setY] = useState(spinAtStart ? 0 : down ? 1000000000 + char : char);
   const [last, setLast] = useState(spinAtStart ? 0 : char);
   const springProps = useSpring({
     from: { y: spinAtStart ? 0 : down ? 1000000000 + char : char },
     to: { y },
-    config: { mass: 1, tension: slow ? 90 : 170, friction: slow ? 40 : 26 },
+    config: {
+      mass: 1,
+      tension: (slow ? 90 : 170) - idx * 5,
+      friction: slow ? 40 : 26,
+    },
   });
 
   useEffect(() => {

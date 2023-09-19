@@ -1,11 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit';
+import { Link } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 import Logo from '../assets/logo.svg';
 import OGVIcon from '../assets/ogv.svg';
 import veOGVIcon from '../assets/ve-ogv.svg';
 import { StateContext } from '../components/AppState';
+import { DevControls } from '../components/DevControls';
 import { ExternalLink, Info, Profile, Sync } from '../components/Icons';
 import { MyLockups } from '../components/MyLockups';
 import { NumberSpinner } from '../components/NumberSpinner';
@@ -13,6 +17,7 @@ import { ExtendStakeModal, StakeModal } from '../components/StakeModal';
 import { Tabs } from '../components/Tabs';
 import { Toaster } from '../components/Toaster';
 import { Tooltip } from '../components/Tooltip';
+import { truncateAddress } from '../utils/string';
 
 import type { ReactNode } from 'react';
 
@@ -26,6 +31,7 @@ export function App() {
       </div>
       <StakeModal />
       <ExtendStakeModal />
+      <DevControls />
     </>
   );
 }
@@ -56,7 +62,10 @@ export const Staking = () => {
 };
 
 const Nav = () => {
-  const { state, setState } = useContext(StateContext);
+  const { isConnected, address } = useAccount();
+  const { openConnectModal } = useConnectModal();
+  const { openAccountModal } = useAccountModal();
+
   return (
     <div className="border-b border-b-gray-900 mb-8 sm:mb-16">
       <div className="px-3 sm:px-6 mx-auto flex items-center gap-12 py-6 sm:py-0">
@@ -67,20 +76,20 @@ const Nav = () => {
             <span className="hidden sm:inline">{'View on '}</span>IPFS
           </button>
 
-          {state.connected ? (
+          {isConnected && address ? (
             <button
               className="btn-secondary px-4 py-2 flex items-center gap-3 font-medium self-stretch"
-              onClick={() => setState({ connected: false })}
+              onClick={() => openAccountModal?.()}
             >
               <div className="rounded-full overflow-hidden">
                 <Profile />
               </div>
-              <div>0x22b&hellip;bA44</div>
+              <div>{truncateAddress(address)}</div>
             </button>
           ) : (
             <button
               className="btn px-6 py-3"
-              onClick={() => setState({ connected: true })}
+              onClick={() => openConnectModal?.()}
             >
               Connect
             </button>
@@ -115,14 +124,22 @@ const Heading = ({ children }: { children: ReactNode }) => (
 
 const Actions = () => (
   <div className="flex items-center gap-4">
-    <button className="btn-outline text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1">
+    <Link
+      className="btn-outline text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1"
+      to="https://www.ousd.com/ogv-dashboard"
+      target="_blank"
+    >
       OGV dashboard
       <ExternalLink />
-    </button>
-    <button className="btn-outline text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1">
+    </Link>
+    <Link
+      className="btn-outline text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1"
+      to="https://app.uniswap.org/swap?outputCurrency=0x9c354503C38481a7A7a51629142963F98eCC12D0&chain=mainnet"
+      target="_blank"
+    >
       Get OGV
       <ExternalLink />
-    </button>
+    </Link>
   </div>
 );
 
@@ -151,6 +168,7 @@ const Stats = () => (
     <div className="flex flex-col items-start gap-3 pr-8">
       <div className="text-gray-500">Voting addresses</div>
       <div className="font-bold text-3xl">
+        {/* <NumberSpinner num={1462} slow spinAtStart /> */}
         <NumberSpinner num={1462} slow spinAtStart />
       </div>
     </div>
@@ -159,6 +177,8 @@ const Stats = () => (
 
 const MyStake = () => {
   const { state, setState } = useContext(StateContext);
+  const { isConnected } = useAccount();
+  const { openConnectModal } = useConnectModal();
 
   const totalLocked = state.lockups.reduce((m, l) => {
     return m + l.tokens;
@@ -170,7 +190,7 @@ const MyStake = () => {
         <div className="text-gray-500 text-sm">My stake</div>
         <div className="flex items-center gap-3">
           <img src={OGVIcon} alt="OGV" />
-          {!state.connected ? (
+          {!isConnected ? (
             <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
           ) : (
             <div className="text-2xl font-bold">
@@ -183,30 +203,27 @@ const MyStake = () => {
         <div className="text-gray-500 text-sm">Wallet balance</div>
         <div className="flex items-center gap-3 w-full sm:w-auto">
           <img src={OGVIcon} alt="OGV" />
-          {state.connected ? (
+          {isConnected ? (
             <div className="text-2xl font-bold">
-              {state.walletBalance.toLocaleString()}
+              <NumberSpinner num={state.walletBalance} slow spinAtStart />
             </div>
           ) : (
             <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
           )}
           {state.walletBalance ? null : (
-            <button
+            <Link
               className="ml-auto sm:ml-4 border-blue-600 border border-px rounded-full text-xs pl-4 pr-3 py-2 leading-tight flex items-center gap-1"
-              onClick={() => {
-                if (state.connected) {
-                  setState({ walletBalance: 2000000 });
-                }
-              }}
+              to="https://app.uniswap.org/swap?outputCurrency=0x9c354503C38481a7A7a51629142963F98eCC12D0&chain=mainnet"
+              target="_blank"
             >
               Get OGV
               <ExternalLink />
-            </button>
+            </Link>
           )}
         </div>
       </div>
       <div className="py-1">
-        {state.connected ? (
+        {isConnected ? (
           <button
             className="btn w-full sm:w-auto sm:px-20 py-4 leading-none"
             onClick={() => setState({ stakeModal: true })}
@@ -216,7 +233,7 @@ const MyStake = () => {
         ) : (
           <button
             className="btn w-full sm:w-auto sm:px-20 py-4 leading-none"
-            onClick={() => setState({ connected: true })}
+            onClick={() => openConnectModal?.()}
           >
             Connect
           </button>

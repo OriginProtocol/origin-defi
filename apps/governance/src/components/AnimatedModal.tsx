@@ -12,6 +12,7 @@ interface AnimatedModalProps {
   open: boolean;
   shouldClose?: boolean;
   onClose: () => void;
+  maxWidth?: number;
 }
 
 export const AnimatedModal = (props: AnimatedModalProps) => {
@@ -60,8 +61,8 @@ export const AnimatedModal = (props: AnimatedModalProps) => {
       }}
     >
       <animated.div
-        style={panelProps}
-        className="bg-gray-900 z-50 w-full max-w-[550px] rounded-lg relative"
+        style={{ ...panelProps, maxWidth: props.maxWidth || 550 }}
+        className="bg-gray-900 z-50 w-full rounded-lg relative"
       >
         {children}
       </animated.div>

@@ -51,7 +51,7 @@ export const Tabs = (props: {
         <Link
           key={idx}
           to={tab.href}
-          className={`py-6 relative${
+          className={`py-6 relative transition-all duration-200 ease-in-out${
             activeTab === idx ? '' : ' text-gray-500 hover:text-off-white'
           }`}
           onClick={() => setActive(idx)}
