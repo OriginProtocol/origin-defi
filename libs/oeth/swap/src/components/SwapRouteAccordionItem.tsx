@@ -1,4 +1,5 @@
 import { alpha, Box, Stack, Typography } from '@mui/material';
+import { InfoTooltip } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { usePrices } from '@origin/shared/providers';
 import { currencyFormat, quantityFormat } from '@origin/shared/utils';
@@ -6,7 +7,6 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { routeActionLabel, routeActionLogos } from '../constants';
-import { SwapInfo } from './SwapInfo';
 
 import type { EstimatedSwapRoute } from '../types';
 
@@ -118,7 +118,11 @@ export function SwapRouteAccordionItem({
             sx={{ display: 'flex', alignItems: 'center' }}
           >
             {intl.formatMessage({ defaultMessage: 'Rate' })}&nbsp;
-            <SwapInfo />
+            <InfoTooltip
+              tooltipLabel={intl.formatMessage({
+                defaultMessage: 'Exchange rate',
+              })}
+            />
             &nbsp;
             <Box component="span" color="primary.contrastText">
               1:{intl.formatNumber(route.rate, quantityFormat)}

@@ -1,31 +1,50 @@
-import { Collapse, Stack, Typography } from '@mui/material';
-import { Card, cardStyles } from '@origin/shared/components';
+import { Collapse, Skeleton, Stack, Typography } from '@mui/material';
+import { InfoTooltip } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { useRedeemState } from '../state';
-import { RedeemInfo } from './RedeemInfo';
 import { RedeemSplitCard } from './RedeemSplitCard';
-import { RouteCard } from './RouteCard';
 
-import type { CardProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 
-export function RedeemRoute(props: Omit<CardProps, 'children'>) {
+export function RedeemRoute(props: Omit<StackProps, 'children'>) {
   const intl = useIntl();
-  const [{ amountOut }] = useRedeemState();
+  const [{ amountOut, isEstimateLoading }] = useRedeemState();
 
   const hasContent = amountOut > 0n;
 
   return (
-    <Card
+    <Stack
       {...props}
       sx={{
-        border: '1px solid',
-        borderColor: (theme) => theme.palette.background.default,
         backgroundColor: 'grey.900',
         borderRadius: 1,
+        padding: 2,
         ...props?.sx,
       }}
-      title={
+    >
+      {isEstimateLoading ? (
+        <Stack
+          direction="row"
+          alignItems="center"
+          gap={1}
+          sx={(theme) => ({ color: theme.palette.primary.contrastText })}
+        >
+          <Skeleton
+            variant="circular"
+            width="0.5rem"
+            height="0.5rem"
+            sx={{
+              backgroundColor: (theme) => theme.palette.primary.contrastText,
+            }}
+          />
+          <Typography variant="body2">
+            {intl.formatMessage({
+              defaultMessage: 'Estimating...',
+            })}
+          </Typography>
+        </Stack>
+      ) : (
         <Stack
           direction="row"
           gap={0.5}
@@ -35,27 +54,16 @@ export function RedeemRoute(props: Omit<CardProps, 'children'>) {
           color="primary.contrastText"
         >
           {intl.formatMessage({ defaultMessage: 'Route' })}
-          <RedeemInfo />
+          <InfoTooltip
+            tooltipLabel={intl.formatMessage({
+              defaultMessage: 'Redeem OETH for the basket of underlying assets',
+            })}
+          />
         </Stack>
-      }
-      sxCardTitle={{ borderBottom: 'none', paddingBlock: 1, paddingInline: 2 }}
-      sxCardContent={{
-        ...(hasContent
-          ? cardStyles
-          : {
-              p: 0,
-              paddingBlock: 0,
-              paddingInline: 0,
-              '&:last-child': { pb: 0 },
-            }),
-      }}
-    >
-      <Collapse in={hasContent}>
-        <Stack spacing={1}>
-          <RouteCard />
-          <RedeemSplitCard />
-        </Stack>
+      )}
+      <Collapse in={hasContent} sx={{ pt: hasContent ? 2 : 0 }}>
+        <RedeemSplitCard />
       </Collapse>
-    </Card>
+    </Stack>
   );
 }
