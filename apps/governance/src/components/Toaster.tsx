@@ -1,8 +1,10 @@
 import { useContext, useEffect, useReducer, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-import { animated, useSpring } from '@react-spring/web';
+import { animated, useSpring, useSpringValue } from '@react-spring/web';
 
+import OGVIcon from '../assets/ogv.svg';
+import { CheckCircle, ExternalLink } from '../components/Icons';
 import { StateContext } from './AppState';
 
 import type { Toast } from './AppState';
@@ -42,27 +44,33 @@ type ToastProps = Toast & {
 };
 
 const ToastCmp = (props: ToastProps) => {
-  const { id, num, message, onHide, type = 'success' } = props;
+  const { id, num, title, text, onHide } = props;
   const [show, setShow] = useState(false);
+  const [startScroll] = useState(
+    window.scrollY < 80 ? 90 - window.scrollY : 20,
+  );
 
   const modalProps = useSpring({
     config: { mass: 0.75, tension: 300, friction: 20 },
     opacity: show ? 1 : 0,
-    top: show ? num * 50 + 20 : -50,
-    zIndex: num + 50,
-    left: '50%',
-    transform: 'translateX(-50%)',
+    top: show ? num * 100 + startScroll : -120,
+    zIndex: num + 100,
+  });
+
+  const width = useSpringValue('0%', {
+    config: { duration: 4000 },
+    onRest: (val) => {
+      if (val.finished) {
+        setShow(false);
+        setTimeout(() => onHide(id), 150);
+      }
+    },
   });
 
   useEffect(() => {
     setShow(true);
-    const showTimeout = setTimeout(() => setShow(false), 4000);
-    const hideTimeout = setTimeout(() => onHide(id), 4200);
-    return () => {
-      clearTimeout(showTimeout);
-      clearTimeout(hideTimeout);
-    };
-  }, [id]);
+    width.start('100%');
+  }, [id, width]);
 
   const el = useRef(document.createElement('div'));
 
@@ -80,10 +88,29 @@ const ToastCmp = (props: ToastProps) => {
 
   const cmp = (
     <animated.div
-      className={`bg-gray-900 text-white fixed rounded text-sm font-medium flex items-center px-8 py-2 ${type} text-center sm:whitespace-nowrap`}
+      className="fixed right-5 min-w-[300px]"
       style={modalProps}
+      onMouseOver={() => width.pause()}
+      onMouseOut={() => width.resume()}
     >
-      {message}
+      <div className="p-4 flex justify-between items-center bg-gray-900">
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-1">
+            <div className="text-green-400">
+              <CheckCircle size={16} />
+            </div>
+            {title}
+            <div className="text-blue-500 ml-1">
+              <ExternalLink size={14} />
+            </div>
+          </div>
+          <div className="text-xs text-gray-500">{text}</div>
+        </div>
+        <div className="ml-8 bg-[#18191C] p-2">
+          <img src={OGVIcon} alt="OGV" />
+        </div>
+      </div>
+      <animated.div className="h-[3px] bg-green-400" style={{ width }} />
     </animated.div>
   );
 

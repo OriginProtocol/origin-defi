@@ -32,7 +32,7 @@ export const MyLockupsTable = (props: MyLockupsProps) => {
   const { state, setState } = useContext(StateContext);
   return (
     <div
-      className={`grid grid-cols-[auto,auto,auto,max-content]${
+      className={`grid grid-cols-[auto,auto,max-content] sm:grid-cols-[auto,auto,auto,max-content]${
         props.disableActions ? '' : ' border-b border-off-black'
       }`}
     >
@@ -52,7 +52,9 @@ export const MyLockupsTable = (props: MyLockupsProps) => {
       >
         Time remaining
       </div>
-      <div className="text-gray-500 py-4 text-center">Lockup ends</div>
+      <div className="text-gray-500 py-4 text-center hidden sm:block">
+        Lockup ends
+      </div>
       <div className="text-gray-500 px-6 py-4 text-center">Voting power</div>
       {props.lockups.map((lockup, idx) => (
         <LockupRow
@@ -71,11 +73,11 @@ const LockupRow = (props: {
   idx: number;
   disableActions?: boolean;
 }) => {
-  const { state, setState } = useContext(StateContext);
+  const { setState } = useContext(StateContext);
   const { lockup } = props;
   const [open, setOpen] = useState(false);
   const rowClassBase =
-    'flex items-center border-t border-off-black py-4 transition duration-150 ease-in-out';
+    'items-center border-t border-off-black py-4 transition duration-150 ease-in-out';
   const rowClass = open
     ? `${rowClassBase} bg-white/3`
     : `${rowClassBase}${props.disableActions ? '' : ' group-hover:bg-white/3'}`;
@@ -87,17 +89,17 @@ const LockupRow = (props: {
       }`}
       onClick={() => (props.disableActions ? null : setOpen(!open))}
     >
-      <div className={`${rowClass} pl-6 gap-2`}>
+      <div className={`${rowClass} flex pl-6 gap-2`}>
         <img src={OGVIcon} alt="veOGV" />
         {lockup.tokens.toLocaleString()}
       </div>
-      <div className={`${rowClass} justify-center`}>
+      <div className={`${rowClass} flex justify-center`}>
         {estimateTimeToFutureTimestamp(lockup.endsAt)}
       </div>
-      <div className={`${rowClass} justify-center`}>
+      <div className={`${rowClass} justify-center hidden sm:flex`}>
         {formatDateFromTimestamp(lockup.endsAt)}
       </div>
-      <div className={`${rowClass} gap-2 justify-center px-6`}>
+      <div className={`${rowClass} flex gap-2 justify-center px-6`}>
         <img src={veOGVIcon} alt="veOGV" />
         {lockup.votingPower.toLocaleString(undefined, {
           maximumFractionDigits: 0,
@@ -109,7 +111,7 @@ const LockupRow = (props: {
         )}
       </div>
       {!open || props.disableActions ? null : (
-        <div className="col-span-4 px-6 pb-4 flex justify-end items-start gap-2 bg-white/3">
+        <div className="col-span-3 sm:col-span-4 px-6 pb-4 flex justify-end items-start gap-2 bg-white/3">
           <div className="overflow-hidden flex gap-2 items-start">
             <button
               className="btn-outline text-xs px-4 py-2"
@@ -120,29 +122,8 @@ const LockupRow = (props: {
             >
               Extend
             </button>
-            {lockup.endsAt > Date.now() ? (
-              <button
-                className="btn-outline opacity-50 text-xs px-4 py-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                Unstake
-              </button>
-            ) : (
-              <button
-                className="btn-outline text-xs px-4 py-2"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setState({
-                    walletBalance: state.walletBalance + lockup.tokens,
-                    lockups: state.lockups.filter((l) => l !== lockup),
-                  });
-                }}
-              >
-                Unstake
-              </button>
-            )}
+            <UnstakeButton lockup={lockup} />
+
             <button className="text-blue-500 ml-6">
               <ExternalLink size={18} />
             </button>
@@ -150,5 +131,51 @@ const LockupRow = (props: {
         </div>
       )}
     </div>
+  );
+};
+
+const UnstakeButton = ({ lockup }: { lockup: Lockup }) => {
+  const { state, setState } = useContext(StateContext);
+  const [mode, setMode] = useState('unstake');
+
+  const disabled = lockup.endsAt > Date.now();
+  const btnClass =
+    disabled || mode !== 'unstake' ? 'btn-outline-disabled' : 'btn-outline';
+
+  function unstake() {
+    if (disabled) {
+      return;
+    }
+    if (mode === 'unstake') {
+      setMode('confirm');
+    } else if (mode === 'confirm') {
+      setMode('pending');
+    } else {
+      setState({
+        walletBalance: state.walletBalance + lockup.tokens,
+        lockups: state.lockups.filter((l) => l !== lockup),
+        toast: {
+          title: 'OGV unstaked',
+          text: `${lockup.tokens.toLocaleString()} OGV`,
+          icon: 'OGV',
+        },
+      });
+    }
+  }
+
+  return (
+    <button
+      className={`${btnClass} text-xs px-4 py-2`}
+      onClick={(e) => {
+        e.stopPropagation();
+        unstake();
+      }}
+    >
+      {mode === 'confirm'
+        ? 'Confirm'
+        : mode === 'pending'
+        ? 'Pending'
+        : 'Unstake'}
+    </button>
   );
 };

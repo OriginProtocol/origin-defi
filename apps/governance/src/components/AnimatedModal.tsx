@@ -3,6 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { Modal } from '@mui/base/Modal';
 import { animated, useSpring } from '@react-spring/web';
 
+import { Close } from './Icons';
+
+import type { ReactNode } from 'react';
+
 interface AnimatedModalProps {
   children: React.ReactNode;
   open: boolean;
@@ -84,3 +88,24 @@ const Backdrop = React.forwardRef<HTMLDivElement, BackdropProps>(
     );
   },
 );
+
+interface HeaderProps {
+  children: ReactNode;
+  onClose?: () => void;
+}
+
+export const ModalHeader = ({ children, onClose }: HeaderProps) => {
+  return (
+    <div className="py-4 px-6 font-bold flex items-center justify-between border-b border-off-black leading-none">
+      {children}
+      {!onClose ? null : (
+        <button
+          className="p-1.5 rounded-full bg-gray-800 hover:bg-gray-700"
+          onClick={() => onClose()}
+        >
+          <Close />
+        </button>
+      )}
+    </div>
+  );
+};

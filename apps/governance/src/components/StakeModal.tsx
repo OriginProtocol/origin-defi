@@ -1,8 +1,8 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 
 import OGVIcon from '../assets/ogv.svg';
 import veOGVIcon from '../assets/ve-ogv.svg';
-import { AnimatedModal } from '../components/AnimatedModal';
+import { AnimatedModal, ModalHeader } from '../components/AnimatedModal';
 import { StateContext } from '../components/AppState';
 import { MyLockupsTable } from '../components/MyLockups';
 import { StyledSlider } from '../components/StyledSlider';
@@ -25,7 +25,11 @@ export const StakeModal = () => {
 
   function onStake() {
     setState({
-      toast: 'Staked successfully',
+      toast: {
+        title: 'Staked',
+        text: `${Number(amount).toLocaleString()} OGV`,
+        icon: 'OGV',
+      },
       walletBalance: state.walletBalance - Number(amount),
       lockups: [
         ...state.lockups,
@@ -63,15 +67,8 @@ export const StakeModal = () => {
         </div>
       )}
 
-      <div className="py-4 px-6 font-bold flex items-center justify-between border-b border-off-black leading-none">
-        Stake
-        <button
-          className="btn-secondary px-6 py-3"
-          onClick={() => setShouldClose(true)}
-        >
-          X
-        </button>
-      </div>
+      <ModalHeader onClose={() => setShouldClose(true)}>Stake</ModalHeader>
+
       <div
         className={`pt-6 pb-10 px-6 text-sm ${
           sign ? 'blur-sm pointer-events-none' : ''
@@ -146,10 +143,15 @@ export const ExtendStakeModal = () => {
   const [shouldClose, setShouldClose] = useState(false);
 
   const sign = mode === 'approve-stake';
+  const lockup = state.lockups.find((l) => l.id === state.extendStakeModal);
 
   function onStake() {
     setState({
-      toast: 'Extended Stake successfully',
+      toast: {
+        title: 'Stake extended',
+        text: `${lockup?.tokens.toLocaleString(undefined)} OGV`,
+        icon: 'OGV',
+      },
       lockups: state.lockups.map((l) => {
         if (l.id === state.extendStakeModal) {
           l.endsAt = getTimestampAfterMonths(monthsToStake);
@@ -160,8 +162,6 @@ export const ExtendStakeModal = () => {
     });
     setShouldClose(true);
   }
-
-  const lockup = state.lockups.find((l) => l.id === state.extendStakeModal);
 
   return (
     <AnimatedModal
@@ -186,15 +186,10 @@ export const ExtendStakeModal = () => {
         </div>
       )}
 
-      <div className="py-4 px-6 font-bold flex items-center justify-between border-b border-off-black leading-none">
+      <ModalHeader onClose={() => setShouldClose(true)}>
         Extend Stake
-        <button
-          className="btn-secondary px-6 py-3"
-          onClick={() => setShouldClose(true)}
-        >
-          X
-        </button>
-      </div>
+      </ModalHeader>
+
       <div
         className={`pt-6 pb-10 px-6 text-sm ${
           sign ? 'blur-sm pointer-events-none' : ''
@@ -213,6 +208,17 @@ export const ExtendStakeModal = () => {
           amount={lockup?.tokens || 0}
           monthsToStake={monthsToStake}
         />
+
+        {!state.rewardsToCollect ? null : (
+          <div className="bg-[rgba(81,84,102,0.20)] rounded px-6 py-4 leading-snug mb-6 flex flex-col gap-2">
+            <div className="font-medium">OGV Rewards will be collected</div>
+            <div className="text-xs text-gray-500">
+              {`You have accrued ${state.rewardsToCollect.toFixed(
+                2,
+              )} OVG in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake.`}
+            </div>
+          </div>
+        )}
 
         <button
           className="btn w-full py-4 text-base leading-none"

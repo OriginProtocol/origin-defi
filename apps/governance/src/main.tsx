@@ -1,21 +1,36 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { BrowserRouter } from 'react-router-dom';
+import { createHashRouter, RouterProvider } from 'react-router-dom';
 
-import App from './app/app';
+import { App, Governance, Staking } from './app/app';
 import { StateProvider } from './components/AppState';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
+const router = createHashRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      {
+        element: <Staking />,
+        index: true,
+      },
+      {
+        element: <Governance />,
+        path: '/governance',
+      },
+    ],
+  },
+]);
+
 root.render(
   <StrictMode>
-    <BrowserRouter>
-      <StateProvider>
-        <App />
-      </StateProvider>
-    </BrowserRouter>
+    <StateProvider>
+      <RouterProvider router={router} />
+    </StateProvider>
   </StrictMode>,
 );

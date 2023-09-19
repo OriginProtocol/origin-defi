@@ -19,7 +19,9 @@ export type SetState = Definitions['set'];
 
 export interface Toast {
   id: string;
-  message: string;
+  title: string;
+  text: string;
+  icon: string;
   type: string;
 }
 
@@ -36,8 +38,13 @@ export interface IAppState {
   extendStakeModal: number | null;
   lockups: Lockup[];
   toasts: Toast[];
-  toast?: string;
+  toast?: {
+    title: string;
+    text: string;
+    icon: string;
+  };
   walletBalance: number;
+  rewardsToCollect: number;
 }
 
 export const initialState: IAppState = {
@@ -47,6 +54,7 @@ export const initialState: IAppState = {
   stakeModal: false,
   extendStakeModal: null,
   walletBalance: 0,
+  rewardsToCollect: 0,
 };
 
 interface StateContextProps {
@@ -64,7 +72,7 @@ function stateReducer(state: IAppState, action: Record<string, object>) {
   Object.keys(action).forEach((path) => {
     const value = action[path];
     if (path === 'toast') {
-      const toast = { message: value, id: Date.now() };
+      const toast = { ...value, id: Date.now() };
       set(newState, 'toasts', [...newState.toasts, toast]);
     } else {
       set(newState, path, value);
