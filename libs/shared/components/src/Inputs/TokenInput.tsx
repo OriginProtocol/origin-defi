@@ -3,6 +3,7 @@ import { forwardRef } from 'react';
 import {
   alpha,
   Box,
+  Button,
   IconButton,
   Skeleton,
   Stack,
@@ -33,6 +34,8 @@ export type TokenInputProps = {
   isConnected: boolean;
   balance?: bigint;
   isBalanceLoading?: boolean;
+  hideMaxButton?: boolean;
+  disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
   isTokenClickDisabled?: boolean;
@@ -56,6 +59,8 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isConnected,
       balance = 0n,
       isBalanceLoading,
+      hideMaxButton,
+      disableMaxButton,
       token,
       onTokenClick,
       isTokenClickDisabled,
@@ -68,13 +73,16 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
 
+    const handleMaxClick = () => {
+      onAmountChange(balance);
+    };
+
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
+    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
       <Stack {...rest}>
-        <Box
-          sx={{ display: 'flex', justifyContent: 'space-between', gap: 2.5 }}
-        >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
           <BigIntInput
             {...inputProps}
             value={amount}
@@ -83,6 +91,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             disabled={isAmountDisabled}
             isLoading={isAmountLoading}
             ref={ref}
+            sx={{ flexGrow: 1, ...inputProps?.sx }}
           />
           <TokenButton
             token={token}
@@ -114,30 +123,43 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               {intl.formatNumber(amountUsd, currencyFormat)}
             </Typography>
           ) : null}
-          {isConnected ? (
-            isBalanceLoading ? (
-              <Skeleton width={28} />
-            ) : (
-              <Typography
-                color="text.secondary"
-                variant="body1"
-                sx={{
-                  justifySelf: 'flex-end',
-                  fontWeight: 400,
-                  fontStyle: 'normal',
-                  visibility: balance === undefined ? 'hidden' : 'visible',
-                  lineHeight: '1.5rem',
-                }}
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            {isConnected ? (
+              isBalanceLoading ? (
+                <Skeleton width={28} />
+              ) : (
+                <Typography
+                  color="text.secondary"
+                  variant="body1"
+                  sx={{
+                    justifySelf: 'flex-end',
+                    fontWeight: 400,
+                    fontStyle: 'normal',
+                    visibility: balance === undefined ? 'hidden' : 'visible',
+                    lineHeight: '1.5rem',
+                  }}
+                >
+                  {intl.formatMessage(
+                    { defaultMessage: 'Balance: {number}' },
+                    {
+                      number: formatAmount(balance, decimals),
+                    },
+                  )}
+                </Typography>
+              )
+            ) : null}
+            {!hideMaxButton && (
+              <Button
+                variant="text"
+                color="inherit"
+                onClick={handleMaxClick}
+                disabled={maxDisabled}
+                sx={{ minWidth: 0, padding: (theme) => theme.spacing(0.2, 1) }}
               >
-                {intl.formatMessage(
-                  { defaultMessage: 'Balance: {number}' },
-                  {
-                    number: formatAmount(balance, decimals),
-                  },
-                )}
-              </Typography>
-            )
-          ) : undefined}
+                {intl.formatMessage({ defaultMessage: 'MAX' })}
+              </Button>
+            )}
+          </Stack>
         </Box>
       </Stack>
     );

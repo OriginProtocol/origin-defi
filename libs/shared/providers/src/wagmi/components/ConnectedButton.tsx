@@ -17,7 +17,7 @@ export const ConnectedButton = (props: ButtonProps) => {
   const { openConnectModal } = useConnectModal();
 
   if (!isConnected) {
-    const { children, onClick, ...rest } = props;
+    const { children, onClick, disabled, ...rest } = props;
 
     return (
       <Button
@@ -32,10 +32,10 @@ export const ConnectedButton = (props: ButtonProps) => {
   }
 
   if (isConnecting) {
-    const { children, onClick, ...rest } = props;
+    const { children, onClick, disabled, ...rest } = props;
 
     return (
-      <Button {...rest}>
+      <Button {...rest} disabled>
         <CircularProgress sx={{ color: 'primary.contrastText' }} />
       </Button>
     );

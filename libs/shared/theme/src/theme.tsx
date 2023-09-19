@@ -319,6 +319,18 @@ export const theme = extendTheme({
         }),
       },
     },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: ({ theme }) => ({
+          paddingInline: theme.spacing(2),
+          paddingBlock: theme.spacing(1.5),
+          borderRadius: theme.shape.borderRadius * 2,
+          border: '1px solid',
+          borderColor: theme.palette.grey[500],
+          boxShadow: theme.shadows[23],
+        }),
+      },
+    },
     MuiPaginationItem: {
       styleOverrides: {
         outlined: ({ theme }) => ({
