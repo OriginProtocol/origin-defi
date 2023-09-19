@@ -7,7 +7,7 @@ interface Props {
   sx?: SxProps;
 }
 
-export function Mix({ size = 2, sx }: Props) {
+export function Mix({ size = 1.5, sx }: Props) {
   const imgSrc = [
     '/images/currency/weth-icon-small.png',
     '/images/currency/reth-icon-small.png',

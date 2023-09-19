@@ -249,6 +249,7 @@ function SwapViewWrapped() {
             tokenPriceUsd={prices?.[tokenOut.symbol]}
             isPriceLoading={isSwapRoutesLoading || isPriceLoading}
             isConnected={isConnected}
+            hideMaxButton
             inputProps={{ readOnly: true, sx: tokenInputStyles }}
             sx={{
               ...commonStyles,
@@ -259,7 +260,13 @@ function SwapViewWrapped() {
           />
           <ArrowButton onClick={handleTokenFlip} />
         </Box>
-        <SwapRoute />
+        <SwapRoute
+          sx={{
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
+        />
         <Collapse in={needsApproval}>
           <Button
             variant="action"
@@ -314,7 +321,9 @@ function ArrowButton(props: IconButtonProps) {
         fill: (theme) => theme.palette.background.paper,
         strokeWidth: (theme) => theme.typography.pxToRem(2),
         stroke: (theme) => theme.palette.grey[700],
-        backgroundColor: (theme) => theme.palette.divider,
+        backgroundColor: (theme) => theme.palette.background.paper,
+        border: '1px solid',
+        borderColor: 'divider',
         '& img': {
           transition: (theme) => theme.transitions.create('transform'),
         },
