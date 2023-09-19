@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   alpha,
@@ -20,7 +20,7 @@ const days = [7, 30];
 export function ApyHeader() {
   const intl = useIntl();
   const [selectedPeriod, setSelectedPeriod] = useState(30);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { address } = useAccount();
   const { data: oethBalance } = useBalance({
     address,
