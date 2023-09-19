@@ -12,8 +12,12 @@ import {
 } from '@mui/material';
 import { ApyHeader, GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
-import { ConnectedButton, usePrices } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import {
+  ConnectedButton,
+  EnsureNetworkProvider,
+  usePrices,
+} from '@origin/shared/providers';
+import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -71,11 +75,11 @@ const tokenInputStyles = {
   },
 };
 
-export const SwapView = () => (
-  <SwapProvider>
-    <SwapViewWrapped />
-  </SwapProvider>
-);
+export const SwapView = () =>
+  composeContexts(
+    [[SwapProvider], [EnsureNetworkProvider]],
+    <SwapViewWrapped />,
+  );
 
 function SwapViewWrapped() {
   const intl = useIntl();
