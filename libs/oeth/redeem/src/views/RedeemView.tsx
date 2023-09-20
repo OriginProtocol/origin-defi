@@ -2,11 +2,7 @@ import { alpha, Box, CircularProgress, Stack, Typography } from '@mui/material';
 import { GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  ConnectedButton,
-  EnsureNetworkProvider,
-  usePrices,
-} from '@origin/shared/providers';
+import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
@@ -47,10 +43,7 @@ const tokenInputStyles = {
 };
 
 export const RedeemView = () =>
-  composeContexts(
-    [[RedeemProvider], [EnsureNetworkProvider]],
-    <RedeemViewWrapped />,
-  );
+  composeContexts([[RedeemProvider]], <RedeemViewWrapped />);
 
 function RedeemViewWrapped() {
   const intl = useIntl();
