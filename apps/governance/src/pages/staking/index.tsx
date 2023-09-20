@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 
+import { Actions } from '../../components/Actions';
 import { StateContext } from '../../components/AppState';
 import { Heading } from '../../components/Heading';
-import { Actions } from './Actions';
 import { MyLockups } from './MyLockups';
 import { MyStake } from './MyStake';
 import { RewardsToCollect } from './RewardsToCollect';

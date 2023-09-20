@@ -2,8 +2,8 @@ import { useContext } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import { StateContext } from '../../components/AppState';
-import { ExternalLink } from '../../components/Icons';
+import { StateContext } from './AppState';
+import { ExternalLink } from './Icons';
 
 export const Actions = () => {
   const { setState } = useContext(StateContext);

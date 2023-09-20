@@ -27,7 +27,7 @@ export const MyStake = () => {
             <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
           ) : (
             <div className="text-2xl font-bold">
-              {totalLocked.toLocaleString()}
+              <NumberSpinner num={totalLocked} slow />
             </div>
           )}
         </div>
@@ -38,7 +38,7 @@ export const MyStake = () => {
           <img src={OGVIcon} alt="OGV" />
           {isConnected ? (
             <div className="text-2xl font-bold">
-              <NumberSpinner num={state.walletBalance} slow spinAtStart />
+              <NumberSpinner num={state.walletBalance} slow />
             </div>
           ) : (
             <div className="mt-2 h-[2.5px] w-3 bg-gray-500" />
@@ -60,7 +60,9 @@ export const MyStake = () => {
       <div className="py-1">
         {isConnected ? (
           <button
-            className="btn w-full sm:w-auto sm:px-20 py-4 leading-none"
+            className={`${
+              state.walletBalance ? 'btn' : 'btn-disabled'
+            } w-full sm:w-auto sm:px-20 py-4 leading-none`}
             onClick={() => setState({ stakeModal: true })}
           >
             Stake
