@@ -4,17 +4,28 @@ import {
   Button,
   Divider,
   Popover,
+  Skeleton,
   Stack,
   Typography,
   useTheme,
 } from '@mui/material';
 import { Icon, LinkIcon, MiddleTruncated } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { quantityFormat } from '@origin/shared/utils';
+import { formatAmount } from '@origin/shared/utils';
+import { map, prop } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance, useDisconnect } from 'wagmi';
+import { useAccount, useBalance, useContractReads, useDisconnect } from 'wagmi';
 
-const values = ['eth', 'weth', 'reth', 'frxeth', 'sfrxeth', 'steth'];
+import type { StackProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
+
+const balanceTokens = [
+  tokens.mainnet.WETH,
+  tokens.mainnet.rETH,
+  tokens.mainnet.frxETH,
+  tokens.mainnet.sfrxETH,
+  tokens.mainnet.stETH,
+];
 
 const padding = { paddingInline: 2, paddingBlock: 3 };
 
@@ -23,51 +34,33 @@ interface Props {
   setAnchor: (value: HTMLButtonElement | null) => void;
 }
 
-export function AccountDetails({ anchor, setAnchor }: Props) {
+export function AccountPopover({ anchor, setAnchor }: Props) {
   const intl = useIntl();
+  const theme = useTheme();
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
 
-  const theme = useTheme();
-  const { data: eth } = useBalance({
+  const { data: eth, isLoading: ethLoading } = useBalance({
     address,
     token: tokens.mainnet.ETH.address,
     enabled: isConnected,
   });
-  const { data: weth } = useBalance({
-    address,
-    token: tokens.mainnet.WETH.address,
-    enabled: isConnected,
-  });
-  const { data: reth } = useBalance({
-    address,
-    token: tokens.mainnet.rETH.address,
-  });
-  const { data: frxeth } = useBalance({
-    address,
-    token: tokens.mainnet.frxETH.address,
-  });
-  const { data: sfrxeth } = useBalance({
-    address,
-    token: tokens.mainnet.sfrxETH.address,
-  });
-  const { data: steth } = useBalance({
-    address,
-    token: tokens.mainnet.stETH.address,
+  const { data: balances, isLoading: balancesLoading } = useContractReads({
+    contracts: balanceTokens.map((t) => ({
+      address: t.address,
+      abi: t.abi,
+      functionName: 'balanceOf',
+      args: [address],
+    })),
+    select: map(prop('result')),
   });
 
   function close() {
     setAnchor(null);
   }
+
   if (!isConnected) return null;
-  const balance = {
-    eth: eth?.formatted || '0',
-    weth: weth?.formatted || '0',
-    reth: reth?.formatted || '0',
-    frxeth: frxeth?.formatted || '0',
-    sfrxeth: sfrxeth?.formatted || '0',
-    steth: steth?.formatted || '0',
-  };
+
   return (
     <Popover
       open={!!anchor}
@@ -83,9 +76,10 @@ export function AccountDetails({ anchor, setAnchor }: Props) {
       }}
       sx={{
         '& .MuiPopover-paper': {
+          borderRadius: 1,
           width: (theme) => ({
             xs: '90vw',
-            md: `min(${theme.typography.pxToRem(250)}, 90vw)`,
+            md: `min(${theme.typography.pxToRem(300)}, 90vw)`,
           }),
           [theme.breakpoints.down('md')]: {
             left: '0 !important',
@@ -95,16 +89,16 @@ export function AccountDetails({ anchor, setAnchor }: Props) {
         },
       }}
     >
-      <Box>
+      <Stack>
         <Stack
-          component={Typography}
-          color="primary.contrastText"
           justifyContent="space-between"
           alignItems="center"
           direction="row"
           sx={padding}
         >
-          Account
+          <Typography color="primary.contrastText">
+            {intl.formatMessage({ defaultMessage: 'Account' })}
+          </Typography>
           <Button
             variant="contained"
             sx={{
@@ -124,7 +118,7 @@ export function AccountDetails({ anchor, setAnchor }: Props) {
               close();
             }}
           >
-            Disconnect
+            {intl.formatMessage({ defaultMessage: 'Disconnect' })}
           </Button>
         </Stack>
         <Divider />
@@ -135,8 +129,7 @@ export function AccountDetails({ anchor, setAnchor }: Props) {
           direction="row"
           color="primary.contrastText"
         >
-          <Icon src={`/images/${connector.id.toLowerCase()}-icon.svg`} />
-
+          <Icon src={`/images/${connector?.id.toLowerCase()}-icon.svg`} />
           <MiddleTruncated>{address}</MiddleTruncated>
           <LinkIcon
             url={`https://etherscan.io/address/${address}`}
@@ -145,23 +138,54 @@ export function AccountDetails({ anchor, setAnchor }: Props) {
         </Stack>
         <Divider />
         <Stack sx={padding} gap={2}>
-          {values.map((value) => (
-            <Stack
-              key={value}
-              component={Typography}
-              direction="row"
-              alignItems="center"
-              color="primary.contrastText"
-              gap={1}
-            >
-              <Icon src={`/images/currency/${value}-icon-small.svg`} />
-              {intl.formatNumber(+balance[value], quantityFormat)}
-              &nbsp;
-              {value}
-            </Stack>
+          <BalanceRow
+            token={tokens.mainnet.ETH}
+            balance={eth.value}
+            isBalanceLoading={ethLoading}
+          />
+          {balanceTokens.map((tok, i) => (
+            <BalanceRow
+              key={tok.name}
+              token={tok}
+              balance={balances?.[i] ?? 0n}
+              isBalanceLoading={balancesLoading}
+            />
           ))}
         </Stack>
-      </Box>
+      </Stack>
     </Popover>
+  );
+}
+
+type BalanceRowProps = {
+  token: Token;
+  balance: bigint;
+  isBalanceLoading: boolean;
+} & StackProps;
+
+function BalanceRow({
+  token,
+  balance,
+  isBalanceLoading,
+  ...rest
+}: BalanceRowProps) {
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      color="primary.contrastText"
+      gap={1}
+      {...rest}
+    >
+      <Box component="img" src={token.icon} sx={{ width: 20 }} />
+      <Typography minWidth={60}>
+        {isBalanceLoading ? (
+          <Skeleton width={60} />
+        ) : (
+          formatAmount(balance, token.decimals)
+        )}
+      </Typography>
+      <Typography color="text.secondary">{token.symbol}</Typography>
+    </Stack>
   );
 }

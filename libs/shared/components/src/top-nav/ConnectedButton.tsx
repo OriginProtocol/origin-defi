@@ -164,8 +164,12 @@ export function ConnectButton({ connected, sx, ...rest }: ConnectButtonProps) {
           ...styles,
           display: 'flex',
           alignItems: 'center',
-          paddingInline: { xs: 1, sm: 3 },
-          paddingInlineStart: { xs: 1, sm: connected ? 1 : 3 },
+          padding: 0.75,
+          fontSize: {
+            xs: '0.75rem',
+            md: '1rem',
+          },
+          minHeight: 36,
           background: (theme) =>
             connected
               ? `linear-gradient(0deg, ${alpha(
