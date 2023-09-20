@@ -128,37 +128,42 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               isBalanceLoading ? (
                 <Skeleton width={28} />
               ) : (
-                <Typography
-                  color="text.secondary"
-                  variant="body1"
-                  sx={{
-                    justifySelf: 'flex-end',
-                    fontWeight: 400,
-                    fontStyle: 'normal',
-                    visibility: balance === undefined ? 'hidden' : 'visible',
-                    lineHeight: '1.5rem',
-                  }}
-                >
-                  {intl.formatMessage(
-                    { defaultMessage: 'Balance: {number}' },
-                    {
-                      number: formatAmount(balance, decimals),
-                    },
+                <>
+                  <Typography
+                    color="text.secondary"
+                    variant="body1"
+                    sx={{
+                      justifySelf: 'flex-end',
+                      fontWeight: 400,
+                      fontStyle: 'normal',
+                      visibility: balance === undefined ? 'hidden' : 'visible',
+                      lineHeight: '1.5rem',
+                    }}
+                  >
+                    {intl.formatMessage(
+                      { defaultMessage: 'Balance: {number}' },
+                      {
+                        number: formatAmount(balance, decimals),
+                      },
+                    )}
+                  </Typography>
+                  {!hideMaxButton && (
+                    <Button
+                      variant="text"
+                      color="inherit"
+                      onClick={handleMaxClick}
+                      disabled={maxDisabled}
+                      sx={{
+                        minWidth: 0,
+                        padding: (theme) => theme.spacing(0.2, 1),
+                      }}
+                    >
+                      {intl.formatMessage({ defaultMessage: 'MAX' })}
+                    </Button>
                   )}
-                </Typography>
+                </>
               )
             ) : null}
-            {!hideMaxButton && (
-              <Button
-                variant="text"
-                color="inherit"
-                onClick={handleMaxClick}
-                disabled={maxDisabled}
-                sx={{ minWidth: 0, padding: (theme) => theme.spacing(0.2, 1) }}
-              >
-                {intl.formatMessage({ defaultMessage: 'MAX' })}
-              </Button>
-            )}
           </Stack>
         </Box>
       </Stack>

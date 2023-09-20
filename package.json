@@ -32,6 +32,7 @@
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-intl": "^6.4.6",
+    "react-jazzicon": "^1.0.4",
     "react-router-dom": "6.16.0",
     "react-tracked": "^1.7.11",
     "tslib": "^2.6.2",
