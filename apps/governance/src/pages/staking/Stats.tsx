@@ -27,8 +27,7 @@ export const Stats = () => (
     <div className="flex flex-col items-start gap-3 pr-8">
       <div className="text-gray-500">Voting addresses</div>
       <div className="font-bold text-3xl">
-        {/* <NumberSpinner num={1462} slow spinAtStart /> */}
-        <NumberSpinner num={1462} slow spinAtStart />
+        <NumberSpinner num={1462} slow />
       </div>
     </div>
   </div>
