@@ -2,10 +2,9 @@ import { ConnectButton as CustomButton } from '@origin/shared/components';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useIntl } from 'react-intl';
 
-import { AddressLabel } from './AddressLabel';
+import { AccountButton } from './AccountButton';
 
 import type { ButtonProps } from '@mui/material';
-import type { HexAddress } from '@origin/shared/utils';
 import type { MouseEvent } from 'react';
 
 interface OpenAccountModalButtonProps extends ButtonProps {
@@ -28,14 +27,7 @@ export const OpenAccountModalButton = ({
 
   return (
     <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openChainModal,
-        openConnectModal,
-        openAccountModal,
-        mounted,
-      }) => {
+      {({ account, chain, openChainModal, openConnectModal, mounted }) => {
         if (!mounted || !account || !chain) {
           return (
             <CustomButton
@@ -65,21 +57,14 @@ export const OpenAccountModalButton = ({
         }
 
         return (
-          <CustomButton
+          <AccountButton
             {...props}
-            connected
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
               if (props?.onClick) {
                 props.onClick(evt);
               }
-              openAccountModal();
             }}
-          >
-            <AddressLabel
-              address={account.address as HexAddress}
-              enableEnsName
-            />
-          </CustomButton>
+          />
         );
       }}
     </ConnectButton.Custom>

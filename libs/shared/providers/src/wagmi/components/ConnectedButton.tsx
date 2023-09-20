@@ -1,24 +1,35 @@
 import { Button, CircularProgress } from '@mui/material';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
 
 import type { ButtonProps } from '@mui/material';
 
-export type ConnectedButtonProps = ButtonProps &
-  Omit<
-    HTMLButtonElement,
-    'form' | 'translate' | 'contentEditable' | 'inputMode'
-  >;
+export type ConnectedButtonProps = {
+  targetChainId?: number;
+  disableNetworkCheck?: boolean;
+} & ButtonProps;
 
-export const ConnectedButton = (props: ButtonProps) => {
+export const ConnectedButton = ({
+  children,
+  onClick,
+  disabled,
+  targetChainId,
+  disableNetworkCheck,
+  ...rest
+}: ConnectedButtonProps) => {
   const intl = useIntl();
+  const { chain, chains } = useNetwork();
   const { isConnected, isConnecting } = useAccount();
   const { openConnectModal } = useConnectModal();
+  const { switchNetwork } = useSwitchNetwork();
+
+  const handleSwitchToDefaultNetwork = () => {
+    switchNetwork(targetChainId ?? chains[0].id);
+  };
 
   if (!isConnected) {
-    const { children, onClick, disabled, ...rest } = props;
-
     return (
       <Button
         {...rest}
@@ -32,8 +43,6 @@ export const ConnectedButton = (props: ButtonProps) => {
   }
 
   if (isConnecting) {
-    const { children, onClick, disabled, ...rest } = props;
-
     return (
       <Button {...rest} disabled>
         <CircularProgress sx={{ color: 'primary.contrastText' }} />
@@ -41,5 +50,20 @@ export const ConnectedButton = (props: ButtonProps) => {
     );
   }
 
-  return <Button {...props} />;
+  if (
+    !disableNetworkCheck &&
+    isNilOrEmpty(chains.find((c) => c.id === chain?.id))
+  ) {
+    return (
+      <Button onClick={handleSwitchToDefaultNetwork} {...rest}>
+        {intl.formatMessage({ defaultMessage: 'Switch network' })}
+      </Button>
+    );
+  }
+
+  return (
+    <Button onClick={onClick} disabled={disabled} {...rest}>
+      {children}
+    </Button>
+  );
 };

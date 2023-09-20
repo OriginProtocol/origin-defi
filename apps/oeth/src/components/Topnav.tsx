@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   alpha,
   Box,
@@ -8,9 +10,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { AccountPopover } from '@origin/oeth/shared';
 import { OpenAccountModalButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';
 
@@ -18,10 +22,13 @@ import type { BoxProps } from '@mui/material';
 
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
+  const { isConnected } = useAccount();
+  const [accountModalAnchor, setAccountModalAnchor] =
+    useState<HTMLButtonElement | null>(null);
 
   return (
     <Box
@@ -144,7 +151,7 @@ export function Topnav(props: BoxProps) {
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
-          alignItems: 'stretch',
+          alignItems: 'center',
           gap: { xs: 1, md: 2 },
           '& > a, & > *': {
             fontSize: {
@@ -159,6 +166,7 @@ export function Topnav(props: BoxProps) {
         <MuiLink
           href="https://oeth.on.fleek.co/"
           target="_blank"
+          noWrap
           sx={{
             borderRadius: 25,
             paddingBlock: 0.75,
@@ -171,6 +179,7 @@ export function Topnav(props: BoxProps) {
             fontFamily: 'Inter',
             fontStyle: 'normal',
             fontWeight: 500,
+            minHeight: 36,
             background: ` linear-gradient(0deg, ${alpha(
               theme.palette.common.white,
               0.05,
@@ -186,11 +195,21 @@ export function Topnav(props: BoxProps) {
             lineHeight: '1rem',
           }}
         >
-          {isSmall
+          {isMd
             ? intl.formatMessage({ defaultMessage: 'IPFS' })
             : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
         </MuiLink>
-        <OpenAccountModalButton />
+        <OpenAccountModalButton
+          onClick={(e) => {
+            if (isConnected) {
+              setAccountModalAnchor(e.currentTarget);
+            }
+          }}
+        />
+        <AccountPopover
+          anchor={accountModalAnchor}
+          setAnchor={setAccountModalAnchor}
+        />
       </Box>
       <Divider
         sx={{

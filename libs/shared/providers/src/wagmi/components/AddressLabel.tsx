@@ -23,19 +23,15 @@ export const AddressLabel = ({
     chainId: mainnet.id,
   });
 
-  const fontFamily = monospace ? 'monospace' : 'inherit';
-
   return enableEnsName ? (
     isEnsNameLoading ? (
       <Skeleton sx={{ minWidth: 100, ...rest?.sx }} />
     ) : (
-      <MiddleTruncated textProps={{ fontFamily, ...rest }}>
+      <MiddleTruncated textProps={{ ...rest }}>
         {ensName ?? address}
       </MiddleTruncated>
     )
   ) : (
-    <MiddleTruncated textProps={{ fontFamily, ...rest }}>
-      {address}
-    </MiddleTruncated>
+    <MiddleTruncated textProps={{ ...rest }}>{address}</MiddleTruncated>
   );
 };

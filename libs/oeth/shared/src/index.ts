@@ -1,4 +1,3 @@
-export * from './components/ApyHeader';
-export * from './components/GasPopover';
+export * from './components';
 export * from './clients';
 export * from './generated/graphql';

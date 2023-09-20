@@ -3,6 +3,7 @@ import { GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
+import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -41,11 +42,8 @@ const tokenInputStyles = {
   },
 };
 
-export const RedeemView = () => (
-  <RedeemProvider>
-    <RedeemViewWrapped />
-  </RedeemProvider>
-);
+export const RedeemView = () =>
+  composeContexts([[RedeemProvider]], <RedeemViewWrapped />);
 
 function RedeemViewWrapped() {
   const intl = useIntl();
