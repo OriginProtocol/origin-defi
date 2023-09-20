@@ -1,6 +1,7 @@
 import {
   Box,
   Dialog,
+  Divider,
   MenuItem,
   MenuList,
   Skeleton,
@@ -8,7 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { usePrices } from '@origin/shared/providers';
-import { currencyFormat, formatAmount } from '@origin/shared/utils';
+import {
+  currencyFormat,
+  formatAmount,
+  isNilOrEmpty,
+} from '@origin/shared/utils';
+import { partition, pipe, prop, reject } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -31,14 +37,19 @@ export const TokenSelectModal = ({
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
+  const intl = useIntl();
+
+  const [swappable, unswappable] = pipe(
+    reject(prop('isSelected')),
+    partition<TokenOption>(prop('isSwappable')),
+  )(tokens);
+
   return (
     <Dialog
       maxWidth="sm"
       PaperProps={{
         elevation: 23,
         sx: {
-          paddingBlock: 2,
-          paddingInline: 0,
           background: (theme) => theme.palette.background.paper,
           borderRadius: 2,
           border: '1px solid',
@@ -46,27 +57,63 @@ export const TokenSelectModal = ({
           backgroundImage: 'none',
           margin: 0,
           minWidth: 'min(90vw, 33rem)',
+          py: 1,
         },
       }}
       {...rest}
       onClose={onClose}
     >
-      <MenuList
-        sx={{
-          padding: 0,
-        }}
-      >
-        {tokens.map((token, i) => (
-          <TokenListItem
-            key={`token-${token.address || 'eth'}-${i}`}
-            token={token}
-            onClick={() => {
-              onClose({}, 'backdropClick');
-              onSelectToken(token);
-            }}
-          />
-        ))}
-      </MenuList>
+      {!isNilOrEmpty(swappable) && (
+        <>
+          <Typography p={2}>
+            {intl.formatMessage({
+              defaultMessage: 'Available swaps for this token',
+            })}
+          </Typography>
+          <MenuList disablePadding>
+            {swappable.map((token, i) => (
+              <TokenListItem
+                key={`token-${token.address || 'eth'}-${i}`}
+                token={token}
+                onClick={() => {
+                  onClose({}, 'backdropClick');
+                  onSelectToken(token);
+                }}
+                sx={{
+                  color: 'primary.contrastText',
+                }}
+              />
+            ))}
+          </MenuList>
+        </>
+      )}
+      {!isNilOrEmpty(swappable) && !isNilOrEmpty(unswappable) && (
+        <Divider sx={{ mt: 1 }} />
+      )}
+      {!isNilOrEmpty(unswappable) && (
+        <>
+          <Typography p={2}>
+            {intl.formatMessage({
+              defaultMessage: 'Unavailable swaps for this token',
+            })}
+          </Typography>
+          <MenuList disablePadding>
+            {unswappable.map((token, i) => (
+              <TokenListItem
+                key={`token-${token.address || 'eth'}-${i}`}
+                token={token}
+                onClick={() => {
+                  onClose({}, 'backdropClick');
+                  onSelectToken(token);
+                }}
+                sx={{
+                  color: 'text.secondary',
+                }}
+              />
+            ))}
+          </MenuList>
+        </>
+      )}
     </Dialog>
   );
 };
@@ -99,11 +146,11 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         gap: 1.5,
         alignItems: 'center',
         background: (theme) => theme.palette.background.paper,
-
         borderRadius: 1,
         '&:hover': {
           background: (theme) => theme.palette.grey[700],
         },
+        color: 'primary.contrastText',
         ...rest?.sx,
       }}
     >
@@ -114,24 +161,8 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           sx={{ width: '2rem', height: '2rem' }}
         />
         <Box>
-          <Typography
-            sx={(theme) => ({
-              color: token.isSwappable
-                ? theme.palette.primary.contrastText
-                : theme.palette.warning.main,
-            })}
-          >
-            {token?.name}
-          </Typography>
-          <Typography
-            color="text.primary"
-            variant="body2"
-            sx={{
-              '& > span:not(:last-child):after': {
-                content: '", "',
-              },
-            }}
-          >
+          <Typography>{token?.name}</Typography>
+          <Typography variant="body2" color="text.primary">
             {token.symbol}
           </Typography>
         </Box>
