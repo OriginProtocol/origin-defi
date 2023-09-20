@@ -8,8 +8,11 @@ import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { WagmiConfig } from 'wagmi';
 
-import { App, Governance, Staking } from './app/app';
 import { StateProvider } from './components/AppState';
+import { App } from './pages/app';
+import { Governance } from './pages/governance';
+import { Spinner } from './pages/Spinner';
+import { Staking } from './pages/staking';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -20,14 +23,9 @@ const router = createHashRouter([
     path: '/',
     element: <App />,
     children: [
-      {
-        element: <Staking />,
-        index: true,
-      },
-      {
-        element: <Governance />,
-        path: '/governance',
-      },
+      { index: true, element: <Staking /> },
+      { path: '/governance', element: <Governance /> },
+      { path: '/spinner', element: <Spinner /> },
     ],
   },
 ]);

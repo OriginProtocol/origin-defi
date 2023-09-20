@@ -4,6 +4,7 @@ import { animated, useSpring } from '@react-spring/web';
 import { Link, useLocation } from 'react-router-dom';
 
 const underlineClass = `absolute left-0 right-0 h-[2px] bg-blue-gradient -bottom-px rounded-full`;
+const underlineHoverClass = `absolute left-0 right-0 h-[2px] bg-blue-gradient opacity-0 group-hover:opacity-100 brightness-50 -bottom-px rounded-full transition-all duration-200 ease-in-out`;
 
 export const Tabs = (props: {
   tabs: {
@@ -33,13 +34,15 @@ export const Tabs = (props: {
     setInteracted(true);
     const parentRect = ref.current.getBoundingClientRect();
     const childEl = ref.current.childNodes[idx] as HTMLElement;
-    const rect = childEl.getBoundingClientRect();
+    const rect = childEl?.getBoundingClientRect();
     const activeEl = ref.current.childNodes[activeTab] as HTMLElement;
-    const activeRect = activeEl.getBoundingClientRect();
-    setSpringProps({
-      from: { left: activeRect.x - parentRect.x, width: activeRect.width },
-      to: { left: rect.x - parentRect.x, width: rect.width },
-    });
+    const activeRect = activeEl?.getBoundingClientRect();
+    if (rect && activeRect) {
+      setSpringProps({
+        from: { left: activeRect.x - parentRect.x, width: activeRect.width },
+        to: { left: rect.x - parentRect.x, width: rect.width },
+      });
+    }
   }
 
   return (
@@ -51,7 +54,7 @@ export const Tabs = (props: {
         <Link
           key={idx}
           to={tab.href}
-          className={`py-6 relative transition-all duration-200 ease-in-out${
+          className={`py-6 relative transition-all duration-200 ease-in-out group${
             activeTab === idx ? '' : ' text-gray-500 hover:text-off-white'
           }`}
           onClick={() => setActive(idx)}
@@ -60,6 +63,7 @@ export const Tabs = (props: {
           {interacted || activeTab !== idx ? null : (
             <div className={underlineClass} />
           )}
+          {activeTab === idx ? null : <div className={underlineHoverClass} />}
         </Link>
       ))}
       {!interacted ? null : (
@@ -68,3 +72,12 @@ export const Tabs = (props: {
     </div>
   );
 };
+
+// const BottomBorder = ({ active }: { active: boolean }) => {
+//   const hoverStyle = useSpring({
+//     from: { opacity: 0 },
+//     to: { opacity: active ? 100 : 0 },
+//   });
+
+//   return <animated.div style={hoverStyle} className={underlineClass} />;
+// };

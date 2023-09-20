@@ -45,6 +45,7 @@ export interface IAppState {
   };
   walletBalance: number;
   rewardsToCollect: number;
+  devControls: boolean;
 }
 
 export const initialState: IAppState = {
@@ -55,6 +56,7 @@ export const initialState: IAppState = {
   extendStakeModal: null,
   walletBalance: 0,
   rewardsToCollect: 0,
+  devControls: false,
 };
 
 interface StateContextProps {

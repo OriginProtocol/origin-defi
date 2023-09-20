@@ -16,7 +16,7 @@ body {
 }
 
 .btn-outline {
-  @apply border-blue-600 border rounded-full leading-tight hover:bg-blue-600 hover:text-off-black transition-all duration-150 ease-in-out cursor-pointer font-medium;
+  @apply border-blue-600 border rounded-full leading-tight hover:bg-blue-600 hover:text-off-black transition-all duration-200 ease-in-out cursor-pointer font-medium;
 }
 .btn-outline-disabled {
   @apply border-blue-600/50 border rounded-full leading-tight text-off-white/30 font-medium;

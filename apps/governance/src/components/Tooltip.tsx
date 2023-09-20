@@ -3,15 +3,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Unstable_Popup as Popup } from '@mui/base/Unstable_Popup';
 import { animated, useSpring } from '@react-spring/web';
 
+import { Info } from './Icons';
+
 import type { PopupChildrenProps } from '@mui/base/Unstable_Popup';
 import type { ReactNode } from 'react';
 
 export function Tooltip({
   children,
   title,
+  placement,
 }: {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   title: React.ReactNode;
+  placement?: string;
 }) {
   const [open, setOpen] = useState(false);
   const anchor = useRef(null);
@@ -19,13 +23,20 @@ export function Tooltip({
   return (
     <>
       <span
+        className="inline-block"
         ref={anchor}
         onMouseOver={() => setOpen(true)}
         onMouseOut={() => setOpen(false)}
       >
-        {children}
+        {children || <Info size={14} />}
       </span>
-      <Popup open={open} anchor={anchor.current} withTransition offset={7}>
+      <Popup
+        open={open}
+        anchor={anchor.current}
+        withTransition
+        offset={7}
+        placement={placement}
+      >
         {(props: PopupChildrenProps) => (
           <PopAnimation {...props}>{title}</PopAnimation>
         )}

@@ -1,15 +1,15 @@
 import { useContext, useState } from 'react';
 
-import OGVIcon from '../assets/ogv.svg';
-import veOGVIcon from '../assets/ve-ogv.svg';
-import { StateContext } from '../components/AppState';
-import { CaretDown, ExternalLink } from '../components/Icons';
+import OGVIcon from '../../assets/ogv.svg';
+import veOGVIcon from '../../assets/ve-ogv.svg';
+import { StateContext } from '../../components/AppState';
+import { CaretDown, ExternalLink } from '../../components/Icons';
 import {
   estimateTimeToFutureTimestamp,
   formatDateFromTimestamp,
-} from '../utils/date';
+} from '../../utils/date';
 
-import type { Lockup } from '../components/AppState';
+import type { Lockup } from '../../components/AppState';
 
 interface MyLockupsProps {
   disableActions?: boolean;
@@ -29,7 +29,6 @@ export const MyLockups = (props: MyLockupsProps) => {
 };
 
 export const MyLockupsTable = (props: MyLockupsProps) => {
-  const { state, setState } = useContext(StateContext);
   return (
     <div
       className={`grid grid-cols-[auto,auto,max-content] sm:grid-cols-[auto,auto,auto,max-content]${
@@ -37,21 +36,7 @@ export const MyLockupsTable = (props: MyLockupsProps) => {
       }`}
     >
       <div className="text-gray-500 pl-6 py-4">OGV</div>
-      <div
-        className="text-gray-500 py-4 text-center"
-        onClick={() => {
-          const sixMonths = 1000 * 60 * 60 * 24 * 30 * 6;
-          setState({
-            lockups: state.lockups.map((l) => ({
-              ...l,
-              endsAt:
-                l.endsAt + (l.endsAt > Date.now() ? -sixMonths : sixMonths),
-            })),
-          });
-        }}
-      >
-        Time remaining
-      </div>
+      <div className="text-gray-500 py-4 text-center">Time remaining</div>
       <div className="text-gray-500 py-4 text-center hidden sm:block">
         Lockup ends
       </div>
@@ -76,8 +61,7 @@ const LockupRow = (props: {
   const { setState } = useContext(StateContext);
   const { lockup } = props;
   const [open, setOpen] = useState(false);
-  const rowClassBase =
-    'items-center border-t border-off-black py-4 transition duration-150 ease-in-out';
+  const rowClassBase = `items-center border-t border-off-black py-4 transition duration-150 ease-in-out`;
   const rowClass = open
     ? `${rowClassBase} bg-white/3`
     : `${rowClassBase}${props.disableActions ? '' : ' group-hover:bg-white/3'}`;

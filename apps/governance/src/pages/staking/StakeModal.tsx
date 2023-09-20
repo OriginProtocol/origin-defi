@@ -1,18 +1,19 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
-import OGVIcon from '../assets/ogv.svg';
-import veOGVIcon from '../assets/ve-ogv.svg';
-import { AnimatedModal, ModalHeader } from '../components/AnimatedModal';
-import { StateContext } from '../components/AppState';
-import { MyLockupsTable } from '../components/MyLockups';
-import { StyledSlider } from '../components/StyledSlider';
+import OGVIcon from '../../assets/ogv.svg';
+import veOGVIcon from '../../assets/ve-ogv.svg';
+import { AnimatedModal, ModalHeader } from '../../components/AnimatedModal';
+import { StateContext } from '../../components/AppState';
+import { StyledSlider } from '../../components/StyledSlider';
+import { Tooltip } from '../../components/Tooltip';
 import {
   formatDurationInMonths,
   getDateAfterMonths,
   getTimestampAfterMonths,
   monthsToTimestamp,
-} from '../utils/date';
-import { estimateAPY, votingPowerMultiplier } from '../utils/stakeMath';
+} from '../../utils/date';
+import { estimateAPY, votingPowerMultiplier } from '../../utils/stakeMath';
+import { MyLockupsTable } from './MyLockups';
 
 export const StakeModal = () => {
   const { state, setState } = useContext(StateContext);
@@ -20,6 +21,12 @@ export const StakeModal = () => {
   const [monthsToStake, setMonthsToStake] = useState(48);
   const [mode, setMode] = useState('start');
   const [shouldClose, setShouldClose] = useState(false);
+
+  useEffect(() => {
+    if (!amount || amount === '0') {
+      setAmount(String(state.walletBalance));
+    }
+  }, [state.walletBalance, state.stakeModal]);
 
   const sign = mode === 'approve' || mode === 'approve-stake';
 
@@ -57,9 +64,7 @@ export const StakeModal = () => {
       {!sign ? null : (
         <div
           className="absolute inset-0 flex items-center justify-center"
-          onClick={() => {
-            setMode(mode === 'approve' ? 'stake' : 'done-stake');
-          }}
+          onClick={() => setMode(mode === 'approve' ? 'stake' : 'done-stake')}
         >
           <div className="bg-blue-500 text-3xl text-off-white rounded-lg z-50 font-bold px-8 py-5 mx-24 leading-tight">
             Sign approval in wallet
@@ -89,25 +94,31 @@ export const StakeModal = () => {
             </button>
           </div>
         </div>
-        <div className="bg-[#141519] border border-[rgba(81,84,102,0.50)] rounded flex items-stretch mt-4 text-2xl font-medium mb-6">
+        <div className="bg-[#141519] border border-[#B5BECA] rounded flex items-stretch mt-4 text-2xl font-medium mb-6">
           <input
             className="bg-transparent border-none py-4 pl-6 leading-none flex-1"
             placeholder="0.00"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
-          <div className="w-32 border-l border-[rgba(81,84,102,0.50)] flex justify-center items-center text-xl gap-2">
-            <img src={OGVIcon} alt="OGV" />
+          <div className="w-32 border-l border-[rgba(81,84,102,0.50)] flex justify-center items-center text-xl gap-2 text-gray-500">
+            <img
+              src={OGVIcon}
+              alt="OGV"
+              className="rounded-full border border-off-white"
+            />
             OGV
           </div>
         </div>
 
         <StakeDuration {...{ monthsToStake, setMonthsToStake }} />
 
-        <VotingPower
+        <AmountReceived
+          {...{ monthsToStake, setMonthsToStake }}
           amount={amount ? Number(amount) : 0}
-          monthsToStake={monthsToStake}
         />
+
+        <RewardsAPY monthsToStake={monthsToStake} />
 
         {!Number(amount) ? (
           <button className="btn w-full py-4 text-base leading-none opacity-50">
@@ -246,9 +257,19 @@ interface StakeDurationProps {
 const StakeDuration = (props: StakeDurationProps) => {
   const { monthsToStake, setMonthsToStake } = props;
   return (
-    <div className="bg-[rgba(81,84,102,0.20)] rounded px-6 py-3 leading-snug mb-2">
-      <div className="border-b border-off-black mb-4">
-        Stake duration
+    <>
+      <div className="font-bold mb-3 flex items-center gap-1">
+        Stake Duration
+        <Tooltip title="Stake duration explanation" placement="right" />
+      </div>
+      <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded px-6 pt-4 pb-2 leading-snug mb-6">
+        <div className="text-2xl font-medium">
+          {formatDurationInMonths(monthsToStake)}
+        </div>
+        <div className="mt-2 mb-2 text-xs">
+          <span className="mr-2">Withdrawal date:</span>
+          <span className="font-bold">{getDateAfterMonths(monthsToStake)}</span>
+        </div>
         <div className="px-2">
           <StyledSlider
             max={48}
@@ -260,29 +281,65 @@ const StakeDuration = (props: StakeDurationProps) => {
           />
         </div>
       </div>
-      <div className="flex justify-between">
-        <div>
-          <div>
-            <span className="mr-2">Lock time:</span>
-            <span className="font-bold">
-              {formatDurationInMonths(monthsToStake)}
-            </span>
+    </>
+  );
+};
+
+interface AmountReceivedProps {
+  monthsToStake: number;
+  amount: number;
+}
+
+const AmountReceived = (props: AmountReceivedProps) => {
+  const { monthsToStake, amount } = props;
+  return (
+    <>
+      <div className="font-bold mb-3 flex items-center gap-1">
+        Amount received today
+        <Tooltip title="Stake duration explanation" placement="right" />
+      </div>
+      <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded leading-snug mb-6 flex justify-stretch">
+        <div className="px-6 pt-3 pb-2 flex-1">
+          <div className="text-2xl font-medium">
+            {(votingPowerMultiplier(monthsToStake) * amount).toLocaleString(
+              undefined,
+              {
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 0,
+              },
+            )}
           </div>
-          <div className="mt-2">
-            <span className="mr-2">Withdrawal date:</span>
-            <span className="font-bold">
-              {getDateAfterMonths(monthsToStake)}
-            </span>
+          <div className="mt-2 mb-2 text-xs">
+            <span className="mr-2">Voting power:</span>
+            <span className="font-bold">1.764%</span>
           </div>
         </div>
-        <div className="flex flex-col items-end">
-          <div>Staking vAPY</div>
-          <div className="bg-orange-gradient bg-clip-text text-transparent font-bold text-2xl flex">
-            {`${estimateAPY(monthsToStake).toFixed(2)}%`}
-          </div>
+        <div className="border-l border-[rgba(81,84,102,0.50)] flex items-center justify-center px-6 text-gray-500 font-medium gap-2 text-xl">
+          <img src={veOGVIcon} alt="veOGV" /> veOGV
         </div>
       </div>
-    </div>
+    </>
+  );
+};
+
+interface RewardsAPYProps {
+  monthsToStake: number;
+}
+
+const RewardsAPY = (props: RewardsAPYProps) => {
+  const { monthsToStake } = props;
+  return (
+    <>
+      <div className="font-bold mb-3 flex items-center gap-1">
+        Rewards vAPY
+        <Tooltip title="Rewards vAPY explanation" placement="right" />
+      </div>
+      <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded leading-snug mb-6 px-6 pt-3 pb-2 flex justify-start">
+        <div className="bg-orange-gradient bg-clip-text text-transparent font-bold text-2xl">
+          {`${estimateAPY(monthsToStake).toFixed(2)}%`}
+        </div>
+      </div>
+    </>
   );
 };
 

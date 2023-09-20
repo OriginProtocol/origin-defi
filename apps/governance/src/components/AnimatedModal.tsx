@@ -51,21 +51,28 @@ export const AnimatedModal = (props: AnimatedModalProps) => {
     <Modal
       open={open}
       onClose={() => setShouldClose(true)}
-      className="fixed inset-0 flex justify-center items-center"
+      className="fixed inset-0 w-screen overflow-y-auto"
       slots={{ backdrop: Backdrop }}
       slotProps={{
         backdrop: {
-          className: 'fixed inset-0 bg-off-black/80 z-0',
+          className: 'fixed inset-0 bg-off-black/80 z-10 pointer-events-none',
           style: opacityProps as object,
         },
       }}
     >
-      <animated.div
-        style={{ ...panelProps, maxWidth: props.maxWidth || 550 }}
-        className="bg-gray-900 z-50 w-full rounded-lg relative"
+      <div
+        className="flex min-h-full justify-center items-center py-4"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) setShouldClose(true);
+        }}
       >
-        {children}
-      </animated.div>
+        <animated.div
+          style={{ ...panelProps, maxWidth: props.maxWidth || 550 }}
+          className="bg-gray-900 z-20 w-full rounded-lg relative"
+        >
+          {children}
+        </animated.div>
+      </div>
     </Modal>
   );
 };
