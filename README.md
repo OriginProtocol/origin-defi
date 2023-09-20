@@ -2,7 +2,7 @@
 
 ## Setup environment
 
-Duplicate `.env` file to `.env.local` and fill the variables with your secrets, they will take precedence over the defaults.
+Duplicate `apps/<YOUR_APP>/.env` file to `apps/<YOUR_APP>/.env.local` and fill the variables with your secrets, they will take precedence over the defaults.
 
 ## Start the app
 
@@ -12,7 +12,7 @@ To start the development server run `pnpm nx serve oeth` or `pnpm nx serve ousd`
 
 | Status | Name | Nx project | Port | Public hosts |
 |:------:|:-----|:-----------|:-----|:-------------|
-|   🚧   | OETH | `oeth`     | 4200 | [fleek]()    |
+|   🚧   | OETH | `oeth`     | 4200 | [fleek](https://defi-oeth.on.fleek.co/)    |
 |   🚧   | OUSD | `ousd`     | 4201 | [fleek]()    |
 
 ## Storybook
