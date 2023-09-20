@@ -3,7 +3,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { chains, wagmiConfig } from '@origin/oeth/shared';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
 import { WagmiConfig } from 'wagmi';
@@ -13,6 +12,7 @@ import { App } from './pages/app';
 import { Governance } from './pages/governance';
 import { Spinner } from './pages/Spinner';
 import { Staking } from './pages/staking';
+import { chains, wagmiConfig } from './utils/wagmi';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
