@@ -9,7 +9,7 @@ export const ExternalLink = ({ size = 14 }: { size?: number }) => (
   </svg>
 );
 
-export const Sync = ({ size = 28 }: { size?: number }) => (
+export const SyncIcon = ({ size = 28 }: { size?: number }) => (
   <svg
     height={size}
     width={size}
@@ -70,7 +70,7 @@ export const CaretDown = ({
   </svg>
 );
 
-export const Profile = ({ size = 28 }: { size?: number }) => (
+export const ProfileIcon = ({ size = 28 }: { size?: number }) => (
   <svg height={size} width={size}>
     <rect
       x="0"

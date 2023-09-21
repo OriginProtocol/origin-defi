@@ -6,13 +6,15 @@ import { Link, useLocation } from 'react-router-dom';
 const underlineClass = `absolute left-0 right-0 h-[2px] bg-blue-gradient -bottom-px rounded-full`;
 const underlineHoverClass = `absolute left-0 right-0 h-[2px] bg-blue-gradient opacity-0 group-hover:opacity-100 brightness-50 -bottom-px rounded-full transition-all duration-200 ease-in-out`;
 
-export const Tabs = (props: {
+interface TabsProps {
   tabs: {
     label: string;
     href: string;
   }[];
   className?: string;
-}) => {
+}
+
+export const Tabs = (props: TabsProps) => {
   const location = useLocation();
   const activeTab = props.tabs.findIndex(
     (tab) => tab.href === location.pathname,
@@ -72,12 +74,3 @@ export const Tabs = (props: {
     </div>
   );
 };
-
-// const BottomBorder = ({ active }: { active: boolean }) => {
-//   const hoverStyle = useSpring({
-//     from: { opacity: 0 },
-//     to: { opacity: active ? 100 : 0 },
-//   });
-
-//   return <animated.div style={hoverStyle} className={underlineClass} />;
-// };

@@ -2,7 +2,7 @@ import { useAccountModal, useConnectModal } from '@rainbow-me/rainbowkit';
 import { useAccount } from 'wagmi';
 
 import Logo from '../assets/logo.svg';
-import { Profile, Sync } from '../components/Icons';
+import { ProfileIcon, SyncIcon } from '../components/Icons';
 import { Tabs } from '../components/Tabs';
 import { truncateAddress } from '../utils/string';
 
@@ -21,13 +21,13 @@ export const Nav = () => {
             <span className="hidden sm:inline">{'View on '}</span>IPFS
           </button>
 
-          {isConnected && address ? (
+          {isConnected ? (
             <button
               className="btn-secondary px-4 py-2 flex items-center gap-3 font-medium self-stretch"
               onClick={openAccountModal}
             >
               <div className="rounded-full overflow-hidden">
-                <Profile />
+                <ProfileIcon />
               </div>
               <div>{truncateAddress(address)}</div>
             </button>
@@ -36,8 +36,8 @@ export const Nav = () => {
               Connect
             </button>
           )}
-          <button className="btn-secondary px-2 py-2 text-blue-500">
-            <Sync />
+          <button className="btn-secondary p-2 text-blue-500">
+            <SyncIcon />
           </button>
         </div>
       </div>
