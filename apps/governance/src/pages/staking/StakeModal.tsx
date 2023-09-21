@@ -268,12 +268,15 @@ interface StakeDurationProps {
 }
 
 const StakeDuration = (props: StakeDurationProps) => {
-  const { monthsToStake, setMonthsToStake } = props;
+  const { monthsToStake, setMonthsToStake, min } = props;
   return (
     <>
       <div className="font-bold mb-3 flex items-center gap-1">
         Stake Duration
-        <Tooltip title="Stake duration explanation" placement="right" />
+        <Tooltip
+          title="The length of time you will lock up your OGV to earn yield and voting power. There is no way to unstake before your withdrawal date."
+          placement="right"
+        />
       </div>
       <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded px-6 pt-4 pb-2 leading-snug mb-6">
         <div className="text-2xl font-medium">
@@ -286,11 +289,14 @@ const StakeDuration = (props: StakeDurationProps) => {
         <div className="px-2">
           <StyledSlider
             max={48}
-            min={props.min || 0}
+            min={0}
             step={1}
             marks={marks}
             value={monthsToStake}
-            onChange={(e, val) => setMonthsToStake(val as number)}
+            onChange={(e, val: number) => {
+              if (min && val < min) return;
+              setMonthsToStake(val);
+            }}
           />
         </div>
       </div>
@@ -309,7 +315,10 @@ const AmountReceived = (props: AmountReceivedProps) => {
     <>
       <div className="font-bold mb-3 flex items-center gap-1">
         Amount received today
-        <Tooltip title="Stake duration explanation" placement="right" />
+        <Tooltip
+          title="The amount of veOGV you will receive today in return for your staked OGV. Your voting power (%) represents your share of the total amount of veOGV issued to date."
+          placement="right"
+        />
       </div>
       <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded leading-snug mb-6 flex justify-stretch">
         <div className="px-6 pt-3 pb-2 flex-1">
@@ -345,7 +354,10 @@ const RewardsAPY = (props: RewardsAPYProps) => {
     <>
       <div className="font-bold mb-3 flex items-center gap-1">
         Rewards vAPY
-        <Tooltip title="Rewards vAPY explanation" placement="right" />
+        <Tooltip
+          title="The APY currently being earned at the chosen staking duration/quantity of OGV. It is variable and will change over time."
+          placement="right"
+        />
       </div>
       <div className="bg-[rgba(81,84,102,0.20)] border border-[rgba(81,84,102,0.50)] rounded leading-snug mb-6 px-6 pt-3 pb-2 flex justify-start">
         <div className="bg-orange-gradient bg-clip-text text-transparent font-bold text-2xl">

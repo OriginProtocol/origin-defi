@@ -7,7 +7,10 @@ export const Stats = () => (
     <div className="flex flex-col items-start gap-3">
       <div className="text-gray-500 flex items-center gap-1.5">
         vAPY
-        <Tooltip title="vAPY info blah blah">
+        <Tooltip
+          title="The maximum APY currently being earned on staked OGV. It is variable and will change over time."
+          placement="right"
+        >
           <Info size={14} />
         </Tooltip>
       </div>
