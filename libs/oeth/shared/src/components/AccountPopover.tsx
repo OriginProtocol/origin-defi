@@ -44,6 +44,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
     address,
     token: tokens.mainnet.ETH.address,
     enabled: isConnected,
+    watch: true,
   });
   const { data: balances, isLoading: balancesLoading } = useContractReads({
     contracts: balanceTokens.map((t) => ({
@@ -52,6 +53,8 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
       functionName: 'balanceOf',
       args: [address],
     })),
+    watch: true,
+    enabled: isConnected,
     select: map(prop('result')),
   });
 
@@ -140,7 +143,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
         <Stack sx={padding} gap={2}>
           <BalanceRow
             token={tokens.mainnet.ETH}
-            balance={eth.value}
+            balance={eth?.value}
             isBalanceLoading={ethLoading}
           />
           {balanceTokens.map((tok, i) => (
