@@ -10,7 +10,6 @@ import { WagmiConfig } from 'wagmi';
 import { StateProvider } from './components/AppState';
 import { App } from './pages/app';
 import { Governance } from './pages/governance';
-import { Spinner } from './pages/Spinner';
 import { Staking } from './pages/staking';
 import { chains, wagmiConfig } from './utils/wagmi';
 
@@ -25,7 +24,6 @@ const router = createHashRouter([
     children: [
       { index: true, element: <Staking /> },
       { path: '/governance', element: <Governance /> },
-      { path: '/spinner', element: <Spinner /> },
     ],
   },
 ]);
