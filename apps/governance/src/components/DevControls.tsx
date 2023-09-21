@@ -40,18 +40,16 @@ export const DevControls = () => {
           <button
             className="btn-outline py-2 text-sm"
             onClick={() => {
-              const sixMonths = 1000 * 60 * 60 * 24 * 30 * 6;
               setState({
                 lockups: state.lockups.map((l) => ({
                   ...l,
-                  endsAt:
-                    l.endsAt + (l.endsAt > Date.now() ? -sixMonths : sixMonths),
+                  endsAt: Date.now(),
                 })),
               });
               setShouldClose(true);
             }}
           >
-            +6 months
+            End lockups
           </button>
         </div>
       </AnimatedModal>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 import { Modal } from '@mui/base/Modal';
 import { animated, useSpring } from '@react-spring/web';
@@ -83,7 +83,7 @@ interface BackdropProps {
   style: object;
 }
 
-const Backdrop = React.forwardRef<HTMLDivElement, BackdropProps>(
+const Backdrop = forwardRef<HTMLDivElement, BackdropProps>(
   function Backdrop(props, ref) {
     const { className, onClick, style } = props;
     return (

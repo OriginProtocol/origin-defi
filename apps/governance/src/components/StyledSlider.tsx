@@ -1,4 +1,4 @@
-import React from 'react';
+import { forwardRef } from 'react';
 
 import { Slider } from '@mui/base/Slider';
 import { clsx } from 'clsx';
@@ -8,7 +8,7 @@ import type { SliderProps } from '@mui/base/Slider';
 const resolveSlotProps = (fn: unknown, args: unknown) =>
   typeof fn === 'function' ? fn(args) : fn;
 
-export const StyledSlider = React.forwardRef<HTMLSpanElement, SliderProps>(
+export const StyledSlider = forwardRef<HTMLSpanElement, SliderProps>(
   (props, ref) => {
     return (
       <Slider

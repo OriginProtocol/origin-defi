@@ -1,9 +1,11 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
+
+import { useSignMessage } from 'wagmi';
 
 import OGVIcon from '../../assets/ogv.svg';
 import veOGVIcon from '../../assets/ve-ogv.svg';
 import { StateContext } from '../../components/AppState';
-import { CaretDown, ExternalLink } from '../../components/Icons';
+import { CaretDown, ExternalLink, Spinner } from '../../components/Icons';
 import {
   estimateTimeToFutureTimestamp,
   formatDateFromTimestamp,
@@ -71,7 +73,7 @@ const LockupRow = (props: {
       className={`contents${
         props.disableActions ? '' : ' cursor-pointer group'
       }`}
-      onClick={() => (props.disableActions ? null : setOpen(!open))}
+      onClick={() => setOpen(!open)}
     >
       <div className={`${rowClass} flex pl-6 gap-2`}>
         <img src={OGVIcon} alt="veOGV" />
@@ -122,6 +124,22 @@ const UnstakeButton = ({ lockup }: { lockup: Lockup }) => {
   const { state, setState } = useContext(StateContext);
   const [mode, setMode] = useState('unstake');
 
+  useEffect(() => {
+    if (mode !== 'pending') return;
+    const timeout = setTimeout(unstake, 5000);
+    return () => clearTimeout(timeout);
+  }, [mode]);
+
+  const { signMessage } = useSignMessage({
+    message: 'Confirm unstake',
+    onSuccess: () => {
+      setMode('pending');
+    },
+    onError: () => {
+      setMode('unstake');
+    },
+  });
+
   const disabled = lockup.endsAt > Date.now();
   const btnClass =
     disabled || mode !== 'unstake' ? 'btn-outline-disabled' : 'btn-outline';
@@ -132,8 +150,9 @@ const UnstakeButton = ({ lockup }: { lockup: Lockup }) => {
     }
     if (mode === 'unstake') {
       setMode('confirm');
+      signMessage();
     } else if (mode === 'confirm') {
-      setMode('pending');
+      /* Ignore */
     } else {
       setState({
         walletBalance: state.walletBalance + lockup.tokens,
@@ -147,19 +166,27 @@ const UnstakeButton = ({ lockup }: { lockup: Lockup }) => {
     }
   }
 
+  if (mode === 'pending' || mode === 'confirm') {
+    return (
+      <button
+        className="btn-outline-disabled text-xs pl-3 pr-4 py-2 flex items-center gap-2"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Spinner size={14} />
+        {mode === 'confirm' ? 'Confirm...' : 'Pending...'}
+      </button>
+    );
+  }
+
   return (
     <button
-      className={`${btnClass} text-xs px-4 py-2`}
+      className={`${btnClass} text-xs px-4 py-2 flex items-center gap-2`}
       onClick={(e) => {
         e.stopPropagation();
         unstake();
       }}
     >
-      {mode === 'confirm'
-        ? 'Confirm'
-        : mode === 'pending'
-        ? 'Pending'
-        : 'Unstake'}
+      {mode === 'confirm' ? 'Confirm' : 'Unstake'}
     </button>
   );
 };

@@ -80,10 +80,10 @@ const PopAnimation = (props: PopupChildrenProps & { children: ReactNode }) => {
   return (
     <animated.div
       style={style}
-      className="bg-gray-800 rounded px-3 py-1 text-off-white text-sm font-medium relative"
+      className="bg-gray-700 rounded px-3 py-1 text-off-white text-sm font-medium relative"
     >
       <div
-        className={`absolute transform w-2.5 h-2.5 bg-gray-800 rotate-45 ${arrowClass}`}
+        className={`absolute transform w-2.5 h-2.5 bg-gray-700 rotate-45 ${arrowClass}`}
       />
       {children}
     </animated.div>

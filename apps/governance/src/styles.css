@@ -1,23 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-/* You can add global styles to this file, and also import other style files */
 
 body {
   @apply bg-off-black text-off-white antialiased;
 }
 
 .btn {
-  @apply rounded-full bg-blue-gradient hover:bg-blue-gradient-light leading-tight transition-[background-image] ease-in-out duration-200 font-medium;
+  @apply rounded-full leading-tight font-medium bg-blue-gradient hover:bg-blue-gradient-light;
 }
-
+.btn-disabled {
+  @apply rounded-full leading-tight font-medium bg-blue-gradient opacity-50 pointer-events-none;
+}
 .btn-secondary {
-  @apply rounded-full bg-gray-900 font-medium hover:bg-gray-800 transition-all duration-200 ease-in-out;
+  @apply rounded-full leading-tight font-medium bg-gray-900 hover:bg-gray-800 transition-all duration-200 ease-in-out;
 }
-
+.btn-secondary-disabled {
+  @apply rounded-full leading-tight font-medium bg-gray-900 opacity-50 pointer-events-none;
+}
 .btn-outline {
-  @apply border-blue-600 border rounded-full leading-tight hover:bg-blue-600 hover:text-off-black transition-all duration-200 ease-in-out cursor-pointer font-medium;
+  @apply rounded-full leading-tight font-medium border-blue-600 border hover:bg-blue-600 hover:text-off-black transition-all duration-200 ease-in-out cursor-pointer;
 }
 .btn-outline-disabled {
-  @apply border-blue-600/50 border rounded-full leading-tight text-off-white/30 font-medium;
+  @apply rounded-full leading-tight font-medium border-blue-600/50 border text-off-white/30;
 }
