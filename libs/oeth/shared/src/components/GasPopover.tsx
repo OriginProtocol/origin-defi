@@ -90,70 +90,70 @@ export function GasPopover({
           },
         }}
       >
-        <Stack gap={2}>
+        <Stack gap={1}>
           <FormControl variant="standard">
             <InputLabel htmlFor="slippage" shrink>
               {intl.formatMessage({ defaultMessage: 'Slippage' })}
             </InputLabel>
             <Box sx={gridStyles}>
-              <PercentInput
-                value={slippage}
-                onChange={onSlippageChange}
-                fullWidth
-                sx={{
-                  borderColor: (theme) => theme.palette.secondary.main,
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 0.05),
-                  paddingInlineEnd: 2,
-                  '& .MuiInputBase-input': {
-                    textAlign: 'right',
-                    color: 'primary.contrastText',
+              <Stack direction="row" gap={2}>
+                <PercentInput
+                  value={slippage}
+                  onChange={onSlippageChange}
+                  fullWidth
+                  sx={{
+                    borderColor: (theme) => theme.palette.secondary.main,
+                    backgroundColor: (theme) =>
+                      alpha(theme.palette.secondary.main, 0.05),
+                    paddingInlineEnd: 2,
+                    '& .MuiInputBase-input': {
+                      textAlign: 'right',
+                      color: 'primary.contrastText',
 
-                    '&::placeholder': {
-                      color: 'text.primary',
-                      opacity: 1,
+                      '&::placeholder': {
+                        color: 'text.primary',
+                        opacity: 1,
+                      },
                     },
-                  },
-                }}
-              />
-
-              <Button
-                variant="contained"
-                sx={{
-                  borderRadius: 20,
-                  height: '38px',
-                  color: 'primary.contrastText',
-                  bgColor:
-                    'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
-                  '&:disabled': {
-                    opacity: 0.3,
-                  },
-                }}
-                fullWidth
-                disabled={slippage === DEFAULT_SLIPPAGE}
-                onClick={() => {
-                  onSlippageChange(DEFAULT_SLIPPAGE);
-                }}
-              >
-                {intl.formatMessage({ defaultMessage: 'Auto' })}
-              </Button>
+                  }}
+                />
+                <Button
+                  variant="contained"
+                  sx={{
+                    borderRadius: 20,
+                    height: '38px',
+                    color: 'primary.contrastText',
+                    bgColor:
+                      'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
+                    '&:disabled': {
+                      opacity: 0.3,
+                    },
+                  }}
+                  fullWidth
+                  disabled={slippage === DEFAULT_SLIPPAGE}
+                  onClick={() => {
+                    onSlippageChange(DEFAULT_SLIPPAGE);
+                  }}
+                >
+                  {intl.formatMessage({ defaultMessage: 'Auto' })}
+                </Button>
+              </Stack>
             </Box>
-            {slippage > WARNING_THRESHOLD ? (
-              <FormHelperText
-                sx={{
-                  gridColumn: 'span 2',
-                  mt: 1.25,
-                  fontSize: (theme) => theme.typography.pxToRem(12),
-                  color: (theme) => theme.palette.warning.main,
-                  fontWeight: 400,
-                  fontStyle: 'normal',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage: 'Your transaction may be frontrun',
-                })}
-              </FormHelperText>
-            ) : null}
+            <FormHelperText
+              sx={{
+                gridColumn: 'span 2',
+                mt: 1.25,
+                fontSize: (theme) => theme.typography.pxToRem(12),
+                color: (theme) => theme.palette.warning.main,
+                fontWeight: 400,
+                fontStyle: 'normal',
+                ...(slippage <= WARNING_THRESHOLD && { visibility: 'hidden' }),
+              }}
+            >
+              {intl.formatMessage({
+                defaultMessage: 'Your transaction may be frontrun',
+              })}
+            </FormHelperText>
           </FormControl>
           <FormControl>
             <InputLabel htmlFor="gas" shrink>
