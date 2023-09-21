@@ -132,12 +132,8 @@ const UnstakeButton = ({ lockup }: { lockup: Lockup }) => {
 
   const { signMessage } = useSignMessage({
     message: 'Confirm unstake',
-    onSuccess: () => {
-      setMode('pending');
-    },
-    onError: () => {
-      setMode('unstake');
-    },
+    onSuccess: () => setMode('pending'),
+    onError: () => setMode('unstake'),
   });
 
   const disabled = lockup.endsAt > Date.now();

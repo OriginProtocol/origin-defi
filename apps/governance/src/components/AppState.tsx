@@ -46,6 +46,7 @@ export interface IAppState {
   walletBalance: number;
   rewardsToCollect: number;
   devControls: boolean;
+  waitForTx: boolean;
 }
 
 export const initialState: IAppState = {
@@ -57,6 +58,7 @@ export const initialState: IAppState = {
   walletBalance: 0,
   rewardsToCollect: 0,
   devControls: false,
+  waitForTx: false,
 };
 
 interface StateContextProps {

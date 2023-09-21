@@ -1,5 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { useSignMessage } from 'wagmi';
+
 import OGVIcon from '../../assets/ogv.svg';
 import veOGVIcon from '../../assets/ve-ogv.svg';
 import { AnimatedModal, ModalHeader } from '../../components/AnimatedModal';
@@ -21,6 +23,18 @@ export const StakeModal = () => {
   const [monthsToStake, setMonthsToStake] = useState(48);
   const [mode, setMode] = useState('start');
   const [shouldClose, setShouldClose] = useState(false);
+
+  const { signMessage: signApproval } = useSignMessage({
+    message: 'Approve token',
+    onSuccess: () => setMode('stake'),
+    onError: () => setMode('start'),
+  });
+
+  const { signMessage: signStake } = useSignMessage({
+    message: 'Stake tokens',
+    onSuccess: () => onStake(),
+    onError: () => setMode('stake'),
+  });
 
   useEffect(() => {
     if (!amount || amount === '0') {
@@ -62,10 +76,7 @@ export const StakeModal = () => {
       }}
     >
       {!sign ? null : (
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          onClick={() => setMode(mode === 'approve' ? 'stake' : 'done-stake')}
-        >
+        <div className="absolute inset-0 flex items-center justify-center">
           <div className="bg-blue-500 text-3xl text-off-white rounded-lg z-50 font-bold px-8 py-5 mx-24 leading-tight">
             Sign approval in wallet
           </div>
@@ -133,9 +144,11 @@ export const StakeModal = () => {
             className="btn w-full py-4 text-base leading-none"
             onClick={() => {
               if (mode === 'stake') {
-                onStake();
-              } else {
-                setMode(mode === 'start' ? 'approve' : 'approve-stake');
+                setMode('approve-stake');
+                signStake();
+              } else if (mode === 'start') {
+                setMode('approve');
+                signApproval();
               }
             }}
           >

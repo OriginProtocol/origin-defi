@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import { Actions } from '../../components/Actions';
 import { StateContext } from '../../components/AppState';
 import { Heading } from '../../components/Heading';
+import { CollectRewards } from './CollectRewards';
 import { MyLockups } from './MyLockups';
 import { MyStake } from './MyStake';
-import { RewardsToCollect } from './RewardsToCollect';
 import { Stats } from './Stats';
 import { VotingPower } from './VotingPower';
 
@@ -22,7 +22,7 @@ export const Staking = () => {
           <MyLockups lockups={state.lockups} />
         </div>
         <div className="flex flex-col gap-6 sm:w-[375px]">
-          <RewardsToCollect />
+          <CollectRewards />
           <VotingPower />
         </div>
       </div>

@@ -1,11 +1,37 @@
 import { useContext, useEffect, useState } from 'react';
 
+import { useSignMessage } from 'wagmi';
+
 import OGVIcon from '../../assets/ogv.svg';
 import { StateContext } from '../../components/AppState';
 import { NumberSpinner } from '../../components/NumberSpinner';
 
-export const RewardsToCollect = () => {
+export const CollectRewards = () => {
   const { state, setState } = useContext(StateContext);
+
+  const { signMessage } = useSignMessage({
+    message: 'Collect rewards',
+    onSuccess: () => {
+      setState({ waitForTx: false });
+      setMode('pending');
+      setTimeout(() => {
+        setMode('collect');
+        setState({
+          rewardsToCollect: 0,
+          walletBalance: state.walletBalance + state.rewardsToCollect,
+          toast: {
+            title: 'OGV rewards collected',
+            text: `${state.rewardsToCollect.toLocaleString()} OGV`,
+            icon: 'OGV',
+          },
+        });
+      }, 3000);
+    },
+    onError: () => {
+      setState({ waitForTx: false });
+      setMode('collect');
+    },
+  });
 
   const totalLocked = state.lockups.reduce((m, l) => {
     return m + l.tokens;
@@ -26,29 +52,6 @@ export const RewardsToCollect = () => {
     return () => clearInterval(i);
   }, [totalLocked, state.rewardsToCollect]);
 
-  function collect() {
-    if (disabled) {
-      return;
-    }
-    if (mode === 'collect') {
-      setMode('confirm');
-    } else if (mode === 'confirm') {
-      setMode('pending');
-    } else {
-      setState({
-        rewardsToCollect: 0,
-        walletBalance: state.walletBalance + state.rewardsToCollect,
-        toast: {
-          title: 'OGV rewards collected',
-          text: `${state.rewardsToCollect.toLocaleString()} OGV`,
-          icon: 'OGV',
-        },
-      });
-
-      setMode('collect');
-    }
-  }
-
   return (
     <div className="bg-gray-900 rounded-lg text-sm p-6">
       <div className="text-gray-500">Rewards Available to collect</div>
@@ -65,7 +68,10 @@ export const RewardsToCollect = () => {
         className={`${btnClass} mt-6 px-4 py-2 w-full`}
         onClick={(e) => {
           e.stopPropagation();
-          collect();
+          if (mode === 'collect') {
+            setState({ waitForTx: true });
+            signMessage();
+          }
         }}
       >
         {mode === 'confirm'
