@@ -44,3 +44,20 @@ pnpm nx run-many -t <target1> <target2> -p <proj1> <proj2>
 ```
 
 Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
+
+## graphQl
+
+We use `react-query` in conjunction with `graphql-codegen` for interacting with graphQl endpoint. Here's how to use (this example is taken from oeth app):
+
+- write gql colocated to your components, in respective `queries|mutations|subscriptions|fragments.graphql` file
+- you get graphql autocompletion based on the schema located in `.graphqlconfig` at the root of the repo
+- run the graphql-codegen task with `pnpm nx run oeth-shared:codegen-graphql`, it will generate 
+  - the global types in `libs/oeth/shared/src/generated/graphql.ts` and 
+  - the generated hooks next to your graphql file (i.e. `/libs/oeth/history/src/queries.generated.tsx`)
+- use the generated hooks in your component with fully typed args and results!
+
+Couple of things to note:
+- generated hooks receives args as first param, second param exposes all react-query api for controlling execution
+- react-query http client is automatically injected via codegen, it is defined here `libs/oeth/shared/src/clients/graphql.ts`
+- autocompletion is ensured by `.graphqlconfig`, you'll probably need the proper IDE plugin to handle it
+- there's a `--watch` flag that you can pass to the codegen if you want to autodetect changes
