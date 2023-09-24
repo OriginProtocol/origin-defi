@@ -8,6 +8,7 @@ import dayjs from 'dayjs';
 import { mergeDeepRight } from 'ramda';
 import { Line } from 'react-chartjs-2';
 
+import type { Theme } from '@mui/material';
 import type { ChartData, ChartOptions, Plugin } from 'chart.js';
 import type { ComponentProps } from 'react';
 
@@ -20,7 +21,6 @@ const chartTheme = {
   primary1: '#CF75D5',
   primary2: '#FEDBA8',
   position: '#0074F0',
-  background: '#828699',
   grid: '#2e2f3d',
   positive: '#4EBE96',
   negative: '#D44E66',
@@ -47,19 +47,25 @@ export function TimeLineChart(props: {
   return (
     <Paper>
       <Box sx={{ fontFamily: 'Inter' }}>
-        <Stack gap={full}>
+        <Stack gap={half}>
           <Stack
             direction="row"
             alignItems="center"
             justifyContent="space-between"
-            p={full}
+            px={full}
+            pt={full}
           >
             <Stack>
-              <Box mb={half} fontSize={'0.875rem'} {...props.titleProps}>
+              <Box mb={half} fontSize={'1rem'} {...props.titleProps}>
                 {props.title}
               </Box>
               <Stack direction={'row'} mb={quarter} gap={0.5}>
-                <Box fontSize={'2.5rem'} color={'white'}>
+                <Box
+                  fontFamily={'Sailec'}
+                  fontSize={'2.5rem'}
+                  fontWeight={'400'}
+                  color={'white'}
+                >
                   {props.formatValues(currentData[0].y)}
                 </Box>
                 {change ? (
@@ -79,8 +85,8 @@ export function TimeLineChart(props: {
                   </Box>
                 ) : null}
               </Stack>
-              <Box fontSize={'.75rem'} color={hovering ? '#ddd' : undefined}>
-                {dayjs(currentData[0].x).format('lll')}
+              <Box fontSize={'.875rem'} color={hovering ? '#ddd' : undefined}>
+                {dayjs(currentData[0].x).format('ll')}
               </Box>
             </Stack>
             <Box fontSize={'0.875rem'}>Filter Options</Box>
@@ -130,8 +136,6 @@ export function TimeLineChart(props: {
 export const DatedLineChart = (props: ComponentProps<typeof Line>) => {
   const theme = useTheme();
   let options: ChartOptions<'line'> = {
-    backgroundColor: chartTheme.background,
-    color: theme.palette.text.secondary,
     responsive: true,
     interaction: {
       mode: 'nearest',
@@ -185,6 +189,11 @@ export const DatedLineChart = (props: ComponentProps<typeof Line>) => {
         radius: 0,
       },
     },
+    layout: {
+      padding: {
+        top: 30, // Depended on by `verticalLinePlugin`
+      },
+    },
     borderColor: (ctx) => {
       const gradient = ctx.chart.ctx.createLinearGradient(
         0,
@@ -203,30 +212,52 @@ export const DatedLineChart = (props: ComponentProps<typeof Line>) => {
   return (
     <Line
       {...props}
-      plugins={[verticalLinePlugin, ...(props.plugins ?? [])]}
+      plugins={[verticalLinePlugin(theme), ...(props.plugins ?? [])]}
       options={options}
       data={props.data}
     />
   );
 };
 
-const verticalLinePlugin: Plugin<'line'> = {
-  id: 'verticalLineAtIndex',
-  afterDraw: (chart) => {
-    const active = chart.getActiveElements();
-    if (active[0]) {
-      const ctx = chart.ctx;
-      const x = active[0].element.x;
+const verticalLinePlugin = (theme: Theme) => {
+  const plugin: Plugin<'line'> = {
+    id: 'verticalLineAtIndex',
+    afterDraw: (chart) => {
+      const active = chart.getActiveElements();
+      if (active[0]) {
+        const ctx = chart.ctx;
+        const x = active[0].element.x;
+        const data = chart.data.datasets[0].data[
+          active[0].index
+        ] as unknown as {
+          x: Date;
+          y: number;
+        };
 
-      ctx.save();
-      ctx.beginPath();
-      ctx.moveTo(x, chart.chartArea.top);
-      ctx.lineTo(x, chart.chartArea.bottom);
-      ctx.setLineDash([2, 2]);
-      ctx.strokeStyle = chartTheme.position;
-      ctx.lineWidth = 0.5;
-      ctx.stroke();
-      ctx.restore();
-    }
-  },
+        const heightAboveChart = 30;
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(x, chart.chartArea.top - heightAboveChart);
+        ctx.lineTo(x, chart.chartArea.bottom);
+        ctx.setLineDash([2, 2]);
+        ctx.strokeStyle = chartTheme.position;
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+        ctx.font = '0.875rem Inter';
+        ctx.fillStyle = theme.palette.text.primary;
+        ctx.textAlign = 'start';
+        const text = dayjs(data.x).format('lll');
+        const textSize = ctx.measureText(text);
+        ctx.fillText(
+          dayjs(data.x).format('lll'),
+          x + heightAboveChart / 2,
+          chart.chartArea.top -
+            heightAboveChart +
+            textSize.actualBoundingBoxAscent,
+        );
+        ctx.restore();
+      }
+    },
+  };
+  return plugin;
 };
