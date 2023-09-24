@@ -25,6 +25,8 @@
     "@wagmi/core": "^1.4.1",
     "axios": "^1.5.0",
     "chart.js": "^4.4.0",
+    "chartjs-adapter-dayjs-4": "^1.0.4",
+    "dayjs": "^1.11.10",
     "graphql": "^16.8.0",
     "immer": "^10.0.2",
     "ramda": "^0.29.0",

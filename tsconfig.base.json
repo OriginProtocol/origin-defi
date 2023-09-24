@@ -20,6 +20,9 @@
     "strict": false,
     "baseUrl": ".",
     "paths": {
+      "@origin/analytics": [
+        "libs/analytics/src/index.ts"
+      ],
       "@origin/oeth/history": [
         "libs/oeth/history/src/index.ts"
       ],

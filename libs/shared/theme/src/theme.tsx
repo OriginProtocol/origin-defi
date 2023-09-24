@@ -14,6 +14,8 @@ export const theme = extendTheme({
           dark: '#0274f1',
           light: '#b361e6',
           contrastText: '#FAFBFB',
+          '400': '#CF75D5', // Often used in charts.
+          '500': '#FEDBA8', // Often used in charts.
         },
         secondary: {
           main: '#0074F0',

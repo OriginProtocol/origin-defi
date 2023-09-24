@@ -162,20 +162,27 @@ const PaletteView = ({ palette, ...rest }: PaletteViewProps) => (
           >
             {capitalize(key)}
           </Typography>
+          {/* eslint-disable @typescript-eslint/ban-ts-comment */}
+          {/* @ts-ignore */}
           {typeof palette[key] === 'object' ? (
+            // @ts-ignore
             Object.keys(palette[key]).map((k) => (
               <PaletteElem
                 key={`${key}-${k}`}
                 keyStr={k}
+                // @ts-ignore
                 value={palette[key][k]}
                 {...(k === 'contrastText' && {
+                  // @ts-ignore
                   contrastBkg: (palette[key] as SimplePaletteColorOptions).main,
                 })}
               />
             ))
           ) : (
+            // @ts-ignore
             <PaletteElem keyStr={key} value={palette[key]} />
           )}
+          {/* eslint-enable @typescript-eslint/ban-ts-comment */}
         </Stack>
       ))}
   </Stack>
