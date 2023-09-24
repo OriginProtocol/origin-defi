@@ -30,7 +30,7 @@ const full = { xs: 1, sm: 2, md: 3 };
 const half = { xs: 0.5, sm: 1, md: 1.5 };
 const quarter = { xs: 0.25, sm: 0.5, md: 0.75 };
 
-export function Analytics(props: {
+export function TimeLineChart(props: {
   title: string;
   titleProps: ComponentProps<typeof Box>;
   data: ChartData<'line', { x: Date; y: number }[]>;

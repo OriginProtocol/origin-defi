@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { Container } from '@mui/material';
 import dayjs from 'dayjs';
 
-import { Analytics } from './analytics';
+import { TimeLineChart } from './TimeLineChart';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -25,9 +25,9 @@ const ema = (p: number) => {
 
 const smooth = ema(7);
 
-const meta: Meta<typeof Analytics> = {
-  component: Analytics,
-  title: 'Analytics/test',
+const meta: Meta<typeof TimeLineChart> = {
+  component: TimeLineChart,
+  title: 'Analytics/TimeLineChart',
   args: {
     title: 'APY',
     data: {
@@ -53,11 +53,11 @@ const meta: Meta<typeof Analytics> = {
   },
   render: (args) => (
     <Container>
-      <Analytics {...args} />
+      <TimeLineChart {...args} />
     </Container>
   ),
 };
 
 export default meta;
 
-export const Default: StoryObj<typeof Analytics> = {};
+export const Default: StoryObj<typeof TimeLineChart> = {};
