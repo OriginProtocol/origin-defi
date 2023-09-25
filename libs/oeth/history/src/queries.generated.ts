@@ -44,6 +44,7 @@ export type HistoryTableWithFiltersQuery = {
     earned: number;
     isContract: boolean;
     rebasingOption: string;
+    credits: any;
     lastUpdated: any;
     history: Array<{
       __typename?: 'History';
@@ -96,6 +97,20 @@ export const useHistoryTableQuery = <
     ),
     options,
   );
+
+useHistoryTableQuery.getKey = (variables: HistoryTableQueryVariables) => [
+  'HistoryTable',
+  variables,
+];
+useHistoryTableQuery.fetcher = (
+  variables: HistoryTableQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  graphqlClient<HistoryTableQuery, HistoryTableQueryVariables>(
+    HistoryTableDocument,
+    variables,
+    options,
+  );
 export const HistoryTableWithFiltersDocument = `
     query HistoryTableWithFilters($address: String!, $offset: Int!, $filters: [String!]) {
   addressById(id: $address) {
@@ -103,6 +118,7 @@ export const HistoryTableWithFiltersDocument = `
     earned
     isContract
     rebasingOption
+    credits
     lastUpdated
     history(
       limit: 20
@@ -134,6 +150,18 @@ export const useHistoryTableWithFiltersQuery = <
     >(HistoryTableWithFiltersDocument, variables),
     options,
   );
+
+useHistoryTableWithFiltersQuery.getKey = (
+  variables: HistoryTableWithFiltersQueryVariables,
+) => ['HistoryTableWithFilters', variables];
+useHistoryTableWithFiltersQuery.fetcher = (
+  variables: HistoryTableWithFiltersQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  graphqlClient<
+    HistoryTableWithFiltersQuery,
+    HistoryTableWithFiltersQueryVariables
+  >(HistoryTableWithFiltersDocument, variables, options);
 export const HistoryApyDocument = `
     query HistoryApy {
   apies(limit: 1, orderBy: timestamp_DESC) {
@@ -152,5 +180,17 @@ export const useHistoryApyQuery = <TData = HistoryApyQuery, TError = unknown>(
       HistoryApyDocument,
       variables,
     ),
+    options,
+  );
+
+useHistoryApyQuery.getKey = (variables?: HistoryApyQueryVariables) =>
+  variables === undefined ? ['HistoryApy'] : ['HistoryApy', variables];
+useHistoryApyQuery.fetcher = (
+  variables?: HistoryApyQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  graphqlClient<HistoryApyQuery, HistoryApyQueryVariables>(
+    HistoryApyDocument,
+    variables,
     options,
   );

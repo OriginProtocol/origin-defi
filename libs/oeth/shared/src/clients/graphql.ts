@@ -6,7 +6,11 @@ export const axiosInstance = axios.create({
 });
 
 export const graphqlClient =
-  <TData, TVariables>(query: string, variables?: TVariables) =>
+  <TData, TVariables>(
+    query: string,
+    variables?: TVariables,
+    options?: RequestInit['headers'],
+  ) =>
   async () => {
     const res = await axiosInstance<TData>({
       url: '/graphql',
@@ -14,6 +18,7 @@ export const graphqlClient =
       headers: {
         'Content-Type': 'application/json',
       },
+      ...options,
       data: { query, variables },
     });
 

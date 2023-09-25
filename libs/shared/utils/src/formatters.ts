@@ -20,6 +20,11 @@ export const quantityFormat: FormatNumberOptions = {
   maximumFractionDigits: 4,
 };
 
+export const balanceFormat: FormatNumberOptions = {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
+};
+
 // Format map [value, maxDigits]
 const mappings = [
   [10000000, 0],

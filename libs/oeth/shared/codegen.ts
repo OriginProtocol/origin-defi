@@ -19,6 +19,8 @@ const config: CodegenConfig = {
       hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
+        exposeFetcher: true,
+        exposeQueryKeys: true,
         fetcher: {
           func: '@origin/oeth/shared#graphqlClient',
         },

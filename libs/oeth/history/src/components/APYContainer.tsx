@@ -1,19 +1,31 @@
-import { Divider, Stack, Typography } from '@mui/material';
-import { valueFormat } from '@origin/shared/utils';
+import { Divider, Skeleton, Stack, Typography } from '@mui/material';
+import { tokens } from '@origin/shared/contracts';
+import { balanceFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { useAccount, useBalance } from 'wagmi';
 
+import { usePendingYield } from '../hooks';
 import { useHistoryTableQuery } from '../queries.generated';
 
+import type { StackProps } from '@mui/material';
+
 export function APYContainer() {
+  const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const { data } = useHistoryTableQuery(
+  const { data: oethBalance, isLoading: oethLoading } = useBalance({
+    address,
+    token: tokens.mainnet.OETH.address,
+    watch: true,
+  });
+  const { data: earnings, isLoading: earningsLoading } = useHistoryTableQuery(
     { address: address?.toLowerCase(), offset: 0 },
     {
       enabled: isConnected,
     },
   );
-  const intl = useIntl();
+  const { data: pendingYield, isLoading: pendingYieldLoading } =
+    usePendingYield(tokens.mainnet.OETH);
+
   return (
     <Stack
       sx={{
@@ -26,35 +38,59 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-        value={data?.addressById?.balance ?? 0}
+        value={intl.formatNumber(
+          Number(oethBalance?.formatted ?? 0),
+          balanceFormat,
+        )}
+        isLoading={isConnected && oethLoading}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
-        value={0.0023}
+        value={intl.formatNumber(pendingYield ?? 0, balanceFormat)}
+        isLoading={isConnected && pendingYieldLoading}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({
           defaultMessage: 'Lifetime earnings (OETH)',
         })}
-        value={data?.addressById?.earned ?? 0}
+        value={intl.formatNumber(
+          earnings?.addressById?.earned ?? 0,
+          balanceFormat,
+        )}
+        isLoading={isConnected && earningsLoading}
       />
     </Stack>
   );
 }
 
-interface Props {
+type ValueContainerProps = {
   label: string;
-  value: number;
-}
+  value: string;
+  isLoading?: boolean;
+} & StackProps;
 
-function ValueContainer(props: Props) {
-  const intl = useIntl();
+function ValueContainer({
+  label,
+  value,
+  isLoading,
+  ...rest
+}: ValueContainerProps) {
   return (
-    <Stack gap={0.5} sx={{ paddingBlock: 2, textAlign: 'center', flex: 1 }}>
+    <Stack
+      gap={0.5}
+      {...rest}
+      sx={{
+        paddingBlock: 2,
+        alignItems: 'center',
+        textAlign: 'center',
+        flex: 1,
+        ...rest?.sx,
+      }}
+    >
       <Typography variant="body2" color="text.secondary">
-        {props.label}
+        {label}
       </Typography>
       <Typography
         sx={{
@@ -67,7 +103,7 @@ function ValueContainer(props: Props) {
         }}
         color="primary.contrastText"
       >
-        {intl.formatNumber(props.value, valueFormat)}
+        {isLoading ? <Skeleton width={60} /> : value}
       </Typography>
     </Stack>
   );

@@ -4,6 +4,7 @@ query HistoryTable($address: String!, $offset: Int!) {
     earned
     isContract
     rebasingOption
+    credits
     lastUpdated
     history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
       type

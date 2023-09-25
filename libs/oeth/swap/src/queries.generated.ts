@@ -37,3 +37,15 @@ export const useApiesQuery = <TData = ApiesQuery, TError = unknown>(
     graphqlClient<ApiesQuery, ApiesQueryVariables>(ApiesDocument, variables),
     options,
   );
+
+useApiesQuery.getKey = (variables?: ApiesQueryVariables) =>
+  variables === undefined ? ['Apies'] : ['Apies', variables];
+useApiesQuery.fetcher = (
+  variables?: ApiesQueryVariables,
+  options?: RequestInit['headers'],
+) =>
+  graphqlClient<ApiesQuery, ApiesQueryVariables>(
+    ApiesDocument,
+    variables,
+    options,
+  );
