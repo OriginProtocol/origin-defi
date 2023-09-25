@@ -78,7 +78,6 @@ function RedeemViewWrapped() {
 
   return (
     <Card
-      sx={{ mt: 3 }}
       sxCardTitle={{
         padding: 0,
         paddingInline: { xs: 2, md: 3 },

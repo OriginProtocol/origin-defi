@@ -1,50 +1,30 @@
 import { useState } from 'react';
 
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import { graphqlClient } from '@origin/oeth/shared';
-import { useQuery } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import {
-  HistoryTableDocument,
-  HistoryTableWithFiltersDocument,
-} from '../queries.generated';
+import { useHistoryTableWithFiltersQuery } from '../queries.generated';
 import { ExportData } from './ExportData';
 import { HistoryFilters } from './Filters';
 import { HistoryTable } from './HistoryTable';
 
-import type { HistoryTableQuery } from '../queries.generated';
-
 const PAGE_SIZE = 20;
 
 export function HistoryCard() {
+  const intl = useIntl();
   const [page, setPage] = useState(0);
   const [filters, setFilters] = useState<string[]>([]);
   const { address, isConnected } = useAccount();
 
-  const { data, isFetching } = useQuery(
-    ['history-table', address, filters, page],
-    () => {
-      return graphqlClient<
-        HistoryTableQuery,
-        { addressId: string; filters?: string[]; offset: number }
-      >(
-        filters.length ? HistoryTableWithFiltersDocument : HistoryTableDocument,
-        {
-          addressId: address?.toLowerCase(),
-          filters: filters.length ? filters : undefined,
-          offset: page * PAGE_SIZE,
-        },
-      )();
-    },
-
+  const { data, isFetching } = useHistoryTableWithFiltersQuery(
     {
-      enabled: isConnected,
+      address: address.toLowerCase(),
+      filters: filters.length ? filters : undefined,
+      offset: page * PAGE_SIZE,
     },
+    { enabled: isConnected },
   );
-
-  const intl = useIntl();
 
   return (
     <Box sx={{ borderRadius: 1, backgroundColor: 'background.paper', mt: 3 }}>

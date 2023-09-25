@@ -13,12 +13,14 @@ const config: CodegenConfig = {
       documents: ['**/src/**/*.graphql'],
       preset: 'near-operation-file',
       presetConfig: {
-        extension: '.generated.tsx',
+        extension: '.generated.ts',
         baseTypesPath: '~@origin/oeth/shared',
       },
       hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
+        exposeFetcher: true,
+        exposeQueryKeys: true,
         fetcher: {
           func: '@origin/oeth/shared#graphqlClient',
         },

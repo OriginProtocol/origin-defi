@@ -1,9 +1,10 @@
-query HistoryTable($addressId: String!, $offset: Int!) {
-  addressById(id: $addressId) {
+query HistoryTable($address: String!, $offset: Int!) {
+  addressById(id: $address) {
     balance
     earned
     isContract
     rebasingOption
+    credits
     lastUpdated
     history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
       type
@@ -16,11 +17,11 @@ query HistoryTable($addressId: String!, $offset: Int!) {
 }
 
 query HistoryTableWithFilters(
-  $addressId: String!
+  $address: String!
   $offset: Int!
   $filters: [String!]
 ) {
-  addressById(id: $addressId) {
+  addressById(id: $address) {
     balance
     earned
     isContract
@@ -38,5 +39,12 @@ query HistoryTableWithFilters(
       timestamp
       balance
     }
+  }
+}
+
+query HistoryApy {
+  apies(limit: 1, orderBy: timestamp_DESC) {
+    apy7DayAvg
+    apy30DayAvg
   }
 }
