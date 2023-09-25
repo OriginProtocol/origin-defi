@@ -7,13 +7,19 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
 import { Icon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
+
+import { useHistoryApyQuery, useHistoryTableQuery } from '../queries.generated';
+
+import type { BoxProps } from '@mui/material';
 
 const days = [7, 30];
 
@@ -24,8 +30,14 @@ export function ApyHeader() {
   const { address } = useAccount();
   const { data: oethBalance } = useBalance({
     address,
-    token: tokens.mainnet.OUSD.address,
+    token: tokens.mainnet.OETH.address,
     watch: true,
+  });
+
+  const { data: apy, isLoading: apyLoading } = useHistoryApyQuery();
+  const { data: earnings, isLoading: earningsLoading } = useHistoryTableQuery({
+    address: address?.toLowerCase(),
+    offset: 0,
   });
 
   const handleClose = () => {
@@ -94,24 +106,32 @@ export function ApyHeader() {
             alignItems="center"
             sx={{ justifyContent: { xs: 'center', md: 'flex-start' } }}
           >
-            <Typography
-              sx={{
-                fontWeight: 700,
-                fontSize: '1.5rem',
-                fontStyle: 'normal',
-                lineHeight: '2rem',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-                fontFamily: 'Sailec',
-                backgroundImage:
-                  'linear-gradient(90deg, var(--mui-palette-primary-light) 0%, #6A36FC 100%)',
-              }}
-            >
-              {intl.formatNumber(6.71 / 100, {
-                minimumFractionDigits: 2,
-                style: 'percent',
-              })}
-            </Typography>
+            {apyLoading ? (
+              <Skeleton width={80} height="2rem" />
+            ) : (
+              <Typography
+                sx={{
+                  fontWeight: 700,
+                  fontSize: '1.5rem',
+                  fontStyle: 'normal',
+                  lineHeight: '2rem',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  fontFamily: 'Sailec',
+                  backgroundImage:
+                    'linear-gradient(90deg, var(--mui-palette-primary-light) 0%, #6A36FC 100%)',
+                }}
+              >
+                {intl.formatNumber(
+                  selectedPeriod === 30
+                    ? apy.apies[0].apy30DayAvg
+                    : apy.apies[0].apy7DayAvg,
+                  {
+                    minimumFractionDigits: 2,
+                  },
+                )}
+              </Typography>
+            )}
             <IconButton
               disableRipple
               onClick={(e) => setAnchorEl(e.currentTarget)}
@@ -144,9 +164,7 @@ export function ApyHeader() {
         >
           <ValueContainer
             text={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-            value={intl.formatNumber(Number(oethBalance?.formatted ?? 0), {
-              minimumFractionDigits: 4,
-            })}
+            value={formatAmount(oethBalance?.value, oethBalance?.decimals)}
           />
           <Box
             sx={{
@@ -177,7 +195,10 @@ export function ApyHeader() {
           </Box>
           <ValueContainer
             text={intl.formatMessage({ defaultMessage: 'Lifetime earnings' })}
-            value={intl.formatNumber(0, { minimumFractionDigits: 4 })}
+            value={intl.formatNumber(earnings?.addressById?.earned, {
+              minimumFractionDigits: 4,
+            })}
+            isLoading={earningsLoading}
           />
         </Stack>
       </Stack>
@@ -185,17 +206,25 @@ export function ApyHeader() {
   );
 }
 
+type ValueContainerProps = {
+  text: string;
+  value: string;
+  icon?: string;
+  isLoading?: boolean;
+} & BoxProps;
+
 function ValueContainer({
   text,
   value,
   icon,
-}: {
-  text: string;
-  value: string;
-  icon?: string;
-}) {
+  isLoading,
+  ...rest
+}: ValueContainerProps) {
   return (
-    <Box sx={{ flex: 1, display: 'grid', placeContent: 'center' }}>
+    <Box
+      {...rest}
+      sx={{ flex: 1, display: 'grid', placeContent: 'center', ...rest?.sx }}
+    >
       <Typography variant="body2" color="text.secondary">
         {text}
       </Typography>
@@ -216,18 +245,24 @@ function ValueContainer({
           },
         }}
       >
-        {icon ? (
-          <Icon
-            sx={{
-              width: '0.75rem',
-              height: '0.75rem',
-              marginInlineEnd: 0.5,
-            }}
-            src={icon}
-          />
-        ) : undefined}
+        {isLoading ? (
+          <Skeleton width={80} />
+        ) : (
+          <>
+            {icon ? (
+              <Icon
+                sx={{
+                  width: '0.75rem',
+                  height: '0.75rem',
+                  marginInlineEnd: 0.5,
+                }}
+                src={icon}
+              />
+            ) : undefined}
 
-        {value}
+            {value}
+          </>
+        )}
       </Stack>
     </Box>
   );

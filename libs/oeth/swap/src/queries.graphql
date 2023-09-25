@@ -1,0 +1,8 @@
+query Apies($limit: Int) {
+  apies(limit: $limit, orderBy: timestamp_DESC) {
+    id
+    timestamp    
+    apy7DayAvg
+    apy30DayAvg
+  }
+}

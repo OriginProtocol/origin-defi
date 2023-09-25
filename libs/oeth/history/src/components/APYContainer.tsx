@@ -8,7 +8,7 @@ import { useHistoryTableQuery } from '../queries.generated';
 export function APYContainer() {
   const { address, isConnected } = useAccount();
   const { data } = useHistoryTableQuery(
-    { addressId: address?.toLowerCase(), offset: 0 },
+    { address: address?.toLowerCase(), offset: 0 },
     {
       enabled: isConnected,
     },

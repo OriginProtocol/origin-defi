@@ -1,10 +1,23 @@
 import { Container, CssBaseline, Stack } from '@mui/material';
-import { registerChart } from '@origin/shared/providers';
+import {
+  CategoryScale,
+  Chart as ChartJS,
+  LinearScale,
+  LineElement,
+  PointElement,
+  registerables,
+} from 'chart.js';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
 
-registerChart();
+ChartJS.register(
+  ...registerables,
+  CategoryScale,
+  LinearScale,
+  LineElement,
+  PointElement,
+);
 
 export const App = () => {
   return (
