@@ -92,10 +92,7 @@ export const ApyChart = (props: StackProps) => {
         !isNilOrEmpty(tooltip?.['_active']) &&
         !isNilOrEmpty(tooltip?.dataPoints?.[0]?.parsed?.x)
       ) {
-        const xCoor = x.getPixelForValue(
-          tooltip.dataPoints[0].parsed.x,
-          tooltip.dataPoints[0].dataIndex,
-        );
+        const xCoor = x.getPixelForValue(tooltip.dataPoints[0].parsed.x);
 
         ctx.save();
         ctx.beginPath();
@@ -165,6 +162,9 @@ export const ApyChart = (props: StackProps) => {
         },
         x: {
           type: 'time',
+          time: {
+            round: 'day',
+          },
           border: { display: false },
           grid: {
             display: false,
