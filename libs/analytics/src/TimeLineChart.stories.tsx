@@ -30,6 +30,11 @@ const meta: Meta<typeof TimeLineChart> = {
   title: 'Analytics/TimeLineChart',
   args: {
     title: 'APY',
+    filter: {
+      options: ['1W', '1M', '6M', '1Y', 'All'],
+      value: '1W',
+      onChange: (value) => console.log(value),
+    },
     data: {
       datasets: [
         {

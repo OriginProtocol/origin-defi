@@ -1,1 +1,1 @@
-export * from './lib/TimeLineChart';
+export * from './TimeLineChart';

@@ -2,13 +2,13 @@ import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
 
 import { useState } from 'react';
 
-import { Box, Paper, Stack, useTheme } from '@mui/material';
+import { Box, MenuItem, Paper, Select, Stack, useTheme } from '@mui/material';
 import { Chart, TimeScale } from 'chart.js';
 import dayjs from 'dayjs';
 import { mergeDeepRight } from 'ramda';
 import { Line } from 'react-chartjs-2';
 
-import type { Theme } from '@mui/material';
+import type { Theme } from '@origin/shared/theme';
 import type { ChartData, ChartOptions, Plugin } from 'chart.js';
 import type { ComponentProps } from 'react';
 
@@ -30,11 +30,16 @@ const full = { xs: 1, sm: 2, md: 3 };
 const half = { xs: 0.5, sm: 1, md: 1.5 };
 const quarter = { xs: 0.25, sm: 0.5, md: 0.75 };
 
-export function TimeLineChart(props: {
+export function TimeLineChart<FilterOption extends string>(props: {
   title: string;
   titleProps: ComponentProps<typeof Box>;
   data: ChartData<'line', { x: Date; y: number }[]>;
   formatValues?: (value: number | string) => string | number;
+  filter?: {
+    options: FilterOption[];
+    value: FilterOption;
+    onChange?: (value: FilterOption) => void;
+  };
 }) {
   if (!props.formatValues) {
     props.formatValues = (value: number | string) => value;
@@ -46,11 +51,11 @@ export function TimeLineChart(props: {
   const change = currentData[0].y / firstData[0].y - 1;
   return (
     <Paper>
-      <Box sx={{ fontFamily: 'Inter' }}>
+      <Stack sx={{ fontFamily: 'Inter' }}>
         <Stack gap={half}>
           <Stack
             direction="row"
-            alignItems="center"
+            alignItems="start"
             justifyContent="space-between"
             px={full}
             pt={full}
@@ -59,7 +64,7 @@ export function TimeLineChart(props: {
               <Box mb={half} fontSize={'1rem'} {...props.titleProps}>
                 {props.title}
               </Box>
-              <Stack direction={'row'} mb={quarter} gap={0.5}>
+              <Stack direction={'row'} gap={0.5}>
                 <Box
                   fontFamily={'Sailec'}
                   fontSize={'2.5rem'}
@@ -89,7 +94,28 @@ export function TimeLineChart(props: {
                 {dayjs(currentData[0].x).format('ll')}
               </Box>
             </Stack>
-            <Box fontSize={'0.875rem'}>Filter Options</Box>
+            <Stack gap={quarter}>
+              {props.filter && (
+                <DateFilterPicker
+                  options={props.filter.options}
+                  value={props.filter.value}
+                  onChange={props.filter.onChange}
+                />
+              )}
+              <Select
+                value={7}
+                onChange={undefined}
+                sx={{
+                  height: '39px',
+                  border: 'none',
+                  background: (theme) => theme.palette.grey['700'],
+                  '> fieldset': { border: 'none' },
+                }}
+              >
+                <MenuItem value={30}>30-day</MenuItem>
+                <MenuItem value={7}>7-day</MenuItem>
+              </Select>
+            </Stack>
           </Stack>
           <Box pr={half} pb={full}>
             <DatedLineChart
@@ -128,13 +154,69 @@ export function TimeLineChart(props: {
             />
           </Box>
         </Stack>
-      </Box>
+      </Stack>
     </Paper>
   );
 }
 
+export const DateFilterPicker = <T extends string>({
+  options,
+  value,
+  onChange,
+}: {
+  options: T[];
+  value: T;
+  onChange?: (val: T) => void;
+}) => {
+  const selectedBackground =
+    'linear-gradient(90deg, rgba(140, 102, 252, 0.30) -28.99%, rgba(2, 116, 241, 0.30) 144.97%);';
+  const hoverBackground =
+    'linear-gradient(90deg, rgba(140, 102, 252, 0.10) -28.99%, rgba(2, 116, 241, 0.10) 144.97%);';
+  return (
+    <Stack
+      direction={'row'}
+      gap={quarter}
+      sx={{
+        fontSize: '.875rem',
+        borderRadius: '7px',
+        p: '3px',
+        background: (theme) => theme.palette.grey['700'],
+      }}
+    >
+      {options.map((option) => {
+        const isSelected = value === option;
+        return (
+          <Stack
+            key={option}
+            color={'primary'}
+            sx={{
+              color: (theme) =>
+                isSelected
+                  ? theme.palette.text.secondary
+                  : theme.palette.text.primary,
+              py: { xs: 0.5, sm: 1 },
+              px: { xs: 0.75, sm: 1.5 },
+              borderRadius: '5px',
+              cursor: 'pointer',
+              transition: 'background 2s ease-out 1000ms',
+              background: isSelected ? selectedBackground : undefined,
+              '&:hover': {
+                color: (theme) => theme.palette.text.secondary,
+                background: isSelected ? selectedBackground : hoverBackground,
+              },
+            }}
+            onClick={() => onChange?.(option)}
+          >
+            {option}
+          </Stack>
+        );
+      })}
+    </Stack>
+  );
+};
+
 export const DatedLineChart = (props: ComponentProps<typeof Line>) => {
-  const theme = useTheme();
+  const theme = useTheme<Theme>();
   let options: ChartOptions<'line'> = {
     responsive: true,
     interaction: {
@@ -245,12 +327,14 @@ const verticalLinePlugin = (theme: Theme) => {
         ctx.stroke();
         ctx.font = '0.875rem Inter';
         ctx.fillStyle = theme.palette.text.primary;
-        ctx.textAlign = 'start';
         const text = dayjs(data.x).format('lll');
         const textSize = ctx.measureText(text);
+        const fromLeft =
+          x + textSize.actualBoundingBoxRight <= chart.chartArea.right;
+        ctx.textAlign = fromLeft ? 'start' : 'end';
         ctx.fillText(
           dayjs(data.x).format('lll'),
-          x + heightAboveChart / 2,
+          x + (fromLeft ? heightAboveChart : -heightAboveChart) / 2,
           chart.chartArea.top -
             heightAboveChart +
             textSize.actualBoundingBoxAscent,
