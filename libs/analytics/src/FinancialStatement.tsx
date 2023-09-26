@@ -14,9 +14,6 @@ export const FinancialStatement = (props: {
   columns: string[];
   data: Record<string, Record<string, Record<string, number[]>>>;
 }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  const columnWeight = props.columns.length + 2;
   return (
     <Stack
       gap={2}
@@ -24,45 +21,55 @@ export const FinancialStatement = (props: {
       fontFamily={'Inter'}
       fontSize={{ xs: '.7rem', sm: '.875rem' }}
     >
-      <Paper
-        sx={{
-          borderRadius: { xs: 1, sm: 2, md: 3 },
-          overflow: 'hidden',
-        }}
-      >
-        <Stack
-          direction={'row'}
-          justifyContent={'space-between'}
-          color={(theme) => theme.palette.primary.contrastText}
-          sx={{ backgroundColor: (theme) => theme.palette.grey[800] }}
-          fontSize={{ xs: '.875rem', sm: '1.125rem' }}
-          px={{ xs: 1, sm: 2, md: 4 }}
-          py={{ xs: 2, sm: 3, md: 4 }}
-        >
-          <Box width={`${(100 / columnWeight) * 1.5}%`} />
-          {props.columns.map((column) => (
-            <Box
-              key={column}
-              width={`${100 / columnWeight}%`}
-              maxWidth={250}
-              textAlign={'right'}
-            >
-              {column}
-            </Box>
-          ))}
-          <Box
-            width={`${100 / columnWeight}%`}
-            maxWidth={250}
-            textAlign={'right'}
-          >
-            {isMobile ? 'Diff' : 'Difference'}
-          </Box>
-        </Stack>
-      </Paper>
+      <Header columns={props.columns} />
       {Object.entries(props.data).map(([title, data]) => (
         <Table key={title} title={title} data={data} />
       ))}
     </Stack>
+  );
+};
+
+const Header = (props: { columns: string[] }) => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const columnWeight = props.columns.length + 2;
+  return (
+    <Paper
+      sx={{
+        borderRadius: { xs: 1, sm: 2, md: 3 },
+        overflow: 'hidden',
+      }}
+    >
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        justifyContent={'space-between'}
+        color={(theme) => theme.palette.primary.contrastText}
+        sx={{ backgroundColor: (theme) => theme.palette.grey[800] }}
+        fontSize={{ xs: '.875rem', sm: '1.125rem' }}
+        px={{ xs: 1, sm: 2, md: 4 }}
+        py={{ xs: 2, sm: 3, md: 4 }}
+      >
+        {props.columns.map((column, index) => (
+          <Box
+            key={column}
+            width={`${(100 / columnWeight) * (index === 0 ? 2.5 : 1)}%`}
+            maxWidth={250}
+            textAlign={'right'}
+            ml={1}
+          >
+            {column}
+          </Box>
+        ))}
+        <Box
+          width={`${100 / columnWeight}%`}
+          maxWidth={250}
+          textAlign={'right'}
+        >
+          {isMobile ? 'Diff' : 'Difference'}
+        </Box>
+      </Stack>
+    </Paper>
   );
 };
 
