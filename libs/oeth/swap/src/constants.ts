@@ -19,8 +19,10 @@ export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
   'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
   'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),
   'swap-curve-eth': defineMessage({ defaultMessage: 'Swap with CurvePool' }),
-  'swap-zapper-eth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
-  'swap-zapper-sfrxeth': defineMessage({ defaultMessage: 'Swap with Zapper' }),
+  'swap-zapper-eth': defineMessage({ defaultMessage: 'Zap + Mint with Vault' }),
+  'swap-zapper-sfrxeth': defineMessage({
+    defaultMessage: 'Zap + Mint with Vault',
+  }),
   'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap with Origin' }),
   'wrap-oeth': defineMessage({ defaultMessage: 'Wrap with Origin' }),
 };

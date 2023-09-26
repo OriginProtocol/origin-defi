@@ -90,7 +90,7 @@ export function GasPopover({
         <Stack gap={1}>
           <FormControl variant="standard">
             <InputLabel htmlFor="slippage" shrink>
-              {intl.formatMessage({ defaultMessage: 'Slippage' })}
+              {intl.formatMessage({ defaultMessage: 'Price Tolerance' })}
             </InputLabel>
             <Box sx={gridStyles}>
               <Stack direction="row" gap={2}>
