@@ -280,11 +280,9 @@ function SwapViewWrapped() {
             onClick={handleSwap}
             sx={{ mt: 1.5 }}
           >
-            {swapButtonLoading ? (
-              <CircularProgress size={32} color="inherit" />
-            ) : (
-              swapButtonLabel
-            )}
+            {swapButtonLoading
+              ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+              : swapButtonLabel}
           </ConnectedButton>
         </CardContent>
       </Card>

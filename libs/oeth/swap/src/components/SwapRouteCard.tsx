@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { tokens } from '@origin/shared/contracts';
 import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
@@ -17,7 +18,7 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import { routeActionLabel, routeActionLogos } from '../constants';
+import { routeActionLabel } from '../constants';
 import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
 
@@ -104,6 +105,7 @@ export function SwapRouteCard({
       <CardHeader
         sx={{
           padding: 0,
+          borderBottom: 'none',
         }}
         title={
           <Grid2 container spacing={0.5} position="relative">
@@ -113,7 +115,7 @@ export function SwapRouteCard({
               ) : (
                 <Box
                   component="img"
-                  src={routeActionLogos[route.action]}
+                  src={tokens.mainnet.OETH.icon}
                   height={16}
                   width={16}
                   mr={0.5}
@@ -121,7 +123,7 @@ export function SwapRouteCard({
               )}
             </Grid2>
             <Grid2 display="flex" alignItems="center">
-              <Typography>
+              <Typography fontWeight={600}>
                 {isLoading ? (
                   <Skeleton width={100} />
                 ) : (
@@ -147,7 +149,7 @@ export function SwapRouteCard({
                   background: (theme) => theme.palette.background.gradient1,
                   fontSize: (theme) => theme.typography.pxToRem(12),
                   top: (theme) => theme.spacing(-3),
-                  right: (theme) => theme.spacing(-2),
+                  right: (theme) => theme.spacing(-1.25),
                   paddingInline: 1,
                 }}
               >
@@ -158,7 +160,7 @@ export function SwapRouteCard({
         }
       ></CardHeader>
 
-      <Typography variant="body2" sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
+      <Typography fontWeight={600} sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
         {isLoading ? (
           <Skeleton width={80} />
         ) : (
@@ -166,16 +168,11 @@ export function SwapRouteCard({
         )}
       </Typography>
       <Stack gap={0.5}>
-        <Stack
-          direction="row"
-          gap={1}
-          justifyContent="space-between"
-          color="text.secondary"
-        >
-          <Typography variant="body2">
+        <Stack direction="row" gap={1} justifyContent="space-between">
+          <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography variant="body2">
+          <Typography fontWeight={600}>
             {isLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -183,16 +180,11 @@ export function SwapRouteCard({
             )}
           </Typography>
         </Stack>
-        <Stack
-          direction="row"
-          gap={1}
-          justifyContent="space-between"
-          color="text.secondary"
-        >
-          <Typography variant="body2">
+        <Stack direction="row" gap={1} justifyContent="space-between">
+          <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
-          <Typography variant="body2">
+          <Typography fontWeight={600}>
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (

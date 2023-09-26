@@ -42,14 +42,14 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         <Mix />
         <Stack flex={1} direction="column">
           <Stack direction="row" alignItems="baseline" gap={1}>
-            <Typography variant="body1">
+            <Typography fontWeight={600}>
               {isEstimateLoading ? (
                 <Skeleton width={100} />
               ) : (
                 formatAmount(amountOut, MIX_TOKEN.decimals)
               )}
             </Typography>
-            <Typography color="text.secondary" variant="body2" noWrap>
+            <Typography variant="body2" noWrap color="text.secondary">
               {isEstimateLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -64,11 +64,11 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           </Typography>
         </Stack>
         <Stack direction="column" alignItems="flex-end" spacing={0.5}>
-          <Stack direction="row" gap={1} color="text.secondary">
-            <Typography variant="body2">
+          <Stack direction="row" gap={1}>
+            <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Gas:' })}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" fontWeight={600}>
               {isEstimateLoading || gasPriceLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -76,11 +76,11 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
               )}
             </Typography>
           </Stack>
-          <Stack direction="row" gap={1} color="text.secondary">
-            <Typography variant="body2">
+          <Stack direction="row" gap={1}>
+            <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Wait time:' })}
             </Typography>
-            <Typography variant="body2">
+            <Typography variant="body2" fontWeight={600}>
               {isEstimateLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -99,16 +99,11 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         px={1.5}
         py={1.5}
       >
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          gap={1}
-          color="text.secondary"
-        >
-          <Typography variant="body2">
+        <Stack direction="row" justifyContent="space-between" gap={1}>
+          <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography variant="body2">
+          <Typography variant="body2" fontWeight={600}>
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -137,7 +132,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             >
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Box component="img" src={s.token.icon} />
-                <Typography>{s.token.symbol}</Typography>
+                <Typography fontWeight={600}>{s.token.symbol}</Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -145,7 +140,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 justifyContent="flex-end"
                 spacing={2}
               >
-                <Typography>
+                <Typography fontWeight={600}>
                   {isEstimateLoading ? (
                     <Skeleton width={80} />
                   ) : (
@@ -155,7 +150,11 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isPricesLoading || isEstimateLoading ? (
                   <Skeleton width={80} />
                 ) : (
-                  <Typography sx={{ minWidth: 100, textAlign: 'end' }}>
+                  <Typography
+                    fontWeight={600}
+                    color="text.subtle"
+                    sx={{ minWidth: 100, textAlign: 'end' }}
+                  >
                     {intl.formatNumber(converted, currencyFormat)}
                   </Typography>
                 )}

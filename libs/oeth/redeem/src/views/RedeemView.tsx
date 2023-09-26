@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
@@ -105,40 +104,35 @@ function RedeemViewWrapped() {
         }
       />
       <CardContent>
-        <Box
+        <TokenInput
+          amount={amountIn}
+          onAmountChange={handleAmountInChange}
+          balance={balOeth?.value}
+          isBalanceLoading={isBalOethLoading}
+          token={tokens.mainnet.OETH}
+          isTokenClickDisabled
+          tokenPriceUsd={prices?.OETH}
+          isPriceLoading={isPricesLoading}
+          isConnected={isConnected}
+          isAmountDisabled={amountInInputDisabled}
+          inputProps={{ sx: tokenInputStyles }}
           sx={{
+            paddingBlock: 2.5,
+            paddingBlockStart: 2.625,
+            paddingInline: 2,
+            border: '1px solid',
+            borderColor: 'divider',
             borderRadius: 1,
-          }}
-        >
-          <TokenInput
-            amount={amountIn}
-            onAmountChange={handleAmountInChange}
-            balance={balOeth?.value}
-            isBalanceLoading={isBalOethLoading}
-            token={tokens.mainnet.OETH}
-            isTokenClickDisabled
-            tokenPriceUsd={prices?.OETH}
-            isPriceLoading={isPricesLoading}
-            isConnected={isConnected}
-            isAmountDisabled={amountInInputDisabled}
-            inputProps={{ sx: tokenInputStyles }}
-            sx={{
-              paddingBlock: 2.5,
-              paddingBlockStart: 2.625,
-              paddingInline: 2,
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              backgroundColor: 'grey.900',
-              borderBottomColor: 'transparent',
-              '&:hover, &:focus-within': {
-                borderColor: 'transparent',
-              },
-              '&:hover': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${
-                    theme.palette.grey[900]
-                  }) padding-box,
+            backgroundColor: 'grey.900',
+            borderBottomColor: 'transparent',
+            '&:hover, &:focus-within': {
+              borderColor: 'transparent',
+            },
+            '&:hover': {
+              background: (theme) =>
+                `linear-gradient(${theme.palette.grey[900]}, ${
+                  theme.palette.grey[900]
+                }) padding-box,
               linear-gradient(90deg, ${alpha(
                 theme.palette.primary.main,
                 0.4,
@@ -146,15 +140,14 @@ function RedeemViewWrapped() {
                 theme.palette.primary.dark,
                 0.4,
               )} 100%) border-box;`,
-              },
-              '&:focus-within': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
+            },
+            '&:focus-within': {
+              background: (theme) =>
+                `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
              linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
-              },
-            }}
-          />
-        </Box>
+            },
+          }}
+        />
         <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
           <ArrowButton />
         </Stack>
@@ -170,13 +163,11 @@ function RedeemViewWrapped() {
           fullWidth
           disabled={redeemButtonDisabled}
           onClick={handleRedeem}
-          sx={{ marginTop: 2 }}
+          sx={{ mt: 1.5 }}
         >
-          {redeemButtonLoading ? (
-            <CircularProgress size={32} color="inherit" />
-          ) : (
-            redeemButtonLabel
-          )}
+          {redeemButtonLoading
+            ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            : redeemButtonLabel}
         </ConnectedButton>
       </CardContent>
     </Card>
@@ -193,10 +184,10 @@ function ArrowButton(props: BoxProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        top: { md: `calc(50% - ${48 / 2}px)`, xs: `calc(50% - ${32 / 2}px)` },
-        left: { md: `calc(50% - ${48 / 2}px)`, xs: `calc(50% - ${32 / 2}px)` },
-        width: { md: 48, xs: 32 },
-        height: { md: 48, xs: 32 },
+        top: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
+        left: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
+        width: { md: 40, xs: 36 },
+        height: { md: 40, xs: 36 },
         zIndex: 2,
         fill: (theme) => theme.palette.background.paper,
         strokeWidth: (theme) => theme.typography.pxToRem(2),
@@ -211,7 +202,7 @@ function ArrowButton(props: BoxProps) {
         component="img"
         src="/images/splitarrow.svg"
         sx={{
-          height: { md: 'auto', xs: '1.25rem' },
+          height: { md: 20, xs: 18 },
         }}
       />
     </Box>

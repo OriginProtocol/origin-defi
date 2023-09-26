@@ -37,6 +37,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
+  tokenButtonProps?: TokenButtonProps;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -141,16 +142,25 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   </Typography>
                   {!hideMaxButton && (
                     <Button
-                      variant="text"
-                      color="inherit"
                       onClick={handleMaxClick}
                       disabled={maxDisabled}
                       sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        borderRadius: 1,
                         minWidth: 0,
-                        padding: (theme) => theme.spacing(0.2, 1),
+                        lineHeight: 1,
+                        color: 'text.secondary',
+                        padding: (theme) => theme.spacing(0.25, 0.5),
+                        background: (theme) =>
+                          alpha(theme.palette.common.white, 0.1),
+                        ':hover': {
+                          background: (theme) => theme.palette.grey[600],
+                        },
                       }}
                     >
-                      {intl.formatMessage({ defaultMessage: 'MAX' })}
+                      {intl.formatMessage({ defaultMessage: 'max' })}
                     </Button>
                   )}
                 </>
@@ -176,7 +186,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
       {...rest}
       sx={{
         alignItems: 'center',
-        justifyContent: 'space-evenly',
+        justifyContent: 'space-between',
         minWidth: 120,
         minHeight: 32,
         borderRadius: 25,
@@ -194,7 +204,9 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         position: 'relative',
         ':hover': {
           background: (theme) =>
-            `linear-gradient(#3B3C3E, #3B3C3E) padding-box, linear-gradient(90deg, ${alpha(
+            `linear-gradient(${theme.palette.grey[600]}, ${
+              theme.palette.grey[600]
+            }) padding-box, linear-gradient(90deg, ${alpha(
               theme.palette.primary.main,
               0.4,
             )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
