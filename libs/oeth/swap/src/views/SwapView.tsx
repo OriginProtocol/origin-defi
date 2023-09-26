@@ -10,13 +10,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ApyHeader, GasPopover } from '@origin/oeth/shared';
+import { GasPopover } from '@origin/oeth/shared';
 import { Card, TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
+import { ApyChart } from '../components/ApyChart';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import { routeActionLabel } from '../constants';
@@ -154,7 +155,7 @@ function SwapViewWrapped() {
 
   return (
     <>
-      <ApyHeader />
+      <ApyChart />
       <Card
         sx={{ mt: 3 }}
         sxCardTitle={{

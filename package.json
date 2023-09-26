@@ -27,6 +27,8 @@
     "chart.js": "^4.4.0",
     "chartjs-adapter-dayjs-4": "^1.0.4",
     "dayjs": "^1.11.10",
+    "chartjs-adapter-date-fns": "^3.0.0",
+    "date-fns": "^2.30.0",
     "graphql": "^16.8.0",
     "immer": "^10.0.2",
     "ramda": "^0.29.0",

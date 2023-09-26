@@ -167,6 +167,24 @@ export const theme = extendTheme({
         },
       ],
     },
+    MuiCssBaseline: {
+      styleOverrides: `
+          body {
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+          }
+
+          input[type=number] {
+            -moz-appearance: textfield;
+          }
+
+          input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+        `,
+    },
     MuiIconButton: {
       defaultProps: {
         disableTouchRipple: true,
@@ -224,6 +242,7 @@ export const theme = extendTheme({
     MuiMenuItem: {
       styleOverrides: {
         root: ({ theme }) => ({
+          color: theme.palette.primary.contrastText,
           '&.Mui-selected': {
             backgroundColor: 'transparent',
             color: theme.palette.text.secondary,
