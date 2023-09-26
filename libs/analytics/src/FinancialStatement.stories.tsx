@@ -24,10 +24,14 @@ const meta: Meta<typeof FinancialStatement> = {
   component: FinancialStatement,
   title: 'Analytics/FinancialStatement',
   args: {
-    dataLastUpdated: 123456789,
+    ethPrice: 1659.47,
+    lastUpdated: {
+      blockNumber: 18036316,
+      timestamp: Date.parse('2023-09-03T21:42:03Z'),
+    },
     columns: ['31 August 2023', '1 week ago'],
     data: {
-      Assets: {
+      assets: {
         Vault: {
           ETH: [125000, 0],
           WETH: [125000, 1],
@@ -50,9 +54,9 @@ const meta: Meta<typeof FinancialStatement> = {
           WETH: randomValues(20000, 50000),
         },
       },
-      Liabilities: {
+      liabilities: {
         'Token supply': {
-          OETH: randomValues(10000000, 1000000000),
+          OETH: randomValues(2000000, 40000000),
         },
       },
     },
