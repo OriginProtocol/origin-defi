@@ -121,7 +121,7 @@ export function SwapRouteCard({
               )}
             </Grid2>
             <Grid2 display="flex" alignItems="center">
-              <Typography color="primary.contrastText" variant="body1">
+              <Typography>
                 {isLoading ? (
                   <Skeleton width={100} />
                 ) : (
@@ -145,7 +145,6 @@ export function SwapRouteCard({
                   position: 'absolute',
                   borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
                   background: (theme) => theme.palette.background.gradient1,
-                  color: 'primary.contrastText',
                   fontSize: (theme) => theme.typography.pxToRem(12),
                   top: (theme) => theme.spacing(-3),
                   right: (theme) => theme.spacing(-2),
@@ -159,11 +158,7 @@ export function SwapRouteCard({
         }
       ></CardHeader>
 
-      <Typography
-        color="primary.contrastText"
-        variant="body2"
-        sx={{ marginBlock: { xs: 1.5, md: 1 } }}
-      >
+      <Typography variant="body2" sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
         {isLoading ? (
           <Skeleton width={80} />
         ) : (
@@ -180,7 +175,7 @@ export function SwapRouteCard({
           <Typography variant="body2">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography color="primary.contrastText" variant="body2">
+          <Typography variant="body2">
             {isLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -197,7 +192,7 @@ export function SwapRouteCard({
           <Typography variant="body2">
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
-          <Typography color="primary.contrastText" variant="body2">
+          <Typography variant="body2">
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (

@@ -30,7 +30,6 @@ export function HistoryFilterButton({
         paddingInline: 2,
         paddingBlock: 0.5,
         fontSize: (theme) => theme.typography.pxToRem(12),
-        color: 'primary.contrastText',
         fontWeight: 500,
         fontStyle: 'normal',
         lineHeight: (theme) => theme.typography.pxToRem(20),

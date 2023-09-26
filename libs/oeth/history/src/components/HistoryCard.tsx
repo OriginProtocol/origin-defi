@@ -19,7 +19,7 @@ export function HistoryCard() {
 
   const { data, isFetching } = useHistoryTableWithFiltersQuery(
     {
-      address: address.toLowerCase(),
+      address: address?.toLowerCase(),
       filters: filters.length ? filters : undefined,
       offset: page * PAGE_SIZE,
     },
@@ -37,7 +37,7 @@ export function HistoryCard() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography color="primary.contrastText">
+        <Typography>
           {intl.formatMessage({ defaultMessage: 'OETH transactions' })}
         </Typography>
         <Stack direction="row" gap={1}>

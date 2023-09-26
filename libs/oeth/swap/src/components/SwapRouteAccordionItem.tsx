@@ -90,14 +90,14 @@ export function SwapRouteAccordionItem({
             }}
           />
           <Box>
-            <Typography color="primary.contrastText" variant="body2">
+            <Typography variant="body2">
               {intl.formatNumber(estimatedAmount, quantityFormat)}
               &nbsp;
               <Box component="span" color="text.secondary">
                 ({intl.formatNumber(convertedAmount, currencyFormat)})
               </Box>
             </Typography>
-            <Typography color="primary.contrastText" variant="body2">
+            <Typography variant="body2">
               {intl.formatMessage(routeActionLabel[route.action])}
             </Typography>
           </Box>
@@ -124,14 +124,14 @@ export function SwapRouteAccordionItem({
               })}
             />
             &nbsp;
-            <Box component="span" color="primary.contrastText">
+            <Box component="span">
               1:{intl.formatNumber(route.rate, quantityFormat)}
             </Box>
           </Typography>
 
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Est gas' })}&nbsp;
-            <Box component="span" color="primary.contrastText">
+            <Box component="span">
               ~{intl.formatNumber(gas, currencyFormat)}
             </Box>
           </Typography>

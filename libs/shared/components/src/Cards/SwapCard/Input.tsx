@@ -6,7 +6,6 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '../../Loader';
-import { cardStyles } from '../Card';
 import { SwapItem } from './SwapItem';
 import { styles } from './utils';
 
@@ -44,7 +43,11 @@ export function Input({
     <Box
       sx={{
         backgroundColor: 'grey.900',
-        ...cardStyles,
+        padding: (theme) => ({
+          xs: theme.spacing(2, 1.5),
+          md: 3,
+        }),
+        color: 'primary.contrastText',
         border: '1px solid',
         borderColor: 'divider',
         borderRadius: 1,

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   alpha,
@@ -25,7 +25,6 @@ const styles = {
   fontSize: '0.75rem',
   fontWeight: 500,
   lineHeight: '1.25rem',
-  color: 'primary.contrastText',
 };
 
 interface Props {
@@ -51,7 +50,7 @@ export function HistoryFilters({ onChange }: Props) {
   return (
     <>
       <HistoryFilterButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-        Filters
+        {intl.formatMessage({ defaultMessage: 'Filters' })}
         <Box
           sx={{
             width: '4px',
@@ -89,7 +88,7 @@ export function HistoryFilters({ onChange }: Props) {
           },
         }}
       >
-        <Typography color="primary.contrastText" sx={{ padding: 2 }}>
+        <Typography sx={{ padding: 2 }}>
           {intl.formatMessage({ defaultMessage: 'Filters' })}
         </Typography>
         <Divider sx={{ marginBlockEnd: 2 }} />
@@ -111,10 +110,7 @@ export function HistoryFilters({ onChange }: Props) {
               },
             }}
           >
-            <FormLabel htmlFor={label} sx={{ color: 'primary.contrastText' }}>
-              {label}
-            </FormLabel>
-
+            <FormLabel htmlFor={label}>{label}</FormLabel>
             <Checkbox
               inputProps={{ id: label }}
               checked={selected.includes(label)}

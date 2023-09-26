@@ -101,7 +101,6 @@ function ValueContainer({
           lineHeight: '2rem',
           textAlign: 'center',
         }}
-        color="primary.contrastText"
       >
         {isLoading ? <Skeleton width={60} /> : value}
       </Typography>

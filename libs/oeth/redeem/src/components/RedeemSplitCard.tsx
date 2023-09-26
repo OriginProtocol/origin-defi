@@ -42,7 +42,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         <Mix />
         <Stack flex={1} direction="column">
           <Stack direction="row" alignItems="baseline" gap={1}>
-            <Typography color="primary.contrastText" variant="body1">
+            <Typography variant="body1">
               {isEstimateLoading ? (
                 <Skeleton width={100} />
               ) : (
@@ -68,7 +68,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             <Typography variant="body2">
               {intl.formatMessage({ defaultMessage: 'Gas:' })}
             </Typography>
-            <Typography color="primary.contrastText" variant="body2">
+            <Typography variant="body2">
               {isEstimateLoading || gasPriceLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -80,7 +80,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             <Typography variant="body2">
               {intl.formatMessage({ defaultMessage: 'Wait time:' })}
             </Typography>
-            <Typography color="primary.contrastText" variant="body2">
+            <Typography variant="body2">
               {isEstimateLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -108,7 +108,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           <Typography variant="body2">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography color="primary.contrastText" variant="body2">
+          <Typography variant="body2">
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -145,7 +145,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 justifyContent="flex-end"
                 spacing={2}
               >
-                <Typography color="primary.contrastText">
+                <Typography>
                   {isEstimateLoading ? (
                     <Skeleton width={80} />
                   ) : (

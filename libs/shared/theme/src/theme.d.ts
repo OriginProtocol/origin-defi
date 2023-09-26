@@ -9,15 +9,25 @@ declare module '@mui/material/styles' {
     gradientSuccess: string;
     gradientHover: string;
     gradientHoverActionButton: string;
+    gradientSelected: string;
   }
 
   interface TypeBackgroundOptions {
-    gradient1: string;
-    gradient2: string;
-    gradient3: string;
-    gradientSuccess: string;
-    gradientHover: string;
-    gradientHoverActionButton: string;
+    gradient1?: string;
+    gradient2?: string;
+    gradient3?: string;
+    gradientSuccess?: string;
+    gradientHover?: string;
+    gradientHoverActionButton?: string;
+    gradientSelected?: string;
+  }
+
+  interface TypeText {
+    subtle: string;
+  }
+
+  interface TypeTextOptions {
+    subtle?: string;
   }
 
   interface Shape {
@@ -25,7 +35,7 @@ declare module '@mui/material/styles' {
   }
 
   interface ShapeOptions {
-    cardBorderRadius: number;
+    cardBorderRadius?: number;
   }
 }
 

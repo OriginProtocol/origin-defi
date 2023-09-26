@@ -1,14 +1,6 @@
 import { forwardRef } from 'react';
 
-import {
-  alpha,
-  Box,
-  Button,
-  IconButton,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
 import {
   currencyFormat,
   formatAmount,
@@ -175,24 +167,25 @@ TokenInput.displayName = 'TokenInput';
 
 type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
 
-function TokenButton({ token, isDisabled, sx, ...rest }: TokenButtonProps) {
+function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
   return (
     <Stack
       direction="row"
-      alignItems="center"
       role="button"
       gap={1}
+      {...rest}
       sx={{
-        width: 'fit-content',
-        maxHeight: '2rem',
-        borderRadius: 20,
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        minWidth: 120,
+        minHeight: 32,
+        borderRadius: 25,
         fontSize: '1rem',
-        color: 'primary.contrastText',
         fontFamily: 'Inter',
-        paddingInlineStart: 0.25,
-        paddingInlineEnd: !isDisabled ? 1 : 2,
+        paddingLeft: 0.25,
+        paddingRight: isDisabled ? 2 : 1,
         border: '1px solid transparent',
-        paddingBlock: 0.25,
+        paddingY: 0.25,
         background: (theme) => alpha(theme.palette.common.white, 0.1),
         fontStyle: 'normal',
         cursor: 'pointer',
@@ -206,9 +199,8 @@ function TokenButton({ token, isDisabled, sx, ...rest }: TokenButtonProps) {
               0.4,
             )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
         },
-        ...sx,
+        ...rest?.sx,
       }}
-      {...rest}
     >
       <Box
         component="img"
@@ -216,20 +208,12 @@ function TokenButton({ token, isDisabled, sx, ...rest }: TokenButtonProps) {
         sx={{ width: '1.75rem', height: 'auto' }}
       />
       <Typography variant="inherit">{token.symbol}</Typography>
-
       {!isDisabled && (
-        <IconButton
-          sx={{
-            maxHeight: '1.375rem',
-            maxWidth: '1.375rem',
-            padding: 0,
-
-            backgroundColor: 'transparent',
-          }}
-          disableRipple
-        >
-          <Box component="img" src="/images/dropdown.svg" />
-        </IconButton>
+        <Box
+          component="img"
+          src="/images/dropdown.svg"
+          sx={{ width: 24, height: 24 }}
+        />
       )}
     </Stack>
   );

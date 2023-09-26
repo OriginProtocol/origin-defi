@@ -8,23 +8,17 @@ export const App = () => {
     <>
       <CssBaseline />
       <Stack>
-        <Topnav />
-        <Container
-          sx={{
-            mt: {
-              xs: 3,
-              md: 5,
-              paddingInline: {
-                xs: 2,
-                md: 0,
-              },
-            },
-          }}
-          maxWidth="sm"
-        >
-          <Stack mt={3}>
-            <Outlet />
-          </Stack>
+        <Topnav
+          sx={(theme) => ({
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: 1,
+            height: theme.mixins.toolbar.height,
+          })}
+        />
+        <Container sx={{ my: 3 }} maxWidth="sm">
+          <Outlet />
         </Container>
       </Stack>
     </>

@@ -79,9 +79,6 @@ export const TokenSelectModal = ({
                   onClose({}, 'backdropClick');
                   onSelectToken(token);
                 }}
-                sx={{
-                  color: 'primary.contrastText',
-                }}
               />
             ))}
           </MenuList>
@@ -150,7 +147,6 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         '&:hover': {
           background: (theme) => theme.palette.grey[700],
         },
-        color: 'primary.contrastText',
         ...rest?.sx,
       }}
     >
@@ -169,7 +165,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       </Stack>
 
       <Box sx={{ textAlign: 'right' }}>
-        <Typography color="primary.contrastText">
+        <Typography>
           {isBalanceLoading ? (
             <Skeleton width={30} />
           ) : (

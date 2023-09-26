@@ -1,6 +1,15 @@
-import { alpha, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { GasPopover } from '@origin/oeth/shared';
-import { Card, TokenInput } from '@origin/shared/components';
+import { TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
@@ -34,7 +43,7 @@ const tokenInputStyles = {
     fontSize: '1.5rem',
     fontWeight: 700,
     height: '1.5rem',
-    color: 'primary.contrastText',
+    color: 'text.primary',
     '&::placeholder': {
       color: 'text.secondary',
       opacity: 1,
@@ -77,65 +86,59 @@ function RedeemViewWrapped() {
     amountIn === 0n;
 
   return (
-    <Card
-      sxCardTitle={{
-        padding: 0,
-        paddingInline: { xs: 2, md: 3 },
-        paddingY: 1.438,
-      }}
-      sxCardContent={{ display: 'flex', flexDirection: 'column' }}
-      title={
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Redeem' })}
-          </Typography>
-          <GasPopover
-            slippage={slippage}
-            onSlippageChange={handleSlippageChange}
-          />
-        </Stack>
-      }
-    >
-      <Box
-        sx={{
-          borderRadius: 1,
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <TokenInput
-          amount={amountIn}
-          onAmountChange={handleAmountInChange}
-          balance={balOeth?.value}
-          isBalanceLoading={isBalOethLoading}
-          token={tokens.mainnet.OETH}
-          isTokenClickDisabled
-          tokenPriceUsd={prices?.OETH}
-          isPriceLoading={isPricesLoading}
-          isConnected={isConnected}
-          isAmountDisabled={amountInInputDisabled}
-          inputProps={{ sx: tokenInputStyles }}
+    <Card>
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Redeem' })}
+            </Typography>
+            <GasPopover
+              slippage={slippage}
+              onSlippageChange={handleSlippageChange}
+            />
+          </Stack>
+        }
+      />
+      <CardContent>
+        <Box
           sx={{
-            paddingBlock: 2.5,
-            paddingBlockStart: 2.625,
-            paddingInline: 2,
-            border: '1px solid',
-            borderColor: 'divider',
             borderRadius: 1,
-            backgroundColor: 'grey.900',
-            borderBottomColor: 'transparent',
-            '&:hover, &:focus-within': {
-              borderColor: 'transparent',
-            },
-            '&:hover': {
-              background: (theme) =>
-                `linear-gradient(${theme.palette.grey[900]}, ${
-                  theme.palette.grey[900]
-                }) padding-box,
+          }}
+        >
+          <TokenInput
+            amount={amountIn}
+            onAmountChange={handleAmountInChange}
+            balance={balOeth?.value}
+            isBalanceLoading={isBalOethLoading}
+            token={tokens.mainnet.OETH}
+            isTokenClickDisabled
+            tokenPriceUsd={prices?.OETH}
+            isPriceLoading={isPricesLoading}
+            isConnected={isConnected}
+            isAmountDisabled={amountInInputDisabled}
+            inputProps={{ sx: tokenInputStyles }}
+            sx={{
+              paddingBlock: 2.5,
+              paddingBlockStart: 2.625,
+              paddingInline: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              backgroundColor: 'grey.900',
+              borderBottomColor: 'transparent',
+              '&:hover, &:focus-within': {
+                borderColor: 'transparent',
+              },
+              '&:hover': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${
+                    theme.palette.grey[900]
+                  }) padding-box,
               linear-gradient(90deg, ${alpha(
                 theme.palette.primary.main,
                 0.4,
@@ -143,38 +146,39 @@ function RedeemViewWrapped() {
                 theme.palette.primary.dark,
                 0.4,
               )} 100%) border-box;`,
-            },
-            '&:focus-within': {
-              background: (theme) =>
-                `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
+              },
+              '&:focus-within': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
              linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
-            },
+              },
+            }}
+          />
+        </Box>
+        <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
+          <ArrowButton />
+        </Stack>
+        <RedeemRoute
+          sx={{
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'divider',
           }}
         />
-      </Box>
-      <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
-        <ArrowButton />
-      </Stack>
-      <RedeemRoute
-        sx={{
-          borderRadius: 1,
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      />
-      <ConnectedButton
-        variant="action"
-        fullWidth
-        disabled={redeemButtonDisabled}
-        onClick={handleRedeem}
-        sx={{ marginTop: 2 }}
-      >
-        {redeemButtonLoading ? (
-          <CircularProgress size={32} color="inherit" />
-        ) : (
-          redeemButtonLabel
-        )}
-      </ConnectedButton>
+        <ConnectedButton
+          variant="action"
+          fullWidth
+          disabled={redeemButtonDisabled}
+          onClick={handleRedeem}
+          sx={{ marginTop: 2 }}
+        >
+          {redeemButtonLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : (
+            redeemButtonLabel
+          )}
+        </ConnectedButton>
+      </CardContent>
     </Card>
   );
 }

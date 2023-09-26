@@ -54,10 +54,7 @@ export function GasPopover({
         data-testid="gas-popover-button"
         {...buttonProps}
       >
-        <img
-          src="https://app.oeth.com/images/settings-icon.svg"
-          alt="settings"
-        />
+        <img src="/images/settings-icon.svg" alt="settings" />
       </IconButton>
       <Popover
         open={!!anchorEl}
@@ -108,8 +105,6 @@ export function GasPopover({
                     paddingInlineEnd: 2,
                     '& .MuiInputBase-input': {
                       textAlign: 'right',
-                      color: 'primary.contrastText',
-
                       '&::placeholder': {
                         color: 'text.primary',
                         opacity: 1,
@@ -122,7 +117,6 @@ export function GasPopover({
                   sx={{
                     borderRadius: 20,
                     height: '38px',
-                    color: 'primary.contrastText',
                     bgColor:
                       'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
                     '&:disabled': {
@@ -176,7 +170,6 @@ export function GasPopover({
                   '& .MuiInputBase-input': {
                     textAlign: 'right',
                     borderColor: (theme) => theme.palette.secondary.main,
-                    color: 'primary.contrastText',
                     '&::placeholder': {
                       color: 'text.primary',
                       opacity: 1,
@@ -184,10 +177,7 @@ export function GasPopover({
                   },
                 }}
                 endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{ color: 'primary.contrastText', ml: 0 }}
-                  >
+                  <InputAdornment position="end" sx={{ ml: 0 }}>
                     {intl.formatMessage({ defaultMessage: 'GWEI' })}
                   </InputAdornment>
                 }

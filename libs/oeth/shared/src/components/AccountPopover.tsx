@@ -99,7 +99,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
           direction="row"
           sx={padding}
         >
-          <Typography color="primary.contrastText">
+          <Typography>
             {intl.formatMessage({ defaultMessage: 'Account' })}
           </Typography>
           <Button
@@ -125,13 +125,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
           </Button>
         </Stack>
         <Divider />
-        <Stack
-          alignItems="center"
-          gap={1.5}
-          sx={padding}
-          direction="row"
-          color="primary.contrastText"
-        >
+        <Stack alignItems="center" gap={1.5} sx={padding} direction="row">
           <Icon src={`/images/${connector?.id.toLowerCase()}-icon.svg`} />
           <MiddleTruncated>{address}</MiddleTruncated>
           <LinkIcon
@@ -173,13 +167,7 @@ function BalanceRow({
   ...rest
 }: BalanceRowProps) {
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      color="primary.contrastText"
-      gap={1}
-      {...rest}
-    >
+    <Stack direction="row" alignItems="center" gap={1} {...rest}>
       <Box component="img" src={token.icon} sx={{ width: 20 }} />
       <Typography minWidth={60}>
         {isBalanceLoading ? (

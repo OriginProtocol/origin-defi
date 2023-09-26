@@ -33,15 +33,15 @@ export function Topnav(props: BoxProps) {
   return (
     <Box
       component="nav"
+      {...props}
       sx={{
         display: 'grid',
-        borderBlockEnd: {
+        borderBottom: (theme) => ({
           xs: 'none',
-          md: '1px solid var(--mui-palette-background-paper)',
-        },
+          md: `1px solid ${theme.palette.background.paper}`,
+        }),
         gap: { xs: 1, md: 10 },
         alignItems: 'center',
-        backgroundColor: 'divider',
         paddingInline: {
           xs: 1.5,
           md: 3,
@@ -94,16 +94,6 @@ export function Topnav(props: BoxProps) {
             xs: 4,
             md: 0,
           },
-          backgroundColor: 'transparent',
-          minHeight: 0,
-          overflow: 'visible',
-          '& .MuiTabs-fixed': {
-            overflow: 'visible !important',
-          },
-          fontSize: {
-            xs: '0.875rem',
-            md: '1rem',
-          },
           '& .MuiTabs-flexContainer': {
             justifyContent: {
               xs: 'center',
@@ -117,50 +107,15 @@ export function Topnav(props: BoxProps) {
             key={route?.path ?? '/'}
             value={route?.path ?? '/'}
             label={intl.formatMessage(route.handle.label)}
-            sx={{
-              fontSize: {
-                xs: '0.875rem',
-                md: '1rem',
-              },
-              position: 'relative',
-              textTransform: 'none',
-              boxSizing: 'borderBox',
-              paddingInline: 2,
-              paddingBlock: { xs: 1, md: 3 },
-              lineHeight: '1.6875rem',
-              '&:hover:after': {
-                content: '""',
-                width: '100%',
-                height: '2px',
-                background: (theme) =>
-                  `linear-gradient(90deg, ${alpha(
-                    theme.palette.primary.main,
-                    0.4,
-                  )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%)`,
-                position: 'absolute',
-                left: 0,
-                bottom: 0,
-                zIndex: 2,
-              },
-            }}
           />
         ))}
       </Tabs>
-
       <Box
         sx={{
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
           gap: { xs: 1, md: 2 },
-          '& > a, & > *': {
-            fontSize: {
-              xs: '0.75rem',
-              md: '1rem',
-            },
-            color: (theme) => theme.palette.primary.contrastText,
-            lineHeight: (theme) => theme.spacing(3),
-          },
         }}
       >
         <MuiLink
@@ -169,18 +124,20 @@ export function Topnav(props: BoxProps) {
           noWrap
           sx={{
             borderRadius: 25,
-            paddingBlock: 0.75,
-            display: 'grid',
-            placeContent: 'center',
-            paddingInline: {
+            paddingX: {
               md: 3,
               xs: 2,
             },
-            fontFamily: 'Inter',
-            fontStyle: 'normal',
+            paddingY: {
+              md: 1,
+              xs: 0.75,
+            },
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
             fontWeight: 500,
-            minHeight: 36,
-            background: ` linear-gradient(0deg, ${alpha(
+            minHeight: { xs: 36, md: 44 },
+            background: `linear-gradient(0deg, ${alpha(
               theme.palette.common.white,
               0.05,
             )} 0%, ${alpha(theme.palette.common.white, 0.05)} 100%), ${
@@ -188,11 +145,7 @@ export function Topnav(props: BoxProps) {
             };`,
             '&:hover': {
               background: (theme) => theme.palette.background.paper,
-              backgroundImage: 'none',
             },
-            color: 'primary.contrastText',
-            boxSizing: 'border-box',
-            lineHeight: '1rem',
           }}
         >
           {isMd
@@ -204,6 +157,21 @@ export function Topnav(props: BoxProps) {
             if (isConnected) {
               setAccountModalAnchor(e.currentTarget);
             }
+          }}
+          sx={{
+            borderRadius: 25,
+            paddingX: {
+              md: 3,
+              xs: 2,
+            },
+            paddingY: {
+              md: 1,
+              xs: 0.75,
+            },
+            minWidth: 36,
+            maxWidth: { xs: 36, sm: 160, lg: 220 },
+            fontWeight: 500,
+            minHeight: { xs: 36, md: 44 },
           }}
         />
         <AccountPopover
