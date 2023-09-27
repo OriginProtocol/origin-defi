@@ -14,7 +14,7 @@ import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import * as colors from './colors';
-import { useFinancialStatementReportQuery } from './FinancialStatement.generated';
+import { useFinancialStatementQuery } from './FinancialStatement.generated';
 
 dayjs.extend(LocalizedFormat);
 
@@ -37,56 +37,76 @@ const getTotals = (data: Record<string, Record<string, number[]>>) => {
 };
 
 export const LiveFinancialStatement = () => {
+  const endOfToday = dayjs().endOf('day').toISOString();
   const [sevenDaysAgo] = useState(dayjs().subtract(7, 'days').toISOString());
-  const { isLoading, data } = useFinancialStatementReportQuery({
+  const { isLoading: fsIsLoading, data: fs } = useFinancialStatementQuery({
+    compareDate: endOfToday,
+  });
+  const { isLoading: fsCIsLoading, data: fsC } = useFinancialStatementQuery({
     compareDate: sevenDaysAgo,
   });
 
-  if (isLoading || !data) return null;
+  if (fsIsLoading || !fs) return null;
+  if (fsCIsLoading || !fsC) return null;
 
-  const fs = data.financialStatements[0];
-  const fsC = data.financialStatementsCompare[0];
-  const c = (n: string) => Number(formatEther(BigInt(n)));
+  const c = (n?: string) => Number(formatEther(BigInt(n ?? 0)));
 
-  if (!fs) return null;
-  if (!fsC) return null;
+  const blockNumber = Math.max(
+    fs.vaults[0]?.blockNumber,
+    fs.curveLps[0]?.blockNumber,
+    fs.morphoAaves[0]?.blockNumber,
+    fs.drippers[0]?.blockNumber,
+    fs.oeths[0]?.blockNumber,
+    fs.fraxStakings[0]?.blockNumber,
+  );
+  const timestamp = Math.max(
+    fs.vaults[0]?.timestamp,
+    fs.curveLps[0]?.timestamp,
+    fs.morphoAaves[0]?.timestamp,
+    fs.drippers[0]?.timestamp,
+    fs.oeths[0]?.timestamp,
+    fs.fraxStakings[0]?.timestamp,
+  );
 
   return (
     <FinancialStatement
       ethPrice={1650}
       lastUpdated={{
-        blockNumber: fs.blockNumber,
-        timestamp: Date.parse(fs.timestamp),
+        blockNumber,
+        timestamp,
       }}
       columns={[
-        dayjs(fsC.timestamp).format('lll'),
-        dayjs(fs.timestamp).format('lll'),
+        dayjs(endOfToday).format('lll'),
+        dayjs(sevenDaysAgo).format('lll'),
       ]}
       data={{
         assets: {
           Vault: {
-            WETH: [fsC.vault.weth, fs.vault.weth].map(c),
-            stETH: [fsC.vault.stETH, fs.vault.stETH].map(c),
-            rETH: [fsC.vault.rETH, fs.vault.rETH].map(c),
-            frxETH: [fsC.vault.frxETH, fs.vault.frxETH].map(c),
+            WETH: [fsC.vaults[0]?.weth, fs.vaults[0]?.weth].map(c),
+            stETH: [fsC.vaults[0]?.stETH, fs.vaults[0]?.stETH].map(c),
+            rETH: [fsC.vaults[0]?.rETH, fs.vaults[0]?.rETH].map(c),
+            frxETH: [fsC.vaults[0]?.frxETH, fs.vaults[0]?.frxETH].map(c),
           },
           Curve: {
-            ETH: [fsC.curveLP.eth, fs.curveLP.eth].map(c),
-            OETH: [fsC.curveLP.oeth, fs.curveLP.oeth].map(c),
+            ETH: [fsC.curveLps[0]?.eth, fs.curveLps[0]?.eth].map(c),
+            OETH: [fsC.curveLps[0]?.oeth, fs.curveLps[0]?.oeth].map(c),
           },
           'Frax Staking': {
-            frxETH: [fsC.fraxStaking.frxETH, fs.fraxStaking.frxETH].map(c),
+            frxETH: [
+              fsC.fraxStakings[0]?.frxETH,
+              fs.fraxStakings[0]?.frxETH,
+            ].map(c),
           },
           'Morpho Aave': {
-            WETH: [fsC.morphoAave.weth, fs.morphoAave.weth].map(c),
+            WETH: [fsC.morphoAaves[0]?.weth, fs.morphoAaves[0]?.weth].map(c),
           },
           Dripper: {
-            WETH: [fsC.dripper.weth, fs.dripper.weth].map(c),
+            WETH: [fsC.drippers[0]?.weth, fs.drippers[0]?.weth].map(c),
           },
         },
         liabilities: {
           'Token Supply': {
-            OETH: [fsC.oeth.totalSupply, fs.oeth.totalSupply].map(c),
+            OETH: [fsC.oeths[0]?.totalSupply, fs.oeths[0]?.totalSupply].map(c),
           },
         },
       }}

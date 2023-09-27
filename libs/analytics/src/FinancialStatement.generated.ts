@@ -3,161 +3,130 @@ import { useQuery } from '@tanstack/react-query';
 
 import type * as Types from '@origin/oeth/shared';
 import type { UseQueryOptions } from '@tanstack/react-query';
-export type FinancialStatementReportQueryVariables = Types.Exact<{
+export type FinancialStatementQueryVariables = Types.Exact<{
   compareDate?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
 }>;
 
-export type FinancialStatementReportQuery = {
+export type FinancialStatementQuery = {
   __typename?: 'Query';
-  financialStatements: Array<{
-    __typename?: 'FinancialStatement';
+  oeths: Array<{
+    __typename?: 'OETH';
     blockNumber: number;
     timestamp: any;
-    oeth: { __typename?: 'OETH'; totalSupply: any };
-    curveLP: {
-      __typename?: 'CurveLP';
-      eth: any;
-      ethOwned: any;
-      oeth: any;
-      oethOwned: any;
-      totalSupply: any;
-      totalSupplyOwned: any;
-    };
-    dripper: { __typename?: 'Dripper'; weth: any };
-    fraxStaking: { __typename?: 'FraxStaking'; frxETH: any };
-    morphoAave: { __typename?: 'MorphoAave'; weth: any };
-    vault: {
-      __typename?: 'Vault';
-      weth: any;
-      rETH: any;
-      stETH: any;
-      frxETH: any;
-    };
+    totalSupply: any;
   }>;
-  financialStatementsCompare: Array<{
-    __typename?: 'FinancialStatement';
+  curveLps: Array<{
+    __typename?: 'CurveLP';
     blockNumber: number;
     timestamp: any;
-    oeth: { __typename?: 'OETH'; totalSupply: any };
-    curveLP: {
-      __typename?: 'CurveLP';
-      eth: any;
-      ethOwned: any;
-      oeth: any;
-      oethOwned: any;
-      totalSupply: any;
-      totalSupplyOwned: any;
-    };
-    dripper: { __typename?: 'Dripper'; weth: any };
-    fraxStaking: { __typename?: 'FraxStaking'; frxETH: any };
-    morphoAave: { __typename?: 'MorphoAave'; weth: any };
-    vault: {
-      __typename?: 'Vault';
-      weth: any;
-      rETH: any;
-      stETH: any;
-      frxETH: any;
-    };
+    eth: any;
+    ethOwned: any;
+    oeth: any;
+    oethOwned: any;
+    totalSupply: any;
+    totalSupplyOwned: any;
+  }>;
+  morphoAaves: Array<{
+    __typename?: 'MorphoAave';
+    blockNumber: number;
+    timestamp: any;
+    weth: any;
+  }>;
+  fraxStakings: Array<{
+    __typename?: 'FraxStaking';
+    blockNumber: number;
+    timestamp: any;
+    frxETH: any;
+  }>;
+  drippers: Array<{
+    __typename?: 'Dripper';
+    blockNumber: number;
+    timestamp: any;
+    weth: any;
+  }>;
+  vaults: Array<{
+    __typename?: 'Vault';
+    blockNumber: number;
+    timestamp: any;
+    weth: any;
+    rETH: any;
+    stETH: any;
+    frxETH: any;
   }>;
 };
 
-export const FinancialStatementReportDocument = `
-    query FinancialStatementReport($compareDate: DateTime) {
-  financialStatements(orderBy: id_DESC, limit: 1) {
+export const FinancialStatementDocument = `
+    query FinancialStatement($compareDate: DateTime) {
+  oeths(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
     blockNumber
     timestamp
-    oeth {
-      totalSupply
-    }
-    curveLP {
-      eth
-      ethOwned
-      oeth
-      oethOwned
-      totalSupply
-      totalSupplyOwned
-    }
-    dripper {
-      weth
-    }
-    fraxStaking {
-      frxETH
-    }
-    morphoAave {
-      weth
-    }
-    vault {
-      weth
-      rETH
-      stETH
-      frxETH
-    }
+    totalSupply
   }
-  financialStatementsCompare: financialStatements(
-    orderBy: id_DESC
-    limit: 1
-    where: {timestamp_lt: $compareDate}
-  ) {
+  curveLps(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
     blockNumber
     timestamp
-    oeth {
-      totalSupply
-    }
-    curveLP {
-      eth
-      ethOwned
-      oeth
-      oethOwned
-      totalSupply
-      totalSupplyOwned
-    }
-    dripper {
-      weth
-    }
-    fraxStaking {
-      frxETH
-    }
-    morphoAave {
-      weth
-    }
-    vault {
-      weth
-      rETH
-      stETH
-      frxETH
-    }
+    eth
+    ethOwned
+    oeth
+    oethOwned
+    totalSupply
+    totalSupplyOwned
+  }
+  morphoAaves(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+  }
+  fraxStakings(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    frxETH
+  }
+  drippers(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+  }
+  vaults(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+    rETH
+    stETH
+    frxETH
   }
 }
     `;
-export const useFinancialStatementReportQuery = <
-  TData = FinancialStatementReportQuery,
+export const useFinancialStatementQuery = <
+  TData = FinancialStatementQuery,
   TError = unknown,
 >(
-  variables?: FinancialStatementReportQueryVariables,
-  options?: UseQueryOptions<FinancialStatementReportQuery, TError, TData>,
+  variables?: FinancialStatementQueryVariables,
+  options?: UseQueryOptions<FinancialStatementQuery, TError, TData>,
 ) =>
-  useQuery<FinancialStatementReportQuery, TError, TData>(
+  useQuery<FinancialStatementQuery, TError, TData>(
     variables === undefined
-      ? ['FinancialStatementReport']
-      : ['FinancialStatementReport', variables],
-    graphqlClient<
-      FinancialStatementReportQuery,
-      FinancialStatementReportQueryVariables
-    >(FinancialStatementReportDocument, variables),
+      ? ['FinancialStatement']
+      : ['FinancialStatement', variables],
+    graphqlClient<FinancialStatementQuery, FinancialStatementQueryVariables>(
+      FinancialStatementDocument,
+      variables,
+    ),
     options,
   );
 
-useFinancialStatementReportQuery.getKey = (
-  variables?: FinancialStatementReportQueryVariables,
+useFinancialStatementQuery.getKey = (
+  variables?: FinancialStatementQueryVariables,
 ) =>
   variables === undefined
-    ? ['FinancialStatementReport']
-    : ['FinancialStatementReport', variables];
-useFinancialStatementReportQuery.fetcher = (
-  variables?: FinancialStatementReportQueryVariables,
+    ? ['FinancialStatement']
+    : ['FinancialStatement', variables];
+useFinancialStatementQuery.fetcher = (
+  variables?: FinancialStatementQueryVariables,
   options?: RequestInit['headers'],
 ) =>
-  graphqlClient<
-    FinancialStatementReportQuery,
-    FinancialStatementReportQueryVariables
-  >(FinancialStatementReportDocument, variables, options);
+  graphqlClient<FinancialStatementQuery, FinancialStatementQueryVariables>(
+    FinancialStatementDocument,
+    variables,
+    options,
+  );

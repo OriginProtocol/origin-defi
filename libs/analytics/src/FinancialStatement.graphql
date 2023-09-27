@@ -1,62 +1,40 @@
-query FinancialStatementReport($compareDate: DateTime) {
-  financialStatements(orderBy: id_DESC, limit: 1) {
+query FinancialStatement($compareDate: DateTime) {
+  oeths(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
     blockNumber
     timestamp
-    oeth {
-      totalSupply
-    }
-    curveLP {
-      eth
-      ethOwned
-      oeth
-      oethOwned
-      totalSupply
-      totalSupplyOwned
-    }
-    dripper {
-      weth
-    }
-    fraxStaking {
-      frxETH
-    }
-    morphoAave {
-      weth
-    }
-    vault {
-      weth
-      rETH
-      stETH
-      frxETH
-    }
+    totalSupply
   }
-  financialStatementsCompare: financialStatements(orderBy: id_DESC, limit: 1, where: {timestamp_lt: $compareDate}) {
+  curveLps(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
     blockNumber
     timestamp
-    oeth {
-      totalSupply
-    }
-    curveLP {
-      eth
-      ethOwned
-      oeth
-      oethOwned
-      totalSupply
-      totalSupplyOwned
-    }
-    dripper {
-      weth
-    }
-    fraxStaking {
-      frxETH
-    }
-    morphoAave {
-      weth
-    }
-    vault {
-      weth
-      rETH
-      stETH
-      frxETH
-    }
+    eth
+    ethOwned
+    oeth
+    oethOwned
+    totalSupply
+    totalSupplyOwned
+  }
+  morphoAaves(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+  }
+  fraxStakings(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    frxETH
+  }
+  drippers(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+  }
+  vaults(limit: 1, orderBy: id_DESC, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    weth
+    rETH
+    stETH
+    frxETH
   }
 }
