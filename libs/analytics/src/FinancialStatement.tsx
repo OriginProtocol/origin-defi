@@ -13,6 +13,7 @@ import {
 import { useChainlinkEthUsd } from '@origin/shared/providers';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
+import RelativeTime from 'dayjs/plugin/relativeTime';
 import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
@@ -20,12 +21,16 @@ import * as colors from './colors';
 import { useFinancialStatementQuery } from './FinancialStatement.generated';
 
 dayjs.extend(LocalizedFormat);
+dayjs.extend(RelativeTime);
 
 const calculateChange = (from: number, to: number) => {
   if (from === 0 && to === 0) return 0;
   const change = -(1 - to / from);
   const mod = to < 0 ? -1 : 1;
-  return (Math[change > 0 ? 'floor' : 'ceil'](change * 10000) / 100) * mod;
+  const result =
+    (Math[change > 0 ? 'floor' : 'ceil'](change * 10000) / 100) * mod;
+  if (result.toFixed(2) === '0.00') return 0; // Weed out tiny rounding issues
+  return result;
 };
 
 const getTotals = (data: Record<string, Record<string, number[]>>) => {
@@ -80,10 +85,7 @@ export const LiveFinancialStatement = () => {
         blockNumber,
         timestamp,
       }}
-      columns={[
-        dayjs(endOfToday).format('lll'),
-        dayjs(sevenDaysAgo).format('lll'),
-      ]}
+      columns={[dayjs(sevenDaysAgo).fromNow(), dayjs(endOfToday).format('ll')]}
       data={{
         assets: {
           Vault: {
@@ -368,6 +370,7 @@ const Total = (props: { title: string; totals: number[] }) => {
     <Stack
       direction={'row'}
       justifyContent={'space-between'}
+      alignItems={'center'}
       p={{ xs: 1, sm: 2, md: 4 }}
       color={(theme) => theme.palette.primary.contrastText}
       sx={{ backgroundColor: (theme) => theme.palette.background.paperFooter }}
