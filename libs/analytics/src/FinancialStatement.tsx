@@ -367,6 +367,7 @@ const Total = (props: { title: string; totals: number[] }) => {
   return (
     <Stack
       direction={'row'}
+      justifyContent={'space-between'}
       p={{ xs: 1, sm: 2, md: 4 }}
       color={(theme) => theme.palette.primary.contrastText}
       sx={{ backgroundColor: (theme) => theme.palette.background.paperFooter }}
