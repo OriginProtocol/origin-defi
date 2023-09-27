@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Box,
   Paper,
@@ -7,9 +9,14 @@ import {
   useTheme,
 } from '@mui/material';
 import dayjs from 'dayjs';
+import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { useIntl } from 'react-intl';
+import { formatEther } from 'viem';
 
 import * as colors from './colors';
+import { useFinancialStatementReportQuery } from './FinancialStatement.generated';
+
+dayjs.extend(LocalizedFormat);
 
 const calculateChange = (from: number, to: number) => {
   if (from === 0 && to === 0) return 0;
@@ -27,6 +34,64 @@ const getTotals = (data: Record<string, Record<string, number[]>>) => {
     }
     return totals;
   }, [] as number[]);
+};
+
+export const LiveFinancialStatement = () => {
+  const [sevenDaysAgo] = useState(dayjs().subtract(7, 'days').toISOString());
+  const { isLoading, data } = useFinancialStatementReportQuery({
+    compareDate: sevenDaysAgo,
+  });
+
+  if (isLoading || !data) return null;
+
+  const fs = data.financialStatements[0];
+  const fs1W = data.financialStatements1W[0];
+  const c = (n: string) => Number(formatEther(BigInt(n)));
+
+  if (!fs) return null;
+  if (!fs1W) return null;
+
+  return (
+    <FinancialStatement
+      ethPrice={1650}
+      lastUpdated={{
+        blockNumber: fs.blockNumber,
+        timestamp: Date.parse(fs.timestamp),
+      }}
+      columns={[
+        dayjs(fs1W.timestamp).format('lll'),
+        dayjs(fs.timestamp).format('lll'),
+      ]}
+      data={{
+        assets: {
+          Vault: {
+            WETH: [fs1W.vault.weth, fs.vault.weth].map(c),
+            stETH: [fs1W.vault.stETH, fs.vault.stETH].map(c),
+            rETH: [fs1W.vault.rETH, fs.vault.rETH].map(c),
+            frxETH: [fs1W.vault.frxETH, fs.vault.frxETH].map(c),
+          },
+          Curve: {
+            ETH: [fs1W.curveLP.eth, fs.curveLP.eth].map(c),
+            OETH: [fs1W.curveLP.oeth, fs.curveLP.oeth].map(c),
+          },
+          'Frax Staking': {
+            frxETH: [fs1W.fraxStaking.frxETH, fs.fraxStaking.frxETH].map(c),
+          },
+          'Morpho Aave': {
+            WETH: [fs1W.morphoAave.weth, fs.morphoAave.weth].map(c),
+          },
+          Dripper: {
+            WETH: [fs1W.dripper.weth, fs.dripper.weth].map(c),
+          },
+        },
+        liabilities: {
+          'Token Supply': {
+            OETH: [fs1W.oeth.totalSupply, fs.oeth.totalSupply].map(c),
+          },
+        },
+      }}
+    />
+  );
 };
 
 export const FinancialStatement = (props: {
@@ -102,7 +167,9 @@ const Header = (props: { columns: string[] }) => {
         alignItems={'center'}
         justifyContent={'space-between'}
         color={(theme) => theme.palette.primary.contrastText}
-        sx={{ backgroundColor: (theme) => theme.palette.grey[800] }}
+        sx={{
+          backgroundColor: (theme) => theme.palette.background.paperHeader,
+        }}
         fontSize={{ xs: '.875rem', sm: '1.125rem' }}
         px={{ xs: 1, sm: 2, md: 4 }}
         py={{ xs: 2, sm: 3, md: 4 }}
@@ -145,6 +212,22 @@ const Table = (props: {
       }}
     >
       <Stack>
+        {/* Header */}
+        <Box
+          pt={{ xs: 1, sm: 2, md: 4 }}
+          px={{ xs: 1, sm: 2, md: 4 }}
+          pb={{ xs: 0.5, sm: 1, md: 2 }}
+          color={(theme) => theme.palette.primary.contrastText}
+          fontSize={{ xs: '.875rem', sm: '1rem' }}
+          sx={{
+            borderBottomStyle: 'solid',
+            borderBottomWidth: 1,
+            borderBottomColor: (theme) => theme.palette.grey['700'],
+          }}
+        >
+          {props.title}
+        </Box>
+
         {/* Body */}
         <Stack>
           {Object.entries(props.data).map(([title, data]) => (
@@ -166,7 +249,7 @@ const Total = (props: { title: string; totals: number[] }) => {
       direction={'row'}
       p={{ xs: 1, sm: 2, md: 4 }}
       color={(theme) => theme.palette.primary.contrastText}
-      sx={{ backgroundColor: (theme) => theme.palette.grey[800] }}
+      sx={{ backgroundColor: (theme) => theme.palette.background.paperFooter }}
     >
       <Box width={`${(100 / columnWeight) * 1.5}%`}>
         {props.title.toUpperCase()}
@@ -246,7 +329,7 @@ export const DataColumn = ({
         color={(theme) => theme.palette.text.primary}
         pr={{ xs: 0.1, sm: 0.15, md: 0.2 }}
       >
-        {'$'}
+        {'Ξ'}
       </Box>
       {intl.formatNumber(value, {
         notation: isMobile ? 'compact' : 'standard',
@@ -288,7 +371,7 @@ export const ChangeColumn = ({
         isFinite(change) &&
         `${intl.formatNumber(change, {
           notation: isMobile ? 'compact' : 'standard',
-          maximumFractionDigits: isMobile ? 1 : 0,
+          maximumFractionDigits: isMobile ? 1 : 2,
         })}%`}
     </Box>
   );

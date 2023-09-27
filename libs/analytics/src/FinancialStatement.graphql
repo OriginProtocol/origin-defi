@@ -1,0 +1,62 @@
+query FinancialStatementReport($compareDate: DateTime) {
+  financialStatements(orderBy: id_DESC, limit: 1) {
+    blockNumber
+    timestamp
+    oeth {
+      totalSupply
+    }
+    curveLP {
+      eth
+      ethOwned
+      oeth
+      oethOwned
+      totalSupply
+      totalSupplyOwned
+    }
+    dripper {
+      weth
+    }
+    fraxStaking {
+      frxETH
+    }
+    morphoAave {
+      weth
+    }
+    vault {
+      weth
+      rETH
+      stETH
+      frxETH
+    }
+  }
+  financialStatements1W: financialStatements(orderBy: id_DESC, limit: 1, where: {timestamp_lt: $compareDate}) {
+    blockNumber
+    timestamp
+    oeth {
+      totalSupply
+    }
+    curveLP {
+      eth
+      ethOwned
+      oeth
+      oethOwned
+      totalSupply
+      totalSupplyOwned
+    }
+    dripper {
+      weth
+    }
+    fraxStaking {
+      frxETH
+    }
+    morphoAave {
+      weth
+    }
+    vault {
+      weth
+      rETH
+      stETH
+      frxETH
+    }
+  }
+}

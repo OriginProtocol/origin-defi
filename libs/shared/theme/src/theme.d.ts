@@ -3,6 +3,9 @@ import '@mui/material/Button';
 
 declare module '@mui/material/styles' {
   interface TypeBackground {
+    paper: string;
+    paperHeader: string;
+    paperFooter: string;
     gradient1: string;
     gradient2: string;
     gradient3: string;

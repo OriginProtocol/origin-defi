@@ -1,6 +1,11 @@
 import { faker } from '@faker-js/faker';
+import { queryClient } from '@origin/oeth/shared';
+import { QueryClientProvider } from '@tanstack/react-query';
 
-import { FinancialStatement } from './FinancialStatement';
+import {
+  FinancialStatement,
+  LiveFinancialStatement,
+} from './FinancialStatement';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
@@ -67,3 +72,11 @@ const meta: Meta<typeof FinancialStatement> = {
 export default meta;
 
 export const Default: StoryObj<typeof FinancialStatement> = {};
+
+export const Live = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <LiveFinancialStatement />
+    </QueryClientProvider>
+  );
+};

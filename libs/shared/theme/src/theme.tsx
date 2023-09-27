@@ -14,8 +14,6 @@ export const theme = extendTheme({
           dark: '#0274f1',
           light: '#b361e6',
           contrastText: '#FAFBFB',
-          '400': '#CF75D5', // Often used in charts.
-          '500': '#FEDBA8', // Often used in charts.
         },
         secondary: {
           main: '#0074F0',
@@ -23,6 +21,8 @@ export const theme = extendTheme({
         divider: '#101113',
         background: {
           paper: '#1E1F25',
+          paperHeader: '#23242A',
+          paperFooter: '#23242A',
           default: '#101113',
           // TODO cleanup these gradients after theme is properly configured -> gradients can be generated based on css vars
           gradient1: 'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',

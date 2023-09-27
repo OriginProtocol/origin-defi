@@ -19,7 +19,7 @@ query HistoryTable($address: String!, $offset: Int!) {
 query HistoryTableWithFilters(
   $address: String!
   $offset: Int!
-  $filters: [String!]
+  $filters: [HistoryType!]
 ) {
   addressById(id: $address) {
     balance

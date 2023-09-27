@@ -12,18 +12,19 @@ export type HistoryTableQuery = {
   __typename?: 'Query';
   addressById?: {
     __typename?: 'Address';
-    balance: number;
-    earned: number;
+    balance: any;
+    earned: any;
     isContract: boolean;
-    rebasingOption: string;
+    rebasingOption: Types.RebasingOption;
+    credits: any;
     lastUpdated: any;
     history: Array<{
       __typename?: 'History';
-      type: string;
-      value: number;
+      type: Types.HistoryType;
+      value: any;
       txHash: string;
       timestamp: any;
-      balance: number;
+      balance: any;
     }>;
   } | null;
 };
@@ -31,28 +32,25 @@ export type HistoryTableQuery = {
 export type HistoryTableWithFiltersQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
   offset: Types.Scalars['Int']['input'];
-  filters?: Types.InputMaybe<
-    Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']
-  >;
+  filters?: Types.InputMaybe<Array<Types.HistoryType> | Types.HistoryType>;
 }>;
 
 export type HistoryTableWithFiltersQuery = {
   __typename?: 'Query';
   addressById?: {
     __typename?: 'Address';
-    balance: number;
-    earned: number;
+    balance: any;
+    earned: any;
     isContract: boolean;
-    rebasingOption: string;
-    credits: any;
+    rebasingOption: Types.RebasingOption;
     lastUpdated: any;
     history: Array<{
       __typename?: 'History';
-      type: string;
-      value: number;
+      type: Types.HistoryType;
+      value: any;
       txHash: string;
       timestamp: any;
-      balance: number;
+      balance: any;
     }>;
   } | null;
 };
@@ -71,6 +69,7 @@ export const HistoryTableDocument = `
     earned
     isContract
     rebasingOption
+    credits
     lastUpdated
     history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
       type
@@ -112,13 +111,12 @@ useHistoryTableQuery.fetcher = (
     options,
   );
 export const HistoryTableWithFiltersDocument = `
-    query HistoryTableWithFilters($address: String!, $offset: Int!, $filters: [String!]) {
+    query HistoryTableWithFilters($address: String!, $offset: Int!, $filters: [HistoryType!]) {
   addressById(id: $address) {
     balance
     earned
     isContract
     rebasingOption
-    credits
     lastUpdated
     history(
       limit: 20
