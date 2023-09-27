@@ -12,6 +12,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { CheckboxIcon, EmptyCheckbox } from '@origin/shared/components';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
@@ -52,6 +53,11 @@ export function HistoryFilters({ filters, onChange }: Props) {
       }
     });
   };
+
+  const applyDisabled =
+    filters.length === selected.length &&
+    filters.every((item) => selected.includes(item));
+  const clearDisabled = isNilOrEmpty(selected);
 
   return (
     <>
@@ -143,13 +149,17 @@ export function HistoryFilters({ filters, onChange }: Props) {
         >
           <Button
             variant="text"
+            disabled={clearDisabled}
             sx={styles}
-            onClick={() => setSelectedTypes([])}
+            onClick={() => {
+              setSelectedTypes([]);
+            }}
           >
             {intl.formatMessage({ defaultMessage: 'Clear all' })}
           </Button>
           <Button
             variant="action"
+            disabled={applyDisabled}
             sx={{
               paddingInline: 2,
               paddingBlock: 0.5,
