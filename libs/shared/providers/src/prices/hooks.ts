@@ -64,3 +64,21 @@ export const usePrices = (
     ...options,
   });
 };
+
+export const useChainlinkEthUsd = () => {
+  return useQuery({
+    queryKey: ['useChainlinkUsd'],
+    queryFn: async () => {
+      const usd = await readContract({
+        address: contracts.mainnet.ChainlinkOracle.address,
+        abi: contracts.mainnet.ChainlinkOracle.abi,
+        functionName: 'ethUsdPrice',
+      });
+
+      const floatUsd = +formatUnits(usd, 6);
+      const gweiUsd = floatUsd * 1e-9;
+
+      return { usd, floatUsd, gweiUsd };
+    },
+  });
+};

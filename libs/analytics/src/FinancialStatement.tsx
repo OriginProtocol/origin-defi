@@ -1,13 +1,16 @@
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
 import {
+  alpha,
   Box,
+  Button,
   Paper,
   Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useChainlinkEthUsd } from '@origin/shared/providers';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import { useIntl } from 'react-intl';
@@ -45,9 +48,11 @@ export const LiveFinancialStatement = () => {
   const { isLoading: fsCIsLoading, data: fsC } = useFinancialStatementQuery({
     compareDate: sevenDaysAgo,
   });
+  const { isLoading: ethPriceIsLoading, data: ethPrice } = useChainlinkEthUsd();
 
   if (fsIsLoading || !fs) return null;
   if (fsCIsLoading || !fsC) return null;
+  if (ethPriceIsLoading || !ethPrice) return null;
 
   const c = (n?: string) => Number(formatEther(BigInt(n ?? 0)));
 
@@ -60,17 +65,17 @@ export const LiveFinancialStatement = () => {
     fs.fraxStakings[0]?.blockNumber,
   );
   const timestamp = Math.max(
-    fs.vaults[0]?.timestamp,
-    fs.curveLps[0]?.timestamp,
-    fs.morphoAaves[0]?.timestamp,
-    fs.drippers[0]?.timestamp,
-    fs.oeths[0]?.timestamp,
-    fs.fraxStakings[0]?.timestamp,
+    Date.parse(fs.vaults[0]?.timestamp),
+    Date.parse(fs.curveLps[0]?.timestamp),
+    Date.parse(fs.morphoAaves[0]?.timestamp),
+    Date.parse(fs.drippers[0]?.timestamp),
+    Date.parse(fs.oeths[0]?.timestamp),
+    Date.parse(fs.fraxStakings[0]?.timestamp),
   );
 
   return (
     <FinancialStatement
-      ethPrice={1650}
+      ethPrice={ethPrice?.floatUsd}
       lastUpdated={{
         blockNumber,
         timestamp,
@@ -114,8 +119,13 @@ export const LiveFinancialStatement = () => {
   );
 };
 
+const FinancialStatementContext = createContext({
+  ethPrice: undefined as number | undefined,
+  showUsdPrice: false,
+});
+
 export const FinancialStatement = (props: {
-  ethPrice: number;
+  ethPrice?: number;
   lastUpdated: {
     blockNumber: number;
     timestamp: number;
@@ -126,48 +136,138 @@ export const FinancialStatement = (props: {
     Record<string, Record<string, number[]>>
   >;
 }) => {
+  const intl = useIntl();
   const assetTotals = getTotals(props.data['assets']);
   const liabilityTotals = getTotals(props.data['liabilities']);
+  const [showUsdPrice, setShowUsdPrice] = useState(!!props.ethPrice);
 
   return (
-    <Stack
-      gap={2}
-      color={(theme) => theme.palette.text.primary}
-      fontFamily={'Inter'}
-      fontSize={{ xs: '.7rem', sm: '.875rem' }}
+    <FinancialStatementContext.Provider
+      value={{
+        ethPrice: props.ethPrice,
+        showUsdPrice,
+      }}
     >
-      <Header columns={props.columns} />
-      <Table
-        title={'Assets'}
-        data={props.data['assets']}
-        totals={assetTotals}
-      />
-      <Table
-        title={'Liabilities'}
-        data={props.data['liabilities']}
-        totals={liabilityTotals}
-      />
-
-      <Paper sx={{ borderRadius: { xs: 1, sm: 2, md: 3 }, overflow: 'hidden' }}>
-        <Total
-          title={'PROTOCOL NET VALUE'}
-          totals={assetTotals.map((val, index) => val - liabilityTotals[index])}
+      <Stack
+        gap={2}
+        color={(theme) => theme.palette.text.primary}
+        fontFamily={'Inter'}
+        fontSize={{ xs: '.7rem', sm: '.875rem' }}
+      >
+        <Stack direction={'row'} justifyContent={'end'}>
+          <Stack
+            direction={'row'}
+            gap={{ xs: 0.25, sm: 0.5, md: 1 }}
+            sx={{
+              height: { xs: 30, sm: 35, md: 40 },
+              borderRadius: 999,
+              overflow: 'hidden',
+              backgroundColor: (theme) => theme.palette.background.paper,
+            }}
+          >
+            <Button
+              sx={{
+                borderRadius: 999,
+                p: '1px',
+                background: !showUsdPrice
+                  ? (theme) => theme.palette.background.gradient3
+                  : 'transparent',
+              }}
+              onClick={() => setShowUsdPrice(false)}
+            >
+              <Box
+                sx={{
+                  borderRadius: 999,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: (theme) =>
+                    !showUsdPrice
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.text.primary,
+                  background: (theme) =>
+                    alpha(theme.palette.background.paper, 0.85),
+                }}
+              >
+                ETH
+              </Box>
+            </Button>
+            <Button
+              sx={{
+                borderRadius: 999,
+                p: '1px',
+                background: showUsdPrice
+                  ? (theme) => theme.palette.background.gradient3
+                  : 'transparent',
+              }}
+              onClick={() => setShowUsdPrice(true)}
+            >
+              <Box
+                sx={{
+                  borderRadius: 999,
+                  width: '100%',
+                  height: '100%',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  color: (theme) =>
+                    showUsdPrice
+                      ? theme.palette.primary.contrastText
+                      : theme.palette.text.primary,
+                  background: (theme) =>
+                    alpha(theme.palette.background.paper, 0.85),
+                }}
+              >
+                USD
+              </Box>
+            </Button>
+          </Stack>
+        </Stack>
+        <Header columns={props.columns} />
+        <Table
+          title={'Assets'}
+          data={props.data['assets']}
+          totals={assetTotals}
         />
-      </Paper>
-      <Box mt={{ xs: 1, sm: 2, md: 3 }}>
-        <Typography>
-          {`Last updated ${dayjs(props.lastUpdated.timestamp).format(
-            'll',
-          )} at `}
-          {`${dayjs(props.lastUpdated.timestamp).format('LT')}, block #${
-            props.lastUpdated.blockNumber
-          }`}
-        </Typography>
-        <Typography>
-          {`Using ETH price of $${props.ethPrice} from Chainlink`}
-        </Typography>
-      </Box>
-    </Stack>
+        <Table
+          title={'Liabilities'}
+          data={props.data['liabilities']}
+          totals={liabilityTotals}
+        />
+
+        <Paper
+          sx={{ borderRadius: { xs: 1, sm: 2, md: 3 }, overflow: 'hidden' }}
+        >
+          <Total
+            title={'PROTOCOL NET VALUE'}
+            totals={assetTotals.map(
+              (val, index) => val - liabilityTotals[index],
+            )}
+          />
+        </Paper>
+        <Box
+          mt={{ xs: 1, sm: 2, md: 3 }}
+          color={(theme) => theme.palette.primary.contrastText}
+        >
+          <Typography>
+            {`Last updated ${dayjs(props.lastUpdated.timestamp).format(
+              'll',
+            )} at `}
+            {`${dayjs(props.lastUpdated.timestamp).format('LT')}, block #${
+              props.lastUpdated.blockNumber
+            }`}
+          </Typography>
+          <Typography>
+            {props.ethPrice &&
+              `Using ETH price of $${intl.formatNumber(props.ethPrice, {
+                maximumFractionDigits: 2,
+              })} from Chainlink`}
+          </Typography>
+        </Box>
+      </Stack>
+    </FinancialStatementContext.Provider>
   );
 };
 
@@ -195,7 +295,7 @@ const Header = (props: { columns: string[] }) => {
         py={{ xs: 2, sm: 3, md: 4 }}
       >
         <Box width={`${(100 / columnWeight) * 1.5}%`} />
-        {props.columns.map((column, index) => (
+        {props.columns.map((column) => (
           <Box
             key={column}
             width={`${100 / columnWeight}%`}
@@ -336,6 +436,7 @@ export const DataColumn = ({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const intl = useIntl();
+  const { showUsdPrice, ethPrice } = useContext(FinancialStatementContext);
   return (
     <Box
       width={`${100 / columnWeight}%`}
@@ -349,9 +450,9 @@ export const DataColumn = ({
         color={(theme) => theme.palette.text.primary}
         pr={{ xs: 0.1, sm: 0.15, md: 0.2 }}
       >
-        {'Ξ'}
+        {showUsdPrice && ethPrice ? '$' : 'Ξ'}
       </Box>
-      {intl.formatNumber(value, {
+      {intl.formatNumber(showUsdPrice && ethPrice ? value * ethPrice : value, {
         notation: isMobile ? 'compact' : 'standard',
         maximumFractionDigits: isMobile ? 1 : 2,
       })}
