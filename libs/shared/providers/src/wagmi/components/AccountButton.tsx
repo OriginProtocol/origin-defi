@@ -21,7 +21,6 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
     <Button
       {...props}
       sx={{
-        maxWidth: { xs: 36, sm: 160, lg: 220 },
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
@@ -33,7 +32,8 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
         },
         paddingRight: {
           md: 2,
-          xs: 1.5,
+          sm: 1.5,
+          xs: 0.75,
         },
       }}
     >

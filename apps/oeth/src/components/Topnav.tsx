@@ -34,12 +34,23 @@ export function Topnav(props: BoxProps) {
     <Box
       component="nav"
       {...props}
-      sx={{
+      sx={(theme) => ({
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: 1,
+        zIndex: theme.zIndex.appBar,
+        backgroundColor: alpha(theme.palette.background.default, 0.6),
+        backdropFilter: 'blur(15px)',
+        height: {
+          xs: `${Number(theme.mixins.toolbar.height) * 2}px`,
+          md: `${theme.mixins.toolbar.height}px`,
+        },
         display: 'grid',
-        borderBottom: (theme) => ({
+        borderBottom: {
           xs: 'none',
           md: `1px solid ${theme.palette.background.paper}`,
-        }),
+        },
         gap: { xs: 1, md: 10 },
         alignItems: 'center',
         paddingInline: {
@@ -54,8 +65,7 @@ export function Topnav(props: BoxProps) {
           xs: '1fr 1fr',
           md: 'auto 1fr auto',
         },
-        ...props?.sx,
-      }}
+      })}
     >
       <Box
         component={Link}
