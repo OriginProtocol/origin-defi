@@ -116,6 +116,7 @@ function RedeemViewWrapped() {
           isConnected={isConnected}
           isAmountDisabled={amountInInputDisabled}
           inputProps={{ sx: tokenInputStyles }}
+          tokenButtonProps={{ sx: { minWidth: 0, maxWidth: 120 } }}
           sx={{
             paddingBlock: 2.5,
             paddingBlockStart: 2.625,
@@ -124,7 +125,6 @@ function RedeemViewWrapped() {
             borderColor: 'divider',
             borderRadius: 1,
             backgroundColor: 'grey.900',
-            borderBottomColor: 'transparent',
             '&:hover, &:focus-within': {
               borderColor: 'transparent',
             },

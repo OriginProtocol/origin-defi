@@ -118,7 +118,9 @@ export function SwapRouteCard({
                   src={tokens.mainnet.OETH.icon}
                   height={16}
                   width={16}
-                  mr={0.5}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
                 />
               )}
             </Grid2>
@@ -150,7 +152,8 @@ export function SwapRouteCard({
                   fontSize: (theme) => theme.typography.pxToRem(12),
                   top: (theme) => theme.spacing(-3),
                   right: (theme) => theme.spacing(-1.25),
-                  paddingInline: 1,
+                  px: 1,
+                  pt: 0.25,
                 }}
               >
                 {intl.formatMessage({ defaultMessage: 'Best' })}
@@ -168,11 +171,16 @@ export function SwapRouteCard({
         )}
       </Typography>
       <Stack gap={0.5}>
-        <Stack direction="row" gap={1} justifyContent="space-between">
+        <Stack
+          direction="row"
+          gap={1}
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography fontWeight={500}>
+          <Typography variant="body2" fontWeight={500}>
             {isLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -180,11 +188,16 @@ export function SwapRouteCard({
             )}
           </Typography>
         </Stack>
-        <Stack direction="row" gap={1} justifyContent="space-between">
+        <Stack
+          direction="row"
+          gap={1}
+          alignItems="center"
+          justifyContent="space-between"
+        >
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
-          <Typography fontWeight={500}>
+          <Typography variant="body2" fontWeight={500}>
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (

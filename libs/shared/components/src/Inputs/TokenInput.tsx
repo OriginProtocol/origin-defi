@@ -37,7 +37,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
-  tokenButtonProps?: TokenButtonProps;
+  tokenButtonProps?: Omit<TokenButtonProps, 'token'>;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -60,6 +60,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       tokenPriceUsd = 0,
       isPriceLoading,
       inputProps,
+      tokenButtonProps,
       ...rest
     },
     ref,
@@ -90,7 +91,11 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             token={token}
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}
-            sx={!isConnected ? { transform: 'translateY(50%)' } : {}}
+            {...tokenButtonProps}
+            sx={{
+              ...(!isConnected && { transform: 'translateY(50%)' }),
+              ...tokenButtonProps?.sx,
+            }}
           />
         </Box>
         <Box
