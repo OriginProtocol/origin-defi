@@ -30,12 +30,12 @@ const filterOptions = [
   { label: defineMessage({ defaultMessage: 'Received' }), value: 'Received' },
 ];
 
-interface Props {
+export type HistoryFiltersProps = {
   filters: string[];
   onChange: (values: string[]) => void;
-}
+};
 
-export function HistoryFilters({ filters, onChange }: Props) {
+export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
   const [selected, setSelectedTypes] = useState<string[]>(filters);
   const intl = useIntl();
   const theme = useTheme();
@@ -104,7 +104,6 @@ export function HistoryFilters({ filters, onChange }: Props) {
           {intl.formatMessage({ defaultMessage: 'Filters' })}
         </Typography>
         <Divider sx={{ marginBlockEnd: 2 }} />
-
         {filterOptions.map((filter) => (
           <Stack
             key={filter.value}
@@ -152,6 +151,8 @@ export function HistoryFilters({ filters, onChange }: Props) {
             disabled={clearDisabled}
             sx={styles}
             onClick={() => {
+              setAnchorEl(null);
+              onChange([]);
               setSelectedTypes([]);
             }}
           >

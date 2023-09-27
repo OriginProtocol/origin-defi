@@ -7,7 +7,7 @@ import { useAccount } from 'wagmi';
 
 import { useHistoryTableWithFiltersQuery } from '../queries.generated';
 import { ExportData } from './ExportData';
-import { HistoryFilters } from './Filters';
+import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
 const PAGE_SIZE = 20;
