@@ -17,7 +17,7 @@ export const App = () => {
             height: theme.mixins.toolbar.height,
           })}
         />
-        <Container sx={{ my: 3 }} maxWidth="sm">
+        <Container sx={{ mt: 3, mb: 10 }} maxWidth="sm">
           <Outlet />
         </Container>
       </Stack>

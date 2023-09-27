@@ -8,12 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import { usePrices } from '@origin/shared/providers';
-import {
-  currencyFormat,
-  formatAmount,
-  isNilOrEmpty,
-} from '@origin/shared/utils';
-import { partition, pipe, prop } from 'ramda';
+import { currencyFormat, formatAmount } from '@origin/shared/utils';
+import { ascend, descend, prop, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -36,9 +32,10 @@ export const TokenSelectModal = ({
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
-  const [swappable, unswappable] = pipe(
-    partition<TokenOption>(prop('isSwappable')),
-  )(tokens);
+  const toks = sortWith<TokenOption>([
+    ascend(prop('isSelected')),
+    descend(prop('isSwappable')),
+  ])(tokens);
 
   return (
     <Dialog
@@ -59,37 +56,22 @@ export const TokenSelectModal = ({
       {...rest}
       onClose={onClose}
     >
-      {!isNilOrEmpty(swappable) && (
-        <MenuList disablePadding>
-          {swappable.map((token, i) => (
-            <TokenListItem
-              key={`token-${token.address || 'eth'}-${i}`}
-              token={token}
-              onClick={() => {
-                onClose({}, 'backdropClick');
-                onSelectToken(token);
-              }}
-            />
-          ))}
-        </MenuList>
-      )}
-      {!isNilOrEmpty(unswappable) && (
-        <MenuList disablePadding>
-          {unswappable.map((token, i) => (
-            <TokenListItem
-              key={`token-${token.address || 'eth'}-${i}`}
-              token={token}
-              onClick={() => {
-                onClose({}, 'backdropClick');
-                onSelectToken(token);
-              }}
-              sx={{
-                color: 'text.secondary',
-              }}
-            />
-          ))}
-        </MenuList>
-      )}
+      <MenuList disablePadding>
+        {toks.map((token, i) => (
+          <TokenListItem
+            key={`token-${token.address || 'eth'}-${i}`}
+            token={token}
+            disabled={token.isSelected}
+            onClick={() => {
+              onClose({}, 'backdropClick');
+              onSelectToken(token);
+            }}
+            sx={{
+              color: token.isSwappable ? 'text.primary' : 'text.secondary',
+            }}
+          />
+        ))}
+      </MenuList>
     </Dialog>
   );
 };
@@ -136,15 +118,15 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           sx={{ width: '2rem', height: '2rem' }}
         />
         <Box>
-          <Typography>{token?.name}</Typography>
-          <Typography variant="body2" color="text.primary">
+          <Typography fontWeight={500}>{token?.name}</Typography>
+          <Typography variant="body2" color="text.secondary">
             {token.symbol}
           </Typography>
         </Box>
       </Stack>
 
       <Box sx={{ textAlign: 'right' }}>
-        <Typography>
+        <Typography fontWeight={500}>
           {isBalanceLoading ? (
             <Skeleton width={30} />
           ) : (

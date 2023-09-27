@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -56,14 +57,21 @@ export function HistoryCard() {
           setPage={(page) => setPage(page)}
         />
       ) : (
-        <Box sx={{ height: '15rem', display: 'grid', placeContent: 'center' }}>
+        <Stack
+          sx={{
+            height: '15rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
           <Typography>
             {intl.formatMessage({
               defaultMessage: 'Connect your wallet to see your history',
             })}
           </Typography>
-          <Button onClick={() => console.log('test')}>Connect</Button>
-        </Box>
+          <ConnectedButton />
+        </Stack>
       )}
     </Box>
   );

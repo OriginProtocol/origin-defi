@@ -31,6 +31,10 @@ export const theme = extendTheme({
             'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
           gradientSelected:
             'linear-gradient(90deg, rgba(140, 102, 252, 0.30) 0%, rgba(2, 116, 241, 0.30) 100%)',
+          gradientPaper: `linear-gradient(0deg, ${alpha(
+            '#fff',
+            0.05,
+          )} 0%, ${alpha('#fff', 0.05)} 100%), #1E1F25;`,
         },
         action: {
           hoverOpacity: 0.1,
@@ -156,18 +160,12 @@ export const theme = extendTheme({
           boxShadow: 'none',
         }),
         containedPrimary: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha(
-            theme.palette.common.white,
-            0.05,
-          )} 0%, ${alpha(theme.palette.common.white, 0.05)} 100%), ${
-            theme.palette.background.paper
-          };`,
+          background: theme.palette.background.gradientPaper,
           '&:hover': {
             background: theme.palette.background.paper,
           },
         }),
         containedSecondary: ({ theme }) => ({
-          borderRadius: theme.shape.borderRadius,
           background: theme.palette.grey[700],
           '&:hover': {
             background: theme.palette.grey[900],

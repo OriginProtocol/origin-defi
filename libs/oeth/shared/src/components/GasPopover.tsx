@@ -20,7 +20,7 @@ import { useFeeData } from 'wagmi';
 
 import type { IconButtonProps } from '@mui/material';
 
-const DEFAULT_SLIPPAGE = 0.01;
+const DEFAULT_SLIPPAGE = 0.001;
 const WARNING_THRESHOLD = 0.05;
 
 const gridStyles = {

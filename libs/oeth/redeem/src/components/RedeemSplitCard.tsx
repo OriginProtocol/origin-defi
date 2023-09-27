@@ -42,7 +42,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         <Mix />
         <Stack flex={1} direction="column">
           <Stack direction="row" alignItems="baseline" gap={1}>
-            <Typography fontWeight={600}>
+            <Typography fontWeight={500}>
               {isEstimateLoading ? (
                 <Skeleton width={100} />
               ) : (
@@ -68,7 +68,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Gas:' })}
             </Typography>
-            <Typography variant="body2" fontWeight={600}>
+            <Typography variant="body2" fontWeight={500}>
               {isEstimateLoading || gasPriceLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -80,7 +80,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Wait time:' })}
             </Typography>
-            <Typography variant="body2" fontWeight={600}>
+            <Typography variant="body2" fontWeight={500}>
               {isEstimateLoading ? (
                 <Skeleton width={60} />
               ) : (
@@ -103,7 +103,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography variant="body2" fontWeight={600}>
+          <Typography variant="body2" fontWeight={500}>
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -132,7 +132,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             >
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Box component="img" src={s.token.icon} />
-                <Typography fontWeight={600}>{s.token.symbol}</Typography>
+                <Typography fontWeight={500}>{s.token.symbol}</Typography>
               </Stack>
               <Stack
                 direction="row"
@@ -140,7 +140,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 justifyContent="flex-end"
                 spacing={2}
               >
-                <Typography fontWeight={600}>
+                <Typography fontWeight={500}>
                   {isEstimateLoading ? (
                     <Skeleton width={80} />
                   ) : (
@@ -151,7 +151,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                   <Skeleton width={80} />
                 ) : (
                   <Typography
-                    fontWeight={600}
+                    fontWeight={500}
                     color="text.subtle"
                     sx={{ minWidth: 100, textAlign: 'end' }}
                   >

@@ -34,7 +34,7 @@ export function HistoryFilterButton({
         fontStyle: 'normal',
         lineHeight: (theme) => theme.typography.pxToRem(20),
         ':hover': {
-          background: (theme) => alpha(theme.palette.common.white, 0.1),
+          background: (theme) => alpha(theme.palette.common.white, 0.04),
         },
         ...sx,
       }}

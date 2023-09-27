@@ -16,6 +16,7 @@ export type HistoryTableQuery = {
     earned: number;
     isContract: boolean;
     rebasingOption: string;
+    credits: any;
     lastUpdated: any;
     history: Array<{
       __typename?: 'History';
@@ -44,7 +45,6 @@ export type HistoryTableWithFiltersQuery = {
     earned: number;
     isContract: boolean;
     rebasingOption: string;
-    credits: any;
     lastUpdated: any;
     history: Array<{
       __typename?: 'History';
@@ -71,6 +71,7 @@ export const HistoryTableDocument = `
     earned
     isContract
     rebasingOption
+    credits
     lastUpdated
     history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
       type
@@ -118,7 +119,6 @@ export const HistoryTableWithFiltersDocument = `
     earned
     isContract
     rebasingOption
-    credits
     lastUpdated
     history(
       limit: 20

@@ -10,6 +10,7 @@ declare module '@mui/material/styles' {
     gradientHover: string;
     gradientHoverActionButton: string;
     gradientSelected: string;
+    gradientPaper: string;
   }
 
   interface TypeBackgroundOptions {
@@ -20,6 +21,7 @@ declare module '@mui/material/styles' {
     gradientHover?: string;
     gradientHoverActionButton?: string;
     gradientSelected?: string;
+    gradientPaper?: string;
   }
 
   interface TypeText {

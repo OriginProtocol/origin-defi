@@ -123,7 +123,7 @@ export function SwapRouteCard({
               )}
             </Grid2>
             <Grid2 display="flex" alignItems="center">
-              <Typography fontWeight={600}>
+              <Typography fontWeight={500}>
                 {isLoading ? (
                   <Skeleton width={100} />
                 ) : (
@@ -160,7 +160,7 @@ export function SwapRouteCard({
         }
       ></CardHeader>
 
-      <Typography fontWeight={600} sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
+      <Typography fontWeight={500} sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
         {isLoading ? (
           <Skeleton width={80} />
         ) : (
@@ -172,7 +172,7 @@ export function SwapRouteCard({
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography fontWeight={600}>
+          <Typography fontWeight={500}>
             {isLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -184,7 +184,7 @@ export function SwapRouteCard({
           <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
-          <Typography fontWeight={600}>
+          <Typography fontWeight={500}>
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (

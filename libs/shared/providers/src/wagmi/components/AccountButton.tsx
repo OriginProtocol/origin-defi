@@ -59,6 +59,7 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
         <AddressLabel
           address={address}
           enableEnsName
+          short
           fontFamily="Inter"
           fontStyle="normal"
           fontWeight={500}
