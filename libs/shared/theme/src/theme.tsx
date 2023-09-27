@@ -260,6 +260,7 @@ export const theme = extendTheme({
     MuiDialog: {
       defaultProps: {
         transitionDuration: 0,
+        disableScrollLock: true,
       },
     },
     MuiFormControl: {
@@ -363,6 +364,7 @@ export const theme = extendTheme({
     MuiPopover: {
       defaultProps: {
         transitionDuration: 0,
+        disableScrollLock: true,
       },
       styleOverrides: {
         root: ({ theme }) => ({
