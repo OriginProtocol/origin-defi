@@ -29,7 +29,7 @@ export const balanceFormat: FormatNumberOptions = {
 const mappings = [
   [10000000, 0],
   [100000, 1],
-  [100, 4],
+  [100, 2],
   [1, 4],
   [0.1, 4],
   [0.0001, 5],
