@@ -42,8 +42,8 @@ export const theme = extendTheme({
         },
         text: {
           primary: '#FAFBFB',
-          secondary: '#828699',
-          subtle: '#BABDCC',
+          secondary: '#B5BECA',
+          tertiary: '#828699',
         },
         grey: {
           200: '#B5BECA',
@@ -257,6 +257,11 @@ export const theme = extendTheme({
           }
         `,
     },
+    MuiDialog: {
+      defaultProps: {
+        transitionDuration: 0,
+      },
+    },
     MuiFormControl: {
       styleOverrides: {
         root: {
@@ -309,6 +314,9 @@ export const theme = extendTheme({
       },
     },
     MuiMenu: {
+      defaultProps: {
+        transitionDuration: 0,
+      },
       styleOverrides: {
         paper: ({ theme }) => ({
           border: '1px solid',
@@ -353,6 +361,9 @@ export const theme = extendTheme({
       },
     },
     MuiPopover: {
+      defaultProps: {
+        transitionDuration: 0,
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           boxShadow: theme.shadows[23],

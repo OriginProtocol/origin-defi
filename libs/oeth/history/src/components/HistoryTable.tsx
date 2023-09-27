@@ -156,8 +156,8 @@ export function HistoryTable({
                   width: '50%',
                 },
                 '& > *:last-of-type': {
-                  width: '10%',
                   pl: 0,
+                  textAlign: 'end',
                 },
               }}
             >

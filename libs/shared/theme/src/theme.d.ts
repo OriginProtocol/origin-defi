@@ -25,11 +25,11 @@ declare module '@mui/material/styles' {
   }
 
   interface TypeText {
-    subtle: string;
+    tertiary: string;
   }
 
   interface TypeTextOptions {
-    subtle?: string;
+    tertiary?: string;
   }
 
   interface Shape {

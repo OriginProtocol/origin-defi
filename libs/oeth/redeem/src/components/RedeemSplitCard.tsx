@@ -152,7 +152,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 ) : (
                   <Typography
                     fontWeight={500}
-                    color="text.subtle"
+                    color="text.tertiary"
                     sx={{ minWidth: 100, textAlign: 'end' }}
                   >
                     {intl.formatNumber(converted, currencyFormat)}

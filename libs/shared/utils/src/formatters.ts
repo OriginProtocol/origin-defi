@@ -29,15 +29,19 @@ export const balanceFormat: FormatNumberOptions = {
 const mappings = [
   [10000000, 0],
   [100000, 1],
-  [100, 2],
-  [1, 3],
+  [100, 4],
+  [1, 4],
   [0.1, 4],
   [0.0001, 5],
   [0.000001, 6],
 ] as const;
 
-export function formatAmount(amount: bigint, decimals = 18) {
-  if (!amount || amount === 0n) return '0';
+export function formatAmount(
+  amount: bigint,
+  decimals = 18,
+  zeroPlaceholder = '0.0000',
+) {
+  if (!amount || amount === 0n) return zeroPlaceholder;
 
   const amt = +formatUnits(amount, decimals);
 
@@ -49,5 +53,5 @@ export function formatAmount(amount: bigint, decimals = 18) {
     }
   }
 
-  return '~ 0';
+  return `~${zeroPlaceholder}`;
 }

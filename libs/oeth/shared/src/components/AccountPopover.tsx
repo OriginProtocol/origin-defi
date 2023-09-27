@@ -13,6 +13,7 @@ import { tokens } from '@origin/shared/contracts';
 import { AddressLabel } from '@origin/shared/providers';
 import { map, prop } from 'ramda';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount, useBalance, useContractReads, useDisconnect } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
@@ -127,14 +128,14 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
         <Stack sx={{ px: 2, py: 3 }} gap={2}>
           <BalanceRow
             token={tokens.mainnet.ETH}
-            balance={eth?.value}
+            balance={+formatUnits(eth?.value, eth?.decimals)}
             isBalanceLoading={ethLoading}
           />
           {balanceTokens.map((tok, i) => (
             <BalanceRow
               key={tok.name}
               token={tok}
-              balance={balances?.[i] ?? 0n}
+              balance={+formatUnits(balances?.[i] ?? 0n, tok.decimals)}
               isBalanceLoading={balancesLoading}
             />
           ))}
@@ -146,7 +147,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
 
 type BalanceRowProps = {
   token: Token;
-  balance: bigint;
+  balance: number;
   isBalanceLoading: boolean;
 } & StackProps;
 
@@ -166,8 +167,8 @@ function BalanceRow({
           <Skeleton width={38} />
         ) : (
           intl.formatNumber(balance, {
-            minimumFractionDigits: 3,
-            maximumFractionDigits: 3,
+            minimumFractionDigits: 4,
+            maximumFractionDigits: 4,
           })
         )}
       </Typography>
