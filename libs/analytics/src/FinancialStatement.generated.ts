@@ -34,7 +34,7 @@ export type FinancialStatementReportQuery = {
       frxETH: any;
     };
   }>;
-  financialStatements1W: Array<{
+  financialStatementsCompare: Array<{
     __typename?: 'FinancialStatement';
     blockNumber: number;
     timestamp: any;
@@ -93,7 +93,7 @@ export const FinancialStatementReportDocument = `
       frxETH
     }
   }
-  financialStatements1W: financialStatements(
+  financialStatementsCompare: financialStatements(
     orderBy: id_DESC
     limit: 1
     where: {timestamp_lt: $compareDate}

@@ -45,11 +45,11 @@ export const LiveFinancialStatement = () => {
   if (isLoading || !data) return null;
 
   const fs = data.financialStatements[0];
-  const fs1W = data.financialStatements1W[0];
+  const fsC = data.financialStatementsCompare[0];
   const c = (n: string) => Number(formatEther(BigInt(n)));
 
   if (!fs) return null;
-  if (!fs1W) return null;
+  if (!fsC) return null;
 
   return (
     <FinancialStatement
@@ -59,34 +59,34 @@ export const LiveFinancialStatement = () => {
         timestamp: Date.parse(fs.timestamp),
       }}
       columns={[
-        dayjs(fs1W.timestamp).format('lll'),
+        dayjs(fsC.timestamp).format('lll'),
         dayjs(fs.timestamp).format('lll'),
       ]}
       data={{
         assets: {
           Vault: {
-            WETH: [fs1W.vault.weth, fs.vault.weth].map(c),
-            stETH: [fs1W.vault.stETH, fs.vault.stETH].map(c),
-            rETH: [fs1W.vault.rETH, fs.vault.rETH].map(c),
-            frxETH: [fs1W.vault.frxETH, fs.vault.frxETH].map(c),
+            WETH: [fsC.vault.weth, fs.vault.weth].map(c),
+            stETH: [fsC.vault.stETH, fs.vault.stETH].map(c),
+            rETH: [fsC.vault.rETH, fs.vault.rETH].map(c),
+            frxETH: [fsC.vault.frxETH, fs.vault.frxETH].map(c),
           },
           Curve: {
-            ETH: [fs1W.curveLP.eth, fs.curveLP.eth].map(c),
-            OETH: [fs1W.curveLP.oeth, fs.curveLP.oeth].map(c),
+            ETH: [fsC.curveLP.eth, fs.curveLP.eth].map(c),
+            OETH: [fsC.curveLP.oeth, fs.curveLP.oeth].map(c),
           },
           'Frax Staking': {
-            frxETH: [fs1W.fraxStaking.frxETH, fs.fraxStaking.frxETH].map(c),
+            frxETH: [fsC.fraxStaking.frxETH, fs.fraxStaking.frxETH].map(c),
           },
           'Morpho Aave': {
-            WETH: [fs1W.morphoAave.weth, fs.morphoAave.weth].map(c),
+            WETH: [fsC.morphoAave.weth, fs.morphoAave.weth].map(c),
           },
           Dripper: {
-            WETH: [fs1W.dripper.weth, fs.dripper.weth].map(c),
+            WETH: [fsC.dripper.weth, fs.dripper.weth].map(c),
           },
         },
         liabilities: {
           'Token Supply': {
-            OETH: [fs1W.oeth.totalSupply, fs.oeth.totalSupply].map(c),
+            OETH: [fsC.oeth.totalSupply, fs.oeth.totalSupply].map(c),
           },
         },
       }}

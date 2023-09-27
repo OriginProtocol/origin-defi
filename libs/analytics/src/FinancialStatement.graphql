@@ -29,7 +29,7 @@ query FinancialStatementReport($compareDate: DateTime) {
       frxETH
     }
   }
-  financialStatements1W: financialStatements(orderBy: id_DESC, limit: 1, where: {timestamp_lt: $compareDate}) {
+  financialStatementsCompare: financialStatements(orderBy: id_DESC, limit: 1, where: {timestamp_lt: $compareDate}) {
     blockNumber
     timestamp
     oeth {
