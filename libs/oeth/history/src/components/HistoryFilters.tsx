@@ -11,7 +11,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CheckboxIcon, EmptyCheckbox } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -125,8 +124,6 @@ export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
                 <Checkbox
                   checked={selected.includes(filter.value)}
                   onChange={(e) => handleSelect(e, filter.value)}
-                  checkedIcon={<CheckboxIcon />}
-                  icon={<EmptyCheckbox />}
                   sx={{
                     ':hover': {
                       backgroundColor: 'transparent',

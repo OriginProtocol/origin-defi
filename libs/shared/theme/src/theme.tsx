@@ -2,6 +2,9 @@ import { alpha, Box } from '@mui/material';
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 import shadows from '@mui/material/styles/shadows';
 
+import { CheckboxIcon } from './components/CheckboxIcon';
+import { EmptyCheckbox } from './components/EmptyCheckbox';
+
 export const theme = extendTheme({
   colorSchemes: {
     dark: {
@@ -38,7 +41,8 @@ export const theme = extendTheme({
         },
         action: {
           hoverOpacity: 0.1,
-          disabledOpacity: 0.3,
+          disabledOpacity: 0.5,
+          disabled: alpha('#FAFBFB', 0.5),
         },
         text: {
           primary: '#FAFBFB',
@@ -178,7 +182,7 @@ export const theme = extendTheme({
           style: ({ theme }) => ({
             background: theme.palette.background.gradient1,
             color: theme.palette.text.primary,
-            paddingBlock: 16,
+            padding: theme.spacing(2),
             fontSize: theme.typography.pxToRem(20),
             lineHeight: '2rem',
             borderRadius: theme.shape.borderRadius * 2,
@@ -190,8 +194,7 @@ export const theme = extendTheme({
               opacity: 1,
             },
             '&:disabled': {
-              background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-              opacity: 0.3,
+              opacity: 0.5,
               color: theme.palette.text.primary,
             },
           }),
@@ -239,6 +242,19 @@ export const theme = extendTheme({
         }),
       },
     },
+    MuiCheckbox: {
+      defaultProps: {
+        checkedIcon: <CheckboxIcon />,
+        icon: <EmptyCheckbox />,
+      },
+      styleOverrides: {
+        root: ({ theme }) => ({
+          ':hover': {
+            backgroundColor: 'transparent',
+          },
+        }),
+      },
+    },
     MuiCssBaseline: {
       styleOverrides: `
           body {
@@ -261,6 +277,27 @@ export const theme = extendTheme({
       defaultProps: {
         transitionDuration: 0,
         disableScrollLock: true,
+      },
+      styleOverrides: {
+        paper: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius * 2,
+        }),
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          py: 3,
+          fontSize: 16,
+          fontWeight: 700,
+          lineHeight: '28px',
+          color: theme.palette.text.primary,
+        }),
+      },
+    },
+    MuiDialogContentText: {
+      styleOverrides: {
+        root: ({ theme }) => ({ color: theme.palette.text.primary }),
       },
     },
     MuiFormControl: {
