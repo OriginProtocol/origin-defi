@@ -131,18 +131,18 @@ function SwapViewWrapped() {
       : !isNilOrEmpty(selectedSwapRoute)
       ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
       : '';
-  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
-  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
-    approveButtonLoading ||
+    isSwapRoutesLoading ||
+    isApprovalLoading ||
     amountIn > balTokenIn?.value;
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
     isBalTokenInLoading ||
-    swapButtonLoading ||
+    isSwapRoutesLoading ||
+    isSwapLoading ||
     amountIn > balTokenIn?.value ||
     amountIn === 0n;
 
@@ -266,8 +266,10 @@ function SwapViewWrapped() {
               disabled={approveButtonDisabled}
               onClick={handleApprove}
             >
-              {approveButtonLoading ? (
+              {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
+              ) : isApprovalLoading ? (
+                intl.formatMessage({ defaultMessage: 'Wait for signature' })
               ) : (
                 intl.formatMessage({ defaultMessage: 'Approve' })
               )}
@@ -280,9 +282,13 @@ function SwapViewWrapped() {
             onClick={handleSwap}
             sx={{ mt: 1.5 }}
           >
-            {swapButtonLoading
-              ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-              : swapButtonLabel}
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isSwapLoading ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            ) : (
+              swapButtonLabel
+            )}
           </ConnectedButton>
         </CardContent>
       </Card>

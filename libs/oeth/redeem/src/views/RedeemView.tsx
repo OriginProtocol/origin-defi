@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
@@ -69,18 +70,16 @@ function RedeemViewWrapped() {
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
 
-  const amountInInputDisabled = isRedeemLoading;
-
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > balOeth?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
       : intl.formatMessage({ defaultMessage: 'Redeem for mix' });
-  const redeemButtonLoading = isEstimateLoading || isRedeemLoading;
   const redeemButtonDisabled =
     isBalOethLoading ||
-    redeemButtonLoading ||
+    isEstimateLoading ||
+    isRedeemLoading ||
     amountIn > balOeth?.value ||
     amountIn === 0n;
 
@@ -114,7 +113,7 @@ function RedeemViewWrapped() {
           tokenPriceUsd={prices?.OETH}
           isPriceLoading={isPricesLoading}
           isConnected={isConnected}
-          isAmountDisabled={amountInInputDisabled}
+          isAmountDisabled={isRedeemLoading}
           inputProps={{ sx: tokenInputStyles }}
           tokenButtonProps={{ sx: { minWidth: 0, maxWidth: 120 } }}
           sx={{
@@ -165,9 +164,13 @@ function RedeemViewWrapped() {
           onClick={handleRedeem}
           sx={{ mt: 1.5 }}
         >
-          {redeemButtonLoading
-            ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-            : redeemButtonLabel}
+          {isEstimateLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : isRedeemLoading ? (
+            intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+          ) : (
+            redeemButtonLabel
+          )}
         </ConnectedButton>
       </CardContent>
     </Card>
