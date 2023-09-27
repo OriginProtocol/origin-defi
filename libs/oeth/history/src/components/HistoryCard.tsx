@@ -42,7 +42,10 @@ export function HistoryCard() {
           {intl.formatMessage({ defaultMessage: 'OETH transactions' })}
         </Typography>
         <Stack direction="row" gap={1}>
-          <HistoryFilters onChange={(values) => setFilters(values)} />
+          <HistoryFilters
+            filters={filters}
+            onChange={(values) => setFilters(values)}
+          />
           <ExportData data={data?.addressById?.history} />
         </Stack>
       </Stack>
