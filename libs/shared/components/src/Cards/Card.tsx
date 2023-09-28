@@ -31,7 +31,7 @@ export function Card({
           color: 'primary.contrastText',
           fontWeight: 500,
           '& .MuiCardHeader-title': {
-            fontSize: (theme) => theme.typography.pxToRem(14),
+            fontSize: 14,
           },
           ...sxCardTitle,
         }}

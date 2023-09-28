@@ -84,10 +84,7 @@ export function SwapRouteAccordionItem({
           <Box
             component="img"
             src={routeActionLogos[route.action]}
-            sx={{
-              height: (theme) => theme.typography.pxToRem(24),
-              width: (theme) => theme.typography.pxToRem(24),
-            }}
+            sx={{ height: 24, width: 24 }}
           />
           <Box>
             <Typography variant="body2">

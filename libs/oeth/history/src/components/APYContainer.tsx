@@ -93,16 +93,7 @@ function ValueContainer({
       <Typography variant="body2" color="text.secondary">
         {label}
       </Typography>
-      <Typography
-        sx={{
-          fontFamily: 'Sailec',
-          fontSize: (theme) => theme.typography.pxToRem(20),
-          fontStyle: 'normal',
-          fontWeight: 700,
-          lineHeight: '2rem',
-          textAlign: 'center',
-        }}
-      >
+      <Typography variant="h4" textAlign="center">
         {isLoading ? <Skeleton width={60} /> : value}
       </Typography>
     </Stack>

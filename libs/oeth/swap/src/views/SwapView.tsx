@@ -51,13 +51,13 @@ const tokenInputStyles = {
   boxSizing: 'border-box',
   '& .MuiInputBase-input': {
     padding: 0,
-    lineHeight: '1.875rem',
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-    fontSize: '1.5rem',
+    fontFamily: 'Sailec, sans-serif',
+    fontSize: 24,
+    lineHeight: 1.25,
     fontWeight: 700,
-    height: '1.5rem',
+    height: 24,
     '&::placeholder': {
       color: 'text.secondary',
       opacity: 1,

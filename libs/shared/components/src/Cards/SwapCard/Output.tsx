@@ -60,7 +60,6 @@ export function Output({
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
               flex: 1,
               alignSelf: 'end',
-              lineHeight: '1.875rem',
               color: (theme) =>
                 exchangeTokenQuantity === 0
                   ? theme.palette.text.secondary
@@ -87,7 +86,7 @@ export function Output({
           isLoading ? (
             <Loader width={28} />
           ) : (
-            <Typography variant="body1" color="grey.200" lineHeight="1.5rem">
+            <Typography variant="body1" color="grey.200">
               {intl.formatNumber(exchangeTokenValue, currencyFormat)}
             </Typography>
           )
@@ -102,7 +101,6 @@ export function Output({
               }}
               variant="body1"
               color="grey.200"
-              lineHeight="1.5rem"
             >
               {intl.formatMessage(
                 { defaultMessage: 'Balance: {number}' },

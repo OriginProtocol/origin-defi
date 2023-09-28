@@ -40,17 +40,13 @@ export const ApyHeader = (props: StackProps) => {
         direction="row"
         alignItems="center"
         justifyContent="space-between"
-        p={(theme) => theme.spacing(2, 3)}
+        px={{ xs: 2, md: 3 }}
+        py={{ xs: 1.5, md: 2 }}
       >
         {apyLoading ? (
           <Skeleton width={100} height={40} />
         ) : (
-          <Typography
-            fontSize={32}
-            fontWeight={700}
-            fontFamily="Sailec"
-            lineHeight="40px"
-          >
+          <Typography variant="h1">
             {intl.formatNumber(
               trailing.value === 30 ? apy.apy30DayAvg : apy.apy7DayAvg,
               { minimumFractionDigits: 2, maximumFractionDigits: 2 },
@@ -61,17 +57,34 @@ export const ApyHeader = (props: StackProps) => {
 
         <Button
           color="secondary"
-          size="small"
+          variant="text"
           onClick={(e) => setAnchorEl(e.currentTarget)}
           sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
             borderRadius: 1,
             color: 'text.secondary',
-            backgroundColor: 'grey.700',
-            img: { marginLeft: 0.75 },
+            transform: 'translateX(5px)',
           }}
         >
           {intl.formatMessage(trailing.label)}
-          <Box component="img" src={`/images/downarrow.png`} />
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: '50%',
+              backgroundColor: 'grey.600',
+              color: 'text.secondary',
+              p: 0.2,
+              transform: 'translateY(2px)',
+              width: 16,
+              height: 16,
+            }}
+          >
+            <Box component="img" src="/images/dropdown.svg" />
+          </Box>
         </Button>
         <Menu
           anchorEl={anchorEl}

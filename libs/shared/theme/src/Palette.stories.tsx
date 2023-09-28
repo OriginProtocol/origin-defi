@@ -80,7 +80,7 @@ const PaletteElem = ({
           noWrap
           sx={{
             fontSize: 13,
-            lineHeight: '19px',
+            lineHeight: 1.5,
             color: 'primary.contrastText',
           }}
         >
@@ -100,7 +100,7 @@ const PaletteElem = ({
             sx={{
               color: value,
               fontSize: 48,
-              lineHeight: '69px',
+              lineHeight: 1.5,
               fontWeight: 500,
             }}
           >
@@ -155,7 +155,7 @@ const PaletteView = ({ palette, ...rest }: PaletteViewProps) => (
             noWrap
             sx={{
               fontSize: 20,
-              lineHeight: '29px',
+              lineHeight: 1.25,
               fontWeight: 500,
               color: 'primary.contrastText',
             }}

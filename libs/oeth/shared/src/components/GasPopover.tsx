@@ -133,7 +133,7 @@ export function GasPopover({
               sx={{
                 gridColumn: 'span 2',
                 mt: 1.25,
-                fontSize: (theme) => theme.typography.pxToRem(12),
+                fontSize: 12,
                 color: (theme) => theme.palette.warning.main,
                 fontWeight: 400,
                 fontStyle: 'normal',

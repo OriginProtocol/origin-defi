@@ -24,6 +24,8 @@ import { Mix } from './Mix';
 
 import type { StackProps } from '@mui/material';
 
+import type { RedeemEstimate } from '../types';
+
 export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const intl = useIntl();
   const theme = useTheme();
@@ -56,60 +58,48 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             <Mix />
           </Stack>
         )}
-        <Stack flex={1} direction="column">
+        <Stack flex={1} direction="column" gap={0.5}>
           <Stack
             direction="row"
             alignItems="baseline"
-            gap={1}
+            justifyContent="space-between"
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            <Typography fontWeight={500}>
-              {isEstimateLoading ? (
-                <Skeleton width={100} />
-              ) : (
-                formatAmount(amountOut, MIX_TOKEN.decimals)
-              )}
-            </Typography>
-            <Typography variant="body2" noWrap color="text.secondary">
-              {isEstimateLoading ? (
-                <Skeleton width={60} />
-              ) : (
-                `(${intl.formatNumber(convertedAmount, currencyFormat)})`
-              )}
-            </Typography>
+            <Stack direction="row" gap={1} alignItems="baseline">
+              <Typography fontWeight={500}>
+                {isEstimateLoading ? (
+                  <Skeleton width={100} />
+                ) : (
+                  formatAmount(amountOut, MIX_TOKEN.decimals)
+                )}
+              </Typography>
+              <Typography variant="body2" noWrap color="text.secondary">
+                {isEstimateLoading ? (
+                  <Skeleton width={60} />
+                ) : (
+                  `(${intl.formatNumber(convertedAmount, currencyFormat)})`
+                )}
+              </Typography>
+            </Stack>
+            <Stack direction="row" gap={1}>
+              <Typography variant="body2" color="text.secondary">
+                {intl.formatMessage({ defaultMessage: 'Gas:' })}
+              </Typography>
+              <Typography variant="body2" fontWeight={500}>
+                {isEstimateLoading || gasPriceLoading ? (
+                  <Skeleton width={60} />
+                ) : (
+                  `~${intl.formatNumber(gasPrice?.gasCostUsd, currencyFormat)}`
+                )}
+              </Typography>
+            </Stack>
           </Stack>
           <Typography noWrap>
             {intl.formatMessage({
               defaultMessage: 'Redeem for mix via OETH vault',
             })}
           </Typography>
-        </Stack>
-        <Stack justifyContent="flex-start" alignItems="flex-end">
-          <Stack direction="row" gap={1}>
-            <Typography variant="body2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Gas:' })}
-            </Typography>
-            <Typography variant="body2" fontWeight={500}>
-              {isEstimateLoading || gasPriceLoading ? (
-                <Skeleton width={60} />
-              ) : (
-                `~${intl.formatNumber(gasPrice?.gasCostUsd, currencyFormat)}`
-              )}
-            </Typography>
-          </Stack>
-          {/* <Stack direction="row" gap={1}>
-            <Typography variant="body2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Wait time:' })}
-            </Typography>
-            <Typography variant="body2" fontWeight={500}>
-              {isEstimateLoading ? (
-                <Skeleton width={60} />
-              ) : (
-                intl.formatMessage({ defaultMessage: '~1 min' })
-              )}
-            </Typography>
-          </Stack> */}
         </Stack>
       </Stack>
       <Divider />
@@ -141,51 +131,80 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       </Stack>
       <Divider />
       <Stack spacing={2} py={1.5} px={2}>
-        {split?.map((s) => {
-          const converted =
-            +formatUnits(s.amount, s.token.decimals) * prices?.[s.token.symbol];
-
-          return (
-            <Stack
-              key={s.token.symbol}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              gap={2}
-            >
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <Box component="img" src={s.token.icon} />
-                <Typography fontWeight={500}>{s.token.symbol}</Typography>
-              </Stack>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="flex-end"
-                spacing={2}
-              >
-                <Typography fontWeight={500}>
-                  {isEstimateLoading ? (
-                    <Skeleton width={80} />
-                  ) : (
-                    formatAmount(s.amount, s.token.decimals)
-                  )}
-                </Typography>
-                {isPricesLoading || isEstimateLoading ? (
-                  <Skeleton width={80} />
-                ) : (
-                  <Typography
-                    fontWeight={500}
-                    color="text.secondary"
-                    sx={{ minWidth: 100, textAlign: 'end' }}
-                  >
-                    {intl.formatNumber(converted, currencyFormat)}
-                  </Typography>
-                )}
-              </Stack>
-            </Stack>
-          );
-        })}
+        {split?.map((s) => (
+          <SplitRow
+            key={s.token.symbol}
+            estimate={s}
+            price={prices?.[s.token.symbol]}
+            isEstimateLoading={isEstimateLoading}
+            isPricesLoading={isPricesLoading}
+          />
+        ))}
       </Stack>
     </Stack>
   );
 };
+
+type SplitRowProps = {
+  estimate: RedeemEstimate;
+  price: number;
+  isEstimateLoading: boolean;
+  isPricesLoading: boolean;
+} & StackProps;
+
+function SplitRow({
+  estimate,
+  price,
+  isEstimateLoading,
+  isPricesLoading,
+  ...rest
+}: SplitRowProps) {
+  const intl = useIntl();
+
+  const converted =
+    +formatUnits(estimate.amount, estimate.token.decimals) * price;
+
+  return (
+    <Stack
+      direction="row"
+      justifyContent="space-between"
+      alignItems="center"
+      gap={1}
+      {...rest}
+    >
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <Box component="img" src={estimate.token.icon} />
+        <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
+      </Stack>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+        spacing={2}
+        overflow="hidden"
+        whiteSpace="nowrap"
+      >
+        <Typography fontWeight={500}>
+          {isEstimateLoading ? (
+            <Skeleton width={80} />
+          ) : (
+            formatAmount(estimate.amount, estimate.token.decimals)
+          )}
+        </Typography>
+        {isPricesLoading || isEstimateLoading ? (
+          <Skeleton width={80} />
+        ) : (
+          <Typography
+            noWrap
+            fontWeight={500}
+            color="text.secondary"
+            textAlign="end"
+            minWidth={80}
+          >
+            {intl.formatNumber(converted, currencyFormat)}
+          </Typography>
+        )}
+      </Stack>
+    </Stack>
+  );
+}

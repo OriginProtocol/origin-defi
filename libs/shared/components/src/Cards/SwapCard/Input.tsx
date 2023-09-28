@@ -95,11 +95,11 @@ export function Input({
             boxSizing: 'border-box',
             '& .MuiInputBase-input': {
               padding: 0,
-              lineHeight: '1.875rem',
+              lineHeight: 1.5,
               boxSizing: 'border-box',
               fontStyle: 'normal',
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-              fontSize: '1.5rem',
+              fontSize: 24,
               fontWeight: 700,
               height: '1.5rem',
               color: 'primary.contrastText',
@@ -135,7 +135,7 @@ export function Input({
               sx={{
                 fontWeight: 400,
                 fontStyle: 'normal',
-                lineHeight: '1.5rem',
+                lineHeight: 1.6,
               }}
             >
               {intl.formatNumber(baseTokenValue, currencyFormat)}
@@ -150,7 +150,7 @@ export function Input({
             fontWeight: 400,
             fontStyle: 'normal',
             visibility: baseTokenBalance === undefined ? 'hidden' : 'visible',
-            lineHeight: '1.5rem',
+            lineHeight: 1.6,
           }}
         >
           {intl.formatMessage(

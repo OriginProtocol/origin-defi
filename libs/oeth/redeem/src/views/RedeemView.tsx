@@ -36,13 +36,13 @@ const tokenInputStyles = {
   boxSizing: 'border-box',
   '& .MuiInputBase-input': {
     padding: 0,
-    lineHeight: '1.875rem',
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-    fontSize: '1.5rem',
+    fontFamily: 'Sailec, sans-serif',
+    fontSize: 24,
+    lineHeight: 1.25,
     fontWeight: 700,
-    height: '1.5rem',
+    height: 24,
     color: 'text.primary',
     '&::placeholder': {
       color: 'text.secondary',
@@ -115,7 +115,7 @@ function RedeemViewWrapped() {
           isConnected={isConnected}
           isAmountDisabled={isRedeemLoading}
           inputProps={{ sx: tokenInputStyles }}
-          tokenButtonProps={{ sx: { minWidth: 0, maxWidth: 120 } }}
+          tokenButtonProps={{ sx: { minWidth: 100, maxWidth: 100 } }}
           sx={{
             paddingBlock: 2.5,
             paddingBlockStart: 2.625,

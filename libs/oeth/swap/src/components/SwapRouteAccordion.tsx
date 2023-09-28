@@ -38,7 +38,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
       <AccordionSummary
         sx={{
           minHeight: 0,
-          fontSize: (theme) => theme.typography.pxToRem(14),
+          fontSize: 14,
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
@@ -67,8 +67,8 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           component="img"
           src="/images/arrow-down.svg"
           sx={{
-            height: (theme) => theme.typography.pxToRem(12),
-            width: (theme) => theme.typography.pxToRem(12),
+            height: 12,
+            width: 12,
             alignSelf: 'center',
           }}
         ></Box>

@@ -17,9 +17,9 @@ import { defineMessage, useIntl } from 'react-intl';
 import { HistoryFilterButton } from './HistoryButton';
 
 const styles = {
-  fontSize: '0.75rem',
+  fontSize: 12,
   fontWeight: 500,
-  lineHeight: '1.25rem',
+  lineHeight: 1.6,
 };
 
 const filterOptions = [

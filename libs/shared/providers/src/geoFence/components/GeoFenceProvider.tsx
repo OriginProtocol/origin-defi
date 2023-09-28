@@ -12,6 +12,8 @@ import {
   FormControlLabel,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useLocalStorageValue } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
@@ -22,6 +24,8 @@ export type GeoFenceProviderProps = { children: ReactNode };
 
 export const GeoFenceProvider = ({ children }: GeoFenceProviderProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [checked, setChecked] = useState(false);
   const { value: geoCheck, set: setGeoCheck } = useLocalStorageValue(
     '@originprotocol/oeth-geo-check',
@@ -33,7 +37,7 @@ export const GeoFenceProvider = ({ children }: GeoFenceProviderProps) => {
   return (
     <>
       {children}
-      <Dialog open={!geoCheck} maxWidth="sm">
+      <Dialog open={!geoCheck} maxWidth="sm" fullScreen={fullScreen}>
         <DialogTitle>
           {intl.formatMessage({ defaultMessage: 'Restricted Access' })}
         </DialogTitle>

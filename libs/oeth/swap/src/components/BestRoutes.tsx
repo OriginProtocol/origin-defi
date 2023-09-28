@@ -17,7 +17,7 @@ export function BestRoutes(props: Grid2Props) {
   return (
     <Grid2 spacing={1} {...props} container>
       {swapRoutes.slice(0, 2).map((route, index) => (
-        <Grid2 key={route.action} xs={6}>
+        <Grid2 key={route.action} xs={12} sm={6}>
           <SwapRouteCard
             key={`bestRoute-${index}`}
             isSelected={routeEq(selectedSwapRoute, route)}

@@ -149,7 +149,7 @@ export function SwapRouteCard({
                   position: 'absolute',
                   borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
                   background: (theme) => theme.palette.background.gradient1,
-                  fontSize: (theme) => theme.typography.pxToRem(12),
+                  fontSize: 12,
                   top: (theme) => theme.spacing(-3),
                   right: (theme) => theme.spacing(-1.25),
                   px: 1,

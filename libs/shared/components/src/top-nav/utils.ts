@@ -9,7 +9,7 @@ export const styles: SxProps<Theme> = {
   paddingInline: { xs: 2, md: 3 },
   color: 'primary.contrastText',
   boxSizing: 'border-box',
-  lineHeight: '1rem',
+  lineHeight: 1.25,
 };
 
 export const messages = {

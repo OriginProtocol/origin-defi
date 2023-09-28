@@ -7,7 +7,7 @@ export const App = () => {
   return (
     <>
       <CssBaseline />
-      <Stack minWidth={420}>
+      <Stack minWidth={370}>
         <Topnav />
         <Container
           sx={{

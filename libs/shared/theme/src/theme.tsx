@@ -1,9 +1,10 @@
-import { alpha, Box } from '@mui/material';
+import { alpha, Box, createTheme } from '@mui/material';
 import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 import shadows from '@mui/material/styles/shadows';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
+const base = createTheme();
 
 export const theme = extendTheme({
   colorSchemes: {
@@ -71,22 +72,56 @@ export const theme = extendTheme({
     },
   },
   typography: {
-    fontFamily: 'Inter, Sailec, Helvetica, Arial, sans-serif',
-    h3: {
+    fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+
+    fontSize: 14,
+    fontWeightRegular: 400,
+    fontWeightMedium: 500,
+    fontWeightBold: 700,
+
+    h1: {
       fontFamily: 'Sailec',
-      fontSize: '1.5rem',
+      fontSize: 32,
       fontStyle: 'normal',
       fontWeight: 700,
-      lineHeight: '2rem',
+      lineHeight: 1.5,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 20,
+      },
+    },
+    h3: {
+      fontFamily: 'Sailec',
+      fontSize: 24,
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: 1.5,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 20,
+      },
+    },
+    h4: {
+      fontFamily: 'Sailec',
+      fontSize: 20,
+      fontStyle: 'normal',
+      fontWeight: 700,
+      lineHeight: 1.6,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 18,
+        lineHeight: 1.5,
+      },
     },
     body1: {
-      fontSize: '0.875rem',
-      lineHeight: '1.4375rem',
+      fontSize: 14,
+      lineHeight: 1.5,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 13,
+        lineHeight: 1.25,
+      },
     },
     body2: {
-      fontSize: '0.75rem',
+      fontSize: 12,
       fontWeight: 400,
-      lineHeight: '1.25rem',
+      lineHeight: 1.6,
       fontStyle: 'normal',
     },
   },
@@ -175,6 +210,12 @@ export const theme = extendTheme({
             background: theme.palette.grey[900],
           },
         }),
+        text: ({ theme }) => ({
+          ':hover': {
+            color: theme.palette.common.white,
+            background: 'transparent',
+          },
+        }),
       },
       variants: [
         {
@@ -183,8 +224,8 @@ export const theme = extendTheme({
             background: theme.palette.background.gradient1,
             color: theme.palette.text.primary,
             padding: theme.spacing(2),
-            fontSize: theme.typography.pxToRem(20),
-            lineHeight: '2rem',
+            fontSize: 20,
+            lineHeight: 1.6,
             borderRadius: theme.shape.borderRadius * 2,
             fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
             fontWeight: 500,
@@ -226,10 +267,10 @@ export const theme = extendTheme({
             padding: theme.spacing(1.5, 2),
           },
         }),
-        title: {
-          fontSize: 14,
+        title: ({ theme }) => ({
+          fontSize: theme.typography.fontSize,
           fontWeight: 500,
-        },
+        }),
       },
     },
     MuiCardContent: {
@@ -256,6 +297,9 @@ export const theme = extendTheme({
       },
     },
     MuiCssBaseline: {
+      defaultProps: {
+        enableColorScheme: true,
+      },
       styleOverrides: `
           body {
             -webkit-font-smoothing: antialiased;
@@ -270,7 +314,7 @@ export const theme = extendTheme({
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
-          }
+          }          
         `,
     },
     MuiDialog: {
@@ -290,7 +334,7 @@ export const theme = extendTheme({
           py: 3,
           fontSize: 16,
           fontWeight: 700,
-          lineHeight: '28px',
+          lineHeight: 1.75,
           color: theme.palette.text.primary,
         }),
       },
@@ -314,8 +358,8 @@ export const theme = extendTheme({
             position: 'static',
             transform: 'none',
             transformOrigin: 'initial',
-            fontSize: theme.typography.pxToRem(14),
-            marginBlockEnd: '0.5rem',
+            fontSize: theme.typography.fontSize,
+            marginBlockEnd: theme.spacing(1),
             color: `${theme.palette.text.primary}`,
           },
         }),
@@ -334,7 +378,7 @@ export const theme = extendTheme({
 
           '& .MuiInputBase-input': {
             color: theme.palette.text.primary,
-            fontSize: theme.typography.pxToRem(14),
+            fontSize: theme.typography.fontSize,
           },
         }),
         input: ({ theme }) => ({
@@ -422,7 +466,7 @@ export const theme = extendTheme({
       styleOverrides: {
         text: ({ theme }) => ({
           borderRadius: 15,
-          backgroundColor: theme.palette.grey[800],
+          // backgroundColor: theme.palette.grey[900],
         }),
       },
     },
@@ -431,9 +475,9 @@ export const theme = extendTheme({
         root: ({ theme }) => ({
           minHeight: 0,
           padding: theme.spacing(3, 2),
-          fontSize: '1rem',
+          fontSize: 16,
           textTransform: 'none',
-          lineHeight: '1.6875rem',
+          lineHeight: 1.6875,
           ':hover': {
             color: theme.palette.text.primary,
           },
@@ -442,7 +486,9 @@ export const theme = extendTheme({
           },
           [theme.breakpoints.down('md')]: {
             padding: theme.spacing(1, 2),
-            fontSize: '0.875rem',
+          },
+          [theme.breakpoints.down('sm')]: {
+            fontSize: 14,
           },
         }),
       },
@@ -452,10 +498,10 @@ export const theme = extendTheme({
         root: ({ theme }) => ({
           paddingInline: theme.spacing(3),
           paddingBlock: theme.spacing(2),
-          fontSize: theme.typography.pxToRem(14),
+          fontSize: theme.typography.fontSize,
           fontStyle: 'normal',
           fontWeight: 400,
-          lineHeight: theme.typography.pxToRem(23),
+          lineHeight: 1.6,
         }),
         head: ({ theme }) => ({
           color: theme.palette.text.secondary,

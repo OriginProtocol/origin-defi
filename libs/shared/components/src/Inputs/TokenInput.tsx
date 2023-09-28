@@ -117,15 +117,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           {isPriceLoading ? (
             <Skeleton width={50} />
           ) : !isNilOrEmpty(tokenPriceUsd) ? (
-            <Typography
-              color="text.secondary"
-              variant="body1"
-              sx={{
-                fontWeight: 400,
-                fontStyle: 'normal',
-                lineHeight: '1.5rem',
-              }}
-            >
+            <Typography color="text.secondary">
               {intl.formatNumber(amountUsd, currencyFormat)}
             </Typography>
           ) : null}
@@ -144,13 +136,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   <Typography
                     noWrap
                     color="text.secondary"
-                    variant="body1"
                     sx={{
                       justifySelf: 'flex-end',
-                      fontWeight: 400,
-                      fontStyle: 'normal',
                       visibility: balance === undefined ? 'hidden' : 'visible',
-                      lineHeight: '1.5rem',
                       textOverflow: 'ellipsis',
                     }}
                   >
