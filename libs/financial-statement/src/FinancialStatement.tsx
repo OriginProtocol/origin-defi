@@ -4,17 +4,21 @@ import {
   alpha,
   Box,
   Button,
+  Experimental_CssVarsProvider,
   Paper,
   Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { queryClient } from '@origin/oeth/shared';
 import { useChainlinkEthUsd } from '@origin/shared/providers';
+import { theme } from '@origin/shared/theme';
+import { QueryClientProvider } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import LocalizedFormat from 'dayjs/plugin/localizedFormat';
 import RelativeTime from 'dayjs/plugin/relativeTime';
-import { useIntl } from 'react-intl';
+import { IntlProvider, useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import * as colors from './colors';
@@ -43,6 +47,18 @@ const getTotals = (data: Record<string, Record<string, number[]>>) => {
     return totals;
   }, [] as number[]);
 };
+
+export default function SelfContainedFinancialStatement() {
+  return (
+    <IntlProvider messages={{}} locale="en" defaultLocale="en">
+      <Experimental_CssVarsProvider theme={theme} defaultMode="dark">
+        <QueryClientProvider client={queryClient}>
+          <LiveFinancialStatement />
+        </QueryClientProvider>
+      </Experimental_CssVarsProvider>
+    </IntlProvider>
+  );
+}
 
 export const LiveFinancialStatement = () => {
   const endOfToday = dayjs().endOf('day').toISOString();
@@ -120,8 +136,6 @@ export const LiveFinancialStatement = () => {
     />
   );
 };
-
-export default LiveFinancialStatement;
 
 const FinancialStatementContext = createContext({
   ethPrice: undefined as number | undefined,

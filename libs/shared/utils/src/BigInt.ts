@@ -1,2 +1,2 @@
-export const jsonStringifyReplacer = (key, value) =>
+export const jsonStringifyReplacer = (key: string, value: unknown) =>
   typeof value === 'bigint' ? value.toString() : value;

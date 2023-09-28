@@ -23,6 +23,9 @@
       "@origin/analytics": [
         "libs/analytics/src/index.ts"
       ],
+      "@origin/financial-statement": [
+        "libs/financial-statement/src/index.ts"
+      ],
       "@origin/oeth/history": [
         "libs/oeth/history/src/index.ts"
       ],
