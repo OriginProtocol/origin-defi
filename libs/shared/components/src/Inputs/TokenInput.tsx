@@ -79,10 +79,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         <Box
           sx={{
             display: 'flex',
+            alignItems: 'center',
             justifyContent: 'space-between',
             gap: 1,
-            overflow: 'hidden',
-            whiteSpace: 'nowrap',
           }}
         >
           <BigIntInput
