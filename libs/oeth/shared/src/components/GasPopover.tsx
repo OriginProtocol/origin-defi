@@ -113,15 +113,11 @@ export function GasPopover({
                   }}
                 />
                 <Button
-                  variant="contained"
+                  variant="action"
                   sx={{
-                    borderRadius: 20,
+                    borderRadius: 8,
+                    fontSize: 14,
                     height: '38px',
-                    bgColor:
-                      'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
-                    '&:disabled': {
-                      opacity: 0.3,
-                    },
                   }}
                   fullWidth
                   disabled={slippage === DEFAULT_SLIPPAGE}
