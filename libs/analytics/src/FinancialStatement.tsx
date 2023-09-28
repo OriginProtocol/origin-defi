@@ -121,6 +121,8 @@ export const LiveFinancialStatement = () => {
   );
 };
 
+export default LiveFinancialStatement;
+
 const FinancialStatementContext = createContext({
   ethPrice: undefined as number | undefined,
   showUsdPrice: false,
