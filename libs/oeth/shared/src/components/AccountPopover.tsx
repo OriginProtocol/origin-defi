@@ -128,7 +128,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
         <Stack sx={{ px: 2, py: 3 }} gap={2}>
           <BalanceRow
             token={tokens.mainnet.ETH}
-            balance={+formatUnits(eth?.value, eth?.decimals)}
+            balance={+formatUnits(eth?.value ?? 0n, 18)}
             isBalanceLoading={ethLoading}
           />
           {balanceTokens.map((tok, i) => (
