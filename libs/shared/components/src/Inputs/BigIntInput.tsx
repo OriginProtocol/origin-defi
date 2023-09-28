@@ -66,7 +66,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
         placeholder="0"
         {...rest}
         inputRef={ref}
-        inputMode="decimal"
+        inputMode="numeric"
         value={strVal}
         onChange={handleChange}
         inputProps={{

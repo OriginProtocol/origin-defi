@@ -11,10 +11,10 @@ export const App = () => {
         <Topnav />
         <Container
           sx={{
-            mt: 3,
+            mt: { xs: 3.25, md: 3 },
             mb: 10,
             pt: (theme) => ({
-              xs: `${Number(theme.mixins.toolbar.height) * 2}px`,
+              xs: '112px',
               md: `${theme.mixins.toolbar.height}px`,
             }),
           }}

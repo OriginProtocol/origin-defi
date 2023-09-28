@@ -43,7 +43,7 @@ export function Topnav(props: BoxProps) {
         backgroundColor: alpha(theme.palette.background.default, 0.6),
         backdropFilter: 'blur(15px)',
         height: {
-          xs: `${Number(theme.mixins.toolbar.height) * 2}px`,
+          xs: '112px',
           md: `${theme.mixins.toolbar.height}px`,
         },
         display: 'grid',
@@ -51,13 +51,14 @@ export function Topnav(props: BoxProps) {
           xs: 'none',
           md: `1px solid ${theme.palette.background.paper}`,
         },
-        gap: { xs: 1, md: 10 },
+        columnGap: { xs: 1, md: 10 },
+        rowGap: { xs: 0, md: 10 },
         alignItems: 'center',
-        paddingInline: {
+        px: {
           xs: 1.5,
           md: 3,
         },
-        paddingBlockStart: {
+        pt: {
           xs: 1.5,
           md: 0,
         },
@@ -101,7 +102,7 @@ export function Topnav(props: BoxProps) {
             md: 'span 1',
           },
           marginBlockStart: {
-            xs: 4,
+            xs: 2,
             md: 0,
           },
           '& .MuiTabs-flexContainer': {
@@ -179,7 +180,7 @@ export function Topnav(props: BoxProps) {
               xs: 0.75,
             },
             minWidth: 36,
-            maxWidth: { xs: 36, sm: 160, lg: 220 },
+            maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
             fontWeight: 500,
             minHeight: { xs: 36, md: 44 },
           }}
@@ -197,7 +198,7 @@ export function Topnav(props: BoxProps) {
           borderColor: (theme) => theme.palette.background.paper,
           position: 'relative',
           width: 'calc(100% + 1.5rem)',
-          bottom: '-3.75rem',
+          bottom: '-3rem',
           left: '-0.75rem',
         }}
       />

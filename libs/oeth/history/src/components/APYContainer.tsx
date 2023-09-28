@@ -85,6 +85,7 @@ function ValueContainer({
         paddingBlock: 2,
         alignItems: 'center',
         textAlign: 'center',
+        justifyContent: 'space-between',
         flex: 1,
         ...rest?.sx,
       }}

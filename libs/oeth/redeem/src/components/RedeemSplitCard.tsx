@@ -1,4 +1,12 @@
-import { Box, Divider, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Divider,
+  Skeleton,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useGasPrice, usePrices } from '@origin/shared/providers';
@@ -18,6 +26,8 @@ import type { StackProps } from '@mui/material';
 
 export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: prices, isLoading: isPricesLoading } = usePrices();
   const [{ amountOut, gas, rate, split, isEstimateLoading }] = useRedeemState();
   const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
@@ -36,12 +46,20 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
  linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
         ...props?.sx,
+        overflow: 'hidden',
+        whiteSpace: 'nowrap',
       }}
     >
       <Stack direction="row" alignItems="center" spacing={1} px={2} py={1.5}>
-        <Mix />
+        {!isXs && <Mix />}
         <Stack flex={1} direction="column">
-          <Stack direction="row" alignItems="baseline" gap={1}>
+          <Stack
+            direction="row"
+            alignItems="baseline"
+            gap={1}
+            overflow="hidden"
+            whiteSpace="nowrap"
+          >
             <Typography fontWeight={500}>
               {isEstimateLoading ? (
                 <Skeleton width={100} />
@@ -57,7 +75,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
               )}
             </Typography>
           </Stack>
-          <Typography>
+          <Typography noWrap>
             {intl.formatMessage({
               defaultMessage: 'Redeem for mix via OETH vault',
             })}
@@ -129,6 +147,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
               direction="row"
               justifyContent="space-between"
               alignItems="center"
+              gap={2}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
                 <Box component="img" src={s.token.icon} />
@@ -152,7 +171,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 ) : (
                   <Typography
                     fontWeight={500}
-                    color="text.tertiary"
+                    color="text.secondary"
                     sx={{ minWidth: 100, textAlign: 'end' }}
                   >
                     {intl.formatNumber(converted, currencyFormat)}

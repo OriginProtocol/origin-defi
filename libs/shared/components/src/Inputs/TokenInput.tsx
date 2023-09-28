@@ -76,7 +76,15 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 
     return (
       <Stack {...rest}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            gap: 1,
+            overflow: 'hidden',
+            whiteSpace: 'nowrap',
+          }}
+        >
           <BigIntInput
             {...inputProps}
             value={amount}
@@ -121,13 +129,20 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               {intl.formatNumber(amountUsd, currencyFormat)}
             </Typography>
           ) : null}
-          <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.5}
+            overflow="hidden"
+            whiteSpace="nowrap"
+          >
             {isConnected ? (
               isBalanceLoading ? (
                 <Skeleton width={28} />
               ) : (
                 <>
                   <Typography
+                    noWrap
                     color="text.secondary"
                     variant="body1"
                     sx={{
@@ -136,6 +151,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                       fontStyle: 'normal',
                       visibility: balance === undefined ? 'hidden' : 'visible',
                       lineHeight: '1.5rem',
+                      textOverflow: 'ellipsis',
                     }}
                   >
                     {intl.formatMessage(
@@ -154,7 +170,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                         justifyContent: 'center',
                         alignItems: 'center',
                         borderRadius: 1,
-                        minWidth: 0,
+                        minWidth: 36,
                         lineHeight: 1,
                         color: 'text.secondary',
                         padding: (theme) => theme.spacing(0.25, 0.5),
