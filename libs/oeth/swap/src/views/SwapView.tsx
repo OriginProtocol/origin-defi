@@ -20,7 +20,7 @@ import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
-import { ApyChart } from '../components/ApyChart';
+import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import { routeActionLabel } from '../constants';
@@ -148,7 +148,7 @@ function SwapViewWrapped() {
 
   return (
     <>
-      <ApyChart />
+      <ApyHeader />
       <Card sx={{ mt: 3 }}>
         <CardHeader
           title={

@@ -50,8 +50,12 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         whiteSpace: 'nowrap',
       }}
     >
-      <Stack direction="row" alignItems="center" spacing={1} px={2} py={1.5}>
-        {!isXs && <Mix />}
+      <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
+        {!isXs && (
+          <Stack justifyContent="center">
+            <Mix />
+          </Stack>
+        )}
         <Stack flex={1} direction="column">
           <Stack
             direction="row"
@@ -81,7 +85,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             })}
           </Typography>
         </Stack>
-        <Stack direction="column" alignItems="flex-end" spacing={0.5}>
+        <Stack justifyContent="flex-start" alignItems="flex-end">
           <Stack direction="row" gap={1}>
             <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Gas:' })}
@@ -94,7 +98,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
               )}
             </Typography>
           </Stack>
-          <Stack direction="row" gap={1}>
+          {/* <Stack direction="row" gap={1}>
             <Typography variant="body2" color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'Wait time:' })}
             </Typography>
@@ -105,7 +109,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 intl.formatMessage({ defaultMessage: '~1 min' })
               )}
             </Typography>
-          </Stack>
+          </Stack> */}
         </Stack>
       </Stack>
       <Divider />

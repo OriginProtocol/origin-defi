@@ -421,8 +421,8 @@ export const theme = extendTheme({
       },
       styleOverrides: {
         text: ({ theme }) => ({
-          borderRadius: theme.shape.borderRadius * 22,
-          backgroundColor: 'grey.900',
+          borderRadius: 15,
+          backgroundColor: theme.palette.grey[800],
         }),
       },
     },
