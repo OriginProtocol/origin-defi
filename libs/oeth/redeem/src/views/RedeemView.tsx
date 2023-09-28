@@ -40,9 +40,8 @@ const tokenInputStyles = {
     fontStyle: 'normal',
     fontFamily: 'Sailec, sans-serif',
     fontSize: 24,
-    lineHeight: 1.25,
+    lineHeight: 1.5,
     fontWeight: 700,
-    height: 24,
     color: 'text.primary',
     '&::placeholder': {
       color: 'text.secondary',

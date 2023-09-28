@@ -115,7 +115,6 @@ export const theme = extendTheme({
       lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
         fontSize: 13,
-        lineHeight: 1.25,
       },
     },
     body2: {

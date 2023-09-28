@@ -66,13 +66,14 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
         placeholder="0"
         {...rest}
         inputRef={ref}
-        inputMode="numeric"
+        inputMode="decimal"
         value={strVal}
         onChange={handleChange}
         inputProps={{
           pattern: `[0-9]*(.[0-9]{0,${decimals}})`,
           minLength: 0,
           maxLength: 30,
+          inputMode: 'decimal',
         }}
       />
     );
