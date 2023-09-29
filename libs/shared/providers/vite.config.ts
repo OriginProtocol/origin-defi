@@ -6,12 +6,13 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/financial-statement',
+  cacheDir: '../../../node_modules/.vite/shared-providers',
 
   plugins: [
     dts({
       entryRoot: 'src',
-      tsconfigPath: path.join(__dirname, 'tsconfig.lib.json'),
+      tsConfigFilePath: path.join(__dirname, 'tsconfig.lib.json'),
+      skipDiagnostics: true,
     }),
     react(),
     nxViteTsPaths(),
@@ -28,7 +29,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: 'financial-statement',
+      name: 'shared-providers',
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.

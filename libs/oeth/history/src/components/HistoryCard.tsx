@@ -9,12 +9,14 @@ import { ExportData } from './ExportData';
 import { HistoryFilters } from './Filters';
 import { HistoryTable } from './HistoryTable';
 
+import type { HistoryType } from '@origin/oeth/shared';
+
 const PAGE_SIZE = 20;
 
 export function HistoryCard() {
   const intl = useIntl();
   const [page, setPage] = useState(0);
-  const [filters, setFilters] = useState<string[]>([]);
+  const [filters, setFilters] = useState<HistoryType[]>([]);
   const { address, isConnected } = useAccount();
 
   const { data, isFetching } = useHistoryTableWithFiltersQuery(

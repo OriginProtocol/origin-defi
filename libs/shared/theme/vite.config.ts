@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/financial-statement',
+  cacheDir: '../../../node_modules/.vite/shared-theme',
 
   plugins: [
     dts({
@@ -28,7 +28,7 @@ export default defineConfig({
     lib: {
       // Could also be a dictionary or array of multiple entry points.
       entry: 'src/index.ts',
-      name: 'financial-statement',
+      name: 'shared-theme',
       fileName: 'index',
       // Change this to the formats you want to support.
       // Don't forget to update your package.json as well.

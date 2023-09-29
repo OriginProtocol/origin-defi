@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import {
   alpha,
@@ -21,6 +21,8 @@ import { useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
 
+import type { HistoryType } from '@origin/oeth/shared';
+
 const styles = {
   fontSize: '0.75rem',
   fontWeight: 500,
@@ -29,16 +31,19 @@ const styles = {
 };
 
 interface Props {
-  onChange: (values: string[]) => void;
+  onChange: (values: HistoryType[]) => void;
 }
 
 export function HistoryFilters({ onChange }: Props) {
-  const [selected, setSelectedTypes] = useState<string[]>([]);
+  const [selected, setSelectedTypes] = useState<HistoryType[]>([]);
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  function selection(e: React.ChangeEvent<HTMLInputElement>, label: string) {
+  function selection(
+    e: React.ChangeEvent<HTMLInputElement>,
+    label: HistoryType,
+  ) {
     setSelectedTypes((prev) => {
       if (e.target.checked) {
         return [...prev, label];
@@ -94,52 +99,54 @@ export function HistoryFilters({ onChange }: Props) {
         </Typography>
         <Divider sx={{ marginBlockEnd: 2 }} />
 
-        {['Yield', 'Swap', 'Sent', 'Received'].map((label) => (
-          <Stack
-            key={label}
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{
-              paddingInline: 2,
-              paddingBlock: 0,
-              paddingTop: 0,
-              paddingBottom: 0,
-              ...styles,
-              ':hover': {
-                background: (theme) => theme.palette.grey[700],
-              },
-            }}
-          >
-            <FormLabel htmlFor={label} sx={{ color: 'primary.contrastText' }}>
-              {label}
-            </FormLabel>
-
-            <Checkbox
-              inputProps={{ id: label }}
-              checked={selected.includes(label)}
-              checkedIcon={<CheckboxIcon />}
-              icon={<EmptyCheckbox />}
+        {(['Yield', 'Swap', 'Sent', 'Received'] as HistoryType[]).map(
+          (label) => (
+            <Stack
+              key={label}
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
               sx={{
-                '& svg, input': {
-                  width: '1.25rem',
-                  height: '1.25rem',
-                  top: 'auto',
-                  left: 'auto',
-                },
-                '&:hover:has(input:checked) svg': {
-                  fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
-                  strokeWidth: '1px',
-                  stroke: (theme) => theme.palette.primary.main,
-                },
-                '&:hover:has(input:not(:checked)) svg': {
-                  fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
+                paddingInline: 2,
+                paddingBlock: 0,
+                paddingTop: 0,
+                paddingBottom: 0,
+                ...styles,
+                ':hover': {
+                  background: (theme) => theme.palette.grey[700],
                 },
               }}
-              onChange={(e) => selection(e, label)}
-            />
-          </Stack>
-        ))}
+            >
+              <FormLabel htmlFor={label} sx={{ color: 'primary.contrastText' }}>
+                {label}
+              </FormLabel>
+
+              <Checkbox
+                inputProps={{ id: label }}
+                checked={selected.includes(label)}
+                checkedIcon={<CheckboxIcon />}
+                icon={<EmptyCheckbox />}
+                sx={{
+                  '& svg, input': {
+                    width: '1.25rem',
+                    height: '1.25rem',
+                    top: 'auto',
+                    left: 'auto',
+                  },
+                  '&:hover:has(input:checked) svg': {
+                    fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
+                    strokeWidth: '1px',
+                    stroke: (theme) => theme.palette.primary.main,
+                  },
+                  '&:hover:has(input:not(:checked)) svg': {
+                    fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
+                  },
+                }}
+                onChange={(e) => selection(e, label)}
+              />
+            </Stack>
+          ),
+        )}
 
         <Divider sx={{ marginBlockStart: 2 }} />
         <Stack

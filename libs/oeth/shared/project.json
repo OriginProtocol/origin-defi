@@ -5,14 +5,6 @@
   "projectType": "library",
   "tags": [],
   "targets": {
-    "codegen-graphql": {
-      "executor": "nx:run-commands",
-      "options": {
-        "commands": [
-          "pnpm graphql-codegen --config 'libs/oeth/shared/codegen.ts'"
-        ]
-      }
-    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": [
@@ -22,6 +14,24 @@
         "lintFilePatterns": [
           "libs/oeth/shared/**/*.{ts,tsx,js,jsx}"
         ]
+      }
+    },
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": [
+        "{options.outputPath}"
+      ],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/libs/oeth/shared"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
       }
     }
   }
