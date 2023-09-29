@@ -32,7 +32,7 @@ export const TokenSelectModal = ({
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
-  const toks = sortWith<TokenOption>([
+  const sortedTokens = sortWith<TokenOption>([
     ascend(prop('isSelected')),
     descend(prop('isSwappable')),
   ])(tokens);
@@ -57,7 +57,7 @@ export const TokenSelectModal = ({
       onClose={onClose}
     >
       <MenuList disablePadding>
-        {toks.map((token, i) => (
+        {sortedTokens.map((token, i) => (
           <TokenListItem
             key={`token-${token.address || 'eth'}-${i}`}
             token={token}
