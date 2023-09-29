@@ -7,6 +7,7 @@ import {
   LineElement,
   PointElement,
   registerables,
+  TimeScale,
 } from 'chart.js';
 
 export function registerChart() {
@@ -14,6 +15,7 @@ export function registerChart() {
     ...registerables,
     CategoryScale,
     LinearScale,
+    TimeScale,
     LineElement,
     PointElement,
   );

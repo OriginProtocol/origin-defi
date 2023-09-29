@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { Container } from '@mui/material';
-import dayjs from 'dayjs';
+import { addDays } from 'date-fns';
 
 import { TimeLineChart } from './TimeLineChart';
 
@@ -40,7 +40,7 @@ const meta: Meta<typeof TimeLineChart> = {
         {
           type: 'line',
           data: array(180, { x: new Date('2023-01-01'), y: 0.05 }, (last) => ({
-            x: dayjs(last.x).add(1, 'day').toDate(),
+            x: addDays(last.x, 1),
             y: faker.number.float({
               min: last.y * 0.9,
               max: last.y * 1.1,

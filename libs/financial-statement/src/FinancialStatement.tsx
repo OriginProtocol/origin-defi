@@ -4,7 +4,7 @@ import {
   alpha,
   Box,
   Button,
-  Experimental_CssVarsProvider,
+  Experimental_CssVarsProvider as CssVarsProvider,
   Paper,
   Stack,
   Typography,
@@ -15,17 +15,18 @@ import { queryClient } from '@origin/oeth/shared';
 import { useChainlinkEthUsd } from '@origin/shared/providers';
 import { theme } from '@origin/shared/theme';
 import { QueryClientProvider } from '@tanstack/react-query';
-import dayjs from 'dayjs';
-import LocalizedFormat from 'dayjs/plugin/localizedFormat';
-import RelativeTime from 'dayjs/plugin/relativeTime';
+import {
+  endOfToday,
+  formatRelative,
+  intlFormat,
+  startOfDay,
+  subDays,
+} from 'date-fns';
 import { IntlProvider, useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import * as colors from './colors';
 import { useFinancialStatementQuery } from './FinancialStatement.generated';
-
-dayjs.extend(LocalizedFormat);
-dayjs.extend(RelativeTime);
 
 const calculateChange = (from: number, to: number) => {
   if (from === 0 && to === 0) return 0;
@@ -51,18 +52,19 @@ const getTotals = (data: Record<string, Record<string, number[]>>) => {
 export default function SelfContainedFinancialStatement() {
   return (
     <IntlProvider messages={{}} locale="en" defaultLocale="en">
-      <Experimental_CssVarsProvider theme={theme} defaultMode="dark">
+      <CssVarsProvider theme={theme} defaultMode="dark">
         <QueryClientProvider client={queryClient}>
           <LiveFinancialStatement />
         </QueryClientProvider>
-      </Experimental_CssVarsProvider>
+      </CssVarsProvider>
     </IntlProvider>
   );
 }
 
 export const LiveFinancialStatement = () => {
-  const endOfToday = dayjs().endOf('day').toISOString();
-  const [sevenDaysAgo] = useState(dayjs().subtract(7, 'days').toISOString());
+  const todayEnd = endOfToday();
+  const sevenDaysAgo = startOfDay(subDays(todayEnd, 7));
+
   const { isLoading: fsIsLoading, data: fs } = useFinancialStatementQuery({
     compareDate: endOfToday,
   });
@@ -101,7 +103,7 @@ export const LiveFinancialStatement = () => {
         blockNumber,
         timestamp,
       }}
-      columns={[dayjs(sevenDaysAgo).fromNow(), dayjs(endOfToday).format('ll')]}
+      columns={[formatRelative(sevenDaysAgo, new Date()), intlFormat(todayEnd)]}
       data={{
         assets: {
           Vault: {
@@ -270,12 +272,8 @@ export const FinancialStatement = (props: {
           color={(theme) => theme.palette.primary.contrastText}
         >
           <Typography>
-            {`Last updated ${dayjs(props.lastUpdated.timestamp).format(
-              'll',
-            )} at `}
-            {`${dayjs(props.lastUpdated.timestamp).format('LT')}, block #${
-              props.lastUpdated.blockNumber
-            }`}
+            {`Last updated ${intlFormat(props.lastUpdated.timestamp)}, `}
+            {`block #${props.lastUpdated.blockNumber}`}
           </Typography>
           <Typography>
             {props.ethPrice &&

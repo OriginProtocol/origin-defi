@@ -1,10 +1,8 @@
-import 'chartjs-adapter-dayjs-4/dist/chartjs-adapter-dayjs-4.esm';
-
 import { useState } from 'react';
 
 import { Box, MenuItem, Paper, Select, Stack, useTheme } from '@mui/material';
-import { Chart, TimeScale } from 'chart.js';
-import dayjs from 'dayjs';
+import { registerChart } from '@origin/shared/providers';
+import { intlFormat } from 'date-fns';
 import { mergeDeepRight } from 'ramda';
 import { Line } from 'react-chartjs-2';
 
@@ -12,7 +10,7 @@ import type { Theme } from '@origin/shared/theme';
 import type { ChartData, ChartOptions, Plugin } from 'chart.js';
 import type { ComponentProps } from 'react';
 
-Chart.register(TimeScale);
+registerChart();
 
 /**
  * TODO: Figure out a proper home for these?
@@ -91,7 +89,7 @@ export function TimeLineChart<FilterOption extends string>(props: {
                 ) : null}
               </Stack>
               <Box fontSize={'.875rem'} color={hovering ? '#ddd' : undefined}>
-                {dayjs(currentData[0].x).format('ll')}
+                {intlFormat(currentData[0].x)}
               </Box>
             </Stack>
             <Stack gap={quarter}>
@@ -327,13 +325,19 @@ const verticalLinePlugin = (theme: Theme) => {
         ctx.stroke();
         ctx.font = '0.875rem Inter';
         ctx.fillStyle = theme.palette.text.primary;
-        const text = dayjs(data.x).format('lll');
+        const text = intlFormat(data.x);
         const textSize = ctx.measureText(text);
         const fromLeft =
           x + textSize.actualBoundingBoxRight <= chart.chartArea.right;
         ctx.textAlign = fromLeft ? 'start' : 'end';
         ctx.fillText(
-          dayjs(data.x).format('lll'),
+          intlFormat(data.x, {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+          }),
           x + (fromLeft ? heightAboveChart : -heightAboveChart) / 2,
           chart.chartArea.top -
             heightAboveChart +

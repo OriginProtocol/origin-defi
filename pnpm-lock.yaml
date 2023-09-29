@@ -35,12 +35,6 @@ dependencies:
   chart.js:
     specifier: ^4.4.0
     version: 4.4.0
-  chartjs-adapter-dayjs-4:
-    specifier: ^1.0.4
-    version: 1.0.4(chart.js@4.4.0)(dayjs@1.11.10)
-  dayjs:
-    specifier: ^1.11.10
-    version: 1.11.10
   chartjs-adapter-date-fns:
     specifier: ^3.0.0
     version: 3.0.0(chart.js@4.4.0)(date-fns@2.30.0)
@@ -8891,17 +8885,6 @@ packages:
       '@kurkle/color': 0.3.2
     dev: false
 
-  /chartjs-adapter-dayjs-4@1.0.4(chart.js@4.4.0)(dayjs@1.11.10):
-    resolution: {integrity: sha512-yy9BAYW4aNzPVrCWZetbILegTRb7HokhgospPoC3b5iZ5qdlqNmXts2KdSp6AqnjkPAp/YWyHDxLvIvwt5x81w==}
-    engines: {node: '>=10'}
-    peerDependencies:
-      chart.js: '>=4.0.1'
-      dayjs: ^1.9.7
-    dependencies:
-      chart.js: 4.4.0
-      dayjs: 1.11.10
-    dev: false
-
   /chartjs-adapter-date-fns@3.0.0(chart.js@4.4.0)(date-fns@2.30.0):
     resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
     peerDependencies:
@@ -9341,10 +9324,6 @@ packages:
     engines: {node: '>=0.11'}
     dependencies:
       '@babel/runtime': 7.22.15
-    dev: false
-
-  /dayjs@1.11.10:
-    resolution: {integrity: sha512-vjAczensTgRcqDERK0SR2XMwsF/tSvnvlv6VcF2GIhg6Sx4yOIt/irsr1RDJsKiIyBzJDpCoXiWWq28MqH2cnQ==}
     dev: false
 
   /de-indent@1.0.2:
