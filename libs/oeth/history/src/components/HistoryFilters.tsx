@@ -11,12 +11,11 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { HistoryType } from '@origin/oeth/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
-
-import type { HistoryType } from '@origin/oeth/shared';
 
 const styles = {
   fontSize: 12,
@@ -27,19 +26,19 @@ const styles = {
 const filterOptions = [
   {
     label: defineMessage({ defaultMessage: 'Yield' }),
-    value: 'Yield' as HistoryType,
+    value: HistoryType.Yield,
   },
   {
     label: defineMessage({ defaultMessage: 'Swap' }),
-    value: 'Swap' as HistoryType,
+    value: HistoryType.Swap,
   },
   {
     label: defineMessage({ defaultMessage: 'Sent' }),
-    value: 'Sent' as HistoryType,
+    value: HistoryType.Sent,
   },
   {
     label: defineMessage({ defaultMessage: 'Received' }),
-    value: 'Received' as HistoryType,
+    value: HistoryType.Received,
   },
 ];
 
