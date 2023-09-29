@@ -22,8 +22,10 @@ export const useHandleAmountInChange = () => {
     (amount: bigint) => {
       setSwapState(
         produce((state) => {
-          state.amountIn = amount;
-          state.isSwapRoutesLoading = amount !== 0n;
+          if (state.amountIn !== amount) {
+            state.amountIn = amount;
+            state.isSwapRoutesLoading = amount !== 0n;
+          }
         }),
       );
     },

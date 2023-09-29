@@ -26,12 +26,6 @@ export const AddressLabel = ({
     chainId: mainnet.id,
   });
 
-  if (short) {
-    return (
-      <MiddleTruncated {...rest}>{middleTruncate(address)}</MiddleTruncated>
-    );
-  }
-
   if (enableEnsName) {
     return isEnsNameLoading ? (
       <Skeleton sx={{ minWidth: 100, ...rest?.sx }} />
@@ -39,6 +33,12 @@ export const AddressLabel = ({
       <MiddleTruncated textProps={{ ...rest }}>
         {ensName ?? address}
       </MiddleTruncated>
+    );
+  }
+
+  if (short) {
+    return (
+      <MiddleTruncated {...rest}>{middleTruncate(address)}</MiddleTruncated>
     );
   }
 
