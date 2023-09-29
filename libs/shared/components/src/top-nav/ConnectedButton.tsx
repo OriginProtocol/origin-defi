@@ -102,8 +102,8 @@ export function ConnectedButton({
                 borderRadius: 7,
                 paddingInline: 2.375,
                 paddingBlock: 1.25,
-                fontSize: '0.75rem',
-                lineHeight: '0.75rem',
+                fontSize: 12,
+                lineHeight: 1.25,
                 '&:hover': {
                   background: (theme) =>
                     alpha(theme.palette.common.white, 0.05),

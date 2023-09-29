@@ -21,7 +21,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenOut: tokens.mainnet.OETH,
       swapRoutes: [],
       selectedSwapRoute: null,
-      slippage: 0.01,
+      slippage: 0.001,
       isSwapRoutesLoading: false,
       isApproved: false,
       isApprovalLoading: false,

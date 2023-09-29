@@ -1,13 +1,13 @@
 import { useMemo } from 'react';
 
 import {
-  Box,
   Stack,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import { LinkIcon } from '@origin/shared/components';
 import { quantityFormat } from '@origin/shared/utils';
@@ -64,37 +64,37 @@ export function HistoryTable({
         },
       }),
       columnHelper.accessor('value', {
-        cell: (info) => intl.formatNumber(info.getValue(), quantityFormat),
-        header: intl.formatMessage({ defaultMessage: 'Change' }),
+        cell: (info) => (
+          <Typography textAlign="end">
+            {intl.formatNumber(info.getValue(), quantityFormat)}
+          </Typography>
+        ),
+        header: () => (
+          <Typography textAlign="end">
+            {intl.formatMessage({ defaultMessage: 'Change' })}
+          </Typography>
+        ),
       }),
       columnHelper.accessor('balance', {
         cell: (info) => (
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            gap={1}
-            sx={{ textAlign: 'right' }}
-          >
-            <Box
-              sx={{
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                maxWidth: '75%',
-              }}
-              component="span"
-            >
-              {intl.formatNumber(info.getValue(), quantityFormat)}
-            </Box>
-
-            <LinkIcon
-              url={`https://etherscan.io/tx/${info.row.original.txHash}`}
-              sx={{ transform: 'translateY(6.5%)' }}
-            />
-          </Stack>
+          <Typography textAlign="end">
+            {intl.formatNumber(info.getValue(), quantityFormat)}
+          </Typography>
         ),
-        header: intl.formatMessage({ defaultMessage: 'Balance' }),
+        header: () => (
+          <Typography textAlign="end">
+            {intl.formatMessage({ defaultMessage: 'Balance' })}
+          </Typography>
+        ),
+      }),
+      columnHelper.display({
+        id: 'link',
+        cell: (info) => (
+          <LinkIcon
+            size={10}
+            url={`https://etherscan.io/tx/${info.row.original.txHash}`}
+          />
+        ),
       }),
     ],
     [intl],
@@ -118,7 +118,7 @@ export function HistoryTable({
   });
 
   return (
-    <Stack gap={2}>
+    <Stack>
       <Table
         sx={{ '& .MuiTableCell-root': { paddingInline: { xs: 2, md: 3 } } }}
       >
@@ -155,12 +155,15 @@ export function HistoryTable({
                 '& > *:first-of-type': {
                   width: '50%',
                 },
+                '& > *:last-of-type': {
+                  pl: 0,
+                  textAlign: 'end',
+                },
               }}
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell
                   key={cell.id}
-                  align="left"
                   sx={{
                     ...(cell.column.columnDef.id === 'type'
                       ? { '&:first-letter': { textTransform: 'uppercase' } }
@@ -176,9 +179,10 @@ export function HistoryTable({
       </Table>
       <Stack
         direction="row"
+        alignItems="baseline"
         justifyContent="flex-end"
         gap={1}
-        sx={{ paddingInline: 2 }}
+        sx={{ px: 3, py: 2 }}
       >
         <HistoryFilterButton
           disabled={!hasPreviousPage}
@@ -186,6 +190,12 @@ export function HistoryTable({
         >
           {intl.formatMessage({ defaultMessage: 'Previous' })}
         </HistoryFilterButton>
+        <Typography fontSize={13} px={2}>
+          {intl.formatMessage(
+            { defaultMessage: 'Page {page}' },
+            { page: page + 1 },
+          )}
+        </Typography>
         <HistoryFilterButton
           disabled={!hasNextPage}
           onClick={() => setPage(page + 1)}

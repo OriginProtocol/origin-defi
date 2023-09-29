@@ -69,6 +69,7 @@ export const PercentInput = forwardRef<HTMLInputElement, PercentInputProps>(
           pattern: `[0-9]*(.[0-9]{0,${precision}})`,
           minLength: 0,
           maxLength: precision + 4,
+          inputMode: 'decimal',
         }}
       />
     );

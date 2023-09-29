@@ -3,7 +3,6 @@ import { currencyFormat, valueFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import { Loader } from '../../Loader';
-import { cardStyles } from '../Card';
 import { SwapItem } from './SwapItem';
 import { styles } from './utils';
 
@@ -39,7 +38,11 @@ export function Output({
         borderStartStartRadius: 0,
         borderStartEndRadius: 0,
         backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
-        ...cardStyles,
+        padding: (theme) => ({
+          xs: theme.spacing(2, 1.5),
+          md: 3,
+        }),
+        borderBlockEnd: '1px solid',
         paddingBlock: 2.5,
         paddingBlockEnd: 2.625,
         boxShadow: 'none',
@@ -57,7 +60,6 @@ export function Output({
               fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
               flex: 1,
               alignSelf: 'end',
-              lineHeight: '1.875rem',
               color: (theme) =>
                 exchangeTokenQuantity === 0
                   ? theme.palette.text.secondary
@@ -84,7 +86,7 @@ export function Output({
           isLoading ? (
             <Loader width={28} />
           ) : (
-            <Typography variant="body1" color="grey.200" lineHeight="1.5rem">
+            <Typography variant="body1" color="grey.200">
               {intl.formatNumber(exchangeTokenValue, currencyFormat)}
             </Typography>
           )
@@ -99,7 +101,6 @@ export function Output({
               }}
               variant="body1"
               color="grey.200"
-              lineHeight="1.5rem"
             >
               {intl.formatMessage(
                 { defaultMessage: 'Balance: {number}' },

@@ -1,4 +1,4 @@
-import { alpha, Box, Button, useMediaQuery, useTheme } from '@mui/material';
+import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
@@ -19,35 +19,22 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
 
   return (
     <Button
-      disableElevation
-      disableRipple
-      disableTouchRipple
-      disableFocusRipple
-      variant="text"
       {...props}
       sx={{
-        backgroundColor: 'background.paper',
-        borderRadius: 25,
-        color: 'primary.contrastText',
-        boxSizing: 'border-box',
-        lineHeight: '1rem',
-        minHeight: 36,
-        minWidth: 36,
-        maxWidth: { xs: 36, sm: 160, lg: 220 },
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 1.5,
-        padding: 0.75,
-        background: (theme) =>
-          `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), ${theme.palette.background.paper}`,
-        '&:hover': {
-          background: (theme) => theme.palette.background.gradient2,
-        },
         ...props?.sx,
+        gap: 0.75,
+        paddingLeft: {
+          md: 1,
+          xs: 0.75,
+        },
+        paddingRight: {
+          md: 2,
+          sm: 1.5,
+          xs: 0.75,
+        },
       }}
     >
       <Box
@@ -72,6 +59,7 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
         <AddressLabel
           address={address}
           enableEnsName
+          short
           fontFamily="Inter"
           fontStyle="normal"
           fontWeight={500}

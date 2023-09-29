@@ -4,6 +4,9 @@ import {
   alpha,
   Box,
   Button,
+  Card,
+  CardContent,
+  CardHeader,
   CircularProgress,
   Collapse,
   IconButton,
@@ -11,13 +14,13 @@ import {
   Typography,
 } from '@mui/material';
 import { GasPopover } from '@origin/oeth/shared';
-import { Card, TokenInput } from '@origin/shared/components';
+import { TokenInput } from '@origin/shared/components';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
-import { ApyChart } from '../components/ApyChart';
+import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import { routeActionLabel } from '../constants';
@@ -33,19 +36,10 @@ import {
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
 
-import type { IconButtonProps, Theme } from '@mui/material';
+import type { IconButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { TokenSource } from '../types';
-
-const commonStyles = {
-  paddingBlock: 2.5,
-  paddingBlockStart: 2.625,
-  paddingInline: 2,
-  border: '1px solid',
-  borderColor: 'divider',
-  borderRadius: 1,
-};
 
 const tokenInputStyles = {
   border: 'none',
@@ -57,14 +51,12 @@ const tokenInputStyles = {
   boxSizing: 'border-box',
   '& .MuiInputBase-input': {
     padding: 0,
-    lineHeight: '1.875rem',
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-    fontSize: '1.5rem',
+    fontFamily: 'Sailec, sans-serif',
+    fontSize: 24,
+    lineHeight: 1.5,
     fontWeight: 700,
-    height: '1.5rem',
-    color: 'primary.contrastText',
     '&::placeholder': {
       color: 'text.secondary',
       opacity: 1,
@@ -138,159 +130,166 @@ function SwapViewWrapped() {
       : !isNilOrEmpty(selectedSwapRoute)
       ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
       : '';
-  const approveButtonLoading = isSwapRoutesLoading || isApprovalLoading;
-  const swapButtonLoading = isSwapRoutesLoading || isSwapLoading;
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
-    approveButtonLoading ||
+    isSwapRoutesLoading ||
+    isApprovalLoading ||
     amountIn > balTokenIn?.value;
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
     isBalTokenInLoading ||
-    swapButtonLoading ||
+    isSwapRoutesLoading ||
+    isSwapLoading ||
     amountIn > balTokenIn?.value ||
     amountIn === 0n;
 
   return (
     <>
-      <ApyChart />
-      <Card
-        sx={{ mt: 3 }}
-        sxCardTitle={{
-          padding: 0,
-          paddingInline: { xs: 2, md: 3 },
-          paddingY: 1.438,
-        }}
-        sxCardContent={{ display: 'flex', flexDirection: 'column', gap: 2 }}
-        title={
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
+      <ApyHeader />
+      <Card sx={{ mt: 3 }}>
+        <CardHeader
+          title={
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'Swap' })}
+              </Typography>
+              <GasPopover
+                slippage={slippage}
+                onSlippageChange={handleSlippageChange}
+                buttonProps={{
+                  sx: {
+                    position: 'relative',
+                    right: (theme) => theme.spacing(-0.75),
+                    svg: { width: 16, height: 16 },
+                  },
+                }}
+              />
+            </Stack>
+          }
+        />
+        <CardContent>
+          <Box
+            sx={{
+              position: 'relative',
+            }}
           >
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'Swap' })}
-            </Typography>
-            <GasPopover
-              slippage={slippage}
-              onSlippageChange={handleSlippageChange}
-              buttonProps={{
-                sx: {
-                  position: 'relative',
-                  right: (theme: Theme) => theme.spacing(-0.75),
+            <TokenInput
+              amount={amountIn}
+              onAmountChange={handleAmountInChange}
+              balance={balTokenIn?.value}
+              isBalanceLoading={isBalTokenInLoading}
+              token={tokenIn}
+              onTokenClick={() => {
+                setTokenSource('tokenIn');
+              }}
+              tokenPriceUsd={prices?.[tokenIn.symbol]}
+              isPriceLoading={isPriceLoading}
+              isConnected={isConnected}
+              isAmountDisabled={amountInInputDisabled}
+              inputProps={{ sx: tokenInputStyles }}
+              sx={{
+                paddingBlock: 2.5,
+                paddingBlockStart: 2.625,
+                paddingInline: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+                borderTopRightRadius: (theme) => theme.shape.borderRadius,
+                backgroundColor: 'grey.900',
+                borderBottomColor: 'transparent',
+                '&:hover, &:focus-within': {
+                  borderColor: 'transparent',
+                },
+                '&:hover': {
+                  background: (theme) =>
+                    `linear-gradient(${theme.palette.grey[900]}, ${
+                      theme.palette.grey[900]
+                    }) padding-box, linear-gradient(90deg, ${alpha(
+                      theme.palette.primary.main,
+                      0.4,
+                    )} 0%, ${alpha(
+                      theme.palette.primary.dark,
+                      0.4,
+                    )} 100%) border-box;`,
+                },
+                '&:focus-within': {
+                  background: (theme) =>
+                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
                 },
               }}
             />
-          </Stack>
-        }
-      >
-        <Box
-          sx={{
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'divider',
-            position: 'relative',
-          }}
-        >
-          <TokenInput
-            amount={amountIn}
-            onAmountChange={handleAmountInChange}
-            balance={balTokenIn?.value}
-            isBalanceLoading={isBalTokenInLoading}
-            token={tokenIn}
-            onTokenClick={() => {
-              setTokenSource('tokenIn');
-            }}
-            tokenPriceUsd={prices?.[tokenIn.symbol]}
-            isPriceLoading={isPriceLoading}
-            isConnected={isConnected}
-            isAmountDisabled={amountInInputDisabled}
-            inputProps={{ sx: tokenInputStyles }}
+            <TokenInput
+              amount={amountOut}
+              balance={balTokenOut?.value}
+              isAmountLoading={isSwapRoutesLoading}
+              isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
+              token={tokenOut}
+              onTokenClick={() => {
+                setTokenSource('tokenOut');
+              }}
+              tokenPriceUsd={prices?.[tokenOut.symbol]}
+              isPriceLoading={isSwapRoutesLoading || isPriceLoading}
+              isConnected={isConnected}
+              hideMaxButton
+              inputProps={{ readOnly: true, sx: tokenInputStyles }}
+              sx={{
+                paddingBlock: 2.5,
+                paddingBlockStart: 2.625,
+                paddingInline: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+                borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+                backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
+              }}
+            />
+            <ArrowButton onClick={handleTokenFlip} />
+          </Box>
+          <SwapRoute
             sx={{
-              ...commonStyles,
-              backgroundColor: 'grey.900',
-              borderBottomColor: 'transparent',
-              '&:hover, &:focus-within': {
-                borderColor: 'transparent',
-              },
-              '&:hover': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${
-                    theme.palette.grey[900]
-                  }) padding-box,
-              linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.4,
-              )} 0%, ${alpha(
-                theme.palette.primary.dark,
-                0.4,
-              )} 100%) border-box;`,
-              },
-              '&:focus-within': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
-             linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
-              },
+              mt: 1.5,
+              borderRadius: 1,
+              border: (theme) => `1px solid ${theme.palette.divider}`,
             }}
           />
-          <TokenInput
-            amount={amountOut}
-            balance={balTokenOut?.value}
-            isAmountLoading={isSwapRoutesLoading}
-            isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
-            token={tokenOut}
-            onTokenClick={() => {
-              setTokenSource('tokenOut');
-            }}
-            tokenPriceUsd={prices?.[tokenOut.symbol]}
-            isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-            isConnected={isConnected}
-            hideMaxButton
-            inputProps={{ readOnly: true, sx: tokenInputStyles }}
-            sx={{
-              ...commonStyles,
-              borderStartStartRadius: 0,
-              borderStartEndRadius: 0,
-              backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
-            }}
-          />
-          <ArrowButton onClick={handleTokenFlip} />
-        </Box>
-        <SwapRoute
-          sx={{
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'divider',
-          }}
-        />
-        <Collapse in={needsApproval}>
-          <Button
+          <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+            <Button
+              variant="action"
+              fullWidth
+              disabled={approveButtonDisabled}
+              onClick={handleApprove}
+            >
+              {isSwapRoutesLoading ? (
+                <CircularProgress size={32} color="inherit" />
+              ) : isApprovalLoading ? (
+                intl.formatMessage({ defaultMessage: 'Wait for signature' })
+              ) : (
+                intl.formatMessage({ defaultMessage: 'Approve' })
+              )}
+            </Button>
+          </Collapse>
+          <ConnectedButton
             variant="action"
             fullWidth
-            disabled={approveButtonDisabled}
-            onClick={handleApprove}
+            disabled={swapButtonDisabled}
+            onClick={handleSwap}
+            sx={{ mt: 1.5 }}
           >
-            {approveButtonLoading ? (
+            {isSwapRoutesLoading ? (
               <CircularProgress size={32} color="inherit" />
+            ) : isSwapLoading ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
             ) : (
-              intl.formatMessage({ defaultMessage: 'Approve' })
+              swapButtonLabel
             )}
-          </Button>
-        </Collapse>
-        <ConnectedButton
-          variant="action"
-          fullWidth
-          disabled={swapButtonDisabled}
-          onClick={handleSwap}
-        >
-          {swapButtonLoading ? (
-            <CircularProgress size={32} color="inherit" />
-          ) : (
-            swapButtonLabel
-          )}
-        </ConnectedButton>
+          </ConnectedButton>
+        </CardContent>
       </Card>
       <TokenSelectModal
         open={!isNilOrEmpty(tokenSource)}
@@ -312,8 +311,8 @@ function ArrowButton(props: IconButtonProps) {
         left: 0,
         right: 0,
         bottom: 0,
-        width: { md: '3rem', xs: '2rem' },
-        height: { md: '3rem', xs: '2rem' },
+        width: { md: 40, xs: 36 },
+        height: { md: 40, xs: 36 },
         margin: 'auto',
         zIndex: 2,
         fill: (theme) => theme.palette.background.paper,
@@ -338,7 +337,7 @@ function ArrowButton(props: IconButtonProps) {
         component="img"
         src="/images/splitarrow.svg"
         sx={{
-          height: { md: 'auto', xs: '1.25rem' },
+          height: { md: 20, xs: 18 },
         }}
       />
     </IconButton>
