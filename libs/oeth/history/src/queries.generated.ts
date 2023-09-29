@@ -12,19 +12,19 @@ export type HistoryTableQuery = {
   __typename?: 'Query';
   addressById?: {
     __typename?: 'Address';
-    balance: any;
-    earned: any;
+    balance: string;
+    earned: string;
     isContract: boolean;
     rebasingOption: Types.RebasingOption;
-    credits: any;
-    lastUpdated: any;
+    credits: string;
+    lastUpdated: string;
     history: Array<{
       __typename?: 'History';
       type: Types.HistoryType;
-      value: any;
+      value: string;
       txHash: string;
-      timestamp: any;
-      balance: any;
+      timestamp: string;
+      balance: string;
     }>;
   } | null;
 };
@@ -39,18 +39,18 @@ export type HistoryTableWithFiltersQuery = {
   __typename?: 'Query';
   addressById?: {
     __typename?: 'Address';
-    balance: any;
-    earned: any;
+    balance: string;
+    earned: string;
     isContract: boolean;
     rebasingOption: Types.RebasingOption;
-    lastUpdated: any;
+    lastUpdated: string;
     history: Array<{
       __typename?: 'History';
       type: Types.HistoryType;
-      value: any;
+      value: string;
       txHash: string;
-      timestamp: any;
-      balance: any;
+      timestamp: string;
+      balance: string;
     }>;
   } | null;
 };

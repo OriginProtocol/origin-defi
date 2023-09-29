@@ -12,46 +12,46 @@ export type FinancialStatementQuery = {
   oeths: Array<{
     __typename?: 'OETH';
     blockNumber: number;
-    timestamp: any;
-    totalSupply: any;
+    timestamp: string;
+    totalSupply: string;
   }>;
   curveLps: Array<{
     __typename?: 'CurveLP';
     blockNumber: number;
-    timestamp: any;
-    eth: any;
-    ethOwned: any;
-    oeth: any;
-    oethOwned: any;
-    totalSupply: any;
-    totalSupplyOwned: any;
+    timestamp: string;
+    eth: string;
+    ethOwned: string;
+    oeth: string;
+    oethOwned: string;
+    totalSupply: string;
+    totalSupplyOwned: string;
   }>;
   morphoAaves: Array<{
     __typename?: 'MorphoAave';
     blockNumber: number;
-    timestamp: any;
-    weth: any;
+    timestamp: string;
+    weth: string;
   }>;
   fraxStakings: Array<{
     __typename?: 'FraxStaking';
     blockNumber: number;
-    timestamp: any;
-    frxETH: any;
+    timestamp: string;
+    frxETH: string;
   }>;
   drippers: Array<{
     __typename?: 'Dripper';
     blockNumber: number;
-    timestamp: any;
-    weth: any;
+    timestamp: string;
+    weth: string;
   }>;
   vaults: Array<{
     __typename?: 'Vault';
     blockNumber: number;
-    timestamp: any;
-    weth: any;
-    rETH: any;
-    stETH: any;
-    frxETH: any;
+    timestamp: string;
+    weth: string;
+    rETH: string;
+    stETH: string;
+    frxETH: string;
   }>;
 };
 

@@ -3,6 +3,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   Box,
   Button,
+  Card,
+  CardHeader,
   Menu,
   MenuItem,
   Skeleton,
@@ -10,7 +12,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { Card } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, last, prop, sort } from 'ramda';
 import { Line } from 'react-chartjs-2';
@@ -212,74 +213,67 @@ export const ApyChart = (props: StackProps) => {
   );
 
   return (
-    <Card
-      sxCardTitle={{
-        padding: 0,
-        paddingInline: { xs: 2, md: 3 },
-        paddingY: 1.438,
-      }}
-      sxCardContent={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        paddingInline: 0,
-      }}
-      title={
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-        >
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'APY' })}
-          </Typography>
-          <Stack direction="row">
-            {limitOptions.map((d) => (
-              <Button
-                key={`duration-${d?.value ?? 'All'}`}
-                size="small"
-                onClick={() => {
-                  setLimit(d);
-                }}
-                sx={{
-                  minWidth: 0,
-                  width: 40,
-                  color: 'text.primary',
-                  ...(d.value === limit.value && {
-                    backgroundColor: (theme) =>
-                      theme.palette.background.default,
-                  }),
-                }}
-              >
-                {intl.formatMessage(d.label)}
-              </Button>
-            ))}
+    <Card>
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'APY' })}
+            </Typography>
+            <Stack
+              direction="row"
+              sx={{
+                borderRadius: 1,
+                padding: 0.25,
+                backgroundColor: 'grey.700',
+                gap: 0.5,
+              }}
+            >
+              {limitOptions.map((d) => (
+                <Button
+                  key={`duration-${d?.value ?? 'All'}`}
+                  variant="text"
+                  size="small"
+                  onClick={() => {
+                    setLimit(d);
+                  }}
+                  sx={{
+                    color: 'text.secondary',
+                    borderRadius: 1,
+                    minWidth: 0,
+                    width: 40,
+                    ...(d.value === limit.value && {
+                      background: (theme) =>
+                        theme.palette.background.gradientSelected,
+                    }),
+                  }}
+                >
+                  {intl.formatMessage(d.label)}
+                </Button>
+              ))}
+            </Stack>
           </Stack>
-        </Stack>
-      }
-    >
+        }
+      />
       <Stack>
         <Stack
           direction="row"
           alignItems="flex-start"
           justifyContent="space-between"
           sx={{
-            paddingInline: {
-              xs: 1.5,
-              md: 3,
-            },
+            paddingX: { xs: 2, md: 3 },
+            paddingTop: 1.5,
           }}
         >
           <Stack>
             {apiesLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              <Typography
-                fontSize={24}
-                fontWeight={700}
-                fontFamily="Sailec"
-                color="primary.contrastText"
-              >
+              <Typography fontSize={24} fontWeight={700} fontFamily="Sailec">
                 {intl.formatNumber(apy, {
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
@@ -290,7 +284,7 @@ export const ApyChart = (props: StackProps) => {
             {apiesLoading ? (
               <Skeleton width={100} height={12} />
             ) : (
-              <Typography fontSize={12} color="text.primary">
+              <Typography fontSize={12} color="text.secondary">
                 {intl.formatDate(new Date(timestamp), {
                   month: 'short',
                   day: 'numeric',
@@ -301,11 +295,17 @@ export const ApyChart = (props: StackProps) => {
           </Stack>
 
           <Button
-            color="inherit"
+            color="secondary"
             size="small"
             onClick={(e) => setAnchorEl(e.currentTarget)}
+            sx={{
+              borderRadius: 1,
+              color: 'text.secondary',
+              backgroundColor: 'grey.700',
+              img: { marginLeft: 0.75 },
+            }}
           >
-            {intl.formatMessage(trailing.label)}&nbsp;
+            {intl.formatMessage(trailing.label)}
             <Box component="img" src={`/images/downarrow.png`} />
           </Button>
           <Menu
@@ -332,7 +332,7 @@ export const ApyChart = (props: StackProps) => {
           </Menu>
         </Stack>
         <Stack
-          sx={{ pt: 2, height: 140, canvas: { width: 1 } }}
+          sx={{ py: 1.5, canvas: { width: 1, height: 140 } }}
           onMouseLeave={handleMouseLeave}
         >
           <Line

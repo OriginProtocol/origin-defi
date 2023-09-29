@@ -1,6 +1,15 @@
-import { alpha, Box, CircularProgress, Stack, Typography } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  CircularProgress,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { GasPopover } from '@origin/oeth/shared';
-import { Card, TokenInput } from '@origin/shared/components';
+import { TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, usePrices } from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
@@ -27,14 +36,13 @@ const tokenInputStyles = {
   boxSizing: 'border-box',
   '& .MuiInputBase-input': {
     padding: 0,
-    lineHeight: '1.875rem',
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-    fontSize: '1.5rem',
+    fontFamily: 'Sailec, sans-serif',
+    fontSize: 24,
+    lineHeight: 1.5,
     fontWeight: 700,
-    height: '1.5rem',
-    color: 'primary.contrastText',
+    color: 'text.primary',
     '&::placeholder': {
       color: 'text.secondary',
       opacity: 1,
@@ -61,52 +69,39 @@ function RedeemViewWrapped() {
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
 
-  const amountInInputDisabled = isRedeemLoading;
-
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > balOeth?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
       : intl.formatMessage({ defaultMessage: 'Redeem for mix' });
-  const redeemButtonLoading = isEstimateLoading || isRedeemLoading;
   const redeemButtonDisabled =
     isBalOethLoading ||
-    redeemButtonLoading ||
+    isEstimateLoading ||
+    isRedeemLoading ||
     amountIn > balOeth?.value ||
     amountIn === 0n;
 
   return (
-    <Card
-      sxCardTitle={{
-        padding: 0,
-        paddingInline: { xs: 2, md: 3 },
-        paddingY: 1.438,
-      }}
-      sxCardContent={{ display: 'flex', flexDirection: 'column' }}
-      title={
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Redeem' })}
-          </Typography>
-          <GasPopover
-            slippage={slippage}
-            onSlippageChange={handleSlippageChange}
-          />
-        </Stack>
-      }
-    >
-      <Box
-        sx={{
-          borderRadius: 1,
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
+    <Card>
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Redeem' })}
+            </Typography>
+            <GasPopover
+              slippage={slippage}
+              onSlippageChange={handleSlippageChange}
+            />
+          </Stack>
+        }
+      />
+      <CardContent>
         <TokenInput
           amount={amountIn}
           onAmountChange={handleAmountInChange}
@@ -117,8 +112,9 @@ function RedeemViewWrapped() {
           tokenPriceUsd={prices?.OETH}
           isPriceLoading={isPricesLoading}
           isConnected={isConnected}
-          isAmountDisabled={amountInInputDisabled}
+          isAmountDisabled={isRedeemLoading}
           inputProps={{ sx: tokenInputStyles }}
+          tokenButtonProps={{ sx: { minWidth: 100, maxWidth: 100 } }}
           sx={{
             paddingBlock: 2.5,
             paddingBlockStart: 2.625,
@@ -127,7 +123,6 @@ function RedeemViewWrapped() {
             borderColor: 'divider',
             borderRadius: 1,
             backgroundColor: 'grey.900',
-            borderBottomColor: 'transparent',
             '&:hover, &:focus-within': {
               borderColor: 'transparent',
             },
@@ -151,30 +146,32 @@ function RedeemViewWrapped() {
             },
           }}
         />
-      </Box>
-      <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
-        <ArrowButton />
-      </Stack>
-      <RedeemRoute
-        sx={{
-          borderRadius: 1,
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      />
-      <ConnectedButton
-        variant="action"
-        fullWidth
-        disabled={redeemButtonDisabled}
-        onClick={handleRedeem}
-        sx={{ marginTop: 2 }}
-      >
-        {redeemButtonLoading ? (
-          <CircularProgress size={32} color="inherit" />
-        ) : (
-          redeemButtonLabel
-        )}
-      </ConnectedButton>
+        <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
+          <ArrowButton />
+        </Stack>
+        <RedeemRoute
+          sx={{
+            borderRadius: 1,
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
+        />
+        <ConnectedButton
+          variant="action"
+          fullWidth
+          disabled={redeemButtonDisabled}
+          onClick={handleRedeem}
+          sx={{ mt: 1.5 }}
+        >
+          {isEstimateLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : isRedeemLoading ? (
+            intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+          ) : (
+            redeemButtonLabel
+          )}
+        </ConnectedButton>
+      </CardContent>
     </Card>
   );
 }
@@ -189,10 +186,10 @@ function ArrowButton(props: BoxProps) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        top: { md: `calc(50% - ${48 / 2}px)`, xs: `calc(50% - ${32 / 2}px)` },
-        left: { md: `calc(50% - ${48 / 2}px)`, xs: `calc(50% - ${32 / 2}px)` },
-        width: { md: 48, xs: 32 },
-        height: { md: 48, xs: 32 },
+        top: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
+        left: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
+        width: { md: 40, xs: 36 },
+        height: { md: 40, xs: 36 },
         zIndex: 2,
         fill: (theme) => theme.palette.background.paper,
         strokeWidth: (theme) => theme.typography.pxToRem(2),
@@ -207,7 +204,7 @@ function ArrowButton(props: BoxProps) {
         component="img"
         src="/images/splitarrow.svg"
         sx={{
-          height: { md: 'auto', xs: '1.25rem' },
+          height: { md: 20, xs: 18 },
         }}
       />
     </Box>

@@ -4,7 +4,7 @@ import type { LinkProps } from '@mui/material';
 
 interface Props extends LinkProps {
   url: string;
-  size?: string;
+  size?: number | string;
 }
 
 export function LinkIcon({

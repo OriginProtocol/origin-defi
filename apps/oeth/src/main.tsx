@@ -8,6 +8,7 @@ import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
 import { chains, queryClient, wagmiConfig } from '@origin/oeth/shared';
 import {
   CurveProvider,
+  GeoFenceProvider,
   NotificationsProvider,
   registerChart,
 } from '@origin/shared/providers';
@@ -42,6 +43,7 @@ root.render(
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [CurveProvider],
       [NotificationsProvider],
+      [GeoFenceProvider],
     ],
     <RouterProvider router={createHashRouter(routes)} />,
   ),

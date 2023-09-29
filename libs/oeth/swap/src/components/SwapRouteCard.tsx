@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { tokens } from '@origin/shared/contracts';
 import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
@@ -17,7 +18,7 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import { routeActionLabel, routeActionLogos } from '../constants';
+import { routeActionLabel } from '../constants';
 import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
 
@@ -104,6 +105,7 @@ export function SwapRouteCard({
       <CardHeader
         sx={{
           padding: 0,
+          borderBottom: 'none',
         }}
         title={
           <Grid2 container spacing={0.5} position="relative">
@@ -113,15 +115,17 @@ export function SwapRouteCard({
               ) : (
                 <Box
                   component="img"
-                  src={routeActionLogos[route.action]}
+                  src={tokens.mainnet.OETH.icon}
                   height={16}
                   width={16}
-                  mr={0.5}
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
                 />
               )}
             </Grid2>
             <Grid2 display="flex" alignItems="center">
-              <Typography color="primary.contrastText" variant="body1">
+              <Typography fontWeight={500}>
                 {isLoading ? (
                   <Skeleton width={100} />
                 ) : (
@@ -145,11 +149,11 @@ export function SwapRouteCard({
                   position: 'absolute',
                   borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
                   background: (theme) => theme.palette.background.gradient1,
-                  color: 'primary.contrastText',
-                  fontSize: (theme) => theme.typography.pxToRem(12),
+                  fontSize: 12,
                   top: (theme) => theme.spacing(-3),
-                  right: (theme) => theme.spacing(-2),
-                  paddingInline: 1,
+                  right: (theme) => theme.spacing(-1.25),
+                  px: 1,
+                  pt: 0.25,
                 }}
               >
                 {intl.formatMessage({ defaultMessage: 'Best' })}
@@ -159,11 +163,7 @@ export function SwapRouteCard({
         }
       ></CardHeader>
 
-      <Typography
-        color="primary.contrastText"
-        variant="body2"
-        sx={{ marginBlock: { xs: 1.5, md: 1 } }}
-      >
+      <Typography fontWeight={500} sx={{ marginBlock: { xs: 1.5, md: 1 } }}>
         {isLoading ? (
           <Skeleton width={80} />
         ) : (
@@ -174,13 +174,13 @@ export function SwapRouteCard({
         <Stack
           direction="row"
           gap={1}
+          alignItems="center"
           justifyContent="space-between"
-          color="text.secondary"
         >
-          <Typography variant="body2">
+          <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography color="primary.contrastText" variant="body2">
+          <Typography variant="body2" fontWeight={500}>
             {isLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -191,13 +191,13 @@ export function SwapRouteCard({
         <Stack
           direction="row"
           gap={1}
+          alignItems="center"
           justifyContent="space-between"
-          color="text.secondary"
         >
-          <Typography variant="body2">
+          <Typography variant="body2" color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Gas:' })}
           </Typography>
-          <Typography color="primary.contrastText" variant="body2">
+          <Typography variant="body2" fontWeight={500}>
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (

@@ -85,6 +85,7 @@ function ValueContainer({
         paddingBlock: 2,
         alignItems: 'center',
         textAlign: 'center',
+        justifyContent: 'space-between',
         flex: 1,
         ...rest?.sx,
       }}
@@ -92,17 +93,7 @@ function ValueContainer({
       <Typography variant="body2" color="text.secondary">
         {label}
       </Typography>
-      <Typography
-        sx={{
-          fontFamily: 'Sailec',
-          fontSize: (theme) => theme.typography.pxToRem(20),
-          fontStyle: 'normal',
-          fontWeight: 700,
-          lineHeight: '2rem',
-          textAlign: 'center',
-        }}
-        color="primary.contrastText"
-      >
+      <Typography variant="h4" textAlign="center">
         {isLoading ? <Skeleton width={60} /> : value}
       </Typography>
     </Stack>

@@ -158,8 +158,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             draft.split.forEach((a, i) => (a.amount = splitEstimates[i]));
             draft.gas = gasEstimate;
             draft.rate =
-              +formatUnits(state.amountIn, tokens.mainnet.OETH.decimals) /
-              +formatUnits(total, MIX_TOKEN.decimals);
+              +formatUnits(total, MIX_TOKEN.decimals) /
+              +formatUnits(state.amountIn, tokens.mainnet.OETH.decimals);
             draft.isEstimateLoading = false;
           }),
         );

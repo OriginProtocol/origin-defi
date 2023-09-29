@@ -1,19 +1,32 @@
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
-export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]?: Maybe<T[SubKey]>;
+};
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+  [SubKey in K]: Maybe<T[SubKey]>;
+};
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  BigInt: { input: any; output: any; }
-  DateTime: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  BigInt: { input: string; output: string };
+  DateTime: { input: string; output: string };
 };
 
 export type Apy = {
@@ -76,7 +89,7 @@ export enum ApyOrderByInput {
   TxHashAsc = 'txHash_ASC',
   TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
   TxHashDesc = 'txHash_DESC',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type ApyWhereInput = {
@@ -161,7 +174,9 @@ export type ApyWhereInput = {
   rebasingCreditsPerToken_lt?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCreditsPerToken_lte?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCreditsPerToken_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  rebasingCreditsPerToken_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rebasingCreditsPerToken_not_in?: InputMaybe<
+    Array<Scalars['BigInt']['input']>
+  >;
   timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
@@ -209,7 +224,6 @@ export type Address = {
   rebasingOption: RebasingOption;
 };
 
-
 export type AddressHistoryArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -251,7 +265,7 @@ export enum AddressOrderByInput {
   RebasingOptionAsc = 'rebasingOption_ASC',
   RebasingOptionAscNullsFirst = 'rebasingOption_ASC_NULLS_FIRST',
   RebasingOptionDesc = 'rebasingOption_DESC',
-  RebasingOptionDescNullsLast = 'rebasingOption_DESC_NULLS_LAST'
+  RebasingOptionDescNullsLast = 'rebasingOption_DESC_NULLS_LAST',
 }
 
 export type AddressWhereInput = {
@@ -385,7 +399,7 @@ export enum CurveLpOrderByInput {
   TotalSupplyAsc = 'totalSupply_ASC',
   TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
   TotalSupplyDesc = 'totalSupply_DESC',
-  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST'
+  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
 }
 
 export type CurveLpWhereInput = {
@@ -519,7 +533,7 @@ export enum DripperOrderByInput {
   WethAsc = 'weth_ASC',
   WethAscNullsFirst = 'weth_ASC_NULLS_FIRST',
   WethDesc = 'weth_DESC',
-  WethDescNullsLast = 'weth_DESC_NULLS_LAST'
+  WethDescNullsLast = 'weth_DESC_NULLS_LAST',
 }
 
 export type DripperWhereInput = {
@@ -608,7 +622,7 @@ export enum FraxStakingOrderByInput {
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
 }
 
 export type FraxStakingWhereInput = {
@@ -748,14 +762,14 @@ export enum HistoryOrderByInput {
   ValueAsc = 'value_ASC',
   ValueAscNullsFirst = 'value_ASC_NULLS_FIRST',
   ValueDesc = 'value_DESC',
-  ValueDescNullsLast = 'value_DESC_NULLS_LAST'
+  ValueDescNullsLast = 'value_DESC_NULLS_LAST',
 }
 
 export enum HistoryType {
   Received = 'Received',
   Sent = 'Sent',
   Swap = 'Swap',
-  Yield = 'Yield'
+  Yield = 'Yield',
 }
 
 export type HistoryWhereInput = {
@@ -870,7 +884,7 @@ export enum MorphoAaveOrderByInput {
   WethAsc = 'weth_ASC',
   WethAscNullsFirst = 'weth_ASC_NULLS_FIRST',
   WethDesc = 'weth_DESC',
-  WethDescNullsLast = 'weth_DESC_NULLS_LAST'
+  WethDescNullsLast = 'weth_DESC_NULLS_LAST',
 }
 
 export type MorphoAaveWhereInput = {
@@ -959,7 +973,7 @@ export enum OethOrderByInput {
   TotalSupplyAsc = 'totalSupply_ASC',
   TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
   TotalSupplyDesc = 'totalSupply_DESC',
-  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST'
+  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
 }
 
 export type OethWhereInput = {
@@ -1086,16 +1100,13 @@ export type Query = {
   vaultsConnection: VaultsConnection;
 };
 
-
 export type QueryAddressByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryAddressByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryAddressesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1104,14 +1115,12 @@ export type QueryAddressesArgs = {
   where?: InputMaybe<AddressWhereInput>;
 };
 
-
 export type QueryAddressesConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<AddressOrderByInput>;
   where?: InputMaybe<AddressWhereInput>;
 };
-
 
 export type QueryApiesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1120,7 +1129,6 @@ export type QueryApiesArgs = {
   where?: InputMaybe<ApyWhereInput>;
 };
 
-
 export type QueryApiesConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1128,26 +1136,21 @@ export type QueryApiesConnectionArgs = {
   where?: InputMaybe<ApyWhereInput>;
 };
 
-
 export type QueryApyByIdArgs = {
   id: Scalars['String']['input'];
 };
-
 
 export type QueryApyByUniqueInputArgs = {
   where: WhereIdInput;
 };
 
-
 export type QueryCurveLpByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryCurveLpByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryCurveLpsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1156,7 +1159,6 @@ export type QueryCurveLpsArgs = {
   where?: InputMaybe<CurveLpWhereInput>;
 };
 
-
 export type QueryCurveLpsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1164,16 +1166,13 @@ export type QueryCurveLpsConnectionArgs = {
   where?: InputMaybe<CurveLpWhereInput>;
 };
 
-
 export type QueryDripperByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryDripperByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryDrippersArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1182,7 +1181,6 @@ export type QueryDrippersArgs = {
   where?: InputMaybe<DripperWhereInput>;
 };
 
-
 export type QueryDrippersConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1190,16 +1188,13 @@ export type QueryDrippersConnectionArgs = {
   where?: InputMaybe<DripperWhereInput>;
 };
 
-
 export type QueryFraxStakingByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryFraxStakingByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryFraxStakingsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1208,14 +1203,12 @@ export type QueryFraxStakingsArgs = {
   where?: InputMaybe<FraxStakingWhereInput>;
 };
 
-
 export type QueryFraxStakingsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<FraxStakingOrderByInput>;
   where?: InputMaybe<FraxStakingWhereInput>;
 };
-
 
 export type QueryHistoriesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1224,7 +1217,6 @@ export type QueryHistoriesArgs = {
   where?: InputMaybe<HistoryWhereInput>;
 };
 
-
 export type QueryHistoriesConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1232,26 +1224,21 @@ export type QueryHistoriesConnectionArgs = {
   where?: InputMaybe<HistoryWhereInput>;
 };
 
-
 export type QueryHistoryByIdArgs = {
   id: Scalars['String']['input'];
 };
-
 
 export type QueryHistoryByUniqueInputArgs = {
   where: WhereIdInput;
 };
 
-
 export type QueryMorphoAaveByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryMorphoAaveByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryMorphoAavesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1260,7 +1247,6 @@ export type QueryMorphoAavesArgs = {
   where?: InputMaybe<MorphoAaveWhereInput>;
 };
 
-
 export type QueryMorphoAavesConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1268,16 +1254,13 @@ export type QueryMorphoAavesConnectionArgs = {
   where?: InputMaybe<MorphoAaveWhereInput>;
 };
 
-
 export type QueryOethByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryOethByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryOethsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1286,7 +1269,6 @@ export type QueryOethsArgs = {
   where?: InputMaybe<OethWhereInput>;
 };
 
-
 export type QueryOethsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1294,26 +1276,21 @@ export type QueryOethsConnectionArgs = {
   where?: InputMaybe<OethWhereInput>;
 };
 
-
 export type QueryRebaseByIdArgs = {
   id: Scalars['String']['input'];
 };
-
 
 export type QueryRebaseByUniqueInputArgs = {
   where: WhereIdInput;
 };
 
-
 export type QueryRebaseOptionByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryRebaseOptionByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryRebaseOptionsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1322,14 +1299,12 @@ export type QueryRebaseOptionsArgs = {
   where?: InputMaybe<RebaseOptionWhereInput>;
 };
 
-
 export type QueryRebaseOptionsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<RebaseOptionOrderByInput>;
   where?: InputMaybe<RebaseOptionWhereInput>;
 };
-
 
 export type QueryRebasesArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1338,7 +1313,6 @@ export type QueryRebasesArgs = {
   where?: InputMaybe<RebaseWhereInput>;
 };
 
-
 export type QueryRebasesConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
@@ -1346,16 +1320,13 @@ export type QueryRebasesConnectionArgs = {
   where?: InputMaybe<RebaseWhereInput>;
 };
 
-
 export type QueryVaultByIdArgs = {
   id: Scalars['String']['input'];
 };
 
-
 export type QueryVaultByUniqueInputArgs = {
   where: WhereIdInput;
 };
-
 
 export type QueryVaultsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -1363,7 +1334,6 @@ export type QueryVaultsArgs = {
   orderBy?: InputMaybe<Array<VaultOrderByInput>>;
   where?: InputMaybe<VaultWhereInput>;
 };
-
 
 export type QueryVaultsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
@@ -1454,7 +1424,7 @@ export enum RebaseOptionOrderByInput {
   TxHashAsc = 'txHash_ASC',
   TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
   TxHashDesc = 'txHash_DESC',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type RebaseOptionWhereInput = {
@@ -1596,7 +1566,7 @@ export enum RebaseOrderByInput {
   TxHashAsc = 'txHash_ASC',
   TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
   TxHashDesc = 'txHash_DESC',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
 }
 
 export type RebaseWhereInput = {
@@ -1638,7 +1608,9 @@ export type RebaseWhereInput = {
   rebasingCreditsPerToken_lt?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCreditsPerToken_lte?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCreditsPerToken_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  rebasingCreditsPerToken_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rebasingCreditsPerToken_not_in?: InputMaybe<
+    Array<Scalars['BigInt']['input']>
+  >;
   rebasingCredits_eq?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCredits_gt?: InputMaybe<Scalars['BigInt']['input']>;
   rebasingCredits_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -1694,7 +1666,7 @@ export type RebasesConnection = {
 
 export enum RebasingOption {
   OptIn = 'OptIn',
-  OptOut = 'OptOut'
+  OptOut = 'OptOut',
 }
 
 export type SquidStatus = {
@@ -1748,7 +1720,7 @@ export enum VaultOrderByInput {
   WethAsc = 'weth_ASC',
   WethAscNullsFirst = 'weth_ASC_NULLS_FIRST',
   WethDesc = 'weth_DESC',
-  WethDescNullsLast = 'weth_DESC_NULLS_LAST'
+  WethDescNullsLast = 'weth_DESC_NULLS_LAST',
 }
 
 export type VaultWhereInput = {

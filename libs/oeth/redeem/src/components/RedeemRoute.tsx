@@ -24,12 +24,7 @@ export function RedeemRoute(props: Omit<StackProps, 'children'>) {
       }}
     >
       {isEstimateLoading ? (
-        <Stack
-          direction="row"
-          alignItems="center"
-          gap={1}
-          sx={(theme) => ({ color: theme.palette.primary.contrastText })}
-        >
+        <Stack direction="row" alignItems="center" gap={1}>
           <Skeleton
             variant="circular"
             width="0.5rem"
@@ -51,7 +46,6 @@ export function RedeemRoute(props: Omit<StackProps, 'children'>) {
           component={Typography}
           variant="body2"
           alignItems="center"
-          color="primary.contrastText"
         >
           {intl.formatMessage({ defaultMessage: 'Route' })}
           <InfoTooltip

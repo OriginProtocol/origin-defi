@@ -1,4 +1,4 @@
-import { ConnectButton as CustomButton } from '@origin/shared/components';
+import { Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useIntl } from 'react-intl';
 
@@ -30,29 +30,35 @@ export const OpenAccountModalButton = ({
       {({ account, chain, openChainModal, openConnectModal, mounted }) => {
         if (!mounted || !account || !chain) {
           return (
-            <CustomButton
+            <Button
               {...props}
-              connected={false}
+              sx={{
+                background: (theme) => theme.palette.background.gradient2,
+                ':hover': {
+                  background: (theme) =>
+                    theme.palette.background.gradientHoverActionButton,
+                },
+                ...props?.sx,
+              }}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
                 intl.formatMessage({ defaultMessage: 'Connect' })}
-            </CustomButton>
+            </Button>
           );
         }
 
         if (chain.unsupported) {
           return (
-            <CustomButton
+            <Button
               {...props}
-              connected
               onClick={handleClick(openChainModal)}
               color="warning"
             >
               {intl.formatMessage({
                 defaultMessage: 'Wrong Network',
               })}
-            </CustomButton>
+            </Button>
           );
         }
 

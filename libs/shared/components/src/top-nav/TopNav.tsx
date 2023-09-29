@@ -130,16 +130,13 @@ export function TopNav({
             label={tab}
             to={`/${tab.toLowerCase()}`}
             sx={{
-              fontSize: {
-                xs: '0.875rem',
-                md: '1rem',
-              },
+              fontSize: 16,
               position: 'relative',
               textTransform: 'none',
               boxSizing: 'borderBox',
               paddingInline: 2,
               paddingBlock: { xs: 1, md: 3 },
-              lineHeight: '1.6875rem',
+              lineHeight: 1.6875,
               '&:hover:after': {
                 content: '""',
                 width: '100%',
@@ -166,12 +163,9 @@ export function TopNav({
           alignItems: 'stretch',
           gap: { xs: 1, md: 2 },
           '& > a, & > *': {
-            fontSize: {
-              xs: '0.75rem',
-              md: '1rem',
-            },
+            fontSize: 16,
             color: (theme) => theme.palette.primary.contrastText,
-            lineHeight: (theme) => theme.spacing(3),
+            lineHeight: 3,
           },
         }}
       >

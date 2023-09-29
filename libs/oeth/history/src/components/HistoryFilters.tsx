@@ -1,49 +1,63 @@
 import { useState } from 'react';
 
 import {
-  alpha,
   Box,
   Button,
   Checkbox,
   Divider,
-  FormLabel,
+  FormControlLabel,
   Popover,
   Stack,
   Typography,
   useTheme,
 } from '@mui/material';
-import {
-  ActionButton,
-  CheckboxIcon,
-  EmptyCheckbox,
-} from '@origin/shared/components';
-import { useIntl } from 'react-intl';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { defineMessage, useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
 
 import type { HistoryType } from '@origin/oeth/shared';
 
 const styles = {
-  fontSize: '0.75rem',
+  fontSize: 12,
   fontWeight: 500,
-  lineHeight: '1.25rem',
-  color: 'primary.contrastText',
+  lineHeight: 1.6,
 };
 
-interface Props {
-  onChange: (values: HistoryType[]) => void;
-}
+const filterOptions = [
+  {
+    label: defineMessage({ defaultMessage: 'Yield' }),
+    value: 'Yield' as HistoryType,
+  },
+  {
+    label: defineMessage({ defaultMessage: 'Swap' }),
+    value: 'Swap' as HistoryType,
+  },
+  {
+    label: defineMessage({ defaultMessage: 'Sent' }),
+    value: 'Sent' as HistoryType,
+  },
+  {
+    label: defineMessage({ defaultMessage: 'Received' }),
+    value: 'Received' as HistoryType,
+  },
+];
 
-export function HistoryFilters({ onChange }: Props) {
-  const [selected, setSelectedTypes] = useState<HistoryType[]>([]);
+export type HistoryFiltersProps = {
+  filters: HistoryType[];
+  onChange: (values: HistoryType[]) => void;
+};
+
+export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
+  const [selected, setSelectedTypes] = useState<HistoryType[]>(filters);
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
-  function selection(
+  const handleSelect = (
     e: React.ChangeEvent<HTMLInputElement>,
     label: HistoryType,
-  ) {
+  ) => {
     setSelectedTypes((prev) => {
       if (e.target.checked) {
         return [...prev, label];
@@ -51,12 +65,17 @@ export function HistoryFilters({ onChange }: Props) {
         return prev.filter((val) => val !== label);
       }
     });
-  }
+  };
+
+  const applyDisabled =
+    filters.length === selected.length &&
+    filters.every((item) => selected.includes(item));
+  const clearDisabled = isNilOrEmpty(selected);
 
   return (
     <>
       <HistoryFilterButton onClick={(e) => setAnchorEl(e.currentTarget)}>
-        Filters
+        {intl.formatMessage({ defaultMessage: 'Filters' })}
         <Box
           sx={{
             width: '4px',
@@ -65,7 +84,7 @@ export function HistoryFilters({ onChange }: Props) {
             background: (theme) => theme.palette.primary.contrastText,
           }}
         ></Box>
-        {selected.length}
+        {filters.length}
       </HistoryFilterButton>
       <Popover
         open={!!anchorEl}
@@ -94,60 +113,43 @@ export function HistoryFilters({ onChange }: Props) {
           },
         }}
       >
-        <Typography color="primary.contrastText" sx={{ padding: 2 }}>
+        <Typography sx={{ padding: 2 }}>
           {intl.formatMessage({ defaultMessage: 'Filters' })}
         </Typography>
         <Divider sx={{ marginBlockEnd: 2 }} />
-
-        {(['Yield', 'Swap', 'Sent', 'Received'] as HistoryType[]).map(
-          (label) => (
-            <Stack
-              key={label}
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              sx={{
-                paddingInline: 2,
-                paddingBlock: 0,
-                paddingTop: 0,
-                paddingBottom: 0,
-                ...styles,
-                ':hover': {
-                  background: (theme) => theme.palette.grey[700],
-                },
-              }}
-            >
-              <FormLabel htmlFor={label} sx={{ color: 'primary.contrastText' }}>
-                {label}
-              </FormLabel>
-
-              <Checkbox
-                inputProps={{ id: label }}
-                checked={selected.includes(label)}
-                checkedIcon={<CheckboxIcon />}
-                icon={<EmptyCheckbox />}
-                sx={{
-                  '& svg, input': {
-                    width: '1.25rem',
-                    height: '1.25rem',
-                    top: 'auto',
-                    left: 'auto',
-                  },
-                  '&:hover:has(input:checked) svg': {
-                    fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
-                    strokeWidth: '1px',
-                    stroke: (theme) => theme.palette.primary.main,
-                  },
-                  '&:hover:has(input:not(:checked)) svg': {
-                    fill: (theme) => alpha(theme.palette.secondary.main, 0.4),
-                  },
-                }}
-                onChange={(e) => selection(e, label)}
-              />
-            </Stack>
-          ),
-        )}
-
+        {filterOptions.map((filter) => (
+          <Stack
+            key={filter.value}
+            direction="row"
+            alignItems="center"
+            sx={{
+              pr: 2,
+              ...styles,
+              ':hover': {
+                background: (theme) => theme.palette.grey[700],
+              },
+            }}
+          >
+            <FormControlLabel
+              label={intl.formatMessage(filter.label)}
+              labelPlacement="start"
+              value={filter.value}
+              control={
+                <Checkbox
+                  checked={selected.includes(filter.value)}
+                  onChange={(e) => handleSelect(e, filter.value)}
+                  sx={{
+                    ':hover': {
+                      backgroundColor: 'transparent',
+                    },
+                  }}
+                />
+              }
+              sx={{ width: 1 }}
+              slotProps={{ typography: { width: 1 } }}
+            />
+          </Stack>
+        ))}
         <Divider sx={{ marginBlockStart: 2 }} />
         <Stack
           direction="row"
@@ -157,12 +159,19 @@ export function HistoryFilters({ onChange }: Props) {
         >
           <Button
             variant="text"
+            disabled={clearDisabled}
             sx={styles}
-            onClick={() => setSelectedTypes([])}
+            onClick={() => {
+              setAnchorEl(null);
+              onChange([]);
+              setSelectedTypes([]);
+            }}
           >
             {intl.formatMessage({ defaultMessage: 'Clear all' })}
           </Button>
-          <ActionButton
+          <Button
+            variant="action"
+            disabled={applyDisabled}
             sx={{
               paddingInline: 2,
               paddingBlock: 0.5,
@@ -175,7 +184,7 @@ export function HistoryFilters({ onChange }: Props) {
             }}
           >
             {intl.formatMessage({ defaultMessage: 'Apply' })}
-          </ActionButton>
+          </Button>
         </Stack>
       </Popover>
     </>

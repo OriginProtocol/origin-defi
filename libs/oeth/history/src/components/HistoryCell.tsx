@@ -25,7 +25,7 @@ export function HistoryCell(props: Props) {
       {/* @ts-expect-error whatever */}
       <TransactionIcon type={props.type.toLowerCase()} />
       <Stack>
-        <Typography color="primary.contrastText">{props.type}</Typography>
+        <Typography fontWeight="500">{props.type}</Typography>
         <Typography color="text.secondary" variant="body2">
           {intl.formatDate(new Date(props.timestamp))}
         </Typography>

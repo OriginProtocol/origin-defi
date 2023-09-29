@@ -29,13 +29,12 @@ export function HistoryFilterButton({
         borderRadius: 8,
         paddingInline: 2,
         paddingBlock: 0.5,
-        fontSize: (theme) => theme.typography.pxToRem(12),
-        color: 'primary.contrastText',
+        fontSize: 12,
         fontWeight: 500,
         fontStyle: 'normal',
-        lineHeight: (theme) => theme.typography.pxToRem(20),
+        lineHeight: 1.6,
         ':hover': {
-          background: (theme) => alpha(theme.palette.common.white, 0.1),
+          background: (theme) => alpha(theme.palette.common.white, 0.04),
         },
         ...sx,
       }}

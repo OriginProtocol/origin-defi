@@ -1,58 +1,48 @@
 import { Card as MuiCard, CardContent, CardHeader } from '@mui/material';
 
-import type { SxProps } from '@mui/material';
+import type { CardProps as MuiCardProps, SxProps } from '@mui/material';
 import type { Theme } from '@origin/shared/theme';
-
-export const cardStyles = {
-  paddingBlock: 2.5,
-  paddingInline: 2,
-} as const;
+import type { ReactNode } from 'react';
 
 export type CardProps = {
-  title: string | React.ReactNode;
-  children: React.ReactNode;
+  title: ReactNode;
   sxCardContent?: SxProps<Theme>;
   sxCardTitle?: SxProps<Theme>;
-  sx?: SxProps<Theme>;
-};
+} & Omit<MuiCardProps, 'title'>;
 
 export function Card({
   title,
   children,
   sxCardContent,
   sxCardTitle,
-  sx,
+  ...rest
 }: CardProps) {
   return (
-    <MuiCard sx={{ padding: 0, borderRadius: 2, ...(sx as SxProps) }}>
+    <MuiCard {...rest} sx={{ padding: 0, borderRadius: 1, ...rest?.sx }}>
       <CardHeader
         title={title}
         sx={{
-          ...cardStyles,
+          padding: (theme) => ({
+            xs: theme.spacing(2, 1.5),
+            md: 3,
+          }),
           borderBlockEnd: '1px solid',
           borderColor: 'divider',
           color: 'primary.contrastText',
           fontWeight: 500,
           '& .MuiCardHeader-title': {
-            fontSize: (theme) => theme.typography.pxToRem(14),
+            fontSize: 14,
           },
-          ...(sxCardTitle as SxProps),
+          ...sxCardTitle,
         }}
       ></CardHeader>
       <CardContent
         sx={{
-          '&:last-child': {
-            paddingBottom: 2,
-          },
-          paddingInline: {
-            xs: 1.5,
+          padding: (theme) => ({
+            xs: theme.spacing(2, 1.5),
             md: 3,
-          },
-          paddingBlock: {
-            xs: 2,
-            md: 3,
-          },
-          ...(sxCardContent as SxProps),
+          }),
+          ...sxCardContent,
         }}
       >
         {children}

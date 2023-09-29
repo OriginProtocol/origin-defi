@@ -12,7 +12,7 @@ export type ApiesQuery = {
   apies: Array<{
     __typename?: 'APY';
     id: string;
-    timestamp: any;
+    timestamp: string;
     apy7DayAvg: number;
     apy30DayAvg: number;
   }>;
@@ -20,7 +20,11 @@ export type ApiesQuery = {
 
 export const ApiesDocument = `
     query Apies($limit: Int) {
-  apies(limit: $limit, orderBy: timestamp_DESC) {
+  apies(
+    limit: $limit
+    orderBy: timestamp_DESC
+    where: {timestamp_gt: "2023-06-06T12:38:47.000000Z"}
+  ) {
     id
     timestamp
     apy7DayAvg

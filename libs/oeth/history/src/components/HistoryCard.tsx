@@ -1,12 +1,13 @@
 import { useState } from 'react';
 
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Box, Divider, Stack, Typography } from '@mui/material';
+import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useHistoryTableWithFiltersQuery } from '../queries.generated';
 import { ExportData } from './ExportData';
-import { HistoryFilters } from './Filters';
+import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
 import type { HistoryType } from '@origin/oeth/shared';
@@ -21,7 +22,7 @@ export function HistoryCard() {
 
   const { data, isFetching } = useHistoryTableWithFiltersQuery(
     {
-      address: address.toLowerCase(),
+      address: address?.toLowerCase(),
       filters: filters.length ? filters : undefined,
       offset: page * PAGE_SIZE,
     },
@@ -39,11 +40,14 @@ export function HistoryCard() {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Typography color="primary.contrastText">
+        <Typography>
           {intl.formatMessage({ defaultMessage: 'OETH transactions' })}
         </Typography>
         <Stack direction="row" gap={1}>
-          <HistoryFilters onChange={(values) => setFilters(values)} />
+          <HistoryFilters
+            filters={filters}
+            onChange={(values) => setFilters(values)}
+          />
           <ExportData data={data?.addressById?.history} />
         </Stack>
       </Stack>
@@ -58,14 +62,21 @@ export function HistoryCard() {
           setPage={(page) => setPage(page)}
         />
       ) : (
-        <Box sx={{ height: '15rem', display: 'grid', placeContent: 'center' }}>
+        <Stack
+          sx={{
+            height: '15rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
           <Typography>
             {intl.formatMessage({
               defaultMessage: 'Connect your wallet to see your history',
             })}
           </Typography>
-          <Button onClick={() => console.log('test')}>Connect</Button>
-        </Box>
+          <ConnectedButton />
+        </Stack>
       )}
     </Box>
   );

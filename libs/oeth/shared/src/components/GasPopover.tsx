@@ -20,7 +20,7 @@ import { useFeeData } from 'wagmi';
 
 import type { IconButtonProps } from '@mui/material';
 
-const DEFAULT_SLIPPAGE = 0.01;
+const DEFAULT_SLIPPAGE = 0.001;
 const WARNING_THRESHOLD = 0.05;
 
 const gridStyles = {
@@ -54,10 +54,7 @@ export function GasPopover({
         data-testid="gas-popover-button"
         {...buttonProps}
       >
-        <img
-          src="https://app.oeth.com/images/settings-icon.svg"
-          alt="settings"
-        />
+        <img src="/images/settings-icon.svg" alt="settings" />
       </IconButton>
       <Popover
         open={!!anchorEl}
@@ -93,7 +90,7 @@ export function GasPopover({
         <Stack gap={1}>
           <FormControl variant="standard">
             <InputLabel htmlFor="slippage" shrink>
-              {intl.formatMessage({ defaultMessage: 'Slippage' })}
+              {intl.formatMessage({ defaultMessage: 'Price Tolerance' })}
             </InputLabel>
             <Box sx={gridStyles}>
               <Stack direction="row" gap={2}>
@@ -108,8 +105,6 @@ export function GasPopover({
                     paddingInlineEnd: 2,
                     '& .MuiInputBase-input': {
                       textAlign: 'right',
-                      color: 'primary.contrastText',
-
                       '&::placeholder': {
                         color: 'text.primary',
                         opacity: 1,
@@ -118,16 +113,11 @@ export function GasPopover({
                   }}
                 />
                 <Button
-                  variant="contained"
+                  variant="action"
                   sx={{
-                    borderRadius: 20,
+                    borderRadius: 8,
+                    fontSize: 14,
                     height: '38px',
-                    color: 'primary.contrastText',
-                    bgColor:
-                      'linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%)',
-                    '&:disabled': {
-                      opacity: 0.3,
-                    },
                   }}
                   fullWidth
                   disabled={slippage === DEFAULT_SLIPPAGE}
@@ -143,7 +133,7 @@ export function GasPopover({
               sx={{
                 gridColumn: 'span 2',
                 mt: 1.25,
-                fontSize: (theme) => theme.typography.pxToRem(12),
+                fontSize: 12,
                 color: (theme) => theme.palette.warning.main,
                 fontWeight: 400,
                 fontStyle: 'normal',
@@ -176,7 +166,6 @@ export function GasPopover({
                   '& .MuiInputBase-input': {
                     textAlign: 'right',
                     borderColor: (theme) => theme.palette.secondary.main,
-                    color: 'primary.contrastText',
                     '&::placeholder': {
                       color: 'text.primary',
                       opacity: 1,
@@ -184,10 +173,7 @@ export function GasPopover({
                   },
                 }}
                 endAdornment={
-                  <InputAdornment
-                    position="end"
-                    sx={{ color: 'primary.contrastText', ml: 0 }}
-                  >
+                  <InputAdornment position="end" sx={{ ml: 0 }}>
                     {intl.formatMessage({ defaultMessage: 'GWEI' })}
                   </InputAdornment>
                 }

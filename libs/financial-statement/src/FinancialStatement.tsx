@@ -274,11 +274,11 @@ export const FinancialStatement = (props: {
           mt={{ xs: 1, sm: 2, md: 3 }}
           color={(theme) => theme.palette.primary.contrastText}
         >
-          <Typography>
+          <Typography fontSize={{ xs: '.75rem' }}>
             {`Last updated ${intlFormat(props.lastUpdated.timestamp)}, `}
             {`block #${props.lastUpdated.blockNumber}`}
           </Typography>
-          <Typography>
+          <Typography fontSize={{ xs: '.75rem' }}>
             {props.ethPrice &&
               `Using ETH price of $${intl.formatNumber(props.ethPrice, {
                 maximumFractionDigits: 2,
@@ -309,7 +309,7 @@ const Header = (props: { columns: string[] }) => {
         sx={{
           backgroundColor: (theme) => theme.palette.background.paperHeader,
         }}
-        fontSize={{ xs: '.875rem', sm: '1.125rem' }}
+        fontSize={{ xs: '.75rem', sm: '.875rem', md: '1rem' }}
         px={{ xs: 1, sm: 2, md: 4 }}
         py={{ xs: 2, sm: 3, md: 4 }}
       >
@@ -353,9 +353,9 @@ const Table = (props: {
       <Stack>
         {/* Header */}
         <Box
-          pt={{ xs: 1, sm: 2, md: 4 }}
+          pt={{ xs: 1.5, sm: 2, md: 4 }}
           px={{ xs: 1, sm: 2, md: 4 }}
-          pb={{ xs: 0.5, sm: 1, md: 2 }}
+          pb={{ xs: 1.5, sm: 2, md: 4 }}
           color={(theme) => theme.palette.primary.contrastText}
           fontSize={{ xs: '.875rem', sm: '1rem' }}
           sx={{
@@ -388,7 +388,7 @@ const Total = (props: { title: string; totals: number[] }) => {
       direction={'row'}
       justifyContent={'space-between'}
       alignItems={'center'}
-      p={{ xs: 1, sm: 2, md: 4 }}
+      p={{ xs: 1.5, sm: 2, md: 4 }}
       color={(theme) => theme.palette.primary.contrastText}
       sx={{ backgroundColor: (theme) => theme.palette.background.paperFooter }}
     >
