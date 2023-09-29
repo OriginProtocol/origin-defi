@@ -17,8 +17,8 @@ import { theme } from '@origin/shared/theme';
 import { QueryClientProvider } from '@tanstack/react-query';
 import {
   endOfToday,
-  formatRelative,
   intlFormat,
+  intlFormatDistance,
   startOfDay,
   subDays,
 } from 'date-fns';
@@ -103,7 +103,10 @@ export const LiveFinancialStatement = () => {
         blockNumber,
         timestamp,
       }}
-      columns={[formatRelative(sevenDaysAgo, new Date()), intlFormat(todayEnd)]}
+      columns={[
+        intlFormatDistance(sevenDaysAgo, new Date()),
+        intlFormat(todayEnd),
+      ]}
       data={{
         assets: {
           Vault: {

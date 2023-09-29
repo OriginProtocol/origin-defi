@@ -34,7 +34,7 @@ const meta: Meta<typeof FinancialStatement> = {
       blockNumber: 18036316,
       timestamp: Date.parse('2023-09-03T21:42:03Z'),
     },
-    columns: ['31 August 2023', '1 week ago'],
+    columns: ['1 week ago', '31 August 2023'],
     data: {
       assets: {
         Vault: {
