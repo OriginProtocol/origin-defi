@@ -92,7 +92,7 @@ export const GeoFenceProvider = ({ children }: GeoFenceProviderProps) => {
             sx={{ pl: 0.2 }}
           />
         </DialogContent>
-        <DialogActions sx={{ gap: 3, px: 3, pb: 3 }}>
+        <DialogActions sx={{ gap: 3, px: 3, pt: { xs: 2, sm: 0 }, pb: 3 }}>
           <Button
             href="https://oeth.com"
             variant="action"
