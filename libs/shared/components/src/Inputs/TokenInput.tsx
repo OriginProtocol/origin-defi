@@ -7,7 +7,7 @@ import {
   isNilOrEmpty,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
+import { formatUnits, parseEther } from 'viem';
 
 import { BigIntInput } from './BigIntInput';
 
@@ -15,6 +15,8 @@ import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { BigintInputProps } from './BigIntInput';
+
+const MIN_ETH_FOR_GAS = '0.01';
 
 export type TokenInputProps = {
   amount: bigint;
@@ -68,10 +70,17 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const intl = useIntl();
 
     const handleMaxClick = () => {
-      onAmountChange(balance);
+      const max =
+        token.symbol === 'ETH'
+          ? balance - parseEther(MIN_ETH_FOR_GAS)
+          : balance;
+      onAmountChange(max);
     };
 
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
+    const maxVisible =
+      !hideMaxButton &&
+      (token.symbol === 'ETH' ? balance > parseEther(MIN_ETH_FOR_GAS) : true);
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
@@ -148,7 +157,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                       },
                     )}
                   </Typography>
-                  {!hideMaxButton && (
+                  {maxVisible && (
                     <Button
                       onClick={handleMaxClick}
                       disabled={maxDisabled}
