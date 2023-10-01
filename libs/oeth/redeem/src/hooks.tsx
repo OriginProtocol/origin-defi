@@ -4,6 +4,7 @@ import { contracts } from '@origin/shared/contracts';
 import {
   BlockExplorerLink,
   usePushNotification,
+  useSlippage,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
@@ -35,26 +36,12 @@ export const useHandleAmountInChange = () => {
   );
 };
 
-export const useHandleSlippageChange = () => {
-  const [, setRedeemState] = useRedeemState();
-
-  return useCallback(
-    (value: number) => {
-      setRedeemState(
-        produce((state) => {
-          state.slippage = value;
-        }),
-      );
-    },
-    [setRedeemState],
-  );
-};
-
 export const useHandleRedeem = () => {
   const intl = useIntl();
+  const { value: slippage } = useSlippage();
   const pushNotification = usePushNotification();
   const { address } = useAccount();
-  const [{ amountIn, amountOut, slippage }, setRedeemState] = useRedeemState();
+  const [{ amountIn, amountOut }, setRedeemState] = useRedeemState();
   const wagmiClient = useQueryClient();
 
   return useCallback(async () => {

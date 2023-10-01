@@ -1,6 +1,10 @@
 import { useCallback, useMemo } from 'react';
 
-import { useCurve, usePushNotification } from '@origin/shared/providers';
+import {
+  useCurve,
+  usePushNotification,
+  useSlippage,
+} from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
@@ -168,21 +172,6 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
   });
 };
 
-export const useHandleSlippageChange = () => {
-  const [, setSwapState] = useSwapState();
-
-  return useCallback(
-    (value: number) => {
-      setSwapState(
-        produce((state) => {
-          state.slippage = value;
-        }),
-      );
-    },
-    [setSwapState],
-  );
-};
-
 export const useHandleApprove = () => {
   const intl = useIntl();
   const { address } = useAccount();
@@ -265,13 +254,14 @@ export const useHandleApprove = () => {
 
 export const useHandleSwap = () => {
   const intl = useIntl();
+  const { value: slippage } = useSlippage();
   const { address } = useAccount();
   const curve = useCurve();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
   const [
-    { amountIn, amountOut, selectedSwapRoute, slippage, tokenIn, tokenOut },
+    { amountIn, amountOut, selectedSwapRoute, tokenIn, tokenOut },
     setSwapState,
   ] = useSwapState();
 
@@ -304,35 +294,25 @@ export const useHandleSwap = () => {
           title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
           severity: 'success',
         });
-        setSwapState(
-          produce((draft) => {
-            draft.isSwapLoading = false;
-          }),
-        );
       },
       onError: () => {
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap failed' }),
           severity: 'error',
         });
-        setSwapState(
-          produce((draft) => {
-            draft.isSwapLoading = false;
-          }),
-        );
       },
       onReject: () => {
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
           severity: 'info',
         });
-        setSwapState(
-          produce((draft) => {
-            draft.isSwapLoading = false;
-          }),
-        );
       },
     });
+    setSwapState(
+      produce((draft) => {
+        draft.isSwapLoading = false;
+      }),
+    );
   }, [
     address,
     amountIn,

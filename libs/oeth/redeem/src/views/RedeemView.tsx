@@ -11,17 +11,17 @@ import {
 import { GasPopover } from '@origin/oeth/shared';
 import { TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { ConnectedButton, usePrices } from '@origin/shared/providers';
+import {
+  ConnectedButton,
+  usePrices,
+  useSlippage,
+} from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
 import { RedeemRoute } from '../components/RedeemRoute';
-import {
-  useHandleAmountInChange,
-  useHandleRedeem,
-  useHandleSlippageChange,
-} from '../hooks';
+import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 
 import type { BoxProps } from '@mui/material';
@@ -55,9 +55,9 @@ export const RedeemView = () =>
 
 function RedeemViewWrapped() {
   const intl = useIntl();
+  const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
-  const [{ amountIn, slippage, isRedeemLoading, isEstimateLoading }] =
-    useRedeemState();
+  const [{ amountIn, isRedeemLoading, isEstimateLoading }] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
   const { data: balOeth, isLoading: isBalOethLoading } = useBalance({
     address,
@@ -65,9 +65,13 @@ function RedeemViewWrapped() {
     watch: true,
     scopeKey: 'redeem_balance',
   });
-  const handleSlippageChange = useHandleSlippageChange();
+
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
+
+  const handleSlippageChange = (val: number) => {
+    setSlippage(val);
+  };
 
   const redeemButtonLabel =
     amountIn === 0n

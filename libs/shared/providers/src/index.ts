@@ -4,4 +4,5 @@ export * from './gas';
 export * from './geoFence';
 export * from './notifications';
 export * from './prices';
+export * from './slippage';
 export * from './wagmi';
