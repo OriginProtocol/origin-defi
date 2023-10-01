@@ -94,19 +94,21 @@ export const ApyHeader = (props: StackProps) => {
           }}
           MenuListProps={{ dense: true }}
         >
-          {trailingOptions.map((t) => (
-            <MenuItem
-              divider
-              key={t.value}
-              selected={trailing.value === t.value}
-              onClick={() => {
-                setTrailing(t);
-                setAnchorEl(null);
-              }}
-            >
-              {intl.formatMessage(t.label)}
-            </MenuItem>
-          ))}
+          {trailingOptions
+            .filter((t) => t.value !== trailing.value)
+            .map((t) => (
+              <MenuItem
+                divider
+                key={t.value}
+                selected={trailing.value === t.value}
+                onClick={() => {
+                  setTrailing(t);
+                  setAnchorEl(null);
+                }}
+              >
+                {intl.formatMessage(t.label)}
+              </MenuItem>
+            ))}
         </Menu>
       </Stack>
     </Paper>
