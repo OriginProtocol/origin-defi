@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { contracts, tokens, whales } from '@origin/shared/contracts';
-import { usePushNotification } from '@origin/shared/providers';
+import { usePushNotification, useSlippage } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -23,13 +23,13 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
       split: [],
       gas: 0n,
       rate: 0,
-      slippage: 0.01,
       isEstimateLoading: false,
       isRedeemLoading: false,
     });
     const intl = useIntl();
     const queryClient = useQueryClient();
     const pushNotification = usePushNotification();
+    const { value: slippage } = useSlippage();
 
     const { data: splitAddresses } = useQuery({
       queryKey: ['assetsDecimals'],
@@ -123,7 +123,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         const minAmountOut = parseUnits(
           (
             +formatUnits(total, MIX_TOKEN.decimals) -
-            +formatUnits(total, MIX_TOKEN.decimals) * state.slippage
+            +formatUnits(total, MIX_TOKEN.decimals) * slippage
           ).toString(),
           MIX_TOKEN.decimals,
         );

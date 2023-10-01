@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
-import { useCurve } from '@origin/shared/providers';
+import { useCurve, useSlippage } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
@@ -21,13 +21,13 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenOut: tokens.mainnet.OETH,
       swapRoutes: [],
       selectedSwapRoute: null,
-      slippage: 0.001,
       isSwapRoutesLoading: false,
       isApproved: false,
       isApprovalLoading: false,
       isSwapLoading: false,
     });
     const queryClient = useQueryClient();
+    const { value: slippage } = useSlippage();
     const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
     useDebouncedEffect(
@@ -55,7 +55,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                 state.tokenIn.symbol,
                 state.tokenOut.symbol,
                 route.action,
-                state.slippage,
+                slippage,
                 state.amountIn.toString(),
               ] as const,
               queryFn: async () =>
@@ -65,7 +65,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                   amountIn: state.amountIn,
                   amountOut: state.amountOut,
                   route,
-                  slippage: state.slippage,
+                  slippage,
                   curve: {
                     CurveRegistryExchange,
                     OethPoolUnderlyings,
