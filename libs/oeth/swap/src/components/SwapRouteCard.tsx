@@ -41,7 +41,7 @@ export function SwapRouteCard({
     route.gas,
   );
   const { data: approvalGasPrice, isLoading: approvalGasPriceLoading } =
-    useGasPrice(route.approvalGas);
+    useGasPrice(route.approvalGas, { refetchInterval: 30e3 });
   const { data: allowance } = useSwapRouteAllowance(route);
 
   const estimatedAmount = +formatUnits(

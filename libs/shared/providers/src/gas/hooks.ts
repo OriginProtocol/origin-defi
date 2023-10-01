@@ -2,15 +2,31 @@ import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { fetchFeeData, readContract } from '@wagmi/core';
 import { formatUnits } from 'viem';
-import { useBlockNumber } from 'wagmi';
+
+import type { UseQueryOptions } from '@tanstack/react-query';
 
 const GAS_MARGIN = 1.3;
 
-export const useGasPrice = (gasAmount = 0n) => {
-  const { data: blockNumber } = useBlockNumber();
+type GasPrice = {
+  gweiUsd: number;
+  gasPrice: number;
+  gasCostUsd: number;
+  gasCostGwei: number;
+  maxGasCostUsd: number;
+  maxGasCostGwei: number;
+};
 
+export const useGasPrice = (
+  gasAmount = 0n,
+  options?: UseQueryOptions<
+    GasPrice,
+    Error,
+    GasPrice,
+    [['useGasPrice', string]]
+  >,
+) => {
   return useQuery({
-    queryKey: ['useGasPrice', gasAmount?.toString(), blockNumber?.toString()],
+    queryKey: ['useGasPrice', gasAmount?.toString()] as const,
     queryFn: async () => {
       const [price, data] = await Promise.all([
         readContract({
@@ -40,5 +56,6 @@ export const useGasPrice = (gasAmount = 0n) => {
         maxGasCostGwei,
       };
     },
+    ...options,
   });
 };
