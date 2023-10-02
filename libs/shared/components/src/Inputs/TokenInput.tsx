@@ -32,6 +32,7 @@ export type TokenInputProps = {
   disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
+  isNativeCurrency?: boolean;
   isTokenClickDisabled?: boolean;
   tokenPriceUsd?: number;
   isPriceLoading?: boolean;
@@ -58,6 +59,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       disableMaxButton,
       token,
       onTokenClick,
+      isNativeCurrency = false,
       isTokenClickDisabled,
       tokenPriceUsd = 0,
       isPriceLoading,
@@ -70,17 +72,16 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const intl = useIntl();
 
     const handleMaxClick = () => {
-      const max =
-        token.symbol === 'ETH'
-          ? balance - parseEther(MIN_ETH_FOR_GAS)
-          : balance;
+      const max = isNativeCurrency
+        ? balance - parseEther(MIN_ETH_FOR_GAS)
+        : balance;
       onAmountChange(max);
     };
 
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
     const maxVisible =
       !hideMaxButton &&
-      (token.symbol === 'ETH' ? balance > parseEther(MIN_ETH_FOR_GAS) : true);
+      (isNativeCurrency ? balance > parseEther(MIN_ETH_FOR_GAS) : true);
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (

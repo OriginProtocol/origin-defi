@@ -22,7 +22,7 @@ import {
 } from '@origin/shared/providers';
 import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
 import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
@@ -74,6 +74,7 @@ function SwapViewWrapped() {
   const intl = useIntl();
   const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [
     {
@@ -194,6 +195,10 @@ function SwapViewWrapped() {
               onTokenClick={() => {
                 setTokenSource('tokenIn');
               }}
+              isNativeCurrency={
+                tokenIn.symbol ===
+                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+              }
               tokenPriceUsd={prices?.[tokenIn.symbol]}
               isPriceLoading={isPriceLoading}
               isConnected={isConnected}
@@ -239,6 +244,10 @@ function SwapViewWrapped() {
               onTokenClick={() => {
                 setTokenSource('tokenOut');
               }}
+              isNativeCurrency={
+                tokenOut.symbol ===
+                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+              }
               tokenPriceUsd={prices?.[tokenOut.symbol]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               isConnected={isConnected}
