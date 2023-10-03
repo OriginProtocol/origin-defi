@@ -364,6 +364,16 @@ export const theme = extendTheme({
         }),
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          background: theme.palette.background.gradientPaper,
+          '&:hover': {
+            background: theme.palette.background.paper,
+          },
+        }),
+      },
+    },
     MuiInputBase: {
       styleOverrides: {
         root: ({ theme }) => ({

@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
+import { usePushActivity, useUpdateActivity } from '@origin/oeth/shared';
 import {
   useCurve,
   usePushNotification,
@@ -179,8 +180,13 @@ export const useHandleApprove = () => {
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
-  const [{ amountIn, selectedSwapRoute, tokenIn, tokenOut }, setSwapState] =
-    useSwapState();
+  const pushActivity = usePushActivity();
+  const updateActivity = useUpdateActivity();
+
+  const [
+    { amountIn, amountOut, selectedSwapRoute, tokenIn, tokenOut },
+    setSwapState,
+  ] = useSwapState();
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
@@ -192,33 +198,35 @@ export const useHandleApprove = () => {
         draft.isApprovalLoading = true;
       }),
     );
+    const activity = pushActivity({
+      tokenIn,
+      tokenOut,
+      type: 'approval',
+      status: 'pending',
+      amountIn,
+      amountOut,
+    });
     await swapActions[selectedSwapRoute.action].approve({
       tokenIn,
       tokenOut,
       amountIn,
       curve,
-      onSuccess: () => {
+      onSuccess: (txReceipt) => {
         wagmiClient.invalidateQueries({
           queryKey: ['swap_balance'],
         });
         queryClient.invalidateQueries({
           queryKey: ['swap_allowance'],
         });
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval complete' }),
-          severity: 'success',
-        });
+        updateActivity({ ...activity, status: 'success', txReceipt });
         setSwapState(
           produce((draft) => {
             draft.isApprovalLoading = false;
           }),
         );
       },
-      onError: () => {
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval failed' }),
-          severity: 'error',
-        });
+      onError: (error: string) => {
+        updateActivity({ ...activity, status: 'error', error });
         setSwapState(
           produce((draft) => {
             draft.isApprovalLoading = false;
@@ -227,7 +235,7 @@ export const useHandleApprove = () => {
       },
       onReject: () => {
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          title: intl.formatMessage({ defaultMessage: 'Approval Cancelled' }),
           severity: 'info',
         });
         setSwapState(
@@ -240,14 +248,17 @@ export const useHandleApprove = () => {
   }, [
     address,
     amountIn,
+    amountOut,
     curve,
     intl,
+    pushActivity,
     pushNotification,
     queryClient,
     selectedSwapRoute,
     setSwapState,
     tokenIn,
     tokenOut,
+    updateActivity,
     wagmiClient,
   ]);
 };
@@ -260,6 +271,8 @@ export const useHandleSwap = () => {
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
+  const pushActivity = usePushActivity();
+  const updateActivity = useUpdateActivity();
   const [
     { amountIn, amountOut, selectedSwapRoute, tokenIn, tokenOut },
     setSwapState,
@@ -270,6 +283,14 @@ export const useHandleSwap = () => {
       return;
     }
 
+    const activity = pushActivity({
+      tokenIn,
+      tokenOut,
+      type: 'swap',
+      status: 'pending',
+      amountIn,
+      amountOut,
+    });
     setSwapState(
       produce((draft) => {
         draft.isSwapLoading = true;
@@ -283,27 +304,21 @@ export const useHandleSwap = () => {
       slippage,
       amountOut,
       curve,
-      onSuccess: () => {
+      onSuccess: (txReceipt) => {
         wagmiClient.invalidateQueries({
           queryKey: ['swap_balance'],
         });
         queryClient.invalidateQueries({
           queryKey: ['swap_allowance'],
         });
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap complete' }),
-          severity: 'success',
-        });
+        updateActivity({ ...activity, status: 'success', txReceipt });
       },
-      onError: () => {
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap failed' }),
-          severity: 'error',
-        });
+      onError: (error: string) => {
+        updateActivity({ ...activity, status: 'error', error });
       },
       onReject: () => {
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          title: intl.formatMessage({ defaultMessage: 'Swap Cancelled' }),
           severity: 'info',
         });
       },
@@ -319,6 +334,7 @@ export const useHandleSwap = () => {
     amountOut,
     curve,
     intl,
+    pushActivity,
     pushNotification,
     queryClient,
     selectedSwapRoute,
@@ -326,6 +342,7 @@ export const useHandleSwap = () => {
     slippage,
     tokenIn,
     tokenOut,
+    updateActivity,
     wagmiClient,
   ]);
 };
