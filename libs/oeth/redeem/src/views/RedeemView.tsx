@@ -78,7 +78,7 @@ function RedeemViewWrapped() {
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > balOeth?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-      : intl.formatMessage({ defaultMessage: 'Redeem for mix' });
+      : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
     isBalOethLoading ||
     isEstimateLoading ||

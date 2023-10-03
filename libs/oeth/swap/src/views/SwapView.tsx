@@ -27,7 +27,7 @@ import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
-import { routeActionLabel } from '../constants';
+import { buttonActionLabel } from '../constants';
 import {
   useHandleAmountInChange,
   useHandleApprove,
@@ -135,7 +135,7 @@ function SwapViewWrapped() {
       : amountIn > balTokenIn?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
       : !isNilOrEmpty(selectedSwapRoute)
-      ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
+      ? intl.formatMessage(buttonActionLabel[selectedSwapRoute?.action])
       : '';
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
