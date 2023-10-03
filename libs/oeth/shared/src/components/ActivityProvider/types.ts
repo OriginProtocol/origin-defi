@@ -2,7 +2,7 @@
 import type { Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
-export type ActivityType = 'swap' | 'approval';
+export type ActivityType = 'swap' | 'approval' | 'redeem';
 
 export type ActivityStatus = 'pending' | 'success' | 'error';
 

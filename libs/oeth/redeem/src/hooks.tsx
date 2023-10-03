@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
 
-import { contracts } from '@origin/shared/contracts';
+import { usePushActivity, useUpdateActivity } from '@origin/oeth/shared';
+import { contracts, tokens } from '@origin/shared/contracts';
 import {
   BlockExplorerLink,
   usePushNotification,
@@ -40,6 +41,8 @@ export const useHandleRedeem = () => {
   const intl = useIntl();
   const { value: slippage } = useSlippage();
   const pushNotification = usePushNotification();
+  const pushActivity = usePushActivity();
+  const updateActivity = useUpdateActivity();
   const { address } = useAccount();
   const [{ amountIn, amountOut }, setRedeemState] = useRedeemState();
   const wagmiClient = useQueryClient();
@@ -48,6 +51,15 @@ export const useHandleRedeem = () => {
     if (amountIn === 0n || isNilOrEmpty(address)) {
       return;
     }
+
+    const activity = pushActivity({
+      type: 'redeem',
+      status: 'pending',
+      tokenIn: tokens.mainnet.OETH,
+      tokenOut: MIX_TOKEN,
+      amountIn,
+      amountOut,
+    });
 
     setRedeemState(
       produce((draft) => {
@@ -75,6 +87,7 @@ export const useHandleRedeem = () => {
 
       console.log('redeem vault done!');
       wagmiClient.invalidateQueries({ queryKey: ['redeem_balance'] });
+      updateActivity({ ...activity, status: 'success', txReceipt });
       pushNotification({
         title: intl.formatMessage({ defaultMessage: 'Redeem complete' }),
         severity: 'success',
@@ -88,10 +101,7 @@ export const useHandleRedeem = () => {
           severity: 'info',
         });
       } else {
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Redeem vault' }),
-          severity: 'error',
-        });
+        updateActivity({ ...activity, status: 'error', error: e.short });
       }
     }
 
@@ -105,9 +115,11 @@ export const useHandleRedeem = () => {
     amountIn,
     amountOut,
     intl,
+    pushActivity,
     pushNotification,
     setRedeemState,
     slippage,
+    updateActivity,
     wagmiClient,
   ]);
 };
