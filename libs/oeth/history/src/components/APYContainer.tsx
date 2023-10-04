@@ -58,7 +58,7 @@ export function APYContainer() {
           defaultMessage: 'Lifetime Earnings (OETH)',
         })}
         value={intl.formatNumber(
-          +formatEther(BigInt(data.earned ?? '0')),
+          +formatEther(BigInt(data?.earned ?? '0')),
           balanceFormat,
         )}
         isLoading={isConnected && isLoading}
