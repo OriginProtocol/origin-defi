@@ -39,12 +39,29 @@ export const useUpdateActivity = () => {
       setState(
         produce((state) => {
           const idx = state.activities.findIndex(propEq(activity.id, 'id'));
-          console.log('update ', idx, state.activities, activity);
           if (idx > -1) {
             state.activities[idx] = {
               ...state.activities[idx],
               ...activity,
             };
+          }
+        }),
+      );
+    },
+    [setState],
+  );
+};
+
+export const useDeleteActivity = () => {
+  const [, setState] = useActivityState();
+
+  return useCallback(
+    (id: string) => {
+      setState(
+        produce((state) => {
+          const idx = state.activities.findIndex(propEq(id, 'id'));
+          if (idx > -1) {
+            state.activities.splice(idx, 1);
           }
         }),
       );
@@ -67,12 +84,12 @@ export const useGlobalStatus = () => {
         setStatus('success');
         setTimeout(() => {
           setStatus('idle');
-        }, 2000);
+        }, 5000);
       } else if (prevGrouped?.error?.length !== grouped?.error?.length) {
         setStatus('error');
         setTimeout(() => {
           setStatus('idle');
-        }, 2000);
+        }, 5000);
       } else {
         setStatus('idle');
       }

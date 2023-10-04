@@ -4,7 +4,9 @@ import { descend, pipe, prop, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useActivityState } from '../state';
-import { ActivityItem } from './ActivityItem';
+import { ApprovalNotification } from './ApprovalNotification';
+import { RedeemNotification } from './RedeemNotification';
+import { SwapNotification } from './SwapNotification';
 
 import type { StackProps } from '@mui/material';
 
@@ -69,9 +71,18 @@ export const ActivityPopover = ({
           {isNilOrEmpty(sortedActivities) ? (
             <EmptyActivity sx={{ px: 3, py: 3 }} />
           ) : (
-            sortedActivities.map((a) => (
-              <ActivityItem key={a.id} activity={a} sx={{ px: 3, py: 2 }} />
-            ))
+            sortedActivities.map(
+              (a) =>
+                ({
+                  approval: (
+                    <ApprovalNotification key={a.id} {...a} px={3} py={2} />
+                  ),
+                  redeem: (
+                    <RedeemNotification key={a.id} {...a} px={3} py={2} />
+                  ),
+                  swap: <SwapNotification key={a.id} {...a} px={3} py={2} />,
+                })[a.type],
+            )
           )}
         </Stack>
       </Stack>

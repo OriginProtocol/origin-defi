@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
 import { IconButton } from '@mui/material';
+import { ActivityIcon } from '@origin/shared/components';
 
 import { useGlobalStatus } from '../hooks';
-import { ActivityIcon } from './ActivityIcon';
 import { ActivityPopover } from './ActivityPopover';
 
 import type { IconButtonProps } from '@mui/material';
