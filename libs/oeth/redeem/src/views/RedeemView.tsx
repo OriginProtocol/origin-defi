@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { GasPopover } from '@origin/oeth/shared';
+import { ApyHeader, GasPopover } from '@origin/oeth/shared';
 import { TokenInput } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -87,54 +87,63 @@ function RedeemViewWrapped() {
     amountIn === 0n;
 
   return (
-    <Card>
-      <CardHeader
-        title={
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-          >
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'Redeem' })}
-            </Typography>
-            <GasPopover
-              slippage={slippage}
-              onSlippageChange={handleSlippageChange}
-            />
-          </Stack>
-        }
-      />
-      <CardContent>
-        <TokenInput
-          amount={amountIn}
-          onAmountChange={handleAmountInChange}
-          balance={balOeth?.value}
-          isBalanceLoading={isBalOethLoading}
-          token={tokens.mainnet.OETH}
-          isTokenClickDisabled
-          tokenPriceUsd={prices?.OETH}
-          isPriceLoading={isPricesLoading}
-          isConnected={isConnected}
-          isAmountDisabled={isRedeemLoading}
-          inputProps={{ sx: tokenInputStyles }}
-          tokenButtonProps={{ sx: { minWidth: 100, maxWidth: 100 } }}
-          sx={{
-            paddingBlock: 2.5,
-            paddingBlockStart: 2.625,
-            paddingInline: 2,
-            border: '1px solid',
-            borderColor: 'divider',
-            borderRadius: 1,
-            backgroundColor: 'grey.900',
-            '&:hover, &:focus-within': {
-              borderColor: 'transparent',
-            },
-            '&:hover': {
-              background: (theme) =>
-                `linear-gradient(${theme.palette.grey[900]}, ${
-                  theme.palette.grey[900]
-                }) padding-box,
+    <>
+      <ApyHeader />
+      <Card sx={{ mt: 3 }}>
+        <CardHeader
+          title={
+            <Stack
+              direction="row"
+              justifyContent="space-between"
+              alignItems="center"
+            >
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'Redeem' })}
+              </Typography>
+              <GasPopover
+                slippage={slippage}
+                onSlippageChange={handleSlippageChange}
+                buttonProps={{
+                  sx: {
+                    position: 'relative',
+                    right: (theme) => theme.spacing(-0.75),
+                    svg: { width: 16, height: 16 },
+                  },
+                }}
+              />
+            </Stack>
+          }
+        />
+        <CardContent>
+          <TokenInput
+            amount={amountIn}
+            onAmountChange={handleAmountInChange}
+            balance={balOeth?.value}
+            isBalanceLoading={isBalOethLoading}
+            token={tokens.mainnet.OETH}
+            isTokenClickDisabled
+            tokenPriceUsd={prices?.OETH}
+            isPriceLoading={isPricesLoading}
+            isConnected={isConnected}
+            isAmountDisabled={isRedeemLoading}
+            inputProps={{ sx: tokenInputStyles }}
+            tokenButtonProps={{ sx: { minWidth: 100, maxWidth: 100 } }}
+            sx={{
+              paddingBlock: 2.5,
+              paddingBlockStart: 2.625,
+              paddingInline: 2,
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 1,
+              backgroundColor: 'grey.900',
+              '&:hover, &:focus-within': {
+                borderColor: 'transparent',
+              },
+              '&:hover': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${
+                    theme.palette.grey[900]
+                  }) padding-box,
               linear-gradient(90deg, ${alpha(
                 theme.palette.primary.main,
                 0.4,
@@ -142,41 +151,42 @@ function RedeemViewWrapped() {
                 theme.palette.primary.dark,
                 0.4,
               )} 100%) border-box;`,
-            },
-            '&:focus-within': {
-              background: (theme) =>
-                `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
+              },
+              '&:focus-within': {
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
              linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
-            },
-          }}
-        />
-        <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
-          <ArrowButton />
-        </Stack>
-        <RedeemRoute
-          sx={{
-            borderRadius: 1,
-            border: '1px solid',
-            borderColor: 'divider',
-          }}
-        />
-        <ConnectedButton
-          variant="action"
-          fullWidth
-          disabled={redeemButtonDisabled}
-          onClick={handleRedeem}
-          sx={{ mt: 1.5 }}
-        >
-          {isEstimateLoading ? (
-            <CircularProgress size={32} color="inherit" />
-          ) : isRedeemLoading ? (
-            intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-          ) : (
-            redeemButtonLabel
-          )}
-        </ConnectedButton>
-      </CardContent>
-    </Card>
+              },
+            }}
+          />
+          <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
+            <ArrowButton />
+          </Stack>
+          <RedeemRoute
+            sx={{
+              borderRadius: 1,
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          />
+          <ConnectedButton
+            variant="action"
+            fullWidth
+            disabled={redeemButtonDisabled}
+            onClick={handleRedeem}
+            sx={{ mt: 1.5 }}
+          >
+            {isEstimateLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isRedeemLoading ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            ) : (
+              redeemButtonLabel
+            )}
+          </ConnectedButton>
+        </CardContent>
+      </Card>
+    </>
   );
 }
 
