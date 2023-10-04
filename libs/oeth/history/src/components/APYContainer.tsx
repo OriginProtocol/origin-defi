@@ -2,10 +2,11 @@ import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 import { balanceFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
-import { useHistoryTableQuery } from '../queries.generated';
+import { useHistoryPageQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 
@@ -17,10 +18,11 @@ export function APYContainer() {
     token: tokens.mainnet.OETH.address,
     watch: true,
   });
-  const { data: earnings, isLoading: earningsLoading } = useHistoryTableQuery(
+  const { data, isLoading } = useHistoryPageQuery(
     { address: address?.toLowerCase(), offset: 0 },
     {
       enabled: isConnected,
+      select: (data) => data?.addresses?.at(0),
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =
@@ -56,10 +58,10 @@ export function APYContainer() {
           defaultMessage: 'Lifetime Earnings (OETH)',
         })}
         value={intl.formatNumber(
-          earnings?.addressById?.earned ?? 0,
+          +formatEther(BigInt(data.earned ?? '0')),
           balanceFormat,
         )}
-        isLoading={isConnected && earningsLoading}
+        isLoading={isConnected && isLoading}
       />
     </Stack>
   );
