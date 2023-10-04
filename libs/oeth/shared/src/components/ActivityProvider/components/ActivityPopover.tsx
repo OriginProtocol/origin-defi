@@ -1,5 +1,13 @@
-import { Divider, Popover, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Button,
+  Divider,
+  Popover,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { produce } from 'immer';
 import { descend, pipe, prop, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -23,10 +31,18 @@ export const ActivityPopover = ({
 }: AcitivityPopoverProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const [{ activities, maxVisible }] = useActivityState();
+  const [{ activities, maxVisible }, setActivityState] = useActivityState();
 
   const handleClose = () => {
     setAnchor(null);
+  };
+
+  const handleClearAll = () => {
+    setActivityState(
+      produce((state) => {
+        state.activities = [];
+      }),
+    );
   };
 
   const sortedActivities = pipe(
@@ -63,9 +79,19 @@ export const ActivityPopover = ({
       }}
     >
       <Stack>
-        <Typography sx={{ px: 3, py: 2 }}>
-          {intl.formatMessage({ defaultMessage: 'Recent activity' })}
-        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography sx={{ px: 3, py: 2 }}>
+            {intl.formatMessage({ defaultMessage: 'Recent activity' })}
+          </Typography>
+          <Button variant="text" onClick={handleClearAll}>
+            {intl.formatMessage({ defaultMessage: 'Clear All' })}
+          </Button>
+        </Stack>
+
         <Divider />
         <Stack divider={<Divider />}>
           {isNilOrEmpty(sortedActivities) ? (
