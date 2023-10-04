@@ -54,7 +54,7 @@ We use `react-query` in conjunction with `graphql-codegen` for interacting with 
 - run the graphql-codegen task with `pnpm nx run oeth-shared:codegen-graphql`, it will generate 
   - the global types in `libs/oeth/shared/src/generated/graphql.ts` and 
   - the generated hooks next to your graphql file (i.e. `/libs/oeth/history/src/queries.generated.tsx`)
-- use the generated hooks in your component with fully typed args and results!
+- use the generated hooks in your component with fully typed args and results
 
 Couple of things to note:
 - generated hooks receives args as first param, second param exposes all react-query api for controlling execution

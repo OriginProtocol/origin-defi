@@ -1,4 +1,4 @@
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 
 import { Box, Link } from '@mui/material';
 import { useIntl } from 'react-intl';

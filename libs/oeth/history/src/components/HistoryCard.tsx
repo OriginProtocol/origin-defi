@@ -5,26 +5,27 @@ import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useHistoryTableWithFiltersQuery } from '../queries.generated';
+import { useHistoryPageQuery } from '../queries.generated';
 import { ExportData } from './ExportData';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
+
+import type { HistoryType } from '@origin/oeth/shared';
 
 const PAGE_SIZE = 20;
 
 export function HistoryCard() {
   const intl = useIntl();
   const [page, setPage] = useState(0);
-  const [filters, setFilters] = useState<string[]>([]);
+  const [filters, setFilters] = useState<HistoryType[]>([]);
   const { address, isConnected } = useAccount();
-
-  const { data, isFetching } = useHistoryTableWithFiltersQuery(
+  const { data, isFetching, isLoading } = useHistoryPageQuery(
     {
       address: address?.toLowerCase(),
       filters: filters.length ? filters : undefined,
       offset: page * PAGE_SIZE,
     },
-    { enabled: isConnected },
+    { enabled: isConnected, select: (data) => data?.addresses?.at(0)?.history },
   );
 
   return (
@@ -46,15 +47,15 @@ export function HistoryCard() {
             filters={filters}
             onChange={(values) => setFilters(values)}
           />
-          <ExportData data={data?.addressById?.history} />
+          <ExportData data={data} />
         </Stack>
       </Stack>
       <Divider />
       {isConnected ? (
         <HistoryTable
-          rows={data?.addressById?.history || []}
-          isLoading={isFetching}
-          hasNextPage={data?.addressById?.history?.length === PAGE_SIZE}
+          rows={data || []}
+          isLoading={isFetching && isLoading}
+          hasNextPage={data?.length === PAGE_SIZE}
           hasPreviousPage={page > 0}
           page={page}
           setPage={(page) => setPage(page)}

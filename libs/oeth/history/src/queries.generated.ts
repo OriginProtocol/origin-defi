@@ -3,58 +3,30 @@ import { useQuery } from '@tanstack/react-query';
 
 import type * as Types from '@origin/oeth/shared';
 import type { UseQueryOptions } from '@tanstack/react-query';
-export type HistoryTableQueryVariables = Types.Exact<{
+export type HistoryPageQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
   offset: Types.Scalars['Int']['input'];
+  filters?: Types.InputMaybe<Array<Types.HistoryType> | Types.HistoryType>;
 }>;
 
-export type HistoryTableQuery = {
+export type HistoryPageQuery = {
   __typename?: 'Query';
-  addressById?: {
+  addresses: Array<{
     __typename?: 'Address';
-    balance: number;
-    earned: number;
+    balance: string;
+    earned: string;
     isContract: boolean;
-    rebasingOption: string;
-    credits: any;
-    lastUpdated: any;
+    rebasingOption: Types.RebasingOption;
+    lastUpdated: string;
     history: Array<{
       __typename?: 'History';
-      type: string;
-      value: number;
+      type: Types.HistoryType;
+      value: string;
       txHash: string;
-      timestamp: any;
-      balance: number;
+      timestamp: string;
+      balance: string;
     }>;
-  } | null;
-};
-
-export type HistoryTableWithFiltersQueryVariables = Types.Exact<{
-  address: Types.Scalars['String']['input'];
-  offset: Types.Scalars['Int']['input'];
-  filters?: Types.InputMaybe<
-    Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']
-  >;
-}>;
-
-export type HistoryTableWithFiltersQuery = {
-  __typename?: 'Query';
-  addressById?: {
-    __typename?: 'Address';
-    balance: number;
-    earned: number;
-    isContract: boolean;
-    rebasingOption: string;
-    lastUpdated: any;
-    history: Array<{
-      __typename?: 'History';
-      type: string;
-      value: number;
-      txHash: string;
-      timestamp: any;
-      balance: number;
-    }>;
-  } | null;
+  }>;
 };
 
 export type HistoryApyQueryVariables = Types.Exact<{ [key: string]: never }>;
@@ -64,57 +36,9 @@ export type HistoryApyQuery = {
   apies: Array<{ __typename?: 'APY'; apy7DayAvg: number; apy30DayAvg: number }>;
 };
 
-export const HistoryTableDocument = `
-    query HistoryTable($address: String!, $offset: Int!) {
-  addressById(id: $address) {
-    balance
-    earned
-    isContract
-    rebasingOption
-    credits
-    lastUpdated
-    history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
-      type
-      value
-      txHash
-      timestamp
-      balance
-    }
-  }
-}
-    `;
-export const useHistoryTableQuery = <
-  TData = HistoryTableQuery,
-  TError = unknown,
->(
-  variables: HistoryTableQueryVariables,
-  options?: UseQueryOptions<HistoryTableQuery, TError, TData>,
-) =>
-  useQuery<HistoryTableQuery, TError, TData>(
-    ['HistoryTable', variables],
-    graphqlClient<HistoryTableQuery, HistoryTableQueryVariables>(
-      HistoryTableDocument,
-      variables,
-    ),
-    options,
-  );
-
-useHistoryTableQuery.getKey = (variables: HistoryTableQueryVariables) => [
-  'HistoryTable',
-  variables,
-];
-useHistoryTableQuery.fetcher = (
-  variables: HistoryTableQueryVariables,
-  options?: RequestInit['headers'],
-) =>
-  graphqlClient<HistoryTableQuery, HistoryTableQueryVariables>(
-    HistoryTableDocument,
-    variables,
-    options,
-  );
-export const HistoryTableWithFiltersDocument = `
-    query HistoryTableWithFilters($address: String!, $offset: Int!, $filters: [String!]) {
-  addressById(id: $address) {
+export const HistoryPageDocument = `
+    query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
+  addresses(where: {id_containsInsensitive: $address}) {
     balance
     earned
     isContract
@@ -135,33 +59,32 @@ export const HistoryTableWithFiltersDocument = `
   }
 }
     `;
-export const useHistoryTableWithFiltersQuery = <
-  TData = HistoryTableWithFiltersQuery,
-  TError = unknown,
->(
-  variables: HistoryTableWithFiltersQueryVariables,
-  options?: UseQueryOptions<HistoryTableWithFiltersQuery, TError, TData>,
+export const useHistoryPageQuery = <TData = HistoryPageQuery, TError = unknown>(
+  variables: HistoryPageQueryVariables,
+  options?: UseQueryOptions<HistoryPageQuery, TError, TData>,
 ) =>
-  useQuery<HistoryTableWithFiltersQuery, TError, TData>(
-    ['HistoryTableWithFilters', variables],
-    graphqlClient<
-      HistoryTableWithFiltersQuery,
-      HistoryTableWithFiltersQueryVariables
-    >(HistoryTableWithFiltersDocument, variables),
+  useQuery<HistoryPageQuery, TError, TData>(
+    ['HistoryPage', variables],
+    graphqlClient<HistoryPageQuery, HistoryPageQueryVariables>(
+      HistoryPageDocument,
+      variables,
+    ),
     options,
   );
 
-useHistoryTableWithFiltersQuery.getKey = (
-  variables: HistoryTableWithFiltersQueryVariables,
-) => ['HistoryTableWithFilters', variables];
-useHistoryTableWithFiltersQuery.fetcher = (
-  variables: HistoryTableWithFiltersQueryVariables,
+useHistoryPageQuery.getKey = (variables: HistoryPageQueryVariables) => [
+  'HistoryPage',
+  variables,
+];
+useHistoryPageQuery.fetcher = (
+  variables: HistoryPageQueryVariables,
   options?: RequestInit['headers'],
 ) =>
-  graphqlClient<
-    HistoryTableWithFiltersQuery,
-    HistoryTableWithFiltersQueryVariables
-  >(HistoryTableWithFiltersDocument, variables, options);
+  graphqlClient<HistoryPageQuery, HistoryPageQueryVariables>(
+    HistoryPageDocument,
+    variables,
+    options,
+  );
 export const HistoryApyDocument = `
     query HistoryApy {
   apies(limit: 1, orderBy: timestamp_DESC) {

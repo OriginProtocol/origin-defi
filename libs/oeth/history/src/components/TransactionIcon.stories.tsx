@@ -1,3 +1,5 @@
+import { HistoryType } from '@origin/oeth/shared';
+
 import { TransactionIcon } from './TransactionIcon';
 
 import type { Meta, StoryObj } from '@storybook/react';
@@ -6,7 +8,7 @@ const meta: Meta<typeof TransactionIcon> = {
   component: TransactionIcon,
   title: 'History/TransactionIcon',
   args: {
-    type: 'yield',
+    type: HistoryType.Yield,
   },
 };
 
@@ -24,19 +26,19 @@ export const SmallScreen: StoryObj<typeof TransactionIcon> = {
 
 export const Sent: StoryObj<typeof TransactionIcon> = {
   args: {
-    type: 'sent',
+    type: HistoryType.Sent,
   },
 };
 
 export const Received: StoryObj<typeof TransactionIcon> = {
   args: {
-    type: 'received',
+    type: HistoryType.Received,
   },
 };
 
 export const Swap: StoryObj<typeof TransactionIcon> = {
   args: {
-    type: 'swap',
+    type: HistoryType.Swap,
     tokenIcon: 'https://app.oeth.com/images/currency/reth-icon-small.png',
   },
 };

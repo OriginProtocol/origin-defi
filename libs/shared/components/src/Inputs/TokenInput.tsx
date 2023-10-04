@@ -16,7 +16,7 @@ import type { Token } from '@origin/shared/contracts';
 
 import type { BigintInputProps } from './BigIntInput';
 
-const MIN_ETH_FOR_GAS = '0.01';
+const MIN_ETH_FOR_GAS = '0.015';
 
 export type TokenInputProps = {
   amount: bigint;

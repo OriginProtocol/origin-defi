@@ -18,13 +18,17 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
+import { formatEther } from 'viem';
 
 import { HistoryFilterButton } from './HistoryButton';
-import { HistoryCell } from './HistoryCell';
+import { TransactionIcon } from './TransactionIcon';
 
-import type { HistoryTableQuery } from '../queries.generated';
+import type { StackProps } from '@mui/material';
+import type { HistoryType } from '@origin/oeth/shared';
 
-export type Rows = HistoryTableQuery['addressById']['history'];
+import type { HistoryPageQuery } from '../queries.generated';
+
+export type Rows = HistoryPageQuery['addresses'][0]['history'];
 
 interface Props {
   rows: Rows;
@@ -49,11 +53,9 @@ export function HistoryTable({
     () => [
       columnHelper.accessor('type', {
         cell: (info) => (
-          <HistoryCell
-            // @ts-expect-error type-mismatch
+          <HistoryTypeCell
             type={info.getValue()}
             timestamp={info.row.original.timestamp}
-            transactionHash={info.row.original.txHash}
           />
         ),
         header: intl.formatMessage({ defaultMessage: 'Type' }),
@@ -66,7 +68,10 @@ export function HistoryTable({
       columnHelper.accessor('value', {
         cell: (info) => (
           <Typography textAlign="end">
-            {intl.formatNumber(info.getValue(), quantityFormat)}
+            {intl.formatNumber(
+              +formatEther(BigInt(info.getValue() ?? '0')),
+              quantityFormat,
+            )}
           </Typography>
         ),
         header: () => (
@@ -78,7 +83,10 @@ export function HistoryTable({
       columnHelper.accessor('balance', {
         cell: (info) => (
           <Typography textAlign="end">
-            {intl.formatNumber(info.getValue(), quantityFormat)}
+            {intl.formatNumber(
+              +formatEther(BigInt(info.getValue() ?? '0')),
+              quantityFormat,
+            )}
           </Typography>
         ),
         header: () => (
@@ -160,14 +168,7 @@ export function HistoryTable({
               }}
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell
-                  key={cell.id}
-                  sx={{
-                    ...(cell.column.columnDef.id === 'type'
-                      ? { '&:first-letter': { textTransform: 'uppercase' } }
-                      : {}),
-                  }}
-                >
+                <TableCell key={cell.id}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}
@@ -200,6 +201,27 @@ export function HistoryTable({
         >
           {intl.formatMessage({ defaultMessage: 'Next' })}
         </HistoryFilterButton>
+      </Stack>
+    </Stack>
+  );
+}
+
+type HistoryTypeCellProps = {
+  timestamp: string;
+  type: HistoryType;
+} & StackProps;
+
+function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
+  const intl = useIntl();
+
+  return (
+    <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
+      <TransactionIcon type={type} />
+      <Stack>
+        <Typography fontWeight="500">{type}</Typography>
+        <Typography color="text.secondary" variant="body2">
+          {intl.formatDate(new Date(timestamp))}
+        </Typography>
       </Stack>
     </Stack>
   );
