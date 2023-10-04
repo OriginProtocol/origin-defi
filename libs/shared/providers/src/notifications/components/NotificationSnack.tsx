@@ -47,8 +47,12 @@ export const NotificationSnack = ({
         borderRadius: 1,
         minWidth: { sm: 300, md: 400, lg: 500, xl: 600 },
         maxWidth: { sm: 400, md: 500, lg: 600, xl: 700 },
+        '.MuiAlert-message': {
+          width: 1,
+        },
         ...AlertProps?.sx,
       }}
+      {...(!isNilOrEmpty(content) && { icon: false })}
       onClose={handleCloseClick}
     >
       {!isNilOrEmpty(title) && (

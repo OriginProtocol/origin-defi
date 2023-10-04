@@ -10,7 +10,7 @@ import type { ReactNode } from 'react';
 
 type NotificationOptions = {
   severity?: AlertColor;
-  title: string;
+  title?: string;
   message?: string;
   content?: ReactNode;
   visible?: boolean;
