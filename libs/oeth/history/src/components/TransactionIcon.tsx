@@ -1,23 +1,34 @@
 import { Box } from '@mui/material';
+import { HistoryType } from '@origin/oeth/shared';
+import { isNilOrEmpty } from '@origin/shared/utils';
 
-type Props =
-  | {
-      type: 'sent' | 'received' | 'yield';
-    }
-  | { type: 'swap'; tokenIcon: string };
+import type { BoxProps } from '@mui/material';
 
-export function TransactionIcon(props: Props) {
+export type TransactionIconProps = {
+  type: HistoryType;
+  tokenIcon?: string;
+} & BoxProps;
+
+export function TransactionIcon({
+  type,
+  tokenIcon,
+  ...rest
+}: TransactionIconProps) {
   return (
     <Box
+      {...rest}
       sx={{
         position: 'relative',
         width: { xs: '1.375rem', md: '2rem' },
         height: { xs: '1.375rem', md: '2rem' },
+        ...rest?.sx,
       }}
     >
       <Box
         component="img"
-        src={props.type === 'yield' ? '/images/Yield.svg' : '/images/oeth.svg'}
+        src={
+          type === HistoryType.Yield ? '/images/Yield.svg' : '/images/oeth.svg'
+        }
         sx={{
           width: '100%',
           height: '100%',
@@ -34,14 +45,14 @@ export function TransactionIcon(props: Props) {
         }}
         component="img"
         src={
-          props.type === 'sent'
+          type === HistoryType.Sent
             ? '/images/Send.svg'
-            : props.type === 'received' || props.type === 'yield'
+            : type === HistoryType.Received || type === HistoryType.Yield
             ? '/images/Received.svg'
             : '/images/Swap.svg'
         }
       ></Box>
-      {props.type === 'swap' && (
+      {type === HistoryType.Swap && !isNilOrEmpty(tokenIcon) && (
         <Box
           sx={{
             position: 'absolute',
@@ -58,7 +69,7 @@ export function TransactionIcon(props: Props) {
               height: { xs: '1.375rem', md: '2rem' },
             }}
             component="img"
-            src={props.tokenIcon}
+            src={tokenIcon}
           ></Box>
         </Box>
       )}

@@ -11,6 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { HistoryType } from '@origin/oeth/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -23,32 +24,38 @@ const styles = {
 };
 
 const filterOptions = [
-  { label: defineMessage({ defaultMessage: 'Yield' }), value: 'Yield' },
-  { label: defineMessage({ defaultMessage: 'Swap' }), value: 'Swap' },
-  { label: defineMessage({ defaultMessage: 'Sent' }), value: 'Sent' },
-  { label: defineMessage({ defaultMessage: 'Received' }), value: 'Received' },
+  {
+    label: defineMessage({ defaultMessage: 'Yield' }),
+    value: HistoryType.Yield,
+  },
+  { label: defineMessage({ defaultMessage: 'Swap' }), value: HistoryType.Swap },
+  { label: defineMessage({ defaultMessage: 'Sent' }), value: HistoryType.Sent },
+  {
+    label: defineMessage({ defaultMessage: 'Received' }),
+    value: HistoryType.Received,
+  },
 ];
 
 export type HistoryFiltersProps = {
-  filters: string[];
-  onChange: (values: string[]) => void;
+  filters: HistoryType[];
+  onChange: (values: HistoryType[]) => void;
 };
 
 export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
-  const [selected, setSelectedTypes] = useState<string[]>(filters);
+  const [selected, setSelectedTypes] = useState<HistoryType[]>(filters);
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleSelect = (
     e: React.ChangeEvent<HTMLInputElement>,
-    label: string,
+    value: HistoryType,
   ) => {
     setSelectedTypes((prev) => {
       if (e.target.checked) {
-        return [...prev, label];
+        return [...prev, value];
       } else {
-        return prev.filter((val) => val !== label);
+        return prev.filter((val) => val !== value);
       }
     });
   };

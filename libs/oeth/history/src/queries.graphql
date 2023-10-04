@@ -1,27 +1,5 @@
-query HistoryTable($address: String!, $offset: Int!) {
-  addressById(id: $address) {
-    balance
-    earned
-    isContract
-    rebasingOption
-    credits
-    lastUpdated
-    history(limit: 20, orderBy: timestamp_DESC, offset: $offset) {
-      type
-      value
-      txHash
-      timestamp
-      balance
-    }
-  }
-}
-
-query HistoryTableWithFilters(
-  $address: String!
-  $offset: Int!
-  $filters: [String!]
-) {
-  addressById(id: $address) {
+query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
+  addresses(where: { id_containsInsensitive: $address }) {
     balance
     earned
     isContract

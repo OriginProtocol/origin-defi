@@ -12,7 +12,7 @@ export type ApiesQuery = {
   apies: Array<{
     __typename?: 'APY';
     id: string;
-    timestamp: any;
+    timestamp: string;
     apy7DayAvg: number;
     apy30DayAvg: number;
   }>;

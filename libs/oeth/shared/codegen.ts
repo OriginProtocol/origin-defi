@@ -7,6 +7,12 @@ const config: CodegenConfig = {
       documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
       hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
+      config: {
+        scalars: {
+          BigInt: 'string',
+          DateTime: 'string',
+        },
+      },
     },
     'libs/oeth/': {
       schema: process.env.VITE_SUBSQUID_URL,
@@ -23,6 +29,10 @@ const config: CodegenConfig = {
         exposeQueryKeys: true,
         fetcher: {
           func: '@origin/oeth/shared#graphqlClient',
+        },
+        scalars: {
+          BigInt: 'string',
+          DateTime: 'string',
         },
       },
     },
