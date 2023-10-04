@@ -18,7 +18,7 @@ type ApprovalNotificationProps = {
   amountIn?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & StackProps;
+} & Pick<StackProps, 'sx'>;
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Approving' }),
@@ -34,12 +34,12 @@ export const ApprovalNotification = ({
   amountIn,
   txReceipt,
   error,
-  ...rest
+  sx,
 }: ApprovalNotificationProps) => {
   const intl = useIntl();
 
   return (
-    <Stack {...rest} direction="row" justifyContent="space-between">
+    <Stack direction="row" justifyContent="space-between" sx={sx}>
       <Stack spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <ActivityIcon status={status} sx={{ width: 20, height: 20 }} />

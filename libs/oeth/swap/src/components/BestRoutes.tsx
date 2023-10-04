@@ -10,8 +10,7 @@ import type { Grid2Props } from '@mui/material';
 export type BestRoutesProps = { isLoading: boolean } & Grid2Props;
 
 export function BestRoutes(props: Grid2Props) {
-  const [{ swapRoutes, selectedSwapRoute, isSwapRoutesLoading }] =
-    useSwapState();
+  const [{ swapRoutes, selectedSwapRoute }] = useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
 
   return (
@@ -24,7 +23,6 @@ export function BestRoutes(props: Grid2Props) {
             isBest={index === 0}
             onSelect={handleSelectSwapRoute}
             route={route}
-            isLoading={isSwapRoutesLoading}
           />
         </Grid2>
       ))}

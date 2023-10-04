@@ -19,7 +19,7 @@ type SwapNotificationProps = {
   amountOut?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & StackProps;
+} & Pick<StackProps, 'sx'>;
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Swapping' }),
@@ -36,12 +36,12 @@ export const SwapNotification = ({
   amountOut,
   txReceipt,
   error,
-  ...rest
+  sx,
 }: SwapNotificationProps) => {
   const intl = useIntl();
 
   return (
-    <Stack width={1} {...rest} direction="row" justifyContent="space-between">
+    <Stack width={1} direction="row" justifyContent="space-between" sx={sx}>
       <Stack spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <ActivityIcon status={status} sx={{ width: 20, height: 20 }} />

@@ -12,7 +12,7 @@ import {
   usePushNotification,
   useSlippage,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransaction } from '@wagmi/core';
 import { produce } from 'immer';
@@ -256,7 +256,7 @@ export const useHandleApprove = () => {
           draft.isApprovalLoading = false;
         }),
       );
-      if (error.cause.name === 'UserRejectedRequestError') {
+      if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval Cancelled' }),
@@ -269,14 +269,14 @@ export const useHandleApprove = () => {
         updateActivity({
           ...activity,
           status: 'error',
-          error: error.shortMessage,
+          error: error?.shortMessage ?? error.message,
         });
         pushNotification({
           content: (
             <ApprovalNotification
               {...activity}
               status="error"
-              error={error.shortMessage}
+              error={error?.shortMessage ?? error.message}
             />
           ),
         });
@@ -375,7 +375,7 @@ export const useHandleSwap = () => {
           draft.isSwapLoading = false;
         }),
       );
-      if (error.cause.name === 'UserRejectedRequestError') {
+      if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Operation Cancelled' }),

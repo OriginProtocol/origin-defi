@@ -8,7 +8,7 @@ import {
 } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { usePushNotification, useSlippage } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -103,7 +103,7 @@ export const useHandleRedeem = () => {
         ),
       });
     } catch (error) {
-      if (error.cause.name === 'UserRejectedRequestError') {
+      if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Redeem Cancelled' }),
@@ -116,14 +116,14 @@ export const useHandleRedeem = () => {
         updateActivity({
           ...activity,
           status: 'error',
-          error: error.shortMessage,
+          error: error?.shortMessage ?? error.message,
         });
         pushNotification({
           content: (
             <RedeemNotification
               {...activity}
               status="error"
-              error={error.shortMessage}
+              error={error?.shortMessage ?? error.message}
             />
           ),
         });

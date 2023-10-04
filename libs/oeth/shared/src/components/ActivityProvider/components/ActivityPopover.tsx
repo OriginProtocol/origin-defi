@@ -75,12 +75,22 @@ export const ActivityPopover = ({
               (a) =>
                 ({
                   approval: (
-                    <ApprovalNotification key={a.id} {...a} px={3} py={2} />
+                    <ApprovalNotification
+                      key={a.id}
+                      {...a}
+                      sx={{ px: 3, py: 2 }}
+                    />
                   ),
                   redeem: (
-                    <RedeemNotification key={a.id} {...a} px={3} py={2} />
+                    <RedeemNotification
+                      key={a.id}
+                      {...a}
+                      sx={{ px: 3, py: 2 }}
+                    />
                   ),
-                  swap: <SwapNotification key={a.id} {...a} px={3} py={2} />,
+                  swap: (
+                    <SwapNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                  ),
                 })[a.type],
             )
           )}

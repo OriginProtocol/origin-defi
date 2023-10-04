@@ -21,7 +21,6 @@ import type { EstimatedSwapRoute } from '../types';
 export type SwapRouteCardProps = {
   isSelected: boolean;
   isBest: boolean;
-  isLoading: boolean;
   onSelect: (route: EstimatedSwapRoute) => void;
   route: EstimatedSwapRoute;
 } & Omit<CardProps, 'onSelect'>;
@@ -29,19 +28,29 @@ export type SwapRouteCardProps = {
 export function SwapRouteCard({
   isSelected,
   isBest,
-  isLoading,
   onSelect,
   route,
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
-  const [{ amountIn }] = useSwapState();
+  const [{ amountIn, isSwapRoutesLoading }] = useSwapState();
   const { data: prices } = usePrices();
-  const { data: swapGasPrice, isLoading: swapGasPriceLoading } = useGasPrice(
-    route.gas,
-  );
-  const { data: approvalGasPrice, isLoading: approvalGasPriceLoading } =
-    useGasPrice(route.approvalGas, { refetchInterval: 30e3 });
+  const {
+    data: swapGasPrice,
+    isLoading: swapGasPriceLoading,
+    isFetching: swapGasPriceFetching,
+  } = useGasPrice(route.gas, {
+    refetchInterval: 30e3,
+    enabled: route.gas > 0n,
+  });
+  const {
+    data: approvalGasPrice,
+    isLoading: approvalGasPriceLoading,
+    isFetching: approvalGasPriceFetching,
+  } = useGasPrice(route.approvalGas, {
+    refetchInterval: 30e3,
+    enabled: route.approvalGas > 0n,
+  });
   const { data: allowance } = useSwapRouteAllowance(route);
 
   const estimatedAmount = +formatUnits(
@@ -51,7 +60,9 @@ export function SwapRouteCard({
   const convertedAmount =
     (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
   const isGasLoading =
-    isLoading || swapGasPriceLoading || approvalGasPriceLoading;
+    isSwapRoutesLoading ||
+    (swapGasPriceLoading && swapGasPriceFetching) ||
+    (approvalGasPriceLoading && approvalGasPriceFetching);
   const gasPrice =
     swapGasPrice?.gasCostUsd +
     (allowance < amountIn ? approvalGasPrice?.gasCostUsd : 0);
@@ -114,7 +125,7 @@ export function SwapRouteCard({
       <Stack height={1}>
         <Grid2 container spacing={0.5}>
           <Grid2 display="flex" alignItems="center">
-            {isLoading ? (
+            {isSwapRoutesLoading ? (
               <Skeleton variant="circular" width={16} height={16} />
             ) : (
               <Box
@@ -130,7 +141,7 @@ export function SwapRouteCard({
           </Grid2>
           <Grid2 display="flex" alignItems="center">
             <Typography fontWeight={500}>
-              {isLoading ? (
+              {isSwapRoutesLoading ? (
                 <Skeleton width={100} />
               ) : (
                 formatAmount(route.estimatedAmount, route.tokenOut.decimals)
@@ -139,7 +150,7 @@ export function SwapRouteCard({
           </Grid2>
           <Grid2 display="flex" alignItems="center" xs={12} sm="auto">
             <Typography color="text.secondary" variant="body2" noWrap>
-              {isLoading ? (
+              {isSwapRoutesLoading ? (
                 <Skeleton width={60} />
               ) : (
                 `(${intl.formatNumber(convertedAmount, currencyFormat)})`
@@ -152,7 +163,7 @@ export function SwapRouteCard({
             fontWeight={500}
             sx={{ fontSize: 12, marginBlock: { xs: 1.5, md: 1 } }}
           >
-            {isLoading ? (
+            {isSwapRoutesLoading ? (
               <Skeleton width={80} />
             ) : (
               intl.formatMessage(routeActionLabel[route.action])
@@ -169,7 +180,7 @@ export function SwapRouteCard({
                 {intl.formatMessage({ defaultMessage: 'Rate:' })}
               </Typography>
               <Typography variant="body2" fontWeight={500}>
-                {isLoading ? (
+                {isSwapRoutesLoading ? (
                   <Skeleton width={60} />
                 ) : (
                   `1:${intl.formatNumber(route.rate, quantityFormat)}`
