@@ -119,9 +119,7 @@ export function HistoryTable({
 
   return (
     <Stack>
-      <Table
-        sx={{ '& .MuiTableCell-root': { paddingInline: { xs: 2, md: 3 } } }}
-      >
+      <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
@@ -182,7 +180,7 @@ export function HistoryTable({
         alignItems="baseline"
         justifyContent="flex-end"
         gap={1}
-        sx={{ px: 3, py: 2 }}
+        sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
         <HistoryFilterButton
           disabled={!hasPreviousPage}

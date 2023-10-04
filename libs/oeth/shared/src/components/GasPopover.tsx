@@ -14,7 +14,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { PercentInput } from '@origin/shared/components';
+import { InfoTooltip, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { useFeeData } from 'wagmi';
 
@@ -89,8 +89,18 @@ export function GasPopover({
       >
         <Stack gap={1}>
           <FormControl variant="standard">
-            <InputLabel htmlFor="slippage" shrink>
+            <InputLabel
+              htmlFor="slippage"
+              shrink
+              sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+            >
               {intl.formatMessage({ defaultMessage: 'Price Tolerance' })}
+              <InfoTooltip
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+                })}
+              />
             </InputLabel>
             <Box sx={gridStyles}>
               <Stack direction="row" gap={2}>

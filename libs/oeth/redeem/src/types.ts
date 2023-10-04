@@ -11,7 +11,6 @@ export type RedeemState = {
   split: RedeemEstimate[];
   gas: bigint;
   rate: number;
-  slippage: number;
   isEstimateLoading: boolean;
   isRedeemLoading: boolean;
 };

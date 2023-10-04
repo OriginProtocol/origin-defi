@@ -19,12 +19,24 @@ export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
   'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
   'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),
   'swap-curve-eth': defineMessage({ defaultMessage: 'Swap with CurvePool' }),
-  'swap-zapper-eth': defineMessage({ defaultMessage: 'Zap + Mint with Vault' }),
+  'swap-zapper-eth': defineMessage({ defaultMessage: 'Mint with Vault' }),
   'swap-zapper-sfrxeth': defineMessage({
-    defaultMessage: 'Zap + Mint with Vault',
+    defaultMessage: 'Mint with Vault',
   }),
   'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap with Origin' }),
   'wrap-oeth': defineMessage({ defaultMessage: 'Wrap with Origin' }),
+};
+
+export const buttonActionLabel: Record<SwapAction, MessageDescriptor> = {
+  'mint-vault': defineMessage({ defaultMessage: 'Mint' }),
+  'swap-curve': defineMessage({ defaultMessage: 'Swap' }),
+  'swap-curve-eth': defineMessage({ defaultMessage: 'Swap' }),
+  'swap-zapper-eth': defineMessage({ defaultMessage: 'Mint' }),
+  'swap-zapper-sfrxeth': defineMessage({
+    defaultMessage: 'Mint',
+  }),
+  'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap' }),
+  'wrap-oeth': defineMessage({ defaultMessage: 'Wrap' }),
 };
 
 export const swapRoutes = [

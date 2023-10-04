@@ -39,7 +39,7 @@ export function HistoryCard() {
         justifyContent="space-between"
       >
         <Typography>
-          {intl.formatMessage({ defaultMessage: 'OETH transactions' })}
+          {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
         </Typography>
         <Stack direction="row" gap={1}>
           <HistoryFilters

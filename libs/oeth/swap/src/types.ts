@@ -122,7 +122,6 @@ export type SwapState = {
   tokenOut: Token;
   swapRoutes: EstimatedSwapRoute[];
   selectedSwapRoute: EstimatedSwapRoute | null;
-  slippage: number;
   isSwapRoutesLoading: boolean;
   isApproved: boolean;
   isApprovalLoading: boolean;

@@ -11,12 +11,8 @@ export const App = () => {
         <Topnav />
         <Container
           sx={{
-            mt: { xs: 3.25, md: 3 },
+            mt: 3,
             mb: 10,
-            pt: (theme) => ({
-              xs: '112px',
-              md: `${theme.mixins.toolbar.height}px`,
-            }),
           }}
           maxWidth="sm"
         >

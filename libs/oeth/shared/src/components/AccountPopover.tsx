@@ -20,6 +20,8 @@ import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 const balanceTokens = [
+  tokens.mainnet.OETH,
+  tokens.mainnet.WOETH,
   tokens.mainnet.WETH,
   tokens.mainnet.rETH,
   tokens.mainnet.frxETH,

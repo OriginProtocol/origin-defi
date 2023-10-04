@@ -15,19 +15,22 @@ import {
 } from '@mui/material';
 import { GasPopover } from '@origin/oeth/shared';
 import { TokenInput } from '@origin/shared/components';
-import { ConnectedButton, usePrices } from '@origin/shared/providers';
+import {
+  ConnectedButton,
+  usePrices,
+  useSlippage,
+} from '@origin/shared/providers';
 import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
 import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
-import { routeActionLabel } from '../constants';
+import { buttonActionLabel } from '../constants';
 import {
   useHandleAmountInChange,
   useHandleApprove,
-  useHandleSlippageChange,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
@@ -69,7 +72,9 @@ export const SwapView = () =>
 
 function SwapViewWrapped() {
   const intl = useIntl();
+  const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
+  const { chain } = useNetwork();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [
     {
@@ -78,7 +83,6 @@ function SwapViewWrapped() {
       tokenIn,
       tokenOut,
       selectedSwapRoute,
-      slippage,
       isSwapLoading,
       isSwapRoutesLoading,
       isApprovalLoading,
@@ -99,7 +103,6 @@ function SwapViewWrapped() {
     watch: true,
     scopeKey: 'swap_balance',
   });
-  const handleSlippageChange = useHandleSlippageChange();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -112,6 +115,10 @@ function SwapViewWrapped() {
 
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
+  };
+
+  const handleSlippageChange = (val: number) => {
+    setSlippage(val);
   };
 
   const needsApproval =
@@ -128,7 +135,7 @@ function SwapViewWrapped() {
       : amountIn > balTokenIn?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
       : !isNilOrEmpty(selectedSwapRoute)
-      ? intl.formatMessage(routeActionLabel[selectedSwapRoute?.action])
+      ? intl.formatMessage(buttonActionLabel[selectedSwapRoute?.action])
       : '';
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
@@ -188,6 +195,10 @@ function SwapViewWrapped() {
               onTokenClick={() => {
                 setTokenSource('tokenIn');
               }}
+              isNativeCurrency={
+                tokenIn.symbol ===
+                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+              }
               tokenPriceUsd={prices?.[tokenIn.symbol]}
               isPriceLoading={isPriceLoading}
               isConnected={isConnected}
@@ -233,6 +244,10 @@ function SwapViewWrapped() {
               onTokenClick={() => {
                 setTokenSource('tokenOut');
               }}
+              isNativeCurrency={
+                tokenOut.symbol ===
+                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+              }
               tokenPriceUsd={prices?.[tokenOut.symbol]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               isConnected={isConnected}

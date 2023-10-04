@@ -53,7 +53,7 @@ export function APYContainer() {
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({
-          defaultMessage: 'Lifetime earnings (OETH)',
+          defaultMessage: 'Lifetime Earnings (OETH)',
         })}
         value={intl.formatNumber(
           earnings?.addressById?.earned ?? 0,
