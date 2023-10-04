@@ -1,12 +1,13 @@
 import { useCallback } from 'react';
 
-import { usePushActivity, useUpdateActivity } from '@origin/oeth/shared';
-import { contracts, tokens } from '@origin/shared/contracts';
 import {
-  BlockExplorerLink,
-  usePushNotification,
-  useSlippage,
-} from '@origin/shared/providers';
+  RedeemNotification,
+  useDeleteActivity,
+  usePushActivity,
+  useUpdateActivity,
+} from '@origin/oeth/shared';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { usePushNotification, useSlippage } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   prepareWriteContract,
@@ -43,6 +44,7 @@ export const useHandleRedeem = () => {
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
+  const deleteActivity = useDeleteActivity();
   const { address } = useAccount();
   const [{ amountIn, amountOut }, setRedeemState] = useRedeemState();
   const wagmiClient = useQueryClient();
@@ -51,6 +53,14 @@ export const useHandleRedeem = () => {
     if (amountIn === 0n || isNilOrEmpty(address)) {
       return;
     }
+
+    const minAmountOut = parseUnits(
+      (
+        +formatUnits(amountOut, MIX_TOKEN.decimals) -
+        +formatUnits(amountOut, MIX_TOKEN.decimals) * slippage
+      ).toString(),
+      MIX_TOKEN.decimals,
+    );
 
     const activity = pushActivity({
       type: 'redeem',
@@ -68,14 +78,6 @@ export const useHandleRedeem = () => {
     );
 
     try {
-      const minAmountOut = parseUnits(
-        (
-          +formatUnits(amountOut, MIX_TOKEN.decimals) -
-          +formatUnits(amountOut, MIX_TOKEN.decimals) * slippage
-        ).toString(),
-        MIX_TOKEN.decimals,
-      );
-
       const { request } = await prepareWriteContract({
         address: contracts.mainnet.OETHVaultCore.address,
         abi: contracts.mainnet.OETHVaultCore.abi,
@@ -83,37 +85,55 @@ export const useHandleRedeem = () => {
         args: [amountIn, minAmountOut],
       });
       const { hash } = await writeContract(request);
+      setRedeemState(
+        produce((draft) => {
+          draft.isRedeemLoading = false;
+        }),
+      );
       const txReceipt = await waitForTransaction({ hash });
-
-      console.log('redeem vault done!');
       wagmiClient.invalidateQueries({ queryKey: ['redeem_balance'] });
       updateActivity({ ...activity, status: 'success', txReceipt });
       pushNotification({
-        title: intl.formatMessage({ defaultMessage: 'Redeem complete' }),
-        severity: 'success',
-        content: <BlockExplorerLink hash={txReceipt.hash} />,
+        content: (
+          <RedeemNotification
+            {...activity}
+            status="success"
+            txReceipt={txReceipt}
+          />
+        ),
       });
-    } catch (e) {
-      console.error(`redeem vault error!\n${e.message}`);
-      if (e?.code === 'ACTION_REJECTED') {
+    } catch (error) {
+      if (error.cause.name === 'UserRejectedRequestError') {
+        deleteActivity(activity.id);
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Redeem vault' }),
+          title: intl.formatMessage({ defaultMessage: 'Redeem Cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
           severity: 'info',
         });
       } else {
-        updateActivity({ ...activity, status: 'error', error: e.short });
+        updateActivity({
+          ...activity,
+          status: 'error',
+          error: error.shortMessage,
+        });
+        pushNotification({
+          content: (
+            <RedeemNotification
+              {...activity}
+              status="error"
+              error={error.shortMessage}
+            />
+          ),
+        });
       }
     }
-
-    setRedeemState(
-      produce((draft) => {
-        draft.isRedeemLoading = false;
-      }),
-    );
   }, [
     address,
     amountIn,
     amountOut,
+    deleteActivity,
     intl,
     pushActivity,
     pushNotification,

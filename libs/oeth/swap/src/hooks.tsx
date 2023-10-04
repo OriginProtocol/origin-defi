@@ -1,6 +1,12 @@
 import { useCallback, useMemo } from 'react';
 
-import { usePushActivity, useUpdateActivity } from '@origin/oeth/shared';
+import {
+  ApprovalNotification,
+  SwapNotification,
+  useDeleteActivity,
+  usePushActivity,
+  useUpdateActivity,
+} from '@origin/oeth/shared';
 import {
   useCurve,
   usePushNotification,
@@ -8,6 +14,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { waitForTransaction } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
@@ -162,12 +169,18 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
       route?.tokenOut.symbol,
       route?.action,
     ],
-    queryFn: () =>
-      swapActions[route.action].allowance({
-        tokenIn: route.tokenIn,
-        tokenOut: route.tokenOut,
-        curve,
-      }),
+    queryFn: async () => {
+      let res = 0n;
+      try {
+        res = await swapActions[route.action].allowance({
+          tokenIn: route.tokenIn,
+          tokenOut: route.tokenOut,
+          curve,
+        });
+      } catch {}
+
+      return res;
+    },
     enabled: !isNilOrEmpty(route),
     placeholderData: 0n,
   });
@@ -182,7 +195,7 @@ export const useHandleApprove = () => {
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
-
+  const deleteActivity = useDeleteActivity();
   const [
     { amountIn, amountOut, selectedSwapRoute, tokenIn, tokenOut },
     setSwapState,
@@ -206,12 +219,20 @@ export const useHandleApprove = () => {
       amountIn,
       amountOut,
     });
-    await swapActions[selectedSwapRoute.action].approve({
-      tokenIn,
-      tokenOut,
-      amountIn,
-      curve,
-      onSuccess: (txReceipt) => {
+    try {
+      const hash = await swapActions[selectedSwapRoute.action].approve({
+        tokenIn,
+        tokenOut,
+        amountIn,
+        curve,
+      });
+      setSwapState(
+        produce((draft) => {
+          draft.isApprovalLoading = false;
+        }),
+      );
+      if (!isNilOrEmpty(hash)) {
+        const txReceipt = await waitForTransaction({ hash });
         wagmiClient.invalidateQueries({
           queryKey: ['swap_balance'],
         });
@@ -219,37 +240,54 @@ export const useHandleApprove = () => {
           queryKey: ['swap_allowance'],
         });
         updateActivity({ ...activity, status: 'success', txReceipt });
-        setSwapState(
-          produce((draft) => {
-            draft.isApprovalLoading = false;
-          }),
-        );
-      },
-      onError: (error: string) => {
-        updateActivity({ ...activity, status: 'error', error });
-        setSwapState(
-          produce((draft) => {
-            draft.isApprovalLoading = false;
-          }),
-        );
-      },
-      onReject: () => {
+        pushNotification({
+          content: (
+            <ApprovalNotification
+              {...activity}
+              status="success"
+              txReceipt={txReceipt}
+            />
+          ),
+        });
+      }
+    } catch (error) {
+      setSwapState(
+        produce((draft) => {
+          draft.isApprovalLoading = false;
+        }),
+      );
+      if (error.cause.name === 'UserRejectedRequestError') {
+        deleteActivity(activity.id);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval Cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
           severity: 'info',
         });
-        setSwapState(
-          produce((draft) => {
-            draft.isApprovalLoading = false;
-          }),
-        );
-      },
-    });
+      } else {
+        updateActivity({
+          ...activity,
+          status: 'error',
+          error: error.shortMessage,
+        });
+        pushNotification({
+          content: (
+            <ApprovalNotification
+              {...activity}
+              status="error"
+              error={error.shortMessage}
+            />
+          ),
+        });
+      }
+    }
   }, [
     address,
     amountIn,
     amountOut,
     curve,
+    deleteActivity,
     intl,
     pushActivity,
     pushNotification,
@@ -273,6 +311,7 @@ export const useHandleSwap = () => {
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
+  const deleteActivity = useDeleteActivity();
   const [
     { amountIn, amountOut, selectedSwapRoute, tokenIn, tokenOut },
     setSwapState,
@@ -296,43 +335,78 @@ export const useHandleSwap = () => {
         draft.isSwapLoading = true;
       }),
     );
-    await swapActions[selectedSwapRoute.action].swap({
-      tokenIn,
-      tokenOut,
-      amountIn,
-      estimatedRoute: selectedSwapRoute,
-      slippage,
-      amountOut,
-      curve,
-      onSuccess: (txReceipt) => {
+    try {
+      const hash = await swapActions[selectedSwapRoute.action].swap({
+        tokenIn,
+        tokenOut,
+        amountIn,
+        estimatedRoute: selectedSwapRoute,
+        slippage,
+        amountOut,
+        curve,
+      });
+      setSwapState(
+        produce((draft) => {
+          draft.isSwapLoading = false;
+        }),
+      );
+      if (!isNilOrEmpty(hash)) {
+        const txReceipt = await waitForTransaction({ hash });
         wagmiClient.invalidateQueries({
           queryKey: ['swap_balance'],
         });
         queryClient.invalidateQueries({
           queryKey: ['swap_allowance'],
         });
-        updateActivity({ ...activity, status: 'success', txReceipt });
-      },
-      onError: (error: string) => {
-        updateActivity({ ...activity, status: 'error', error });
-      },
-      onReject: () => {
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap Cancelled' }),
+          content: (
+            <SwapNotification
+              {...activity}
+              status="success"
+              txReceipt={txReceipt}
+            />
+          ),
+        });
+        updateActivity({ ...activity, status: 'success', txReceipt });
+      }
+    } catch (error) {
+      setSwapState(
+        produce((draft) => {
+          draft.isSwapLoading = false;
+        }),
+      );
+      if (error.cause.name === 'UserRejectedRequestError') {
+        deleteActivity(activity.id);
+        pushNotification({
+          title: intl.formatMessage({ defaultMessage: 'Operation Cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
           severity: 'info',
         });
-      },
-    });
-    setSwapState(
-      produce((draft) => {
-        draft.isSwapLoading = false;
-      }),
-    );
+      } else {
+        updateActivity({
+          ...activity,
+          status: 'error',
+          error: error.shortMessage,
+        });
+        pushNotification({
+          content: (
+            <SwapNotification
+              {...activity}
+              status="error"
+              error={error.shortMessage}
+            />
+          ),
+        });
+      }
+    }
   }, [
     address,
     amountIn,
     amountOut,
     curve,
+    deleteActivity,
     intl,
     pushActivity,
     pushNotification,

@@ -6,7 +6,6 @@ import {
   getPublicClient,
   prepareWriteContract,
   readContract,
-  waitForTransaction,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
@@ -69,7 +68,9 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       args: [amountIn, whales.mainnet.OETH],
       account: whales.mainnet.OETH,
     });
-  } catch {}
+  } catch {
+    console.log(`Wrap OETH uses fix gas estimate: 0`);
+  }
 
   return gasEstimate;
 };
@@ -112,7 +113,9 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       args: [contracts.mainnet.WOETH.address, amountIn],
       account: address,
     });
-  } catch {}
+  } catch {
+    console.log(`Wrap OETH uses fix approval gas estimate: 0`);
+  }
 
   return approvalEstimate;
 };
@@ -155,83 +158,40 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({
-  tokenIn,
-  amountIn,
-  onSuccess,
-  onError,
-  onReject,
-}) => {
-  try {
-    const { request } = await prepareWriteContract({
-      address: tokenIn.address,
-      abi: erc20ABI,
-      functionName: 'approve',
-      args: [contracts.mainnet.WOETH.address, amountIn],
-    });
-    const { hash } = await writeContract(request);
-    const txReceipt = await waitForTransaction({ hash });
+const approve: Approve = async ({ tokenIn, amountIn }) => {
+  const { request } = await prepareWriteContract({
+    address: tokenIn.address,
+    abi: erc20ABI,
+    functionName: 'approve',
+    args: [contracts.mainnet.WOETH.address, amountIn],
+  });
+  const { hash } = await writeContract(request);
 
-    console.log(`wrap oeth approval done!`);
-    if (onSuccess) {
-      await onSuccess(txReceipt);
-    }
-  } catch (e) {
-    console.error(`wrap oeth approval error!\n${e.message}`);
-    if (e?.code === 'ACTION_REJECTED' && onReject) {
-      await onReject('Wrap OETH approval');
-    } else if (onError) {
-      await onError('Wrap OETH approval');
-    }
-  }
+  return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  onSuccess,
-  onError,
-  onReject,
-}) => {
+const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
-    return;
+    return null;
   }
 
   const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    console.error(`wrap oeth is not approved`);
-    if (onError) {
-      await onError('Wrap OETH is not approved');
-    }
-    return;
+    throw new Error(`Wrap OETH is not approved`);
   }
 
-  try {
-    const { request } = await prepareWriteContract({
-      address: contracts.mainnet.WOETH.address,
-      abi: contracts.mainnet.WOETH.abi,
-      functionName: 'deposit',
-      args: [amountIn, address],
-    });
-    const { hash } = await writeContract(request);
-    const txReceipt = await waitForTransaction({ hash });
+  const { request } = await prepareWriteContract({
+    address: contracts.mainnet.WOETH.address,
+    abi: contracts.mainnet.WOETH.abi,
+    functionName: 'deposit',
+    args: [amountIn, address],
+  });
+  const { hash } = await writeContract(request);
 
-    console.log('wrap oeth done!');
-    if (onSuccess) {
-      await onSuccess(txReceipt);
-    }
-  } catch (e) {
-    console.error(`wrap oeth error!\n${e.message}`);
-    if (e?.code === 'ACTION_REJECTED' && onReject) {
-      await onReject('Wrap OETH');
-    } else if (onError) {
-      await onError('Wrap OETH');
-    }
-  }
+  return hash;
 };
 
 export default {

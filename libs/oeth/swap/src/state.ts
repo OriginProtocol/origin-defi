@@ -10,7 +10,7 @@ import { createContainer } from 'react-tracked';
 import { swapActions } from './actions';
 import { getAvailableRoutes } from './utils';
 
-import type { SwapState } from './types';
+import type { EstimatedSwapRoute, SwapState } from './types';
 
 export const { Provider: SwapProvider, useTracked: useSwapState } =
   createContainer(() => {
@@ -58,19 +58,39 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                 slippage,
                 state.amountIn.toString(),
               ] as const,
-              queryFn: async () =>
-                swapActions[route.action].estimateRoute({
-                  tokenIn: route.tokenIn,
-                  tokenOut: route.tokenOut,
-                  amountIn: state.amountIn,
-                  amountOut: state.amountOut,
-                  route,
-                  slippage,
-                  curve: {
-                    CurveRegistryExchange,
-                    OethPoolUnderlyings,
-                  },
-                }),
+              queryFn: async () => {
+                let res: EstimatedSwapRoute;
+                try {
+                  res = await swapActions[route.action].estimateRoute({
+                    tokenIn: route.tokenIn,
+                    tokenOut: route.tokenOut,
+                    amountIn: state.amountIn,
+                    amountOut: state.amountOut,
+                    route,
+                    slippage,
+                    curve: {
+                      CurveRegistryExchange,
+                      OethPoolUnderlyings,
+                    },
+                  });
+                } catch (error) {
+                  console.error(
+                    `Fail to estimate route ${route.action}\n${error.message}`,
+                  );
+                  res = {
+                    tokenIn: route.tokenIn,
+                    tokenOut: route.tokenOut,
+                    estimatedAmount: 0n,
+                    action: route.action,
+                    allowanceAmount: 0n,
+                    approvalGas: 0n,
+                    gas: 0n,
+                    rate: 0,
+                  };
+                }
+
+                return res;
+              },
             }),
           ),
         );

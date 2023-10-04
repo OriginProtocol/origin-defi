@@ -6,7 +6,6 @@ import {
   getPublicClient,
   prepareWriteContract,
   readContract,
-  waitForTransaction,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
@@ -26,7 +25,7 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
 };
 
 const estimateGas: EstimateGas = async ({ amountIn }) => {
-  let gasEstimate = 200000n;
+  let gasEstimate = 0n;
 
   const { address } = getAccount();
 
@@ -44,7 +43,10 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       value: amountIn,
       account: address,
     });
-  } catch {}
+  } catch {
+    console.log(`Swap zapper uses fix gas estimate: 200000`);
+    gasEstimate = 200000n;
+  }
 
   return gasEstimate;
 };
@@ -97,7 +99,9 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       args: [contracts.mainnet.OETHZapper.address, amountIn],
       account: address,
     });
-  } catch {}
+  } catch {
+    console.log(`Swap zapper uses fix approval gas estimate: 0`);
+  }
 
   return approvalEstimate;
 };
@@ -140,92 +144,44 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  onSuccess,
-  onError,
-  onReject,
-}) => {
-  if (
-    (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) &&
-    onSuccess
-  ) {
-    console.log(`swap eth does not require approval!`);
-    onSuccess(null);
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
+  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+    return null;
   }
 
-  try {
-    const { request } = await prepareWriteContract({
-      address: tokenIn.address,
-      abi: erc20ABI,
-      functionName: 'approve',
-      args: [contracts.mainnet.OETHZapper.address, amountIn],
-    });
-    const { hash } = await writeContract(request);
-    const txReceipt = await waitForTransaction({ hash });
+  const { request } = await prepareWriteContract({
+    address: tokenIn.address,
+    abi: erc20ABI,
+    functionName: 'approve',
+    args: [contracts.mainnet.OETHZapper.address, amountIn],
+  });
+  const { hash } = await writeContract(request);
 
-    console.log(`swap zapper eth approval done!`);
-    if (onSuccess) {
-      await onSuccess(txReceipt);
-    }
-  } catch (e) {
-    console.error(`swap zapper eth approval error!\n${e.message}`);
-    if (e?.code === 'ACTION_REJECTED' && onReject) {
-      await onReject('Swap Zapper ETH approval');
-    } else if (onError) {
-      await onError('Swap Zapper ETH approval');
-    }
-  }
+  return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  onSuccess,
-  onError,
-  onReject,
-}) => {
+const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
-    return;
+    return null;
   }
 
   const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    console.error(`swap zapper eth is not approved`);
-    if (onError) {
-      await onError('Swap Zapper Eth is not approved');
-    }
-    return;
+    throw new Error(`Swap zapper is not approved`);
   }
 
-  try {
-    const { request } = await prepareWriteContract({
-      address: contracts.mainnet.OETHZapper.address,
-      abi: contracts.mainnet.OETHZapper.abi,
-      functionName: 'deposit',
-      value: amountIn,
-    });
-    const { hash } = await writeContract(request);
-    const txReceipt = await waitForTransaction({ hash });
+  const { request } = await prepareWriteContract({
+    address: contracts.mainnet.OETHZapper.address,
+    abi: contracts.mainnet.OETHZapper.abi,
+    functionName: 'deposit',
+    value: amountIn,
+  });
+  const { hash } = await writeContract(request);
 
-    console.log('swap zapper eth done!');
-    if (onSuccess) {
-      await onSuccess(txReceipt);
-    }
-  } catch (e) {
-    console.error(`swap zapper eth error!\n${e.message}`);
-    if (e?.code === 'ACTION_REJECTED' && onReject) {
-      await onReject('Swap Zapper Eth');
-    } else if (onError) {
-      await onError('Swap Zapper Eth');
-    }
-  }
+  return hash;
 };
 
 export default {
