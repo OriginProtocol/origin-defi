@@ -14,11 +14,10 @@ import type { GlobalActivityStatus } from '../types';
 type ApprovalNotificationProps = {
   status: GlobalActivityStatus;
   tokenIn: Token;
-  tokenOut: Token;
   amountIn?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & Pick<StackProps, 'sx'>;
+} & StackProps;
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Approving' }),
@@ -30,16 +29,16 @@ const title: Record<GlobalActivityStatus, MessageDescriptor> = {
 export const ApprovalNotification = ({
   status,
   tokenIn,
-  tokenOut,
   amountIn,
   txReceipt,
   error,
-  sx,
+  ...rest
 }: ApprovalNotificationProps) => {
   const intl = useIntl();
 
   return (
     <NotificationSnack
+      {...rest}
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={

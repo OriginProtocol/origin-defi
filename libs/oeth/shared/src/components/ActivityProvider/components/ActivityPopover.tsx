@@ -83,12 +83,18 @@ export const ActivityPopover = ({
           direction="row"
           alignItems="center"
           justifyContent="space-between"
+          sx={{ px: 3, py: 2 }}
         >
-          <Typography sx={{ px: 3, py: 2 }}>
-            {intl.formatMessage({ defaultMessage: 'Recent activity' })}
+          <Typography>
+            {intl.formatMessage({ defaultMessage: 'Recent Activity' })}
           </Typography>
-          <Button variant="text" onClick={handleClearAll}>
-            {intl.formatMessage({ defaultMessage: 'Clear All' })}
+          <Button
+            variant="text"
+            disabled={isNilOrEmpty(sortedActivities)}
+            onClick={handleClearAll}
+            sx={{ transform: 'translateX(9px)' }}
+          >
+            {intl.formatMessage({ defaultMessage: 'Clear' })}
           </Button>
         </Stack>
 
@@ -132,7 +138,7 @@ function EmptyActivity(props: StackProps) {
   return (
     <Stack {...props} justifyContent="center" alignItems="center" py={3}>
       <Typography>
-        {intl.formatMessage({ defaultMessage: 'No activity' })}
+        {intl.formatMessage({ defaultMessage: 'No Activity' })}
       </Typography>
     </Stack>
   );

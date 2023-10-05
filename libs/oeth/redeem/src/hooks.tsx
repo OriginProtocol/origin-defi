@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { Box } from '@mui/material';
 import {
   RedeemNotification,
   useDeleteActivity,
@@ -109,6 +110,7 @@ export const useHandleRedeem = () => {
         pushNotification({
           content: (
             <NotificationSnack
+              icon={<Box component="img" src="/images/warn.png" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}

@@ -164,7 +164,7 @@ export const theme = extendTheme({
             <Box component="img" src="/images/success.svg" sx={{ width: 20 }} />
           ),
           warning: (
-            <Box component="img" src="/images/failed.svg" sx={{ width: 20 }} />
+            <Box component="img" src="/images/warn.png" sx={{ width: 20 }} />
           ),
         },
       },
@@ -474,7 +474,7 @@ export const theme = extendTheme({
       },
       styleOverrides: {
         text: ({ theme }) => ({
-          borderRadius: 15,
+          borderRadius: 10,
           // backgroundColor: theme.palette.grey[900],
         }),
       },

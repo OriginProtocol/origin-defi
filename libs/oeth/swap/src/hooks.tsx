@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 
+import { Box } from '@mui/material';
 import {
   ApprovalNotification,
   SwapNotification,
@@ -262,6 +263,7 @@ export const useHandleApprove = () => {
         pushNotification({
           content: (
             <NotificationSnack
+              icon={<Box component="img" src="/images/warn.png" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}
@@ -365,7 +367,6 @@ export const useHandleSwap = () => {
           queryKey: ['swap_allowance'],
         });
         pushNotification({
-          hideDuration: null,
           content: (
             <SwapNotification
               {...activity}
@@ -387,6 +388,7 @@ export const useHandleSwap = () => {
         pushNotification({
           content: (
             <NotificationSnack
+              icon={<Box component="img" src="/images/warn.png" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}
