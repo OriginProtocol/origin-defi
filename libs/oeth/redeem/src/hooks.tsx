@@ -6,6 +6,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/oeth/shared';
+import { NotificationSnack } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { usePushNotification, useSlippage } from '@origin/shared/providers';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
@@ -106,11 +107,16 @@ export const useHandleRedeem = () => {
       if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Redeem Cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
+          content: (
+            <NotificationSnack
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
         });
       } else {
         updateActivity({

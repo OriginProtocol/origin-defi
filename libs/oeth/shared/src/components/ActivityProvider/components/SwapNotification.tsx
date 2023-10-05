@@ -1,5 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { ActivityIcon, LinkIcon } from '@origin/shared/components';
+import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -19,7 +19,7 @@ type SwapNotificationProps = {
   amountOut?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & Pick<StackProps, 'sx'>;
+} & StackProps;
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Swapping' }),
@@ -36,67 +36,65 @@ export const SwapNotification = ({
   amountOut,
   txReceipt,
   error,
-  sx,
+  ...rest
 }: SwapNotificationProps) => {
   const intl = useIntl();
 
   return (
-    <Stack width={1} direction="row" justifyContent="space-between" sx={sx}>
-      <Stack spacing={1}>
+    <NotificationSnack
+      {...rest}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      title={intl.formatMessage(title[status])}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? null
+          : `https://etherscan.io/tx/${txReceipt.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          <Typography color="text.tertiary">
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+              },
+              {
+                amountIn: intl.formatNumber(
+                  +formatUnits(amountIn, tokenIn.decimals),
+                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                ),
+                symbolIn: tokenIn.symbol,
+                amountOut: intl.formatNumber(
+                  +formatUnits(amountOut, tokenOut.decimals),
+                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                ),
+                symbolOut: tokenOut.symbol,
+              },
+            )}
+          </Typography>
+        ) : (
+          <Typography color="error">{error}</Typography>
+        )
+      }
+      endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <ActivityIcon status={status} sx={{ width: 20, height: 20 }} />
-          <Typography>{intl.formatMessage(title[status])}</Typography>
-          {!isNilOrEmpty(txReceipt?.transactionHash) && (
-            <LinkIcon
-              size={10}
-              url={`https://etherscan.io/tx/${txReceipt.transactionHash}`}
-            />
-          )}
+          <Box
+            component="img"
+            src={tokenIn.icon}
+            sx={{ width: 24, height: 24 }}
+          />
+          <Box
+            component="img"
+            src="images/arrow-right.svg"
+            sx={{ width: 12, height: 12 }}
+          />
+          <Box
+            component="img"
+            src={tokenOut.icon}
+            sx={{ width: 24, height: 24 }}
+          />
         </Stack>
-        <Stack direction="row" alignItems="center">
-          {isNilOrEmpty(error) ? (
-            <Typography color="text.tertiary">
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
-                },
-                {
-                  amountIn: intl.formatNumber(
-                    +formatUnits(amountIn, tokenIn.decimals),
-                    { minimumFractionDigits: 4, maximumFractionDigits: 4 },
-                  ),
-                  symbolIn: tokenIn.symbol,
-                  amountOut: intl.formatNumber(
-                    +formatUnits(amountOut, tokenOut.decimals),
-                    { minimumFractionDigits: 4, maximumFractionDigits: 4 },
-                  ),
-                  symbolOut: tokenOut.symbol,
-                },
-              )}
-            </Typography>
-          ) : (
-            <Typography color="error">{error}</Typography>
-          )}
-        </Stack>
-      </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Box
-          component="img"
-          src={tokenIn.icon}
-          sx={{ width: 24, height: 24 }}
-        />
-        <Box
-          component="img"
-          src="images/arrow-right.svg"
-          sx={{ width: 12, height: 12 }}
-        />
-        <Box
-          component="img"
-          src={tokenOut.icon}
-          sx={{ width: 24, height: 24 }}
-        />
-      </Stack>
-    </Stack>
+      }
+    />
   );
 };

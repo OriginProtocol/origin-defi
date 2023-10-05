@@ -7,6 +7,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/oeth/shared';
+import { NotificationSnack } from '@origin/shared/components';
 import {
   useCurve,
   usePushNotification,
@@ -259,11 +260,16 @@ export const useHandleApprove = () => {
       if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval Cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
+          content: (
+            <NotificationSnack
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
         });
       } else {
         updateActivity({
@@ -359,6 +365,7 @@ export const useHandleSwap = () => {
           queryKey: ['swap_allowance'],
         });
         pushNotification({
+          hideDuration: null,
           content: (
             <SwapNotification
               {...activity}
@@ -378,11 +385,16 @@ export const useHandleSwap = () => {
       if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Operation Cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
+          content: (
+            <NotificationSnack
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
         });
       } else {
         updateActivity({

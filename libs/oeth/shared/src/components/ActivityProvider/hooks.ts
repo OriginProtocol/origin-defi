@@ -80,12 +80,18 @@ export const useGlobalStatus = () => {
     const grouped = groupBy(prop('status'), activities ?? []);
 
     if (isNilOrEmpty(grouped.pending)) {
-      if (prevGrouped?.success?.length !== grouped?.success?.length) {
+      if (
+        !isNilOrEmpty(grouped.success) &&
+        prevGrouped?.success?.length !== grouped?.success?.length
+      ) {
         setStatus('success');
         setTimeout(() => {
           setStatus('idle');
         }, 5000);
-      } else if (prevGrouped?.error?.length !== grouped?.error?.length) {
+      } else if (
+        !isNilOrEmpty(grouped.error) &&
+        prevGrouped?.error?.length !== grouped?.error?.length
+      ) {
         setStatus('error');
         setTimeout(() => {
           setStatus('idle');

@@ -6,4 +6,5 @@ export * from './Icons';
 export * from './Loader';
 export * from './MiddleTruncated';
 export * from './Mix';
+export * from './Notifications';
 export * from './top-nav';
