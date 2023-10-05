@@ -5,7 +5,6 @@ import {
   getPublicClient,
   prepareWriteContract,
   readContract,
-  waitForTransaction,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
@@ -68,7 +67,9 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       args: [amountIn, whales.mainnet.WOETH, whales.mainnet.WOETH],
       account: whales.mainnet.WOETH,
     });
-  } catch {}
+  } catch {
+    console.log(`Unwrap WOETH uses fix gas estimate: 0`);
+  }
 
   return gasEstimate;
 };
@@ -80,6 +81,7 @@ const allowance: Allowance = async () => {
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
   // Unwrap WOETH does not require approval
+  console.log(`Unwrap WOETH uses fix gas estimate: 0`);
   return 0n;
 };
 
@@ -121,11 +123,9 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ onSuccess }) => {
+const approve: Approve = async () => {
   // Unwrap WOETH does not require approval
-  if (onSuccess) {
-    await onSuccess(null);
-  }
+  return null;
 };
 
 const swap: Swap = async ({ amountIn }) => {
@@ -135,21 +135,15 @@ const swap: Swap = async ({ amountIn }) => {
     return;
   }
 
-  try {
-    const { request } = await prepareWriteContract({
-      address: contracts.mainnet.WOETH.address,
-      abi: contracts.mainnet.WOETH.abi,
-      functionName: 'redeem',
-      args: [amountIn, address, address],
-    });
-    const { hash } = await writeContract(request);
-    await waitForTransaction({ hash });
-    // TODO trigger notification
-    console.log('unwrap woeth done!');
-  } catch (e) {
-    // TODO trigger notification
-    console.log(`unwrap woeth error!\n${e.message}`);
-  }
+  const { request } = await prepareWriteContract({
+    address: contracts.mainnet.WOETH.address,
+    abi: contracts.mainnet.WOETH.abi,
+    functionName: 'redeem',
+    args: [amountIn, address, address],
+  });
+  const { hash } = await writeContract(request);
+
+  return hash;
 };
 
 export default {

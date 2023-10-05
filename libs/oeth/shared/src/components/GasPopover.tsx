@@ -7,8 +7,6 @@ import {
   FormControl,
   FormHelperText,
   IconButton,
-  InputAdornment,
-  InputBase,
   InputLabel,
   Popover,
   Stack,
@@ -16,7 +14,6 @@ import {
 } from '@mui/material';
 import { InfoTooltip, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
-import { useFeeData } from 'wagmi';
 
 import type { IconButtonProps } from '@mui/material';
 
@@ -45,7 +42,6 @@ export function GasPopover({
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const { data: feeData } = useFeeData({ formatUnits: 'gwei' });
 
   return (
     <>
@@ -87,7 +83,7 @@ export function GasPopover({
           },
         }}
       >
-        <Stack gap={1}>
+        <Stack justifyContent="center">
           <FormControl variant="standard">
             <InputLabel
               htmlFor="slippage"
@@ -154,41 +150,6 @@ export function GasPopover({
                 defaultMessage: 'Your transaction may be frontrun',
               })}
             </FormHelperText>
-          </FormControl>
-          <FormControl>
-            <InputLabel htmlFor="gas" shrink>
-              {intl.formatMessage({ defaultMessage: 'Gas Price' })}
-            </InputLabel>
-            <Box sx={gridStyles}>
-              <InputBase
-                id="gas"
-                readOnly
-                defaultValue={intl.formatNumber(
-                  parseFloat(feeData?.formatted.gasPrice ?? '0'),
-                  { maximumFractionDigits: 4 },
-                )}
-                fullWidth
-                sx={{
-                  borderColor: (theme) => theme.palette.secondary.main,
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.secondary.main, 0.05),
-                  paddingInlineEnd: 2,
-                  '& .MuiInputBase-input': {
-                    textAlign: 'right',
-                    borderColor: (theme) => theme.palette.secondary.main,
-                    '&::placeholder': {
-                      color: 'text.primary',
-                      opacity: 1,
-                    },
-                  },
-                }}
-                endAdornment={
-                  <InputAdornment position="end" sx={{ ml: 0 }}>
-                    {intl.formatMessage({ defaultMessage: 'GWEI' })}
-                  </InputAdornment>
-                }
-              />
-            </Box>
           </FormControl>
         </Stack>
       </Popover>

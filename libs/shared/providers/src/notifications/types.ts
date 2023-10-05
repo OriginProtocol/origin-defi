@@ -3,8 +3,8 @@ import type { ReactNode } from 'react';
 
 export type Notification = {
   id: string;
-  severity: AlertColor;
-  title: string;
+  severity?: AlertColor;
+  title?: string;
   message?: string;
   content?: ReactNode;
   createdOn: number;

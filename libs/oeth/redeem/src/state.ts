@@ -77,7 +77,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         try {
           splitEstimates = await queryClient.fetchQuery({
             queryKey: ['splitEstimates', state.amountIn.toString()],
-            queryFn: () =>
+            queryFn: async () =>
               readContract({
                 address: contracts.mainnet.OETHVaultCore.address,
                 abi: contracts.mainnet.OETHVaultCore.abi,
@@ -85,8 +85,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
                 args: [state.amountIn],
               }),
           });
-        } catch (e) {
-          console.error(`redeem vault estimate amount error.\n${e.message}`);
+        } catch (error) {
+          console.error(`Fail to estimate redeem operation.\n${error.message}`);
           setState(
             produce((draft) => {
               draft.amountIn = 0n;
@@ -99,7 +99,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             title: intl.formatMessage({
               defaultMessage: 'Error while estimating',
             }),
-            message: e.shortMessage,
+            message: error?.shortMessage ?? error.message,
             severity: 'error',
           });
 
@@ -145,10 +145,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
                 account: whales.mainnet.OETH,
               }),
           });
-        } catch (e) {
-          console.error(
-            `redeem vault estimate gas error. Using default!\n${e.message}`,
-          );
+        } catch (error) {
+          console.log(`Redeem uses fix gas estimate: 1500000`);
           gasEstimate = 1500000n;
         }
 

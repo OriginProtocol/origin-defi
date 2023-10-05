@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { LinkIcon } from '../LinkIcon';
+import { LinkIcon } from '../Icons';
 import { MiddleTruncated } from '../MiddleTruncated';
 import { Icon } from './Icon';
 import { styles } from './utils';

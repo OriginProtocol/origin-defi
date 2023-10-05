@@ -43,9 +43,11 @@ const defaultApi: SwapApi = {
   },
   approve: async () => {
     console.log('Approve operation not implemented');
+    return null;
   },
   swap: async () => {
     console.log('Route swap operation not implemented');
+    return null;
   },
 };
 

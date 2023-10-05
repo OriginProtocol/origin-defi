@@ -13,7 +13,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { GasPopover } from '@origin/oeth/shared';
+import { ApyHeader, GasPopover } from '@origin/oeth/shared';
 import { TokenInput } from '@origin/shared/components';
 import {
   ConnectedButton,
@@ -24,7 +24,6 @@ import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
-import { ApyHeader } from '../components/ApyHeader';
 import { SwapRoute } from '../components/SwapRoute';
 import { TokenSelectModal } from '../components/TokenSelectModal';
 import { buttonActionLabel } from '../constants';

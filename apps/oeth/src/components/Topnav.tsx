@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { AccountPopover } from '@origin/oeth/shared';
+import { AccountPopover, ActivityButton } from '@origin/oeth/shared';
 import { OpenAccountModalButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -197,6 +197,16 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
+          />
+          <ActivityButton
+            sx={{
+              width: { xs: 36, md: 44 },
+              height: { xs: 36, md: 44 },
+              padding: {
+                xs: 0.75,
+                md: 1,
+              },
+            }}
           />
         </Box>
         <Divider

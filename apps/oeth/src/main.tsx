@@ -5,7 +5,12 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
-import { chains, queryClient, wagmiConfig } from '@origin/oeth/shared';
+import {
+  ActivityProvider,
+  chains,
+  queryClient,
+  wagmiConfig,
+} from '@origin/oeth/shared';
 import {
   CurveProvider,
   GeoFenceProvider,
@@ -43,6 +48,7 @@ root.render(
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [CurveProvider],
       [NotificationsProvider],
+      [ActivityProvider],
       [GeoFenceProvider],
     ],
     <RouterProvider router={createHashRouter(routes)} />,

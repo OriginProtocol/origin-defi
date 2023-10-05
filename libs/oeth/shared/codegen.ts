@@ -6,7 +6,6 @@ const config: CodegenConfig = {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
-      hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
       config: {
         scalars: {
           BigInt: 'string',
@@ -22,7 +21,6 @@ const config: CodegenConfig = {
         extension: '.generated.ts',
         baseTypesPath: '~@origin/oeth/shared',
       },
-      hooks: { afterOneFileWrite: ['prettier --write', 'eslint --fix'] },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
         exposeFetcher: true,

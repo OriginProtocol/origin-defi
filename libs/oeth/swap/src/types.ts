@@ -1,6 +1,5 @@
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
-import type { TransactionReceipt } from 'viem';
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
@@ -25,9 +24,6 @@ type Args = {
     CurveRegistryExchange: Contract;
     OethPoolUnderlyings: HexAddress[];
   };
-  onSuccess?: (txReceipt: TransactionReceipt) => void | Promise<void>;
-  onError?: (msg: string) => void | Promise<void>;
-  onReject?: (msg: string) => void | Promise<void>;
 };
 
 export type EstimateAmount = (
@@ -63,17 +59,8 @@ export type EstimateApprovalGas = (
 ) => Promise<bigint>;
 
 export type Approve = (
-  args: Pick<
-    Args,
-    | 'tokenIn'
-    | 'tokenOut'
-    | 'amountIn'
-    | 'curve'
-    | 'onSuccess'
-    | 'onError'
-    | 'onReject'
-  >,
-) => Promise<void>;
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+) => Promise<HexAddress>;
 
 export type Swap = (
   args: Pick<
@@ -85,11 +72,8 @@ export type Swap = (
     | 'slippage'
     | 'estimatedRoute'
     | 'curve'
-    | 'onSuccess'
-    | 'onError'
-    | 'onReject'
   >,
-) => Promise<void>;
+) => Promise<HexAddress>;
 
 export type SwapApi = {
   estimateAmount: EstimateAmount;
