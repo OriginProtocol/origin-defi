@@ -1,6 +1,12 @@
 import { useState } from 'react';
 
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -29,54 +35,59 @@ export function HistoryCard() {
   );
 
   return (
-    <Box sx={{ borderRadius: 1, backgroundColor: 'background.paper', mt: 3 }}>
-      <Stack
-        sx={{
-          paddingInline: { xs: 2, sm: 3 },
-          paddingBlock: { xs: 1.75, md: 2.75 },
-        }}
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography>
-          {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
-        </Typography>
-        <Stack direction="row" gap={1}>
-          <HistoryFilters
-            filters={filters}
-            onChange={(values) => setFilters(values)}
+    <Card>
+      <CardHeader
+        title={
+          <Stack
+            sx={{
+              paddingInline: { xs: 2, sm: 3 },
+              paddingBlock: { xs: 1.75, md: 2.75 },
+            }}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
+            </Typography>
+            <Stack direction="row" gap={1}>
+              <HistoryFilters
+                filters={filters}
+                onChange={(values) => setFilters(values)}
+              />
+              <ExportData data={data} />
+            </Stack>
+          </Stack>
+        }
+      />
+      <CardContent>
+        {isConnected ? (
+          <HistoryTable
+            rows={data || []}
+            isLoading={isFetching && isLoading}
+            hasNextPage={data?.length === PAGE_SIZE}
+            hasPreviousPage={page > 0}
+            page={page}
+            setPage={(page) => setPage(page)}
           />
-          <ExportData data={data} />
-        </Stack>
-      </Stack>
-      <Divider />
-      {isConnected ? (
-        <HistoryTable
-          rows={data || []}
-          isLoading={isFetching && isLoading}
-          hasNextPage={data?.length === PAGE_SIZE}
-          hasPreviousPage={page > 0}
-          page={page}
-          setPage={(page) => setPage(page)}
-        />
-      ) : (
-        <Stack
-          sx={{
-            height: '15rem',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Typography>
-            {intl.formatMessage({
-              defaultMessage: 'Connect your wallet to see your history',
-            })}
-          </Typography>
-          <ConnectedButton />
-        </Stack>
-      )}
-    </Box>
+        ) : (
+          <Stack
+            sx={{
+              height: '15rem',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 2,
+            }}
+          >
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'Connect your wallet to see your history',
+              })}
+            </Typography>
+            <ConnectedButton />
+          </Stack>
+        )}
+      </CardContent>
+    </Card>
   );
 }
