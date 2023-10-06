@@ -39,10 +39,6 @@ export function HistoryCard() {
       <CardHeader
         title={
           <Stack
-            sx={{
-              paddingInline: { xs: 2, sm: 3 },
-              paddingBlock: { xs: 1.75, md: 2.75 },
-            }}
             direction="row"
             alignItems="center"
             justifyContent="space-between"
@@ -60,7 +56,7 @@ export function HistoryCard() {
           </Stack>
         }
       />
-      <CardContent>
+      <CardContent sx={{ p: 0 }}>
         {isConnected ? (
           <HistoryTable
             rows={data || []}

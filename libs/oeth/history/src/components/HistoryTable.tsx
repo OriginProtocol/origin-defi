@@ -141,7 +141,7 @@ export function HistoryTable({
               {headerGroup.headers.map((header, index) => (
                 <TableCell
                   key={header.id}
-                  sx={{ paddingBlock: 3 }}
+                  sx={{ py: 3 }}
                   align={index > 0 ? 'center' : 'left'}
                 >
                   {flexRender(
