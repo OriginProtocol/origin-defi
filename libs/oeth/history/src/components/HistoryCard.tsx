@@ -1,12 +1,6 @@
 import { useState } from 'react';
 
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardHeader, Stack, Typography } from '@mui/material';
 import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -56,34 +50,33 @@ export function HistoryCard() {
           </Stack>
         }
       />
-      <CardContent sx={{ p: 0 }}>
-        {isConnected ? (
-          <HistoryTable
-            rows={data || []}
-            isLoading={isFetching && isLoading}
-            hasNextPage={data?.length === PAGE_SIZE}
-            hasPreviousPage={page > 0}
-            page={page}
-            setPage={(page) => setPage(page)}
-          />
-        ) : (
-          <Stack
-            sx={{
-              height: '15rem',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: 2,
-            }}
-          >
-            <Typography>
-              {intl.formatMessage({
-                defaultMessage: 'Connect your wallet to see your history',
-              })}
-            </Typography>
-            <ConnectedButton />
-          </Stack>
-        )}
-      </CardContent>
+
+      {isConnected ? (
+        <HistoryTable
+          rows={data || []}
+          isLoading={isFetching && isLoading}
+          hasNextPage={data?.length === PAGE_SIZE}
+          hasPreviousPage={page > 0}
+          page={page}
+          setPage={(page) => setPage(page)}
+        />
+      ) : (
+        <Stack
+          sx={{
+            height: '15rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Typography>
+            {intl.formatMessage({
+              defaultMessage: 'Connect your wallet to see your history',
+            })}
+          </Typography>
+          <ConnectedButton />
+        </Stack>
+      )}
     </Card>
   );
 }
