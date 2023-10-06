@@ -1,5 +1,6 @@
 export * from './Cards';
 export * from './DataTable';
+export * from './Errors';
 export * from './InfoTooltip';
 export * from './Inputs';
 export * from './Icons';

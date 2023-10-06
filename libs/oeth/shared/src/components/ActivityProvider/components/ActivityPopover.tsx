@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
-import { descend, pipe, prop, sort, take } from 'ramda';
+import { descend, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useActivityState } from '../state';
@@ -46,7 +46,7 @@ export const ActivityPopover = ({
   };
 
   const sortedActivities = pipe(
-    sort(descend(prop('createdOn'))),
+    sort(descend((a) => a['createdOn'] as number)),
     take(maxVisible),
   )(activities) as Activity[];
 
@@ -97,7 +97,6 @@ export const ActivityPopover = ({
             {intl.formatMessage({ defaultMessage: 'Clear' })}
           </Button>
         </Stack>
-
         <Divider />
         <Stack divider={<Divider />}>
           {isNilOrEmpty(sortedActivities) ? (

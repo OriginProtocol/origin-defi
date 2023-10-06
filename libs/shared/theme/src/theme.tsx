@@ -263,7 +263,7 @@ export const theme = extendTheme({
           padding: theme.spacing(2, 3),
           borderBottom: `1px solid ${theme.palette.divider}`,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.5, 2),
+            padding: theme.spacing(1.75, 2.75),
           },
         }),
         title: ({ theme }) => ({

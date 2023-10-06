@@ -17,10 +17,10 @@ import type { StackProps } from '@mui/material';
 
 const trailingOptions = [
   {
-    label: defineMessage({ defaultMessage: '30 days trailing APY' }),
+    label: defineMessage({ defaultMessage: '30 Day Trailing APY' }),
     value: 30,
   },
-  { label: defineMessage({ defaultMessage: '7 days trailing APY' }), value: 7 },
+  { label: defineMessage({ defaultMessage: '7 Day Trailing APY' }), value: 7 },
 ];
 
 export const ApyHeader = (props: StackProps) => {

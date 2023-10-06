@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Divider, Stack, Typography } from '@mui/material';
+import { Card, CardHeader, Stack, Typography } from '@mui/material';
 import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -29,28 +29,28 @@ export function HistoryCard() {
   );
 
   return (
-    <Box sx={{ borderRadius: 1, backgroundColor: 'background.paper', mt: 3 }}>
-      <Stack
-        sx={{
-          paddingInline: { xs: 2, sm: 3 },
-          paddingBlock: { xs: 1.75, md: 2.75 },
-        }}
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography>
-          {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
-        </Typography>
-        <Stack direction="row" gap={1}>
-          <HistoryFilters
-            filters={filters}
-            onChange={(values) => setFilters(values)}
-          />
-          <ExportData data={data} />
-        </Stack>
-      </Stack>
-      <Divider />
+    <Card>
+      <CardHeader
+        title={
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
+            </Typography>
+            <Stack direction="row" gap={1}>
+              <HistoryFilters
+                filters={filters}
+                onChange={(values) => setFilters(values)}
+              />
+              <ExportData data={data} />
+            </Stack>
+          </Stack>
+        }
+      />
+
       {isConnected ? (
         <HistoryTable
           rows={data || []}
@@ -77,6 +77,6 @@ export function HistoryCard() {
           <ConnectedButton />
         </Stack>
       )}
-    </Box>
+    </Card>
   );
 }

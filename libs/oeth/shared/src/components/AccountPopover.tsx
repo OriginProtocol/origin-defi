@@ -137,7 +137,12 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
             <BalanceRow
               key={tok.name}
               token={tok}
-              balance={+formatUnits(balances?.[i] ?? 0n, tok.decimals)}
+              balance={
+                +formatUnits(
+                  (balances?.[i] as unknown as bigint) ?? 0n,
+                  tok.decimals,
+                )
+              }
               isBalanceLoading={balancesLoading}
             />
           ))}

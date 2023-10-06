@@ -64,8 +64,8 @@ export function SwapRouteCard({
     (swapGasPriceLoading && swapGasPriceFetching) ||
     (approvalGasPriceLoading && approvalGasPriceFetching);
   const gasPrice =
-    swapGasPrice?.gasCostUsd +
-    (allowance < amountIn ? approvalGasPrice?.gasCostUsd : 0);
+    (swapGasPrice?.gasCostUsd ?? 0) +
+    (allowance < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
 
   return (
     <Card

@@ -124,19 +124,29 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           </Typography>
         </Box>
       </Stack>
-
-      <Box sx={{ textAlign: 'right' }}>
-        <Typography fontWeight={500}>
-          {isBalanceLoading ? (
-            <Skeleton width={30} />
-          ) : (
-            formatAmount(balance?.value, balance?.decimals)
-          )}
-        </Typography>
-        <Typography color="text.secondary" variant="body2">
-          {intl.formatNumber(balUsd, currencyFormat)}
-        </Typography>
-      </Box>
+      <Stack direction="row" spacing={2}>
+        {token?.isSelected && (
+          <Stack display="flex" justifyContent="center" alignItems="center">
+            <Box
+              component="img"
+              src="/images/checkmark-icon-white.svg"
+              sx={{ color: '#fff', width: 16, height: 16 }}
+            />
+          </Stack>
+        )}
+        <Box sx={{ textAlign: 'right' }}>
+          <Typography fontWeight={500}>
+            {isBalanceLoading ? (
+              <Skeleton width={30} />
+            ) : (
+              formatAmount(balance?.value, balance?.decimals)
+            )}
+          </Typography>
+          <Typography color="text.secondary" variant="body2">
+            {intl.formatNumber(balUsd, currencyFormat)}
+          </Typography>
+        </Box>
+      </Stack>
     </MenuItem>
   );
 }
