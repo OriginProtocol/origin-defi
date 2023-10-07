@@ -15,6 +15,8 @@ import {
 import { InfoTooltip, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { trackEvent } from '../clients';
+
 import type { IconButtonProps } from '@mui/material';
 
 const DEFAULT_SLIPPAGE = 0.001;
@@ -46,8 +48,10 @@ export function GasPopover({
   return (
     <>
       <IconButton
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        data-testid="gas-popover-button"
+        onClick={(e) => {
+          setAnchorEl(e.currentTarget);
+          trackEvent({ name: 'open_settings' });
+        }}
         {...buttonProps}
       >
         <img src="/images/settings-icon.svg" alt="settings" />

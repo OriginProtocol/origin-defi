@@ -4,6 +4,7 @@ import { Box } from '@mui/material';
 import {
   ApprovalNotification,
   SwapNotification,
+  trackEvent,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
@@ -122,6 +123,11 @@ export const useHandleTokenChange = () => {
           state.selectedSwapRoute = null;
         }),
       );
+      trackEvent(
+        source === 'tokenIn'
+          ? { name: 'change_input_currency', change_input_to: token.symbol }
+          : { name: 'change_output_currency', change_output_to: token.symbol },
+      );
     },
     [setSwapState],
   );
@@ -156,6 +162,10 @@ export const useHandleSelectSwapRoute = () => {
           state.amountOut = route.estimatedAmount;
         }),
       );
+      trackEvent({
+        name: 'change_swap_route',
+        change_route_to: route.action,
+      });
     },
     [setSwapState],
   );
@@ -221,6 +231,11 @@ export const useHandleApprove = () => {
       amountIn,
       amountOut,
     });
+    trackEvent({
+      name: 'approve_started',
+      approval_token: tokenIn.symbol,
+      approval_type: tokenOut.symbol,
+    });
     try {
       const hash = await swapActions[selectedSwapRoute.action].approve({
         tokenIn,
@@ -251,6 +266,11 @@ export const useHandleApprove = () => {
             />
           ),
         });
+        trackEvent({
+          name: 'approve_complete',
+          approval_token: tokenIn.symbol,
+          approval_type: tokenOut.symbol,
+        });
       }
     } catch (error) {
       setSwapState(
@@ -273,6 +293,11 @@ export const useHandleApprove = () => {
             />
           ),
         });
+        trackEvent({
+          name: 'approve_rejected',
+          approval_token: tokenIn.symbol,
+          approval_type: tokenOut.symbol,
+        });
       } else {
         updateActivity({
           ...activity,
@@ -287,6 +312,11 @@ export const useHandleApprove = () => {
               error={error?.shortMessage ?? error.message}
             />
           ),
+        });
+        trackEvent({
+          name: 'approve_failed',
+          approval_token: tokenIn.symbol,
+          approval_type: tokenOut.symbol,
         });
       }
     }
@@ -338,6 +368,12 @@ export const useHandleSwap = () => {
       amountIn,
       amountOut,
     });
+    trackEvent({
+      name: 'swap_started',
+      swap_route: selectedSwapRoute.action,
+      swap_token: tokenIn.symbol,
+      swap_amount: amountIn.toString(),
+    });
     setSwapState(
       produce((draft) => {
         draft.isSwapLoading = true;
@@ -376,6 +412,13 @@ export const useHandleSwap = () => {
           ),
         });
         updateActivity({ ...activity, status: 'success', txReceipt });
+        trackEvent({
+          name: 'swap_complete',
+          swap_route: selectedSwapRoute.action,
+          swap_token: tokenIn.symbol,
+          swap_amount: amountIn.toString(),
+          swap_type: tokenOut.symbol,
+        });
       }
     } catch (error) {
       setSwapState(
@@ -398,6 +441,12 @@ export const useHandleSwap = () => {
             />
           ),
         });
+        trackEvent({
+          name: 'swap_rejected',
+          swap_token: tokenIn.symbol,
+          swap_amount: amountIn.toString(),
+          swap_type: tokenOut.symbol,
+        });
       } else {
         updateActivity({
           ...activity,
@@ -412,6 +461,12 @@ export const useHandleSwap = () => {
               error={error.shortMessage}
             />
           ),
+        });
+        trackEvent({
+          name: 'swap_failed',
+          swap_token: tokenIn.symbol,
+          swap_amount: amountIn.toString(),
+          swap_type: tokenOut.symbol,
         });
       }
     }

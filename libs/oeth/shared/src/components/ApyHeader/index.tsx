@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import { defineMessage, useIntl } from 'react-intl';
 
+import { trackEvent } from '../../clients';
 import { useApiesQuery } from './queries.generated';
 
 import type { StackProps } from '@mui/material';
@@ -107,6 +108,10 @@ export const ApyHeader = (props: StackProps) => {
               onClick={() => {
                 setTrailing(t);
                 setAnchorEl(null);
+                trackEvent({
+                  name: 'change_apy',
+                  change_apy_to: t.value.toString(),
+                });
               }}
             >
               {intl.formatMessage(t.label)}
