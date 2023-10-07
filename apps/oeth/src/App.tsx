@@ -1,4 +1,5 @@
 import { Container, CssBaseline, Stack } from '@mui/material';
+import { TrackingProvider } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { Outlet } from 'react-router-dom';
 
@@ -9,18 +10,20 @@ export const App = () => {
     <>
       <CssBaseline />
       <ErrorBoundary ErrorComponent={<ErrorPage height={1} width={1} />}>
-        <Stack minWidth={370}>
-          <Topnav />
-          <Container
-            sx={{
-              mt: 3,
-              mb: 10,
-            }}
-            maxWidth="sm"
-          >
-            <Outlet />
-          </Container>
-        </Stack>
+        <TrackingProvider>
+          <Stack minWidth={370}>
+            <Topnav />
+            <Container
+              sx={{
+                mt: 3,
+                mb: 10,
+              }}
+              maxWidth="sm"
+            >
+              <Outlet />
+            </Container>
+          </Stack>
+        </TrackingProvider>
       </ErrorBoundary>
     </>
   );

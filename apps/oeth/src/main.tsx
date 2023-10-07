@@ -9,6 +9,7 @@ import {
   ActivityProvider,
   chains,
   queryClient,
+  registerGoogleTagManager,
   wagmiConfig,
 } from '@origin/oeth/shared';
 import {
@@ -33,6 +34,8 @@ import { routes } from './routes';
 setAutoFreeze(false);
 
 registerChart();
+
+registerGoogleTagManager();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
