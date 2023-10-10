@@ -42,7 +42,7 @@ export const theme = extendTheme({
         },
         action: {
           hoverOpacity: 0.1,
-          disabledOpacity: 0.5,
+          disabledOpacity: 0.25,
           disabled: alpha('#FAFBFB', 0.5),
         },
         text: {
@@ -313,7 +313,7 @@ export const theme = extendTheme({
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
-          }          
+          }
         `,
     },
     MuiDialog: {
