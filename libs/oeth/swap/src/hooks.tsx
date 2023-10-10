@@ -210,7 +210,7 @@ export const useHandleApprove = () => {
 
     setSwapState(
       produce((draft) => {
-        draft.isApprovalLoading = true;
+        draft.isApprovalWaitingForSignature = true;
       }),
     );
     const activity = pushActivity({
@@ -230,7 +230,8 @@ export const useHandleApprove = () => {
       });
       setSwapState(
         produce((draft) => {
-          draft.isApprovalLoading = false;
+          draft.isApprovalWaitingForSignature = false;
+          draft.isApprovalLoading = true;
         }),
       );
       if (!isNilOrEmpty(hash)) {
@@ -251,10 +252,16 @@ export const useHandleApprove = () => {
             />
           ),
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
       }
     } catch (error) {
       setSwapState(
         produce((draft) => {
+          draft.isApprovalWaitingForSignature = false;
           draft.isApprovalLoading = false;
         }),
       );
@@ -340,7 +347,7 @@ export const useHandleSwap = () => {
     });
     setSwapState(
       produce((draft) => {
-        draft.isSwapLoading = true;
+        draft.isSwapWaitingForSignature = true;
       }),
     );
     try {
@@ -355,7 +362,8 @@ export const useHandleSwap = () => {
       });
       setSwapState(
         produce((draft) => {
-          draft.isSwapLoading = false;
+          draft.isSwapWaitingForSignature = false;
+          draft.isSwapLoading = true;
         }),
       );
       if (!isNilOrEmpty(hash)) {
@@ -366,6 +374,11 @@ export const useHandleSwap = () => {
         queryClient.invalidateQueries({
           queryKey: ['swap_allowance'],
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
         pushNotification({
           content: (
             <SwapNotification
@@ -380,6 +393,7 @@ export const useHandleSwap = () => {
     } catch (error) {
       setSwapState(
         produce((draft) => {
+          draft.isSwapWaitingForSignature = false;
           draft.isSwapLoading = false;
         }),
       );

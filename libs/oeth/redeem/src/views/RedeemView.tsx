@@ -61,7 +61,14 @@ function RedeemViewWrapped() {
   const intl = useIntl();
   const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
-  const [{ amountIn, isRedeemLoading, isEstimateLoading }] = useRedeemState();
+  const [
+    {
+      amountIn,
+      isRedeemLoading,
+      isEstimateLoading,
+      isRedeemWaitingForSignature: isRedeemWaitingForTransaction,
+    },
+  ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
   const { data: balOeth, isLoading: isBalOethLoading } = useBalance({
     address,
@@ -85,6 +92,7 @@ function RedeemViewWrapped() {
   const redeemButtonDisabled =
     isBalOethLoading ||
     isEstimateLoading ||
+    isRedeemWaitingForTransaction ||
     isRedeemLoading ||
     amountIn > balOeth?.value ||
     amountIn === 0n;
@@ -184,8 +192,10 @@ function RedeemViewWrapped() {
             >
               {isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />
-              ) : isRedeemLoading ? (
+              ) : isRedeemWaitingForTransaction ? (
                 intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+              ) : isRedeemLoading ? (
+                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
               ) : (
                 redeemButtonLabel
               )}
