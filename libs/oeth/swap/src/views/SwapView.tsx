@@ -147,6 +147,7 @@ function SwapViewWrapped() {
     isNilOrEmpty(selectedSwapRoute) ||
     isSwapRoutesLoading ||
     isApprovalLoading ||
+    isApprovalWaitingForSignature ||
     amountIn > balTokenIn?.value;
   const swapButtonDisabled =
     needsApproval ||
@@ -154,6 +155,7 @@ function SwapViewWrapped() {
     isBalTokenInLoading ||
     isSwapRoutesLoading ||
     isSwapLoading ||
+    isSwapWaitingForSignature ||
     amountIn > balTokenIn?.value ||
     amountIn === 0n;
 
