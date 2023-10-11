@@ -24,6 +24,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
       gas: 0n,
       rate: 0,
       isEstimateLoading: false,
+      isRedeemWaitingForSignature: false,
       isRedeemLoading: false,
     });
     const intl = useIntl();
@@ -68,6 +69,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
               draft.amountOut = 0n;
               draft.split.forEach((a) => (a.amount = 0n));
               draft.isEstimateLoading = false;
+              draft.isRedeemWaitingForSignature = false;
             }),
           );
           return;
@@ -93,6 +95,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
               draft.amountOut = 0n;
               draft.split = [];
               draft.isEstimateLoading = false;
+              draft.isRedeemWaitingForSignature = false;
             }),
           );
           pushNotification({

@@ -87,8 +87,10 @@ function SwapViewWrapped() {
       tokenOut,
       selectedSwapRoute,
       isSwapLoading,
+      isSwapWaitingForSignature,
       isSwapRoutesLoading,
       isApprovalLoading,
+      isApprovalWaitingForSignature,
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
@@ -145,6 +147,7 @@ function SwapViewWrapped() {
     isNilOrEmpty(selectedSwapRoute) ||
     isSwapRoutesLoading ||
     isApprovalLoading ||
+    isApprovalWaitingForSignature ||
     amountIn > balTokenIn?.value;
   const swapButtonDisabled =
     needsApproval ||
@@ -152,6 +155,7 @@ function SwapViewWrapped() {
     isBalTokenInLoading ||
     isSwapRoutesLoading ||
     isSwapLoading ||
+    isSwapWaitingForSignature ||
     amountIn > balTokenIn?.value ||
     amountIn === 0n;
 
@@ -291,8 +295,10 @@ function SwapViewWrapped() {
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />
-                ) : isApprovalLoading ? (
+                ) : isApprovalWaitingForSignature ? (
                   intl.formatMessage({ defaultMessage: 'Wait for signature' })
+                ) : isApprovalLoading ? (
+                  intl.formatMessage({ defaultMessage: 'Processing Approval' })
                 ) : (
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
@@ -307,8 +313,10 @@ function SwapViewWrapped() {
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
-              ) : isSwapLoading ? (
+              ) : isSwapWaitingForSignature ? (
                 intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+              ) : isSwapLoading ? (
+                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
               ) : (
                 swapButtonLabel
               )}

@@ -106,8 +106,9 @@ export type SwapState = {
   tokenOut: Token;
   swapRoutes: EstimatedSwapRoute[];
   selectedSwapRoute: EstimatedSwapRoute | null;
+  isSwapWaitingForSignature: boolean;
   isSwapRoutesLoading: boolean;
-  isApproved: boolean;
   isApprovalLoading: boolean;
+  isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
 };

@@ -67,7 +67,7 @@ export const TokenSelectModal = ({
               onSelectToken(token);
             }}
             sx={{
-              color: token.isSwappable ? 'text.primary' : 'text.secondary',
+              opacity: token.isSwappable ? 1 : 0.5,
             }}
           />
         ))}

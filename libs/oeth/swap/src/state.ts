@@ -21,8 +21,9 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       tokenOut: tokens.mainnet.OETH,
       swapRoutes: [],
       selectedSwapRoute: null,
+      isSwapWaitingForSignature: false,
       isSwapRoutesLoading: false,
-      isApproved: false,
+      isApprovalWaitingForSignature: false,
       isApprovalLoading: false,
       isSwapLoading: false,
     });
@@ -39,9 +40,10 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               draft.selectedSwapRoute = null;
               draft.amountOut = 0n;
               draft.isSwapRoutesLoading = false;
-              draft.isApproved = false;
+              draft.isSwapWaitingForSignature = false;
               draft.isApprovalLoading = false;
               draft.isSwapLoading = false;
+              draft.isApprovalWaitingForSignature = false;
             }),
           );
           return;

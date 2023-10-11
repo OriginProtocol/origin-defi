@@ -12,5 +12,6 @@ export type RedeemState = {
   gas: bigint;
   rate: number;
   isEstimateLoading: boolean;
+  isRedeemWaitingForSignature: boolean;
   isRedeemLoading: boolean;
 };
