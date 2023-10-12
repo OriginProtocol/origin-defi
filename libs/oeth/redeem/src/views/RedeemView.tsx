@@ -12,6 +12,7 @@ import {
   ApyHeader,
   PriceTolerancePopover,
   trackEvent,
+  trackSentryError,
 } from '@origin/oeth/shared';
 import {
   ErrorBoundary,
@@ -107,10 +108,10 @@ function RedeemViewWrapped() {
 
   return (
     <Stack spacing={3}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />}>
+      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <ApyHeader />
       </ErrorBoundary>
-      <ErrorBoundary ErrorComponent={<ErrorCard />}>
+      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <Card>
           <CardHeader
             title={

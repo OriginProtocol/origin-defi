@@ -1,5 +1,5 @@
 import { Container, CssBaseline, Stack } from '@mui/material';
-import { TrackingProvider } from '@origin/oeth/shared';
+import { TrackingProvider, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { Outlet } from 'react-router-dom';
 
@@ -9,7 +9,10 @@ export const App = () => {
   return (
     <>
       <CssBaseline />
-      <ErrorBoundary ErrorComponent={<ErrorPage height={1} width={1} />}>
+      <ErrorBoundary
+        ErrorComponent={<ErrorPage height={1} width={1} />}
+        onError={trackSentryError}
+      >
         <TrackingProvider>
           <Stack minWidth={370}>
             <Topnav />

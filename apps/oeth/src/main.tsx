@@ -10,6 +10,7 @@ import {
   chains,
   queryClient,
   registerGoogleTagManager,
+  registerSentry,
   wagmiConfig,
 } from '@origin/oeth/shared';
 import {
@@ -36,6 +37,8 @@ setAutoFreeze(false);
 registerChart();
 
 registerGoogleTagManager();
+
+registerSentry();
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
