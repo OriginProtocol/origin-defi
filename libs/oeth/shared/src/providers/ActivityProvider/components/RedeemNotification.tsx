@@ -23,7 +23,8 @@ type RedeemNotificationProps = {
   amountOut?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & StackProps;
+  sx?: StackProps['sx'];
+};
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Redeeming' }),
@@ -40,13 +41,13 @@ export const RedeemNotification = ({
   amountOut,
   txReceipt,
   error,
-  ...rest
+  sx,
 }: RedeemNotificationProps) => {
   const intl = useIntl();
 
   return (
     <NotificationSnack
-      {...rest}
+      sx={sx}
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={

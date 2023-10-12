@@ -120,7 +120,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
 
         trackEvent({
           name: 'change_input_amount',
-          change_amount_to: state.amountIn.toString(),
+          change_amount_to: state.amountIn,
         });
       },
       [state.amountIn],

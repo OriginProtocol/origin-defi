@@ -14,7 +14,8 @@ export type NotificationSnackProps = {
   endIcon?: ReactNode;
   titleProps?: TypographyProps;
   subtitleProps?: TypographyProps;
-} & Omit<StackProps, 'onClick'>;
+  sx?: StackProps['sx'];
+};
 
 export const NotificationSnack = ({
   icon,

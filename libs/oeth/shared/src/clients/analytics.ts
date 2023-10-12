@@ -1,5 +1,10 @@
 import googleTagManager from '@analytics/google-tag-manager';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { Analytics } from 'analytics';
+import { map } from 'ramda';
+import { formatEther } from 'viem';
+
+import type { HexAddress } from '@origin/shared/utils';
 
 export type TrackEvent =
   | { name: 'approve_started'; approval_type: string; approval_token: string }
@@ -10,56 +15,39 @@ export type TrackEvent =
       name: 'swap_started';
       swap_route: string;
       swap_token: string;
-      swap_amount: string;
+      swap_amount: bigint;
     }
   | {
       name: 'swap_complete';
       swap_type: string;
       swap_route: string;
       swap_token: string;
-      swap_amount: string;
+      swap_amount: bigint;
     }
   | {
       name: 'swap_failed';
       swap_type: string;
       swap_token: string;
-      swap_amount: string;
+      swap_amount: bigint;
     }
   | {
       name: 'swap_rejected';
       swap_type: string;
       swap_token: string;
-      swap_amount: string;
+      swap_amount: bigint;
     }
-  | { name: 'wrap_started'; wrap_token: string; wrap_amount: string }
-  | {
-      name: 'wrap_complete';
-      wrap_type: string;
-      wrap_token: string;
-      wrap_amount: string;
-    }
-  | {
-      name: 'wrap_failed';
-      wrap_type: string;
-      wrap_token: string;
-      wrap_amount: string;
-    }
-  | {
-      name: 'wrap_rejected';
-      wrap_type: string;
-      wrap_token: string;
-      wrap_amount: string;
-    }
-  | { name: 'change_input_amount'; change_amount_to: string }
+  | { name: 'change_input_amount'; change_amount_to: bigint }
   | { name: 'change_input_currency'; change_input_to: string }
   | { name: 'change_output_currency'; change_output_to: string }
   | { name: 'change_swap_route'; change_route_to: string }
   | { name: 'open_account' }
   | { name: 'open_settings' }
-  | { name: 'change_apy'; change_apy_to: string }
+  | { name: 'change_apy'; change_apy_to: number }
   | { name: 'show_swap_routes' }
-  | { name: 'connect'; connect_address: string; connect_wallet: string }
-  | { name: 'connect_click' };
+  | { name: 'connect'; connect_address: HexAddress; connect_wallet: string }
+  | { name: 'connect_click' }
+  | { name: 'activity_click' }
+  | { name: 'change_price_tolerance'; price_tolerance: number };
 
 const analytics = Analytics({
   app: 'oeth-dapp',
@@ -78,7 +66,7 @@ export const registerGoogleTagManager = () => {
 
 export const trackEvent = ({ name, ...rest }: TrackEvent) => {
   if (analytics.ready /*&& import.meta.env.PROD */) {
-    analytics.track(name, rest);
+    analytics.track(name, map(formatParams, rest));
   }
 };
 
@@ -87,3 +75,19 @@ export const trackPage = () => {
     analytics.page();
   }
 };
+
+function formatParams(param: string | number | bigint | HexAddress) {
+  if (isNilOrEmpty(param)) {
+    return;
+  }
+
+  if (typeof param === 'number') {
+    return param.toString();
+  } else if (typeof param === 'bigint') {
+    return formatEther(param);
+  } else if (typeof param === 'string' && /0x.*/.test(param)) {
+    return param.substring(2);
+  } else {
+    return param;
+  }
+}

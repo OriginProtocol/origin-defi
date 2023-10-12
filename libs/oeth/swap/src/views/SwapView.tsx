@@ -13,7 +13,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ApyHeader, GasPopover } from '@origin/oeth/shared';
+import {
+  ApyHeader,
+  PriceTolerancePopover,
+  trackEvent,
+} from '@origin/oeth/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -124,6 +128,10 @@ function SwapViewWrapped() {
 
   const handleSlippageChange = (val: number) => {
     setSlippage(val);
+    trackEvent({
+      name: 'change_price_tolerance',
+      price_tolerance: val,
+    });
   };
 
   const needsApproval =
@@ -176,7 +184,7 @@ function SwapViewWrapped() {
                 <Typography>
                   {intl.formatMessage({ defaultMessage: 'Swap' })}
                 </Typography>
-                <GasPopover
+                <PriceTolerancePopover
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
                   buttonProps={{

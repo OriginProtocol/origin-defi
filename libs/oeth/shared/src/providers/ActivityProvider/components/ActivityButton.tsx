@@ -7,12 +7,18 @@ import { useGlobalStatus } from '../hooks';
 import { ActivityPopover } from './ActivityPopover';
 
 import type { IconButtonProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 
-export const ActivityButton = (
-  props: Omit<IconButtonProps, 'children' | 'onClick'>,
-) => {
+export const ActivityButton = (props: Omit<IconButtonProps, 'children'>) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const status = useGlobalStatus();
+
+  const handleClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    if (props?.onClick) {
+      props.onClick(evt);
+    }
+    setAnchorEl(evt.currentTarget);
+  };
 
   return (
     <>
@@ -28,7 +34,7 @@ export const ActivityButton = (
           },
           ...props?.sx,
         }}
-        onClick={(e) => setAnchorEl(e.currentTarget)}
+        onClick={handleClick}
       >
         <ActivityIcon status={status} />
       </IconButton>

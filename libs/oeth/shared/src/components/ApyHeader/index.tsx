@@ -110,7 +110,7 @@ export const ApyHeader = (props: StackProps) => {
                 setAnchorEl(null);
                 trackEvent({
                   name: 'change_apy',
-                  change_apy_to: t.value.toString(),
+                  change_apy_to: t.value,
                 });
               }}
             >

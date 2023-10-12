@@ -206,6 +206,9 @@ export function Topnav(props: BoxProps) {
             setAnchor={setAccountModalAnchor}
           />
           <ActivityButton
+            onClick={() => {
+              trackEvent({ name: 'activity_click' });
+            }}
             sx={{
               width: { xs: 36, md: 44 },
               height: { xs: 36, md: 44 },

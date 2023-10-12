@@ -8,7 +8,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ApyHeader, GasPopover } from '@origin/oeth/shared';
+import {
+  ApyHeader,
+  PriceTolerancePopover,
+  trackEvent,
+} from '@origin/oeth/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -81,6 +85,10 @@ function RedeemViewWrapped() {
 
   const handleSlippageChange = (val: number) => {
     setSlippage(val);
+    trackEvent({
+      name: 'change_price_tolerance',
+      price_tolerance: val,
+    });
   };
 
   const redeemButtonLabel =
@@ -114,7 +122,7 @@ function RedeemViewWrapped() {
                 <Typography>
                   {intl.formatMessage({ defaultMessage: 'Redeem' })}
                 </Typography>
-                <GasPopover
+                <PriceTolerancePopover
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
                   buttonProps={{
