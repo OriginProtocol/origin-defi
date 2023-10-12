@@ -75,7 +75,7 @@ export const useHandleRedeem = () => {
 
     setRedeemState(
       produce((draft) => {
-        draft.isRedeemLoading = true;
+        draft.isRedeemWaitingForSignature = true;
       }),
     );
 
@@ -89,7 +89,8 @@ export const useHandleRedeem = () => {
       const { hash } = await writeContract(request);
       setRedeemState(
         produce((draft) => {
-          draft.isRedeemLoading = false;
+          draft.isRedeemWaitingForSignature = false;
+          draft.isRedeemLoading = true;
         }),
       );
       const txReceipt = await waitForTransaction({ hash });
@@ -105,6 +106,12 @@ export const useHandleRedeem = () => {
         ),
       });
     } catch (error) {
+      setRedeemState(
+        produce((draft) => {
+          draft.isRedeemWaitingForSignature = false;
+          draft.isRedeemLoading = false;
+        }),
+      );
       if (isUserRejected(error)) {
         deleteActivity(activity.id);
         pushNotification({

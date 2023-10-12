@@ -24,7 +24,11 @@ import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
 
 import { swapActions } from './actions';
 import { useSwapState } from './state';
-import { getAllAvailableTokens, getAvailableTokensForSource } from './utils';
+import {
+  getAllAvailableTokens,
+  getAvailableRoutes,
+  getAvailableTokensForSource,
+} from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 
@@ -134,21 +138,122 @@ export const useHandleTokenChange = () => {
 };
 
 export const useHandleTokenFlip = () => {
-  const [, setSwapState] = useSwapState();
+  const [{ tokenIn, tokenOut, amountIn, amountOut }, setSwapState] =
+    useSwapState();
+  const { value: slippage } = useSlippage();
+  const queryClient = useQueryClient();
+  const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
-  return useCallback(() => {
-    setSwapState(
-      produce((state) => {
-        state.amountIn = 0n;
-        state.amountOut = 0n;
-        const oldTokenOut = state.tokenOut;
-        state.tokenOut = state.tokenIn;
-        state.tokenIn = oldTokenOut;
-        state.swapRoutes = [];
-        state.selectedSwapRoute = null;
-      }),
-    );
-  }, [setSwapState]);
+  return useCallback(async () => {
+    const newRoutes = getAvailableRoutes(tokenOut, tokenIn);
+    if (isNilOrEmpty(newRoutes)) {
+      const newTokenOut = getAvailableTokensForSource('tokenIn', tokenOut)[0];
+      setSwapState(
+        produce((state) => {
+          state.amountIn = 0n;
+          state.amountOut = 0n;
+          const oldTokenOut = state.tokenOut;
+          state.tokenOut = newTokenOut;
+          state.tokenIn = oldTokenOut;
+          state.swapRoutes = [];
+          state.selectedSwapRoute = null;
+        }),
+      );
+    } else {
+      setSwapState(
+        produce((draft) => {
+          const oldTokenOut = tokenOut;
+          draft.tokenOut = tokenIn;
+          draft.tokenIn = oldTokenOut;
+        }),
+      );
+
+      if (amountIn > 0n || amountOut > 0n) {
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapRoutesLoading = true;
+          }),
+        );
+        const routes = await Promise.all(
+          newRoutes.map((route) =>
+            queryClient.fetchQuery({
+              queryKey: [
+                'estimateRoute',
+                tokenOut.symbol,
+                tokenIn.symbol,
+                route.action,
+                slippage,
+                amountIn.toString(),
+              ] as const,
+              queryFn: async () => {
+                let res: EstimatedSwapRoute;
+                try {
+                  res = await swapActions[route.action].estimateRoute({
+                    tokenIn: route.tokenIn,
+                    tokenOut: route.tokenOut,
+                    amountIn: amountOut,
+                    amountOut: amountIn,
+                    route,
+                    slippage,
+                    curve: {
+                      CurveRegistryExchange,
+                      OethPoolUnderlyings,
+                    },
+                  });
+                } catch (error) {
+                  console.error(
+                    `Fail to estimate route ${route.action}\n${error.message}`,
+                  );
+                  res = {
+                    tokenIn: route.tokenIn,
+                    tokenOut: route.tokenOut,
+                    estimatedAmount: 0n,
+                    action: route.action,
+                    allowanceAmount: 0n,
+                    approvalGas: 0n,
+                    gas: 0n,
+                    rate: 0,
+                  };
+                }
+
+                return res;
+              },
+            }),
+          ),
+        );
+
+        const sortedRoutes = routes.sort((a, b) => {
+          const valA =
+            a.estimatedAmount -
+            (a.gas + (a.allowanceAmount < amountOut ? a.approvalGas : 0n));
+          const valB =
+            b.estimatedAmount -
+            (b.gas + (b.allowanceAmount < amountOut ? b.approvalGas : 0n));
+
+          return valA < valB ? 1 : valA > valB ? -1 : 0;
+        });
+
+        setSwapState(
+          produce((draft) => {
+            draft.swapRoutes = sortedRoutes;
+            draft.selectedSwapRoute = sortedRoutes[0];
+            draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
+            draft.isSwapRoutesLoading = false;
+          }),
+        );
+      }
+    }
+  }, [
+    CurveRegistryExchange,
+    OethPoolUnderlyings,
+    amountIn,
+    amountOut,
+    queryClient,
+    setSwapState,
+    slippage,
+    tokenIn,
+    tokenOut,
+  ]);
 };
 
 export const useHandleSelectSwapRoute = () => {
@@ -220,7 +325,7 @@ export const useHandleApprove = () => {
 
     setSwapState(
       produce((draft) => {
-        draft.isApprovalLoading = true;
+        draft.isApprovalWaitingForSignature = true;
       }),
     );
     const activity = pushActivity({
@@ -245,7 +350,8 @@ export const useHandleApprove = () => {
       });
       setSwapState(
         produce((draft) => {
-          draft.isApprovalLoading = false;
+          draft.isApprovalWaitingForSignature = false;
+          draft.isApprovalLoading = true;
         }),
       );
       if (!isNilOrEmpty(hash)) {
@@ -266,6 +372,11 @@ export const useHandleApprove = () => {
             />
           ),
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isApprovalLoading = false;
+          }),
+        );
         trackEvent({
           name: 'approve_complete',
           approval_token: tokenIn.symbol,
@@ -275,6 +386,7 @@ export const useHandleApprove = () => {
     } catch (error) {
       setSwapState(
         produce((draft) => {
+          draft.isApprovalWaitingForSignature = false;
           draft.isApprovalLoading = false;
         }),
       );
@@ -376,7 +488,7 @@ export const useHandleSwap = () => {
     });
     setSwapState(
       produce((draft) => {
-        draft.isSwapLoading = true;
+        draft.isSwapWaitingForSignature = true;
       }),
     );
     try {
@@ -391,7 +503,8 @@ export const useHandleSwap = () => {
       });
       setSwapState(
         produce((draft) => {
-          draft.isSwapLoading = false;
+          draft.isSwapWaitingForSignature = false;
+          draft.isSwapLoading = true;
         }),
       );
       if (!isNilOrEmpty(hash)) {
@@ -402,6 +515,11 @@ export const useHandleSwap = () => {
         queryClient.invalidateQueries({
           queryKey: ['swap_allowance'],
         });
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapLoading = false;
+          }),
+        );
         pushNotification({
           content: (
             <SwapNotification
@@ -423,6 +541,7 @@ export const useHandleSwap = () => {
     } catch (error) {
       setSwapState(
         produce((draft) => {
+          draft.isSwapWaitingForSignature = false;
           draft.isSwapLoading = false;
         }),
       );
