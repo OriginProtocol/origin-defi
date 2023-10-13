@@ -52,7 +52,7 @@ export const ErrorPage = ({
         <Typography variant="h4" pb={8} color="grey.600">
           {subtitle ??
             intl.formatMessage({
-              defaultMessage: 'Oops, something went wrong 😓',
+              defaultMessage: 'Ooops, something went wrong 😓',
             })}
         </Typography>
         {message}
