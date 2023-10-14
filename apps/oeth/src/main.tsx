@@ -16,6 +16,7 @@ import {
 import {
   CurveProvider,
   GeoFenceProvider,
+  logWelcomeMessage,
   NotificationsProvider,
   registerChart,
 } from '@origin/shared/providers';
@@ -33,6 +34,8 @@ import { routes } from './routes';
 
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
+
+logWelcomeMessage('OETH');
 
 registerChart();
 
