@@ -40,13 +40,14 @@ export type TrackEvent =
   | { name: 'change_input_currency'; change_input_to: string }
   | { name: 'change_output_currency'; change_output_to: string }
   | { name: 'change_swap_route'; change_route_to: string }
+  | { name: 'change_input_output' }
   | { name: 'open_account' }
   | { name: 'open_settings' }
   | { name: 'change_apy'; change_apy_to: number }
   | { name: 'show_swap_routes' }
   | { name: 'connect'; connect_address: HexAddress; connect_wallet: string }
   | { name: 'connect_click' }
-  | { name: 'activity_click' }
+  | { name: 'open_activity' }
   | { name: 'change_price_tolerance'; price_tolerance: number };
 
 const analytics = Analytics({

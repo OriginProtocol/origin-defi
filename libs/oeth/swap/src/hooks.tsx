@@ -145,6 +145,7 @@ export const useHandleTokenFlip = () => {
   const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
 
   return useCallback(async () => {
+    trackEvent({ name: 'change_input_output' });
     const newRoutes = getAvailableRoutes(tokenOut, tokenIn);
     if (isNilOrEmpty(newRoutes)) {
       const newTokenOut = getAvailableTokensForSource('tokenIn', tokenOut)[0];

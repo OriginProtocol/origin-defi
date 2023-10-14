@@ -183,6 +183,10 @@ export function Topnav(props: BoxProps) {
                 trackEvent({
                   name: 'open_account',
                 });
+              } else {
+                trackEvent({
+                  name: 'connect_click',
+                });
               }
             }}
             sx={{
@@ -207,7 +211,7 @@ export function Topnav(props: BoxProps) {
           />
           <ActivityButton
             onClick={() => {
-              trackEvent({ name: 'activity_click' });
+              trackEvent({ name: 'open_activity' });
             }}
             sx={{
               width: { xs: 36, md: 44 },
