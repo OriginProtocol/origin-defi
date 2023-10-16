@@ -482,6 +482,7 @@ export const useHandleSwap = () => {
       name: 'swap_started',
       swap_route: selectedSwapRoute.action,
       swap_token: tokenIn.symbol,
+      swap_to: tokenOut.symbol,
       swap_amount: amountIn,
     });
     setSwapState(
@@ -532,6 +533,7 @@ export const useHandleSwap = () => {
           name: 'swap_complete',
           swap_route: selectedSwapRoute.action,
           swap_token: tokenIn.symbol,
+          swap_to: tokenOut.symbol,
           swap_amount: amountIn,
         });
       }
@@ -561,6 +563,7 @@ export const useHandleSwap = () => {
           name: 'swap_rejected',
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
+          swap_to: tokenOut.symbol,
           swap_route: selectedSwapRoute.action,
         });
       } else {
@@ -582,6 +585,7 @@ export const useHandleSwap = () => {
           name: 'swap_failed',
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
+          swap_to: tokenOut.symbol,
           swap_route: selectedSwapRoute.action,
           swap_error: error?.shortMessage ?? error.message,
         });
