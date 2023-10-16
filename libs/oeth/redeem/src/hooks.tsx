@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { Box } from '@mui/material';
 import {
   RedeemNotification,
+  trackEvent,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
@@ -78,7 +79,10 @@ export const useHandleRedeem = () => {
         draft.isRedeemWaitingForSignature = true;
       }),
     );
-
+    trackEvent({
+      name: 'redeem_started',
+      redeem_amount: amountIn,
+    });
     try {
       const { request } = await prepareWriteContract({
         address: contracts.mainnet.OETHVaultCore.address,
@@ -105,6 +109,10 @@ export const useHandleRedeem = () => {
           />
         ),
       });
+      trackEvent({
+        name: 'redeem_complete',
+        redeem_amount: amountIn,
+      });
     } catch (error) {
       setRedeemState(
         produce((draft) => {
@@ -127,6 +135,10 @@ export const useHandleRedeem = () => {
             />
           ),
         });
+        trackEvent({
+          name: 'redeem_rejected',
+          redeem_amount: amountIn,
+        });
       } else {
         updateActivity({
           ...activity,
@@ -141,6 +153,11 @@ export const useHandleRedeem = () => {
               error={error?.shortMessage ?? error.message}
             />
           ),
+        });
+        trackEvent({
+          name: 'redeem_failed',
+          redeem_amount: amountIn,
+          redeem_error: error?.shortMessage ?? error.message,
         });
       }
     }

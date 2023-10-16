@@ -340,7 +340,6 @@ export const useHandleApprove = () => {
     trackEvent({
       name: 'approve_started',
       approval_token: tokenIn.symbol,
-      approval_type: tokenOut.symbol,
     });
     try {
       const hash = await swapActions[selectedSwapRoute.action].approve({
@@ -381,7 +380,6 @@ export const useHandleApprove = () => {
         trackEvent({
           name: 'approve_complete',
           approval_token: tokenIn.symbol,
-          approval_type: tokenOut.symbol,
         });
       }
     } catch (error) {
@@ -409,7 +407,6 @@ export const useHandleApprove = () => {
         trackEvent({
           name: 'approve_rejected',
           approval_token: tokenIn.symbol,
-          approval_type: tokenOut.symbol,
         });
       } else {
         updateActivity({
@@ -429,7 +426,7 @@ export const useHandleApprove = () => {
         trackEvent({
           name: 'approve_failed',
           approval_token: tokenIn.symbol,
-          approval_type: tokenOut.symbol,
+          approve_error: error?.shortMessage ?? error.message,
         });
       }
     }
@@ -536,7 +533,6 @@ export const useHandleSwap = () => {
           swap_route: selectedSwapRoute.action,
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
-          swap_type: tokenOut.symbol,
         });
       }
     } catch (error) {
@@ -565,20 +561,20 @@ export const useHandleSwap = () => {
           name: 'swap_rejected',
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
-          swap_type: tokenOut.symbol,
+          swap_route: selectedSwapRoute.action,
         });
       } else {
         updateActivity({
           ...activity,
           status: 'error',
-          error: error.shortMessage,
+          error: error?.shortMessage ?? error.message,
         });
         pushNotification({
           content: (
             <SwapNotification
               {...activity}
               status="error"
-              error={error.shortMessage}
+              error={error?.shortMessage ?? error.message}
             />
           ),
         });
@@ -586,7 +582,8 @@ export const useHandleSwap = () => {
           name: 'swap_failed',
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
-          swap_type: tokenOut.symbol,
+          swap_route: selectedSwapRoute.action,
+          swap_error: error?.shortMessage ?? error.message,
         });
       }
     }

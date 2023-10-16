@@ -7,10 +7,14 @@ import { formatEther } from 'viem';
 import type { HexAddress } from '@origin/shared/utils';
 
 export type TrackEvent =
-  | { name: 'approve_started'; approval_type: string; approval_token: string }
-  | { name: 'approve_complete'; approval_type: string; approval_token: string }
-  | { name: 'approve_failed'; approval_type: string; approval_token: string }
-  | { name: 'approve_rejected'; approval_type: string; approval_token: string }
+  | { name: 'approve_started'; approval_token: string }
+  | { name: 'approve_complete'; approval_token: string }
+  | { name: 'approve_failed'; approval_token: string; approve_error: string }
+  | { name: 'approve_rejected'; approval_token: string }
+  | { name: 'redeem_started'; redeem_amount: bigint }
+  | { name: 'redeem_complete'; redeem_amount: bigint }
+  | { name: 'redeem_failed'; redeem_amount: bigint; redeem_error: string }
+  | { name: 'redeem_rejected'; redeem_amount: bigint }
   | {
       name: 'swap_started';
       swap_route: string;
@@ -19,20 +23,20 @@ export type TrackEvent =
     }
   | {
       name: 'swap_complete';
-      swap_type: string;
       swap_route: string;
       swap_token: string;
       swap_amount: bigint;
     }
   | {
       name: 'swap_failed';
-      swap_type: string;
+      swap_route: string;
       swap_token: string;
       swap_amount: bigint;
+      swap_error: string;
     }
   | {
       name: 'swap_rejected';
-      swap_type: string;
+      swap_route: string;
       swap_token: string;
       swap_amount: bigint;
     }
