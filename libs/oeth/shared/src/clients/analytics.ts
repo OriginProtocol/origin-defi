@@ -19,18 +19,21 @@ export type TrackEvent =
       name: 'swap_started';
       swap_route: string;
       swap_token: string;
+      swap_to: string;
       swap_amount: bigint;
     }
   | {
       name: 'swap_complete';
       swap_route: string;
       swap_token: string;
+      swap_to: string;
       swap_amount: bigint;
     }
   | {
       name: 'swap_failed';
       swap_route: string;
       swap_token: string;
+      swap_to: string;
       swap_amount: bigint;
       swap_error: string;
     }
@@ -38,6 +41,7 @@ export type TrackEvent =
       name: 'swap_rejected';
       swap_route: string;
       swap_token: string;
+      swap_to: string;
       swap_amount: bigint;
     }
   | { name: 'change_input_amount'; change_amount_to: bigint }
