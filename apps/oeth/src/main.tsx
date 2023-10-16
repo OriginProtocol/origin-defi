@@ -4,7 +4,6 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
 import {
   ActivityProvider,
   chains,
@@ -16,8 +15,8 @@ import {
   GeoFenceProvider,
   NotificationsProvider,
   registerChart,
+  ThemeProvider,
 } from '@origin/shared/providers';
-import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -34,6 +33,8 @@ setAutoFreeze(false);
 
 registerChart();
 
+const router = createHashRouter(routes);
+
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
@@ -43,7 +44,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages: en, locale: 'en', defaultLocale: 'en' }],
       [QueryClientProvider, { client: queryClient }],
-      [CssVarsProvider, { theme: theme, defaultMode: 'dark' }],
+      [ThemeProvider],
       [WagmiConfig, { config: wagmiConfig }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [CurveProvider],
@@ -51,6 +52,6 @@ root.render(
       [ActivityProvider],
       [GeoFenceProvider],
     ],
-    <RouterProvider router={createHashRouter(routes)} />,
+    <RouterProvider router={router} />,
   ),
 );

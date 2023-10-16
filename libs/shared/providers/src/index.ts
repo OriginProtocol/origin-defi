@@ -5,4 +5,5 @@ export * from './geoFence';
 export * from './notifications';
 export * from './prices';
 export * from './slippage';
+export * from './theme';
 export * from './wagmi';
