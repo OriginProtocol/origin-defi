@@ -1,4 +1,5 @@
-import type { Contract, Token } from '@origin/shared/contracts';
+import type { Token } from '@origin/shared/contracts';
+import type { CurveState } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
@@ -20,10 +21,7 @@ type Args = {
   slippage: number;
   route: SwapRoute;
   estimatedRoute: EstimatedSwapRoute;
-  curve?: {
-    CurveRegistryExchange: Contract;
-    OethPoolUnderlyings: HexAddress[];
-  };
+  curve?: CurveState;
 };
 
 export type EstimateAmount = (
