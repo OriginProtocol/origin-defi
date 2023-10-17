@@ -8,7 +8,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ApyHeader, GasPopover } from '@origin/oeth/shared';
+import {
+  ApyHeader,
+  PriceTolerancePopover,
+  trackEvent,
+  trackSentryError,
+} from '@origin/oeth/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -81,6 +86,10 @@ function RedeemViewWrapped() {
 
   const handleSlippageChange = (val: number) => {
     setSlippage(val);
+    trackEvent({
+      name: 'change_price_tolerance',
+      price_tolerance: val,
+    });
   };
 
   const redeemButtonLabel =
@@ -99,10 +108,10 @@ function RedeemViewWrapped() {
 
   return (
     <Stack spacing={3}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />}>
+      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <ApyHeader />
       </ErrorBoundary>
-      <ErrorBoundary ErrorComponent={<ErrorCard />}>
+      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <Card>
           <CardHeader
             title={
@@ -114,7 +123,7 @@ function RedeemViewWrapped() {
                 <Typography>
                   {intl.formatMessage({ defaultMessage: 'Redeem' })}
                 </Typography>
-                <GasPopover
+                <PriceTolerancePopover
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
                   buttonProps={{

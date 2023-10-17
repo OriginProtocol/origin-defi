@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { trackEvent } from '@origin/oeth/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useCurve, useSlippage } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
@@ -116,6 +117,11 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             draft.isSwapRoutesLoading = false;
           }),
         );
+
+        trackEvent({
+          name: 'change_input_amount',
+          change_amount_to: state.amountIn,
+        });
       },
       [state.amountIn],
       state.amountIn === 0n ? 0 : 800,

@@ -8,11 +8,14 @@ import {
   ActivityProvider,
   chains,
   queryClient,
+  registerGoogleTagManager,
+  registerSentry,
   wagmiConfig,
 } from '@origin/oeth/shared';
 import {
   CurveProvider,
   GeoFenceProvider,
+  logWelcomeMessage,
   NotificationsProvider,
   registerChart,
   ThemeProvider,
@@ -31,7 +34,13 @@ import { routes } from './routes';
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
 
+logWelcomeMessage('OETH');
+
 registerChart();
+
+registerGoogleTagManager();
+
+registerSentry();
 
 const router = createHashRouter(routes);
 

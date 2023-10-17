@@ -1,5 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
+import {
+  ActivityIcon,
+  Mix,
+  NotificationSnack,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -11,7 +15,7 @@ import type { TransactionReceipt } from 'viem';
 
 import type { GlobalActivityStatus } from '../types';
 
-type SwapNotificationProps = {
+type RedeemNotificationProps = {
   status: GlobalActivityStatus;
   tokenIn: Token;
   tokenOut: Token;
@@ -19,16 +23,17 @@ type SwapNotificationProps = {
   amountOut?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;
-} & StackProps;
-
-const title: Record<GlobalActivityStatus, MessageDescriptor> = {
-  pending: defineMessage({ defaultMessage: 'Swapping' }),
-  success: defineMessage({ defaultMessage: 'Swapped' }),
-  error: defineMessage({ defaultMessage: 'Error while swapping' }),
-  idle: defineMessage({ defaultMessage: 'Swap' }),
+  sx?: StackProps['sx'];
 };
 
-export const SwapNotification = ({
+const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+  pending: defineMessage({ defaultMessage: 'Redeeming' }),
+  success: defineMessage({ defaultMessage: 'Redeemed' }),
+  error: defineMessage({ defaultMessage: 'Error while redeeming' }),
+  idle: defineMessage({ defaultMessage: 'Redeem' }),
+};
+
+export const RedeemNotification = ({
   status,
   tokenIn,
   tokenOut,
@@ -36,13 +41,13 @@ export const SwapNotification = ({
   amountOut,
   txReceipt,
   error,
-  ...rest
-}: SwapNotificationProps) => {
+  sx,
+}: RedeemNotificationProps) => {
   const intl = useIntl();
 
   return (
     <NotificationSnack
-      {...rest}
+      sx={sx}
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={
@@ -55,8 +60,7 @@ export const SwapNotification = ({
           <Typography color="text.tertiary">
             {intl.formatMessage(
               {
-                defaultMessage:
-                  '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+                defaultMessage: '{amountIn} {symbolIn}',
               },
               {
                 amountIn: intl.formatNumber(
@@ -68,7 +72,6 @@ export const SwapNotification = ({
                   +formatUnits(amountOut, tokenOut.decimals),
                   { minimumFractionDigits: 4, maximumFractionDigits: 4 },
                 ),
-                symbolOut: tokenOut.symbol,
               },
             )}
           </Typography>
@@ -88,10 +91,14 @@ export const SwapNotification = ({
             src="images/arrow-right.svg"
             sx={{ width: 12, height: 12 }}
           />
-          <Box
-            component="img"
-            src={tokenOut.icon}
-            sx={{ width: 24, height: 24 }}
+          <Mix
+            imgSrc={[
+              '/images/currency/weth-icon-small.png',
+              '/images/currency/reth-icon-small.png',
+              '/images/currency/steth-icon-small.svg',
+              '/images/currency/frxeth-icon-small.svg',
+            ]}
+            size={1.5}
           />
         </Stack>
       }

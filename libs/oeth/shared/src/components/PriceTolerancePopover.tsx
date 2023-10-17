@@ -15,7 +15,10 @@ import {
 import { InfoTooltip, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { trackEvent } from '../clients';
+
 import type { IconButtonProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 
 const DEFAULT_SLIPPAGE = 0.001;
 const WARNING_THRESHOLD = 0.05;
@@ -28,28 +31,29 @@ const gridStyles = {
   alignItems: 'center',
 };
 
-export type GasPopoverProps = {
+export type PriceTolerancePopoverProps = {
   buttonProps?: IconButtonProps;
   slippage: number;
   onSlippageChange: (value: number) => void;
 };
 
-export function GasPopover({
+export function PriceTolerancePopover({
   buttonProps,
   slippage,
   onSlippageChange,
-}: GasPopoverProps) {
+}: PriceTolerancePopoverProps) {
   const theme = useTheme();
   const intl = useIntl();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
+  const handleClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(evt.currentTarget);
+    trackEvent({ name: 'open_settings' });
+  };
+
   return (
     <>
-      <IconButton
-        onClick={(e) => setAnchorEl(e.currentTarget)}
-        data-testid="gas-popover-button"
-        {...buttonProps}
-      >
+      <IconButton onClick={handleClick} {...buttonProps}>
         <img src="/images/settings-icon.svg" alt="settings" />
       </IconButton>
       <Popover

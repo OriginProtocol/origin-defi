@@ -10,7 +10,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { AccountPopover, ActivityButton } from '@origin/oeth/shared';
+import {
+  AccountPopover,
+  ActivityButton,
+  trackEvent,
+} from '@origin/oeth/shared';
 import { OpenAccountModalButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
@@ -176,6 +180,13 @@ export function Topnav(props: BoxProps) {
             onClick={(e) => {
               if (isConnected) {
                 setAccountModalAnchor(e.currentTarget);
+                trackEvent({
+                  name: 'open_account',
+                });
+              } else {
+                trackEvent({
+                  name: 'connect_click',
+                });
               }
             }}
             sx={{
@@ -199,6 +210,9 @@ export function Topnav(props: BoxProps) {
             setAnchor={setAccountModalAnchor}
           />
           <ActivityButton
+            onClick={() => {
+              trackEvent({ name: 'open_activity' });
+            }}
             sx={{
               width: { xs: 36, md: 44 },
               height: { xs: 36, md: 44 },
