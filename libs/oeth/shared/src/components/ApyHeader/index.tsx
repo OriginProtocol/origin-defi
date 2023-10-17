@@ -53,9 +53,12 @@ export const ApyHeader = (props: StackProps) => {
         <Typography variant="h1">
           {intl.formatNumber(
             trailing.value === 30 ? apy.apy30DayAvg : apy.apy7DayAvg,
-            { minimumFractionDigits: 2, maximumFractionDigits: 2 },
+            {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              style: 'percent',
+            },
           )}
-          %
         </Typography>
       )}
 
