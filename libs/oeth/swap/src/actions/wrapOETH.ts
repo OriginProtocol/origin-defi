@@ -69,7 +69,7 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       account: whales.mainnet.OETH,
     });
   } catch {
-    console.log(`Wrap OETH uses fix gas estimate: 0`);
+    gasEstimate = 21000n;
   }
 
   return gasEstimate;
@@ -114,7 +114,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       account: address,
     });
   } catch {
-    console.log(`Wrap OETH uses fix approval gas estimate: 0`);
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
@@ -158,12 +158,20 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, amountIn }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+  const gas = await estimateApprovalGas({
+    amountIn,
+    tokenIn,
+    tokenOut,
+    curve,
+  });
+
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [contracts.mainnet.WOETH.address, amountIn],
+    gas,
   });
   const { hash } = await writeContract(request);
 

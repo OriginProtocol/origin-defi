@@ -9,6 +9,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits, isAddressEqual, maxUint256, parseUnits } from 'viem';
 
+import { GAS_BUFFER } from '../constants';
+
 import type {
   Allowance,
   Approve,
@@ -92,8 +94,6 @@ const estimateGas: EstimateGas = async ({
       account: address ?? ETH_ADDRESS_CURVE,
     });
   } catch (e) {
-    console.log(`Swap curve OETH Pool uses fix gas estimate: 180000`);
-
     gasEstimate = 180000n;
   }
 
@@ -107,7 +107,6 @@ const allowance: Allowance = async () => {
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
   // ETH doesn't need approval
-  console.log(`Swap curve OETH Pool uses fix approval gas estimate: 0`);
   return 0n;
 };
 
@@ -186,6 +185,16 @@ const swap: Swap = async ({
     tokenOut.decimals,
   );
 
+  const estimatedGas = await estimateGas({
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    amountOut,
+    curve,
+  });
+  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+
   const { request } = await prepareWriteContract({
     address: contracts.mainnet.curveOethPool.address,
     abi: contracts.mainnet.curveOethPool.abi,
@@ -204,6 +213,7 @@ const swap: Swap = async ({
       amountIn,
       minAmountOut,
     ],
+    gas,
     ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
   });
   const { hash } = await writeContract(request);
