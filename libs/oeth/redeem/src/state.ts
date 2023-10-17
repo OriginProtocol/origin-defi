@@ -149,7 +149,6 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
               }),
           });
         } catch (error) {
-          console.log(`Redeem uses fix gas estimate: 1500000`);
           gasEstimate = 1500000n;
         }
 

@@ -22,7 +22,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useQueryClient } from 'wagmi';
 
-import { MIX_TOKEN } from './constants';
+import { GAS_BUFFER, MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
 export const useHandleAmountInChange = () => {
@@ -49,7 +49,7 @@ export const useHandleRedeem = () => {
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const { address } = useAccount();
-  const [{ amountIn, amountOut }, setRedeemState] = useRedeemState();
+  const [{ amountIn, amountOut, gas }, setRedeemState] = useRedeemState();
   const wagmiClient = useQueryClient();
 
   return useCallback(async () => {
@@ -89,6 +89,7 @@ export const useHandleRedeem = () => {
         abi: contracts.mainnet.OETHVaultCore.abi,
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
+        gas: gas + (gas * GAS_BUFFER) / 100n,
       });
       const { hash } = await writeContract(request);
       setRedeemState(
@@ -166,6 +167,7 @@ export const useHandleRedeem = () => {
     amountIn,
     amountOut,
     deleteActivity,
+    gas,
     intl,
     pushActivity,
     pushNotification,
