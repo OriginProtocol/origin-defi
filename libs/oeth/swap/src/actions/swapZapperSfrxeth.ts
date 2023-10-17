@@ -11,6 +11,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits, maxUint256, parseUnits } from 'viem';
 
+import { GAS_BUFFER } from '../constants';
+
 import type {
   Allowance,
   Approve,
@@ -53,7 +55,6 @@ const estimateAmount: EstimateAmount = async ({ tokenOut, amountIn }) => {
 };
 
 const estimateGas: EstimateGas = async () => {
-  console.log(`Swap zapper sfrxETH uses fix gas estimate: 90000`);
   return 90000n;
 };
 
@@ -106,8 +107,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       account: address,
     });
   } catch {
-    console.log(`Swap zapper sfrxETH uses fix approval gas estimate: 64000`);
-    approvalEstimate = 64000n;
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
@@ -151,16 +151,24 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
     return null;
   }
+
+  const gas = await estimateApprovalGas({
+    amountIn,
+    tokenIn,
+    tokenOut,
+    curve,
+  });
 
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
+    gas,
   });
   const { hash } = await writeContract(request);
 
@@ -194,11 +202,21 @@ const swap: Swap = async ({
     tokenOut.decimals,
   );
 
+  const estimatedGas = await estimateGas({
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    amountOut,
+  });
+  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+
   const { request } = await prepareWriteContract({
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'depositSFRXETH',
     args: [amountIn, minAmountOut],
+    gas,
   });
   const { hash } = await writeContract(request);
 

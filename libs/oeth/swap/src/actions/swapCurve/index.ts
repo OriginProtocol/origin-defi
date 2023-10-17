@@ -9,6 +9,7 @@ import {
 } from '@wagmi/core';
 import { formatUnits, maxUint256, parseUnits } from 'viem';
 
+import { GAS_BUFFER } from '../../constants';
 import { curveRoutes } from './curveRoutes';
 
 import type {
@@ -97,7 +98,6 @@ const estimateGas: EstimateGas = async ({
       ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
     });
   } catch (e) {
-    console.log(`Swap curve uses fix gas estimate: 350000`);
     gasEstimate = 350000n;
   }
 
@@ -148,7 +148,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       account: address,
     });
   } catch {
-    console.log(`Swap curve uses fix approval gas estimate: 0`);
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
@@ -204,12 +204,20 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, amountIn, curve }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+  const gas = await estimateApprovalGas({
+    amountIn,
+    tokenIn,
+    tokenOut,
+    curve,
+  });
+
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [curve.CurveRegistryExchange.address, amountIn],
+    gas,
   });
   const { hash } = await writeContract(request);
 
@@ -252,11 +260,22 @@ const swap: Swap = async ({
     );
   }
 
+  const estimatedGas = await estimateGas({
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    amountOut,
+    curve,
+  });
+  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+
   const { request } = await prepareWriteContract({
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'exchange_multiple',
     args: [curveConfig.routes, curveConfig.swapParams, amountIn, minAmountOut],
+    gas,
     ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
   });
   const { hash } = await writeContract(request);

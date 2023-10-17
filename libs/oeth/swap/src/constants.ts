@@ -5,6 +5,8 @@ import type { MessageDescriptor } from 'react-intl';
 
 import type { SwapAction } from './types';
 
+export const GAS_BUFFER = 10n; // 10%
+
 export const routeActionLogos: Record<SwapAction, string> = {
   'mint-vault': '/images/protocols/origin.svg',
   'swap-curve': '/images/protocols/curve.webp',

@@ -12,6 +12,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
 
+import { GAS_BUFFER } from '../constants';
+
 import type {
   Allowance,
   Approve,
@@ -112,8 +114,6 @@ const estimateGas: EstimateGas = async ({
     gasEstimate = 510000n;
   }
 
-  console.log(`Mint vault uses fix gas estimate: ${gasEstimate}`);
-
   return gasEstimate;
 };
 
@@ -156,7 +156,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       account: address,
     });
   } catch {
-    console.log(`Mint vault uses fix approval gas estimate: 0`);
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
@@ -205,12 +205,20 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, amountIn }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+  const gas = await estimateApprovalGas({
+    amountIn,
+    tokenIn,
+    tokenOut,
+    curve,
+  });
+
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+    gas,
   });
   const { hash } = await writeContract(request);
 
@@ -244,11 +252,21 @@ const swap: Swap = async ({
     tokenOut.decimals,
   );
 
+  const estimatedGas = await estimateGas({
+    amountIn,
+    slippage,
+    tokenIn,
+    tokenOut,
+    amountOut,
+  });
+  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+
   const { request } = await prepareWriteContract({
     address: contracts.mainnet.OETHVaultCore.address,
     abi: contracts.mainnet.OETHVaultCore.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
+    gas,
   });
   const { hash } = await writeContract(request);
 

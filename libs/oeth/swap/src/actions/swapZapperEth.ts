@@ -10,6 +10,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
 
+import { GAS_BUFFER } from '../constants';
+
 import type {
   Allowance,
   Approve,
@@ -44,7 +46,6 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       account: address,
     });
   } catch {
-    console.log(`Swap zapper uses fix gas estimate: 200000`);
     gasEstimate = 200000n;
   }
 
@@ -100,7 +101,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       account: address,
     });
   } catch {
-    console.log(`Swap zapper uses fix approval gas estimate: 0`);
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
@@ -144,23 +145,31 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
     return null;
   }
+
+  const gas = await estimateApprovalGas({
+    amountIn,
+    tokenIn,
+    tokenOut,
+    curve,
+  });
 
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
+    gas,
   });
   const { hash } = await writeContract(request);
 
   return hash;
 };
 
-const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
+const swap: Swap = async ({ tokenIn, tokenOut, amountIn, slippage }) => {
   const { address } = getAccount();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
@@ -173,11 +182,20 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
     throw new Error(`Swap zapper is not approved`);
   }
 
+  const estimatedGas = await estimateGas({
+    tokenIn,
+    tokenOut,
+    amountIn,
+    slippage,
+  });
+  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+
   const { request } = await prepareWriteContract({
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'deposit',
     value: amountIn,
+    gas,
   });
   const { hash } = await writeContract(request);
 

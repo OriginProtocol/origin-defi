@@ -68,7 +68,7 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       account: whales.mainnet.WOETH,
     });
   } catch {
-    console.log(`Unwrap WOETH uses fix gas estimate: 0`);
+    gasEstimate = 21000n;
   }
 
   return gasEstimate;
@@ -81,7 +81,6 @@ const allowance: Allowance = async () => {
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
   // Unwrap WOETH does not require approval
-  console.log(`Unwrap WOETH uses fix gas estimate: 0`);
   return 0n;
 };
 
