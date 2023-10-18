@@ -100,6 +100,11 @@ export const useHandleRedeem = () => {
       );
       const txReceipt = await waitForTransaction({ hash });
       wagmiClient.invalidateQueries({ queryKey: ['redeem_balance'] });
+      setRedeemState(
+        produce((draft) => {
+          draft.isRedeemLoading = false;
+        }),
+      );
       updateActivity({ ...activity, status: 'success', txReceipt });
       pushNotification({
         content: (
