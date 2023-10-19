@@ -94,7 +94,7 @@ export function PriceTolerancePopover({
               shrink
               sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
             >
-              {intl.formatMessage({ defaultMessage: 'Price Tolerance' })}
+              {intl.formatMessage({ defaultMessage: 'Max slippage' })}
               <InfoTooltip
                 tooltipLabel={intl.formatMessage({
                   defaultMessage:

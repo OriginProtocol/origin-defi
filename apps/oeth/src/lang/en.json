@@ -69,7 +69,7 @@
     "defaultMessage": "Rate:"
   },
   "ZrmBE1": {
-    "defaultMessage": "{days} day trailing APY"
+    "defaultMessage": "{days}-day trailing APY"
   },
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
@@ -87,7 +87,7 @@
     "defaultMessage": "History"
   },
   "eTeBsj": {
-    "defaultMessage": "Price tolerance"
+    "defaultMessage": "Max slippage"
   },
   "gcuDcH": {
     "defaultMessage": "Sent"
