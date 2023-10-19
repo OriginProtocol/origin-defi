@@ -5,10 +5,10 @@ import {
   argentWallet,
   braveWallet,
   coinbaseWallet,
-  imTokenWallet,
   injectedWallet,
   ledgerWallet,
   metaMaskWallet,
+  rabbyWallet,
   rainbowWallet,
   safeWallet,
   walletConnectWallet,
@@ -63,16 +63,13 @@ const connectors = connectorsForWallets([
     wallets: [
       injectedWallet({ chains, shimDisconnect: true }),
       safeWallet({ chains }),
+      rabbyWallet({ chains }),
       rainbowWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
       braveWallet({ chains, shimDisconnect: true }),
       argentWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      imTokenWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),

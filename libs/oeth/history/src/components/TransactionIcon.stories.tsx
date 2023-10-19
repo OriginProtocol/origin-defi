@@ -39,6 +39,6 @@ export const Received: StoryObj<typeof TransactionIcon> = {
 export const Swap: StoryObj<typeof TransactionIcon> = {
   args: {
     type: HistoryType.Swap,
-    tokenIcon: 'https://app.oeth.com/images/currency/reth-icon-small.png',
+    tokenIcon: '/tokens/rETH.svg',
   },
 };

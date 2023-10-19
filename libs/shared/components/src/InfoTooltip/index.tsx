@@ -26,7 +26,7 @@ export function InfoTooltip({
         {...rest}
         component="img"
         src="/images/info.svg"
-        data-testid="swap-route-info"
+        alt="info"
         sx={{
           width: (theme) => theme.typography.pxToRem(iconSize),
           height: (theme) => theme.typography.pxToRem(iconSize),

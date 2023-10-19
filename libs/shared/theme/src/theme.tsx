@@ -155,16 +155,36 @@ export const theme = extendTheme({
         variant: 'standard',
         iconMapping: {
           error: (
-            <Box component="img" src="/images/failed.svg" sx={{ width: 20 }} />
+            <Box
+              component="img"
+              src="/images/failed.svg"
+              alt="failed"
+              sx={{ width: 20 }}
+            />
           ),
           info: (
-            <Box component="img" src="/images/pending.svg" sx={{ width: 20 }} />
+            <Box
+              component="img"
+              src="/images/pending.svg"
+              alt="pending"
+              sx={{ width: 20 }}
+            />
           ),
           success: (
-            <Box component="img" src="/images/success.svg" sx={{ width: 20 }} />
+            <Box
+              component="img"
+              src="/images/success.svg"
+              alt="success"
+              sx={{ width: 20 }}
+            />
           ),
           warning: (
-            <Box component="img" src="/images/warn.png" sx={{ width: 20 }} />
+            <Box
+              component="img"
+              src="/images/warn.webp"
+              alt="warn"
+              sx={{ width: 20 }}
+            />
           ),
         },
       },

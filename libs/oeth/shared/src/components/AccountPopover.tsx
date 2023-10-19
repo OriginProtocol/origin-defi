@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { Icon, LinkIcon } from '@origin/shared/components';
+import { LinkIcon, WalletIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { AddressLabel } from '@origin/shared/providers';
 import { map, prop } from 'ramda';
@@ -118,7 +118,7 @@ export function AccountPopover({ anchor, setAnchor }: Props) {
           sx={{ px: 2, py: 3 }}
           direction="row"
         >
-          <Icon src={`/images/${connector?.id.toLowerCase()}-icon.svg`} />
+          <WalletIcon walletId={connector?.id} />
           <AddressLabel address={address} short />
           <LinkIcon
             size={10}

@@ -11,5 +11,4 @@ export const MIX_TOKEN: Token = {
   decimals: 18,
   name: 'Redeem Mix',
   symbol: 'MIX_TOKEN',
-  icon: '/images/backed-graphic.svg',
 };

@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
 import { theme } from '@origin/shared/theme';
 import { IntlProvider } from 'react-intl';

@@ -9,10 +9,10 @@ interface Props {
 
 export function Mix({ size = 1.5, sx }: Props) {
   const imgSrc = [
-    '/images/currency/weth-icon-small.png',
-    '/images/currency/reth-icon-small.png',
-    '/images/currency/steth-icon-small.svg',
-    '/images/currency/frxeth-icon-small.svg',
+    '/images/tokens/WETH.svg',
+    '/images/tokens/rETH.svg',
+    '/images/tokens/stETH.svg',
+    '/images/tokens/frxETH.svg',
   ];
 
   return (
@@ -35,6 +35,7 @@ export function Mix({ size = 1.5, sx }: Props) {
             transform: `translateX(-${(index * size) / 2.66666}rem)`,
           }}
           src={img}
+          alt="mix_token"
           component="img"
         />
       ))}

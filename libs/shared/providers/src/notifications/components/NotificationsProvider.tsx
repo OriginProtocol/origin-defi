@@ -3,7 +3,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 
 import { useVisibleNotifications } from '../hooks';
 import { Provider } from '../state';
-import { NotificationSnack } from './NotificationSnack';
+import { NotificationAlert } from './NotificationAlert';
 
 import type { StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -35,7 +35,7 @@ const NotificationsWrapped = ({ children, ...rest }: StackProps) => {
           }}
         >
           {visibleNotifications.map((notif) => (
-            <NotificationSnack key={notif.id} notification={notif} />
+            <NotificationAlert key={notif.id} notification={notif} />
           ))}
         </Stack>
       )}

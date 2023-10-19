@@ -84,19 +84,21 @@ export const RedeemNotification = ({
           <Box
             component="img"
             src={tokenIn.icon}
+            alt="token"
             sx={{ width: 24, height: 24 }}
           />
           <Box
             component="img"
             src="images/arrow-right.svg"
+            alt="arrow"
             sx={{ width: 12, height: 12 }}
           />
           <Mix
             imgSrc={[
-              '/images/currency/weth-icon-small.png',
-              '/images/currency/reth-icon-small.png',
-              '/images/currency/steth-icon-small.svg',
-              '/images/currency/frxeth-icon-small.svg',
+              '/images/tokens/WETH.svg',
+              '/images/tokens/rETH.svg',
+              '/images/tokens/stETH.svg',
+              '/images/tokens/frxETH.svg',
             ]}
             size={1.5}
           />

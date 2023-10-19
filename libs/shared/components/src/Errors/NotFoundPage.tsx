@@ -12,7 +12,7 @@ export const NotFoundPage = () => {
         height: '100svh',
         alignItems: 'flex-start',
         p: { xs: 3, sm: 16 },
-        background: `url('/images/splines-404.png')`,
+        background: `url('/images/splines-404.webp')`,
         backgroundPosition: `100% 100%`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain',

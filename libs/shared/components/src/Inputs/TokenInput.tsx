@@ -242,6 +242,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         <Box
           component="img"
           src="/images/dropdown.svg"
+          alt="dropdown"
           sx={{ width: 24, height: 24 }}
         />
       )}

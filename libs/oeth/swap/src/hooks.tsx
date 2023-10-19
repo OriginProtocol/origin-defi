@@ -1,6 +1,5 @@
 import { useCallback, useMemo } from 'react';
 
-import { Box } from '@mui/material';
 import {
   ApprovalNotification,
   SwapNotification,
@@ -9,7 +8,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/oeth/shared';
-import { NotificationSnack } from '@origin/shared/components';
+import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import {
   useCurve,
   usePushNotification,
@@ -394,7 +393,7 @@ export const useHandleApprove = () => {
         pushNotification({
           content: (
             <NotificationSnack
-              icon={<Box component="img" src="/images/warn.png" />}
+              icon={<SeverityIcon severity="warning" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}
@@ -549,7 +548,7 @@ export const useHandleSwap = () => {
         pushNotification({
           content: (
             <NotificationSnack
-              icon={<Box component="img" src="/images/warn.png" />}
+              icon={<SeverityIcon severity="warning" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}

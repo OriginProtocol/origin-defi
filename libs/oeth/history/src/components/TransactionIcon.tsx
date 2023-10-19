@@ -26,8 +26,11 @@ export function TransactionIcon({
     >
       <Box
         component="img"
+        alt="yield"
         src={
-          type === HistoryType.Yield ? '/images/Yield.svg' : '/images/oeth.svg'
+          type === HistoryType.Yield
+            ? '/images/Yield.svg'
+            : '/images/tokens/OETH.svg'
         }
         sx={{
           width: '100%',
@@ -44,6 +47,7 @@ export function TransactionIcon({
           zIndex: 1,
         }}
         component="img"
+        alt="transaction"
         src={
           type === HistoryType.Sent
             ? '/images/Send.svg'
@@ -69,6 +73,7 @@ export function TransactionIcon({
               height: { xs: '1.375rem', md: '2rem' },
             }}
             component="img"
+            alt="token"
             src={tokenIcon}
           ></Box>
         </Box>
