@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import { Box } from '@mui/material';
 import {
   RedeemNotification,
   trackEvent,
@@ -8,7 +7,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/oeth/shared';
-import { NotificationSnack } from '@origin/shared/components';
+import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { usePushNotification, useSlippage } from '@origin/shared/providers';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
@@ -131,7 +130,7 @@ export const useHandleRedeem = () => {
         pushNotification({
           content: (
             <NotificationSnack
-              icon={<Box component="img" src="/images/warn.png" />}
+              icon={<SeverityIcon severity="warning" />}
               title={intl.formatMessage({
                 defaultMessage: 'Operation Cancelled',
               })}

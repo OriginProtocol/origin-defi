@@ -38,6 +38,7 @@ export function ExportData({ data }: Props) {
         <Box
           component="img"
           src="/images/download.svg"
+          alt="export"
           sx={{ height: '0.75rem', width: '0.75rem' }}
         ></Box>
         {intl.formatMessage({ defaultMessage: 'CSV' })}

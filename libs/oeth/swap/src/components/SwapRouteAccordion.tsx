@@ -66,6 +66,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
         <Box
           component="img"
           src="/images/arrow-down.svg"
+          alt="arrow"
           sx={{
             height: 12,
             width: 12,

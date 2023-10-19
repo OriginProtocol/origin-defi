@@ -243,6 +243,7 @@ function ArrowButton(props: BoxProps) {
       <Box
         component="img"
         src="/images/splitarrow.svg"
+        alt="split"
         sx={{
           height: { md: 20, xs: 18 },
         }}

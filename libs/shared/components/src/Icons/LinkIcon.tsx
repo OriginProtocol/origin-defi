@@ -19,6 +19,7 @@ export function LinkIcon({
       <Box
         component="img"
         src="/images/link-icon-purple.svg"
+        alt="link"
         sx={{ height: size, width: size }}
       ></Box>
     </Link>
