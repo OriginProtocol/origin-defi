@@ -27,7 +27,7 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
 };
 
 const estimateGas: EstimateGas = async ({ amountIn }) => {
-  let gasEstimate = 0n;
+  let gasEstimate = 200000n;
 
   const { address } = getAccount();
 
@@ -45,9 +45,7 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       value: amountIn,
       account: address,
     });
-  } catch {
-    gasEstimate = 200000n;
-  }
+  } catch {}
 
   return gasEstimate;
 };

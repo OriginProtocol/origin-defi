@@ -102,6 +102,9 @@ export const useHandleRedeem = () => {
       setRedeemState(
         produce((draft) => {
           draft.isRedeemLoading = false;
+          draft.amountIn = 0n;
+          draft.amountOut = 0n;
+          draft.split = [];
         }),
       );
       updateActivity({ ...activity, status: 'success', txReceipt });

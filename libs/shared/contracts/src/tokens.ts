@@ -77,7 +77,7 @@ export const tokens = {
       name: 'Wrapped Origin Ether',
       icon: '/images/tokens/WOETH.svg',
       decimals: 18,
-      symbol: 'WOETH',
+      symbol: 'wOETH',
     },
     OUSD: {
       address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',

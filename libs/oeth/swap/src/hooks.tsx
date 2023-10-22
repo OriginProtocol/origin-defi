@@ -516,6 +516,10 @@ export const useHandleSwap = () => {
         setSwapState(
           produce((draft) => {
             draft.isSwapLoading = false;
+            draft.amountIn = 0n;
+            draft.amountOut = 0n;
+            draft.swapRoutes = [];
+            draft.selectedSwapRoute = null;
           }),
         );
         pushNotification({
