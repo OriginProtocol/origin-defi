@@ -205,7 +205,6 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
       sx={{
         alignItems: 'center',
         justifyContent: 'space-between',
-        minWidth: 120,
         minHeight: 32,
         borderRadius: 25,
         fontSize: '1rem',
