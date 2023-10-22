@@ -31,7 +31,6 @@ export function APYContainer() {
   return (
     <Stack
       sx={{
-        paddingInline: { xs: 2, md: 2.75 },
         backgroundColor: (theme) => theme.palette.background.paper,
         borderRadius: 1,
       }}
