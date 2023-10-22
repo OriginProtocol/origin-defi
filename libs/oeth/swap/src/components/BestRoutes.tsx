@@ -13,14 +13,16 @@ export function BestRoutes(props: Grid2Props) {
   const [{ swapRoutes, selectedSwapRoute }] = useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
 
+  const isOnlyRoute = swapRoutes.length === 1;
+
   return (
     <Grid2 spacing={1} {...props} container>
       {swapRoutes.slice(0, 2).map((route, index) => (
-        <Grid2 key={route.action} xs={6}>
+        <Grid2 key={route.action} xs={isOnlyRoute ? 12 : 6}>
           <SwapRouteCard
             key={`bestRoute-${index}`}
             isSelected={routeEq(selectedSwapRoute, route)}
-            isBest={index === 0}
+            isBest={index === 0 && !isOnlyRoute}
             onSelect={handleSelectSwapRoute}
             route={route}
           />
