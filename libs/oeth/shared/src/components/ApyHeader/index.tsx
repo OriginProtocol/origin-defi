@@ -45,6 +45,7 @@ export const ApyHeader = (props: StackProps) => {
       bgcolor="background.paper"
       px={{ xs: 2, md: 3 }}
       py={{ xs: 1.5, md: 2 }}
+      borderRadius={1}
       {...props}
     >
       {apyLoading ? (
