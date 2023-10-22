@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Button,
   Menu,
@@ -74,21 +75,25 @@ export const ApyHeader = (props: StackProps) => {
           borderRadius: 1,
           color: 'text.secondary',
           transform: 'translateX(5px)',
+          width: 180,
+          ':hover .dd': {
+            backgroundColor: (theme) => alpha(theme.palette.common.white, 0.15),
+          },
         }}
       >
         {intl.formatMessage(trailing.label)}
         <Box
+          className="dd"
           sx={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             borderRadius: '50%',
-            backgroundColor: 'grey.600',
+            backgroundColor: (theme) => alpha(theme.palette.common.white, 0.1),
             color: 'text.secondary',
             p: 0.2,
-            transform: 'translateY(2px)',
-            width: 16,
-            height: 16,
+            width: 20,
+            height: 20,
           }}
         >
           <Box component="img" alt="dropdown" src="/images/dropdown.svg" />
@@ -117,6 +122,7 @@ export const ApyHeader = (props: StackProps) => {
                   change_apy_to: t.value,
                 });
               }}
+              sx={{ height: 40, width: 172 }}
             >
               {intl.formatMessage(t.label)}
             </MenuItem>
