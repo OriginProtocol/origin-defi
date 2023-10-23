@@ -10,10 +10,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { trackEvent } from '@origin/oeth/shared';
-import { tokens } from '@origin/shared/contracts';
+import { AccountPopover, trackEvent } from '@origin/oeth/shared';
 import {
-  AccountPopover,
   ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
@@ -209,15 +207,6 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
-            balanceTokens={[
-              tokens.mainnet.OETH,
-              tokens.mainnet.WOETH,
-              tokens.mainnet.WETH,
-              tokens.mainnet.rETH,
-              tokens.mainnet.frxETH,
-              tokens.mainnet.sfrxETH,
-              tokens.mainnet.stETH,
-            ]}
           />
           <ActivityButton
             onClick={() => {

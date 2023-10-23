@@ -1,18 +1,16 @@
 import { useCallback, useMemo } from 'react';
 
+import { trackEvent } from '@origin/oeth/shared';
+import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import {
   ApprovalNotification,
   SwapNotification,
-  trackEvent,
+  useCurve,
   useDeleteActivity,
   usePushActivity,
-  useUpdateActivity,
-} from '@origin/oeth/shared';
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import {
-  useCurve,
   usePushNotification,
   useSlippage,
+  useUpdateActivity,
 } from '@origin/shared/providers';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';

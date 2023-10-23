@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
 
-import {
-  RedeemNotification,
-  trackEvent,
-  useDeleteActivity,
-  usePushActivity,
-  useUpdateActivity,
-} from '@origin/oeth/shared';
+import { trackEvent } from '@origin/oeth/shared';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { usePushNotification, useSlippage } from '@origin/shared/providers';
+import {
+  RedeemNotification,
+  useDeleteActivity,
+  usePushActivity,
+  usePushNotification,
+  useSlippage,
+  useUpdateActivity,
+} from '@origin/shared/providers';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import {
   prepareWriteContract,

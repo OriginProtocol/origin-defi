@@ -1,3 +1,4 @@
+export * from './activities';
 export * from './chart';
 export * from './console';
 export * from './curve';

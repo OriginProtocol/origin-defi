@@ -4,7 +4,8 @@
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "types": ["vite/client", "vitest"]
+    "types": ["vite/client", "vitest"],
+    "jsxImportSource": "@emotion/react"
   },
   "files": [],
   "include": [],

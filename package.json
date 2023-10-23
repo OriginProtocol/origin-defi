@@ -47,6 +47,7 @@
   "devDependencies": {
     "@babel/core": "^7.23.0",
     "@babel/preset-react": "^7.22.15",
+    "@emotion/babel-plugin": "11.11.0",
     "@faker-js/faker": "^8.1.0",
     "@formatjs/cli": "^6.2.0",
     "@graphql-codegen/cli": "^5.0.0",

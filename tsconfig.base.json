@@ -27,7 +27,8 @@
       "@origin/shared/providers": ["libs/shared/providers/src/index.ts"],
       "@origin/shared/storybook": ["libs/shared/storybook/src/index.ts"],
       "@origin/shared/theme": ["libs/shared/theme/src/index.ts"],
-      "@origin/shared/utils": ["libs/shared/utils/src/index.ts"]
+      "@origin/shared/utils": ["libs/shared/utils/src/index.ts"],
+      "@origin/swap": ["libs/ousd/swap/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
