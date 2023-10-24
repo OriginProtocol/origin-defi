@@ -1,6 +1,5 @@
 import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { tokens } from '@origin/shared/contracts';
 import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
@@ -33,7 +32,7 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
-  const [{ amountIn, isSwapRoutesLoading }] = useSwapState();
+  const [{ amountIn, tokenOut, isSwapRoutesLoading }] = useSwapState();
   const { data: prices } = usePrices();
   const {
     data: swapGasPrice,
@@ -130,7 +129,7 @@ export function SwapRouteCard({
             ) : (
               <Box
                 component="img"
-                src={tokens.mainnet.OETH.icon}
+                src={tokenOut.icon}
                 height={16}
                 width={16}
                 display="flex"
