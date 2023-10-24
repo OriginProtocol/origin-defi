@@ -8,7 +8,8 @@
     "oeth": "pnpm nx serve oeth",
     "ousd": "pnpm nx serve ousd",
     "prepare": "husky install",
-    "lint-fix": "pnpm nx run-many --target=lint -- --fix"
+    "lint-fix": "pnpm nx run-many --target=lint -- --fix",
+    "heroku-prebuild": "npm config set ignore-scripts true"
   },
   "private": true,
   "lint-staged": {
