@@ -1,1 +1,1 @@
-web: pnpm nx run oeth:preview:production
+web: pnpm nx run oeth:build:production && bin/start-nginx-solo
