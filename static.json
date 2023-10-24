@@ -1,0 +1,16 @@
+{
+  "root": "dist/apps/oeth/",
+  "routes": {
+    "/assets/*": "/assets/",
+    "/images/*": "/images/",
+    "/**": "index.html"
+  },
+  "headers": {
+    "/": {
+      "Cache-Control": "no-store, no-cache"
+    },
+    "/images/**": {
+      "Cache-Control": "public, max-age=512000"
+    }
+  }
+}
