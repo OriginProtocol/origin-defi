@@ -70,12 +70,12 @@ export const tokens = {
       decimals: 18,
       symbol: 'OETH',
     },
-    WOETH: {
+    wOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
       chainId: mainnet.id,
       abi: erc20ABI,
       name: 'Wrapped Origin Ether',
-      icon: '/images/tokens/WOETH.svg',
+      icon: '/images/tokens/wOETH.svg',
       decimals: 18,
       symbol: 'wOETH',
     },

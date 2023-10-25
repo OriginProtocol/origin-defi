@@ -21,7 +21,7 @@ import type { Token } from '@origin/shared/contracts';
 
 const balanceTokens = [
   tokens.mainnet.OETH,
-  tokens.mainnet.WOETH,
+  tokens.mainnet.wOETH,
   tokens.mainnet.WETH,
   tokens.mainnet.rETH,
   tokens.mainnet.frxETH,
