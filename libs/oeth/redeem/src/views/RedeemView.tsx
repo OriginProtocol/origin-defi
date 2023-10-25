@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   alpha,
   Box,
@@ -5,15 +7,11 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  ApyHeader,
-  PriceTolerancePopover,
-  trackEvent,
-  trackSentryError,
-} from '@origin/oeth/shared';
+import { ApyHeader, trackEvent, trackSentryError } from '@origin/oeth/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -22,6 +20,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
+  PriceTolerancePopover,
   usePrices,
   useSlippage,
 } from '@origin/shared/providers';
@@ -34,6 +33,7 @@ import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 
 import type { BoxProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 
 const tokenInputStyles = {
   border: 'none',
@@ -66,6 +66,7 @@ function RedeemViewWrapped() {
   const intl = useIntl();
   const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
       amountIn,
@@ -83,6 +84,11 @@ function RedeemViewWrapped() {
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
+
+  const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(evt.currentTarget);
+    trackEvent({ name: 'open_settings' });
+  };
 
   const handleSlippageChange = (val: number) => {
     setSlippage(val);
@@ -123,16 +129,22 @@ function RedeemViewWrapped() {
                 <Typography>
                   {intl.formatMessage({ defaultMessage: 'Redeem' })}
                 </Typography>
+                <IconButton
+                  onClick={handleSettingClick}
+                  sx={{
+                    position: 'relative',
+                    right: (theme) => theme.spacing(-0.75),
+                    svg: { width: 16, height: 16 },
+                  }}
+                >
+                  <img src="/images/settings-icon.svg" alt="settings" />
+                </IconButton>
                 <PriceTolerancePopover
+                  open={!!anchorEl}
+                  anchorEl={anchorEl}
+                  onClose={() => setAnchorEl(null)}
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
-                  buttonProps={{
-                    sx: {
-                      position: 'relative',
-                      right: (theme) => theme.spacing(-0.75),
-                      svg: { width: 16, height: 16 },
-                    },
-                  }}
                 />
               </Stack>
             }
