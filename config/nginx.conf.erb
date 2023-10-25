@@ -42,7 +42,7 @@ http {
 		client_max_body_size <%= ENV['NGINX_CLIENT_MAX_BODY_SIZE'] || 1 %>M;
 
 		## Document root
-		root /app/apps/oeth/;
+		root /dist/apps/oeth/;
 
 		location / {
 			try_files $uri $uri/ $uri.html =404;
