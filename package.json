@@ -4,12 +4,14 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "build": "pnpm nx build oeth",
     "build-storybook": "nx build-storybook  shared-storybook --verbose",
     "heroku-prebuild": "npm config set ignore-scripts true",
     "lint-fix": "pnpm nx run-many --target=lint -- --fix",
     "oeth": "pnpm nx serve oeth",
     "ousd": "pnpm nx serve ousd",
     "prepare": "husky install",
+    "start": "pnpm exec nx run oeth:preview --configuration=production",
     "storybook": "nx storybook shared-storybook"
   },
   "lint-staged": {
