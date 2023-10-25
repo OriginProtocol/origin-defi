@@ -48,9 +48,5 @@ http {
 			try_files $uri $uri/ $uri.html =404;
 			error_page 404 = /index.html;
 		}
-
-		location /images {
-		 	expires 7d;
-		}
 	}
 }
