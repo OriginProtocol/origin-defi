@@ -41,11 +41,11 @@ export const contracts = {
       abi: OETHVaultCoreABI,
       name: 'vault',
     },
-    WOETH: {
+    wOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
       chainId: mainnet.id,
       abi: WOETHABI,
-      name: 'WOETH',
+      name: 'wOETH',
     },
     OETHZapper: {
       address: '0x9858e47BCbBe6fBAC040519B02d7cd4B2C470C66',
