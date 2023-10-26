@@ -26,7 +26,7 @@ export function APYContainer() {
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =
-    usePendingYield(tokens.mainnet.OETH);
+    usePendingYield();
 
   return (
     <Stack
