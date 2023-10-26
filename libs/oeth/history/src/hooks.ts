@@ -1,20 +1,27 @@
 import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
-import { getAccount, readContract } from '@wagmi/core';
+import { readContract } from '@wagmi/core';
 import axios from 'axios';
 import { formatEther } from 'viem';
+import { useAccount } from 'wagmi';
 
+import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions } from '@tanstack/react-query';
 
 export const usePendingYield = (
   isWrapped = false,
-  options?: QueryOptions<number, Error, number, ['usePendingYield', boolean]>,
-) =>
-  useQuery({
-    queryKey: ['usePendingYield', isWrapped],
-    queryFn: async () => {
-      const { address, isConnected } = getAccount();
+  options?: QueryOptions<
+    number,
+    Error,
+    number,
+    ['usePendingYield', boolean, HexAddress, boolean]
+  >,
+) => {
+  const { address, isConnected } = useAccount();
 
+  return useQuery({
+    queryKey: ['usePendingYield', isWrapped, address, isConnected],
+    queryFn: async () => {
       if (!isConnected) {
         return 0;
       }
@@ -45,3 +52,4 @@ export const usePendingYield = (
     },
     ...options,
   });
+};
