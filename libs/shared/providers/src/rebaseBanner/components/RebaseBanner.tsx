@@ -1,24 +1,23 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { contracts } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import {
-  useAccount,
-  useContractRead,
-  useContractWrite,
-  usePrepareContractWrite,
-} from 'wagmi';
+import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+
+import { useIsRebaseBannerVisible } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 
 export const RebaseBanner = (props: StackProps) => {
   const intl = useIntl();
-  const { address, isConnected, connector } = useAccount();
-  const { data, isLoading } = useContractRead({
-    address: contracts.mainnet.OETH.address,
-    abi: contracts.mainnet.OETH.abi,
-    functionName: 'rebaseState',
-    args: [address],
-  });
+  const theme = useTheme();
+  const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const { config } = usePrepareContractWrite({
     address: contracts.mainnet.OETH.address,
     abi: contracts.mainnet.OETH.abi,
@@ -26,8 +25,9 @@ export const RebaseBanner = (props: StackProps) => {
     value: 0n,
   });
   const { write } = useContractWrite(config);
+  const visible = useIsRebaseBannerVisible();
 
-  if (!isConnected || isLoading || data !== 0 || connector?.id !== 'safe') {
+  if (!visible) {
     return null;
   }
 
@@ -38,19 +38,24 @@ export const RebaseBanner = (props: StackProps) => {
   return (
     <Stack
       {...props}
-      direction={{ xs: 'column', sm: 'row' }}
-      spacing={3}
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={{ xs: 1, md: 3 }}
       sx={{
         backgroundColor: (theme) => theme.palette.secondary.main,
         color: 'text.primary',
-        p: { xs: 3, sm: 4 },
+        p: { xs: 1.5, md: 1 },
         alignItems: 'center',
         justifyContent: 'center',
+        overflow: 'hidden',
         ...props?.sx,
       }}
     >
-      <Box component="img" src="/images/poweredBySafe.svg" />
-      <Typography textAlign="center">
+      <Box
+        component="img"
+        src="/images/poweredBySafe.svg"
+        sx={{ height: 20 }}
+      />
+      <Typography textAlign="center" noWrap={!isSmall}>
         {intl.formatMessage({
           defaultMessage:
             'It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield.',
@@ -62,6 +67,7 @@ export const RebaseBanner = (props: StackProps) => {
           whiteSpace: 'nowrap',
           backgroundColor: 'common.white',
           color: 'grey.900',
+          height: 32,
           ':hover': { backgroundColor: 'grey.200' },
         }}
       >
