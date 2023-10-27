@@ -1,1 +1,1 @@
-export * from './lib/swap';
+export * from './views/SwapView';

@@ -10,7 +10,7 @@ import {
   registerGoogleTagManager,
   registerSentry,
   wagmiConfig,
-} from '@origin/oeth/shared';
+} from '@origin/ousd/shared';
 import {
   ActivityProvider,
   CurveProvider,
@@ -34,7 +34,7 @@ import { routes } from './routes';
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
 
-logWelcomeMessage('OETH');
+logWelcomeMessage('Dollar');
 
 registerChart();
 

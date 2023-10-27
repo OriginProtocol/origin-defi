@@ -1,0 +1,24 @@
+{
+  "name": "ousd-shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ousd/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "codegen-graphql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm graphql-codegen --config 'libs/ousd/shared/codegen.ts'"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ousd/shared/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

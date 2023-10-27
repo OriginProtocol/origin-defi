@@ -10,8 +10,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { AccountPopover, trackEvent } from '@origin/oeth/shared';
+import { trackEvent } from '@origin/oeth/shared';
+import { tokens } from '@origin/shared/contracts';
 import {
+  AccountPopover,
   ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
@@ -97,7 +99,7 @@ export function Topnav(props: BoxProps) {
             },
           })}
         >
-          <img src="/images/origin-ether-logo.svg" alt="Origin logo" />
+          <img src="/images/origin-dollar-logo.svg" alt="Origin logo" />
         </Box>
         <Tabs
           value={location.pathname}
@@ -207,6 +209,12 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
+            balanceTokens={[
+              tokens.mainnet.OUSD,
+              tokens.mainnet.USDT,
+              tokens.mainnet.DAI,
+              tokens.mainnet.USDC,
+            ]}
           />
           <ActivityButton
             onClick={() => {

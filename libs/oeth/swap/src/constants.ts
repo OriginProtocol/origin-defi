@@ -7,16 +7,6 @@ import type { SwapAction } from './types';
 
 export const GAS_BUFFER = 10n; // 10%
 
-export const routeActionLogos: Record<SwapAction, string> = {
-  'mint-vault': '/images/protocols/origin.svg',
-  'swap-curve': '/images/protocols/curve.webp',
-  'swap-curve-eth': '/images/protocols/curve.webp',
-  'swap-zapper-eth': '/images/protocols/zapper.svg',
-  'swap-zapper-sfrxeth': '/images/protocols/zapper.svg',
-  'unwrap-woeth': '/images/protocols/origin.svg',
-  'wrap-oeth': '/images/protocols/origin.svg',
-};
-
 export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
   'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
   'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),

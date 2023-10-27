@@ -1,6 +1,10 @@
 /// <reference types="vitest" />
+/// <reference types="vite-plugin-svgr/client" />
 import react from '@vitejs/plugin-react';
+import path from 'path';
 import { defineConfig } from 'vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import svgr from 'vite-plugin-svgr';
 import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
@@ -16,7 +20,17 @@ export default defineConfig({
     host: 'localhost',
   },
 
+  optimizeDeps: {
+    esbuildOptions: {
+      target: 'esnext',
+      supported: {
+        bigint: true,
+      },
+    },
+  },
+
   plugins: [
+    svgr(),
     react({
       babel: {
         plugins: [
@@ -32,6 +46,14 @@ export default defineConfig({
     }),
     viteTsConfigPaths({
       root: '../../',
+    }),
+    viteStaticCopy({
+      targets: [
+        {
+          src: path.resolve(__dirname, '../../libs/shared/assets/files/**/*'),
+          dest: './images',
+        },
+      ],
     }),
   ],
 

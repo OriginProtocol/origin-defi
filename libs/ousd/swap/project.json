@@ -1,5 +1,5 @@
 {
-  "name": "swap",
+  "name": "ousd-swap",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ousd/swap/src",
   "projectType": "library",
