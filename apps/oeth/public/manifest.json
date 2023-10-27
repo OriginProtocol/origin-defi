@@ -1,0 +1,6 @@
+{
+  "name": "OETH",
+  "description": "An ETH-pegged token that earns yield from all forms of staking",
+  "iconPath": "https://www.originprotocol.com/images/logos/oeth-logo.svg",
+  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+}

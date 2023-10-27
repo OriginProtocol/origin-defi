@@ -1,6 +1,6 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { balanceFormat } from '@origin/shared/utils';
+import { quantityFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
@@ -26,7 +26,7 @@ export function APYContainer() {
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =
-    usePendingYield(tokens.mainnet.OETH);
+    usePendingYield();
 
   return (
     <Stack
@@ -41,14 +41,14 @@ export function APYContainer() {
         label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
         value={intl.formatNumber(
           Number(oethBalance?.formatted ?? 0),
-          balanceFormat,
+          quantityFormat,
         )}
         isLoading={isConnected && oethLoading}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
-        value={intl.formatNumber(pendingYield ?? 0, balanceFormat)}
+        value={intl.formatNumber(pendingYield ?? 0, quantityFormat)}
         isLoading={isConnected && pendingYieldLoading}
       />
       <Divider orientation="vertical" flexItem />
@@ -58,7 +58,7 @@ export function APYContainer() {
         })}
         value={intl.formatNumber(
           +formatEther(BigInt(data?.earned ?? '0')),
-          balanceFormat,
+          quantityFormat,
         )}
         isLoading={isConnected && isLoading}
       />

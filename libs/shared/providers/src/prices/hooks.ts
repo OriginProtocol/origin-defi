@@ -43,19 +43,19 @@ export const usePrices = (
         {},
       );
 
-      if (tokens.includes('WOETH')) {
+      if (tokens.includes('wOETH')) {
         const oethAmount = await readContract({
-          address: contracts.mainnet.WOETH.address,
-          abi: contracts.mainnet.WOETH.abi,
+          address: contracts.mainnet.wOETH.address,
+          abi: contracts.mainnet.wOETH.abi,
           functionName: 'previewRedeem',
-          args: [parseUnits('1', toks.mainnet.WOETH.decimals)],
+          args: [parseUnits('1', toks.mainnet.wOETH.decimals)],
         });
 
         prices = {
           ...prices,
-          WOETH:
-            +formatUnits(oethAmount, toks.mainnet.WOETH.decimals) *
-            prices['WOETH'],
+          wOETH:
+            +formatUnits(oethAmount, toks.mainnet.wOETH.decimals) *
+            prices['wOETH'],
         };
       }
 

@@ -6,7 +6,7 @@ export type SupportedToken =
   | 'USDT'
   | 'TUSD'
   | 'OETH'
-  | 'WOETH'
+  | 'wOETH'
   | 'OUSD'
   | 'stETH'
   | 'rETH'
