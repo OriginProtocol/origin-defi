@@ -18,14 +18,15 @@ export const RebaseBanner = (props: StackProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
+  const visible = useIsRebaseBannerVisible();
   const { config } = usePrepareContractWrite({
     address: contracts.mainnet.OETH.address,
     abi: contracts.mainnet.OETH.abi,
     functionName: 'rebaseOptIn',
     value: 0n,
+    enabled: visible,
   });
   const { write } = useContractWrite(config);
-  const visible = useIsRebaseBannerVisible();
 
   if (!visible) {
     return null;
