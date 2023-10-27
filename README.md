@@ -18,7 +18,7 @@ To start the development server run `pnpm nx serve <APP_NAME>`. Open your browse
 
 ## Storybook
 
-There is a shared storybook aggregator that can run all the stories across all the libraries, run `pnpm storybook`. If you want to run storybook for one individual library (eg: ousd) simply run `pnpm nx storybook defi-ousd` (basically the command is `pnpm nx storybook name-of-the-lib`).
+There is a shared storybook aggregator that can run all the stories across all the libraries, run `pnpm storybook`. If you want to run storybook for one individual library (eg: ousd) simply run `pnpm nx storybook defi-oeth` (basically the command is `pnpm nx storybook name-of-the-lib`).
 
 ## Translations
 
