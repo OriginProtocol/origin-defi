@@ -1,10 +1,10 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
+  schema: process.env.VITE_SUBSQUID_URL,
+  documents: 'libs/ousd/**/src/**/*.graphql',
   generates: {
-    'libs/oeth/shared/src/generated/graphql.ts': {
-      schema: process.env.VITE_SUBSQUID_URL,
-      documents: ['**/src/**/*.graphql'],
+    'libs/ousd/shared/src/generated/graphql.ts': {
       plugins: ['typescript'],
       config: {
         scalars: {
@@ -13,20 +13,18 @@ const config: CodegenConfig = {
         },
       },
     },
-    'libs/oeth/': {
-      schema: process.env.VITE_SUBSQUID_URL,
-      documents: ['**/src/**/*.graphql'],
+    'libs/ousd/': {
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.ts',
-        baseTypesPath: '~@origin/oeth/shared',
+        baseTypesPath: '~@origin/ousd/shared',
       },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
         exposeFetcher: true,
         exposeQueryKeys: true,
         fetcher: {
-          func: '@origin/oeth/shared#graphqlClient',
+          func: '@origin/ousd/shared#graphqlClient',
         },
         scalars: {
           BigInt: 'string',

@@ -1,10 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
+  schema: process.env.VITE_SUBSQUID_URL,
+  documents: 'libs/oeth/**/src/**/*.graphql',
   generates: {
     'libs/oeth/shared/src/generated/graphql.ts': {
       schema: process.env.VITE_SUBSQUID_URL,
-      documents: ['**/src/**/*.graphql'],
       plugins: ['typescript'],
       config: {
         scalars: {
@@ -14,8 +15,6 @@ const config: CodegenConfig = {
       },
     },
     'libs/oeth/': {
-      schema: process.env.VITE_SUBSQUID_URL,
-      documents: ['**/src/**/*.graphql'],
       preset: 'near-operation-file',
       presetConfig: {
         extension: '.generated.ts',
