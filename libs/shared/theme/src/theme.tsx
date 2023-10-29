@@ -320,10 +320,14 @@ export const theme = extendTheme({
         enableColorScheme: true,
       },
       styleOverrides: `
+          html {
+            scrollbar-gutter: stable;
+          }
+
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
+            text-rendering: optimizeLegibility;            
           }
 
           input[type=number] {
