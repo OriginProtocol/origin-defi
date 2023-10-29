@@ -9,5 +9,6 @@ export * from './notifications';
 export * from './prices';
 export * from './rebaseBanner';
 export * from './slippage';
+export * from './swapper';
 export * from './theme';
 export * from './wagmi';
