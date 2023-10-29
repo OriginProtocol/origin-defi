@@ -1,6 +1,18 @@
-import type { SwapAction, SwapApi } from '../types';
+import { defineMessage } from 'react-intl';
+
+import flipper from './flipper';
+import originVault from './originVault';
+import sushiswap from './sushiswap';
+import swapCurve from './swapCurve';
+import uniswapV2 from './uniswapV2';
+import uniswapV3 from './uniswapV3';
+
+import type { SwapApi } from '@origin/shared/providers';
+
+import type { SwapAction } from '../types';
 
 const defaultApi: SwapApi = {
+  isRouteAvailable: async () => true,
   estimateAmount: async ({ amountIn }) => {
     console.log('Amount estimation not implemented');
 
@@ -41,13 +53,39 @@ const defaultApi: SwapApi = {
     console.log('Route swap operation not implemented');
     return null;
   },
+  routeLabel: defineMessage({ defaultMessage: 'Swap' }),
+  buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
 };
 
 export const swapActions: Record<SwapAction, SwapApi> = {
-  flipper: { ...defaultApi },
-  'uniswap-v2': { ...defaultApi },
-  'uniswap-v3': { ...defaultApi },
-  sushiswap: { ...defaultApi },
-  vault: { ...defaultApi },
-  'swap-curve': { ...defaultApi },
+  flipper: {
+    ...defaultApi,
+    ...flipper,
+    routeLabel: defineMessage({ defaultMessage: 'Flipper' }),
+  },
+  'origin-vault': {
+    ...defaultApi,
+    ...originVault,
+    routeLabel: defineMessage({ defaultMessage: 'Origin Vault' }),
+  },
+  sushiswap: {
+    ...defaultApi,
+    ...sushiswap,
+    routeLabel: defineMessage({ defaultMessage: 'SushiSwap' }),
+  },
+  'swap-curve': {
+    ...defaultApi,
+    ...swapCurve,
+    routeLabel: defineMessage({ defaultMessage: 'Curve' }),
+  },
+  'uniswap-v2': {
+    ...defaultApi,
+    ...uniswapV2,
+    routeLabel: defineMessage({ defaultMessage: 'Uniswap V2' }),
+  },
+  'uniswap-v3': {
+    ...defaultApi,
+    ...uniswapV3,
+    routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
+  },
 };

@@ -3,6 +3,7 @@ import { mainnet } from 'wagmi/chains';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurvePoolABI } from './abis/CurvePool';
+import { FlipperABI } from './abis/Flipper';
 import { OETHABI } from './abis/OETH';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
@@ -58,6 +59,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: ChainlinkOracleABI,
       name: 'ChainlinkOracle',
+    },
+    Flipper: {
+      address: '0xcecaD69d7D4Ed6D52eFcFA028aF8732F27e08F70',
+      chainId: mainnet.id,
+      abi: FlipperABI,
+      name: 'Flipper',
     },
   },
 } as const;
