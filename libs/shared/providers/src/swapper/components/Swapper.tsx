@@ -206,6 +206,7 @@ function SwapperWrapped({
             >
               <TokenInput
                 amount={amountIn}
+                decimals={tokenIn.decimals}
                 onAmountChange={handleAmountInChange}
                 balance={balTokenIn?.value}
                 isBalanceLoading={isBalTokenInLoading}
@@ -256,6 +257,7 @@ function SwapperWrapped({
               />
               <TokenInput
                 amount={amountOut}
+                decimals={tokenOut.decimals}
                 balance={balTokenOut?.value}
                 isAmountLoading={isSwapRoutesLoading}
                 isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
