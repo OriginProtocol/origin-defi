@@ -28,6 +28,16 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.OUSD,
     action: 'uniswap-v3',
   },
+  {
+    tokenIn: tokens.mainnet.DAI,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'origin-vault',
+  },
+  {
+    tokenIn: tokens.mainnet.DAI,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'sushiswap',
+  },
   // Mint USDT -> OUSD
   {
     tokenIn: tokens.mainnet.USDT,
@@ -49,6 +59,16 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.OUSD,
     action: 'uniswap-v3',
   },
+  {
+    tokenIn: tokens.mainnet.USDT,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'origin-vault',
+  },
+  {
+    tokenIn: tokens.mainnet.USDT,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'sushiswap',
+  },
   // Mint USDC -> OUSD
   {
     tokenIn: tokens.mainnet.USDC,
@@ -69,6 +89,16 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
     action: 'uniswap-v3',
+  },
+  {
+    tokenIn: tokens.mainnet.USDC,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'origin-vault',
+  },
+  {
+    tokenIn: tokens.mainnet.USDC,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'sushiswap',
   },
   // Redeem OUSD -> DAI
   {
