@@ -1,47 +1,12 @@
 import { tokens } from '@origin/shared/contracts';
-import { defineMessage } from 'react-intl';
 
-import type { MessageDescriptor } from 'react-intl';
+import type { SwapRoute } from '@origin/shared/providers';
 
 import type { SwapAction } from './types';
 
 export const GAS_BUFFER = 10n; // 10%
 
-export const routeActionLogos: Record<SwapAction, string> = {
-  'mint-vault': '/images/protocols/origin.svg',
-  'swap-curve': '/images/protocols/curve.webp',
-  'swap-curve-eth': '/images/protocols/curve.webp',
-  'swap-zapper-eth': '/images/protocols/zapper.svg',
-  'swap-zapper-sfrxeth': '/images/protocols/zapper.svg',
-  'unwrap-woeth': '/images/protocols/origin.svg',
-  'wrap-oeth': '/images/protocols/origin.svg',
-};
-
-export const routeActionLabel: Record<SwapAction, MessageDescriptor> = {
-  'mint-vault': defineMessage({ defaultMessage: 'Mint with Vault' }),
-  'swap-curve': defineMessage({ defaultMessage: 'Swap with Curve' }),
-  'swap-curve-eth': defineMessage({ defaultMessage: 'Swap with CurvePool' }),
-  'swap-zapper-eth': defineMessage({ defaultMessage: 'Mint with Vault' }),
-  'swap-zapper-sfrxeth': defineMessage({
-    defaultMessage: 'Mint with Vault',
-  }),
-  'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap with Origin' }),
-  'wrap-oeth': defineMessage({ defaultMessage: 'Wrap with Origin' }),
-};
-
-export const buttonActionLabel: Record<SwapAction, MessageDescriptor> = {
-  'mint-vault': defineMessage({ defaultMessage: 'Mint' }),
-  'swap-curve': defineMessage({ defaultMessage: 'Swap' }),
-  'swap-curve-eth': defineMessage({ defaultMessage: 'Swap' }),
-  'swap-zapper-eth': defineMessage({ defaultMessage: 'Mint' }),
-  'swap-zapper-sfrxeth': defineMessage({
-    defaultMessage: 'Mint',
-  }),
-  'unwrap-woeth': defineMessage({ defaultMessage: 'Unwrap' }),
-  'wrap-oeth': defineMessage({ defaultMessage: 'Wrap' }),
-};
-
-export const swapRoutes = [
+export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Mint
   {
     tokenIn: tokens.mainnet.ETH,
@@ -146,4 +111,4 @@ export const swapRoutes = [
     tokenOut: tokens.mainnet.OETH,
     action: 'unwrap-woeth',
   },
-] as const;
+];

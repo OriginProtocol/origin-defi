@@ -1,3 +1,4 @@
+export * from './AccountPopover';
 export * from './AddressLabel';
 export * from './BlockExplorerLink';
 export * from './ConnectedButton';

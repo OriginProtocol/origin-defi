@@ -1,5 +1,5 @@
 import { Button, Link, Stack, Typography } from '@mui/material';
-import { DISCORD_URL } from '@origin/constants';
+import { DISCORD_URL } from '@origin/shared/constants';
 import { useMountEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 

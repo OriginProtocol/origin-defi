@@ -5,7 +5,6 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
-  ActivityProvider,
   chains,
   queryClient,
   registerGoogleTagManager,
@@ -13,6 +12,7 @@ import {
   wagmiConfig,
 } from '@origin/oeth/shared';
 import {
+  ActivityProvider,
   CurveProvider,
   GeoFenceProvider,
   logWelcomeMessage,

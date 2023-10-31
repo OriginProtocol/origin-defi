@@ -10,12 +10,13 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { trackEvent } from '@origin/oeth/shared';
+import { tokens } from '@origin/shared/contracts';
 import {
   AccountPopover,
   ActivityButton,
-  trackEvent,
-} from '@origin/oeth/shared';
-import { OpenAccountModalButton } from '@origin/shared/providers';
+  OpenAccountModalButton,
+} from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -208,6 +209,15 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
+            balanceTokens={[
+              tokens.mainnet.OETH,
+              tokens.mainnet.wOETH,
+              tokens.mainnet.WETH,
+              tokens.mainnet.rETH,
+              tokens.mainnet.frxETH,
+              tokens.mainnet.sfrxETH,
+              tokens.mainnet.stETH,
+            ]}
           />
           <ActivityButton
             onClick={() => {

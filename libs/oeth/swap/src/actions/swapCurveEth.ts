@@ -19,7 +19,7 @@ import type {
   EstimateGas,
   EstimateRoute,
   Swap,
-} from '../types';
+} from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async ({
   tokenIn,

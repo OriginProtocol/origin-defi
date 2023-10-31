@@ -1,3 +1,5 @@
+import { defineMessage } from 'react-intl';
+
 import mintVault from './mintVault';
 import swapCurve from './swapCurve';
 import swapCurveEth from './swapCurveEth';
@@ -6,9 +8,12 @@ import swapZapperSfrxeth from './swapZapperSfrxeth';
 import unwrapWOETH from './unwrapWOETH';
 import wrapOETH from './wrapOETH';
 
-import type { SwapAction, SwapApi } from '../types';
+import type { SwapApi } from '@origin/shared/providers';
+
+import type { SwapAction } from '../types';
 
 const defaultApi: SwapApi = {
+  isRouteAvailable: async () => true,
   estimateAmount: async ({ amountIn }) => {
     console.log('Amount estimation not implemented');
 
@@ -49,14 +54,51 @@ const defaultApi: SwapApi = {
     console.log('Route swap operation not implemented');
     return null;
   },
+  buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  routeLabel: defineMessage({ defaultMessage: 'Swap' }),
 };
 
 export const swapActions: Record<SwapAction, SwapApi> = {
-  'swap-curve': { ...defaultApi, ...swapCurve },
-  'swap-curve-eth': { ...defaultApi, ...swapCurveEth },
-  'swap-zapper-eth': { ...defaultApi, ...swapZapperEth },
-  'swap-zapper-sfrxeth': { ...defaultApi, ...swapZapperSfrxeth },
-  'mint-vault': { ...defaultApi, ...mintVault },
-  'wrap-oeth': { ...defaultApi, ...wrapOETH },
-  'unwrap-woeth': { ...defaultApi, ...unwrapWOETH },
+  'swap-curve': {
+    ...defaultApi,
+    ...swapCurve,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Curve' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-curve-eth': {
+    ...defaultApi,
+    ...swapCurveEth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with CurvePool' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-zapper-eth': {
+    ...defaultApi,
+    ...swapZapperEth,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
+  },
+  'swap-zapper-sfrxeth': {
+    ...defaultApi,
+    ...swapZapperSfrxeth,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
+  },
+  'mint-vault': {
+    ...defaultApi,
+    ...mintVault,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
+  },
+  'wrap-oeth': {
+    ...defaultApi,
+    ...wrapOETH,
+    routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
+  },
+  'unwrap-woeth': {
+    ...defaultApi,
+    ...unwrapWOETH,
+    routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
+  },
 };

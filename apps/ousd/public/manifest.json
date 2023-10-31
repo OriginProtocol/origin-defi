@@ -1,0 +1,6 @@
+{
+  "name": "OUSD",
+  "description": "A fully transparent stablecoin that earns a yield from DeFi",
+  "iconPath": "https://www.originprotocol.com/images/logos/ousd-logo.svg",
+  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+}
