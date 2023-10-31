@@ -8,6 +8,8 @@ import { OETHABI } from './abis/OETH';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { OUSDABI } from './abis/OUSD';
+import { VaultCoreABI } from './abis/VaultCore';
 import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
@@ -40,7 +42,7 @@ export const contracts = {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
       abi: OETHVaultCoreABI,
-      name: 'vault',
+      name: 'OETHVault',
     },
     wOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
@@ -65,6 +67,18 @@ export const contracts = {
       chainId: mainnet.id,
       abi: FlipperABI,
       name: 'Flipper',
+    },
+    OUSDVaultCore: {
+      address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
+      chainId: mainnet.id,
+      abi: VaultCoreABI,
+      name: 'OUSDVault',
+    },
+    OUSD: {
+      address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',
+      chainId: mainnet.id,
+      abi: OUSDABI,
+      name: 'OUSD',
     },
   },
 } as const;
