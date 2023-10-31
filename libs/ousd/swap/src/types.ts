@@ -3,5 +3,5 @@ export type SwapAction =
   | 'uniswap-v2'
   | 'uniswap-v3'
   | 'sushiswap'
-  | 'origin-vault'
+  | 'mint-vault'
   | 'swap-curve';

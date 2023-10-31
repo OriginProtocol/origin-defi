@@ -1,4 +1,4 @@
-import { queryClient } from '@origin/oeth/shared';
+import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
 import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
 import {
@@ -17,19 +17,18 @@ import { GAS_BUFFER } from '../constants';
 import type {
   Allowance,
   Approve,
+  EstimateAmount,
   EstimateApprovalGas,
-  EstimateGas,
   EstimateRoute,
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
-import type { EstimateAmount } from '@origin/shared/providers';
 
 const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
   try {
     await readContract({
-      address: contracts.mainnet.OETHVaultCore.address,
-      abi: contracts.mainnet.OETHVaultCore.abi,
+      address: contracts.mainnet.OUSDVaultCore.address,
+      abi: contracts.mainnet.OUSDVaultCore.abi,
       functionName: 'priceUnitMint',
       args: [tokenIn.address],
     });
@@ -41,17 +40,17 @@ const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
 };
 
 const estimateAmount: EstimateAmount = async ({
+  amountIn,
   tokenIn,
   tokenOut,
-  amountIn,
 }) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
   const priceUnitMint = await readContract({
-    address: contracts.mainnet.OETHVaultCore.address,
-    abi: contracts.mainnet.OETHVaultCore.abi,
+    address: contracts.mainnet.OUSDVaultCore.address,
+    abi: contracts.mainnet.OUSDVaultCore.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
   });
@@ -64,7 +63,7 @@ const estimateAmount: EstimateAmount = async ({
   );
 };
 
-const estimateGas: EstimateGas = async ({
+const estimateGas = async ({
   tokenIn,
   tokenOut,
   amountIn,
@@ -84,8 +83,8 @@ const estimateGas: EstimateGas = async ({
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OETHVaultCore.address,
-      abi: contracts.mainnet.OETHVaultCore.abi,
+      address: contracts.mainnet.OUSDVaultCore.address,
+      abi: contracts.mainnet.OUSDVaultCore.abi,
       functionName: 'mint',
       args: [tokenIn.address, amountIn, minAmountOut],
       account: address,
@@ -101,13 +100,13 @@ const estimateGas: EstimateGas = async ({
         readContracts({
           contracts: [
             {
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
+              address: contracts.mainnet.OUSDVaultCore.address,
+              abi: contracts.mainnet.OUSDVaultCore.abi,
               functionName: 'rebaseThreshold',
             },
             {
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
+              address: contracts.mainnet.OUSDVaultCore.address,
+              abi: contracts.mainnet.OUSDVaultCore.abi,
               functionName: 'autoAllocateThreshold',
             },
           ],
@@ -124,51 +123,6 @@ const estimateGas: EstimateGas = async ({
   }
 
   return gasEstimate;
-};
-
-const allowance: Allowance = async ({ tokenIn }) => {
-  const { address } = getAccount();
-
-  if (isNilOrEmpty(address)) {
-    return 0n;
-  }
-
-  const allowance = await readContract({
-    address: tokenIn.address,
-    abi: erc20ABI,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.OETHVaultCore.address],
-  });
-
-  return allowance;
-};
-
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  amountIn,
-}) => {
-  let approvalEstimate = 0n;
-  const { address } = getAccount();
-
-  if (amountIn === 0n || isNilOrEmpty(address)) {
-    return approvalEstimate;
-  }
-
-  const publicClient = getPublicClient();
-
-  try {
-    approvalEstimate = await publicClient.estimateContractGas({
-      address: tokenIn.address,
-      abi: erc20ABI,
-      functionName: 'approve',
-      args: [contracts.mainnet.OETHVaultCore.address, amountIn],
-      account: address,
-    });
-  } catch {
-    approvalEstimate = 200000n;
-  }
-
-  return approvalEstimate;
 };
 
 const estimateRoute: EstimateRoute = async ({
@@ -214,6 +168,51 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
+const allowance: Allowance = async ({ tokenIn }) => {
+  const { address } = getAccount();
+
+  if (isNilOrEmpty(address)) {
+    return 0n;
+  }
+
+  const allowance = await readContract({
+    address: tokenIn.address,
+    abi: erc20ABI,
+    functionName: 'allowance',
+    args: [address, contracts.mainnet.OUSDVaultCore.address],
+  });
+
+  return allowance;
+};
+
+const estimateApprovalGas: EstimateApprovalGas = async ({
+  tokenIn,
+  amountIn,
+}) => {
+  let approvalEstimate = 0n;
+  const { address } = getAccount();
+
+  if (amountIn === 0n || isNilOrEmpty(address)) {
+    return approvalEstimate;
+  }
+
+  const publicClient = getPublicClient();
+
+  try {
+    approvalEstimate = await publicClient.estimateContractGas({
+      address: tokenIn.address,
+      abi: erc20ABI,
+      functionName: 'approve',
+      args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
+      account: address,
+    });
+  } catch {
+    approvalEstimate = 200000n;
+  }
+
+  return approvalEstimate;
+};
+
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const gas = await estimateApprovalGas({
     amountIn,
@@ -226,7 +225,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
-    args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+    args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
     gas,
   });
   const { hash } = await writeContract(request);
@@ -265,8 +264,8 @@ const swap: Swap = async ({
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.OETHVaultCore.address,
-    abi: contracts.mainnet.OETHVaultCore.abi,
+    address: contracts.mainnet.OUSDVaultCore.address,
+    abi: contracts.mainnet.OUSDVaultCore.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,

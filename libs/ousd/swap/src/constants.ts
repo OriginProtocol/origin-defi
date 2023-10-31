@@ -31,7 +31,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.DAI,
@@ -62,7 +62,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.USDT,
@@ -93,7 +93,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.USDC,
@@ -105,11 +105,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
     action: 'flipper',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
-    action: 'origin-vault',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -135,11 +130,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'origin-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.USDT,
     action: 'sushiswap',
   },
   {
@@ -157,11 +147,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
     action: 'flipper',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.USDC,
-    action: 'origin-vault',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
