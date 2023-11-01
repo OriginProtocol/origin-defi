@@ -37,7 +37,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
     });
     const queryClient = useQueryClient();
     const { value: slippage } = useSlippage();
-    const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
+    const { data: curve } = useCurve();
 
     useDebouncedEffect(
       async () => {
@@ -62,19 +62,21 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           state.tokenIn,
           state.tokenOut,
         );
-        const filteredRoutes = [];
-        for (const r of availableRoutes) {
-          const isRouteAvailable = await swapActions[r.action].isRouteAvailable(
-            {
+        const availabilities = await Promise.allSettled(
+          availableRoutes.map((r) =>
+            swapActions[r.action].isRouteAvailable({
               amountIn: state.amountIn,
               tokenIn: r.tokenIn,
               tokenOut: r.tokenOut,
-            },
-          );
-          if (isRouteAvailable) {
-            filteredRoutes.push(r);
-          }
-        }
+              curve,
+            }),
+          ),
+        );
+        const filteredRoutes = availableRoutes.filter(
+          (_, i) =>
+            availabilities[i].status === 'fulfilled' &&
+            (availabilities[i] as PromiseFulfilledResult<boolean>).value,
+        );
 
         const routes = await Promise.all(
           filteredRoutes.map((route) =>
@@ -97,10 +99,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                     amountOut: state.amountOut,
                     route,
                     slippage,
-                    curve: {
-                      CurveRegistryExchange,
-                      OethPoolUnderlyings,
-                    },
+                    curve,
                   });
                 } catch (error) {
                   console.error(

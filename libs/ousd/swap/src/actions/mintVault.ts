@@ -2,7 +2,6 @@ import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
 import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -177,12 +176,12 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OUSDVaultCore.address],
   });
 
-  return allowance;
+  return allowance as unknown as bigint;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async ({
@@ -201,7 +200,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
       account: address,
@@ -214,19 +213,11 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const gas = await estimateApprovalGas({
-    amountIn,
-    tokenIn,
-    tokenOut,
-    curve,
-  });
-
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
-    gas,
   });
   const { hash } = await writeContract(request);
 

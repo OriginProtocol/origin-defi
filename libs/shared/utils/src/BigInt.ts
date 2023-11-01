@@ -1,6 +1,6 @@
 import { formatUnits, parseUnits } from 'viem';
 
-export const jsonStringifyReplacer = (key, value) =>
+export const jsonStringifyReplacer = (key: string, value: unknown) =>
   typeof value === 'bigint' ? value.toString() : value;
 
 export const scale = (
@@ -12,9 +12,7 @@ export const scale = (
     return value;
   }
 
-  const num = +formatUnits(value, originDecimals);
-
-  return parseUnits(num.toString(), targetDecimals);
+  return parseUnits(formatUnits(value, originDecimals), targetDecimals);
 };
 
 export const addRatio = (value: bigint, decimals: number, ratio: number) => {

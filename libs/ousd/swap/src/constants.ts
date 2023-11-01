@@ -5,6 +5,7 @@ import type { SwapRoute } from '@origin/shared/providers';
 import type { SwapAction } from './types';
 
 export const GAS_BUFFER = 10n; // 10%
+export const MAX_PRICE = 1.2;
 
 export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Mint DAI -> OUSD
@@ -121,6 +122,11 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.DAI,
     action: 'uniswap-v3',
   },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.DAI,
+    action: 'swap-curve',
+  },
   // Redeem OUSD -> USDT
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -142,6 +148,11 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.USDT,
     action: 'uniswap-v3',
   },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDT,
+    action: 'swap-curve',
+  },
   // Redeem OUSD -> USDC
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -162,5 +173,10 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
     action: 'uniswap-v3',
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDC,
+    action: 'swap-curve',
   },
 ];

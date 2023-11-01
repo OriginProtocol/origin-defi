@@ -2,6 +2,7 @@ import { mainnet } from 'wagmi/chains';
 
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
+import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { FlipperABI } from './abis/Flipper';
 import { OETHABI } from './abis/OETH';
@@ -17,17 +18,23 @@ import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
   mainnet: {
-    curveOethPool: {
+    CurveOethPool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
       abi: CurvePoolABI,
-      name: 'curveOethPool',
+      name: 'CurveOethPool',
     },
     CurveAddressProvider: {
       address: '0x0000000022d53366457f9d5e68ec105046fc4383',
       chainId: mainnet.id,
       abi: CurveAddressProviderABI,
       name: 'CurveAddressProvider',
+    },
+    CurveOusdMetaPool: {
+      address: '0x87650D7bbfC3A9F10587d7778206671719d9910D',
+      chainId: mainnet.id,
+      abi: CurveMetaPoolABI,
+      name: 'CurveOusdMetaPool',
     },
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',

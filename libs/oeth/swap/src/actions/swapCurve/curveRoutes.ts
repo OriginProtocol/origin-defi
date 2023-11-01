@@ -38,7 +38,7 @@ export const curveRoutes = {
     OETH: {
       routes: [
         ETH_ADDRESS_CURVE,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         tokens.mainnet.OETH.address,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -62,7 +62,7 @@ export const curveRoutes = {
         tokens.mainnet.stETH.address,
         '0x21E27a5E5513D6e65C4f830167390997aA84843a',
         ETH_ADDRESS_CURVE,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         tokens.mainnet.OETH.address,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -86,7 +86,7 @@ export const curveRoutes = {
         tokens.mainnet.WETH.address,
         tokens.mainnet.WETH.address,
         ETH_ADDRESS_CURVE,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         tokens.mainnet.OETH.address,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -110,7 +110,7 @@ export const curveRoutes = {
         tokens.mainnet.rETH.address,
         '0x0f3159811670c117c372428D4E69AC32325e4D0F',
         ETH_ADDRESS_CURVE,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         tokens.mainnet.OETH.address,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -134,7 +134,7 @@ export const curveRoutes = {
         tokens.mainnet.frxETH.address,
         '0xa1F8A6807c402E4A15ef4EBa36528A3FED24E577',
         ETH_ADDRESS_CURVE,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         tokens.mainnet.OETH.address,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -157,7 +157,7 @@ export const curveRoutes = {
     ETH: {
       routes: [
         tokens.mainnet.OETH.address,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         ETH_ADDRESS_CURVE,
         '0x0000000000000000000000000000000000000000',
         '0x0000000000000000000000000000000000000000',
@@ -177,7 +177,7 @@ export const curveRoutes = {
     frxETH: {
       routes: [
         tokens.mainnet.OETH.address,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         ETH_ADDRESS_CURVE,
         '0xa1F8A6807c402E4A15ef4EBa36528A3FED24E577',
         tokens.mainnet.frxETH.address,
@@ -199,7 +199,7 @@ export const curveRoutes = {
     WETH: {
       routes: [
         tokens.mainnet.OETH.address,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         ETH_ADDRESS_CURVE,
         tokens.mainnet.WETH.address,
         tokens.mainnet.WETH.address,
@@ -221,7 +221,7 @@ export const curveRoutes = {
     rETH: {
       routes: [
         tokens.mainnet.OETH.address,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         ETH_ADDRESS_CURVE,
         '0x0f3159811670c117c372428D4E69AC32325e4D0F',
         tokens.mainnet.rETH.address,
@@ -243,7 +243,7 @@ export const curveRoutes = {
     stETH: {
       routes: [
         tokens.mainnet.OETH.address,
-        contracts.mainnet.curveOethPool.address,
+        contracts.mainnet.CurveOethPool.address,
         ETH_ADDRESS_CURVE,
         '0x21E27a5E5513D6e65C4f830167390997aA84843a',
         tokens.mainnet.stETH.address,

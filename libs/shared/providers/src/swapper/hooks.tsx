@@ -157,7 +157,7 @@ export const useHandleTokenFlip = () => {
   ] = useSwapState();
   const { value: slippage } = useSlippage();
   const queryClient = useQueryClient();
-  const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
+  const { data: curve } = useCurve();
 
   return useCallback(async () => {
     trackEvent({ name: 'change_input_output' });
@@ -215,10 +215,7 @@ export const useHandleTokenFlip = () => {
                     amountOut: amountIn,
                     route,
                     slippage,
-                    curve: {
-                      CurveRegistryExchange,
-                      OethPoolUnderlyings,
-                    },
+                    curve,
                   });
                 } catch (error) {
                   console.error(
@@ -264,10 +261,9 @@ export const useHandleTokenFlip = () => {
       }
     }
   }, [
-    CurveRegistryExchange,
-    OethPoolUnderlyings,
     amountIn,
     amountOut,
+    curve,
     queryClient,
     setSwapState,
     slippage,
@@ -301,7 +297,7 @@ export const useHandleSelectSwapRoute = () => {
 
 export const useSwapRouteAllowance = (route: SwapRoute) => {
   const [{ swapActions }] = useSwapState();
-  const curve = useCurve();
+  const { data: curve } = useCurve();
 
   return useQuery({
     queryKey: [
@@ -330,7 +326,7 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
 export const useHandleApprove = () => {
   const intl = useIntl();
   const { address } = useAccount();
-  const curve = useCurve();
+  const { data: curve } = useCurve();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
@@ -486,7 +482,7 @@ export const useHandleSwap = () => {
   const intl = useIntl();
   const { value: slippage } = useSlippage();
   const { address } = useAccount();
-  const curve = useCurve();
+  const { data: curve } = useCurve();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();

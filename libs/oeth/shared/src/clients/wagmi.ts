@@ -55,7 +55,7 @@ const connectors = connectorsForWallets([
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
-      coinbaseWallet({ appName: 'origin', chains }),
+      coinbaseWallet({ appName: 'OETH', chains }),
     ],
   },
   {

@@ -215,19 +215,11 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const gas = await estimateApprovalGas({
-    amountIn,
-    tokenIn,
-    tokenOut,
-    curve,
-  });
-
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [contracts.mainnet.OETHVaultCore.address, amountIn],
-    gas,
   });
   const { hash } = await writeContract(request);
 

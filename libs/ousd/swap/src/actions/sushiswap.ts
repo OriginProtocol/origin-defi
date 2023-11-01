@@ -1,7 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -11,7 +10,7 @@ import {
 import { last } from 'ramda';
 import { formatUnits } from 'viem';
 
-import { GAS_BUFFER } from '../constants';
+import { GAS_BUFFER, MAX_PRICE } from '../constants';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
@@ -23,8 +22,6 @@ import type {
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
-
-const MAX_PRICE = 1.2;
 
 const getPath = (tokenIn: Token, tokenOut: Token) => {
   if (tokenIn.symbol === tokens.mainnet.OUSD.symbol) {
@@ -70,7 +67,7 @@ const isRouteAvailable: IsRouteAvailable = async ({
   tokenOut,
 }) => {
   try {
-    const res = await readContract({
+    const estimate = await readContract({
       address: contracts.mainnet.sushiswapRouter.address,
       abi: contracts.mainnet.sushiswapRouter.abi,
       functionName: 'getAmountsOut',
@@ -79,7 +76,7 @@ const isRouteAvailable: IsRouteAvailable = async ({
 
     return (
       +formatUnits(amountIn, tokenIn.decimals) /
-        +formatUnits(last(res), tokenOut.decimals) <
+        +formatUnits(last(estimate), tokenOut.decimals) <
       MAX_PRICE
     );
   } catch {}
@@ -92,18 +89,18 @@ const estimateAmount: EstimateAmount = async ({
   tokenIn,
   tokenOut,
 }) => {
-  try {
-    const res = await readContract({
-      address: contracts.mainnet.sushiswapRouter.address,
-      abi: contracts.mainnet.sushiswapRouter.abi,
-      functionName: 'getAmountsOut',
-      args: [amountIn, getPath(tokenIn, tokenOut)],
-    });
+  if (amountIn === 0n) {
+    return 0n;
+  }
 
-    return last(res);
-  } catch {}
+  const estimate = await readContract({
+    address: contracts.mainnet.sushiswapRouter.address,
+    abi: contracts.mainnet.sushiswapRouter.abi,
+    functionName: 'getAmountsOut',
+    args: [amountIn, getPath(tokenIn, tokenOut)],
+  });
 
-  return amountIn;
+  return last(estimate);
 };
 
 const estimateGas = async ({
@@ -121,7 +118,6 @@ const estimateGas = async ({
 
   const publicClient = getPublicClient();
   const { address } = getAccount();
-
   const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
 
   try {
@@ -190,12 +186,12 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.sushiswapRouter.address],
   });
 
-  return allowance;
+  return allowance as unknown as bigint;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async ({
@@ -214,7 +210,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.sushiswapRouter.address, amountIn],
       account: address,
@@ -227,18 +223,11 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const gas = await estimateApprovalGas({
-    amountIn,
-    tokenIn,
-    tokenOut,
-  });
-
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.sushiswapRouter.address, amountIn],
-    gas,
   });
   const { hash } = await writeContract(request);
 

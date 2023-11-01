@@ -66,7 +66,7 @@ export const swapActions: Record<SwapAction, SwapApi> = {
   'mint-vault': {
     ...defaultApi,
     ...mintVault,
-    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    routeLabel: defineMessage({ defaultMessage: 'Origin Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
   sushiswap: {

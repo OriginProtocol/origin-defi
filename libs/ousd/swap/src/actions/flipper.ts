@@ -1,7 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, scale } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -67,14 +66,16 @@ const estimateAmount: EstimateAmount = async ({
   const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
 
   try {
-    const res = await publicClient.simulateContract({
-      address: contracts.mainnet.Flipper.address,
-      abi: contracts.mainnet.Flipper.abi,
-      functionName: getFunctionName(tokenIn, tokenOut),
-      args: [scaledAmount],
-    });
+    const estimate = (
+      await publicClient.simulateContract({
+        address: contracts.mainnet.Flipper.address,
+        abi: contracts.mainnet.Flipper.abi,
+        functionName: getFunctionName(tokenIn, tokenOut),
+        args: [scaledAmount],
+      })
+    )?.result;
 
-    return scale(res.result as unknown as bigint, 18, tokenIn.decimals);
+    return scale(estimate as unknown as bigint, 18, tokenIn.decimals);
   } catch {}
 
   return scale(amountIn, tokenIn.decimals, tokenOut.decimals);
@@ -119,12 +120,12 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.Flipper.address],
   });
 
-  return allowance;
+  return allowance as unknown as bigint;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async ({
@@ -143,7 +144,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.Flipper.address, amountIn],
       account: address,
@@ -156,18 +157,11 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const gas = await estimateApprovalGas({
-    amountIn,
-    tokenIn,
-    tokenOut,
-  });
-
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.Flipper.address, amountIn],
-    gas,
   });
   const { hash } = await writeContract(request);
 
