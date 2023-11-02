@@ -74,7 +74,7 @@ export const contracts = {
       abi: DripperABI,
       name: 'Dripper',
     },
-    OethDripper: {
+    OETHDripper: {
       address: '0xc0F42F73b8f01849a2DD99753524d4ba14317EB3',
       chainId: mainnet.id,
       abi: OETHDripperABI,

@@ -45,8 +45,8 @@ export const usePendingYield = (
               functionName: 'totalSupply',
             },
             {
-              address: contracts.mainnet.OethDripper.address,
-              abi: contracts.mainnet.OethDripper.abi,
+              address: contracts.mainnet.OETHDripper.address,
+              abi: contracts.mainnet.OETHDripper.abi,
               functionName: 'availableFunds',
             },
             {
