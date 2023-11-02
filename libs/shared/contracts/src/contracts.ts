@@ -11,6 +11,9 @@ import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { UniswapV2RouterABI } from './abis/UniswapV2Router';
+import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
+import { UniswapV3RouterABI } from './abis/UniswapV3Router';
 import { VaultCoreABI } from './abis/VaultCore';
 import { WOETHABI } from './abis/WOETH';
 
@@ -87,10 +90,36 @@ export const contracts = {
       name: 'OUSDFlipper',
     },
     OUSDVault: {
-      address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
+      address: '0x277e80f3E14E7fB3fc40A9d6184088e0241034bD',
       chainId: mainnet.id,
       abi: VaultCoreABI,
       name: 'OUSDVault',
+    },
+    // SushiSwap
+    sushiswapRouter: {
+      address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'sushiswapRouter',
+    },
+    // Uniswap
+    uniswapV2Router: {
+      address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'uniswapV2Router',
+    },
+    uniswapV3Quoter: {
+      address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+      chainId: mainnet.id,
+      abi: UniswapV3QuoterABI,
+      name: 'uniswapV3Quoter',
+    },
+    uniswapV3Router: {
+      address: '0xe592427a0aece92de3edee1f18e0157c05861564',
+      chainId: mainnet.id,
+      abi: UniswapV3RouterABI,
+      name: 'uniswapV3Router',
     },
     // wOETH
     wOETH: {
