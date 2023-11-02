@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
@@ -78,7 +79,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             (availabilities[i] as PromiseFulfilledResult<boolean>).value,
         );
 
-        const routes = await Promise.all(
+        const routes = await Promise.allSettled(
           filteredRoutes.map((route) =>
             queryClient.fetchQuery({
               queryKey: [
@@ -123,16 +124,20 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           ),
         );
 
-        const sortedRoutes = routes.sort((a, b) => {
-          const valA =
-            a.estimatedAmount -
-            (a.gas + (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
-          const valB =
-            b.estimatedAmount -
-            (b.gas + (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
+        const sortedRoutes = routes
+          .map((r) => (r.status === 'fulfilled' ? r.value : null))
+          .sort((a, b) => {
+            const valA =
+              scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
+              (a.gas +
+                (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
+            const valB =
+              scale(b.estimatedAmount, b.tokenOut.decimals, 18) -
+              (b.gas +
+                (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
 
-          return valA < valB ? 1 : valA > valB ? -1 : 0;
-        });
+            return valA < valB ? 1 : valA > valB ? -1 : 0;
+          });
 
         setState(
           produce((draft) => {

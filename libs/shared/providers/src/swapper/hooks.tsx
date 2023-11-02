@@ -161,11 +161,7 @@ export const useHandleTokenFlip = () => {
 
   return useCallback(async () => {
     trackEvent({ name: 'change_input_output' });
-    setSwapState(
-      produce((draft) => {
-        draft.isSwapRoutesLoading = true;
-      }),
-    );
+
     const scaledAmountIn = scale(amountIn, tokenIn.decimals, tokenOut.decimals);
     const scaledAmountOut = scale(
       amountOut,
@@ -208,18 +204,15 @@ export const useHandleTokenFlip = () => {
         }),
       );
     } else {
-      setSwapState(
-        produce((draft) => {
-          const oldTokenOut = tokenOut;
-          draft.tokenOut = tokenIn;
-          draft.tokenIn = oldTokenOut;
-          draft.amountIn = scaledAmountIn;
-          draft.amountOut = scaledAmountOut;
-        }),
-      );
-
       if (amountIn > 0n || amountOut > 0n) {
-        const routes = await Promise.all(
+        setSwapState(
+          produce((draft) => {
+            draft.isSwapRoutesLoading = true;
+            draft.estimatedSwapRoutes = [];
+            draft.selectedSwapRoute = null;
+          }),
+        );
+        const routes = await Promise.allSettled(
           newRoutes.map((route) =>
             queryClient.fetchQuery({
               queryKey: [
@@ -236,8 +229,8 @@ export const useHandleTokenFlip = () => {
                   res = await swapActions[route.action].estimateRoute({
                     tokenIn: route.tokenIn,
                     tokenOut: route.tokenOut,
-                    amountIn: scaledAmountOut,
-                    amountOut: scaledAmountIn,
+                    amountIn: scaledAmountIn,
+                    amountOut: scaledAmountOut,
                     route,
                     slippage,
                     curve,
@@ -264,19 +257,25 @@ export const useHandleTokenFlip = () => {
           ),
         );
 
-        const sortedRoutes = routes.sort((a, b) => {
-          const valA =
-            a.estimatedAmount -
-            (a.gas + (a.allowanceAmount < amountOut ? a.approvalGas : 0n));
-          const valB =
-            b.estimatedAmount -
-            (b.gas + (b.allowanceAmount < amountOut ? b.approvalGas : 0n));
+        const sortedRoutes = routes
+          .map((r) => (r.status === 'fulfilled' ? r.value : null))
+          .sort((a, b) => {
+            const valA =
+              scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
+              (a.gas + (a.allowanceAmount < amountIn ? a.approvalGas : 0n));
+            const valB =
+              scale(b.estimatedAmount, b.tokenOut.decimals, 18) -
+              (b.gas + (b.allowanceAmount < amountIn ? b.approvalGas : 0n));
 
-          return valA < valB ? 1 : valA > valB ? -1 : 0;
-        });
-
+            return valA < valB ? 1 : valA > valB ? -1 : 0;
+          });
         setSwapState(
           produce((draft) => {
+            const oldTokenOut = tokenOut;
+            draft.tokenOut = tokenIn;
+            draft.tokenIn = oldTokenOut;
+            draft.amountIn = scaledAmountIn;
+            draft.amountOut = scaledAmountOut;
             draft.estimatedSwapRoutes = sortedRoutes;
             draft.selectedSwapRoute = sortedRoutes[0];
             draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
