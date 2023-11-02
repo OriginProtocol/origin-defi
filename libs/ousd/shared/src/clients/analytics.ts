@@ -20,7 +20,7 @@ export type TrackEvent =
   | { name: 'open_activity' };
 
 const analytics = Analytics({
-  app: 'oeth-dapp',
+  app: 'ousd-dapp',
   plugins: [
     ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID)
       ? []

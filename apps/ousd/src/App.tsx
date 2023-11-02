@@ -1,5 +1,5 @@
 import { Container, Stack } from '@mui/material';
-import { trackSentryError } from '@origin/oeth/shared';
+import { trackSentryError } from '@origin/ousd/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import {
   TrackingProvider,

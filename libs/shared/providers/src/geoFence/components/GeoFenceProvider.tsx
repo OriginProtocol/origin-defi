@@ -20,15 +20,23 @@ import { useIntl } from 'react-intl';
 
 import type { ReactNode } from 'react';
 
-export type GeoFenceProviderProps = { children: ReactNode };
+export type GeoFenceProviderProps = {
+  children: ReactNode;
+  name: string;
+  href: string;
+};
 
-export const GeoFenceProvider = ({ children }: GeoFenceProviderProps) => {
+export const GeoFenceProvider = ({
+  children,
+  name,
+  href,
+}: GeoFenceProviderProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
   const [checked, setChecked] = useState(false);
   const { value: geoCheck, set: setGeoCheck } = useLocalStorageValue(
-    '@originprotocol/oeth-geo-check',
+    `@originprotocol/${name}-geo-check`,
     {
       defaultValue: false,
     },
@@ -94,7 +102,7 @@ export const GeoFenceProvider = ({ children }: GeoFenceProviderProps) => {
         </DialogContent>
         <DialogActions sx={{ gap: 3, px: 3, pt: { xs: 2, sm: 0 }, pb: 3 }}>
           <Button
-            href="https://oeth.com"
+            href={href}
             variant="action"
             fullWidth
             sx={{
