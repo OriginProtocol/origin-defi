@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+import { isNilOrEmpty, isUserRejected, scale } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransaction } from '@wagmi/core';
 import { produce } from 'immer';
@@ -161,8 +161,35 @@ export const useHandleTokenFlip = () => {
 
   return useCallback(async () => {
     trackEvent({ name: 'change_input_output' });
+    setSwapState(
+      produce((draft) => {
+        draft.isSwapRoutesLoading = true;
+      }),
+    );
+    const scaledAmountIn = scale(amountIn, tokenIn.decimals, tokenOut.decimals);
+    const scaledAmountOut = scale(
+      amountOut,
+      tokenOut.decimals,
+      tokenIn.decimals,
+    );
     const newRoutes = getAvailableRoutes(swapRoutes, tokenOut, tokenIn);
-    if (isNilOrEmpty(newRoutes)) {
+    const availabilities = await Promise.allSettled(
+      newRoutes.map((r) =>
+        swapActions[r.action].isRouteAvailable({
+          amountIn: amountIn,
+          tokenIn: r.tokenIn,
+          tokenOut: r.tokenOut,
+          curve,
+        }),
+      ),
+    );
+    const filteredRoutes = newRoutes.filter(
+      (_, i) =>
+        availabilities[i].status === 'fulfilled' &&
+        (availabilities[i] as PromiseFulfilledResult<boolean>).value,
+    );
+
+    if (isNilOrEmpty(filteredRoutes)) {
       const newTokenOut = getAvailableTokensForSource(
         swapRoutes,
         'tokenIn',
@@ -177,6 +204,7 @@ export const useHandleTokenFlip = () => {
           state.tokenIn = oldTokenOut;
           state.estimatedSwapRoutes = [];
           state.selectedSwapRoute = null;
+          state.isSwapRoutesLoading = false;
         }),
       );
     } else {
@@ -185,15 +213,12 @@ export const useHandleTokenFlip = () => {
           const oldTokenOut = tokenOut;
           draft.tokenOut = tokenIn;
           draft.tokenIn = oldTokenOut;
+          draft.amountIn = scaledAmountIn;
+          draft.amountOut = scaledAmountOut;
         }),
       );
 
       if (amountIn > 0n || amountOut > 0n) {
-        setSwapState(
-          produce((draft) => {
-            draft.isSwapRoutesLoading = true;
-          }),
-        );
         const routes = await Promise.all(
           newRoutes.map((route) =>
             queryClient.fetchQuery({
@@ -211,8 +236,8 @@ export const useHandleTokenFlip = () => {
                   res = await swapActions[route.action].estimateRoute({
                     tokenIn: route.tokenIn,
                     tokenOut: route.tokenOut,
-                    amountIn: amountOut,
-                    amountOut: amountIn,
+                    amountIn: scaledAmountOut,
+                    amountOut: scaledAmountIn,
                     route,
                     slippage,
                     curve,
