@@ -6,6 +6,7 @@ import { CurvePoolABI } from './abis/CurvePool';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { OETHABI } from './abis/OETH';
+import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
@@ -71,6 +72,12 @@ export const contracts = {
       address: '0xc7068A35F9F5b77471BcFfBdf82D9531D52AFCdc',
       chainId: mainnet.id,
       abi: DripperABI,
+      name: 'Dripper',
+    },
+    OethDripper: {
+      address: '0x2FDfBb2b905484f1445E23A97C97F65fe0e43dEC',
+      chainId: mainnet.id,
+      abi: OETHDripperABI,
       name: 'Dripper',
     },
   },
