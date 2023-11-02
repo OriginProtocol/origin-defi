@@ -6,6 +6,7 @@ import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
+import { IVaultABI } from './abis/IVault';
 import { OETHABI } from './abis/OETH';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
@@ -14,7 +15,6 @@ import { OracleRouterABI } from './abis/OracleRouter';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
-import { VaultCoreABI } from './abis/VaultCore';
 import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
@@ -90,9 +90,9 @@ export const contracts = {
       name: 'OUSDFlipper',
     },
     OUSDVault: {
-      address: '0x277e80f3E14E7fB3fc40A9d6184088e0241034bD',
+      address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
       chainId: mainnet.id,
-      abi: VaultCoreABI,
+      abi: IVaultABI,
       name: 'OUSDVault',
     },
     // SushiSwap
