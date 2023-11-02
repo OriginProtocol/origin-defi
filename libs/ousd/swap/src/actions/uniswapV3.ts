@@ -1,5 +1,5 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { addRatio, isNilOrEmpty, scale } from '@origin/shared/utils';
+import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -7,7 +7,7 @@ import {
   readContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { encodePacked, formatUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -22,58 +22,52 @@ import type {
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
-import type { HexAddress } from '@origin/shared/utils';
-
-const encodePath = (path: HexAddress[], fees: number[]) => {
-  const FEE_SIZE = 3;
-
-  let encoded = '0x';
-  for (let i = 0; i < fees.length; i++) {
-    encoded += path[i].slice(2);
-    encoded += fees[i].toString(16).padStart(2 * FEE_SIZE, '0');
-  }
-  encoded += path[path.length - 1].slice(2);
-
-  return encoded.toLowerCase() as HexAddress;
-};
 
 const getPath = (tokenIn: Token, tokenOut: Token) => {
   if (tokenIn.symbol === tokens.mainnet.OUSD.symbol) {
     return {
-      [tokens.mainnet.DAI.symbol]: encodePath(
+      [tokens.mainnet.DAI.symbol]: encodePacked(
+        ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           tokens.mainnet.OUSD.address,
+          500,
           tokens.mainnet.USDT.address,
+          500,
           tokens.mainnet.DAI.address,
         ],
-        [500, 500],
       ),
-      [tokens.mainnet.USDC.symbol]: encodePath(
+      [tokens.mainnet.USDC.symbol]: encodePacked(
+        ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           tokens.mainnet.OUSD.address,
+          500,
           tokens.mainnet.USDT.address,
+          100,
           tokens.mainnet.USDC.address,
         ],
-        [500, 100],
       ),
     }[tokenOut.symbol];
   } else if (tokenOut.symbol === tokens.mainnet.OUSD.symbol) {
     return {
-      [tokens.mainnet.DAI.symbol]: encodePath(
+      [tokens.mainnet.DAI.symbol]: encodePacked(
+        ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           tokens.mainnet.DAI.address,
+          500,
           tokens.mainnet.USDT.address,
+          500,
           tokens.mainnet.OUSD.address,
         ],
-        [500, 500],
       ),
-      [tokens.mainnet.USDC.symbol]: encodePath(
+      [tokens.mainnet.USDC.symbol]: encodePacked(
+        ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           tokens.mainnet.USDC.address,
+          100,
           tokens.mainnet.USDT.address,
+          500,
           tokens.mainnet.OUSD.address,
         ],
-        [100, 500],
       ),
     }[tokenIn.symbol];
   }
@@ -113,7 +107,7 @@ const estimateAmount: EstimateAmount = async ({
     )?.result;
   }
 
-  return scale(estimate, 18, tokenOut.decimals);
+  return estimate;
 };
 
 const estimateGas: EstimateGas = async ({
@@ -131,7 +125,6 @@ const estimateGas: EstimateGas = async ({
 
   const publicClient = getPublicClient();
   const { address } = getAccount();
-  const scaledAmountIn = scale(amountIn, tokenIn.decimals, 18);
   const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
 
   try {
@@ -146,7 +139,7 @@ const estimateGas: EstimateGas = async ({
           {
             tokenIn: tokenIn.address,
             tokenOut: tokenOut.address,
-            amountIn: scaledAmountIn,
+            amountIn: amountIn,
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             fee: 500,
@@ -163,7 +156,7 @@ const estimateGas: EstimateGas = async ({
         args: [
           {
             path: getPath(tokenIn, tokenOut),
-            amountIn: scaledAmountIn,
+            amountIn: amountIn,
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             recipient: address,
@@ -286,7 +279,6 @@ const swap: Swap = async ({
     throw new Error(`Uniswap V3 is not approved`);
   }
 
-  const scaledAmountIn = scale(amountIn, tokenIn.decimals, 18);
   const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
@@ -308,7 +300,7 @@ const swap: Swap = async ({
         {
           tokenIn: tokenIn.address,
           tokenOut: tokenOut.address,
-          amountIn: scaledAmountIn,
+          amountIn: amountIn,
           amountOutMinimum: minAmountOut,
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           fee: 500,
@@ -328,7 +320,7 @@ const swap: Swap = async ({
       args: [
         {
           path: getPath(tokenIn, tokenOut),
-          amountIn: scaledAmountIn,
+          amountIn: amountIn,
           amountOutMinimum: minAmountOut,
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           recipient: address,
