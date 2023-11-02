@@ -35,13 +35,13 @@ export const useCurve = () => {
             address: addresses[1].result,
             abi: CurveFactoryABI,
             functionName: 'get_coins',
-            args: [contracts.mainnet.CurveOethPool.address],
+            args: [contracts.mainnet.OETHCurvePool.address],
           },
           {
             address: addresses[1].result,
             abi: CurveFactoryABI,
             functionName: 'get_underlying_coins',
-            args: [contracts.mainnet.CurveOusdMetaPool.address],
+            args: [contracts.mainnet.OUSDCurveMetaPool.address],
           },
         ],
       });

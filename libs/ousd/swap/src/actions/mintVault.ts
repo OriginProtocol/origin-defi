@@ -26,8 +26,8 @@ import type {
 const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
   try {
     await readContract({
-      address: contracts.mainnet.OUSDVaultCore.address,
-      abi: contracts.mainnet.OUSDVaultCore.abi,
+      address: contracts.mainnet.OUSDVault.address,
+      abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'priceUnitMint',
       args: [tokenIn.address],
     });
@@ -48,8 +48,8 @@ const estimateAmount: EstimateAmount = async ({
   }
 
   const priceUnitMint = await readContract({
-    address: contracts.mainnet.OUSDVaultCore.address,
-    abi: contracts.mainnet.OUSDVaultCore.abi,
+    address: contracts.mainnet.OUSDVault.address,
+    abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
   });
@@ -82,8 +82,8 @@ const estimateGas = async ({
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OUSDVaultCore.address,
-      abi: contracts.mainnet.OUSDVaultCore.abi,
+      address: contracts.mainnet.OUSDVault.address,
+      abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'mint',
       args: [tokenIn.address, amountIn, minAmountOut],
       account: address,
@@ -99,13 +99,13 @@ const estimateGas = async ({
         readContracts({
           contracts: [
             {
-              address: contracts.mainnet.OUSDVaultCore.address,
-              abi: contracts.mainnet.OUSDVaultCore.abi,
+              address: contracts.mainnet.OUSDVault.address,
+              abi: contracts.mainnet.OUSDVault.abi,
               functionName: 'rebaseThreshold',
             },
             {
-              address: contracts.mainnet.OUSDVaultCore.address,
-              abi: contracts.mainnet.OUSDVaultCore.abi,
+              address: contracts.mainnet.OUSDVault.address,
+              abi: contracts.mainnet.OUSDVault.abi,
               functionName: 'autoAllocateThreshold',
             },
           ],
@@ -178,7 +178,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.OUSDVaultCore.address],
+    args: [address, contracts.mainnet.OUSDVault.address],
   });
 
   return allowance as unknown as bigint;
@@ -202,7 +202,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
+      args: [contracts.mainnet.OUSDVault.address, amountIn],
       account: address,
     });
   } catch {
@@ -217,7 +217,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
+    args: [contracts.mainnet.OUSDVault.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -255,8 +255,8 @@ const swap: Swap = async ({
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.OUSDVaultCore.address,
-    abi: contracts.mainnet.OUSDVaultCore.abi,
+    address: contracts.mainnet.OUSDVault.address,
+    abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,

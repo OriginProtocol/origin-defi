@@ -85,8 +85,8 @@ export const useHandleRedeem = () => {
     });
     try {
       const { request } = await prepareWriteContract({
-        address: contracts.mainnet.OETHVaultCore.address,
-        abi: contracts.mainnet.OETHVaultCore.abi,
+        address: contracts.mainnet.OETHVault.address,
+        abi: contracts.mainnet.OETHVault.abi,
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
         gas: gas + (gas * GAS_BUFFER) / 100n,

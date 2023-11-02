@@ -28,8 +28,8 @@ import type { EstimateAmount } from '@origin/shared/providers';
 const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
   try {
     await readContract({
-      address: contracts.mainnet.OETHVaultCore.address,
-      abi: contracts.mainnet.OETHVaultCore.abi,
+      address: contracts.mainnet.OETHVault.address,
+      abi: contracts.mainnet.OETHVault.abi,
       functionName: 'priceUnitMint',
       args: [tokenIn.address],
     });
@@ -50,8 +50,8 @@ const estimateAmount: EstimateAmount = async ({
   }
 
   const priceUnitMint = await readContract({
-    address: contracts.mainnet.OETHVaultCore.address,
-    abi: contracts.mainnet.OETHVaultCore.abi,
+    address: contracts.mainnet.OETHVault.address,
+    abi: contracts.mainnet.OETHVault.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
   });
@@ -84,8 +84,8 @@ const estimateGas: EstimateGas = async ({
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OETHVaultCore.address,
-      abi: contracts.mainnet.OETHVaultCore.abi,
+      address: contracts.mainnet.OETHVault.address,
+      abi: contracts.mainnet.OETHVault.abi,
       functionName: 'mint',
       args: [tokenIn.address, amountIn, minAmountOut],
       account: address,
@@ -101,13 +101,13 @@ const estimateGas: EstimateGas = async ({
         readContracts({
           contracts: [
             {
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
+              address: contracts.mainnet.OETHVault.address,
+              abi: contracts.mainnet.OETHVault.abi,
               functionName: 'rebaseThreshold',
             },
             {
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
+              address: contracts.mainnet.OETHVault.address,
+              abi: contracts.mainnet.OETHVault.abi,
               functionName: 'autoAllocateThreshold',
             },
           ],
@@ -137,7 +137,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.OETHVaultCore.address],
+    args: [address, contracts.mainnet.OETHVault.address],
   });
 
   return allowance;
@@ -161,7 +161,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: erc20ABI,
       functionName: 'approve',
-      args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+      args: [contracts.mainnet.OETHVault.address, amountIn],
       account: address,
     });
   } catch {
@@ -219,7 +219,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
-    args: [contracts.mainnet.OETHVaultCore.address, amountIn],
+    args: [contracts.mainnet.OETHVault.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -257,8 +257,8 @@ const swap: Swap = async ({
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.OETHVaultCore.address,
-    abi: contracts.mainnet.OETHVaultCore.abi,
+    address: contracts.mainnet.OETHVault.address,
+    abi: contracts.mainnet.OETHVault.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,
