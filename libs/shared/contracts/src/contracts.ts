@@ -4,16 +4,13 @@ import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
+import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { OETHABI } from './abis/OETH';
+import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
-import { OUSDABI } from './abis/OUSD';
-import { UniswapV2RouterABI } from './abis/UniswapV2Router';
-import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
-import { UniswapV3RouterABI } from './abis/UniswapV3Router';
-import { VaultCoreABI } from './abis/VaultCore';
 import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
@@ -78,41 +75,17 @@ export const contracts = {
       abi: FlipperABI,
       name: 'Flipper',
     },
-    OUSDVaultCore: {
-      address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
+    OUSDDripper: {
+      address: '0xc7068A35F9F5b77471BcFfBdf82D9531D52AFCdc',
       chainId: mainnet.id,
-      abi: VaultCoreABI,
-      name: 'OUSDVault',
+      abi: DripperABI,
+      name: 'Dripper',
     },
-    OUSD: {
-      address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',
+    OETHDripper: {
+      address: '0xc0F42F73b8f01849a2DD99753524d4ba14317EB3',
       chainId: mainnet.id,
-      abi: OUSDABI,
-      name: 'OUSD',
-    },
-    uniswapV2Router: {
-      address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
-      chainId: mainnet.id,
-      abi: UniswapV2RouterABI,
-      name: 'uniswapV2Router',
-    },
-    uniswapV3Quoter: {
-      address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
-      chainId: mainnet.id,
-      abi: UniswapV3QuoterABI,
-      name: 'uniswapV3Quoter',
-    },
-    uniswapV3Router: {
-      address: '0xe592427a0aece92de3edee1f18e0157c05861564',
-      chainId: mainnet.id,
-      abi: UniswapV3RouterABI,
-      name: 'uniswapV3Router',
-    },
-    sushiswapRouter: {
-      address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
-      chainId: mainnet.id,
-      abi: UniswapV2RouterABI,
-      name: 'sushiswapRouter',
+      abi: OETHDripperABI,
+      name: 'Dripper',
     },
   },
 } as const;
