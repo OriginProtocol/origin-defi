@@ -36,7 +36,7 @@ const estimateAmount: EstimateAmount = async ({
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_amount',
     args: [
-      contracts.mainnet.CurveOethPool.address,
+      contracts.mainnet.OETHCurvePool.address,
       tokenIn.address ?? ETH_ADDRESS_CURVE,
       tokenOut.address ?? ETH_ADDRESS_CURVE,
       amountIn,
@@ -73,8 +73,8 @@ const estimateGas: EstimateGas = async ({
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.CurveOethPool.address,
-      abi: contracts.mainnet.CurveOethPool.abi,
+      address: contracts.mainnet.OETHCurvePool.address,
+      abi: contracts.mainnet.OETHCurvePool.abi,
       functionName: 'exchange',
       args: [
         BigInt(
@@ -196,8 +196,8 @@ const swap: Swap = async ({
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.CurveOethPool.address,
-    abi: contracts.mainnet.CurveOethPool.abi,
+    address: contracts.mainnet.OETHCurvePool.address,
+    abi: contracts.mainnet.OETHCurvePool.abi,
     functionName: 'exchange',
     args: [
       BigInt(

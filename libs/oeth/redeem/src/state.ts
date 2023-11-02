@@ -36,8 +36,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
       queryKey: ['assetsDecimals'],
       queryFn: async () => {
         const assets = await readContract({
-          address: contracts.mainnet.OETHVaultCore.address,
-          abi: contracts.mainnet.OETHVaultCore.abi,
+          address: contracts.mainnet.OETHVault.address,
+          abi: contracts.mainnet.OETHVault.abi,
           functionName: 'getAllAssets',
         });
 
@@ -81,8 +81,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             queryKey: ['splitEstimates', state.amountIn.toString()],
             queryFn: async () =>
               readContract({
-                address: contracts.mainnet.OETHVaultCore.address,
-                abi: contracts.mainnet.OETHVaultCore.abi,
+                address: contracts.mainnet.OETHVault.address,
+                abi: contracts.mainnet.OETHVault.abi,
                 functionName: 'calculateRedeemOutputs',
                 args: [state.amountIn],
               }),
@@ -141,8 +141,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             ],
             queryFn: () =>
               publicClient.estimateContractGas({
-                address: contracts.mainnet.OETHVaultCore.address,
-                abi: contracts.mainnet.OETHVaultCore.abi,
+                address: contracts.mainnet.OETHVault.address,
+                abi: contracts.mainnet.OETHVault.abi,
                 functionName: 'redeem',
                 args: [state.amountIn, minAmountOut],
                 account: whales.mainnet.OETH,

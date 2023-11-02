@@ -35,8 +35,8 @@ export const usePendingYield = (
         await readContracts({
           contracts: [
             {
-              address: contracts.mainnet.OETHVaultCore.address,
-              abi: contracts.mainnet.OETHVaultCore.abi,
+              address: contracts.mainnet.OETHVault.address,
+              abi: contracts.mainnet.OETHVault.abi,
               functionName: 'totalValue',
             },
             {

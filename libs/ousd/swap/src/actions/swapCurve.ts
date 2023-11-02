@@ -34,7 +34,7 @@ const isRouteAvailable: IsRouteAvailable = async ({
       abi: curve.CurveRegistryExchange.abi,
       functionName: 'get_exchange_amount',
       args: [
-        contracts.mainnet.CurveOusdMetaPool.address,
+        contracts.mainnet.OUSDCurveMetaPool.address,
         tokenIn.address,
         tokenOut.address,
         amountIn,
@@ -67,7 +67,7 @@ const estimateAmount: EstimateAmount = async ({
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_amount',
     args: [
-      contracts.mainnet.CurveOusdMetaPool.address,
+      contracts.mainnet.OUSDCurveMetaPool.address,
       tokenIn.address,
       tokenOut.address,
       amountIn,
@@ -97,8 +97,8 @@ const estimateGas: EstimateGas = async ({
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.CurveOusdMetaPool.address,
-      abi: contracts.mainnet.CurveOusdMetaPool.abi,
+      address: contracts.mainnet.OUSDCurveMetaPool.address,
+      abi: contracts.mainnet.OUSDCurveMetaPool.abi,
       functionName: 'exchange_underlying',
       args: [
         BigInt(
@@ -166,7 +166,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.CurveOusdMetaPool.address],
+    args: [address, contracts.mainnet.OUSDCurveMetaPool.address],
   });
 
   return allowance as unknown as bigint;
@@ -190,7 +190,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.CurveOusdMetaPool.address, amountIn],
+      args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
       account: address,
     });
   } catch {
@@ -205,7 +205,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.CurveOusdMetaPool.address, amountIn],
+    args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -245,8 +245,8 @@ const swap: Swap = async ({
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.CurveOusdMetaPool.address,
-    abi: contracts.mainnet.CurveOusdMetaPool.abi,
+    address: contracts.mainnet.OUSDCurveMetaPool.address,
+    abi: contracts.mainnet.OUSDCurveMetaPool.abi,
     functionName: 'exchange_underlying',
     args: [
       BigInt(

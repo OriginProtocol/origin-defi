@@ -48,7 +48,7 @@ const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'balanceOf',
-      args: [contracts.mainnet.Flipper.address],
+      args: [contracts.mainnet.OUSDFlipper.address],
     });
 
     return (balance as unknown as bigint) >= amountIn;
@@ -68,8 +68,8 @@ const estimateAmount: EstimateAmount = async ({
   try {
     const estimate = (
       await publicClient.simulateContract({
-        address: contracts.mainnet.Flipper.address,
-        abi: contracts.mainnet.Flipper.abi,
+        address: contracts.mainnet.OUSDFlipper.address,
+        abi: contracts.mainnet.OUSDFlipper.abi,
         functionName: getFunctionName(tokenIn, tokenOut),
         args: [scaledAmount],
       })
@@ -122,7 +122,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.Flipper.address],
+    args: [address, contracts.mainnet.OUSDFlipper.address],
   });
 
   return allowance as unknown as bigint;
@@ -146,7 +146,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.Flipper.address, amountIn],
+      args: [contracts.mainnet.OUSDFlipper.address, amountIn],
       account: address,
     });
   } catch {
@@ -161,7 +161,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.Flipper.address, amountIn],
+    args: [contracts.mainnet.OUSDFlipper.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -186,8 +186,8 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
   const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.Flipper.address,
-    abi: contracts.mainnet.Flipper.abi,
+    address: contracts.mainnet.OUSDFlipper.address,
+    abi: contracts.mainnet.OUSDFlipper.abi,
     functionName: getFunctionName(tokenIn, tokenOut),
     args: [scaledAmount],
     gas,
