@@ -1,6 +1,6 @@
 import { queryClient } from '@origin/oeth/shared';
 import { contracts } from '@origin/shared/contracts';
-import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, substractSlippage } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
@@ -80,7 +80,11 @@ const estimateGas: EstimateGas = async ({
   const publicClient = getPublicClient();
   const { address } = getAccount();
 
-  const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = substractSlippage(
+    amountOut,
+    tokenOut.decimals,
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -245,7 +249,11 @@ const swap: Swap = async ({
     throw new Error(`Mint vault is not approved`);
   }
 
-  const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = substractSlippage(
+    amountOut,
+    tokenOut.decimals,
+    slippage,
+  );
 
   const estimatedGas = await estimateGas({
     amountIn,

@@ -11,7 +11,11 @@ import {
   useSlippage,
   useUpdateActivity,
 } from '@origin/shared/providers';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  isUserRejected,
+  substractSlippage,
+} from '@origin/shared/utils';
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -19,7 +23,6 @@ import {
 } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
-import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useQueryClient } from 'wagmi';
 
 import { GAS_BUFFER, MIX_TOKEN } from './constants';
@@ -57,12 +60,10 @@ export const useHandleRedeem = () => {
       return;
     }
 
-    const minAmountOut = parseUnits(
-      (
-        +formatUnits(amountOut, MIX_TOKEN.decimals) -
-        +formatUnits(amountOut, MIX_TOKEN.decimals) * slippage
-      ).toString(),
+    const minAmountOut = substractSlippage(
+      amountOut,
       MIX_TOKEN.decimals,
+      slippage,
     );
 
     const activity = pushActivity({

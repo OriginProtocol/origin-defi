@@ -2,14 +2,14 @@ import { useEffect, useState } from 'react';
 
 import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { usePushNotification, useSlippage } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, substractSlippage } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAccount, getPublicClient, readContract } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
-import { formatUnits, isAddressEqual, parseUnits } from 'viem';
+import { formatUnits, isAddressEqual } from 'viem';
 
 import { MIX_TOKEN } from './constants';
 
@@ -123,12 +123,10 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         const publicClient = getPublicClient();
         const { address } = getAccount();
 
-        const minAmountOut = parseUnits(
-          (
-            +formatUnits(total, MIX_TOKEN.decimals) -
-            +formatUnits(total, MIX_TOKEN.decimals) * slippage
-          ).toString(),
+        const minAmountOut = substractSlippage(
+          total,
           MIX_TOKEN.decimals,
+          slippage,
         );
 
         try {
