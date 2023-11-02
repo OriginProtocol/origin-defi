@@ -1,53 +1,39 @@
+import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
-import { addRatio, isAddressEqual, isNilOrEmpty } from '@origin/shared/utils';
+import { addRatio, isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
   prepareWriteContract,
   readContract,
+  readContracts,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 
-import { GAS_BUFFER, MAX_PRICE } from '../constants';
+import { GAS_BUFFER } from '../constants';
 
 import type {
   Allowance,
   Approve,
   EstimateAmount,
   EstimateApprovalGas,
-  EstimateGas,
   EstimateRoute,
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-  curve,
-}) => {
+const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
   try {
-    const estimate = await readContract({
-      address: curve.CurveRegistryExchange.address,
-      abi: curve.CurveRegistryExchange.abi,
-      functionName: 'get_exchange_amount',
-      args: [
-        contracts.mainnet.CurveOusdMetaPool.address,
-        tokenIn.address,
-        tokenOut.address,
-        amountIn,
-      ],
+    await readContract({
+      address: contracts.mainnet.OUSDVaultCore.address,
+      abi: contracts.mainnet.OUSDVaultCore.abi,
+      functionName: 'priceUnitMint',
+      args: [tokenIn.address],
     });
-    return (
-      +formatUnits(amountIn, tokenIn.decimals) /
-        +formatUnits(estimate as unknown as bigint, tokenOut.decimals) <
-      MAX_PRICE
-    );
-  } catch (e) {
-    console.log(e);
-  }
+
+    return true;
+  } catch {}
 
   return false;
 };
@@ -56,34 +42,32 @@ const estimateAmount: EstimateAmount = async ({
   amountIn,
   tokenIn,
   tokenOut,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
-  const estimate = await readContract({
-    address: curve.CurveRegistryExchange.address,
-    abi: curve.CurveRegistryExchange.abi,
-    functionName: 'get_exchange_amount',
-    args: [
-      contracts.mainnet.CurveOusdMetaPool.address,
-      tokenIn.address,
-      tokenOut.address,
-      amountIn,
-    ],
+  const priceUnitMint = await readContract({
+    address: contracts.mainnet.OUSDVaultCore.address,
+    abi: contracts.mainnet.OUSDVaultCore.abi,
+    functionName: 'priceUnitMint',
+    args: [tokenIn.address],
   });
 
-  return estimate as unknown as bigint;
+  return parseUnits(
+    (
+      +formatUnits(amountIn, tokenIn.decimals) * +formatUnits(priceUnitMint, 18)
+    ).toString(),
+    tokenOut.decimals,
+  );
 };
 
-const estimateGas: EstimateGas = async ({
+const estimateGas = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  amountOut,
   slippage,
-  curve,
+  amountOut,
 }) => {
   let gasEstimate = 0n;
 
@@ -93,30 +77,49 @@ const estimateGas: EstimateGas = async ({
 
   const publicClient = getPublicClient();
   const { address } = getAccount();
+
   const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.CurveOusdMetaPool.address,
-      abi: contracts.mainnet.CurveOusdMetaPool.abi,
-      functionName: 'exchange_underlying',
-      args: [
-        BigInt(
-          curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenIn.address),
-          ),
-        ),
-        BigInt(
-          curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenOut.address),
-          ),
-        ),
-        amountIn,
-        minAmountOut,
-      ],
+      address: contracts.mainnet.OUSDVaultCore.address,
+      abi: contracts.mainnet.OUSDVaultCore.abi,
+      functionName: 'mint',
+      args: [tokenIn.address, amountIn, minAmountOut],
       account: address,
     });
+
+    return gasEstimate;
   } catch {}
+
+  const [rebaseThreshold, autoAllocateThreshold] = await queryClient.fetchQuery(
+    {
+      queryKey: ['vault-info', tokenOut.address],
+      queryFn: () =>
+        readContracts({
+          contracts: [
+            {
+              address: contracts.mainnet.OUSDVaultCore.address,
+              abi: contracts.mainnet.OUSDVaultCore.abi,
+              functionName: 'rebaseThreshold',
+            },
+            {
+              address: contracts.mainnet.OUSDVaultCore.address,
+              abi: contracts.mainnet.OUSDVaultCore.abi,
+              functionName: 'autoAllocateThreshold',
+            },
+          ],
+        }),
+      staleTime: Infinity,
+    },
+  );
+
+  gasEstimate = 220000n;
+  if (amountIn > autoAllocateThreshold?.result) {
+    gasEstimate = 2900000n;
+  } else if (amountIn > rebaseThreshold?.result) {
+    gasEstimate = 510000n;
+  }
 
   return gasEstimate;
 };
@@ -125,30 +128,39 @@ const estimateRoute: EstimateRoute = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  slippage,
   route,
-  curve,
+  slippage,
 }) => {
+  if (amountIn === 0n) {
+    return {
+      ...route,
+      estimatedAmount: 0n,
+      gas: 0n,
+      rate: 0,
+      allowanceAmount: 0n,
+      approvalGas: 0n,
+    };
+  }
+
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn, curve }),
-    allowance({ tokenIn, tokenOut, curve }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut, curve }),
+    estimateAmount({ tokenIn, tokenOut, amountIn }),
+    allowance({ tokenIn, tokenOut }),
+    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
   const gas = await estimateGas({
     tokenIn,
     tokenOut,
     amountIn,
-    amountOut: estimatedAmount,
     slippage,
-    curve,
+    amountOut: estimatedAmount,
   });
 
   return {
     ...route,
     estimatedAmount,
-    allowanceAmount,
-    approvalGas,
     gas,
+    approvalGas,
+    allowanceAmount,
     rate:
       +formatUnits(estimatedAmount, tokenOut.decimals) /
       +formatUnits(amountIn, tokenIn.decimals),
@@ -166,7 +178,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.CurveOusdMetaPool.address],
+    args: [address, contracts.mainnet.OUSDVaultCore.address],
   });
 
   return allowance as unknown as bigint;
@@ -190,22 +202,22 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.CurveOusdMetaPool.address, amountIn],
+      args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
       account: address,
     });
   } catch {
-    approvalEstimate = 60000n;
+    approvalEstimate = 200000n;
   }
 
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.CurveOusdMetaPool.address, amountIn],
+    args: [contracts.mainnet.OUSDVaultCore.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -218,7 +230,6 @@ const swap: Swap = async ({
   amountIn,
   slippage,
   amountOut,
-  curve,
 }) => {
   const { address } = getAccount();
 
@@ -229,40 +240,25 @@ const swap: Swap = async ({
   const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    throw new Error(`Curve swap is not approved`);
+    throw new Error(`Mint vault is not approved`);
   }
 
   const minAmountOut = addRatio(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
+    amountIn,
+    slippage,
     tokenIn,
     tokenOut,
-    amountIn,
     amountOut,
-    slippage,
-    curve,
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.CurveOusdMetaPool.address,
-    abi: contracts.mainnet.CurveOusdMetaPool.abi,
-    functionName: 'exchange_underlying',
-    args: [
-      BigInt(
-        curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenIn.address),
-        ),
-      ),
-      BigInt(
-        curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenOut.address),
-        ),
-      ),
-      amountIn,
-      minAmountOut,
-    ],
-    account: address,
+    address: contracts.mainnet.OUSDVaultCore.address,
+    abi: contracts.mainnet.OUSDVaultCore.abi,
+    functionName: 'mint',
+    args: [tokenIn.address, amountIn, minAmountOut],
     gas,
   });
   const { hash } = await writeContract(request);

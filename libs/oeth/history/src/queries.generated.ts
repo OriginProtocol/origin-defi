@@ -9,17 +9,17 @@ export type HistoryPageQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryPageQuery = { __typename?: 'Query', addresses: Array<{ __typename?: 'Address', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string, history: Array<{ __typename?: 'History', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> }> };
+export type HistoryPageQuery = { __typename?: 'Query', oethAddresses: Array<{ __typename?: 'OETHAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string, history: Array<{ __typename?: 'OETHHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> }> };
 
 export type HistoryApyQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type HistoryApyQuery = { __typename?: 'Query', apies: Array<{ __typename?: 'APY', apy7DayAvg: number, apy30DayAvg: number }> };
+export type HistoryApyQuery = { __typename?: 'Query', oethapies: Array<{ __typename?: 'OETHAPY', apy7DayAvg: number, apy30DayAvg: number }> };
 
 
 export const HistoryPageDocument = `
     query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
-  addresses(where: {id_containsInsensitive: $address}) {
+  oethAddresses(where: {id_containsInsensitive: $address}) {
     balance
     earned
     isContract
@@ -59,7 +59,7 @@ useHistoryPageQuery.getKey = (variables: HistoryPageQueryVariables) => ['History
 useHistoryPageQuery.fetcher = (variables: HistoryPageQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryPageQuery, HistoryPageQueryVariables>(HistoryPageDocument, variables, options);
 export const HistoryApyDocument = `
     query HistoryApy {
-  apies(limit: 1, orderBy: timestamp_DESC) {
+  oethapies(limit: 1, orderBy: timestamp_DESC) {
     apy7DayAvg
     apy30DayAvg
   }

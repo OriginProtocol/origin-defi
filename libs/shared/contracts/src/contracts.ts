@@ -2,27 +2,39 @@ import { mainnet } from 'wagmi/chains';
 
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
+import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { FlipperABI } from './abis/Flipper';
 import { OETHABI } from './abis/OETH';
 import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { OUSDABI } from './abis/OUSD';
+import { UniswapV2RouterABI } from './abis/UniswapV2Router';
+import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
+import { UniswapV3RouterABI } from './abis/UniswapV3Router';
+import { VaultCoreABI } from './abis/VaultCore';
 import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
   mainnet: {
-    curveOethPool: {
+    CurveOethPool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
       abi: CurvePoolABI,
-      name: 'curveOethPool',
+      name: 'CurveOethPool',
     },
     CurveAddressProvider: {
       address: '0x0000000022d53366457f9d5e68ec105046fc4383',
       chainId: mainnet.id,
       abi: CurveAddressProviderABI,
       name: 'CurveAddressProvider',
+    },
+    CurveOusdMetaPool: {
+      address: '0x87650D7bbfC3A9F10587d7778206671719d9910D',
+      chainId: mainnet.id,
+      abi: CurveMetaPoolABI,
+      name: 'CurveOusdMetaPool',
     },
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',
@@ -40,7 +52,7 @@ export const contracts = {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
       abi: OETHVaultCoreABI,
-      name: 'vault',
+      name: 'OETHVault',
     },
     wOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
@@ -65,6 +77,42 @@ export const contracts = {
       chainId: mainnet.id,
       abi: FlipperABI,
       name: 'Flipper',
+    },
+    OUSDVaultCore: {
+      address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
+      chainId: mainnet.id,
+      abi: VaultCoreABI,
+      name: 'OUSDVault',
+    },
+    OUSD: {
+      address: '0x2A8e1E676Ec238d8A992307B495b45B3fEAa5e86',
+      chainId: mainnet.id,
+      abi: OUSDABI,
+      name: 'OUSD',
+    },
+    uniswapV2Router: {
+      address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'uniswapV2Router',
+    },
+    uniswapV3Quoter: {
+      address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+      chainId: mainnet.id,
+      abi: UniswapV3QuoterABI,
+      name: 'uniswapV3Quoter',
+    },
+    uniswapV3Router: {
+      address: '0xe592427a0aece92de3edee1f18e0157c05861564',
+      chainId: mainnet.id,
+      abi: UniswapV3RouterABI,
+      name: 'uniswapV3Router',
+    },
+    sushiswapRouter: {
+      address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'sushiswapRouter',
     },
   },
 } as const;

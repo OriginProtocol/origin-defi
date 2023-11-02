@@ -1,5 +1,5 @@
 query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
-  addresses(where: { id_containsInsensitive: $address }) {
+  oethAddresses(where: { id_containsInsensitive: $address }) {
     balance
     earned
     isContract
@@ -21,7 +21,7 @@ query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
 }
 
 query HistoryApy {
-  apies(limit: 1, orderBy: timestamp_DESC) {
+  oethapies(limit: 1, orderBy: timestamp_DESC) {
     apy7DayAvg
     apy30DayAvg
   }

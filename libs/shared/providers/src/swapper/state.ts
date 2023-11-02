@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
@@ -37,7 +38,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
     });
     const queryClient = useQueryClient();
     const { value: slippage } = useSlippage();
-    const { CurveRegistryExchange, OethPoolUnderlyings } = useCurve();
+    const { data: curve } = useCurve();
 
     useDebouncedEffect(
       async () => {
@@ -62,21 +63,23 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           state.tokenIn,
           state.tokenOut,
         );
-        const filteredRoutes = [];
-        for (const r of availableRoutes) {
-          const isRouteAvailable = await swapActions[r.action].isRouteAvailable(
-            {
+        const availabilities = await Promise.allSettled(
+          availableRoutes.map((r) =>
+            swapActions[r.action].isRouteAvailable({
               amountIn: state.amountIn,
               tokenIn: r.tokenIn,
               tokenOut: r.tokenOut,
-            },
-          );
-          if (isRouteAvailable) {
-            filteredRoutes.push(r);
-          }
-        }
+              curve,
+            }),
+          ),
+        );
+        const filteredRoutes = availableRoutes.filter(
+          (_, i) =>
+            availabilities[i].status === 'fulfilled' &&
+            (availabilities[i] as PromiseFulfilledResult<boolean>).value,
+        );
 
-        const routes = await Promise.all(
+        const routes = await Promise.allSettled(
           filteredRoutes.map((route) =>
             queryClient.fetchQuery({
               queryKey: [
@@ -97,10 +100,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                     amountOut: state.amountOut,
                     route,
                     slippage,
-                    curve: {
-                      CurveRegistryExchange,
-                      OethPoolUnderlyings,
-                    },
+                    curve,
                   });
                 } catch (error) {
                   console.error(
@@ -124,16 +124,20 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           ),
         );
 
-        const sortedRoutes = routes.sort((a, b) => {
-          const valA =
-            a.estimatedAmount -
-            (a.gas + (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
-          const valB =
-            b.estimatedAmount -
-            (b.gas + (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
+        const sortedRoutes = routes
+          .map((r) => (r.status === 'fulfilled' ? r.value : null))
+          .sort((a, b) => {
+            const valA =
+              scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
+              (a.gas +
+                (a.allowanceAmount < state.amountIn ? a.approvalGas : 0n));
+            const valB =
+              scale(b.estimatedAmount, b.tokenOut.decimals, 18) -
+              (b.gas +
+                (b.allowanceAmount < state.amountIn ? b.approvalGas : 0n));
 
-          return valA < valB ? 1 : valA > valB ? -1 : 0;
-        });
+            return valA < valB ? 1 : valA > valB ? -1 : 0;
+          });
 
         setState(
           produce((draft) => {

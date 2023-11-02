@@ -1,7 +1,10 @@
 import { erc20ABI } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
+import { DAIABI } from './abis/DAI';
 import { sfrxethABI } from './abis/sfrxeth';
+import { USDCABI } from './abis/USDC';
+import { USDTABI } from './abis/USDT';
 
 export const tokens = {
   mainnet: {
@@ -27,7 +30,7 @@ export const tokens = {
     DAI: {
       address: '0x6b175474e89094c44da98b954eedeac495271d0f',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: DAIABI,
       name: 'Dai Stablecoin',
       icon: '/images/tokens/DAI.svg',
       decimals: 18,
@@ -36,7 +39,7 @@ export const tokens = {
     USDC: {
       address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: USDCABI,
       name: 'USD Coin',
       icon: '/images/tokens/USDC.svg',
       decimals: 6,
@@ -45,7 +48,7 @@ export const tokens = {
     USDT: {
       address: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: USDTABI,
       name: 'Tether USD',
       icon: '/images/tokens/USDT.svg',
       decimals: 6,

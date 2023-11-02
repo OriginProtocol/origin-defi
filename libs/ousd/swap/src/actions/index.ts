@@ -1,7 +1,7 @@
 import { defineMessage } from 'react-intl';
 
 import flipper from './flipper';
-import originVault from './originVault';
+import mintVault from './mintVault';
 import sushiswap from './sushiswap';
 import swapCurve from './swapCurve';
 import uniswapV2 from './uniswapV2';
@@ -63,10 +63,11 @@ export const swapActions: Record<SwapAction, SwapApi> = {
     ...flipper,
     routeLabel: defineMessage({ defaultMessage: 'Flipper' }),
   },
-  'origin-vault': {
+  'mint-vault': {
     ...defaultApi,
-    ...originVault,
+    ...mintVault,
     routeLabel: defineMessage({ defaultMessage: 'Origin Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
   sushiswap: {
     ...defaultApi,

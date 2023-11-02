@@ -1,13 +1,16 @@
 import { Container, Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { RebaseBanner } from '@origin/shared/providers';
+import { RebaseBanner, useCurve, usePrices } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
+  useCurve();
+  usePrices();
+
   return (
     <ErrorBoundary
       ErrorComponent={<ErrorPage height={1} width={1} />}

@@ -23,6 +23,7 @@ export const usePrices = (
 ) => {
   return useQuery({
     queryKey: ['usePrices', tokens] as const,
+    staleTime: import.meta.env.DEV ? 1000 * 60 * 30 : 1000 * 30,
     queryFn: async ({ queryKey }) => {
       let tokens = queryKey[1];
       if (isNilOrEmpty(tokens)) {

@@ -1,7 +1,6 @@
 import { forwardRef, useEffect, useState } from 'react';
 
 import { InputBase } from '@mui/material';
-import { Skeleton } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { formatUnits, parseUnits } from 'viem';
@@ -13,12 +12,11 @@ export type BigintInputProps = {
   value: bigint;
   decimals?: number;
   onChange?: (value: bigint) => void;
-  isLoading?: boolean;
   isError?: boolean;
 } & Omit<InputBaseProps, 'value' | 'onChange' | 'inputRef'>;
 
 export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
-  ({ value, decimals = 18, isLoading, isError, onChange, ...rest }, ref) => {
+  ({ value, decimals = 18, isError, onChange, ...rest }, ref) => {
     const [strVal, setStrVal] = useState(formatUnits(value, decimals));
     const prev = usePrevious(strVal);
 
@@ -34,6 +32,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
 
       if (
         isNilOrEmpty(strVal) ||
+        isNilOrEmpty(prev) ||
         strVal === '0.' ||
         value !== parseUnits(prev, decimals)
       ) {
@@ -57,9 +56,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       }
     };
 
-    return isLoading ? (
-      <Skeleton width={100} height={24} />
-    ) : (
+    return (
       <InputBase
         type="text"
         spellCheck="false"

@@ -5,6 +5,7 @@ import type { SwapRoute } from '@origin/shared/providers';
 import type { SwapAction } from './types';
 
 export const GAS_BUFFER = 10n; // 10%
+export const MAX_PRICE = 1.2;
 
 export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Mint DAI -> OUSD
@@ -31,7 +32,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.DAI,
@@ -62,7 +63,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.USDT,
@@ -93,7 +94,7 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'origin-vault',
+    action: 'mint-vault',
   },
   {
     tokenIn: tokens.mainnet.USDC,
@@ -109,11 +110,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'origin-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.DAI,
     action: 'sushiswap',
   },
   {
@@ -125,6 +121,11 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
     action: 'uniswap-v3',
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.DAI,
+    action: 'swap-curve',
   },
   // Redeem OUSD -> USDT
   {
@@ -135,11 +136,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'origin-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.USDT,
     action: 'sushiswap',
   },
   {
@@ -151,6 +147,11 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
     action: 'uniswap-v3',
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDT,
+    action: 'swap-curve',
   },
   // Redeem OUSD -> USDC
   {
@@ -161,11 +162,6 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'origin-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.USDC,
     action: 'sushiswap',
   },
   {
@@ -177,5 +173,10 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
     action: 'uniswap-v3',
+  },
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.USDC,
+    action: 'swap-curve',
   },
 ];

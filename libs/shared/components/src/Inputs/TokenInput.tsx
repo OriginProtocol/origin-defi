@@ -16,6 +16,8 @@ import type { Token } from '@origin/shared/contracts';
 
 import type { BigintInputProps } from './BigIntInput';
 
+// When clicking max on native currency, we leave this amount of token
+// on the wallet so the user can afford the transaction gas fees
 const MIN_ETH_FOR_GAS = '0.015';
 
 export type TokenInputProps = {
@@ -94,16 +96,20 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             gap: 1,
           }}
         >
-          <BigIntInput
-            {...inputProps}
-            value={amount}
-            decimals={decimals}
-            onChange={onAmountChange}
-            disabled={isAmountDisabled}
-            isLoading={isAmountLoading}
-            ref={ref}
-            sx={{ flexGrow: 1, ...inputProps?.sx }}
-          />
+          {isAmountLoading ? (
+            <Skeleton width={100} height={36} />
+          ) : (
+            <BigIntInput
+              {...inputProps}
+              value={amount}
+              decimals={decimals}
+              onChange={onAmountChange}
+              disabled={isAmountDisabled}
+              ref={ref}
+              sx={{ flexGrow: 1, height: 36, ...inputProps?.sx }}
+            />
+          )}
+
           <TokenButton
             token={token}
             onClick={onTokenClick}
@@ -139,7 +145,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           >
             {isConnected ? (
               isBalanceLoading ? (
-                <Skeleton width={28} />
+                <Skeleton width={38} />
               ) : (
                 <>
                   <Typography
