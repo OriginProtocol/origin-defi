@@ -22,7 +22,7 @@ export function APYContainer() {
     { address: address?.toLowerCase(), offset: 0 },
     {
       enabled: isConnected,
-      select: (data) => data?.addresses?.at(0),
+      select: (data) => data?.oethAddresses?.at(0),
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =

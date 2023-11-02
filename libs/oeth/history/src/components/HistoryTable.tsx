@@ -28,7 +28,7 @@ import type { HistoryType } from '@origin/oeth/shared';
 
 import type { HistoryPageQuery } from '../queries.generated';
 
-export type Rows = HistoryPageQuery['addresses'][0]['history'];
+export type Rows = HistoryPageQuery['oethAddresses'][0]['history'];
 
 interface Props {
   rows: Rows;
