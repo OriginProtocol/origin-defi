@@ -260,7 +260,7 @@ function SwapperWrapped({
                 decimals={tokenOut.decimals}
                 balance={balTokenOut?.value}
                 isAmountLoading={isSwapRoutesLoading}
-                isBalanceLoading={isSwapRoutesLoading || isBalTokenOutLoading}
+                isBalanceLoading={isBalTokenOutLoading}
                 token={tokenOut}
                 onTokenClick={() => {
                   setTokenSource('tokenOut');

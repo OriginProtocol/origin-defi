@@ -272,6 +272,82 @@ export const VaultCoreABI = [
     inputs: [
       {
         indexed: false,
+        internalType: 'uint256',
+        name: '_basis',
+        type: 'uint256',
+      },
+    ],
+    name: 'SwapAllowedUndervalueChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_asset',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_basis',
+        type: 'uint256',
+      },
+    ],
+    name: 'SwapSlippageChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_fromAsset',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_toAsset',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_fromAssetAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_toAssetAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'Swapped',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_address',
+        type: 'address',
+      },
+    ],
+    name: 'SwapperChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: 'address',
         name: '_address',
         type: 'address',
@@ -398,6 +474,33 @@ export const VaultCoreABI = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+    name: 'getAssetConfig',
+    outputs: [
+      {
+        components: [
+          { internalType: 'bool', name: 'isSupported', type: 'bool' },
+          {
+            internalType: 'enum VaultStorage.UnitConversion',
+            name: 'unitConversion',
+            type: 'uint8',
+          },
+          { internalType: 'uint8', name: 'decimals', type: 'uint8' },
+          {
+            internalType: 'uint16',
+            name: 'allowedOracleSlippageBps',
+            type: 'uint16',
+          },
+        ],
+        internalType: 'struct VaultStorage.Asset',
+        name: 'config',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'getAssetCount',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -482,6 +585,20 @@ export const VaultCoreABI = [
     inputs: [],
     name: 'priceProvider',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitMint',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitRedeem',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },

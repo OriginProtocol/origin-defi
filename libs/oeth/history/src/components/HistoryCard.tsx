@@ -25,7 +25,10 @@ export function HistoryCard() {
       filters: filters.length ? filters : undefined,
       offset: page * PAGE_SIZE,
     },
-    { enabled: isConnected, select: (data) => data?.addresses?.at(0)?.history },
+    {
+      enabled: isConnected,
+      select: (data) => data?.oethAddresses?.at(0)?.history,
+    },
   );
 
   return (

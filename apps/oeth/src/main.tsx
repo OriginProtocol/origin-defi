@@ -13,7 +13,6 @@ import {
 } from '@origin/oeth/shared';
 import {
   ActivityProvider,
-  CurveProvider,
   GeoFenceProvider,
   logWelcomeMessage,
   NotificationsProvider,
@@ -56,7 +55,6 @@ root.render(
       [ThemeProvider],
       [WagmiConfig, { config: wagmiConfig }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
-      [CurveProvider],
       [NotificationsProvider],
       [ActivityProvider],
       [GeoFenceProvider],
