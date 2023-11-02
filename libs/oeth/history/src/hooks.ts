@@ -1,7 +1,6 @@
 import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
-import { readContract } from '@wagmi/core';
-import axios from 'axios';
+import { readContracts } from '@wagmi/core';
 import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -26,29 +25,52 @@ export const usePendingYield = (
         return 0;
       }
 
-      const [creditsBalanceOf, maxWithdraw, ratios] = await Promise.all([
-        readContract({
-          address: contracts.mainnet.OETH.address,
-          abi: contracts.mainnet.OETH.abi,
-          functionName: 'creditsBalanceOf',
-          args: [address],
-        }),
-        readContract({
-          address: contracts.mainnet.wOETH.address,
-          abi: contracts.mainnet.wOETH.abi,
-          functionName: 'maxWithdraw',
-          args: [address],
-        }),
-        axios.get('https://analytics.ousd.com/api/v2/oeth/ratios'),
-      ]);
+      const [
+        totalValue,
+        totalSupply,
+        availableFunds,
+        nonRebasingSupply,
+        balance,
+      ] = (
+        await readContracts({
+          contracts: [
+            {
+              address: contracts.mainnet.OETHVaultCore.address,
+              abi: contracts.mainnet.OETHVaultCore.abi,
+              functionName: 'totalValue',
+            },
+            {
+              address: contracts.mainnet.OETH.address,
+              abi: contracts.mainnet.OETH.abi,
+              functionName: 'totalSupply',
+            },
+            {
+              address: contracts.mainnet.Dripper.address,
+              abi: contracts.mainnet.Dripper.abi,
+              functionName: 'availableFunds',
+            },
+            {
+              address: contracts.mainnet.OETH.address,
+              abi: contracts.mainnet.OETH.abi,
+              functionName: 'nonRebasingSupply',
+            },
+            {
+              address: contracts.mainnet.OETH.address,
+              abi: contracts.mainnet.OETH.abi,
+              functionName: 'balanceOf',
+              args: [address],
+            },
+          ],
+        })
+      ).map((res) => (res.status === 'success' ? +formatEther(res.result) : 0));
 
-      const currentRatio = ratios?.data?.current_credits_per_token ?? 1;
-      const nextRatio = ratios?.data?.next_credits_per_token ?? 1;
-      const credits = isWrapped
-        ? +formatEther(maxWithdraw) * +formatEther(creditsBalanceOf[1])
-        : +formatEther(creditsBalanceOf[0]);
+      const vaultYield = totalValue - totalSupply;
+      const expectedYield = vaultYield + availableFunds;
+      const rebasingSupply = totalSupply - nonRebasingSupply;
+      const expectedYieldPerOeth = expectedYield / rebasingSupply;
+      const expectedYieldPerOethWithFee = expectedYieldPerOeth * 0.8;
 
-      return Math.max(0, credits / nextRatio - credits / currentRatio);
+      return balance * expectedYieldPerOethWithFee;
     },
     ...options,
   });
