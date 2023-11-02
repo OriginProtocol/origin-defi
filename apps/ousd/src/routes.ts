@@ -1,3 +1,4 @@
+import { RedeemView } from '@origin/ousd/redeem';
 import { SwapView } from '@origin/ousd/swap';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
@@ -16,11 +17,11 @@ export const routes: RouteObject[] = [
         Component: SwapView,
         handle: { label: defineMessage({ defaultMessage: 'Swap' }) },
       },
-      // {
-      //   path: '/redeem',
-      //   Component: RedeemView,
-      //   handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
-      // },
+      {
+        path: '/redeem',
+        Component: RedeemView,
+        handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
+      },
       // {
       //   path: '/history',
       //   Component: HistoryView,
