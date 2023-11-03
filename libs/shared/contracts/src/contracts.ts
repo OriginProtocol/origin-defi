@@ -9,7 +9,6 @@ import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
 import { OETHABI } from './abis/OETH';
 import { OETHDripperABI } from './abis/OETHDripper';
-import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
@@ -61,7 +60,7 @@ export const contracts = {
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
-      abi: OETHVaultCoreABI,
+      abi: IVaultABI,
       name: 'OETHVault',
     },
     OETHZapper: {

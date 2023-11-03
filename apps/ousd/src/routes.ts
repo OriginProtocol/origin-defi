@@ -1,9 +1,9 @@
-import { RedeemView } from '@origin/ousd/redeem';
 import { SwapView } from '@origin/ousd/swap';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
+import { RedeemView } from './views/RedeemView';
 
 import type { RouteObject } from 'react-router-dom';
 
