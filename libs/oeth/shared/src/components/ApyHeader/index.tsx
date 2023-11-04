@@ -96,7 +96,12 @@ export const ApyHeader = (props: StackProps) => {
             height: 20,
           }}
         >
-          <Box component="img" alt="dropdown" src="/images/dropdown.svg" />
+          <Box
+            component="img"
+            alt="dropdown"
+            src="/images/dropdown.svg"
+            sx={{ width: 20, height: 20 }}
+          />
         </Box>
       </Button>
       <Menu

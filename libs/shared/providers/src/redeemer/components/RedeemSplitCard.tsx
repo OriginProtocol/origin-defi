@@ -177,7 +177,11 @@ function SplitRow({
       {...rest}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Box component="img" src={estimate.token.icon} />
+        <Box
+          component="img"
+          src={estimate.token.icon}
+          sx={{ width: 24, height: 24 }}
+        />
         <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
       </Stack>
       <Stack
