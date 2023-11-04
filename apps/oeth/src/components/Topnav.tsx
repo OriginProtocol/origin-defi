@@ -65,8 +65,8 @@ export function Topnav(props: BoxProps) {
             xs: 'none',
             md: `1px solid ${theme.palette.background.paper}`,
           },
-          columnGap: { xs: 1, md: 10 },
-          rowGap: { xs: 0, md: 10 },
+          columnGap: { xs: 1, md: 6 },
+          rowGap: 0,
           alignItems: 'center',
           px: {
             xs: 1.5,
@@ -86,15 +86,10 @@ export function Topnav(props: BoxProps) {
           component={Link}
           to="/"
           sx={(theme) => ({
-            '& img': {
-              maxHeight: {
-                xs: '1rem',
-                md: '1.5rem',
-              },
-              maxWidth: {
-                xs: theme.typography.pxToRem(100),
-                sm: theme.typography.pxToRem(120),
-                md: theme.typography.pxToRem(180),
+            img: {
+              height: {
+                xs: 16,
+                md: 24,
               },
             },
           })}
