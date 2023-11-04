@@ -1,7 +1,7 @@
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
-  substractSlippage,
+  subtractSlippage,
 } from '@origin/shared/utils';
 import {
   erc20ABI,
@@ -71,11 +71,7 @@ const estimateGas: EstimateGas = async ({
   const publicClient = getPublicClient();
   const { address } = getAccount();
 
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut.symbol];
 
@@ -238,11 +234,7 @@ const swap: Swap = async ({
     throw new Error(`Swap curve is not approved`);
   }
 
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut?.symbol];
 

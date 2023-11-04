@@ -1,5 +1,5 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty, substractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -118,11 +118,7 @@ const estimateGas = async ({
 
   const publicClient = getPublicClient();
   const { address } = getAccount();
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -257,11 +253,7 @@ const swap: Swap = async ({
     throw new Error(`SushiSwap is not approved`);
   }
 
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
     tokenIn,

@@ -4,7 +4,7 @@ import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import {
   isNilOrEmpty,
   isUserRejected,
-  substractSlippage,
+  subtractSlippage,
 } from '@origin/shared/utils';
 import {
   prepareWriteContract,
@@ -61,7 +61,7 @@ export const useHandleRedeem = () => {
       return;
     }
 
-    const minAmountOut = substractSlippage(
+    const minAmountOut = subtractSlippage(
       amountOut,
       MIX_TOKEN.decimals,
       slippage,

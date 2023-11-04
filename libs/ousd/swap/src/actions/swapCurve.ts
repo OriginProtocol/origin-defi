@@ -2,7 +2,7 @@ import { contracts } from '@origin/shared/contracts';
 import {
   isAddressEqual,
   isNilOrEmpty,
-  substractSlippage,
+  subtractSlippage,
 } from '@origin/shared/utils';
 import {
   getAccount,
@@ -97,11 +97,7 @@ const estimateGas: EstimateGas = async ({
 
   const publicClient = getPublicClient();
   const { address } = getAccount();
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -240,11 +236,7 @@ const swap: Swap = async ({
     throw new Error(`Curve swap is not approved`);
   }
 
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
     tokenIn,

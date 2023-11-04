@@ -1,5 +1,5 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty, substractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
@@ -186,11 +186,7 @@ const swap: Swap = async ({
     throw new Error(`Swap zapper sfrxETH is not approved`);
   }
 
-  const minAmountOut = substractSlippage(
-    amountOut,
-    tokenOut.decimals,
-    slippage,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
     amountIn,

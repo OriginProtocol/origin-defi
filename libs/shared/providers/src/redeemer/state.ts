@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty, scale, substractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, scale, subtractSlippage } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAccount, getPublicClient, readContract } from '@wagmi/core';
@@ -130,7 +130,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         const publicClient = getPublicClient();
         const { address } = getAccount();
 
-        const minAmountOut = substractSlippage(
+        const minAmountOut = subtractSlippage(
           total,
           MIX_TOKEN.decimals,
           slippage,
