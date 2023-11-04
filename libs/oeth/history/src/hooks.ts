@@ -1,4 +1,4 @@
-import { contracts } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { formatEther } from 'viem';
@@ -40,8 +40,8 @@ export const usePendingYield = (
               functionName: 'totalValue',
             },
             {
-              address: contracts.mainnet.OETH.address,
-              abi: contracts.mainnet.OETH.abi,
+              address: tokens.mainnet.OETH.address,
+              abi: tokens.mainnet.OETH.abi,
               functionName: 'totalSupply',
             },
             {
@@ -50,13 +50,13 @@ export const usePendingYield = (
               functionName: 'availableFunds',
             },
             {
-              address: contracts.mainnet.OETH.address,
-              abi: contracts.mainnet.OETH.abi,
+              address: tokens.mainnet.OETH.address,
+              abi: tokens.mainnet.OETH.abi,
               functionName: 'nonRebasingSupply',
             },
             {
-              address: contracts.mainnet.OETH.address,
-              abi: contracts.mainnet.OETH.abi,
+              address: tokens.mainnet.OETH.address,
+              abi: tokens.mainnet.OETH.abi,
               functionName: 'balanceOf',
               args: [address],
             },

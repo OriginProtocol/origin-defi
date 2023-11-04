@@ -1,4 +1,3 @@
-import { contracts } from '@origin/shared/contracts';
 import { tokens as toks } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -44,19 +43,19 @@ export const usePrices = (
         {},
       );
 
-      if (tokens.includes('wOETH')) {
+      if (tokens.includes('WOETH')) {
         const oethAmount = await readContract({
-          address: contracts.mainnet.wOETH.address,
-          abi: contracts.mainnet.wOETH.abi,
+          address: toks.mainnet.WOETH.address,
+          abi: toks.mainnet.WOETH.abi,
           functionName: 'previewRedeem',
-          args: [parseUnits('1', toks.mainnet.wOETH.decimals)],
+          args: [parseUnits('1', toks.mainnet.WOETH.decimals)],
         });
 
         prices = {
           ...prices,
-          wOETH:
-            +formatUnits(oethAmount, toks.mainnet.wOETH.decimals) *
-            prices['wOETH'],
+          WOETH:
+            +formatUnits(oethAmount, toks.mainnet.WOETH.decimals) *
+            prices['WOETH'],
         };
       }
 

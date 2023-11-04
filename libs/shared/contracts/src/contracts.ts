@@ -7,14 +7,12 @@ import { CurvePoolABI } from './abis/CurvePool';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
-import { OETHABI } from './abis/OETH';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
-import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
   mainnet: {
@@ -33,12 +31,6 @@ export const contracts = {
       name: 'CurveAddressProvider',
     },
     // OETH
-    OETH: {
-      address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',
-      chainId: mainnet.id,
-      abi: OETHABI,
-      name: 'OETH',
-    },
     OETHCurvePool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
@@ -119,13 +111,6 @@ export const contracts = {
       chainId: mainnet.id,
       abi: UniswapV3RouterABI,
       name: 'uniswapV3Router',
-    },
-    // wOETH
-    wOETH: {
-      address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
-      chainId: mainnet.id,
-      abi: WOETHABI,
-      name: 'wOETH',
     },
   },
 } as const;

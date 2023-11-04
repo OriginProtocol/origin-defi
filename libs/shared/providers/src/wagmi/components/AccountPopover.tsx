@@ -127,7 +127,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
           />
           {balanceTokens.map((tok, i) => (
             <BalanceRow
-              key={tok.name}
+              key={tok.symbol}
               token={tok}
               balance={
                 +formatUnits(

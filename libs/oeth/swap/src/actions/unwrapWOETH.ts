@@ -1,4 +1,4 @@
-import { contracts, whales } from '@origin/shared/contracts';
+import { tokens, whales } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
@@ -25,8 +25,8 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
   }
 
   const data = await readContract({
-    address: contracts.mainnet.wOETH.address,
-    abi: contracts.mainnet.wOETH.abi,
+    address: tokens.mainnet.WOETH.address,
+    abi: tokens.mainnet.WOETH.abi,
     functionName: 'convertToAssets',
     args: [amountIn],
   });
@@ -48,8 +48,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   if (!isNilOrEmpty(address)) {
     try {
       gasEstimate = await publicClient.estimateContractGas({
-        address: contracts.mainnet.wOETH.address,
-        abi: contracts.mainnet.wOETH.abi,
+        address: tokens.mainnet.WOETH.address,
+        abi: tokens.mainnet.WOETH.abi,
         functionName: 'redeem',
         args: [amountIn, address, address],
         account: address,
@@ -61,11 +61,11 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.wOETH.address,
-      abi: contracts.mainnet.wOETH.abi,
+      address: tokens.mainnet.WOETH.address,
+      abi: tokens.mainnet.WOETH.abi,
       functionName: 'redeem',
-      args: [amountIn, whales.mainnet.wOETH, whales.mainnet.wOETH],
-      account: whales.mainnet.wOETH,
+      args: [amountIn, whales.mainnet.WOETH, whales.mainnet.WOETH],
+      account: whales.mainnet.WOETH,
     });
   } catch {
     gasEstimate = 21000n;
@@ -75,12 +75,12 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
 };
 
 const allowance: Allowance = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap WOETH does not require approval
   return maxUint256;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap WOETH does not require approval
   return 0n;
 };
 
@@ -123,7 +123,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap WOETH does not require approval
   return null;
 };
 
@@ -135,8 +135,8 @@ const swap: Swap = async ({ amountIn }) => {
   }
 
   const { request } = await prepareWriteContract({
-    address: contracts.mainnet.wOETH.address,
-    abi: contracts.mainnet.wOETH.abi,
+    address: tokens.mainnet.WOETH.address,
+    abi: tokens.mainnet.WOETH.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
   });

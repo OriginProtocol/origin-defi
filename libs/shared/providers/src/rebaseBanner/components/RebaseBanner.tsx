@@ -6,7 +6,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { contracts } from '@origin/shared/contracts';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { useContractWrite, usePrepareContractWrite } from 'wagmi';
 
@@ -20,8 +20,8 @@ export const RebaseBanner = (props: StackProps) => {
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const visible = useIsRebaseBannerVisible();
   const { config } = usePrepareContractWrite({
-    address: contracts.mainnet.OETH.address,
-    abi: contracts.mainnet.OETH.abi,
+    address: tokens.mainnet.OETH.address,
+    abi: tokens.mainnet.OETH.abi,
     functionName: 'rebaseOptIn',
     value: 0n,
     enabled: visible,
