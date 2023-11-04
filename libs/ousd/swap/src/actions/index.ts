@@ -6,6 +6,8 @@ import sushiswap from './sushiswap';
 import swapCurve from './swapCurve';
 import uniswapV2 from './uniswapV2';
 import uniswapV3 from './uniswapV3';
+import unwrapWOUSD from './unwrapWOUSD';
+import wrapOUSD from './wrapOUSD';
 
 import type { SwapApi } from '@origin/shared/providers';
 
@@ -88,5 +90,17 @@ export const swapActions: Record<SwapAction, SwapApi> = {
     ...defaultApi,
     ...uniswapV3,
     routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
+  },
+  'wrap-ousd': {
+    ...defaultApi,
+    ...wrapOUSD,
+    routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
+  },
+  'unwrap-wousd': {
+    ...defaultApi,
+    ...unwrapWOUSD,
+    routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
   },
 };

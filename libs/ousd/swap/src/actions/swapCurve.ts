@@ -49,9 +49,7 @@ const isRouteAvailable: IsRouteAvailable = async ({
         +formatUnits(estimate as unknown as bigint, tokenOut.decimals) <
       MAX_PRICE
     );
-  } catch (e) {
-    console.log(e);
-  }
+  } catch {}
 
   return false;
 };
