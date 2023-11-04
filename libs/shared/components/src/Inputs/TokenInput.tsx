@@ -83,7 +83,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
     const maxVisible =
       !hideMaxButton &&
-      (isNativeCurrency ? balance > parseEther(MIN_ETH_FOR_GAS) : true);
+      balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
