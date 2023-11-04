@@ -6,12 +6,14 @@ import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
+import { IVaultABI } from './abis/IVault';
 import { OETHABI } from './abis/OETH';
 import { OETHDripperABI } from './abis/OETHDripper';
-import { OETHVaultCoreABI } from './abis/OETHVaultCore';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
-import { VaultCoreABI } from './abis/VaultCore';
+import { UniswapV2RouterABI } from './abis/UniswapV2Router';
+import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
+import { UniswapV3RouterABI } from './abis/UniswapV3Router';
 import { WOETHABI } from './abis/WOETH';
 
 export const contracts = {
@@ -58,7 +60,7 @@ export const contracts = {
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
-      abi: OETHVaultCoreABI,
+      abi: IVaultABI,
       name: 'OETHVault',
     },
     OETHZapper: {
@@ -89,8 +91,34 @@ export const contracts = {
     OUSDVault: {
       address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
       chainId: mainnet.id,
-      abi: VaultCoreABI,
+      abi: IVaultABI,
       name: 'OUSDVault',
+    },
+    // SushiSwap
+    sushiswapRouter: {
+      address: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'sushiswapRouter',
+    },
+    // Uniswap
+    uniswapV2Router: {
+      address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
+      chainId: mainnet.id,
+      abi: UniswapV2RouterABI,
+      name: 'uniswapV2Router',
+    },
+    uniswapV3Quoter: {
+      address: '0xb27308f9F90D607463bb33eA1BeBb41C27CE5AB6',
+      chainId: mainnet.id,
+      abi: UniswapV3QuoterABI,
+      name: 'uniswapV3Quoter',
+    },
+    uniswapV3Router: {
+      address: '0xe592427a0aece92de3edee1f18e0157c05861564',
+      chainId: mainnet.id,
+      abi: UniswapV3RouterABI,
+      name: 'uniswapV3Router',
     },
     // wOETH
     wOETH: {

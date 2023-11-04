@@ -15,11 +15,15 @@ export const scale = (
   return parseUnits(formatUnits(value, originDecimals), targetDecimals);
 };
 
-export const addRatio = (value: bigint, decimals: number, ratio: number) => {
+export const subtractSlippage = (
+  value: bigint,
+  decimals: number,
+  slippage: number,
+) => {
   return parseUnits(
     (
       +formatUnits(value, decimals) -
-      +formatUnits(value, decimals) * ratio
+      +formatUnits(value, decimals) * slippage
     ).toString(),
     decimals,
   );

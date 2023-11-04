@@ -2,19 +2,13 @@ import { Box, Stack } from '@mui/material';
 
 import type { SxProps } from '@mui/material';
 
-interface Props {
+interface MixProps {
+  imgSrc: string[];
   size?: number;
   sx?: SxProps;
 }
 
-export function Mix({ size = 1.5, sx }: Props) {
-  const imgSrc = [
-    '/images/tokens/WETH.svg',
-    '/images/tokens/rETH.svg',
-    '/images/tokens/stETH.svg',
-    '/images/tokens/frxETH.svg',
-  ];
-
+export function Mix({ imgSrc, size = 1.5, sx }: MixProps) {
   return (
     <Stack
       direction="row"

@@ -2,8 +2,6 @@ import { erc20ABI, mainnet } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
 
-export const GAS_BUFFER = 25n; // 25%
-
 export const MIX_TOKEN: Token = {
   address: undefined,
   chainId: mainnet.id,

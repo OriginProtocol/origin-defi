@@ -1,23 +1,34 @@
 import { useEffect, useState } from 'react';
 
-import { contracts, tokens, whales } from '@origin/shared/contracts';
-import { usePushNotification, useSlippage } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { tokens } from '@origin/shared/contracts';
+import { isNilOrEmpty, scale, subtractSlippage } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getAccount, getPublicClient, readContract } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
-import { formatUnits, isAddressEqual, parseUnits } from 'viem';
+import { formatUnits, isAddressEqual } from 'viem';
 
+import { usePushNotification } from '../notifications';
+import { useSlippage } from '../slippage';
 import { MIX_TOKEN } from './constants';
+
+import type { Dispatch, SetStateAction } from 'react';
 
 import type { RedeemState } from './types';
 
 export const { Provider: RedeemProvider, useTracked: useRedeemState } =
-  createContainer(() => {
+  createContainer<
+    RedeemState,
+    Dispatch<SetStateAction<RedeemState>>,
+    Pick<RedeemState, 'tokenIn' | 'vaultContract' | 'trackEvent' | 'gasBuffer'>
+  >(({ tokenIn, vaultContract, trackEvent, gasBuffer }) => {
     const [state, setState] = useState<RedeemState>({
+      tokenIn,
+      vaultContract,
+      gasBuffer,
+      trackEvent,
       amountIn: 0n,
       amountOut: 0n,
       split: [],
@@ -36,8 +47,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
       queryKey: ['assetsDecimals'],
       queryFn: async () => {
         const assets = await readContract({
-          address: contracts.mainnet.OETHVault.address,
-          abi: contracts.mainnet.OETHVault.abi,
+          address: vaultContract.address,
+          abi: vaultContract.abi,
           functionName: 'getAllAssets',
         });
 
@@ -81,8 +92,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             queryKey: ['splitEstimates', state.amountIn.toString()],
             queryFn: async () =>
               readContract({
-                address: contracts.mainnet.OETHVault.address,
-                abi: contracts.mainnet.OETHVault.abi,
+                address: vaultContract.address,
+                abi: vaultContract.abi,
                 functionName: 'calculateRedeemOutputs',
                 args: [state.amountIn],
               }),
@@ -110,25 +121,19 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         }
 
         const total = splitEstimates.reduce((acc, curr, i) => {
-          if (state.split[i].token.decimals !== MIX_TOKEN.decimals) {
-            const exp = MIX_TOKEN.decimals - state.split[i].token.decimals;
-
-            return acc + curr * (10n ^ BigInt(exp));
-          }
-
-          return acc + curr;
+          return (
+            acc + scale(curr, state.split[i].token.decimals, MIX_TOKEN.decimals)
+          );
         }, 0n);
 
         let gasEstimate = 0n;
         const publicClient = getPublicClient();
         const { address } = getAccount();
 
-        const minAmountOut = parseUnits(
-          (
-            +formatUnits(total, MIX_TOKEN.decimals) -
-            +formatUnits(total, MIX_TOKEN.decimals) * slippage
-          ).toString(),
+        const minAmountOut = subtractSlippage(
+          total,
           MIX_TOKEN.decimals,
+          slippage,
         );
 
         try {
@@ -141,14 +146,14 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             ],
             queryFn: () =>
               publicClient.estimateContractGas({
-                address: contracts.mainnet.OETHVault.address,
-                abi: contracts.mainnet.OETHVault.abi,
+                address: vaultContract.address,
+                abi: vaultContract.abi,
                 functionName: 'redeem',
                 args: [state.amountIn, minAmountOut],
-                account: whales.mainnet.OETH,
+                account: address,
               }),
           });
-        } catch (error) {
+        } catch {
           gasEstimate = 1500000n;
         }
 
@@ -159,7 +164,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             draft.gas = gasEstimate;
             draft.rate =
               +formatUnits(total, MIX_TOKEN.decimals) /
-              +formatUnits(state.amountIn, tokens.mainnet.OETH.decimals);
+              +formatUnits(state.amountIn, tokenIn.decimals);
             draft.isEstimateLoading = false;
           }),
         );

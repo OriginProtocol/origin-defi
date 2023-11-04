@@ -1,23 +1,21 @@
 import { Stack } from '@mui/material';
 import { ApyHeader, trackEvent, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
-import { Swapper } from '@origin/shared/providers';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { Redeemer } from '@origin/shared/providers';
 
-import { swapActions } from '../actions';
-import { swapRoutes } from '../constants';
-
-export const SwapView = () => {
+export const RedeemView = () => {
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <ApyHeader />
       </ErrorBoundary>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
-        <Swapper
-          swapActions={swapActions}
-          swapRoutes={swapRoutes}
-          onError={trackSentryError}
+        <Redeemer
+          tokenIn={tokens.mainnet.OETH}
+          vaultContract={contracts.mainnet.OETHVault}
           trackEvent={trackEvent}
+          onError={trackSentryError}
         />
       </ErrorBoundary>
     </Stack>

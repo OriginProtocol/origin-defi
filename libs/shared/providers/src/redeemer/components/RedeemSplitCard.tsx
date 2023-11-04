@@ -8,8 +8,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import { useGasPrice, usePrices } from '@origin/shared/providers';
 import {
   currencyFormat,
   formatAmount,
@@ -18,6 +16,8 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
+import { useGasPrice } from '../../gas';
+import { usePrices } from '../../prices';
 import { MIX_TOKEN } from '../constants';
 import { useRedeemState } from '../state';
 import { Mix } from './Mix';
@@ -34,9 +34,13 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const [{ amountOut, gas, rate, split, isEstimateLoading }] = useRedeemState();
   const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
 
-  const estimatedAmount = +formatUnits(amountOut, MIX_TOKEN.decimals);
-  const convertedAmount =
-    (prices?.[tokens.mainnet.WETH.symbol] ?? 1) * estimatedAmount;
+  const convertedAmount = split.reduce((acc, curr) => {
+    return (
+      acc +
+      +formatUnits(curr.amount, curr.token.decimals) * prices[curr.token.symbol]
+    );
+  }, 0);
+  const imgSrc = split.map((s) => s.token.icon);
 
   return (
     <Stack
@@ -55,7 +59,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
         {!isXs && (
           <Stack justifyContent="center">
-            <Mix />
+            <Mix imgSrc={imgSrc} />
           </Stack>
         )}
         <Stack flex={1} direction="column" gap={0.5}>
@@ -97,7 +101,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           </Stack>
           <Typography noWrap>
             {intl.formatMessage({
-              defaultMessage: 'Redeem for mix via OETH vault',
+              defaultMessage: 'Redeem for mix via OUSD vault',
             })}
           </Typography>
         </Stack>

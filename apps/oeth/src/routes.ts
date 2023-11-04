@@ -1,10 +1,10 @@
 import { HistoryView } from '@origin/oeth/history';
-import { RedeemView } from '@origin/oeth/redeem';
 import { SwapView } from '@origin/oeth/swap';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
+import { RedeemView } from './views/RedeemView';
 
 import type { RouteObject } from 'react-router-dom';
 

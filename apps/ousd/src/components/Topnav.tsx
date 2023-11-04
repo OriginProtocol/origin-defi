@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { trackEvent } from '@origin/oeth/shared';
+import { trackEvent } from '@origin/ousd/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
   AccountPopover,
@@ -144,7 +144,7 @@ export function Topnav(props: BoxProps) {
           }}
         >
           <MuiLink
-            href="https://oeth.on.fleek.co/"
+            href="https://ousd.on.fleek.co/"
             target="_blank"
             noWrap
             sx={{

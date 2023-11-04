@@ -11,58 +11,51 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ApyHeader, trackEvent, trackSentryError } from '@origin/oeth/shared';
 import {
   ErrorBoundary,
   ErrorCard,
   TokenInput,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import {
-  ConnectedButton,
-  PriceTolerancePopover,
-  usePrices,
-  useSlippage,
-} from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
-import { RedeemRoute } from '../components/RedeemRoute';
+import { usePrices } from '../../prices';
+import { PriceTolerancePopover, useSlippage } from '../../slippage';
+import { ConnectedButton } from '../../wagmi';
 import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
+import { RedeemRoute } from './RedeemRoute';
 
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, StackProps } from '@mui/material';
 import type { MouseEvent } from 'react';
 
-const tokenInputStyles = {
-  border: 'none',
-  backgroundColor: 'transparent',
-  borderRadius: 0,
-  paddingBlock: 0,
-  paddingInline: 0,
-  borderImageWidth: 0,
-  boxSizing: 'border-box',
-  '& .MuiInputBase-input': {
-    padding: 0,
-    boxSizing: 'border-box',
-    fontStyle: 'normal',
-    fontFamily: 'Sailec, sans-serif',
-    fontSize: 24,
-    lineHeight: 1.5,
-    fontWeight: 700,
-    color: 'text.primary',
-    '&::placeholder': {
-      color: 'text.secondary',
-      opacity: 1,
-    },
-  },
-};
+import type { RedeemState } from '../types';
 
-export const RedeemView = () =>
-  composeContexts([[RedeemProvider]], <RedeemViewWrapped />);
+export type RedeemerProps = Pick<
+  RedeemState,
+  'trackEvent' | 'tokenIn' | 'vaultContract'
+> & {
+  gasBuffer?: bigint;
+  onError?: (error: Error) => void;
+} & Omit<StackProps, 'onError'>;
 
-function RedeemViewWrapped() {
+export const Redeemer = ({
+  tokenIn,
+  trackEvent,
+  gasBuffer = 25n,
+  vaultContract,
+  ...rest
+}: RedeemerProps) =>
+  composeContexts(
+    [[RedeemProvider, { tokenIn, trackEvent, gasBuffer, vaultContract }]],
+    <RedeemerWrapped {...rest} />,
+  );
+
+function RedeemerWrapped({
+  onError,
+  ...rest
+}: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
   const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
@@ -70,15 +63,17 @@ function RedeemViewWrapped() {
   const [
     {
       amountIn,
+      tokenIn,
       isRedeemLoading,
       isEstimateLoading,
       isRedeemWaitingForSignature,
+      trackEvent,
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
-  const { data: balOeth, isLoading: isBalOethLoading } = useBalance({
+  const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
-    token: tokens.mainnet.OETH.address,
+    token: tokenIn.address,
     watch: true,
     scopeKey: 'redeem_balance',
   });
@@ -101,23 +96,23 @@ function RedeemViewWrapped() {
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > balOeth?.value
+      : amountIn > balance?.value
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
       : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
-    isBalOethLoading ||
+    isBalanceLoading ||
     isEstimateLoading ||
     isRedeemWaitingForSignature ||
     isRedeemLoading ||
-    amountIn > balOeth?.value ||
+    amountIn > balance?.value ||
     amountIn === 0n;
 
   return (
-    <Stack spacing={3}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
+    <Stack spacing={3} {...rest}>
+      {/* <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <ApyHeader />
-      </ErrorBoundary>
-      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
+      </ErrorBoundary> */}
+      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
             title={
@@ -153,11 +148,11 @@ function RedeemViewWrapped() {
             <TokenInput
               amount={amountIn}
               onAmountChange={handleAmountInChange}
-              balance={balOeth?.value}
-              isBalanceLoading={isBalOethLoading}
-              token={tokens.mainnet.OETH}
+              balance={balance?.value}
+              isBalanceLoading={isBalanceLoading}
+              token={tokenIn}
               isTokenClickDisabled
-              tokenPriceUsd={prices?.OETH}
+              tokenPriceUsd={prices?.[tokenIn.symbol]}
               isPriceLoading={isPricesLoading}
               isConnected={isConnected}
               isAmountDisabled={isRedeemLoading}
@@ -263,3 +258,27 @@ function ArrowButton(props: BoxProps) {
     </Box>
   );
 }
+
+const tokenInputStyles = {
+  border: 'none',
+  backgroundColor: 'transparent',
+  borderRadius: 0,
+  paddingBlock: 0,
+  paddingInline: 0,
+  borderImageWidth: 0,
+  boxSizing: 'border-box',
+  '& .MuiInputBase-input': {
+    padding: 0,
+    boxSizing: 'border-box',
+    fontStyle: 'normal',
+    fontFamily: 'Sailec, sans-serif',
+    fontSize: 24,
+    lineHeight: 1.5,
+    fontWeight: 700,
+    color: 'text.primary',
+    '&::placeholder': {
+      color: 'text.secondary',
+      opacity: 1,
+    },
+  },
+};

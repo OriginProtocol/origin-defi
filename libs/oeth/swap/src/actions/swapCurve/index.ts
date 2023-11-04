@@ -1,4 +1,8 @@
-import { ETH_ADDRESS_CURVE, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  ETH_ADDRESS_CURVE,
+  isNilOrEmpty,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
@@ -7,7 +11,7 @@ import {
   readContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, maxUint256, parseUnits } from 'viem';
+import { formatUnits, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../../constants';
 import { curveRoutes } from './curveRoutes';
@@ -67,13 +71,7 @@ const estimateGas: EstimateGas = async ({
   const publicClient = getPublicClient();
   const { address } = getAccount();
 
-  const minAmountOut = parseUnits(
-    (
-      +formatUnits(amountOut, tokenOut.decimals) -
-      +formatUnits(amountOut, tokenOut.decimals) * slippage
-    ).toString(),
-    tokenOut.decimals,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut.symbol];
 
@@ -236,13 +234,7 @@ const swap: Swap = async ({
     throw new Error(`Swap curve is not approved`);
   }
 
-  const minAmountOut = parseUnits(
-    (
-      +formatUnits(amountOut, tokenOut.decimals) -
-      +formatUnits(amountOut, tokenOut.decimals) * slippage
-    ).toString(),
-    tokenOut.decimals,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curveConfig = curveRoutes[tokenIn.symbol]?.[tokenOut?.symbol];
 

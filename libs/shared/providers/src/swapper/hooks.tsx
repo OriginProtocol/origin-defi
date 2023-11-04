@@ -204,6 +204,15 @@ export const useHandleTokenFlip = () => {
         }),
       );
     } else {
+      setSwapState(
+        produce((draft) => {
+          const oldTokenOut = tokenOut;
+          draft.tokenOut = tokenIn;
+          draft.tokenIn = oldTokenOut;
+          draft.amountIn = scaledAmountIn;
+          draft.amountOut = scaledAmountOut;
+        }),
+      );
       if (amountIn > 0n || amountOut > 0n) {
         setSwapState(
           produce((draft) => {
@@ -221,7 +230,8 @@ export const useHandleTokenFlip = () => {
                 tokenIn.symbol,
                 route.action,
                 slippage,
-                amountIn.toString(),
+                scaledAmountIn.toString(),
+                scaledAmountOut.toString(),
               ] as const,
               queryFn: async () => {
                 let res: EstimatedSwapRoute;
@@ -271,18 +281,17 @@ export const useHandleTokenFlip = () => {
           });
         setSwapState(
           produce((draft) => {
-            const oldTokenOut = tokenOut;
-            draft.tokenOut = tokenIn;
-            draft.tokenIn = oldTokenOut;
-            draft.amountIn = scaledAmountIn;
-            draft.amountOut = scaledAmountOut;
             draft.estimatedSwapRoutes = sortedRoutes;
             draft.selectedSwapRoute = sortedRoutes[0];
             draft.amountOut = sortedRoutes[0].estimatedAmount ?? 0n;
-            draft.isSwapRoutesLoading = false;
           }),
         );
       }
+      setSwapState(
+        produce((draft) => {
+          draft.isSwapRoutesLoading = false;
+        }),
+      );
     }
   }, [
     amountIn,

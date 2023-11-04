@@ -9,7 +9,7 @@ import type { StackProps } from '@mui/material';
 
 export function RedeemRoute(props: Omit<StackProps, 'children'>) {
   const intl = useIntl();
-  const [{ amountOut, isEstimateLoading }] = useRedeemState();
+  const [{ amountOut, isEstimateLoading, tokenIn }] = useRedeemState();
 
   const hasContent = amountOut > 0n;
 
@@ -49,9 +49,13 @@ export function RedeemRoute(props: Omit<StackProps, 'children'>) {
         >
           {intl.formatMessage({ defaultMessage: 'Route' })}
           <InfoTooltip
-            tooltipLabel={intl.formatMessage({
-              defaultMessage: 'Redeem OETH for the basket of underlying assets',
-            })}
+            tooltipLabel={intl.formatMessage(
+              {
+                defaultMessage:
+                  'Redeem {token} for the basket of underlying assets',
+              },
+              { token: tokenIn.symbol },
+            )}
           />
         </Stack>
       )}

@@ -1,5 +1,9 @@
 import { contracts } from '@origin/shared/contracts';
-import { ETH_ADDRESS_CURVE, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  ETH_ADDRESS_CURVE,
+  isNilOrEmpty,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -7,7 +11,7 @@ import {
   readContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, isAddressEqual, maxUint256, parseUnits } from 'viem';
+import { formatUnits, isAddressEqual, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -63,13 +67,7 @@ const estimateGas: EstimateGas = async ({
   const publicClient = getPublicClient();
   const { address } = getAccount();
 
-  const minAmountOut = parseUnits(
-    (
-      +formatUnits(amountOut, tokenOut.decimals) -
-      +formatUnits(amountOut, tokenOut.decimals) * slippage
-    ).toString(),
-    tokenOut.decimals,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -177,13 +175,7 @@ const swap: Swap = async ({
     return null;
   }
 
-  const minAmountOut = parseUnits(
-    (
-      +formatUnits(amountOut, tokenOut.decimals) -
-      +formatUnits(amountOut, tokenOut.decimals) * slippage
-    ).toString(),
-    tokenOut.decimals,
-  );
+  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const estimatedGas = await estimateGas({
     amountIn,

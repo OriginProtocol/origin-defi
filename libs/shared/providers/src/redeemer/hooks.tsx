@@ -1,17 +1,11 @@
 import { useCallback } from 'react';
 
-import { trackEvent } from '@origin/oeth/shared';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { contracts, tokens } from '@origin/shared/contracts';
 import {
-  RedeemNotification,
-  useDeleteActivity,
-  usePushActivity,
-  usePushNotification,
-  useSlippage,
-  useUpdateActivity,
-} from '@origin/shared/providers';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+  isNilOrEmpty,
+  isUserRejected,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import {
   prepareWriteContract,
   waitForTransaction,
@@ -19,10 +13,17 @@ import {
 } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
-import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useQueryClient } from 'wagmi';
 
-import { GAS_BUFFER, MIX_TOKEN } from './constants';
+import {
+  RedeemNotification,
+  useDeleteActivity,
+  usePushActivity,
+  useUpdateActivity,
+} from '../activities';
+import { usePushNotification } from '../notifications';
+import { useSlippage } from '../slippage';
+import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
 export const useHandleAmountInChange = () => {
@@ -49,7 +50,10 @@ export const useHandleRedeem = () => {
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const { address } = useAccount();
-  const [{ amountIn, amountOut, gas }, setRedeemState] = useRedeemState();
+  const [
+    { amountIn, amountOut, gas, trackEvent, tokenIn, vaultContract, gasBuffer },
+    setRedeemState,
+  ] = useRedeemState();
   const wagmiClient = useQueryClient();
 
   return useCallback(async () => {
@@ -57,18 +61,16 @@ export const useHandleRedeem = () => {
       return;
     }
 
-    const minAmountOut = parseUnits(
-      (
-        +formatUnits(amountOut, MIX_TOKEN.decimals) -
-        +formatUnits(amountOut, MIX_TOKEN.decimals) * slippage
-      ).toString(),
+    const minAmountOut = subtractSlippage(
+      amountOut,
       MIX_TOKEN.decimals,
+      slippage,
     );
 
     const activity = pushActivity({
       type: 'redeem',
       status: 'pending',
-      tokenIn: tokens.mainnet.OETH,
+      tokenIn,
       tokenOut: MIX_TOKEN,
       amountIn,
       amountOut,
@@ -85,11 +87,11 @@ export const useHandleRedeem = () => {
     });
     try {
       const { request } = await prepareWriteContract({
-        address: contracts.mainnet.OETHVault.address,
-        abi: contracts.mainnet.OETHVault.abi,
+        address: vaultContract.address,
+        abi: vaultContract.abi,
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
-        gas: gas + (gas * GAS_BUFFER) / 100n,
+        gas: gas + (gas * gasBuffer) / 100n,
       });
       const { hash } = await writeContract(request);
       setRedeemState(
@@ -105,7 +107,7 @@ export const useHandleRedeem = () => {
           draft.isRedeemLoading = false;
           draft.amountIn = 0n;
           draft.amountOut = 0n;
-          draft.split = [];
+          draft.split.forEach((a) => (a.amount = 0n));
         }),
       );
       updateActivity({ ...activity, status: 'success', txReceipt });
@@ -176,12 +178,17 @@ export const useHandleRedeem = () => {
     amountOut,
     deleteActivity,
     gas,
+    gasBuffer,
     intl,
     pushActivity,
     pushNotification,
     setRedeemState,
     slippage,
+    tokenIn,
+    trackEvent,
     updateActivity,
+    vaultContract.abi,
+    vaultContract.address,
     wagmiClient,
   ]);
 };

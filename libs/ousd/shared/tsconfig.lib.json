@@ -7,7 +7,7 @@
       "@nx/react/typings/cssmodule.d.ts",
       "@nx/react/typings/image.d.ts",
       "../../../libs/shared/theme/src/theme.d.ts",
-      "../../../apps/oeth/src/env.d.ts",
+      "../../../apps/ousd/src/env.d.ts",
     ]
   },
   "exclude": [

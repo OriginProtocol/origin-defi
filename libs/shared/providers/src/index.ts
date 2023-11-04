@@ -8,6 +8,7 @@ export * from './geoFence';
 export * from './notifications';
 export * from './prices';
 export * from './rebaseBanner';
+export * from './redeemer';
 export * from './slippage';
 export * from './swapper';
 export * from './theme';

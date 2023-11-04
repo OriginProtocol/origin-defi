@@ -80,7 +80,6 @@ function ValueContainer({
 }: ValueContainerProps) {
   return (
     <Stack
-      gap={0.5}
       {...rest}
       sx={{
         paddingBlock: 2,
@@ -88,13 +87,14 @@ function ValueContainer({
         textAlign: 'center',
         justifyContent: 'space-between',
         flex: 1,
+        height: { xs: 72, md: 80 },
         ...rest?.sx,
       }}
     >
-      <Typography variant="body2" color="text.secondary">
+      <Typography variant="body2" color="text.secondary" lineHeight={1}>
         {label}
       </Typography>
-      <Typography variant="h4" textAlign="center">
+      <Typography variant="h4" textAlign="center" lineHeight={1}>
         {isLoading ? <Skeleton width={60} /> : value}
       </Typography>
     </Stack>

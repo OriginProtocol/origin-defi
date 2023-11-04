@@ -3,6 +3,7 @@ import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
+import { RedeemView } from './views/RedeemView';
 
 import type { RouteObject } from 'react-router-dom';
 
@@ -16,11 +17,11 @@ export const routes: RouteObject[] = [
         Component: SwapView,
         handle: { label: defineMessage({ defaultMessage: 'Swap' }) },
       },
-      // {
-      //   path: '/redeem',
-      //   Component: RedeemView,
-      //   handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
-      // },
+      {
+        path: '/redeem',
+        Component: RedeemView,
+        handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
+      },
       // {
       //   path: '/history',
       //   Component: HistoryView,

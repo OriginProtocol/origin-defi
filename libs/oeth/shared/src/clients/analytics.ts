@@ -4,15 +4,15 @@ import { Analytics } from 'analytics';
 import { map } from 'ramda';
 import { formatEther } from 'viem';
 
-import type { SwapTrackEvent } from '@origin/shared/providers';
+import type {
+  RedeemTrackEvent,
+  SwapTrackEvent,
+} from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 
 export type TrackEvent =
   | SwapTrackEvent
-  | { name: 'redeem_started'; redeem_amount: bigint }
-  | { name: 'redeem_complete'; redeem_amount: bigint }
-  | { name: 'redeem_failed'; redeem_amount: bigint; redeem_error: string }
-  | { name: 'redeem_rejected'; redeem_amount: bigint }
+  | RedeemTrackEvent
   | { name: 'open_account' }
   | { name: 'change_apy'; change_apy_to: number }
   | { name: 'connect'; connect_address: HexAddress; connect_wallet: string }
