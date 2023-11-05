@@ -44,7 +44,7 @@ export const contracts = {
       name: 'OETHDripper',
     },
     OETHOracleRouter: {
-      address: '0x3cCD26E82F7305B12742fBb36708B42f82B61dBa',
+      address: '0xbE19cC5654e30dAF04AD3B5E06213D70F4e882eE',
       chainId: mainnet.id,
       abi: OracleRouterABI,
       name: 'OETHOracleRouter',
@@ -79,6 +79,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: FlipperABI,
       name: 'OUSDFlipper',
+    },
+    OUSDOracleRouter: {
+      address: '0xe7fD05515A51509Ca373a42E81ae63A40AA4384b',
+      chainId: mainnet.id,
+      abi: OracleRouterABI,
+      name: 'OUSDOracleRouter',
     },
     OUSDVault: {
       address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',

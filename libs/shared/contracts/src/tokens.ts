@@ -102,16 +102,6 @@ export const tokens = {
       decimals: 18,
       symbol: 'stETH',
     },
-
-    TUSD: {
-      address: '0x0000000000085d4780B73119b644AE5ecd22b376',
-      chainId: mainnet.id,
-      abi: erc20ABI,
-      name: 'TrueUSD',
-      icon: '/images/tokens/TUSD.svg',
-      decimals: 18,
-      symbol: 'TUSD',
-    },
     USDC: {
       address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
       chainId: mainnet.id,
