@@ -179,4 +179,16 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.USDC,
     action: 'swap-curve',
   },
+  // Wrap OUSD
+  {
+    tokenIn: tokens.mainnet.OUSD,
+    tokenOut: tokens.mainnet.wOUSD,
+    action: 'wrap-ousd',
+  },
+  // Unwrap wOUSD
+  {
+    tokenIn: tokens.mainnet.wOUSD,
+    tokenOut: tokens.mainnet.OUSD,
+    action: 'unwrap-wousd',
+  },
 ];

@@ -110,7 +110,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
           sx={{ px: 2, py: 3 }}
           direction="row"
         >
-          <WalletIcon walletId={connector?.id} />
+          <WalletIcon walletName={connector?.name} />
           <AddressLabel address={address} short />
           <LinkIcon
             size={10}
@@ -127,7 +127,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
           />
           {balanceTokens.map((tok, i) => (
             <BalanceRow
-              key={tok.name}
+              key={tok.symbol}
               token={tok}
               balance={
                 +formatUnits(

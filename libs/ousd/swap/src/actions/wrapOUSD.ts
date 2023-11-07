@@ -26,8 +26,8 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
   }
 
   const data = await readContract({
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToShares',
     args: [amountIn],
   });
@@ -49,8 +49,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   if (!isNilOrEmpty(address)) {
     try {
       gasEstimate = await publicClient.estimateContractGas({
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
+        address: tokens.mainnet.wOUSD.address,
+        abi: tokens.mainnet.wOUSD.abi,
         functionName: 'deposit',
         args: [amountIn, address],
         account: address,
@@ -62,8 +62,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: tokens.mainnet.wOETH.address,
-      abi: tokens.mainnet.wOETH.abi,
+      address: tokens.mainnet.wOUSD.address,
+      abi: tokens.mainnet.wOUSD.abi,
       functionName: 'deposit',
       args: [amountIn, whales.mainnet.OETH],
       account: whales.mainnet.OETH,
@@ -84,12 +84,12 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, tokens.mainnet.wOETH.address],
+    args: [address, tokens.mainnet.wOUSD.address],
   });
 
-  return allowance;
+  return allowance as unknown as bigint;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async ({
@@ -110,7 +110,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       address: tokenIn.address,
       abi: erc20ABI,
       functionName: 'approve',
-      args: [tokens.mainnet.wOETH.address, amountIn],
+      args: [tokens.mainnet.wOUSD.address, amountIn],
       account: address,
     });
   } catch {
@@ -161,9 +161,9 @@ const estimateRoute: EstimateRoute = async ({
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: tokenIn.abi,
     functionName: 'approve',
-    args: [tokens.mainnet.wOETH.address, amountIn],
+    args: [tokens.mainnet.wOUSD.address, amountIn],
   });
   const { hash } = await writeContract(request);
 
@@ -180,12 +180,12 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
   const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    throw new Error(`Wrap OETH is not approved`);
+    throw new Error(`wOUSD is not approved`);
   }
 
   const { request } = await prepareWriteContract({
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'deposit',
     args: [amountIn, address],
   });

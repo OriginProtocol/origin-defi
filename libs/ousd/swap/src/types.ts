@@ -4,4 +4,6 @@ export type SwapAction =
   | 'uniswap-v3'
   | 'sushiswap'
   | 'mint-vault'
-  | 'swap-curve';
+  | 'swap-curve'
+  | 'wrap-ousd'
+  | 'unwrap-wousd';

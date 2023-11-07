@@ -3,12 +3,11 @@ import { Box } from '@mui/material';
 import type { BoxProps } from '@mui/material';
 
 export type WalletIconProps = {
-  walletId: string;
+  walletName: string;
 } & BoxProps<'img'>;
 
 const iconPaths: Record<string, string> = {
   metamask: '/images/wallets/metamask.svg',
-  walletconnect: '/images/wallets/walletconnect.svg',
   ledger: '/images/wallets/ledger.svg',
   argent: '/images/wallets/argent.svg',
   safe: '/images/wallets/safe.svg',
@@ -16,16 +15,23 @@ const iconPaths: Record<string, string> = {
   coinbase: '/images/wallets/coinbase.svg',
   brave: '/images/wallets/brave.svg',
   rainbow: '/images/wallets/rainbow.svg',
+  connect: '/images/wallets/walletconnect.svg',
 };
 
-export const WalletIcon = ({ walletId, ...rest }: WalletIconProps) => {
+export const WalletIcon = ({ walletName, ...rest }: WalletIconProps) => {
   return (
     <Box
       width={20}
       {...rest}
       component="img"
-      alt={`${walletId}-icon`}
-      src={iconPaths[walletId?.toLowerCase()] ?? '/images/wallets/default.svg'}
+      alt={`${walletName}-icon`}
+      src={
+        iconPaths[
+          Object.keys(iconPaths).find(
+            (key) => walletName.toLowerCase().search(key) > -1,
+          )
+        ] ?? '/images/wallets/default.svg'
+      }
     />
   );
 };
