@@ -138,23 +138,23 @@ export const tokens = {
       decimals: 18,
       symbol: 'WETH',
     },
-    WOETH: {
+    wOETH: {
       address: '0xDcEe70654261AF21C44c093C300eD3Bb97b78192',
       chainId: mainnet.id,
       abi: WOETHABI,
       name: 'Wrapped Origin Ether',
-      icon: '/images/tokens/WOETH.svg',
+      icon: '/images/tokens/wOETH.svg',
       decimals: 18,
-      symbol: 'WOETH',
+      symbol: 'wOETH',
     },
-    WOUSD: {
+    wOUSD: {
       address: '0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62',
       chainId: mainnet.id,
       abi: WrappedOusdABI,
       name: 'WrappedOrigin Dollar',
-      icon: '/images/tokens/WOUSD.svg',
+      icon: '/images/tokens/wOUSD.svg',
       decimals: 18,
-      symbol: 'WOUSD',
+      symbol: 'wOUSD',
     },
   },
 } as const;

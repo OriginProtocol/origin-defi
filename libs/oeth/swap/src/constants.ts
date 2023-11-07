@@ -102,12 +102,12 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Wrap
   {
     tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.WOETH,
+    tokenOut: tokens.mainnet.wOETH,
     action: 'wrap-oeth',
   },
   // Unwrap
   {
-    tokenIn: tokens.mainnet.WOETH,
+    tokenIn: tokens.mainnet.wOETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'unwrap-woeth',
   },

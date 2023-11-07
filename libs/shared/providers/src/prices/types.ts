@@ -11,5 +11,5 @@ export type SupportedToken =
   | 'USDC'
   | 'USDT'
   | 'WETH'
-  | 'WOETH'
-  | 'WOUSD';
+  | 'wOETH'
+  | 'wOUSD';

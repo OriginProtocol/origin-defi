@@ -53,16 +53,16 @@ export const usePrices = (
               functionName: 'latestRoundData',
             })),
             {
-              address: toks.mainnet.WOETH.address,
-              abi: toks.mainnet.WOETH.abi,
+              address: toks.mainnet.wOETH.address,
+              abi: toks.mainnet.wOETH.abi,
               functionName: 'previewRedeem',
-              args: [parseUnits('1', toks.mainnet.WOETH.decimals)],
+              args: [parseUnits('1', toks.mainnet.wOETH.decimals)],
             },
             {
-              address: toks.mainnet.WOUSD.address,
-              abi: toks.mainnet.WOUSD.abi,
+              address: toks.mainnet.wOUSD.address,
+              abi: toks.mainnet.wOUSD.abi,
               functionName: 'previewRedeem',
-              args: [parseUnits('1', toks.mainnet.WOUSD.decimals)],
+              args: [parseUnits('1', toks.mainnet.wOUSD.decimals)],
             },
             {
               address: toks.mainnet.sfrxETH.address,
@@ -102,15 +102,15 @@ export const usePrices = (
       const rETH =
         +formatUnits(multi?.[7]?.result?.[1] ?? 0n, toks.mainnet.ETH.decimals) *
         ETH;
-      const WOETH =
+      const wOETH =
         +formatUnits(
           (multi?.[8]?.result as unknown as bigint) ?? 0n,
-          toks.mainnet.WOETH.decimals,
+          toks.mainnet.wOETH.decimals,
         ) * OETH;
-      const WOUSD =
+      const wOUSD =
         +formatUnits(
           (multi?.[9]?.result as unknown as bigint) ?? 0n,
-          toks.mainnet.WOUSD.decimals,
+          toks.mainnet.wOUSD.decimals,
         ) * OUSD;
       const sfrxETH =
         +formatUnits(
@@ -127,8 +127,8 @@ export const usePrices = (
         frxETH,
         stETH,
         rETH,
-        WOETH,
-        WOUSD,
+        wOETH,
+        wOUSD,
         sfrxETH,
         WETH,
         OETH,

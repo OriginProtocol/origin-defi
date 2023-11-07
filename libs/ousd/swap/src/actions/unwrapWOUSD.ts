@@ -25,8 +25,8 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
   }
 
   const data = await readContract({
-    address: tokens.mainnet.WOUSD.address,
-    abi: tokens.mainnet.WOUSD.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToAssets',
     args: [amountIn],
   });
@@ -48,8 +48,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   if (!isNilOrEmpty(address)) {
     try {
       gasEstimate = await publicClient.estimateContractGas({
-        address: tokens.mainnet.WOUSD.address,
-        abi: tokens.mainnet.WOUSD.abi,
+        address: tokens.mainnet.wOUSD.address,
+        abi: tokens.mainnet.wOUSD.abi,
         functionName: 'redeem',
         args: [amountIn, address, address],
         account: address,
@@ -61,11 +61,11 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: tokens.mainnet.WOUSD.address,
-      abi: tokens.mainnet.WOUSD.abi,
+      address: tokens.mainnet.wOUSD.address,
+      abi: tokens.mainnet.wOUSD.abi,
       functionName: 'redeem',
-      args: [amountIn, whales.mainnet.WOUSD, whales.mainnet.WOUSD],
-      account: whales.mainnet.WOUSD,
+      args: [amountIn, whales.mainnet.wOUSD, whales.mainnet.wOUSD],
+      account: whales.mainnet.wOUSD,
     });
   } catch {
     gasEstimate = 21000n;
@@ -75,12 +75,12 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
 };
 
 const allowance: Allowance = async () => {
-  // Unwrap WOUSD does not require approval
+  // Unwrap wOUSD does not require approval
   return maxUint256;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
-  // Unwrap WOUSD does not require approval
+  // Unwrap wOUSD does not require approval
   return 0n;
 };
 
@@ -123,7 +123,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async () => {
-  // Unwrap WOUSD does not require approval
+  // Unwrap wOUSD does not require approval
   return null;
 };
 
@@ -135,8 +135,8 @@ const swap: Swap = async ({ amountIn }) => {
   }
 
   const { request } = await prepareWriteContract({
-    address: tokens.mainnet.WOUSD.address,
-    abi: tokens.mainnet.WOUSD.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
   });

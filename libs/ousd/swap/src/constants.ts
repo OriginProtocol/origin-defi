@@ -182,12 +182,12 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Wrap OUSD
   {
     tokenIn: tokens.mainnet.OUSD,
-    tokenOut: tokens.mainnet.WOUSD,
+    tokenOut: tokens.mainnet.wOUSD,
     action: 'wrap-ousd',
   },
-  // Unwrap WOUSD
+  // Unwrap wOUSD
   {
-    tokenIn: tokens.mainnet.WOUSD,
+    tokenIn: tokens.mainnet.wOUSD,
     tokenOut: tokens.mainnet.OUSD,
     action: 'unwrap-wousd',
   },
