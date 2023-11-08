@@ -5,7 +5,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { endOfMonth, isThisMonth, startOfMonth } from 'date-fns';
+import { endOfMonth, isThisMonth } from 'date-fns';
 import { descend, groupBy, prop, sort, take } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -97,8 +97,8 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
   } = useHistoryTransactionQuery(
     {
       address,
-      dateStart: startOfMonth(date).toISOString(),
-      dateEnd: endOfMonth(date).toISOString(),
+      dateStart: new Date('2023-05-01').toISOString(),
+      dateEnd: endOfMonth(new Date()).toISOString(),
       filters: filters.length ? filters : undefined,
     },
     {
@@ -108,10 +108,7 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
   );
 
   const data = useMemo(() => {
-    const grouped = groupBy(
-      (hist) => take(10, hist.timestamp),
-      queryData ?? [],
-    );
+    const grouped = groupBy((hist) => take(7, hist.timestamp), queryData ?? []);
 
     const aggregated = Object.entries(grouped).reduce((acc, [day, values]) => {
       if (isNilOrEmpty(values)) {
