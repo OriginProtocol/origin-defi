@@ -26,3 +26,30 @@ query HistoryApy {
     apy30DayAvg
   }
 }
+
+query HistoryTransaction(
+  $address: String!
+  $dateStart: DateTime!
+  $dateEnd: DateTime!
+  $filters: [HistoryType!]
+) {
+  oethAddresses(where: { id_containsInsensitive: $address }) {
+    lastUpdated
+    history(
+      orderBy: timestamp_DESC
+      where: {
+        AND: {
+          timestamp_gte: $dateStart
+          timestamp_lte: $dateEnd
+          type_in: $filters
+        }
+      }
+    ) {
+      type
+      value
+      txHash
+      timestamp
+      balance
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Stack,
@@ -10,13 +10,15 @@ import {
   Typography,
 } from '@mui/material';
 import { LinkIcon } from '@origin/shared/components';
-import { quantityFormat } from '@origin/shared/utils';
+import { isNilOrEmpty, quantityFormat } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { addMonths, subMonths } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
@@ -25,30 +27,23 @@ import { TransactionIcon } from './TransactionIcon';
 
 import type { StackProps } from '@mui/material';
 import type { HistoryType } from '@origin/oeth/shared';
+import type { ExpandedState } from '@tanstack/react-table';
 
-import type { HistoryPageQuery } from '../queries.generated';
-
-export type Rows = HistoryPageQuery['oethAddresses'][0]['history'];
+import type { DailyHistory } from '../types';
 
 interface Props {
-  rows: Rows;
+  rows: DailyHistory[];
   isLoading: boolean;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  page: number;
-  setPage: (page: number) => void;
+  date: Date;
+  setDate: (date: Date) => void;
 }
 
-const columnHelper = createColumnHelper<Rows[0]>();
+const columnHelper = createColumnHelper<DailyHistory>();
 
-export function HistoryTable({
-  rows,
-  hasNextPage,
-  hasPreviousPage,
-  page,
-  setPage,
-}: Props) {
+export function HistoryTable({ rows, date, setDate }: Props) {
   const intl = useIntl();
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+
   const columns = useMemo(
     () => [
       columnHelper.accessor('type', {
@@ -56,6 +51,7 @@ export function HistoryTable({
           <HistoryTypeCell
             type={info.getValue()}
             timestamp={info.row.original.timestamp}
+            sx={{ pl: info.row.depth * 2 }}
           />
         ),
         header: intl.formatMessage({ defaultMessage: 'Type' }),
@@ -97,12 +93,13 @@ export function HistoryTable({
       }),
       columnHelper.display({
         id: 'link',
-        cell: (info) => (
-          <LinkIcon
-            size={10}
-            url={`https://etherscan.io/tx/${info.row.original.txHash}`}
-          />
-        ),
+        cell: (info) =>
+          !isNilOrEmpty(info.row.original.txHash) && (
+            <LinkIcon
+              size={10}
+              url={`https://etherscan.io/tx/${info.row.original.txHash}`}
+            />
+          ),
       }),
     ],
     [intl],
@@ -112,12 +109,12 @@ export function HistoryTable({
     data: rows,
     columns,
     state: {
-      pagination: {
-        pageSize: 20,
-        pageIndex: 0,
-      },
+      expanded,
     },
     getCoreRowModel: getCoreRowModel(),
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => row?.transactions,
+    getExpandedRowModel: getExpandedRowModel(),
     // getPaginationRowModel: getPaginationRowModel(),
     // add when we do server side pagination
     // manualPagination: true,
@@ -157,7 +154,20 @@ export function HistoryTable({
           {table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
+              onClick={row.getToggleExpandedHandler()}
               sx={{
+                ...(row.getCanExpand() && {
+                  cursor: 'pointer',
+                  ':hover': {
+                    backgroundColor: 'grey.900',
+                  },
+                }),
+                ...(row.getIsExpanded() && {
+                  backgroundColor: 'grey.900',
+                }),
+                ...(row.depth > 0 && {
+                  backgroundColor: 'grey.800',
+                }),
                 '& > *:first-of-type': {
                   width: '50%',
                 },
@@ -184,20 +194,19 @@ export function HistoryTable({
         sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
         <HistoryFilterButton
-          disabled={!hasPreviousPage}
-          onClick={() => setPage(page - 1)}
+          onClick={() => {
+            setDate(subMonths(date, 1));
+          }}
         >
           {intl.formatMessage({ defaultMessage: 'Previous' })}
         </HistoryFilterButton>
         <Typography fontSize={13} px={2}>
-          {intl.formatMessage(
-            { defaultMessage: 'Page {page}' },
-            { page: page + 1 },
-          )}
+          {intl.formatDate(date, { month: 'short', year: '2-digit' })}
         </Typography>
         <HistoryFilterButton
-          disabled={!hasNextPage}
-          onClick={() => setPage(page + 1)}
+          onClick={() => {
+            setDate(addMonths(date, 1));
+          }}
         >
           {intl.formatMessage({ defaultMessage: 'Next' })}
         </HistoryFilterButton>
