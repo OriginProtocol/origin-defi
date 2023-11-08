@@ -1,0 +1,35 @@
+name: ⚡ OETH main
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish-chromatic:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+          run_install: true
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Build oeth
+        run: VITE_ALCHEMY_ID=$alchemy VITE_WALLET_CONNECT_PROJECT_ID=$walletConnect VITE_GTM_CONTAINER_ID=$gtm VITE_SENTRY_DSN=$sentry pnpm nx build oeth
+        env:
+          alchemy: ${{ secrets.VITE_ALCHEMY_ID }}
+          walletConnect: ${{ secrets.VITE_WALLET_CONNECT_PROJECT_ID }}
+          gtm: ${{ secrets.VITE_GTM_CONTAINER_ID }}
+          sentry: ${{ secrets.VITE_SENTRY_DSN }}
+
+      - name: Deploy to S3 bucket
+        run: aws s3 sync ./dist/apps/oeth s3://origin-defi/oeth --delete
