@@ -32,4 +32,4 @@ jobs:
           sentry: ${{ secrets.VITE_SENTRY_DSN }}
 
       - name: Deploy to S3 bucket
-        run: aws s3 sync ./dist/apps/oeth s3://origin-defi/oeth --delete
+        run: aws s3 sync ./dist/apps/oeth s3://origin-oeth --delete
