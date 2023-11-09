@@ -35,4 +35,4 @@ jobs:
         run: cd ./dist/apps/oeth && zip -r oeth.zip .
 
       - name: Deploy to S3 bucket
-        run: aws s3 sync ./dist/apps/oeth/oeth.zip s3://origin-defi --delete
+        run: aws s3 cp ./dist/apps/oeth/oeth.zip s3://origin-defi --delete
