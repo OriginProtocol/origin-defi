@@ -1,10 +1,10 @@
 import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   readContracts,
   writeContract,
@@ -213,7 +213,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
@@ -254,7 +254,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OUSDVault.address,
     abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'mint',

@@ -1,3 +1,4 @@
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
@@ -7,7 +8,6 @@ import {
   erc20ABI,
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -203,7 +203,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
@@ -254,7 +254,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'exchange_multiple',

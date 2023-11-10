@@ -6,11 +6,7 @@ import {
   isUserRejected,
   subtractSlippage,
 } from '@origin/shared/utils';
-import {
-  prepareWriteContract,
-  waitForTransaction,
-  writeContract,
-} from '@wagmi/core';
+import { waitForTransaction, writeContract } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { useAccount, useQueryClient } from 'wagmi';
@@ -23,6 +19,7 @@ import {
 } from '../activities';
 import { usePushNotification } from '../notifications';
 import { useSlippage } from '../slippage';
+import { prepareWriteContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
@@ -86,7 +83,7 @@ export const useHandleRedeem = () => {
       redeem_amount: amountIn,
     });
     try {
-      const { request } = await prepareWriteContract({
+      const { request } = await prepareWriteContractWithTxTracker({
         address: vaultContract.address,
         abi: vaultContract.abi,
         functionName: 'redeem',
