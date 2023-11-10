@@ -7,7 +7,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { InfoTooltip } from '@origin/shared/components';
+import { InfoTooltip, Mix } from '@origin/shared/components';
 import {
   currencyFormat,
   formatAmount,
@@ -20,7 +20,6 @@ import { useGasPrice } from '../../gas';
 import { usePrices } from '../../prices';
 import { MIX_TOKEN } from '../constants';
 import { useRedeemState } from '../state';
-import { Mix } from './Mix';
 
 import type { StackProps } from '@mui/material';
 

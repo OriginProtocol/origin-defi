@@ -112,7 +112,8 @@ export function SwapRouteCard({
           sx={{
             position: 'absolute',
             borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-            background: (theme) => theme.palette.background.gradient1,
+            background:
+              'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
             fontSize: 12,
             top: 0,
             right: 0,

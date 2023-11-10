@@ -1,11 +1,11 @@
 /// <reference types="vitest" />
 /// <reference types="vite-plugin-svgr/client" />
+import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
-import viteTsConfigPaths from 'vite-tsconfig-paths';
 
 export default defineConfig({
   cacheDir: '../../node_modules/.vite/ousd',
@@ -44,9 +44,7 @@ export default defineConfig({
         ],
       },
     }),
-    viteTsConfigPaths({
-      root: '../../',
-    }),
+    nxViteTsPaths(),
     viteStaticCopy({
       targets: [
         {
@@ -56,15 +54,6 @@ export default defineConfig({
       ],
     }),
   ],
-
-  // Uncomment this if you are using workers.
-  // worker: {
-  //  plugins: [
-  //    viteTsConfigPaths({
-  //      root: '../../',
-  //    }),
-  //  ],
-  // },
 
   test: {
     globals: true,

@@ -19,6 +19,7 @@ import {
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
+import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -52,7 +53,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages: en, locale: 'en', defaultLocale: 'en' }],
       [QueryClientProvider, { client: queryClient }],
-      [ThemeProvider],
+      [ThemeProvider, { theme }],
       [WagmiConfig, { config: wagmiConfig }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [NotificationsProvider],
