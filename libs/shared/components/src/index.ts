@@ -1,3 +1,4 @@
+export * from './Chip';
 export * from './Errors';
 export * from './InfoTooltip';
 export * from './Inputs';

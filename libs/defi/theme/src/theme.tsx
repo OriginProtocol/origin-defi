@@ -3,24 +3,25 @@ import shadows from '@mui/material/styles/shadows';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
-const base = createTheme();
 
-export const theme = createTheme({
+const base = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#8c66fc',
-      dark: '#0274f1',
-      light: '#b361e6',
+      main: '#0074F0',
       contrastText: '#FAFBFB',
     },
     secondary: {
-      main: '#0074F0',
+      main: '#9869FB',
+      contrastText: '#FAFBFB',
     },
-    divider: '#101113',
+    divider: '#282A32',
     background: {
-      paper: '#1E1F25',
-      default: '#101113',
+      paper: '#1E1F254D',
+      default: '#141214',
+      header: '#19191D',
+      gradientPurple:
+        'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
     },
     action: {
       hoverOpacity: 0.1,
@@ -33,7 +34,9 @@ export const theme = createTheme({
       tertiary: '#828699',
     },
     grey: {
+      100: '#FAFBFB',
       200: '#B5BECA',
+      300: '#97A0AB',
       400: '#515466',
       500: '#252833',
       600: '#3B3C3E',
@@ -51,6 +54,9 @@ export const theme = createTheme({
       main: '#FF4E4E',
     },
   },
+});
+
+export const theme = createTheme(base, {
   typography: {
     fontFamily: 'Inter, Helvetica, Arial, sans-serif',
 
@@ -58,6 +64,8 @@ export const theme = createTheme({
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
+
+    allVariants: {},
 
     h1: {
       fontFamily: 'Sailec',
@@ -90,11 +98,18 @@ export const theme = createTheme({
         lineHeight: 1.5,
       },
     },
+    subtitle1: {
+      fontSize: 16,
+      color: base.palette.text.secondary,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 14,
+      },
+    },
     body1: {
       fontSize: 14,
       lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 13,
+        fontSize: 14,
       },
     },
     body2: {
@@ -108,7 +123,6 @@ export const theme = createTheme({
     borderRadius: 4,
   },
   shadows: [
-    // @ts-expect-error remove one box shadow
     ...shadows.slice(0, -2),
     '0px 6px 12px 0px rgba(0, 0, 0, 0.20)',
     'rgba(0, 0, 0, 0.25) 0px 4px 4px 0px',
@@ -305,10 +319,6 @@ export const theme = createTheme({
         enableColorScheme: true,
       },
       styleOverrides: `
-          html {
-            scrollbar-gutter: stable;
-          }
-
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -376,7 +386,7 @@ export const theme = createTheme({
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
+          background: `liear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
             '#fff',
             0.05,
           )} 100%), #1E1F25;`,

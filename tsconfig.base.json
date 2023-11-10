@@ -17,6 +17,9 @@
     "strict": false,
     "baseUrl": ".",
     "paths": {
+      "@origin/defi/home": ["libs/defi/home/src/index.ts"],
+      "@origin/defi/shared": ["libs/defi/shared/src/index.ts"],
+      "@origin/defi/theme": ["libs/defi/theme/src/index.ts"],
       "@origin/oeth/history": ["libs/oeth/history/src/index.ts"],
       "@origin/oeth/shared": ["libs/oeth/shared/src/index.ts"],
       "@origin/oeth/swap": ["libs/oeth/swap/src/index.ts"],
