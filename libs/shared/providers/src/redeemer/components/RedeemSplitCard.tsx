@@ -48,8 +48,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         border: '1px solid',
         borderColor: 'transparent',
         background: (theme) =>
-          `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
- linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
+          `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
         ...props?.sx,
         overflow: 'hidden',
         whiteSpace: 'nowrap',

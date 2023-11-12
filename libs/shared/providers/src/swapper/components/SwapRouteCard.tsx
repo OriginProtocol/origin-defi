@@ -81,23 +81,23 @@ export function SwapRouteCard({
         height: 1,
         ...(isSelected
           ? {
-              background: `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
-             linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
               borderColor: 'transparent',
+              background: (theme) =>
+                `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
               '&:hover': {
                 borderColor: 'transparent',
-                background: (
-                  theme,
-                ) => `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
-             linear-gradient(90deg, ${alpha(
-               theme.palette.primary.main,
-               0.4,
-             )} 0%, ${alpha(
-               theme.palette.primary.dark,
-               0.4,
-             )} 100%) border-box;`,
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey['800']}, ${
+                    theme.palette.grey['800']
+                  }) padding-box, linear-gradient(90deg, ${alpha(
+                    theme.palette.primary.main,
+                    0.4,
+                  )} 0%, ${alpha(
+                    theme.palette.primary.dark,
+                    0.4,
+                  )} 100%) border-box;`,
               },
             }),
         ...rest?.sx,
