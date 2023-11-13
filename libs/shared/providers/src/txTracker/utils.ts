@@ -1,8 +1,5 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { prepareWriteContract as prepareWriteContractOrig } from '@wagmi/core';
-import { keccak256, toBytes } from 'viem';
-
-const defaultSuffix = keccak256(toBytes('oeth.com')).slice(2, 10); // 9fed593b
+import { usePrepareContractWrite as usePrepareContractWriteOrig } from 'wagmi';
 
 interface TxTrackerValue {
   id: string;
@@ -17,6 +14,18 @@ interface TxTrackerValue {
 export function prepareWriteContractWithTxTracker(
   opts: Parameters<typeof prepareWriteContractOrig>[0],
 ) {
+  const dataSuffix = getDataSuffix();
+  return prepareWriteContractOrig({ ...opts, dataSuffix });
+}
+
+export function usePrepareContractWriteWithTxTracker(
+  opts: Parameters<typeof usePrepareContractWriteOrig>[0],
+) {
+  const dataSuffix = getDataSuffix();
+  return usePrepareContractWriteOrig({ ...opts, dataSuffix });
+}
+
+function getDataSuffix() {
   let value: TxTrackerValue | undefined;
 
   if (typeof window !== 'undefined') {
@@ -30,9 +39,5 @@ export function prepareWriteContractWithTxTracker(
     }
   }
 
-  const dataSuffix = value?.id.match(/^[0-9a-f]{8}$/)
-    ? value.id
-    : defaultSuffix;
-
-  return prepareWriteContractOrig({ ...opts, dataSuffix: `0x${dataSuffix}` });
+  return value?.id.match(/^[0-9a-f]{8}$/) ? `0x${value.id}` : undefined;
 }

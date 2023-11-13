@@ -15,7 +15,7 @@ import { Topnav } from './components/Topnav';
 export const App = () => {
   useCurve();
   usePrices();
-  useTxTracker();
+  useTxTracker('oeth.com'); // Will be hashed as 9fed593b and added to call data
 
   return (
     <ErrorBoundary
