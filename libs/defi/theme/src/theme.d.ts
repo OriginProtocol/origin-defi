@@ -4,11 +4,15 @@ import '@mui/material/Button';
 declare module '@mui/material/styles' {
   interface TypeBackground {
     gradientPurple: string;
+    gradientBlue: string;
+    gradientOrange: string;
     header: string;
   }
 
   interface TypeBackgroundOptions {
     gradientPurple?: string;
+    gradientBlue?: string;
+    gradientOrange?: string;
     header?: string;
   }
 

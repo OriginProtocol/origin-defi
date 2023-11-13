@@ -20,8 +20,10 @@ const base = createTheme({
       paper: '#1E1F254D',
       default: '#141214',
       header: '#19191D',
+      gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
+      gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
     },
     action: {
       hoverOpacity: 0.1,
@@ -45,7 +47,7 @@ const base = createTheme({
       900: '#18191C',
     },
     success: {
-      main: '#5BFF92',
+      main: '#66FE90',
     },
     warning: {
       main: '#FFDC86',
