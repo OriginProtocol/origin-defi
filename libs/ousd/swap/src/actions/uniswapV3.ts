@@ -1,9 +1,9 @@
 import { contracts, tokens } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -249,7 +249,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
@@ -292,7 +292,7 @@ const swap: Swap = async ({
 
   let txHash;
   if ([tokenIn.symbol, tokenOut.symbol].includes(tokens.mainnet.USDT.symbol)) {
-    const { request } = await prepareWriteContract({
+    const { request } = await prepareWriteContractWithTxTracker({
       address: contracts.mainnet.uniswapV3Router.address,
       abi: contracts.mainnet.uniswapV3Router.abi,
       functionName: 'exactInputSingle',
@@ -313,7 +313,7 @@ const swap: Swap = async ({
     const { hash } = await writeContract(request);
     txHash = hash;
   } else {
-    const { request } = await prepareWriteContract({
+    const { request } = await prepareWriteContractWithTxTracker({
       address: contracts.mainnet.uniswapV3Router.address,
       abi: contracts.mainnet.uniswapV3Router.abi,
       functionName: 'exactInput',

@@ -1,10 +1,10 @@
 import { contracts, tokens } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   readContracts,
   writeContract,
@@ -156,7 +156,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
     return null;
   }
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
@@ -197,7 +197,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'depositSFRXETH',

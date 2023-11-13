@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { useContractWrite, usePrepareContractWrite } from 'wagmi';
+import { useContractWrite } from 'wagmi';
 
+import { usePrepareContractWriteWithTxTracker } from '../../txTracker';
 import { useIsRebaseBannerVisible } from '../hooks';
 
 import type { StackProps } from '@mui/material';
@@ -19,7 +20,7 @@ export const RebaseBanner = (props: StackProps) => {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
   const visible = useIsRebaseBannerVisible();
-  const { config } = usePrepareContractWrite({
+  const { config } = usePrepareContractWriteWithTxTracker({
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
     functionName: 'rebaseOptIn',

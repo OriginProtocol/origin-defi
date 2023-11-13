@@ -1,4 +1,5 @@
 import { contracts } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
@@ -7,7 +8,6 @@ import {
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -187,7 +187,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OETHCurvePool.address,
     abi: contracts.mainnet.OETHCurvePool.abi,
     functionName: 'exchange',

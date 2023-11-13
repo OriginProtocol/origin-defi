@@ -1,11 +1,11 @@
 import { queryClient } from '@origin/oeth/shared';
 import { contracts } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   readContracts,
   writeContract,
@@ -215,7 +215,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
@@ -256,7 +256,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OETHVault.address,
     abi: contracts.mainnet.OETHVault.abi,
     functionName: 'mint',

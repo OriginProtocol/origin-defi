@@ -1,9 +1,9 @@
 import { contracts, tokens } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, scale } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -157,7 +157,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
@@ -185,7 +185,7 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OUSDFlipper.address,
     abi: contracts.mainnet.OUSDFlipper.abi,
     functionName: getFunctionName(tokenIn, tokenOut),

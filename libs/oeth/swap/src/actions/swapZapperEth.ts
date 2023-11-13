@@ -1,10 +1,10 @@
 import { contracts } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -148,7 +148,7 @@ const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
     return null;
   }
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
@@ -180,7 +180,7 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn, slippage }) => {
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'deposit',
