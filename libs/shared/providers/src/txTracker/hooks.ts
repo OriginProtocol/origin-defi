@@ -10,7 +10,7 @@ import { keccak256, toBytes } from 'viem';
  * sources on-chain by appending it to the calldata of any transaction
  * originting from the dapp.
  *
- * @param defaultTrackId The unhashed track ID to use if one is not found in localStorage. EG 'oeth.com'
+ * @param defaultTrackId The unhashed track ID to use if one is not found in localStorage. Eg 'oeth.com'
  */
 export function useTxTracker(defaultTrackId: string) {
   const { value: storedTxTrackId, set: setTxTrackId } =
