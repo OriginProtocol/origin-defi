@@ -14,8 +14,8 @@ To start the development server run `pnpm nx serve <APP_NAME>`. Open your browse
 
 | Status | Name | Nx project | Port | Public hosts |
 |:------:|:-----|:-----------|:-----|:-------------|
-|   ✅   | OETH | `oeth`     | 4200 | [fleek](https://defi-oeth.on.fleek.co/)    |
-|   🚧   | OUSD | `ousd`     | 4201 |     |
+|   ✅   | OETH | `oeth`     | 4200 | [aws](https://main.d21cq9khxoetn4.amplifyapp.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
+|   🚧   | OUSD | `ousd`     | 4201 | [aws](https://main.d3vake4ybrgst8.amplifyapp.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
 
 ## Storybook
 
