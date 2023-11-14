@@ -2,18 +2,19 @@ import { useCallback, useRef } from 'react';
 
 import { Box, Link } from '@mui/material';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
+import { useHistoryTransactionQuery } from '../queries.generated';
 import { HistoryFilterButton } from './HistoryButton';
 
-import type { Rows } from './HistoryTable';
-
-interface Props {
-  data?: Rows;
-}
-
-export function ExportData({ data }: Props) {
+export function ExportData() {
   const link = useRef<HTMLAnchorElement>(null);
   const intl = useIntl();
+  const { address } = useAccount();
+  const { data } = useHistoryTransactionQuery(
+    { address, offset: 0, limit: 1000 },
+    { select: (data) => data?.oethAddresses?.at(0)?.history ?? [] },
+  );
 
   const generateCSV = useCallback(() => {
     const rows = [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']];

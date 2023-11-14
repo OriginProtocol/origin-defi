@@ -5,19 +5,14 @@ import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useAggregatedHistory } from '../hooks';
 import { ExportData } from './ExportData';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
-import type { HistoryType } from '@origin/oeth/shared';
-
 export function HistoryCard() {
   const intl = useIntl();
-  const [filters, setFilters] = useState<HistoryType[]>([]);
   const { isConnected } = useAccount();
-  const { data, isLoading, isFetching, date, setDate } =
-    useAggregatedHistory(filters);
+  const [filters, setFilters] = useState([]);
 
   return (
     <Card>
@@ -32,23 +27,15 @@ export function HistoryCard() {
               {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
             </Typography>
             <Stack direction="row" gap={1}>
-              <HistoryFilters
-                filters={filters}
-                onChange={(values) => setFilters(values)}
-              />
-              <ExportData data={data} />
+              <HistoryFilters filters={filters} setFilters={setFilters} />
+              <ExportData />
             </Stack>
           </Stack>
         }
       />
 
       {isConnected ? (
-        <HistoryTable
-          rows={data || []}
-          isLoading={isFetching && isLoading}
-          date={date}
-          setDate={setDate}
-        />
+        <HistoryTable filters={filters} />
       ) : (
         <Stack
           sx={{

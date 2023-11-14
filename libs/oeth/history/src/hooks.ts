@@ -1,11 +1,8 @@
-import { useMemo, useState } from 'react';
-
 import { HistoryType } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { endOfMonth, isThisMonth } from 'date-fns';
 import { descend, groupBy, prop, sort, take } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -87,88 +84,80 @@ export const usePendingYield = (
 };
 
 export const useAggregatedHistory = (filters?: HistoryType[]) => {
-  const { address } = useAccount();
-  const [date, setDate] = useState(new Date());
+  const { address, isConnected } = useAccount();
 
-  const {
-    data: queryData,
-    isLoading,
-    isFetching,
-  } = useHistoryTransactionQuery(
+  return useHistoryTransactionQuery(
     {
       address,
-      dateStart: new Date('2023-05-01').toISOString(),
-      dateEnd: endOfMonth(new Date()).toISOString(),
-      filters: filters.length ? filters : undefined,
+      filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
-      staleTime: isThisMonth(date) ? 30e3 : Infinity,
-      select: (data) => data?.oethAddresses?.at(0)?.history,
+      enabled: isConnected,
+      placeholderData: { oethAddresses: [{ history: [] }] },
+      select: (data) => {
+        const history = data?.oethAddresses?.at(0)?.history;
+
+        const grouped = groupBy(
+          (hist) => take(10, hist.timestamp),
+          history ?? [],
+        );
+
+        const aggregated = Object.entries(grouped).reduce(
+          (acc, [day, values]) => {
+            if (isNilOrEmpty(values)) {
+              return acc;
+            }
+
+            if (values.length === 1) {
+              return [...acc, ...values];
+            }
+
+            const yieldCount =
+              values.filter((v) => v.type === HistoryType.Yield)?.length ?? 0;
+
+            if (yieldCount <= 1) {
+              return [...acc, ...values];
+            }
+
+            const dailyYield = values.reduce(
+              (a: DailyHistory, c) => {
+                if (c.type === HistoryType.Yield) {
+                  a.value = formatUnits(
+                    parseUnits(a.value, 18) + parseUnits(c.value, 18),
+                    18,
+                  );
+                  if (
+                    +formatUnits(parseUnits(a.balance, 18), 18) <
+                    +formatUnits(parseUnits(c.balance, 18), 18)
+                  ) {
+                    a.balance = c.balance;
+                  }
+                  a.transactions = [...a.transactions, c];
+                }
+
+                return a;
+              },
+              {
+                type: HistoryType.Yield,
+                value: '0',
+                txHash: '',
+                timestamp: day,
+                balance: '0',
+                transactions: [],
+              },
+            );
+
+            return [
+              ...acc,
+              ...values.filter((v) => v.type !== HistoryType.Yield),
+              dailyYield,
+            ];
+          },
+          [],
+        );
+
+        return sort(descend(prop('timestamp')), aggregated) as DailyHistory[];
+      },
     },
   );
-
-  const data = useMemo(() => {
-    const grouped = groupBy((hist) => take(7, hist.timestamp), queryData ?? []);
-
-    const aggregated = Object.entries(grouped).reduce((acc, [day, values]) => {
-      if (isNilOrEmpty(values)) {
-        return acc;
-      }
-
-      if (values.length === 1) {
-        return [...acc, ...values];
-      }
-
-      const yieldCount =
-        values.filter((v) => v.type === HistoryType.Yield)?.length ?? 0;
-
-      if (yieldCount <= 1) {
-        return [...acc, ...values];
-      }
-
-      const dailyYield = values.reduce(
-        (a: DailyHistory, c) => {
-          if (c.type === HistoryType.Yield) {
-            a.value = formatUnits(
-              parseUnits(a.value, 18) + parseUnits(c.value, 18),
-              18,
-            );
-            if (
-              +formatUnits(parseUnits(a.balance, 18), 18) <
-              +formatUnits(parseUnits(c.balance, 18), 18)
-            ) {
-              a.balance = c.balance;
-            }
-            a.transactions = [...a.transactions, c];
-          }
-
-          return a;
-        },
-        {
-          type: HistoryType.Yield,
-          value: '0',
-          txHash: '',
-          timestamp: day,
-          balance: '0',
-          transactions: [],
-        },
-      );
-
-      return [
-        ...acc,
-        ...values.filter((v) => v.type !== HistoryType.Yield),
-        dailyYield,
-      ];
-    }, []);
-
-    return sort(descend(prop('timestamp')), aggregated) as DailyHistory[];
-  }, [queryData]);
-
-  return {
-    data,
-    isLoading,
-    isFetching,
-    date,
-    setDate,
-  };
 };

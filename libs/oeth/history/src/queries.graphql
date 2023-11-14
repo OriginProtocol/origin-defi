@@ -1,22 +1,10 @@
-query HistoryPage($address: String!, $offset: Int!, $filters: [HistoryType!]) {
+query HistoryUserStat($address: String!) {
   oethAddresses(where: { id_containsInsensitive: $address }) {
     balance
     earned
     isContract
     rebasingOption
     lastUpdated
-    history(
-      limit: 20
-      orderBy: timestamp_DESC
-      offset: $offset
-      where: { type_in: $filters }
-    ) {
-      type
-      value
-      txHash
-      timestamp
-      balance
-    }
   }
 }
 
@@ -27,23 +15,13 @@ query HistoryApy {
   }
 }
 
-query HistoryTransaction(
-  $address: String!
-  $dateStart: DateTime!
-  $dateEnd: DateTime!
-  $filters: [HistoryType!]
-) {
+query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
   oethAddresses(where: { id_containsInsensitive: $address }) {
-    lastUpdated
     history(
       orderBy: timestamp_DESC
-      where: {
-        AND: {
-          timestamp_gte: $dateStart
-          timestamp_lte: $dateEnd
-          type_in: $filters
-        }
-      }
+      offset: 0
+      limit: 5000
+      where: { type_in: $filters }
     ) {
       type
       value

@@ -6,7 +6,7 @@ import { formatEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
-import { useHistoryPageQuery } from '../queries.generated';
+import { useHistoryUserStatQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 
@@ -18,8 +18,8 @@ export function APYContainer() {
     token: tokens.mainnet.OETH.address,
     watch: true,
   });
-  const { data, isLoading } = useHistoryPageQuery(
-    { address: address?.toLowerCase(), offset: 0 },
+  const { data, isLoading } = useHistoryUserStatQuery(
+    { address },
     {
       enabled: isConnected,
       select: (data) => data?.oethAddresses?.at(0),
