@@ -228,13 +228,19 @@ export function HistoryTable({ filters }: HistoryTableProps) {
         sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
         <HistoryFilterButton
-          onClick={() => table.setPageIndex(0)}
+          onClick={() => {
+            table.setPageIndex(0);
+            window.scrollTo(0, 0);
+          }}
           disabled={!table.getCanPreviousPage()}
         >
           {intl.formatMessage({ defaultMessage: 'First' })}
         </HistoryFilterButton>
         <HistoryFilterButton
-          onClick={table.previousPage}
+          onClick={() => {
+            table.previousPage();
+            window.scrollTo(0, 0);
+          }}
           disabled={!table.getCanPreviousPage()}
         >
           <Box
@@ -253,7 +259,10 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           )}
         </Typography>
         <HistoryFilterButton
-          onClick={table.nextPage}
+          onClick={() => {
+            table.nextPage();
+            window.scrollTo(0, 0);
+          }}
           disabled={!table.getCanNextPage()}
         >
           <Box
@@ -263,7 +272,10 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           />
         </HistoryFilterButton>
         <HistoryFilterButton
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          onClick={() => {
+            table.setPageIndex(table.getPageCount() - 1);
+            window.scrollTo(0, 0);
+          }}
           disabled={!table.getCanNextPage()}
         >
           {intl.formatMessage({ defaultMessage: 'Last' })}
