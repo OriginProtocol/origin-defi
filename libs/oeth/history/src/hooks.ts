@@ -3,8 +3,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { descend, groupBy, prop, sort } from 'ramda';
-import { useIntl } from 'react-intl';
+import { descend, groupBy, sort } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -86,7 +85,6 @@ export const usePendingYield = (
 
 export const useAggregatedHistory = (filters?: HistoryType[]) => {
   const { address, isConnected } = useAccount();
-  const intl = useIntl();
 
   return useHistoryTransactionQuery(
     {
@@ -101,11 +99,11 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
 
         const grouped = groupBy(
           (hist) =>
-            intl.formatDate(new Date(hist.timestamp), {
-              day: '2-digit',
+            Intl.DateTimeFormat('fr-CA', {
+              year: 'numeric',
               month: '2-digit',
-              year: '2-digit',
-            }),
+              day: '2-digit',
+            }).format(new Date(hist.timestamp)),
           history ?? [],
         );
 
@@ -163,7 +161,18 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
           [],
         );
 
-        return sort(descend(prop('timestamp')), aggregated) as DailyHistory[];
+        return sort(
+          descend((h) =>
+            Intl.DateTimeFormat('fr-CA', {
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+              hour: 'numeric',
+              second: 'numeric',
+            }).format(new Date(h.timestamp)),
+          ),
+          aggregated,
+        ) as DailyHistory[];
       },
     },
   );
