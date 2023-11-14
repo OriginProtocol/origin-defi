@@ -3,7 +3,8 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { descend, groupBy, prop, sort, take } from 'ramda';
+import { descend, groupBy, prop, sort } from 'ramda';
+import { useIntl } from 'react-intl';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -85,6 +86,7 @@ export const usePendingYield = (
 
 export const useAggregatedHistory = (filters?: HistoryType[]) => {
   const { address, isConnected } = useAccount();
+  const intl = useIntl();
 
   return useHistoryTransactionQuery(
     {
@@ -98,7 +100,12 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
         const history = data?.oethAddresses?.at(0)?.history;
 
         const grouped = groupBy(
-          (hist) => take(10, hist.timestamp),
+          (hist) =>
+            intl.formatDate(new Date(hist.timestamp), {
+              day: '2-digit',
+              month: '2-digit',
+              year: '2-digit',
+            }),
           history ?? [],
         );
 

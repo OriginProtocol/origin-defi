@@ -328,7 +328,7 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
       <Stack>
         <Typography color="text.secondary" variant="body2">
           {intl.formatDate(new Date(timestamp), {
-            hour12: false,
+            hourCycle: 'h23',
             hour: '2-digit',
             minute: '2-digit',
           })}
