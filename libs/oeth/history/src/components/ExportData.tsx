@@ -12,7 +12,7 @@ export function ExportData() {
   const intl = useIntl();
   const { address } = useAccount();
   const { data } = useHistoryTransactionQuery(
-    { address, offset: 0, limit: 1000 },
+    { address },
     { select: (data) => data?.oethAddresses?.at(0)?.history ?? [] },
   );
 
