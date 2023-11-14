@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 
 import {
   Box,
+  Link,
   Stack,
   Table,
   TableBody,
@@ -10,7 +11,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ExpandIcon, LinkIcon } from '@origin/shared/components';
+import { ExpandIcon } from '@origin/shared/components';
 import {
   formatAmount,
   isNilOrEmpty,
@@ -109,7 +110,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           if (info.row.getCanExpand()) {
             return (
               <ExpandIcon
-                sx={{ width: 10, color: (theme) => theme.palette.primary.main }}
+                sx={{ width: 12, color: (theme) => theme.palette.primary.main }}
                 isExpanded={info.row.getIsExpanded()}
               />
             );
@@ -117,10 +118,18 @@ export function HistoryTable({ filters }: HistoryTableProps) {
 
           return (
             !isNilOrEmpty(info.row.original.txHash) && (
-              <LinkIcon
-                size={10}
-                url={`https://etherscan.io/tx/${info.row.original.txHash}`}
-              />
+              <Link
+                href={`https://etherscan.io/tx/${info.row.original.txHash}`}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                <Box
+                  component="img"
+                  src="/images/icons/arrow-up-right-from-square.svg"
+                  alt="link"
+                  sx={{ height: 12, width: 12 }}
+                />
+              </Link>
             )
           );
         },
