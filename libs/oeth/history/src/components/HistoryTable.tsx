@@ -147,6 +147,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
     getSubRows: (row) => row?.transactions,
     getExpandedRowModel: getExpandedRowModel(),
     autoResetPageIndex: true,
+    paginateExpandedRows: false,
   });
 
   return (
@@ -218,14 +219,14 @@ export function HistoryTable({ filters }: HistoryTableProps) {
         sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
         <HistoryFilterButton
-          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
-          disabled={!table.getCanNextPage()}
+          onClick={() => table.setPageIndex(0)}
+          disabled={!table.getCanPreviousPage()}
         >
           {intl.formatMessage({ defaultMessage: 'First' })}
         </HistoryFilterButton>
         <HistoryFilterButton
-          onClick={table.nextPage}
-          disabled={!table.getCanNextPage()}
+          onClick={table.previousPage}
+          disabled={!table.getCanPreviousPage()}
         >
           <Box
             component="img"
@@ -243,8 +244,8 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           )}
         </Typography>
         <HistoryFilterButton
-          onClick={table.previousPage}
-          disabled={!table.getCanPreviousPage()}
+          onClick={table.nextPage}
+          disabled={!table.getCanNextPage()}
         >
           <Box
             component="img"
@@ -253,8 +254,8 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           />
         </HistoryFilterButton>
         <HistoryFilterButton
-          onClick={() => table.setPageIndex(0)}
-          disabled={!table.getCanPreviousPage()}
+          onClick={() => table.setPageIndex(table.getPageCount() - 1)}
+          disabled={!table.getCanNextPage()}
         >
           {intl.formatMessage({ defaultMessage: 'Last' })}
         </HistoryFilterButton>
