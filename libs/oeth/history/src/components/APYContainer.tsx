@@ -82,12 +82,12 @@ function ValueContainer({
     <Stack
       {...rest}
       sx={{
-        paddingBlock: 2,
+        py: 2,
         alignItems: 'center',
         textAlign: 'center',
         justifyContent: 'space-between',
+        gap: 1,
         flex: 1,
-        height: { xs: 72, md: 80 },
         ...rest?.sx,
       }}
     >

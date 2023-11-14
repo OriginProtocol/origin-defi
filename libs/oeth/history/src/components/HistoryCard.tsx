@@ -22,6 +22,7 @@ export function HistoryCard() {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
+            spacing={2}
           >
             <Typography>
               {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}

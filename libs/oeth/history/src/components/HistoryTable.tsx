@@ -236,7 +236,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
         </HistoryFilterButton>
         <Typography fontSize={13} px={2}>
           {intl.formatMessage(
-            { defaultMessage: 'Page {page} of {lastPage}' },
+            { defaultMessage: '{page} of {lastPage}' },
             {
               page: table.getState().pagination.pageIndex + 1,
               lastPage: table.getPageCount(),
