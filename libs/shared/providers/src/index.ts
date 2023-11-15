@@ -5,6 +5,7 @@ export * from './console';
 export * from './curve';
 export * from './gas';
 export * from './geoFence';
+export * from './intl';
 export * from './notifications';
 export * from './prices';
 export * from './rebaseBanner';

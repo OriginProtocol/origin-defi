@@ -1,0 +1,329 @@
+{
+  "+LmzMn": {
+    "defaultMessage": "max"
+  },
+  "+U6ozc": {
+    "defaultMessage": "Type"
+  },
+  "+vVZ/G": {
+    "defaultMessage": "Connect"
+  },
+  "/GCoTA": {
+    "defaultMessage": "Clear"
+  },
+  "/xvR4F": {
+    "defaultMessage": "Opt in"
+  },
+  "024MfN": {
+    "defaultMessage": "Processing Approval"
+  },
+  "0Go4jI": {
+    "defaultMessage": "Swapped"
+  },
+  "0fR+fE": {
+    "defaultMessage": "Route"
+  },
+  "1XVJUl": {
+    "defaultMessage": "Switch to {defaultChain}"
+  },
+  "1nxJrQ": {
+    "defaultMessage": "Return to Home Page"
+  },
+  "4D9M13": {
+    "defaultMessage": "Swap with CurvePool"
+  },
+  "4LOwM/": {
+    "defaultMessage": "OETH Transactions"
+  },
+  "5RMD2G": {
+    "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
+  },
+  "5X3I7d": {
+    "defaultMessage": "Switch network"
+  },
+  "5h3TFE": {
+    "defaultMessage": "I agree"
+  },
+  "6GZbSi": {
+    "defaultMessage": "The selected network is not supported by the application."
+  },
+  "6XFO/C": {
+    "defaultMessage": "Approved"
+  },
+  "6cYAtm": {
+    "defaultMessage": "Insufficient funds"
+  },
+  "7CPiAt": {
+    "defaultMessage": "Redeemed"
+  },
+  "7ZWZTS": {
+    "defaultMessage": "Wait for signature"
+  },
+  "8UzT6d": {
+    "defaultMessage": "CSV"
+  },
+  "8XZjyW": {
+    "defaultMessage": "There was an error while loading this component, you can try to reload."
+  },
+  "8cCxx8": {
+    "defaultMessage": "Redeem for mix via Origin Vault"
+  },
+  "9+Ddtu": {
+    "defaultMessage": "Next"
+  },
+  "9ghOJK": {
+    "defaultMessage": "Unhandled Error!"
+  },
+  "9iP/A8": {
+    "defaultMessage": "Lifetime Earnings (OETH)"
+  },
+  "9lt7g1": {
+    "defaultMessage": "Discord support channel"
+  },
+  "ASNc/h": {
+    "defaultMessage": "Enter an amount"
+  },
+  "BY343C": {
+    "defaultMessage": "Change"
+  },
+  "C73Nbd": {
+    "defaultMessage": "Swap with Curve"
+  },
+  "CcqmCh": {
+    "defaultMessage": "OETH Balance"
+  },
+  "DKaqyQ": {
+    "defaultMessage": "Redeeming"
+  },
+  "DRdgbZ": {
+    "defaultMessage": "Redeem {token} for the basket of underlying assets"
+  },
+  "DupNoS": {
+    "defaultMessage": "Go back home"
+  },
+  "E2sGaF": {
+    "defaultMessage": "Exit"
+  },
+  "EEwopl": {
+    "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
+  },
+  "EWw/tK": {
+    "defaultMessage": "Apply"
+  },
+  "H5+NAX": {
+    "defaultMessage": "Balance"
+  },
+  "HyhkDr": {
+    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+  },
+  "JA3MsG": {
+    "defaultMessage": "Operation Cancelled"
+  },
+  "JJNc3c": {
+    "defaultMessage": "Previous"
+  },
+  "JrepQU": {
+    "defaultMessage": "Gas:"
+  },
+  "KjK2z3": {
+    "defaultMessage": "Sorry, we can't seem to find that page"
+  },
+  "L9unn+": {
+    "defaultMessage": "Pending Yield"
+  },
+  "M6AGsR": {
+    "defaultMessage": "Est gas"
+  },
+  "MLTKb6": {
+    "defaultMessage": "APY"
+  },
+  "MSTVqC": {
+    "defaultMessage": "Reload Page"
+  },
+  "MW9FHt": {
+    "defaultMessage": "Ooops..."
+  },
+  "NXFAgE": {
+    "defaultMessage": "Ooops, something went wrong 😓"
+  },
+  "NXI/XL": {
+    "defaultMessage": "Auto"
+  },
+  "O1F5Cx": {
+    "defaultMessage": "Connect your wallet to see your history"
+  },
+  "OwO+Nr": {
+    "defaultMessage": "Mint"
+  },
+  "Ozw3aL": {
+    "defaultMessage": "Mint with Vault"
+  },
+  "PKgDoL": {
+    "defaultMessage": "Estimating..."
+  },
+  "PmkP1H": {
+    "defaultMessage": "Unsupported Network"
+  },
+  "PzlMqG": {
+    "defaultMessage": "Best"
+  },
+  "QW+Q5N": {
+    "defaultMessage": "Clear all"
+  },
+  "Qz1fcp": {
+    "defaultMessage": "Balance: {number}"
+  },
+  "TrKxvg": {
+    "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+  },
+  "TwyMau": {
+    "defaultMessage": "Account"
+  },
+  "UkXeBW": {
+    "defaultMessage": "If the problem persists, you can contact us through our {support}."
+  },
+  "UlMgTq": {
+    "defaultMessage": "If the problem persists, contact us on our {support}."
+  },
+  "V/q7w4": {
+    "defaultMessage": "Finding the best route..."
+  },
+  "W87PYU": {
+    "defaultMessage": "View on {name}"
+  },
+  "WCaf5C": {
+    "defaultMessage": "Approve"
+  },
+  "XSdWHA": {
+    "defaultMessage": "Redeem"
+  },
+  "ZIstZx": {
+    "defaultMessage": "Page {page}"
+  },
+  "ZmLuI/": {
+    "defaultMessage": "Rate:"
+  },
+  "aA9zvD": {
+    "defaultMessage": "The best swap route factors in the best price after transaction costs"
+  },
+  "aAMuJm": {
+    "defaultMessage": "7-Day Trailing APY"
+  },
+  "aWpBzj": {
+    "defaultMessage": "Show more"
+  },
+  "c0b5XV": {
+    "defaultMessage": "Rate"
+  },
+  "c31Feo": {
+    "defaultMessage": "Swapping"
+  },
+  "cOB9Jx": {
+    "defaultMessage": "Yield"
+  },
+  "cg1VJ2": {
+    "defaultMessage": "Connect Wallet"
+  },
+  "dUJwm/": {
+    "defaultMessage": "Processing Transaction"
+  },
+  "djJp6c": {
+    "defaultMessage": "History"
+  },
+  "dtJo4Y": {
+    "defaultMessage": "Exchange rate"
+  },
+  "fuV7zb": {
+    "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "gBm7FQ": {
+    "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "gcuDcH": {
+    "defaultMessage": "Sent"
+  },
+  "iLgjES": {
+    "defaultMessage": "Error while estimating"
+  },
+  "iaS0YY": {
+    "defaultMessage": "I have read and agree to the above terms"
+  },
+  "k3YWIR": {
+    "defaultMessage": "Max slippage"
+  },
+  "kF1zxQ": {
+    "defaultMessage": "30-Day Trailing APY"
+  },
+  "lozEho": {
+    "defaultMessage": "Error while approving"
+  },
+  "m/L3sK": {
+    "defaultMessage": "Approving"
+  },
+  "nc8QpJ": {
+    "defaultMessage": "Recent Activity"
+  },
+  "qNe+Iz": {
+    "defaultMessage": "Wrap with Origin"
+  },
+  "qQ/SRd": {
+    "defaultMessage": "User rejected operation"
+  },
+  "qj1uhz": {
+    "defaultMessage": "Disconnect"
+  },
+  "r7kiOG": {
+    "defaultMessage": "Wrap"
+  },
+  "s8BnAC": {
+    "defaultMessage": "Swap"
+  },
+  "stTYBM": {
+    "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+  },
+  "tio9Gt": {
+    "defaultMessage": "IPFS"
+  },
+  "uaols3": {
+    "defaultMessage": "Unwrap"
+  },
+  "vugtF7": {
+    "defaultMessage": "No Activity"
+  },
+  "w2pp9r": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
+  },
+  "w5VeGT": {
+    "defaultMessage": "Error while redeeming"
+  },
+  "wf1EAp": {
+    "defaultMessage": "Unwrap with Origin"
+  },
+  "wqlXwW": {
+    "defaultMessage": "Wrong Network"
+  },
+  "xZIm6b": {
+    "defaultMessage": "Your transaction may be frontrun"
+  },
+  "xwfunk": {
+    "defaultMessage": "Restricted Access"
+  },
+  "y5HZFA": {
+    "defaultMessage": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+  },
+  "z/wUXE": {
+    "defaultMessage": "Received"
+  },
+  "z1bu+z": {
+    "defaultMessage": "Error while swapping"
+  },
+  "zSOvI0": {
+    "defaultMessage": "Filters"
+  },
+  "zbaTLV": {
+    "defaultMessage": "View on IPFS"
+  },
+  "zmWQIG": {
+    "defaultMessage": "Waiting for signature"
+  }
+}
