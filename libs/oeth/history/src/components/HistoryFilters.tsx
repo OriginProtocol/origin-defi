@@ -17,6 +17,8 @@ import { defineMessage, useIntl } from 'react-intl';
 
 import { HistoryFilterButton } from './HistoryButton';
 
+import type { Dispatch, SetStateAction } from 'react';
+
 const styles = {
   fontSize: 12,
   fontWeight: 500,
@@ -38,10 +40,10 @@ const filterOptions = [
 
 export type HistoryFiltersProps = {
   filters: HistoryType[];
-  onChange: (values: HistoryType[]) => void;
+  setFilters: Dispatch<SetStateAction<HistoryType[]>>;
 };
 
-export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
+export function HistoryFilters({ filters, setFilters }: HistoryFiltersProps) {
   const [selected, setSelectedTypes] = useState<HistoryType[]>(filters);
   const intl = useIntl();
   const theme = useTheme();
@@ -156,7 +158,7 @@ export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
             sx={styles}
             onClick={() => {
               setAnchorEl(null);
-              onChange([]);
+              setFilters([]);
               setSelectedTypes([]);
             }}
           >
@@ -173,7 +175,7 @@ export function HistoryFilters({ filters, onChange }: HistoryFiltersProps) {
             }}
             onClick={() => {
               setAnchorEl(null);
-              onChange(selected);
+              setFilters(selected);
             }}
           >
             {intl.formatMessage({ defaultMessage: 'Apply' })}

@@ -34,6 +34,8 @@ const mappings = [
   [0.1, 4],
   [0.0001, 5],
   [0.000001, 6],
+  [0.00000001, 8],
+  [0.0000000001, 10],
 ] as const;
 
 export function formatAmount(

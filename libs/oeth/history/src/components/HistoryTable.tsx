@@ -1,6 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
+  Box,
+  Link,
   Stack,
   Table,
   TableBody,
@@ -9,55 +11,65 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { LinkIcon } from '@origin/shared/components';
-import { quantityFormat } from '@origin/shared/utils';
+import { ExpandIcon } from '@origin/shared/components';
+import {
+  formatAmount,
+  isNilOrEmpty,
+  quantityFormat,
+} from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
   getCoreRowModel,
+  getExpandedRowModel,
+  getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
+import { useAggregatedHistory } from '../hooks';
 import { HistoryFilterButton } from './HistoryButton';
 import { TransactionIcon } from './TransactionIcon';
 
 import type { StackProps } from '@mui/material';
 import type { HistoryType } from '@origin/oeth/shared';
+import type { ExpandedState } from '@tanstack/react-table';
 
-import type { HistoryPageQuery } from '../queries.generated';
+import type { DailyHistory } from '../types';
 
-export type Rows = HistoryPageQuery['oethAddresses'][0]['history'];
+const columnHelper = createColumnHelper<DailyHistory>();
 
-interface Props {
-  rows: Rows;
-  isLoading: boolean;
-  hasPreviousPage: boolean;
-  hasNextPage: boolean;
-  page: number;
-  setPage: (page: number) => void;
-}
+export type HistoryTableProps = {
+  filters: HistoryType[];
+};
 
-const columnHelper = createColumnHelper<Rows[0]>();
-
-export function HistoryTable({
-  rows,
-  hasNextPage,
-  hasPreviousPage,
-  page,
-  setPage,
-}: Props) {
+export function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
+  const [expanded, setExpanded] = useState<ExpandedState>({});
+  const { data } = useAggregatedHistory(filters);
+
   const columns = useMemo(
     () => [
       columnHelper.accessor('type', {
-        cell: (info) => (
-          <HistoryTypeCell
-            type={info.getValue()}
-            timestamp={info.row.original.timestamp}
-          />
-        ),
+        cell: (info) => {
+          if (info.row.depth > 0) {
+            return (
+              <AggregatedTypeCell
+                type={info.getValue()}
+                timestamp={info.row.original.timestamp}
+              />
+            );
+          }
+
+          return (
+            <HistoryTypeCell
+              type={info.getValue()}
+              timestamp={info.row.original.timestamp}
+              sx={{ pl: info.row.depth * 2 }}
+            />
+          );
+        },
         header: intl.formatMessage({ defaultMessage: 'Type' }),
         enableColumnFilter: true,
         filterFn: (row, _, value) => {
@@ -68,10 +80,7 @@ export function HistoryTable({
       columnHelper.accessor('value', {
         cell: (info) => (
           <Typography textAlign="end">
-            {intl.formatNumber(
-              +formatEther(BigInt(info.getValue() ?? '0')),
-              quantityFormat,
-            )}
+            {formatAmount(BigInt(info.getValue() ?? '0'))}
           </Typography>
         ),
         header: () => (
@@ -97,32 +106,57 @@ export function HistoryTable({
       }),
       columnHelper.display({
         id: 'link',
-        cell: (info) => (
-          <LinkIcon
-            size={10}
-            url={`https://etherscan.io/tx/${info.row.original.txHash}`}
-          />
-        ),
+        cell: (info) => {
+          if (info.row.getCanExpand()) {
+            return (
+              <ExpandIcon
+                sx={{ width: 12, color: (theme) => theme.palette.primary.main }}
+                isExpanded={info.row.getIsExpanded()}
+              />
+            );
+          }
+
+          return (
+            !isNilOrEmpty(info.row.original.txHash) && (
+              <Link
+                href={`https://etherscan.io/tx/${info.row.original.txHash}`}
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
+                <Box
+                  component="img"
+                  src="/images/icons/arrow-up-right-from-square.svg"
+                  alt="link"
+                  sx={{ height: 12, width: 12 }}
+                />
+              </Link>
+            )
+          );
+        },
       }),
     ],
     [intl],
   );
 
   const table = useReactTable({
-    data: rows,
+    data,
     columns,
     state: {
+      expanded,
+    },
+    initialState: {
       pagination: {
-        pageSize: 20,
         pageIndex: 0,
+        pageSize: 10,
       },
     },
     getCoreRowModel: getCoreRowModel(),
-    // getPaginationRowModel: getPaginationRowModel(),
-    // add when we do server side pagination
-    // manualPagination: true,
-    // add when we do server side pagination
-    // onPaginationChange: setPagination
+    getPaginationRowModel: getPaginationRowModel(),
+    onExpandedChange: setExpanded,
+    getSubRows: (row) => row?.transactions,
+    getExpandedRowModel: getExpandedRowModel(),
+    autoResetPageIndex: true,
+    paginateExpandedRows: false,
   });
 
   return (
@@ -157,7 +191,17 @@ export function HistoryTable({
           {table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
+              onClick={row.getToggleExpandedHandler()}
               sx={{
+                ...(row.getCanExpand() && {
+                  cursor: 'pointer',
+                  ':hover': {
+                    backgroundColor: 'grey.900',
+                  },
+                }),
+                ...(row.depth > 0 && {
+                  borderTopStyle: 'hidden',
+                }),
                 '& > *:first-of-type': {
                   width: '50%',
                 },
@@ -184,22 +228,57 @@ export function HistoryTable({
         sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
         <HistoryFilterButton
-          disabled={!hasPreviousPage}
-          onClick={() => setPage(page - 1)}
+          onClick={() => {
+            table.setPageIndex(0);
+            window.scrollTo(0, 0);
+          }}
+          disabled={!table.getCanPreviousPage()}
         >
-          {intl.formatMessage({ defaultMessage: 'Previous' })}
+          {intl.formatMessage({ defaultMessage: 'First' })}
+        </HistoryFilterButton>
+        <HistoryFilterButton
+          onClick={() => {
+            table.previousPage();
+            window.scrollTo(0, 0);
+          }}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <Box
+            component="img"
+            src="/images/icons/chevron-left-light.svg"
+            width={10}
+          />
         </HistoryFilterButton>
         <Typography fontSize={13} px={2}>
           {intl.formatMessage(
-            { defaultMessage: 'Page {page}' },
-            { page: page + 1 },
+            { defaultMessage: '{page} of {lastPage}' },
+            {
+              page: table.getState().pagination.pageIndex + 1,
+              lastPage: table.getPageCount(),
+            },
           )}
         </Typography>
         <HistoryFilterButton
-          disabled={!hasNextPage}
-          onClick={() => setPage(page + 1)}
+          onClick={() => {
+            table.nextPage();
+            window.scrollTo(0, 0);
+          }}
+          disabled={!table.getCanNextPage()}
         >
-          {intl.formatMessage({ defaultMessage: 'Next' })}
+          <Box
+            component="img"
+            src="/images/icons/chevron-right-light.svg"
+            width={10}
+          />
+        </HistoryFilterButton>
+        <HistoryFilterButton
+          onClick={() => {
+            table.setPageIndex(table.getPageCount() - 1);
+            window.scrollTo(0, 0);
+          }}
+          disabled={!table.getCanNextPage()}
+        >
+          {intl.formatMessage({ defaultMessage: 'Last' })}
         </HistoryFilterButton>
       </Stack>
     </Stack>
@@ -216,11 +295,64 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} />
+      <TransactionIcon type={type} zIndex={1} />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>
         <Typography color="text.secondary" variant="body2">
           {intl.formatDate(new Date(timestamp))}
+        </Typography>
+      </Stack>
+    </Stack>
+  );
+}
+
+type AggregatedCellProps = {
+  timestamp: string;
+  type: HistoryType;
+} & StackProps;
+
+function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
+  const intl = useIntl();
+
+  return (
+    <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
+      <Box
+        sx={{
+          position: 'relative',
+          width: { xs: '1.375rem', md: '2rem' },
+          height: { xs: '1.375rem', md: '2rem' },
+        }}
+      >
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '-150%',
+            left: '50%',
+            bottom: '50%',
+            width: 2,
+            backgroundColor: 'grey.800',
+            zIndex: 0,
+          }}
+        />
+        <Box
+          sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            width: '50%',
+            height: 2,
+            backgroundColor: 'grey.800',
+            zIndex: 0,
+          }}
+        />
+      </Box>
+      <Stack>
+        <Typography color="text.secondary" variant="body2">
+          {intl.formatDate(new Date(timestamp), {
+            hourCycle: 'h23',
+            hour: '2-digit',
+            minute: '2-digit',
+          })}
         </Typography>
       </Stack>
     </Stack>
