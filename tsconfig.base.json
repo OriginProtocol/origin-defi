@@ -20,6 +20,7 @@
       "@origin/oeth/history": ["libs/oeth/history/src/index.ts"],
       "@origin/oeth/shared": ["libs/oeth/shared/src/index.ts"],
       "@origin/oeth/swap": ["libs/oeth/swap/src/index.ts"],
+      "@origin/ousd/history": ["libs/ousd/history/src/index.ts"],
       "@origin/ousd/shared": ["libs/ousd/shared/src/index.ts"],
       "@origin/ousd/swap": ["libs/ousd/swap/src/index.ts"],
       "@origin/shared/components": ["libs/shared/components/src/index.ts"],

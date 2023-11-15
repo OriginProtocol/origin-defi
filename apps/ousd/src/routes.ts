@@ -1,3 +1,4 @@
+import { HistoryView } from '@origin/ousd/history';
 import { SwapView } from '@origin/ousd/swap';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
@@ -22,11 +23,11 @@ export const routes: RouteObject[] = [
         Component: RedeemView,
         handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
       },
-      // {
-      //   path: '/history',
-      //   Component: HistoryView,
-      //   handle: { label: defineMessage({ defaultMessage: 'History' }) },
-      // },
+      {
+        path: '/history',
+        Component: HistoryView,
+        handle: { label: defineMessage({ defaultMessage: 'History' }) },
+      },
     ],
   },
   {
