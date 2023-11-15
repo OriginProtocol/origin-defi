@@ -10,8 +10,9 @@ import { useAccount } from 'wagmi';
 import { useHistoryTransactionQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
-import type { QueryOptions } from '@tanstack/react-query';
+import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
 
+import type { HistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
 
 export const usePendingYield = (
@@ -83,7 +84,10 @@ export const usePendingYield = (
   });
 };
 
-export const useAggregatedHistory = (filters?: HistoryType[]) => {
+export const useAggregatedHistory = (
+  filters?: HistoryType[],
+  options?: UseQueryOptions<HistoryTransactionQuery, Error, DailyHistory[]>,
+) => {
   const { address, isConnected } = useAccount();
 
   return useHistoryTransactionQuery(
@@ -92,6 +96,7 @@ export const useAggregatedHistory = (filters?: HistoryType[]) => {
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
+      ...options,
       enabled: isConnected,
       placeholderData: { oethAddresses: [{ history: [] }] },
       select: (data) => {
