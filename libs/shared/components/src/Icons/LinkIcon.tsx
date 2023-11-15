@@ -18,7 +18,7 @@ export function LinkIcon({
     <Link href={url} target={target} rel={rel} {...rest}>
       <Box
         component="img"
-        src="/images/link-icon-purple.svg"
+        src="/images/icons/arrow-up-right-light.svg"
         alt="link"
         sx={{ height: size, width: size }}
       ></Box>
