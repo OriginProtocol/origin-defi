@@ -1,3 +1,3 @@
-import * as en from './enUS.json';
+import en from './en.json';
 
-export { en };
+export const messages = { en };
