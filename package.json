@@ -8,10 +8,11 @@
     "build-storybook": "nx build-storybook shared-storybook --verbose",
     "codegen": "pnpm nx run-many --target=codegen-graphql oeth-shared ousd-shared",
     "heroku-prebuild": "npm config set ignore-scripts true",
+    "i18n": "pnpm nx run-many --target=i18n-compile oeth ousd",
     "lint-fix": "pnpm nx run-many --target=lint -- --fix",
     "oeth": "pnpm nx serve oeth",
     "ousd": "pnpm nx serve ousd",
-    "prepare": "husky install",    
+    "prepare": "husky install",
     "storybook": "nx storybook shared-storybook"
   },
   "lint-staged": {
