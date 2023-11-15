@@ -1,0 +1,302 @@
+{
+  "+14VoL": {
+    "defaultMessage": "Staking"
+  },
+  "+LmzMn": {
+    "defaultMessage": "max"
+  },
+  "+vVZ/G": {
+    "defaultMessage": "Connect"
+  },
+  "/GCoTA": {
+    "defaultMessage": "Clear"
+  },
+  "/xvR4F": {
+    "defaultMessage": "Opt in"
+  },
+  "024MfN": {
+    "defaultMessage": "Processing Approval"
+  },
+  "0Go4jI": {
+    "defaultMessage": "Swapped"
+  },
+  "0fR+fE": {
+    "defaultMessage": "Route"
+  },
+  "1XVJUl": {
+    "defaultMessage": "Switch to {defaultChain}"
+  },
+  "1nxJrQ": {
+    "defaultMessage": "Return to Home Page"
+  },
+  "2R/YHR": {
+    "defaultMessage": "Liquid staking"
+  },
+  "5RMD2G": {
+    "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
+  },
+  "5X3I7d": {
+    "defaultMessage": "Switch network"
+  },
+  "5h3TFE": {
+    "defaultMessage": "I agree"
+  },
+  "5m9ETS": {
+    "defaultMessage": "Fees and voting rights accrue to OGV stakers.<br></br>Control the future of Origin products and profit from its growth."
+  },
+  "6GZbSi": {
+    "defaultMessage": "The selected network is not supported by the application."
+  },
+  "6XFO/C": {
+    "defaultMessage": "Approved"
+  },
+  "6cYAtm": {
+    "defaultMessage": "Insufficient funds"
+  },
+  "7CPiAt": {
+    "defaultMessage": "Redeemed"
+  },
+  "7ZWZTS": {
+    "defaultMessage": "Wait for signature"
+  },
+  "8NtrKz": {
+    "defaultMessage": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
+  },
+  "8XZjyW": {
+    "defaultMessage": "There was an error while loading this component, you can try to reload."
+  },
+  "8cCxx8": {
+    "defaultMessage": "Redeem for mix via Origin Vault"
+  },
+  "9ghOJK": {
+    "defaultMessage": "Unhandled Error!"
+  },
+  "9lt7g1": {
+    "defaultMessage": "Discord support channel"
+  },
+  "9oQCRd": {
+    "defaultMessage": "Stablecoin"
+  },
+  "A9AGhs": {
+    "defaultMessage": "APY (Trailing 30-day)"
+  },
+  "ASNc/h": {
+    "defaultMessage": "Enter an amount"
+  },
+  "DKaqyQ": {
+    "defaultMessage": "Redeeming"
+  },
+  "DRdgbZ": {
+    "defaultMessage": "Redeem {token} for the basket of underlying assets"
+  },
+  "DupNoS": {
+    "defaultMessage": "Go back home"
+  },
+  "E2sGaF": {
+    "defaultMessage": "Exit"
+  },
+  "EEwopl": {
+    "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
+  },
+  "EpAQ64": {
+    "defaultMessage": "Earn {apy} APY"
+  },
+  "GtMIIe": {
+    "defaultMessage": "Get OGV"
+  },
+  "H6QzKn": {
+    "defaultMessage": "Ethereum network"
+  },
+  "HyhkDr": {
+    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+  },
+  "JA3MsG": {
+    "defaultMessage": "Operation Cancelled"
+  },
+  "JLmDla": {
+    "defaultMessage": "Governance"
+  },
+  "JrepQU": {
+    "defaultMessage": "Gas:"
+  },
+  "KjK2z3": {
+    "defaultMessage": "Sorry, we can't seem to find that page"
+  },
+  "Kw1jw2": {
+    "defaultMessage": "Get {symbol}"
+  },
+  "M6AGsR": {
+    "defaultMessage": "Est gas"
+  },
+  "MSTVqC": {
+    "defaultMessage": "Reload Page"
+  },
+  "MW9FHt": {
+    "defaultMessage": "Ooops..."
+  },
+  "NQOjUX": {
+    "defaultMessage": "Origin Governance Token"
+  },
+  "NXFAgE": {
+    "defaultMessage": "Ooops, something went wrong 😓"
+  },
+  "NXI/XL": {
+    "defaultMessage": "Auto"
+  },
+  "PKgDoL": {
+    "defaultMessage": "Estimating..."
+  },
+  "POmYVs": {
+    "defaultMessage": "Current price"
+  },
+  "PmkP1H": {
+    "defaultMessage": "Unsupported Network"
+  },
+  "PzlMqG": {
+    "defaultMessage": "Best"
+  },
+  "Qz1fcp": {
+    "defaultMessage": "Balance: {number}"
+  },
+  "RoqJiX": {
+    "defaultMessage": "Collateral"
+  },
+  "SKB/G9": {
+    "defaultMessage": "TVL"
+  },
+  "TrKxvg": {
+    "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+  },
+  "TwyMau": {
+    "defaultMessage": "Account"
+  },
+  "UkXeBW": {
+    "defaultMessage": "If the problem persists, you can contact us through our {support}."
+  },
+  "UlMgTq": {
+    "defaultMessage": "If the problem persists, contact us on our {support}."
+  },
+  "V/q7w4": {
+    "defaultMessage": "Finding the best route..."
+  },
+  "VqXRJ4": {
+    "defaultMessage": "Stake OGV"
+  },
+  "W87PYU": {
+    "defaultMessage": "View on {name}"
+  },
+  "WCaf5C": {
+    "defaultMessage": "Approve"
+  },
+  "XSdWHA": {
+    "defaultMessage": "Redeem"
+  },
+  "ZmLuI/": {
+    "defaultMessage": "Rate:"
+  },
+  "aA9zvD": {
+    "defaultMessage": "The best swap route factors in the best price after transaction costs"
+  },
+  "aWpBzj": {
+    "defaultMessage": "Show more"
+  },
+  "c0b5XV": {
+    "defaultMessage": "Rate"
+  },
+  "c31Feo": {
+    "defaultMessage": "Swapping"
+  },
+  "cg1VJ2": {
+    "defaultMessage": "Connect Wallet"
+  },
+  "dUJwm/": {
+    "defaultMessage": "Processing Transaction"
+  },
+  "djJp6c": {
+    "defaultMessage": "History"
+  },
+  "dtJo4Y": {
+    "defaultMessage": "Exchange rate"
+  },
+  "fuV7zb": {
+    "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "gBm7FQ": {
+    "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "iLgjES": {
+    "defaultMessage": "Error while estimating"
+  },
+  "iaS0YY": {
+    "defaultMessage": "I have read and agree to the above terms"
+  },
+  "k3YWIR": {
+    "defaultMessage": "Max slippage"
+  },
+  "lozEho": {
+    "defaultMessage": "Error while approving"
+  },
+  "m/L3sK": {
+    "defaultMessage": "Approving"
+  },
+  "nc8QpJ": {
+    "defaultMessage": "Recent Activity"
+  },
+  "ntQz2o": {
+    "defaultMessage": "Yield bearing"
+  },
+  "qQ/SRd": {
+    "defaultMessage": "User rejected operation"
+  },
+  "qj1uhz": {
+    "defaultMessage": "Disconnect"
+  },
+  "s49boM": {
+    "defaultMessage": "Ethereum liquid staking token"
+  },
+  "s8BnAC": {
+    "defaultMessage": "Swap"
+  },
+  "stTYBM": {
+    "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+  },
+  "tio9Gt": {
+    "defaultMessage": "IPFS"
+  },
+  "upk2hm": {
+    "defaultMessage": "Origin products"
+  },
+  "viL6nH": {
+    "defaultMessage": "Yield-generating stablecoin"
+  },
+  "vugtF7": {
+    "defaultMessage": "No Activity"
+  },
+  "w2pp9r": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
+  },
+  "w5VeGT": {
+    "defaultMessage": "Error while redeeming"
+  },
+  "wqlXwW": {
+    "defaultMessage": "Wrong Network"
+  },
+  "xZIm6b": {
+    "defaultMessage": "Your transaction may be frontrun"
+  },
+  "xwfunk": {
+    "defaultMessage": "Restricted Access"
+  },
+  "y5HZFA": {
+    "defaultMessage": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+  },
+  "z1bu+z": {
+    "defaultMessage": "Error while swapping"
+  },
+  "zbaTLV": {
+    "defaultMessage": "View on IPFS"
+  },
+  "zmWQIG": {
+    "defaultMessage": "Waiting for signature"
+  }
+}

@@ -1,11 +1,692 @@
 {
-  "XSdWHA": {
-    "defaultMessage": "Redeem"
-  },
-  "djJp6c": {
-    "defaultMessage": "History"
-  },
-  "s8BnAC": {
-    "defaultMessage": "Swap"
-  }
+  "+14VoL": [
+    {
+      "type": 0,
+      "value": "Staking"
+    }
+  ],
+  "+LmzMn": [
+    {
+      "type": 0,
+      "value": "max"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Connect"
+    }
+  ],
+  "/GCoTA": [
+    {
+      "type": 0,
+      "value": "Clear"
+    }
+  ],
+  "/xvR4F": [
+    {
+      "type": 0,
+      "value": "Opt in"
+    }
+  ],
+  "024MfN": [
+    {
+      "type": 0,
+      "value": "Processing Approval"
+    }
+  ],
+  "0Go4jI": [
+    {
+      "type": 0,
+      "value": "Swapped"
+    }
+  ],
+  "0fR+fE": [
+    {
+      "type": 0,
+      "value": "Route"
+    }
+  ],
+  "1XVJUl": [
+    {
+      "type": 0,
+      "value": "Switch to "
+    },
+    {
+      "type": 1,
+      "value": "defaultChain"
+    }
+  ],
+  "1nxJrQ": [
+    {
+      "type": 0,
+      "value": "Return to Home Page"
+    }
+  ],
+  "2R/YHR": [
+    {
+      "type": 0,
+      "value": "Liquid staking"
+    }
+  ],
+  "5RMD2G": [
+    {
+      "type": 0,
+      "value": "Your transaction will revert if the price changes unfavorably by more than this percentage."
+    }
+  ],
+  "5X3I7d": [
+    {
+      "type": 0,
+      "value": "Switch network"
+    }
+  ],
+  "5h3TFE": [
+    {
+      "type": 0,
+      "value": "I agree"
+    }
+  ],
+  "5m9ETS": [
+    {
+      "type": 0,
+      "value": "Fees and voting rights accrue to OGV stakers."
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Control the future of Origin products and profit from its growth."
+    }
+  ],
+  "6GZbSi": [
+    {
+      "type": 0,
+      "value": "The selected network is not supported by the application."
+    }
+  ],
+  "6XFO/C": [
+    {
+      "type": 0,
+      "value": "Approved"
+    }
+  ],
+  "6cYAtm": [
+    {
+      "type": 0,
+      "value": "Insufficient funds"
+    }
+  ],
+  "7CPiAt": [
+    {
+      "type": 0,
+      "value": "Redeemed"
+    }
+  ],
+  "7ZWZTS": [
+    {
+      "type": 0,
+      "value": "Wait for signature"
+    }
+  ],
+  "8NtrKz": [
+    {
+      "type": 0,
+      "value": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
+    }
+  ],
+  "8XZjyW": [
+    {
+      "type": 0,
+      "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8cCxx8": [
+    {
+      "type": 0,
+      "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "9ghOJK": [
+    {
+      "type": 0,
+      "value": "Unhandled Error!"
+    }
+  ],
+  "9lt7g1": [
+    {
+      "type": 0,
+      "value": "Discord support channel"
+    }
+  ],
+  "9oQCRd": [
+    {
+      "type": 0,
+      "value": "Stablecoin"
+    }
+  ],
+  "A9AGhs": [
+    {
+      "type": 0,
+      "value": "APY (Trailing 30-day)"
+    }
+  ],
+  "ASNc/h": [
+    {
+      "type": 0,
+      "value": "Enter an amount"
+    }
+  ],
+  "DKaqyQ": [
+    {
+      "type": 0,
+      "value": "Redeeming"
+    }
+  ],
+  "DRdgbZ": [
+    {
+      "type": 0,
+      "value": "Redeem "
+    },
+    {
+      "type": 1,
+      "value": "token"
+    },
+    {
+      "type": 0,
+      "value": " for the basket of underlying assets"
+    }
+  ],
+  "DupNoS": [
+    {
+      "type": 0,
+      "value": "Go back home"
+    }
+  ],
+  "E2sGaF": [
+    {
+      "type": 0,
+      "value": "Exit"
+    }
+  ],
+  "EEwopl": [
+    {
+      "type": 1,
+      "value": "amountIn"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "amountOut"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolOut"
+    }
+  ],
+  "EpAQ64": [
+    {
+      "type": 0,
+      "value": "Earn "
+    },
+    {
+      "type": 1,
+      "value": "apy"
+    },
+    {
+      "type": 0,
+      "value": " APY"
+    }
+  ],
+  "GtMIIe": [
+    {
+      "type": 0,
+      "value": "Get OGV"
+    }
+  ],
+  "H6QzKn": [
+    {
+      "type": 0,
+      "value": "Ethereum network"
+    }
+  ],
+  "HyhkDr": [
+    {
+      "type": 0,
+      "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+    }
+  ],
+  "JA3MsG": [
+    {
+      "type": 0,
+      "value": "Operation Cancelled"
+    }
+  ],
+  "JLmDla": [
+    {
+      "type": 0,
+      "value": "Governance"
+    }
+  ],
+  "JrepQU": [
+    {
+      "type": 0,
+      "value": "Gas:"
+    }
+  ],
+  "KjK2z3": [
+    {
+      "type": 0,
+      "value": "Sorry, we can't seem to find that page"
+    }
+  ],
+  "Kw1jw2": [
+    {
+      "type": 0,
+      "value": "Get "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "M6AGsR": [
+    {
+      "type": 0,
+      "value": "Est gas"
+    }
+  ],
+  "MSTVqC": [
+    {
+      "type": 0,
+      "value": "Reload Page"
+    }
+  ],
+  "MW9FHt": [
+    {
+      "type": 0,
+      "value": "Ooops..."
+    }
+  ],
+  "NQOjUX": [
+    {
+      "type": 0,
+      "value": "Origin Governance Token"
+    }
+  ],
+  "NXFAgE": [
+    {
+      "type": 0,
+      "value": "Ooops, something went wrong 😓"
+    }
+  ],
+  "NXI/XL": [
+    {
+      "type": 0,
+      "value": "Auto"
+    }
+  ],
+  "PKgDoL": [
+    {
+      "type": 0,
+      "value": "Estimating..."
+    }
+  ],
+  "POmYVs": [
+    {
+      "type": 0,
+      "value": "Current price"
+    }
+  ],
+  "PmkP1H": [
+    {
+      "type": 0,
+      "value": "Unsupported Network"
+    }
+  ],
+  "PzlMqG": [
+    {
+      "type": 0,
+      "value": "Best"
+    }
+  ],
+  "Qz1fcp": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    }
+  ],
+  "RoqJiX": [
+    {
+      "type": 0,
+      "value": "Collateral"
+    }
+  ],
+  "SKB/G9": [
+    {
+      "type": 0,
+      "value": "TVL"
+    }
+  ],
+  "TrKxvg": [
+    {
+      "type": 0,
+      "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "UkXeBW": [
+    {
+      "type": 0,
+      "value": "If the problem persists, you can contact us through our "
+    },
+    {
+      "type": 1,
+      "value": "support"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "UlMgTq": [
+    {
+      "type": 0,
+      "value": "If the problem persists, contact us on our "
+    },
+    {
+      "type": 1,
+      "value": "support"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "V/q7w4": [
+    {
+      "type": 0,
+      "value": "Finding the best route..."
+    }
+  ],
+  "VqXRJ4": [
+    {
+      "type": 0,
+      "value": "Stake OGV"
+    }
+  ],
+  "W87PYU": [
+    {
+      "type": 0,
+      "value": "View on "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "WCaf5C": [
+    {
+      "type": 0,
+      "value": "Approve"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "ZmLuI/": [
+    {
+      "type": 0,
+      "value": "Rate:"
+    }
+  ],
+  "aA9zvD": [
+    {
+      "type": 0,
+      "value": "The best swap route factors in the best price after transaction costs"
+    }
+  ],
+  "aWpBzj": [
+    {
+      "type": 0,
+      "value": "Show more"
+    }
+  ],
+  "c0b5XV": [
+    {
+      "type": 0,
+      "value": "Rate"
+    }
+  ],
+  "c31Feo": [
+    {
+      "type": 0,
+      "value": "Swapping"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connect Wallet"
+    }
+  ],
+  "dUJwm/": [
+    {
+      "type": 0,
+      "value": "Processing Transaction"
+    }
+  ],
+  "djJp6c": [
+    {
+      "type": 0,
+      "value": "History"
+    }
+  ],
+  "dtJo4Y": [
+    {
+      "type": 0,
+      "value": "Exchange rate"
+    }
+  ],
+  "fuV7zb": [
+    {
+      "type": 1,
+      "value": "amountIn"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    }
+  ],
+  "gBm7FQ": [
+    {
+      "type": 0,
+      "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "iLgjES": [
+    {
+      "type": 0,
+      "value": "Error while estimating"
+    }
+  ],
+  "iaS0YY": [
+    {
+      "type": 0,
+      "value": "I have read and agree to the above terms"
+    }
+  ],
+  "k3YWIR": [
+    {
+      "type": 0,
+      "value": "Max slippage"
+    }
+  ],
+  "lozEho": [
+    {
+      "type": 0,
+      "value": "Error while approving"
+    }
+  ],
+  "m/L3sK": [
+    {
+      "type": 0,
+      "value": "Approving"
+    }
+  ],
+  "nc8QpJ": [
+    {
+      "type": 0,
+      "value": "Recent Activity"
+    }
+  ],
+  "ntQz2o": [
+    {
+      "type": 0,
+      "value": "Yield bearing"
+    }
+  ],
+  "qQ/SRd": [
+    {
+      "type": 0,
+      "value": "User rejected operation"
+    }
+  ],
+  "qj1uhz": [
+    {
+      "type": 0,
+      "value": "Disconnect"
+    }
+  ],
+  "s49boM": [
+    {
+      "type": 0,
+      "value": "Ethereum liquid staking token"
+    }
+  ],
+  "s8BnAC": [
+    {
+      "type": 0,
+      "value": "Swap"
+    }
+  ],
+  "stTYBM": [
+    {
+      "type": 0,
+      "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+    }
+  ],
+  "tio9Gt": [
+    {
+      "type": 0,
+      "value": "IPFS"
+    }
+  ],
+  "upk2hm": [
+    {
+      "type": 0,
+      "value": "Origin products"
+    }
+  ],
+  "viL6nH": [
+    {
+      "type": 0,
+      "value": "Yield-generating stablecoin"
+    }
+  ],
+  "vugtF7": [
+    {
+      "type": 0,
+      "value": "No Activity"
+    }
+  ],
+  "w2pp9r": [
+    {
+      "type": 0,
+      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
+    }
+  ],
+  "w5VeGT": [
+    {
+      "type": 0,
+      "value": "Error while redeeming"
+    }
+  ],
+  "wqlXwW": [
+    {
+      "type": 0,
+      "value": "Wrong Network"
+    }
+  ],
+  "xZIm6b": [
+    {
+      "type": 0,
+      "value": "Your transaction may be frontrun"
+    }
+  ],
+  "xwfunk": [
+    {
+      "type": 0,
+      "value": "Restricted Access"
+    }
+  ],
+  "y5HZFA": [
+    {
+      "type": 0,
+      "value": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+    }
+  ],
+  "z1bu+z": [
+    {
+      "type": 0,
+      "value": "Error while swapping"
+    }
+  ],
+  "zbaTLV": [
+    {
+      "type": 0,
+      "value": "View on IPFS"
+    }
+  ],
+  "zmWQIG": [
+    {
+      "type": 0,
+      "value": "Waiting for signature"
+    }
+  ]
 }
