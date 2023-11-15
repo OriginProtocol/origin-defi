@@ -13,6 +13,7 @@ export const currencyFormat: FormatNumberOptions = {
   style: 'currency',
   currency: 'USD',
   minimumFractionDigits: 2,
+  currencyDisplay: 'narrowSymbol',
 };
 
 export const quantityFormat: FormatNumberOptions = {
