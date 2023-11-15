@@ -99,7 +99,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           </Stack>
           <Typography noWrap>
             {intl.formatMessage({
-              defaultMessage: 'Redeem for mix via OUSD vault',
+              defaultMessage: 'Redeem for mix via Origin Vault',
             })}
           </Typography>
         </Stack>

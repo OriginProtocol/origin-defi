@@ -1,9 +1,9 @@
 import { tokens, whales } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -134,7 +134,7 @@ const swap: Swap = async ({ amountIn }) => {
     return;
   }
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokens.mainnet.wOUSD.address,
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'redeem',

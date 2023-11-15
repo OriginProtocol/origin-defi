@@ -1,10 +1,10 @@
 import { tokens, whales } from '@origin/shared/contracts';
+import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   erc20ABI,
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -159,7 +159,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
@@ -183,7 +183,7 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
     throw new Error(`wOUSD is not approved`);
   }
 
-  const { request } = await prepareWriteContract({
+  const { request } = await prepareWriteContractWithTxTracker({
     address: tokens.mainnet.wOUSD.address,
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'deposit',
