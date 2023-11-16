@@ -100,7 +100,7 @@ export const useAggregatedHistory = (
     },
     {
       ...options,
-      enabled: isConnected,
+      enabled: isConnected && !isNilOrEmpty(address),
       placeholderData: { ousdAddresses: [{ history: [] }] },
       select: (data) => {
         const history = data?.ousdAddresses?.at(0)?.history;

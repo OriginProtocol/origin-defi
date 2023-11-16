@@ -97,7 +97,7 @@ export const useAggregatedHistory = (
     },
     {
       ...options,
-      enabled: isConnected,
+      enabled: isConnected && !isNilOrEmpty(address),
       placeholderData: { oethAddresses: [{ history: [] }] },
       select: (data) => {
         const history = data?.oethAddresses?.at(0)?.history;
