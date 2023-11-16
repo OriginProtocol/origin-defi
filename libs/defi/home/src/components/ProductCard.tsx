@@ -10,9 +10,8 @@ import { Chip, Mix } from '@origin/shared/components';
 import { usePrices } from '@origin/shared/providers';
 import { currencyFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
-import { useProductCardQuery } from '../queries.generated';
+import { useTokenInfo } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -24,23 +23,9 @@ export type ProductCardProps = { product: (typeof products)[0] } & StackProps;
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
-  const { data: queryData, isLoading: isQueryDataLoading } =
-    useProductCardQuery();
-
-  const apy =
-    product.token.symbol === 'OETH'
-      ? queryData?.oethDailyStats?.[0]?.apy30DayAvg ?? 0
-      : 0;
-  const tvl =
-    product.token.symbol === 'OETH'
-      ? +formatUnits(
-          queryData?.oethDailyStats?.[0]?.strategies?.reduce(
-            (acc, curr) => acc + BigInt(curr.tvl),
-            0n,
-          ) ?? 0n,
-          product.token.decimals,
-        )
-      : 0;
+  const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
+    product.token,
+  );
 
   return (
     <Stack
@@ -103,7 +88,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
           {isQueryDataLoading ? (
             <Skeleton width={80} />
           ) : (
-            intl.formatNumber(apy, {
+            intl.formatNumber(queryData.apy30DayAvg, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
               style: 'percent',
@@ -130,7 +115,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             isQueryDataLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              intl.formatNumber(tvl, currencyFormat)
+              intl.formatNumber(queryData.tvl, currencyFormat)
             )
           }
         />

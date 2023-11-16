@@ -5,16 +5,20 @@ import { graphqlClient } from '@origin/defi/shared';
 export type ProductCardQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ProductCardQuery = { __typename?: 'Query', oethDailyStats: Array<{ __typename?: 'OETHDailyStat', apy30DayAvg: number, strategies: Array<{ __typename?: 'OETHStrategyDailyStat', tvl: string }> }> };
+export type ProductCardQuery = { __typename?: 'Query', oethDailyStats: Array<{ __typename?: 'OETHDailyStat', apy30DayAvg: number, totalSupply: string }>, ousds: Array<{ __typename?: 'OUSD', totalSupply: string }>, ousdapies: Array<{ __typename?: 'OUSDAPY', apy30DayAvg: number }> };
 
 
 export const ProductCardDocument = `
     query ProductCard {
   oethDailyStats(limit: 1, orderBy: timestamp_DESC) {
     apy30DayAvg
-    strategies {
-      tvl
-    }
+    totalSupply
+  }
+  ousds(limit: 1, orderBy: timestamp_DESC) {
+    totalSupply
+  }
+  ousdapies(limit: 1, orderBy: timestamp_DESC) {
+    apy30DayAvg
   }
 }
     `;
