@@ -212,11 +212,11 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
-  "djJp6c": {
-    "defaultMessage": "History"
-  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "ejEGdx": {
+    "defaultMessage": "Home"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
@@ -260,9 +260,6 @@
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
   },
-  "tio9Gt": {
-    "defaultMessage": "IPFS"
-  },
   "upk2hm": {
     "defaultMessage": "Origin products"
   },
@@ -292,9 +289,6 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
-  },
-  "zbaTLV": {
-    "defaultMessage": "View on IPFS"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

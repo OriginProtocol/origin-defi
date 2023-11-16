@@ -507,16 +507,16 @@
       "value": "Processing Transaction"
     }
   ],
-  "djJp6c": [
-    {
-      "type": 0,
-      "value": "History"
-    }
-  ],
   "dtJo4Y": [
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "ejEGdx": [
+    {
+      "type": 0,
+      "value": "Home"
     }
   ],
   "fuV7zb": [
@@ -611,12 +611,6 @@
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
     }
   ],
-  "tio9Gt": [
-    {
-      "type": 0,
-      "value": "IPFS"
-    }
-  ],
   "upk2hm": [
     {
       "type": 0,
@@ -675,12 +669,6 @@
     {
       "type": 0,
       "value": "Error while swapping"
-    }
-  ],
-  "zbaTLV": [
-    {
-      "type": 0,
-      "value": "View on IPFS"
     }
   ],
   "zmWQIG": [
