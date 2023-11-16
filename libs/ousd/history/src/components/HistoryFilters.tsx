@@ -15,8 +15,6 @@ import { HistoryType } from '@origin/ousd/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
-import { HistoryFilterButton } from './HistoryButton';
-
 import type { Dispatch, SetStateAction } from 'react';
 
 const styles = {
@@ -69,7 +67,11 @@ export function HistoryFilters({ filters, setFilters }: HistoryFiltersProps) {
 
   return (
     <>
-      <HistoryFilterButton onClick={(e) => setAnchorEl(e.currentTarget)}>
+      <Button
+        onClick={(e) => setAnchorEl(e.currentTarget)}
+        size="small"
+        sx={{ gap: 0.75 }}
+      >
         {intl.formatMessage({ defaultMessage: 'Filters' })}
         <Box
           sx={{
@@ -78,9 +80,9 @@ export function HistoryFilters({ filters, setFilters }: HistoryFiltersProps) {
             borderRadius: '50%',
             background: (theme) => theme.palette.primary.contrastText,
           }}
-        ></Box>
+        />
         {filters.length}
-      </HistoryFilterButton>
+      </Button>
       <Popover
         open={!!anchorEl}
         anchorEl={anchorEl}

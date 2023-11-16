@@ -1,11 +1,10 @@
 import { useCallback, useRef } from 'react';
 
-import { Box, Link } from '@mui/material';
+import { Box, Button, Link } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useHistoryTransactionQuery } from '../queries.generated';
-import { HistoryFilterButton } from './HistoryButton';
 
 export function ExportData() {
   const link = useRef<HTMLAnchorElement>(null);
@@ -35,15 +34,15 @@ export function ExportData() {
         target="_blank"
         download="transaction_history.csv"
       ></Link>
-      <HistoryFilterButton onClick={generateCSV}>
+      <Button onClick={generateCSV} sx={{ gap: 0.75 }} size="small">
         <Box
           component="img"
           src="/images/download.svg"
           alt="export"
-          sx={{ height: '0.75rem', width: '0.75rem' }}
-        ></Box>
+          width={12}
+        />
         {intl.formatMessage({ defaultMessage: 'CSV' })}
-      </HistoryFilterButton>
+      </Button>
     </>
   );
 }

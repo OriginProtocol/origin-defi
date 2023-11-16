@@ -2,8 +2,8 @@ import { useMemo, useState } from 'react';
 
 import {
   Box,
+  Button,
   Link,
-  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -26,15 +26,13 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { times } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import { useAggregatedHistory } from '../hooks';
-import { HistoryFilterButton } from './HistoryButton';
 import { TransactionIcon } from './TransactionIcon';
 
-import type { StackProps, TableRowProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 import type { HistoryType } from '@origin/ousd/shared';
 import type { ExpandedState } from '@tanstack/react-table';
 
@@ -49,7 +47,7 @@ export type HistoryTableProps = {
 export function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data, isLoading, isFetching } = useAggregatedHistory(filters);
+  const { data } = useAggregatedHistory(filters);
 
   const columns = useMemo(
     () => [
@@ -161,10 +159,6 @@ export function HistoryTable({ filters }: HistoryTableProps) {
     paginateExpandedRows: false,
   });
 
-  if (isNilOrEmpty(table.getRowModel().rows) && !isLoading && !isFetching) {
-    return <EmptyTable />;
-  }
-
   return (
     <Stack>
       <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
@@ -194,46 +188,36 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           ))}
         </TableHead>
         <TableBody>
-          {isLoading || isFetching
-            ? times(
-                (r) => (
-                  <SkeletonRow key={`load-row-${r}`} sx={{ height: 72 }} />
-                ),
-                table.getState().pagination.pageSize,
-              )
-            : table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  onClick={row.getToggleExpandedHandler()}
-                  sx={{
-                    ...(row.getCanExpand() && {
-                      cursor: 'pointer',
-                      ':hover': {
-                        backgroundColor: 'grey.900',
-                      },
-                    }),
-                    ...(row.depth > 0 && {
-                      borderTopStyle: 'hidden',
-                    }),
-                    '& > *:first-of-type': {
-                      width: '50%',
-                    },
-                    '& > *:last-of-type': {
-                      pl: 0,
-                      textAlign: 'end',
-                    },
-                  }}
-                >
-                  {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableCell>
-                  ))}
-                </TableRow>
+          {table.getRowModel().rows.map((row) => (
+            <TableRow
+              key={row.id}
+              onClick={row.getToggleExpandedHandler()}
+              sx={{
+                ...(row.getCanExpand() && {
+                  cursor: 'pointer',
+                  ':hover': {
+                    backgroundColor: 'grey.900',
+                  },
+                }),
+                ...(row.depth > 0 && {
+                  borderTopStyle: 'hidden',
+                }),
+                '& > *:first-of-type': {
+                  width: '50%',
+                },
+                '& > *:last-of-type': {
+                  pl: 0,
+                  textAlign: 'end',
+                },
+              }}
+            >
+              {row.getVisibleCells().map((cell) => (
+                <TableCell key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </TableCell>
               ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <Stack
@@ -243,7 +227,8 @@ export function HistoryTable({ filters }: HistoryTableProps) {
         gap={1}
         sx={{ px: { xs: 2, md: 3 }, py: 2 }}
       >
-        <HistoryFilterButton
+        <Button
+          size="small"
           onClick={() => {
             table.setPageIndex(0);
             window.scrollTo(0, 0);
@@ -251,8 +236,9 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           disabled={!table.getCanPreviousPage()}
         >
           {intl.formatMessage({ defaultMessage: 'First' })}
-        </HistoryFilterButton>
-        <HistoryFilterButton
+        </Button>
+        <Button
+          size="small"
           onClick={() => {
             table.previousPage();
             window.scrollTo(0, 0);
@@ -264,7 +250,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
             src="/images/icons/chevron-left-light.svg"
             width={10}
           />
-        </HistoryFilterButton>
+        </Button>
         <Typography fontSize={13} px={2}>
           {intl.formatMessage(
             { defaultMessage: '{page} of {lastPage}' },
@@ -274,7 +260,8 @@ export function HistoryTable({ filters }: HistoryTableProps) {
             },
           )}
         </Typography>
-        <HistoryFilterButton
+        <Button
+          size="small"
           onClick={() => {
             table.nextPage();
             window.scrollTo(0, 0);
@@ -286,8 +273,9 @@ export function HistoryTable({ filters }: HistoryTableProps) {
             src="/images/icons/chevron-right-light.svg"
             width={10}
           />
-        </HistoryFilterButton>
-        <HistoryFilterButton
+        </Button>
+        <Button
+          size="small"
           onClick={() => {
             table.setPageIndex(table.getPageCount() - 1);
             window.scrollTo(0, 0);
@@ -295,7 +283,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           disabled={!table.getCanNextPage()}
         >
           {intl.formatMessage({ defaultMessage: 'Last' })}
-        </HistoryFilterButton>
+        </Button>
       </Stack>
     </Stack>
   );
@@ -371,52 +359,6 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
           })}
         </Typography>
       </Stack>
-    </Stack>
-  );
-}
-
-function SkeletonRow(props: TableRowProps) {
-  return (
-    <TableRow {...props}>
-      <TableCell width="50%">
-        <Stack direction="row" spacing={0.5}>
-          <Skeleton variant="circular" width={32} height={32} />
-          <Stack spacing={0.5}>
-            <Skeleton width={40} height={16} />
-            <Skeleton width={80} height={14} />
-          </Stack>
-        </Stack>
-      </TableCell>
-      <TableCell>
-        <Skeleton width={80} height={16} />
-      </TableCell>
-      <TableCell>
-        <Skeleton width={80} height={16} />
-      </TableCell>
-      <TableCell>
-        <Skeleton variant="rectangular" width={12} height={12} />
-      </TableCell>
-    </TableRow>
-  );
-}
-
-function EmptyTable(props: StackProps) {
-  const intl = useIntl();
-
-  return (
-    <Stack
-      {...props}
-      sx={{
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: '15rem',
-        width: 1,
-        ...props?.sx,
-      }}
-    >
-      <Typography>
-        {intl.formatMessage({ defaultMessage: 'No transaction' })}
-      </Typography>
     </Stack>
   );
 }
