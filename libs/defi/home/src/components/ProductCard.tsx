@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { Chip, Mix } from '@origin/shared/components';
 import { usePrices } from '@origin/shared/providers';
+import { currencyFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -129,11 +130,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             isQueryDataLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              intl.formatNumber(tvl, {
-                style: 'currency',
-                currency: 'USD',
-                notation: 'compact',
-              })
+              intl.formatNumber(tvl, currencyFormat)
             )
           }
         />
@@ -143,10 +140,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             isPricesLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              intl.formatNumber(prices[product.token.symbol], {
-                style: 'currency',
-                currency: 'USD',
-              })
+              intl.formatNumber(prices[product.token.symbol], currencyFormat)
             )
           }
         />
