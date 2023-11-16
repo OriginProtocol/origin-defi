@@ -1,8 +1,14 @@
 import { Box } from '@mui/material';
-import { HistoryType } from '@origin/oeth/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { BoxProps } from '@mui/material';
+
+enum HistoryType {
+  Received = 'Received',
+  Sent = 'Sent',
+  Swap = 'Swap',
+  Yield = 'Yield',
+}
 
 export type TransactionIconProps = {
   type: HistoryType;
@@ -30,7 +36,7 @@ export function TransactionIcon({
         src={
           type === HistoryType.Yield
             ? '/images/Yield.svg'
-            : '/images/tokens/OETH.svg'
+            : '/images/tokens/OUSD.svg'
         }
         sx={{
           width: '100%',

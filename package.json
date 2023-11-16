@@ -5,6 +5,7 @@
   "license": "MIT",
   "scripts": {
     "codegen": "pnp♪m nx run-many --target=codegen-graphql",
+    "i18n": "pnpm nx run-many --target=i18n-compile",
     "lint-fix": "pnpm nx run-many --target=lint -- --fix",
     "prepare": "husky install"
   },

@@ -1,0 +1,16 @@
+{
+  "name": "ousd-history",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ousd/history/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/ousd/history/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

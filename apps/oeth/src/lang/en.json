@@ -141,10 +141,10 @@
       "value": "Redeem for mix via Origin Vault"
     }
   ],
-  "9+Ddtu": [
+  "8nvhZ9": [
     {
       "type": 0,
-      "value": "Next"
+      "value": "Last"
     }
   ],
   "9ghOJK": [
@@ -169,6 +169,20 @@
     {
       "type": 0,
       "value": "Enter an amount"
+    }
+  ],
+  "AdvVFR": [
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "lastPage"
     }
   ],
   "BY343C": [
@@ -275,12 +289,6 @@
       "value": "Operation Cancelled"
     }
   ],
-  "JJNc3c": [
-    {
-      "type": 0,
-      "value": "Previous"
-    }
-  ],
   "JrepQU": [
     {
       "type": 0,
@@ -299,16 +307,16 @@
       "value": "Pending Yield"
     }
   ],
+  "LpWMOQ": [
+    {
+      "type": 0,
+      "value": "No transaction"
+    }
+  ],
   "M6AGsR": [
     {
       "type": 0,
       "value": "Est gas"
-    }
-  ],
-  "MLTKb6": [
-    {
-      "type": 0,
-      "value": "APY"
     }
   ],
   "MSTVqC": [
@@ -387,6 +395,12 @@
       "value": "number"
     }
   ],
+  "S45aoc": [
+    {
+      "type": 0,
+      "value": "First"
+    }
+  ],
   "TrKxvg": [
     {
       "type": 0,
@@ -453,16 +467,6 @@
     {
       "type": 0,
       "value": "Redeem"
-    }
-  ],
-  "ZIstZx": [
-    {
-      "type": 0,
-      "value": "Page "
-    },
-    {
-      "type": 1,
-      "value": "page"
     }
   ],
   "ZmLuI/": [

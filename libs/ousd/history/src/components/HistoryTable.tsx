@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ExpandIcon, TransactionIcon } from '@origin/shared/components';
+import { ExpandIcon } from '@origin/shared/components';
 import {
   formatAmount,
   isNilOrEmpty,
@@ -30,9 +30,10 @@ import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import { useAggregatedHistory } from '../hooks';
+import { TransactionIcon } from './TransactionIcon';
 
 import type { StackProps } from '@mui/material';
-import type { HistoryType } from '@origin/oeth/shared';
+import type { HistoryType } from '@origin/ousd/shared';
 import type { ExpandedState } from '@tanstack/react-table';
 
 import type { DailyHistory } from '../types';

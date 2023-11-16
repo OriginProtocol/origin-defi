@@ -184,6 +184,11 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: ({ theme }) => ({
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 0.75,
           color: theme.palette.text.primary,
           textTransform: 'none',
           borderRadius: 25,
@@ -196,6 +201,7 @@ export const theme = createTheme({
             xs: 0.75,
           },
           boxShadow: 'none',
+          minWidth: 0,
         }),
         containedPrimary: ({ theme }) => ({
           background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
@@ -203,7 +209,7 @@ export const theme = createTheme({
             0.05,
           )} 100%), #1E1F25;`,
           '&:hover': {
-            background: theme.palette.background.paper,
+            background: alpha(theme.palette.common.white, 0.04),
           },
         }),
         containedSecondary: ({ theme }) => ({
@@ -212,6 +218,18 @@ export const theme = createTheme({
             background: theme.palette.grey[900],
           },
         }),
+        containedSizeSmall: {
+          fontSize: 12,
+          fontWeight: 500,
+          fontStyle: 'normal',
+          lineHeight: 1.6,
+          minHeight: 28,
+          backgroundImage: 'none',
+          gap: 1,
+          borderRadius: 32,
+          px: 2,
+          py: 0.5,
+        },
         text: ({ theme }) => ({
           ':hover': {
             color: theme.palette.common.white,

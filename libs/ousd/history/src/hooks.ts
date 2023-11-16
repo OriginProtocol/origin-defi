@@ -1,4 +1,4 @@
-import { HistoryType } from '@origin/oeth/shared';
+import { HistoryType } from '@origin/ousd/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -43,28 +43,28 @@ export const usePendingYield = (
         await readContracts({
           contracts: [
             {
-              address: contracts.mainnet.OETHVault.address,
-              abi: contracts.mainnet.OETHVault.abi,
+              address: contracts.mainnet.OUSDVault.address,
+              abi: contracts.mainnet.OUSDVault.abi,
               functionName: 'totalValue',
             },
             {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
+              address: tokens.mainnet.OUSD.address,
+              abi: tokens.mainnet.OUSD.abi,
               functionName: 'totalSupply',
             },
             {
-              address: contracts.mainnet.OETHDripper.address,
-              abi: contracts.mainnet.OETHDripper.abi,
+              address: contracts.mainnet.OUSDDripper.address,
+              abi: contracts.mainnet.OUSDDripper.abi,
               functionName: 'availableFunds',
             },
             {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
+              address: tokens.mainnet.OUSD.address,
+              abi: tokens.mainnet.OUSD.abi,
               functionName: 'nonRebasingSupply',
             },
             {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
+              address: tokens.mainnet.OUSD.address,
+              abi: tokens.mainnet.OUSD.abi,
               functionName: 'balanceOf',
               args: [address],
             },
@@ -86,7 +86,10 @@ export const usePendingYield = (
 
 export const useAggregatedHistory = (
   filters?: HistoryType[],
-  options?: UseQueryOptions<HistoryTransactionQuery, Error, DailyHistory[]>,
+  options?: Omit<
+    UseQueryOptions<HistoryTransactionQuery, Error, DailyHistory[]>,
+    'select'
+  >,
 ) => {
   const { address, isConnected } = useAccount();
 
@@ -98,9 +101,9 @@ export const useAggregatedHistory = (
     {
       ...options,
       enabled: isConnected && !isNilOrEmpty(address),
-      placeholderData: { oethAddresses: [{ history: [] }] },
+      placeholderData: { ousdAddresses: [{ history: [] }] },
       select: (data) => {
-        const history = data?.oethAddresses?.at(0)?.history;
+        const history = data?.ousdAddresses?.at(0)?.history;
 
         const grouped = groupBy(
           (hist) =>

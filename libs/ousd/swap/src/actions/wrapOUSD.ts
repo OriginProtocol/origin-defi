@@ -65,8 +65,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
       address: tokens.mainnet.wOUSD.address,
       abi: tokens.mainnet.wOUSD.abi,
       functionName: 'deposit',
-      args: [amountIn, whales.mainnet.OETH],
-      account: whales.mainnet.OETH,
+      args: [amountIn, whales.mainnet.OUSD],
+      account: whales.mainnet.OUSD,
     });
   } catch {
     gasEstimate = 21000n;

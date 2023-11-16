@@ -75,6 +75,7 @@
     },
     "i18n-compile": {
       "executor": "nx:run-commands",
+      "dependsOn": ["i18n-extract"],
       "options": {
         "command": "pnpm formatjs compile 'apps/defi/src/lang/extracts/en.json' --ast --out-file apps/defi/src/lang/en.json"
       }
