@@ -7869,6 +7869,7 @@ export type StrategyDailyYield = {
   apy: Scalars['Float']['output'];
   asset: Scalars['String']['output'];
   balance: Scalars['BigInt']['output'];
+  balanceWeight: Scalars['Float']['output'];
   blockNumber: Scalars['Int']['output'];
   earnings: Scalars['BigInt']['output'];
   earningsChange: Scalars['BigInt']['output'];
@@ -7897,6 +7898,10 @@ export enum StrategyDailyYieldOrderByInput {
   AssetAscNullsFirst = 'asset_ASC_NULLS_FIRST',
   AssetDesc = 'asset_DESC',
   AssetDescNullsLast = 'asset_DESC_NULLS_LAST',
+  BalanceWeightAsc = 'balanceWeight_ASC',
+  BalanceWeightAscNullsFirst = 'balanceWeight_ASC_NULLS_FIRST',
+  BalanceWeightDesc = 'balanceWeight_DESC',
+  BalanceWeightDescNullsLast = 'balanceWeight_DESC_NULLS_LAST',
   BalanceAsc = 'balance_ASC',
   BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
   BalanceDesc = 'balance_DESC',
@@ -7965,6 +7970,15 @@ export type StrategyDailyYieldWhereInput = {
   asset_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   asset_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   asset_startsWith?: InputMaybe<Scalars['String']['input']>;
+  balanceWeight_eq?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_gt?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_gte?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  balanceWeight_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balanceWeight_lt?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_lte?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  balanceWeight_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
   balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
