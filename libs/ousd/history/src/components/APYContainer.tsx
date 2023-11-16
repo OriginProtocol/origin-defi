@@ -1,8 +1,7 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { quantityFormat } from '@origin/shared/utils';
+import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatEther } from 'viem';
 import { useAccount, useBalance } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
@@ -39,16 +38,13 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OUSD Balance' })}
-        value={intl.formatNumber(
-          Number(ousdBalance?.formatted ?? 0),
-          quantityFormat,
-        )}
+        value={formatAmount(ousdBalance.value, ousdBalance.decimals)}
         isLoading={isConnected && ousdLoading}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
-        value={intl.formatNumber(pendingYield ?? 0, quantityFormat)}
+        value={formatAmount(pendingYield)}
         isLoading={isConnected && pendingYieldLoading}
       />
       <Divider orientation="vertical" flexItem />
@@ -56,10 +52,7 @@ export function APYContainer() {
         label={intl.formatMessage({
           defaultMessage: 'Lifetime Earnings (OUSD)',
         })}
-        value={intl.formatNumber(
-          +formatEther(BigInt(data?.earned ?? '0')),
-          quantityFormat,
-        )}
+        value={formatAmount(BigInt(data?.earned ?? '0'))}
         isLoading={isConnected && isLoading}
       />
     </Stack>

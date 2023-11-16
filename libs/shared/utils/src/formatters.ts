@@ -40,13 +40,14 @@ const mappings = [
 ] as const;
 
 export function formatAmount(
-  amount: bigint,
+  amount: bigint | number,
   decimals = 18,
   zeroPlaceholder = '0.0000',
 ) {
   if (!amount || amount === 0n) return zeroPlaceholder;
 
-  const amt = +formatUnits(amount, decimals);
+  const amt =
+    typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
 
   for (const [threshold, maxDigits] of mappings) {
     if (amt >= threshold) {
