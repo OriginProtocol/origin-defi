@@ -38,7 +38,7 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-        value={formatAmount(oethBalance?.value, oethBalance.decimals)}
+        value={formatAmount(oethBalance?.value, oethBalance?.decimals)}
         isLoading={isConnected && oethLoading}
       />
       <Divider orientation="vertical" flexItem />

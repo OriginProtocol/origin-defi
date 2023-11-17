@@ -1,6 +1,6 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -20,7 +20,7 @@ export function APYContainer() {
   const { data, isLoading } = useHistoryUserStatQuery(
     { address },
     {
-      enabled: isConnected,
+      enabled: isConnected && !isNilOrEmpty(address),
       select: (data) => data?.ousdAddresses?.at(0),
     },
   );
@@ -38,7 +38,7 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OUSD Balance' })}
-        value={formatAmount(ousdBalance.value, ousdBalance.decimals)}
+        value={formatAmount(ousdBalance?.value ?? 0n, ousdBalance?.decimals)}
         isLoading={isConnected && ousdLoading}
       />
       <Divider orientation="vertical" flexItem />
