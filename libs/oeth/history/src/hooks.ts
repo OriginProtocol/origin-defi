@@ -96,6 +96,7 @@ export const useAggregatedHistory = (
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
+      refetchOnWindowFocus: false,
       ...options,
       enabled: isConnected && !isNilOrEmpty(address),
       placeholderData: { oethAddresses: [{ history: [] }] },
