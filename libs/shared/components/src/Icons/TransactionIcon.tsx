@@ -12,12 +12,14 @@ enum HistoryType {
 
 export type TransactionIconProps = {
   type: HistoryType;
-  tokenIcon?: string;
+  tokenIcon: string;
+  swapTokenIcon?: string;
 } & BoxProps;
 
 export function TransactionIcon({
   type,
   tokenIcon,
+  swapTokenIcon,
   ...rest
 }: TransactionIconProps) {
   return (
@@ -33,11 +35,7 @@ export function TransactionIcon({
       <Box
         component="img"
         alt="yield"
-        src={
-          type === HistoryType.Yield
-            ? '/images/Yield.svg'
-            : '/images/tokens/OUSD.svg'
-        }
+        src={type === HistoryType.Yield ? '/images/Yield.svg' : tokenIcon}
         sx={{
           width: '100%',
           height: '100%',
@@ -62,7 +60,7 @@ export function TransactionIcon({
             : '/images/Swap.svg'
         }
       ></Box>
-      {type === HistoryType.Swap && !isNilOrEmpty(tokenIcon) && (
+      {type === HistoryType.Swap && !isNilOrEmpty(swapTokenIcon) && (
         <Box
           sx={{
             position: 'absolute',
@@ -80,7 +78,7 @@ export function TransactionIcon({
             }}
             component="img"
             alt="token"
-            src={tokenIcon}
+            src={swapTokenIcon}
           ></Box>
         </Box>
       )}

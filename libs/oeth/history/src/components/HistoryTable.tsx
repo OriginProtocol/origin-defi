@@ -13,6 +13,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandIcon, TransactionIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
   formatAmount,
   isNilOrEmpty,
@@ -298,7 +299,11 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} zIndex={1} />
+      <TransactionIcon
+        type={type}
+        zIndex={1}
+        tokenIcon={tokens.mainnet.OETH.icon}
+      />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>
         <Typography color="text.secondary" variant="body2">

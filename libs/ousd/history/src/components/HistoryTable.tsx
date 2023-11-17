@@ -12,7 +12,8 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ExpandIcon } from '@origin/shared/components';
+import { ExpandIcon, TransactionIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
   formatAmount,
   isNilOrEmpty,
@@ -30,7 +31,6 @@ import { useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 
 import { useAggregatedHistory } from '../hooks';
-import { TransactionIcon } from './TransactionIcon';
 
 import type { StackProps } from '@mui/material';
 import type { HistoryType } from '@origin/ousd/shared';
@@ -299,7 +299,11 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} zIndex={1} />
+      <TransactionIcon
+        type={type}
+        zIndex={1}
+        tokenIcon={tokens.mainnet.OUSD.icon}
+      />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>
         <Typography color="text.secondary" variant="body2">
