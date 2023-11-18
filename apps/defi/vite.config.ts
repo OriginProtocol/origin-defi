@@ -55,6 +55,13 @@ export default defineConfig({
     }),
   ],
 
+  resolve: {
+    alias: {
+      '@formatjs/icu-messageformat-parser':
+        '@formatjs/icu-messageformat-parser/no-parser',
+    },
+  },
+
   define: {
     'import.meta.vitest': undefined,
   },
