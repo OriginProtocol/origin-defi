@@ -47,6 +47,9 @@
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
+  "6WMuFp": {
+    "defaultMessage": "Proposals"
+  },
   "6XFO/C": {
     "defaultMessage": "Approved"
   },
@@ -76,6 +79,9 @@
   },
   "9oQCRd": {
     "defaultMessage": "Stablecoin"
+  },
+  "9uOFF3": {
+    "defaultMessage": "Overview"
   },
   "A9AGhs": {
     "defaultMessage": "APY (Trailing 30-day)"
@@ -220,6 +226,9 @@
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "g5pX+a": {
+    "defaultMessage": "About"
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."

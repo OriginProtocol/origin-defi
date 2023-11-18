@@ -1,3 +1,4 @@
+import { governanceRoutes } from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
@@ -16,11 +17,11 @@ export const routes: RouteObject[] = [
         Component: HomeView,
         handle: { label: defineMessage({ defaultMessage: 'Home' }) },
       },
-      // {
-      //   path: '/redeem',
-      //   Component: RedeemView,
-      //   handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
-      // },
+      {
+        path: 'governance',
+        handle: { label: defineMessage({ defaultMessage: 'Governance' }) },
+        children: governanceRoutes,
+      },
       // {
       //   path: '/history',
       //   Component: HistoryView,
