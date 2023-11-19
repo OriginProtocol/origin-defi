@@ -41,6 +41,12 @@
       "value": "Swapped"
     }
   ],
+  "0KIAYU": [
+    {
+      "type": 0,
+      "value": "View my stake"
+    }
+  ],
   "0fR+fE": [
     {
       "type": 0,
@@ -67,6 +73,18 @@
     {
       "type": 0,
       "value": "Liquid staking"
+    }
+  ],
+  "3a5wL8": [
+    {
+      "type": 0,
+      "value": "Active"
+    }
+  ],
+  "3wsVWF": [
+    {
+      "type": 0,
+      "value": "Cancelled"
     }
   ],
   "5RMD2G": [
@@ -107,6 +125,12 @@
     {
       "type": 0,
       "value": "The selected network is not supported by the application."
+    }
+  ],
+  "6WMuFp": [
+    {
+      "type": 0,
+      "value": "Proposals"
     }
   ],
   "6XFO/C": [
@@ -169,6 +193,12 @@
       "value": "Stablecoin"
     }
   ],
+  "9uOFF3": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
   "A9AGhs": [
     {
       "type": 0,
@@ -179,6 +209,12 @@
     {
       "type": 0,
       "value": "Enter an amount"
+    }
+  ],
+  "Bm4aQN": [
+    {
+      "type": 0,
+      "value": "Percentage of total voting power"
     }
   ],
   "DKaqyQ": [
@@ -257,6 +293,12 @@
       "value": " APY"
     }
   ],
+  "Fv1ZSz": [
+    {
+      "type": 0,
+      "value": "Closed"
+    }
+  ],
   "GtMIIe": [
     {
       "type": 0,
@@ -285,6 +327,12 @@
     {
       "type": 0,
       "value": "Governance"
+    }
+  ],
+  "JYOKXD": [
+    {
+      "type": 0,
+      "value": "Snapshot Vote"
     }
   ],
   "JrepQU": [
@@ -325,6 +373,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "Mt/W73": [
+    {
+      "type": 0,
+      "value": "Voting addresses"
     }
   ],
   "NQOjUX": [
@@ -369,6 +423,12 @@
       "value": "Best"
     }
   ],
+  "Q8Qw5B": [
+    {
+      "type": 0,
+      "value": "Description"
+    }
+  ],
   "Qz1fcp": [
     {
       "type": 0,
@@ -377,6 +437,12 @@
     {
       "type": 1,
       "value": "number"
+    }
+  ],
+  "RE9KvP": [
+    {
+      "type": 0,
+      "value": "Vote supply"
     }
   ],
   "RoqJiX": [
@@ -443,6 +509,12 @@
       "value": "Stake OGV"
     }
   ],
+  "W/z9WD": [
+    {
+      "type": 0,
+      "value": "My voting power"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -457,6 +529,12 @@
     {
       "type": 0,
       "value": "Approve"
+    }
+  ],
+  "WtvQnb": [
+    {
+      "type": 0,
+      "value": "Delegate my voting power"
     }
   ],
   "XSdWHA": [
@@ -507,6 +585,12 @@
       "value": "Processing Transaction"
     }
   ],
+  "dWjKid": [
+    {
+      "type": 0,
+      "value": "All proposals"
+    }
+  ],
   "dtJo4Y": [
     {
       "type": 0,
@@ -533,10 +617,22 @@
       "value": "symbolIn"
     }
   ],
+  "g5pX+a": [
+    {
+      "type": 0,
+      "value": "About"
+    }
+  ],
   "gBm7FQ": [
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "hE0rba": [
+    {
+      "type": 0,
+      "value": "Discussion Forum"
     }
   ],
   "iLgjES": [
@@ -591,6 +687,12 @@
     {
       "type": 0,
       "value": "Disconnect"
+    }
+  ],
+  "qyJtWy": [
+    {
+      "type": 0,
+      "value": "Show less"
     }
   ],
   "s49boM": [

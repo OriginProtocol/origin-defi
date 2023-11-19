@@ -3,6 +3,8 @@ export * from './Errors';
 export * from './InfoTooltip';
 export * from './Inputs';
 export * from './Icons';
+export * from './Labels';
+export * from './Links';
 export * from './MiddleTruncated';
 export * from './Mix';
 export * from './Notifications';

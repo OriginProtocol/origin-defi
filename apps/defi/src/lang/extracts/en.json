@@ -20,6 +20,9 @@
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
+  "0KIAYU": {
+    "defaultMessage": "View my stake"
+  },
   "0fR+fE": {
     "defaultMessage": "Route"
   },
@@ -31,6 +34,12 @@
   },
   "2R/YHR": {
     "defaultMessage": "Liquid staking"
+  },
+  "3a5wL8": {
+    "defaultMessage": "Active"
+  },
+  "3wsVWF": {
+    "defaultMessage": "Cancelled"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -89,6 +98,9 @@
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
+  "Bm4aQN": {
+    "defaultMessage": "Percentage of total voting power"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -107,6 +119,9 @@
   "EpAQ64": {
     "defaultMessage": "Earn {apy} APY"
   },
+  "Fv1ZSz": {
+    "defaultMessage": "Closed"
+  },
   "GtMIIe": {
     "defaultMessage": "Get OGV"
   },
@@ -121,6 +136,9 @@
   },
   "JLmDla": {
     "defaultMessage": "Governance"
+  },
+  "JYOKXD": {
+    "defaultMessage": "Snapshot Vote"
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
@@ -139,6 +157,9 @@
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "Mt/W73": {
+    "defaultMessage": "Voting addresses"
   },
   "NQOjUX": {
     "defaultMessage": "Origin Governance Token"
@@ -161,8 +182,14 @@
   "PzlMqG": {
     "defaultMessage": "Best"
   },
+  "Q8Qw5B": {
+    "defaultMessage": "Description"
+  },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
+  },
+  "RE9KvP": {
+    "defaultMessage": "Vote supply"
   },
   "RoqJiX": {
     "defaultMessage": "Collateral"
@@ -188,11 +215,17 @@
   "VqXRJ4": {
     "defaultMessage": "Stake OGV"
   },
+  "W/z9WD": {
+    "defaultMessage": "My voting power"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
   "WCaf5C": {
     "defaultMessage": "Approve"
+  },
+  "WtvQnb": {
+    "defaultMessage": "Delegate my voting power"
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
@@ -218,6 +251,9 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "dWjKid": {
+    "defaultMessage": "All proposals"
+  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
@@ -232,6 +268,9 @@
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "hE0rba": {
+    "defaultMessage": "Discussion Forum"
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
@@ -259,6 +298,9 @@
   },
   "qj1uhz": {
     "defaultMessage": "Disconnect"
+  },
+  "qyJtWy": {
+    "defaultMessage": "Show less"
   },
   "s49boM": {
     "defaultMessage": "Ethereum liquid staking token"

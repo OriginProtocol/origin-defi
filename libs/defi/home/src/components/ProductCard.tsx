@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Chip, Mix } from '@origin/shared/components';
+import { Chip, Mix, ValueLabel } from '@origin/shared/components';
 import { usePrices } from '@origin/shared/providers';
 import { currencyFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -14,7 +14,6 @@ import { useIntl } from 'react-intl';
 import { useTokenInfo } from '../hooks';
 
 import type { StackProps } from '@mui/material';
-import type { ReactNode } from 'react';
 
 import type { products } from '../constants';
 
@@ -109,7 +108,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         divider={<Divider orientation="vertical" flexItem />}
         sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
       >
-        <BottomTile
+        <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'TVL' })}
           value={
             isQueryDataLoading ? (
@@ -118,8 +117,12 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
               intl.formatNumber(queryData.tvl, currencyFormat)
             )
           }
+          sx={{
+            width: 0.33,
+            py: 2,
+          }}
         />
-        <BottomTile
+        <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Current price' })}
           value={
             isPricesLoading ? (
@@ -128,33 +131,20 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
               intl.formatNumber(prices[product.token.symbol], currencyFormat)
             )
           }
+          sx={{
+            width: 0.33,
+            py: 2,
+          }}
         />
-        <BottomTile
+        <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Collateral' })}
           value={<Mix imgSrc={product.collaterals.map((t) => t.icon)} />}
+          sx={{
+            width: 0.33,
+            py: 2,
+          }}
         />
       </Stack>
     </Stack>
   );
 };
-
-type BottomTileProps = {
-  label: string;
-  value: ReactNode;
-};
-
-function BottomTile({ label, value }: BottomTileProps) {
-  return (
-    <Stack
-      sx={{
-        width: 0.33,
-        alignItems: 'center',
-        py: 2,
-        gap: 1,
-      }}
-    >
-      <Typography color="text.secondary">{label}</Typography>
-      {typeof value === 'string' ? <Typography>{value}</Typography> : value}
-    </Stack>
-  );
-}

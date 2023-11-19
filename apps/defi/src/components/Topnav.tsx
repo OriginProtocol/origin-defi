@@ -80,6 +80,7 @@ export const Topnav = () => {
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
+              gap: 2,
             }}
           >
             {routes[0].children.map((route) => (

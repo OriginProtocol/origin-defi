@@ -21,7 +21,7 @@ export const IntlProvider = ({ children, messages }: IntlProviderProps) => {
   const handleError = (e: Error) => {
     if (warn.current) {
       console.warn(
-        `Missing translations! While this is normal during development, don't forget to run i18n-compile to generate the locales.\n${e}`,
+        `Missing translations! While this is normal during development, don't forget to run i18n-compile to generate the locales.`,
       );
       warn.current = false;
     }

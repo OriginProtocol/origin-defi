@@ -56,8 +56,8 @@ export function TransactionIcon({
           type === HistoryType.Sent
             ? '/images/Send.svg'
             : type === HistoryType.Received || type === HistoryType.Yield
-            ? '/images/Received.svg'
-            : '/images/Swap.svg'
+              ? '/images/Received.svg'
+              : '/images/Swap.svg'
         }
       ></Box>
       {type === HistoryType.Swap && !isNilOrEmpty(swapTokenIcon) && (

@@ -25,7 +25,7 @@ export const App = () => {
           trackEvent({ name: 'connect', connect_address, connect_wallet });
         }}
       >
-        <Stack minWidth={370}>
+        <Stack minWidth={370} mb={5}>
           <Topnav />
           <Outlet />
         </Stack>

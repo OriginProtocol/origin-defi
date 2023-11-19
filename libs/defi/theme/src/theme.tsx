@@ -4,6 +4,8 @@ import shadows from '@mui/material/styles/shadows';
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
 
+import type { ThemeOptions } from '@mui/material';
+
 const base = createTheme({
   palette: {
     mode: 'dark',
@@ -228,6 +230,12 @@ export const theme = createTheme(base, {
             background: theme.palette.grey[900],
           },
         }),
+        outlinedSecondary: ({ theme }) => ({
+          borderColor: theme.palette.divider,
+          ':hover': {
+            borderColor: theme.palette.primary.main,
+          },
+        }),
         text: ({ theme }) => ({
           ':hover': {
             color: theme.palette.common.white,
@@ -272,19 +280,21 @@ export const theme = createTheme(base, {
       styleOverrides: {
         root: ({ theme }) => ({
           padding: 0,
-          borderRadius: theme.shape.borderRadius,
+          borderRadius: '8px',
           backgroundImage: 'none',
           backgroundColor: theme.palette.background.paper,
+          border: `1px solid ${theme.palette.divider}`,
         }),
       },
     },
     MuiCardHeader: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2, 3),
+          padding: theme.spacing(2.5, 3),
           borderBottom: `1px solid ${theme.palette.divider}`,
+          backgroundColor: theme.palette.background.header,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.75, 2.75),
+            padding: theme.spacing(1.25, 1.5),
           },
         }),
         title: ({ theme }) => ({
@@ -296,9 +306,9 @@ export const theme = createTheme(base, {
     MuiCardContent: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(3),
+          padding: theme.spacing(2.5, 3),
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.5, 2),
+            padding: theme.spacing(1.25, 1.5),
           },
         }),
       },
@@ -564,7 +574,7 @@ export const theme = createTheme(base, {
         }),
       },
     },
-  },
+  } as ThemeOptions,
   mixins: {
     toolbar: {
       height: 75,

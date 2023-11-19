@@ -17,3 +17,6 @@ export const INSTAGRAM_URL = 'http://instagram.com/originprotocol';
 export const EMAIL_LIST_URL =
   'https://www.originprotocol.com/mailing-list/join';
 export const AIRDROP_URL = 'https://governance.ousd.com/claim';
+export const GOVERNANCE_DISCUSSION_FORUM =
+  'https://discord.com/channels/404673842007506945/1025438212908396564/';
+export const GOVERNANCE_SNAPSHOT_VOTES = 'https://vote.ousd.com';

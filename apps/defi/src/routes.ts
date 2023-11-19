@@ -1,4 +1,4 @@
-import { governanceRoutes } from '@origin/defi/governance';
+import { governanceRoute } from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
@@ -18,9 +18,10 @@ export const routes: RouteObject[] = [
         handle: { label: defineMessage({ defaultMessage: 'Home' }) },
       },
       {
+        index: false,
         path: 'governance',
         handle: { label: defineMessage({ defaultMessage: 'Governance' }) },
-        children: governanceRoutes,
+        ...governanceRoute,
       },
       // {
       //   path: '/history',
