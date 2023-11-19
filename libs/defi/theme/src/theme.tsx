@@ -4,8 +4,6 @@ import shadows from '@mui/material/styles/shadows';
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
 
-import type { ThemeOptions } from '@mui/material';
-
 const base = createTheme({
   palette: {
     mode: 'dark',
@@ -19,7 +17,7 @@ const base = createTheme({
     },
     divider: '#282A32',
     background: {
-      paper: '#1E1F254D',
+      paper: '#171619',
       default: '#141214',
       header: '#19191D',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
@@ -574,7 +572,7 @@ export const theme = createTheme(base, {
         }),
       },
     },
-  } as ThemeOptions,
+  },
   mixins: {
     toolbar: {
       height: 75,

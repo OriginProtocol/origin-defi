@@ -8,14 +8,43 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { Skeleton } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
+import { ConnectedButton } from '@origin/shared/providers';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
+import { useAccount, useContractReads } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
 
 export const UserVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
+  const { address, isConnected } = useAccount();
+  const { data, isLoading } = useContractReads({
+    contracts: [
+      {
+        address: tokens.mainnet.veOGV.address,
+        abi: tokens.mainnet.veOGV.abi,
+        functionName: 'balanceOf',
+        args: [address],
+      },
+      {
+        address: tokens.mainnet.veOGV.address,
+        abi: tokens.mainnet.veOGV.abi,
+        functionName: 'totalSupply',
+      },
+    ],
+  });
+
+  const balance = +formatUnits(
+    data?.[0]?.result ?? 0n,
+    tokens.mainnet.veOGV.decimals,
+  );
+  const total = +formatUnits(
+    data?.[1]?.result ?? 0n,
+    tokens.mainnet.veOGV.decimals,
+  );
 
   return (
     <Card {...props}>
@@ -33,7 +62,9 @@ export const UserVotingPowerCard = (props: CardProps) => {
         <Typography>{tokens.mainnet.veOGV.symbol}</Typography>
         <Stack direction="row" spacing={1}>
           <Box component="img" src={tokens.mainnet.veOGV.icon} width={20} />
-          <Typography>{formatAmount(15051561)}</Typography>
+          <Typography>
+            {isLoading ? <Skeleton width={60} /> : formatAmount(balance)}
+          </Typography>
         </Stack>
       </CardContent>
       <CardContent
@@ -51,10 +82,14 @@ export const UserVotingPowerCard = (props: CardProps) => {
           })}
         </Typography>
         <Typography>
-          {intl.formatNumber(0.00366663, {
-            style: 'percent',
-            minimumSignificantDigits: 2,
-          })}
+          {isLoading ? (
+            <Skeleton width={60} />
+          ) : (
+            intl.formatNumber(balance / total, {
+              style: 'percent',
+              maximumFractionDigits: 2,
+            })
+          )}
         </Typography>
       </CardContent>
       <CardActions
@@ -65,12 +100,24 @@ export const UserVotingPowerCard = (props: CardProps) => {
           borderTop: (theme) => `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Button variant="outlined" color="secondary" sx={{ fontSize: 12 }}>
-          {intl.formatMessage({ defaultMessage: 'Delegate my voting power' })}
-        </Button>
-        <Button variant="outlined" color="secondary" sx={{ fontSize: 12 }}>
-          {intl.formatMessage({ defaultMessage: 'View my stake' })}
-        </Button>
+        {isConnected ? (
+          <>
+            <Button variant="outlined" color="secondary" sx={{ fontSize: 12 }}>
+              {intl.formatMessage({
+                defaultMessage: 'Delegate my voting power',
+              })}
+            </Button>
+            <Button variant="outlined" color="secondary" sx={{ fontSize: 12 }}>
+              {intl.formatMessage({ defaultMessage: 'View my stake' })}
+            </Button>
+          </>
+        ) : (
+          <ConnectedButton
+            variant="outlined"
+            color="secondary"
+            sx={{ fontSize: 12 }}
+          />
+        )}
       </CardActions>
     </Card>
   );

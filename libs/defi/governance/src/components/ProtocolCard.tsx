@@ -3,11 +3,20 @@ import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
+import { useContractRead } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 
 export const ProtocolCard = (props: StackProps) => {
   const intl = useIntl();
+  const { data, isLoading: isTotalSupplyLoading } = useContractRead({
+    address: tokens.mainnet.veOGV.address,
+    abi: tokens.mainnet.veOGV.abi,
+    functionName: 'totalSupply',
+  });
+
+  const totalSupply = +formatUnits(data ?? 0n, tokens.mainnet.veOGV.decimals);
 
   return (
     <Stack borderRadius={2} border={1} borderColor="divider" {...props}>
@@ -55,10 +64,11 @@ export const ProtocolCard = (props: StackProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Vote supply' })}
-          value={intl.formatNumber(12351e6, {
+          value={intl.formatNumber(totalSupply, {
             notation: 'compact',
             minimumFractionDigits: 2,
           })}
+          isLoading={isTotalSupplyLoading}
           py={2}
           valueProps={{ variant: 'h3' }}
           width={1}

@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Skeleton, Stack, Typography } from '@mui/material';
 
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -8,6 +8,7 @@ export type ValueLabelProps = {
   value: ReactNode;
   labelProps?: TypographyProps;
   valueProps?: TypographyProps;
+  isLoading?: boolean;
 } & StackProps;
 
 export const ValueLabel = ({
@@ -15,6 +16,7 @@ export const ValueLabel = ({
   value,
   labelProps,
   valueProps,
+  isLoading,
   ...rest
 }: ValueLabelProps) => {
   return (
@@ -23,7 +25,11 @@ export const ValueLabel = ({
         {label}
       </Typography>
       {typeof value === 'string' ? (
-        <Typography {...valueProps}>{value}</Typography>
+        <Typography {...valueProps}>
+          {isLoading ? <Skeleton width={60} /> : value}
+        </Typography>
+      ) : isLoading ? (
+        <Skeleton width={60} />
       ) : (
         value
       )}
