@@ -8,8 +8,9 @@ import {
 } from '@mui/material';
 import { Chip, Mix, ValueLabel } from '@origin/shared/components';
 import { usePrices } from '@origin/shared/providers';
-import { currencyFormat } from '@origin/shared/utils';
+import { currencyFormat, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { useTokenInfo } from '../hooks';
 
@@ -17,10 +18,14 @@ import type { StackProps } from '@mui/material';
 
 import type { products } from '../constants';
 
-export type ProductCardProps = { product: (typeof products)[0] } & StackProps;
+export type ProductCardProps = {
+  product: (typeof products)[0];
+  href?: string;
+} & StackProps;
 
-export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
+export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
   const intl = useIntl();
+  const navigate = useNavigate();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
   const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
     product.token,
@@ -96,12 +101,20 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         </Typography>
       </Stack>
       <Stack pt={3} pb={6} px={3} flexGrow={1}>
-        <Button variant="outlined" sx={{ height: 56, fontSize: 16 }}>
-          {intl.formatMessage(
-            { defaultMessage: 'Get {symbol}' },
-            { symbol: product.token.symbol },
-          )}
-        </Button>
+        {!isNilOrEmpty(href) && (
+          <Button
+            onClick={() => {
+              navigate(href);
+            }}
+            variant="outlined"
+            sx={{ height: 56, fontSize: 16 }}
+          >
+            {intl.formatMessage(
+              { defaultMessage: 'Get {symbol}' },
+              { symbol: product.token.symbol },
+            )}
+          </Button>
+        )}
       </Stack>
       <Stack
         direction="row"

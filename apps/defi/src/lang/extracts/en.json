@@ -122,11 +122,17 @@
   "Fv1ZSz": {
     "defaultMessage": "Closed"
   },
+  "GZJpDf": {
+    "defaultMessage": "Analytics"
+  },
   "GtMIIe": {
     "defaultMessage": "Get OGV"
   },
   "H6QzKn": {
     "defaultMessage": "Ethereum network"
+  },
+  "HJLofA": {
+    "defaultMessage": "My voting history"
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
@@ -194,6 +200,9 @@
   "RoqJiX": {
     "defaultMessage": "Collateral"
   },
+  "SGXihn": {
+    "defaultMessage": "OETH"
+  },
   "SKB/G9": {
     "defaultMessage": "TVL"
   },
@@ -211,6 +220,9 @@
   },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
+  },
+  "VK+Ydv": {
+    "defaultMessage": "OUSD"
   },
   "VqXRJ4": {
     "defaultMessage": "Stake OGV"
@@ -325,6 +337,9 @@
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
+  },
+  "wcWIOX": {
+    "defaultMessage": "Proof of yield"
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"

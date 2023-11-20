@@ -29,6 +29,11 @@ export const HomeView = () => {
         {products.map((product) => (
           <ProductCard
             key={product.token.symbol}
+            href={
+              product.token.symbol !== 'OGN'
+                ? product.token.symbol.toLowerCase()
+                : undefined
+            }
             product={product}
             width={0.33}
           />

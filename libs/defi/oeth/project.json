@@ -1,0 +1,16 @@
+{
+  "name": "defi-oeth",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/defi/oeth/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/defi/oeth/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

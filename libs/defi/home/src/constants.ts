@@ -5,6 +5,7 @@ export const products = [
   {
     id: 'oeth',
     token: tokens.mainnet.OETH,
+    href: 'oeth',
     description: defineMessage({
       defaultMessage: 'Ethereum liquid staking token',
     }),
@@ -30,6 +31,7 @@ export const products = [
   {
     id: 'ousd',
     token: tokens.mainnet.OUSD,
+    href: 'oeth',
     description: defineMessage({
       defaultMessage: 'Yield-generating stablecoin',
     }),

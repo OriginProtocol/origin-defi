@@ -299,6 +299,12 @@
       "value": "Closed"
     }
   ],
+  "GZJpDf": [
+    {
+      "type": 0,
+      "value": "Analytics"
+    }
+  ],
   "GtMIIe": [
     {
       "type": 0,
@@ -309,6 +315,12 @@
     {
       "type": 0,
       "value": "Ethereum network"
+    }
+  ],
+  "HJLofA": [
+    {
+      "type": 0,
+      "value": "My voting history"
     }
   ],
   "HyhkDr": [
@@ -451,6 +463,12 @@
       "value": "Collateral"
     }
   ],
+  "SGXihn": [
+    {
+      "type": 0,
+      "value": "OETH"
+    }
+  ],
   "SKB/G9": [
     {
       "type": 0,
@@ -501,6 +519,12 @@
     {
       "type": 0,
       "value": "Finding the best route..."
+    }
+  ],
+  "VK+Ydv": [
+    {
+      "type": 0,
+      "value": "OUSD"
     }
   ],
   "VqXRJ4": [
@@ -741,6 +765,12 @@
     {
       "type": 0,
       "value": "Error while redeeming"
+    }
+  ],
+  "wcWIOX": [
+    {
+      "type": 0,
+      "value": "Proof of yield"
     }
   ],
   "wqlXwW": [
