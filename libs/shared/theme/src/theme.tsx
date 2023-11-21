@@ -230,6 +230,12 @@ export const theme = createTheme({
           px: 2,
           py: 0.5,
         },
+        outlinedSecondary: ({ theme }) => ({
+          borderColor: theme.palette.secondary.main,
+          ':hover': {
+            borderColor: theme.palette.secondary.dark,
+          },
+        }),
         text: ({ theme }) => ({
           ':hover': {
             color: theme.palette.common.white,
