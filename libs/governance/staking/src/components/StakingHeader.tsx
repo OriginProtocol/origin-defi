@@ -10,10 +10,10 @@ export const StackingHeader = () => {
 
   return (
     <Stack spacing={3}>
-      <Box>
+      <Box py={5}>
         <Grid2 container spacing={3}>
           <Grid2 xs={12} md={6}>
-            <Stack alignItems="flex-start" justifyContent="center" spacing={4}>
+            <Stack alignItems="flex-start" justifyContent="center" spacing={3}>
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
               </Typography>
@@ -39,19 +39,22 @@ export const StackingHeader = () => {
             >
               <ValueLabel
                 label={
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography fontSize={14} color="text.secondary">
-                      {intl.formatMessage({
-                        defaultMessage: 'Total OGV staked',
-                      })}
-                    </Typography>
+                  <Typography
+                    fontSize={14}
+                    color="text.secondary"
+                    sx={{ textWrap: 'balance', textAlign: 'center' }}
+                  >
+                    {intl.formatMessage({
+                      defaultMessage: 'Total OGV staked',
+                    })}
+                    &nbsp;
                     <InfoTooltip
                       tooltipLabel={intl.formatMessage({
                         defaultMessage:
                           'Percent of OGV staked out of the current total supply.',
                       })}
                     />
-                  </Stack>
+                  </Typography>
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
@@ -60,26 +63,35 @@ export const StackingHeader = () => {
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
-                labelProps={{ sx: { fontSize: 14 } }}
+                labelProps={{
+                  sx: {
+                    fontSize: 14,
+                    textWrap: 'balance',
+                    textAlign: 'center',
+                  },
+                }}
                 sx={{ width: 1 }}
                 value={'0'}
                 valueProps={{ variant: 'h3' }}
               />
               <ValueLabel
                 label={
-                  <Stack direction="row" alignItems="center" spacing={1}>
-                    <Typography fontSize={14} color="text.secondary">
-                      {intl.formatMessage({
-                        defaultMessage: 'Max vAPY',
-                      })}
-                    </Typography>
+                  <Typography
+                    fontSize={14}
+                    color="text.secondary"
+                    sx={{ textWrap: 'balance', textAlign: 'center' }}
+                  >
+                    {intl.formatMessage({
+                      defaultMessage: 'Max vAPY',
+                    })}
+                    &nbsp;
                     <InfoTooltip
                       tooltipLabel={intl.formatMessage({
                         defaultMessage:
                           'The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV.',
                       })}
                     />
-                  </Stack>
+                  </Typography>
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
@@ -121,7 +133,7 @@ export const StackingHeader = () => {
                     <Stack direction="row" spacing={0.75}>
                       <Box
                         component="img"
-                        src={tokens.mainnet.veOGV.icon}
+                        src={tokens.mainnet.OGV.icon}
                         width={20}
                       />
                       <Typography fontSize={24}>{formatAmount(0)}</Typography>
@@ -139,7 +151,7 @@ export const StackingHeader = () => {
                     <Stack direction="row" spacing={0.75}>
                       <Box
                         component="img"
-                        src={tokens.mainnet.veOGV.icon}
+                        src={tokens.mainnet.OGV.icon}
                         width={20}
                       />
                       <Typography fontSize={24}>
@@ -152,7 +164,7 @@ export const StackingHeader = () => {
               <Stack direction="row" spacing={2}>
                 <Button
                   sx={{
-                    minWidth: 200,
+                    minWidth: 160,
                     background:
                       'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
                     ':hover': {
@@ -166,7 +178,7 @@ export const StackingHeader = () => {
                 <Button
                   variant="outlined"
                   sx={{
-                    minWidth: 200,
+                    minWidth: 160,
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Get OGV' })}
@@ -199,7 +211,7 @@ export const StackingHeader = () => {
                   <Stack direction="row" spacing={0.75}>
                     <Box
                       component="img"
-                      src={tokens.mainnet.veOGV.icon}
+                      src={tokens.mainnet.OGV.icon}
                       width={20}
                     />
                     <Typography fontSize={24}>{formatAmount(20e6)}</Typography>
@@ -240,7 +252,7 @@ export const StackingHeader = () => {
                       <Typography fontSize={12} color="text.secondary">
                         {intl.formatMessage(
                           {
-                            defaultMessage: '({value}% of total votes)',
+                            defaultMessage: '({value} of total votes)',
                           },
                           {
                             value: intl.formatNumber(0.00563, {

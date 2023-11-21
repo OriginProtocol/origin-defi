@@ -376,6 +376,13 @@ export const theme = createTheme({
         root: ({ theme }) => ({ color: theme.palette.text.primary }),
       },
     },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderWidth: 1,
+        },
+      },
+    },
     MuiFormControl: {
       styleOverrides: {
         root: {

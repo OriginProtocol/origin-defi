@@ -5,7 +5,7 @@ import { StackingHeader } from '../components/StakingHeader';
 
 export const StakingView = () => {
   return (
-    <Stack mt={5} spacing={3}>
+    <Stack spacing={3}>
       <StackingHeader />
       <LockupsCard />
     </Stack>
