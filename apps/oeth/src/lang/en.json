@@ -307,12 +307,6 @@
       "value": "No transaction"
     }
   ],
-  "M6AGsR": [
-    {
-      "type": 0,
-      "value": "Est gas"
-    }
-  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -439,6 +433,12 @@
     {
       "type": 0,
       "value": "Finding the best route..."
+    }
+  ],
+  "Vn/9nH": [
+    {
+      "type": 0,
+      "value": "Est gas:"
     }
   ],
   "W87PYU": [
