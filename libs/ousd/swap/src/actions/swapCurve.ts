@@ -118,7 +118,9 @@ const estimateGas: EstimateGas = async ({
       ],
       account: address,
     });
-  } catch {}
+  } catch {
+    gasEstimate = 350000n;
+  }
 
   return gasEstimate;
 };
