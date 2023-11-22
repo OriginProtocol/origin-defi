@@ -78,6 +78,7 @@ export function SwapRouteCard({
         cursor: 'pointer',
         border: `1px solid transparent`,
         position: 'relative',
+        boxShadow: 'none',
         height: 1,
         ...(isSelected
           ? {
@@ -86,8 +87,9 @@ export function SwapRouteCard({
                 `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
+              borderColor: 'grey.800',
               '&:hover': {
-                borderColor: 'transparent',
+                borderColor: `transparent`,
                 background: (theme) =>
                   `linear-gradient(${theme.palette.grey['800']}, ${
                     theme.palette.grey['800']
