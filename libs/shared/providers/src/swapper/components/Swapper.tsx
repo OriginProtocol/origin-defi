@@ -306,7 +306,9 @@ function SwapperWrapped({
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />
                 ) : isApprovalWaitingForSignature ? (
-                  intl.formatMessage({ defaultMessage: 'Wait for signature' })
+                  intl.formatMessage({
+                    defaultMessage: 'Waiting for signature',
+                  })
                 ) : isApprovalLoading ? (
                   intl.formatMessage({ defaultMessage: 'Processing Approval' })
                 ) : (

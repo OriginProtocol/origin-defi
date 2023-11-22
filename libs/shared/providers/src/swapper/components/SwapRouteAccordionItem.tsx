@@ -1,11 +1,12 @@
-import { alpha, Box, Stack, Typography } from '@mui/material';
+import { alpha, Box, Skeleton, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { currencyFormat, quantityFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
+import { useGasPrice } from '../../gas';
 import { usePrices } from '../../prices';
+import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
 
 import type { EstimatedSwapRoute } from '../types';
@@ -22,17 +23,40 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
+  const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = usePrices();
-  const [{ swapActions }] = useSwapState();
+  const {
+    data: swapGasPrice,
+    isLoading: swapGasPriceLoading,
+    isFetching: swapGasPriceFetching,
+  } = useGasPrice(route.gas, {
+    refetchInterval: 30e3,
+    enabled: route.gas > 0n,
+  });
+  const {
+    data: approvalGasPrice,
+    isLoading: approvalGasPriceLoading,
+    isFetching: approvalGasPriceFetching,
+  } = useGasPrice(route.approvalGas, {
+    refetchInterval: 30e3,
+    enabled: route.approvalGas > 0n,
+  });
+  const { data: allowance } = useSwapRouteAllowance(route);
 
-  const routeLabel = swapActions[route.action].routeLabel;
   const estimatedAmount = +formatUnits(
     route.estimatedAmount,
     route.tokenOut.decimals,
   );
   const convertedAmount =
     (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
-  const gas = +formatUnits(route.gas, tokens.mainnet.ETH.decimals);
+  const isGasLoading =
+    isSwapRoutesLoading ||
+    (swapGasPriceLoading && swapGasPriceFetching) ||
+    (approvalGasPriceLoading && approvalGasPriceFetching);
+  const gasPrice =
+    (swapGasPrice?.gasCostUsd ?? 0) +
+    (allowance < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+  const routeLabel = swapActions[route.action].routeLabel;
 
   return (
     <Box
@@ -114,7 +138,11 @@ export function SwapRouteAccordionItem({
           <Typography
             variant="body2"
             color="text.secondary"
-            sx={{ display: 'flex', alignItems: 'center' }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              '.value': { color: 'text.primary' },
+            }}
           >
             {intl.formatMessage({ defaultMessage: 'Rate' })}&nbsp;
             <InfoTooltip
@@ -123,16 +151,28 @@ export function SwapRouteAccordionItem({
               })}
             />
             &nbsp;
-            <Box component="span">
-              1:{intl.formatNumber(route.rate, quantityFormat)}
-            </Box>
+            {isSwapRoutesLoading ? (
+              <Skeleton width={60} />
+            ) : (
+              <span className="value">
+                1:{intl.formatNumber(route.rate, quantityFormat)}
+              </span>
+            )}
           </Typography>
 
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            sx={{ '.value': { color: 'text.primary' } }}
+          >
             {intl.formatMessage({ defaultMessage: 'Est gas' })}&nbsp;
-            <Box component="span">
-              ~{intl.formatNumber(gas, currencyFormat)}
-            </Box>
+            {isGasLoading ? (
+              <Skeleton width={60} />
+            ) : (
+              <span className="value">
+                ~{intl.formatNumber(gasPrice, currencyFormat)}
+              </span>
+            )}
           </Typography>
         </Box>
       </Stack>

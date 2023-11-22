@@ -78,6 +78,7 @@ export function SwapRouteCard({
         cursor: 'pointer',
         border: `1px solid transparent`,
         position: 'relative',
+        boxShadow: 'none',
         height: 1,
         ...(isSelected
           ? {
@@ -86,8 +87,9 @@ export function SwapRouteCard({
               borderColor: 'transparent',
             }
           : {
+              borderColor: 'grey.800',
               '&:hover': {
-                borderColor: 'transparent',
+                borderColor: `transparent`,
                 background: (
                   theme,
                 ) => `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
