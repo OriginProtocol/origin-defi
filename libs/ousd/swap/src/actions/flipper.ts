@@ -4,6 +4,7 @@ import { isNilOrEmpty, scale } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
+  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -157,7 +158,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',

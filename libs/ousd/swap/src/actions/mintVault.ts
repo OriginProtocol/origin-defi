@@ -5,6 +5,7 @@ import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
+  prepareWriteContract,
   readContract,
   readContracts,
   writeContract,
@@ -213,7 +214,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
