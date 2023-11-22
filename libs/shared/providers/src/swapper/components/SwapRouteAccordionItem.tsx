@@ -150,7 +150,7 @@ export function SwapRouteAccordionItem({
                 defaultMessage: 'Exchange rate',
               })}
             />
-            &nbsp;
+            :&nbsp;
             {isSwapRoutesLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -165,7 +165,7 @@ export function SwapRouteAccordionItem({
             color="text.secondary"
             sx={{ '.value': { color: 'text.primary' } }}
           >
-            {intl.formatMessage({ defaultMessage: 'Est gas' })}&nbsp;
+            {intl.formatMessage({ defaultMessage: 'Est gas:' })}&nbsp;
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (
