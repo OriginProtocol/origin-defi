@@ -128,9 +128,6 @@
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
-  "M6AGsR": {
-    "defaultMessage": "Est gas"
-  },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
@@ -190,6 +187,9 @@
   },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
+  },
+  "Vn/9nH": {
+    "defaultMessage": "Est gas:"
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"

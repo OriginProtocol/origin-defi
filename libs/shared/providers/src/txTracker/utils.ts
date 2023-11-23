@@ -1,6 +1,9 @@
 import { prepareWriteContract as prepareWriteContractOrig } from '@wagmi/core';
 import { usePrepareContractWrite as usePrepareContractWriteOrig } from 'wagmi';
 
+import type { PrepareWriteContractConfig } from '@wagmi/core';
+import type { UsePrepareContractWriteConfig } from 'wagmi';
+
 interface TxTrackerValue {
   id: string;
   timestamp: number;
@@ -12,17 +15,25 @@ interface TxTrackerValue {
  * transaction sources.
  */
 export function prepareWriteContractWithTxTracker(
-  opts: Parameters<typeof prepareWriteContractOrig>[0],
+  opts: Omit<PrepareWriteContractConfig, 'dataSuffix'>,
 ) {
   const dataSuffix = getDataSuffix();
-  return prepareWriteContractOrig({ ...opts, dataSuffix });
+
+  return prepareWriteContractOrig({
+    ...opts,
+    dataSuffix,
+  });
 }
 
 export function usePrepareContractWriteWithTxTracker(
-  opts: Parameters<typeof usePrepareContractWriteOrig>[0],
+  opts: Omit<UsePrepareContractWriteConfig, 'dataSuffix'>,
 ) {
   const dataSuffix = getDataSuffix();
-  return usePrepareContractWriteOrig({ ...opts, dataSuffix });
+
+  return usePrepareContractWriteOrig({
+    ...opts,
+    dataSuffix,
+  });
 }
 
 function getDataSuffix() {

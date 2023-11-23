@@ -15,7 +15,6 @@ import { keccak256, toBytes } from 'viem';
 export function useTxTracker(defaultTrackId: string) {
   const { value: storedTxTrackId, set: setTxTrackId } =
     useLocalStorageValue(`@origin/tx-track`);
-
   const [searchParams, setSearchParams] = useSearchParams();
   const trackId = searchParams.get('r');
 

@@ -6,6 +6,7 @@ import {
   erc20ABI,
   getAccount,
   getPublicClient,
+  prepareWriteContract,
   readContract,
   readContracts,
   writeContract,
@@ -215,7 +216,7 @@ const estimateRoute: EstimateRoute = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
     functionName: 'approve',
