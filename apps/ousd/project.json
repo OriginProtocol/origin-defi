@@ -76,6 +76,7 @@
     },
     "i18n-compile": {
       "executor": "nx:run-commands",
+      "dependsOn": ["i18n-extract"],
       "options": {
         "command": "pnpm formatjs compile 'apps/ousd/src/lang/extracts/en.json' --ast --out-file apps/ousd/src/lang/en.json"
       }

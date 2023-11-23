@@ -1,6 +1,6 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -12,16 +12,16 @@ import type { StackProps } from '@mui/material';
 export function APYContainer() {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const { data: oethBalance, isLoading: oethLoading } = useBalance({
+  const { data: ousdBalance, isLoading: ousdLoading } = useBalance({
     address,
-    token: tokens.mainnet.OETH.address,
+    token: tokens.mainnet.OUSD.address,
     watch: true,
   });
   const { data, isLoading } = useHistoryUserStatQuery(
     { address },
     {
-      enabled: isConnected,
-      select: (data) => data?.oethAddresses?.at(0),
+      enabled: isConnected && !isNilOrEmpty(address),
+      select: (data) => data?.ousdAddresses?.at(0),
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =
@@ -37,9 +37,9 @@ export function APYContainer() {
       justifyContent="space-between"
     >
       <ValueContainer
-        label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-        value={formatAmount(oethBalance?.value, oethBalance?.decimals)}
-        isLoading={isConnected && oethLoading}
+        label={intl.formatMessage({ defaultMessage: 'OUSD Balance' })}
+        value={formatAmount(ousdBalance?.value ?? 0n, ousdBalance?.decimals)}
+        isLoading={isConnected && ousdLoading}
       />
       <Divider orientation="vertical" flexItem />
       <ValueContainer
@@ -50,7 +50,7 @@ export function APYContainer() {
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({
-          defaultMessage: 'Lifetime Earnings (OETH)',
+          defaultMessage: 'Lifetime Earnings (OUSD)',
         })}
         value={formatAmount(BigInt(data?.earned ?? '0'))}
         isLoading={isConnected && isLoading}

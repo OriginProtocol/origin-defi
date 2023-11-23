@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { HistoryType } from '@origin/oeth/shared';
+import { HistoryType } from '@origin/ousd/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 

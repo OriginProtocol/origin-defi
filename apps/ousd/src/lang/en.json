@@ -5,6 +5,12 @@
       "value": "max"
     }
   ],
+  "+U6ozc": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
@@ -105,10 +111,10 @@
       "value": "Redeemed"
     }
   ],
-  "7ZWZTS": [
+  "8UzT6d": [
     {
       "type": 0,
-      "value": "Wait for signature"
+      "value": "CSV"
     }
   ],
   "8XZjyW": [
@@ -121,6 +127,12 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "8nvhZ9": [
+    {
+      "type": 0,
+      "value": "Last"
     }
   ],
   "9ghOJK": [
@@ -141,10 +153,36 @@
       "value": "Enter an amount"
     }
   ],
+  "AdvVFR": [
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "lastPage"
+    }
+  ],
   "BONcjO": [
     {
       "type": 0,
       "value": "Uniswap V3"
+    }
+  ],
+  "BY343C": [
+    {
+      "type": 0,
+      "value": "Change"
+    }
+  ],
+  "Cd75LB": [
+    {
+      "type": 0,
+      "value": "OUSD Transactions"
     }
   ],
   "DKaqyQ": [
@@ -209,6 +247,18 @@
       "value": "symbolOut"
     }
   ],
+  "EWw/tK": [
+    {
+      "type": 0,
+      "value": "Apply"
+    }
+  ],
+  "H5+NAX": [
+    {
+      "type": 0,
+      "value": "Balance"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -239,10 +289,16 @@
       "value": "Sorry, we can't seem to find that page"
     }
   ],
-  "M6AGsR": [
+  "L9unn+": [
     {
       "type": 0,
-      "value": "Est gas"
+      "value": "Pending Yield"
+    }
+  ],
+  "LpWMOQ": [
+    {
+      "type": 0,
+      "value": "No transaction"
     }
   ],
   "MSTVqC": [
@@ -275,6 +331,12 @@
       "value": "Auto"
     }
   ],
+  "O1F5Cx": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to see your history"
+    }
+  ],
   "OhU4K0": [
     {
       "type": 0,
@@ -305,6 +367,12 @@
       "value": "Best"
     }
   ],
+  "QW+Q5N": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
   "Qz1fcp": [
     {
       "type": 0,
@@ -313,6 +381,12 @@
     {
       "type": 1,
       "value": "number"
+    }
+  ],
+  "S45aoc": [
+    {
+      "type": 0,
+      "value": "First"
     }
   ],
   "TrKxvg": [
@@ -365,6 +439,12 @@
     {
       "type": 0,
       "value": "Finding the best route..."
+    }
+  ],
+  "Vn/9nH": [
+    {
+      "type": 0,
+      "value": "Est gas:"
     }
   ],
   "W87PYU": [
@@ -425,6 +505,12 @@
       "value": "Swapping"
     }
   ],
+  "cOB9Jx": [
+    {
+      "type": 0,
+      "value": "Yield"
+    }
+  ],
   "cg1VJ2": [
     {
       "type": 0,
@@ -437,10 +523,22 @@
       "value": "Processing Transaction"
     }
   ],
+  "djJp6c": [
+    {
+      "type": 0,
+      "value": "History"
+    }
+  ],
   "dtJo4Y": [
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "f0gqO4": [
+    {
+      "type": 0,
+      "value": "Lifetime Earnings (OUSD)"
     }
   ],
   "fuV7zb": [
@@ -461,6 +559,12 @@
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "gcuDcH": [
+    {
+      "type": 0,
+      "value": "Sent"
     }
   ],
   "iLgjES": [
@@ -497,6 +601,12 @@
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "mVILQT": [
+    {
+      "type": 0,
+      "value": "OUSD Balance"
     }
   ],
   "nc8QpJ": [
@@ -601,10 +711,22 @@
       "value": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
     }
   ],
+  "z/wUXE": [
+    {
+      "type": 0,
+      "value": "Received"
+    }
+  ],
   "z1bu+z": [
     {
       "type": 0,
       "value": "Error while swapping"
+    }
+  ],
+  "zSOvI0": [
+    {
+      "type": 0,
+      "value": "Filters"
     }
   ],
   "zbaTLV": [

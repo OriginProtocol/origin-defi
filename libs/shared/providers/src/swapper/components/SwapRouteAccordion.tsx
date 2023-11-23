@@ -76,21 +76,9 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
       </AccordionSummary>
       <AccordionDetails
         sx={{
-          paddingBlockStart: 1,
-          paddingBlockEnd: 0,
-          paddingInline: 0,
-          position: 'relative',
-          marginInline: (theme) => theme.spacing(-1),
-          '&:before': {
-            content: '""',
-            width: (theme) => `calc(100% + ${theme.spacing(2)})`,
-            position: 'absolute',
-            left: (theme) => theme.spacing(-1),
-            height: '1px',
-            borderBlockEnd: '1px solid',
-            display: 'block',
-            borderColor: 'grey.800',
-          },
+          pt: 1,
+          pb: 0,
+          px: 0,
         }}
       >
         <Stack gap={0.25} mt={1.5}>

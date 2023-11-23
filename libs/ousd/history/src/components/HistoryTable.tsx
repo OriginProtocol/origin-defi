@@ -33,7 +33,7 @@ import { formatEther } from 'viem';
 import { useAggregatedHistory } from '../hooks';
 
 import type { StackProps } from '@mui/material';
-import type { HistoryType } from '@origin/oeth/shared';
+import type { HistoryType } from '@origin/ousd/shared';
 import type { ExpandedState } from '@tanstack/react-table';
 
 import type { DailyHistory } from '../types';
@@ -302,7 +302,7 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
       <TransactionIcon
         type={type}
         zIndex={1}
-        tokenIcon={tokens.mainnet.OETH.icon}
+        tokenIcon={tokens.mainnet.OUSD.icon}
       />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>

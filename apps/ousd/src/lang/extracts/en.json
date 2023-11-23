@@ -2,6 +2,9 @@
   "+LmzMn": {
     "defaultMessage": "max"
   },
+  "+U6ozc": {
+    "defaultMessage": "Type"
+  },
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
@@ -50,14 +53,17 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7ZWZTS": {
-    "defaultMessage": "Wait for signature"
+  "8UzT6d": {
+    "defaultMessage": "CSV"
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
+  },
+  "8nvhZ9": {
+    "defaultMessage": "Last"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -68,8 +74,17 @@
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
+  "AdvVFR": {
+    "defaultMessage": "{page} of {lastPage}"
+  },
   "BONcjO": {
     "defaultMessage": "Uniswap V3"
+  },
+  "BY343C": {
+    "defaultMessage": "Change"
+  },
+  "Cd75LB": {
+    "defaultMessage": "OUSD Transactions"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -86,6 +101,12 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
+  "EWw/tK": {
+    "defaultMessage": "Apply"
+  },
+  "H5+NAX": {
+    "defaultMessage": "Balance"
+  },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
@@ -101,8 +122,11 @@
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
-  "M6AGsR": {
-    "defaultMessage": "Est gas"
+  "L9unn+": {
+    "defaultMessage": "Pending Yield"
+  },
+  "LpWMOQ": {
+    "defaultMessage": "No transaction"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -119,6 +143,9 @@
   "NXI/XL": {
     "defaultMessage": "Auto"
   },
+  "O1F5Cx": {
+    "defaultMessage": "Connect your wallet to see your history"
+  },
   "OhU4K0": {
     "defaultMessage": "SushiSwap"
   },
@@ -134,8 +161,14 @@
   "PzlMqG": {
     "defaultMessage": "Best"
   },
+  "QW+Q5N": {
+    "defaultMessage": "Clear all"
+  },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
+  },
+  "S45aoc": {
+    "defaultMessage": "First"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -154,6 +187,9 @@
   },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
+  },
+  "Vn/9nH": {
+    "defaultMessage": "Est gas:"
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"
@@ -182,20 +218,32 @@
   "c31Feo": {
     "defaultMessage": "Swapping"
   },
+  "cOB9Jx": {
+    "defaultMessage": "Yield"
+  },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "djJp6c": {
+    "defaultMessage": "History"
+  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "f0gqO4": {
+    "defaultMessage": "Lifetime Earnings (OUSD)"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "gcuDcH": {
+    "defaultMessage": "Sent"
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
@@ -214,6 +262,9 @@
   },
   "m/L3sK": {
     "defaultMessage": "Approving"
+  },
+  "mVILQT": {
+    "defaultMessage": "OUSD Balance"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
@@ -266,8 +317,14 @@
   "y5HZFA": {
     "defaultMessage": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
+  "z/wUXE": {
+    "defaultMessage": "Received"
+  },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
+  },
+  "zSOvI0": {
+    "defaultMessage": "Filters"
   },
   "zbaTLV": {
     "defaultMessage": "View on IPFS"

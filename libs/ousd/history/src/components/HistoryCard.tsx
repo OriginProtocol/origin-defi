@@ -36,7 +36,7 @@ export function HistoryCard() {
             spacing={2}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'OETH Transactions' })}
+              {intl.formatMessage({ defaultMessage: 'OUSD Transactions' })}
             </Typography>
             <Stack direction="row" gap={1}>
               <HistoryFilters filters={filters} setFilters={setFilters} />

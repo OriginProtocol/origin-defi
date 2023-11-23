@@ -4,6 +4,7 @@ import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
+  prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
@@ -249,7 +250,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
 };
 
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
@@ -313,23 +314,27 @@ const swap: Swap = async ({
     const { hash } = await writeContract(request);
     txHash = hash;
   } else {
-    const { request } = await prepareWriteContractWithTxTracker({
-      address: contracts.mainnet.uniswapV3Router.address,
-      abi: contracts.mainnet.uniswapV3Router.abi,
-      functionName: 'exactInput',
-      args: [
-        {
-          path: getPath(tokenIn, tokenOut),
-          amountIn: amountIn,
-          amountOutMinimum: minAmountOut,
-          deadline: BigInt(Date.now() + 2 * 60 * 1000),
-          recipient: address,
-        },
-      ],
-      gas,
-    });
-    const { hash } = await writeContract(request);
-    txHash = hash;
+    try {
+      const { request } = await prepareWriteContractWithTxTracker({
+        address: contracts.mainnet.uniswapV3Router.address,
+        abi: contracts.mainnet.uniswapV3Router.abi,
+        functionName: 'exactInput',
+        args: [
+          {
+            path: getPath(tokenIn, tokenOut),
+            amountIn: amountIn,
+            amountOutMinimum: minAmountOut,
+            deadline: BigInt(Date.now() + 2 * 60 * 1000),
+            recipient: address,
+          },
+        ],
+        gas,
+      });
+      const { hash } = await writeContract(request);
+      txHash = hash;
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   return txHash;

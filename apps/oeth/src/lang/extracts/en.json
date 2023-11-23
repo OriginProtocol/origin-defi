@@ -56,9 +56,6 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7ZWZTS": {
-    "defaultMessage": "Wait for signature"
-  },
   "8UzT6d": {
     "defaultMessage": "CSV"
   },
@@ -68,8 +65,8 @@
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
-  "9+Ddtu": {
-    "defaultMessage": "Next"
+  "8nvhZ9": {
+    "defaultMessage": "Last"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -82,6 +79,9 @@
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
+  },
+  "AdvVFR": {
+    "defaultMessage": "{page} of {lastPage}"
   },
   "BY343C": {
     "defaultMessage": "Change"
@@ -119,9 +119,6 @@
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
   },
-  "JJNc3c": {
-    "defaultMessage": "Previous"
-  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
@@ -131,11 +128,8 @@
   "L9unn+": {
     "defaultMessage": "Pending Yield"
   },
-  "M6AGsR": {
-    "defaultMessage": "Est gas"
-  },
-  "MLTKb6": {
-    "defaultMessage": "APY"
+  "LpWMOQ": {
+    "defaultMessage": "No transaction"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -173,6 +167,9 @@
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
+  "S45aoc": {
+    "defaultMessage": "First"
+  },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
   },
@@ -188,6 +185,9 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
+  "Vn/9nH": {
+    "defaultMessage": "Est gas:"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
@@ -196,9 +196,6 @@
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
-  },
-  "ZIstZx": {
-    "defaultMessage": "Page {page}"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"

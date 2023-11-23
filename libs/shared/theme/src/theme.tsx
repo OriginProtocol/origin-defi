@@ -204,6 +204,11 @@ export const theme = extendTheme({
       },
       styleOverrides: {
         root: ({ theme }) => ({
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 0.75,
           color: theme.palette.text.primary,
           textTransform: 'none',
           borderRadius: 25,
@@ -216,11 +221,12 @@ export const theme = extendTheme({
             xs: 0.75,
           },
           boxShadow: 'none',
+          minWidth: 0,
         }),
         containedPrimary: ({ theme }) => ({
-          background: theme.palette.background.gradientPaper,
+          background: alpha(theme.palette.common.white, 0.1),
           '&:hover': {
-            background: theme.palette.background.paper,
+            background: alpha(theme.palette.common.white, 0.04),
           },
         }),
         containedSecondary: ({ theme }) => ({
@@ -229,6 +235,18 @@ export const theme = extendTheme({
             background: theme.palette.grey[900],
           },
         }),
+        containedSizeSmall: {
+          fontSize: 12,
+          fontWeight: 500,
+          fontStyle: 'normal',
+          lineHeight: 1.6,
+          minHeight: 28,
+          backgroundImage: 'none',
+          gap: 1,
+          borderRadius: 32,
+          px: 2,
+          py: 0.5,
+        },
         text: ({ theme }) => ({
           ':hover': {
             color: theme.palette.common.white,
