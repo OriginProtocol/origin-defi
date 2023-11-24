@@ -1,4 +1,16 @@
 {
+  "+14VoL": {
+    "defaultMessage": "Staking"
+  },
+  "+3F+BA": {
+    "defaultMessage": "veOGV holders"
+  },
+  "+4uVEp": {
+    "defaultMessage": "Origin DeFi Staking"
+  },
+  "+7UEXM": {
+    "defaultMessage": "My Lock-ups"
+  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -17,14 +29,26 @@
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
+  "0STEwK": {
+    "defaultMessage": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
+  },
+  "0eghlt": {
+    "defaultMessage": "My Wallet Balance"
+  },
   "0fR+fE": {
     "defaultMessage": "Route"
   },
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
   },
+  "1i2T/n": {
+    "defaultMessage": "({value} of total votes)"
+  },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
+  },
+  "3townk": {
+    "defaultMessage": "Max vAPY"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -47,14 +71,14 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7ZWZTS": {
-    "defaultMessage": "Wait for signature"
-  },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
+  },
+  "8rfT4i": {
+    "defaultMessage": "The current APY you are earning across all of your lock-ups."
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -64,6 +88,9 @@
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
+  },
+  "Bih77e": {
+    "defaultMessage": "Total OGV staked"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -80,20 +107,29 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
+  "EVmlnF": {
+    "defaultMessage": "OGV"
+  },
+  "GZZUyE": {
+    "defaultMessage": "My vAPY"
+  },
+  "GtMIIe": {
+    "defaultMessage": "Get OGV"
+  },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
   },
+  "JLmDla": {
+    "defaultMessage": "Governance"
+  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
-  },
-  "M6AGsR": {
-    "defaultMessage": "Est gas"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -119,8 +155,14 @@
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
+  "S5tBcz": {
+    "defaultMessage": "Stake"
+  },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+  },
+  "TtRt/7": {
+    "defaultMessage": "Lock-up Ends"
   },
   "TwyMau": {
     "defaultMessage": "Account"
@@ -134,14 +176,29 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
+  "Vn/9nH": {
+    "defaultMessage": "Est gas:"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
   "WCaf5C": {
     "defaultMessage": "Approve"
   },
+  "Wocb8I": {
+    "defaultMessage": "My Rewards"
+  },
   "XSdWHA": {
     "defaultMessage": "Redeem"
+  },
+  "YGiRwq": {
+    "defaultMessage": "Voting Power"
+  },
+  "YS+T+s": {
+    "defaultMessage": "veOGV"
+  },
+  "YvbZVM": {
+    "defaultMessage": "Time Remaining"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -167,8 +224,14 @@
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
+  "eOs6lG": {
+    "defaultMessage": "My Voting Power"
+  },
   "ejEGdx": {
     "defaultMessage": "Home"
+  },
+  "fFXn5l": {
+    "defaultMessage": "Collect Rewards"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
@@ -185,6 +248,9 @@
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
+  "kmAKoi": {
+    "defaultMessage": "My Staked Balance"
+  },
   "lozEho": {
     "defaultMessage": "Error while approving"
   },
@@ -193,6 +259,9 @@
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
+  },
+  "oedH3R": {
+    "defaultMessage": "OGV Dashboard"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
@@ -206,8 +275,11 @@
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
   },
-  "tio9Gt": {
-    "defaultMessage": "IPFS"
+  "u4BAsU": {
+    "defaultMessage": "View proposals"
+  },
+  "upcyvM": {
+    "defaultMessage": "Percent of OGV staked out of the current total supply."
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
@@ -232,9 +304,6 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
-  },
-  "zbaTLV": {
-    "defaultMessage": "View on IPFS"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

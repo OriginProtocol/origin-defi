@@ -1,4 +1,28 @@
 {
+  "+14VoL": [
+    {
+      "type": 0,
+      "value": "Staking"
+    }
+  ],
+  "+3F+BA": [
+    {
+      "type": 0,
+      "value": "veOGV holders"
+    }
+  ],
+  "+4uVEp": [
+    {
+      "type": 0,
+      "value": "Origin DeFi Staking"
+    }
+  ],
+  "+7UEXM": [
+    {
+      "type": 0,
+      "value": "My Lock-ups"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -35,6 +59,18 @@
       "value": "Swapped"
     }
   ],
+  "0STEwK": [
+    {
+      "type": 0,
+      "value": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
+    }
+  ],
+  "0eghlt": [
+    {
+      "type": 0,
+      "value": "My Wallet Balance"
+    }
+  ],
   "0fR+fE": [
     {
       "type": 0,
@@ -51,10 +87,30 @@
       "value": "defaultChain"
     }
   ],
+  "1i2T/n": [
+    {
+      "type": 0,
+      "value": "("
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " of total votes)"
+    }
+  ],
   "1nxJrQ": [
     {
       "type": 0,
       "value": "Return to Home Page"
+    }
+  ],
+  "3townk": [
+    {
+      "type": 0,
+      "value": "Max vAPY"
     }
   ],
   "5RMD2G": [
@@ -99,12 +155,6 @@
       "value": "Redeemed"
     }
   ],
-  "7ZWZTS": [
-    {
-      "type": 0,
-      "value": "Wait for signature"
-    }
-  ],
   "8XZjyW": [
     {
       "type": 0,
@@ -115,6 +165,12 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "8rfT4i": [
+    {
+      "type": 0,
+      "value": "The current APY you are earning across all of your lock-ups."
     }
   ],
   "9ghOJK": [
@@ -133,6 +189,12 @@
     {
       "type": 0,
       "value": "Enter an amount"
+    }
+  ],
+  "Bih77e": [
+    {
+      "type": 0,
+      "value": "Total OGV staked"
     }
   ],
   "DKaqyQ": [
@@ -197,6 +259,24 @@
       "value": "symbolOut"
     }
   ],
+  "EVmlnF": [
+    {
+      "type": 0,
+      "value": "OGV"
+    }
+  ],
+  "GZZUyE": [
+    {
+      "type": 0,
+      "value": "My vAPY"
+    }
+  ],
+  "GtMIIe": [
+    {
+      "type": 0,
+      "value": "Get OGV"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -209,6 +289,12 @@
       "value": "Operation Cancelled"
     }
   ],
+  "JLmDla": [
+    {
+      "type": 0,
+      "value": "Governance"
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
@@ -219,12 +305,6 @@
     {
       "type": 0,
       "value": "Sorry, we can't seem to find that page"
-    }
-  ],
-  "M6AGsR": [
-    {
-      "type": 0,
-      "value": "Est gas"
     }
   ],
   "MSTVqC": [
@@ -279,10 +359,22 @@
       "value": "number"
     }
   ],
+  "S5tBcz": [
+    {
+      "type": 0,
+      "value": "Stake"
+    }
+  ],
   "TrKxvg": [
     {
       "type": 0,
       "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+    }
+  ],
+  "TtRt/7": [
+    {
+      "type": 0,
+      "value": "Lock-up Ends"
     }
   ],
   "TwyMau": [
@@ -325,6 +417,12 @@
       "value": "Finding the best route..."
     }
   ],
+  "Vn/9nH": [
+    {
+      "type": 0,
+      "value": "Est gas:"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -341,10 +439,34 @@
       "value": "Approve"
     }
   ],
+  "Wocb8I": [
+    {
+      "type": 0,
+      "value": "My Rewards"
+    }
+  ],
   "XSdWHA": [
     {
       "type": 0,
       "value": "Redeem"
+    }
+  ],
+  "YGiRwq": [
+    {
+      "type": 0,
+      "value": "Voting Power"
+    }
+  ],
+  "YS+T+s": [
+    {
+      "type": 0,
+      "value": "veOGV"
+    }
+  ],
+  "YvbZVM": [
+    {
+      "type": 0,
+      "value": "Time Remaining"
     }
   ],
   "ZmLuI/": [
@@ -395,10 +517,22 @@
       "value": "Exchange rate"
     }
   ],
+  "eOs6lG": [
+    {
+      "type": 0,
+      "value": "My Voting Power"
+    }
+  ],
   "ejEGdx": [
     {
       "type": 0,
       "value": "Home"
+    }
+  ],
+  "fFXn5l": [
+    {
+      "type": 0,
+      "value": "Collect Rewards"
     }
   ],
   "fuV7zb": [
@@ -439,6 +573,12 @@
       "value": "Max slippage"
     }
   ],
+  "kmAKoi": [
+    {
+      "type": 0,
+      "value": "My Staked Balance"
+    }
+  ],
   "lozEho": [
     {
       "type": 0,
@@ -455,6 +595,12 @@
     {
       "type": 0,
       "value": "Recent Activity"
+    }
+  ],
+  "oedH3R": [
+    {
+      "type": 0,
+      "value": "OGV Dashboard"
     }
   ],
   "qQ/SRd": [
@@ -481,10 +627,16 @@
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
     }
   ],
-  "tio9Gt": [
+  "u4BAsU": [
     {
       "type": 0,
-      "value": "IPFS"
+      "value": "View proposals"
+    }
+  ],
+  "upcyvM": [
+    {
+      "type": 0,
+      "value": "Percent of OGV staked out of the current total supply."
     }
   ],
   "vugtF7": [
@@ -533,12 +685,6 @@
     {
       "type": 0,
       "value": "Error while swapping"
-    }
-  ],
-  "zbaTLV": [
-    {
-      "type": 0,
-      "value": "View on IPFS"
     }
   ],
   "zmWQIG": [

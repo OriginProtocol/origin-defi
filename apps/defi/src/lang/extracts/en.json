@@ -68,9 +68,6 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7ZWZTS": {
-    "defaultMessage": "Wait for signature"
-  },
   "8NtrKz": {
     "defaultMessage": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
   },
@@ -155,9 +152,6 @@
   "Kw1jw2": {
     "defaultMessage": "Get {symbol}"
   },
-  "M6AGsR": {
-    "defaultMessage": "Est gas"
-  },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
@@ -223,6 +217,9 @@
   },
   "VK+Ydv": {
     "defaultMessage": "OUSD"
+  },
+  "Vn/9nH": {
+    "defaultMessage": "Est gas:"
   },
   "VqXRJ4": {
     "defaultMessage": "Stake OGV"
