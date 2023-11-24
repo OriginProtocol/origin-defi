@@ -4,6 +4,7 @@ export type SupportedToken =
   | 'FRAX'
   | 'frxETH'
   | 'OETH'
+  | 'OGN'
   | 'OUSD'
   | 'rETH'
   | 'sfrxETH'

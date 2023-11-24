@@ -1,0 +1,16 @@
+{
+  "name": "defi-governance",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/defi/governance/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/defi/governance/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

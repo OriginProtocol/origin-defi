@@ -21,7 +21,7 @@ export function LinkIcon({
         src="/images/icons/arrow-up-right-light.svg"
         alt="link"
         sx={{ height: size, width: size }}
-      ></Box>
+      />
     </Link>
   );
 }

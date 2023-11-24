@@ -109,9 +109,6 @@ function RedeemerWrapped({
 
   return (
     <Stack spacing={3} {...rest}>
-      {/* <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
-        <ApyHeader />
-      </ErrorBoundary> */}
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
@@ -184,8 +181,7 @@ function RedeemerWrapped({
                 },
                 '&:focus-within': {
                   background: (theme) =>
-                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box,
-             linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
+                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
                 },
               }}
             />

@@ -1,0 +1,24 @@
+{
+  "name": "governance-shared",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/governance/shared/src",
+  "projectType": "library",
+  "tags": [],
+  "targets": {
+    "codegen-graphql": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          "pnpm graphql-codegen --config 'libs/governance/shared/codegen.ts'"
+        ]
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/governance/shared/**/*.{ts,tsx,js,jsx}"]
+      }
+    }
+  }
+}

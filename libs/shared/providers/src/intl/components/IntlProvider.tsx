@@ -1,3 +1,5 @@
+import { useRef } from 'react';
+
 import { Typography } from '@mui/material';
 import { IntlProvider as OriginalIntlProvider } from 'react-intl';
 
@@ -14,6 +16,16 @@ interface IntlProviderProps extends Children {
 export const IntlProvider = ({ children, messages }: IntlProviderProps) => {
   const lang = navigator.language.substring(0, 2).toLowerCase();
   const mess = messages[lang] ?? messages['en'];
+  const warn = useRef(import.meta.env.DEV);
+
+  const handleError = (e: Error) => {
+    if (warn.current) {
+      console.warn(
+        `Missing translations! While this is normal during development, don't forget to run i18n-compile to generate the locales.`,
+      );
+      warn.current = false;
+    }
+  };
 
   return (
     <OriginalIntlProvider
@@ -21,6 +33,7 @@ export const IntlProvider = ({ children, messages }: IntlProviderProps) => {
       messages={mess}
       defaultLocale="en"
       textComponent={Typography}
+      onError={handleError}
       wrapRichTextChunksInFragment
       defaultRichTextElements={{
         p: (chunks) => <p>{chunks}</p>,

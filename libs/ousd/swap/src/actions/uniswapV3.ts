@@ -10,8 +10,6 @@ import {
 } from '@wagmi/core';
 import { encodePacked, formatUnits } from 'viem';
 
-import { GAS_BUFFER } from '../constants';
-
 import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
@@ -43,7 +41,7 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
           tokens.mainnet.OUSD.address,
           500,
           tokens.mainnet.USDT.address,
-          100,
+          500,
           tokens.mainnet.USDC.address,
         ],
       ),
@@ -64,7 +62,7 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
         ['address', 'uint24', 'address', 'uint24', 'address'],
         [
           tokens.mainnet.USDC.address,
-          100,
+          500,
           tokens.mainnet.USDT.address,
           500,
           tokens.mainnet.OUSD.address,
@@ -140,7 +138,7 @@ const estimateGas: EstimateGas = async ({
           {
             tokenIn: tokenIn.address,
             tokenOut: tokenOut.address,
-            amountIn: amountIn,
+            amountIn,
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             fee: 500,
@@ -157,7 +155,7 @@ const estimateGas: EstimateGas = async ({
         args: [
           {
             path: getPath(tokenIn, tokenOut),
-            amountIn: amountIn,
+            amountIn,
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             recipient: address,
@@ -282,15 +280,6 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const estimatedGas = await estimateGas({
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut,
-    slippage,
-  });
-  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
-
   let txHash;
   if ([tokenIn.symbol, tokenOut.symbol].includes(tokens.mainnet.USDT.symbol)) {
     const { request } = await prepareWriteContractWithTxTracker({
@@ -309,32 +298,26 @@ const swap: Swap = async ({
           sqrtPriceLimitX96: 0n,
         },
       ],
-      gas,
     });
     const { hash } = await writeContract(request);
     txHash = hash;
   } else {
-    try {
-      const { request } = await prepareWriteContractWithTxTracker({
-        address: contracts.mainnet.uniswapV3Router.address,
-        abi: contracts.mainnet.uniswapV3Router.abi,
-        functionName: 'exactInput',
-        args: [
-          {
-            path: getPath(tokenIn, tokenOut),
-            amountIn: amountIn,
-            amountOutMinimum: minAmountOut,
-            deadline: BigInt(Date.now() + 2 * 60 * 1000),
-            recipient: address,
-          },
-        ],
-        gas,
-      });
-      const { hash } = await writeContract(request);
-      txHash = hash;
-    } catch (e) {
-      console.log(e);
-    }
+    const { request } = await prepareWriteContractWithTxTracker({
+      address: contracts.mainnet.uniswapV3Router.address,
+      abi: contracts.mainnet.uniswapV3Router.abi,
+      functionName: 'exactInput',
+      args: [
+        {
+          path: getPath(tokenIn, tokenOut),
+          amountIn: amountIn,
+          amountOutMinimum: minAmountOut,
+          deadline: BigInt(Date.now() + 2 * 60 * 1000),
+          recipient: address,
+        },
+      ],
+    });
+    const { hash } = await writeContract(request);
+    txHash = hash;
   }
 
   return txHash;

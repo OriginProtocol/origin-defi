@@ -82,24 +82,24 @@ export function SwapRouteCard({
         height: 1,
         ...(isSelected
           ? {
-              background: `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
-             linear-gradient(90deg, var(--mui-palette-primary-main) 0%, var(--mui-palette-primary-dark) 100%) border-box;`,
               borderColor: 'transparent',
+              background: (theme) =>
+                `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
               borderColor: 'grey.800',
               '&:hover': {
                 borderColor: `transparent`,
-                background: (
-                  theme,
-                ) => `linear-gradient(var(--mui-palette-grey-800), var(--mui-palette-grey-800)) padding-box,
-             linear-gradient(90deg, ${alpha(
-               theme.palette.primary.main,
-               0.4,
-             )} 0%, ${alpha(
-               theme.palette.primary.dark,
-               0.4,
-             )} 100%) border-box;`,
+                background: (theme) =>
+                  `linear-gradient(${theme.palette.grey['800']}, ${
+                    theme.palette.grey['800']
+                  }) padding-box, linear-gradient(90deg, ${alpha(
+                    theme.palette.primary.main,
+                    0.4,
+                  )} 0%, ${alpha(
+                    theme.palette.primary.dark,
+                    0.4,
+                  )} 100%) border-box;`,
               },
             }),
         ...rest?.sx,
@@ -114,7 +114,8 @@ export function SwapRouteCard({
           sx={{
             position: 'absolute',
             borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-            background: (theme) => theme.palette.background.gradient1,
+            background:
+              'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
             fontSize: 12,
             top: 0,
             right: 0,

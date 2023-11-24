@@ -125,7 +125,7 @@ export const tokens = {
       chainId: mainnet.id,
       abi: erc20ABI,
       name: 'Staked Origin Dollar Governance',
-      icon: '/images/tokens/OGV.svg',
+      icon: '/images/tokens/veOGV.svg',
       decimals: 18,
       symbol: 'veOGV',
     },

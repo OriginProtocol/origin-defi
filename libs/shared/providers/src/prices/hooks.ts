@@ -29,6 +29,7 @@ const coinGeckoTokens = [
   coingeckoTokenIds.OETH,
   coingeckoTokenIds.OUSD,
   coingeckoTokenIds.WETH,
+  coingeckoTokenIds.OGN,
 ];
 
 export const usePrices = (
@@ -85,6 +86,7 @@ export const usePrices = (
       const WETH = coinGecko?.[coingeckoTokenIds.WETH]?.usd ?? 0;
       const OETH = coinGecko?.[coingeckoTokenIds.OETH]?.usd ?? 0;
       const OUSD = coinGecko?.[coingeckoTokenIds.OUSD]?.usd ?? 0;
+      const OGN = coinGecko?.[coingeckoTokenIds.OGN]?.usd ?? 0;
 
       const multi = res[0].status === 'fulfilled' ? res[0].value : [];
 
@@ -133,6 +135,7 @@ export const usePrices = (
         WETH,
         OETH,
         OUSD,
+        OGN,
       };
     },
     ...options,

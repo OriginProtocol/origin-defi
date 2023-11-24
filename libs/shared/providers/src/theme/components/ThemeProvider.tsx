@@ -1,14 +1,16 @@
 import { CssBaseline } from '@mui/material';
-import { Experimental_CssVarsProvider as CssVarsProvider } from '@mui/material';
-import { theme } from '@origin/shared/theme';
+import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
+import type { Theme } from '@mui/material';
 import type { Children } from '@origin/shared/utils';
 
-export const ThemeProvider = ({ children }: Children) => {
+export type ThemeProviderProps = { theme: Theme } & Children;
+
+export const ThemeProvider = ({ children, theme }: ThemeProviderProps) => {
   return (
-    <CssVarsProvider theme={theme} defaultColorScheme="dark">
+    <MuiThemeProvider theme={theme}>
       <CssBaseline />
       {children}
-    </CssVarsProvider>
+    </MuiThemeProvider>
   );
 };

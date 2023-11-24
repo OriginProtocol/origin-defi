@@ -8,6 +8,7 @@ export const useIsRebaseBannerVisible = () => {
     abi: tokens.mainnet.OETH.abi,
     functionName: 'rebaseState',
     args: [address],
+    enabled: !!address,
   });
 
   return isConnected && !isLoading && data === 0 && connector?.id === 'safe';

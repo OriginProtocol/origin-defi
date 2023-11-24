@@ -2,13 +2,13 @@ import { Box, Stack } from '@mui/material';
 
 import type { SxProps } from '@mui/material';
 
-interface Props {
+interface MixProps {
   imgSrc: string[];
   size?: number;
   sx?: SxProps;
 }
 
-export function Mix({ imgSrc, size = 2, sx }: Props) {
+export function Mix({ imgSrc, size = 1.5, sx }: MixProps) {
   return (
     <Stack
       direction="row"
@@ -29,6 +29,7 @@ export function Mix({ imgSrc, size = 2, sx }: Props) {
             transform: `translateX(-${(index * size) / 2.66666}rem)`,
           }}
           src={img}
+          alt="mix_token"
           component="img"
         />
       ))}

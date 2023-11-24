@@ -23,7 +23,7 @@ export const NotFoundPage = () => {
         sx={(theme) => ({
           fontSize: { xs: 32, sm: 56 },
           fontWeight: 800,
-          background: theme.palette.background.gradient2,
+          background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
           backgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         })}

@@ -43,6 +43,7 @@ export function formatAmount(
   amount: bigint | number,
   decimals = 18,
   zeroPlaceholder = '0.0000',
+  options?: Intl.NumberFormatOptions,
 ) {
   if (!amount || amount === 0n) return zeroPlaceholder;
 
@@ -53,6 +54,7 @@ export function formatAmount(
     if (amt >= threshold) {
       return amt.toLocaleString('en', {
         maximumFractionDigits: maxDigits,
+        ...options,
       });
     }
   }

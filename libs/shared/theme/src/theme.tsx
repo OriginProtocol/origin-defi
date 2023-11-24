@@ -1,74 +1,54 @@
 import { alpha, Box, createTheme } from '@mui/material';
-import { experimental_extendTheme as extendTheme } from '@mui/material/styles';
 import shadows from '@mui/material/styles/shadows';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
 const base = createTheme();
 
-export const theme = extendTheme({
-  colorSchemes: {
-    dark: {
-      palette: {
-        primary: {
-          main: '#8c66fc',
-          dark: '#0274f1',
-          light: '#b361e6',
-          contrastText: '#FAFBFB',
-        },
-        secondary: {
-          main: '#0074F0',
-        },
-        divider: '#101113',
-        background: {
-          paper: '#1E1F25',
-          default: '#101113',
-          gradient1: 'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
-          gradient2: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-          gradient3:
-            'linear-gradient(90deg, rgb(179, 97, 230) 20.29%, rgb(106, 54, 252) 79.06%)',
-          gradientSuccess:
-            'linear-gradient(97.67deg, rgb(102, 254, 144) -10.09%, rgb(102, 217, 254) 120.99%)',
-          gradientHover:
-            'linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.05) 100%), #1E1F25',
-          gradientHoverActionButton:
-            'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-          gradientSelected:
-            'linear-gradient(90deg, rgba(140, 102, 252, 0.30) 0%, rgba(2, 116, 241, 0.30) 100%)',
-          gradientPaper: `linear-gradient(0deg, ${alpha(
-            '#fff',
-            0.05,
-          )} 0%, ${alpha('#fff', 0.05)} 100%), #1E1F25;`,
-        },
-        action: {
-          hoverOpacity: 0.1,
-          disabledOpacity: 0.25,
-          disabled: alpha('#FAFBFB', 0.5),
-        },
-        text: {
-          primary: '#FAFBFB',
-          secondary: '#B5BECA',
-          tertiary: '#828699',
-        },
-        grey: {
-          200: '#B5BECA',
-          400: '#515466',
-          500: '#252833',
-          600: '#3B3C3E',
-          700: '#141519',
-          800: '#282A32',
-          900: '#18191C',
-        },
-        success: {
-          main: '#5BFF92',
-        },
-        warning: {
-          main: '#FFDC86',
-        },
-        error: {
-          main: '#FF4E4E',
-        },
-      },
+export const theme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: {
+      main: '#8c66fc',
+      dark: '#0274f1',
+      light: '#b361e6',
+      contrastText: '#FAFBFB',
+    },
+    secondary: {
+      main: '#0074F0',
+    },
+    divider: '#101113',
+    background: {
+      paper: '#1E1F25',
+      default: '#101113',
+    },
+    action: {
+      hoverOpacity: 0.1,
+      disabledOpacity: 0.25,
+      disabled: alpha('#FAFBFB', 0.5),
+    },
+    text: {
+      primary: '#FAFBFB',
+      secondary: '#B5BECA',
+      tertiary: '#828699',
+    },
+    grey: {
+      200: '#B5BECA',
+      400: '#515466',
+      500: '#252833',
+      600: '#3B3C3E',
+      700: '#141519',
+      800: '#282A32',
+      900: '#18191C',
+    },
+    success: {
+      main: '#5BFF92',
+    },
+    warning: {
+      main: '#FFDC86',
+    },
+    error: {
+      main: '#FF4E4E',
     },
   },
   typography: {
@@ -224,7 +204,10 @@ export const theme = extendTheme({
           minWidth: 0,
         }),
         containedPrimary: ({ theme }) => ({
-          background: alpha(theme.palette.common.white, 0.1),
+          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
+            '#fff',
+            0.05,
+          )} 100%), #1E1F25;`,
           '&:hover': {
             background: alpha(theme.palette.common.white, 0.04),
           },
@@ -247,6 +230,12 @@ export const theme = extendTheme({
           px: 2,
           py: 0.5,
         },
+        outlinedSecondary: ({ theme }) => ({
+          borderColor: theme.palette.secondary.main,
+          ':hover': {
+            borderColor: theme.palette.secondary.dark,
+          },
+        }),
         text: ({ theme }) => ({
           ':hover': {
             color: theme.palette.common.white,
@@ -258,7 +247,8 @@ export const theme = extendTheme({
         {
           props: { variant: 'action' },
           style: ({ theme }) => ({
-            background: theme.palette.background.gradient1,
+            background:
+              'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
             color: theme.palette.text.primary,
             padding: theme.spacing(2),
             fontSize: 20,
@@ -268,7 +258,8 @@ export const theme = extendTheme({
             fontWeight: 500,
             fontStyle: 'normal',
             '&:hover': {
-              background: theme.palette.background.gradientHoverActionButton,
+              background:
+                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
               opacity: 1,
             },
             '&:disabled': {
@@ -385,6 +376,13 @@ export const theme = extendTheme({
         root: ({ theme }) => ({ color: theme.palette.text.primary }),
       },
     },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          borderWidth: 1,
+        },
+      },
+    },
     MuiFormControl: {
       styleOverrides: {
         root: {
@@ -409,7 +407,10 @@ export const theme = extendTheme({
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
-          background: theme.palette.background.gradientPaper,
+          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
+            '#fff',
+            0.05,
+          )} 100%), #1E1F25;`,
           '&:hover': {
             background: theme.palette.background.paper,
           },
@@ -562,7 +563,7 @@ export const theme = extendTheme({
     MuiTabs: {
       styleOverrides: {
         indicator: ({ theme }) => ({
-          background: theme.palette.background.gradient2,
+          background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
           transition: theme.transitions.create('all', {
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.easeInOut,
@@ -589,5 +590,3 @@ export const theme = extendTheme({
     },
   },
 });
-
-export type Theme = typeof theme;
