@@ -1,30 +1,7 @@
 import { formatUnits } from 'viem';
 
-import type { FormatNumberOptions } from 'react-intl';
-
 export const middleTruncate = (address: string, start = 6, end = 4): string =>
   `${address.slice(0, start)}…${address.slice(-end)}`;
-
-export const valueFormat: FormatNumberOptions = {
-  minimumFractionDigits: 2,
-};
-
-export const currencyFormat: FormatNumberOptions = {
-  style: 'currency',
-  currency: 'USD',
-  minimumFractionDigits: 2,
-  currencyDisplay: 'narrowSymbol',
-};
-
-export const quantityFormat: FormatNumberOptions = {
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 4,
-};
-
-export const balanceFormat: FormatNumberOptions = {
-  minimumFractionDigits: 2,
-  maximumFractionDigits: 2,
-};
 
 // Format map [value, maxDigits]
 const mappings = [
