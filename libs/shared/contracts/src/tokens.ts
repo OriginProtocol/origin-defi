@@ -7,6 +7,7 @@ import { OUSDABI } from './abis/OUSD';
 import { sfrxethABI } from './abis/sfrxeth';
 import { USDCABI } from './abis/USDC';
 import { USDTABI } from './abis/USDT';
+import { veOGVABI } from './abis/veOGV';
 import { WOETHABI } from './abis/WOETH';
 import { WrappedOusdABI } from './abis/WrappedOusd';
 
@@ -123,7 +124,7 @@ export const tokens = {
     veOGV: {
       address: '0x0C4576Ca1c365868E162554AF8e385dc3e7C66D9',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: veOGVABI,
       name: 'Staked Origin Dollar Governance',
       icon: '/images/tokens/veOGV.svg',
       decimals: 18,

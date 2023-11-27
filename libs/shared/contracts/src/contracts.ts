@@ -10,6 +10,7 @@ import { IVaultABI } from './abis/IVault';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OracleRouterABI } from './abis/OracleRouter';
+import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
@@ -79,6 +80,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: FlipperABI,
       name: 'OUSDFlipper',
+    },
+    OUSDGovernance: {
+      address: '0x3cdD07c16614059e66344a7b579DAB4f9516C0b6',
+      chainId: mainnet.id,
+      abi: OUSDGovernanceABI,
+      name: 'OUSDGovernance',
     },
     OUSDOracleRouter: {
       address: '0xe7fD05515A51509Ca373a42E81ae63A40AA4384b',

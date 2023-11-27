@@ -73,6 +73,7 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
           minLength: 0,
           maxLength: 30,
           inputMode: 'decimal',
+          ...rest?.inputProps,
         }}
       />
     );
