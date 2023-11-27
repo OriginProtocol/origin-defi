@@ -1,10 +1,10 @@
 import { alpha, Box, Skeleton, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { currencyFormat, quantityFormat } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
@@ -23,6 +23,7 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
+  const { formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = usePrices();
   const {
@@ -114,10 +115,10 @@ export function SwapRouteAccordionItem({
           />
           <Box>
             <Typography variant="body2">
-              {intl.formatNumber(estimatedAmount, quantityFormat)}
+              {formatQuantity(estimatedAmount)}
               &nbsp;
               <Box component="span" color="text.secondary">
-                ({intl.formatNumber(convertedAmount, currencyFormat)})
+                ({formatCurrency(convertedAmount)})
               </Box>
             </Typography>
             <Typography variant="body2">
@@ -154,9 +155,7 @@ export function SwapRouteAccordionItem({
             {isSwapRoutesLoading ? (
               <Skeleton width={60} />
             ) : (
-              <span className="value">
-                1:{intl.formatNumber(route.rate, quantityFormat)}
-              </span>
+              <span className="value">1:{formatQuantity(route.rate)}</span>
             )}
           </Typography>
 
@@ -169,9 +168,7 @@ export function SwapRouteAccordionItem({
             {isGasLoading ? (
               <Skeleton width={60} />
             ) : (
-              <span className="value">
-                ~{intl.formatNumber(gasPrice, currencyFormat)}
-              </span>
+              <span className="value">~{formatCurrency(gasPrice)}</span>
             )}
           </Typography>
         </Box>

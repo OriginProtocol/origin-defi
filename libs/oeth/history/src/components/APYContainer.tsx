@@ -1,6 +1,6 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -11,6 +11,7 @@ import type { StackProps } from '@mui/material';
 
 export function APYContainer() {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
   const { data: oethBalance, isLoading: oethLoading } = useBalance({
     address,

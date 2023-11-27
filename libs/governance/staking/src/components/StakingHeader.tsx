@@ -6,7 +6,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
 import { useStakingInfo } from '../hooks';
@@ -14,6 +14,7 @@ import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const {
     isLoading,
     ogvBalance,

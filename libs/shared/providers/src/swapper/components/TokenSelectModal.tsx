@@ -7,11 +7,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { currencyFormat, formatAmount } from '@origin/shared/utils';
 import { ascend, descend, prop, sortWith } from 'ramda';
-import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -82,7 +81,7 @@ type TokenListItemProps = {
 } & MenuItemProps;
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
-  const intl = useIntl();
+  const { formatAmount, formatCurrency } = useFormat();
   const { address } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useBalance({
     address,
@@ -144,7 +143,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             )}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {intl.formatNumber(balUsd, currencyFormat)}
+            {formatCurrency(balUsd)}
           </Typography>
         </Box>
       </Stack>

@@ -14,11 +14,8 @@ import {
 } from '@mui/material';
 import { ExpandIcon, TransactionIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  formatAmount,
-  isNilOrEmpty,
-  quantityFormat,
-} from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -28,7 +25,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { formatEther } from 'viem';
 
 import { useAggregatedHistory } from '../hooks';
 
@@ -46,6 +42,7 @@ export type HistoryTableProps = {
 
 export function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
+  const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
   const { data } = useAggregatedHistory(filters);
 
@@ -92,10 +89,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
       columnHelper.accessor('balance', {
         cell: (info) => (
           <Typography textAlign="end">
-            {intl.formatNumber(
-              +formatEther(BigInt(info.getValue() ?? '0')),
-              quantityFormat,
-            )}
+            {formatQuantity(BigInt(info.getValue() ?? '0'))}
           </Typography>
         ),
         header: () => (
@@ -135,7 +129,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
         },
       }),
     ],
-    [intl],
+    [formatAmount, formatQuantity, intl],
   );
 
   const table = useReactTable({

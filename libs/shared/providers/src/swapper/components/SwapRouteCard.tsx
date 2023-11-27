@@ -1,14 +1,10 @@
 import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import {
-  currencyFormat,
-  formatAmount,
-  quantityFormat,
-} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
@@ -32,6 +28,7 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
+  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
   const { data: prices } = usePrices();
@@ -157,7 +154,7 @@ export function SwapRouteCard({
               {isSwapRoutesLoading ? (
                 <Skeleton width={60} />
               ) : (
-                `(${intl.formatNumber(convertedAmount, currencyFormat)})`
+                `(${formatCurrency(convertedAmount)})`
               )}
             </Typography>
           </Grid2>
@@ -187,7 +184,7 @@ export function SwapRouteCard({
                 {isSwapRoutesLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `1:${intl.formatNumber(route.rate, quantityFormat)}`
+                  `1:${formatQuantity(route.rate)}`
                 )}
               </Typography>
             </Stack>
@@ -204,7 +201,7 @@ export function SwapRouteCard({
                 {isGasLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `~${intl.formatNumber(gasPrice, currencyFormat)}`
+                  `~${formatCurrency(gasPrice)}`
                 )}
               </Typography>
             </Stack>
