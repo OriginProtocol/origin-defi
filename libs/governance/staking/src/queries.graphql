@@ -1,0 +1,16 @@
+query UserLockups($address: String!) {
+  ogvLockups(where: { address: { id_containsInsensitive: $address } }) {
+    id
+    lockupId
+    amount
+    end
+    veogv
+    timestamp
+    logs {
+      id
+      event
+      hash
+      timestamp
+    }
+  }
+}
