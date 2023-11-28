@@ -1,0 +1,81 @@
+import { Box, Button, Stack, Typography } from '@mui/material';
+import { useIntl } from 'react-intl';
+
+import type { StackProps } from '@mui/material';
+import type { Table } from '@tanstack/react-table';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type PaginationProps = { table: Table<any> } & StackProps;
+
+export const Pagination = ({ table, ...rest }: PaginationProps) => {
+  const intl = useIntl();
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="baseline"
+      justifyContent="flex-end"
+      gap={1}
+      {...rest}
+      sx={{ px: { xs: 2, md: 3 }, py: 2, ...rest?.sx }}
+    >
+      <Button
+        size="small"
+        onClick={() => {
+          table.setPageIndex(0);
+          window.scrollTo(0, 0);
+        }}
+        disabled={!table.getCanPreviousPage()}
+      >
+        {intl.formatMessage({ defaultMessage: 'First' })}
+      </Button>
+      <Button
+        size="small"
+        onClick={() => {
+          table.previousPage();
+          window.scrollTo(0, 0);
+        }}
+        disabled={!table.getCanPreviousPage()}
+      >
+        <Box
+          component="img"
+          src="/images/icons/chevron-left-light.svg"
+          width={10}
+        />
+      </Button>
+      <Typography fontSize={13} px={2}>
+        {intl.formatMessage(
+          { defaultMessage: '{page} of {lastPage}' },
+          {
+            page: table.getState().pagination.pageIndex + 1,
+            lastPage: table.getPageCount(),
+          },
+        )}
+      </Typography>
+      <Button
+        size="small"
+        onClick={() => {
+          table.nextPage();
+          window.scrollTo(0, 0);
+        }}
+        disabled={!table.getCanNextPage()}
+      >
+        <Box
+          component="img"
+          src="/images/icons/chevron-right-light.svg"
+          width={10}
+        />
+      </Button>
+      <Button
+        size="small"
+        onClick={() => {
+          table.setPageIndex(table.getPageCount() - 1);
+          window.scrollTo(0, 0);
+        }}
+        disabled={!table.getCanNextPage()}
+      >
+        {intl.formatMessage({ defaultMessage: 'Last' })}
+      </Button>
+    </Stack>
+  );
+};
