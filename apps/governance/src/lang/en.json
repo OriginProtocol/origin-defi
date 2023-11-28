@@ -393,6 +393,12 @@
       "value": "Sorry, we can't seem to find that page"
     }
   ],
+  "LpWMOQ": [
+    {
+      "type": 0,
+      "value": "No transaction"
+    }
+  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -421,6 +427,12 @@
     {
       "type": 0,
       "value": "Auto"
+    }
+  ],
+  "O1F5Cx": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to see your history"
     }
   ],
   "OmyPDW": [
