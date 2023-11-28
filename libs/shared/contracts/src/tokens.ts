@@ -152,7 +152,7 @@ export const tokens = {
       address: '0xD2af830E8CBdFed6CC11Bab697bB25496ed6FA62',
       chainId: mainnet.id,
       abi: WrappedOusdABI,
-      name: 'WrappedOrigin Dollar',
+      name: 'Wrapped Origin Dollar',
       icon: '/images/tokens/wOUSD.svg',
       decimals: 18,
       symbol: 'wOUSD',
