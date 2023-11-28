@@ -169,6 +169,12 @@
       "value": "Redeem for mix via Origin Vault"
     }
   ],
+  "8nvhZ9": [
+    {
+      "type": 0,
+      "value": "Last"
+    }
+  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -203,6 +209,20 @@
     {
       "type": 0,
       "value": "Enter an amount"
+    }
+  ],
+  "AdvVFR": [
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "lastPage"
     }
   ],
   "Bm4aQN": [
@@ -449,6 +469,12 @@
     {
       "type": 0,
       "value": "Collateral"
+    }
+  ],
+  "S45aoc": [
+    {
+      "type": 0,
+      "value": "First"
     }
   ],
   "SGXihn": [

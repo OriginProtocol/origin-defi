@@ -77,6 +77,9 @@
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
+  "8nvhZ9": {
+    "defaultMessage": "Last"
+  },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
@@ -94,6 +97,9 @@
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
+  },
+  "AdvVFR": {
+    "defaultMessage": "{page} of {lastPage}"
   },
   "Bm4aQN": {
     "defaultMessage": "Percentage of total voting power"
@@ -193,6 +199,9 @@
   },
   "RoqJiX": {
     "defaultMessage": "Collateral"
+  },
+  "S45aoc": {
+    "defaultMessage": "First"
   },
   "SGXihn": {
     "defaultMessage": "OETH"
