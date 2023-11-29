@@ -25,7 +25,7 @@ export const useFormat = () => {
     (
       amount: bigint | number,
       decimals = 18,
-      zeroPlaceholder = '0.0000',
+      zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
     ) => {
       if (!amount || amount === 0n) return zeroPlaceholder;
