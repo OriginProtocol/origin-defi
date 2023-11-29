@@ -9,22 +9,25 @@ import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
-import { useStakingInfo, useTotalLockedUp } from '../hooks';
+import { useStakingAPY, useStakingInfo, useTotalLockedUp } from '../hooks';
 import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const {
+    data: {
+      ogvBalance,
+      veOgvBalance,
+      votingPowerPercent,
+      veOgvRewards,
+      ogvTotalLockedPercent,
+    },
     isLoading,
-    ogvBalance,
-    veOgvBalance,
-    veOgvTotalSupply,
-    votingPowerPercent,
-    veOgvRewards,
   } = useStakingInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
+  const { data: vApy, isLoading: isvApyLoading } = useStakingAPY(100, 48);
 
   return (
     <Stack spacing={3}>
@@ -76,7 +79,11 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={formatAmount(veOgvTotalSupply)}
+                value={intl.formatNumber(ogvTotalLockedPercent, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
                 valueProps={{ variant: 'h3' }}
                 isLoading={isLoading}
               />
@@ -114,7 +121,12 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={'52.32%'}
+                value={intl.formatNumber(vApy / 100, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                isLoading={isvApyLoading}
                 valueProps={{
                   variant: 'h3',
                   sx: {

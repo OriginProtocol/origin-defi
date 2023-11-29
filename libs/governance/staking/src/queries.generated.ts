@@ -12,14 +12,17 @@ export type UserLockupsQuery = { __typename?: 'Query', ogvLockups: Array<{ __typ
 
 export const UserLockupsDocument = `
     query UserLockups($address: String!) {
-  ogvLockups(where: {address: {id_containsInsensitive: $address}}) {
+  ogvLockups(
+    where: {address: {id_containsInsensitive: $address}}
+    orderBy: end_ASC
+  ) {
     id
     lockupId
     amount
     end
     veogv
     timestamp
-    logs {
+    logs(orderBy: timestamp_DESC) {
       id
       event
       hash

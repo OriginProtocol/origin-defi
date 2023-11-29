@@ -17,7 +17,7 @@ import {
   LoadingLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
+import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
@@ -30,7 +30,9 @@ import type { ButtonProps, DialogProps } from '@mui/material';
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { ogvBalance } = useStakingInfo();
+  const {
+    data: { ogvBalance },
+  } = useStakingInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -369,7 +371,7 @@ export const StakeButton = (props: ButtonProps) => {
 
   return (
     <>
-      <Button
+      <ConnectedButton
         {...props}
         onClick={(e) => {
           setOpen(true);
