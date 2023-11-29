@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   alpha,
@@ -11,21 +11,56 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { BigIntInput, InfoTooltip } from '@origin/shared/components';
+import {
+  BigIntInput,
+  InfoTooltip,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { useDebouncedEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { useStakingInfo } from '../hooks';
+import { useStakingAPY, useStakingInfo } from '../hooks';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const { ogvBalance } = useStakingInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const { data, refetch } = useStakingAPY(amount, duration, { enabled: false });
+
+  useDebouncedEffect(
+    () => {
+      if (amount > 0n && duration > 0) {
+        refetch();
+      }
+    },
+    [amount, duration],
+    800,
+  );
+
+  useEffect(() => {
+    if (isLoading && (!isNilOrEmpty(data) || amount === 0n || duration === 0)) {
+      setIsLoading(false);
+    }
+  }, [amount, data, duration, isLoading]);
+
+  const handleAmountChange = (val: bigint) => {
+    setIsLoading(duration > 0);
+    setAmount(val);
+  };
+
+  const handleDurationChange = (event: Event, newValue: number | number[]) => {
+    setIsLoading(amount > 0n);
+    setDuration(newValue as number);
+  };
 
   const handleMaxClick = () => {
     setAmount(ogvBalance);
@@ -88,7 +123,8 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
           <BigIntInput
             value={amount}
-            onChange={setAmount}
+            decimals={tokens.mainnet.OGV.decimals}
+            onChange={handleAmountChange}
             endAdornment={
               <Stack
                 direction="row"
@@ -180,9 +216,7 @@ export const StakeFormModal = (props: DialogProps) => {
             <Box>
               <Slider
                 value={duration}
-                onChange={(event: Event, newValue: number | number[]) => {
-                  setDuration(newValue as number);
-                }}
+                onChange={handleDurationChange}
                 min={0}
                 max={48}
                 step={1}
@@ -290,9 +324,14 @@ export const StakeFormModal = (props: DialogProps) => {
                   width={28}
                   mr={1}
                 />
-                <Typography variant="h3" mr={0.5}>
-                  {formatAmount(475e5)}
-                </Typography>
+                <LoadingLabel
+                  variant="h3"
+                  mr={0.5}
+                  isLoading={isLoading}
+                  sWidth={100}
+                >
+                  {formatAmount(data?.[1])}
+                </LoadingLabel>
                 <Typography color="text.secondary">
                   {tokens.mainnet.veOGV.symbol}
                 </Typography>

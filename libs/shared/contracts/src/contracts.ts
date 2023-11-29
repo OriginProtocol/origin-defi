@@ -9,6 +9,8 @@ import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHZapperABI } from './abis/OETHZapper';
+import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
+import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
@@ -61,6 +63,19 @@ export const contracts = {
       chainId: mainnet.id,
       abi: OETHZapperABI,
       name: 'OETHZapper',
+    },
+    // Governance
+    OGVMandatoryDistributor: {
+      address: '0xD667091c2d1DCc8620f4eaEA254CdFB0a176718D',
+      chainId: mainnet.id,
+      abi: OGVMandatoryDistibutorABI,
+      name: 'OGVMandatoryDistributor',
+    },
+    OGVOptionalDistributor: {
+      address: '0x7aE2334f12a449895AD21d4c255D9DE194fe986f',
+      chainId: mainnet.id,
+      abi: OGVOptionalDistibutorABI,
+      name: 'OGVOptionalDistributor',
     },
     // OUSD
     OUSDCurveMetaPool: {

@@ -9,7 +9,7 @@ import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
-import { useStakingInfo } from '../hooks';
+import { useStakingInfo, useTotalLockedUp } from '../hooks';
 import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
@@ -21,8 +21,10 @@ export const StackingHeader = () => {
     veOgvBalance,
     veOgvTotalSupply,
     votingPowerPercent,
-    ogvRewards,
+    veOgvRewards,
   } = useStakingInfo();
+  const { data: totalLockups, isLoading: isTotalLockupsLoading } =
+    useTotalLockedUp();
 
   return (
     <Stack spacing={3}>
@@ -180,9 +182,9 @@ export const StackingHeader = () => {
                       <LoadingLabel
                         fontSize={24}
                         sWidth={80}
-                        isLoading={isLoading}
+                        isLoading={isTotalLockupsLoading}
                       >
-                        {formatAmount(veOgvBalance)}
+                        {formatAmount(totalLockups)}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -246,7 +248,7 @@ export const StackingHeader = () => {
                       sWidth={80}
                       isLoading={isLoading}
                     >
-                      {formatAmount(ogvRewards)}
+                      {formatAmount(veOgvRewards)}
                     </LoadingLabel>
                   </Stack>
                 }
