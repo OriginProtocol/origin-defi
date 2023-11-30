@@ -39,20 +39,28 @@ const getFunctionName = (tokenIn: Token, tokenOut: Token) => {
   }
 };
 
-const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
-  if (+formatUnits(amountIn, tokenIn.decimals) > 25000) {
+const isRouteAvailable: IsRouteAvailable = async ({
+  amountIn,
+  tokenIn,
+  tokenOut,
+}) => {
+  const amtIn = +formatUnits(amountIn, tokenIn.decimals);
+
+  if (amtIn > 25000) {
     return false;
   }
 
   try {
     const balance = await readContract({
-      address: tokenIn.address,
-      abi: tokenIn.abi,
+      address: tokenOut.address,
+      abi: tokenOut.abi,
       functionName: 'balanceOf',
       args: [contracts.mainnet.OUSDFlipper.address],
     });
 
-    return (balance as unknown as bigint) >= amountIn;
+    const bal = +formatUnits(balance as unknown as bigint, tokenOut.decimals);
+
+    return bal > amtIn;
   } catch {}
 
   return false;
