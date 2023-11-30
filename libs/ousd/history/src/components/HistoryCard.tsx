@@ -28,24 +28,14 @@ export function HistoryCard() {
   return (
     <Card>
       <CardHeader
-        title={
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            spacing={2}
-          >
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'OUSD Transactions' })}
-            </Typography>
-            <Stack direction="row" gap={1}>
-              <HistoryFilters filters={filters} setFilters={setFilters} />
-              <ExportData />
-            </Stack>
+        title={intl.formatMessage({ defaultMessage: 'OUSD Transactions' })}
+        action={
+          <Stack direction="row" gap={1}>
+            <HistoryFilters filters={filters} setFilters={setFilters} />
+            <ExportData />
           </Stack>
         }
       />
-
       {isConnected ? (
         isFetching ? (
           <Stack

@@ -204,14 +204,9 @@ export const theme = createTheme({
           minWidth: 0,
         }),
         containedPrimary: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha(
-            theme.palette.common.white,
-            0.05,
-          )} 0%, ${alpha(theme.palette.common.white, 0.05)} 100%), ${
-            theme.palette.background.paper
-          };`,
+          background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
-            background: theme.palette.background.paper,
+            background: alpha(theme.palette.common.white, 0.01),
           },
         }),
         containedSecondary: ({ theme }) => ({
