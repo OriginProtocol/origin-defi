@@ -10,8 +10,6 @@ import {
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
 
-import { GAS_BUFFER } from '../constants';
-
 import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
@@ -190,8 +188,6 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
     throw new Error(`Flipper is not approved`);
   }
 
-  const estimatedGas = await estimateGas();
-  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
 
   const { request } = await prepareWriteContractWithTxTracker({
@@ -199,7 +195,6 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn }) => {
     abi: contracts.mainnet.OUSDFlipper.abi,
     functionName: getFunctionName(tokenIn, tokenOut),
     args: [scaledAmount],
-    gas,
   });
   const { hash } = await writeContract(request);
 

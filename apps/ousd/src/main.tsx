@@ -34,7 +34,7 @@ import { routes } from './routes';
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
 
-logWelcomeMessage('Dollar fix');
+logWelcomeMessage('Dollar');
 
 registerChart();
 
