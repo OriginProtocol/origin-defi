@@ -90,6 +90,17 @@ export const theme = createTheme({
         lineHeight: 1.5,
       },
     },
+    h5: {
+      fontFamily: 'Sailec',
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: 1.6,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 14,
+        lineHeight: 1.25,
+      },
+    },
     body1: {
       fontSize: 14,
       lineHeight: 1.5,
