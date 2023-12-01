@@ -2,7 +2,10 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import * as Sentry from '@sentry/react';
 
 export const registerSentry = () => {
-  if (!isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN)) {
+  if (
+    !isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN) &&
+    !isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN.replace(' ', ''))
+  ) {
     Sentry.init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
       enableTracing: false,
