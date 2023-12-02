@@ -5,9 +5,9 @@ import type { StackProps } from '@mui/material';
 import type { Table } from '@tanstack/react-table';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type PaginationProps = { table: Table<any> } & StackProps;
+export type TablePaginationProps = { table: Table<any> } & StackProps;
 
-export const Pagination = ({ table, ...rest }: PaginationProps) => {
+export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
   const intl = useIntl();
 
   return (

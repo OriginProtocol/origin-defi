@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import {
   ExpandIcon,
-  Pagination,
+  TablePagination,
   TransactionIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -217,7 +217,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           ))}
         </TableBody>
       </Table>
-      <Pagination table={table} />
+      <TablePagination table={table} />
     </Stack>
   );
 }

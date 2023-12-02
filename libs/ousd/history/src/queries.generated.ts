@@ -20,7 +20,7 @@ export type HistoryTransactionQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryTransactionQuery = { __typename?: 'Query', ousdAddresses: Array<{ __typename?: 'OUSDAddress', history: Array<{ __typename?: 'OUSDHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> }> };
+export type HistoryTransactionQuery = { __typename?: 'Query', ousdHistories: Array<{ __typename?: 'OUSDHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
 
 
 export const HistoryUserStatDocument = `
@@ -78,19 +78,17 @@ useHistoryApyQuery.getKey = (variables?: HistoryApyQueryVariables) => variables 
 useHistoryApyQuery.fetcher = (variables?: HistoryApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryApyQuery, HistoryApyQueryVariables>(HistoryApyDocument, variables, options);
 export const HistoryTransactionDocument = `
     query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  ousdAddresses(where: {id_containsInsensitive: $address}) {
-    history(
-      orderBy: timestamp_DESC
-      offset: 0
-      limit: 5000
-      where: {type_in: $filters}
-    ) {
-      type
-      value
-      txHash
-      timestamp
-      balance
-    }
+  ousdHistories(
+    orderBy: timestamp_DESC
+    offset: 0
+    limit: 5000
+    where: {AND: {address: {id_containsInsensitive: $address}, type_in: $filters}}
+  ) {
+    type
+    value
+    txHash
+    timestamp
+    balance
   }
 }
     `;
