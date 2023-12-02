@@ -81,7 +81,7 @@ export const HistoryTransactionDocument = `
   oethHistories(
     orderBy: timestamp_DESC
     offset: 0
-    limit: 5000
+    limit: 2000
     where: {AND: {address: {id_containsInsensitive: $address}, type_in: $filters}}
   ) {
     type
