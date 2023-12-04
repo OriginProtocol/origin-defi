@@ -8,15 +8,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { InfoTooltip, Mix } from '@origin/shared/components';
-import {
-  currencyFormat,
-  formatAmount,
-  quantityFormat,
-} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { MIX_TOKEN } from '../constants';
 import { useRedeemState } from '../state';
@@ -27,6 +23,7 @@ import type { RedeemEstimate } from '../types';
 
 export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const intl = useIntl();
+  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: prices, isLoading: isPricesLoading } = usePrices();
@@ -80,7 +77,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isEstimateLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `(${intl.formatNumber(convertedAmount, currencyFormat)})`
+                  `(${formatCurrency(convertedAmount)})`
                 )}
               </Typography>
             </Stack>
@@ -92,7 +89,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isEstimateLoading || gasPriceLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `~${intl.formatNumber(gasPrice?.gasCostUsd, currencyFormat)}`
+                  `~${formatCurrency(gasPrice?.gasCostUsd)}`
                 )}
               </Typography>
             </Stack>
@@ -121,7 +118,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
-              `1:${intl.formatNumber(rate, quantityFormat)}`
+              `1:${formatQuantity(rate)}`
             )}
           </Typography>
         </Stack>
@@ -161,7 +158,7 @@ function SplitRow({
   isPricesLoading,
   ...rest
 }: SplitRowProps) {
-  const intl = useIntl();
+  const { formatAmount, formatCurrency } = useFormat();
 
   const converted =
     +formatUnits(estimate.amount, estimate.token.decimals) * price;
@@ -207,7 +204,7 @@ function SplitRow({
             textAlign="end"
             minWidth={80}
           >
-            {intl.formatNumber(converted, currencyFormat)}
+            {formatCurrency(converted)}
           </Typography>
         )}
       </Stack>

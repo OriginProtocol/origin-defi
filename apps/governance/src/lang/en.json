@@ -101,16 +101,52 @@
       "value": " of total votes)"
     }
   ],
+  "1lkU0S": [
+    {
+      "type": 0,
+      "value": "1y"
+    }
+  ],
   "1nxJrQ": [
     {
       "type": 0,
       "value": "Return to Home Page"
     }
   ],
+  "20KPDF": [
+    {
+      "type": 0,
+      "value": "Registered Voters"
+    }
+  ],
+  "3WcLXG": [
+    {
+      "type": 0,
+      "value": "Learn about Governance"
+    }
+  ],
+  "3a5wL8": [
+    {
+      "type": 0,
+      "value": "Active"
+    }
+  ],
+  "3fTTLv": [
+    {
+      "type": 0,
+      "value": "Unstake"
+    }
+  ],
   "3townk": [
     {
       "type": 0,
       "value": "Max vAPY"
+    }
+  ],
+  "4cSnUS": [
+    {
+      "type": 0,
+      "value": "3y"
     }
   ],
   "5RMD2G": [
@@ -137,6 +173,12 @@
       "value": "The selected network is not supported by the application."
     }
   ],
+  "6WMuFp": [
+    {
+      "type": 0,
+      "value": "Proposals"
+    }
+  ],
   "6XFO/C": [
     {
       "type": 0,
@@ -149,10 +191,22 @@
       "value": "Insufficient funds"
     }
   ],
+  "6fzXU+": [
+    {
+      "type": 0,
+      "value": "Amount to Stake"
+    }
+  ],
   "7CPiAt": [
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "8Vr/2f": [
+    {
+      "type": 0,
+      "value": "Current Staking vAPY"
     }
   ],
   "8XZjyW": [
@@ -165,6 +219,12 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "8nvhZ9": [
+    {
+      "type": 0,
+      "value": "Last"
     }
   ],
   "8rfT4i": [
@@ -191,10 +251,48 @@
       "value": "Enter an amount"
     }
   ],
+  "AdvVFR": [
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "lastPage"
+    }
+  ],
+  "BLAy25": [
+    {
+      "type": 0,
+      "value": "Extend"
+    }
+  ],
   "Bih77e": [
     {
       "type": 0,
       "value": "Total OGV staked"
+    }
+  ],
+  "BorrCB": [
+    {
+      "type": 0,
+      "value": "Voting Power:"
+    }
+  ],
+  "CKr0mb": [
+    {
+      "type": 0,
+      "value": "Locked Tokens Received Now"
+    }
+  ],
+  "Cnm0QA": [
+    {
+      "type": 0,
+      "value": "Queued"
     }
   ],
   "DKaqyQ": [
@@ -227,6 +325,12 @@
     {
       "type": 0,
       "value": "Exit"
+    }
+  ],
+  "EBxIt1": [
+    {
+      "type": 0,
+      "value": "No Lock-ups"
     }
   ],
   "EEwopl": [
@@ -263,6 +367,30 @@
     {
       "type": 0,
       "value": "OGV"
+    }
+  ],
+  "ErxWra": [
+    {
+      "type": 0,
+      "value": "Self"
+    }
+  ],
+  "F6lS59": [
+    {
+      "type": 0,
+      "value": "0 months"
+    }
+  ],
+  "FCXIlK": [
+    {
+      "type": 0,
+      "value": "Transaction hash"
+    }
+  ],
+  "FVfYnP": [
+    {
+      "type": 0,
+      "value": "The variable APY currently being earned on staked OGV."
     }
   ],
   "GZZUyE": [
@@ -307,6 +435,18 @@
       "value": "Sorry, we can't seem to find that page"
     }
   ],
+  "LOghU6": [
+    {
+      "type": 0,
+      "value": "Succeeded"
+    }
+  ],
+  "MQq3X+": [
+    {
+      "type": 0,
+      "value": "Active Proposals"
+    }
+  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -319,6 +459,12 @@
       "value": "Ooops..."
     }
   ],
+  "N5g7Qy": [
+    {
+      "type": 0,
+      "value": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
+    }
+  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -329,6 +475,24 @@
     {
       "type": 0,
       "value": "Auto"
+    }
+  ],
+  "OmyPDW": [
+    {
+      "type": 0,
+      "value": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
+    }
+  ],
+  "P1YoB8": [
+    {
+      "type": 0,
+      "value": "Transaction time"
+    }
+  ],
+  "PFtMy9": [
+    {
+      "type": 0,
+      "value": "Canceled"
     }
   ],
   "PKgDoL": [
@@ -359,10 +523,40 @@
       "value": "number"
     }
   ],
+  "RahCRH": [
+    {
+      "type": 0,
+      "value": "Expired"
+    }
+  ],
+  "S+gf+n": [
+    {
+      "type": 0,
+      "value": "Defeated"
+    }
+  ],
+  "S45aoc": [
+    {
+      "type": 0,
+      "value": "First"
+    }
+  ],
   "S5tBcz": [
     {
       "type": 0,
       "value": "Stake"
+    }
+  ],
+  "S7CBOR": [
+    {
+      "type": 0,
+      "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
+  "TdHjj5": [
+    {
+      "type": 0,
+      "value": "Origin DeFi Governance"
     }
   ],
   "TrKxvg": [
@@ -417,6 +611,18 @@
       "value": "Finding the best route..."
     }
   ],
+  "VFsDB8": [
+    {
+      "type": 0,
+      "value": "Delegated by others"
+    }
+  ],
+  "VZ5Ypk": [
+    {
+      "type": 0,
+      "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on."
+    }
+  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -445,22 +651,28 @@
       "value": "My Rewards"
     }
   ],
+  "WtvQnb": [
+    {
+      "type": 0,
+      "value": "Delegate my voting power"
+    }
+  ],
   "XSdWHA": [
     {
       "type": 0,
       "value": "Redeem"
     }
   ],
+  "Y7WXOT": [
+    {
+      "type": 0,
+      "value": "Transaction history"
+    }
+  ],
   "YGiRwq": [
     {
       "type": 0,
       "value": "Voting Power"
-    }
-  ],
-  "YS+T+s": [
-    {
-      "type": 0,
-      "value": "veOGV"
     }
   ],
   "YvbZVM": [
@@ -487,10 +699,10 @@
       "value": "Show more"
     }
   ],
-  "c0b5XV": [
+  "b0+k6i": [
     {
       "type": 0,
-      "value": "Rate"
+      "value": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
     }
   ],
   "c31Feo": [
@@ -505,6 +717,18 @@
       "value": "Connect Wallet"
     }
   ],
+  "ck/Gd6": [
+    {
+      "type": 0,
+      "value": "Vote Delegation"
+    }
+  ],
+  "d0O17Z": [
+    {
+      "type": 0,
+      "value": "2y"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -517,16 +741,22 @@
       "value": "Exchange rate"
     }
   ],
+  "e8UIVj": [
+    {
+      "type": 0,
+      "value": "4y"
+    }
+  ],
+  "eKEL/g": [
+    {
+      "type": 0,
+      "value": "Pending"
+    }
+  ],
   "eOs6lG": [
     {
       "type": 0,
       "value": "My Voting Power"
-    }
-  ],
-  "ejEGdx": [
-    {
-      "type": 0,
-      "value": "Home"
     }
   ],
   "fFXn5l": [
@@ -567,10 +797,34 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "jYECM4": [
+    {
+      "type": 0,
+      "value": "Delegated to"
+    }
+  ],
+  "jfexoW": [
+    {
+      "type": 0,
+      "value": "Lock-up Duration"
+    }
+  ],
+  "jn6PGG": [
+    {
+      "type": 0,
+      "value": "My Voting History"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
       "value": "Max slippage"
+    }
+  ],
+  "kifTG+": [
+    {
+      "type": 0,
+      "value": "All Proposals"
     }
   ],
   "kmAKoi": [
@@ -589,6 +843,12 @@
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "m1czzY": [
+    {
+      "type": 0,
+      "value": "Event"
     }
   ],
   "nc8QpJ": [
@@ -615,6 +875,12 @@
       "value": "Disconnect"
     }
   ],
+  "rFWd1Y": [
+    {
+      "type": 0,
+      "value": "Lock up Ends:"
+    }
+  ],
   "s8BnAC": [
     {
       "type": 0,
@@ -633,10 +899,26 @@
       "value": "View proposals"
     }
   ],
+  "uEFsHG": [
+    {
+      "type": 0,
+      "value": "Discord forum"
+    }
+  ],
   "upcyvM": [
     {
       "type": 0,
       "value": "Percent of OGV staked out of the current total supply."
+    }
+  ],
+  "vclhrb": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "balance"
     }
   ],
   "vugtF7": [
@@ -655,6 +937,12 @@
     {
       "type": 0,
       "value": "Error while redeeming"
+    }
+  ],
+  "weP/oT": [
+    {
+      "type": 0,
+      "value": "Voting power"
     }
   ],
   "wqlXwW": [
@@ -679,6 +967,18 @@
     {
       "type": 0,
       "value": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+    }
+  ],
+  "yWtbSZ": [
+    {
+      "type": 0,
+      "value": "Executed"
+    }
+  ],
+  "yvxbM+": [
+    {
+      "type": 0,
+      "value": "Next Emissions Reduction Event:"
     }
   ],
   "z1bu+z": [

@@ -1369,6 +1369,10 @@ export enum OethCollateralDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
+  DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
+  DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
+  DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
   DailyStatIdYieldAsc = 'dailyStatId_yield_ASC',
   DailyStatIdYieldAscNullsFirst = 'dailyStatId_yield_ASC_NULLS_FIRST',
   DailyStatIdYieldDesc = 'dailyStatId_yield_DESC',
@@ -1653,6 +1657,7 @@ export type OethDailyStat = {
   timestamp: Scalars['DateTime']['output'];
   totalSupply: Scalars['BigInt']['output'];
   totalSupplyUSD: Scalars['Float']['output'];
+  wrappedSupply: Scalars['BigInt']['output'];
   yield: Scalars['BigInt']['output'];
 };
 
@@ -1759,6 +1764,10 @@ export enum OethDailyStatOrderByInput {
   TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
   TotalSupplyDesc = 'totalSupply_DESC',
   TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
+  WrappedSupplyAsc = 'wrappedSupply_ASC',
+  WrappedSupplyAscNullsFirst = 'wrappedSupply_ASC_NULLS_FIRST',
+  WrappedSupplyDesc = 'wrappedSupply_DESC',
+  WrappedSupplyDescNullsLast = 'wrappedSupply_DESC_NULLS_LAST',
   YieldAsc = 'yield_ASC',
   YieldAscNullsFirst = 'yield_ASC_NULLS_FIRST',
   YieldDesc = 'yield_DESC',
@@ -1962,6 +1971,15 @@ export type OethDailyStatWhereInput = {
   totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  wrappedSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  wrappedSupply_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  wrappedSupply_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  wrappedSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   yield_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yield_gt?: InputMaybe<Scalars['BigInt']['input']>;
   yield_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3105,6 +3123,10 @@ export enum OethStrategyDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
+  DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
+  DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
+  DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
   DailyStatIdYieldAsc = 'dailyStatId_yield_ASC',
   DailyStatIdYieldAscNullsFirst = 'dailyStatId_yield_ASC_NULLS_FIRST',
   DailyStatIdYieldDesc = 'dailyStatId_yield_DESC',

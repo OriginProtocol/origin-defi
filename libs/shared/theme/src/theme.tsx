@@ -90,6 +90,17 @@ export const theme = createTheme({
         lineHeight: 1.5,
       },
     },
+    h5: {
+      fontFamily: 'Sailec',
+      fontSize: 16,
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: 1.6,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 14,
+        lineHeight: 1.25,
+      },
+    },
     body1: {
       fontSize: 14,
       lineHeight: 1.5,
@@ -204,12 +215,9 @@ export const theme = createTheme({
           minWidth: 0,
         }),
         containedPrimary: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), #1E1F25;`,
+          background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
-            background: alpha(theme.palette.common.white, 0.04),
+            background: alpha(theme.palette.common.white, 0.01),
           },
         }),
         containedSecondary: ({ theme }) => ({

@@ -154,7 +154,16 @@ function RedeemerWrapped({
               isConnected={isConnected}
               isAmountDisabled={isRedeemLoading}
               inputProps={{ sx: tokenInputStyles }}
-              tokenButtonProps={{ sx: { minWidth: 100, maxWidth: 100 } }}
+              tokenButtonProps={{
+                sx: {
+                  minWidth: 100,
+                  maxWidth: 100,
+                  ':hover': {
+                    background: (theme) =>
+                      alpha(theme.palette.common.white, 0.1),
+                  },
+                },
+              }}
               sx={{
                 paddingBlock: 2.5,
                 paddingBlockStart: 2.625,

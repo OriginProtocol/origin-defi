@@ -16,18 +16,18 @@ query HistoryApy {
 }
 
 query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  ousdAddresses(where: { id_containsInsensitive: $address }) {
-    history(
-      orderBy: timestamp_DESC
-      offset: 0
-      limit: 5000
-      where: { type_in: $filters }
-    ) {
-      type
-      value
-      txHash
-      timestamp
-      balance
+  ousdHistories(
+    orderBy: timestamp_DESC
+    offset: 0
+    limit: 2000
+    where: {
+      AND: { address: { id_containsInsensitive: $address }, type_in: $filters }
     }
+  ) {
+    type
+    value
+    txHash
+    timestamp
+    balance
   }
 }

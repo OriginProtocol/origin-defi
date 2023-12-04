@@ -1,7 +1,7 @@
 import { Box, Divider, Stack, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useContractRead } from 'wagmi';
@@ -10,6 +10,7 @@ import type { StackProps } from '@mui/material';
 
 export const ProtocolCard = (props: StackProps) => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const { data, isLoading: isTotalSupplyLoading } = useContractRead({
     address: tokens.mainnet.veOGV.address,
     abi: tokens.mainnet.veOGV.abi,

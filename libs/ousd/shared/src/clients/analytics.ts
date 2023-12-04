@@ -22,7 +22,8 @@ export type TrackEvent =
 const analytics = Analytics({
   app: 'ousd-dapp',
   plugins: [
-    ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID)
+    ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID) ||
+    isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID.replace(' ', ''))
       ? []
       : [
           googleTagManager({

@@ -1,14 +1,11 @@
 import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import {
-  currencyFormat,
-  formatAmount,
-  quantityFormat,
-} from '@origin/shared/utils';
+import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
@@ -32,6 +29,7 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
+  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
   const { data: prices } = usePrices();
@@ -144,35 +142,35 @@ export function SwapRouteCard({
             )}
           </Grid2>
           <Grid2 display="flex" alignItems="center">
-            <Typography fontWeight={500}>
-              {isSwapRoutesLoading ? (
-                <Skeleton width={100} />
-              ) : (
-                formatAmount(route.estimatedAmount, route.tokenOut.decimals)
-              )}
-            </Typography>
+            <LoadingLabel
+              fontWeight={500}
+              isLoading={isSwapRoutesLoading}
+              sWidth={100}
+            >
+              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
+            </LoadingLabel>
           </Grid2>
           <Grid2 display="flex" alignItems="center" xs={12} sm="auto">
-            <Typography color="text.secondary" variant="body2" noWrap>
-              {isSwapRoutesLoading ? (
-                <Skeleton width={60} />
-              ) : (
-                `(${intl.formatNumber(convertedAmount, currencyFormat)})`
-              )}
-            </Typography>
+            <LoadingLabel
+              color="text.secondary"
+              variant="body2"
+              noWrap
+              isLoading={isSwapRoutesLoading}
+              sWidth={60}
+            >
+              ({formatCurrency(convertedAmount)})
+            </LoadingLabel>
           </Grid2>
         </Grid2>
         <Stack justifyContent="space-between" height={1}>
-          <Typography
+          <LoadingLabel
             fontWeight={500}
-            sx={{ fontSize: 12, marginBlock: { xs: 1.5, md: 1 } }}
+            sx={{ fontSize: 12, my: { xs: 1.5, md: 1 } }}
+            isLoading={isSwapRoutesLoading}
+            sWidth={80}
           >
-            {isSwapRoutesLoading ? (
-              <Skeleton width={80} />
-            ) : (
-              intl.formatMessage(routeLabel)
-            )}
-          </Typography>
+            {intl.formatMessage(routeLabel)}
+          </LoadingLabel>
           <Stack gap={0.5}>
             <Stack
               direction="row"
@@ -183,13 +181,14 @@ export function SwapRouteCard({
               <Typography variant="body2" color="text.secondary">
                 {intl.formatMessage({ defaultMessage: 'Rate:' })}
               </Typography>
-              <Typography variant="body2" fontWeight={500}>
-                {isSwapRoutesLoading ? (
-                  <Skeleton width={60} />
-                ) : (
-                  `1:${intl.formatNumber(route.rate, quantityFormat)}`
-                )}
-              </Typography>
+              <LoadingLabel
+                variant="body2"
+                fontWeight={500}
+                isLoading={isSwapRoutesLoading}
+                sWidth={60}
+              >
+                1:{formatQuantity(route.rate)}
+              </LoadingLabel>
             </Stack>
             <Stack
               direction="row"
@@ -200,13 +199,13 @@ export function SwapRouteCard({
               <Typography variant="body2" color="text.secondary">
                 {intl.formatMessage({ defaultMessage: 'Gas:' })}
               </Typography>
-              <Typography variant="body2" fontWeight={500}>
-                {isGasLoading ? (
-                  <Skeleton width={60} />
-                ) : (
-                  `~${intl.formatNumber(gasPrice, currencyFormat)}`
-                )}
-              </Typography>
+              <LoadingLabel
+                variant="body2"
+                fontWeight={500}
+                isLoading={isGasLoading}
+              >
+                ~{formatCurrency(gasPrice)}
+              </LoadingLabel>
             </Stack>
           </Stack>
         </Stack>

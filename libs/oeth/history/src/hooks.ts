@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { HistoryType } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -99,9 +101,9 @@ export const useAggregatedHistory = (
       refetchOnWindowFocus: false,
       ...options,
       enabled: isConnected && !isNilOrEmpty(address),
-      placeholderData: { oethAddresses: [{ history: [] }] },
-      select: (data) => {
-        const history = data?.oethAddresses?.at(0)?.history;
+      placeholderData: { oethHistories: [] },
+      select: useCallback((data) => {
+        const history = data?.oethHistories;
 
         const grouped = groupBy(
           (hist) =>
@@ -179,7 +181,7 @@ export const useAggregatedHistory = (
           ),
           aggregated,
         ) as DailyHistory[];
-      },
+      }, []),
     },
   );
 };

@@ -1,12 +1,33 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { InfoTooltip, ValueLabel } from '@origin/shared/components';
+import {
+  InfoTooltip,
+  LoadingLabel,
+  ValueLabel,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { formatAmount } from '@origin/shared/utils';
+import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+
+import { useStakingAPY, useStakingInfo, useTotalLockedUp } from '../hooks';
+import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
+  const {
+    data: {
+      ogvBalance,
+      veOgvBalance,
+      votingPowerPercent,
+      veOgvRewards,
+      ogvTotalLockedPercent,
+    },
+    isLoading,
+  } = useStakingInfo();
+  const { data: totalLockups, isLoading: isTotalLockupsLoading } =
+    useTotalLockedUp();
+  const { data: vApy, isLoading: isvApyLoading } = useStakingAPY(100, 48);
 
   return (
     <Stack spacing={3}>
@@ -58,8 +79,13 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={'0'}
+                value={intl.formatNumber(ogvTotalLockedPercent, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
                 valueProps={{ variant: 'h3' }}
+                isLoading={isLoading}
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
@@ -95,7 +121,12 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={'52.32%'}
+                value={intl.formatNumber(vApy / 100, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+                isLoading={isvApyLoading}
                 valueProps={{
                   variant: 'h3',
                   sx: {
@@ -136,7 +167,13 @@ export const StackingHeader = () => {
                         src={tokens.mainnet.OGV.icon}
                         width={20}
                       />
-                      <Typography fontSize={24}>{formatAmount(0)}</Typography>
+                      <LoadingLabel
+                        fontSize={24}
+                        sWidth={80}
+                        isLoading={isLoading}
+                      >
+                        {formatAmount(ogvBalance)}
+                      </LoadingLabel>
                     </Stack>
                   }
                 />
@@ -154,15 +191,19 @@ export const StackingHeader = () => {
                         src={tokens.mainnet.OGV.icon}
                         width={20}
                       />
-                      <Typography fontSize={24}>
-                        {formatAmount(20e6)}
-                      </Typography>
+                      <LoadingLabel
+                        fontSize={24}
+                        sWidth={80}
+                        isLoading={isTotalLockupsLoading}
+                      >
+                        {formatAmount(totalLockups)}
+                      </LoadingLabel>
                     </Stack>
                   }
                 />
               </Stack>
               <Stack direction="row" spacing={2}>
-                <Button
+                <StakeButton
                   sx={{
                     minWidth: 160,
                     background:
@@ -174,7 +215,7 @@ export const StackingHeader = () => {
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Stake' })}
-                </Button>
+                </StakeButton>
                 <Button
                   variant="outlined"
                   sx={{
@@ -214,7 +255,13 @@ export const StackingHeader = () => {
                       src={tokens.mainnet.OGV.icon}
                       width={20}
                     />
-                    <Typography fontSize={24}>{formatAmount(20e6)}</Typography>
+                    <LoadingLabel
+                      fontSize={24}
+                      sWidth={80}
+                      isLoading={isLoading}
+                    >
+                      {formatAmount(veOgvRewards)}
+                    </LoadingLabel>
                   </Stack>
                 }
               />
@@ -246,23 +293,32 @@ export const StackingHeader = () => {
                       width={20}
                     />
                     <Stack>
-                      <Typography fontSize={24}>
-                        {formatAmount(20e6)}
-                      </Typography>
-                      <Typography fontSize={12} color="text.secondary">
+                      <LoadingLabel
+                        fontSize={24}
+                        sWidth={80}
+                        isLoading={isLoading}
+                      >
+                        {formatAmount(veOgvBalance)}
+                      </LoadingLabel>
+                      <LoadingLabel
+                        fontSize={12}
+                        color="text.secondary"
+                        sWidth={120}
+                        isLoading={isLoading}
+                      >
                         {intl.formatMessage(
                           {
                             defaultMessage: '({value} of total votes)',
                           },
                           {
-                            value: intl.formatNumber(0.00563, {
+                            value: intl.formatNumber(votingPowerPercent, {
                               style: 'percent',
                               minimumFractionDigits: 2,
                               maximumFractionDigits: 2,
                             }),
                           },
                         )}
-                      </Typography>
+                      </LoadingLabel>
                     </Stack>
                   </Stack>
                 }

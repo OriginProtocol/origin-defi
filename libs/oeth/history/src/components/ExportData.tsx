@@ -12,7 +12,7 @@ export function ExportData() {
   const { address } = useAccount();
   const { data } = useHistoryTransactionQuery(
     { address },
-    { select: (data) => data?.oethAddresses?.at(0)?.history ?? [] },
+    { select: (data) => data?.oethHistories ?? [] },
   );
 
   const generateCSV = useCallback(() => {

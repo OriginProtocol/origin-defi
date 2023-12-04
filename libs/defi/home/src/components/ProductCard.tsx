@@ -7,8 +7,8 @@ import {
   Typography,
 } from '@mui/material';
 import { Chip, Mix, ValueLabel } from '@origin/shared/components';
-import { usePrices } from '@origin/shared/providers';
-import { currencyFormat, isNilOrEmpty } from '@origin/shared/utils';
+import { useFormat, usePrices } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,6 +25,7 @@ export type ProductCardProps = {
 
 export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
   const intl = useIntl();
+  const { formatCurrency } = useFormat();
   const navigate = useNavigate();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
   const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
@@ -127,7 +128,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
             isQueryDataLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              intl.formatNumber(queryData.tvl, currencyFormat)
+              formatCurrency(queryData.tvl)
             )
           }
           sx={{
@@ -141,7 +142,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
             isPricesLoading ? (
               <Skeleton width={60} height={24} />
             ) : (
-              intl.formatNumber(prices[product.token.symbol], currencyFormat)
+              formatCurrency(prices[product.token.symbol])
             )
           }
           sx={{

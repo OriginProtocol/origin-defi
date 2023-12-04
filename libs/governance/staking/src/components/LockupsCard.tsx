@@ -1,17 +1,28 @@
 import {
   Card,
-  CardContent,
   CardHeader,
+  CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
+import { ConnectedButton } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
+
+import { useUserLockupsQuery } from '../queries.generated';
+import { LockupsTable } from './LockupsTable';
 
 import type { CardProps } from '@mui/material';
 
 export const LockupsCard = (props: CardProps) => {
   const intl = useIntl();
+  const { address, isConnected } = useAccount();
+  const { data, isFetching } = useUserLockupsQuery(
+    { address },
+    { enabled: !!address, select: (data) => data.ogvLockups },
+  );
 
   return (
     <Card {...props}>
@@ -46,30 +57,57 @@ export const LockupsCard = (props: CardProps) => {
           </Stack>
         }
       />
-      <CardContent>
+      {isConnected ? (
+        isFetching ? (
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '15rem',
+              width: 1,
+            }}
+          >
+            <CircularProgress />
+          </Stack>
+        ) : isNilOrEmpty(data) ? (
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '15rem',
+              width: 1,
+            }}
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'No Lock-ups' })}
+            </Typography>
+          </Stack>
+        ) : (
+          <LockupsTable />
+        )
+      ) : (
         <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-evenly"
-          color="text.secondary"
+          sx={{
+            height: '15rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+          }}
         >
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'OGV' })}
-          </Typography>
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Lock-up Ends' })}
-          </Typography>
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
-          </Typography>
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Voting Power' })}
-          </Typography>
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'veOGV' })}
-          </Typography>
+          <ConnectedButton
+            sx={{
+              minWidth: 160,
+              background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+              ':hover': {
+                background:
+                  'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+              },
+            }}
+          />
         </Stack>
-      </CardContent>
+      )}
     </Card>
   );
 };

@@ -1,11 +1,7 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import {
-  currencyFormat,
-  formatAmount,
-  isNilOrEmpty,
-} from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
@@ -133,7 +129,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             <Skeleton width={50} />
           ) : !isNilOrEmpty(tokenPriceUsd) ? (
             <Typography color="text.secondary">
-              {intl.formatNumber(amountUsd, currencyFormat)}
+              {intl.formatNumber(amountUsd, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                currencyDisplay: 'narrowSymbol',
+              })}
             </Typography>
           ) : null}
           <Stack

@@ -50,28 +50,28 @@ const connectors = connectorsForWallets([
         shimDisconnect: true,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
-      ledgerWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
       walletConnectWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
       coinbaseWallet({ appName: 'OUSD', chains }),
+      rabbyWallet({ chains }),
+      braveWallet({ chains, shimDisconnect: true }),
     ],
   },
   {
     groupName: 'Others',
     wallets: [
       injectedWallet({ chains, shimDisconnect: true }),
+      ledgerWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
       safeWallet({ chains }),
-      rabbyWallet({ chains }),
       rainbowWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
-      braveWallet({ chains, shimDisconnect: true }),
       argentWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
