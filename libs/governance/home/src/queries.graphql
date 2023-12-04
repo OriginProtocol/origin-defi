@@ -1,6 +1,27 @@
-query Home {
-  ogvs {
-    id
-    total
+query Proposals($cursor: String, $pageSize: Int) {
+  ogvProposalsConnection(
+    first: $pageSize
+    after: $cursor
+    orderBy: timestamp_DESC
+  ) {
+    totalCount
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+    edges {
+      cursor
+      node {
+        id
+        description
+        timestamp
+        startBlock
+        endBlock
+        lastUpdated
+        status
+      }
+    }
   }
 }

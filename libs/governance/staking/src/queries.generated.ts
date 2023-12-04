@@ -1,6 +1,6 @@
 import * as Types from '@origin/governance/shared';
 
-import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/governance/shared';
 export type UserLockupsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
@@ -45,6 +45,24 @@ export const useUserLockupsQuery = <
     );
 
 useUserLockupsQuery.getKey = (variables: UserLockupsQueryVariables) => ['UserLockups', variables];
+;
+
+export const useInfiniteUserLockupsQuery = <
+      TData = UserLockupsQuery,
+      TError = unknown
+    >(
+      variables: UserLockupsQueryVariables,
+      options?: UseInfiniteQueryOptions<UserLockupsQuery, TError, TData>
+    ) =>{
+    
+    return useInfiniteQuery<UserLockupsQuery, TError, TData>(
+      ['UserLockups.infinite', variables],
+      (metaData) => graphqlClient<UserLockupsQuery, UserLockupsQueryVariables>(UserLockupsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      options
+    )};
+
+
+useInfiniteUserLockupsQuery.getKey = (variables: UserLockupsQueryVariables) => ['UserLockups.infinite', variables];
 ;
 
 useUserLockupsQuery.fetcher = (variables: UserLockupsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserLockupsQuery, UserLockupsQueryVariables>(UserLockupsDocument, variables, options);

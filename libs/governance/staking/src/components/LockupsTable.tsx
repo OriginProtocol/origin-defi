@@ -11,7 +11,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Pagination } from '@origin/shared/components';
+import { TablePagination } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import {
@@ -167,7 +167,7 @@ export const LockupsTable = () => {
           ))}
         </TableBody>
       </Table>
-      <Pagination table={table} />
+      <TablePagination table={table} />
     </Stack>
   );
 };
