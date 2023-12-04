@@ -1,9 +1,5 @@
-query Proposals($cursor: String, $pageSize: Int) {
-  ogvProposalsConnection(
-    first: $pageSize
-    after: $cursor
-    orderBy: timestamp_DESC
-  ) {
+query Proposals($cursor: String) {
+  ogvProposalsConnection(first: 10, after: $cursor, orderBy: timestamp_DESC) {
     totalCount
     pageInfo {
       hasNextPage
@@ -12,7 +8,6 @@ query Proposals($cursor: String, $pageSize: Int) {
       endCursor
     }
     edges {
-      cursor
       node {
         id
         description

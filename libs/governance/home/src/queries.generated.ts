@@ -4,20 +4,15 @@ import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions } 
 import { graphqlClient } from '@origin/governance/shared';
 export type ProposalsQueryVariables = Types.Exact<{
   cursor?: Types.InputMaybe<Types.Scalars['String']['input']>;
-  pageSize?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
-export type ProposalsQuery = { __typename?: 'Query', ogvProposalsConnection: { __typename?: 'OGVProposalsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ __typename?: 'OGVProposalEdge', cursor: string, node: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState } }> } };
+export type ProposalsQuery = { __typename?: 'Query', ogvProposalsConnection: { __typename?: 'OGVProposalsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ __typename?: 'OGVProposalEdge', node: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState } }> } };
 
 
 export const ProposalsDocument = `
-    query Proposals($cursor: String, $pageSize: Int) {
-  ogvProposalsConnection(
-    first: $pageSize
-    after: $cursor
-    orderBy: timestamp_DESC
-  ) {
+    query Proposals($cursor: String) {
+  ogvProposalsConnection(first: 10, after: $cursor, orderBy: timestamp_DESC) {
     totalCount
     pageInfo {
       hasNextPage
@@ -26,7 +21,6 @@ export const ProposalsDocument = `
       endCursor
     }
     edges {
-      cursor
       node {
         id
         description

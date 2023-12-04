@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   Box,
   Button,
@@ -12,7 +10,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
-import { useProposalsQuery } from '../queries.generated';
+import { useInfiniteProposalsQuery } from '../queries.generated';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -21,19 +19,45 @@ import type { Proposal } from '../types';
 
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
-  const [cursor, setCursor] = useState(undefined);
-  const { data } = useProposalsQuery(
-    { cursor, pageSize: 3 },
-    {
-      keepPreviousData: true,
-    },
-  );
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteProposalsQuery(
+      { cursor: undefined },
+      {
+        getNextPageParam: (last) => {
+          if (!last.ogvProposalsConnection.pageInfo.hasNextPage) {
+            return undefined;
+          }
+
+          return {
+            cursor: last.ogvProposalsConnection.pageInfo.endCursor,
+          };
+        },
+        getPreviousPageParam: (last) => {
+          if (!last.ogvProposalsConnection.pageInfo.hasPreviousPage) {
+            return undefined;
+          }
+
+          return {
+            cursor: last.ogvProposalsConnection.pageInfo.startCursor,
+          };
+        },
+      },
+    );
 
   const handleShowMoreClick = () => {
-    if (data?.ogvProposalsConnection?.pageInfo?.hasNextPage) {
-      setCursor(data?.ogvProposalsConnection?.pageInfo?.endCursor);
+    if (hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
     }
   };
+
+  const proposals =
+    data?.pages?.reduce(
+      (acc, curr) => [
+        ...acc,
+        ...(curr?.ogvProposalsConnection?.edges?.map((e) => e?.node) ?? []),
+      ],
+      [],
+    ) ?? [];
 
   return (
     <Card>
@@ -52,8 +76,8 @@ export const ProposalsCard = (props: CardProps) => {
         }
       />
       <Stack divider={<Divider />}>
-        {data?.ogvProposalsConnection?.edges?.map((edge) => (
-          <ProposalRow key={edge?.node?.id} proposal={edge?.node} />
+        {proposals.map((proposal) => (
+          <ProposalRow key={proposal.id} proposal={proposal} />
         ))}
       </Stack>
       <Stack justifyContent="center" alignItems="center" py={2}>
@@ -62,6 +86,7 @@ export const ProposalsCard = (props: CardProps) => {
           color="primary"
           sx={{ minWidth: 120 }}
           onClick={handleShowMoreClick}
+          disabled={!hasNextPage}
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Button>
