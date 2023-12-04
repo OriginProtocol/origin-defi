@@ -1,3 +1,4 @@
 import type { ProposalsQuery } from './queries.generated';
 
-export type Proposal = ProposalsQuery['ogvProposals'][0];
+export type Proposal =
+  ProposalsQuery['ogvProposalsConnection']['edges'][0]['node'];
