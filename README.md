@@ -4,19 +4,20 @@
 
 Duplicate `.env` file to `.env.local` and fill the variables with your secrets, they will take precedence over the defaults.
 
-> We use multiple `.env` files in the project, either at the root or in `/apps/<APP_NAME>` folders. They can be nested to increase specificity, more info [here](https://nx.dev/recipes/tips-n-tricks/define-environment-variables)
+> We use multiple `.env` files in the project: at the root for global settings and in `/apps/<APP_NAME>` folders for app scoped variables. They can be nested to increase specificity, more info [here](https://nx.dev/recipes/tips-n-tricks/define-environment-variables)
 
 ## Start the app
 
-To start the development server run `pnpm nx serve <APP_NAME>`. Open your browser and navigate to http://localhost:4200/. Happy coding!
+To start the development server run `pnpm nx serve <APP_NAME>`
 
 ## Apps
 
-| Status | Name | Nx project | Port | Public hosts |
-|:------:|:-----|:-----------|:-----|:-------------|
-|   ✅   | OETH | `oeth`     | 4200 | [aws](https://main.d21cq9khxoetn4.amplifyapp.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
-|   ✅   | OUSD | `ousd`     | 4201 | [aws](https://main.d3vake4ybrgst8.amplifyapp.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
-|   🚧   | DEFI | `defi`     | 4202 |     |
+| Status | App Name   | Port | Public hosts |
+|:------:|:-------------|:-----|:-------------|
+|   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
+|   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
+|   🚧   | `defi`       | 4202 | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    |
+|   🚧   | `governance` | 4203 | [aws](https://next.d11mo0k0jspnpd.amplifyapp.com/)   |
 
 ## Storybook
 

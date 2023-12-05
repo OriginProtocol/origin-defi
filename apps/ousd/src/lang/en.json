@@ -53,6 +53,20 @@
       "value": "Route"
     }
   ],
+  "1VDppm": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "fullName"
+    },
+    {
+      "type": 0,
+      "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+    }
+  ],
   "1XVJUl": [
     {
       "type": 0,
@@ -697,12 +711,6 @@
     {
       "type": 0,
       "value": "Restricted Access"
-    }
-  ],
-  "y5HZFA": [
-    {
-      "type": 0,
-      "value": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
     }
   ],
   "z/wUXE": [

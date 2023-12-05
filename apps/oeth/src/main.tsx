@@ -58,7 +58,10 @@ root.render(
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [NotificationsProvider],
       [ActivityProvider],
-      [GeoFenceProvider, { name: 'oeth', href: 'https://oeth.com' }],
+      [
+        GeoFenceProvider,
+        { name: 'oeth', fullName: 'Origin Ether', href: 'https://oeth.com' },
+      ],
     ],
     <RouterProvider router={router} />,
   ),

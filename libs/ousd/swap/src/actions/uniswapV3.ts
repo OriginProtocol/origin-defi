@@ -72,7 +72,9 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
   }
 };
 
-const isRouteAvailable: IsRouteAvailable = async () => true;
+const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
+  return +formatUnits(amountIn, tokenIn.decimals) > 0.000003;
+};
 
 const estimateAmount: EstimateAmount = async ({
   amountIn,

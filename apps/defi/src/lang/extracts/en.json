@@ -26,6 +26,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "1VDppm": {
+    "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+  },
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
   },
@@ -352,9 +355,6 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
-  },
-  "y5HZFA": {
-    "defaultMessage": "The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
