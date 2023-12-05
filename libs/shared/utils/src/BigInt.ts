@@ -20,6 +20,10 @@ export const subtractSlippage = (
   decimals: number,
   slippage: number,
 ) => {
+  if (+formatUnits(value, decimals) <= +formatUnits(1n, decimals)) {
+    return value;
+  }
+
   return parseUnits(
     (
       +formatUnits(value, decimals) -

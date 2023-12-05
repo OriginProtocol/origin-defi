@@ -1,5 +1,6 @@
 import { alpha, Box, Skeleton, Stack, Typography } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -61,7 +62,7 @@ export function SwapRouteAccordionItem({
 
   return (
     <Stack
-      direction="row"
+      direction={{ xs: 'column', sm: 'row' }}
       justifyContent="space-between"
       gap={1}
       sx={{
@@ -108,10 +109,13 @@ export function SwapRouteAccordionItem({
             sx={{ height: 24, width: 24 }}
           />
         )}
-        <Stack>
+        <Stack
+          direction={{ xs: 'row', sm: 'column' }}
+          spacing={{ xs: 1, sm: 0 }}
+        >
           <Stack direction="row" spacing={0.5} alignItems="baseline">
             <LoadingLabel variant="body2" isLoading={isSwapRoutesLoading}>
-              {formatQuantity(estimatedAmount)}
+              {formatAmount(estimatedAmount)}
             </LoadingLabel>
             <LoadingLabel
               variant="body2"

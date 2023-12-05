@@ -24,16 +24,20 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async ({ tokenIn }) => {
+const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
   try {
-    await readContract({
+    const priceUnitMint = await readContract({
       address: contracts.mainnet.OUSDVault.address,
       abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'priceUnitMint',
       args: [tokenIn.address],
     });
 
-    return true;
+    return (
+      +formatUnits(amountIn, tokenIn.decimals) *
+        +formatUnits(priceUnitMint, 18) >
+      +formatUnits(1n, tokenIn.decimals)
+    );
   } catch {}
 
   return false;
