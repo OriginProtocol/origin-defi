@@ -226,6 +226,14 @@ export const theme = createTheme({
             background: theme.palette.grey[900],
           },
         }),
+        containedWarning: {
+          background:
+            'linear-gradient(90deg, rgb(179, 97, 230) 20.29%, rgb(106, 54, 252) 79.06%)',
+          '&:hover': {
+            background:
+              'linear-gradient(90deg, rgba(179, 97, 230, 0.75) 20.29%, rgba(106, 54, 252, 0.75) 79.06%)',
+          },
+        },
         containedSizeSmall: {
           fontSize: 12,
           fontWeight: 500,
