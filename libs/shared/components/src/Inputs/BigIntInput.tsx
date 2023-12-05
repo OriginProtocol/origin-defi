@@ -41,7 +41,8 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
     }, [value, decimals, strVal, prev]);
 
     const handleChange = (evt: ChangeEvent<HTMLInputElement>) => {
-      if (evt.target.validity.valid) {
+      const regex = new RegExp(`^[0-9]*\\.?[0-9]{0,${decimals}}$`);
+      if (evt.target.validity.valid && regex.test(evt.target.value)) {
         setStrVal(evt.target.value === '.' ? '0.' : evt.target.value);
         const val =
           isNilOrEmpty(evt.target.value) || evt.target.value === '.'
@@ -69,7 +70,6 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
         value={strVal}
         onChange={handleChange}
         inputProps={{
-          pattern: `[0-9]*(.[0-9]{0,${decimals}})`,
           minLength: 0,
           maxLength: 30,
           inputMode: 'decimal',
