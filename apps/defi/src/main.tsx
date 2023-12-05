@@ -60,7 +60,11 @@ root.render(
       [ActivityProvider],
       [
         GeoFenceProvider,
-        { name: 'defi', href: 'https://www.originprotocol.com' },
+        {
+          name: 'defi',
+          fullName: 'Origin DeFi',
+          href: 'https://www.originprotocol.com',
+        },
       ],
     ],
     <RouterProvider router={router} />,

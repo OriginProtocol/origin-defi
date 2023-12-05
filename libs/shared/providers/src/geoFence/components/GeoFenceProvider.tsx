@@ -23,12 +23,14 @@ import type { ReactNode } from 'react';
 export type GeoFenceProviderProps = {
   children: ReactNode;
   name: string;
+  fullName: string;
   href: string;
 };
 
 export const GeoFenceProvider = ({
   children,
   name,
+  fullName,
   href,
 }: GeoFenceProviderProps) => {
   const intl = useIntl();
@@ -52,9 +54,12 @@ export const GeoFenceProvider = ({
         <Divider />
         <DialogContent>
           <DialogContentText>
-            {intl.formatMessage({
-              defaultMessage: `The Origin Ether dapp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:`,
-            })}
+            {intl.formatMessage(
+              {
+                defaultMessage: `The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:`,
+              },
+              { fullName },
+            )}
           </DialogContentText>
           <Stack
             component="ul"

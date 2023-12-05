@@ -58,7 +58,10 @@ root.render(
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [NotificationsProvider],
       [ActivityProvider],
-      [GeoFenceProvider, { name: 'ousd', href: 'https://ousd.com' }],
+      [
+        GeoFenceProvider,
+        { name: 'ousd', fullName: 'Origin Dollar', href: 'https://ousd.com' },
+      ],
     ],
     <RouterProvider router={router} />,
   ),

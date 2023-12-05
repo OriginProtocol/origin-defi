@@ -60,7 +60,11 @@ root.render(
       [ActivityProvider],
       [
         GeoFenceProvider,
-        { name: 'oeth', href: 'https://www.ousd.com/ogv-dashboard' },
+        {
+          name: 'oeth',
+          fullName: 'Origin Governance',
+          href: 'https://www.ousd.com/ogv-dashboard',
+        },
       ],
     ],
     <RouterProvider router={router} />,
