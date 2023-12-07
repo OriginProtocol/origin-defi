@@ -18,10 +18,15 @@ import {
   ErrorCard,
   TokenInput,
 } from '@origin/shared/components';
-import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  composeContexts,
+  isNilOrEmpty,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
+import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
 import { ConnectedButton } from '../../wagmi';
@@ -68,6 +73,7 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
@@ -143,10 +149,12 @@ function SwapperWrapped({
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > balTokenIn?.value
-      ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-      : !isNilOrEmpty(selectedSwapRoute)
-      ? intl.formatMessage(swapActions[selectedSwapRoute.action].buttonLabel)
-      : '';
+        ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+        : !isNilOrEmpty(selectedSwapRoute)
+          ? intl.formatMessage(
+              swapActions[selectedSwapRoute.action].buttonLabel,
+            )
+          : '';
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
@@ -296,6 +304,37 @@ function SwapperWrapped({
                 border: (theme) => `1px solid ${theme.palette.divider}`,
               }}
             />
+            <Collapse in={amountOut > 0n}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                pt={2}
+                pb={1}
+              >
+                <Typography variant="body2" color="text.secondary">
+                  {intl.formatMessage(
+                    {
+                      defaultMessage:
+                        'Minimum received with {slippage} slippage:',
+                    },
+                    {
+                      slippage: intl.formatNumber(slippage, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }),
+                    },
+                  )}
+                </Typography>
+                <Typography variant="body2">
+                  {formatAmount(
+                    subtractSlippage(amountOut, tokenOut.decimals, slippage),
+                  )}
+                  &nbsp;{tokenOut.symbol}
+                </Typography>
+              </Stack>
+            </Collapse>
+
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 variant="action"
