@@ -16,6 +16,7 @@ import {
 import {
   ErrorBoundary,
   ErrorCard,
+  LoadingLabel,
   TokenInput,
 } from '@origin/shared/components';
 import {
@@ -308,6 +309,7 @@ function SwapperWrapped({
               <Stack
                 direction="row"
                 justifyContent="space-between"
+                alignItems="center"
                 pt={2}
                 pb={1}
               >
@@ -326,12 +328,18 @@ function SwapperWrapped({
                     },
                   )}
                 </Typography>
-                <Typography variant="body2">
-                  {formatAmount(
-                    subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                  )}
-                  &nbsp;{tokenOut.symbol}
-                </Typography>
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <LoadingLabel
+                    variant="body2"
+                    isLoading={isSwapRoutesLoading}
+                    sWidth={60}
+                  >
+                    {formatAmount(
+                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
+                    )}
+                  </LoadingLabel>
+                  <Typography variant="body2">{tokenOut.symbol}</Typography>
+                </Stack>
               </Stack>
             </Collapse>
 
