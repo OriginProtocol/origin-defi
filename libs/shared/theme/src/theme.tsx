@@ -55,6 +55,7 @@ export const theme = createTheme({
     fontFamily: 'Inter, Helvetica, Arial, sans-serif',
 
     fontSize: 14,
+    fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
@@ -62,42 +63,61 @@ export const theme = createTheme({
     h1: {
       fontFamily: 'Sailec',
       fontSize: 32,
-      fontStyle: 'normal',
       fontWeight: 700,
-      lineHeight: 1.5,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
         fontSize: 20,
+        lineHeight: 1.25,
+      },
+    },
+    h2: {
+      fontFamily: 'Sailec',
+      fontSize: 28,
+      fontWeight: 700,
+      lineHeight: 1.4,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 24,
+        lineHeight: 1.25,
       },
     },
     h3: {
       fontFamily: 'Sailec',
       fontSize: 24,
-      fontStyle: 'normal',
       fontWeight: 700,
-      lineHeight: 1.5,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
         fontSize: 20,
+        lineHeight: 1.25,
       },
     },
     h4: {
       fontFamily: 'Sailec',
       fontSize: 20,
-      fontStyle: 'normal',
       fontWeight: 700,
-      lineHeight: 1.6,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
         fontSize: 18,
-        lineHeight: 1.5,
+        lineHeight: 1.25,
       },
     },
     h5: {
       fontFamily: 'Sailec',
       fontSize: 16,
-      fontStyle: 'normal',
       fontWeight: 400,
-      lineHeight: 1.6,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
         fontSize: 14,
+        lineHeight: 1.25,
+      },
+    },
+    h6: {
+      fontFamily: 'Sailec',
+      fontSize: 15,
+      textTransform: 'uppercase',
+      fontWeight: 500,
+      lineHeight: 1.4,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 13,
         lineHeight: 1.25,
       },
     },
@@ -112,7 +132,6 @@ export const theme = createTheme({
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      fontStyle: 'normal',
     },
   },
   shape: {
