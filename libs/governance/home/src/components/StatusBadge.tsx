@@ -2,6 +2,8 @@ import { Typography, useTheme } from '@mui/material';
 import { OgvProposalState } from '@origin/governance/shared';
 import { useIntl } from 'react-intl';
 
+import { statusLabels } from '../constants';
+
 import type { TypographyProps } from '@mui/material';
 
 import type { Proposal } from '../types';
@@ -12,28 +14,7 @@ export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
   const intl = useIntl();
   const theme = useTheme();
 
-  const label = {
-    [OgvProposalState.Active]: intl.formatMessage({ defaultMessage: 'Active' }),
-    [OgvProposalState.Canceled]: intl.formatMessage({
-      defaultMessage: 'Canceled',
-    }),
-    [OgvProposalState.Defeated]: intl.formatMessage({
-      defaultMessage: 'Defeated',
-    }),
-    [OgvProposalState.Executed]: intl.formatMessage({
-      defaultMessage: 'Executed',
-    }),
-    [OgvProposalState.Expired]: intl.formatMessage({
-      defaultMessage: 'Expired',
-    }),
-    [OgvProposalState.Pending]: intl.formatMessage({
-      defaultMessage: 'Pending',
-    }),
-    [OgvProposalState.Queued]: intl.formatMessage({ defaultMessage: 'Queued' }),
-    [OgvProposalState.Succeeded]: intl.formatMessage({
-      defaultMessage: 'Succeeded',
-    }),
-  }[proposal.status];
+  const label = statusLabels[proposal.status];
   const color = {
     [OgvProposalState.Active]: theme.palette.secondary.main,
     [OgvProposalState.Canceled]: theme.palette.text.secondary,
@@ -58,7 +39,7 @@ export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
         ...rest?.sx,
       }}
     >
-      {label}
+      {intl.formatMessage(label)}
     </Typography>
   );
 };
