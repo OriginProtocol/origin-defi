@@ -21,7 +21,7 @@ export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteProposalsQuery(
-      { cursor: undefined },
+      { cursor: undefined, first: 5 },
       {
         getNextPageParam: (last) => {
           if (!last.ogvProposalsConnection.pageInfo.hasNextPage) {
@@ -60,7 +60,7 @@ export const ProposalsCard = (props: CardProps) => {
     ) ?? [];
 
   return (
-    <Card>
+    <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Proposals' })}
         action={
