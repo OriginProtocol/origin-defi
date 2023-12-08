@@ -68,6 +68,9 @@
   "3townk": {
     "defaultMessage": "Max vAPY"
   },
+  "45EvZ3": {
+    "defaultMessage": "Minimum received with {slippage} slippage:"
+  },
   "4cSnUS": {
     "defaultMessage": "3y"
   },
