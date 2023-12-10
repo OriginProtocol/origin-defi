@@ -97,8 +97,8 @@ function RedeemerWrapped({
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > balance?.value
-      ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-      : intl.formatMessage({ defaultMessage: 'Redeem' });
+        ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+        : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
     isBalanceLoading ||
     isEstimateLoading ||

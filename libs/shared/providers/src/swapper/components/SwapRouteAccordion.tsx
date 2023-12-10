@@ -17,25 +17,26 @@ import type { AccordionProps } from '@mui/material';
 
 export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
   const intl = useIntl();
-  const [{ estimatedSwapRoutes, selectedSwapRoute }] = useSwapState();
+  const [{ estimatedSwapRoutes, selectedSwapRoute, trackEvent }] =
+    useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
 
   return (
     <Accordion
       {...props}
       sx={{
-        '&.MuiPaper-root': {
-          padding: 0,
-          backgroundColor: 'grey.900',
-          paddingInline: 2,
-          paddingBlock: 1,
-          borderColor: 'grey.800',
-        },
+        px: 2,
+        py: 1,
+        backgroundColor: 'grey.900',
+        borderColor: 'grey.800',
         ...props?.sx,
       }}
       disableGutters
     >
       <AccordionSummary
+        onClick={() => {
+          trackEvent({ name: 'show_swap_routes' });
+        }}
         sx={{
           minHeight: 0,
           fontSize: 14,
@@ -62,7 +63,6 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
-
         <Box
           component="img"
           src="/images/arrow-down.svg"
@@ -72,7 +72,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
             width: 12,
             alignSelf: 'center',
           }}
-        ></Box>
+        />
       </AccordionSummary>
       <AccordionDetails
         sx={{
