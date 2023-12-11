@@ -1,5 +1,4 @@
 // Calculation imported from https://github.com/OriginProtocol/ousd-governance/blob/d420f0fe4dd6ac3bdb704ac354975d1f7ce37a47/client/utils/apy.tsx#L1
-// TODO check if still valid
 
 export function getDailyRewardsEmissions(time = Date.now() / 1000) {
   // format: start_timestamp, end_timestamp, daily emissions
