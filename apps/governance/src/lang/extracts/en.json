@@ -164,6 +164,9 @@
   "EVmlnF": {
     "defaultMessage": "OGV"
   },
+  "EWw/tK": {
+    "defaultMessage": "Apply"
+  },
   "ErxWra": {
     "defaultMessage": "Self"
   },
@@ -235,6 +238,9 @@
   },
   "PzlMqG": {
     "defaultMessage": "Best"
+  },
+  "QW+Q5N": {
+    "defaultMessage": "Clear all"
   },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
@@ -374,9 +380,6 @@
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
-  "kifTG+": {
-    "defaultMessage": "All Proposals"
-  },
   "kmAKoi": {
     "defaultMessage": "My Staked Balance"
   },
@@ -437,6 +440,9 @@
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
+  "xM6PS8": {
+    "defaultMessage": "{count,plural,=0{All Proposals} =1{1 Filter} other{# Filters}}"
+  },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"
   },
@@ -451,6 +457,9 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
+  },
+  "zSOvI0": {
+    "defaultMessage": "Filters"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
