@@ -3,12 +3,12 @@ import { useQuery } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
 import { descend, prop, sort } from 'ramda';
 
-import { useAllProposalsQuery } from './queries.generated';
+import { useProposalsQuery } from './queries.generated';
 import { useSnapshotProposalsQuery } from './snapshot.generated';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import type { AllProposalsQuery } from './queries.generated';
+import type { ProposalsQuery } from './queries.generated';
 import type { SnapshotProposalsQuery } from './snapshot.generated';
 import type { Proposal, ProposalType } from './types';
 
@@ -19,13 +19,13 @@ export const useProposals = (
     queryKey: ['useProposals'],
     queryFn: async () => {
       const res = await Promise.allSettled([
-        useAllProposalsQuery.fetcher()(),
+        useProposalsQuery.fetcher()(),
         useSnapshotProposalsQuery.fetcher()(),
       ]);
 
       const onChainProposals =
         res[0].status === 'fulfilled'
-          ? (res[0].value as AllProposalsQuery)?.ogvProposals?.map((p) => ({
+          ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => ({
               id: p.id,
               type: 'onchain' as ProposalType,
               title: p.description,

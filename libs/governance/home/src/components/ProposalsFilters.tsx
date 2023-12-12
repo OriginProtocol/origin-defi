@@ -64,7 +64,7 @@ export const ProposalsFilters = ({
     value: ProposalType,
   ) => {
     if (e.target.checked) {
-      setFilters([value]);
+      setFilters(isNilOrEmpty(value) ? [] : [value]);
     } else {
       setFilters([]);
     }
@@ -74,14 +74,8 @@ export const ProposalsFilters = ({
   const buttonLabel = isNilOrEmpty(filters)
     ? intl.formatMessage({ defaultMessage: 'All proposals' })
     : filters.includes('onchain')
-      ? intl.formatMessage(
-          { defaultMessage: '{count} On chain' },
-          { count: proposals?.length ?? '0' },
-        )
-      : intl.formatMessage(
-          { defaultMessage: '{count} Snapshot' },
-          { count: proposals?.length ?? '0' },
-        );
+      ? intl.formatMessage({ defaultMessage: 'On chain' })
+      : intl.formatMessage({ defaultMessage: ' Snapshot' });
 
   return (
     <>
@@ -91,7 +85,15 @@ export const ProposalsFilters = ({
         sx={{ gap: 0.75 }}
       >
         {buttonLabel}
-        &nbsp;
+        <Box
+          sx={{
+            width: '4px',
+            height: '4px',
+            borderRadius: '50%',
+            background: (theme) => theme.palette.primary.contrastText,
+          }}
+        />
+        {proposals?.length ?? '0'}
         <Box
           component="img"
           src="images/icons/chevron-down-regular.svg"
@@ -162,6 +164,25 @@ export const ProposalsFilters = ({
             />
           </Stack>
         ))}
+        <Divider sx={{ mt: 2 }} />
+        <Stack
+          direction="row"
+          justifyContent="flex-end"
+          sx={{ padding: 2 }}
+          gap={1}
+        >
+          <Button
+            variant="text"
+            disabled={isNilOrEmpty(filters)}
+            sx={styles}
+            onClick={() => {
+              setAnchorEl(null);
+              setFilters([]);
+            }}
+          >
+            {intl.formatMessage({ defaultMessage: 'Clear' })}
+          </Button>
+        </Stack>
       </Popover>
     </>
   );

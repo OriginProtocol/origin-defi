@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { take } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useProposals } from '../hooks';
@@ -22,9 +23,12 @@ import type { CardProps, StackProps } from '@mui/material';
 
 import type { Proposal } from '../types';
 
+const PAGE_SIZE = 10;
+
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
   const [filters, setFilters] = useState([]);
+  const [limit, setLimit] = useState(PAGE_SIZE);
   const { data: proposals, isLoading: isProposalsLoading } = useProposals({
     select: (data) => {
       if (isNilOrEmpty(filters) || isNilOrEmpty(data)) {
@@ -33,15 +37,28 @@ export const ProposalsCard = (props: CardProps) => {
 
       return data.filter((p) => filters.includes(p.type));
     },
+    placeholderData: [],
   });
 
-  const handleShowMoreClick = () => {};
+  const handleShowMoreClick = () => {
+    setLimit(Math.min(limit + PAGE_SIZE, proposals.length));
+  };
+
+  const paginatedProposals = take(limit, proposals);
 
   return (
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Proposals' })}
-        action={<ProposalsFilters filters={filters} setFilters={setFilters} />}
+        action={
+          <ProposalsFilters
+            filters={filters}
+            setFilters={(filters) => {
+              setLimit(PAGE_SIZE);
+              setFilters(filters);
+            }}
+          />
+        }
       />
       {isProposalsLoading ? (
         <Stack
@@ -57,7 +74,7 @@ export const ProposalsCard = (props: CardProps) => {
         </Stack>
       ) : (
         <Stack divider={<Divider />}>
-          {proposals?.map((proposal) => (
+          {paginatedProposals?.map((proposal) => (
             <ProposalRow key={proposal.id} proposal={proposal} />
           ))}
         </Stack>
@@ -68,6 +85,7 @@ export const ProposalsCard = (props: CardProps) => {
           color="primary"
           sx={{ minWidth: 120 }}
           onClick={handleShowMoreClick}
+          disabled={limit >= (proposals?.length ?? 0)}
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Button>
