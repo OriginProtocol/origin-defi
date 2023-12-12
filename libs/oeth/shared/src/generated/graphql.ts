@@ -4311,6 +4311,12 @@ export type OetHsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type OgnStatsResult = {
+  __typename?: 'OGNStatsResult';
+  circulatingSupply: Scalars['Float']['output'];
+  totalSupply: Scalars['Float']['output'];
+};
+
 export type Ogv = {
   __typename?: 'OGV';
   blockNumber: Scalars['Int']['output'];
@@ -8787,6 +8793,7 @@ export type Query = {
   oethapyByUniqueInput?: Maybe<Oethapy>;
   oeths: Array<Oeth>;
   oethsConnection: OetHsConnection;
+  ognStats: OgnStatsResult;
   ogvAddressById?: Maybe<OgvAddress>;
   /** @deprecated Use ogvAddressById */
   ogvAddressByUniqueInput?: Maybe<OgvAddress>;
