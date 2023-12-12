@@ -107,7 +107,29 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         <Stack direction="row" spacing={2}>
           <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
           <StatusBadge proposal={proposal} />
-          {proposal.type === 'offchain' && <SnapshotBadge />}
+          {proposal.type === 'offchain' && (
+            <Button
+              href={proposal?.link}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              variant="outlined"
+              color="warning"
+              sx={{
+                borderRadius: 2,
+                px: 0.75,
+                py: 0.2,
+              }}
+            >
+              <Box
+                component="img"
+                src="/images/protocols/snapshot.svg"
+                width={16}
+              />
+              <Typography variant="body2" color="warning.main">
+                {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
+              </Typography>
+            </Button>
+          )}
         </Stack>
         <Typography variant="h5">{proposal.title}</Typography>
         <Stack
@@ -135,29 +157,6 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
       <Stack width={0.3}>
         <VotesGauge choices={proposal.choices} scores={proposal.scores} />
       </Stack>
-    </Stack>
-  );
-}
-
-function SnapshotBadge() {
-  const intl = useIntl();
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={0.75}
-      sx={{
-        border: (theme) => `1px solid ${theme.palette.warning.main}`,
-        px: 0.75,
-        py: 0.2,
-        borderRadius: 2,
-      }}
-    >
-      <Box component="img" src="/images/protocols/snapshot.svg" width={16} />
-      <Typography variant="body2" color="warning.main">
-        {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
-      </Typography>
     </Stack>
   );
 }

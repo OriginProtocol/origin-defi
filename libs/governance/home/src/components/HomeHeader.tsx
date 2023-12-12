@@ -20,12 +20,24 @@ export const HomeHeader = (props: StackProps) => {
         })}
       </Typography>
       <Stack direction="row" spacing={2}>
-        <Button variant="outlined" color="secondary">
+        <Button
+          variant="outlined"
+          color="secondary"
+          href="https://docs.oeth.com/governance/admin-privileges"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           {intl.formatMessage({
             defaultMessage: 'Learn about Governance',
           })}
         </Button>
-        <Button variant="outlined" color="secondary">
+        <Button
+          variant="outlined"
+          color="secondary"
+          href="https://discord.com/channels/404673842007506945/872600469959245826"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           {intl.formatMessage({
             defaultMessage: 'Discord forum',
           })}
