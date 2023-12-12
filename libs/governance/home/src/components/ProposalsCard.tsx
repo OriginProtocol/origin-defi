@@ -7,12 +7,14 @@ import {
   CardHeader,
   CircularProgress,
   Divider,
+  LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
+import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { take } from 'ramda';
+import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useProposals } from '../hooks';
@@ -101,7 +103,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
 
   return (
     <Stack direction="row" p={3} {...rest}>
-      <Stack width={0.75} spacing={1}>
+      <Stack width={0.7} spacing={1}>
         <Stack direction="row" spacing={2}>
           <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
           <StatusBadge proposal={proposal} />
@@ -130,7 +132,9 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
           </Typography>
         </Stack>
       </Stack>
-      <Stack width={0.25}></Stack>
+      <Stack width={0.3}>
+        <VotesGauge choices={proposal.choices} scores={proposal.scores} />
+      </Stack>
     </Stack>
   );
 }
@@ -154,6 +158,57 @@ function SnapshotBadge() {
       <Typography variant="body2" color="warning.main">
         {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
       </Typography>
+    </Stack>
+  );
+}
+
+type VotesGaugeProps = {
+  choices: string[];
+  scores: number[];
+} & StackProps;
+
+function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
+  const { formatAmount } = useFormat();
+
+  const scoreVote = sort(
+    descend((i) => i[1]),
+    zip(choices, scores),
+  );
+  const total = scores.reduce((acc, curr) => acc + curr, 0);
+
+  return (
+    <Stack {...rest} spacing={3}>
+      {take(2, scoreVote).map((c, i) => (
+        <Stack key={c[0]} spacing={1}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            spacing={1}
+          >
+            <Typography color="text.secondary" noWrap>
+              {c[0]}:
+            </Typography>
+            <Typography>
+              {formatAmount(c[1])}&nbsp;{tokens.mainnet.veOGV.symbol}
+            </Typography>
+          </Stack>
+          <LinearProgress
+            value={(c[1] / total) * 100}
+            variant="determinate"
+            sx={{
+              borderRadius: 1,
+              backgroundColor: 'grey.600',
+              '.MuiLinearProgress-bar': {
+                backgroundColor: (theme) =>
+                  i === 0
+                    ? theme.palette.success.main
+                    : theme.palette.error.main,
+              },
+            }}
+          />
+        </Stack>
+      ))}
     </Stack>
   );
 }
