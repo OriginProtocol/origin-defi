@@ -4,7 +4,7 @@
     "allowJs": false,
     "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "types": ["vitest"],
+    "strict": false,
     "jsxImportSource": "@emotion/react"
   },
   "files": [],
@@ -12,9 +12,6 @@
   "references": [
     {
       "path": "./tsconfig.lib.json"
-    },
-    {
-      "path": "./tsconfig.spec.json"
     }
   ],
   "extends": "../../../tsconfig.base.json"

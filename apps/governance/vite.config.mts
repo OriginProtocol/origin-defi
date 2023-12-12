@@ -1,4 +1,3 @@
-/// <reference types="vitest" />
 /// <reference types="vite-plugin-svgr/client" />
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
@@ -8,15 +7,23 @@ import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
-  cacheDir: '../../node_modules/.vite/defi',
+  root: __dirname,
+  build: {
+    outDir: '../../dist/apps/governance',
+    reportCompressedSize: true,
+    commonjsOptions: {
+      transformMixedEsModules: true,
+    },
+  },
+  cacheDir: '../../node_modules/.vite/governance',
 
   server: {
-    port: 4202,
+    port: 4203,
     host: 'localhost',
   },
 
   preview: {
-    port: 4302,
+    port: 4303,
     host: 'localhost',
   },
 
@@ -61,16 +68,5 @@ export default defineConfig({
       '@formatjs/icu-messageformat-parser':
         '@formatjs/icu-messageformat-parser/no-parser',
     },
-  },
-
-  define: {
-    'import.meta.vitest': undefined,
-  },
-  test: {
-    includeSource: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    globals: true,
-    cache: { dir: '../../node_modules/.vitest' },
-    environment: 'jsdom',
-    include: ['src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
   },
 });
