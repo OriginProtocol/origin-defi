@@ -13,6 +13,10 @@
         "{workspaceRoot}/.eslintignore"
       ],
       "cache": true
+    },
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
     }
   },
   "namedInputs": {
@@ -31,22 +35,27 @@
   "generators": {
     "@nx/react": {
       "application": {
-        "style": "css",
+        "style": "@emotion/styled",
         "linter": "eslint",
         "bundler": "vite",
         "babel": true,
         "test": "none",
-        "unitTestRunner": "none"
+        "e2eTestRunner": "none",
+        "unitTestRunner": "none",
+        "minimal": true,
+        "strict": false
       },
       "component": {
         "style": "css"
       },
       "library": {
-        "style": "css",
+        "style": "@emotion/styled",
         "linter": "eslint",
         "unitTestRunner": "none",
-        "bundler": "none",
-        "test": "none"
+        "test": "none",
+        "component": false,
+        "minimal": true,
+        "strict": false
       }
     }
   }
