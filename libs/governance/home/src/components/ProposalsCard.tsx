@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardHeader,
+  CircularProgress,
   Divider,
   Stack,
   Typography,
@@ -13,7 +14,7 @@ import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
-import { useInfiniteProposalsQuery } from '../queries.generated';
+import { useProposals } from '../hooks';
 import { ProposalsFilters } from './ProposalsFilters';
 import { StatusBadge } from './StatusBadge';
 
@@ -24,49 +25,17 @@ import type { Proposal } from '../types';
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
   const [filters, setFilters] = useState([]);
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteProposalsQuery(
-      {
-        cursor: undefined,
-        first: 5,
-        status: isNilOrEmpty(filters) ? undefined : filters,
-      },
-      {
-        getNextPageParam: (last) => {
-          if (!last.ogvProposalsConnection.pageInfo.hasNextPage) {
-            return undefined;
-          }
+  const { data: proposals, isLoading: isProposalsLoading } = useProposals({
+    select: (data) => {
+      if (isNilOrEmpty(filters) || isNilOrEmpty(data)) {
+        return data;
+      }
 
-          return {
-            cursor: last.ogvProposalsConnection.pageInfo.endCursor,
-          };
-        },
-        getPreviousPageParam: (last) => {
-          if (!last.ogvProposalsConnection.pageInfo.hasPreviousPage) {
-            return undefined;
-          }
+      return data.filter((p) => filters.includes(p.type));
+    },
+  });
 
-          return {
-            cursor: last.ogvProposalsConnection.pageInfo.startCursor,
-          };
-        },
-      },
-    );
-
-  const handleShowMoreClick = () => {
-    if (hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  };
-
-  const proposals =
-    data?.pages?.reduce(
-      (acc, curr) => [
-        ...acc,
-        ...(curr?.ogvProposalsConnection?.edges?.map((e) => e?.node) ?? []),
-      ],
-      [],
-    ) ?? [];
+  const handleShowMoreClick = () => {};
 
   return (
     <Card {...props}>
@@ -74,18 +43,31 @@ export const ProposalsCard = (props: CardProps) => {
         title={intl.formatMessage({ defaultMessage: 'Proposals' })}
         action={<ProposalsFilters filters={filters} setFilters={setFilters} />}
       />
-      <Stack divider={<Divider />}>
-        {proposals.map((proposal) => (
-          <ProposalRow key={proposal.id} proposal={proposal} />
-        ))}
-      </Stack>
+      {isProposalsLoading ? (
+        <Stack
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '15rem',
+            width: 1,
+          }}
+        >
+          <CircularProgress />
+        </Stack>
+      ) : (
+        <Stack divider={<Divider />}>
+          {proposals?.map((proposal) => (
+            <ProposalRow key={proposal.id} proposal={proposal} />
+          ))}
+        </Stack>
+      )}
       <Stack justifyContent="center" alignItems="center" py={2}>
         <Button
           variant="outlined"
           color="primary"
           sx={{ minWidth: 120 }}
           onClick={handleShowMoreClick}
-          disabled={!hasNextPage}
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Button>
@@ -105,8 +87,9 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         <Stack direction="row" spacing={2}>
           <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
           <StatusBadge proposal={proposal} />
+          {proposal.type === 'offchain' && <SnapshotBadge />}
         </Stack>
-        <Typography variant="h5">{proposal.description}</Typography>
+        <Typography variant="h5">{proposal.title}</Typography>
         <Stack
           direction="row"
           divider={
@@ -121,7 +104,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
           }
         >
           <Typography variant="body2" color="text.secondary">
-            {intl.formatDate(new Date(proposal.timestamp), {
+            {intl.formatDate(new Date(proposal.created), {
               day: '2-digit',
               month: 'short',
               year: 'numeric',
@@ -130,6 +113,29 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         </Stack>
       </Stack>
       <Stack width={0.25}></Stack>
+    </Stack>
+  );
+}
+
+function SnapshotBadge() {
+  const intl = useIntl();
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={0.75}
+      sx={{
+        border: (theme) => `1px solid ${theme.palette.warning.main}`,
+        px: 0.75,
+        py: 0.2,
+        borderRadius: 2,
+      }}
+    >
+      <Box component="img" src="/images/protocols/snapshot.svg" width={16} />
+      <Typography variant="body2" color="warning.main">
+        {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
+      </Typography>
     </Stack>
   );
 }

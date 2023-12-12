@@ -24,6 +24,7 @@ export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
     [OgvProposalState.Pending]: theme.palette.text.secondary,
     [OgvProposalState.Queued]: theme.palette.text.secondary,
     [OgvProposalState.Succeeded]: theme.palette.success.main,
+    closed: theme.palette.success.main,
   }[proposal.status];
 
   return (

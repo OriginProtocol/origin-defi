@@ -26,8 +26,26 @@ query Proposals($first: Int, $cursor: String, $status: [OGVProposalState!]) {
   }
 }
 
+query AllProposals {
+  ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
+    id    
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status    
+  }
+}
+
 query ProposalsCount($status: [OGVProposalState!]) {
   ogvProposalsConnection(orderBy: id_ASC, where: { status_in: $status }) {
+    totalCount
+  }
+}
+
+query HoldersCount {
+  ogvAddressesConnection(orderBy: id_ASC) {
     totalCount
   }
 }

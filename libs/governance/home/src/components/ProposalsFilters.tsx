@@ -12,22 +12,29 @@ import {
   useTheme,
 } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
 
-import { statusLabels } from '../constants';
+import { useProposals } from '../hooks';
 
-import type { OgvProposalState } from '@origin/governance/shared';
 import type { ChangeEvent, Dispatch, SetStateAction } from 'react';
 
+import type { ProposalType } from '../types';
+
 export type ProposalsFiltersProps = {
-  filters: OgvProposalState[];
-  setFilters: Dispatch<SetStateAction<OgvProposalState[]>>;
+  filters: ProposalType[];
+  setFilters: Dispatch<SetStateAction<ProposalType[]>>;
 };
 
-const filterOptions = Object.entries(statusLabels).map(([key, value]) => ({
-  label: value,
-  value: key as OgvProposalState,
-}));
+const filterOptions = [
+  {
+    label: defineMessage({ defaultMessage: 'On chain' }),
+    value: 'onchain' as ProposalType,
+  },
+  {
+    label: defineMessage({ defaultMessage: 'Snapshot' }),
+    value: 'offchain' as ProposalType,
+  },
+];
 
 const styles = {
   fontSize: 12,
@@ -39,28 +46,42 @@ export const ProposalsFilters = ({
   filters,
   setFilters,
 }: ProposalsFiltersProps) => {
-  const [selected, setSelectedTypes] = useState<OgvProposalState[]>(filters);
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const { data: proposals } = useProposals({
+    select: (data) => {
+      if (isNilOrEmpty(filters) || isNilOrEmpty(data)) {
+        return data;
+      }
+
+      return data.filter((p) => filters.includes(p.type));
+    },
+  });
 
   const handleSelect = (
     e: ChangeEvent<HTMLInputElement>,
-    value: OgvProposalState,
+    value: ProposalType,
   ) => {
-    setSelectedTypes((prev) => {
-      if (e.target.checked) {
-        return [...prev, value];
-      } else {
-        return prev.filter((val) => val !== value);
-      }
-    });
+    if (e.target.checked) {
+      setFilters([value]);
+    } else {
+      setFilters([]);
+    }
+    setAnchorEl(null);
   };
 
-  const applyDisabled =
-    filters.length === selected.length &&
-    filters.every((item) => selected.includes(item));
-  const clearDisabled = isNilOrEmpty(selected);
+  const buttonLabel = isNilOrEmpty(filters)
+    ? intl.formatMessage({ defaultMessage: 'All proposals' })
+    : filters.includes('onchain')
+      ? intl.formatMessage(
+          { defaultMessage: '{count} On chain' },
+          { count: proposals?.length ?? '0' },
+        )
+      : intl.formatMessage(
+          { defaultMessage: '{count} Snapshot' },
+          { count: proposals?.length ?? '0' },
+        );
 
   return (
     <>
@@ -69,13 +90,7 @@ export const ProposalsFilters = ({
         size="small"
         sx={{ gap: 0.75 }}
       >
-        {intl.formatMessage(
-          {
-            defaultMessage:
-              '{count, plural, =0 {All Proposals} =1 {1 Filter} other {# Filters}}',
-          },
-          { count: filters.length },
-        )}
+        {buttonLabel}
         &nbsp;
         <Box
           component="img"
@@ -133,7 +148,7 @@ export const ProposalsFilters = ({
               value={filter.value}
               control={
                 <Checkbox
-                  checked={selected.includes(filter.value)}
+                  checked={filters.includes(filter.value)}
                   onChange={(e) => handleSelect(e, filter.value)}
                   sx={{
                     ':hover': {
@@ -147,42 +162,6 @@ export const ProposalsFilters = ({
             />
           </Stack>
         ))}
-        <Divider sx={{ marginBlockStart: 2 }} />
-        <Stack
-          direction="row"
-          justifyContent="flex-end"
-          sx={{ padding: 2 }}
-          gap={1}
-        >
-          <Button
-            variant="text"
-            disabled={clearDisabled}
-            sx={styles}
-            onClick={() => {
-              setAnchorEl(null);
-              setFilters([]);
-              setSelectedTypes([]);
-            }}
-          >
-            {intl.formatMessage({ defaultMessage: 'Clear all' })}
-          </Button>
-          <Button
-            variant="action"
-            disabled={applyDisabled}
-            sx={{
-              paddingInline: 2,
-              paddingBlock: 0.5,
-              maxWidth: '4rem',
-              ...styles,
-            }}
-            onClick={() => {
-              setAnchorEl(null);
-              setFilters(selected);
-            }}
-          >
-            {intl.formatMessage({ defaultMessage: 'Apply' })}
-          </Button>
-        </Stack>
       </Popover>
     </>
   );

@@ -11,12 +11,22 @@ export type ProposalsQueryVariables = Types.Exact<{
 
 export type ProposalsQuery = { __typename?: 'Query', ogvProposalsConnection: { __typename?: 'OGVProposalsConnection', totalCount: number, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string, endCursor: string }, edges: Array<{ __typename?: 'OGVProposalEdge', node: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState } }> } };
 
+export type AllProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type AllProposalsQuery = { __typename?: 'Query', ogvProposals: Array<{ __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState }> };
+
 export type ProposalsCountQueryVariables = Types.Exact<{
   status?: Types.InputMaybe<Array<Types.OgvProposalState> | Types.OgvProposalState>;
 }>;
 
 
 export type ProposalsCountQuery = { __typename?: 'Query', ogvProposalsConnection: { __typename?: 'OGVProposalsConnection', totalCount: number } };
+
+export type HoldersCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
+
+
+export type HoldersCountQuery = { __typename?: 'Query', ogvAddressesConnection: { __typename?: 'OGVAddressesConnection', totalCount: number } };
 
 
 export const ProposalsDocument = `
@@ -83,6 +93,54 @@ useInfiniteProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => vari
 ;
 
 useProposalsQuery.fetcher = (variables?: ProposalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables, options);
+export const AllProposalsDocument = `
+    query AllProposals {
+  ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
+    id
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+  }
+}
+    `;
+export const useAllProposalsQuery = <
+      TData = AllProposalsQuery,
+      TError = unknown
+    >(
+      variables?: AllProposalsQueryVariables,
+      options?: UseQueryOptions<AllProposalsQuery, TError, TData>
+    ) =>
+    useQuery<AllProposalsQuery, TError, TData>(
+      variables === undefined ? ['AllProposals'] : ['AllProposals', variables],
+      graphqlClient<AllProposalsQuery, AllProposalsQueryVariables>(AllProposalsDocument, variables),
+      options
+    );
+
+useAllProposalsQuery.getKey = (variables?: AllProposalsQueryVariables) => variables === undefined ? ['AllProposals'] : ['AllProposals', variables];
+;
+
+export const useInfiniteAllProposalsQuery = <
+      TData = AllProposalsQuery,
+      TError = unknown
+    >(
+      variables?: AllProposalsQueryVariables,
+      options?: UseInfiniteQueryOptions<AllProposalsQuery, TError, TData>
+    ) =>{
+    
+    return useInfiniteQuery<AllProposalsQuery, TError, TData>(
+      variables === undefined ? ['AllProposals.infinite'] : ['AllProposals.infinite', variables],
+      (metaData) => graphqlClient<AllProposalsQuery, AllProposalsQueryVariables>(AllProposalsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      options
+    )};
+
+
+useInfiniteAllProposalsQuery.getKey = (variables?: AllProposalsQueryVariables) => variables === undefined ? ['AllProposals.infinite'] : ['AllProposals.infinite', variables];
+;
+
+useAllProposalsQuery.fetcher = (variables?: AllProposalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<AllProposalsQuery, AllProposalsQueryVariables>(AllProposalsDocument, variables, options);
 export const ProposalsCountDocument = `
     query ProposalsCount($status: [OGVProposalState!]) {
   ogvProposalsConnection(orderBy: id_ASC, where: {status_in: $status}) {
@@ -125,3 +183,45 @@ useInfiniteProposalsCountQuery.getKey = (variables?: ProposalsCountQueryVariable
 ;
 
 useProposalsCountQuery.fetcher = (variables?: ProposalsCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalsCountQuery, ProposalsCountQueryVariables>(ProposalsCountDocument, variables, options);
+export const HoldersCountDocument = `
+    query HoldersCount {
+  ogvAddressesConnection(orderBy: id_ASC) {
+    totalCount
+  }
+}
+    `;
+export const useHoldersCountQuery = <
+      TData = HoldersCountQuery,
+      TError = unknown
+    >(
+      variables?: HoldersCountQueryVariables,
+      options?: UseQueryOptions<HoldersCountQuery, TError, TData>
+    ) =>
+    useQuery<HoldersCountQuery, TError, TData>(
+      variables === undefined ? ['HoldersCount'] : ['HoldersCount', variables],
+      graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, variables),
+      options
+    );
+
+useHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) => variables === undefined ? ['HoldersCount'] : ['HoldersCount', variables];
+;
+
+export const useInfiniteHoldersCountQuery = <
+      TData = HoldersCountQuery,
+      TError = unknown
+    >(
+      variables?: HoldersCountQueryVariables,
+      options?: UseInfiniteQueryOptions<HoldersCountQuery, TError, TData>
+    ) =>{
+    
+    return useInfiniteQuery<HoldersCountQuery, TError, TData>(
+      variables === undefined ? ['HoldersCount.infinite'] : ['HoldersCount.infinite', variables],
+      (metaData) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      options
+    )};
+
+
+useInfiniteHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) => variables === undefined ? ['HoldersCount.infinite'] : ['HoldersCount.infinite', variables];
+;
+
+useHoldersCountQuery.fetcher = (variables?: HoldersCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, variables, options);

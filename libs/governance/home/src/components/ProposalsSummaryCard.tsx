@@ -3,7 +3,8 @@ import { OgvProposalState } from '@origin/governance/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
-import { useProposalsCountQuery } from '../queries.generated';
+import { useProposals } from '../hooks';
+import { useHoldersCountQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 
@@ -15,10 +16,14 @@ const valueLabelProps = {
 
 export const ProposalsSummaryCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: all, isLoading: isAllLoading } = useProposalsCountQuery();
-  const { data: active, isLoading: isActiveLoading } = useProposalsCountQuery({
-    status: OgvProposalState.Active,
-  });
+  const { data: proposals, isLoading: isProposalsLoading } = useProposals();
+  const { data: holdersCount, isLoading: isHoldersCountLoading } =
+    useHoldersCountQuery();
+
+  const active =
+    proposals
+      ?.filter((p) => [OgvProposalState.Active, 'active'].includes(p.status))
+      ?.length.toString() ?? '0';
 
   return (
     <Card {...props}>
@@ -26,21 +31,23 @@ export const ProposalsSummaryCard = (props: CardProps) => {
         <Stack direction="row" spacing={2}>
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Proposals' })}
-            value={all?.ogvProposalsConnection?.totalCount?.toString() ?? '0'}
-            isLoading={isAllLoading}
+            value={proposals?.length.toString() ?? '0'}
+            isLoading={isProposalsLoading}
             {...valueLabelProps}
           />
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Active Proposals' })}
-            value={
-              active?.ogvProposalsConnection?.totalCount?.toString() ?? '0'
-            }
-            isLoading={isActiveLoading}
+            value={active}
+            isLoading={isProposalsLoading}
             {...valueLabelProps}
           />
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Registered Voters' })}
-            value={'1325'}
+            value={
+              holdersCount?.ogvAddressesConnection?.totalCount?.toString() ??
+              '0'
+            }
+            isLoading={isHoldersCountLoading}
             {...valueLabelProps}
           />
         </Stack>

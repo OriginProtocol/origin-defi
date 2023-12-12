@@ -1,0 +1,15 @@
+query SnapshotProposals {
+  proposals(orderBy: "created", orderDirection: desc, where: { space_in: "ousdgov.eth" }) {
+    id
+    title
+    choices
+    scores
+    state
+    start
+    end
+    link
+    quorum
+    created
+    updated
+  }
+}
