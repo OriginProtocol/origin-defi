@@ -1,5 +1,6 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   InfoTooltip,
   LoadingLabel,
@@ -9,7 +10,7 @@ import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
-import { useStakingAPY, useStakingInfo, useTotalLockedUp } from '../hooks';
+import { useStakingAPY, useTotalLockedUp } from '../hooks';
 import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
@@ -24,7 +25,7 @@ export const StackingHeader = () => {
       ogvTotalLockedPercent,
     },
     isLoading,
-  } = useStakingInfo();
+  } = useGovernanceInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
   const { data: vApy, isLoading: isvApyLoading } = useStakingAPY(100, 48);

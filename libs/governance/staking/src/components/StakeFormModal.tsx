@@ -11,6 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   BigIntInput,
   InfoTooltip,
@@ -23,7 +24,7 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { useStakingAPY, useStakingInfo } from '../hooks';
+import { useStakingAPY } from '../hooks';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -32,7 +33,7 @@ export const StakeFormModal = (props: DialogProps) => {
   const { formatAmount } = useFormat();
   const {
     data: { ogvBalance },
-  } = useStakingInfo();
+  } = useGovernanceInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
