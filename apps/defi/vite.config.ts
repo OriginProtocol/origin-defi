@@ -33,6 +33,7 @@ export default defineConfig({
     svgr(),
     react({
       babel: {
+        compact: true,
         plugins: [
           [
             'formatjs',
