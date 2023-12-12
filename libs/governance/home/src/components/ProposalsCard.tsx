@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Box,
   Button,
@@ -8,9 +10,11 @@ import {
   Typography,
 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import { useInfiniteProposalsQuery } from '../queries.generated';
+import { ProposalsFilters } from './ProposalsFilters';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -19,9 +23,14 @@ import type { Proposal } from '../types';
 
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
+  const [filters, setFilters] = useState([]);
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useInfiniteProposalsQuery(
-      { cursor: undefined },
+      {
+        cursor: undefined,
+        first: 5,
+        status: isNilOrEmpty(filters) ? undefined : filters,
+      },
       {
         getNextPageParam: (last) => {
           if (!last.ogvProposalsConnection.pageInfo.hasNextPage) {
@@ -60,20 +69,10 @@ export const ProposalsCard = (props: CardProps) => {
     ) ?? [];
 
   return (
-    <Card>
+    <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Proposals' })}
-        action={
-          <Button>
-            {intl.formatMessage({ defaultMessage: 'All Proposals' })}
-            &nbsp;
-            <Box
-              component="img"
-              src="images/icons/chevron-down-regular.svg"
-              width={10}
-            />
-          </Button>
-        }
+        action={<ProposalsFilters filters={filters} setFilters={setFilters} />}
       />
       <Stack divider={<Divider />}>
         {proposals.map((proposal) => (

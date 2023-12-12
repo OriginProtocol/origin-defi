@@ -32,6 +32,9 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "45EvZ3": {
+    "defaultMessage": "Minimum received with {slippage} slippage:"
+  },
   "4D9M13": {
     "defaultMessage": "Swap with CurvePool"
   },

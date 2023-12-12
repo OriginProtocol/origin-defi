@@ -1,5 +1,10 @@
-query Proposals($cursor: String) {
-  ogvProposalsConnection(first: 10, after: $cursor, orderBy: timestamp_DESC) {
+query Proposals($first: Int, $cursor: String, $status: [OGVProposalState!]) {
+  ogvProposalsConnection(
+    first: $first
+    after: $cursor
+    orderBy: timestamp_DESC
+    where: { status_in: $status }
+  ) {
     totalCount
     pageInfo {
       hasNextPage
@@ -18,5 +23,11 @@ query Proposals($cursor: String) {
         status
       }
     }
+  }
+}
+
+query ProposalsCount($status: [OGVProposalState!]) {
+  ogvProposalsConnection(orderBy: id_ASC, where: { status_in: $status }) {
+    totalCount
   }
 }

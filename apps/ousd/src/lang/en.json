@@ -83,6 +83,20 @@
       "value": "Return to Home Page"
     }
   ],
+  "45EvZ3": [
+    {
+      "type": 0,
+      "value": "Minimum received with "
+    },
+    {
+      "type": 1,
+      "value": "slippage"
+    },
+    {
+      "type": 0,
+      "value": " slippage:"
+    }
+  ],
   "5RMD2G": [
     {
       "type": 0,
