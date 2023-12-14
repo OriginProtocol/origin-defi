@@ -403,6 +403,7 @@ export const theme = createTheme({
           fontWeight: 700,
           lineHeight: 1.75,
           color: theme.palette.text.primary,
+          textTransform: 'none',
         }),
       },
     },
