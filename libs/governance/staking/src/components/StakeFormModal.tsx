@@ -22,6 +22,7 @@ import { tokens } from '@origin/shared/contracts';
 import {
   ApprovalButton,
   ConnectedButton,
+  TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -407,9 +408,7 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
         </Collapse>
         <Stack>
-          <Button variant="action">
-            {intl.formatMessage({ defaultMessage: 'Stake' })}
-          </Button>
+          <TransactionButton token={tokens.mainnet.DAI} />
         </Stack>
       </DialogContent>
     </Dialog>

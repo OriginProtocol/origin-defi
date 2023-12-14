@@ -63,7 +63,7 @@ export const ApprovalButton = ({
     abi: erc20ABI,
     functionName: 'approve',
     args: [spender.address, amount],
-    enabled: amount > 0n,
+    enabled: isConnected && amount > 0n,
   });
   const {
     write,
