@@ -1,6 +1,5 @@
 export * from './activities';
 export * from './analytics';
-export * from './approver';
 export * from './chart';
 export * from './console';
 export * from './curve';

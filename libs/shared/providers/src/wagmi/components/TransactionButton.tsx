@@ -14,19 +14,18 @@ import {
 import {
   SwapNotification,
   useDeleteActivity,
-  usePushActivity,
   useUpdateActivity,
 } from '../../activities';
 import { usePushNotification } from '../../notifications';
 
 import type { ButtonProps } from '@mui/material';
-import type { Contract } from '@origin/shared/contracts';
+import type { Contract, Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity } from '../../activities';
 
 export type TransactionButtonProps = {
-  contract: Contract;
+  contract: Contract | Token;
   functionName: string;
   args?: unknown[];
   value?: bigint;
@@ -54,9 +53,8 @@ export const TransactionButton = ({
 }: TransactionButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [activity, setActivity] = useState<Activity>(null);
+  const [activity] = useState<Activity>(null);
   const pushNotification = usePushNotification();
-  const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const { config } = usePrepareContractWrite({
@@ -178,37 +176,17 @@ export const TransactionButton = ({
 
   const handleClick = () => {
     write?.();
-    if (!disableActivity) {
-      const activity = pushActivity({
-        tokenIn: contract,
-
-        type: 'swap',
-        status: 'pending',
-        amountIn: amount,
-      });
-      setActivity(activity);
-    } else {
-      setActivity({
-        id: 'approval',
-        createdOn: Date.now(),
-        tokenIn: token,
-        tokenOut: spender,
-        type: 'approval',
-        status: 'pending',
-        amountIn: amount,
-      });
-    }
   };
 
   const buttonLabel = isWriteLoading
     ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-    : isApprovalLoading
+    : isTxLoading
       ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
-        ? intl.formatMessage({ defaultMessage: 'Approve' })
+        ? intl.formatMessage({ defaultMessage: 'Swap' })
         : label;
   const buttonDisabled =
-    !isConnected || isWriteLoading || isApprovalLoading || disabled;
+    !isConnected || isWriteLoading || isTxLoading || disabled;
 
   return (
     <Button {...rest} disabled={buttonDisabled} onClick={handleClick}>
