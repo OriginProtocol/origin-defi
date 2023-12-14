@@ -84,7 +84,12 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'Voting Power' }),
         cell: (info) => (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Box component="img" src={tokens.mainnet.veOGV.icon} width={24} />
+            <Box
+              component="img"
+              src={tokens.mainnet.veOGV.icon}
+              width={24}
+              sx={{ transform: 'translateY(4px)' }}
+            />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),

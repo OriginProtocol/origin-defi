@@ -61,7 +61,12 @@ export const UserVotingPowerCard = (props: CardProps) => {
       >
         <Typography>{tokens.mainnet.veOGV.symbol}</Typography>
         <Stack direction="row" spacing={1}>
-          <Box component="img" src={tokens.mainnet.veOGV.icon} width={20} />
+          <Box
+            component="img"
+            src={tokens.mainnet.veOGV.icon}
+            width={20}
+            sx={{ transform: 'translateY(4px)' }}
+          />
           <Typography>
             {isLoading ? <Skeleton width={60} /> : formatAmount(balance)}
           </Typography>
