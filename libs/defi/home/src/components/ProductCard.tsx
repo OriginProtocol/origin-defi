@@ -124,13 +124,8 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
       >
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'TVL' })}
-          value={
-            isQueryDataLoading ? (
-              <Skeleton width={60} height={24} />
-            ) : (
-              formatCurrency(queryData.tvl)
-            )
-          }
+          value={formatCurrency(queryData.tvl)}
+          isLoading={isQueryDataLoading}
           sx={{
             width: 0.33,
             py: 2,
@@ -138,13 +133,8 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Current price' })}
-          value={
-            isPricesLoading ? (
-              <Skeleton width={60} height={24} />
-            ) : (
-              formatCurrency(prices[product.token.symbol])
-            )
-          }
+          value={formatCurrency(prices[product.token.symbol])}
+          isLoading={isPricesLoading}
           sx={{
             width: 0.33,
             py: 2,
