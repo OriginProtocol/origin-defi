@@ -1,0 +1,5 @@
+query HoldersCount {
+  ogvAddressesConnection(orderBy: id_ASC, where: { balance_gt: 0 }) {
+    totalCount
+  }
+}

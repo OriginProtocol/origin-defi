@@ -1,17 +1,11 @@
 query Proposals {
   ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
-    id    
+    id
     description
     timestamp
     startBlock
     endBlock
     lastUpdated
-    status    
-  }
-}
-
-query HoldersCount {
-  ogvAddressesConnection(orderBy: id_ASC) {
-    totalCount
+    status
   }
 }

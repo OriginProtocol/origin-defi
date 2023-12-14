@@ -1,10 +1,12 @@
 import { Card, CardContent, Stack } from '@mui/material';
-import { OgvProposalState } from '@origin/governance/shared';
+import {
+  OgvProposalState,
+  useHoldersCountQuery,
+} from '@origin/governance/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { useProposals } from '../hooks';
-import { useHoldersCountQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 
@@ -31,7 +33,7 @@ export const ProposalsSummaryCard = (props: CardProps) => {
         <Stack direction="row" spacing={2}>
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Proposals' })}
-            value={proposals?.length.toString() ?? '0'}
+            value={proposals?.length ?? 0}
             isLoading={isProposalsLoading}
             {...valueLabelProps}
           />
@@ -43,10 +45,7 @@ export const ProposalsSummaryCard = (props: CardProps) => {
           />
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Registered Voters' })}
-            value={
-              holdersCount?.ogvAddressesConnection?.totalCount?.toString() ??
-              '0'
-            }
+            value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
             isLoading={isHoldersCountLoading}
             {...valueLabelProps}
           />

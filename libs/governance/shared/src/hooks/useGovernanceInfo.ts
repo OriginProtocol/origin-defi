@@ -46,6 +46,12 @@ export const useGovernanceInfo = () => {
             functionName: 'balanceOf',
             args: [tokens.mainnet.veOGV.address],
           },
+          {
+            address: tokens.mainnet.OGV.address,
+            abi: tokens.mainnet.OGV.abi,
+            functionName: 'allowance',
+            args: [address, tokens.mainnet.veOGV.address],
+          },
         ],
         allowFailure: true,
       });
@@ -57,6 +63,7 @@ export const useGovernanceInfo = () => {
         veOgvBalance,
         veOgvRewards,
         ogvTotalLocked,
+        ogvVeOgvAllowance,
       ] = data.map((d) => (d.status === 'success' ? d.result : 0n));
 
       const votingPowerPercent =
@@ -75,6 +82,7 @@ export const useGovernanceInfo = () => {
         votingPowerPercent,
         ogvTotalLocked,
         ogvTotalLockedPercent,
+        ogvVeOgvAllowance,
       };
     },
     placeholderData: {
@@ -86,6 +94,7 @@ export const useGovernanceInfo = () => {
       votingPowerPercent: 0,
       ogvTotalLocked: 0n,
       ogvTotalLockedPercent: 0,
+      ogvVeOgvAllowance: 0n,
     },
   });
 };

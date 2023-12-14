@@ -4,6 +4,7 @@ import {
   alpha,
   Box,
   Button,
+  Collapse,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -18,11 +19,17 @@ import {
   LoadingLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import {
+  ApprovalButton,
+  ConnectedButton,
+  useFormat,
+} from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../hooks';
 
@@ -30,18 +37,23 @@ import type { ButtonProps, DialogProps } from '@mui/material';
 
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
+  const { formatQuantity, formatAmount } = useFormat();
+  const { isConnected } = useAccount();
   const {
-    data: { ogvBalance },
+    data: { ogvBalance, veOgvTotalSupply, ogvVeOgvAllowance },
+    isLoading: isInfoLoading,
   } = useGovernanceInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const { data, refetch } = useStakingAPY(amount, duration, { enabled: false });
+  const { data: staking, refetch } = useStakingAPY(amount, duration, {
+    enabled: false,
+  });
 
   useDebouncedEffect(
     () => {
       if (amount > 0n && duration > 0) {
+        setIsLoading(true);
         refetch();
       }
     },
@@ -50,17 +62,20 @@ export const StakeFormModal = (props: DialogProps) => {
   );
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(data) || amount === 0n || duration === 0)) {
+    if (
+      isLoading &&
+      (!isNilOrEmpty(staking?.stakingAPY) || amount === 0n || duration === 0)
+    ) {
       setIsLoading(false);
     }
-  }, [amount, data, duration, isLoading]);
+  }, [amount, staking, duration, isLoading]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(duration > 0);
     setAmount(val);
   };
 
-  const handleDurationChange = (event: Event, newValue: number | number[]) => {
+  const handleDurationChange = (_, newValue: number | number[]) => {
     setIsLoading(amount > 0n);
     setDuration(newValue as number);
   };
@@ -69,7 +84,16 @@ export const StakeFormModal = (props: DialogProps) => {
     setAmount(ogvBalance);
   };
 
-  const maxDisabled = ogvBalance === 0n;
+  const votinPowerPercent =
+    (staking?.veOGVReceived ?? 0) /
+    +formatUnits(veOgvTotalSupply, tokens.mainnet.OGV.decimals);
+  const showApprove =
+    isConnected &&
+    !isInfoLoading &&
+    amount > 0n &&
+    duration > 0 &&
+    amount <= ogvBalance &&
+    amount > ogvVeOgvAllowance;
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
@@ -103,7 +127,7 @@ export const StakeFormModal = (props: DialogProps) => {
               </Typography>
               <Button
                 onClick={handleMaxClick}
-                disabled={maxDisabled}
+                disabled={ogvBalance === 0n}
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -266,7 +290,7 @@ export const StakeFormModal = (props: DialogProps) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography
+              <LoadingLabel
                 variant="h3"
                 sx={{
                   background:
@@ -274,9 +298,15 @@ export const StakeFormModal = (props: DialogProps) => {
                   backgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
+                sWidth={60}
+                isLoading={isLoading}
               >
-                ~52.89%
-              </Typography>
+                {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </LoadingLabel>
               <Stack direction="row" spacing={1}>
                 <Typography sx={{ strong: { minWidth: 92 } }}>
                   {intl.formatMessage({
@@ -318,7 +348,7 @@ export const StakeFormModal = (props: DialogProps) => {
             <Stack
               direction="row"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="baseline"
             >
               <Stack direction="row" alignItems="baseline">
                 <Box
@@ -326,41 +356,60 @@ export const StakeFormModal = (props: DialogProps) => {
                   src={tokens.mainnet.veOGV.icon}
                   width={28}
                   mr={1}
+                  sx={{ transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
                   mr={0.5}
                   isLoading={isLoading}
-                  sWidth={100}
+                  sWidth={60}
                 >
-                  {formatAmount(data?.[1])}
+                  {formatQuantity(staking?.veOGVReceived)}
                 </LoadingLabel>
+                &nbsp;
                 <Typography color="text.secondary">
                   {tokens.mainnet.veOGV.symbol}
                 </Typography>
               </Stack>
-              <Stack direction="row" spacing={1}>
-                <Typography sx={{ strong: { minWidth: 92 } }}>
+              <Stack direction="row" alignItems="baseline">
+                <Typography sx={{ mr: 1, strong: { minWidth: 92 } }}>
                   {intl.formatMessage({
                     defaultMessage: 'Voting Power:',
                   })}
                 </Typography>
-                <Typography fontWeight={700}>
-                  {intl.formatNumber(0.07645, {
+                <LoadingLabel fontWeight={700} isLoading={isLoading}>
+                  {votinPowerPercent <= 1e-4 && votinPowerPercent > 0 && `~ `}
+                  {intl.formatNumber(votinPowerPercent, {
                     style: 'percent',
+                    minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
-                  &nbsp;
-                  <InfoTooltip
-                    tooltipLabel={intl.formatMessage({
-                      defaultMessage:
-                        'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
-                    })}
-                  />
-                </Typography>
+                </LoadingLabel>
+                <InfoTooltip
+                  ml={0.75}
+                  tooltipLabel={intl.formatMessage({
+                    defaultMessage:
+                      'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                  })}
+                />
               </Stack>
             </Stack>
           </Stack>
+        </Stack>
+        <Collapse in={showApprove}>
+          <Stack>
+            <ApprovalButton
+              token={tokens.mainnet.OGV}
+              spender={tokens.mainnet.veOGV}
+              amount={amount}
+              variant="action"
+            />
+          </Stack>
+        </Collapse>
+        <Stack>
+          <Button variant="action">
+            {intl.formatMessage({ defaultMessage: 'Stake' })}
+          </Button>
         </Stack>
       </DialogContent>
     </Dialog>
@@ -382,6 +431,7 @@ export const StakeButton = (props: ButtonProps) => {
         }}
       />
       <StakeFormModal
+        key={open ? 'open' : 'closed'}
         open={open}
         onClose={() => {
           setOpen(false);

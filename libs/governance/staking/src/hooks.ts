@@ -1,8 +1,8 @@
 import { tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty, scale } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from './queries.generated';
@@ -33,9 +33,15 @@ export const useStakingAPY = (
   amount: bigint | number,
   monthDuration: number,
   options?: UseQueryOptions<
-    number,
+    {
+      stakingAPY: number;
+      veOGVReceived: number;
+    },
     Error,
-    number,
+    {
+      stakingAPY: number;
+      veOGVReceived: number;
+    },
     ['useStakingAPY', string, number]
   >,
 ) => {
@@ -44,8 +50,8 @@ export const useStakingAPY = (
     queryFn: async () => {
       const amt =
         typeof amount === 'bigint'
-          ? +formatUnits(amount, tokens.mainnet.OGV.decimals)
-          : amount;
+          ? amount
+          : parseUnits(amount.toString(), tokens.mainnet.veOGV.decimals);
 
       const res = await readContracts({
         contracts: [
@@ -53,10 +59,7 @@ export const useStakingAPY = (
             address: tokens.mainnet.veOGV.address,
             abi: tokens.mainnet.veOGV.abi,
             functionName: 'previewPoints',
-            args: [
-              scale(BigInt(amt), 0, tokens.mainnet.OGV.decimals),
-              BigInt(monthDuration * 2629800),
-            ],
+            args: [amt, BigInt(monthDuration * 2629800)],
           },
           {
             address: tokens.mainnet.veOGV.address,
@@ -76,7 +79,14 @@ export const useStakingAPY = (
           ? +formatUnits(res[1].result, tokens.mainnet.veOGV.decimals)
           : 100e6;
 
-      return getRewardsApy(preview, amt, veOgvTotalSupply);
+      return {
+        stakingAPY: getRewardsApy(
+          preview,
+          +formatUnits(amt, tokens.mainnet.veOGV.decimals),
+          veOgvTotalSupply,
+        ),
+        veOGVReceived: preview,
+      };
     },
     ...options,
   });

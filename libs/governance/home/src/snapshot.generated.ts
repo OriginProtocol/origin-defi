@@ -436,6 +436,7 @@ export type Space = {
   template?: Maybe<Scalars['String']['output']>;
   terms?: Maybe<Scalars['String']['output']>;
   treasuries?: Maybe<Array<Maybe<Treasury>>>;
+  turbo?: Maybe<Scalars['Boolean']['output']>;
   twitter?: Maybe<Scalars['String']['output']>;
   validation?: Maybe<Validation>;
   verified?: Maybe<Scalars['Boolean']['output']>;

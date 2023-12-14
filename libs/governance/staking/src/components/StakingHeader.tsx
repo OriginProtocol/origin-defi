@@ -1,21 +1,23 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { useGovernanceInfo } from '@origin/governance/shared';
+import {
+  useGovernanceInfo,
+  useHoldersCountQuery,
+} from '@origin/governance/shared';
 import {
   InfoTooltip,
   LoadingLabel,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 
 import { useStakingAPY, useTotalLockedUp } from '../hooks';
 import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
   const {
     data: {
       ogvBalance,
@@ -28,7 +30,9 @@ export const StackingHeader = () => {
   } = useGovernanceInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
-  const { data: vApy, isLoading: isvApyLoading } = useStakingAPY(100, 48);
+  const { data: staking, isLoading: isStakingLoading } = useStakingAPY(100, 48);
+  const { data: holdersCount, isLoading: isHoldersCountLoading } =
+    useHoldersCountQuery();
 
   return (
     <Stack spacing={3}>
@@ -98,7 +102,8 @@ export const StackingHeader = () => {
                   },
                 }}
                 sx={{ width: 1 }}
-                value={'0'}
+                value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
+                isLoading={isHoldersCountLoading}
                 valueProps={{ variant: 'h3' }}
               />
               <ValueLabel
@@ -122,12 +127,12 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={intl.formatNumber(vApy / 100, {
+                value={intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
-                isLoading={isvApyLoading}
+                isLoading={isStakingLoading}
                 valueProps={{
                   variant: 'h3',
                   sx: {
@@ -173,7 +178,10 @@ export const StackingHeader = () => {
                         sWidth={80}
                         isLoading={isLoading}
                       >
-                        {formatAmount(ogvBalance)}
+                        {intl.formatNumber(
+                          +formatUnits(ogvBalance, tokens.mainnet.OGV.decimals),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -197,7 +205,13 @@ export const StackingHeader = () => {
                         sWidth={80}
                         isLoading={isTotalLockupsLoading}
                       >
-                        {formatAmount(totalLockups)}
+                        {intl.formatNumber(
+                          +formatUnits(
+                            totalLockups,
+                            tokens.mainnet.OGV.decimals,
+                          ),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -261,7 +275,10 @@ export const StackingHeader = () => {
                       sWidth={80}
                       isLoading={isLoading}
                     >
-                      {formatAmount(veOgvRewards)}
+                      {intl.formatNumber(
+                        +formatUnits(veOgvRewards, tokens.mainnet.OGV.decimals),
+                        { notation: 'compact', maximumSignificantDigits: 4 },
+                      )}
                     </LoadingLabel>
                   </Stack>
                 }
@@ -292,6 +309,7 @@ export const StackingHeader = () => {
                       component="img"
                       src={tokens.mainnet.veOGV.icon}
                       width={20}
+                      sx={{ transform: 'translateY(4px)' }}
                     />
                     <Stack>
                       <LoadingLabel
@@ -299,7 +317,13 @@ export const StackingHeader = () => {
                         sWidth={80}
                         isLoading={isLoading}
                       >
-                        {formatAmount(veOgvBalance)}
+                        {intl.formatNumber(
+                          +formatUnits(
+                            veOgvBalance,
+                            tokens.mainnet.OGV.decimals,
+                          ),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                       <LoadingLabel
                         fontSize={12}
