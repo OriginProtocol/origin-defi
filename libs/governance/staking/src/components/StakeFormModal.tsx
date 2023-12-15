@@ -18,6 +18,7 @@ import {
   InfoTooltip,
   LoadingLabel,
 } from '@origin/shared/components';
+import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   ApprovalButton,
@@ -27,6 +28,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -39,6 +41,7 @@ import type { ButtonProps, DialogProps } from '@mui/material';
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
+  const queryClient = useQueryClient();
   const { isConnected } = useAccount();
   const {
     data: { ogvBalance, veOgvTotalSupply, ogvVeOgvAllowance },
@@ -94,6 +97,13 @@ export const StakeFormModal = (props: DialogProps) => {
     amount > 0n &&
     duration > 0 &&
     amount <= ogvBalance &&
+    amount > ogvVeOgvAllowance;
+  const stakeDisabled =
+    !isConnected ||
+    isInfoLoading ||
+    amount === 0n ||
+    duration === 0 ||
+    amount > ogvBalance ||
     amount > ogvVeOgvAllowance;
 
   return (
@@ -404,12 +414,52 @@ export const StakeFormModal = (props: DialogProps) => {
               spender={tokens.mainnet.veOGV}
               amount={amount}
               variant="action"
+              disabled={isInfoLoading}
+              onSuccess={() => {
+                queryClient.invalidateQueries({
+                  queryKey: ['useGovernanceInfo'],
+                });
+              }}
             />
           </Stack>
         </Collapse>
-        <Stack>
-          <TransactionButton token={tokens.mainnet.DAI} />
-        </Stack>
+        <TransactionButton
+          contract={tokens.mainnet.veOGV}
+          functionName="stake"
+          args={[amount, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          disabled={stakeDisabled}
+          variant="action"
+          label={
+            amount > ogvBalance
+              ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+              : intl.formatMessage({ defaultMessage: 'Stake' })
+          }
+          activityTitle={intl.formatMessage({ defaultMessage: 'Stake OGV' })}
+          activitySubtitle={intl.formatMessage(
+            {
+              defaultMessage:
+                'Lock {amount} OGV for {duration,plural,=1{# month} other{# months}}',
+            },
+            {
+              amount: intl.formatNumber(
+                +formatUnits(amount, tokens.mainnet.OGV.decimals),
+                { notation: 'compact', maximumSignificantDigits: 4 },
+              ),
+              duration,
+            },
+          )}
+          activityEndIcon={
+            <Box
+              component="img"
+              src={tokens.mainnet.veOGV.icon}
+              width={24}
+              sx={{ transform: 'translateY(4px)' }}
+            />
+          }
+          onSuccess={() => {
+            props.onClose(null, 'backdropClick');
+          }}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -1,3 +1,4 @@
+import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
@@ -59,7 +60,7 @@ export const useStakingAPY = (
             address: tokens.mainnet.veOGV.address,
             abi: tokens.mainnet.veOGV.abi,
             functionName: 'previewPoints',
-            args: [amt, BigInt(monthDuration * 2629800)],
+            args: [amt, BigInt(monthDuration * MILLISECONDS_IN_MONTH)],
           },
           {
             address: tokens.mainnet.veOGV.address,
