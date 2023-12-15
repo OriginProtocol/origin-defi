@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
@@ -31,6 +31,7 @@ export type ApprovalButtonProps = {
   spender: Token;
   amount: bigint;
   label?: string;
+  onClick?: () => void;
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
@@ -43,6 +44,7 @@ export const ApprovalButton = ({
   spender,
   amount,
   label,
+  onClick,
   onSuccess,
   onError,
   onUserReject,
@@ -54,16 +56,17 @@ export const ApprovalButton = ({
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [activity, setActivity] = useState<Activity>(null);
+  const done = useRef(false);
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
-  const { config } = usePrepareContractWrite({
+  const { config, error: prepareError } = usePrepareContractWrite({
     address: token.address,
     abi: erc20ABI,
     functionName: 'approve',
     args: [spender.address, amount],
-    enabled: isConnected && amount > 0n,
+    enabled: isConnected && amount > 0n && !disabled,
   });
   const {
     write,
@@ -81,11 +84,10 @@ export const ApprovalButton = ({
     if (
       !isNilOrEmpty(approvalData) &&
       !isApprovalLoading &&
-      isApprovalSuccess
+      isApprovalSuccess &&
+      !done.current
     ) {
-      if (onSuccess) {
-        onSuccess(approvalData);
-      }
+      onSuccess?.(approvalData);
       if (!disableActivity) {
         updateActivity({
           ...activity,
@@ -104,6 +106,7 @@ export const ApprovalButton = ({
           ),
         });
       }
+      done.current = true;
     }
   }, [
     activity,
@@ -118,11 +121,9 @@ export const ApprovalButton = ({
   ]);
 
   useEffect(() => {
-    if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity)) {
+    if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity) && !done.current) {
       if (isUserRejected(writeError)) {
-        if (onUserReject) {
-          onUserReject();
-        }
+        onUserReject?.();
         if (!disableActivity) {
           deleteActivity(activity.id);
         }
@@ -142,9 +143,7 @@ export const ApprovalButton = ({
           });
         }
       } else {
-        if (onError) {
-          onError(writeError);
-        }
+        onError?.(writeError);
         if (!disableActivity) {
           updateActivity({
             ...activity,
@@ -164,6 +163,7 @@ export const ApprovalButton = ({
           });
         }
       }
+      done.current = true;
     }
   }, [
     activity,
@@ -180,6 +180,7 @@ export const ApprovalButton = ({
 
   const handleClick = () => {
     write?.();
+    onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({
         tokenIn: token,
@@ -191,7 +192,7 @@ export const ApprovalButton = ({
       setActivity(activity);
     } else {
       setActivity({
-        id: 'approval',
+        id: Date.now().toString(),
         createdOn: Date.now(),
         tokenIn: token,
         tokenOut: spender,
@@ -200,6 +201,7 @@ export const ApprovalButton = ({
         amountIn: amount,
       });
     }
+    done.current = false;
   };
 
   const buttonLabel = isWriteLoading
@@ -210,7 +212,11 @@ export const ApprovalButton = ({
         ? intl.formatMessage({ defaultMessage: 'Approve' })
         : label;
   const buttonDisabled =
-    !isConnected || isWriteLoading || isApprovalLoading || disabled;
+    !isConnected ||
+    !isNilOrEmpty(prepareError) ||
+    isWriteLoading ||
+    isApprovalLoading ||
+    disabled;
 
   return (
     <Button {...rest} disabled={buttonDisabled} onClick={handleClick}>

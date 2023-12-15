@@ -1,0 +1,1 @@
+export const MILLISECONDS_IN_MONTH = 2629800;
