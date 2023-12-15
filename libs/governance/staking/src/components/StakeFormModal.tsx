@@ -35,6 +35,7 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../hooks';
+import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -325,7 +326,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </Typography>
                 <Typography fontWeight={700} minWidth={92}>
-                  {intl.formatDate(new Date(), {
+                  {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric',

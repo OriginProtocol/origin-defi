@@ -11,6 +11,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 import { formatUnits } from 'viem';
 
 import { useStakingAPY, useTotalLockedUp } from '../hooks';
@@ -18,6 +19,7 @@ import { StakeButton } from './StakeFormModal';
 
 export const StackingHeader = () => {
   const intl = useIntl();
+  const navigate = useNavigate();
   const {
     data: {
       ogvBalance,
@@ -232,6 +234,9 @@ export const StackingHeader = () => {
                   {intl.formatMessage({ defaultMessage: 'Stake' })}
                 </StakeButton>
                 <Button
+                  href="https://app.uniswap.org/swap?outputCurrency=0x9c354503C38481a7A7a51629142963F98eCC12D0&chain=mainnet"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
                   variant="outlined"
                   sx={{
                     minWidth: 160,
@@ -348,7 +353,12 @@ export const StackingHeader = () => {
                   </Stack>
                 }
               />
-              <Button variant="outlined">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'View proposals' })}
               </Button>
             </Stack>
