@@ -13,7 +13,7 @@ import type { GlobalActivityStatus } from '../types';
 
 type ApprovalNotificationProps = {
   status: GlobalActivityStatus;
-  tokenIn: Token;
+  tokenIn?: Token;
   amountIn?: bigint;
   txReceipt?: TransactionReceipt;
   error?: string;

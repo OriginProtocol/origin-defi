@@ -15,6 +15,7 @@ import { useActivityState } from '../state';
 import { ApprovalNotification } from './ApprovalNotification';
 import { RedeemNotification } from './RedeemNotification';
 import { SwapNotification } from './SwapNotification';
+import { TransactionNotification } from './TransactionNotification';
 
 import type { StackProps } from '@mui/material';
 
@@ -121,6 +122,20 @@ export const ActivityPopover = ({
                   ),
                   swap: (
                     <SwapNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                  ),
+                  transaction: (
+                    <TransactionNotification
+                      key={a.id}
+                      {...a}
+                      title={
+                        a?.title ??
+                        intl.formatMessage({
+                          defaultMessage: 'New transaction',
+                        })
+                      }
+                      subtitle={a?.subtitle ?? ''}
+                      sx={{ px: 3, py: 2 }}
+                    />
                   ),
                 })[a.type],
             )
