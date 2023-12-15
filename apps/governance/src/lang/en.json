@@ -195,6 +195,62 @@
       "value": "I agree"
     }
   ],
+  "5y98eS": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
@@ -241,6 +297,12 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8Y0yUM": [
+    {
+      "type": 0,
+      "value": "Snapshot"
     }
   ],
   "8cCxx8": [
@@ -291,6 +353,12 @@
     {
       "type": 1,
       "value": "lastPage"
+    }
+  ],
+  "Alwl9C": [
+    {
+      "type": 0,
+      "value": "Snapshot proposal"
     }
   ],
   "BLAy25": [
@@ -397,12 +465,6 @@
       "value": "OGV"
     }
   ],
-  "EWw/tK": [
-    {
-      "type": 0,
-      "value": "Apply"
-    }
-  ],
   "ErxWra": [
     {
       "type": 0,
@@ -425,6 +487,12 @@
     {
       "type": 0,
       "value": "The variable APY currently being earned on staked OGV."
+    }
+  ],
+  "Fv1ZSz": [
+    {
+      "type": 0,
+      "value": "Closed"
     }
   ],
   "GZZUyE": [
@@ -511,6 +579,18 @@
       "value": "Auto"
     }
   ],
+  "NY6umm": [
+    {
+      "type": 0,
+      "value": "Your operation has been executed"
+    }
+  ],
+  "OEgBBj": [
+    {
+      "type": 0,
+      "value": "On chain"
+    }
+  ],
   "OmyPDW": [
     {
       "type": 0,
@@ -545,12 +625,6 @@
     {
       "type": 0,
       "value": "Best"
-    }
-  ],
-  "QW+Q5N": [
-    {
-      "type": 0,
-      "value": "Clear all"
     }
   ],
   "Qz1fcp": [
@@ -669,6 +743,12 @@
       "value": "Est gas:"
     }
   ],
+  "VqXRJ4": [
+    {
+      "type": 0,
+      "value": "Stake OGV"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -733,6 +813,12 @@
       "value": "The best swap route factors in the best price after transaction costs"
     }
   ],
+  "aDYxXF": [
+    {
+      "type": 0,
+      "value": "New transaction"
+    }
+  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -769,10 +855,22 @@
       "value": "2y"
     }
   ],
+  "d21Els": [
+    {
+      "type": 0,
+      "value": "Execute"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
       "value": "Processing Transaction"
+    }
+  ],
+  "dWjKid": [
+    {
+      "type": 0,
+      "value": "All proposals"
     }
   ],
   "dtJo4Y": [
@@ -823,6 +921,12 @@
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "hzfM3P": [
+    {
+      "type": 0,
+      "value": "Transaction executed"
     }
   ],
   "iLgjES": [
@@ -927,6 +1031,12 @@
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
     }
   ],
+  "tFriEi": [
+    {
+      "type": 0,
+      "value": "Transaction error"
+    }
+  ],
   "u4BAsU": [
     {
       "type": 0,
@@ -973,53 +1083,10 @@
       "value": "Error while redeeming"
     }
   ],
-  "weP/oT": [
-    {
-      "type": 0,
-      "value": "Voting power"
-    }
-  ],
   "wqlXwW": [
     {
       "type": 0,
       "value": "Wrong Network"
-    }
-  ],
-  "xM6PS8": [
-    {
-      "offset": 0,
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "All Proposals"
-            }
-          ]
-        },
-        "=1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "1 Filter"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " Filters"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
     }
   ],
   "xZIm6b": [

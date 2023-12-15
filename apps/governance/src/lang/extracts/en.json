@@ -83,6 +83,9 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
+  "5y98eS": {
+    "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
+  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
@@ -107,6 +110,9 @@
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
+  "8Y0yUM": {
+    "defaultMessage": "Snapshot"
+  },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
@@ -127,6 +133,9 @@
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "Alwl9C": {
+    "defaultMessage": "Snapshot proposal"
   },
   "BLAy25": {
     "defaultMessage": "Extend"
@@ -164,9 +173,6 @@
   "EVmlnF": {
     "defaultMessage": "OGV"
   },
-  "EWw/tK": {
-    "defaultMessage": "Apply"
-  },
   "ErxWra": {
     "defaultMessage": "Self"
   },
@@ -178,6 +184,9 @@
   },
   "FVfYnP": {
     "defaultMessage": "The variable APY currently being earned on staked OGV."
+  },
+  "Fv1ZSz": {
+    "defaultMessage": "Closed"
   },
   "GZZUyE": {
     "defaultMessage": "My vAPY"
@@ -221,6 +230,12 @@
   "NXI/XL": {
     "defaultMessage": "Auto"
   },
+  "NY6umm": {
+    "defaultMessage": "Your operation has been executed"
+  },
+  "OEgBBj": {
+    "defaultMessage": "On chain"
+  },
   "OmyPDW": {
     "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
   },
@@ -238,9 +253,6 @@
   },
   "PzlMqG": {
     "defaultMessage": "Best"
-  },
-  "QW+Q5N": {
-    "defaultMessage": "Clear all"
   },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
@@ -290,6 +302,9 @@
   "Vn/9nH": {
     "defaultMessage": "Est gas:"
   },
+  "VqXRJ4": {
+    "defaultMessage": "Stake OGV"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
@@ -320,6 +335,9 @@
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
   },
+  "aDYxXF": {
+    "defaultMessage": "New transaction"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -338,8 +356,14 @@
   "d0O17Z": {
     "defaultMessage": "2y"
   },
+  "d21Els": {
+    "defaultMessage": "Execute"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
+  },
+  "dWjKid": {
+    "defaultMessage": "All proposals"
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
@@ -361,6 +385,9 @@
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "hzfM3P": {
+    "defaultMessage": "Transaction executed"
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
@@ -413,6 +440,9 @@
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
   },
+  "tFriEi": {
+    "defaultMessage": "Transaction error"
+  },
   "u4BAsU": {
     "defaultMessage": "View proposals"
   },
@@ -434,14 +464,8 @@
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
   },
-  "weP/oT": {
-    "defaultMessage": "Voting power"
-  },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
-  },
-  "xM6PS8": {
-    "defaultMessage": "{count,plural,=0{All Proposals} =1{1 Filter} other{# Filters}}"
   },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"

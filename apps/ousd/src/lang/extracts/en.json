@@ -149,6 +149,9 @@
   "NXI/XL": {
     "defaultMessage": "Auto"
   },
+  "NY6umm": {
+    "defaultMessage": "Your operation has been executed"
+  },
   "O1F5Cx": {
     "defaultMessage": "Connect your wallet to see your history"
   },
@@ -215,6 +218,9 @@
   "aAMuJm": {
     "defaultMessage": "7-Day Trailing APY"
   },
+  "aDYxXF": {
+    "defaultMessage": "New transaction"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -226,6 +232,9 @@
   },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
+  },
+  "d21Els": {
+    "defaultMessage": "Execute"
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
@@ -247,6 +256,9 @@
   },
   "gcuDcH": {
     "defaultMessage": "Sent"
+  },
+  "hzfM3P": {
+    "defaultMessage": "Transaction executed"
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
@@ -289,6 +301,9 @@
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+  },
+  "tFriEi": {
+    "defaultMessage": "Transaction error"
   },
   "tio9Gt": {
     "defaultMessage": "IPFS"
