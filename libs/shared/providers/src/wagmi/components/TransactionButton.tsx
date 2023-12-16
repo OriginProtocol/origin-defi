@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { capitalize } from '@mui/material';
+import { SeverityIcon } from '@origin/shared/components';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import {
@@ -76,7 +78,6 @@ export const TransactionButton = ({
     value,
     enabled: isConnected && !!contract?.address && !disabled,
   });
-  console.log(config);
   const {
     write,
     data: writeData,
@@ -85,6 +86,7 @@ export const TransactionButton = ({
   } = useContractWrite(config);
   const {
     data: txData,
+    error: txError,
     isLoading: isTxLoading,
     isSuccess: isTxSuccess,
   } = useWaitForTransaction({ hash: writeData?.hash });
@@ -140,8 +142,13 @@ export const TransactionButton = ({
   ]);
 
   useEffect(() => {
-    if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity) && !done.current) {
-      if (isUserRejected(writeError)) {
+    if (
+      (!isNilOrEmpty(writeError) || !isNilOrEmpty(txError)) &&
+      !isNilOrEmpty(activity) &&
+      !done.current
+    ) {
+      const err = isNilOrEmpty(writeError) ? txError : writeError;
+      if (isUserRejected(err)) {
         onUserReject?.();
         if (!disableActivity) {
           deleteActivity(activity.id);
@@ -151,24 +158,24 @@ export const TransactionButton = ({
             content: (
               <TransactionNotification
                 {...activity}
+                icon={<SeverityIcon severity="warning" />}
                 title={intl.formatMessage({
                   defaultMessage: 'Operation Cancelled',
                 })}
                 subtitle={intl.formatMessage({
                   defaultMessage: 'User rejected operation',
                 })}
-                endIcon={activityEndIcon}
               />
             ),
           });
         }
       } else {
-        onError?.(writeError);
+        onError?.(err);
         if (!disableActivity) {
           updateActivity({
             ...activity,
             status: 'error',
-            error: writeError?.message,
+            error: err?.message,
           });
         }
         if (!disableNotification) {
@@ -179,10 +186,9 @@ export const TransactionButton = ({
                 title={intl.formatMessage({
                   defaultMessage: 'Transaction error',
                 })}
-                subtitle={writeError.message}
+                subtitle={err.message}
                 status="error"
-                error={writeError.message}
-                endIcon={activityEndIcon}
+                error={err.message}
               />
             ),
           });
@@ -200,6 +206,7 @@ export const TransactionButton = ({
     onError,
     onUserReject,
     pushNotification,
+    txError,
     updateActivity,
     writeError,
   ]);
@@ -218,7 +225,7 @@ export const TransactionButton = ({
       setActivity(activity);
     } else {
       setActivity({
-        id: 'approval',
+        id: Date.now().toString(),
         createdOn: Date.now(),
         title: activityTitle,
         subtitle: activitySubtitle,
@@ -235,7 +242,7 @@ export const TransactionButton = ({
     : isTxLoading
       ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
-        ? intl.formatMessage({ defaultMessage: 'Execute' })
+        ? capitalize(functionName)
         : label;
   const buttonDisabled =
     !isConnected ||

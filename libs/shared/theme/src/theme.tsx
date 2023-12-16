@@ -50,6 +50,9 @@ export const theme = createTheme({
     error: {
       main: '#FF4E4E',
     },
+    info: {
+      main: '#586CF8',
+    },
   },
   typography: {
     fontFamily: 'Inter, Helvetica, Arial, sans-serif',

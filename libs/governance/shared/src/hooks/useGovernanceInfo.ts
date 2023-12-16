@@ -85,16 +85,5 @@ export const useGovernanceInfo = () => {
         ogvVeOgvAllowance,
       };
     },
-    placeholderData: {
-      ogvTotalSupply: 0n,
-      veOgvTotalSupply: 0n,
-      ogvBalance: 0n,
-      veOgvBalance: 0n,
-      veOgvRewards: 0n,
-      votingPowerPercent: 0,
-      ogvTotalLocked: 0n,
-      ogvTotalLockedPercent: 0,
-      ogvVeOgvAllowance: 0n,
-    },
   });
 };

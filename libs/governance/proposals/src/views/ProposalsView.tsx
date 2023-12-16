@@ -10,7 +10,7 @@ import { ProposalsCard } from '../components/ProposalsCard';
 import { ProposalsSummaryCard } from '../components/ProposalsSummaryCard';
 import { VoteDelegationCard } from '../components/VoteDelegationCard';
 
-export const HomeView = () => {
+export const ProposalsView = () => {
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>

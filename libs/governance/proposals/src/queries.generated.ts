@@ -5,7 +5,7 @@ import { graphqlClient } from '@origin/governance/shared';
 export type ProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ProposalsQuery = { __typename?: 'Query', ogvProposals: Array<{ __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState }> };
+export type ProposalsQuery = { __typename?: 'Query', ogvProposals: Array<{ __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null> }> };
 
 
 export const ProposalsDocument = `
@@ -18,6 +18,8 @@ export const ProposalsDocument = `
     endBlock
     lastUpdated
     status
+    choices
+    scores
   }
 }
     `;

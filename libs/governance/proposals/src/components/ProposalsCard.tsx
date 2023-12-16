@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Button,
   Card,
@@ -11,17 +12,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { SliderSwitch, TooltipLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
 import { useProposals } from '../hooks';
-import { ProposalsFilters } from './ProposalsFilters';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
+import type { Option } from '@origin/shared/components';
 
 import type { Proposal } from '../types';
 
@@ -29,35 +32,46 @@ const PAGE_SIZE = 10;
 
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
-  const [filters, setFilters] = useState([]);
+  const [filter, setFilter] = useState(null);
   const [limit, setLimit] = useState(PAGE_SIZE);
   const { data: proposals, isLoading: isProposalsLoading } = useProposals({
     select: (data) => {
-      if (isNilOrEmpty(filters) || isNilOrEmpty(data)) {
+      if (isNilOrEmpty(filter) || isNilOrEmpty(data)) {
         return data;
       }
 
-      return data.filter((p) => filters.includes(p.type));
+      return data.filter((p) => filter === p.type);
     },
-    placeholderData: [],
   });
 
   const handleShowMoreClick = () => {
     setLimit(Math.min(limit + PAGE_SIZE, proposals.length));
   };
 
-  const paginatedProposals = take(limit, proposals);
+  const paginatedProposals = take(limit, proposals ?? []);
+  const filterOptions: Option[] = [
+    { label: intl.formatMessage({ defaultMessage: 'All' }), value: null },
+    {
+      label: intl.formatMessage({ defaultMessage: 'On-chain' }),
+      value: 'onchain',
+    },
+    {
+      label: intl.formatMessage({ defaultMessage: 'Snapshot' }),
+      value: 'offchain',
+    },
+  ];
 
   return (
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Proposals' })}
         action={
-          <ProposalsFilters
-            filters={filters}
-            setFilters={(filters) => {
+          <SliderSwitch
+            options={filterOptions}
+            value={filter}
+            onChange={(value) => {
               setLimit(PAGE_SIZE);
-              setFilters(filters);
+              setFilter(value);
             }}
           />
         }
@@ -100,21 +114,45 @@ type ProposalRowProps = { proposal: Proposal } & StackProps;
 
 function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
   const intl = useIntl();
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    if (proposal.type === 'offchain') {
+      window.open(proposal.link, '_blank');
+    } else {
+      navigate(proposal.id);
+    }
+  };
 
   return (
-    <Stack direction="row" p={3} {...rest}>
+    <Stack
+      role="button"
+      direction="row"
+      onClick={handleClick}
+      p={3}
+      spacing={2}
+      {...rest}
+      sx={{
+        cursor: 'pointer',
+        ':hover': {
+          backgroundColor: (theme) => alpha(theme.palette.common.white, 0.01),
+          '.title': {
+            textDecoration: 'underline',
+          },
+        },
+        ...rest?.sx,
+      }}
+    >
       <Stack width={0.7} spacing={1}>
         <Stack direction="row" spacing={2}>
           <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
           <StatusBadge proposal={proposal} />
           {proposal.type === 'offchain' && (
-            <Button
-              href={proposal?.link}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              variant="outlined"
-              color="warning"
+            <Stack
+              direction="row"
+              alignItems="center"
               sx={{
+                border: (theme) => `1px solid ${theme.palette.warning.main}`,
                 borderRadius: 2,
                 px: 0.75,
                 py: 0.2,
@@ -128,10 +166,31 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               <Typography variant="body2" color="warning.main">
                 {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
               </Typography>
-            </Button>
+            </Stack>
           )}
         </Stack>
-        <Typography variant="h5">{proposal.title}</Typography>
+        <Typography
+          className="title"
+          variant="h5"
+          sx={{
+            maxWidth: 1,
+            display: '-webkit-box',
+            WebkitBoxOrient: 'vertical',
+            WebkitLineClamp: 3,
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+          }}
+        >
+          {proposal.title}
+          {proposal.type === 'offchain' && (
+            <Box
+              component="img"
+              src="images/icons/arrow-up-right-from-square.svg"
+              width={12}
+              ml={1}
+            />
+          )}
+        </Typography>
         <Stack
           direction="row"
           divider={
@@ -173,7 +232,7 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
     descend((i) => i[1]),
     zip(choices, scores),
   );
-  const total = scores.reduce((acc, curr) => acc + curr, 0);
+  const total = scores.reduce((acc, curr) => acc + curr, 1);
 
   return (
     <Stack {...rest} spacing={3}>
@@ -185,9 +244,9 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
             justifyContent="space-between"
             spacing={1}
           >
-            <Typography color="text.secondary" noWrap>
-              {c[0]}:
-            </Typography>
+            <TooltipLabel color="text.secondary" noWrap>
+              {`${c[0]}:`}
+            </TooltipLabel>
             <Typography>
               {formatAmount(c[1])}&nbsp;{tokens.mainnet.veOGV.symbol}
             </Typography>
@@ -200,9 +259,11 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
               backgroundColor: 'grey.600',
               '.MuiLinearProgress-bar': {
                 backgroundColor: (theme) =>
-                  i === 0
+                  c[0] === 'For'
                     ? theme.palette.success.main
-                    : theme.palette.error.main,
+                    : c[0] === 'Against'
+                      ? theme.palette.error.main
+                      : theme.palette.info.main,
               },
             }}
           />

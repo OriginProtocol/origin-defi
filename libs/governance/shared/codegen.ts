@@ -6,7 +6,7 @@ const config: CodegenConfig = {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: [
         'libs/governance/**/src/**/*.graphql',
-        '!libs/governance/home/src/snapshot.graphql',
+        '!libs/governance/proposals/src/snapshot.graphql',
       ],
       plugins: ['typescript'],
       config: {
@@ -20,7 +20,7 @@ const config: CodegenConfig = {
       schema: process.env.VITE_SUBSQUID_URL,
       documents: [
         'libs/governance/**/src/**/*.graphql',
-        '!libs/governance/home/src/snapshot.graphql',
+        '!libs/governance/proposals/src/snapshot.graphql',
       ],
       preset: 'near-operation-file',
       presetConfig: {
@@ -41,9 +41,9 @@ const config: CodegenConfig = {
         },
       },
     },
-    'libs/governance/home/src/snapshot.generated.ts': {
+    'libs/governance/proposals/src/snapshot.generated.ts': {
       schema: process.env.VITE_SNAPSHOT_URL,
-      documents: 'libs/governance/home/src/snapshot.graphql',
+      documents: 'libs/governance/proposals/src/snapshot.graphql',
       plugins: [
         'typescript',
         'typescript-operations',

@@ -7,5 +7,7 @@ query Proposals {
     endBlock
     lastUpdated
     status
+    choices
+    scores    
   }
 }

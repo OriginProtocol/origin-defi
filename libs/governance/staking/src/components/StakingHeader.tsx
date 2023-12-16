@@ -20,16 +20,7 @@ import { StakeButton } from './StakeFormModal';
 export const StackingHeader = () => {
   const intl = useIntl();
   const navigate = useNavigate();
-  const {
-    data: {
-      ogvBalance,
-      veOgvBalance,
-      votingPowerPercent,
-      veOgvRewards,
-      ogvTotalLockedPercent,
-    },
-    isLoading,
-  } = useGovernanceInfo();
+  const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
   const { data: staking, isLoading: isStakingLoading } = useStakingAPY(100, 48);
@@ -45,7 +36,13 @@ export const StackingHeader = () => {
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
               </Typography>
-              <Button variant="outlined" color="secondary">
+              <Button
+                variant="outlined"
+                color="secondary"
+                href="https://www.ousd.com/governance"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
               </Button>
             </Stack>
@@ -86,13 +83,13 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={intl.formatNumber(ogvTotalLockedPercent, {
+                value={intl.formatNumber(info?.ogvTotalLockedPercent ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
                 valueProps={{ variant: 'h3' }}
-                isLoading={isLoading}
+                isLoading={isInfoLoading}
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
@@ -178,10 +175,13 @@ export const StackingHeader = () => {
                       <LoadingLabel
                         fontSize={24}
                         sWidth={80}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
                         {intl.formatNumber(
-                          +formatUnits(ogvBalance, tokens.mainnet.OGV.decimals),
+                          +formatUnits(
+                            info?.ogvBalance ?? 0n,
+                            tokens.mainnet.OGV.decimals,
+                          ),
                           { notation: 'compact', maximumSignificantDigits: 4 },
                         )}
                       </LoadingLabel>
@@ -278,10 +278,13 @@ export const StackingHeader = () => {
                     <LoadingLabel
                       fontSize={24}
                       sWidth={80}
-                      isLoading={isLoading}
+                      isLoading={isInfoLoading}
                     >
                       {intl.formatNumber(
-                        +formatUnits(veOgvRewards, tokens.mainnet.OGV.decimals),
+                        +formatUnits(
+                          info?.veOgvRewards ?? 0n,
+                          tokens.mainnet.OGV.decimals,
+                        ),
                         { notation: 'compact', maximumSignificantDigits: 4 },
                       )}
                     </LoadingLabel>
@@ -320,11 +323,11 @@ export const StackingHeader = () => {
                       <LoadingLabel
                         fontSize={24}
                         sWidth={80}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
                         {intl.formatNumber(
                           +formatUnits(
-                            veOgvBalance,
+                            info?.veOgvBalance ?? 0n,
                             tokens.mainnet.OGV.decimals,
                           ),
                           { notation: 'compact', maximumSignificantDigits: 4 },
@@ -334,18 +337,21 @@ export const StackingHeader = () => {
                         fontSize={12}
                         color="text.secondary"
                         sWidth={120}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
                         {intl.formatMessage(
                           {
                             defaultMessage: '({value} of total votes)',
                           },
                           {
-                            value: intl.formatNumber(votingPowerPercent, {
-                              style: 'percent',
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
+                            value: intl.formatNumber(
+                              info?.votingPowerPercent ?? 0,
+                              {
+                                style: 'percent',
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              },
+                            ),
                           },
                         )}
                       </LoadingLabel>

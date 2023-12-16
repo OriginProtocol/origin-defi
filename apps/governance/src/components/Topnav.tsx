@@ -8,6 +8,7 @@ import {
   ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -111,13 +112,15 @@ export function Topnav(props: BoxProps) {
             },
           }}
         >
-          {routes[0].children.map((route) => (
-            <Tab
-              key={route?.path ?? '/'}
-              value={route?.path ?? '/'}
-              label={intl.formatMessage(route.handle.label)}
-            />
-          ))}
+          {routes[0].children
+            .filter((route) => !isNilOrEmpty(route?.handle?.label))
+            .map((route) => (
+              <Tab
+                key={route?.path ?? '/'}
+                value={route?.path ?? '/'}
+                label={intl.formatMessage(route.handle.label)}
+              />
+            ))}
         </Tabs>
         <Box
           sx={{

@@ -39,17 +39,23 @@ import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
-export const StakeFormModal = (props: DialogProps) => {
+export type StakeFormModalProps = {
+  initialAmount?: bigint;
+  initialMonthDuration?: number;
+} & DialogProps;
+
+export const StakeFormModal = ({
+  initialAmount = 0n,
+  initialMonthDuration = 0,
+  ...rest
+}: StakeFormModalProps) => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { isConnected } = useAccount();
-  const {
-    data: { ogvBalance, veOgvTotalSupply, ogvVeOgvAllowance },
-    isLoading: isInfoLoading,
-  } = useGovernanceInfo();
-  const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(0);
+  const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
+  const [amount, setAmount] = useState(initialAmount);
+  const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
   const { data: staking, refetch } = useStakingAPY(amount, duration, {
     enabled: false,
@@ -86,29 +92,29 @@ export const StakeFormModal = (props: DialogProps) => {
   };
 
   const handleMaxClick = () => {
-    setAmount(ogvBalance);
+    setAmount(info?.ogvBalance ?? 0n);
   };
 
   const votinPowerPercent =
     (staking?.veOGVReceived ?? 0) /
-    +formatUnits(veOgvTotalSupply, tokens.mainnet.OGV.decimals);
+    +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
   const showApprove =
     isConnected &&
     !isInfoLoading &&
     amount > 0n &&
     duration > 0 &&
-    amount <= ogvBalance &&
-    amount > ogvVeOgvAllowance;
+    amount <= (info?.ogvBalance ?? 0n) &&
+    amount > (info?.ogvVeOgvAllowance ?? 0n);
   const stakeDisabled =
     !isConnected ||
     isInfoLoading ||
     amount === 0n ||
     duration === 0 ||
-    amount > ogvBalance ||
-    amount > ogvVeOgvAllowance;
+    amount > (info?.ogvBalance ?? 0n) ||
+    amount > (info?.ogvVeOgvAllowance ?? 0n);
 
   return (
-    <Dialog {...props} maxWidth="sm" fullWidth>
+    <Dialog {...rest} maxWidth="sm" fullWidth>
       <DialogTitle>
         {intl.formatMessage({ defaultMessage: 'Stake' })}
       </DialogTitle>
@@ -131,7 +137,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   },
                   {
                     balance: formatAmount(
-                      ogvBalance,
+                      info?.ogvBalance ?? 0n,
                       tokens.mainnet.OGV.decimals,
                     ),
                   },
@@ -139,7 +145,7 @@ export const StakeFormModal = (props: DialogProps) => {
               </Typography>
               <Button
                 onClick={handleMaxClick}
-                disabled={ogvBalance === 0n}
+                disabled={isNilOrEmpty(info) || info?.ogvBalance === 0n}
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -431,7 +437,7 @@ export const StakeFormModal = (props: DialogProps) => {
           disabled={stakeDisabled}
           variant="action"
           label={
-            amount > ogvBalance
+            amount > (info?.ogvBalance ?? 0n)
               ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
               : intl.formatMessage({ defaultMessage: 'Stake' })
           }
@@ -458,7 +464,7 @@ export const StakeFormModal = (props: DialogProps) => {
             />
           }
           onSuccess={() => {
-            props.onClose(null, 'backdropClick');
+            rest.onClose(null, 'backdropClick');
           }}
         />
       </DialogContent>
@@ -466,22 +472,31 @@ export const StakeFormModal = (props: DialogProps) => {
   );
 };
 
-export const StakeButton = (props: ButtonProps) => {
+export type StakeButtonProps = {
+  initialAmount?: bigint;
+  initialMonthDuration?: number;
+} & ButtonProps;
+
+export const StakeButton = ({
+  initialAmount,
+  initialMonthDuration,
+  ...rest
+}: StakeButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <ConnectedButton
-        {...props}
+        {...rest}
         onClick={(e) => {
           setOpen(true);
-          if (props?.onClick) {
-            props.onClick(e);
-          }
+          rest?.onClick(e);
         }}
       />
       <StakeFormModal
         key={open ? 'open' : 'closed'}
+        initialAmount={initialAmount}
+        initialMonthDuration={initialMonthDuration}
         open={open}
         onClose={() => {
           setOpen(false);

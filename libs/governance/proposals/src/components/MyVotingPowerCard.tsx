@@ -12,15 +12,14 @@ export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
-  const {
-    data: { veOgvBalance, votingPowerPercent },
-  } = useGovernanceInfo();
+  const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
 
   return (
     <Card {...props}>
       <CardContent>
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+          isLoading={isInfoLoading}
           value={
             isConnected ? (
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
@@ -31,7 +30,10 @@ export const MyVotingPowerCard = (props: CardProps) => {
                   sx={{ transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
-                  {formatAmount(veOgvBalance, tokens.mainnet.veOGV.decimals)}
+                  {formatAmount(
+                    info?.veOgvBalance ?? 0n,
+                    tokens.mainnet.veOGV.decimals,
+                  )}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
                   {intl.formatMessage(
@@ -39,7 +41,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
                       defaultMessage: '({value} of total votes)',
                     },
                     {
-                      value: intl.formatNumber(votingPowerPercent, {
+                      value: intl.formatNumber(info?.votingPowerPercent ?? 0, {
                         style: 'percent',
                         minimumFractionDigits: 2,
                         maximumFractionDigits: 2,

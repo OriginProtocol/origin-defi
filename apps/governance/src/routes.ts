@@ -1,4 +1,4 @@
-import { HomeView } from '@origin/governance/home';
+import { ProposalsView, ProposalView } from '@origin/governance/proposals';
 import { StakingView } from '@origin/governance/staking';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
@@ -14,8 +14,12 @@ export const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        Component: HomeView,
+        Component: ProposalsView,
         handle: { label: defineMessage({ defaultMessage: 'Governance' }) },
+      },
+      {
+        path: ':proposalId',
+        Component: ProposalView,
       },
       {
         path: '/staking',

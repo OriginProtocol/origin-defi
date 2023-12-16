@@ -32,7 +32,16 @@ export const TransactionNotification = ({
         isNilOrEmpty(error) ? (
           rest?.subtitle
         ) : (
-          <Typography color="error">{error}</Typography>
+          <Typography
+            color="error"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              WebkitLineClamp: 2,
+            }}
+          >
+            {error}
+          </Typography>
         )
       }
     />

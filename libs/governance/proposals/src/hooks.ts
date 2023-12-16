@@ -1,7 +1,7 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
-import { descend, prop, sort } from 'ramda';
+import { descend, prop, sort, zipObj } from 'ramda';
 
 import { useProposalsQuery } from './queries.generated';
 import { useSnapshotProposalsQuery } from './snapshot.generated';
@@ -25,20 +25,28 @@ export const useProposals = (
 
       const onChainProposals =
         res[0].status === 'fulfilled'
-          ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => ({
-              id: p.id,
-              type: 'onchain' as ProposalType,
-              title: p.description,
-              created: p.timestamp,
-              start: fromUnixTime(Number(p.startBlock)).toISOString(),
-              end: fromUnixTime(Number(p.endBlock)).toISOString(),
-              updated: p.lastUpdated,
-              status: p.status,
-              choices: ['For', 'Against'],
-              scores: [0, 0],
-              quorum: 348e9,
-              link: '',
-            })) ?? []
+          ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => {
+              const votes = {
+                For: 0,
+                Against: 0,
+                ...zipObj(p.choices, p.scores),
+              };
+
+              return {
+                id: p.id,
+                type: 'onchain' as ProposalType,
+                title: p.description,
+                created: p.timestamp,
+                start: fromUnixTime(Number(p.startBlock)).toISOString(),
+                end: fromUnixTime(Number(p.endBlock)).toISOString(),
+                updated: p.lastUpdated,
+                status: p.status,
+                choices: Object.keys(votes),
+                scores: Object.values(votes),
+                quorum: 348e9,
+                link: '',
+              };
+            }) ?? []
           : [];
 
       const offChainProposals =

@@ -1,7 +1,7 @@
 {
-  "name": "governance-home",
+  "name": "governance-proposals",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/governance/home/src",
+  "sourceRoot": "libs/governance/proposals/src",
   "projectType": "library",
   "tags": [],
   "targets": {
