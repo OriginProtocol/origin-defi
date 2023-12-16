@@ -1,6 +1,7 @@
 import { forwardRef, useRef } from 'react';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
+import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { ButtonProps, StackProps } from '@mui/material';
 
@@ -23,7 +24,9 @@ export const SliderSwitch = ({
 }: SliderSwitchProps) => {
   const refs = useRef([]);
   const itemWidths = refs.current.map((o) => o.offsetWidth);
-  const idx = options.findIndex((o) => o.value === value);
+  const idx = options.findIndex((o) =>
+    isNilOrEmpty(o.value) ? isNilOrEmpty(value) : o.value === value,
+  );
   const translateX = itemWidths.reduce(
     (acc, curr, i) => (i < idx ? acc + curr : acc),
     0,
