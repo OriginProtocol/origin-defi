@@ -195,6 +195,12 @@
       "value": "I agree"
     }
   ],
+  "5jeq8P": [
+    {
+      "type": 0,
+      "value": "Unknown"
+    }
+  ],
   "5y98eS": [
     {
       "offset": 0,
@@ -359,6 +365,12 @@
     {
       "type": 0,
       "value": "Snapshot proposal"
+    }
+  ],
+  "AozuFZ": [
+    {
+      "type": 0,
+      "value": "On-chain"
     }
   ],
   "BLAy25": [
@@ -855,12 +867,6 @@
       "value": "2y"
     }
   ],
-  "d21Els": [
-    {
-      "type": 0,
-      "value": "Execute"
-    }
-  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -1117,6 +1123,12 @@
     {
       "type": 0,
       "value": "Error while swapping"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "All"
     }
   ],
   "zSOvI0": [

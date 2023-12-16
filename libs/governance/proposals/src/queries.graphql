@@ -8,6 +8,40 @@ query Proposals {
     lastUpdated
     status
     choices
-    scores    
+    scores
+  }
+}
+
+query Proposal($proposalId: String!) {
+  ogvProposalById(id: $proposalId) {
+    id
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+    choices
+    scores
+    quorum
+    logs {
+      id
+      hash
+      event
+      timestamp
+    }
+  }
+  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
+    id
+    voter{
+      id
+      delegatee {
+        id
+      }
+    }
+    weight
+    type
+    txHash
+    timestamp
   }
 }

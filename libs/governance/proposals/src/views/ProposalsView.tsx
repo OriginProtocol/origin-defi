@@ -3,10 +3,10 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackSentryError } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 
-import { HomeHeader } from '../components/HomeHeader';
 import { MyVotingHistoryCard } from '../components/MyVotingHistoryCard';
 import { MyVotingPowerCard } from '../components/MyVotingPowerCard';
 import { ProposalsCard } from '../components/ProposalsCard';
+import { ProposalsHeader } from '../components/ProposalsHeader';
 import { ProposalsSummaryCard } from '../components/ProposalsSummaryCard';
 import { VoteDelegationCard } from '../components/VoteDelegationCard';
 
@@ -14,7 +14,7 @@ export const ProposalsView = () => {
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
-        <HomeHeader />
+        <ProposalsHeader />
       </ErrorBoundary>
       <Box>
         <Grid2 container spacing={3}>

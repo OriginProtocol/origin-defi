@@ -83,6 +83,9 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
+  "5jeq8P": {
+    "defaultMessage": "Unknown"
+  },
   "5y98eS": {
     "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
   },
@@ -136,6 +139,9 @@
   },
   "Alwl9C": {
     "defaultMessage": "Snapshot proposal"
+  },
+  "AozuFZ": {
+    "defaultMessage": "On-chain"
   },
   "BLAy25": {
     "defaultMessage": "Extend"
@@ -356,9 +362,6 @@
   "d0O17Z": {
     "defaultMessage": "2y"
   },
-  "d21Els": {
-    "defaultMessage": "Execute"
-  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
@@ -481,6 +484,9 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
+  },
+  "zQvVDJ": {
+    "defaultMessage": "All"
   },
   "zSOvI0": {
     "defaultMessage": "Filters"

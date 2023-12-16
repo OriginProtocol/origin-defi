@@ -1,12 +1,14 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import { trackSentryError } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
+
+import { ProposalHeader } from '../components/ProposalHeader';
 
 export const ProposalView = () => {
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
-        <Typography>Proposal</Typography>
+        <ProposalHeader />
       </ErrorBoundary>
     </Stack>
   );

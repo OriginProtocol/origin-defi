@@ -25,6 +25,15 @@ export function Topnav(props: BoxProps) {
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
 
+  const visibleRoutes = routes[0].children.filter(
+    (route) => !isNilOrEmpty(route?.handle?.label),
+  );
+  const selectedTab = visibleRoutes
+    .map((r) => r.path)
+    .includes(location.pathname)
+    ? location.pathname
+    : '/';
+
   return (
     <>
       <Box
@@ -75,19 +84,19 @@ export function Topnav(props: BoxProps) {
         <Box
           component={Link}
           to="/"
-          sx={(theme) => ({
+          sx={{
             img: {
               height: {
                 xs: 16,
                 md: 24,
               },
             },
-          })}
+          }}
         >
           <img src="/images/origin-defi-logo.svg" alt="Origin logo" />
         </Box>
         <Tabs
-          value={location.pathname}
+          value={selectedTab}
           onChange={(_, value) => {
             navigate(value);
           }}
@@ -112,15 +121,13 @@ export function Topnav(props: BoxProps) {
             },
           }}
         >
-          {routes[0].children
-            .filter((route) => !isNilOrEmpty(route?.handle?.label))
-            .map((route) => (
-              <Tab
-                key={route?.path ?? '/'}
-                value={route?.path ?? '/'}
-                label={intl.formatMessage(route.handle.label)}
-              />
-            ))}
+          {visibleRoutes.map((route) => (
+            <Tab
+              key={route?.path ?? '/'}
+              value={route?.path ?? '/'}
+              label={intl.formatMessage(route.handle.label)}
+            />
+          ))}
         </Tabs>
         <Box
           sx={{

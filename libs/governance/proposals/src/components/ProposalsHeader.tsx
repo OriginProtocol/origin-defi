@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
 
-export const HomeHeader = (props: StackProps) => {
+export const ProposalsHeader = (props: StackProps) => {
   const intl = useIntl();
 
   return (

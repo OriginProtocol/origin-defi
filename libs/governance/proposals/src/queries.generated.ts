@@ -7,6 +7,13 @@ export type ProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 export type ProposalsQuery = { __typename?: 'Query', ogvProposals: Array<{ __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null> }> };
 
+export type ProposalQueryVariables = Types.Exact<{
+  proposalId: Types.Scalars['String']['input'];
+}>;
+
+
+export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null>, quorum: string, logs: Array<{ __typename?: 'OGVProposalTxLog', id: string, hash: string, event: Types.OgvProposalEvent, timestamp: string }> } | null, ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, txHash: string, timestamp: string, voter: { __typename?: 'OGVAddress', id: string, delegatee?: { __typename?: 'OGVAddress', id: string } | null } }> };
+
 
 export const ProposalsDocument = `
     query Proposals {
@@ -58,3 +65,73 @@ useInfiniteProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => vari
 ;
 
 useProposalsQuery.fetcher = (variables?: ProposalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables, options);
+export const ProposalDocument = `
+    query Proposal($proposalId: String!) {
+  ogvProposalById(id: $proposalId) {
+    id
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+    choices
+    scores
+    quorum
+    logs {
+      id
+      hash
+      event
+      timestamp
+    }
+  }
+  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
+    id
+    voter {
+      id
+      delegatee {
+        id
+      }
+    }
+    weight
+    type
+    txHash
+    timestamp
+  }
+}
+    `;
+export const useProposalQuery = <
+      TData = ProposalQuery,
+      TError = unknown
+    >(
+      variables: ProposalQueryVariables,
+      options?: UseQueryOptions<ProposalQuery, TError, TData>
+    ) =>
+    useQuery<ProposalQuery, TError, TData>(
+      ['Proposal', variables],
+      graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables),
+      options
+    );
+
+useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', variables];
+;
+
+export const useInfiniteProposalQuery = <
+      TData = ProposalQuery,
+      TError = unknown
+    >(
+      variables: ProposalQueryVariables,
+      options?: UseInfiniteQueryOptions<ProposalQuery, TError, TData>
+    ) =>{
+    
+    return useInfiniteQuery<ProposalQuery, TError, TData>(
+      ['Proposal.infinite', variables],
+      (metaData) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      options
+    )};
+
+
+useInfiniteProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal.infinite', variables];
+;
+
+useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
