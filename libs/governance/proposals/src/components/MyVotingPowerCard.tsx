@@ -33,6 +33,8 @@ export const MyVotingPowerCard = (props: CardProps) => {
                   {formatAmount(
                     info?.veOgvBalance ?? 0n,
                     tokens.mainnet.veOGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
                   )}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
@@ -51,17 +53,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
                 </Typography>
               </Stack>
             ) : (
-              <ConnectedButton
-                sx={{
-                  minWidth: 160,
-                  background:
-                    'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                  ':hover': {
-                    background:
-                      'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                  },
-                }}
-              />
+              <ConnectedButton variant="connect" />
             )
           }
           spacing={1.5}

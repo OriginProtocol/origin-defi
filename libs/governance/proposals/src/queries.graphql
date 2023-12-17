@@ -12,6 +12,24 @@ query Proposals {
   }
 }
 
+query UserVotes($address: String!) {
+  ogvProposalVotes(
+    where: { voter: { id_containsInsensitive: $address } }
+    orderBy: timestamp_DESC
+  ) {
+    id
+    weight
+    type
+    timestamp
+    txHash
+    proposal {
+      id
+      description
+      status
+    }
+  }
+}
+
 query Proposal($proposalId: String!) {
   ogvProposalById(id: $proposalId) {
     id
@@ -34,7 +52,9 @@ query Proposal($proposalId: String!) {
       id
     }
   }
-  ogvProposalVotes(where: { proposal: { id_containsInsensitive: $proposalId } }) {
+  ogvProposalVotes(
+    where: { proposal: { id_containsInsensitive: $proposalId } }
+  ) {
     id
     voter {
       id

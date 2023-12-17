@@ -12,8 +12,13 @@ import type { ProposalsQuery } from './queries.generated';
 import type { SnapshotProposalsQuery } from './snapshot.generated';
 import type { GovernanceChoice, Proposal, ProposalType } from './types';
 
-export const useProposals = (
-  options?: UseQueryOptions<Proposal[], Error, Proposal[], ['useProposals']>,
+export const useProposals = <T = unknown>(
+  options?: UseQueryOptions<
+    Proposal[],
+    Error,
+    Proposal[] | T,
+    ['useProposals']
+  >,
 ) => {
   return useQuery({
     queryKey: ['useProposals'],
@@ -72,7 +77,7 @@ export const useProposals = (
       return sort(descend(prop('created')), [
         ...onChainProposals,
         ...offChainProposals,
-      ]);
+      ]).map((p, index) => ({ index, ...p }));
     },
     ...options,
   });

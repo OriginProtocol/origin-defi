@@ -106,7 +106,7 @@ export const ProposalHeader = (props: StackProps) => {
         </Button>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography color="text.secondary">017</Typography>
+        <Typography color="text.secondary">019</Typography>
         <Box
           sx={{
             borderRadius: '50%',

@@ -6,6 +6,7 @@ import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { CurrentResultsCard } from '../components/CurrentResultsCard';
 import { DetailsCard } from '../components/DetailsCard';
 import { ProposalHeader } from '../components/ProposalHeader';
+import { StatusCard } from '../components/StatusCard';
 import { VoteCard } from '../components/VotesCard';
 
 export const ProposalView = () => {
@@ -36,6 +37,12 @@ export const ProposalView = () => {
                 onError={trackSentryError}
               >
                 <VoteCard />
+              </ErrorBoundary>
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <StatusCard />
               </ErrorBoundary>
             </Stack>
           </Grid2>
