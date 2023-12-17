@@ -38,6 +38,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "17g+HZ": {
+    "defaultMessage": "No activity"
+  },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
@@ -224,6 +227,9 @@
   "JLmDla": {
     "defaultMessage": "Governance"
   },
+  "JNuVd0": {
+    "defaultMessage": "No votes"
+  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
@@ -277,6 +283,9 @@
   },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
+  },
+  "PuubxK": {
+    "defaultMessage": "Voted For"
   },
   "PzlMqG": {
     "defaultMessage": "Best"
@@ -470,6 +479,9 @@
   "rFWd1Y": {
     "defaultMessage": "Lock up Ends:"
   },
+  "rhQtuf": {
+    "defaultMessage": "Voted Against"
+  },
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
@@ -478,6 +490,9 @@
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tzMNF3": {
+    "defaultMessage": "Status"
   },
   "u4BAsU": {
     "defaultMessage": "View proposals"

@@ -77,6 +77,12 @@
       "value": "Route"
     }
   ],
+  "17g+HZ": [
+    {
+      "type": 0,
+      "value": "No activity"
+    }
+  ],
   "1VDppm": [
     {
       "type": 0,
@@ -575,6 +581,12 @@
       "value": "Governance"
     }
   ],
+  "JNuVd0": [
+    {
+      "type": 0,
+      "value": "No votes"
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
@@ -681,6 +693,12 @@
     {
       "type": 0,
       "value": "Unsupported Network"
+    }
+  ],
+  "PuubxK": [
+    {
+      "type": 0,
+      "value": "Voted For"
     }
   ],
   "PzlMqG": [
@@ -1141,6 +1159,12 @@
       "value": "Lock up Ends:"
     }
   ],
+  "rhQtuf": [
+    {
+      "type": 0,
+      "value": "Voted Against"
+    }
+  ],
   "s8BnAC": [
     {
       "type": 0,
@@ -1157,6 +1181,12 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
     }
   ],
   "u4BAsU": [
