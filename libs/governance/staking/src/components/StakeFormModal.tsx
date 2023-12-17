@@ -35,6 +35,7 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../hooks';
+import { useUserLockupsQuery } from '../queries.generated';
 import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
@@ -52,7 +53,7 @@ export const StakeFormModal = ({
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const queryClient = useQueryClient();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const [amount, setAmount] = useState(initialAmount);
   const [duration, setDuration] = useState(initialMonthDuration);
@@ -465,6 +466,9 @@ export const StakeFormModal = ({
           }
           onSuccess={() => {
             rest.onClose(null, 'backdropClick');
+            queryClient.invalidateQueries({
+              queryKey: [useUserLockupsQuery.getKey({ address })],
+            });
           }}
         />
       </DialogContent>
