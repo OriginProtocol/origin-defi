@@ -6,7 +6,7 @@ export type ExternalLinkProps = { iconSize?: number } & LinkProps;
 
 export const ExternalLink = ({
   children,
-  iconSize = 8,
+  iconSize = 10,
   ...rest
 }: ExternalLinkProps) => {
   return (
@@ -14,18 +14,13 @@ export const ExternalLink = ({
       target="_blank"
       rel="noopener noreferrer nofollow"
       {...rest}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 0.75,
-        ...rest?.sx,
-      }}
+      sx={{ cursor: 'pointer', ...rest?.sx }}
     >
       {children}
+      &nbsp;
       <Box
         component="img"
-        src="/images/icons/arrow-up-right-light.svg"
+        src="images/icons/arrow-up-right-from-square.svg"
         alt="link"
         sx={{ height: iconSize, width: iconSize }}
       />
