@@ -13,17 +13,18 @@ export type UserAvatarProps = { address?: HexAddress; width?: number } & Omit<
 >;
 
 export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
-  const { address: self, isConnected } = useAccount();
+  const { address: self } = useAccount();
+  const adr = address ?? self;
   const { data: ensName } = useEnsName({
-    address: address ?? self,
-    enabled: !!address || isConnected,
+    address: adr,
+    enabled: !isNilOrEmpty(adr),
   });
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName,
     enabled: !!ensName,
   });
 
-  if (!isConnected && isNilOrEmpty(address)) {
+  if (isNilOrEmpty(adr)) {
     return (
       <Box
         borderRadius="50%"
@@ -64,10 +65,7 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
         ...rest?.sx,
       }}
     >
-      <Jazzicon
-        diameter={rest?.width ?? 24}
-        seed={jsNumberForAddress(address)}
-      />
+      <Jazzicon diameter={rest?.width ?? 24} seed={jsNumberForAddress(adr)} />
     </Box>
   );
 };
