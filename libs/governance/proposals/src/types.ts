@@ -1,3 +1,7 @@
+import type { governanceChoices } from './constants';
+
+export type GovernanceChoice = (typeof governanceChoices)[number];
+
 export type ProposalType = 'onchain' | 'offchain';
 
 export type Proposal = {
@@ -9,7 +13,7 @@ export type Proposal = {
   end: string;
   updated?: string;
   status: string;
-  choices: string[];
+  choices: GovernanceChoice[];
   scores?: number[];
   quorum?: number;
   link?: string;

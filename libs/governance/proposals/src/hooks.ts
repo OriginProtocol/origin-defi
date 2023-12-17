@@ -10,7 +10,7 @@ import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { ProposalsQuery } from './queries.generated';
 import type { SnapshotProposalsQuery } from './snapshot.generated';
-import type { Proposal, ProposalType } from './types';
+import type { GovernanceChoice, Proposal, ProposalType } from './types';
 
 export const useProposals = (
   options?: UseQueryOptions<Proposal[], Error, Proposal[], ['useProposals']>,
@@ -41,7 +41,7 @@ export const useProposals = (
                 end: fromUnixTime(Number(p.endBlock)).toISOString(),
                 updated: p.lastUpdated,
                 status: p.status,
-                choices: Object.keys(votes),
+                choices: Object.keys(votes) as GovernanceChoice[],
                 scores: Object.values(votes),
                 quorum: 348e9,
                 link: '',
@@ -62,7 +62,7 @@ export const useProposals = (
                 ? null
                 : fromUnixTime(p.updated).toISOString(),
               status: p.state,
-              choices: p.choices,
+              choices: p.choices as GovernanceChoice[],
               scores: p.scores,
               quorum: p.quorum,
               link: p.link,

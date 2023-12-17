@@ -12,7 +12,7 @@ export type ProposalQueryVariables = Types.Exact<{
 }>;
 
 
-export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null>, quorum: string, logs: Array<{ __typename?: 'OGVProposalTxLog', id: string, hash: string, event: Types.OgvProposalEvent, timestamp: string }> } | null, ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, txHash: string, timestamp: string, voter: { __typename?: 'OGVAddress', id: string, delegatee?: { __typename?: 'OGVAddress', id: string } | null } }> };
+export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null>, quorum: string, logs: Array<{ __typename?: 'OGVProposalTxLog', id: string, hash: string, event: Types.OgvProposalEvent, timestamp: string }>, proposer: { __typename?: 'OGVAddress', id: string } } | null, ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, txHash: string, timestamp: string, voter: { __typename?: 'OGVAddress', id: string } }> };
 
 
 export const ProposalsDocument = `
@@ -84,14 +84,14 @@ export const ProposalDocument = `
       event
       timestamp
     }
+    proposer {
+      id
+    }
   }
-  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
+  ogvProposalVotes(where: {proposal: {id_containsInsensitive: $proposalId}}) {
     id
     voter {
       id
-      delegatee {
-        id
-      }
     }
     weight
     type

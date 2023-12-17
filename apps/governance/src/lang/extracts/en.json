@@ -107,6 +107,9 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
+  "87E0Iv": {
+    "defaultMessage": "Current results"
+  },
   "8Vr/2f": {
     "defaultMessage": "Current Staking vAPY"
   },
@@ -191,6 +194,9 @@
   "FVfYnP": {
     "defaultMessage": "The variable APY currently being earned on staked OGV."
   },
+  "Fuk0aF": {
+    "defaultMessage": "{event} {date}"
+  },
   "Fv1ZSz": {
     "defaultMessage": "Closed"
   },
@@ -203,6 +209,15 @@
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
+  "IAoEwp": {
+    "defaultMessage": "Vote for"
+  },
+  "IfZsEo": {
+    "defaultMessage": "Vote against"
+  },
+  "J0o6HO": {
+    "defaultMessage": "Proposed by"
+  },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
   },
@@ -212,11 +227,20 @@
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
+  "JyPAH1": {
+    "defaultMessage": "No one voted for this choice"
+  },
+  "KXTAK8": {
+    "defaultMessage": "Abstain"
+  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
   "LOghU6": {
     "defaultMessage": "Succeeded"
+  },
+  "Lv0zJu": {
+    "defaultMessage": "Details"
   },
   "MQq3X+": {
     "defaultMessage": "Active Proposals"
@@ -238,9 +262,6 @@
   },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
-  },
-  "OEgBBj": {
-    "defaultMessage": "On chain"
   },
   "OmyPDW": {
     "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
@@ -277,6 +298,9 @@
   },
   "S7CBOR": {
     "defaultMessage": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+  },
+  "SzA4oV": {
+    "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
   "TdHjj5": {
     "defaultMessage": "Origin DeFi Governance"
@@ -323,6 +347,9 @@
   "WtvQnb": {
     "defaultMessage": "Delegate my voting power"
   },
+  "XObaE9": {
+    "defaultMessage": "Votes"
+  },
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
@@ -334,6 +361,9 @@
   },
   "YvbZVM": {
     "defaultMessage": "Time Remaining"
+  },
+  "Zl7l7P": {
+    "defaultMessage": "{count} {symbol}"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -350,6 +380,9 @@
   "b0+k6i": {
     "defaultMessage": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
   },
+  "bqVPh2": {
+    "defaultMessage": "Discord discussion"
+  },
   "c31Feo": {
     "defaultMessage": "Swapping"
   },
@@ -364,9 +397,6 @@
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
-  },
-  "dWjKid": {
-    "defaultMessage": "All proposals"
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
@@ -397,6 +427,9 @@
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
+  },
+  "j8y+qc": {
+    "defaultMessage": "{label}"
   },
   "jYECM4": {
     "defaultMessage": "Delegated to"
@@ -455,6 +488,9 @@
   "upcyvM": {
     "defaultMessage": "Percent of OGV staked out of the current total supply."
   },
+  "vEvTRL": {
+    "defaultMessage": "Snapshot post"
+  },
   "vclhrb": {
     "defaultMessage": "Balance: {balance}"
   },
@@ -487,9 +523,6 @@
   },
   "zQvVDJ": {
     "defaultMessage": "All"
-  },
-  "zSOvI0": {
-    "defaultMessage": "Filters"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

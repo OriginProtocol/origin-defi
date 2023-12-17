@@ -293,6 +293,12 @@
       "value": "Redeemed"
     }
   ],
+  "87E0Iv": [
+    {
+      "type": 0,
+      "value": "Current results"
+    }
+  ],
   "8Vr/2f": [
     {
       "type": 0,
@@ -501,6 +507,20 @@
       "value": "The variable APY currently being earned on staked OGV."
     }
   ],
+  "Fuk0aF": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
   "Fv1ZSz": [
     {
       "type": 0,
@@ -525,6 +545,24 @@
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
     }
   ],
+  "IAoEwp": [
+    {
+      "type": 0,
+      "value": "Vote for"
+    }
+  ],
+  "IfZsEo": [
+    {
+      "type": 0,
+      "value": "Vote against"
+    }
+  ],
+  "J0o6HO": [
+    {
+      "type": 0,
+      "value": "Proposed by"
+    }
+  ],
   "JA3MsG": [
     {
       "type": 0,
@@ -543,6 +581,18 @@
       "value": "Gas:"
     }
   ],
+  "JyPAH1": [
+    {
+      "type": 0,
+      "value": "No one voted for this choice"
+    }
+  ],
+  "KXTAK8": [
+    {
+      "type": 0,
+      "value": "Abstain"
+    }
+  ],
   "KjK2z3": [
     {
       "type": 0,
@@ -553,6 +603,12 @@
     {
       "type": 0,
       "value": "Succeeded"
+    }
+  ],
+  "Lv0zJu": [
+    {
+      "type": 0,
+      "value": "Details"
     }
   ],
   "MQq3X+": [
@@ -595,12 +651,6 @@
     {
       "type": 0,
       "value": "Your operation has been executed"
-    }
-  ],
-  "OEgBBj": [
-    {
-      "type": 0,
-      "value": "On chain"
     }
   ],
   "OmyPDW": [
@@ -677,6 +727,46 @@
     {
       "type": 0,
       "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
+  "SzA4oV": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No address"
+            }
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " address"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " addresses"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "TdHjj5": [
@@ -789,6 +879,12 @@
       "value": "Delegate my voting power"
     }
   ],
+  "XObaE9": [
+    {
+      "type": 0,
+      "value": "Votes"
+    }
+  ],
   "XSdWHA": [
     {
       "type": 0,
@@ -811,6 +907,20 @@
     {
       "type": 0,
       "value": "Time Remaining"
+    }
+  ],
+  "Zl7l7P": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
     }
   ],
   "ZmLuI/": [
@@ -843,6 +953,12 @@
       "value": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
     }
   ],
+  "bqVPh2": [
+    {
+      "type": 0,
+      "value": "Discord discussion"
+    }
+  ],
   "c31Feo": [
     {
       "type": 0,
@@ -871,12 +987,6 @@
     {
       "type": 0,
       "value": "Processing Transaction"
-    }
-  ],
-  "dWjKid": [
-    {
-      "type": 0,
-      "value": "All proposals"
     }
   ],
   "dtJo4Y": [
@@ -945,6 +1055,12 @@
     {
       "type": 0,
       "value": "I have read and agree to the above terms"
+    }
+  ],
+  "j8y+qc": [
+    {
+      "type": 1,
+      "value": "label"
     }
   ],
   "jYECM4": [
@@ -1061,6 +1177,12 @@
       "value": "Percent of OGV staked out of the current total supply."
     }
   ],
+  "vEvTRL": [
+    {
+      "type": 0,
+      "value": "Snapshot post"
+    }
+  ],
   "vclhrb": [
     {
       "type": 0,
@@ -1129,12 +1251,6 @@
     {
       "type": 0,
       "value": "All"
-    }
-  ],
-  "zSOvI0": [
-    {
-      "type": 0,
-      "value": "Filters"
     }
   ],
   "zmWQIG": [

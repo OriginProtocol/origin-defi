@@ -30,14 +30,14 @@ query Proposal($proposalId: String!) {
       event
       timestamp
     }
-  }
-  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
-    id
-    voter{
+    proposer {
       id
-      delegatee {
-        id
-      }
+    }
+  }
+  ogvProposalVotes(where: { proposal: { id_containsInsensitive: $proposalId } }) {
+    id
+    voter {
+      id
     }
     weight
     type

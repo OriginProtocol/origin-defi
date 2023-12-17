@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   alpha,
   Box,
@@ -12,13 +10,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { SliderSwitch, TooltipLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useProposals } from '../hooks';
 import { StatusBadge } from './StatusBadge';
@@ -32,8 +31,12 @@ const PAGE_SIZE = 10;
 
 export const ProposalsCard = (props: CardProps) => {
   const intl = useIntl();
-  const [filter, setFilter] = useState(null);
-  const [limit, setLimit] = useState(PAGE_SIZE);
+  const [search, setSearch] = useSearchParams({
+    filter: '',
+    limit: PAGE_SIZE.toString(),
+  });
+  const limit = search.get('limit') ? Number(search.get('limit')) : PAGE_SIZE;
+  const filter = search.get('filter') ?? '';
   const { data: proposals, isLoading: isProposalsLoading } = useProposals({
     select: (data) => {
       if (isNilOrEmpty(filter) || isNilOrEmpty(data)) {
@@ -44,13 +47,30 @@ export const ProposalsCard = (props: CardProps) => {
     },
   });
 
+  const handleFilterChange = (newVal: string | number) => {
+    setSearch((params) => {
+      if (isNilOrEmpty(newVal)) {
+        params.delete('filter');
+      } else {
+        params.set('filter', newVal.toString());
+      }
+      return params;
+    });
+  };
+
   const handleShowMoreClick = () => {
-    setLimit(Math.min(limit + PAGE_SIZE, proposals.length));
+    setSearch((params) => {
+      params.set(
+        'limit',
+        Math.min(Number(limit) + PAGE_SIZE, proposals.length).toString(),
+      );
+      return params;
+    });
   };
 
   const paginatedProposals = take(limit, proposals ?? []);
   const filterOptions: Option[] = [
-    { label: intl.formatMessage({ defaultMessage: 'All' }), value: null },
+    { label: intl.formatMessage({ defaultMessage: 'All' }), value: '' },
     {
       label: intl.formatMessage({ defaultMessage: 'On-chain' }),
       value: 'onchain',
@@ -69,10 +89,7 @@ export const ProposalsCard = (props: CardProps) => {
           <SliderSwitch
             options={filterOptions}
             value={filter}
-            onChange={(value) => {
-              setLimit(PAGE_SIZE);
-              setFilter(value);
-            }}
+            onChange={handleFilterChange}
           />
         }
       />
@@ -127,10 +144,8 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
   return (
     <Stack
       role="button"
-      direction="row"
       onClick={handleClick}
       p={3}
-      spacing={2}
       {...rest}
       sx={{
         cursor: 'pointer',
@@ -143,79 +158,86 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         ...rest?.sx,
       }}
     >
-      <Stack width={0.7} spacing={1}>
-        <Stack direction="row" spacing={2}>
-          <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
-          <StatusBadge proposal={proposal} />
-          {proposal.type === 'offchain' && (
-            <Stack
-              direction="row"
-              alignItems="center"
+      <Grid2 container spacing={2}>
+        <Grid2 xs={12} sm={8}>
+          <Stack spacing={1}>
+            <Stack direction="row" spacing={2}>
+              <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
+              <StatusBadge status={proposal?.status} />
+              {proposal.type === 'offchain' && (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  sx={{
+                    border: (theme) =>
+                      `1px solid ${theme.palette.warning.main}`,
+                    borderRadius: 2,
+                    px: 0.75,
+                    py: 0.2,
+                  }}
+                >
+                  <Box
+                    component="img"
+                    src="/images/protocols/snapshot.svg"
+                    width={16}
+                  />
+                  <Typography variant="body2" color="warning.main">
+                    {intl.formatMessage({
+                      defaultMessage: 'Snapshot proposal',
+                    })}
+                  </Typography>
+                </Stack>
+              )}
+            </Stack>
+            <Typography
+              className="title"
+              variant="h5"
               sx={{
-                border: (theme) => `1px solid ${theme.palette.warning.main}`,
-                borderRadius: 2,
-                px: 0.75,
-                py: 0.2,
+                maxWidth: 1,
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 3,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
-              <Box
-                component="img"
-                src="/images/protocols/snapshot.svg"
-                width={16}
-              />
-              <Typography variant="body2" color="warning.main">
-                {intl.formatMessage({ defaultMessage: 'Snapshot proposal' })}
+              {proposal.title}
+              {proposal.type === 'offchain' && (
+                <Box
+                  component="img"
+                  src="images/icons/arrow-up-right-from-square.svg"
+                  width={12}
+                  ml={1}
+                />
+              )}
+            </Typography>
+            <Stack
+              direction="row"
+              divider={
+                <Box
+                  sx={{
+                    backgroundColor: 'grey.600',
+                    borderRadius: '50%',
+                    width: 4,
+                    height: 4,
+                  }}
+                />
+              }
+            >
+              <Typography variant="body2" color="text.secondary">
+                {intl.formatDate(new Date(proposal.created), {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                })}
               </Typography>
             </Stack>
-          )}
-        </Stack>
-        <Typography
-          className="title"
-          variant="h5"
-          sx={{
-            maxWidth: 1,
-            display: '-webkit-box',
-            WebkitBoxOrient: 'vertical',
-            WebkitLineClamp: 3,
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {proposal.title}
-          {proposal.type === 'offchain' && (
-            <Box
-              component="img"
-              src="images/icons/arrow-up-right-from-square.svg"
-              width={12}
-              ml={1}
-            />
-          )}
-        </Typography>
-        <Stack
-          direction="row"
-          divider={
-            <Box
-              sx={{
-                backgroundColor: 'grey.600',
-                borderRadius: '50%',
-                width: 4,
-                height: 4,
-              }}
-            />
-          }
-        >
-          <Typography variant="body2" color="text.secondary">
-            {intl.formatDate(new Date(proposal.created), {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            })}
-          </Typography>
-        </Stack>
-      </Stack>
-      <Stack width={0.3}>
-        <VotesGauge choices={proposal.choices} scores={proposal.scores} />
-      </Stack>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={12} sm={4}>
+          <VotesGauge choices={proposal.choices} scores={proposal.scores} />
+        </Grid2>
+      </Grid2>
     </Stack>
   );
 }
@@ -248,7 +270,11 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>
-              {formatAmount(c[1])}&nbsp;{tokens.mainnet.veOGV.symbol}
+              {formatAmount(c[1], tokens.mainnet.veOGV.decimals, undefined, {
+                notation: 'compact',
+                maximumSignificantDigits: 4,
+              })}
+              &nbsp;{tokens.mainnet.veOGV.symbol}
             </Typography>
           </Stack>
           <LinearProgress

@@ -1,22 +1,26 @@
-import { Typography, useTheme } from '@mui/material';
+import { Skeleton, Typography, useTheme } from '@mui/material';
 import { OgvProposalState } from '@origin/governance/shared';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
 
 import { statusLabels } from '../constants';
 
 import type { TypographyProps } from '@mui/material';
 
-import type { Proposal } from '../types';
+export type StatusBadgeProps = {
+  status: string;
+  isLoading?: boolean;
+} & TypographyProps;
 
-export type StatusBadgeProps = { proposal: Proposal } & TypographyProps;
-
-export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
+export const StatusBadge = ({
+  status,
+  isLoading,
+  ...rest
+}: StatusBadgeProps) => {
   const intl = useIntl();
   const theme = useTheme();
 
   const label =
-    statusLabels[proposal.status] ??
-    intl.formatMessage({ defaultMessage: 'Unknown' });
+    statusLabels[status] ?? defineMessage({ defaultMessage: 'Unknown' });
   const color =
     {
       [OgvProposalState.Active]: theme.palette.secondary.main,
@@ -28,7 +32,7 @@ export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
       [OgvProposalState.Queued]: theme.palette.text.secondary,
       [OgvProposalState.Succeeded]: theme.palette.success.main,
       closed: theme.palette.success.main,
-    }[proposal.status] ?? theme.palette.info.main;
+    }[status] ?? theme.palette.grey[800];
 
   return (
     <Typography
@@ -43,7 +47,7 @@ export const StatusBadge = ({ proposal, ...rest }: StatusBadgeProps) => {
         ...rest?.sx,
       }}
     >
-      {intl.formatMessage(label)}
+      {isLoading ? <Skeleton width={60} /> : intl.formatMessage(label)}
     </Typography>
   );
 };
