@@ -1,4 +1,4 @@
-import { forwardRef, useRef } from 'react';
+import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -23,11 +23,16 @@ export const SliderSwitch = ({
   ...rest
 }: SliderSwitchProps) => {
   const refs = useRef([]);
-  const itemWidths = refs.current.map((o) => o.offsetWidth);
+  const [itemsWidth, setItemsWidth] = useState([]);
+
+  useLayoutEffect(() => {
+    setItemsWidth(refs.current.map((o) => o.offsetWidth));
+  }, []);
+
   const idx = options.findIndex((o) =>
     isNilOrEmpty(o.value) ? isNilOrEmpty(value) : o.value === value,
   );
-  const translateX = itemWidths.reduce(
+  const translateX = itemsWidth.reduce(
     (acc, curr, i) => (i < idx ? acc + curr : acc),
     0,
   );
@@ -68,7 +73,7 @@ export const SliderSwitch = ({
           zIndex: 1,
           top: 0,
           left: 0,
-          width: itemWidths[idx],
+          width: itemsWidth[idx],
           height: 1,
           background: 'grey.800',
           transform: `translateX(${translateX}px)`,
