@@ -6,6 +6,7 @@ import {
   braveWallet,
   coinbaseWallet,
   injectedWallet,
+  ledgerWallet,
   metaMaskWallet,
   rabbyWallet,
   rainbowWallet,
@@ -62,10 +63,10 @@ const connectors = connectorsForWallets([
     groupName: 'Others',
     wallets: [
       injectedWallet({ chains, shimDisconnect: true }),
-      // ledgerWallet({
-      //   chains,
-      //   projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      // }),
+      ledgerWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
       safeWallet({ chains }),
       rainbowWallet({
         chains,
