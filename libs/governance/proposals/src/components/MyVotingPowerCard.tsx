@@ -19,6 +19,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
       <CardContent>
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+          labelProps={{ sx: { fontSize: 14 } }}
           isLoading={isInfoLoading}
           value={
             isConnected ? (

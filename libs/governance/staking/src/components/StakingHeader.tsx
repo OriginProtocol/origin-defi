@@ -152,7 +152,7 @@ export const StackingHeader = () => {
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               justifyContent="space-between"
               spacing={2}
@@ -252,7 +252,7 @@ export const StackingHeader = () => {
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               justifyContent="space-between"
               spacing={2}
@@ -295,7 +295,7 @@ export const StackingHeader = () => {
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               spacing={2}
               justifyContent="space-between"

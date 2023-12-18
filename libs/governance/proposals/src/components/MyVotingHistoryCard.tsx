@@ -1,6 +1,7 @@
 import {
   Box,
   Card,
+  CardContent,
   CardHeader,
   CircularProgress,
   Divider,
@@ -37,52 +38,53 @@ export const MyVotingHistoryCard = (props: CardProps) => {
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'My Voting History' })}
       />
-
-      {isConnected ? (
-        isVotesLoading ? (
-          <Stack
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '5rem',
-              width: 1,
-            }}
-          >
-            <CircularProgress size={20} />
-          </Stack>
-        ) : isNilOrEmpty(votes) ? (
-          <Stack
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '5rem',
-              width: 1,
-            }}
-          >
-            <Typography variant="body2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'No votes' })}
-            </Typography>
-          </Stack>
+      <CardContent>
+        {isConnected ? (
+          isVotesLoading ? (
+            <Stack
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '5rem',
+                width: 1,
+              }}
+            >
+              <CircularProgress size={20} />
+            </Stack>
+          ) : isNilOrEmpty(votes) ? (
+            <Stack
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                height: '5rem',
+                width: 1,
+              }}
+            >
+              <Typography variant="body2" color="text.secondary">
+                {intl.formatMessage({ defaultMessage: 'No votes' })}
+              </Typography>
+            </Stack>
+          ) : (
+            <Stack spacing={1.5} divider={<Divider />}>
+              {votes.map((vote) => (
+                <VoteHistory key={vote.id} vote={vote} />
+              ))}
+            </Stack>
+          )
         ) : (
-          <Stack spacing={1.5} divider={<Divider />}>
-            {votes.map((vote) => (
-              <VoteHistory key={vote.id} vote={vote} />
-            ))}
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              width: 1,
+            }}
+          >
+            <ConnectedButton variant="connect" />
           </Stack>
-        )
-      ) : (
-        <Stack
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            width: 1,
-          }}
-        >
-          <ConnectedButton />
-        </Stack>
-      )}
+        )}
+      </CardContent>
     </Card>
   );
 };

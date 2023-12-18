@@ -35,18 +35,21 @@ export const ProposalsSummaryCard = (props: CardProps) => {
             label={intl.formatMessage({ defaultMessage: 'Proposals' })}
             value={proposals?.length ?? 0}
             isLoading={isProposalsLoading}
+            labelProps={{ sx: { fontSize: 14 } }}
             {...valueLabelProps}
           />
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Active Proposals' })}
             value={active}
             isLoading={isProposalsLoading}
+            labelProps={{ sx: { fontSize: 14 } }}
             {...valueLabelProps}
           />
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Registered Voters' })}
             value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
             isLoading={isHoldersCountLoading}
+            labelProps={{ sx: { fontSize: 14 } }}
             {...valueLabelProps}
           />
         </Stack>
