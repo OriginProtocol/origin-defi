@@ -5,7 +5,7 @@ import type { TooltipProps, TypographyProps } from '@mui/material';
 
 export type TooltipLabelProps = {
   maxChars?: number;
-  tooltipProps?: TooltipProps;
+  tooltipProps?: Omit<TooltipProps, 'children' | 'title'>;
 } & TypographyProps;
 
 export const TooltipLabel = ({
@@ -22,7 +22,7 @@ export const TooltipLabel = ({
     ? children.filter((c) => typeof c === 'string').join('').length
     : children.toString().length;
 
-  if (typeof children !== 'string' || strLength <= maxChars) {
+  if (strLength <= maxChars) {
     return <Typography {...rest}>{children}</Typography>;
   }
 

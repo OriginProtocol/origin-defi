@@ -173,7 +173,7 @@ export const StackingHeader = () => {
                         width={20}
                       />
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
                         isLoading={isInfoLoading}
                       >
@@ -203,7 +203,7 @@ export const StackingHeader = () => {
                         width={20}
                       />
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
                         isLoading={isTotalLockupsLoading}
                       >
@@ -271,7 +271,7 @@ export const StackingHeader = () => {
                       width={20}
                     />
                     <LoadingLabel
-                      fontSize={24}
+                      variant="h3"
                       sWidth={80}
                       isLoading={isInfoLoading}
                     >
@@ -316,7 +316,7 @@ export const StackingHeader = () => {
                     />
                     <Stack>
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
                         isLoading={isInfoLoading}
                       >

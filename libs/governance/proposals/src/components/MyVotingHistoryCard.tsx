@@ -141,6 +141,9 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
           WebkitLineClamp: 2,
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          ':hover': {
+            textDecoration: 'underline',
+          },
         }}
       >
         {vote?.proposal?.description}

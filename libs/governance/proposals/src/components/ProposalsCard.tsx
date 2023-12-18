@@ -160,7 +160,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
     >
       <Grid2 container spacing={2}>
         <Grid2 xs={12} sm={8}>
-          <Stack spacing={1}>
+          <Stack spacing={1.5}>
             <Stack direction="row" spacing={2}>
               <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
               <StatusBadge status={proposal?.status} />
@@ -170,8 +170,8 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   alignItems="center"
                   sx={{
                     border: (theme) =>
-                      `1px solid ${theme.palette.warning.main}`,
-                    borderRadius: 2,
+                      `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                    borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
                   }}
@@ -189,9 +189,10 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 </Stack>
               )}
             </Stack>
-            <Typography
+            <TooltipLabel
               className="title"
               variant="h5"
+              maxChars={150}
               sx={{
                 maxWidth: 1,
                 display: '-webkit-box',
@@ -200,6 +201,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
               }}
+              tooltipProps={{ placement: 'top' }}
             >
               {proposal.title}
               {proposal.type === 'offchain' && (
@@ -210,7 +212,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   ml={1}
                 />
               )}
-            </Typography>
+            </TooltipLabel>
             <Stack
               direction="row"
               divider={
@@ -266,7 +268,11 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
             justifyContent="space-between"
             spacing={1}
           >
-            <TooltipLabel color="text.secondary" noWrap>
+            <TooltipLabel
+              color="text.secondary"
+              noWrap
+              tooltipProps={{ placement: 'top' }}
+            >
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>

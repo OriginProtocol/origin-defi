@@ -1,4 +1,4 @@
-import { Skeleton, Typography, useTheme } from '@mui/material';
+import { alpha, Skeleton, Typography, useTheme } from '@mui/material';
 import { OgvProposalState } from '@origin/governance/shared';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -40,10 +40,10 @@ export const StatusBadge = ({
       {...rest}
       sx={{
         color,
-        border: `1px solid ${color}`,
+        border: `1px solid ${alpha(color, 0.2)}`,
         px: 0.75,
         py: 0.2,
-        borderRadius: 2,
+        borderRadius: 1,
         ...rest?.sx,
       }}
     >

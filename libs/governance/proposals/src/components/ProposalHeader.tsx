@@ -64,7 +64,18 @@ export const ProposalHeader = (props: StackProps) => {
           isLoading={isProposalLoading}
         />
       </Stack>
-      <LoadingLabel variant="h1" isLoading={isProposalLoading}>
+      <LoadingLabel
+        variant="h1"
+        isLoading={isProposalLoading}
+        sx={{
+          maxWidth: 1,
+          display: '-webkit-box',
+          WebkitBoxOrient: 'vertical',
+          WebkitLineClamp: 2,
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
+      >
         {proposal?.ogvProposalById?.description}
       </LoadingLabel>
       <Stack direction="row" spacing={2}>
@@ -106,15 +117,6 @@ export const ProposalHeader = (props: StackProps) => {
         </Button>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography color="text.secondary">019</Typography>
-        <Box
-          sx={{
-            borderRadius: '50%',
-            width: 5,
-            height: 5,
-            backgroundColor: 'text.secondary',
-          }}
-        />
         <Typography color="text.secondary">
           {intl.formatMessage(
             { defaultMessage: '{event} {date}' },
