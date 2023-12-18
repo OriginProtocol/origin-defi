@@ -31,8 +31,15 @@ export const OpenAccountModalButton = ({
         if (!mounted || !account || !chain) {
           return (
             <Button
-              variant="connect"
               {...props}
+              sx={{
+                background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                '&:hover': {
+                  background:
+                    'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                },
+                ...props?.sx,
+              }}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
