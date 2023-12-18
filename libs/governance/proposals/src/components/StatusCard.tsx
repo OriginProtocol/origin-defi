@@ -67,18 +67,20 @@ export const StatusCard = (props: CardProps) => {
             {logs.map((log) => (
               <LogItem key={log.id} log={log} />
             ))}
-            <Box
-              sx={{
-                position: 'absolute',
-                zIndex: 1,
-                top: 0,
-                left: 15,
-                width: '1px',
-                height: 0.8,
-                background: (theme) =>
-                  `linear-gradient(0deg, ${theme.palette.grey[300]} 0%, ${theme.palette.grey[800]} 100%)`,
-              }}
-            />
+            {logs.length > 1 && (
+              <Box
+                sx={{
+                  position: 'absolute',
+                  zIndex: 1,
+                  top: 0,
+                  left: 15,
+                  width: '1px',
+                  height: 0.8,
+                  background: (theme) =>
+                    `linear-gradient(0deg, ${theme.palette.grey[300]} 0%, ${theme.palette.grey[800]} 100%)`,
+                }}
+              />
+            )}
           </Stack>
         )}
       </CardContent>

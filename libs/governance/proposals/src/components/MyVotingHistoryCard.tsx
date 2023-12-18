@@ -1,18 +1,18 @@
 import {
   Box,
   Card,
-  CardContent,
   CardHeader,
   CircularProgress,
   Divider,
+  Link as MuiLink,
   Stack,
   Typography,
 } from '@mui/material';
-import { ExternalLink } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { useUserVotesQuery } from '../queries.generated';
@@ -37,53 +37,52 @@ export const MyVotingHistoryCard = (props: CardProps) => {
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'My Voting History' })}
       />
-      <CardContent>
-        {isConnected ? (
-          isVotesLoading ? (
-            <Stack
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '5rem',
-                width: 1,
-              }}
-            >
-              <CircularProgress size={20} />
-            </Stack>
-          ) : isNilOrEmpty(votes) ? (
-            <Stack
-              sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                height: '5rem',
-                width: 1,
-              }}
-            >
-              <Typography variant="body2" color="text.secondary">
-                {intl.formatMessage({ defaultMessage: 'No votes' })}
-              </Typography>
-            </Stack>
-          ) : (
-            <Stack spacing={1.5} divider={<Divider />}>
-              {votes.map((vote) => (
-                <VoteHistory key={vote.id} vote={vote} />
-              ))}
-            </Stack>
-          )
-        ) : (
+
+      {isConnected ? (
+        isVotesLoading ? (
           <Stack
             sx={{
               display: 'flex',
-              alignItems: 'flex-start',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '5rem',
               width: 1,
             }}
           >
-            <ConnectedButton />
+            <CircularProgress size={20} />
           </Stack>
-        )}
-      </CardContent>
+        ) : isNilOrEmpty(votes) ? (
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '5rem',
+              width: 1,
+            }}
+          >
+            <Typography variant="body2" color="text.secondary">
+              {intl.formatMessage({ defaultMessage: 'No votes' })}
+            </Typography>
+          </Stack>
+        ) : (
+          <Stack spacing={1.5} divider={<Divider />}>
+            {votes.map((vote) => (
+              <VoteHistory key={vote.id} vote={vote} />
+            ))}
+          </Stack>
+        )
+      ) : (
+        <Stack
+          sx={{
+            display: 'flex',
+            alignItems: 'flex-start',
+            width: 1,
+          }}
+        >
+          <ConnectedButton />
+        </Stack>
+      )}
     </Card>
   );
 };
@@ -126,13 +125,14 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
   }[vote.type];
 
   return (
-    <Stack spacing={1} {...rest}>
+    <Stack spacing={1.5} px={3} py={1.5} {...rest}>
       <Stack direction="row" spacing={2}>
         <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
         <StatusBadge status={vote?.proposal?.status} />
       </Stack>
-      <ExternalLink
-        href={`https://etherscan.io/tx/${vote.txHash}`}
+      <MuiLink
+        component={Link}
+        to={`/${vote.proposal.id}`}
         variant="h5"
         sx={{
           maxWidth: 1,
@@ -144,7 +144,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
         }}
       >
         {vote?.proposal?.description}
-      </ExternalLink>
+      </MuiLink>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
         <Typography variant="body2" color="text.secondary">
           {intl.formatDate(new Date(vote.timestamp), {

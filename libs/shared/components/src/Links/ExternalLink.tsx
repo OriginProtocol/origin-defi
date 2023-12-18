@@ -14,10 +14,15 @@ export const ExternalLink = ({
       target="_blank"
       rel="noopener noreferrer nofollow"
       {...rest}
-      sx={{ cursor: 'pointer', ...rest?.sx }}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 0.75,
+        ...rest?.sx,
+      }}
     >
       {children}
-      &nbsp;
       <Box
         component="img"
         src="images/icons/arrow-up-right-from-square.svg"
