@@ -1,35 +1,32 @@
 import { useEffect, useState } from 'react';
 
 import {
-  alpha,
   Box,
-  Button,
-  Collapse,
   Dialog,
   DialogContent,
   DialogTitle,
+  Divider,
   Slider,
   Stack,
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
-  BigIntInput,
   InfoTooltip,
   LoadingLabel,
+  MiddleTruncated,
 } from '@origin/shared/components';
 import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
-  ApprovalButton,
   ConnectedButton,
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { useDebouncedEffect } from '@react-hookz/web';
+import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
-import { addMonths, formatDuration } from 'date-fns';
+import { addMonths, differenceInMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -40,173 +37,151 @@ import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
-export const StakeFormModal = (props: DialogProps) => {
+import type { Lockup } from '../types';
+
+export type ExtendFormModalProps = {
+  lockup: Lockup;
+} & DialogProps;
+
+export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
+  const amount = BigInt(lockup.amount);
+  const initialMonthDuration = differenceInMonths(
+    new Date(lockup.end),
+    new Date(),
+  );
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
-  const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
   const { data: staking, refetch } = useStakingAPY(amount, duration, {
     enabled: false,
   });
 
+  useMountEffect(() => {
+    refetch();
+  });
+
   useDebouncedEffect(
     () => {
-      if (amount > 0n && duration > 0) {
+      if (duration > initialMonthDuration) {
         refetch();
       }
     },
-    [amount, duration],
+    [duration],
     800,
   );
 
   useEffect(() => {
     if (
       isLoading &&
-      (!isNilOrEmpty(staking?.stakingAPY) || amount === 0n || duration === 0)
+      (!isNilOrEmpty(staking?.stakingAPY) || duration === initialMonthDuration)
     ) {
       setIsLoading(false);
     }
-  }, [amount, staking, duration, isLoading]);
-
-  const handleAmountChange = (val: bigint) => {
-    setIsLoading(duration > 0);
-    setAmount(val);
-  };
+  }, [duration, initialMonthDuration, isLoading, staking?.stakingAPY]);
 
   const handleDurationChange = (_, newValue: number | number[]) => {
-    setIsLoading(amount > 0n);
-    setDuration(newValue as number);
+    const val = newValue as number;
+    if (val >= (initialMonthDuration ?? 0)) {
+      setIsLoading(true);
+      setDuration(val);
+    }
   };
 
-  const handleMaxClick = () => {
-    setAmount(info?.ogvBalance ?? 0n);
-  };
-
-  const votinPowerPercent =
+  const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
-    +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
-  const showApprove =
-    isConnected &&
-    !isInfoLoading &&
-    amount > 0n &&
-    duration > 0 &&
-    amount <= (info?.ogvBalance ?? 0n) &&
-    amount > (info?.ogvVeOgvAllowance ?? 0n);
+    +formatUnits(info?.veOgvTotalSupply ?? 1n, tokens.mainnet.OGV.decimals);
+  const showRewardLabel = (info?.veOgvRewards ?? 0n) > 0n;
   const stakeDisabled =
     !isConnected ||
     isInfoLoading ||
     isLoading ||
-    amount === 0n ||
-    duration === 0 ||
-    amount > (info?.ogvBalance ?? 0n) ||
-    amount > (info?.ogvVeOgvAllowance ?? 0n);
+    initialMonthDuration === 48 ||
+    duration === initialMonthDuration;
 
   return (
-    <Dialog {...props} maxWidth="sm" fullWidth>
+    <Dialog {...rest} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {intl.formatMessage({ defaultMessage: 'Stake' })}
+        {intl.formatMessage({ defaultMessage: 'Extend Stake' })}
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            spacing={2}
-            mb={1.5}
-          >
-            <Typography fontWeight={700}>
-              {intl.formatMessage({ defaultMessage: 'Amount to Stake' })}
-            </Typography>
-            <Stack direction="row" spacing={1}>
-              <Typography color="text.secondary">
-                {intl.formatMessage(
-                  {
-                    defaultMessage: 'Balance: {balance}',
-                  },
-                  {
-                    balance: formatAmount(
-                      info?.ogvBalance ?? 0n,
-                      tokens.mainnet.OGV.decimals,
-                    ),
-                  },
-                )}
+          <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
+            <Stack
+              direction="row"
+              px={3}
+              pt={2}
+              pb={1}
+              sx={{ '> *': { width: 1, color: 'text.secondary' } }}
+            >
+              <Typography>{tokens.mainnet.OGV.symbol}</Typography>
+              <Typography textAlign="end">
+                {intl.formatMessage({ defaultMessage: 'Time remaining' })}
               </Typography>
-              <Button
-                onClick={handleMaxClick}
-                disabled={isNilOrEmpty(info) || info?.ogvBalance === 0n}
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  borderRadius: 1,
-                  minWidth: 36,
-                  lineHeight: 1,
-                  color: 'text.secondary',
-                  py: 0.25,
-                  px: 0.5,
-                  background: (theme) => alpha(theme.palette.common.white, 0.1),
-                  ':hover': {
-                    background: (theme) => theme.palette.grey[600],
-                  },
-                }}
-              >
-                {intl.formatMessage({ defaultMessage: 'max' })}
-              </Button>
+              <Typography textAlign="end">
+                {intl.formatMessage({ defaultMessage: 'Voting Power' })}
+              </Typography>
             </Stack>
-          </Stack>
-          <BigIntInput
-            value={amount}
-            decimals={tokens.mainnet.OGV.decimals}
-            onChange={handleAmountChange}
-            endAdornment={
-              <Stack
-                direction="row"
-                sx={{
-                  borderLeft: (theme) => `1px solid ${theme.palette.grey[800]}`,
-                  pl: 1,
-                  gap: 1,
-                }}
-              >
-                <Box component="img" src={tokens.mainnet.OGV.icon} width={28} />
-                <Typography fontSize={20}>
-                  {tokens.mainnet.OGV.symbol}
+            <Divider />
+            <Stack
+              direction="row"
+              px={3}
+              pt={1}
+              pb={2}
+              alignItems="baseline"
+              sx={{ '> *': { width: 1 } }}
+            >
+              <Stack direction="row" spacing={1} alignItems="baseline">
+                <Box
+                  component="img"
+                  src={tokens.mainnet.OGV.icon}
+                  width={24}
+                  sx={{ transform: 'translateY(4px)' }}
+                />
+                <Typography variant="h3">
+                  {formatAmount(
+                    BigInt(lockup.amount),
+                    tokens.mainnet.OGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  )}
                 </Typography>
               </Stack>
-            }
-            inputProps={{
-              style: { fontSize: 24 },
-            }}
-            sx={{
-              px: 3,
-              py: 2,
-              borderRadius: 1,
-              backgroundColor: 'grey.900',
-              borderColor: 'transparent',
-              '&:hover, &:focus-within': {
-                borderColor: 'transparent',
-              },
-              '&:hover': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${
-                    theme.palette.grey[900]
-                  }) padding-box, linear-gradient(90deg, ${alpha(
-                    theme.palette.primary.main,
-                    0.4,
-                  )} 0%, ${alpha(
-                    theme.palette.primary.dark,
-                    0.4,
-                  )} 100%) border-box;`,
-              },
-              '&:focus-within': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-              },
-            }}
-          />
+              <Typography textAlign="end" fontWeight={700}>
+                {intl.formatMessage(
+                  {
+                    defaultMessage:
+                      '{count,plural, =1{# month} other{# months}}',
+                  },
+                  { count: initialMonthDuration },
+                )}
+              </Typography>
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="baseline"
+                justifyContent="flex-end"
+              >
+                <Box
+                  component="img"
+                  src={tokens.mainnet.veOGV.icon}
+                  width={24}
+                  sx={{ transform: 'translateY(4px)' }}
+                />
+                <Typography fontWeight={700}>
+                  {formatAmount(
+                    BigInt(lockup.veogv),
+                    tokens.mainnet.veOGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  )}
+                </Typography>
+              </Stack>
+            </Stack>
+          </Stack>
         </Stack>
         <Stack>
           <Typography fontWeight={700} mb={1.5}>
@@ -221,35 +196,59 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
             <Stack
               direction="row"
-              justifyContent="space-between"
               alignItems="center"
+              justifyContent="space-between"
             >
-              <Typography variant="h3">
-                {duration === 0
-                  ? intl.formatMessage({ defaultMessage: '0 months' })
-                  : formatDuration(
+              <Stack>
+                <Typography variant="h3">
+                  {duration === 0
+                    ? intl.formatMessage({ defaultMessage: '0 months' })
+                    : formatDuration(
+                        {
+                          years: Math.floor(duration / 12),
+                          months: duration % 12,
+                        },
+                        {
+                          format: ['years', 'months'],
+                        },
+                      )}
+                </Typography>
+              </Stack>
+              <Stack spacing={0.5}>
+                <Stack direction="row" justifyContent="flex-end">
+                  <Typography color="text.secondary">
+                    {intl.formatMessage({
+                      defaultMessage: 'Current Lock-up Ends:',
+                    })}
+                  </Typography>
+                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                    {intl.formatDate(new Date(lockup.end), {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </Typography>
+                </Stack>
+                <Stack direction="row">
+                  <Typography color="text.secondary">
+                    {intl.formatMessage({
+                      defaultMessage: 'Extended Lock up Ends:',
+                    })}
+                  </Typography>
+                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                    {intl.formatDate(
+                      addMonths(
+                        new Date(lockup.end),
+                        duration - initialMonthDuration,
+                      ),
                       {
-                        years: Math.floor(duration / 12),
-                        months: duration % 12,
-                      },
-                      {
-                        format: ['years', 'months'],
+                        day: '2-digit',
+                        month: 'short',
+                        year: 'numeric',
                       },
                     )}
-              </Typography>
-              <Stack direction="row" spacing={1}>
-                <Typography
-                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
-                >
-                  {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
-                </Typography>
-                <Typography fontWeight={700} minWidth={92}>
-                  {intl.formatDate(addMonths(new Date(), duration), {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
-                </Typography>
+                  </Typography>
+                </Stack>
               </Stack>
             </Stack>
             <Box>
@@ -320,9 +319,7 @@ export const StakeFormModal = (props: DialogProps) => {
                 })}
               </LoadingLabel>
               <Stack direction="row" spacing={1}>
-                <Typography
-                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
-                >
+                <Typography color="text.secondary">
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
@@ -354,7 +351,7 @@ export const StakeFormModal = (props: DialogProps) => {
             <InfoTooltip
               tooltipLabel={intl.formatMessage({
                 defaultMessage:
-                  'The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn.',
+                  'The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn.',
               })}
             />
           </Typography>
@@ -390,7 +387,6 @@ export const StakeFormModal = (props: DialogProps) => {
                   sx={{
                     mr: 1,
                     color: 'text.secondary',
-                    strong: { minWidth: 92 },
                   }}
                 >
                   {intl.formatMessage({
@@ -398,8 +394,8 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </Typography>
                 <LoadingLabel fontWeight={700} isLoading={isLoading}>
-                  {votinPowerPercent <= 1e-4 && votinPowerPercent > 0 && `~ `}
-                  {intl.formatNumber(votinPowerPercent, {
+                  {votingPowerPercent <= 1e-4 && votingPowerPercent > 0 && `~ `}
+                  {intl.formatNumber(votingPowerPercent, {
                     style: 'percent',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -416,43 +412,52 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Collapse in={showApprove}>
-          <Stack>
-            <ApprovalButton
-              token={tokens.mainnet.OGV}
-              spender={tokens.mainnet.veOGV}
-              amount={amount}
-              variant="action"
-              disabled={isInfoLoading}
-              onSuccess={() => {
-                queryClient.invalidateQueries({
-                  queryKey: ['useGovernanceInfo'],
-                });
-              }}
-            />
+        {showRewardLabel && (
+          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'OGV Rewards Will be Collected',
+              })}
+            </Typography>
+            <Typography
+              color="text.secondary"
+              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
+            >
+              {intl.formatMessage(
+                {
+                  defaultMessage:
+                    'You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake.',
+                },
+                {
+                  reward: formatAmount(
+                    info?.veOgvRewards,
+                    tokens.mainnet.OGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  ),
+                },
+              )}
+            </Typography>
           </Stack>
-        </Collapse>
+        )}
         <TransactionButton
           contract={tokens.mainnet.veOGV}
-          functionName="stake"
-          args={[amount, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          functionName="extend"
+          args={[lockup.lockupId, BigInt(duration * MILLISECONDS_IN_MONTH)]}
           disabled={stakeDisabled}
           variant="action"
-          label={
-            amount > (info?.ogvBalance ?? 0n)
-              ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-              : intl.formatMessage({ defaultMessage: 'Stake' })
-          }
-          activityTitle={intl.formatMessage({ defaultMessage: 'Stake OGV' })}
+          label={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
+          activityTitle={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
           activitySubtitle={intl.formatMessage(
             {
               defaultMessage:
-                'Lock {amount} OGV for {duration,plural,=1{# month} other{# months}}',
+                'Extend Stake {stake} to {duration,plural,=1{# month} other{# months}}',
             },
             {
-              amount: intl.formatNumber(
-                +formatUnits(amount, tokens.mainnet.OGV.decimals),
-                { notation: 'compact', maximumSignificantDigits: 4 },
+              stake: (
+                <MiddleTruncated maxWidth={60}>
+                  {lockup.lockupId}
+                </MiddleTruncated>
               ),
               duration,
             },
@@ -466,7 +471,7 @@ export const StakeFormModal = (props: DialogProps) => {
             />
           }
           onSuccess={() => {
-            props.onClose(null, 'backdropClick');
+            rest.onClose(null, 'backdropClick');
             queryClient.invalidateQueries({
               queryKey: [useUserLockupsQuery.getKey({ address })],
             });
@@ -477,20 +482,25 @@ export const StakeFormModal = (props: DialogProps) => {
   );
 };
 
-export const StakeButton = (props: ButtonProps) => {
+export type ExtendButtonProps = {
+  lockup: Lockup;
+} & ButtonProps;
+
+export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <ConnectedButton
-        {...props}
+        {...rest}
         onClick={(e) => {
           setOpen(true);
-          props?.onClick(e);
+          rest?.onClick(e);
         }}
       />
-      <StakeFormModal
+      <ExtendFormModal
         key={open ? 'open' : 'closed'}
+        lockup={lockup}
         open={open}
         onClose={() => {
           setOpen(false);

@@ -26,6 +26,7 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from '../queries.generated';
+import { ExtendButton } from './ExtendFormModal';
 import { LockupTransactionsButton } from './LockupTransactionsModal';
 
 import type { Lockup } from '../types';
@@ -75,7 +76,7 @@ export const LockupsTable = () => {
           <Typography>
             {formatDistanceToNowStrict(new Date(info.row.original.end), {
               unit: 'month',
-              roundingMethod: 'ceil',
+              roundingMethod: 'floor',
             })}
           </Typography>
         ),
@@ -98,12 +99,13 @@ export const LockupsTable = () => {
         id: 'action',
         cell: (info) => (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Button
+            <ExtendButton
+              lockup={info.row.original}
               variant="outlined"
               disabled={isPast(new Date(info.row.original.end))}
             >
               {intl.formatMessage({ defaultMessage: 'Extend' })}
-            </Button>
+            </ExtendButton>
             <Button
               variant="outlined"
               disabled={isFuture(new Date(info.row.original.end))}
