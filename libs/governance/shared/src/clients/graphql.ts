@@ -25,7 +25,7 @@ export const graphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'];
+    return res.data['data'] as TData;
   };
 
 export const snapshotGraphqlClient =
@@ -45,5 +45,5 @@ export const snapshotGraphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'];
+    return res.data['data'] as TData;
   };
