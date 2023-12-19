@@ -1331,6 +1331,131 @@ export type MakerDsrStrategyWhereInput = {
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
+export type MaverickPoolBalance = {
+  __typename?: 'MaverickPoolBalance';
+  address: Scalars['String']['output'];
+  binBalanceA: Scalars['BigInt']['output'];
+  binBalanceB: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+};
+
+export type MaverickPoolBalanceEdge = {
+  __typename?: 'MaverickPoolBalanceEdge';
+  cursor: Scalars['String']['output'];
+  node: MaverickPoolBalance;
+};
+
+export enum MaverickPoolBalanceOrderByInput {
+  AddressAsc = 'address_ASC',
+  AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
+  AddressDesc = 'address_DESC',
+  AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  BinBalanceAAsc = 'binBalanceA_ASC',
+  BinBalanceAAscNullsFirst = 'binBalanceA_ASC_NULLS_FIRST',
+  BinBalanceADesc = 'binBalanceA_DESC',
+  BinBalanceADescNullsLast = 'binBalanceA_DESC_NULLS_LAST',
+  BinBalanceBAsc = 'binBalanceB_ASC',
+  BinBalanceBAscNullsFirst = 'binBalanceB_ASC_NULLS_FIRST',
+  BinBalanceBDesc = 'binBalanceB_DESC',
+  BinBalanceBDescNullsLast = 'binBalanceB_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+}
+
+export type MaverickPoolBalanceWhereInput = {
+  AND?: InputMaybe<Array<MaverickPoolBalanceWhereInput>>;
+  OR?: InputMaybe<Array<MaverickPoolBalanceWhereInput>>;
+  address_contains?: InputMaybe<Scalars['String']['input']>;
+  address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_eq?: InputMaybe<Scalars['String']['input']>;
+  address_gt?: InputMaybe<Scalars['String']['input']>;
+  address_gte?: InputMaybe<Scalars['String']['input']>;
+  address_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  address_lt?: InputMaybe<Scalars['String']['input']>;
+  address_lte?: InputMaybe<Scalars['String']['input']>;
+  address_not_contains?: InputMaybe<Scalars['String']['input']>;
+  address_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_not_eq?: InputMaybe<Scalars['String']['input']>;
+  address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  binBalanceA_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  binBalanceA_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  binBalanceA_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceA_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  binBalanceB_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  binBalanceB_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  binBalanceB_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  binBalanceB_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type MaverickPoolBalancesConnection = {
+  __typename?: 'MaverickPoolBalancesConnection';
+  edges: Array<MaverickPoolBalanceEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 /** The OETH entity tracks the change in total supply of OETH over time. */
 export type Oeth = {
   __typename?: 'OETH';
@@ -9055,6 +9180,11 @@ export type Query = {
   makerDsrStrategyById?: Maybe<MakerDsrStrategy>;
   /** @deprecated Use makerDsrStrategyById */
   makerDsrStrategyByUniqueInput?: Maybe<MakerDsrStrategy>;
+  maverickPoolBalanceById?: Maybe<MaverickPoolBalance>;
+  /** @deprecated Use maverickPoolBalanceById */
+  maverickPoolBalanceByUniqueInput?: Maybe<MaverickPoolBalance>;
+  maverickPoolBalances: Array<MaverickPoolBalance>;
+  maverickPoolBalancesConnection: MaverickPoolBalancesConnection;
   oethActivities: Array<OethActivity>;
   oethActivitiesConnection: OethActivitiesConnection;
   oethActivityById?: Maybe<OethActivity>;
@@ -9567,6 +9697,32 @@ export type QueryMakerDsrStrategyByIdArgs = {
 
 export type QueryMakerDsrStrategyByUniqueInputArgs = {
   where: WhereIdInput;
+};
+
+
+export type QueryMaverickPoolBalanceByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryMaverickPoolBalanceByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryMaverickPoolBalancesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MaverickPoolBalanceOrderByInput>>;
+  where?: InputMaybe<MaverickPoolBalanceWhereInput>;
+};
+
+
+export type QueryMaverickPoolBalancesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<MaverickPoolBalanceOrderByInput>;
+  where?: InputMaybe<MaverickPoolBalanceWhereInput>;
 };
 
 
