@@ -1,8 +1,8 @@
 import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
-import { readContracts } from '@wagmi/core';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { readContract, readContracts } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -11,6 +11,8 @@ import { getRewardsApy } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
+import type { UserLockupsQuery } from './queries.generated';
+
 export const useTotalLockedUp = () => {
   const { address } = useAccount();
 
@@ -18,14 +20,11 @@ export const useTotalLockedUp = () => {
     { address },
     {
       select: (data) =>
-        isNilOrEmpty(data?.ogvLockups)
-          ? 0n
-          : data.ogvLockups.reduce(
-              (acc, curr) => acc + BigInt(curr?.amount ?? 0n),
-              0n,
-            ),
+        data?.ogvLockups?.reduce(
+          (acc, curr) => acc + BigInt(curr?.amount ?? 0n),
+          0n,
+        ) ?? 0n,
       enabled: !!address,
-      placeholderData: { ogvLockups: [] },
     },
   );
 };
@@ -90,5 +89,55 @@ export const useStakingAPY = (
       };
     },
     ...options,
+  });
+};
+
+export const useMyVApy = () => {
+  const { address, isConnected } = useAccount();
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    queryKey: [useMyVApy, address],
+    queryFn: async () => {
+      const data = await Promise.all([
+        queryClient.fetchQuery<UserLockupsQuery>(
+          useUserLockupsQuery.getKey({ address }),
+        ),
+        readContract({
+          address: tokens.mainnet.veOGV.address,
+          abi: tokens.mainnet.veOGV.abi,
+          functionName: 'totalSupply',
+        }),
+      ]);
+
+      if (!isConnected || isNilOrEmpty(data?.[0]?.ogvLockups)) {
+        return 0;
+      }
+
+      const total = data[0].ogvLockups.reduce(
+        (acc, curr) =>
+          acc +
+          +formatUnits(
+            BigInt(curr?.amount ?? 0n),
+            tokens.mainnet.veOGV.decimals,
+          ),
+        0,
+      );
+
+      return data[0].ogvLockups.reduce((acc, curr) => {
+        const vAPY = getRewardsApy(
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals),
+          +formatUnits(BigInt(curr.veogv), tokens.mainnet.veOGV.decimals),
+          +formatUnits(data[1], tokens.mainnet.veOGV.decimals),
+        );
+
+        const weight =
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals) /
+          total;
+
+        return acc + weight * vAPY;
+      }, 0);
+    },
+    enabled: !!address,
   });
 };

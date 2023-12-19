@@ -5,12 +5,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { InfoTooltip } from '@origin/shared/components';
+import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { ConnectedButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { useMyVApy } from '../hooks';
 import { useUserLockupsQuery } from '../queries.generated';
 import { LockupsTable } from './LockupsTable';
 
@@ -23,38 +24,42 @@ export const LockupsCard = (props: CardProps) => {
     { address },
     { enabled: !!address, select: (data) => data.ogvLockups },
   );
+  const { data: myvAPY, isLoading: isMyvAPYLoading } = useMyVApy();
 
   return (
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'My Lock-ups' })}
         action={
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'My vAPY' })}
-            </Typography>
-            <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The current APY you are earning across all of your lock-ups.',
-              })}
-            />
-            <Typography
-              variant="h3"
-              sx={{
-                background:
-                  'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              {intl.formatNumber(0.2489, {
-                style: 'percent',
-                maximumFractionDigits: 2,
-                minimumFractionDigits: 2,
-              })}
-            </Typography>
-          </Stack>
+          isConnected && (
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'My vAPY' })}
+              </Typography>
+              <InfoTooltip
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'The current APY you are earning across all of your lock-ups.',
+                })}
+              />
+              <LoadingLabel
+                variant="h3"
+                isLoading={isMyvAPYLoading}
+                sx={{
+                  background:
+                    'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                {intl.formatNumber(myvAPY, {
+                  style: 'percent',
+                  maximumFractionDigits: 2,
+                  minimumFractionDigits: 2,
+                })}
+              </LoadingLabel>
+            </Stack>
+          )
         }
       />
       {isConnected ? (
