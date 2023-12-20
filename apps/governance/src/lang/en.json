@@ -41,6 +41,12 @@
       "value": "Clear"
     }
   ],
+  "/Kr6f5": [
+    {
+      "type": 0,
+      "value": "End block"
+    }
+  ],
   "/xvR4F": [
     {
       "type": 0,
@@ -53,10 +59,40 @@
       "value": "Processing Approval"
     }
   ],
+  "0AYOgf": [
+    {
+      "type": 0,
+      "value": "You have accrued "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reward"
+        },
+        {
+          "type": 0,
+          "value": " OGV"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
+    }
+  ],
   "0Go4jI": [
     {
       "type": 0,
       "value": "Swapped"
+    }
+  ],
+  "0ICwq5": [
+    {
+      "type": 0,
+      "value": "Last updated"
     }
   ],
   "0STEwK": [
@@ -139,6 +175,12 @@
       "value": "Registered Voters"
     }
   ],
+  "3TvsVz": [
+    {
+      "type": 0,
+      "value": "Collect rewards"
+    }
+  ],
   "3WcLXG": [
     {
       "type": 0,
@@ -161,6 +203,20 @@
     {
       "type": 0,
       "value": "Max vAPY"
+    }
+  ],
+  "40/oSs": [
+    {
+      "type": 0,
+      "value": "If you plan to restake your rewards, you can save on transaction fees by selecting the "
+    },
+    {
+      "type": 1,
+      "value": "restake"
+    },
+    {
+      "type": 0,
+      "value": " option."
     }
   ],
   "45EvZ3": [
@@ -409,6 +465,12 @@
       "value": "Locked Tokens Received Now"
     }
   ],
+  "Cdsqgz": [
+    {
+      "type": 0,
+      "value": "Extended Lock up Ends:"
+    }
+  ],
   "Cnm0QA": [
     {
       "type": 0,
@@ -545,6 +607,12 @@
       "value": "Get OGV"
     }
   ],
+  "Gtdie8": [
+    {
+      "type": 0,
+      "value": "Available to claim"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -665,6 +733,26 @@
       "value": "Your operation has been executed"
     }
   ],
+  "O6UApS": [
+    {
+      "type": 0,
+      "value": "Collect "
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " rewards OGV"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
   "OmyPDW": [
     {
       "type": 0,
@@ -695,6 +783,12 @@
       "value": "Unsupported Network"
     }
   ],
+  "PqSAYk": [
+    {
+      "type": 0,
+      "value": "Current APY"
+    }
+  ],
   "PuubxK": [
     {
       "type": 0,
@@ -705,6 +799,12 @@
     {
       "type": 0,
       "value": "Best"
+    }
+  ],
+  "Q8Qw5B": [
+    {
+      "type": 0,
+      "value": "Description"
     }
   ],
   "Qz1fcp": [
@@ -791,6 +891,12 @@
     {
       "type": 0,
       "value": "Origin DeFi Governance"
+    }
+  ],
+  "Tfx/3J": [
+    {
+      "type": 0,
+      "value": "Start block"
     }
   ],
   "TrKxvg": [
@@ -927,6 +1033,62 @@
       "value": "Time Remaining"
     }
   ],
+  "Ze2Qul": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend Stake "
+            },
+            {
+              "type": 1,
+              "value": "stake"
+            },
+            {
+              "type": 0,
+              "value": " to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend Stake "
+            },
+            {
+              "type": 1,
+              "value": "stake"
+            },
+            {
+              "type": 0,
+              "value": " to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
   "Zl7l7P": [
     {
       "type": 1,
@@ -1051,16 +1213,72 @@
       "value": "symbolIn"
     }
   ],
+  "fvroLn": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "g+YZVZ": [
+    {
+      "type": 0,
+      "value": "The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
   "gBm7FQ": [
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "hZA4Ul": [
+    {
+      "type": 0,
+      "value": "Current Lock-up Ends:"
+    }
+  ],
+  "hsqHqR": [
+    {
+      "type": 0,
+      "value": "Time remaining"
+    }
+  ],
   "hzfM3P": [
     {
       "type": 0,
       "value": "Transaction executed"
+    }
+  ],
+  "i9rSSQ": [
+    {
+      "type": 0,
+      "value": "OGV Rewards Will be Collected"
     }
   ],
   "iLgjES": [
@@ -1097,6 +1315,12 @@
     {
       "type": 0,
       "value": "My Voting History"
+    }
+  ],
+  "jngAIm": [
+    {
+      "type": 0,
+      "value": "Extend Stake"
     }
   ],
   "k3YWIR": [
@@ -1141,10 +1365,26 @@
       "value": "OGV Dashboard"
     }
   ],
+  "ox/9Hn": [
+    {
+      "type": 0,
+      "value": "Unstake lock-up "
+    },
+    {
+      "type": 1,
+      "value": "stake"
+    }
+  ],
   "qQ/SRd": [
     {
       "type": 0,
       "value": "User rejected operation"
+    }
+  ],
+  "qivQ44": [
+    {
+      "type": 0,
+      "value": "Unstake lock-up"
     }
   ],
   "qj1uhz": [
@@ -1239,6 +1479,12 @@
     {
       "type": 0,
       "value": "Error while redeeming"
+    }
+  ],
+  "wL7VAE": [
+    {
+      "type": 0,
+      "value": "Actions"
     }
   ],
   "wqlXwW": [
