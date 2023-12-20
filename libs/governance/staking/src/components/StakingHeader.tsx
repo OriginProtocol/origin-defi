@@ -16,6 +16,7 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStakingAPY, useTotalLockedUp } from '../hooks';
+import { ClaimRewardsButton } from './ClaimRewardsModal';
 import { StakeButton } from './StakeFormModal';
 
 export const StakingHeader = () => {
@@ -288,9 +289,9 @@ export const StakingHeader = () => {
                   </Stack>
                 }
               />
-              <Button variant="outlined">
+              <ClaimRewardsButton variant="outlined">
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
-              </Button>
+              </ClaimRewardsButton>
             </Stack>
           </Grid2>
           <Grid2 xs={6} md={3}>

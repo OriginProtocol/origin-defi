@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { capitalize } from '@mui/material';
-import { SeverityIcon } from '@origin/shared/components';
+import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import {
@@ -156,8 +156,7 @@ export const TransactionButton = ({
         if (!disableNotification) {
           pushNotification({
             content: (
-              <TransactionNotification
-                {...activity}
+              <NotificationSnack
                 icon={<SeverityIcon severity="warning" />}
                 title={intl.formatMessage({
                   defaultMessage: 'Operation Cancelled',
