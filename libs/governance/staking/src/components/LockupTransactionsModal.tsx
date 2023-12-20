@@ -173,7 +173,7 @@ export const LockupTransactionsButton = ({
         onClick={(e) => {
           setOpen(true);
           if (rest?.onClick) {
-            rest.onClick(e);
+            rest.onClick?.(e);
           }
         }}
       />

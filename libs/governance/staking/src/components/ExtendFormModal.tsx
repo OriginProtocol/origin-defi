@@ -495,7 +495,7 @@ export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
         {...rest}
         onClick={(e) => {
           setOpen(true);
-          rest?.onClick(e);
+          rest?.onClick?.(e);
         }}
       />
       <ExtendFormModal

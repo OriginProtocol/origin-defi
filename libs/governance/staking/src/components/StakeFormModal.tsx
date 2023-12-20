@@ -486,7 +486,7 @@ export const StakeButton = (props: ButtonProps) => {
         {...props}
         onClick={(e) => {
           setOpen(true);
-          props?.onClick(e);
+          props?.onClick?.(e);
         }}
       />
       <StakeFormModal

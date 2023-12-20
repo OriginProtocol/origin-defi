@@ -2,7 +2,6 @@ import { useMemo } from 'react';
 
 import {
   Box,
-  Button,
   Stack,
   Table,
   TableBody,
@@ -28,6 +27,7 @@ import { useAccount } from 'wagmi';
 import { useUserLockupsQuery } from '../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
 import { LockupTransactionsButton } from './LockupTransactionsModal';
+import { UnstakeButton } from './UnstakeFormModal';
 
 import type { Lockup } from '../types';
 
@@ -97,33 +97,45 @@ export const LockupsTable = () => {
       }),
       columnHelper.display({
         id: 'action',
-        cell: (info) => (
-          <Stack direction="row" spacing={1} alignItems="center">
-            <ExtendButton
-              lockup={info.row.original}
-              variant="outlined"
-              disabled={isPast(new Date(info.row.original.end))}
-            >
-              {intl.formatMessage({ defaultMessage: 'Extend' })}
-            </ExtendButton>
-            <Button
-              variant="outlined"
-              disabled={isFuture(new Date(info.row.original.end))}
-            >
-              {intl.formatMessage({ defaultMessage: 'Unstake' })}
-            </Button>
-            <LockupTransactionsButton
-              variant="text"
-              logs={info.row.original.logs}
-            >
-              <Box
-                component="img"
-                src="images/icons/chart-pie-light.svg"
-                width={16}
-              />
-            </LockupTransactionsButton>
-          </Stack>
-        ),
+        cell: (info) => {
+          const isUnstaked =
+            info.row.original.logs.filter(
+              (log) => log?.event?.toLowerCase() === 'unstaked',
+            )?.length > 0;
+
+          return (
+            <Stack direction="row" spacing={1} alignItems="center">
+              <ExtendButton
+                lockup={info.row.original}
+                variant="outlined"
+                disabled={isPast(new Date(info.row.original.end))}
+              >
+                {intl.formatMessage({ defaultMessage: 'Extend' })}
+              </ExtendButton>
+
+              <UnstakeButton
+                lockup={info.row.original}
+                variant="outlined"
+                disabled={
+                  isFuture(new Date(info.row.original.end)) || isUnstaked
+                }
+              >
+                {intl.formatMessage({ defaultMessage: 'Unstake' })}
+              </UnstakeButton>
+
+              <LockupTransactionsButton
+                variant="text"
+                logs={info.row.original.logs}
+              >
+                <Box
+                  component="img"
+                  src="images/icons/chart-pie-light.svg"
+                  width={16}
+                />
+              </LockupTransactionsButton>
+            </Stack>
+          );
+        },
       }),
     ],
     [formatAmount, intl],
