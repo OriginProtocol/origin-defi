@@ -11,6 +11,9 @@
   "+7UEXM": {
     "defaultMessage": "My Lock-ups"
   },
+  "+LCX9R": {
+    "defaultMessage": "Delegating to"
+  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -55,6 +58,9 @@
   },
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
+  },
+  "1hrrJK": {
+    "defaultMessage": "Snapshot delegate page"
   },
   "1i2T/n": {
     "defaultMessage": "({value} of total votes)"
@@ -106,6 +112,9 @@
   },
   "5y98eS": {
     "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
+  },
+  "6+973y": {
+    "defaultMessage": "Delegate on-chain voting power"
   },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
@@ -296,6 +305,9 @@
   "ORGv1Q": {
     "defaultMessage": "Created"
   },
+  "Olbt4a": {
+    "defaultMessage": "Delegate"
+  },
   "OmyPDW": {
     "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
   },
@@ -341,6 +353,9 @@
   "S7CBOR": {
     "defaultMessage": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
   },
+  "SqjwlJ": {
+    "defaultMessage": "Delegate {balance} veOGV to self"
+  },
   "SzA4oV": {
     "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
@@ -382,6 +397,9 @@
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"
+  },
+  "W94W+W": {
+    "defaultMessage": "No voting power"
   },
   "WCaf5C": {
     "defaultMessage": "Approve"
@@ -425,6 +443,9 @@
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
+  "aYAoF4": {
+    "defaultMessage": "Delegate off-chain votes? Go to the {link}."
+  },
   "b0+k6i": {
     "defaultMessage": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
   },
@@ -445,6 +466,9 @@
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
+  },
+  "dm9FiM": {
+    "defaultMessage": "Delegate to self"
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
@@ -494,9 +518,6 @@
   "j8y+qc": {
     "defaultMessage": "{label}"
   },
-  "jYECM4": {
-    "defaultMessage": "Delegated to"
-  },
   "jfexoW": {
     "defaultMessage": "Lock-up Duration"
   },
@@ -511,6 +532,9 @@
   },
   "kmAKoi": {
     "defaultMessage": "My Staked Balance"
+  },
+  "ksTDub": {
+    "defaultMessage": "Connect wallet to view"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -529,6 +553,9 @@
   },
   "ox/9Hn": {
     "defaultMessage": "Unstake lock-up {stake}"
+  },
+  "pSYtOY": {
+    "defaultMessage": "Delegate {votingPower} veOGV to {delegatee}"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
@@ -553,6 +580,9 @@
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tx8kgu": {
+    "defaultMessage": "Enter address"
   },
   "tzMNF3": {
     "defaultMessage": "Status"
@@ -583,6 +613,9 @@
   },
   "wL7VAE": {
     "defaultMessage": "Actions"
+  },
+  "weP/oT": {
+    "defaultMessage": "Voting power"
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"

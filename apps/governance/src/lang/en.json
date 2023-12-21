@@ -23,6 +23,12 @@
       "value": "My Lock-ups"
     }
   ],
+  "+LCX9R": [
+    {
+      "type": 0,
+      "value": "Delegating to"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -141,6 +147,12 @@
     {
       "type": 1,
       "value": "defaultChain"
+    }
+  ],
+  "1hrrJK": [
+    {
+      "type": 0,
+      "value": "Snapshot delegate page"
     }
   ],
   "1i2T/n": [
@@ -317,6 +329,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "duration"
+    }
+  ],
+  "6+973y": [
+    {
+      "type": 0,
+      "value": "Delegate on-chain voting power"
     }
   ],
   "6GZbSi": [
@@ -753,6 +771,12 @@
       "value": "Created"
     }
   ],
+  "Olbt4a": [
+    {
+      "type": 0,
+      "value": "Delegate"
+    }
+  ],
   "OmyPDW": [
     {
       "type": 0,
@@ -845,6 +869,20 @@
     {
       "type": 0,
       "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
+  "SqjwlJ": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "balance"
+    },
+    {
+      "type": 0,
+      "value": " veOGV to self"
     }
   ],
   "SzA4oV": [
@@ -983,6 +1021,12 @@
     {
       "type": 1,
       "value": "name"
+    }
+  ],
+  "W94W+W": [
+    {
+      "type": 0,
+      "value": "No voting power"
     }
   ],
   "WCaf5C": [
@@ -1127,6 +1171,20 @@
       "value": "Show more"
     }
   ],
+  "aYAoF4": [
+    {
+      "type": 0,
+      "value": "Delegate off-chain votes? Go to the "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
   "b0+k6i": [
     {
       "type": 0,
@@ -1167,6 +1225,12 @@
     {
       "type": 0,
       "value": "Processing Transaction"
+    }
+  ],
+  "dm9FiM": [
+    {
+      "type": 0,
+      "value": "Delegate to self"
     }
   ],
   "dtJo4Y": [
@@ -1299,12 +1363,6 @@
       "value": "label"
     }
   ],
-  "jYECM4": [
-    {
-      "type": 0,
-      "value": "Delegated to"
-    }
-  ],
   "jfexoW": [
     {
       "type": 0,
@@ -1333,6 +1391,12 @@
     {
       "type": 0,
       "value": "My Staked Balance"
+    }
+  ],
+  "ksTDub": [
+    {
+      "type": 0,
+      "value": "Connect wallet to view"
     }
   ],
   "lozEho": [
@@ -1373,6 +1437,24 @@
     {
       "type": 1,
       "value": "stake"
+    }
+  ],
+  "pSYtOY": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "votingPower"
+    },
+    {
+      "type": 0,
+      "value": " veOGV to "
+    },
+    {
+      "type": 1,
+      "value": "delegatee"
     }
   ],
   "qQ/SRd": [
@@ -1421,6 +1503,12 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tx8kgu": [
+    {
+      "type": 0,
+      "value": "Enter address"
     }
   ],
   "tzMNF3": [
@@ -1485,6 +1573,12 @@
     {
       "type": 0,
       "value": "Actions"
+    }
+  ],
+  "weP/oT": [
+    {
+      "type": 0,
+      "value": "Voting power"
     }
   ],
   "wqlXwW": [

@@ -1,9 +1,10 @@
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
-import { useGovernanceInfo } from '@origin/governance/shared';
+import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
@@ -11,8 +12,19 @@ import type { CardProps } from '@mui/material';
 export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
+  const { data: user, isLoading: isUserLoading } = useUserInfoQuery(
+    { address: address?.toLowerCase() },
+    { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
+  );
+
+  const percent =
+    +formatUnits(
+      BigInt(user?.votingPower ?? 0n),
+      tokens.mainnet.veOGV.decimals,
+    ) /
+    +formatUnits(info?.veOgvTotalSupply ?? 1n, tokens.mainnet.veOGV.decimals);
 
   return (
     <Card {...props}>
@@ -20,7 +32,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
           labelProps={{ sx: { fontSize: 14 } }}
-          isLoading={isInfoLoading}
+          isLoading={isInfoLoading || isUserLoading}
           value={
             isConnected ? (
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
@@ -32,7 +44,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
                 />
                 <Typography variant="h3">
                   {formatAmount(
-                    info?.veOgvBalance ?? 0n,
+                    BigInt(user?.votingPower ?? '0'),
                     tokens.mainnet.veOGV.decimals,
                     undefined,
                     { notation: 'compact', maximumSignificantDigits: 4 },
@@ -44,11 +56,14 @@ export const MyVotingPowerCard = (props: CardProps) => {
                       defaultMessage: '({value} of total votes)',
                     },
                     {
-                      value: intl.formatNumber(info?.votingPowerPercent ?? 0, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
+                      value:
+                        percent < 0.0001
+                          ? '~ 0.00%'
+                          : intl.formatNumber(percent, {
+                              style: 'percent',
+                              minimumFractionDigits: 2,
+                              maximumFractionDigits: 2,
+                            }),
                     },
                   )}
                 </Typography>

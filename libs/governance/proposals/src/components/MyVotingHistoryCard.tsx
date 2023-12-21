@@ -8,19 +8,17 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useUserVotesQuery } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
-import { ConnectedButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import { useUserVotesQuery } from '../queries.generated';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
-
-import type { UserVotesQuery } from '../queries.generated';
+import type { UserVotesQuery } from '@origin/governance/shared';
 
 export const MyVotingHistoryCard = (props: CardProps) => {
   const intl = useIntl();
@@ -54,13 +52,12 @@ export const MyVotingHistoryCard = (props: CardProps) => {
           <Stack
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '5rem',
+              alignItems: 'flex-start',
               width: 1,
+              p: 3,
             }}
           >
-            <Typography variant="body2" color="text.secondary">
+            <Typography color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'No votes' })}
             </Typography>
           </Stack>
@@ -80,7 +77,9 @@ export const MyVotingHistoryCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <ConnectedButton variant="connect" />
+          <Typography color="text.secondary">
+            {intl.formatMessage({ defaultMessage: 'Connect wallet to view' })}
+          </Typography>
         </Stack>
       )}
     </Card>
