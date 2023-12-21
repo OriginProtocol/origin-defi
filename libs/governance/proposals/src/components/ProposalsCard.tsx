@@ -115,7 +115,7 @@ export const ProposalsCard = (props: CardProps) => {
       <Stack justifyContent="center" alignItems="center" py={2}>
         <Button
           variant="outlined"
-          color="primary"
+          color="secondary"
           sx={{ minWidth: 120 }}
           onClick={handleShowMoreClick}
           disabled={limit >= (proposals?.length ?? 0)}

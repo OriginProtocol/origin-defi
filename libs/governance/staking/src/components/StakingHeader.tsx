@@ -47,6 +47,12 @@ export const StakingHeader = () => {
                 rel="noopener noreferrer nofollow"
               >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
+                <Box
+                  component="img"
+                  src="images/icons/arrow-up-right-light.svg"
+                  width={8}
+                  ml={1}
+                />
               </Button>
             </Stack>
           </Grid2>
@@ -236,6 +242,7 @@ export const StakingHeader = () => {
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   variant="outlined"
+                  color="secondary"
                   sx={{
                     minWidth: 160,
                   }}
@@ -289,7 +296,7 @@ export const StakingHeader = () => {
                   </Stack>
                 }
               />
-              <ClaimRewardsButton variant="outlined">
+              <ClaimRewardsButton variant="outlined" color="secondary">
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
               </ClaimRewardsButton>
             </Stack>
@@ -359,11 +366,12 @@ export const StakingHeader = () => {
               />
               <Button
                 variant="outlined"
+                color="secondary"
                 onClick={() => {
                   navigate('/');
                 }}
               >
-                {intl.formatMessage({ defaultMessage: 'View proposals' })}
+                {intl.formatMessage({ defaultMessage: 'View Proposals' })}
               </Button>
             </Stack>
           </Grid2>

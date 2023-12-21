@@ -123,7 +123,7 @@ export const VoteDelegationCard = (props: CardProps) => {
             </CardContent>
             <CardContent sx={{ pt: 0, pl: 2 }}>
               {isSelfDelegating ? (
-                <DelegateButton variant="outlined">
+                <DelegateButton variant="outlined" color="secondary">
                   {intl.formatMessage({
                     defaultMessage: 'Delegate my voting power',
                   })}
@@ -134,6 +134,7 @@ export const VoteDelegationCard = (props: CardProps) => {
                   functionName="delegate"
                   args={[address]}
                   variant="outlined"
+                  color="secondary"
                   label={intl.formatMessage({
                     defaultMessage: 'Delegate to self',
                   })}
@@ -168,7 +169,7 @@ export const VoteDelegationCard = (props: CardProps) => {
               <CardContent sx={{ pt: 0 }}>
                 <Typography color="text.secondary">
                   {intl.formatMessage({
-                    defaultMessage: 'Delegated by others',
+                    defaultMessage: 'Delegated to me',
                   })}
                   &nbsp;
                   <InfoTooltip

@@ -39,7 +39,7 @@ export const LockupsCard = (props: CardProps) => {
               <InfoTooltip
                 tooltipLabel={intl.formatMessage({
                   defaultMessage:
-                    'The current APY you are earning across all of your lock-ups.',
+                    'The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY.',
                 })}
               />
               <LoadingLabel

@@ -104,10 +104,16 @@ export const LockupsTable = () => {
             )?.length > 0;
 
           return (
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="flex-end"
+            >
               <ExtendButton
                 lockup={info.row.original}
                 variant="outlined"
+                color="secondary"
                 disabled={isPast(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
@@ -116,6 +122,7 @@ export const LockupsTable = () => {
               <UnstakeButton
                 lockup={info.row.original}
                 variant="outlined"
+                color="secondary"
                 disabled={
                   isFuture(new Date(info.row.original.end)) || isUnstaked
                 }

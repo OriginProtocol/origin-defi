@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
@@ -30,6 +30,12 @@ export const ProposalsHeader = (props: StackProps) => {
           {intl.formatMessage({
             defaultMessage: 'Learn about Governance',
           })}
+          <Box
+            component="img"
+            src="images/icons/arrow-up-right-light.svg"
+            width={8}
+            ml={1}
+          />
         </Button>
         <Button
           variant="outlined"
@@ -39,8 +45,14 @@ export const ProposalsHeader = (props: StackProps) => {
           rel="noopener noreferrer nofollow"
         >
           {intl.formatMessage({
-            defaultMessage: 'Discord forum',
+            defaultMessage: 'Discord Forum',
           })}
+          <Box
+            component="img"
+            src="images/icons/arrow-up-right-light.svg"
+            width={8}
+            ml={1}
+          />
         </Button>
       </Stack>
     </Stack>
