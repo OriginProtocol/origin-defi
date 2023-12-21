@@ -86,7 +86,7 @@ export const StakeFormModal = (props: DialogProps) => {
     setAmount(info?.ogvBalance ?? 0n);
   };
 
-  const votinPowerPercent =
+  const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
   const showApprove =
@@ -398,11 +398,11 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </Typography>
                 <LoadingLabel fontWeight={700} isLoading={isLoading}>
-                  {votinPowerPercent <= 1e-4 && votinPowerPercent > 0 && `~ `}
-                  {intl.formatNumber(votinPowerPercent, {
+                  {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
+                  {intl.formatNumber(votingPowerPercent, {
                     style: 'percent',
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    maximumFractionDigits: 5,
                   })}
                 </LoadingLabel>
                 <InfoTooltip

@@ -391,11 +391,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   })}
                 </Typography>
                 <LoadingLabel fontWeight={700} isLoading={isLoading}>
-                  {votingPowerPercent <= 1e-4 && votingPowerPercent > 0 && `~ `}
+                  {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
                   {intl.formatNumber(votingPowerPercent, {
                     style: 'percent',
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    maximumFractionDigits: 5,
                   })}
                 </LoadingLabel>
                 <InfoTooltip

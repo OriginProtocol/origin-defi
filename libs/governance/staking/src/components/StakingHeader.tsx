@@ -354,7 +354,7 @@ export const StakingHeader = () => {
                               {
                                 style: 'percent',
                                 minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
+                                maximumFractionDigits: 5,
                               },
                             ),
                           },
