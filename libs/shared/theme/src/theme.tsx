@@ -411,6 +411,11 @@ export const theme = createTheme({
         disableScrollLock: true,
       },
       styleOverrides: {
+        root: {
+          '.MuiModal-backdrop': {
+            backdropFilter: 'blur(10px)',
+          },
+        },
         paper: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 2,
         }),
