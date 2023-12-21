@@ -1,8 +1,8 @@
-import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
+import { secondsInMonth } from 'date-fns/constants';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -59,7 +59,7 @@ export const useStakingAPY = (
             address: tokens.mainnet.veOGV.address,
             abi: tokens.mainnet.veOGV.abi,
             functionName: 'previewPoints',
-            args: [amt, BigInt(monthDuration * MILLISECONDS_IN_MONTH)],
+            args: [amt, BigInt(monthDuration * secondsInMonth)],
           },
           {
             address: tokens.mainnet.veOGV.address,

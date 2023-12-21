@@ -18,7 +18,6 @@ import {
   InfoTooltip,
   LoadingLabel,
 } from '@origin/shared/components';
-import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   ApprovalButton,
@@ -30,6 +29,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
+import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -435,7 +435,7 @@ export const StakeFormModal = (props: DialogProps) => {
         <TransactionButton
           contract={tokens.mainnet.veOGV}
           functionName="stake"
-          args={[amount, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          args={[amount, BigInt(duration * secondsInMonth)]}
           disabled={stakeDisabled}
           variant="action"
           label={

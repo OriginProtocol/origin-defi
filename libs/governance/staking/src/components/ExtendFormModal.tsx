@@ -16,7 +16,6 @@ import {
   LoadingLabel,
   MiddleTruncated,
 } from '@origin/shared/components';
-import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -27,6 +26,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, differenceInMonths, formatDuration } from 'date-fns';
+import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -237,10 +237,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   </Typography>
                   <Typography fontWeight={700} textAlign="end" minWidth={92}>
                     {intl.formatDate(
-                      addMonths(
-                        new Date(lockup.end),
-                        duration - initialMonthDuration,
-                      ),
+                      addMonths(new Date(), duration - initialMonthDuration),
                       {
                         day: '2-digit',
                         month: 'short',
@@ -443,7 +440,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
         <TransactionButton
           contract={tokens.mainnet.veOGV}
           functionName="extend"
-          args={[lockup.lockupId, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          args={[lockup.lockupId, BigInt(duration * secondsInMonth)]}
           disabled={stakeDisabled}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
