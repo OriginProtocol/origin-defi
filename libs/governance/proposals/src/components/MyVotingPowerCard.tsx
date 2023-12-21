@@ -51,19 +51,17 @@ export const MyVotingPowerCard = (props: CardProps) => {
                   )}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
+                  {percent <= 1e-6 && percent > 0 && `~ `}
                   {intl.formatMessage(
                     {
                       defaultMessage: '({value} of total votes)',
                     },
                     {
-                      value:
-                        percent < 0.0001
-                          ? '~ 0.00%'
-                          : intl.formatNumber(percent, {
-                              style: 'percent',
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
+                      value: intl.formatNumber(percent, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 5,
+                      }),
                     },
                   )}
                 </Typography>
