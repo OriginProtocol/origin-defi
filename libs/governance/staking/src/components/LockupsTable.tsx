@@ -131,13 +131,15 @@ export const LockupsTable = () => {
               </UnstakeButton>
 
               <LockupTransactionsButton
-                variant="text"
+                variant="outlined"
+                color="secondary"
+                sx={{ width: 36, height: 36, borderRadius: '50%', p: 0 }}
                 logs={info.row.original.logs}
               >
                 <Box
                   component="img"
-                  src="images/icons/chart-pie-light.svg"
-                  width={16}
+                  src="images/icons/clock-rotate-left.svg"
+                  width={14}
                 />
               </LockupTransactionsButton>
             </Stack>
