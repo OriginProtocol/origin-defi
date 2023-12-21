@@ -359,6 +359,12 @@
       "value": "Auto"
     }
   ],
+  "NY6umm": [
+    {
+      "type": 0,
+      "value": "Your operation has been executed"
+    }
+  ],
   "O1F5Cx": [
     {
       "type": 0,
@@ -509,6 +515,12 @@
       "value": "7-Day Trailing APY"
     }
   ],
+  "aDYxXF": [
+    {
+      "type": 0,
+      "value": "New transaction"
+    }
+  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -575,6 +587,12 @@
     {
       "type": 0,
       "value": "Sent"
+    }
+  ],
+  "hzfM3P": [
+    {
+      "type": 0,
+      "value": "Transaction executed"
     }
   ],
   "iLgjES": [
@@ -653,6 +671,12 @@
     {
       "type": 0,
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+    }
+  ],
+  "tFriEi": [
+    {
+      "type": 0,
+      "value": "Transaction error"
     }
   ],
   "tio9Gt": [

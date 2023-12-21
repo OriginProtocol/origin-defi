@@ -1,0 +1,49 @@
+query Proposals {
+  ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
+    id
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+    choices
+    scores
+  }
+}
+
+query Proposal($proposalId: String!) {
+  ogvProposalById(id: $proposalId) {
+    id
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+    choices
+    scores
+    quorum
+    logs {
+      id
+      hash
+      event
+      timestamp
+    }
+    proposer {
+      id
+    }
+  }
+  ogvProposalVotes(
+    where: { proposal: { id_containsInsensitive: $proposalId } }
+  ) {
+    id
+    voter {
+      id
+    }
+    weight
+    type
+    txHash
+    timestamp
+  }
+}

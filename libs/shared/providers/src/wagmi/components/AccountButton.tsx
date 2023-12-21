@@ -1,21 +1,15 @@
-import { Box, Button, useMediaQuery, useTheme } from '@mui/material';
-import { jsNumberForAddress } from 'react-jazzicon';
-import Jazzicon from 'react-jazzicon/dist/Jazzicon';
-import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
+import { Button, useMediaQuery, useTheme } from '@mui/material';
+import { useAccount } from 'wagmi';
 
 import { AddressLabel } from './AddressLabel';
+import { UserAvatar } from './UserAvatar';
 
 import type { ButtonProps } from '@mui/material';
 
 export function AccountButton(props: Omit<ButtonProps, 'children'>) {
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
-  const { address, isConnected } = useAccount();
-  const { data: ensName } = useEnsName({ address, enabled: isConnected });
-  const { data: ensAvatar } = useEnsAvatar({
-    name: ensName,
-    enabled: !!ensName,
-  });
+  const { address } = useAccount();
 
   return (
     <Button
@@ -37,24 +31,7 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
         },
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          'svg, img': {
-            borderRadius: '50%',
-            width: 24,
-            height: 24,
-          },
-        }}
-      >
-        {ensAvatar ? (
-          <Box component={'img'} src={ensAvatar} />
-        ) : (
-          <Jazzicon diameter={24} seed={jsNumberForAddress(address)} />
-        )}
-      </Box>
+      <UserAvatar />
       {!isSmall && (
         <AddressLabel
           address={address}

@@ -8,6 +8,7 @@ import {
   ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -23,6 +24,15 @@ export function Topnav(props: BoxProps) {
   const { isConnected } = useAccount();
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
+
+  const visibleRoutes = routes[0].children.filter(
+    (route) => !isNilOrEmpty(route?.handle?.label),
+  );
+  const selectedTab = visibleRoutes
+    .map((r) => r.path)
+    .includes(location.pathname)
+    ? location.pathname
+    : '/';
 
   return (
     <>
@@ -74,19 +84,19 @@ export function Topnav(props: BoxProps) {
         <Box
           component={Link}
           to="/"
-          sx={(theme) => ({
+          sx={{
             img: {
               height: {
                 xs: 16,
                 md: 24,
               },
             },
-          })}
+          }}
         >
           <img src="/images/origin-defi-logo.svg" alt="Origin logo" />
         </Box>
         <Tabs
-          value={location.pathname}
+          value={selectedTab}
           onChange={(_, value) => {
             navigate(value);
           }}
@@ -111,7 +121,7 @@ export function Topnav(props: BoxProps) {
             },
           }}
         >
-          {routes[0].children.map((route) => (
+          {visibleRoutes.map((route) => (
             <Tab
               key={route?.path ?? '/'}
               value={route?.path ?? '/'}

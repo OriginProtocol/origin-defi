@@ -32,8 +32,8 @@ export const ExpandIcon = ({
               ? 'up'
               : 'left'
             : direction === 'vertical'
-            ? 'down'
-            : 'right'
+              ? 'down'
+              : 'right'
         ]
       }
     />

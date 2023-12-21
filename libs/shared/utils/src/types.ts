@@ -16,8 +16,8 @@ export type RecursiveMutable<T> = {
   -readonly [K in keyof T]: T[K] extends (infer U)[]
     ? RecursiveMutable<U>[]
     : T[K] extends object
-    ? RecursiveMutable<T[K]>
-    : T[K];
+      ? RecursiveMutable<T[K]>
+      : T[K];
 };
 
 export type OptionalBy<T, K extends keyof T> = Omit<T, K> & Partial<Pick<T, K>>;
@@ -28,8 +28,8 @@ export type RecursivePartial<T> = {
   [K in keyof T]?: T[K] extends (infer U)[]
     ? RecursivePartial<U>[]
     : T[K] extends object
-    ? RecursivePartial<T[K]>
-    : T[K];
+      ? RecursivePartial<T[K]>
+      : T[K];
 };
 
 export type ArrayElement<ArrayType> =

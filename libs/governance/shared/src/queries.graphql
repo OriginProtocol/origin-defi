@@ -1,0 +1,43 @@
+query HoldersCount {
+  ogvAddressesConnection(orderBy: id_ASC, where: { balance_gt: 0 }) {
+    totalCount
+  }
+}
+
+query UserVotes($address: String!) {
+  ogvProposalVotes(
+    where: { voter: { id_containsInsensitive: $address } }
+    orderBy: timestamp_DESC
+  ) {
+    id
+    weight
+    type
+    timestamp
+    txHash
+    proposal {
+      id
+      description
+      status
+    }
+  }
+}
+
+query UserInfo($address: String!) {
+  ogvAddresses(where: { id_containsInsensitive: $address }) {
+    id
+    balance
+    staked
+    veogvBalance
+    votingPower
+    delegatee {
+      id
+    }
+  }
+}
+
+query UserDelegators($address: String!) {
+  ogvAddresses(where: { delegatee: { id_containsInsensitive: $address } }) {
+    id
+    votingPower
+  }
+}

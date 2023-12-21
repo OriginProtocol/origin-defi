@@ -1,33 +1,34 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  useGovernanceInfo,
+  useHoldersCountQuery,
+} from '@origin/governance/shared';
+import {
   InfoTooltip,
   LoadingLabel,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
-import { useStakingAPY, useStakingInfo, useTotalLockedUp } from '../hooks';
+import { useStakingAPY, useTotalLockedUp } from '../hooks';
+import { ClaimRewardsButton } from './ClaimRewardsModal';
 import { StakeButton } from './StakeFormModal';
 
-export const StackingHeader = () => {
+export const StakingHeader = () => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const {
-    data: {
-      ogvBalance,
-      veOgvBalance,
-      votingPowerPercent,
-      veOgvRewards,
-      ogvTotalLockedPercent,
-    },
-    isLoading,
-  } = useStakingInfo();
+  const { isConnected } = useAccount();
+  const navigate = useNavigate();
+  const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
-  const { data: vApy, isLoading: isvApyLoading } = useStakingAPY(100, 48);
+  const { data: staking, isLoading: isStakingLoading } = useStakingAPY(100, 48);
+  const { data: holdersCount, isLoading: isHoldersCountLoading } =
+    useHoldersCountQuery();
 
   return (
     <Stack spacing={3}>
@@ -38,7 +39,13 @@ export const StackingHeader = () => {
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
               </Typography>
-              <Button variant="outlined" color="secondary">
+              <Button
+                variant="outlined"
+                color="secondary"
+                href="https://www.ousd.com/governance"
+                target="_blank"
+                rel="noopener noreferrer nofollow"
+              >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
               </Button>
             </Stack>
@@ -79,13 +86,13 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={intl.formatNumber(ogvTotalLockedPercent, {
+                value={intl.formatNumber(info?.ogvTotalLockedPercent ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
                 valueProps={{ variant: 'h3' }}
-                isLoading={isLoading}
+                isLoading={isInfoLoading}
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
@@ -97,7 +104,8 @@ export const StackingHeader = () => {
                   },
                 }}
                 sx={{ width: 1 }}
-                value={'0'}
+                value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
+                isLoading={isHoldersCountLoading}
                 valueProps={{ variant: 'h3' }}
               />
               <ValueLabel
@@ -121,12 +129,12 @@ export const StackingHeader = () => {
                 }
                 labelProps={{ sx: { fontSize: 14 } }}
                 sx={{ width: 1 }}
-                value={intl.formatNumber(vApy / 100, {
+                value={intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
-                isLoading={isvApyLoading}
+                isLoading={isStakingLoading}
                 valueProps={{
                   variant: 'h3',
                   sx: {
@@ -147,7 +155,7 @@ export const StackingHeader = () => {
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               justifyContent="space-between"
               spacing={2}
@@ -168,11 +176,17 @@ export const StackingHeader = () => {
                         width={20}
                       />
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
-                        {formatAmount(ogvBalance)}
+                        {intl.formatNumber(
+                          +formatUnits(
+                            info?.ogvBalance ?? 0n,
+                            tokens.mainnet.OGV.decimals,
+                          ),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -192,11 +206,17 @@ export const StackingHeader = () => {
                         width={20}
                       />
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
-                        isLoading={isTotalLockupsLoading}
+                        isLoading={isTotalLockupsLoading && isConnected}
                       >
-                        {formatAmount(totalLockups)}
+                        {intl.formatNumber(
+                          +formatUnits(
+                            totalLockups ?? 0n,
+                            tokens.mainnet.OGV.decimals,
+                          ),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -204,19 +224,17 @@ export const StackingHeader = () => {
               </Stack>
               <Stack direction="row" spacing={2}>
                 <StakeButton
+                  variant="connect"
                   sx={{
                     minWidth: 160,
-                    background:
-                      'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                    ':hover': {
-                      background:
-                        'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                    },
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Stake' })}
                 </StakeButton>
                 <Button
+                  href="https://app.uniswap.org/swap?outputCurrency=0x9c354503C38481a7A7a51629142963F98eCC12D0&chain=mainnet"
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
                   variant="outlined"
                   sx={{
                     minWidth: 160,
@@ -237,7 +255,7 @@ export const StackingHeader = () => {
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               justifyContent="space-between"
               spacing={2}
@@ -256,25 +274,31 @@ export const StackingHeader = () => {
                       width={20}
                     />
                     <LoadingLabel
-                      fontSize={24}
+                      variant="h3"
                       sWidth={80}
-                      isLoading={isLoading}
+                      isLoading={isInfoLoading}
                     >
-                      {formatAmount(veOgvRewards)}
+                      {intl.formatNumber(
+                        +formatUnits(
+                          info?.veOgvRewards ?? 0n,
+                          tokens.mainnet.OGV.decimals,
+                        ),
+                        { notation: 'compact', maximumSignificantDigits: 4 },
+                      )}
                     </LoadingLabel>
                   </Stack>
                 }
               />
-              <Button variant="outlined">
+              <ClaimRewardsButton variant="outlined">
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
-              </Button>
+              </ClaimRewardsButton>
             </Stack>
           </Grid2>
           <Grid2 xs={6} md={3}>
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
-              p={2}
+              p={3}
               height={1}
               spacing={2}
               justifyContent="space-between"
@@ -291,31 +315,41 @@ export const StackingHeader = () => {
                       component="img"
                       src={tokens.mainnet.veOGV.icon}
                       width={20}
+                      sx={{ transform: 'translateY(4px)' }}
                     />
                     <Stack>
                       <LoadingLabel
-                        fontSize={24}
+                        variant="h3"
                         sWidth={80}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
-                        {formatAmount(veOgvBalance)}
+                        {intl.formatNumber(
+                          +formatUnits(
+                            info?.veOgvBalance ?? 0n,
+                            tokens.mainnet.OGV.decimals,
+                          ),
+                          { notation: 'compact', maximumSignificantDigits: 4 },
+                        )}
                       </LoadingLabel>
                       <LoadingLabel
                         fontSize={12}
                         color="text.secondary"
                         sWidth={120}
-                        isLoading={isLoading}
+                        isLoading={isInfoLoading}
                       >
                         {intl.formatMessage(
                           {
                             defaultMessage: '({value} of total votes)',
                           },
                           {
-                            value: intl.formatNumber(votingPowerPercent, {
-                              style: 'percent',
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
+                            value: intl.formatNumber(
+                              info?.votingPowerPercent ?? 0,
+                              {
+                                style: 'percent',
+                                minimumFractionDigits: 2,
+                                maximumFractionDigits: 2,
+                              },
+                            ),
                           },
                         )}
                       </LoadingLabel>
@@ -323,7 +357,12 @@ export const StackingHeader = () => {
                   </Stack>
                 }
               />
-              <Button variant="outlined">
+              <Button
+                variant="outlined"
+                onClick={() => {
+                  navigate('/');
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'View proposals' })}
               </Button>
             </Stack>

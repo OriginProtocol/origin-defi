@@ -17,8 +17,8 @@ import type { GlobalActivityStatus } from '../types';
 
 type RedeemNotificationProps = {
   status: GlobalActivityStatus;
-  tokenIn: Token;
-  tokenOut: Token;
+  tokenIn?: Token;
+  tokenOut?: Token;
   amountIn?: bigint;
   amountOut?: bigint;
   txReceipt?: TransactionReceipt;

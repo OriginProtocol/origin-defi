@@ -26,7 +26,7 @@ const base = createTheme({
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
     },
     action: {
-      hoverOpacity: 0.1,
+      hoverOpacity: 0.01,
       disabledOpacity: 0.25,
       disabled: alpha('#FAFBFB', 0.5),
     },

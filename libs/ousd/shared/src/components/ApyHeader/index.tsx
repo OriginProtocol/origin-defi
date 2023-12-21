@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   alpha,
@@ -8,8 +8,9 @@ import {
   MenuItem,
   Skeleton,
   Stack,
-  Typography,
 } from '@mui/material';
+import { LoadingLabel } from '@origin/shared/components';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
 import { trackEvent } from '../../clients';
@@ -27,7 +28,8 @@ const trailingOptions = [
 
 export const ApyHeader = (props: StackProps) => {
   const intl = useIntl();
-  const [trailing, setTrailing] = useState(trailingOptions[0]);
+  const once = useRef(false);
+  const [trailing, setTrailing] = useState(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: apy, isLoading: apyLoading } = useApiesQuery(
     {
@@ -37,6 +39,15 @@ export const ApyHeader = (props: StackProps) => {
       select: (data) => data.ousdapies[0],
     },
   );
+
+  useEffect(() => {
+    if (!once.current && !apyLoading && !isNilOrEmpty(apy)) {
+      setTrailing(
+        trailingOptions.at(apy?.apy30DayAvg > apy?.apy7DayAvg ? 0 : 1),
+      );
+      once.current = true;
+    }
+  }, [apy, apyLoading]);
 
   return (
     <Stack
@@ -49,23 +60,20 @@ export const ApyHeader = (props: StackProps) => {
       borderRadius={1}
       {...props}
     >
-      {apyLoading ? (
-        <Skeleton width={100} height={40} />
-      ) : (
-        <Typography variant="h1">
-          {intl.formatNumber(
-            trailing.value === 30
-              ? apy?.apy30DayAvg ?? 0
-              : apy?.apy7DayAvg ?? 0,
-            {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-              style: 'percent',
-            },
-          )}
-        </Typography>
-      )}
-
+      <LoadingLabel
+        variant="h1"
+        sWidth={100}
+        isLoading={apyLoading || isNilOrEmpty(trailing)}
+      >
+        {intl.formatNumber(
+          trailing?.value === 30 ? apy?.apy30DayAvg ?? 0 : apy?.apy7DayAvg ?? 0,
+          {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            style: 'percent',
+          },
+        )}
+      </LoadingLabel>
       <Button
         color="secondary"
         variant="text"
@@ -83,7 +91,11 @@ export const ApyHeader = (props: StackProps) => {
           },
         }}
       >
-        {intl.formatMessage(trailing.label)}
+        {apyLoading || isNilOrEmpty(trailing) ? (
+          <Skeleton height={16} width={100} />
+        ) : (
+          intl.formatMessage(trailing?.label)
+        )}
         <Box
           className="dd"
           sx={{
@@ -115,12 +127,12 @@ export const ApyHeader = (props: StackProps) => {
         MenuListProps={{ dense: true }}
       >
         {trailingOptions
-          .filter((t) => t.value !== trailing.value)
+          .filter((t) => t.value !== trailing?.value)
           .map((t) => (
             <MenuItem
               divider
               key={t.value}
-              selected={trailing.value === t.value}
+              selected={trailing?.value === t.value}
               onClick={() => {
                 setTrailing(t);
                 setAnchorEl(null);

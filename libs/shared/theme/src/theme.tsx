@@ -50,6 +50,9 @@ export const theme = createTheme({
     error: {
       main: '#FF4E4E',
     },
+    info: {
+      main: '#586CF8',
+    },
   },
   typography: {
     fontFamily: 'Inter, Helvetica, Arial, sans-serif',
@@ -303,6 +306,24 @@ export const theme = createTheme({
             },
           }),
         },
+        {
+          props: { variant: 'connect' },
+          style: ({ theme }) => ({
+            background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+            color: theme.palette.text.primary,
+            borderRadius: theme.shape.borderRadius * 8,
+            fontStyle: 'normal',
+            '&:hover': {
+              background:
+                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+              opacity: 1,
+            },
+            '&:disabled': {
+              opacity: 0.5,
+              color: theme.palette.text.primary,
+            },
+          }),
+        },
       ],
     },
     MuiButtonBase: {
@@ -403,6 +424,7 @@ export const theme = createTheme({
           fontWeight: 700,
           lineHeight: 1.75,
           color: theme.palette.text.primary,
+          textTransform: 'none',
         }),
       },
     },

@@ -80,7 +80,6 @@ export const LockupTransactionsModal = ({
                 background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
                 backgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-
                 svg: {
                   fill: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
                 },
@@ -174,7 +173,7 @@ export const LockupTransactionsButton = ({
         onClick={(e) => {
           setOpen(true);
           if (rest?.onClick) {
-            rest.onClick(e);
+            rest.onClick?.(e);
           }
         }}
       />

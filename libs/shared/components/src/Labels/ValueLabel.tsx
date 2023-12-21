@@ -28,7 +28,7 @@ export const ValueLabel = ({
       ) : (
         label
       )}
-      {typeof value === 'string' ? (
+      {['string', 'number'].includes(typeof value) ? (
         <Typography {...valueProps}>
           {isLoading ? <Skeleton width={60} /> : value}
         </Typography>

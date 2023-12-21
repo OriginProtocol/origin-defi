@@ -4,6 +4,7 @@ import {
   alpha,
   Box,
   Button,
+  Collapse,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -11,32 +12,46 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   BigIntInput,
   InfoTooltip,
   LoadingLabel,
 } from '@origin/shared/components';
+import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import {
+  ApprovalButton,
+  ConnectedButton,
+  TransactionButton,
+  useFormat,
+} from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
-import { useStakingAPY, useStakingInfo } from '../hooks';
+import { useStakingAPY } from '../hooks';
+import { useUserLockupsQuery } from '../queries.generated';
+import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const {
-    data: { ogvBalance },
-  } = useStakingInfo();
+  const { formatQuantity, formatAmount } = useFormat();
+  const queryClient = useQueryClient();
+  const { isConnected, address } = useAccount();
+  const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const { data, refetch } = useStakingAPY(amount, duration, { enabled: false });
+  const { data: staking, refetch } = useStakingAPY(amount, duration, {
+    enabled: false,
+  });
 
   useDebouncedEffect(
     () => {
@@ -49,26 +64,46 @@ export const StakeFormModal = (props: DialogProps) => {
   );
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(data) || amount === 0n || duration === 0)) {
+    if (
+      isLoading &&
+      (!isNilOrEmpty(staking?.stakingAPY) || amount === 0n || duration === 0)
+    ) {
       setIsLoading(false);
     }
-  }, [amount, data, duration, isLoading]);
+  }, [amount, staking, duration, isLoading]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(duration > 0);
     setAmount(val);
   };
 
-  const handleDurationChange = (event: Event, newValue: number | number[]) => {
+  const handleDurationChange = (_, newValue: number | number[]) => {
     setIsLoading(amount > 0n);
     setDuration(newValue as number);
   };
 
   const handleMaxClick = () => {
-    setAmount(ogvBalance);
+    setAmount(info?.ogvBalance ?? 0n);
   };
 
-  const maxDisabled = ogvBalance === 0n;
+  const votinPowerPercent =
+    (staking?.veOGVReceived ?? 0) /
+    +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
+  const showApprove =
+    isConnected &&
+    !isInfoLoading &&
+    amount > 0n &&
+    duration > 0 &&
+    amount <= (info?.ogvBalance ?? 0n) &&
+    amount > (info?.ogvVeOgvAllowance ?? 0n);
+  const stakeDisabled =
+    !isConnected ||
+    isInfoLoading ||
+    isLoading ||
+    amount === 0n ||
+    duration === 0 ||
+    amount > (info?.ogvBalance ?? 0n) ||
+    amount > (info?.ogvVeOgvAllowance ?? 0n);
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
@@ -94,7 +129,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   },
                   {
                     balance: formatAmount(
-                      ogvBalance,
+                      info?.ogvBalance ?? 0n,
                       tokens.mainnet.OGV.decimals,
                     ),
                   },
@@ -102,7 +137,7 @@ export const StakeFormModal = (props: DialogProps) => {
               </Typography>
               <Button
                 onClick={handleMaxClick}
-                disabled={maxDisabled}
+                disabled={isNilOrEmpty(info) || info?.ogvBalance === 0n}
                 sx={{
                   display: 'flex',
                   justifyContent: 'center',
@@ -203,7 +238,9 @@ export const StakeFormModal = (props: DialogProps) => {
                     )}
               </Typography>
               <Stack direction="row" spacing={1}>
-                <Typography sx={{ strong: { minWidth: 92 } }}>
+                <Typography
+                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
+                >
                   {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
                 </Typography>
                 <Typography fontWeight={700} minWidth={92}>
@@ -265,7 +302,7 @@ export const StakeFormModal = (props: DialogProps) => {
               justifyContent="space-between"
               alignItems="center"
             >
-              <Typography
+              <LoadingLabel
                 variant="h3"
                 sx={{
                   background:
@@ -273,17 +310,25 @@ export const StakeFormModal = (props: DialogProps) => {
                   backgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                 }}
+                sWidth={60}
+                isLoading={isLoading}
               >
-                ~52.89%
-              </Typography>
+                {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </LoadingLabel>
               <Stack direction="row" spacing={1}>
-                <Typography sx={{ strong: { minWidth: 92 } }}>
+                <Typography
+                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
                 </Typography>
                 <Typography fontWeight={700} minWidth={92}>
-                  {intl.formatDate(new Date(), {
+                  {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
                     year: 'numeric',
@@ -317,7 +362,7 @@ export const StakeFormModal = (props: DialogProps) => {
             <Stack
               direction="row"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="baseline"
             >
               <Stack direction="row" alignItems="baseline">
                 <Box
@@ -325,42 +370,108 @@ export const StakeFormModal = (props: DialogProps) => {
                   src={tokens.mainnet.veOGV.icon}
                   width={28}
                   mr={1}
+                  sx={{ transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
                   mr={0.5}
                   isLoading={isLoading}
-                  sWidth={100}
+                  sWidth={60}
                 >
-                  {formatAmount(data?.[1])}
+                  {formatQuantity(staking?.veOGVReceived)}
                 </LoadingLabel>
+                &nbsp;
                 <Typography color="text.secondary">
                   {tokens.mainnet.veOGV.symbol}
                 </Typography>
               </Stack>
-              <Stack direction="row" spacing={1}>
-                <Typography sx={{ strong: { minWidth: 92 } }}>
+              <Stack direction="row" alignItems="baseline">
+                <Typography
+                  sx={{
+                    mr: 1,
+                    color: 'text.secondary',
+                    strong: { minWidth: 92 },
+                  }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Voting Power:',
                   })}
                 </Typography>
-                <Typography fontWeight={700}>
-                  {intl.formatNumber(0.07645, {
+                <LoadingLabel fontWeight={700} isLoading={isLoading}>
+                  {votinPowerPercent <= 1e-4 && votinPowerPercent > 0 && `~ `}
+                  {intl.formatNumber(votinPowerPercent, {
                     style: 'percent',
+                    minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
                   })}
-                  &nbsp;
-                  <InfoTooltip
-                    tooltipLabel={intl.formatMessage({
-                      defaultMessage:
-                        'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
-                    })}
-                  />
-                </Typography>
+                </LoadingLabel>
+                <InfoTooltip
+                  ml={0.75}
+                  tooltipLabel={intl.formatMessage({
+                    defaultMessage:
+                      'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                  })}
+                />
               </Stack>
             </Stack>
           </Stack>
         </Stack>
+        <Collapse in={showApprove}>
+          <Stack>
+            <ApprovalButton
+              token={tokens.mainnet.OGV}
+              spender={tokens.mainnet.veOGV}
+              amount={amount}
+              variant="action"
+              disabled={isInfoLoading}
+              onSuccess={() => {
+                queryClient.invalidateQueries({
+                  queryKey: ['useGovernanceInfo'],
+                });
+              }}
+            />
+          </Stack>
+        </Collapse>
+        <TransactionButton
+          contract={tokens.mainnet.veOGV}
+          functionName="stake"
+          args={[amount, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          disabled={stakeDisabled}
+          variant="action"
+          label={
+            amount > (info?.ogvBalance ?? 0n)
+              ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+              : intl.formatMessage({ defaultMessage: 'Stake' })
+          }
+          activityTitle={intl.formatMessage({ defaultMessage: 'Stake OGV' })}
+          activitySubtitle={intl.formatMessage(
+            {
+              defaultMessage:
+                'Lock {amount} OGV for {duration,plural,=1{# month} other{# months}}',
+            },
+            {
+              amount: intl.formatNumber(
+                +formatUnits(amount, tokens.mainnet.OGV.decimals),
+                { notation: 'compact', maximumSignificantDigits: 4 },
+              ),
+              duration,
+            },
+          )}
+          activityEndIcon={
+            <Box
+              component="img"
+              src={tokens.mainnet.veOGV.icon}
+              width={24}
+              sx={{ transform: 'translateY(4px)' }}
+            />
+          }
+          onSuccess={() => {
+            props.onClose(null, 'backdropClick');
+            queryClient.invalidateQueries({
+              queryKey: [useUserLockupsQuery.getKey({ address })],
+            });
+          }}
+        />
       </DialogContent>
     </Dialog>
   );
@@ -375,12 +486,11 @@ export const StakeButton = (props: ButtonProps) => {
         {...props}
         onClick={(e) => {
           setOpen(true);
-          if (props?.onClick) {
-            props.onClick(e);
-          }
+          props?.onClick?.(e);
         }}
       />
       <StakeFormModal
+        key={open ? 'open' : 'closed'}
         open={open}
         onClose={() => {
           setOpen(false);

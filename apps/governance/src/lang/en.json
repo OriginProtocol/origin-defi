@@ -23,6 +23,12 @@
       "value": "My Lock-ups"
     }
   ],
+  "+LCX9R": [
+    {
+      "type": 0,
+      "value": "Delegating to"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -41,6 +47,12 @@
       "value": "Clear"
     }
   ],
+  "/Kr6f5": [
+    {
+      "type": 0,
+      "value": "End block"
+    }
+  ],
   "/xvR4F": [
     {
       "type": 0,
@@ -53,10 +65,40 @@
       "value": "Processing Approval"
     }
   ],
+  "0AYOgf": [
+    {
+      "type": 0,
+      "value": "You have accrued "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reward"
+        },
+        {
+          "type": 0,
+          "value": " OGV"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
+    }
+  ],
   "0Go4jI": [
     {
       "type": 0,
       "value": "Swapped"
+    }
+  ],
+  "0ICwq5": [
+    {
+      "type": 0,
+      "value": "Last updated"
     }
   ],
   "0STEwK": [
@@ -75,6 +117,12 @@
     {
       "type": 0,
       "value": "Route"
+    }
+  ],
+  "17g+HZ": [
+    {
+      "type": 0,
+      "value": "No activity"
     }
   ],
   "1VDppm": [
@@ -99,6 +147,12 @@
     {
       "type": 1,
       "value": "defaultChain"
+    }
+  ],
+  "1hrrJK": [
+    {
+      "type": 0,
+      "value": "Snapshot delegate page"
     }
   ],
   "1i2T/n": [
@@ -133,6 +187,12 @@
       "value": "Registered Voters"
     }
   ],
+  "3TvsVz": [
+    {
+      "type": 0,
+      "value": "Collect rewards"
+    }
+  ],
   "3WcLXG": [
     {
       "type": 0,
@@ -155,6 +215,20 @@
     {
       "type": 0,
       "value": "Max vAPY"
+    }
+  ],
+  "40/oSs": [
+    {
+      "type": 0,
+      "value": "If you plan to restake your rewards, you can save on transaction fees by selecting the "
+    },
+    {
+      "type": 1,
+      "value": "restake"
+    },
+    {
+      "type": 0,
+      "value": " option."
     }
   ],
   "45EvZ3": [
@@ -195,6 +269,74 @@
       "value": "I agree"
     }
   ],
+  "5jeq8P": [
+    {
+      "type": 0,
+      "value": "Unknown"
+    }
+  ],
+  "5y98eS": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
+  "6+973y": [
+    {
+      "type": 0,
+      "value": "Delegate on-chain voting power"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
@@ -231,6 +373,12 @@
       "value": "Redeemed"
     }
   ],
+  "87E0Iv": [
+    {
+      "type": 0,
+      "value": "Current results"
+    }
+  ],
   "8Vr/2f": [
     {
       "type": 0,
@@ -241,6 +389,12 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8Y0yUM": [
+    {
+      "type": 0,
+      "value": "Snapshot"
     }
   ],
   "8cCxx8": [
@@ -293,6 +447,18 @@
       "value": "lastPage"
     }
   ],
+  "Alwl9C": [
+    {
+      "type": 0,
+      "value": "Snapshot proposal"
+    }
+  ],
+  "AozuFZ": [
+    {
+      "type": 0,
+      "value": "On-chain"
+    }
+  ],
   "BLAy25": [
     {
       "type": 0,
@@ -315,6 +481,12 @@
     {
       "type": 0,
       "value": "Locked Tokens Received Now"
+    }
+  ],
+  "Cdsqgz": [
+    {
+      "type": 0,
+      "value": "Extended Lock up Ends:"
     }
   ],
   "Cnm0QA": [
@@ -397,12 +569,6 @@
       "value": "OGV"
     }
   ],
-  "EWw/tK": [
-    {
-      "type": 0,
-      "value": "Apply"
-    }
-  ],
   "ErxWra": [
     {
       "type": 0,
@@ -427,6 +593,26 @@
       "value": "The variable APY currently being earned on staked OGV."
     }
   ],
+  "Fuk0aF": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "Fv1ZSz": [
+    {
+      "type": 0,
+      "value": "Closed"
+    }
+  ],
   "GZZUyE": [
     {
       "type": 0,
@@ -439,10 +625,34 @@
       "value": "Get OGV"
     }
   ],
+  "Gtdie8": [
+    {
+      "type": 0,
+      "value": "Available to claim"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+    }
+  ],
+  "IAoEwp": [
+    {
+      "type": 0,
+      "value": "Vote for"
+    }
+  ],
+  "IfZsEo": [
+    {
+      "type": 0,
+      "value": "Vote against"
+    }
+  ],
+  "J0o6HO": [
+    {
+      "type": 0,
+      "value": "Proposed by"
     }
   ],
   "JA3MsG": [
@@ -457,10 +667,28 @@
       "value": "Governance"
     }
   ],
+  "JNuVd0": [
+    {
+      "type": 0,
+      "value": "No votes"
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
       "value": "Gas:"
+    }
+  ],
+  "JyPAH1": [
+    {
+      "type": 0,
+      "value": "No one voted for this choice"
+    }
+  ],
+  "KXTAK8": [
+    {
+      "type": 0,
+      "value": "Abstain"
     }
   ],
   "KjK2z3": [
@@ -473,6 +701,12 @@
     {
       "type": 0,
       "value": "Succeeded"
+    }
+  ],
+  "Lv0zJu": [
+    {
+      "type": 0,
+      "value": "Details"
     }
   ],
   "MQq3X+": [
@@ -511,6 +745,38 @@
       "value": "Auto"
     }
   ],
+  "NY6umm": [
+    {
+      "type": 0,
+      "value": "Your operation has been executed"
+    }
+  ],
+  "O6UApS": [
+    {
+      "type": 0,
+      "value": "Collect "
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " rewards OGV"
+    }
+  ],
+  "ORGv1Q": [
+    {
+      "type": 0,
+      "value": "Created"
+    }
+  ],
+  "Olbt4a": [
+    {
+      "type": 0,
+      "value": "Delegate"
+    }
+  ],
   "OmyPDW": [
     {
       "type": 0,
@@ -541,16 +807,28 @@
       "value": "Unsupported Network"
     }
   ],
+  "PqSAYk": [
+    {
+      "type": 0,
+      "value": "Current APY"
+    }
+  ],
+  "PuubxK": [
+    {
+      "type": 0,
+      "value": "Voted For"
+    }
+  ],
   "PzlMqG": [
     {
       "type": 0,
       "value": "Best"
     }
   ],
-  "QW+Q5N": [
+  "Q8Qw5B": [
     {
       "type": 0,
-      "value": "Clear all"
+      "value": "Description"
     }
   ],
   "Qz1fcp": [
@@ -593,10 +871,70 @@
       "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
     }
   ],
+  "SqjwlJ": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "balance"
+    },
+    {
+      "type": 0,
+      "value": " veOGV to self"
+    }
+  ],
+  "SzA4oV": [
+    {
+      "offset": 0,
+      "options": {
+        "=0": {
+          "value": [
+            {
+              "type": 0,
+              "value": "No address"
+            }
+          ]
+        },
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " address"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " addresses"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "TdHjj5": [
     {
       "type": 0,
       "value": "Origin DeFi Governance"
+    }
+  ],
+  "Tfx/3J": [
+    {
+      "type": 0,
+      "value": "Start block"
     }
   ],
   "TrKxvg": [
@@ -669,6 +1007,12 @@
       "value": "Est gas:"
     }
   ],
+  "VqXRJ4": [
+    {
+      "type": 0,
+      "value": "Stake OGV"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -677,6 +1021,12 @@
     {
       "type": 1,
       "value": "name"
+    }
+  ],
+  "W94W+W": [
+    {
+      "type": 0,
+      "value": "No voting power"
     }
   ],
   "WCaf5C": [
@@ -695,6 +1045,12 @@
     {
       "type": 0,
       "value": "Delegate my voting power"
+    }
+  ],
+  "XObaE9": [
+    {
+      "type": 0,
+      "value": "Votes"
     }
   ],
   "XSdWHA": [
@@ -721,6 +1077,76 @@
       "value": "Time Remaining"
     }
   ],
+  "Ze2Qul": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend Stake "
+            },
+            {
+              "type": 1,
+              "value": "stake"
+            },
+            {
+              "type": 0,
+              "value": " to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend Stake "
+            },
+            {
+              "type": 1,
+              "value": "stake"
+            },
+            {
+              "type": 0,
+              "value": " to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
+  "Zl7l7P": [
+    {
+      "type": 1,
+      "value": "count"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
   "ZmLuI/": [
     {
       "type": 0,
@@ -733,16 +1159,42 @@
       "value": "The best swap route factors in the best price after transaction costs"
     }
   ],
+  "aDYxXF": [
+    {
+      "type": 0,
+      "value": "New transaction"
+    }
+  ],
   "aWpBzj": [
     {
       "type": 0,
       "value": "Show more"
     }
   ],
+  "aYAoF4": [
+    {
+      "type": 0,
+      "value": "Delegate off-chain votes? Go to the "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
   "b0+k6i": [
     {
       "type": 0,
       "value": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
+    }
+  ],
+  "bqVPh2": [
+    {
+      "type": 0,
+      "value": "Discord discussion"
     }
   ],
   "c31Feo": [
@@ -773,6 +1225,12 @@
     {
       "type": 0,
       "value": "Processing Transaction"
+    }
+  ],
+  "dm9FiM": [
+    {
+      "type": 0,
+      "value": "Delegate to self"
     }
   ],
   "dtJo4Y": [
@@ -819,10 +1277,72 @@
       "value": "symbolIn"
     }
   ],
+  "fvroLn": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "g+YZVZ": [
+    {
+      "type": 0,
+      "value": "The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
   "gBm7FQ": [
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "hZA4Ul": [
+    {
+      "type": 0,
+      "value": "Current Lock-up Ends:"
+    }
+  ],
+  "hsqHqR": [
+    {
+      "type": 0,
+      "value": "Time remaining"
+    }
+  ],
+  "hzfM3P": [
+    {
+      "type": 0,
+      "value": "Transaction executed"
+    }
+  ],
+  "i9rSSQ": [
+    {
+      "type": 0,
+      "value": "OGV Rewards Will be Collected"
     }
   ],
   "iLgjES": [
@@ -837,10 +1357,10 @@
       "value": "I have read and agree to the above terms"
     }
   ],
-  "jYECM4": [
+  "j8y+qc": [
     {
-      "type": 0,
-      "value": "Delegated to"
+      "type": 1,
+      "value": "label"
     }
   ],
   "jfexoW": [
@@ -855,6 +1375,12 @@
       "value": "My Voting History"
     }
   ],
+  "jngAIm": [
+    {
+      "type": 0,
+      "value": "Extend Stake"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -865,6 +1391,12 @@
     {
       "type": 0,
       "value": "My Staked Balance"
+    }
+  ],
+  "ksTDub": [
+    {
+      "type": 0,
+      "value": "Connect wallet to view"
     }
   ],
   "lozEho": [
@@ -897,10 +1429,44 @@
       "value": "OGV Dashboard"
     }
   ],
+  "ox/9Hn": [
+    {
+      "type": 0,
+      "value": "Unstake lock-up "
+    },
+    {
+      "type": 1,
+      "value": "stake"
+    }
+  ],
+  "pSYtOY": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "votingPower"
+    },
+    {
+      "type": 0,
+      "value": " veOGV to "
+    },
+    {
+      "type": 1,
+      "value": "delegatee"
+    }
+  ],
   "qQ/SRd": [
     {
       "type": 0,
       "value": "User rejected operation"
+    }
+  ],
+  "qivQ44": [
+    {
+      "type": 0,
+      "value": "Unstake lock-up"
     }
   ],
   "qj1uhz": [
@@ -915,6 +1481,12 @@
       "value": "Lock up Ends:"
     }
   ],
+  "rhQtuf": [
+    {
+      "type": 0,
+      "value": "Voted Against"
+    }
+  ],
   "s8BnAC": [
     {
       "type": 0,
@@ -925,6 +1497,24 @@
     {
       "type": 0,
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+    }
+  ],
+  "tFriEi": [
+    {
+      "type": 0,
+      "value": "Transaction error"
+    }
+  ],
+  "tx8kgu": [
+    {
+      "type": 0,
+      "value": "Enter address"
+    }
+  ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
     }
   ],
   "u4BAsU": [
@@ -943,6 +1533,12 @@
     {
       "type": 0,
       "value": "Percent of OGV staked out of the current total supply."
+    }
+  ],
+  "vEvTRL": [
+    {
+      "type": 0,
+      "value": "Snapshot post"
     }
   ],
   "vclhrb": [
@@ -973,6 +1569,12 @@
       "value": "Error while redeeming"
     }
   ],
+  "wL7VAE": [
+    {
+      "type": 0,
+      "value": "Actions"
+    }
+  ],
   "weP/oT": [
     {
       "type": 0,
@@ -983,43 +1585,6 @@
     {
       "type": 0,
       "value": "Wrong Network"
-    }
-  ],
-  "xM6PS8": [
-    {
-      "offset": 0,
-      "options": {
-        "=0": {
-          "value": [
-            {
-              "type": 0,
-              "value": "All Proposals"
-            }
-          ]
-        },
-        "=1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "1 Filter"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " Filters"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "count"
     }
   ],
   "xZIm6b": [
@@ -1052,10 +1617,10 @@
       "value": "Error while swapping"
     }
   ],
-  "zSOvI0": [
+  "zQvVDJ": [
     {
       "type": 0,
-      "value": "Filters"
+      "value": "All"
     }
   ],
   "zmWQIG": [

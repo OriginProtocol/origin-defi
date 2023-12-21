@@ -30,8 +30,8 @@ export const AddressLabel = ({
     enableEnsName && !isNilOrEmpty(ensName)
       ? ensName
       : short
-      ? middleTruncate(address)
-      : address;
+        ? middleTruncate(address)
+        : address;
 
   if (enableEnsName && isEnsNameLoading) {
     return <Skeleton sx={{ minWidth: 100, ...rest?.sx }} />;
