@@ -2346,10 +2346,18 @@ export enum OethCollateralDailyStatOrderByInput {
   DailyStatIdFeesUsdAscNullsFirst = 'dailyStatId_feesUSD_ASC_NULLS_FIRST',
   DailyStatIdFeesUsdDesc = 'dailyStatId_feesUSD_DESC',
   DailyStatIdFeesUsdDescNullsLast = 'dailyStatId_feesUSD_DESC_NULLS_LAST',
+  DailyStatIdHoldersOverThresholdAsc = 'dailyStatId_holdersOverThreshold_ASC',
+  DailyStatIdHoldersOverThresholdAscNullsFirst = 'dailyStatId_holdersOverThreshold_ASC_NULLS_FIRST',
+  DailyStatIdHoldersOverThresholdDesc = 'dailyStatId_holdersOverThreshold_DESC',
+  DailyStatIdHoldersOverThresholdDescNullsLast = 'dailyStatId_holdersOverThreshold_DESC_NULLS_LAST',
   DailyStatIdIdAsc = 'dailyStatId_id_ASC',
   DailyStatIdIdAscNullsFirst = 'dailyStatId_id_ASC_NULLS_FIRST',
   DailyStatIdIdDesc = 'dailyStatId_id_DESC',
   DailyStatIdIdDescNullsLast = 'dailyStatId_id_DESC_NULLS_LAST',
+  DailyStatIdMarketCapUsdAsc = 'dailyStatId_marketCapUSD_ASC',
+  DailyStatIdMarketCapUsdAscNullsFirst = 'dailyStatId_marketCapUSD_ASC_NULLS_FIRST',
+  DailyStatIdMarketCapUsdDesc = 'dailyStatId_marketCapUSD_DESC',
+  DailyStatIdMarketCapUsdDescNullsLast = 'dailyStatId_marketCapUSD_DESC_NULLS_LAST',
   DailyStatIdNonRebasingSupplyAsc = 'dailyStatId_nonRebasingSupply_ASC',
   DailyStatIdNonRebasingSupplyAscNullsFirst = 'dailyStatId_nonRebasingSupply_ASC_NULLS_FIRST',
   DailyStatIdNonRebasingSupplyDesc = 'dailyStatId_nonRebasingSupply_DESC',
@@ -2374,10 +2382,18 @@ export enum OethCollateralDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdTradingVolumeUsdAsc = 'dailyStatId_tradingVolumeUSD_ASC',
+  DailyStatIdTradingVolumeUsdAscNullsFirst = 'dailyStatId_tradingVolumeUSD_ASC_NULLS_FIRST',
+  DailyStatIdTradingVolumeUsdDesc = 'dailyStatId_tradingVolumeUSD_DESC',
+  DailyStatIdTradingVolumeUsdDescNullsLast = 'dailyStatId_tradingVolumeUSD_DESC_NULLS_LAST',
   DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
   DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
   DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
   DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
+  DailyStatIdYieldEth7DayAsc = 'dailyStatId_yieldETH7Day_ASC',
+  DailyStatIdYieldEth7DayAscNullsFirst = 'dailyStatId_yieldETH7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldEth7DayDesc = 'dailyStatId_yieldETH7Day_DESC',
+  DailyStatIdYieldEth7DayDescNullsLast = 'dailyStatId_yieldETH7Day_DESC_NULLS_LAST',
   DailyStatIdYieldEthAllTimeAsc = 'dailyStatId_yieldETHAllTime_ASC',
   DailyStatIdYieldEthAllTimeAscNullsFirst = 'dailyStatId_yieldETHAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldEthAllTimeDesc = 'dailyStatId_yieldETHAllTime_DESC',
@@ -2386,6 +2402,10 @@ export enum OethCollateralDailyStatOrderByInput {
   DailyStatIdYieldEthAscNullsFirst = 'dailyStatId_yieldETH_ASC_NULLS_FIRST',
   DailyStatIdYieldEthDesc = 'dailyStatId_yieldETH_DESC',
   DailyStatIdYieldEthDescNullsLast = 'dailyStatId_yieldETH_DESC_NULLS_LAST',
+  DailyStatIdYieldUsd7DayAsc = 'dailyStatId_yieldUSD7Day_ASC',
+  DailyStatIdYieldUsd7DayAscNullsFirst = 'dailyStatId_yieldUSD7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldUsd7DayDesc = 'dailyStatId_yieldUSD7Day_DESC',
+  DailyStatIdYieldUsd7DayDescNullsLast = 'dailyStatId_yieldUSD7Day_DESC_NULLS_LAST',
   DailyStatIdYieldUsdAllTimeAsc = 'dailyStatId_yieldUSDAllTime_ASC',
   DailyStatIdYieldUsdAllTimeAscNullsFirst = 'dailyStatId_yieldUSDAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldUsdAllTimeDesc = 'dailyStatId_yieldUSDAllTime_DESC',
@@ -2665,20 +2685,24 @@ export type OethDailyStat = {
   feesUSD: Scalars['BigInt']['output'];
   feesUSD7Day: Scalars['BigInt']['output'];
   feesUSDAllTime: Scalars['BigInt']['output'];
+  holdersOverThreshold: Scalars['Int']['output'];
   id: Scalars['String']['output'];
+  marketCapUSD: Scalars['Float']['output'];
   nonRebasingSupply: Scalars['BigInt']['output'];
   pegPrice: Scalars['BigInt']['output'];
   rebasingSupply: Scalars['BigInt']['output'];
-  /** Price of OETH in ETH */
   strategies: Array<OethStrategyDailyStat>;
   /** Last block number stats were updated */
   timestamp: Scalars['DateTime']['output'];
   totalSupply: Scalars['BigInt']['output'];
   totalSupplyUSD: Scalars['Float']['output'];
+  tradingVolumeUSD: Scalars['Float']['output'];
   wrappedSupply: Scalars['BigInt']['output'];
   yieldETH: Scalars['BigInt']['output'];
+  yieldETH7Day: Scalars['BigInt']['output'];
   yieldETHAllTime: Scalars['BigInt']['output'];
   yieldUSD: Scalars['BigInt']['output'];
+  yieldUSD7Day: Scalars['BigInt']['output'];
   yieldUSDAllTime: Scalars['BigInt']['output'];
 };
 
@@ -2761,10 +2785,18 @@ export enum OethDailyStatOrderByInput {
   FeesUsdAscNullsFirst = 'feesUSD_ASC_NULLS_FIRST',
   FeesUsdDesc = 'feesUSD_DESC',
   FeesUsdDescNullsLast = 'feesUSD_DESC_NULLS_LAST',
+  HoldersOverThresholdAsc = 'holdersOverThreshold_ASC',
+  HoldersOverThresholdAscNullsFirst = 'holdersOverThreshold_ASC_NULLS_FIRST',
+  HoldersOverThresholdDesc = 'holdersOverThreshold_DESC',
+  HoldersOverThresholdDescNullsLast = 'holdersOverThreshold_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdDesc = 'id_DESC',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  MarketCapUsdAsc = 'marketCapUSD_ASC',
+  MarketCapUsdAscNullsFirst = 'marketCapUSD_ASC_NULLS_FIRST',
+  MarketCapUsdDesc = 'marketCapUSD_DESC',
+  MarketCapUsdDescNullsLast = 'marketCapUSD_DESC_NULLS_LAST',
   NonRebasingSupplyAsc = 'nonRebasingSupply_ASC',
   NonRebasingSupplyAscNullsFirst = 'nonRebasingSupply_ASC_NULLS_FIRST',
   NonRebasingSupplyDesc = 'nonRebasingSupply_DESC',
@@ -2789,10 +2821,18 @@ export enum OethDailyStatOrderByInput {
   TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
   TotalSupplyDesc = 'totalSupply_DESC',
   TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
+  TradingVolumeUsdAsc = 'tradingVolumeUSD_ASC',
+  TradingVolumeUsdAscNullsFirst = 'tradingVolumeUSD_ASC_NULLS_FIRST',
+  TradingVolumeUsdDesc = 'tradingVolumeUSD_DESC',
+  TradingVolumeUsdDescNullsLast = 'tradingVolumeUSD_DESC_NULLS_LAST',
   WrappedSupplyAsc = 'wrappedSupply_ASC',
   WrappedSupplyAscNullsFirst = 'wrappedSupply_ASC_NULLS_FIRST',
   WrappedSupplyDesc = 'wrappedSupply_DESC',
   WrappedSupplyDescNullsLast = 'wrappedSupply_DESC_NULLS_LAST',
+  YieldEth7DayAsc = 'yieldETH7Day_ASC',
+  YieldEth7DayAscNullsFirst = 'yieldETH7Day_ASC_NULLS_FIRST',
+  YieldEth7DayDesc = 'yieldETH7Day_DESC',
+  YieldEth7DayDescNullsLast = 'yieldETH7Day_DESC_NULLS_LAST',
   YieldEthAllTimeAsc = 'yieldETHAllTime_ASC',
   YieldEthAllTimeAscNullsFirst = 'yieldETHAllTime_ASC_NULLS_FIRST',
   YieldEthAllTimeDesc = 'yieldETHAllTime_DESC',
@@ -2801,6 +2841,10 @@ export enum OethDailyStatOrderByInput {
   YieldEthAscNullsFirst = 'yieldETH_ASC_NULLS_FIRST',
   YieldEthDesc = 'yieldETH_DESC',
   YieldEthDescNullsLast = 'yieldETH_DESC_NULLS_LAST',
+  YieldUsd7DayAsc = 'yieldUSD7Day_ASC',
+  YieldUsd7DayAscNullsFirst = 'yieldUSD7Day_ASC_NULLS_FIRST',
+  YieldUsd7DayDesc = 'yieldUSD7Day_DESC',
+  YieldUsd7DayDescNullsLast = 'yieldUSD7Day_DESC_NULLS_LAST',
   YieldUsdAllTimeAsc = 'yieldUSDAllTime_ASC',
   YieldUsdAllTimeAscNullsFirst = 'yieldUSDAllTime_ASC_NULLS_FIRST',
   YieldUsdAllTimeDesc = 'yieldUSDAllTime_DESC',
@@ -2943,6 +2987,15 @@ export type OethDailyStatWhereInput = {
   feesUSD_lte?: InputMaybe<Scalars['BigInt']['input']>;
   feesUSD_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   feesUSD_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  holdersOverThreshold_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  holdersOverThreshold_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  holdersOverThreshold_lt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_lte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -2960,6 +3013,15 @@ export type OethDailyStatWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  marketCapUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  marketCapUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  marketCapUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
   nonRebasingSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
   nonRebasingSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
   nonRebasingSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3017,6 +3079,15 @@ export type OethDailyStatWhereInput = {
   totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  tradingVolumeUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tradingVolumeUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  tradingVolumeUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
   wrappedSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3026,6 +3097,15 @@ export type OethDailyStatWhereInput = {
   wrappedSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldETH7Day_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldETH7Day_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  yieldETH7Day_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   yieldETHAllTime_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETHAllTime_gt?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETHAllTime_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3044,6 +3124,15 @@ export type OethDailyStatWhereInput = {
   yieldETH_lte?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETH_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETH_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldUSD7Day_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldUSD7Day_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  yieldUSD7Day_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   yieldUSDAllTime_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldUSDAllTime_gt?: InputMaybe<Scalars['BigInt']['input']>;
   yieldUSDAllTime_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -4200,10 +4289,18 @@ export enum OethStrategyDailyStatOrderByInput {
   DailyStatIdFeesUsdAscNullsFirst = 'dailyStatId_feesUSD_ASC_NULLS_FIRST',
   DailyStatIdFeesUsdDesc = 'dailyStatId_feesUSD_DESC',
   DailyStatIdFeesUsdDescNullsLast = 'dailyStatId_feesUSD_DESC_NULLS_LAST',
+  DailyStatIdHoldersOverThresholdAsc = 'dailyStatId_holdersOverThreshold_ASC',
+  DailyStatIdHoldersOverThresholdAscNullsFirst = 'dailyStatId_holdersOverThreshold_ASC_NULLS_FIRST',
+  DailyStatIdHoldersOverThresholdDesc = 'dailyStatId_holdersOverThreshold_DESC',
+  DailyStatIdHoldersOverThresholdDescNullsLast = 'dailyStatId_holdersOverThreshold_DESC_NULLS_LAST',
   DailyStatIdIdAsc = 'dailyStatId_id_ASC',
   DailyStatIdIdAscNullsFirst = 'dailyStatId_id_ASC_NULLS_FIRST',
   DailyStatIdIdDesc = 'dailyStatId_id_DESC',
   DailyStatIdIdDescNullsLast = 'dailyStatId_id_DESC_NULLS_LAST',
+  DailyStatIdMarketCapUsdAsc = 'dailyStatId_marketCapUSD_ASC',
+  DailyStatIdMarketCapUsdAscNullsFirst = 'dailyStatId_marketCapUSD_ASC_NULLS_FIRST',
+  DailyStatIdMarketCapUsdDesc = 'dailyStatId_marketCapUSD_DESC',
+  DailyStatIdMarketCapUsdDescNullsLast = 'dailyStatId_marketCapUSD_DESC_NULLS_LAST',
   DailyStatIdNonRebasingSupplyAsc = 'dailyStatId_nonRebasingSupply_ASC',
   DailyStatIdNonRebasingSupplyAscNullsFirst = 'dailyStatId_nonRebasingSupply_ASC_NULLS_FIRST',
   DailyStatIdNonRebasingSupplyDesc = 'dailyStatId_nonRebasingSupply_DESC',
@@ -4228,10 +4325,18 @@ export enum OethStrategyDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdTradingVolumeUsdAsc = 'dailyStatId_tradingVolumeUSD_ASC',
+  DailyStatIdTradingVolumeUsdAscNullsFirst = 'dailyStatId_tradingVolumeUSD_ASC_NULLS_FIRST',
+  DailyStatIdTradingVolumeUsdDesc = 'dailyStatId_tradingVolumeUSD_DESC',
+  DailyStatIdTradingVolumeUsdDescNullsLast = 'dailyStatId_tradingVolumeUSD_DESC_NULLS_LAST',
   DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
   DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
   DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
   DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
+  DailyStatIdYieldEth7DayAsc = 'dailyStatId_yieldETH7Day_ASC',
+  DailyStatIdYieldEth7DayAscNullsFirst = 'dailyStatId_yieldETH7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldEth7DayDesc = 'dailyStatId_yieldETH7Day_DESC',
+  DailyStatIdYieldEth7DayDescNullsLast = 'dailyStatId_yieldETH7Day_DESC_NULLS_LAST',
   DailyStatIdYieldEthAllTimeAsc = 'dailyStatId_yieldETHAllTime_ASC',
   DailyStatIdYieldEthAllTimeAscNullsFirst = 'dailyStatId_yieldETHAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldEthAllTimeDesc = 'dailyStatId_yieldETHAllTime_DESC',
@@ -4240,6 +4345,10 @@ export enum OethStrategyDailyStatOrderByInput {
   DailyStatIdYieldEthAscNullsFirst = 'dailyStatId_yieldETH_ASC_NULLS_FIRST',
   DailyStatIdYieldEthDesc = 'dailyStatId_yieldETH_DESC',
   DailyStatIdYieldEthDescNullsLast = 'dailyStatId_yieldETH_DESC_NULLS_LAST',
+  DailyStatIdYieldUsd7DayAsc = 'dailyStatId_yieldUSD7Day_ASC',
+  DailyStatIdYieldUsd7DayAscNullsFirst = 'dailyStatId_yieldUSD7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldUsd7DayDesc = 'dailyStatId_yieldUSD7Day_DESC',
+  DailyStatIdYieldUsd7DayDescNullsLast = 'dailyStatId_yieldUSD7Day_DESC_NULLS_LAST',
   DailyStatIdYieldUsdAllTimeAsc = 'dailyStatId_yieldUSDAllTime_ASC',
   DailyStatIdYieldUsdAllTimeAscNullsFirst = 'dailyStatId_yieldUSDAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldUsdAllTimeDesc = 'dailyStatId_yieldUSDAllTime_DESC',
@@ -4816,6 +4925,179 @@ export type OgvAddressWhereInput = {
 export type OgvAddressesConnection = {
   __typename?: 'OGVAddressesConnection';
   edges: Array<OgvAddressEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type OgvDailyStat = {
+  __typename?: 'OGVDailyStat';
+  blockNumber: Scalars['Int']['output'];
+  holdersOverThreshold: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  marketCapUSD: Scalars['Float']['output'];
+  priceUSD: Scalars['Float']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  totalStaked: Scalars['BigInt']['output'];
+  totalSupply: Scalars['BigInt']['output'];
+  totalSupplyUSD: Scalars['Float']['output'];
+  tradingVolumeUSD: Scalars['Float']['output'];
+};
+
+export type OgvDailyStatEdge = {
+  __typename?: 'OGVDailyStatEdge';
+  cursor: Scalars['String']['output'];
+  node: OgvDailyStat;
+};
+
+export enum OgvDailyStatOrderByInput {
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  HoldersOverThresholdAsc = 'holdersOverThreshold_ASC',
+  HoldersOverThresholdAscNullsFirst = 'holdersOverThreshold_ASC_NULLS_FIRST',
+  HoldersOverThresholdDesc = 'holdersOverThreshold_DESC',
+  HoldersOverThresholdDescNullsLast = 'holdersOverThreshold_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  MarketCapUsdAsc = 'marketCapUSD_ASC',
+  MarketCapUsdAscNullsFirst = 'marketCapUSD_ASC_NULLS_FIRST',
+  MarketCapUsdDesc = 'marketCapUSD_DESC',
+  MarketCapUsdDescNullsLast = 'marketCapUSD_DESC_NULLS_LAST',
+  PriceUsdAsc = 'priceUSD_ASC',
+  PriceUsdAscNullsFirst = 'priceUSD_ASC_NULLS_FIRST',
+  PriceUsdDesc = 'priceUSD_DESC',
+  PriceUsdDescNullsLast = 'priceUSD_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TotalStakedAsc = 'totalStaked_ASC',
+  TotalStakedAscNullsFirst = 'totalStaked_ASC_NULLS_FIRST',
+  TotalStakedDesc = 'totalStaked_DESC',
+  TotalStakedDescNullsLast = 'totalStaked_DESC_NULLS_LAST',
+  TotalSupplyUsdAsc = 'totalSupplyUSD_ASC',
+  TotalSupplyUsdAscNullsFirst = 'totalSupplyUSD_ASC_NULLS_FIRST',
+  TotalSupplyUsdDesc = 'totalSupplyUSD_DESC',
+  TotalSupplyUsdDescNullsLast = 'totalSupplyUSD_DESC_NULLS_LAST',
+  TotalSupplyAsc = 'totalSupply_ASC',
+  TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
+  TotalSupplyDesc = 'totalSupply_DESC',
+  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
+  TradingVolumeUsdAsc = 'tradingVolumeUSD_ASC',
+  TradingVolumeUsdAscNullsFirst = 'tradingVolumeUSD_ASC_NULLS_FIRST',
+  TradingVolumeUsdDesc = 'tradingVolumeUSD_DESC',
+  TradingVolumeUsdDescNullsLast = 'tradingVolumeUSD_DESC_NULLS_LAST'
+}
+
+export type OgvDailyStatWhereInput = {
+  AND?: InputMaybe<Array<OgvDailyStatWhereInput>>;
+  OR?: InputMaybe<Array<OgvDailyStatWhereInput>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  holdersOverThreshold_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  holdersOverThreshold_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  holdersOverThreshold_lt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_lte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  marketCapUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  marketCapUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  marketCapUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  priceUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  priceUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  priceUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  priceUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  totalStaked_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalStaked_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalStaked_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalStaked_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupplyUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  totalSupplyUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupplyUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  totalSupplyUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  totalSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupply_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupply_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  tradingVolumeUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tradingVolumeUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  tradingVolumeUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+};
+
+export type OgvDailyStatsConnection = {
+  __typename?: 'OGVDailyStatsConnection';
+  edges: Array<OgvDailyStatEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -6637,10 +6919,18 @@ export enum OusdCollateralDailyStatOrderByInput {
   DailyStatIdFeesUsdAscNullsFirst = 'dailyStatId_feesUSD_ASC_NULLS_FIRST',
   DailyStatIdFeesUsdDesc = 'dailyStatId_feesUSD_DESC',
   DailyStatIdFeesUsdDescNullsLast = 'dailyStatId_feesUSD_DESC_NULLS_LAST',
+  DailyStatIdHoldersOverThresholdAsc = 'dailyStatId_holdersOverThreshold_ASC',
+  DailyStatIdHoldersOverThresholdAscNullsFirst = 'dailyStatId_holdersOverThreshold_ASC_NULLS_FIRST',
+  DailyStatIdHoldersOverThresholdDesc = 'dailyStatId_holdersOverThreshold_DESC',
+  DailyStatIdHoldersOverThresholdDescNullsLast = 'dailyStatId_holdersOverThreshold_DESC_NULLS_LAST',
   DailyStatIdIdAsc = 'dailyStatId_id_ASC',
   DailyStatIdIdAscNullsFirst = 'dailyStatId_id_ASC_NULLS_FIRST',
   DailyStatIdIdDesc = 'dailyStatId_id_DESC',
   DailyStatIdIdDescNullsLast = 'dailyStatId_id_DESC_NULLS_LAST',
+  DailyStatIdMarketCapUsdAsc = 'dailyStatId_marketCapUSD_ASC',
+  DailyStatIdMarketCapUsdAscNullsFirst = 'dailyStatId_marketCapUSD_ASC_NULLS_FIRST',
+  DailyStatIdMarketCapUsdDesc = 'dailyStatId_marketCapUSD_DESC',
+  DailyStatIdMarketCapUsdDescNullsLast = 'dailyStatId_marketCapUSD_DESC_NULLS_LAST',
   DailyStatIdNonRebasingSupplyAsc = 'dailyStatId_nonRebasingSupply_ASC',
   DailyStatIdNonRebasingSupplyAscNullsFirst = 'dailyStatId_nonRebasingSupply_ASC_NULLS_FIRST',
   DailyStatIdNonRebasingSupplyDesc = 'dailyStatId_nonRebasingSupply_DESC',
@@ -6665,10 +6955,18 @@ export enum OusdCollateralDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdTradingVolumeUsdAsc = 'dailyStatId_tradingVolumeUSD_ASC',
+  DailyStatIdTradingVolumeUsdAscNullsFirst = 'dailyStatId_tradingVolumeUSD_ASC_NULLS_FIRST',
+  DailyStatIdTradingVolumeUsdDesc = 'dailyStatId_tradingVolumeUSD_DESC',
+  DailyStatIdTradingVolumeUsdDescNullsLast = 'dailyStatId_tradingVolumeUSD_DESC_NULLS_LAST',
   DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
   DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
   DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
   DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
+  DailyStatIdYieldEth7DayAsc = 'dailyStatId_yieldETH7Day_ASC',
+  DailyStatIdYieldEth7DayAscNullsFirst = 'dailyStatId_yieldETH7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldEth7DayDesc = 'dailyStatId_yieldETH7Day_DESC',
+  DailyStatIdYieldEth7DayDescNullsLast = 'dailyStatId_yieldETH7Day_DESC_NULLS_LAST',
   DailyStatIdYieldEthAllTimeAsc = 'dailyStatId_yieldETHAllTime_ASC',
   DailyStatIdYieldEthAllTimeAscNullsFirst = 'dailyStatId_yieldETHAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldEthAllTimeDesc = 'dailyStatId_yieldETHAllTime_DESC',
@@ -6677,6 +6975,10 @@ export enum OusdCollateralDailyStatOrderByInput {
   DailyStatIdYieldEthAscNullsFirst = 'dailyStatId_yieldETH_ASC_NULLS_FIRST',
   DailyStatIdYieldEthDesc = 'dailyStatId_yieldETH_DESC',
   DailyStatIdYieldEthDescNullsLast = 'dailyStatId_yieldETH_DESC_NULLS_LAST',
+  DailyStatIdYieldUsd7DayAsc = 'dailyStatId_yieldUSD7Day_ASC',
+  DailyStatIdYieldUsd7DayAscNullsFirst = 'dailyStatId_yieldUSD7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldUsd7DayDesc = 'dailyStatId_yieldUSD7Day_DESC',
+  DailyStatIdYieldUsd7DayDescNullsLast = 'dailyStatId_yieldUSD7Day_DESC_NULLS_LAST',
   DailyStatIdYieldUsdAllTimeAsc = 'dailyStatId_yieldUSDAllTime_ASC',
   DailyStatIdYieldUsdAllTimeAscNullsFirst = 'dailyStatId_yieldUSDAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldUsdAllTimeDesc = 'dailyStatId_yieldUSDAllTime_DESC',
@@ -7146,7 +7448,9 @@ export type OusdDailyStat = {
   feesUSD: Scalars['BigInt']['output'];
   feesUSD7Day: Scalars['BigInt']['output'];
   feesUSDAllTime: Scalars['BigInt']['output'];
+  holdersOverThreshold: Scalars['Int']['output'];
   id: Scalars['String']['output'];
+  marketCapUSD: Scalars['Float']['output'];
   nonRebasingSupply: Scalars['BigInt']['output'];
   pegPrice: Scalars['BigInt']['output'];
   rebasingSupply: Scalars['BigInt']['output'];
@@ -7154,10 +7458,13 @@ export type OusdDailyStat = {
   timestamp: Scalars['DateTime']['output'];
   totalSupply: Scalars['BigInt']['output'];
   totalSupplyUSD: Scalars['Float']['output'];
+  tradingVolumeUSD: Scalars['Float']['output'];
   wrappedSupply: Scalars['BigInt']['output'];
   yieldETH: Scalars['BigInt']['output'];
+  yieldETH7Day: Scalars['BigInt']['output'];
   yieldETHAllTime: Scalars['BigInt']['output'];
   yieldUSD: Scalars['BigInt']['output'];
+  yieldUSD7Day: Scalars['BigInt']['output'];
   yieldUSDAllTime: Scalars['BigInt']['output'];
 };
 
@@ -7240,10 +7547,18 @@ export enum OusdDailyStatOrderByInput {
   FeesUsdAscNullsFirst = 'feesUSD_ASC_NULLS_FIRST',
   FeesUsdDesc = 'feesUSD_DESC',
   FeesUsdDescNullsLast = 'feesUSD_DESC_NULLS_LAST',
+  HoldersOverThresholdAsc = 'holdersOverThreshold_ASC',
+  HoldersOverThresholdAscNullsFirst = 'holdersOverThreshold_ASC_NULLS_FIRST',
+  HoldersOverThresholdDesc = 'holdersOverThreshold_DESC',
+  HoldersOverThresholdDescNullsLast = 'holdersOverThreshold_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdDesc = 'id_DESC',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  MarketCapUsdAsc = 'marketCapUSD_ASC',
+  MarketCapUsdAscNullsFirst = 'marketCapUSD_ASC_NULLS_FIRST',
+  MarketCapUsdDesc = 'marketCapUSD_DESC',
+  MarketCapUsdDescNullsLast = 'marketCapUSD_DESC_NULLS_LAST',
   NonRebasingSupplyAsc = 'nonRebasingSupply_ASC',
   NonRebasingSupplyAscNullsFirst = 'nonRebasingSupply_ASC_NULLS_FIRST',
   NonRebasingSupplyDesc = 'nonRebasingSupply_DESC',
@@ -7268,10 +7583,18 @@ export enum OusdDailyStatOrderByInput {
   TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
   TotalSupplyDesc = 'totalSupply_DESC',
   TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST',
+  TradingVolumeUsdAsc = 'tradingVolumeUSD_ASC',
+  TradingVolumeUsdAscNullsFirst = 'tradingVolumeUSD_ASC_NULLS_FIRST',
+  TradingVolumeUsdDesc = 'tradingVolumeUSD_DESC',
+  TradingVolumeUsdDescNullsLast = 'tradingVolumeUSD_DESC_NULLS_LAST',
   WrappedSupplyAsc = 'wrappedSupply_ASC',
   WrappedSupplyAscNullsFirst = 'wrappedSupply_ASC_NULLS_FIRST',
   WrappedSupplyDesc = 'wrappedSupply_DESC',
   WrappedSupplyDescNullsLast = 'wrappedSupply_DESC_NULLS_LAST',
+  YieldEth7DayAsc = 'yieldETH7Day_ASC',
+  YieldEth7DayAscNullsFirst = 'yieldETH7Day_ASC_NULLS_FIRST',
+  YieldEth7DayDesc = 'yieldETH7Day_DESC',
+  YieldEth7DayDescNullsLast = 'yieldETH7Day_DESC_NULLS_LAST',
   YieldEthAllTimeAsc = 'yieldETHAllTime_ASC',
   YieldEthAllTimeAscNullsFirst = 'yieldETHAllTime_ASC_NULLS_FIRST',
   YieldEthAllTimeDesc = 'yieldETHAllTime_DESC',
@@ -7280,6 +7603,10 @@ export enum OusdDailyStatOrderByInput {
   YieldEthAscNullsFirst = 'yieldETH_ASC_NULLS_FIRST',
   YieldEthDesc = 'yieldETH_DESC',
   YieldEthDescNullsLast = 'yieldETH_DESC_NULLS_LAST',
+  YieldUsd7DayAsc = 'yieldUSD7Day_ASC',
+  YieldUsd7DayAscNullsFirst = 'yieldUSD7Day_ASC_NULLS_FIRST',
+  YieldUsd7DayDesc = 'yieldUSD7Day_DESC',
+  YieldUsd7DayDescNullsLast = 'yieldUSD7Day_DESC_NULLS_LAST',
   YieldUsdAllTimeAsc = 'yieldUSDAllTime_ASC',
   YieldUsdAllTimeAscNullsFirst = 'yieldUSDAllTime_ASC_NULLS_FIRST',
   YieldUsdAllTimeDesc = 'yieldUSDAllTime_DESC',
@@ -7422,6 +7749,15 @@ export type OusdDailyStatWhereInput = {
   feesUSD_lte?: InputMaybe<Scalars['BigInt']['input']>;
   feesUSD_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   feesUSD_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  holdersOverThreshold_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_gte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  holdersOverThreshold_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  holdersOverThreshold_lt?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_lte?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  holdersOverThreshold_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -7439,6 +7775,15 @@ export type OusdDailyStatWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  marketCapUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  marketCapUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  marketCapUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  marketCapUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
   nonRebasingSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
   nonRebasingSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
   nonRebasingSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -7496,6 +7841,15 @@ export type OusdDailyStatWhereInput = {
   totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  tradingVolumeUSD_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_gte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_in?: InputMaybe<Array<Scalars['Float']['input']>>;
+  tradingVolumeUSD_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  tradingVolumeUSD_lt?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_lte?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_eq?: InputMaybe<Scalars['Float']['input']>;
+  tradingVolumeUSD_not_in?: InputMaybe<Array<Scalars['Float']['input']>>;
   wrappedSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -7505,6 +7859,15 @@ export type OusdDailyStatWhereInput = {
   wrappedSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   wrappedSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldETH7Day_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldETH7Day_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  yieldETH7Day_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldETH7Day_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   yieldETHAllTime_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETHAllTime_gt?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETHAllTime_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -7523,6 +7886,15 @@ export type OusdDailyStatWhereInput = {
   yieldETH_lte?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETH_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldETH_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldUSD7Day_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  yieldUSD7Day_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  yieldUSD7Day_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  yieldUSD7Day_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   yieldUSDAllTime_eq?: InputMaybe<Scalars['BigInt']['input']>;
   yieldUSDAllTime_gt?: InputMaybe<Scalars['BigInt']['input']>;
   yieldUSDAllTime_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -8677,10 +9049,18 @@ export enum OusdStrategyDailyStatOrderByInput {
   DailyStatIdFeesUsdAscNullsFirst = 'dailyStatId_feesUSD_ASC_NULLS_FIRST',
   DailyStatIdFeesUsdDesc = 'dailyStatId_feesUSD_DESC',
   DailyStatIdFeesUsdDescNullsLast = 'dailyStatId_feesUSD_DESC_NULLS_LAST',
+  DailyStatIdHoldersOverThresholdAsc = 'dailyStatId_holdersOverThreshold_ASC',
+  DailyStatIdHoldersOverThresholdAscNullsFirst = 'dailyStatId_holdersOverThreshold_ASC_NULLS_FIRST',
+  DailyStatIdHoldersOverThresholdDesc = 'dailyStatId_holdersOverThreshold_DESC',
+  DailyStatIdHoldersOverThresholdDescNullsLast = 'dailyStatId_holdersOverThreshold_DESC_NULLS_LAST',
   DailyStatIdIdAsc = 'dailyStatId_id_ASC',
   DailyStatIdIdAscNullsFirst = 'dailyStatId_id_ASC_NULLS_FIRST',
   DailyStatIdIdDesc = 'dailyStatId_id_DESC',
   DailyStatIdIdDescNullsLast = 'dailyStatId_id_DESC_NULLS_LAST',
+  DailyStatIdMarketCapUsdAsc = 'dailyStatId_marketCapUSD_ASC',
+  DailyStatIdMarketCapUsdAscNullsFirst = 'dailyStatId_marketCapUSD_ASC_NULLS_FIRST',
+  DailyStatIdMarketCapUsdDesc = 'dailyStatId_marketCapUSD_DESC',
+  DailyStatIdMarketCapUsdDescNullsLast = 'dailyStatId_marketCapUSD_DESC_NULLS_LAST',
   DailyStatIdNonRebasingSupplyAsc = 'dailyStatId_nonRebasingSupply_ASC',
   DailyStatIdNonRebasingSupplyAscNullsFirst = 'dailyStatId_nonRebasingSupply_ASC_NULLS_FIRST',
   DailyStatIdNonRebasingSupplyDesc = 'dailyStatId_nonRebasingSupply_DESC',
@@ -8705,10 +9085,18 @@ export enum OusdStrategyDailyStatOrderByInput {
   DailyStatIdTotalSupplyAscNullsFirst = 'dailyStatId_totalSupply_ASC_NULLS_FIRST',
   DailyStatIdTotalSupplyDesc = 'dailyStatId_totalSupply_DESC',
   DailyStatIdTotalSupplyDescNullsLast = 'dailyStatId_totalSupply_DESC_NULLS_LAST',
+  DailyStatIdTradingVolumeUsdAsc = 'dailyStatId_tradingVolumeUSD_ASC',
+  DailyStatIdTradingVolumeUsdAscNullsFirst = 'dailyStatId_tradingVolumeUSD_ASC_NULLS_FIRST',
+  DailyStatIdTradingVolumeUsdDesc = 'dailyStatId_tradingVolumeUSD_DESC',
+  DailyStatIdTradingVolumeUsdDescNullsLast = 'dailyStatId_tradingVolumeUSD_DESC_NULLS_LAST',
   DailyStatIdWrappedSupplyAsc = 'dailyStatId_wrappedSupply_ASC',
   DailyStatIdWrappedSupplyAscNullsFirst = 'dailyStatId_wrappedSupply_ASC_NULLS_FIRST',
   DailyStatIdWrappedSupplyDesc = 'dailyStatId_wrappedSupply_DESC',
   DailyStatIdWrappedSupplyDescNullsLast = 'dailyStatId_wrappedSupply_DESC_NULLS_LAST',
+  DailyStatIdYieldEth7DayAsc = 'dailyStatId_yieldETH7Day_ASC',
+  DailyStatIdYieldEth7DayAscNullsFirst = 'dailyStatId_yieldETH7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldEth7DayDesc = 'dailyStatId_yieldETH7Day_DESC',
+  DailyStatIdYieldEth7DayDescNullsLast = 'dailyStatId_yieldETH7Day_DESC_NULLS_LAST',
   DailyStatIdYieldEthAllTimeAsc = 'dailyStatId_yieldETHAllTime_ASC',
   DailyStatIdYieldEthAllTimeAscNullsFirst = 'dailyStatId_yieldETHAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldEthAllTimeDesc = 'dailyStatId_yieldETHAllTime_DESC',
@@ -8717,6 +9105,10 @@ export enum OusdStrategyDailyStatOrderByInput {
   DailyStatIdYieldEthAscNullsFirst = 'dailyStatId_yieldETH_ASC_NULLS_FIRST',
   DailyStatIdYieldEthDesc = 'dailyStatId_yieldETH_DESC',
   DailyStatIdYieldEthDescNullsLast = 'dailyStatId_yieldETH_DESC_NULLS_LAST',
+  DailyStatIdYieldUsd7DayAsc = 'dailyStatId_yieldUSD7Day_ASC',
+  DailyStatIdYieldUsd7DayAscNullsFirst = 'dailyStatId_yieldUSD7Day_ASC_NULLS_FIRST',
+  DailyStatIdYieldUsd7DayDesc = 'dailyStatId_yieldUSD7Day_DESC',
+  DailyStatIdYieldUsd7DayDescNullsLast = 'dailyStatId_yieldUSD7Day_DESC_NULLS_LAST',
   DailyStatIdYieldUsdAllTimeAsc = 'dailyStatId_yieldUSDAllTime_ASC',
   DailyStatIdYieldUsdAllTimeAscNullsFirst = 'dailyStatId_yieldUSDAllTime_ASC_NULLS_FIRST',
   DailyStatIdYieldUsdAllTimeDesc = 'dailyStatId_yieldUSDAllTime_DESC',
@@ -9289,6 +9681,11 @@ export type Query = {
   ogvById?: Maybe<Ogv>;
   /** @deprecated Use ogvById */
   ogvByUniqueInput?: Maybe<Ogv>;
+  ogvDailyStatById?: Maybe<OgvDailyStat>;
+  /** @deprecated Use ogvDailyStatById */
+  ogvDailyStatByUniqueInput?: Maybe<OgvDailyStat>;
+  ogvDailyStats: Array<OgvDailyStat>;
+  ogvDailyStatsConnection: OgvDailyStatsConnection;
   ogvLockupById?: Maybe<OgvLockup>;
   /** @deprecated Use ogvLockupById */
   ogvLockupByUniqueInput?: Maybe<OgvLockup>;
@@ -10253,6 +10650,32 @@ export type QueryOgvByIdArgs = {
 
 export type QueryOgvByUniqueInputArgs = {
   where: WhereIdInput;
+};
+
+
+export type QueryOgvDailyStatByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryOgvDailyStatByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryOgvDailyStatsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OgvDailyStatOrderByInput>>;
+  where?: InputMaybe<OgvDailyStatWhereInput>;
+};
+
+
+export type QueryOgvDailyStatsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<OgvDailyStatOrderByInput>;
+  where?: InputMaybe<OgvDailyStatWhereInput>;
 };
 
 

@@ -50,6 +50,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "0kn7st": {
+    "defaultMessage": "No actions"
+  },
   "17g+HZ": {
     "defaultMessage": "No activity"
   },
@@ -98,6 +101,9 @@
   "4cSnUS": {
     "defaultMessage": "3y"
   },
+  "4fPELu": {
+    "defaultMessage": "Function"
+  },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
   },
@@ -134,6 +140,9 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
+  "7yGjVx": {
+    "defaultMessage": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
+  },
   "87E0Iv": {
     "defaultMessage": "Current results"
   },
@@ -151,9 +160,6 @@
   },
   "8nvhZ9": {
     "defaultMessage": "Last"
-  },
-  "8rfT4i": {
-    "defaultMessage": "The current APY you are earning across all of your lock-ups."
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -383,9 +389,6 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
-  "VFsDB8": {
-    "defaultMessage": "Delegated by others"
-  },
   "VZ5Ypk": {
     "defaultMessage": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on."
   },
@@ -425,6 +428,9 @@
   "YvbZVM": {
     "defaultMessage": "Time Remaining"
   },
+  "Z6ohOJ": {
+    "defaultMessage": "Discord Forum"
+  },
   "Ze2Qul": {
     "defaultMessage": "{duration,plural,=1{Extend Stake {stake} to # month} other{Extend Stake {stake} to # months}}"
   },
@@ -439,6 +445,9 @@
   },
   "aDYxXF": {
     "defaultMessage": "New transaction"
+  },
+  "aHPD2Z": {
+    "defaultMessage": "View Proposals"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
@@ -515,8 +524,17 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
+  "ibDi9l": {
+    "defaultMessage": "Quorum"
+  },
   "j8y+qc": {
     "defaultMessage": "{label}"
+  },
+  "jHPKic": {
+    "defaultMessage": "Argument types"
+  },
+  "jab7Gg": {
+    "defaultMessage": "Delegated to me"
   },
   "jfexoW": {
     "defaultMessage": "Lock-up Duration"
@@ -544,6 +562,15 @@
   },
   "m1czzY": {
     "defaultMessage": "Event"
+  },
+  "mcotxc": {
+    "defaultMessage": "{balance} {symbol}"
+  },
+  "nV7Cv+": {
+    "defaultMessage": "Contract"
+  },
+  "nc7Brw": {
+    "defaultMessage": "Arguments"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
@@ -586,12 +613,6 @@
   },
   "tzMNF3": {
     "defaultMessage": "Status"
-  },
-  "u4BAsU": {
-    "defaultMessage": "View proposals"
-  },
-  "uEFsHG": {
-    "defaultMessage": "Discord forum"
   },
   "upcyvM": {
     "defaultMessage": "Percent of OGV staked out of the current total supply."

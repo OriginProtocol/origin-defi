@@ -119,6 +119,12 @@
       "value": "Route"
     }
   ],
+  "0kn7st": [
+    {
+      "type": 0,
+      "value": "No actions"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -251,6 +257,12 @@
       "value": "3y"
     }
   ],
+  "4fPELu": [
+    {
+      "type": 0,
+      "value": "Function"
+    }
+  ],
   "5RMD2G": [
     {
       "type": 0,
@@ -373,6 +385,12 @@
       "value": "Redeemed"
     }
   ],
+  "7yGjVx": [
+    {
+      "type": 0,
+      "value": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
+    }
+  ],
   "87E0Iv": [
     {
       "type": 0,
@@ -407,12 +425,6 @@
     {
       "type": 0,
       "value": "Last"
-    }
-  ],
-  "8rfT4i": [
-    {
-      "type": 0,
-      "value": "The current APY you are earning across all of your lock-ups."
     }
   ],
   "9ghOJK": [
@@ -989,12 +1001,6 @@
       "value": "Finding the best route..."
     }
   ],
-  "VFsDB8": [
-    {
-      "type": 0,
-      "value": "Delegated by others"
-    }
-  ],
   "VZ5Ypk": [
     {
       "type": 0,
@@ -1075,6 +1081,12 @@
     {
       "type": 0,
       "value": "Time Remaining"
+    }
+  ],
+  "Z6ohOJ": [
+    {
+      "type": 0,
+      "value": "Discord Forum"
     }
   ],
   "Ze2Qul": [
@@ -1163,6 +1175,12 @@
     {
       "type": 0,
       "value": "New transaction"
+    }
+  ],
+  "aHPD2Z": [
+    {
+      "type": 0,
+      "value": "View Proposals"
     }
   ],
   "aWpBzj": [
@@ -1357,10 +1375,28 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "ibDi9l": [
+    {
+      "type": 0,
+      "value": "Quorum"
+    }
+  ],
   "j8y+qc": [
     {
       "type": 1,
       "value": "label"
+    }
+  ],
+  "jHPKic": [
+    {
+      "type": 0,
+      "value": "Argument types"
+    }
+  ],
+  "jab7Gg": [
+    {
+      "type": 0,
+      "value": "Delegated to me"
     }
   ],
   "jfexoW": [
@@ -1415,6 +1451,32 @@
     {
       "type": 0,
       "value": "Event"
+    }
+  ],
+  "mcotxc": [
+    {
+      "type": 1,
+      "value": "balance"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "nV7Cv+": [
+    {
+      "type": 0,
+      "value": "Contract"
+    }
+  ],
+  "nc7Brw": [
+    {
+      "type": 0,
+      "value": "Arguments"
     }
   ],
   "nc8QpJ": [
@@ -1515,18 +1577,6 @@
     {
       "type": 0,
       "value": "Status"
-    }
-  ],
-  "u4BAsU": [
-    {
-      "type": 0,
-      "value": "View proposals"
-    }
-  ],
-  "uEFsHG": [
-    {
-      "type": 0,
-      "value": "Discord forum"
     }
   ],
   "upcyvM": [
