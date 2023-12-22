@@ -1,20 +1,19 @@
-import { useMemo } from 'react';
+import { useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Card,
   CardContent,
   CardHeader,
   CircularProgress,
   Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
   Typography,
 } from '@mui/material';
 import {
+  ExpandIcon,
   ExternalLink,
   LoadingLabel,
   MiddleTruncated,
@@ -23,13 +22,6 @@ import {
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import {
-  createColumnHelper,
-  flexRender,
-  getCoreRowModel,
-  getPaginationRowModel,
-  useReactTable,
-} from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useContractRead } from 'wagmi';
@@ -150,16 +142,10 @@ const vl: Partial<ValueLabelProps> = {
   },
 };
 
-const columnHelper = createColumnHelper<{
-  address: string;
-  functionName: string;
-  argumentType: string;
-  args: string;
-}>();
-
 function Actions(props: StackProps) {
   const intl = useIntl();
   const { proposalId } = useParams();
+  const [expanded, setExpanded] = useState(null);
   const { data: actions, isLoading: isActionsLoading } = useContractRead({
     address: contracts.mainnet.OUSDGovernance.address,
     abi: contracts.mainnet.OUSDGovernance.abi,
@@ -177,54 +163,6 @@ function Actions(props: StackProps) {
           args: data[3][i],
         };
       }),
-  });
-
-  const columns = useMemo(
-    () => [
-      columnHelper.accessor('address', {
-        header: intl.formatMessage({ defaultMessage: 'Contract' }),
-        cell: (info) => (
-          <ExternalLink
-            href={`https://etherscan.io/address/${info.getValue()}`}
-          >
-            <MiddleTruncated maxWidth={60}>{info.getValue()}</MiddleTruncated>
-          </ExternalLink>
-        ),
-      }),
-      columnHelper.accessor('functionName', {
-        header: intl.formatMessage({ defaultMessage: 'Function' }),
-      }),
-      columnHelper.accessor('argumentType', {
-        header: intl.formatMessage({ defaultMessage: 'Argument types' }),
-        cell: (info) => (
-          <Typography sx={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-            {info.getValue()}
-          </Typography>
-        ),
-      }),
-      columnHelper.accessor('args', {
-        header: intl.formatMessage({ defaultMessage: 'Arguments' }),
-        cell: (info) => (
-          <Typography sx={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}>
-            {info.getValue()}
-          </Typography>
-        ),
-      }),
-    ],
-    [intl],
-  );
-
-  const table = useReactTable({
-    data: actions ?? [],
-    columns,
-    initialState: {
-      pagination: {
-        pageIndex: 0,
-        pageSize: 10,
-      },
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
   });
 
   return (
@@ -250,45 +188,64 @@ function Actions(props: StackProps) {
           </Typography>
         </Box>
       ) : (
-        <Table>
-          <TableHead>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => (
-                  <TableCell
-                    key={header.id}
-                    sx={{
-                      width: header.getSize(),
-                      p: 1,
-                      color: 'text.secondary',
-                    }}
+        actions.map((a, i) => (
+          <Accordion
+            key={`${a.address}-${i}`}
+            expanded={expanded === `${a.address}-${i}`}
+            onChange={() => {
+              setExpanded(
+                expanded === `${a.address}-${i}` ? null : `${a.address}-${i}`,
+              );
+            }}
+            sx={{
+              px: 2,
+              py: 0,
+              backgroundColor: 'grey.900',
+              borderRadius: 1,
+              ...props?.sx,
+            }}
+            disableGutters
+          >
+            <AccordionSummary>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                spacing={2}
+                width={1}
+              >
+                <Stack direction="row" spacing={2}>
+                  <ExternalLink
+                    href={`https://etherscan.io/address/${a.address}`}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableHead>
-          <TableBody>
-            {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell
-                    key={cell.id}
-                    sx={{
-                      p: 1,
-                    }}
-                  >
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                    <MiddleTruncated maxWidth={120}>
+                      {a.address}
+                    </MiddleTruncated>
+                  </ExternalLink>
+                  <Typography color="secondary">{a.functionName}</Typography>
+                  <Typography>{a.argumentType}</Typography>
+                </Stack>
+                <ExpandIcon
+                  isExpanded={expanded === `${a.address}-${i}`}
+                  width={10}
+                />
+              </Stack>
+            </AccordionSummary>
+            <AccordionDetails>
+              <Typography
+                component="pre"
+                sx={{
+                  fontFamily: 'monospace',
+                  whiteSpace: 'pre-wrap',
+                  wordBreak: 'break-all',
+                  overflowY: 'auto',
+                  overflowX: 'hidden',
+                }}
+              >
+                {a.args}
+              </Typography>
+            </AccordionDetails>
+          </Accordion>
+        ))
       )}
     </Stack>
   );
