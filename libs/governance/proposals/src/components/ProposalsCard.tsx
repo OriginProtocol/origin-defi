@@ -77,7 +77,7 @@ export const ProposalsCard = (props: CardProps) => {
     },
     {
       label: intl.formatMessage({ defaultMessage: 'Snapshot' }),
-      value: 'offchain',
+      value: 'snapshot',
     },
   ];
 
@@ -134,7 +134,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (proposal.type === 'offchain') {
+    if (proposal.type === 'snapshot') {
       window.open(proposal.link, '_blank');
     } else {
       navigate(proposal.id);
@@ -164,7 +164,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             <Stack direction="row" spacing={2}>
               <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
               <StatusBadge status={proposal?.status} />
-              {proposal.type === 'offchain' && (
+              {proposal.type === 'snapshot' && (
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -204,7 +204,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               tooltipProps={{ placement: 'top' }}
             >
               {proposal.title}
-              {proposal.type === 'offchain' && (
+              {proposal.type === 'snapshot' && (
                 <Box
                   component="img"
                   src="images/icons/arrow-up-right-from-square.svg"

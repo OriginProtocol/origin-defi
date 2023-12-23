@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useGovernanceInfo } from '@origin/governance/shared';
 import { TablePagination } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
@@ -22,6 +23,7 @@ import {
 } from '@tanstack/react-table';
 import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from '../queries.generated';
@@ -37,6 +39,7 @@ export const LockupsTable = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address } = useAccount();
+  const { data: govInfo } = useGovernanceInfo();
   const { data } = useUserLockupsQuery(
     { address },
     {
@@ -59,32 +62,31 @@ export const LockupsTable = () => {
       }),
       columnHelper.accessor('end', {
         header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
-        cell: (info) => (
-          <Typography>
-            {intl.formatDate(info.getValue(), {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            })}
-          </Typography>
-        ),
+        cell: (info) =>
+          intl.formatDate(info.getValue(), {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          }),
       }),
       columnHelper.display({
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
-        cell: (info) => (
-          <Typography>
-            {formatDistanceToNowStrict(new Date(info.row.original.end), {
-              unit: 'month',
-              roundingMethod: 'floor',
-            })}
-          </Typography>
-        ),
+        cell: (info) =>
+          formatDistanceToNowStrict(new Date(info.row.original.end), {
+            unit: 'month',
+            roundingMethod: 'floor',
+          }),
       }),
       columnHelper.accessor('veogv', {
-        header: intl.formatMessage({ defaultMessage: 'Voting Power' }),
+        header: tokens.mainnet.veOGV.symbol,
         cell: (info) => (
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
             <Box
               component="img"
               src={tokens.mainnet.veOGV.icon}
@@ -94,6 +96,25 @@ export const LockupsTable = () => {
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),
+      }),
+      columnHelper.accessor('veogv', {
+        header: intl.formatMessage({ defaultMessage: 'Voting power' }),
+        cell: (info) =>
+          intl.formatNumber(
+            +formatUnits(
+              BigInt(info.getValue()) ?? 0n,
+              tokens.mainnet.veOGV.decimals,
+            ) /
+              +formatUnits(
+                govInfo?.veOgvTotalSupply ?? 1n,
+                tokens.mainnet.veOGV.decimals,
+              ),
+            {
+              style: 'percent',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 5,
+            },
+          ),
       }),
       columnHelper.display({
         id: 'action',
@@ -147,7 +168,7 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [formatAmount, intl],
+    [formatAmount, govInfo?.veOgvTotalSupply, intl],
   );
 
   const table = useReactTable({
@@ -172,7 +193,11 @@ export const LockupsTable = () => {
               {headerGroup.headers.map((header, index) => (
                 <TableCell
                   key={header.id}
-                  sx={{ width: header.getSize(), color: 'text.secondary' }}
+                  sx={{
+                    width: header.getSize(),
+                    textAlign: index === 0 ? 'start' : 'end',
+                    color: 'text.secondary',
+                  }}
                 >
                   {flexRender(
                     header.column.columnDef.header,
@@ -186,8 +211,13 @@ export const LockupsTable = () => {
         <TableBody>
           {table.getRowModel().rows.map((row) => (
             <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+              {row.getVisibleCells().map((cell, index) => (
+                <TableCell
+                  key={cell.id}
+                  sx={{
+                    textAlign: index === 0 ? 'start' : 'end',
+                  }}
+                >
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

@@ -2,6 +2,7 @@ import { Box, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackSentryError } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
+import { useMountEffect } from '@react-hookz/web';
 
 import { CurrentResultsCard } from '../components/CurrentResultsCard';
 import { DetailsCard } from '../components/DetailsCard';
@@ -11,6 +12,10 @@ import { StatusCard } from '../components/StatusCard';
 import { VoteCard } from '../components/VotesCard';
 
 export const ProposalView = () => {
+  useMountEffect(() => {
+    window.scrollTo(0, 0);
+  });
+
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>

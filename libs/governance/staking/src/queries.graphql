@@ -7,7 +7,7 @@ query UserLockups($address: String!) {
     lockupId
     amount
     end
-    veogv
+    veogv    
     timestamp
     logs(orderBy: timestamp_DESC) {
       id

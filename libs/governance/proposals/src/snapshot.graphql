@@ -1,5 +1,9 @@
 query SnapshotProposals {
-  proposals(orderBy: "created", orderDirection: desc, where: { space_in: "ousdgov.eth" }) {
+  proposals(
+    orderBy: "created"
+    orderDirection: desc
+    where: { space_in: "ousdgov.eth" }
+  ) {
     id
     title
     choices
@@ -11,5 +15,24 @@ query SnapshotProposals {
     quorum
     created
     updated
+  }
+}
+
+query SnapshotUserVotes($address: String!) {
+  votes(
+    orderBy: "created"
+    orderDirection: desc
+    where: { space_in: "ousdgov.eth", voter: $address }
+  ) {
+    id
+    created
+    choice    
+    proposal {
+      id
+      title
+      state
+      link
+      choices
+    }
   }
 }

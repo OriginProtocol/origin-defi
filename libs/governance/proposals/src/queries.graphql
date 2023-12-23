@@ -47,3 +47,19 @@ query Proposal($proposalId: String!) {
     timestamp
   }
 }
+
+query UserVotes($address: String!) {
+  ogvProposalVotes(
+    where: { voter: { id_containsInsensitive: $address } }
+    orderBy: timestamp_DESC
+  ) {
+    id
+    type
+    timestamp
+    proposal {
+      id
+      description
+      status
+    }
+  }
+}

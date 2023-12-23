@@ -5,11 +5,10 @@ export type ProposalLog = ProposalQuery['ogvProposalById']['logs'][number];
 
 export type GovernanceChoice = (typeof governanceChoices)[number];
 
-export type ProposalType = 'onchain' | 'offchain';
+export type ProposalType = 'onchain' | 'snapshot';
 
 export type Proposal = {
   id: string;
-  index: number;
   type: ProposalType;
   title: string;
   created: string;
@@ -21,4 +20,11 @@ export type Proposal = {
   scores?: number[];
   quorum?: number;
   link?: string;
+};
+
+export type Vote = {
+  id: string;
+  choice: string;
+  created: string;
+  proposal: Pick<Proposal, 'id' | 'type' | 'title' | 'status' | 'link'>;
 };
