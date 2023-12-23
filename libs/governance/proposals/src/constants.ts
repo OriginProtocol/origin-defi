@@ -24,6 +24,9 @@ export const statusLabels = {
   [OgvProposalState.Succeeded]: defineMessage({
     defaultMessage: 'Succeeded',
   }),
+  active: defineMessage({
+    defaultMessage: 'Active',
+  }),
   closed: defineMessage({
     defaultMessage: 'Closed',
   }),
