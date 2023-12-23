@@ -101,6 +101,10 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     isLoading ||
     initialMonthDuration === 48 ||
     duration === initialMonthDuration;
+  const extendLockupEnd =
+    duration === initialMonthDuration
+      ? new Date(lockup.end)
+      : addMonths(new Date(), duration);
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth>
@@ -236,14 +240,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     })}
                   </Typography>
                   <Typography fontWeight={700} textAlign="end" minWidth={92}>
-                    {intl.formatDate(
-                      addMonths(new Date(), duration - initialMonthDuration),
-                      {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      },
-                    )}
+                    {intl.formatDate(extendLockupEnd, {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
                   </Typography>
                 </Stack>
               </Stack>
