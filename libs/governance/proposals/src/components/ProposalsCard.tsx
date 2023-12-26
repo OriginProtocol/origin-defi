@@ -250,6 +250,7 @@ type VotesGaugeProps = {
 } & StackProps;
 
 function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
+  const intl = useIntl();
   const { formatAmount } = useFormat();
 
   const scoreVote = sort(
@@ -260,7 +261,7 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
 
   return (
     <Stack {...rest} spacing={3}>
-      {take(2, scoreVote).map((c, i) => (
+      {take(2, scoreVote).map((c) => (
         <Stack key={c[0]} spacing={1}>
           <Stack
             direction="row"
@@ -301,6 +302,17 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
           />
         </Stack>
       ))}
+      {scoreVote.length > 2 && (
+        <Typography variant="body2" color="text.secondary">
+          {intl.formatMessage(
+            {
+              defaultMessage:
+                'Plus {count,plural, =1{# more option} other{# more options}}...',
+            },
+            { count: scoreVote.length - 2 },
+          )}
+        </Typography>
+      )}
     </Stack>
   );
 }

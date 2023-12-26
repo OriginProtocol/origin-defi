@@ -62,7 +62,7 @@ root.render(
         GeoFenceProvider,
         {
           name: 'oeth',
-          fullName: 'Origin Governance',
+          fullName: 'OGV Staking and Origin Governance',
           href: 'https://www.ousd.com/ogv-dashboard',
         },
       ],

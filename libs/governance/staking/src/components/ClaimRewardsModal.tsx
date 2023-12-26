@@ -31,7 +31,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
       <DialogTitle>
-        {intl.formatMessage({ defaultMessage: 'Collect rewards' })}
+        {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack spacing={0.75}>
@@ -39,7 +39,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             sx={{ px: 3, py: 2, borderRadius: 1, backgroundColor: 'grey.900' }}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'Available to claim' })}
+              {intl.formatMessage({ defaultMessage: 'Available to Collect' })}
             </Typography>
             <Stack
               direction="row"
@@ -68,15 +68,14 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-
         <TransactionButton
           contract={tokens.mainnet.veOGV}
           functionName="collectRewards"
           args={undefined}
           variant="action"
-          label={intl.formatMessage({ defaultMessage: 'Collect rewards' })}
+          label={intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
           activityTitle={intl.formatMessage({
-            defaultMessage: 'Collect rewards',
+            defaultMessage: 'Collect Rewards',
           })}
           activitySubtitle={intl.formatMessage(
             {

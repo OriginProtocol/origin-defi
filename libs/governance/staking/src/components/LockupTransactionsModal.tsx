@@ -42,7 +42,7 @@ export const LockupTransactionsModal = ({
   const columns = useMemo(
     () => [
       columnHelper.accessor('timestamp', {
-        header: intl.formatMessage({ defaultMessage: 'Transaction time' }),
+        header: intl.formatMessage({ defaultMessage: 'Transaction Time' }),
         cell: (info) => (
           <Typography>
             {intl.formatDate(info.getValue(), {
@@ -65,7 +65,7 @@ export const LockupTransactionsModal = ({
         size: 80,
       }),
       columnHelper.accessor('hash', {
-        header: intl.formatMessage({ defaultMessage: 'Transaction hash' }),
+        header: intl.formatMessage({ defaultMessage: 'Transaction Hash' }),
         cell: (info) => (
           <Link
             href={`https://etherscan.io/tx/${info.getValue()}`}

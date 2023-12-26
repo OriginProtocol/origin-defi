@@ -1,6 +1,6 @@
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { ValueLabel } from '@origin/shared/components';
+import { InfoTooltip, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -30,7 +30,17 @@ export const MyVotingPowerCard = (props: CardProps) => {
     <Card {...props}>
       <CardContent>
         <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+          label={
+            <Typography color="text.secondary">
+              {intl.formatMessage({ defaultMessage: 'My Voting Power' })}&nbsp;
+              <InfoTooltip
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
+                })}
+              />
+            </Typography>
+          }
           labelProps={{ sx: { fontSize: 14 } }}
           isLoading={isInfoLoading || isUserLoading}
           value={

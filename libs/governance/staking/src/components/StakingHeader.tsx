@@ -312,9 +312,18 @@ export const StakingHeader = () => {
             >
               <ValueLabel
                 alignItems="flex-start"
-                label={intl.formatMessage({
-                  defaultMessage: 'My Voting Power',
-                })}
+                label={
+                  <Typography color="text.secondary">
+                    {intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+                    &nbsp;
+                    <InfoTooltip
+                      tooltipLabel={intl.formatMessage({
+                        defaultMessage:
+                          'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
+                      })}
+                    />
+                  </Typography>
+                }
                 labelProps={{ fontSize: 14 }}
                 value={
                   <Stack direction="row" spacing={0.75} alignItems="flex-start">

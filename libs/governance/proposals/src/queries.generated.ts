@@ -24,7 +24,11 @@ export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ _
 
 export const ProposalsDocument = `
     query Proposals {
-  ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
+  ogvProposals(
+    orderBy: timestamp_DESC
+    limit: 1000
+    where: {status_not_in: Canceled}
+  ) {
     id
     description
     timestamp

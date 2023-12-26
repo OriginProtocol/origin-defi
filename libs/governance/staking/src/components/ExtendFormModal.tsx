@@ -123,7 +123,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             >
               <Typography>{tokens.mainnet.OGV.symbol}</Typography>
               <Typography textAlign="end">
-                {intl.formatMessage({ defaultMessage: 'Time remaining' })}
+                {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
               </Typography>
               <Typography textAlign="end">
                 {intl.formatMessage({ defaultMessage: 'Voting Power' })}
@@ -403,7 +403,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   ml={0.75}
                   tooltipLabel={intl.formatMessage({
                     defaultMessage:
-                      'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                      'The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up.',
                   })}
                 />
               </Stack>
