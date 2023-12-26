@@ -136,6 +136,10 @@ export const theme = createTheme({
       fontWeight: 400,
       lineHeight: 1.6,
     },
+    button: {
+      fontSize: 14,
+      lineHeight: 1.5,
+    },
   },
   shape: {
     borderRadius: 4,
@@ -236,6 +240,24 @@ export const theme = createTheme({
           boxShadow: 'none',
           minWidth: 0,
         }),
+        sizeSmall: {
+          fontSize: 12,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 11,
+          },
+        },
+        sizeMedium: ({ theme }) => ({
+          fontSize: theme.typography.button.fontSize,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 11,
+          },
+        }),
+        sizeLarge: {
+          fontSize: 16,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 15,
+          },
+        },
         containedPrimary: ({ theme }) => ({
           background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
@@ -303,6 +325,9 @@ export const theme = createTheme({
             '&:disabled': {
               opacity: 0.5,
               color: theme.palette.text.primary,
+            },
+            [base.breakpoints.down('sm')]: {
+              fontSize: 18,
             },
           }),
         },
@@ -430,6 +455,9 @@ export const theme = createTheme({
           lineHeight: 1.75,
           color: theme.palette.text.primary,
           textTransform: 'none',
+          [base.breakpoints.down('sm')]: {
+            fontSize: 14,
+          },
         }),
       },
     },

@@ -29,7 +29,7 @@ import type { Proposal } from '../types';
 
 const PAGE_SIZE = 10;
 
-export const ProposalsCard = (props: CardProps) => {
+export const ProposalListCard = (props: CardProps) => {
   const intl = useIntl();
   const [search, setSearch] = useSearchParams({
     filter: '',

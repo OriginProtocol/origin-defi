@@ -7,7 +7,7 @@ import { useMountEffect } from '@react-hookz/web';
 import { CurrentResultsCard } from '../components/CurrentResultsCard';
 import { DetailsCard } from '../components/DetailsCard';
 import { MyVotingPowerCard } from '../components/MyVotingPowerCard';
-import { ProposalHeader } from '../components/ProposalHeader';
+import { ProposalDetailHeader } from '../components/ProposalDetailHeader';
 import { StatusCard } from '../components/StatusCard';
 import { VoteCard } from '../components/VotesCard';
 
@@ -19,7 +19,7 @@ export const ProposalDetailView = () => {
   return (
     <Stack spacing={3}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
-        <ProposalHeader />
+        <ProposalDetailHeader />
       </ErrorBoundary>
       <Box>
         <Grid2 container spacing={3}>

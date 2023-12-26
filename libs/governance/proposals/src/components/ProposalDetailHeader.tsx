@@ -13,7 +13,7 @@ import { StatusBadge } from './StatusBadge';
 import type { StackProps } from '@mui/material';
 import type { HexAddress } from '@origin/shared/utils';
 
-export const ProposalHeader = (props: StackProps) => {
+export const ProposalDetailHeader = (props: StackProps) => {
   const intl = useIntl();
   const location = useLocation();
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ export const ProposalHeader = (props: StackProps) => {
   const proposer = proposal?.ogvProposalById?.proposer?.id as HexAddress;
 
   return (
-    <Stack alignItems="flex-start" spacing={4} py={5} {...props}>
+    <Stack alignItems="flex-start" spacing={4} py={{ xs: 3, sm: 5 }} {...props}>
       <Button
         variant="text"
         onClick={handleBack}

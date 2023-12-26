@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
 
-export const ProposalsHeader = (props: StackProps) => {
+export const ProposalListHeader = (props: StackProps) => {
   const intl = useIntl();
 
   return (
@@ -11,7 +11,7 @@ export const ProposalsHeader = (props: StackProps) => {
       alignItems="flex-start"
       justifyContent="center"
       spacing={3}
-      py={5}
+      py={{ xs: 3, sm: 5 }}
       {...props}
     >
       <Typography variant="h1">
@@ -19,7 +19,7 @@ export const ProposalsHeader = (props: StackProps) => {
           defaultMessage: 'Origin DeFi Governance',
         })}
       </Typography>
-      <Stack direction="row" spacing={2}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2 }}>
         <Button
           variant="outlined"
           color="secondary"

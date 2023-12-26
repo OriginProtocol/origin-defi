@@ -6,9 +6,12 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Slider,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
@@ -51,6 +54,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   );
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const queryClient = useQueryClient();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
@@ -107,12 +112,28 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       : addMonths(new Date(), duration);
 
   return (
-    <Dialog {...rest} maxWidth="sm" fullWidth>
-      <DialogTitle>
+    <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Extend Stake' })}
+        <IconButton
+          onClick={(evt) => {
+            rest?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <Box
+            component="img"
+            src="/images/icons/close-light.svg"
+            width={12}
+            height={12}
+          />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Stack>
+        <Stack pt={3}>
           <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
             <Stack
               direction="row"
@@ -202,23 +223,23 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               direction="row"
               alignItems="center"
               justifyContent="space-between"
+              flexWrap="wrap"
+              rowGap={1}
             >
-              <Stack>
-                <Typography variant="h3">
-                  {duration === 0
-                    ? intl.formatMessage({ defaultMessage: '0 months' })
-                    : formatDuration(
-                        {
-                          years: Math.floor(duration / 12),
-                          months: duration % 12,
-                        },
-                        {
-                          format: ['years', 'months'],
-                        },
-                      )}
-                </Typography>
-              </Stack>
-              <Stack spacing={0.5}>
+              <Typography variant="h3" mr={1}>
+                {duration === 0
+                  ? intl.formatMessage({ defaultMessage: '0 months' })
+                  : formatDuration(
+                      {
+                        years: Math.floor(duration / 12),
+                        months: duration % 12,
+                      },
+                      {
+                        format: ['years', 'months'],
+                      },
+                    )}
+              </Typography>
+              <Stack spacing={0.5} flexGrow={1}>
                 <Stack direction="row" justifyContent="flex-end">
                   <Typography color="text.secondary">
                     {intl.formatMessage({
@@ -233,7 +254,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     })}
                   </Typography>
                 </Stack>
-                <Stack direction="row">
+                <Stack direction="row" justifyContent="flex-end">
                   <Typography color="text.secondary">
                     {intl.formatMessage({
                       defaultMessage: 'Extended Lock up Ends:',
@@ -297,11 +318,14 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             <Stack
               direction="row"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="baseline"
+              flexWrap="wrap"
+              rowGap={1}
             >
               <LoadingLabel
                 variant="h3"
                 sx={{
+                  mr: 1,
                   background:
                     'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
                   backgroundClip: 'text',
@@ -316,13 +340,13 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   maximumFractionDigits: 2,
                 })}
               </LoadingLabel>
-              <Stack direction="row" spacing={1}>
-                <Typography color="text.secondary">
+              <Stack direction="row" flexWrap="wrap">
+                <Typography color="text.secondary" mr={1}>
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
                 </Typography>
-                <Typography fontWeight={700} minWidth={92}>
+                <Typography fontWeight={700} noWrap>
                   {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
@@ -358,8 +382,10 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               direction="row"
               justifyContent="space-between"
               alignItems="baseline"
+              flexWrap="wrap"
+              rowGap={1}
             >
-              <Stack direction="row" alignItems="baseline">
+              <Stack direction="row" alignItems="baseline" mr={1}>
                 <Box
                   component="img"
                   src={tokens.mainnet.veOGV.icon}

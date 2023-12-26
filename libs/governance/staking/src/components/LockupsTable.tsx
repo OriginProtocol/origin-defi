@@ -79,6 +79,7 @@ export const LockupsTable = () => {
           }),
       }),
       columnHelper.accessor('veogv', {
+        id: 'veogv',
         header: tokens.mainnet.veOGV.symbol,
         cell: (info) => (
           <Stack
@@ -98,6 +99,7 @@ export const LockupsTable = () => {
         ),
       }),
       columnHelper.accessor('veogv', {
+        id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) =>
           intl.formatNumber(
@@ -186,45 +188,47 @@ export const LockupsTable = () => {
 
   return (
     <Stack>
-      <Table>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header, index) => (
-                <TableCell
-                  key={header.id}
-                  sx={{
-                    width: header.getSize(),
-                    textAlign: index === 0 ? 'start' : 'end',
-                    color: 'text.secondary',
-                  }}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell, index) => (
-                <TableCell
-                  key={cell.id}
-                  sx={{
-                    textAlign: index === 0 ? 'start' : 'end',
-                  }}
-                >
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Table sx={{ width: 1 }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header, index) => (
+                  <TableCell
+                    key={header.id}
+                    sx={{
+                      width: header.getSize(),
+                      textAlign: index === 0 ? 'start' : 'end',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell, index) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{
+                      textAlign: index === 0 ? 'start' : 'end',
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       <TablePagination table={table} />
     </Stack>
   );
