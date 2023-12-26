@@ -10,8 +10,6 @@ import { useProposals } from '../hooks';
 
 import type { CardProps } from '@mui/material';
 
-import type { Proposal } from '../types';
-
 const valueLabelProps = {
   valueProps: { variant: 'h3' },
   spacing: 1.5,
@@ -20,14 +18,17 @@ const valueLabelProps = {
 
 export const ProposalsSummaryCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: proposals, isLoading: isProposalsLoading } =
-    useProposals<Proposal[]>();
+  const { data: proposals, isLoading: isProposalsLoading } = useProposals();
   const { data: holdersCount, isLoading: isHoldersCountLoading } =
     useHoldersCountQuery();
 
   const active =
     proposals
-      ?.filter((p) => [OgvProposalState.Active, 'active'].includes(p.status))
+      ?.filter((p) =>
+        [OgvProposalState.Active.toLowerCase()].includes(
+          p.status.toLowerCase(),
+        ),
+      )
       ?.length.toString() ?? '0';
 
   return (

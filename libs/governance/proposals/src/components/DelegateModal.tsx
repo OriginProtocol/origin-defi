@@ -91,7 +91,7 @@ export const DelegateModal = (props: DialogProps) => {
               {
                 link: (
                   <Link
-                    href="https://snapshot.org/#/ousdgov.eth"
+                    href="https://snapshot.org/#/delegate"
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     sx={{
