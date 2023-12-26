@@ -11,7 +11,7 @@ import { ProposalHeader } from '../components/ProposalHeader';
 import { StatusCard } from '../components/StatusCard';
 import { VoteCard } from '../components/VotesCard';
 
-export const ProposalView = () => {
+export const ProposalDetailView = () => {
   useMountEffect(() => {
     window.scrollTo(0, 0);
   });
