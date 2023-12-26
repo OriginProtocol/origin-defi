@@ -249,7 +249,7 @@ export const StakeFormModal = (props: DialogProps) => {
               flexWrap="wrap"
               rowGap={1}
             >
-              <Typography variant="h3" mr={1}>
+              <Typography variant="h3" minWidth={170} mr={1}>
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(

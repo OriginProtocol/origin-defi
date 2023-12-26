@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -53,8 +54,24 @@ export const UnstakeFormModal = ({
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Unstake lock-up' })}
+        <IconButton
+          onClick={(evt) => {
+            rest?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <Box
+            component="img"
+            src="/images/icons/close-light.svg"
+            width={12}
+            height={12}
+          />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack>

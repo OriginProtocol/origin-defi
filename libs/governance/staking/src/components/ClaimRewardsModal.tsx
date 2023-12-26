@@ -5,6 +5,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   Link,
   Stack,
   Typography,
@@ -30,8 +31,24 @@ export const ClaimRewardsModal = (props: DialogProps) => {
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
+        <IconButton
+          onClick={(evt) => {
+            props?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <Box
+            component="img"
+            src="/images/icons/close-light.svg"
+            width={12}
+            height={12}
+          />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack spacing={0.75}>

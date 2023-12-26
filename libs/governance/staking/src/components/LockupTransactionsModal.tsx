@@ -6,6 +6,7 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   Link,
   Table,
   TableBody,
@@ -117,8 +118,24 @@ export const LockupTransactionsModal = ({
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Transaction history' })}
+        <IconButton
+          onClick={(evt) => {
+            rest?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <Box
+            component="img"
+            src="/images/icons/close-light.svg"
+            width={12}
+            height={12}
+          />
+        </IconButton>
       </DialogTitle>
       <DialogContent>
         <Table>
