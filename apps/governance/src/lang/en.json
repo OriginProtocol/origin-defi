@@ -193,12 +193,6 @@
       "value": "Registered Voters"
     }
   ],
-  "3TvsVz": [
-    {
-      "type": 0,
-      "value": "Collect rewards"
-    }
-  ],
   "3WcLXG": [
     {
       "type": 0,
@@ -255,12 +249,6 @@
     {
       "type": 0,
       "value": "3y"
-    }
-  ],
-  "4fPELu": [
-    {
-      "type": 0,
-      "value": "Function"
     }
   ],
   "5RMD2G": [
@@ -379,6 +367,12 @@
       "value": "Amount to Stake"
     }
   ],
+  "6lc5Lh": [
+    {
+      "type": 0,
+      "value": "Transaction Time"
+    }
+  ],
   "7CPiAt": [
     {
       "type": 0,
@@ -469,6 +463,12 @@
     {
       "type": 0,
       "value": "On-chain"
+    }
+  ],
+  "BBCjbl": [
+    {
+      "type": 0,
+      "value": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
     }
   ],
   "BLAy25": [
@@ -593,16 +593,16 @@
       "value": "0 months"
     }
   ],
-  "FCXIlK": [
-    {
-      "type": 0,
-      "value": "Transaction hash"
-    }
-  ],
   "FVfYnP": [
     {
       "type": 0,
       "value": "The variable APY currently being earned on staked OGV."
+    }
+  ],
+  "Fsxv1h": [
+    {
+      "type": 0,
+      "value": "Cast vote"
     }
   ],
   "Fuk0aF": [
@@ -637,12 +637,6 @@
       "value": "Get OGV"
     }
   ],
-  "Gtdie8": [
-    {
-      "type": 0,
-      "value": "Available to claim"
-    }
-  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -653,6 +647,12 @@
     {
       "type": 0,
       "value": "Vote for"
+    }
+  ],
+  "IPuH1g": [
+    {
+      "type": 0,
+      "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
     }
   ],
   "IfZsEo": [
@@ -715,6 +715,18 @@
       "value": "Succeeded"
     }
   ],
+  "LRJJAc": [
+    {
+      "type": 0,
+      "value": "Transaction Hash"
+    }
+  ],
+  "LsLfrw": [
+    {
+      "type": 0,
+      "value": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
+    }
+  ],
   "Lv0zJu": [
     {
       "type": 0,
@@ -743,6 +755,46 @@
     {
       "type": 0,
       "value": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
+    }
+  ],
+  "NND2zi": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Plus "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more option..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Plus "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more options..."
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "NXFAgE": [
@@ -795,12 +847,6 @@
       "value": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
     }
   ],
-  "P1YoB8": [
-    {
-      "type": 0,
-      "value": "Transaction time"
-    }
-  ],
   "PFtMy9": [
     {
       "type": 0,
@@ -841,6 +887,12 @@
     {
       "type": 0,
       "value": "Description"
+    }
+  ],
+  "Qe+UCa": [
+    {
+      "type": 0,
+      "value": "Available to Collect"
     }
   ],
   "Qz1fcp": [
@@ -1001,12 +1053,6 @@
       "value": "Finding the best route..."
     }
   ],
-  "VZ5Ypk": [
-    {
-      "type": 0,
-      "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on."
-    }
-  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -1075,6 +1121,24 @@
     {
       "type": 0,
       "value": "Voting Power"
+    }
+  ],
+  "YtTAoV": [
+    {
+      "type": 0,
+      "value": "Vote "
+    },
+    {
+      "type": 1,
+      "value": "choice"
+    },
+    {
+      "type": 0,
+      "value": " on proposal "
+    },
+    {
+      "type": 1,
+      "value": "proposalId"
     }
   ],
   "YvbZVM": [
@@ -1345,12 +1409,6 @@
       "value": "Current Lock-up Ends:"
     }
   ],
-  "hsqHqR": [
-    {
-      "type": 0,
-      "value": "Time remaining"
-    }
-  ],
   "hzfM3P": [
     {
       "type": 0,
@@ -1385,12 +1443,6 @@
     {
       "type": 1,
       "value": "label"
-    }
-  ],
-  "jHPKic": [
-    {
-      "type": 0,
-      "value": "Argument types"
     }
   ],
   "jab7Gg": [
@@ -1465,18 +1517,6 @@
     {
       "type": 1,
       "value": "symbol"
-    }
-  ],
-  "nV7Cv+": [
-    {
-      "type": 0,
-      "value": "Contract"
-    }
-  ],
-  "nc7Brw": [
-    {
-      "type": 0,
-      "value": "Arguments"
     }
   ],
   "nc8QpJ": [

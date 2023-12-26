@@ -77,9 +77,6 @@
   "20KPDF": {
     "defaultMessage": "Registered Voters"
   },
-  "3TvsVz": {
-    "defaultMessage": "Collect rewards"
-  },
   "3WcLXG": {
     "defaultMessage": "Learn about Governance"
   },
@@ -100,9 +97,6 @@
   },
   "4cSnUS": {
     "defaultMessage": "3y"
-  },
-  "4fPELu": {
-    "defaultMessage": "Function"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -136,6 +130,9 @@
   },
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
+  },
+  "6lc5Lh": {
+    "defaultMessage": "Transaction Time"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
@@ -178,6 +175,9 @@
   },
   "AozuFZ": {
     "defaultMessage": "On-chain"
+  },
+  "BBCjbl": {
+    "defaultMessage": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
   },
   "BLAy25": {
     "defaultMessage": "Extend"
@@ -224,11 +224,11 @@
   "F6lS59": {
     "defaultMessage": "0 months"
   },
-  "FCXIlK": {
-    "defaultMessage": "Transaction hash"
-  },
   "FVfYnP": {
     "defaultMessage": "The variable APY currently being earned on staked OGV."
+  },
+  "Fsxv1h": {
+    "defaultMessage": "Cast vote"
   },
   "Fuk0aF": {
     "defaultMessage": "{event} {date}"
@@ -242,14 +242,14 @@
   "GtMIIe": {
     "defaultMessage": "Get OGV"
   },
-  "Gtdie8": {
-    "defaultMessage": "Available to claim"
-  },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
   "IAoEwp": {
     "defaultMessage": "Vote for"
+  },
+  "IPuH1g": {
+    "defaultMessage": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -281,6 +281,12 @@
   "LOghU6": {
     "defaultMessage": "Succeeded"
   },
+  "LRJJAc": {
+    "defaultMessage": "Transaction Hash"
+  },
+  "LsLfrw": {
+    "defaultMessage": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
+  },
   "Lv0zJu": {
     "defaultMessage": "Details"
   },
@@ -295,6 +301,9 @@
   },
   "N5g7Qy": {
     "defaultMessage": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
+  },
+  "NND2zi": {
+    "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -317,9 +326,6 @@
   "OmyPDW": {
     "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
   },
-  "P1YoB8": {
-    "defaultMessage": "Transaction time"
-  },
   "PFtMy9": {
     "defaultMessage": "Canceled"
   },
@@ -340,6 +346,9 @@
   },
   "Q8Qw5B": {
     "defaultMessage": "Description"
+  },
+  "Qe+UCa": {
+    "defaultMessage": "Available to Collect"
   },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
@@ -389,9 +398,6 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
-  "VZ5Ypk": {
-    "defaultMessage": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on."
-  },
   "Vn/9nH": {
     "defaultMessage": "Est gas:"
   },
@@ -424,6 +430,9 @@
   },
   "YGiRwq": {
     "defaultMessage": "Voting Power"
+  },
+  "YtTAoV": {
+    "defaultMessage": "Vote {choice} on proposal {proposalId}"
   },
   "YvbZVM": {
     "defaultMessage": "Time Remaining"
@@ -509,9 +518,6 @@
   "hZA4Ul": {
     "defaultMessage": "Current Lock-up Ends:"
   },
-  "hsqHqR": {
-    "defaultMessage": "Time remaining"
-  },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
   },
@@ -529,9 +535,6 @@
   },
   "j8y+qc": {
     "defaultMessage": "{label}"
-  },
-  "jHPKic": {
-    "defaultMessage": "Argument types"
   },
   "jab7Gg": {
     "defaultMessage": "Delegated to me"
@@ -565,12 +568,6 @@
   },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
-  },
-  "nV7Cv+": {
-    "defaultMessage": "Contract"
-  },
-  "nc7Brw": {
-    "defaultMessage": "Arguments"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
