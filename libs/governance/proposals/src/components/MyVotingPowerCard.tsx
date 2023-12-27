@@ -1,6 +1,6 @@
-import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { InfoTooltip, ValueLabel } from '@origin/shared/components';
+import { InfoTooltip, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -46,9 +46,8 @@ export const MyVotingPowerCard = (props: CardProps) => {
           value={
             isConnected ? (
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   width={26}
                   sx={{ transform: 'translateY(4px)' }}
                 />

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -10,7 +9,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { LoadingLabel, MiddleTruncated } from '@origin/shared/components';
+import {
+  LoadingLabel,
+  MiddleTruncated,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -19,6 +22,7 @@ import {
 } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { differenceInMonths } from 'date-fns';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -65,12 +69,7 @@ export const UnstakeFormModal = ({
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose width={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -101,12 +100,7 @@ export const UnstakeFormModal = ({
               sx={{ '> *': { width: 1 } }}
             >
               <Stack direction="row" spacing={1} alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.OGV.icon}
-                  width={24}
-                  sx={{ transform: 'translateY(4px)' }}
-                />
+                <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
                 <Typography variant="h3">
                   {formatAmount(
                     BigInt(lockup.amount),
@@ -133,10 +127,8 @@ export const UnstakeFormModal = ({
                 alignItems="baseline"
                 justifyContent="flex-end"
               >
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
-                  width={24}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   sx={{ transform: 'translateY(4px)' }}
                 />
                 <Typography fontWeight={700}>
@@ -172,10 +164,8 @@ export const UnstakeFormModal = ({
             },
           )}
           activityEndIcon={
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
-              width={24}
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
               sx={{ transform: 'translateY(4px)' }}
             />
           }

@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
-import { TablePagination } from '@origin/shared/components';
+import { TablePagination, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import {
@@ -22,6 +22,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
+import { FaClockRotateLeft } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -55,7 +56,7 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
         cell: (info) => (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Box component="img" src={tokens.mainnet.OGV.icon} width={24} />
+            <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={24} />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),
@@ -88,9 +89,8 @@ export const LockupsTable = () => {
             alignItems="center"
             justifyContent="flex-end"
           >
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
               width={24}
               sx={{ transform: 'translateY(4px)' }}
             />
@@ -159,11 +159,7 @@ export const LockupsTable = () => {
                 sx={{ width: 36, height: 36, borderRadius: '50%', p: 0 }}
                 logs={info.row.original.logs}
               >
-                <Box
-                  component="img"
-                  src="images/icons/clock-rotate-left.svg"
-                  width={14}
-                />
+                <FaClockRotateLeft />
               </LockupTransactionsButton>
             </Stack>
           );

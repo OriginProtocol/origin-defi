@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 
 import {
-  Box,
   Button,
   Dialog,
   DialogContent,
@@ -22,6 +21,8 @@ import {
   getCoreRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { CgClose } from 'react-icons/cg';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
@@ -78,25 +79,15 @@ export const LockupTransactionsModal = ({
             gap={1}
             sx={{
               ':hover': {
-                background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                backgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
+                color: 'primary.main',
                 svg: {
-                  fill: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                  color: 'primary.main',
                 },
               },
             }}
           >
             <MiddleTruncated maxWidth={80}>{info.getValue()}</MiddleTruncated>
-            <Box
-              component="img"
-              src="/images/icons/arrow-up-right-from-square.svg"
-              alt="link"
-              sx={{
-                height: 12,
-                width: 12,
-              }}
-            />
+            <FaArrowUpRightFromSquare fontSize={12} />
           </Link>
         ),
       }),
@@ -129,12 +120,7 @@ export const LockupTransactionsModal = ({
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose width={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent>

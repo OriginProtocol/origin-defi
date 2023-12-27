@@ -19,11 +19,13 @@ import {
   LoadingLabel,
   TokenInput,
 } from '@origin/shared/components';
+import { ArrowDown } from '@origin/shared/icons';
 import {
   composeContexts,
   isNilOrEmpty,
   subtractSlippage,
 } from '@origin/shared/utils';
+import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
@@ -195,7 +197,7 @@ function SwapperWrapped({
                     svg: { width: 16, height: 16 },
                   }}
                 >
-                  <img src="/images/settings-icon.svg" alt="settings" />
+                  <FiSettings />
                 </IconButton>
                 <PriceTolerancePopover
                   open={!!anchorEl}
@@ -407,28 +409,24 @@ function ArrowButton(props: IconButtonProps) {
         height: { md: 40, xs: 36 },
         margin: 'auto',
         zIndex: 2,
-        fill: (theme) => theme.palette.background.paper,
-        strokeWidth: (theme) => theme.typography.pxToRem(2),
-        stroke: (theme) => theme.palette.grey[700],
         backgroundColor: (theme) => theme.palette.background.paper,
         border: '1px solid',
         borderColor: 'divider',
-        '& img': {
+        svg: {
           transition: (theme) => theme.transitions.create('transform'),
         },
         '&:hover': {
-          backgroundColor: (theme) => theme.palette.background.default,
-          '& img': {
+          backgroundColor: (theme) => theme.palette.grey[900],
+          svg: {
             transform: 'rotate(-180deg)',
           },
         },
         ...props?.sx,
       }}
     >
-      <Box
-        component="img"
-        src="/images/splitarrow.svg"
+      <ArrowDown
         sx={{
+          width: { md: 20, xs: 18 },
           height: { md: 20, xs: 18 },
         }}
       />

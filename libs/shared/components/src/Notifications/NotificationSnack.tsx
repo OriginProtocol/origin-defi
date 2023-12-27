@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
-import { LinkIcon } from '../Icons';
+import { ExternalLink } from '../Links';
 
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -32,12 +32,13 @@ export const NotificationSnack = ({
       <Stack spacing={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           {icon}
-          {typeof title === 'string' ? (
+          {!isNilOrEmpty(href) && typeof title === 'string' ? (
+            <ExternalLink href={href}>{title}</ExternalLink>
+          ) : typeof title === 'string' ? (
             <Typography {...titleProps}>{title}</Typography>
           ) : (
             title
           )}
-          {!isNilOrEmpty(href) && <LinkIcon size={10} url={href} />}
         </Stack>
         <Stack direction="row" alignItems="center">
           {typeof subtitle === 'string' ? (

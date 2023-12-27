@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -11,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -19,6 +18,7 @@ import {
   useFormat,
 } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
@@ -42,12 +42,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose width={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -72,9 +67,8 @@ export const ClaimRewardsModal = (props: DialogProps) => {
                 )}
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.OGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.OGV.symbol}
                   width={30}
                   sx={{ transform: 'translateY(4px)' }}
                 />

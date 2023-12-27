@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardHeader,
@@ -8,11 +7,16 @@ import {
   Link as MuiLink,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
-import { TooltipLabel } from '@origin/shared/components';
+import { TokenIcon, TooltipLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { Snapshot } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { take } from 'ramda';
+import { FaCheckCircle } from 'react-icons/fa';
+import { IoCloseCircle } from 'react-icons/io5';
+import { RiErrorWarningLine } from 'react-icons/ri';
 import { useIntl } from 'react-intl';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -124,6 +128,7 @@ type VoteHistoryProps = {
 
 function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
   const intl = useIntl();
+  const theme = useTheme();
 
   const label =
     {
@@ -132,36 +137,17 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
       Abstain: intl.formatMessage({ defaultMessage: 'Abstain' }),
     }[vote.choice] ?? vote.choice;
   const icon = {
-    For: (
-      <Box
-        sx={{
-          borderRadius: '50%',
-          width: 14,
-          height: 14,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: 'success.main',
-          zIndex: 2,
-        }}
-      >
-        <Box
-          component="img"
-          src="images/icons/check-regular-dark.svg"
-          width={10}
-        />
-      </Box>
+    For: <FaCheckCircle color={theme.palette.success.main} width={14} />,
+    Against: <IoCloseCircle color={theme.palette.error.main} width={14} />,
+    Abstain: (
+      <RiErrorWarningLine color={theme.palette.warning.main} width={14} />
     ),
-    Against: <Box component="img" src="/images/failed.svg" width={14} />,
-    Abstain: <Box component="img" src="images/warn.webp" width={14} />,
-  }[vote.choice] ?? (
-    <Box component="img" src="images/protocols/snapshot.svg" width={14} />
-  );
+  }[vote.choice] ?? <Snapshot fontSize="inherit" />;
 
   return (
     <Stack spacing={1.5} px={3} py={1.5} {...rest}>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
+        <TokenIcon symbol={tokens.mainnet.OETH.symbol} width={24} />
         <StatusBadge status={vote?.proposal?.status} />
         {vote.proposal.type === 'snapshot' && (
           <Typography variant="body2" color="warning.main">

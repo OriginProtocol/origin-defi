@@ -226,7 +226,7 @@ function Actions(props: StackProps) {
                 </Stack>
                 <ExpandIcon
                   isExpanded={expanded === `${a.address}-${i}`}
-                  width={10}
+                  sx={{ width: 12 }}
                 />
               </Stack>
             </AccordionSummary>

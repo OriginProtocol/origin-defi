@@ -1,5 +1,5 @@
-import { Box, Divider, Stack, Typography } from '@mui/material';
-import { ValueLabel } from '@origin/shared/components';
+import { Divider, Stack, Typography } from '@mui/material';
+import { TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -40,12 +40,7 @@ export const ProtocolCard = (props: StackProps) => {
             {intl.formatMessage({ defaultMessage: 'Description' })}
           </Typography>
         </Stack>
-        <Box
-          component="img"
-          src={tokens.mainnet.OGV.icon}
-          width={{ xs: 44, sm: 88 }}
-          height={{ xs: 44, sm: 88 }}
-        />
+        <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={88} height={88} />
       </Stack>
       <Stack
         direction="row"

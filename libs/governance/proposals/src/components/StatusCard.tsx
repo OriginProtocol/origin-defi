@@ -5,18 +5,22 @@ import {
   CardHeader,
   CircularProgress,
   Stack,
+  SvgIcon,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { ExternalLink } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, prop, sort } from 'ramda';
+import { FaRegQuestionCircle } from 'react-icons/fa';
+import { FaCircleCheck } from 'react-icons/fa6';
+import { IoCloseCircle } from 'react-icons/io5';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
 import { useProposalQuery } from '../queries.generated';
 
 import type { CardProps, StackProps } from '@mui/material';
-import type { OgvProposalEvent } from '@origin/governance/shared';
 
 import type { ProposalLog } from '../types';
 
@@ -88,43 +92,32 @@ export const StatusCard = (props: CardProps) => {
   );
 };
 
-const eventColor: Record<OgvProposalEvent, string> = {
-  Canceled: 'grey.600',
-  Created: 'grey.400',
-  Executed: 'success.main',
-  Extended: 'success.main',
-  Queued: 'success.main',
-};
-
-const eventIcon: Record<OgvProposalEvent, string> = {
-  Canceled: 'images/icons/close-light.svg',
-  Created: 'images/icons/check-regular.svg',
-  Executed: 'images/icons/check-regular-dark.svg',
-  Extended: 'images/icons/check-regular-dark.svg',
-  Queued: 'images/icons/check-regular-dark.svg',
-};
-
 type LogItemProps = { log: ProposalLog } & StackProps;
 
 function LogItem({ log, ...rest }: LogItemProps) {
   const intl = useIntl();
+  const theme = useTheme();
+
+  const eventIcon = {
+    Canceled: <IoCloseCircle color={theme.palette.grey['600']} />,
+    Created: <FaCircleCheck color={theme.palette.grey['400']} />,
+    Executed: <FaCircleCheck color={theme.palette.success.main} />,
+    Extended: <FaCircleCheck color={theme.palette.success.main} />,
+    Queued: <FaCircleCheck color={theme.palette.success.main} />,
+  }[log?.event] ?? <FaRegQuestionCircle />;
 
   return (
     <Stack {...rest} direction="row" spacing={2} alignItems="center">
-      <Box
+      <SvgIcon
         sx={{
-          borderRadius: '50%',
           width: 30,
           height: 30,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: eventColor[log.event],
           zIndex: 2,
+          backgroundColor: 'background.paper',
         }}
       >
-        <Box component="img" src={eventIcon[log.event]} width={16} />
-      </Box>
+        {eventIcon}
+      </SvgIcon>
       <Stack>
         {isNilOrEmpty(log?.hash) ? (
           <Typography>{log?.event}</Typography>

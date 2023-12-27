@@ -1,15 +1,17 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
+
+import { TokenIcon } from '../Icons';
 
 import type { StackProps, TypographyProps } from '@mui/material';
 
 type ChipProps = {
   label: string;
-  icon?: string;
+  symbol?: string;
   labelProps?: TypographyProps;
 } & StackProps;
 
-export const Chip = ({ label, icon, labelProps, ...rest }: ChipProps) => {
+export const Chip = ({ label, symbol, labelProps, ...rest }: ChipProps) => {
   return (
     <Stack
       direction="row"
@@ -24,9 +26,7 @@ export const Chip = ({ label, icon, labelProps, ...rest }: ChipProps) => {
       <Typography fontSize={12} {...labelProps}>
         {label}
       </Typography>
-      {!isNilOrEmpty(icon) && (
-        <Box component="img" src={icon} width={16} height={16} />
-      )}
+      {!isNilOrEmpty(symbol) && <TokenIcon symbol={symbol} />}
     </Stack>
   );
 };

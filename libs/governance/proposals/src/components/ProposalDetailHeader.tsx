@@ -1,9 +1,15 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { ExternalLink, LoadingLabel } from '@origin/shared/components';
+import {
+  ExternalLink,
+  LoadingLabel,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, last, prop, sort } from 'ramda';
+import { FaChevronLeft } from 'react-icons/fa6';
+import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -12,7 +18,6 @@ import { StatusBadge } from './StatusBadge';
 
 import type { StackProps } from '@mui/material';
 import type { HexAddress } from '@origin/shared/utils';
-
 export const ProposalDetailHeader = (props: StackProps) => {
   const intl = useIntl();
   const location = useLocation();
@@ -50,15 +55,11 @@ export const ProposalDetailHeader = (props: StackProps) => {
           gap: 1,
         }}
       >
-        <Box
-          component="img"
-          src="images/icons/chevron-left-light.svg"
-          width={10}
-        />
+        <FaChevronLeft width={10} />
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
       <Stack direction="row" spacing={2} alignItems="center">
-        <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
+        <TokenIcon symbol={tokens.mainnet.OETH.symbol} width={24} />
         <StatusBadge
           status={proposal?.ogvProposalById?.status}
           isLoading={isProposalLoading}
@@ -90,12 +91,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
             defaultMessage: 'Snapshot post',
           })}
           &nbsp;
-          <Box
-            component="img"
-            src="images/icons/arrow-up-right-light.svg"
-            width={10}
-            ml={1}
-          />
+          <GoArrowUpRight />
         </Button>
         <Button
           variant="outlined"
@@ -108,12 +104,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
             defaultMessage: 'Discord discussion',
           })}
           &nbsp;
-          <Box
-            component="img"
-            src="images/icons/arrow-up-right-light.svg"
-            width={10}
-            ml={1}
-          />
+          <GoArrowUpRight />
         </Button>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>

@@ -1,4 +1,5 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
+import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
@@ -30,12 +31,8 @@ export const ProposalListHeader = (props: StackProps) => {
           {intl.formatMessage({
             defaultMessage: 'Learn about Governance',
           })}
-          <Box
-            component="img"
-            src="images/icons/arrow-up-right-light.svg"
-            width={8}
-            ml={1}
-          />
+          &nbsp;
+          <GoArrowUpRight />
         </Button>
         <Button
           variant="outlined"
@@ -47,12 +44,8 @@ export const ProposalListHeader = (props: StackProps) => {
           {intl.formatMessage({
             defaultMessage: 'Discord Forum',
           })}
-          <Box
-            component="img"
-            src="images/icons/arrow-up-right-light.svg"
-            width={8}
-            ml={1}
-          />
+          &nbsp;
+          <GoArrowUpRight />
         </Button>
       </Stack>
     </Stack>

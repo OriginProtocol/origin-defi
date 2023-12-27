@@ -7,7 +7,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { TokenIcon } from '@origin/shared/components';
 import { ascend, descend, prop, sortWith } from 'ramda';
+import { FaCheck } from 'react-icons/fa6';
 import { useAccount, useBalance } from 'wagmi';
 
 import { useFormat } from '../../intl';
@@ -112,11 +114,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       }}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
-        <Box
-          component="img"
-          src={token.icon}
-          sx={{ width: '2rem', height: '2rem' }}
-        />
+        <TokenIcon symbol={token?.symbol} width="2rem" height="2rem" />
         <Box>
           <Typography fontWeight={500}>{token?.name}</Typography>
           <Typography variant="body2" color="text.secondary">
@@ -127,11 +125,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       <Stack direction="row" spacing={2}>
         {token?.isSelected && (
           <Stack display="flex" justifyContent="center" alignItems="center">
-            <Box
-              component="img"
-              src="/images/checkmark-icon-white.svg"
-              sx={{ color: '#fff', width: 16, height: 16 }}
-            />
+            <FaCheck fontSize={16} color="#fff" />
           </Stack>
         )}
         <Box sx={{ textAlign: 'right' }}>

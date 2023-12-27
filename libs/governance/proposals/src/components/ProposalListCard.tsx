@@ -11,11 +11,17 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { SliderSwitch, TooltipLabel } from '@origin/shared/components';
+import {
+  SliderSwitch,
+  TokenIcon,
+  TooltipLabel,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { Snapshot } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -162,12 +168,13 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         <Grid2 xs={12} sm={8}>
           <Stack spacing={1.5}>
             <Stack direction="row" spacing={2}>
-              <Box component="img" src={tokens.mainnet.OETH.icon} width={24} />
+              <TokenIcon symbol={tokens.mainnet.OETH.symbol} width={24} />
               <StatusBadge status={proposal?.status} />
               {proposal.type === 'snapshot' && (
                 <Stack
                   direction="row"
                   alignItems="center"
+                  spacing={0.75}
                   sx={{
                     border: (theme) =>
                       `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
@@ -176,11 +183,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                     py: 0.2,
                   }}
                 >
-                  <Box
-                    component="img"
-                    src="/images/protocols/snapshot.svg"
-                    width={16}
-                  />
+                  <Snapshot />
                   <Typography variant="body2" color="warning.main">
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
@@ -200,17 +203,13 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 WebkitLineClamp: 3,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
+                svg: { ml: 0.75 },
               }}
               tooltipProps={{ placement: 'top' }}
             >
               {proposal.title}
               {proposal.type === 'snapshot' && (
-                <Box
-                  component="img"
-                  src="images/icons/arrow-up-right-from-square.svg"
-                  width={12}
-                  ml={1}
-                />
+                <FaArrowUpRightFromSquare fontSize={12} />
               )}
             </TooltipLabel>
             <Stack

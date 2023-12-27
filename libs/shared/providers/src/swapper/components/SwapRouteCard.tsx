@@ -1,6 +1,6 @@
 import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -130,15 +130,7 @@ export function SwapRouteCard({
             {isSwapRoutesLoading ? (
               <Skeleton variant="circular" width={16} height={16} />
             ) : (
-              <Box
-                component="img"
-                src={tokenOut.icon}
-                height={16}
-                width={16}
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-              />
+              <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 16 }} />
             )}
           </Grid2>
           <Grid2 display="flex" alignItems="center">

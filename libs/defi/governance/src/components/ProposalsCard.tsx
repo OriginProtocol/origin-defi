@@ -12,7 +12,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ExpandIcon } from '@origin/shared/components';
+import { ExpandIcon, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not, splitAt } from 'ramda';
@@ -63,7 +63,7 @@ function ProposalCard({ proposal, ...rest }: ProposalCardProps) {
       <Stack direction="row" p={3} spacing={1.5}>
         <Stack width={0.5} spacing={1.5} alignItems="flex-start">
           <Stack direction="row" spacing={1.5}>
-            <Box component="img" src={token.icon} width={28} />
+            <TokenIcon symbol={token.symbol} width={28} />
             <StatusBadge proposal={proposal} />
           </Stack>
           <Link

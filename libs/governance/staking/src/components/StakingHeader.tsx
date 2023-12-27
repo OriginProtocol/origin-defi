@@ -7,9 +7,11 @@ import {
 import {
   InfoTooltip,
   LoadingLabel,
+  TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { formatUnits } from 'viem';
@@ -49,12 +51,8 @@ export const StakingHeader = () => {
                 rel="noopener noreferrer nofollow"
               >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
-                <Box
-                  component="img"
-                  src="images/icons/arrow-up-right-light.svg"
-                  width={8}
-                  ml={1}
-                />
+                &nbsp;
+                <GoArrowUpRight />
               </Button>
             </Stack>
           </Grid2>
@@ -169,10 +167,9 @@ export const StakingHeader = () => {
                   })}
                   labelProps={{ fontSize: 14 }}
                   value={
-                    <Stack direction="row" spacing={0.75}>
-                      <Box
-                        component="img"
-                        src={tokens.mainnet.OGV.icon}
+                    <Stack direction="row" alignItems="center" spacing={0.75}>
+                      <TokenIcon
+                        symbol={tokens.mainnet.OGV.symbol}
                         width={20}
                       />
                       <LoadingLabel
@@ -199,12 +196,8 @@ export const StakingHeader = () => {
                   })}
                   labelProps={{ fontSize: 14 }}
                   value={
-                    <Stack direction="row" spacing={0.75}>
-                      <Box
-                        component="img"
-                        src={tokens.mainnet.OGV.icon}
-                        width={20}
-                      />
+                    <Stack direction="row" alignItems="center" spacing={0.75}>
+                      <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
                       <LoadingLabel
                         variant="h3"
                         sWidth={80}
@@ -242,12 +235,8 @@ export const StakingHeader = () => {
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Get OGV' })}
-                  <Box
-                    component="img"
-                    src="/images/icons/arrow-up-right-light.svg"
-                    alt="link"
-                    sx={{ height: 8, width: 8, ml: 1 }}
-                  />
+                  &nbsp;
+                  <GoArrowUpRight />
                 </Button>
               </Stack>
             </Stack>
@@ -268,12 +257,8 @@ export const StakingHeader = () => {
                 })}
                 labelProps={{ fontSize: 14 }}
                 value={
-                  <Stack direction="row" spacing={0.75}>
-                    <Box
-                      component="img"
-                      src={tokens.mainnet.OGV.icon}
-                      width={20}
-                    />
+                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                    <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
                     <LoadingLabel
                       variant="h3"
                       sWidth={80}
@@ -321,10 +306,8 @@ export const StakingHeader = () => {
                 labelProps={{ fontSize: 14 }}
                 value={
                   <Stack direction="row" spacing={0.75} alignItems="flex-start">
-                    <Box
-                      component="img"
-                      src={tokens.mainnet.veOGV.icon}
-                      width={20}
+                    <TokenIcon
+                      symbol={tokens.mainnet.veOGV.symbol}
                       sx={{ transform: 'translateY(4px)' }}
                     />
                     <Stack>

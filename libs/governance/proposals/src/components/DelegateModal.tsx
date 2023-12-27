@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -12,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -21,6 +20,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { isAddressEqual } from 'viem';
 import { useAccount } from 'wagmi';
@@ -54,12 +54,7 @@ export const DelegateModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose width={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -84,9 +79,8 @@ export const DelegateModal = (props: DialogProps) => {
                 )}
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   width={30}
                   sx={{ transform: 'translateY(4px)' }}
                 />

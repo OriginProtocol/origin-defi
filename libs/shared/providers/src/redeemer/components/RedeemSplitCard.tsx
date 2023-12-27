@@ -1,5 +1,4 @@
 import {
-  Box,
   Divider,
   Skeleton,
   Stack,
@@ -7,7 +6,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { InfoTooltip, Mix } from '@origin/shared/components';
+import { InfoTooltip, Mix, TokenIcon } from '@origin/shared/components';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -30,13 +30,17 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const [{ amountOut, gas, rate, split, isEstimateLoading }] = useRedeemState();
   const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
 
-  const convertedAmount = split.reduce((acc, curr) => {
-    return (
-      acc +
-      +formatUnits(curr.amount, curr.token.decimals) * prices[curr.token.symbol]
-    );
-  }, 0);
-  const imgSrc = split.map((s) => s.token.icon);
+  const convertedAmount =
+    isPricesLoading || isEstimateLoading || isNilOrEmpty(prices)
+      ? 0
+      : split.reduce((acc, curr) => {
+          return (
+            acc +
+            +formatUnits(curr.amount, curr.token.decimals) *
+              (prices[curr.token.symbol] ?? 0)
+          );
+        }, 0);
+  const imgSrc = split.map((s) => s.token.symbol);
 
   return (
     <Stack
@@ -74,7 +78,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 )}
               </Typography>
               <Typography variant="body2" noWrap color="text.secondary">
-                {isEstimateLoading ? (
+                {isEstimateLoading || isPricesLoading ? (
                   <Skeleton width={60} />
                 ) : (
                   `(${formatCurrency(convertedAmount)})`
@@ -172,11 +176,7 @@ function SplitRow({
       {...rest}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Box
-          component="img"
-          src={estimate.token.icon}
-          sx={{ width: 24, height: 24 }}
-        />
+        <TokenIcon symbol={estimate.token.symbol} />
         <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
       </Stack>
       <Stack

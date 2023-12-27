@@ -1,5 +1,9 @@
-import { Box, Typography } from '@mui/material';
-import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
+import { Typography } from '@mui/material';
+import {
+  ActivityIcon,
+  NotificationSnack,
+  TokenIcon,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -67,13 +71,7 @@ export const ApprovalNotification = ({
           <Typography color="error">{error}</Typography>
         )
       }
-      endIcon={
-        <Box
-          component="img"
-          src={tokenIn.icon}
-          sx={{ width: 24, height: 24 }}
-        />
-      }
+      endIcon={<TokenIcon symbol={tokenIn.symbol} />}
     />
   );
 };

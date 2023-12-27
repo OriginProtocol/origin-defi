@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Stack,
   Typography,
@@ -7,6 +6,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
+import { PoweredBySafe } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { useContractWrite } from 'wagmi';
 
@@ -52,11 +52,7 @@ export const RebaseBanner = (props: StackProps) => {
         ...props?.sx,
       }}
     >
-      <Box
-        component="img"
-        src="/images/poweredBySafe.svg"
-        sx={{ height: 20 }}
-      />
+      <PoweredBySafe sx={{ height: 20 }} />
       <Typography textAlign="center" noWrap={!isSmall}>
         {intl.formatMessage({
           defaultMessage:

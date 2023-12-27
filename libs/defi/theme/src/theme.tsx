@@ -1,5 +1,8 @@
-import { alpha, Box, createTheme } from '@mui/material';
+import { alpha, createTheme } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
+import { FaArrowsRotate, FaCircleCheck } from 'react-icons/fa6';
+import { IoCloseCircle } from 'react-icons/io5';
+import { RiErrorWarningLine } from 'react-icons/ri';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
@@ -151,35 +154,18 @@ export const theme = createTheme(base, {
         variant: 'standard',
         iconMapping: {
           error: (
-            <Box
-              component="img"
-              src="/images/failed.svg"
-              alt="failed"
-              sx={{ width: 20 }}
-            />
+            <IoCloseCircle color={base.palette.error.main} fontSize={20} />
           ),
           info: (
-            <Box
-              component="img"
-              src="/images/pending.svg"
-              alt="pending"
-              sx={{ width: 20 }}
-            />
+            <FaArrowsRotate color={base.palette.success.main} fontSize={20} />
           ),
           success: (
-            <Box
-              component="img"
-              src="/images/success.svg"
-              alt="success"
-              sx={{ width: 20 }}
-            />
+            <FaCircleCheck color={base.palette.success.main} fontSize={20} />
           ),
           warning: (
-            <Box
-              component="img"
-              src="/images/warn.webp"
-              alt="warn"
-              sx={{ width: 20 }}
+            <RiErrorWarningLine
+              color={base.palette.warning.main}
+              fontSize={20}
             />
           ),
         },
@@ -396,6 +382,9 @@ export const theme = createTheme(base, {
     MuiIconButton: {
       styleOverrides: {
         root: ({ theme }) => ({
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           background: `liear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
             '#fff',
             0.05,

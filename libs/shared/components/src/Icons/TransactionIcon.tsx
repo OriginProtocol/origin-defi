@@ -1,7 +1,10 @@
 import { Box } from '@mui/material';
+import { Received, Send, Swap, Yield } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
-import type { BoxProps } from '@mui/material';
+import { TokenIcon } from './TokenIcon';
+
+import type { BoxProps, SvgIconProps } from '@mui/material';
 
 enum HistoryType {
   Received = 'Received',
@@ -12,14 +15,14 @@ enum HistoryType {
 
 export type TransactionIconProps = {
   type: HistoryType;
-  tokenIcon: string;
-  swapTokenIcon?: string;
+  tokenSymbol: string;
+  swapTokenSymbol?: string;
 } & BoxProps;
 
 export function TransactionIcon({
   type,
-  tokenIcon,
-  swapTokenIcon,
+  tokenSymbol,
+  swapTokenSymbol,
   ...rest
 }: TransactionIconProps) {
   return (
@@ -32,35 +35,30 @@ export function TransactionIcon({
         ...rest?.sx,
       }}
     >
-      <Box
-        component="img"
-        alt="yield"
-        src={type === HistoryType.Yield ? '/images/Yield.svg' : tokenIcon}
-        sx={{
-          width: '100%',
-          height: '100%',
-        }}
-      ></Box>
-      <Box
-        sx={{
-          width: { xs: '0.75rem', md: '1rem' },
-          height: { xs: '0.75rem', md: '1rem' },
-          position: 'absolute',
-          right: '-0.4rem',
-          bottom: 0,
-          zIndex: 1,
-        }}
-        component="img"
-        alt="transaction"
-        src={
-          type === HistoryType.Sent
-            ? '/images/Send.svg'
-            : type === HistoryType.Received || type === HistoryType.Yield
-              ? '/images/Received.svg'
-              : '/images/Swap.svg'
-        }
-      ></Box>
-      {type === HistoryType.Swap && !isNilOrEmpty(swapTokenIcon) && (
+      {type === HistoryType.Yield ? (
+        <Yield
+          sx={{
+            width: 1,
+            height: 1,
+          }}
+        />
+      ) : (
+        <TokenIcon
+          symbol={tokenSymbol}
+          sx={{
+            width: 1,
+            height: 1,
+          }}
+        />
+      )}
+      {type === HistoryType.Sent ? (
+        <Send {...subIconProps} />
+      ) : type === HistoryType.Received || type === HistoryType.Yield ? (
+        <Received {...subIconProps} />
+      ) : (
+        <Swap {...subIconProps} />
+      )}
+      {type === HistoryType.Swap && !isNilOrEmpty(swapTokenSymbol) && (
         <Box
           sx={{
             position: 'absolute',
@@ -71,17 +69,26 @@ export function TransactionIcon({
             left: 0,
           }}
         >
-          <Box
+          <TokenIcon
+            symbol={swapTokenSymbol}
             sx={{
               width: { xs: '1.375rem', md: '2rem' },
               height: { xs: '1.375rem', md: '2rem' },
             }}
-            component="img"
-            alt="token"
-            src={swapTokenIcon}
-          ></Box>
+          />
         </Box>
       )}
     </Box>
   );
 }
+
+const subIconProps: Partial<SvgIconProps> = {
+  sx: {
+    width: { xs: 12, md: 16 },
+    height: { xs: 12, md: 16 },
+    position: 'absolute',
+    right: '-0.4rem',
+    bottom: 0,
+    zIndex: 1,
+  },
+};

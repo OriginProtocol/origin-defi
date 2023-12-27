@@ -20,6 +20,7 @@ import {
   BigIntInput,
   InfoTooltip,
   LoadingLabel,
+  TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -33,6 +34,7 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -123,12 +125,7 @@ export const StakeFormModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose fontSize={14} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -194,7 +191,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   gap: 1,
                 }}
               >
-                <Box component="img" src={tokens.mainnet.OGV.icon} width={28} />
+                <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={28} />
                 <Typography fontSize={20}>
                   {tokens.mainnet.OGV.symbol}
                 </Typography>
@@ -391,12 +388,10 @@ export const StakeFormModal = (props: DialogProps) => {
               rowGap={1}
             >
               <Stack direction="row" alignItems="baseline" mr={1}>
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   width={28}
-                  mr={1}
-                  sx={{ transform: 'translateY(4px)' }}
+                  sx={{ mr: 1, transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
@@ -483,10 +478,9 @@ export const StakeFormModal = (props: DialogProps) => {
             },
           )}
           activityEndIcon={
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
-              width={24}
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
+              width={28}
               sx={{ transform: 'translateY(4px)' }}
             />
           }

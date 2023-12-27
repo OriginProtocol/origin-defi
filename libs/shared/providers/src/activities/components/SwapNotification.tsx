@@ -1,6 +1,11 @@
-import { Box, Stack, Typography } from '@mui/material';
-import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
+import { Stack, Typography } from '@mui/material';
+import {
+  ActivityIcon,
+  NotificationSnack,
+  TokenIcon,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { FaArrowRight } from 'react-icons/fa6';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -79,21 +84,9 @@ export const SwapNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Box
-            component="img"
-            src={tokenIn.icon}
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box
-            component="img"
-            src="images/arrow-right.svg"
-            sx={{ width: 12, height: 12 }}
-          />
-          <Box
-            component="img"
-            src={tokenOut.icon}
-            sx={{ width: 24, height: 24 }}
-          />
+          <TokenIcon symbol={tokenIn.symbol} />
+          <FaArrowRight fontSize={14} />
+          <TokenIcon symbol={tokenIn.symbol} />
         </Stack>
       }
     />

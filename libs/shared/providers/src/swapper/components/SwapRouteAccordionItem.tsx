@@ -1,5 +1,5 @@
-import { alpha, Box, Skeleton, Stack, Typography } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import { alpha, Skeleton, Stack, Typography } from '@mui/material';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -103,11 +103,7 @@ export function SwapRouteAccordionItem({
         {isSwapRoutesLoading ? (
           <Skeleton variant="circular" width={24} height={24} />
         ) : (
-          <Box
-            component="img"
-            src={route.tokenOut.icon}
-            sx={{ height: 24, width: 24 }}
-          />
+          <TokenIcon symbol={route.tokenOut.symbol} />
         )}
         <Stack
           direction={{ xs: 'row', sm: 'column' }}

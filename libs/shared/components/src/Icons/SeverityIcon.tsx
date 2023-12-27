@@ -1,26 +1,34 @@
-import { Box } from '@mui/material';
+import { SvgIcon, useTheme } from '@mui/material';
+import { Pending } from '@origin/shared/icons';
+import { FaCircleCheck } from 'react-icons/fa6';
+import { IoCloseCircle } from 'react-icons/io5';
+import { RiErrorWarningLine } from 'react-icons/ri';
 
-import type { AlertColor, BoxProps } from '@mui/material';
+import type { AlertColor, SvgIconProps } from '@mui/material';
 
 export type SeverityIconProps = {
   severity: AlertColor;
-} & BoxProps<'img'>;
-
-const iconPaths: Record<AlertColor, string> = {
-  info: '/images/pending.svg',
-  warning: '/images/warn.webp',
-  error: '/images/failed.svg',
-  success: '/images/success.svg',
-};
+} & SvgIconProps;
 
 export const SeverityIcon = ({ severity, ...rest }: SeverityIconProps) => {
-  return (
-    <Box
-      width={20}
-      {...rest}
-      component="img"
-      alt={`${severity}-icon`}
-      src={iconPaths[severity]}
-    />
-  );
+  const theme = useTheme();
+
+  return {
+    info: <Pending {...rest} />,
+    warning: (
+      <SvgIcon {...rest}>
+        <RiErrorWarningLine color={theme.palette.warning.main} fontSize={20} />
+      </SvgIcon>
+    ),
+    error: (
+      <SvgIcon {...rest}>
+        <IoCloseCircle color={theme.palette.error.main} fontSize={20} />
+      </SvgIcon>
+    ),
+    success: (
+      <SvgIcon {...rest}>
+        <FaCircleCheck color={theme.palette.success.main} fontSize={20} />
+      </SvgIcon>
+    ),
+  }[severity];
 };

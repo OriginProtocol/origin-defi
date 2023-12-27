@@ -18,6 +18,7 @@ import {
   InfoTooltip,
   LoadingLabel,
   MiddleTruncated,
+  TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -30,6 +31,7 @@ import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, differenceInMonths, formatDuration } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -124,12 +126,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <Box
-            component="img"
-            src="/images/icons/close-light.svg"
-            width={12}
-            height={12}
-          />
+          <CgClose width={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -160,9 +157,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               sx={{ '> *': { width: 1 } }}
             >
               <Stack direction="row" spacing={1} alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.OGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.OGV.symbol}
                   width={24}
                   sx={{ transform: 'translateY(4px)' }}
                 />
@@ -190,9 +186,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 alignItems="baseline"
                 justifyContent="flex-end"
               >
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   width={24}
                   sx={{ transform: 'translateY(4px)' }}
                 />
@@ -386,12 +381,10 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               rowGap={1}
             >
               <Stack direction="row" alignItems="baseline" mr={1}>
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
                   width={28}
-                  mr={1}
-                  sx={{ transform: 'translateY(4px)' }}
+                  sx={{ mr: 1, transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
@@ -487,9 +480,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             },
           )}
           activityEndIcon={
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
               width={24}
               sx={{ transform: 'translateY(4px)' }}
             />

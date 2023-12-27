@@ -1,37 +1,42 @@
-import { Box } from '@mui/material';
+import {
+  Argent,
+  Brave,
+  Coinbase,
+  DefaultWallet,
+  Ledger,
+  Metamask,
+  Rabby,
+  Rainbow,
+  Safe,
+  WalletConnect,
+} from '@origin/shared/icons';
 
-import type { BoxProps } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
 
 export type WalletIconProps = {
   walletName: string;
-} & BoxProps<'img'>;
+} & SvgIconProps;
 
-const iconPaths: Record<string, string> = {
-  metamask: '/images/wallets/metamask.svg',
-  ledger: '/images/wallets/ledger.svg',
-  argent: '/images/wallets/argent.svg',
-  safe: '/images/wallets/safe.svg',
-  rabby: '/images/wallets/rabby.svg',
-  coinbase: '/images/wallets/coinbase.svg',
-  brave: '/images/wallets/brave.svg',
-  rainbow: '/images/wallets/rainbow.svg',
-  connect: '/images/wallets/walletconnect.svg',
+const wallets = {
+  metamask: Metamask,
+  ledger: Ledger,
+  argent: Argent,
+  safe: Safe,
+  rabby: Rabby,
+  coinbase: Coinbase,
+  brave: Brave,
+  rainbow: Rainbow,
+  connect: WalletConnect,
+  defaultWallet: DefaultWallet,
 };
 
 export const WalletIcon = ({ walletName, ...rest }: WalletIconProps) => {
-  return (
-    <Box
-      width={20}
-      {...rest}
-      component="img"
-      alt={`${walletName}-icon`}
-      src={
-        iconPaths[
-          Object.keys(iconPaths).find(
-            (key) => walletName.toLowerCase().search(key) > -1,
-          )
-        ] ?? '/images/wallets/default.svg'
-      }
-    />
-  );
+  const Icon =
+    wallets[
+      Object.keys(wallets).find(
+        (key) => walletName.toLowerCase().search(key) > -1,
+      ) ?? 'defaultWallet'
+    ];
+
+  return <Icon {...rest} />;
 };
