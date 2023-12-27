@@ -17,7 +17,6 @@ import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   InfoTooltip,
   LoadingLabel,
-  MiddleTruncated,
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -126,7 +125,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose width={12} />
+          <CgClose fontSize={14} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -468,14 +467,9 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           activitySubtitle={intl.formatMessage(
             {
               defaultMessage:
-                'Extend Stake {stake} to {duration,plural,=1{# month} other{# months}}',
+                'Extend lock-up to {duration,plural,=1{# month} other{# months}}',
             },
             {
-              stake: (
-                <MiddleTruncated maxWidth={60}>
-                  {lockup.lockupId}
-                </MiddleTruncated>
-              ),
               duration,
             },
           )}

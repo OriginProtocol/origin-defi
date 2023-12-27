@@ -120,7 +120,7 @@ export const LockupTransactionsModal = ({
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose width={12} />
+          <CgClose fontSize={14} />
         </IconButton>
       </DialogTitle>
       <DialogContent>
