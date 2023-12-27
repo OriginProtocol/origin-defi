@@ -1153,62 +1153,6 @@
       "value": "Discord Forum"
     }
   ],
-  "Ze2Qul": [
-    {
-      "offset": 0,
-      "options": {
-        "=1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Extend Stake "
-            },
-            {
-              "type": 1,
-              "value": "stake"
-            },
-            {
-              "type": 0,
-              "value": " to "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " month"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Extend Stake "
-            },
-            {
-              "type": 1,
-              "value": "stake"
-            },
-            {
-              "type": 0,
-              "value": " to "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " months"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "duration"
-    }
-  ],
   "Zl7l7P": [
     {
       "type": 1,
@@ -1437,6 +1381,46 @@
     {
       "type": 0,
       "value": "Quorum"
+    }
+  ],
+  "j07TC/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
     }
   ],
   "j8y+qc": [

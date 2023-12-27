@@ -440,9 +440,6 @@
   "Z6ohOJ": {
     "defaultMessage": "Discord Forum"
   },
-  "Ze2Qul": {
-    "defaultMessage": "{duration,plural,=1{Extend Stake {stake} to # month} other{Extend Stake {stake} to # months}}"
-  },
   "Zl7l7P": {
     "defaultMessage": "{count} {symbol}"
   },
@@ -532,6 +529,9 @@
   },
   "ibDi9l": {
     "defaultMessage": "Quorum"
+  },
+  "j07TC/": {
+    "defaultMessage": "{duration,plural,=1{Extend lock-up to # month} other{Extend lock-up to # months}}"
   },
   "j8y+qc": {
     "defaultMessage": "{label}"
