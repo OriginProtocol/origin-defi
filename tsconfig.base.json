@@ -23,7 +23,9 @@
       "@origin/defi/ousd": ["libs/defi/ousd/src/index.ts"],
       "@origin/defi/shared": ["libs/defi/shared/src/index.ts"],
       "@origin/defi/theme": ["libs/defi/theme/src/index.ts"],
-      "@origin/governance/proposals": ["libs/governance/proposals/src/index.ts"],
+      "@origin/governance/proposals": [
+        "libs/governance/proposals/src/index.ts"
+      ],
       "@origin/governance/shared": ["libs/governance/shared/src/index.ts"],
       "@origin/governance/staking": ["libs/governance/staking/src/index.ts"],
       "@origin/oeth/history": ["libs/oeth/history/src/index.ts"],
@@ -32,6 +34,7 @@
       "@origin/ousd/history": ["libs/ousd/history/src/index.ts"],
       "@origin/ousd/shared": ["libs/ousd/shared/src/index.ts"],
       "@origin/ousd/swap": ["libs/ousd/swap/src/index.ts"],
+      "@origin/shared/icons": ["libs/shared/icons/src/index.ts"],
       "@origin/shared/components": ["libs/shared/components/src/index.ts"],
       "@origin/shared/constants": ["libs/shared/constants/src/index.ts"],
       "@origin/shared/contracts": ["libs/shared/contracts/src/index.ts"],
