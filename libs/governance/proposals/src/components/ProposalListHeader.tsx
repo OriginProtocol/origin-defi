@@ -20,7 +20,7 @@ export const ProposalListHeader = (props: StackProps) => {
           defaultMessage: 'Origin DeFi Governance',
         })}
       </Typography>
-      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2 }}>
+      <Stack direction="row" spacing={{ xs: 1, sm: 2 }}>
         <Button
           variant="outlined"
           color="secondary"

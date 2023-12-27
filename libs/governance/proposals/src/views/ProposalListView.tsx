@@ -24,7 +24,7 @@ export const ProposalListView = () => {
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <ProposalsCountCard />
+                <ProposalsCountCard sx={{ minHeight: 116 }} />
               </ErrorBoundary>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
@@ -40,7 +40,7 @@ export const ProposalListView = () => {
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <MyVotingPowerCard />
+                <MyVotingPowerCard sx={{ minHeight: 116 }} />
               </ErrorBoundary>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
