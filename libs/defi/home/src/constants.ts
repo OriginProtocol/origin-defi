@@ -12,7 +12,7 @@ export const products = [
     tags: [
       {
         label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        icon: tokens.mainnet.ETH.symbol,
+        symbol: tokens.mainnet.ETH.symbol,
       },
       {
         label: defineMessage({ defaultMessage: 'Liquid staking' }),
@@ -38,7 +38,7 @@ export const products = [
     tags: [
       {
         label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        icon: tokens.mainnet.ETH.symbol,
+        symbol: tokens.mainnet.ETH.symbol,
       },
       {
         label: defineMessage({ defaultMessage: 'Stablecoin' }),

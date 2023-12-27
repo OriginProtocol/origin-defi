@@ -426,7 +426,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </LoadingLabel>
                 <InfoTooltip
-                  ml={0.75}
+                  sx={{ ml: 0.75 }}
                   tooltipLabel={intl.formatMessage({
                     defaultMessage:
                       'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',

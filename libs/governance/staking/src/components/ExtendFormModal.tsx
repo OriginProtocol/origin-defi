@@ -419,7 +419,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   })}
                 </LoadingLabel>
                 <InfoTooltip
-                  ml={0.75}
+                  sx={{ ml: 0.75 }}
                   tooltipLabel={intl.formatMessage({
                     defaultMessage:
                       'The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up.',
