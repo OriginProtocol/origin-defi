@@ -34,7 +34,7 @@ export const ProposalsCard = (props: CardProps) => {
         action={
           <Button variant="outlined" color="secondary" size="small">
             {intl.formatMessage({ defaultMessage: 'All proposals' })}
-            <ExpandIcon isExpanded={false} width={8} ml={1} />
+            <ExpandIcon isExpanded={false} sx={{ ml: 1 }} />
           </Button>
         }
       />
@@ -63,7 +63,7 @@ function ProposalCard({ proposal, ...rest }: ProposalCardProps) {
       <Stack direction="row" p={3} spacing={1.5}>
         <Stack width={0.5} spacing={1.5} alignItems="flex-start">
           <Stack direction="row" spacing={1.5}>
-            <TokenIcon symbol={token.symbol} width={28} />
+            <TokenIcon symbol={token.symbol} sx={{ width: 28 }} />
             <StatusBadge proposal={proposal} />
           </Stack>
           <Link

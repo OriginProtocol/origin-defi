@@ -56,7 +56,7 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
         cell: (info) => (
           <Stack direction="row" spacing={1} alignItems="center">
-            <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={24} />
+            <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),
@@ -91,7 +91,6 @@ export const LockupsTable = () => {
           >
             <TokenIcon
               symbol={tokens.mainnet.veOGV.symbol}
-              width={24}
               sx={{ transform: 'translateY(4px)' }}
             />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>

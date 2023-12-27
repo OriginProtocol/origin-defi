@@ -191,7 +191,10 @@ export const StakeFormModal = (props: DialogProps) => {
                   gap: 1,
                 }}
               >
-                <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={28} />
+                <TokenIcon
+                  symbol={tokens.mainnet.OGV.symbol}
+                  sx={{ width: 28 }}
+                />
                 <Typography fontSize={20}>
                   {tokens.mainnet.OGV.symbol}
                 </Typography>
@@ -390,8 +393,7 @@ export const StakeFormModal = (props: DialogProps) => {
               <Stack direction="row" alignItems="baseline" mr={1}>
                 <TokenIcon
                   symbol={tokens.mainnet.veOGV.symbol}
-                  width={28}
-                  sx={{ mr: 1, transform: 'translateY(4px)' }}
+                  sx={{ mr: 1, width: 28, transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
@@ -480,8 +482,7 @@ export const StakeFormModal = (props: DialogProps) => {
           activityEndIcon={
             <TokenIcon
               symbol={tokens.mainnet.veOGV.symbol}
-              width={28}
-              sx={{ transform: 'translateY(4px)' }}
+              sx={{ width: 28, transform: 'translateY(4px)' }}
             />
           }
           onSuccess={() => {

@@ -40,7 +40,7 @@ export const ProtocolCard = (props: StackProps) => {
             {intl.formatMessage({ defaultMessage: 'Description' })}
           </Typography>
         </Stack>
-        <TokenIcon symbol={tokens.mainnet.OGV.symbol} width={88} height={88} />
+        <TokenIcon symbol={tokens.mainnet.OGV.symbol} sx={{ width: 88 }} />
       </Stack>
       <Stack
         direction="row"

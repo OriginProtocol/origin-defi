@@ -170,7 +170,7 @@ export const StakingHeader = () => {
                     <Stack direction="row" alignItems="center" spacing={0.75}>
                       <TokenIcon
                         symbol={tokens.mainnet.OGV.symbol}
-                        width={20}
+                        sx={{ width: 20 }}
                       />
                       <LoadingLabel
                         variant="h3"

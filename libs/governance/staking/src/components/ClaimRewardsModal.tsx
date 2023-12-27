@@ -69,8 +69,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
               <Stack direction="row" alignItems="baseline">
                 <TokenIcon
                   symbol={tokens.mainnet.OGV.symbol}
-                  width={30}
-                  sx={{ transform: 'translateY(4px)' }}
+                  sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
                   {tokens.mainnet.OGV.symbol}

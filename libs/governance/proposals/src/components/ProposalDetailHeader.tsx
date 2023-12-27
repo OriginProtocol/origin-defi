@@ -55,11 +55,11 @@ export const ProposalDetailHeader = (props: StackProps) => {
           gap: 1,
         }}
       >
-        <FaChevronLeft width={10} />
+        <FaChevronLeft fontSize={10} />
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
       <Stack direction="row" spacing={2} alignItems="center">
-        <TokenIcon symbol={tokens.mainnet.OETH.symbol} width={24} />
+        <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
         <StatusBadge
           status={proposal?.ogvProposalById?.status}
           isLoading={isProposalLoading}

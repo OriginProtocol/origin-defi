@@ -158,7 +158,6 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               <Stack direction="row" spacing={1} alignItems="baseline">
                 <TokenIcon
                   symbol={tokens.mainnet.OGV.symbol}
-                  width={24}
                   sx={{ transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
@@ -187,7 +186,6 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               >
                 <TokenIcon
                   symbol={tokens.mainnet.veOGV.symbol}
-                  width={24}
                   sx={{ transform: 'translateY(4px)' }}
                 />
                 <Typography fontWeight={700}>
@@ -382,8 +380,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               <Stack direction="row" alignItems="baseline" mr={1}>
                 <TokenIcon
                   symbol={tokens.mainnet.veOGV.symbol}
-                  width={28}
-                  sx={{ mr: 1, transform: 'translateY(4px)' }}
+                  sx={{ mr: 1, width: 28, transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
@@ -476,7 +473,6 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           activityEndIcon={
             <TokenIcon
               symbol={tokens.mainnet.veOGV.symbol}
-              width={24}
               sx={{ transform: 'translateY(4px)' }}
             />
           }

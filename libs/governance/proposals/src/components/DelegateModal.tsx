@@ -54,7 +54,7 @@ export const DelegateModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose width={12} />
+          <CgClose fontSize={12} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -81,8 +81,7 @@ export const DelegateModal = (props: DialogProps) => {
               <Stack direction="row" alignItems="baseline">
                 <TokenIcon
                   symbol={tokens.mainnet.veOGV.symbol}
-                  width={30}
-                  sx={{ transform: 'translateY(4px)' }}
+                  sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
                   {tokens.mainnet.veOGV.symbol}

@@ -137,17 +137,17 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
       Abstain: intl.formatMessage({ defaultMessage: 'Abstain' }),
     }[vote.choice] ?? vote.choice;
   const icon = {
-    For: <FaCheckCircle color={theme.palette.success.main} width={14} />,
-    Against: <IoCloseCircle color={theme.palette.error.main} width={14} />,
+    For: <FaCheckCircle color={theme.palette.success.main} fontSize={14} />,
+    Against: <IoCloseCircle color={theme.palette.error.main} fontSize={14} />,
     Abstain: (
-      <RiErrorWarningLine color={theme.palette.warning.main} width={14} />
+      <RiErrorWarningLine color={theme.palette.warning.main} fontSize={14} />
     ),
   }[vote.choice] ?? <Snapshot fontSize="inherit" />;
 
   return (
     <Stack spacing={1.5} px={3} py={1.5} {...rest}>
       <Stack direction="row" spacing={2} alignItems="center">
-        <TokenIcon symbol={tokens.mainnet.OETH.symbol} width={24} />
+        <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
         <StatusBadge status={vote?.proposal?.status} />
         {vote.proposal.type === 'snapshot' && (
           <Typography variant="body2" color="warning.main">
