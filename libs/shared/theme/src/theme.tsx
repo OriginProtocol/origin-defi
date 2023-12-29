@@ -648,6 +648,9 @@ export const theme = createTheme({
       },
     },
     MuiTooltip: {
+      defaultProps: {
+        placement: 'top',
+      },
       styleOverrides: {
         tooltip: ({ theme }) => ({
           paddingInline: theme.spacing(2),

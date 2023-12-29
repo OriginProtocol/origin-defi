@@ -13,7 +13,7 @@ import { ExternalLink } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, prop, sort } from 'ramda';
 import { FaRegQuestionCircle } from 'react-icons/fa';
-import { FaCircleCheck } from 'react-icons/fa6';
+import { FaCircleCheck, FaClock } from 'react-icons/fa6';
 import { IoCloseCircle } from 'react-icons/io5';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -102,7 +102,7 @@ function LogItem({ log, ...rest }: LogItemProps) {
     Canceled: <IoCloseCircle color={theme.palette.grey['600']} />,
     Created: <FaCircleCheck color={theme.palette.grey['400']} />,
     Executed: <FaCircleCheck color={theme.palette.success.main} />,
-    Extended: <FaCircleCheck color={theme.palette.success.main} />,
+    Extended: <FaClock color={theme.palette.warning.main} />,
     Queued: <FaCircleCheck color={theme.palette.success.main} />,
   }[log?.event] ?? <FaRegQuestionCircle />;
 

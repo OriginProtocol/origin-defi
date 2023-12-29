@@ -174,7 +174,6 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
               textDecoration: 'underline',
             },
           }}
-          tooltipProps={{ placement: 'top' }}
         >
           {vote?.proposal?.title}
         </TooltipLabel>
@@ -194,13 +193,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
           justifyContent="flex-end"
         >
           {icon}&nbsp;
-          <TooltipLabel
-            noWrap
-            variant="body2"
-            maxWidth={120}
-            maxChars={20}
-            tooltipProps={{ placement: 'top' }}
-          >
+          <TooltipLabel noWrap variant="body2" maxWidth={120} maxChars={20}>
             {label}
           </TooltipLabel>
         </Stack>

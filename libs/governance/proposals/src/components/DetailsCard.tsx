@@ -55,7 +55,6 @@ export const DetailsCard = (props: CardProps) => {
             isLoading={isProposalLoading}
             sWidth={200}
             color="text.secondary"
-            pb={3}
           >
             {proposal?.description}
           </LoadingLabel>
@@ -236,7 +235,7 @@ function Actions(props: StackProps) {
                   </TooltipLabel>
                 </Grid2>
                 <Grid2 xs={4}>
-                  <TooltipLabel maxChars={60} noWrap>
+                  <TooltipLabel maxChars={30} noWrap>
                     {a.argumentType}
                   </TooltipLabel>
                 </Grid2>

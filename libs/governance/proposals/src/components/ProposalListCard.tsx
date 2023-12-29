@@ -205,7 +205,6 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 textOverflow: 'ellipsis',
                 svg: { ml: 0.75 },
               }}
-              tooltipProps={{ placement: 'top' }}
             >
               {proposal.title}
               {proposal.type === 'snapshot' && (
@@ -268,11 +267,7 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
             justifyContent="space-between"
             spacing={1}
           >
-            <TooltipLabel
-              color="text.secondary"
-              noWrap
-              tooltipProps={{ placement: 'top' }}
-            >
+            <TooltipLabel color="text.secondary" noWrap>
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>
