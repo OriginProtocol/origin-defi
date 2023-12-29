@@ -12,16 +12,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   ExpandIcon,
   ExternalLink,
   LoadingLabel,
   MiddleTruncated,
+  TooltipLabel,
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useContractRead } from 'wagmi';
@@ -43,7 +46,6 @@ export const DetailsCard = (props: CardProps) => {
   return (
     <Card {...props}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Details' })} />
-
       <Stack>
         <CardContent>
           <Typography variant="h5" pb={3}>
@@ -145,7 +147,7 @@ const vl: Partial<ValueLabelProps> = {
 function Actions(props: StackProps) {
   const intl = useIntl();
   const { proposalId } = useParams();
-  const [expanded, setExpanded] = useState(null);
+  const [expanded, setExpanded] = useState([]);
   const { data: actions, isLoading: isActionsLoading } = useContractRead({
     address: contracts.mainnet.OUSDGovernance.address,
     abi: contracts.mainnet.OUSDGovernance.abi,
@@ -164,6 +166,15 @@ function Actions(props: StackProps) {
         };
       }),
   });
+
+  const handleToggleActionRow = (actionKey: string) => () => {
+    const idx = expanded.findIndex((a) => a === actionKey);
+    if (idx > -1) {
+      setExpanded((prev) => remove(idx, 1, prev));
+    } else {
+      setExpanded((prev) => [...prev, actionKey]);
+    }
+  };
 
   return (
     <Stack {...props}>
@@ -190,45 +201,55 @@ function Actions(props: StackProps) {
       ) : (
         actions.map((a, i) => (
           <Accordion
-            key={`${a.address}-${i}`}
-            expanded={expanded === `${a.address}-${i}`}
-            onChange={() => {
-              setExpanded(
-                expanded === `${a.address}-${i}` ? null : `${a.address}-${i}`,
-              );
-            }}
+            key={getKey(a.address, i)}
+            expanded={expanded.includes(getKey(a.address, i))}
+            onChange={handleToggleActionRow(getKey(a.address, i))}
             sx={{
-              px: 2,
-              py: 0,
-              backgroundColor: 'grey.900',
-              borderRadius: 1,
+              p: 0,
+              background: 'transparent',
+              borderTop: (theme) =>
+                i === 0 ? 'none' : `1px solid ${theme.palette.divider}`,
+              borderBottom: (theme) =>
+                i === actions.length - 1
+                  ? 'none'
+                  : `1px solid ${theme.palette.divider}`,
+              borderRight: 'none',
+              borderLeft: 'none',
+              borderColor: 'divider',
               ...props?.sx,
             }}
             disableGutters
           >
-            <AccordionSummary>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                spacing={2}
-                width={1}
-              >
-                <Stack direction="row" spacing={2}>
+            <AccordionSummary sx={{ px: 0 }}>
+              <Grid2 container width={1} spacing={2}>
+                <Grid2 xs={3}>
                   <ExternalLink
                     href={`https://etherscan.io/address/${a.address}`}
+                    sx={{ maxWidth: 120, color: 'secondary.main' }}
                   >
-                    <MiddleTruncated maxWidth={120}>
-                      {a.address}
-                    </MiddleTruncated>
+                    <MiddleTruncated>{a.address}</MiddleTruncated>
                   </ExternalLink>
-                  <Typography color="secondary">{a.functionName}</Typography>
-                  <Typography>{a.argumentType}</Typography>
-                </Stack>
-                <ExpandIcon
-                  isExpanded={expanded === `${a.address}-${i}`}
-                  sx={{ width: 12 }}
-                />
-              </Stack>
+                </Grid2>
+                <Grid2 xs={4}>
+                  <TooltipLabel maxChars={23} noWrap>
+                    {a.functionName}
+                  </TooltipLabel>
+                </Grid2>
+                <Grid2 xs={4}>
+                  <TooltipLabel maxChars={60} noWrap>
+                    {a.argumentType}
+                  </TooltipLabel>
+                </Grid2>
+                <Grid2
+                  xs={1}
+                  sx={{ display: 'flex', justifyContent: 'flex-end' }}
+                >
+                  <ExpandIcon
+                    isExpanded={expanded.includes(getKey(a.address, i))}
+                    sx={{ width: 12 }}
+                  />
+                </Grid2>
+              </Grid2>
             </AccordionSummary>
             <AccordionDetails>
               <Typography
@@ -249,4 +270,8 @@ function Actions(props: StackProps) {
       )}
     </Stack>
   );
+}
+
+function getKey(address: string, index: number) {
+  return `${address}-${index}`;
 }

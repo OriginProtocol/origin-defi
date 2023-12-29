@@ -359,7 +359,7 @@ export const theme = createTheme({
           padding: theme.spacing(2, 3),
           borderBottom: `1px solid ${theme.palette.divider}`,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.75, 2.75),
+            padding: theme.spacing(1.5, 2),
           },
         }),
         title: ({ theme }) => ({
