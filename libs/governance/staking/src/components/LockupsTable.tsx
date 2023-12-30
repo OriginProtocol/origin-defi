@@ -14,6 +14,7 @@ import { useGovernanceInfo } from '@origin/governance/shared';
 import { TablePagination, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -44,7 +45,12 @@ export const LockupsTable = () => {
   const { data } = useUserLockupsQuery(
     { address },
     {
-      select: (data) => data.ogvLockups,
+      select: (data) =>
+        data?.ogvLockups?.filter((l) =>
+          isNilOrEmpty(
+            l.logs.filter((log) => log?.event?.toLowerCase() === 'unstaked'),
+          ),
+        ),
       enabled: !!address,
       placeholderData: { ogvLockups: [] },
     },
@@ -120,11 +126,6 @@ export const LockupsTable = () => {
       columnHelper.display({
         id: 'action',
         cell: (info) => {
-          const isUnstaked =
-            info.row.original.logs.filter(
-              (log) => log?.event?.toLowerCase() === 'unstaked',
-            )?.length > 0;
-
           return (
             <Stack
               direction="row"
@@ -145,9 +146,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={
-                  isFuture(new Date(info.row.original.end)) || isUnstaked
-                }
+                disabled={isFuture(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Unstake' })}
               </UnstakeButton>
