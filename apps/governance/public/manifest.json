@@ -1,0 +1,6 @@
+{
+  "name": "Governance",
+  "description": "Origin decentralized governance portal",
+  "iconPath": "https://www.originprotocol.com/images/logos/ogv-logo.svg",
+  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+}
