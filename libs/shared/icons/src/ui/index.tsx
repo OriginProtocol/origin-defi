@@ -2,6 +2,7 @@ import { SvgIcon } from '@mui/material';
 
 import ActivitySvg from './activity.svg?react';
 import ArrowDownSvg from './arrowDown.svg?react';
+import ArrowUpRightSvg from './arrowUpRight.svg?react';
 import DropdownSvg from './dropdown.svg?react';
 import PendingSvg from './pending.svg?react';
 import PoweredBySafeSvg from './poweredBySafe.svg?react';
@@ -12,11 +13,18 @@ import YieldSvg from './yield.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
 
+export const Activity = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ActivitySvg} viewBox="0 0 28 28" />
+);
 export const ArrowDown = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ArrowDownSvg} viewBox="0 0 14 25" />
 );
-export const Activity = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={ActivitySvg} viewBox="0 0 28 28" />
+export const ArrowUpRight = (props: SvgIconProps) => (
+  <SvgIcon
+    {...props}
+    component={ArrowUpRightSvg}
+    viewBox="10.67 10.66 10.67 10.67"
+  />
 );
 export const Dropdown = (props: SvgIconProps) => (
   <SvgIcon {...props} component={DropdownSvg} viewBox="0 0 17 16" />
