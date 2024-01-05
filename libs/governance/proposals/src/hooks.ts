@@ -9,6 +9,7 @@ import {
   useSnapshotProposalsQuery,
   useSnapshotUserVotesQuery,
 } from './snapshot.generated';
+import { parseProposalContent } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
@@ -31,6 +32,9 @@ export const useProposals = (options?: UseQueryOptions<Proposal[], Error>) => {
       const onChainProposals =
         res[0].status === 'fulfilled'
           ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => {
+              const { title, description } = parseProposalContent(
+                p?.description,
+              );
               const votes = {
                 For: 0,
                 Against: 0,
@@ -40,7 +44,8 @@ export const useProposals = (options?: UseQueryOptions<Proposal[], Error>) => {
               return {
                 id: p.id,
                 type: 'onchain' as ProposalType,
-                title: p.description,
+                title,
+                description,
                 created: p.timestamp,
                 start: fromUnixTime(Number(p.startBlock)).toISOString(),
                 end: fromUnixTime(Number(p.endBlock)).toISOString(),
@@ -97,6 +102,8 @@ export const useUserVotes = (options?: UseQueryOptions<Vote[], Error>) => {
       const onChainVotes =
         res[0].status === 'fulfilled'
           ? (res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
+              const { title } = parseProposalContent(v.proposal.description);
+
               return {
                 id: v.id,
                 choice: v.type,
@@ -104,7 +111,7 @@ export const useUserVotes = (options?: UseQueryOptions<Vote[], Error>) => {
                 proposal: {
                   id: v.proposal.id,
                   type: 'onchain' as ProposalType,
-                  title: v.proposal.description,
+                  title,
                   status: v.proposal.status,
                 },
               };

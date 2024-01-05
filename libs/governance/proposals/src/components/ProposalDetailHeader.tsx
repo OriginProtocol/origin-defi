@@ -14,6 +14,7 @@ import { useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useProposalQuery } from '../queries.generated';
+import { parseProposalContent } from '../utils';
 import { StatusBadge } from './StatusBadge';
 
 import type { StackProps } from '@mui/material';
@@ -42,6 +43,9 @@ export const ProposalDetailHeader = (props: StackProps) => {
     sort(ascend(prop('timestamp')), proposal?.ogvProposalById?.logs ?? []),
   );
   const proposer = proposal?.ogvProposalById?.proposer?.id as HexAddress;
+  const { title } = parseProposalContent(
+    proposal?.ogvProposalById?.description,
+  );
 
   return (
     <Stack alignItems="flex-start" spacing={4} py={{ xs: 3, sm: 5 }} {...props}>
@@ -77,7 +81,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
           textOverflow: 'ellipsis',
         }}
       >
-        {proposal?.ogvProposalById?.description}
+        {title}
       </LoadingLabel>
       <Stack direction="row" spacing={2}>
         <Button

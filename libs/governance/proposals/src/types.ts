@@ -11,6 +11,7 @@ export type Proposal = {
   id: string;
   type: ProposalType;
   title: string;
+  description?: string;
   created: string;
   start: string;
   end: string;

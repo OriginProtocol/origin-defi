@@ -30,6 +30,7 @@ import { useParams } from 'react-router-dom';
 import { useContractRead } from 'wagmi';
 
 import { useProposalQuery } from '../queries.generated';
+import { parseProposalContent } from '../utils';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -42,6 +43,8 @@ export const DetailsCard = (props: CardProps) => {
     { proposalId },
     { enabled: !!proposalId, select: (data) => data?.ogvProposalById },
   );
+
+  const { description } = parseProposalContent(proposal?.description);
 
   return (
     <Card {...props}>
@@ -56,7 +59,9 @@ export const DetailsCard = (props: CardProps) => {
             sWidth={200}
             color="text.secondary"
           >
-            {proposal?.description}
+            {isNilOrEmpty(description)
+              ? intl.formatMessage({ defaultMessage: 'No description' })
+              : description}
           </LoadingLabel>
         </CardContent>
         <CardContent>

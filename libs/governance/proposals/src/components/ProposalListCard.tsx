@@ -195,12 +195,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             <TooltipLabel
               className="title"
               variant="h5"
-              maxChars={150}
+              maxChars={75}
               sx={{
                 maxWidth: 1,
                 display: '-webkit-box',
                 WebkitBoxOrient: 'vertical',
-                WebkitLineClamp: 3,
+                WebkitLineClamp: 1,
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 svg: { ml: 0.75 },
@@ -210,6 +210,21 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               {proposal.type === 'snapshot' && (
                 <FaArrowUpRightFromSquare fontSize={12} />
               )}
+            </TooltipLabel>
+            <TooltipLabel
+              variant="body2"
+              color="text.secondary"
+              maxChars={150}
+              sx={{
+                maxWidth: 1,
+                display: '-webkit-box',
+                WebkitBoxOrient: 'vertical',
+                WebkitLineClamp: 2,
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
+              }}
+            >
+              {proposal?.description}
             </TooltipLabel>
             <Stack
               direction="row"
