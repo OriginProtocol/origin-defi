@@ -11,10 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
-import { TablePagination, TokenIcon } from '@origin/shared/components';
+import {
+  ArrowLink,
+  TablePagination,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -23,14 +26,12 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
-import { FaClockRotateLeft } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from '../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
-import { LockupTransactionsButton } from './LockupTransactionsModal';
 import { UnstakeButton } from './UnstakeFormModal';
 
 import type { Lockup } from '../types';
@@ -45,12 +46,7 @@ export const LockupsTable = () => {
   const { data } = useUserLockupsQuery(
     { address },
     {
-      select: (data) =>
-        data?.ogvLockups?.filter((l) =>
-          isNilOrEmpty(
-            l.logs.filter((log) => log?.event?.toLowerCase() === 'unstaked'),
-          ),
-        ),
+      select: (data) => data?.ogvLockups,
       enabled: !!address,
       placeholderData: { ogvLockups: [] },
     },
@@ -151,14 +147,12 @@ export const LockupsTable = () => {
                 {intl.formatMessage({ defaultMessage: 'Unstake' })}
               </UnstakeButton>
 
-              <LockupTransactionsButton
-                variant="outlined"
-                color="secondary"
-                sx={{ width: 36, height: 36, borderRadius: '50%', p: 0 }}
-                logs={info.row.original.logs}
-              >
-                <FaClockRotateLeft />
-              </LockupTransactionsButton>
+              <ArrowLink
+                iconSize={12}
+                href={`https://etherscan.io/tx/${
+                  info.row.original?.logs?.[0]?.hash ?? ''
+                }`}
+              />
             </Stack>
           );
         },

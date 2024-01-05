@@ -7,13 +7,13 @@ export type UserLockupsQueryVariables = Types.Exact<{
 }>;
 
 
-export type UserLockupsQuery = { __typename?: 'Query', ogvLockups: Array<{ __typename?: 'OGVLockup', id: string, lockupId: string, amount: string, end: string, veogv: string, timestamp: string, logs: Array<{ __typename?: 'OGVLockupTxLog', id: string, event: Types.OgvLockupEventType, hash: string, timestamp: string }> }> };
+export type UserLockupsQuery = { __typename?: 'Query', ogvLockups: Array<{ __typename?: 'OGVLockup', id: string, lockupId: string, amount: string, end: string, veogv: string, timestamp: string, logs: Array<{ __typename?: 'OGVLockupTxLog', event: Types.OgvLockupEventType, hash: string }> }> };
 
 
 export const UserLockupsDocument = `
     query UserLockups($address: String!) {
   ogvLockups(
-    where: {address: {id_containsInsensitive: $address}}
+    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id
@@ -22,11 +22,9 @@ export const UserLockupsDocument = `
     end
     veogv
     timestamp
-    logs(orderBy: timestamp_DESC) {
-      id
+    logs(orderBy: timestamp_DESC, limit: 1) {
       event
       hash
-      timestamp
     }
   }
 }
