@@ -24,7 +24,7 @@ export type UserDelegatorsQuery = { __typename?: 'Query', ogvAddresses: Array<{ 
 
 export const HoldersCountDocument = `
     query HoldersCount {
-  ogvAddressesConnection(orderBy: id_ASC, where: {balance_gt: 0}) {
+  ogvAddressesConnection(orderBy: id_ASC, where: {staked_gt: 0}) {
     totalCount
   }
 }

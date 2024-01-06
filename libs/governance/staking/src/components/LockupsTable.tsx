@@ -13,6 +13,7 @@ import {
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   ArrowLink,
+  LoadingLabel,
   TablePagination,
   TokenIcon,
 } from '@origin/shared/components';
@@ -42,13 +43,12 @@ export const LockupsTable = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address } = useAccount();
-  const { data: govInfo } = useGovernanceInfo();
-  const { data } = useUserLockupsQuery(
+  const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
+  const { data, isLoading } = useUserLockupsQuery(
     { address },
     {
       select: (data) => data?.ogvLockups,
       enabled: !!address,
-      placeholderData: { ogvLockups: [] },
     },
   );
 
@@ -102,22 +102,29 @@ export const LockupsTable = () => {
       columnHelper.accessor('veogv', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
-        cell: (info) =>
-          intl.formatNumber(
-            +formatUnits(
-              BigInt(info.getValue()) ?? 0n,
-              tokens.mainnet.veOGV.decimals,
-            ) /
+        cell: (info) => (
+          <LoadingLabel
+            isLoading={isLoading || isGovInfoLoading}
+            sWidth={50}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
+            {intl.formatNumber(
               +formatUnits(
-                govInfo?.veOgvTotalSupply ?? 1n,
+                BigInt(info.getValue()) ?? 0n,
                 tokens.mainnet.veOGV.decimals,
-              ),
-            {
-              style: 'percent',
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 5,
-            },
-          ),
+              ) /
+                +formatUnits(
+                  govInfo?.veOgvTotalSupply ?? 1n,
+                  tokens.mainnet.veOGV.decimals,
+                ),
+              {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 5,
+              },
+            )}
+          </LoadingLabel>
+        ),
       }),
       columnHelper.display({
         id: 'action',
@@ -158,7 +165,13 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [formatAmount, govInfo?.veOgvTotalSupply, intl],
+    [
+      formatAmount,
+      govInfo?.veOgvTotalSupply,
+      intl,
+      isGovInfoLoading,
+      isLoading,
+    ],
   );
 
   const table = useReactTable({

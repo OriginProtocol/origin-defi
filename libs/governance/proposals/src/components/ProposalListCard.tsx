@@ -195,7 +195,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             <TooltipLabel
               className="title"
               variant="h5"
-              maxChars={75}
+              maxChars={60}
               sx={{
                 maxWidth: 1,
                 display: '-webkit-box',
