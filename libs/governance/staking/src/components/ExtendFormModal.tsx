@@ -143,7 +143,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
               </Typography>
               <Typography textAlign="end">
-                {intl.formatMessage({ defaultMessage: 'Voting Power' })}
+                {tokens.mainnet.veOGV.symbol}
               </Typography>
             </Stack>
             <Divider />
