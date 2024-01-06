@@ -158,7 +158,6 @@ export const VoteCard = (props: CardProps) => {
                   <AddressLabel
                     address={v.voter.id as HexAddress}
                     maxWidth={60}
-                    enableEnsName
                   />
                 </ExternalLink>
               </Stack>
