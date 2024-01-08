@@ -84,20 +84,7 @@ export const LockupsTable = () => {
       columnHelper.accessor('veogv', {
         id: 'veogv',
         header: tokens.mainnet.veOGV.symbol,
-        cell: (info) => (
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <TokenIcon
-              symbol={tokens.mainnet.veOGV.symbol}
-              sx={{ transform: 'translateY(4px)' }}
-            />
-            <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
-          </Stack>
-        ),
+        cell: (info) => formatAmount(BigInt(info.getValue())),
       }),
       columnHelper.accessor('veogv', {
         id: 'vp',
