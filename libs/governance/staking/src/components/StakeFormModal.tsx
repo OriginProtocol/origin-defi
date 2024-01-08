@@ -96,6 +96,7 @@ export const StakeFormModal = (props: DialogProps) => {
   const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
+  const showRewardLabel = (info?.veOgvRewards ?? 0n) > 0n;
   const showApprove =
     isConnected &&
     !isInfoLoading &&
@@ -438,6 +439,34 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
+        {showRewardLabel && (
+          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'OGV Rewards Will be Collected',
+              })}
+            </Typography>
+            <Typography
+              color="text.secondary"
+              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
+            >
+              {intl.formatMessage(
+                {
+                  defaultMessage:
+                    'You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake.',
+                },
+                {
+                  reward: formatAmount(
+                    info?.veOgvRewards,
+                    tokens.mainnet.OGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  ),
+                },
+              )}
+            </Typography>
+          </Stack>
+        )}
         <Collapse in={showApprove}>
           <Stack>
             <ApprovalButton

@@ -275,6 +275,12 @@
       "value": "Unknown"
     }
   ],
+  "5lVaeB": [
+    {
+      "type": 0,
+      "value": "No description"
+    }
+  ],
   "5y98eS": [
     {
       "offset": 0,
@@ -365,12 +371,6 @@
     {
       "type": 0,
       "value": "Amount to Stake"
-    }
-  ],
-  "6lc5Lh": [
-    {
-      "type": 0,
-      "value": "Transaction Time"
     }
   ],
   "7CPiAt": [
@@ -713,12 +713,6 @@
     {
       "type": 0,
       "value": "Succeeded"
-    }
-  ],
-  "LRJJAc": [
-    {
-      "type": 0,
-      "value": "Transaction Hash"
     }
   ],
   "LsLfrw": [
@@ -1111,12 +1105,6 @@
       "value": "Redeem"
     }
   ],
-  "Y7WXOT": [
-    {
-      "type": 0,
-      "value": "Transaction history"
-    }
-  ],
   "YGiRwq": [
     {
       "type": 0,
@@ -1481,12 +1469,6 @@
     {
       "type": 0,
       "value": "Approving"
-    }
-  ],
-  "m1czzY": [
-    {
-      "type": 0,
-      "value": "Event"
     }
   ],
   "mcotxc": [
