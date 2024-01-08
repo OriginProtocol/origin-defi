@@ -1,17 +1,17 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   InputBase,
   Link,
   Stack,
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -20,6 +20,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { isAddressEqual } from 'viem';
 import { useAccount } from 'wagmi';
@@ -42,8 +43,19 @@ export const DelegateModal = (props: DialogProps) => {
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
-      <DialogTitle>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Delegate' })}
+        <IconButton
+          onClick={(evt) => {
+            props?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <CgClose fontSize={12} />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack spacing={0.75}>
@@ -67,11 +79,9 @@ export const DelegateModal = (props: DialogProps) => {
                 )}
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
-                  width={30}
-                  sx={{ transform: 'translateY(4px)' }}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
+                  sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
                   {tokens.mainnet.veOGV.symbol}
@@ -91,7 +101,7 @@ export const DelegateModal = (props: DialogProps) => {
               {
                 link: (
                   <Link
-                    href="https://snapshot.org/#/ousdgov.eth"
+                    href="https://snapshot.org/#/delegate"
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                     sx={{

@@ -1,7 +1,10 @@
 import { keyframes } from '@emotion/react';
-import { Box, Fade } from '@mui/material';
+import { SvgIcon, useTheme } from '@mui/material';
+import { Activity, Pending } from '@origin/shared/icons';
+import { FaCircleCheck } from 'react-icons/fa6';
+import { IoCloseCircle } from 'react-icons/io5';
 
-import type { BoxProps } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
 
 export type ActivityIconStatus = 'idle' | 'pending' | 'success' | 'error';
 
@@ -11,38 +14,40 @@ const spin = keyframes`
   }
 `;
 
-const iconPaths: Record<ActivityIconStatus, string> = {
-  idle: '/images/activity.svg',
-  pending: '/images/pending.svg',
-  error: '/images/failed.svg',
-  success: '/images/success.svg',
-};
-
 type ActivityIconProps = {
   status: ActivityIconStatus;
   disablePendingSpin?: boolean;
-} & BoxProps<'img'>;
+} & SvgIconProps;
 
 export const ActivityIcon = ({
   status,
   disablePendingSpin,
   ...rest
 }: ActivityIconProps) => {
-  return (
-    <Fade in appear>
-      <Box
+  const theme = useTheme();
+
+  return {
+    idle: <Activity {...rest} />,
+    pending: (
+      <Pending
         {...rest}
-        component="img"
-        src={iconPaths[status]}
-        alt={`Activity-${status}`}
-        {...(status === 'pending' &&
-          !disablePendingSpin && {
-            sx: {
-              animation: `${spin} 3s linear infinite`,
-              ...rest?.sx,
-            },
-          })}
+        {...(!disablePendingSpin && {
+          sx: {
+            animation: `${spin} 3s linear infinite`,
+            ...rest?.sx,
+          },
+        })}
       />
-    </Fade>
-  );
+    ),
+    error: (
+      <SvgIcon {...rest}>
+        <IoCloseCircle color={theme.palette.error.main} />
+      </SvgIcon>
+    ),
+    success: (
+      <SvgIcon {...rest}>
+        <FaCircleCheck color={theme.palette.success.main} />
+      </SvgIcon>
+    ),
+  }[status];
 };

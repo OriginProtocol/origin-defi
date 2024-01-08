@@ -119,6 +119,12 @@
       "value": "Route"
     }
   ],
+  "0kn7st": [
+    {
+      "type": 0,
+      "value": "No actions"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -185,12 +191,6 @@
     {
       "type": 0,
       "value": "Registered Voters"
-    }
-  ],
-  "3TvsVz": [
-    {
-      "type": 0,
-      "value": "Collect rewards"
     }
   ],
   "3WcLXG": [
@@ -367,10 +367,22 @@
       "value": "Amount to Stake"
     }
   ],
+  "6lc5Lh": [
+    {
+      "type": 0,
+      "value": "Transaction Time"
+    }
+  ],
   "7CPiAt": [
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "7yGjVx": [
+    {
+      "type": 0,
+      "value": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
     }
   ],
   "87E0Iv": [
@@ -407,12 +419,6 @@
     {
       "type": 0,
       "value": "Last"
-    }
-  ],
-  "8rfT4i": [
-    {
-      "type": 0,
-      "value": "The current APY you are earning across all of your lock-ups."
     }
   ],
   "9ghOJK": [
@@ -457,6 +463,12 @@
     {
       "type": 0,
       "value": "On-chain"
+    }
+  ],
+  "BBCjbl": [
+    {
+      "type": 0,
+      "value": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
     }
   ],
   "BLAy25": [
@@ -581,16 +593,16 @@
       "value": "0 months"
     }
   ],
-  "FCXIlK": [
-    {
-      "type": 0,
-      "value": "Transaction hash"
-    }
-  ],
   "FVfYnP": [
     {
       "type": 0,
       "value": "The variable APY currently being earned on staked OGV."
+    }
+  ],
+  "Fsxv1h": [
+    {
+      "type": 0,
+      "value": "Cast vote"
     }
   ],
   "Fuk0aF": [
@@ -625,12 +637,6 @@
       "value": "Get OGV"
     }
   ],
-  "Gtdie8": [
-    {
-      "type": 0,
-      "value": "Available to claim"
-    }
-  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -641,6 +647,12 @@
     {
       "type": 0,
       "value": "Vote for"
+    }
+  ],
+  "IPuH1g": [
+    {
+      "type": 0,
+      "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
     }
   ],
   "IfZsEo": [
@@ -703,6 +715,18 @@
       "value": "Succeeded"
     }
   ],
+  "LRJJAc": [
+    {
+      "type": 0,
+      "value": "Transaction Hash"
+    }
+  ],
+  "LsLfrw": [
+    {
+      "type": 0,
+      "value": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
+    }
+  ],
   "Lv0zJu": [
     {
       "type": 0,
@@ -731,6 +755,46 @@
     {
       "type": 0,
       "value": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
+    }
+  ],
+  "NND2zi": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Plus "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more option..."
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Plus "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " more options..."
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
     }
   ],
   "NXFAgE": [
@@ -783,12 +847,6 @@
       "value": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
     }
   ],
-  "P1YoB8": [
-    {
-      "type": 0,
-      "value": "Transaction time"
-    }
-  ],
   "PFtMy9": [
     {
       "type": 0,
@@ -829,6 +887,12 @@
     {
       "type": 0,
       "value": "Description"
+    }
+  ],
+  "Qe+UCa": [
+    {
+      "type": 0,
+      "value": "Available to Collect"
     }
   ],
   "Qz1fcp": [
@@ -989,18 +1053,6 @@
       "value": "Finding the best route..."
     }
   ],
-  "VFsDB8": [
-    {
-      "type": 0,
-      "value": "Delegated by others"
-    }
-  ],
-  "VZ5Ypk": [
-    {
-      "type": 0,
-      "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on."
-    }
-  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -1071,66 +1123,34 @@
       "value": "Voting Power"
     }
   ],
+  "YtTAoV": [
+    {
+      "type": 0,
+      "value": "Vote "
+    },
+    {
+      "type": 1,
+      "value": "choice"
+    },
+    {
+      "type": 0,
+      "value": " on proposal "
+    },
+    {
+      "type": 1,
+      "value": "proposalId"
+    }
+  ],
   "YvbZVM": [
     {
       "type": 0,
       "value": "Time Remaining"
     }
   ],
-  "Ze2Qul": [
+  "Z6ohOJ": [
     {
-      "offset": 0,
-      "options": {
-        "=1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Extend Stake "
-            },
-            {
-              "type": 1,
-              "value": "stake"
-            },
-            {
-              "type": 0,
-              "value": " to "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " month"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Extend Stake "
-            },
-            {
-              "type": 1,
-              "value": "stake"
-            },
-            {
-              "type": 0,
-              "value": " to "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " months"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "duration"
+      "type": 0,
+      "value": "Discord Forum"
     }
   ],
   "Zl7l7P": [
@@ -1163,6 +1183,12 @@
     {
       "type": 0,
       "value": "New transaction"
+    }
+  ],
+  "aHPD2Z": [
+    {
+      "type": 0,
+      "value": "View Proposals"
     }
   ],
   "aWpBzj": [
@@ -1327,12 +1353,6 @@
       "value": "Current Lock-up Ends:"
     }
   ],
-  "hsqHqR": [
-    {
-      "type": 0,
-      "value": "Time remaining"
-    }
-  ],
   "hzfM3P": [
     {
       "type": 0,
@@ -1357,10 +1377,62 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "ibDi9l": [
+    {
+      "type": 0,
+      "value": "Quorum"
+    }
+  ],
+  "j07TC/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
   "j8y+qc": [
     {
       "type": 1,
       "value": "label"
+    }
+  ],
+  "jab7Gg": [
+    {
+      "type": 0,
+      "value": "Delegated to me"
     }
   ],
   "jfexoW": [
@@ -1415,6 +1487,20 @@
     {
       "type": 0,
       "value": "Event"
+    }
+  ],
+  "mcotxc": [
+    {
+      "type": 1,
+      "value": "balance"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
     }
   ],
   "nc8QpJ": [
@@ -1515,18 +1601,6 @@
     {
       "type": 0,
       "value": "Status"
-    }
-  ],
-  "u4BAsU": [
-    {
-      "type": 0,
-      "value": "View proposals"
-    }
-  ],
-  "uEFsHG": [
-    {
-      "type": 0,
-      "value": "Discord forum"
     }
   ],
   "upcyvM": [

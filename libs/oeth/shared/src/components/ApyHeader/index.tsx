@@ -10,6 +10,7 @@ import {
   Stack,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { Dropdown } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -111,12 +112,7 @@ export const ApyHeader = (props: StackProps) => {
             height: 20,
           }}
         >
-          <Box
-            component="img"
-            alt="dropdown"
-            src="/images/dropdown.svg"
-            sx={{ width: 20, height: 20 }}
-          />
+          <Dropdown />
         </Box>
       </Button>
       <Menu

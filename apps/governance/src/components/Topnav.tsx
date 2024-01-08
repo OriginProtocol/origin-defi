@@ -203,7 +203,7 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
-            balanceTokens={[tokens.mainnet.veOGV]}
+            balanceTokens={[tokens.mainnet.OGV, tokens.mainnet.veOGV]}
           />
           <ActivityButton
             onClick={() => {

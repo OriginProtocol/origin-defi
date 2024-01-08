@@ -1,10 +1,12 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import { Dropdown } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
+import { TokenIcon } from '../Icons';
 import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
@@ -238,20 +240,12 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         ...rest?.sx,
       }}
     >
-      <Box
-        component="img"
-        src={token.icon}
+      <TokenIcon
+        symbol={token.symbol}
         sx={{ width: '1.75rem', height: 'auto' }}
       />
       <Typography variant="inherit">{token.symbol}</Typography>
-      {!isDisabled && (
-        <Box
-          component="img"
-          src="/images/dropdown.svg"
-          alt="dropdown"
-          sx={{ width: 24, height: 24 }}
-        />
-      )}
+      {!isDisabled && <Dropdown />}
     </Stack>
   );
 }

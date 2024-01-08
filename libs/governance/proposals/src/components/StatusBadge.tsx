@@ -23,16 +23,16 @@ export const StatusBadge = ({
     statusLabels[status] ?? defineMessage({ defaultMessage: 'Unknown' });
   const color =
     {
-      [OgvProposalState.Active]: theme.palette.secondary.main,
-      [OgvProposalState.Canceled]: theme.palette.text.secondary,
-      [OgvProposalState.Defeated]: theme.palette.error.main,
-      [OgvProposalState.Executed]: theme.palette.success.main,
-      [OgvProposalState.Expired]: theme.palette.text.secondary,
-      [OgvProposalState.Pending]: theme.palette.text.secondary,
-      [OgvProposalState.Queued]: theme.palette.text.secondary,
-      [OgvProposalState.Succeeded]: theme.palette.success.main,
+      [OgvProposalState.Active.toLowerCase()]: theme.palette.secondary.main,
+      [OgvProposalState.Canceled.toLowerCase()]: theme.palette.text.secondary,
+      [OgvProposalState.Defeated.toLowerCase()]: theme.palette.error.main,
+      [OgvProposalState.Executed.toLowerCase()]: theme.palette.success.main,
+      [OgvProposalState.Expired.toLowerCase()]: theme.palette.text.secondary,
+      [OgvProposalState.Pending.toLowerCase()]: theme.palette.text.secondary,
+      [OgvProposalState.Queued.toLowerCase()]: theme.palette.text.secondary,
+      [OgvProposalState.Succeeded.toLowerCase()]: theme.palette.success.main,
       closed: theme.palette.success.main,
-    }[status] ?? theme.palette.grey[800];
+    }[status?.toLowerCase()] ?? theme.palette.grey[600];
 
   return (
     <Typography

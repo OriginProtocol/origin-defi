@@ -1,5 +1,8 @@
-import { alpha, Box, createTheme } from '@mui/material';
+import { alpha, createTheme } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
+import { FaArrowsRotate, FaCircleCheck } from 'react-icons/fa6';
+import { IoCloseCircle } from 'react-icons/io5';
+import { RiErrorWarningLine } from 'react-icons/ri';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
@@ -136,6 +139,10 @@ export const theme = createTheme({
       fontWeight: 400,
       lineHeight: 1.6,
     },
+    button: {
+      fontSize: 14,
+      lineHeight: 1.5,
+    },
   },
   shape: {
     borderRadius: 4,
@@ -168,35 +175,18 @@ export const theme = createTheme({
         variant: 'standard',
         iconMapping: {
           error: (
-            <Box
-              component="img"
-              src="/images/failed.svg"
-              alt="failed"
-              sx={{ width: 20 }}
-            />
+            <IoCloseCircle color={base.palette.error.main} fontSize={20} />
           ),
           info: (
-            <Box
-              component="img"
-              src="/images/pending.svg"
-              alt="pending"
-              sx={{ width: 20 }}
-            />
+            <FaArrowsRotate color={base.palette.success.main} fontSize={20} />
           ),
           success: (
-            <Box
-              component="img"
-              src="/images/success.svg"
-              alt="success"
-              sx={{ width: 20 }}
-            />
+            <FaCircleCheck color={base.palette.success.main} fontSize={20} />
           ),
           warning: (
-            <Box
-              component="img"
-              src="/images/warn.webp"
-              alt="warn"
-              sx={{ width: 20 }}
+            <RiErrorWarningLine
+              color={base.palette.warning.main}
+              fontSize={20}
             />
           ),
         },
@@ -236,6 +226,24 @@ export const theme = createTheme({
           boxShadow: 'none',
           minWidth: 0,
         }),
+        sizeSmall: {
+          fontSize: 12,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 11,
+          },
+        },
+        sizeMedium: ({ theme }) => ({
+          fontSize: theme.typography.button.fontSize,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 11,
+          },
+        }),
+        sizeLarge: {
+          fontSize: 16,
+          [base.breakpoints.down('sm')]: {
+            fontSize: 15,
+          },
+        },
         containedPrimary: ({ theme }) => ({
           background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
@@ -304,6 +312,9 @@ export const theme = createTheme({
               opacity: 0.5,
               color: theme.palette.text.primary,
             },
+            [base.breakpoints.down('sm')]: {
+              fontSize: 18,
+            },
           }),
         },
         {
@@ -348,7 +359,7 @@ export const theme = createTheme({
           padding: theme.spacing(2, 3),
           borderBottom: `1px solid ${theme.palette.divider}`,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.75, 2.75),
+            padding: theme.spacing(1.5, 2),
           },
         }),
         title: ({ theme }) => ({
@@ -411,6 +422,11 @@ export const theme = createTheme({
         disableScrollLock: true,
       },
       styleOverrides: {
+        root: {
+          '.MuiModal-backdrop': {
+            backdropFilter: 'blur(10px)',
+          },
+        },
         paper: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 2,
         }),
@@ -425,6 +441,9 @@ export const theme = createTheme({
           lineHeight: 1.75,
           color: theme.palette.text.primary,
           textTransform: 'none',
+          [base.breakpoints.down('sm')]: {
+            fontSize: 14,
+          },
         }),
       },
     },
@@ -629,6 +648,9 @@ export const theme = createTheme({
       },
     },
     MuiTooltip: {
+      defaultProps: {
+        placement: 'top',
+      },
       styleOverrides: {
         tooltip: ({ theme }) => ({
           paddingInline: theme.spacing(2),

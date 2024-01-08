@@ -7,13 +7,6 @@ export type HoldersCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 export type HoldersCountQuery = { __typename?: 'Query', ogvAddressesConnection: { __typename?: 'OGVAddressesConnection', totalCount: number } };
 
-export type UserVotesQueryVariables = Types.Exact<{
-  address: Types.Scalars['String']['input'];
-}>;
-
-
-export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, timestamp: string, txHash: string, proposal: { __typename?: 'OGVProposal', id: string, description?: string | null, status: Types.OgvProposalState } }> };
-
 export type UserInfoQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
@@ -31,7 +24,7 @@ export type UserDelegatorsQuery = { __typename?: 'Query', ogvAddresses: Array<{ 
 
 export const HoldersCountDocument = `
     query HoldersCount {
-  ogvAddressesConnection(orderBy: id_ASC, where: {balance_gt: 0}) {
+  ogvAddressesConnection(orderBy: id_ASC, where: {staked_gt: 0}) {
     totalCount
   }
 }
@@ -71,60 +64,6 @@ useInfiniteHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) =
 ;
 
 useHoldersCountQuery.fetcher = (variables?: HoldersCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, variables, options);
-export const UserVotesDocument = `
-    query UserVotes($address: String!) {
-  ogvProposalVotes(
-    where: {voter: {id_containsInsensitive: $address}}
-    orderBy: timestamp_DESC
-  ) {
-    id
-    weight
-    type
-    timestamp
-    txHash
-    proposal {
-      id
-      description
-      status
-    }
-  }
-}
-    `;
-export const useUserVotesQuery = <
-      TData = UserVotesQuery,
-      TError = unknown
-    >(
-      variables: UserVotesQueryVariables,
-      options?: UseQueryOptions<UserVotesQuery, TError, TData>
-    ) =>
-    useQuery<UserVotesQuery, TError, TData>(
-      ['UserVotes', variables],
-      graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables),
-      options
-    );
-
-useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes', variables];
-;
-
-export const useInfiniteUserVotesQuery = <
-      TData = UserVotesQuery,
-      TError = unknown
-    >(
-      variables: UserVotesQueryVariables,
-      options?: UseInfiniteQueryOptions<UserVotesQuery, TError, TData>
-    ) =>{
-    
-    return useInfiniteQuery<UserVotesQuery, TError, TData>(
-      ['UserVotes.infinite', variables],
-      (metaData) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      options
-    )};
-
-
-useInfiniteUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes.infinite', variables];
-;
-
-useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
 export const UserInfoDocument = `
     query UserInfo($address: String!) {
   ogvAddresses(where: {id_containsInsensitive: $address}) {

@@ -1,6 +1,6 @@
-import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { ValueLabel } from '@origin/shared/components';
+import { InfoTooltip, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -30,17 +30,25 @@ export const MyVotingPowerCard = (props: CardProps) => {
     <Card {...props}>
       <CardContent>
         <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+          label={
+            <Typography color="text.secondary">
+              {intl.formatMessage({ defaultMessage: 'My Voting Power' })}&nbsp;
+              <InfoTooltip
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
+                })}
+              />
+            </Typography>
+          }
           labelProps={{ sx: { fontSize: 14 } }}
           isLoading={isInfoLoading || isUserLoading}
           value={
             isConnected ? (
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
-                  width={26}
-                  sx={{ transform: 'translateY(4px)' }}
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
+                  sx={{ width: 26, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
                   {formatAmount(
@@ -51,19 +59,17 @@ export const MyVotingPowerCard = (props: CardProps) => {
                   )}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
+                  {percent <= 1e-6 && percent > 0 && `~ `}
                   {intl.formatMessage(
                     {
                       defaultMessage: '({value} of total votes)',
                     },
                     {
-                      value:
-                        percent < 0.0001
-                          ? '~ 0.00%'
-                          : intl.formatNumber(percent, {
-                              style: 'percent',
-                              minimumFractionDigits: 2,
-                              maximumFractionDigits: 2,
-                            }),
+                      value: intl.formatNumber(percent, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 5,
+                      }),
                     },
                   )}
                 </Typography>

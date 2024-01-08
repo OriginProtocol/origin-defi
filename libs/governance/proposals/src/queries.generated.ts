@@ -14,10 +14,21 @@ export type ProposalQueryVariables = Types.Exact<{
 
 export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<number | null>, quorum: string, logs: Array<{ __typename?: 'OGVProposalTxLog', id: string, hash: string, event: Types.OgvProposalEvent, timestamp: string }>, proposer: { __typename?: 'OGVAddress', id: string } } | null, ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, txHash: string, timestamp: string, voter: { __typename?: 'OGVAddress', id: string } }> };
 
+export type UserVotesQueryVariables = Types.Exact<{
+  address: Types.Scalars['String']['input'];
+}>;
+
+
+export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, type: Types.OgvVoteType, timestamp: string, proposal: { __typename?: 'OGVProposal', id: string, description?: string | null, status: Types.OgvProposalState } }> };
+
 
 export const ProposalsDocument = `
     query Proposals {
-  ogvProposals(orderBy: timestamp_DESC, limit: 1000) {
+  ogvProposals(
+    orderBy: timestamp_DESC
+    limit: 1000
+    where: {status_not_in: Canceled}
+  ) {
     id
     description
     timestamp
@@ -135,3 +146,55 @@ useInfiniteProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Propo
 ;
 
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
+export const UserVotesDocument = `
+    query UserVotes($address: String!) {
+  ogvProposalVotes(
+    where: {voter: {id_containsInsensitive: $address}}
+    orderBy: timestamp_DESC
+  ) {
+    id
+    type
+    timestamp
+    proposal {
+      id
+      description
+      status
+    }
+  }
+}
+    `;
+export const useUserVotesQuery = <
+      TData = UserVotesQuery,
+      TError = unknown
+    >(
+      variables: UserVotesQueryVariables,
+      options?: UseQueryOptions<UserVotesQuery, TError, TData>
+    ) =>
+    useQuery<UserVotesQuery, TError, TData>(
+      ['UserVotes', variables],
+      graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables),
+      options
+    );
+
+useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes', variables];
+;
+
+export const useInfiniteUserVotesQuery = <
+      TData = UserVotesQuery,
+      TError = unknown
+    >(
+      variables: UserVotesQueryVariables,
+      options?: UseInfiniteQueryOptions<UserVotesQuery, TError, TData>
+    ) =>{
+    
+    return useInfiniteQuery<UserVotesQuery, TError, TData>(
+      ['UserVotes.infinite', variables],
+      (metaData) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      options
+    )};
+
+
+useInfiniteUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes.infinite', variables];
+;
+
+useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);

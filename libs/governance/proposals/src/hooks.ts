@@ -2,24 +2,25 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
+import { useAccount } from 'wagmi';
 
-import { useProposalsQuery } from './queries.generated';
-import { useSnapshotProposalsQuery } from './snapshot.generated';
+import { useProposalsQuery, useUserVotesQuery } from './queries.generated';
+import {
+  useSnapshotProposalsQuery,
+  useSnapshotUserVotesQuery,
+} from './snapshot.generated';
+import { parseProposalContent } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import type { ProposalsQuery } from './queries.generated';
-import type { SnapshotProposalsQuery } from './snapshot.generated';
-import type { GovernanceChoice, Proposal, ProposalType } from './types';
+import type { ProposalsQuery, UserVotesQuery } from './queries.generated';
+import type {
+  SnapshotProposalsQuery,
+  SnapshotUserVotesQuery,
+} from './snapshot.generated';
+import type { GovernanceChoice, Proposal, ProposalType, Vote } from './types';
 
-export const useProposals = <T = unknown>(
-  options?: UseQueryOptions<
-    Proposal[],
-    Error,
-    Proposal[] | T,
-    ['useProposals']
-  >,
-) => {
+export const useProposals = (options?: UseQueryOptions<Proposal[], Error>) => {
   return useQuery({
     queryKey: ['useProposals'],
     queryFn: async () => {
@@ -31,6 +32,9 @@ export const useProposals = <T = unknown>(
       const onChainProposals =
         res[0].status === 'fulfilled'
           ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => {
+              const { title, description } = parseProposalContent(
+                p?.description,
+              );
               const votes = {
                 For: 0,
                 Against: 0,
@@ -40,7 +44,8 @@ export const useProposals = <T = unknown>(
               return {
                 id: p.id,
                 type: 'onchain' as ProposalType,
-                title: p.description,
+                title,
+                description,
                 created: p.timestamp,
                 start: fromUnixTime(Number(p.startBlock)).toISOString(),
                 end: fromUnixTime(Number(p.endBlock)).toISOString(),
@@ -58,7 +63,7 @@ export const useProposals = <T = unknown>(
         res[1].status === 'fulfilled'
           ? (res[1].value as SnapshotProposalsQuery)?.proposals?.map((p) => ({
               id: p.id,
-              type: 'offchain' as ProposalType,
+              type: 'snapshot' as ProposalType,
               title: p.title,
               created: fromUnixTime(p.created).toISOString(),
               start: fromUnixTime(p.start).toISOString(),
@@ -77,7 +82,68 @@ export const useProposals = <T = unknown>(
       return sort(descend(prop('created')), [
         ...onChainProposals,
         ...offChainProposals,
-      ]).map((p, index) => ({ index, ...p }));
+      ]);
+    },
+    ...options,
+  });
+};
+
+export const useUserVotes = (options?: UseQueryOptions<Vote[], Error>) => {
+  const { address } = useAccount();
+
+  return useQuery({
+    queryKey: ['useUserVotes', address],
+    queryFn: async () => {
+      const res = await Promise.allSettled([
+        useUserVotesQuery.fetcher({ address })(),
+        useSnapshotUserVotesQuery.fetcher({ address })(),
+      ]);
+
+      const onChainVotes =
+        res[0].status === 'fulfilled'
+          ? (res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
+              const { title } = parseProposalContent(v.proposal.description);
+
+              return {
+                id: v.id,
+                choice: v.type,
+                created: v.timestamp,
+                proposal: {
+                  id: v.proposal.id,
+                  type: 'onchain' as ProposalType,
+                  title,
+                  status: v.proposal.status,
+                },
+              };
+            }) ?? []
+          : [];
+
+      const offChainVotes =
+        res[1].status === 'fulfilled'
+          ? (res[1].value as SnapshotUserVotesQuery)?.votes?.map((v) => {
+              const idx =
+                Number(Array.isArray(v.choice) ? v.choice.at(0) : v.choice) - 1;
+              const choice = v.proposal?.choices?.at?.(idx) ?? '';
+
+              return {
+                id: v.id,
+                created: fromUnixTime(v.created).toISOString(),
+                choice,
+                proposal: {
+                  id: v.proposal.id,
+                  type: 'snapshot' as ProposalType,
+                  title: v.proposal.title,
+                  status: v.proposal.state,
+                  link: v.proposal.link,
+                },
+              };
+            }) ?? []
+          : [];
+
+      return sort(descend(prop('created')), [
+        ...onChainVotes,
+        ...offChainVotes,
+      ]);
     },
     ...options,
   });

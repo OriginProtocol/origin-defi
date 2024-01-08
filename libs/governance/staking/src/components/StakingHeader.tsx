@@ -7,9 +7,11 @@ import {
 import {
   InfoTooltip,
   LoadingLabel,
+  TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { formatUnits } from 'viem';
@@ -18,6 +20,8 @@ import { useAccount } from 'wagmi';
 import { useStakingAPY, useTotalLockedUp } from '../hooks';
 import { ClaimRewardsButton } from './ClaimRewardsModal';
 import { StakeButton } from './StakeFormModal';
+
+import type { ValueLabelProps } from '@origin/shared/components';
 
 export const StakingHeader = () => {
   const intl = useIntl();
@@ -32,9 +36,9 @@ export const StakingHeader = () => {
 
   return (
     <Stack spacing={3}>
-      <Box py={5}>
+      <Box py={{ xs: 3, sm: 5 }}>
         <Grid2 container spacing={3}>
-          <Grid2 xs={12} md={6}>
+          <Grid2 xs={12} md={5}>
             <Stack alignItems="flex-start" justifyContent="center" spacing={3}>
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
@@ -47,15 +51,15 @@ export const StakingHeader = () => {
                 rel="noopener noreferrer nofollow"
               >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
+                &nbsp;
+                <GoArrowUpRight />
               </Button>
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={6}>
+          <Grid2 xs={12} md={7}>
             <Stack
               direction="row"
-              spacing={4}
-              alignItems="center"
-              height={1}
+              spacing={{ xs: 2, sm: 4 }}
               divider={
                 <Divider
                   orientation="vertical"
@@ -68,7 +72,6 @@ export const StakingHeader = () => {
               <ValueLabel
                 label={
                   <Typography
-                    fontSize={14}
                     color="text.secondary"
                     sx={{ textWrap: 'balance', textAlign: 'center' }}
                   >
@@ -84,36 +87,29 @@ export const StakingHeader = () => {
                     />
                   </Typography>
                 }
-                labelProps={{ sx: { fontSize: 14 } }}
-                sx={{ width: 1 }}
                 value={intl.formatNumber(info?.ogvTotalLockedPercent ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
-                valueProps={{ variant: 'h3' }}
                 isLoading={isInfoLoading}
+                {...valueLabelProps}
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
-                labelProps={{
-                  sx: {
-                    fontSize: 14,
-                    textWrap: 'balance',
-                    textAlign: 'center',
-                  },
-                }}
-                sx={{ width: 1 }}
                 value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
                 isLoading={isHoldersCountLoading}
-                valueProps={{ variant: 'h3' }}
+                {...valueLabelProps}
               />
               <ValueLabel
                 label={
                   <Typography
-                    fontSize={14}
                     color="text.secondary"
-                    sx={{ textWrap: 'balance', textAlign: 'center' }}
+                    sx={{
+                      textWrap: 'balance',
+                      textAlign: 'center',
+                      flexGrow: 1,
+                    }}
                   >
                     {intl.formatMessage({
                       defaultMessage: 'Max vAPY',
@@ -127,23 +123,25 @@ export const StakingHeader = () => {
                     />
                   </Typography>
                 }
-                labelProps={{ sx: { fontSize: 14 } }}
-                sx={{ width: 1 }}
-                value={intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
+                value={
+                  <Typography
+                    variant="h3"
+                    sx={{
+                      background:
+                        'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+                      backgroundClip: 'text',
+                      WebkitTextFillColor: 'transparent',
+                    }}
+                  >
+                    {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                      style: 'percent',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </Typography>
+                }
                 isLoading={isStakingLoading}
-                valueProps={{
-                  variant: 'h3',
-                  sx: {
-                    background:
-                      'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
-                    backgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  },
-                }}
+                {...valueLabelProps}
               />
             </Stack>
           </Grid2>
@@ -169,11 +167,10 @@ export const StakingHeader = () => {
                   })}
                   labelProps={{ fontSize: 14 }}
                   value={
-                    <Stack direction="row" spacing={0.75}>
-                      <Box
-                        component="img"
-                        src={tokens.mainnet.OGV.icon}
-                        width={20}
+                    <Stack direction="row" alignItems="center" spacing={0.75}>
+                      <TokenIcon
+                        symbol={tokens.mainnet.OGV.symbol}
+                        sx={{ width: 20 }}
                       />
                       <LoadingLabel
                         variant="h3"
@@ -199,12 +196,8 @@ export const StakingHeader = () => {
                   })}
                   labelProps={{ fontSize: 14 }}
                   value={
-                    <Stack direction="row" spacing={0.75}>
-                      <Box
-                        component="img"
-                        src={tokens.mainnet.OGV.icon}
-                        width={20}
-                      />
+                    <Stack direction="row" alignItems="center" spacing={0.75}>
+                      <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
                       <LoadingLabel
                         variant="h3"
                         sWidth={80}
@@ -226,7 +219,7 @@ export const StakingHeader = () => {
                 <StakeButton
                   variant="connect"
                   sx={{
-                    minWidth: 160,
+                    minWidth: 140,
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Stake' })}
@@ -236,22 +229,19 @@ export const StakingHeader = () => {
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                   variant="outlined"
+                  color="secondary"
                   sx={{
-                    minWidth: 160,
+                    minWidth: 140,
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Get OGV' })}
-                  <Box
-                    component="img"
-                    src="/images/icons/arrow-up-right-light.svg"
-                    alt="link"
-                    sx={{ height: 8, width: 8, ml: 1 }}
-                  />
+                  &nbsp;
+                  <GoArrowUpRight />
                 </Button>
               </Stack>
             </Stack>
           </Grid2>
-          <Grid2 xs={6} md={3}>
+          <Grid2 xs={12} sm={6} md={3}>
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
@@ -267,12 +257,8 @@ export const StakingHeader = () => {
                 })}
                 labelProps={{ fontSize: 14 }}
                 value={
-                  <Stack direction="row" spacing={0.75}>
-                    <Box
-                      component="img"
-                      src={tokens.mainnet.OGV.icon}
-                      width={20}
-                    />
+                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                    <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
                     <LoadingLabel
                       variant="h3"
                       sWidth={80}
@@ -289,12 +275,12 @@ export const StakingHeader = () => {
                   </Stack>
                 }
               />
-              <ClaimRewardsButton variant="outlined">
+              <ClaimRewardsButton variant="outlined" color="secondary">
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
               </ClaimRewardsButton>
             </Stack>
           </Grid2>
-          <Grid2 xs={6} md={3}>
+          <Grid2 xs={12} sm={6} md={3}>
             <Stack
               bgcolor="background.paper"
               borderRadius={2}
@@ -305,16 +291,23 @@ export const StakingHeader = () => {
             >
               <ValueLabel
                 alignItems="flex-start"
-                label={intl.formatMessage({
-                  defaultMessage: 'My Voting Power',
-                })}
+                label={
+                  <Typography color="text.secondary">
+                    {intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+                    &nbsp;
+                    <InfoTooltip
+                      tooltipLabel={intl.formatMessage({
+                        defaultMessage:
+                          'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
+                      })}
+                    />
+                  </Typography>
+                }
                 labelProps={{ fontSize: 14 }}
                 value={
                   <Stack direction="row" spacing={0.75} alignItems="flex-start">
-                    <Box
-                      component="img"
-                      src={tokens.mainnet.veOGV.icon}
-                      width={20}
+                    <TokenIcon
+                      symbol={tokens.mainnet.veOGV.symbol}
                       sx={{ transform: 'translateY(4px)' }}
                     />
                     <Stack>
@@ -347,7 +340,7 @@ export const StakingHeader = () => {
                               {
                                 style: 'percent',
                                 minimumFractionDigits: 2,
-                                maximumFractionDigits: 2,
+                                maximumFractionDigits: 5,
                               },
                             ),
                           },
@@ -359,11 +352,12 @@ export const StakingHeader = () => {
               />
               <Button
                 variant="outlined"
+                color="secondary"
                 onClick={() => {
                   navigate('/');
                 }}
               >
-                {intl.formatMessage({ defaultMessage: 'View proposals' })}
+                {intl.formatMessage({ defaultMessage: 'View Proposals' })}
               </Button>
             </Stack>
           </Grid2>
@@ -371,4 +365,14 @@ export const StakingHeader = () => {
       </Box>
     </Stack>
   );
+};
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  labelProps: {
+    variant: 'body1',
+    sx: { flexGrow: 1, textWrap: 'balance', textAlign: 'center' },
+  },
+  valueProps: { variant: 'h3' },
+  spacing: 1.5,
+  sx: { width: 1 },
 };

@@ -10,7 +10,13 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { TablePagination } from '@origin/shared/components';
+import { useGovernanceInfo } from '@origin/governance/shared';
+import {
+  ArrowLink,
+  LoadingLabel,
+  TablePagination,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import {
@@ -22,11 +28,11 @@ import {
 } from '@tanstack/react-table';
 import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from '../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
-import { LockupTransactionsButton } from './LockupTransactionsModal';
 import { UnstakeButton } from './UnstakeFormModal';
 
 import type { Lockup } from '../types';
@@ -37,12 +43,12 @@ export const LockupsTable = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address } = useAccount();
-  const { data } = useUserLockupsQuery(
+  const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
+  const { data, isLoading } = useUserLockupsQuery(
     { address },
     {
-      select: (data) => data.ogvLockups,
+      select: (data) => data?.ogvLockups,
       enabled: !!address,
-      placeholderData: { ogvLockups: [] },
     },
   );
 
@@ -52,62 +58,88 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
         cell: (info) => (
           <Stack direction="row" spacing={1} alignItems="center">
-            <Box component="img" src={tokens.mainnet.OGV.icon} width={24} />
+            <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),
       }),
       columnHelper.accessor('end', {
         header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
-        cell: (info) => (
-          <Typography>
-            {intl.formatDate(info.getValue(), {
-              day: '2-digit',
-              month: 'short',
-              year: 'numeric',
-            })}
-          </Typography>
-        ),
+        cell: (info) =>
+          intl.formatDate(info.getValue(), {
+            day: '2-digit',
+            month: 'short',
+            year: 'numeric',
+          }),
       }),
       columnHelper.display({
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
-        cell: (info) => (
-          <Typography>
-            {formatDistanceToNowStrict(new Date(info.row.original.end), {
-              unit: 'month',
-              roundingMethod: 'floor',
-            })}
-          </Typography>
-        ),
+        cell: (info) =>
+          formatDistanceToNowStrict(new Date(info.row.original.end), {
+            unit: 'month',
+            roundingMethod: 'floor',
+          }),
       }),
       columnHelper.accessor('veogv', {
-        header: intl.formatMessage({ defaultMessage: 'Voting Power' }),
+        id: 'veogv',
+        header: tokens.mainnet.veOGV.symbol,
         cell: (info) => (
-          <Stack direction="row" spacing={1} alignItems="center">
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
-              width={24}
+          <Stack
+            direction="row"
+            spacing={1}
+            alignItems="center"
+            justifyContent="flex-end"
+          >
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
               sx={{ transform: 'translateY(4px)' }}
             />
             <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
           </Stack>
         ),
       }),
+      columnHelper.accessor('veogv', {
+        id: 'vp',
+        header: intl.formatMessage({ defaultMessage: 'Voting power' }),
+        cell: (info) => (
+          <LoadingLabel
+            isLoading={isLoading || isGovInfoLoading}
+            sWidth={50}
+            sx={{ display: 'flex', justifyContent: 'flex-end' }}
+          >
+            {intl.formatNumber(
+              +formatUnits(
+                BigInt(info.getValue()) ?? 0n,
+                tokens.mainnet.veOGV.decimals,
+              ) /
+                +formatUnits(
+                  govInfo?.veOgvTotalSupply ?? 1n,
+                  tokens.mainnet.veOGV.decimals,
+                ),
+              {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 5,
+              },
+            )}
+          </LoadingLabel>
+        ),
+      }),
       columnHelper.display({
         id: 'action',
         cell: (info) => {
-          const isUnstaked =
-            info.row.original.logs.filter(
-              (log) => log?.event?.toLowerCase() === 'unstaked',
-            )?.length > 0;
-
           return (
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="center"
+              justifyContent="flex-end"
+            >
               <ExtendButton
                 lockup={info.row.original}
                 variant="outlined"
+                color="secondary"
                 disabled={isPast(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
@@ -116,29 +148,30 @@ export const LockupsTable = () => {
               <UnstakeButton
                 lockup={info.row.original}
                 variant="outlined"
-                disabled={
-                  isFuture(new Date(info.row.original.end)) || isUnstaked
-                }
+                color="secondary"
+                disabled={isFuture(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Unstake' })}
               </UnstakeButton>
 
-              <LockupTransactionsButton
-                variant="text"
-                logs={info.row.original.logs}
-              >
-                <Box
-                  component="img"
-                  src="images/icons/chart-pie-light.svg"
-                  width={16}
-                />
-              </LockupTransactionsButton>
+              <ArrowLink
+                iconSize={12}
+                href={`https://etherscan.io/tx/${
+                  info.row.original?.logs?.[0]?.hash ?? ''
+                }`}
+              />
             </Stack>
           );
         },
       }),
     ],
-    [formatAmount, intl],
+    [
+      formatAmount,
+      govInfo?.veOgvTotalSupply,
+      intl,
+      isGovInfoLoading,
+      isLoading,
+    ],
   );
 
   const table = useReactTable({
@@ -156,36 +189,47 @@ export const LockupsTable = () => {
 
   return (
     <Stack>
-      <Table>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header, index) => (
-                <TableCell
-                  key={header.id}
-                  sx={{ width: header.getSize(), color: 'text.secondary' }}
-                >
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <Box sx={{ overflowX: 'auto' }}>
+        <Table sx={{ width: 1 }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header, index) => (
+                  <TableCell
+                    key={header.id}
+                    sx={{
+                      width: header.getSize(),
+                      textAlign: index === 0 ? 'start' : 'end',
+                      color: 'text.secondary',
+                    }}
+                  >
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell, index) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{
+                      textAlign: index === 0 ? 'start' : 'end',
+                    }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
       <TablePagination table={table} />
     </Stack>
   );

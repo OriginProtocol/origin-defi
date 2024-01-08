@@ -1,24 +1,6 @@
 query HoldersCount {
-  ogvAddressesConnection(orderBy: id_ASC, where: { balance_gt: 0 }) {
+  ogvAddressesConnection(orderBy: id_ASC, where: { staked_gt: 0 }) {
     totalCount
-  }
-}
-
-query UserVotes($address: String!) {
-  ogvProposalVotes(
-    where: { voter: { id_containsInsensitive: $address } }
-    orderBy: timestamp_DESC
-  ) {
-    id
-    weight
-    type
-    timestamp
-    txHash
-    proposal {
-      id
-      description
-      status
-    }
   }
 }
 

@@ -27,6 +27,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 
 import { useAggregatedHistory } from '../hooks';
@@ -120,12 +121,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
                 target="_blank"
                 rel="noopener noreferrer nofollow"
               >
-                <Box
-                  component="img"
-                  src="/images/icons/arrow-up-right-from-square.svg"
-                  alt="link"
-                  sx={{ height: 12, width: 12 }}
-                />
+                <FaArrowUpRightFromSquare fontSize={12} />
               </Link>
             )
           );
@@ -235,7 +231,7 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
       <TransactionIcon
         type={type}
         zIndex={1}
-        tokenIcon={tokens.mainnet.OETH.icon}
+        tokenSymbol={tokens.mainnet.OETH.symbol}
       />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>

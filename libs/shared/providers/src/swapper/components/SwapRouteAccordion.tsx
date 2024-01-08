@@ -1,11 +1,14 @@
+import { useState } from 'react';
+
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Stack,
   Typography,
 } from '@mui/material';
+import { ExpandIcon } from '@origin/shared/components';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useHandleSelectSwapRoute } from '../hooks';
@@ -17,6 +20,7 @@ import type { AccordionProps } from '@mui/material';
 
 export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
   const intl = useIntl();
+  const [showMore, setShowMore] = useState(false);
   const [{ estimatedSwapRoutes, selectedSwapRoute, trackEvent }] =
     useSwapState();
   const handleSelectSwapRoute = useHandleSelectSwapRoute();
@@ -24,6 +28,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
   return (
     <Accordion
       {...props}
+      expanded={showMore}
       sx={{
         px: 2,
         py: 1,
@@ -35,6 +40,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
     >
       <AccordionSummary
         onClick={() => {
+          setShowMore(not);
           trackEvent({ name: 'show_swap_routes' });
         }}
         sx={{
@@ -63,15 +69,9 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
-        <Box
-          component="img"
-          src="/images/arrow-down.svg"
-          alt="arrow"
-          sx={{
-            height: 12,
-            width: 12,
-            alignSelf: 'center',
-          }}
+        <ExpandIcon
+          isExpanded={showMore}
+          sx={{ width: 12, color: 'text.secondary' }}
         />
       </AccordionSummary>
       <AccordionDetails

@@ -1,10 +1,11 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
   ActivityIcon,
-  Mix,
   NotificationSnack,
+  TokenIcon,
 } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { FaArrowRight } from 'react-icons/fa6';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -81,27 +82,8 @@ export const RedeemNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <Box
-            component="img"
-            src={tokenIn.icon}
-            alt="token"
-            sx={{ width: 24, height: 24 }}
-          />
-          <Box
-            component="img"
-            src="images/arrow-right.svg"
-            alt="arrow"
-            sx={{ width: 12, height: 12 }}
-          />
-          <Mix
-            imgSrc={[
-              '/images/tokens/WETH.svg',
-              '/images/tokens/rETH.svg',
-              '/images/tokens/stETH.svg',
-              '/images/tokens/frxETH.svg',
-            ]}
-            size={1.5}
-          />
+          <TokenIcon symbol={tokenIn.symbol} />
+          <FaArrowRight fontSize={14} />
         </Stack>
       }
     />

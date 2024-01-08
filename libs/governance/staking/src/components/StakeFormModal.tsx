@@ -8,17 +8,20 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   Slider,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   BigIntInput,
   InfoTooltip,
   LoadingLabel,
+  TokenIcon,
 } from '@origin/shared/components';
-import { MILLISECONDS_IN_MONTH } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   ApprovalButton,
@@ -30,6 +33,8 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
+import { secondsInMonth } from 'date-fns/constants';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -43,6 +48,8 @@ import type { ButtonProps, DialogProps } from '@mui/material';
 export const StakeFormModal = (props: DialogProps) => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const queryClient = useQueryClient();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
@@ -86,7 +93,7 @@ export const StakeFormModal = (props: DialogProps) => {
     setAmount(info?.ogvBalance ?? 0n);
   };
 
-  const votinPowerPercent =
+  const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
   const showApprove =
@@ -106,23 +113,35 @@ export const StakeFormModal = (props: DialogProps) => {
     amount > (info?.ogvVeOgvAllowance ?? 0n);
 
   return (
-    <Dialog {...props} maxWidth="sm" fullWidth>
-      <DialogTitle>
+    <Dialog {...props} maxWidth="sm" fullWidth fullScreen={fullScreen}>
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
         {intl.formatMessage({ defaultMessage: 'Stake' })}
+        <IconButton
+          onClick={(evt) => {
+            props?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <CgClose fontSize={14} />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Stack>
+        <Stack pt={3}>
           <Stack
             direction="row"
             justifyContent="space-between"
-            spacing={2}
+            flexWrap="wrap"
+            rowGap={1}
             mb={1.5}
           >
-            <Typography fontWeight={700}>
+            <Typography fontWeight={700} mr={1}>
               {intl.formatMessage({ defaultMessage: 'Amount to Stake' })}
             </Typography>
             <Stack direction="row" spacing={1}>
-              <Typography color="text.secondary">
+              <Typography color="text.secondary" noWrap>
                 {intl.formatMessage(
                   {
                     defaultMessage: 'Balance: {balance}',
@@ -165,13 +184,17 @@ export const StakeFormModal = (props: DialogProps) => {
             endAdornment={
               <Stack
                 direction="row"
+                alignItems="center"
                 sx={{
                   borderLeft: (theme) => `1px solid ${theme.palette.grey[800]}`,
                   pl: 1,
                   gap: 1,
                 }}
               >
-                <Box component="img" src={tokens.mainnet.OGV.icon} width={28} />
+                <TokenIcon
+                  symbol={tokens.mainnet.OGV.symbol}
+                  sx={{ width: 28 }}
+                />
                 <Typography fontSize={20}>
                   {tokens.mainnet.OGV.symbol}
                 </Typography>
@@ -221,10 +244,12 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
             <Stack
               direction="row"
+              alignItems="baseline"
               justifyContent="space-between"
-              alignItems="center"
+              flexWrap="wrap"
+              rowGap={1}
             >
-              <Typography variant="h3">
+              <Typography variant="h3" minWidth={170} mr={1}>
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -238,9 +263,7 @@ export const StakeFormModal = (props: DialogProps) => {
                     )}
               </Typography>
               <Stack direction="row" spacing={1}>
-                <Typography
-                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
-                >
+                <Typography sx={{ color: 'text.secondary' }}>
                   {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
                 </Typography>
                 <Typography fontWeight={700} minWidth={92}>
@@ -300,11 +323,14 @@ export const StakeFormModal = (props: DialogProps) => {
             <Stack
               direction="row"
               justifyContent="space-between"
-              alignItems="center"
+              alignItems="baseline"
+              flexWrap="wrap"
+              rowGap={1}
             >
               <LoadingLabel
                 variant="h3"
                 sx={{
+                  mr: 1,
                   background:
                     'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
                   backgroundClip: 'text',
@@ -319,15 +345,13 @@ export const StakeFormModal = (props: DialogProps) => {
                   maximumFractionDigits: 2,
                 })}
               </LoadingLabel>
-              <Stack direction="row" spacing={1}>
-                <Typography
-                  sx={{ color: 'text.secondary', strong: { minWidth: 92 } }}
-                >
+              <Stack direction="row" flexWrap="wrap">
+                <Typography sx={{ color: 'text.secondary', mr: 1 }}>
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
                 </Typography>
-                <Typography fontWeight={700} minWidth={92}>
+                <Typography fontWeight={700} noWrap>
                   {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
@@ -363,14 +387,13 @@ export const StakeFormModal = (props: DialogProps) => {
               direction="row"
               justifyContent="space-between"
               alignItems="baseline"
+              flexWrap="wrap"
+              rowGap={1}
             >
-              <Stack direction="row" alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.veOGV.icon}
-                  width={28}
-                  mr={1}
-                  sx={{ transform: 'translateY(4px)' }}
+              <Stack direction="row" alignItems="baseline" mr={1}>
+                <TokenIcon
+                  symbol={tokens.mainnet.veOGV.symbol}
+                  sx={{ mr: 1, width: 28, transform: 'translateY(4px)' }}
                 />
                 <LoadingLabel
                   variant="h3"
@@ -390,7 +413,6 @@ export const StakeFormModal = (props: DialogProps) => {
                   sx={{
                     mr: 1,
                     color: 'text.secondary',
-                    strong: { minWidth: 92 },
                   }}
                 >
                   {intl.formatMessage({
@@ -398,15 +420,15 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </Typography>
                 <LoadingLabel fontWeight={700} isLoading={isLoading}>
-                  {votinPowerPercent <= 1e-4 && votinPowerPercent > 0 && `~ `}
-                  {intl.formatNumber(votinPowerPercent, {
+                  {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
+                  {intl.formatNumber(votingPowerPercent, {
                     style: 'percent',
                     minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
+                    maximumFractionDigits: 5,
                   })}
                 </LoadingLabel>
                 <InfoTooltip
-                  ml={0.75}
+                  sx={{ ml: 0.75 }}
                   tooltipLabel={intl.formatMessage({
                     defaultMessage:
                       'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
@@ -435,7 +457,7 @@ export const StakeFormModal = (props: DialogProps) => {
         <TransactionButton
           contract={tokens.mainnet.veOGV}
           functionName="stake"
-          args={[amount, BigInt(duration * MILLISECONDS_IN_MONTH)]}
+          args={[amount, BigInt(duration * secondsInMonth)]}
           disabled={stakeDisabled}
           variant="action"
           label={
@@ -458,11 +480,9 @@ export const StakeFormModal = (props: DialogProps) => {
             },
           )}
           activityEndIcon={
-            <Box
-              component="img"
-              src={tokens.mainnet.veOGV.icon}
-              width={24}
-              sx={{ transform: 'translateY(4px)' }}
+            <TokenIcon
+              symbol={tokens.mainnet.veOGV.symbol}
+              sx={{ width: 28, transform: 'translateY(4px)' }}
             />
           }
           onSuccess={() => {

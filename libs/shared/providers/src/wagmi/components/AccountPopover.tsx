@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Divider,
   Popover,
@@ -8,7 +7,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { LinkIcon, WalletIcon } from '@origin/shared/components';
+import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { map, prop } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -104,19 +103,14 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
           </Button>
         </Stack>
         <Divider />
-        <Stack
-          alignItems="center"
-          gap={1.5}
-          sx={{ px: 2, py: 3 }}
-          direction="row"
-        >
-          <WalletIcon walletName={connector?.name} />
-          <AddressLabel address={address} short />
-          <LinkIcon
-            size={10}
-            url={`https://etherscan.io/address/${address}`}
-            sx={{ transform: 'translateY(5%)' }}
+        <Stack alignItems="center" sx={{ px: 2, py: 3 }} direction="row">
+          <WalletIcon
+            walletName={connector?.name}
+            sx={{ width: 20, height: 20 }}
           />
+          <ExternalLink href={`https://etherscan.io/address/${address}`}>
+            <AddressLabel address={address} short sx={{ ml: 1.5 }} />
+          </ExternalLink>
         </Stack>
         <Divider />
         <Stack sx={{ px: 2, py: 3 }} gap={2}>
@@ -160,7 +154,7 @@ function BalanceRow({
 
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
-      <Box component="img" src={token.icon} sx={{ width: 20 }} />
+      <TokenIcon symbol={token.symbol} sx={{ width: 20 }} />
       <Typography>
         {isBalanceLoading ? (
           <Skeleton width={38} />

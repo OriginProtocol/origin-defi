@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   Card,
   CardActions,
@@ -9,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { Skeleton } from '@mui/material';
+import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -61,12 +61,12 @@ export const UserVotingPowerCard = (props: CardProps) => {
       >
         <Typography>{tokens.mainnet.veOGV.symbol}</Typography>
         <Stack direction="row" spacing={1}>
-          <Box
-            component="img"
-            src={tokens.mainnet.veOGV.icon}
+          <TokenIcon
+            symbol={tokens.mainnet.veOGV.symbol}
             width={20}
             sx={{ transform: 'translateY(4px)' }}
           />
+
           <Typography>
             {isLoading ? <Skeleton width={60} /> : formatAmount(balance)}
           </Typography>

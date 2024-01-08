@@ -1,5 +1,5 @@
 import { Box, Button, Stack, Typography } from '@mui/material';
-import { Chip } from '@origin/shared/components';
+import { Chip, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -8,7 +8,7 @@ import type { StackProps } from '@mui/material';
 const tags = [
   {
     label: defineMessage({ defaultMessage: 'Ethereum network' }),
-    icon: tokens.mainnet.ETH.icon,
+    symbol: tokens.mainnet.ETH.symbol,
   },
   {
     label: defineMessage({ defaultMessage: 'Governance' }),
@@ -40,7 +40,7 @@ export const StakeOGVCard = (props: StackProps) => {
             <Chip
               key={intl.formatMessage(tag.label)}
               label={intl.formatMessage(tag.label)}
-              icon={tag.icon}
+              symbol={tag.symbol}
               borderColor="grey.200"
             />
           ))}
@@ -87,12 +87,11 @@ export const StakeOGVCard = (props: StackProps) => {
         </Button>
       </Stack>
       <Stack width={0.25} justifyContent="center" alignItems="center">
-        <Box
-          component="img"
-          src={tokens.mainnet.OGV.icon}
+        <TokenIcon
+          symbol={tokens.mainnet.OGV.symbol}
           width={216}
           height={216}
-          zIndex={1}
+          sx={{ zIndex: 1 }}
         />
       </Stack>
       <Box

@@ -30,7 +30,7 @@ const NotificationsWrapped = ({ children, ...rest }: StackProps) => {
             position: 'fixed',
             top: (theme) => theme.spacing(8),
             right: (theme) => theme.spacing(1),
-            zIndex: (theme) => theme.zIndex.drawer + 1,
+            zIndex: (theme) => theme.zIndex.modal + 1,
             ...rest?.sx,
           }}
         >

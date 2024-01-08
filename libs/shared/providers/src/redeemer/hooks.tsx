@@ -30,8 +30,10 @@ export const useHandleAmountInChange = () => {
     (amount: bigint) => {
       setRedeemState(
         produce((state) => {
-          state.amountIn = amount;
-          state.isEstimateLoading = amount !== 0n;
+          if (state.amountIn !== amount) {
+            state.amountIn = amount;
+            state.isEstimateLoading = amount !== 0n;
+          }
         }),
       );
     },

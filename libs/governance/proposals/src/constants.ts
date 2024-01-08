@@ -1,7 +1,7 @@
 import { OgvProposalState } from '@origin/governance/shared';
 import { defineMessage } from 'react-intl';
 
-export const governanceChoices = ['For', 'Against', 'Abstain'] as const;
+export const governanceChoices = ['For', 'Against'] as const;
 
 export const statusLabels = {
   [OgvProposalState.Active]: defineMessage({ defaultMessage: 'Active' }),
@@ -24,7 +24,16 @@ export const statusLabels = {
   [OgvProposalState.Succeeded]: defineMessage({
     defaultMessage: 'Succeeded',
   }),
+  active: defineMessage({
+    defaultMessage: 'Active',
+  }),
   closed: defineMessage({
     defaultMessage: 'Closed',
   }),
+};
+
+export const governanceSupport = {
+  Against: 0,
+  For: 1,
+  Abstain: 2,
 };

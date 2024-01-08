@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Chip, Mix, ValueLabel } from '@origin/shared/components';
+import { Chip, Mix, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { useFormat, usePrices } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -49,7 +49,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           <Chip
             key={intl.formatMessage(tag.label)}
             label={intl.formatMessage(tag.label)}
-            icon={tag.icon}
+            symbol={tag.symbol}
           />
         ))}
       </Stack>
@@ -65,9 +65,8 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
             zIndex: 0,
           }}
         />
-        <Box
-          component="img"
-          src={product.token.icon}
+        <TokenIcon
+          symbol={product.token.symbol}
           sx={{ width: 68, height: 68, zIndex: 1 }}
         />
       </Stack>
@@ -142,7 +141,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Collateral' })}
-          value={<Mix imgSrc={product.collaterals.map((t) => t.icon)} />}
+          value={<Mix imgSrc={product.collaterals.map((t) => t.symbol)} />}
           sx={{
             width: 0.33,
             py: 2,

@@ -57,7 +57,17 @@ export const VoteDelegationCard = (props: CardProps) => {
   return (
     <Card {...props}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Vote Delegation' })}
+        title={
+          <Typography>
+            {intl.formatMessage({ defaultMessage: 'Vote Delegation' })}&nbsp;
+            <InfoTooltip
+              tooltipLabel={intl.formatMessage({
+                defaultMessage:
+                  'veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on.',
+              })}
+            />
+          </Typography>
+        }
       />
       {isConnected ? (
         isUserInfoLoading ? (
@@ -89,13 +99,7 @@ export const VoteDelegationCard = (props: CardProps) => {
           <>
             <CardContent>
               <Typography color="text.secondary">
-                {intl.formatMessage({ defaultMessage: 'Delegating to' })}&nbsp;
-                <InfoTooltip
-                  tooltipLabel={intl.formatMessage({
-                    defaultMessage:
-                      'veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on.',
-                  })}
-                />
+                {intl.formatMessage({ defaultMessage: 'Delegating to' })}
               </Typography>
               <Stack direction="row" alignItems="center" spacing={1} pt={2}>
                 {isSelfDelegating ? (
@@ -123,7 +127,7 @@ export const VoteDelegationCard = (props: CardProps) => {
             </CardContent>
             <CardContent sx={{ pt: 0, pl: 2 }}>
               {isSelfDelegating ? (
-                <DelegateButton variant="outlined">
+                <DelegateButton variant="outlined" color="secondary">
                   {intl.formatMessage({
                     defaultMessage: 'Delegate my voting power',
                   })}
@@ -134,6 +138,7 @@ export const VoteDelegationCard = (props: CardProps) => {
                   functionName="delegate"
                   args={[address]}
                   variant="outlined"
+                  color="secondary"
                   label={intl.formatMessage({
                     defaultMessage: 'Delegate to self',
                   })}
@@ -168,15 +173,8 @@ export const VoteDelegationCard = (props: CardProps) => {
               <CardContent sx={{ pt: 0 }}>
                 <Typography color="text.secondary">
                   {intl.formatMessage({
-                    defaultMessage: 'Delegated by others',
+                    defaultMessage: 'Delegated to me',
                   })}
-                  &nbsp;
-                  <InfoTooltip
-                    tooltipLabel={intl.formatMessage({
-                      defaultMessage:
-                        'veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on proposals the delegator has not voted on.',
-                    })}
-                  />
                 </Typography>
                 {isDelegatorsLoading ? (
                   <Box

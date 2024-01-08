@@ -1,4 +1,5 @@
-import { Box, Link } from '@mui/material';
+import { Link, SvgIcon } from '@mui/material';
+import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 
 import type { LinkProps } from '@mui/material';
 
@@ -23,12 +24,9 @@ export const ExternalLink = ({
       }}
     >
       {children}
-      <Box
-        component="img"
-        src="images/icons/arrow-up-right-from-square.svg"
-        alt="link"
-        sx={{ height: iconSize, width: iconSize }}
-      />
+      <SvgIcon sx={{ height: iconSize, width: iconSize }}>
+        <FaArrowUpRightFromSquare />
+      </SvgIcon>
     </Link>
   );
 };

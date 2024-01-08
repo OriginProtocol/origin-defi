@@ -8,7 +8,6 @@ export type Contract<Abi = any> = {
   chainId: number;
   abi: Abi;
   name?: string;
-  icon?: string;
 };
 
 export type Token<Abi = any> = {

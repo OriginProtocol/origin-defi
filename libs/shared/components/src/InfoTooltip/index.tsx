@@ -1,16 +1,17 @@
-import { Box, Tooltip, Typography } from '@mui/material';
+import { SvgIcon, Tooltip, Typography } from '@mui/material';
+import { MdOutlineInfo } from 'react-icons/md';
 
-import type { BoxProps } from '@mui/material';
+import type { SvgIconProps } from '@mui/material';
 
 export type InfoTooltipProps = {
   tooltipLabel: string;
   iconSize?: number;
   iconColor?: string;
-} & BoxProps;
+} & SvgIconProps;
 
 export function InfoTooltip({
   tooltipLabel,
-  iconSize = 12,
+  iconSize = 14,
   iconColor = 'text.secondary',
   ...rest
 }: InfoTooltipProps) {
@@ -22,19 +23,17 @@ export function InfoTooltip({
         </Typography>
       }
     >
-      <Box
+      <SvgIcon
         {...rest}
-        component="img"
-        src="/images/info.svg"
-        alt="info"
         sx={{
-          width: (theme) => theme.typography.pxToRem(iconSize),
-          height: (theme) => theme.typography.pxToRem(iconSize),
+          width: iconSize,
+          height: iconSize,
           color: iconColor,
-
           ...rest?.sx,
         }}
-      ></Box>
+      >
+        <MdOutlineInfo />
+      </SvgIcon>
     </Tooltip>
   );
 }

@@ -1,16 +1,16 @@
 import { useState } from 'react';
 
 import {
-  Box,
   Dialog,
   DialogContent,
   DialogTitle,
+  IconButton,
   Link,
   Stack,
   Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -18,6 +18,7 @@ import {
   useFormat,
 } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
+import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
@@ -30,8 +31,19 @@ export const ClaimRewardsModal = (props: DialogProps) => {
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
-      <DialogTitle>
-        {intl.formatMessage({ defaultMessage: 'Collect rewards' })}
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
+        <IconButton
+          onClick={(evt) => {
+            props?.onClose?.(evt, 'backdropClick');
+          }}
+        >
+          <CgClose fontSize={14} />
+        </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Stack spacing={0.75}>
@@ -39,7 +51,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             sx={{ px: 3, py: 2, borderRadius: 1, backgroundColor: 'grey.900' }}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'Available to claim' })}
+              {intl.formatMessage({ defaultMessage: 'Available to Collect' })}
             </Typography>
             <Stack
               direction="row"
@@ -55,11 +67,9 @@ export const ClaimRewardsModal = (props: DialogProps) => {
                 )}
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
-                <Box
-                  component="img"
-                  src={tokens.mainnet.OGV.icon}
-                  width={30}
-                  sx={{ transform: 'translateY(4px)' }}
+                <TokenIcon
+                  symbol={tokens.mainnet.OGV.symbol}
+                  sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
                   {tokens.mainnet.OGV.symbol}
@@ -68,15 +78,14 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-
         <TransactionButton
           contract={tokens.mainnet.veOGV}
           functionName="collectRewards"
           args={undefined}
           variant="action"
-          label={intl.formatMessage({ defaultMessage: 'Collect rewards' })}
+          label={intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
           activityTitle={intl.formatMessage({
-            defaultMessage: 'Collect rewards',
+            defaultMessage: 'Collect Rewards',
           })}
           activitySubtitle={intl.formatMessage(
             {
