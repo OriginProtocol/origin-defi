@@ -26,7 +26,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
+import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -140,7 +140,6 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={isPast(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
               </ExtendButton>

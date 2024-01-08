@@ -49,9 +49,9 @@ export type ExtendFormModalProps = {
 
 export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const amount = BigInt(lockup.amount);
-  const initialMonthDuration = differenceInMonths(
-    new Date(lockup.end),
-    new Date(),
+  const initialMonthDuration = Math.max(
+    0,
+    differenceInMonths(new Date(lockup.end), new Date()),
   );
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
