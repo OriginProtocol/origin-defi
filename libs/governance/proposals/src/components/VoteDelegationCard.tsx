@@ -59,7 +59,8 @@ export const VoteDelegationCard = (props: CardProps) => {
       <CardHeader
         title={
           <Typography>
-            {intl.formatMessage({ defaultMessage: 'Vote Delegation' })}&nbsp;
+            {intl.formatMessage({ defaultMessage: 'On-chain Vote Delegation' })}
+            &nbsp;
             <InfoTooltip
               tooltipLabel={intl.formatMessage({
                 defaultMessage:

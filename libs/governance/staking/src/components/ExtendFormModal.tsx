@@ -28,7 +28,12 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
-import { addMonths, differenceInMonths, formatDuration } from 'date-fns';
+import {
+  addMonths,
+  differenceInMonths,
+  formatDuration,
+  isPast,
+} from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
 import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
@@ -109,7 +114,9 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     duration === initialMonthDuration;
   const extendLockupEnd =
     duration === initialMonthDuration
-      ? new Date(lockup.end)
+      ? isPast(new Date(lockup.end))
+        ? new Date()
+        : new Date(lockup.end)
       : addMonths(new Date(), duration);
 
   return (

@@ -467,9 +467,6 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
-  "ck/Gd6": {
-    "defaultMessage": "Vote Delegation"
-  },
   "d0O17Z": {
     "defaultMessage": "2y"
   },
@@ -559,6 +556,9 @@
   },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
+  },
+  "nPWAZD": {
+    "defaultMessage": "On-chain Vote Delegation"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
