@@ -26,7 +26,7 @@ import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
-import { WagmiConfig } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';
 import { routes } from './routes';
@@ -52,9 +52,9 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [QueryClientProvider, { client: queryClient }],
       [ThemeProvider, { theme }],
-      [WagmiConfig, { config: wagmiConfig }],
+      [WagmiProvider, { config: wagmiConfig }],
+      [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
       [NotificationsProvider],
       [ActivityProvider],

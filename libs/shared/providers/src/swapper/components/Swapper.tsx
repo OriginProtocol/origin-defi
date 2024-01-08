@@ -27,12 +27,12 @@ import {
 } from '@origin/shared/utils';
 import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
-import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
+import { mainnet, useAccount, useNetwork } from 'wagmi';
 
 import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
-import { ConnectedButton } from '../../wagmi';
+import { ConnectedButton, useWatchContract } from '../../wagmi';
 import {
   useHandleAmountInChange,
   useHandleApprove,
@@ -101,18 +101,22 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
-    address,
-    token: tokenIn.address,
-    watch: true,
-    scopeKey: 'swap_balance',
-  });
-  const { data: balTokenOut, isLoading: isBalTokenOutLoading } = useBalance({
-    address,
-    token: tokenOut.address,
-    watch: true,
-    scopeKey: 'swap_balance',
-  });
+
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchContract(
+    {
+      address: tokenIn.address,
+      abi: tokenIn.abi,
+      functionName: 'balanceOf',
+      args: [address],
+    },
+  );
+  const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
+    useWatchContract({
+      address: tokenOut.address,
+      abi: tokenOut.abi,
+      functionName: 'balanceOf',
+      args: [address],
+    });
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -144,14 +148,14 @@ function SwapperWrapped({
     isConnected &&
     amountIn > 0n &&
     !isBalTokenInLoading &&
-    balTokenIn.value >= amountIn &&
+    (balTokenIn as unknown as bigint) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
     selectedSwapRoute?.allowanceAmount < amountIn &&
     allowance < amountIn;
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > balTokenIn?.value
+      : amountIn > (balTokenIn as unknown as bigint)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : !isNilOrEmpty(selectedSwapRoute)
           ? intl.formatMessage(
@@ -164,7 +168,7 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isApprovalLoading ||
     isApprovalWaitingForSignature ||
-    amountIn > balTokenIn?.value;
+    amountIn > (balTokenIn as unknown as bigint);
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
@@ -172,7 +176,7 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isSwapLoading ||
     isSwapWaitingForSignature ||
-    amountIn > balTokenIn?.value ||
+    amountIn > (balTokenIn as unknown as bigint) ||
     amountIn === 0n;
 
   return (
@@ -219,7 +223,7 @@ function SwapperWrapped({
                 amount={amountIn}
                 decimals={tokenIn.decimals}
                 onAmountChange={handleAmountInChange}
-                balance={balTokenIn?.value}
+                balance={balTokenIn as unknown as bigint}
                 isBalanceLoading={isBalTokenInLoading}
                 token={tokenIn}
                 onTokenClick={() => {
@@ -269,7 +273,7 @@ function SwapperWrapped({
               <TokenInput
                 amount={amountOut}
                 decimals={tokenOut.decimals}
-                balance={balTokenOut?.value}
+                balance={balTokenOut as unknown as bigint}
                 isAmountLoading={isSwapRoutesLoading}
                 isBalanceLoading={isBalTokenOutLoading}
                 token={tokenOut}

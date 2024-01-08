@@ -20,11 +20,11 @@ import { ArrowDown } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
 import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
-import { ConnectedButton } from '../../wagmi';
+import { ConnectedButton, useWatchContract } from '../../wagmi';
 import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
@@ -73,11 +73,11 @@ function RedeemerWrapped({
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
-    token: tokenIn.address,
-    watch: true,
-    scopeKey: 'redeem_balance',
+  const { data: balance, isLoading: isBalanceLoading } = useWatchContract({
+    address: tokenIn.address,
+    abi: tokenIn.abi,
+    functionName: 'balanceOf',
+    args: [address],
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
@@ -98,7 +98,7 @@ function RedeemerWrapped({
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > balance?.value
+      : amountIn > (balance as unknown as bigint)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
@@ -106,7 +106,7 @@ function RedeemerWrapped({
     isEstimateLoading ||
     isRedeemWaitingForSignature ||
     isRedeemLoading ||
-    amountIn > balance?.value ||
+    amountIn > (balance as unknown as bigint) ||
     amountIn === 0n;
 
   return (
@@ -147,7 +147,7 @@ function RedeemerWrapped({
             <TokenInput
               amount={amountIn}
               onAmountChange={handleAmountInChange}
-              balance={balance?.value}
+              balance={balance as unknown as bigint}
               isBalanceLoading={isBalanceLoading}
               token={tokenIn}
               isTokenClickDisabled

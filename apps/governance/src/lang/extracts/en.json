@@ -110,6 +110,9 @@
   "5jeq8P": {
     "defaultMessage": "Unknown"
   },
+  "5lVaeB": {
+    "defaultMessage": "No description"
+  },
   "5y98eS": {
     "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
   },
@@ -130,9 +133,6 @@
   },
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
-  },
-  "6lc5Lh": {
-    "defaultMessage": "Transaction Time"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
@@ -281,9 +281,6 @@
   "LOghU6": {
     "defaultMessage": "Succeeded"
   },
-  "LRJJAc": {
-    "defaultMessage": "Transaction Hash"
-  },
   "LsLfrw": {
     "defaultMessage": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
   },
@@ -425,9 +422,6 @@
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
-  "Y7WXOT": {
-    "defaultMessage": "Transaction history"
-  },
   "YGiRwq": {
     "defaultMessage": "Voting Power"
   },
@@ -562,9 +556,6 @@
   },
   "m/L3sK": {
     "defaultMessage": "Approving"
-  },
-  "m1czzY": {
-    "defaultMessage": "Event"
   },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"

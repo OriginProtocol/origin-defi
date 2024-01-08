@@ -43,7 +43,7 @@ export const usePrices = (
   return useQuery({
     queryKey: ['usePrices'],
     staleTime: import.meta.env.DEV ? 1000 * 60 * 30 : 1000 * 30,
-    cacheTime: import.meta.env.DEV ? 1000 * 60 * 60 : 1000 * 60,
+    gcTime: import.meta.env.DEV ? 1000 * 60 * 60 : 1000 * 60,
     queryFn: async () => {
       const res = await Promise.allSettled([
         readContracts({

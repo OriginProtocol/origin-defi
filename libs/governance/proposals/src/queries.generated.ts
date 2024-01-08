@@ -1,6 +1,6 @@
 import * as Types from '@origin/governance/shared';
 
-import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, InfiniteData } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/governance/shared';
 export type ProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -22,6 +22,7 @@ export type UserVotesQueryVariables = Types.Exact<{
 export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, type: Types.OgvVoteType, timestamp: string, proposal: { __typename?: 'OGVProposal', id: string, description?: string | null, status: Types.OgvProposalState } }> };
 
 
+
 export const ProposalsDocument = `
     query Proposals {
   ogvProposals(
@@ -41,41 +42,49 @@ export const ProposalsDocument = `
   }
 }
     `;
+
 export const useProposalsQuery = <
       TData = ProposalsQuery,
       TError = unknown
     >(
       variables?: ProposalsQueryVariables,
-      options?: UseQueryOptions<ProposalsQuery, TError, TData>
-    ) =>
-    useQuery<ProposalsQuery, TError, TData>(
-      variables === undefined ? ['Proposals'] : ['Proposals', variables],
-      graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables),
-      options
-    );
-
-useProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => variables === undefined ? ['Proposals'] : ['Proposals', variables];
-;
-
-export const useInfiniteProposalsQuery = <
-      TData = ProposalsQuery,
-      TError = unknown
-    >(
-      variables?: ProposalsQueryVariables,
-      options?: UseInfiniteQueryOptions<ProposalsQuery, TError, TData>
-    ) =>{
+      options?: Omit<UseQueryOptions<ProposalsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProposalsQuery, TError, TData>['queryKey'] }
+    ) => {
     
-    return useInfiniteQuery<ProposalsQuery, TError, TData>(
-      variables === undefined ? ['Proposals.infinite'] : ['Proposals.infinite', variables],
-      (metaData) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      options
+    return useQuery<ProposalsQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['Proposals'] : ['Proposals', variables],
+    queryFn: graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables),
+    ...options
+  }
     )};
 
+useProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => variables === undefined ? ['Proposals'] : ['Proposals', variables];
+
+export const useInfiniteProposalsQuery = <
+      TData = InfiniteData<ProposalsQuery>,
+      TError = unknown
+    >(
+      variables: ProposalsQueryVariables,
+      options: Omit<UseInfiniteQueryOptions<ProposalsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<ProposalsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useInfiniteQuery<ProposalsQuery, TError, TData>(
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? variables === undefined ? ['Proposals.infinite'] : ['Proposals.infinite', variables],
+      queryFn: (metaData) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
+    )};
 
 useInfiniteProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => variables === undefined ? ['Proposals.infinite'] : ['Proposals.infinite', variables];
-;
+
 
 useProposalsQuery.fetcher = (variables?: ProposalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables, options);
+
 export const ProposalDocument = `
     query Proposal($proposalId: String!) {
   ogvProposalById(id: $proposalId) {
@@ -111,41 +120,49 @@ export const ProposalDocument = `
   }
 }
     `;
+
 export const useProposalQuery = <
       TData = ProposalQuery,
       TError = unknown
     >(
       variables: ProposalQueryVariables,
-      options?: UseQueryOptions<ProposalQuery, TError, TData>
-    ) =>
-    useQuery<ProposalQuery, TError, TData>(
-      ['Proposal', variables],
-      graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<ProposalQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProposalQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ProposalQuery, TError, TData>(
+      {
+    queryKey: ['Proposal', variables],
+    queryFn: graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables),
+    ...options
+  }
+    )};
 
 useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', variables];
-;
 
 export const useInfiniteProposalQuery = <
-      TData = ProposalQuery,
+      TData = InfiniteData<ProposalQuery>,
       TError = unknown
     >(
       variables: ProposalQueryVariables,
-      options?: UseInfiniteQueryOptions<ProposalQuery, TError, TData>
-    ) =>{
+      options: Omit<UseInfiniteQueryOptions<ProposalQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<ProposalQuery, TError, TData>['queryKey'] }
+    ) => {
     
     return useInfiniteQuery<ProposalQuery, TError, TData>(
-      ['Proposal.infinite', variables],
-      (metaData) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      options
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['Proposal.infinite', variables],
+      queryFn: (metaData) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
     )};
 
-
 useInfiniteProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal.infinite', variables];
-;
+
 
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
+
 export const UserVotesDocument = `
     query UserVotes($address: String!) {
   ogvProposalVotes(
@@ -163,38 +180,45 @@ export const UserVotesDocument = `
   }
 }
     `;
+
 export const useUserVotesQuery = <
       TData = UserVotesQuery,
       TError = unknown
     >(
       variables: UserVotesQueryVariables,
-      options?: UseQueryOptions<UserVotesQuery, TError, TData>
-    ) =>
-    useQuery<UserVotesQuery, TError, TData>(
-      ['UserVotes', variables],
-      graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<UserVotesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserVotesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<UserVotesQuery, TError, TData>(
+      {
+    queryKey: ['UserVotes', variables],
+    queryFn: graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables),
+    ...options
+  }
+    )};
 
 useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes', variables];
-;
 
 export const useInfiniteUserVotesQuery = <
-      TData = UserVotesQuery,
+      TData = InfiniteData<UserVotesQuery>,
       TError = unknown
     >(
       variables: UserVotesQueryVariables,
-      options?: UseInfiniteQueryOptions<UserVotesQuery, TError, TData>
-    ) =>{
+      options: Omit<UseInfiniteQueryOptions<UserVotesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<UserVotesQuery, TError, TData>['queryKey'] }
+    ) => {
     
     return useInfiniteQuery<UserVotesQuery, TError, TData>(
-      ['UserVotes.infinite', variables],
-      (metaData) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      options
+      (() => {
+    const { queryKey: optionsQueryKey, ...restOptions } = options;
+    return {
+      queryKey: optionsQueryKey ?? ['UserVotes.infinite', variables],
+      queryFn: (metaData) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
+      ...restOptions
+    }
+  })()
     )};
 
-
 useInfiniteUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes.infinite', variables];
-;
+
 
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
