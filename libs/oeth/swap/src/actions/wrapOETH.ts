@@ -2,14 +2,13 @@ import { tokens, whales } from '@origin/shared/contracts';
 import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { erc20Abi, formatUnits } from 'viem';
 
 import type {
   Allowance,
@@ -85,7 +84,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'allowance',
     args: [address, tokens.mainnet.wOETH.address],
   });
@@ -109,7 +108,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: erc20Abi,
       functionName: 'approve',
       args: [tokens.mainnet.wOETH.address, amountIn],
       account: address,
@@ -162,7 +161,7 @@ const estimateRoute: EstimateRoute = async ({
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
     args: [tokens.mainnet.wOETH.address, amountIn],
   });

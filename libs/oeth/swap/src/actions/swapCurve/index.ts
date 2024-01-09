@@ -5,14 +5,13 @@ import {
   subtractSlippage,
 } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
   readContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, maxUint256 } from 'viem';
+import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../../constants';
 import { curveRoutes } from './curveRoutes';
@@ -116,7 +115,7 @@ const allowance: Allowance = async ({ tokenIn, tokenOut, curve }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'allowance',
     args: [address, curve.CurveRegistryExchange.address],
   });
@@ -141,7 +140,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: erc20Abi,
       functionName: 'approve',
       args: [curve.CurveRegistryExchange.address, amountIn],
       account: address,
@@ -206,7 +205,7 @@ const estimateRoute: EstimateRoute = async ({
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
     args: [curve.CurveRegistryExchange.address, amountIn],
   });

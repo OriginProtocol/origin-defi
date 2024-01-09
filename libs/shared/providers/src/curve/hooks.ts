@@ -1,6 +1,7 @@
 import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
-import { mainnet, readContracts } from 'wagmi';
+import { readContracts } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { CurveFactoryABI } from './abis/CurveFactory';
 import { CurveRegistryExchangeABI } from './abis/CurveRegistryExchange';

@@ -27,7 +27,8 @@ import {
 } from '@origin/shared/utils';
 import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
-import { mainnet, useAccount, useNetwork } from 'wagmi';
+import { useAccount } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
@@ -78,8 +79,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage, set: setSlippage } = useSlippage();
-  const { address, isConnected } = useAccount();
-  const { chain } = useNetwork();
+  const { address, isConnected, chain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [

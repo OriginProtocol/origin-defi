@@ -3,7 +3,6 @@ import { contracts } from '@origin/shared/contracts';
 import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
-  erc20ABI,
   getAccount,
   getPublicClient,
   prepareWriteContract,
@@ -11,7 +10,7 @@ import {
   readContracts,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, parseUnits } from 'viem';
+import { erc20Abi, formatUnits, parseUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -136,7 +135,7 @@ const allowance: Allowance = async ({ tokenIn }) => {
 
   const allowance = await readContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OETHVault.address],
   });
@@ -160,7 +159,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   try {
     approvalEstimate = await publicClient.estimateContractGas({
       address: tokenIn.address,
-      abi: erc20ABI,
+      abi: erc20Abi,
       functionName: 'approve',
       args: [contracts.mainnet.OETHVault.address, amountIn],
       account: address,
@@ -218,7 +217,7 @@ const estimateRoute: EstimateRoute = async ({
 const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHVault.address, amountIn],
   });
