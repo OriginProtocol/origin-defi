@@ -97,7 +97,9 @@ export const StakingHeader = () => {
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
-                value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
+                value={intl.formatNumber(
+                  holdersCount?.ogvAddressesConnection?.totalCount ?? 0,
+                )}
                 isLoading={isHoldersCountLoading}
                 {...valueLabelProps}
               />

@@ -5,7 +5,6 @@ import {
   DialogContent,
   DialogTitle,
   IconButton,
-  Link,
   Stack,
   Typography,
 } from '@mui/material';
@@ -107,34 +106,6 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             });
           }}
         />
-        <Stack
-          sx={{ px: 3, py: 2, borderRadius: 1, backgroundColor: 'grey.900' }}
-        >
-          <Typography>
-            {intl.formatMessage(
-              {
-                defaultMessage:
-                  'If you plan to restake your rewards, you can save on transaction fees by selecting the {restake} option.',
-              },
-              {
-                restake: (
-                  <Link
-                    onClick={() => {
-                      props?.onClose?.(null, 'backdropClick');
-                    }}
-                    sx={{
-                      cursor: 'pointer',
-                      color: 'secondary.main',
-                      ':hover': { textDecoration: 'underline' },
-                    }}
-                  >
-                    {intl.formatMessage({ defaultMessage: 'Extend' })}
-                  </Link>
-                ),
-              },
-            )}
-          </Typography>
-        </Stack>
       </DialogContent>
     </Dialog>
   );

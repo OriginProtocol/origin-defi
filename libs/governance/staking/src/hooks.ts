@@ -97,7 +97,7 @@ export const useMyVApy = () => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: [useMyVApy, address],
+    queryKey: ['useMyVApy', address],
     queryFn: async () => {
       const data = await Promise.all([
         queryClient.fetchQuery<UserLockupsQuery>(

@@ -1223,12 +1223,6 @@
       "value": "Connect Wallet"
     }
   ],
-  "ck/Gd6": [
-    {
-      "type": 0,
-      "value": "Vote Delegation"
-    }
-  ],
   "d0O17Z": [
     {
       "type": 0,
@@ -1483,6 +1477,12 @@
     {
       "type": 1,
       "value": "symbol"
+    }
+  ],
+  "nPWAZD": [
+    {
+      "type": 0,
+      "value": "On-chain Vote Delegation"
     }
   ],
   "nc8QpJ": [
