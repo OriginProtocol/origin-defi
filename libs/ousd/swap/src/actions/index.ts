@@ -15,7 +15,7 @@ import type { SwapAction } from '../types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
-  estimateAmount: async ({ amountIn }) => {
+  estimateAmount: async (config, { amountIn }) => {
     console.log('Amount estimation not implemented');
 
     return amountIn;
@@ -25,7 +25,7 @@ const defaultApi: SwapApi = {
 
     return 0n;
   },
-  estimateRoute: async ({ amountIn, route }) => {
+  estimateRoute: async (config, { amountIn, route }) => {
     console.log('Route estimation not implemented');
 
     return {

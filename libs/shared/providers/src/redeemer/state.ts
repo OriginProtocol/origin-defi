@@ -9,6 +9,7 @@ import { produce } from 'immer';
 import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
 import { formatUnits, isAddressEqual } from 'viem';
+import { useConfig } from 'wagmi';
 
 import { usePushNotification } from '../notifications';
 import { useSlippage } from '../slippage';
@@ -40,13 +41,14 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
     });
     const intl = useIntl();
     const queryClient = useQueryClient();
+    const config = useConfig();
     const pushNotification = usePushNotification();
     const { value: slippage } = useSlippage();
 
     const { data: splitAddresses } = useQuery({
       queryKey: ['assetsDecimals'],
       queryFn: async () => {
-        const assets = await readContract({
+        const assets = await readContract(config, {
           address: vaultContract.address,
           abi: vaultContract.abi,
           functionName: 'getAllAssets',
@@ -91,7 +93,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
           splitEstimates = await queryClient.fetchQuery({
             queryKey: ['splitEstimates', state.amountIn.toString()],
             queryFn: async () =>
-              readContract({
+              readContract(config, {
                 address: vaultContract.address,
                 abi: vaultContract.abi,
                 functionName: 'calculateRedeemOutputs',
@@ -127,8 +129,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         }, 0n);
 
         let gasEstimate = 0n;
-        const publicClient = getPublicClient();
-        const { address } = getAccount();
+        const publicClient = getPublicClient(config);
+        const { address } = getAccount(config);
 
         const minAmountOut = subtractSlippage(
           total,

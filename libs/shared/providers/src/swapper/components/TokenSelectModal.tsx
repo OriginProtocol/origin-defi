@@ -10,10 +10,12 @@ import {
 import { TokenIcon } from '@origin/shared/components';
 import { ascend, descend, prop, sortWith } from 'ramda';
 import { FaCheck } from 'react-icons/fa6';
-import { useAccount, useBalance } from 'wagmi';
+import { erc20Abi, formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
+import { useWatchContract } from '../../wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -85,13 +87,18 @@ type TokenListItemProps = {
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
   const { formatAmount, formatCurrency } = useFormat();
   const { address } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
-    token: token.address,
+  const { data: balance, isLoading: isBalanceLoading } = useWatchContract({
+    address: token.address,
+    abi: erc20Abi,
+    functionName: 'balanceOf',
+    args: [address],
+    query: {
+      enabled: !!address,
+    },
   });
   const { data: prices } = usePrices();
 
-  const bal = parseFloat(balance?.formatted ?? '0');
+  const bal = +formatUnits(balance as unknown as bigint, token.decimals);
   const balUsd = bal * (prices?.[token.symbol] ?? 0);
 
   return (
@@ -133,7 +140,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
-              formatAmount(balance?.value, balance?.decimals)
+              formatAmount(balance as unknown as bigint, token.decimals)
             )}
           </Typography>
           <Typography color="text.secondary" variant="body2">

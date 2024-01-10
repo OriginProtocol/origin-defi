@@ -1,5 +1,5 @@
 import { tokens, whales } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
@@ -19,12 +19,12 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({ amountIn }) => {
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
-  const data = await readContract({
+  const data = await readContract(config, {
     address: tokens.mainnet.wOUSD.address,
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToAssets',
@@ -34,16 +34,16 @@ const estimateAmount: EstimateAmount = async ({ amountIn }) => {
   return data;
 };
 
-const estimateGas: EstimateGas = async ({ amountIn }) => {
+const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient();
+  const publicClient = getPublicClient(config);
 
   if (amountIn === 0n) {
     return gasEstimate;
   }
 
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   if (!isNilOrEmpty(address)) {
     try {
@@ -84,13 +84,10 @@ const estimateApprovalGas: EstimateApprovalGas = async () => {
   return 0n;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, route, slippage },
+) => {
   if (amountIn === 0n) {
     return {
       ...route,
@@ -104,10 +101,10 @@ const estimateRoute: EstimateRoute = async ({
 
   const [estimatedAmount, gas, allowanceAmount, approvalGas] =
     await Promise.all([
-      estimateAmount({ tokenIn, tokenOut, amountIn }),
-      estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-      allowance(),
-      estimateApprovalGas(),
+      estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+      estimateGas(config, { tokenIn, tokenOut, amountIn, slippage }),
+      allowance(config),
+      estimateApprovalGas(config),
     ]);
 
   return {
@@ -127,20 +124,20 @@ const approve: Approve = async () => {
   return null;
 };
 
-const swap: Swap = async ({ amountIn }) => {
-  const { address } = getAccount();
+const swap: Swap = async (config, { amountIn }) => {
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return;
   }
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: tokens.mainnet.wOUSD.address,
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

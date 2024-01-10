@@ -5,7 +5,6 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
-  chains,
   queryClient,
   registerGoogleTagManager,
   registerSentry,
@@ -55,7 +54,7 @@ root.render(
       [ThemeProvider, { theme }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
-      [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
+      [RainbowKitProvider, { chains: wagmiConfig.chains, theme: darkTheme() }],
       [NotificationsProvider],
       [ActivityProvider],
       [

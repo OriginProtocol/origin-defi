@@ -1,5 +1,5 @@
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isAddressEqual,
   isNilOrEmpty,
@@ -8,8 +8,8 @@ import {
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
+  simulateContract,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
@@ -27,14 +27,12 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-  curve,
-}) => {
+const isRouteAvailable: IsRouteAvailable = async (
+  config,
+  { amountIn, tokenIn, tokenOut, curve },
+) => {
   try {
-    const estimate = await readContract({
+    const estimate = await readContract(config, {
       address: curve.CurveRegistryExchange.address,
       abi: curve.CurveRegistryExchange.abi,
       functionName: 'get_exchange_amount',
@@ -55,17 +53,15 @@ const isRouteAvailable: IsRouteAvailable = async ({
   return false;
 };
 
-const estimateAmount: EstimateAmount = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-  curve,
-}) => {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { amountIn, tokenIn, tokenOut, curve },
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
-  const estimate = await readContract({
+  const estimate = await readContract(config, {
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_amount',
@@ -80,22 +76,18 @@ const estimateAmount: EstimateAmount = async ({
   return estimate as unknown as bigint;
 };
 
-const estimateGas: EstimateGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amountOut,
-  slippage,
-  curve,
-}) => {
+const estimateGas: EstimateGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn, amountOut, slippage, curve },
+) => {
   let gasEstimate = 0n;
 
   if (amountIn === 0n) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
-  const { address } = getAccount();
+  const publicClient = getPublicClient(config);
+  const { address } = getAccount(config);
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
@@ -126,20 +118,16 @@ const estimateGas: EstimateGas = async ({
   return gasEstimate;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  route,
-  curve,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, route, curve },
+) => {
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn, curve }),
-    allowance({ tokenIn, tokenOut, curve }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut, curve }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn, curve }),
+    allowance(config, { tokenIn, tokenOut, curve }),
+    estimateApprovalGas(config, { amountIn, tokenIn, tokenOut, curve }),
   ]);
-  const gas = await estimateGas({
+  const gas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -160,14 +148,14 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const allowance: Allowance = async ({ tokenIn }) => {
-  const { address } = getAccount();
+const allowance: Allowance = async (config, { tokenIn }) => {
+  const { address } = getAccount(config);
 
   if (isNilOrEmpty(address)) {
     return 0n;
   }
 
-  const allowance = await readContract({
+  const allowance = await readContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
@@ -177,18 +165,18 @@ const allowance: Allowance = async ({ tokenIn }) => {
   return allowance as unknown as bigint;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  amountIn,
-}) => {
+const estimateApprovalGas: EstimateApprovalGas = async (
+  config,
+  { tokenIn, amountIn },
+) => {
   let approvalEstimate = 0n;
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return approvalEstimate;
   }
 
-  const publicClient = getPublicClient();
+  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -205,33 +193,29 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+  const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-  curve,
-}) => {
-  const { address } = getAccount();
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, amountOut, curve },
+) => {
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut });
+  const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`Curve swap is not approved`);
@@ -239,7 +223,7 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const estimatedGas = await estimateGas({
+  const estimatedGas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -249,7 +233,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OUSDCurveMetaPool.address,
     abi: contracts.mainnet.OUSDCurveMetaPool.abi,
     functionName: 'exchange_underlying',
@@ -270,7 +254,7 @@ const swap: Swap = async ({
     account: address,
     gas,
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

@@ -1,11 +1,11 @@
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
+  simulateContract,
   writeContract,
 } from '@wagmi/core';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
@@ -22,20 +22,20 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({ amountIn }) => {
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   return amountIn;
 };
 
-const estimateGas: EstimateGas = async ({ amountIn }) => {
+const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 200000n;
 
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
+  const publicClient = getPublicClient(config);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -50,8 +50,8 @@ const estimateGas: EstimateGas = async ({ amountIn }) => {
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ tokenIn, tokenOut }) => {
-  const { address } = getAccount();
+const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
+  const { address } = getAccount(config);
 
   if (isNilOrEmpty(address)) {
     return 0n;
@@ -61,7 +61,7 @@ const allowance: Allowance = async ({ tokenIn, tokenOut }) => {
     return maxUint256;
   }
 
-  const allowance = await readContract({
+  const allowance = await readContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
@@ -71,13 +71,12 @@ const allowance: Allowance = async ({ tokenIn, tokenOut }) => {
   return allowance;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-}) => {
+const estimateApprovalGas: EstimateApprovalGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn },
+) => {
   let approvalEstimate = 0n;
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   if (
     amountIn === 0n ||
@@ -88,7 +87,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
     return approvalEstimate;
   }
 
-  const publicClient = getPublicClient();
+  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -105,13 +104,10 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, route, slippage },
+) => {
   if (amountIn === 0n) {
     return {
       ...route,
@@ -125,10 +121,10 @@ const estimateRoute: EstimateRoute = async ({
 
   const [estimatedAmount, gas, allowanceAmount, approvalGas] =
     await Promise.all([
-      estimateAmount({ tokenIn, tokenOut, amountIn }),
-      estimateGas({ tokenIn, tokenOut, amountIn, slippage }),
-      allowance({ tokenIn, tokenOut }),
-      estimateApprovalGas({ tokenIn, tokenOut, amountIn }),
+      estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+      estimateGas(config, { tokenIn, tokenOut, amountIn, slippage }),
+      allowance(config, { tokenIn, tokenOut }),
+      estimateApprovalGas(config, { tokenIn, tokenOut, amountIn }),
     ]);
 
   return {
@@ -143,36 +139,42 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+const approve: Approve = async (
+  config,
+  { tokenIn, tokenOut, amountIn, curve },
+) => {
   if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
     return null;
   }
 
-  const { request } = await prepareWriteContract({
+  const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };
 
-const swap: Swap = async ({ tokenIn, tokenOut, amountIn, slippage }) => {
-  const { address } = getAccount();
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage },
+) => {
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut });
+  const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`Swap zapper is not approved`);
   }
 
-  const estimatedGas = await estimateGas({
+  const estimatedGas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -180,14 +182,14 @@ const swap: Swap = async ({ tokenIn, tokenOut, amountIn, slippage }) => {
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'deposit',
     value: amountIn,
     gas,
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

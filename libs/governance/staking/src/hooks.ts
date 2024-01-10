@@ -4,7 +4,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
 import { secondsInMonth } from 'date-fns/constants';
 import { formatUnits, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useUserLockupsQuery } from './queries.generated';
 import { getRewardsApy } from './utils';
@@ -32,19 +32,23 @@ export const useTotalLockedUp = () => {
 export const useStakingAPY = (
   amount: bigint | number,
   monthDuration: number,
-  options?: UseQueryOptions<
-    {
-      stakingAPY: number;
-      veOGVReceived: number;
-    },
-    Error,
-    {
-      stakingAPY: number;
-      veOGVReceived: number;
-    },
-    ['useStakingAPY', string, number]
+  options?: Partial<
+    UseQueryOptions<
+      {
+        stakingAPY: number;
+        veOGVReceived: number;
+      },
+      Error,
+      {
+        stakingAPY: number;
+        veOGVReceived: number;
+      },
+      ['useStakingAPY', string, number]
+    >
   >,
 ) => {
+  const config = useConfig();
+
   return useQuery({
     queryKey: ['useStakingAPY', amount?.toString(), monthDuration],
     queryFn: async () => {
@@ -53,7 +57,7 @@ export const useStakingAPY = (
           ? amount
           : parseUnits(amount.toString(), tokens.mainnet.veOGV.decimals);
 
-      const res = await readContracts({
+      const res = await readContracts(config, {
         contracts: [
           {
             address: tokens.mainnet.veOGV.address,
@@ -95,15 +99,16 @@ export const useStakingAPY = (
 export const useMyVApy = () => {
   const { address, isConnected } = useAccount();
   const queryClient = useQueryClient();
+  const config = useConfig();
 
   return useQuery({
     queryKey: ['useMyVApy', address],
     queryFn: async () => {
       const data = await Promise.all([
-        queryClient.fetchQuery<UserLockupsQuery>(
-          useUserLockupsQuery.getKey({ address }),
-        ),
-        readContract({
+        queryClient.fetchQuery<UserLockupsQuery>({
+          queryKey: useUserLockupsQuery.getKey({ address }),
+        }),
+        readContract(config, {
           address: tokens.mainnet.veOGV.address,
           abi: tokens.mainnet.veOGV.abi,
           functionName: 'totalSupply',

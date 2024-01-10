@@ -1,6 +1,7 @@
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { MessageDescriptor } from 'react-intl';
+import type { Config } from 'wagmi';
 
 import type { CurveState } from '../curve';
 
@@ -20,14 +21,17 @@ type Args = {
 };
 
 export type IsRouteAvailable = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
+  config: Config,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'curve'
@@ -35,6 +39,7 @@ export type EstimateGas = (
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
+  config: Config,
   args: Pick<
     Args,
     | 'tokenIn'
@@ -48,18 +53,22 @@ export type EstimateRoute = (
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
+  config: Config,
   args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'curve'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
+  config: Config,
   args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
 ) => Promise<bigint>;
 
 export type Approve = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
 ) => Promise<HexAddress>;
 
 export type Swap = (
+  config: Config,
   args: Pick<
     Args,
     | 'tokenIn'

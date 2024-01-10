@@ -19,36 +19,36 @@ export const useWatchContract = <T extends Abi | readonly unknown[]>(
   config: UseReadContractParameters<T>,
 ) => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { refetch, ...rest } = useReadContract(config);
+  const res = useReadContract(config);
 
   useEffect(() => {
-    refetch();
-  }, [blockNumber, refetch]);
+    res?.refetch();
+  }, [blockNumber, res]);
 
-  return rest;
+  return res;
 };
 
 export const useWatchContracts = (config: UseReadContractsParameters) => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { refetch, ...rest } = useReadContracts(config);
+  const res = useReadContracts(config);
 
   useEffect(() => {
-    refetch();
-  }, [blockNumber, refetch]);
+    res?.refetch();
+  }, [blockNumber, res]);
 
-  return rest;
+  return res;
 };
 
 export const useWatchBalance = (config?: { address?: HexAddress }) => {
   const { address } = useAccount();
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { refetch, ...rest } = useBalance({
+  const res = useBalance({
     address: config?.address ?? address,
   });
 
   useEffect(() => {
-    refetch();
-  }, [blockNumber, refetch]);
+    res?.refetch();
+  }, [blockNumber, res]);
 
-  return rest;
+  return res;
 };

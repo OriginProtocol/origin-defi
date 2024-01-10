@@ -27,7 +27,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { useContractRead } from 'wagmi';
+import { useReadContract } from 'wagmi';
 
 import { useProposalQuery } from '../queries.generated';
 import { parseProposalContent } from '../utils';
@@ -152,23 +152,25 @@ function Actions(props: StackProps) {
   const intl = useIntl();
   const { proposalId } = useParams();
   const [expanded, setExpanded] = useState([]);
-  const { data: actions, isLoading: isActionsLoading } = useContractRead({
+  const { data: actions, isLoading: isActionsLoading } = useReadContract({
     address: contracts.mainnet.OUSDGovernance.address,
     abi: contracts.mainnet.OUSDGovernance.abi,
     functionName: 'getActions',
     args: [BigInt(proposalId)],
-    enabled: !!proposalId,
-    select: (data) =>
-      data?.[0]?.map((_, i) => {
-        const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
+    query: {
+      enabled: !!proposalId,
+      select: (data) =>
+        data?.[0]?.map((_, i) => {
+          const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
 
-        return {
-          address: data[0][i],
-          functionName: res[1],
-          argumentType: res[2],
-          args: data[3][i],
-        };
-      }),
+          return {
+            address: data[0][i],
+            functionName: res[1],
+            argumentType: res[2],
+            args: data[3][i],
+          };
+        }),
+    },
   });
 
   const handleToggleActionRow = (actionKey: string) => () => {

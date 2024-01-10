@@ -5,6 +5,7 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
+import { useConfig } from 'wagmi';
 
 import { useCurve } from '../curve';
 import { useSlippage } from '../slippage';
@@ -37,6 +38,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       trackEvent,
     });
     const queryClient = useQueryClient();
+    const config = useConfig();
     const { value: slippage } = useSlippage();
     const { data: curve } = useCurve();
 
@@ -65,7 +67,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         );
         const availabilities = await Promise.allSettled(
           availableRoutes.map((r) =>
-            swapActions[r.action].isRouteAvailable({
+            swapActions[r.action].isRouteAvailable(config, {
               amountIn: state.amountIn,
               tokenIn: r.tokenIn,
               tokenOut: r.tokenOut,
@@ -93,7 +95,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               queryFn: async () => {
                 let res: EstimatedSwapRoute;
                 try {
-                  res = await swapActions[route.action].estimateRoute({
+                  res = await swapActions[route.action].estimateRoute(config, {
                     tokenIn: route.tokenIn,
                     tokenOut: route.tokenOut,
                     amountIn: state.amountIn,

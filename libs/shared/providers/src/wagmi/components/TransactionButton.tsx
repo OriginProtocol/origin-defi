@@ -45,7 +45,7 @@ export type TransactionButtonProps = {
   onUserReject?: () => void;
   disableActivity?: boolean;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick'>;
+} & Omit<ButtonProps, 'onClick' | 'value'>;
 
 export const TransactionButton = ({
   contract,

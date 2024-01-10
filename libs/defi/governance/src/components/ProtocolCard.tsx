@@ -4,14 +4,14 @@ import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
-import { useContractRead } from 'wagmi';
+import { useReadContract } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 
 export const ProtocolCard = (props: StackProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { data, isLoading: isTotalSupplyLoading } = useContractRead({
+  const { data, isLoading: isTotalSupplyLoading } = useReadContract({
     address: tokens.mainnet.veOGV.address,
     abi: tokens.mainnet.veOGV.abi,
     functionName: 'totalSupply',

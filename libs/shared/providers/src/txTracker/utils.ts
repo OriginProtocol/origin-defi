@@ -1,8 +1,8 @@
-import { prepareWriteContract as prepareWriteContractOrig } from '@wagmi/core';
-import { usePrepareContractWrite as usePrepareContractWriteOrig } from 'wagmi';
+import { simulateContract } from '@wagmi/core';
+import { useSimulateContract } from 'wagmi';
 
-import type { PrepareWriteContractConfig } from '@wagmi/core';
-import type { UsePrepareContractWriteConfig } from 'wagmi';
+import type { Config, SimulateContractParameters } from '@wagmi/core';
+import type { UseSimulateContractParameters } from 'wagmi';
 
 interface TxTrackerValue {
   id: string;
@@ -10,27 +10,28 @@ interface TxTrackerValue {
 }
 
 /**
- * This function wraps the original `prepareWriteContract` function from wagmi,
+ * This function wraps the original `simulateContract` function from wagmi,
  * appending 4 bytes to the calldata which can be used on chain for tracking
  * transaction sources.
  */
-export function prepareWriteContractWithTxTracker(
-  opts: Omit<PrepareWriteContractConfig, 'dataSuffix'>,
+export function simulateContractWithTxTracker(
+  config: Config,
+  opts: Omit<SimulateContractParameters, 'dataSuffix'>,
 ) {
   const dataSuffix = getDataSuffix();
 
-  return prepareWriteContractOrig({
+  return simulateContract(config, {
     ...opts,
     dataSuffix,
   });
 }
 
-export function usePrepareContractWriteWithTxTracker(
-  opts: Omit<UsePrepareContractWriteConfig, 'dataSuffix'>,
+export function useSimulateContractWithTxTracker(
+  opts: Omit<UseSimulateContractParameters, 'dataSuffix'>,
 ) {
   const dataSuffix = getDataSuffix();
 
-  return usePrepareContractWriteOrig({
+  return useSimulateContract({
     ...opts,
     dataSuffix,
   });

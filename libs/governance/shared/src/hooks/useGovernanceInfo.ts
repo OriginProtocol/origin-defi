@@ -2,15 +2,16 @@ import { tokens } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { formatUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 export const useGovernanceInfo = () => {
   const { address } = useAccount();
+  const config = useConfig();
 
   return useQuery({
     queryKey: ['useGovernanceInfo', address],
     queryFn: async () => {
-      const data = await readContracts({
+      const data = await readContracts(config, {
         contracts: [
           {
             address: tokens.mainnet.OGV.address,
