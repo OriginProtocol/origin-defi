@@ -98,35 +98,37 @@ export const VoteDelegationCard = (props: CardProps) => {
           </Stack>
         ) : (
           <>
-            <CardContent>
-              <Typography color="text.secondary">
-                {intl.formatMessage({ defaultMessage: 'Delegating to' })}
-              </Typography>
-              <Stack direction="row" alignItems="center" spacing={1} pt={2}>
-                {isSelfDelegating ? (
-                  <Typography>
-                    {intl.formatMessage({ defaultMessage: 'Self' })}
-                  </Typography>
-                ) : (
-                  <>
-                    <UserAvatar
-                      address={isSelfDelegating ? address : delegatee}
-                      width={20}
-                    />
-                    <ExternalLink
-                      href={`https://etherscan.io/address/${delegatee}`}
-                    >
-                      <AddressLabel
-                        address={delegatee}
-                        maxWidth={100}
-                        enableEnsName
+            {!isSelfDelegating && (
+              <CardContent>
+                <Typography color="text.secondary">
+                  {intl.formatMessage({ defaultMessage: 'Delegating to' })}
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={1} pt={2}>
+                  {isSelfDelegating ? (
+                    <Typography>
+                      {intl.formatMessage({ defaultMessage: 'Self' })}
+                    </Typography>
+                  ) : (
+                    <>
+                      <UserAvatar
+                        address={isSelfDelegating ? address : delegatee}
+                        width={20}
                       />
-                    </ExternalLink>
-                  </>
-                )}
-              </Stack>
-            </CardContent>
-            <CardContent sx={{ pt: 0, pl: 2 }}>
+                      <ExternalLink
+                        href={`https://etherscan.io/address/${delegatee}`}
+                      >
+                        <AddressLabel
+                          address={delegatee}
+                          maxWidth={100}
+                          enableEnsName
+                        />
+                      </ExternalLink>
+                    </>
+                  )}
+                </Stack>
+              </CardContent>
+            )}
+            <CardContent sx={{ pt: isSelfDelegating ? 2 : 0, pl: 2 }}>
               {isSelfDelegating ? (
                 <DelegateButton variant="outlined" color="secondary">
                   {intl.formatMessage({
