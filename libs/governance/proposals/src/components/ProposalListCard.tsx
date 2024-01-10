@@ -21,7 +21,7 @@ import { Snapshot } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { FaArrowUpRightFromSquare, FaLink } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -170,7 +170,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             <Stack direction="row" spacing={2}>
               <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
               <StatusBadge status={proposal?.status} />
-              {proposal.type === 'snapshot' && (
+              {proposal.type === 'snapshot' ? (
                 <Stack
                   direction="row"
                   alignItems="center"
@@ -187,6 +187,29 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   <Typography variant="body2" color="warning.main">
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
+                    })}
+                  </Typography>
+                </Stack>
+              ) : (
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  spacing={0.75}
+                  sx={{
+                    border: (theme) =>
+                      `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
+                    borderRadius: 1,
+                    px: 0.75,
+                    py: 0.2,
+                    svg: {
+                      color: 'secondary.light',
+                    },
+                  }}
+                >
+                  <FaLink />
+                  <Typography variant="body2" color="secondary.light">
+                    {intl.formatMessage({
+                      defaultMessage: 'On-chain proposal',
                     })}
                   </Typography>
                 </Stack>
