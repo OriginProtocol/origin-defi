@@ -22,6 +22,7 @@ export const usePushNotification = () => {
 
   return useCallback(
     (options: NotificationOptions) => {
+      const id = Date.now().toString();
       setState(
         produce((state) => {
           state.notifications.unshift({
@@ -29,12 +30,14 @@ export const usePushNotification = () => {
             visible: true,
             hideDuration: state.autoHideDuration,
             ...options,
-            id: Date.now().toString(),
+            id,
             createdOn: Date.now(),
             read: false,
           });
         }),
       );
+
+      return id;
     },
     [setState],
   );

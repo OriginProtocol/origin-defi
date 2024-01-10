@@ -17,7 +17,10 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../../activities';
-import { usePushNotification } from '../../notifications';
+import {
+  useDeleteNotification,
+  usePushNotification,
+} from '../../notifications';
 import { ConnectedButton } from './ConnectedButton';
 
 import type { ButtonProps } from '@mui/material';
@@ -64,9 +67,11 @@ export const TransactionButton = ({
 }: TransactionButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
+  const [notifId, setNotifId] = useState(null);
   const [activity, setActivity] = useState<Activity>(null);
   const done = useRef(false);
   const pushNotification = usePushNotification();
+  const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -92,6 +97,27 @@ export const TransactionButton = ({
   } = useWaitForTransaction({ hash: writeData?.hash });
 
   useEffect(() => {
+    if (isTxLoading && !disableNotification) {
+      setNotifId(
+        pushNotification({
+          hideDuration: null,
+          content: (
+            <NotificationSnack
+              icon={<SeverityIcon severity="info" />}
+              title={intl.formatMessage({
+                defaultMessage: 'Processing transaction',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'Your transaction is being processed on-chain.',
+              })}
+            />
+          ),
+        }),
+      );
+    }
+  }, [disableNotification, intl, isTxLoading, pushNotification]);
+
+  useEffect(() => {
     if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
       onSuccess?.(txData);
       if (!disableActivity) {
@@ -102,6 +128,10 @@ export const TransactionButton = ({
         });
       }
       if (!disableNotification) {
+        if (!isNilOrEmpty(notifId)) {
+          deleteNotification(notifId);
+          setNotifId(null);
+        }
         pushNotification({
           content: (
             <TransactionNotification
@@ -130,11 +160,13 @@ export const TransactionButton = ({
     activityEndIcon,
     activitySubtitle,
     activityTitle,
+    deleteNotification,
     disableActivity,
     disableNotification,
     intl,
     isTxLoading,
     isTxSuccess,
+    notifId,
     onSuccess,
     pushNotification,
     txData,
@@ -148,6 +180,10 @@ export const TransactionButton = ({
       !done.current
     ) {
       const err = isNilOrEmpty(writeError) ? txError : writeError;
+      if (!isNilOrEmpty(notifId)) {
+        deleteNotification(notifId);
+        setNotifId(null);
+      }
       if (isUserRejected(err)) {
         onUserReject?.();
         if (!disableActivity) {
@@ -199,9 +235,11 @@ export const TransactionButton = ({
     activity,
     activityEndIcon,
     deleteActivity,
+    deleteNotification,
     disableActivity,
     disableNotification,
     intl,
+    notifId,
     onError,
     onUserReject,
     pushNotification,
