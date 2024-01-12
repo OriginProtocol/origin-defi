@@ -117,22 +117,19 @@ export const useMyVApy = () => {
       const total = data[0].ogvLockups.reduce(
         (acc, curr) =>
           acc +
-          +formatUnits(
-            BigInt(curr?.amount ?? 0n),
-            tokens.mainnet.veOGV.decimals,
-          ),
+          +formatUnits(BigInt(curr?.amount ?? 0n), tokens.mainnet.OGV.decimals),
         0,
       );
 
       return data[0].ogvLockups.reduce((acc, curr) => {
         const vAPY = getRewardsApy(
-          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals),
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.OGV.decimals),
           +formatUnits(BigInt(curr.veogv), tokens.mainnet.veOGV.decimals),
-          +formatUnits(data[1], tokens.mainnet.veOGV.decimals),
+          +formatUnits(BigInt(data[1]), tokens.mainnet.veOGV.decimals),
         );
 
         const weight =
-          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals) /
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.OGV.decimals) /
           total;
 
         return acc + weight * vAPY;
