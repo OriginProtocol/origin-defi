@@ -440,7 +440,7 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
         </Stack>
         {showRewardLabel && (
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
+          <Stack bgcolor="grey.900" px={3} py={2} spacing={1} pt={3}>
             <Typography>
               {intl.formatMessage({
                 defaultMessage: 'OGV Rewards Will be Collected',
