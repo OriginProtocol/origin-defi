@@ -52,7 +52,7 @@ export const LockupsCard = (props: CardProps) => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                {intl.formatNumber(myvAPY, {
+                {intl.formatNumber(myvAPY / 100, {
                   style: 'percent',
                   maximumFractionDigits: 2,
                   minimumFractionDigits: 2,
