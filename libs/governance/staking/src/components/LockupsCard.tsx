@@ -101,7 +101,10 @@ export const LockupsCard = (props: CardProps) => {
             gap: 2,
           }}
         >
-          <ConnectedButton variant="connect" sx={{ minWidth: 160 }} />
+          <ConnectedButton
+            variant="connect"
+            sx={{ minWidth: 160, height: 44 }}
+          />
         </Stack>
       )}
     </Card>
