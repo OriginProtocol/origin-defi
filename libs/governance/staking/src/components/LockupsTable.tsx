@@ -8,14 +8,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Typography,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   ArrowLink,
   LoadingLabel,
   TablePagination,
-  TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
@@ -56,12 +54,7 @@ export const LockupsTable = () => {
     () => [
       columnHelper.accessor('amount', {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
-        cell: (info) => (
-          <Stack direction="row" spacing={1} alignItems="center">
-            <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
-            <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
-          </Stack>
-        ),
+        cell: (info) => formatAmount(BigInt(info.getValue())),
       }),
       columnHelper.accessor('end', {
         header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
