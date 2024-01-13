@@ -2,12 +2,13 @@ import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
+import { differenceInSeconds } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from './queries.generated';
-import { getRewardsApy } from './utils';
+import { getRewardsApy, getVAPY } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
@@ -114,6 +115,18 @@ export const useMyVApy = () => {
         return 0;
       }
 
+      const previews = await readContracts({
+        contracts: data[0].ogvLockups.map((l) => ({
+          address: tokens.mainnet.veOGV.address,
+          abi: tokens.mainnet.veOGV.abi,
+          functionName: 'previewPoints',
+          args: [
+            l.amount,
+            BigInt(differenceInSeconds(new Date(l.end), new Date())),
+          ],
+        })),
+      });
+
       const total = data[0].ogvLockups.reduce(
         (acc, curr) =>
           acc +
@@ -121,10 +134,10 @@ export const useMyVApy = () => {
         0,
       );
 
-      return data[0].ogvLockups.reduce((acc, curr) => {
-        const vAPY = getRewardsApy(
+      return data[0].ogvLockups.reduce((acc, curr, i) => {
+        const vAPY = getVAPY(
+          +formatUnits(previews[i].result[0], tokens.mainnet.veOGV.decimals),
           +formatUnits(BigInt(curr.amount), tokens.mainnet.OGV.decimals),
-          +formatUnits(BigInt(curr.veogv), tokens.mainnet.veOGV.decimals),
           +formatUnits(BigInt(data[1]), tokens.mainnet.veOGV.decimals),
         );
 
