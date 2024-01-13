@@ -8,6 +8,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
@@ -40,6 +43,8 @@ const columnHelper = createColumnHelper<Lockup>();
 export const LockupsTable = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
   const { data, isLoading } = useUserLockupsQuery(
@@ -56,15 +61,19 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
         cell: (info) => formatAmount(BigInt(info.getValue())),
       }),
-      columnHelper.accessor('end', {
-        header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
-        cell: (info) =>
-          intl.formatDate(info.getValue(), {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-          }),
-      }),
+      ...(isSm
+        ? []
+        : [
+            columnHelper.accessor('end', {
+              header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
+              cell: (info) =>
+                intl.formatDate(info.getValue(), {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                }),
+            }),
+          ]),
       columnHelper.display({
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
@@ -74,11 +83,15 @@ export const LockupsTable = () => {
             roundingMethod: 'floor',
           }),
       }),
-      columnHelper.accessor('veogv', {
-        id: 'veogv',
-        header: tokens.mainnet.veOGV.symbol,
-        cell: (info) => formatAmount(BigInt(info.getValue())),
-      }),
+      ...(isSm
+        ? []
+        : [
+            columnHelper.accessor('veogv', {
+              id: 'veogv',
+              header: tokens.mainnet.veOGV.symbol,
+              cell: (info) => formatAmount(BigInt(info.getValue())),
+            }),
+          ]),
       columnHelper.accessor('veogv', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
@@ -150,6 +163,7 @@ export const LockupsTable = () => {
       intl,
       isGovInfoLoading,
       isLoading,
+      isSm,
     ],
   );
 
@@ -182,10 +196,12 @@ export const LockupsTable = () => {
                       color: 'text.secondary',
                     }}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                    <Typography noWrap>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </Typography>
                   </TableCell>
                 ))}
               </TableRow>
