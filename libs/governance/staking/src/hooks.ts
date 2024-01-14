@@ -7,7 +7,7 @@ import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useUserLockupsQuery } from './queries.generated';
-import { getRewardsApy } from './utils';
+import { getRewardsApy, getVAPY } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
@@ -122,22 +122,19 @@ export const useMyVApy = () => {
       const total = data[0].ogvLockups.reduce(
         (acc, curr) =>
           acc +
-          +formatUnits(
-            BigInt(curr?.amount ?? 0n),
-            tokens.mainnet.veOGV.decimals,
-          ),
+          +formatUnits(BigInt(curr?.amount ?? 0n), tokens.mainnet.OGV.decimals),
         0,
       );
 
       return data[0].ogvLockups.reduce((acc, curr) => {
-        const vAPY = getRewardsApy(
-          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals),
+        const vAPY = getVAPY(
           +formatUnits(BigInt(curr.veogv), tokens.mainnet.veOGV.decimals),
-          +formatUnits(data[1], tokens.mainnet.veOGV.decimals),
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.OGV.decimals),
+          +formatUnits(BigInt(data[1]), tokens.mainnet.veOGV.decimals),
         );
 
         const weight =
-          +formatUnits(BigInt(curr.amount), tokens.mainnet.veOGV.decimals) /
+          +formatUnits(BigInt(curr.amount), tokens.mainnet.OGV.decimals) /
           total;
 
         return acc + weight * vAPY;

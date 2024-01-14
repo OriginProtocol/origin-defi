@@ -246,28 +246,28 @@ export type Query = {
 
 
 export type QueryAliasesArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<AliasWhere>;
 };
 
 
 export type QueryFollowsArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<FollowWhere>;
 };
 
 
 export type QueryMessagesArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<MessageWhere>;
 };
 
@@ -278,17 +278,17 @@ export type QueryProposalArgs = {
 
 
 export type QueryProposalsArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<ProposalWhere>;
 };
 
 
 export type QueryRankingArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<RankingWhere>;
 };
 
@@ -304,10 +304,10 @@ export type QuerySpaceArgs = {
 
 
 export type QuerySpacesArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<SpaceWhere>;
 };
 
@@ -318,10 +318,10 @@ export type QueryStatementArgs = {
 
 
 export type QueryStatementsArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<StatementsWhere>;
 };
 
@@ -332,10 +332,10 @@ export type QueryStrategyArgs = {
 
 
 export type QuerySubscriptionsArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<SubscriptionWhere>;
 };
 
@@ -346,10 +346,10 @@ export type QueryUserArgs = {
 
 
 export type QueryUsersArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<UsersWhere>;
 };
 
@@ -360,10 +360,10 @@ export type QueryVoteArgs = {
 
 
 export type QueryVotesArgs = {
-  first?: InputMaybe<Scalars['Int']['input']>;
+  first?: Scalars['Int']['input'];
   orderBy?: InputMaybe<Scalars['String']['input']>;
   orderDirection?: InputMaybe<OrderDirection>;
-  skip?: InputMaybe<Scalars['Int']['input']>;
+  skip?: Scalars['Int']['input'];
   where?: InputMaybe<VoteWhere>;
 };
 

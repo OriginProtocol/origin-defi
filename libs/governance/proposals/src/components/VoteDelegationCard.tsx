@@ -130,7 +130,11 @@ export const VoteDelegationCard = (props: CardProps) => {
             )}
             <CardContent sx={{ pt: isSelfDelegating ? 2 : 0, pl: 2 }}>
               {isSelfDelegating ? (
-                <DelegateButton variant="outlined" color="secondary">
+                <DelegateButton
+                  variant="outlined"
+                  color="secondary"
+                  sx={{ height: 44 }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Delegate my voting power',
                   })}
@@ -169,6 +173,7 @@ export const VoteDelegationCard = (props: CardProps) => {
                       queryKey: [useUserInfoQuery.getKey({ address })],
                     });
                   }}
+                  sx={{ height: 44 }}
                 />
               )}
             </CardContent>

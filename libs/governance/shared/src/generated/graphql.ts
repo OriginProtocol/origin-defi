@@ -5802,11 +5802,13 @@ export enum OgvLockupOrderByInput {
 
 export type OgvLockupTxLog = {
   __typename?: 'OGVLockupTxLog';
+  blockNumber: Scalars['Int']['output'];
   event: OgvLockupEventType;
   hash: Scalars['String']['output'];
   id: Scalars['String']['output'];
   ogvLockup: OgvLockup;
   timestamp: Scalars['DateTime']['output'];
+  totalSupply: Scalars['BigInt']['output'];
 };
 
 export type OgvLockupTxLogEdge = {
@@ -5816,6 +5818,10 @@ export type OgvLockupTxLogEdge = {
 };
 
 export enum OgvLockupTxLogOrderByInput {
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
   EventAsc = 'event_ASC',
   EventAscNullsFirst = 'event_ASC_NULLS_FIRST',
   EventDesc = 'event_DESC',
@@ -5855,12 +5861,25 @@ export enum OgvLockupTxLogOrderByInput {
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TotalSupplyAsc = 'totalSupply_ASC',
+  TotalSupplyAscNullsFirst = 'totalSupply_ASC_NULLS_FIRST',
+  TotalSupplyDesc = 'totalSupply_DESC',
+  TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST'
 }
 
 export type OgvLockupTxLogWhereInput = {
   AND?: InputMaybe<Array<OgvLockupTxLogWhereInput>>;
   OR?: InputMaybe<Array<OgvLockupTxLogWhereInput>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   event_eq?: InputMaybe<OgvLockupEventType>;
   event_in?: InputMaybe<Array<OgvLockupEventType>>;
   event_isNull?: InputMaybe<Scalars['Boolean']['input']>;
@@ -5911,6 +5930,15 @@ export type OgvLockupTxLogWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  totalSupply_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupply_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupply_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
 export type OgvLockupTxLogsConnection = {

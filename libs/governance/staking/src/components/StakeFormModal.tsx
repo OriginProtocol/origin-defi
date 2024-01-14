@@ -129,7 +129,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <CgClose fontSize={14} />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <DialogContent>
         <Stack pt={3}>
           <Stack
             direction="row"
@@ -232,7 +232,7 @@ export const StakeFormModal = (props: DialogProps) => {
             }}
           />
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}&nbsp;
             <InfoTooltip
@@ -309,7 +309,7 @@ export const StakeFormModal = (props: DialogProps) => {
             </Box>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
             &nbsp;
@@ -370,7 +370,7 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({
               defaultMessage: 'Locked Tokens Received Now',
@@ -440,7 +440,7 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
         </Stack>
         {showRewardLabel && (
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
+          <Stack bgcolor="grey.900" px={3} py={2} spacing={1} mt={3}>
             <Typography>
               {intl.formatMessage({
                 defaultMessage: 'OGV Rewards Will be Collected',
@@ -468,20 +468,20 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
         )}
         <Collapse in={showApprove}>
-          <Stack>
-            <ApprovalButton
-              token={tokens.mainnet.OGV}
-              spender={tokens.mainnet.veOGV}
-              amount={amount}
-              variant="action"
-              disabled={isInfoLoading}
-              onSuccess={() => {
-                queryClient.invalidateQueries({
-                  queryKey: ['useGovernanceInfo'],
-                });
-              }}
-            />
-          </Stack>
+          <ApprovalButton
+            token={tokens.mainnet.OGV}
+            spender={tokens.mainnet.veOGV}
+            amount={amount}
+            variant="action"
+            fullWidth
+            disabled={isInfoLoading}
+            onSuccess={() => {
+              queryClient.invalidateQueries({
+                queryKey: ['useGovernanceInfo'],
+              });
+            }}
+            sx={{ mt: 3 }}
+          />
         </Collapse>
         <TransactionButton
           contract={tokens.mainnet.veOGV}
@@ -520,6 +520,8 @@ export const StakeFormModal = (props: DialogProps) => {
               queryKey: [useUserLockupsQuery.getKey({ address })],
             });
           }}
+          fullWidth
+          sx={{ mt: 3 }}
         />
       </DialogContent>
     </Dialog>
