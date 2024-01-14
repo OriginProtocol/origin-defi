@@ -24,7 +24,7 @@ import { useAccount } from 'wagmi';
 
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
-import { ConnectedButton, useWatchContract } from '../../wagmi';
+import { ConnectedButton, useWatchBalance } from '../../wagmi';
 import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
@@ -60,7 +60,7 @@ function RedeemerWrapped({
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
   const { value: slippage, set: setSlippage } = useSlippage();
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
@@ -73,11 +73,8 @@ function RedeemerWrapped({
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchContract({
-    address: tokenIn.address,
-    abi: tokenIn.abi,
-    functionName: 'balanceOf',
-    args: [address],
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokenIn.address,
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
@@ -98,7 +95,7 @@ function RedeemerWrapped({
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > (balance as unknown as bigint)
+      : amountIn > balance
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
@@ -106,7 +103,7 @@ function RedeemerWrapped({
     isEstimateLoading ||
     isRedeemWaitingForSignature ||
     isRedeemLoading ||
-    amountIn > (balance as unknown as bigint) ||
+    amountIn > balance ||
     amountIn === 0n;
 
   return (
@@ -147,7 +144,7 @@ function RedeemerWrapped({
             <TokenInput
               amount={amountIn}
               onAmountChange={handleAmountInChange}
-              balance={balance as unknown as bigint}
+              balance={balance}
               isBalanceLoading={isBalanceLoading}
               token={tokenIn}
               isTokenClickDisabled

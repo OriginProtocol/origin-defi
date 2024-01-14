@@ -33,7 +33,7 @@ import { mainnet } from 'wagmi/chains';
 import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
-import { ConnectedButton, useWatchContract } from '../../wagmi';
+import { ConnectedButton, useWatchBalance } from '../../wagmi';
 import {
   useHandleAmountInChange,
   useHandleApprove,
@@ -79,7 +79,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage, set: setSlippage } = useSlippage();
-  const { address, isConnected, chain } = useAccount();
+  const { isConnected, chain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
@@ -102,20 +102,12 @@ function SwapperWrapped({
   const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
 
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchContract(
-    {
-      address: tokenIn.address,
-      abi: tokenIn.abi,
-      functionName: 'balanceOf',
-      args: [address],
-    },
-  );
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
+    token: tokenIn.address,
+  });
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchContract({
-      address: tokenOut.address,
-      abi: tokenOut.abi,
-      functionName: 'balanceOf',
-      args: [address],
+    useWatchBalance({
+      token: tokenOut.address,
     });
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
