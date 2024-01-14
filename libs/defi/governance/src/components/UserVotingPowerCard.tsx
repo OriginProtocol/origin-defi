@@ -13,7 +13,7 @@ import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
-import { useAccount, useContractReads } from 'wagmi';
+import { useAccount, useReadContracts } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
 
@@ -21,7 +21,7 @@ export const UserVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
-  const { data, isLoading } = useContractReads({
+  const { data, isLoading } = useReadContracts({
     contracts: [
       {
         address: tokens.mainnet.veOGV.address,
