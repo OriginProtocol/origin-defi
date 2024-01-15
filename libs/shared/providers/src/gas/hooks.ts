@@ -6,15 +6,11 @@ import { useConfig } from 'wagmi';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-const GAS_MARGIN = 1.3;
-
 type GasPrice = {
   gweiUsd: number;
   gasPrice: number;
   gasCostUsd: number;
   gasCostGwei: number;
-  maxGasCostUsd: number;
-  maxGasCostGwei: number;
 };
 
 export const useGasPrice = (
@@ -39,21 +35,16 @@ export const useGasPrice = (
 
       const gweiUsd = +formatUnits(price, 6) * 1e-9;
       const gasPrice =
-        +formatUnits(data.gasPrice, 9) +
+        +formatUnits(data.maxFeePerGas, 9) +
         +formatUnits(data.maxPriorityFeePerGas, 9);
-      const maxGasPrice = +formatUnits(data.maxFeePerGas, 9);
-      const gasCostGwei = Number(gasAmount) * GAS_MARGIN * gasPrice;
+      const gasCostGwei = Number(gasAmount) * gasPrice;
       const gasCostUsd = gasCostGwei * gweiUsd;
-      const maxGasCostGwei = Number(gasAmount) * GAS_MARGIN * maxGasPrice;
-      const maxGasCostUsd = maxGasCostGwei * gweiUsd;
 
       return {
         gweiUsd,
         gasPrice,
         gasCostUsd,
         gasCostGwei,
-        maxGasCostUsd,
-        maxGasCostGwei,
       };
     },
     ...options,
