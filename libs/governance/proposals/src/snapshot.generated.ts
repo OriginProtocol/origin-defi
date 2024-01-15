@@ -1,4 +1,4 @@
-import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, InfiniteData } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { snapshotGraphqlClient } from '@origin/governance/shared';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -698,27 +698,6 @@ export const useSnapshotProposalsQuery = <
 
 useSnapshotProposalsQuery.getKey = (variables?: SnapshotProposalsQueryVariables) => variables === undefined ? ['SnapshotProposals'] : ['SnapshotProposals', variables];
 
-export const useInfiniteSnapshotProposalsQuery = <
-      TData = InfiniteData<SnapshotProposalsQuery>,
-      TError = unknown
-    >(
-      variables: SnapshotProposalsQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<SnapshotProposalsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<SnapshotProposalsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<SnapshotProposalsQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? variables === undefined ? ['SnapshotProposals.infinite'] : ['SnapshotProposals.infinite', variables],
-      queryFn: (metaData) => snapshotGraphqlClient<SnapshotProposalsQuery, SnapshotProposalsQueryVariables>(SnapshotProposalsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteSnapshotProposalsQuery.getKey = (variables?: SnapshotProposalsQueryVariables) => variables === undefined ? ['SnapshotProposals.infinite'] : ['SnapshotProposals.infinite', variables];
-
 
 useSnapshotProposalsQuery.fetcher = (variables?: SnapshotProposalsQueryVariables, options?: RequestInit['headers']) => snapshotGraphqlClient<SnapshotProposalsQuery, SnapshotProposalsQueryVariables>(SnapshotProposalsDocument, variables, options);
 
@@ -760,27 +739,6 @@ export const useSnapshotUserVotesQuery = <
     )};
 
 useSnapshotUserVotesQuery.getKey = (variables: SnapshotUserVotesQueryVariables) => ['SnapshotUserVotes', variables];
-
-export const useInfiniteSnapshotUserVotesQuery = <
-      TData = InfiniteData<SnapshotUserVotesQuery>,
-      TError = unknown
-    >(
-      variables: SnapshotUserVotesQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<SnapshotUserVotesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<SnapshotUserVotesQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<SnapshotUserVotesQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? ['SnapshotUserVotes.infinite', variables],
-      queryFn: (metaData) => snapshotGraphqlClient<SnapshotUserVotesQuery, SnapshotUserVotesQueryVariables>(SnapshotUserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteSnapshotUserVotesQuery.getKey = (variables: SnapshotUserVotesQueryVariables) => ['SnapshotUserVotes.infinite', variables];
 
 
 useSnapshotUserVotesQuery.fetcher = (variables: SnapshotUserVotesQueryVariables, options?: RequestInit['headers']) => snapshotGraphqlClient<SnapshotUserVotesQuery, SnapshotUserVotesQueryVariables>(SnapshotUserVotesDocument, variables, options);

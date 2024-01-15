@@ -60,14 +60,15 @@ export const wagmiConfig = getDefaultConfig({
   projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
   chains: [mainnet],
   transports: {
-    [mainnet.id]: fallback([
-      ...(isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
-        ? []
-        : [http(import.meta.env.VITE_CUSTOM_RPC)]),
-      http(
-        `${import.meta.env.VITE_ALCHEMY_RPC}${import.meta.env.VITE_ALCHEMY_ID}`,
-      ),
-      http(),
-    ]),
+    [mainnet.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
+      ? fallback([
+          http(
+            `${import.meta.env.VITE_ALCHEMY_RPC}${
+              import.meta.env.VITE_ALCHEMY_ID
+            }`,
+          ),
+          http(),
+        ])
+      : http(import.meta.env.VITE_CUSTOM_RPC),
   },
 });

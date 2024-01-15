@@ -54,7 +54,7 @@ root.render(
       [ThemeProvider, { theme }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
-      [RainbowKitProvider, { chains: wagmiConfig.chains, theme: darkTheme() }],
+      [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
       [NotificationsProvider],
       [ActivityProvider],
       [

@@ -44,7 +44,7 @@ export const usePrices = (
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['usePrices'],
+    queryKey: ['usePrices', config],
     staleTime: import.meta.env.DEV ? 1000 * 60 * 30 : 1000 * 30,
     gcTime: import.meta.env.DEV ? 1000 * 60 * 60 : 1000 * 60,
     queryFn: async () => {

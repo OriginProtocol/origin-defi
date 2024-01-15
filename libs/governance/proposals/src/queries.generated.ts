@@ -1,6 +1,6 @@
 import * as Types from '@origin/governance/shared';
 
-import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, InfiniteData } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/governance/shared';
 export type ProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -61,27 +61,6 @@ export const useProposalsQuery = <
 
 useProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => variables === undefined ? ['Proposals'] : ['Proposals', variables];
 
-export const useInfiniteProposalsQuery = <
-      TData = InfiniteData<ProposalsQuery>,
-      TError = unknown
-    >(
-      variables: ProposalsQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<ProposalsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<ProposalsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<ProposalsQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? variables === undefined ? ['Proposals.infinite'] : ['Proposals.infinite', variables],
-      queryFn: (metaData) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteProposalsQuery.getKey = (variables?: ProposalsQueryVariables) => variables === undefined ? ['Proposals.infinite'] : ['Proposals.infinite', variables];
-
 
 useProposalsQuery.fetcher = (variables?: ProposalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalsQuery, ProposalsQueryVariables>(ProposalsDocument, variables, options);
 
@@ -139,27 +118,6 @@ export const useProposalQuery = <
 
 useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', variables];
 
-export const useInfiniteProposalQuery = <
-      TData = InfiniteData<ProposalQuery>,
-      TError = unknown
-    >(
-      variables: ProposalQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<ProposalQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<ProposalQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<ProposalQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? ['Proposal.infinite', variables],
-      queryFn: (metaData) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal.infinite', variables];
-
 
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
 
@@ -198,27 +156,6 @@ export const useUserVotesQuery = <
     )};
 
 useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes', variables];
-
-export const useInfiniteUserVotesQuery = <
-      TData = InfiniteData<UserVotesQuery>,
-      TError = unknown
-    >(
-      variables: UserVotesQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<UserVotesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<UserVotesQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<UserVotesQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? ['UserVotes.infinite', variables],
-      queryFn: (metaData) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes.infinite', variables];
 
 
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);

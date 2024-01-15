@@ -1,5 +1,11 @@
-import { isNilOrEmpty } from '@origin/shared/utils';
-import { getDefaultConfig } from '@rainbow-me/rainbowkit';
+import { connectorsForWallets } from '@rainbow-me/rainbowkit';
+import {
+  coinbaseWallet,
+  ledgerWallet,
+  metaMaskWallet,
+  rabbyWallet,
+  walletConnectWallet,
+} from '@rainbow-me/rainbowkit/wallets';
 // import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 // import {
 //   argentWallet,
@@ -13,7 +19,7 @@ import { getDefaultConfig } from '@rainbow-me/rainbowkit';
 //   safeWallet,
 //   walletConnectWallet,
 // } from '@rainbow-me/rainbowkit/wallets';
-import { fallback, http } from 'wagmi';
+import { createConfig, fallback, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 // const connectors = connectorsForWallets([
@@ -55,15 +61,30 @@ import { mainnet } from 'wagmi/chains';
 //   },
 // ]);
 
-export const wagmiConfig = getDefaultConfig({
-  appName: 'Origin OETH',
-  projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Supported',
+      wallets: [
+        metaMaskWallet,
+        rabbyWallet,
+        walletConnectWallet,
+        coinbaseWallet,
+        ledgerWallet,
+      ],
+    },
+  ],
+  {
+    appName: 'OETH',
+    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+  },
+);
+
+export const wagmiConfig = createConfig({
   chains: [mainnet],
+  connectors,
   transports: {
     [mainnet.id]: fallback([
-      ...(isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
-        ? []
-        : [http(import.meta.env.VITE_CUSTOM_RPC)]),
       http(
         `${import.meta.env.VITE_ALCHEMY_RPC}${import.meta.env.VITE_ALCHEMY_ID}`,
       ),

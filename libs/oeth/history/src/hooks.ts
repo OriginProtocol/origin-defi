@@ -13,6 +13,7 @@ import { useHistoryTransactionQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 import type { HistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
@@ -23,14 +24,14 @@ export const usePendingYield = (
     number,
     Error,
     number,
-    ['usePendingYield', boolean, HexAddress, boolean]
+    ['usePendingYield', boolean, HexAddress, boolean, Config]
   >,
 ) => {
   const config = useConfig();
   const { address, isConnected } = useAccount();
 
   return useQuery({
-    queryKey: ['usePendingYield', isWrapped, address, isConnected],
+    queryKey: ['usePendingYield', isWrapped, address, isConnected, config],
     queryFn: async () => {
       if (!isConnected) {
         return 0;

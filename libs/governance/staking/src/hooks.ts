@@ -10,6 +10,7 @@ import { useUserLockupsQuery } from './queries.generated';
 import { getRewardsApy, getVAPY } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 import type { UserLockupsQuery } from './queries.generated';
 
@@ -43,14 +44,14 @@ export const useStakingAPY = (
         stakingAPY: number;
         veOGVReceived: number;
       },
-      ['useStakingAPY', string, number]
+      ['useStakingAPY', string, number, Config]
     >
   >,
 ) => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useStakingAPY', amount?.toString(), monthDuration],
+    queryKey: ['useStakingAPY', amount?.toString(), monthDuration, config],
     queryFn: async () => {
       const amt =
         typeof amount === 'bigint'
@@ -102,7 +103,7 @@ export const useMyVApy = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useMyVApy', address],
+    queryKey: ['useMyVApy', address, config],
     queryFn: async () => {
       const data = await Promise.all([
         queryClient.fetchQuery<UserLockupsQuery>({

@@ -1,6 +1,6 @@
 import * as Types from '@origin/governance/shared';
 
-import { useQuery, useInfiniteQuery, UseQueryOptions, UseInfiniteQueryOptions, InfiniteData } from '@tanstack/react-query';
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/governance/shared';
 export type HoldersCountQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
@@ -49,27 +49,6 @@ export const useHoldersCountQuery = <
 
 useHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) => variables === undefined ? ['HoldersCount'] : ['HoldersCount', variables];
 
-export const useInfiniteHoldersCountQuery = <
-      TData = InfiniteData<HoldersCountQuery>,
-      TError = unknown
-    >(
-      variables: HoldersCountQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<HoldersCountQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<HoldersCountQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<HoldersCountQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? variables === undefined ? ['HoldersCount.infinite'] : ['HoldersCount.infinite', variables],
-      queryFn: (metaData) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) => variables === undefined ? ['HoldersCount.infinite'] : ['HoldersCount.infinite', variables];
-
 
 useHoldersCountQuery.fetcher = (variables?: HoldersCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, variables, options);
 
@@ -106,27 +85,6 @@ export const useUserInfoQuery = <
 
 useUserInfoQuery.getKey = (variables: UserInfoQueryVariables) => ['UserInfo', variables];
 
-export const useInfiniteUserInfoQuery = <
-      TData = InfiniteData<UserInfoQuery>,
-      TError = unknown
-    >(
-      variables: UserInfoQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<UserInfoQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<UserInfoQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<UserInfoQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? ['UserInfo.infinite', variables],
-      queryFn: (metaData) => graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteUserInfoQuery.getKey = (variables: UserInfoQueryVariables) => ['UserInfo.infinite', variables];
-
 
 useUserInfoQuery.fetcher = (variables: UserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables, options);
 
@@ -156,27 +114,6 @@ export const useUserDelegatorsQuery = <
     )};
 
 useUserDelegatorsQuery.getKey = (variables: UserDelegatorsQueryVariables) => ['UserDelegators', variables];
-
-export const useInfiniteUserDelegatorsQuery = <
-      TData = InfiniteData<UserDelegatorsQuery>,
-      TError = unknown
-    >(
-      variables: UserDelegatorsQueryVariables,
-      options: Omit<UseInfiniteQueryOptions<UserDelegatorsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseInfiniteQueryOptions<UserDelegatorsQuery, TError, TData>['queryKey'] }
-    ) => {
-    
-    return useInfiniteQuery<UserDelegatorsQuery, TError, TData>(
-      (() => {
-    const { queryKey: optionsQueryKey, ...restOptions } = options;
-    return {
-      queryKey: optionsQueryKey ?? ['UserDelegators.infinite', variables],
-      queryFn: (metaData) => graphqlClient<UserDelegatorsQuery, UserDelegatorsQueryVariables>(UserDelegatorsDocument, {...variables, ...(metaData.pageParam ?? {})})(),
-      ...restOptions
-    }
-  })()
-    )};
-
-useInfiniteUserDelegatorsQuery.getKey = (variables: UserDelegatorsQueryVariables) => ['UserDelegators.infinite', variables];
 
 
 useUserDelegatorsQuery.fetcher = (variables: UserDelegatorsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserDelegatorsQuery, UserDelegatorsQueryVariables>(UserDelegatorsDocument, variables, options);
