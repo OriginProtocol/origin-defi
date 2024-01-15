@@ -89,11 +89,11 @@
   "3townk": {
     "defaultMessage": "Max vAPY"
   },
-  "40/oSs": {
-    "defaultMessage": "If you plan to restake your rewards, you can save on transaction fees by selecting the {restake} option."
-  },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
+  },
+  "4OE2Tb": {
+    "defaultMessage": "Your transaction is being processed on-chain."
   },
   "4cSnUS": {
     "defaultMessage": "3y"
@@ -275,6 +275,9 @@
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
+  "KaxXiQ": {
+    "defaultMessage": "Processing approval"
+  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
@@ -352,6 +355,9 @@
   },
   "RahCRH": {
     "defaultMessage": "Expired"
+  },
+  "RxMChd": {
+    "defaultMessage": "On-chain proposal"
   },
   "S+gf+n": {
     "defaultMessage": "Defeated"
@@ -637,6 +643,9 @@
   },
   "yWtbSZ": {
     "defaultMessage": "Executed"
+  },
+  "yphS5C": {
+    "defaultMessage": "Processing transaction"
   },
   "yvxbM+": {
     "defaultMessage": "Next Emissions Reduction Event:"
