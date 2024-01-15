@@ -103,6 +103,12 @@
       "value": "OETH Transactions"
     }
   ],
+  "4OE2Tb": [
+    {
+      "type": 0,
+      "value": "Your transaction is being processed on-chain."
+    }
+  ],
   "5RMD2G": [
     {
       "type": 0,
@@ -315,6 +321,12 @@
     {
       "type": 0,
       "value": "Gas:"
+    }
+  ],
+  "KaxXiQ": [
+    {
+      "type": 0,
+      "value": "Processing approval"
     }
   ],
   "KjK2z3": [
@@ -731,6 +743,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "yphS5C": [
+    {
+      "type": 0,
+      "value": "Processing transaction"
     }
   ],
   "z/wUXE": [
