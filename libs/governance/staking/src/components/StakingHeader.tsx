@@ -97,7 +97,9 @@ export const StakingHeader = () => {
               />
               <ValueLabel
                 label={intl.formatMessage({ defaultMessage: 'veOGV holders' })}
-                value={holdersCount?.ogvAddressesConnection?.totalCount ?? 0}
+                value={intl.formatNumber(
+                  holdersCount?.ogvAddressesConnection?.totalCount ?? 0,
+                )}
                 isLoading={isHoldersCountLoading}
                 {...valueLabelProps}
               />
@@ -220,6 +222,7 @@ export const StakingHeader = () => {
                   variant="connect"
                   sx={{
                     minWidth: 140,
+                    height: 44,
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Stake' })}
@@ -232,6 +235,7 @@ export const StakingHeader = () => {
                   color="secondary"
                   sx={{
                     minWidth: 140,
+                    height: 44,
                   }}
                 >
                   {intl.formatMessage({ defaultMessage: 'Get OGV' })}
@@ -275,7 +279,11 @@ export const StakingHeader = () => {
                   </Stack>
                 }
               />
-              <ClaimRewardsButton variant="outlined" color="secondary">
+              <ClaimRewardsButton
+                variant="outlined"
+                color="secondary"
+                sx={{ height: 44 }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
               </ClaimRewardsButton>
             </Stack>
@@ -356,6 +364,7 @@ export const StakingHeader = () => {
                 onClick={() => {
                   navigate('/');
                 }}
+                sx={{ height: 44 }}
               >
                 {intl.formatMessage({ defaultMessage: 'View Proposals' })}
               </Button>

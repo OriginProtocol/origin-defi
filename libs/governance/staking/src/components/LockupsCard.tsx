@@ -52,7 +52,7 @@ export const LockupsCard = (props: CardProps) => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                {intl.formatNumber(myvAPY, {
+                {intl.formatNumber(myvAPY / 100, {
                   style: 'percent',
                   maximumFractionDigits: 2,
                   minimumFractionDigits: 2,
@@ -101,7 +101,10 @@ export const LockupsCard = (props: CardProps) => {
             gap: 2,
           }}
         >
-          <ConnectedButton variant="connect" sx={{ minWidth: 160 }} />
+          <ConnectedButton
+            variant="connect"
+            sx={{ minWidth: 160, height: 44 }}
+          />
         </Stack>
       )}
     </Card>

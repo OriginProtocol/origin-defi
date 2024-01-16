@@ -9,13 +9,14 @@ import {
   TableHead,
   TableRow,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { useGovernanceInfo } from '@origin/governance/shared';
 import {
   ArrowLink,
   LoadingLabel,
   TablePagination,
-  TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
@@ -26,7 +27,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict, isFuture, isPast } from 'date-fns';
+import { formatDistanceToNowStrict, isFuture } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -42,6 +43,8 @@ const columnHelper = createColumnHelper<Lockup>();
 export const LockupsTable = () => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
   const { data, isLoading } = useUserLockupsQuery(
@@ -56,22 +59,21 @@ export const LockupsTable = () => {
     () => [
       columnHelper.accessor('amount', {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
-        cell: (info) => (
-          <Stack direction="row" spacing={1} alignItems="center">
-            <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
-            <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
-          </Stack>
-        ),
+        cell: (info) => formatAmount(BigInt(info.getValue())),
       }),
-      columnHelper.accessor('end', {
-        header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
-        cell: (info) =>
-          intl.formatDate(info.getValue(), {
-            day: '2-digit',
-            month: 'short',
-            year: 'numeric',
-          }),
-      }),
+      ...(isSm
+        ? []
+        : [
+            columnHelper.accessor('end', {
+              header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
+              cell: (info) =>
+                intl.formatDate(info.getValue(), {
+                  day: '2-digit',
+                  month: 'short',
+                  year: 'numeric',
+                }),
+            }),
+          ]),
       columnHelper.display({
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
@@ -81,24 +83,15 @@ export const LockupsTable = () => {
             roundingMethod: 'floor',
           }),
       }),
-      columnHelper.accessor('veogv', {
-        id: 'veogv',
-        header: tokens.mainnet.veOGV.symbol,
-        cell: (info) => (
-          <Stack
-            direction="row"
-            spacing={1}
-            alignItems="center"
-            justifyContent="flex-end"
-          >
-            <TokenIcon
-              symbol={tokens.mainnet.veOGV.symbol}
-              sx={{ transform: 'translateY(4px)' }}
-            />
-            <Typography>{formatAmount(BigInt(info.getValue()))}</Typography>
-          </Stack>
-        ),
-      }),
+      ...(isSm
+        ? []
+        : [
+            columnHelper.accessor('veogv', {
+              id: 'veogv',
+              header: tokens.mainnet.veOGV.symbol,
+              cell: (info) => formatAmount(BigInt(info.getValue())),
+            }),
+          ]),
       columnHelper.accessor('veogv', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
@@ -140,7 +133,6 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={isPast(new Date(info.row.original.end))}
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
               </ExtendButton>
@@ -171,6 +163,7 @@ export const LockupsTable = () => {
       intl,
       isGovInfoLoading,
       isLoading,
+      isSm,
     ],
   );
 
@@ -203,10 +196,12 @@ export const LockupsTable = () => {
                       color: 'text.secondary',
                     }}
                   >
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
+                    <Typography noWrap>
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </Typography>
                   </TableCell>
                 ))}
               </TableRow>

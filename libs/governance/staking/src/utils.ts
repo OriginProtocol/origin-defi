@@ -61,3 +61,26 @@ export function getNextEmissionDate() {
 
   return fromUnixTime(range[1]);
 }
+
+export const getVAPY = (
+  veOgvReceived: number,
+  ogvToStake: number,
+  totalSupplyVeOgv: number,
+) => {
+  if (totalSupplyVeOgv === 0 || ogvToStake === 0 || veOgvReceived === 0) {
+    return 0;
+  }
+
+  const ogvPercentageOfRewards = veOgvReceived / totalSupplyVeOgv;
+  const dailyEmissions = getDailyRewardsEmissions();
+  if (dailyEmissions === 0) {
+    console.warn(
+      'Reason for APY 0% -> no reward emissions for current timestamp.',
+    );
+  }
+  const ogvRewardsDaily = dailyEmissions * ogvPercentageOfRewards;
+  const ogvRewardsYearly = ogvRewardsDaily * 365.25;
+  const ogvLockupRewardApr = ogvRewardsYearly / ogvToStake;
+
+  return ((1 + ogvLockupRewardApr / 1) ** 1 - 1) * 100;
+};

@@ -41,6 +41,9 @@
   "4LOwM/": {
     "defaultMessage": "OETH Transactions"
   },
+  "4OE2Tb": {
+    "defaultMessage": "Your transaction is being processed on-chain."
+  },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
   },
@@ -127,6 +130,9 @@
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
+  },
+  "KaxXiQ": {
+    "defaultMessage": "Processing approval"
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
@@ -319,6 +325,9 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
+  },
+  "yphS5C": {
+    "defaultMessage": "Processing transaction"
   },
   "z/wUXE": {
     "defaultMessage": "Received"

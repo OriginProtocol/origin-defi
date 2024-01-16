@@ -75,7 +75,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
                 </Typography>
               </Stack>
             ) : (
-              <ConnectedButton variant="connect" />
+              <ConnectedButton variant="connect" sx={{ height: 44 }} />
             )
           }
           spacing={1.5}

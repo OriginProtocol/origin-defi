@@ -217,20 +217,6 @@
       "value": "Max vAPY"
     }
   ],
-  "40/oSs": [
-    {
-      "type": 0,
-      "value": "If you plan to restake your rewards, you can save on transaction fees by selecting the "
-    },
-    {
-      "type": 1,
-      "value": "restake"
-    },
-    {
-      "type": 0,
-      "value": " option."
-    }
-  ],
   "45EvZ3": [
     {
       "type": 0,
@@ -243,6 +229,12 @@
     {
       "type": 0,
       "value": " slippage:"
+    }
+  ],
+  "4OE2Tb": [
+    {
+      "type": 0,
+      "value": "Your transaction is being processed on-chain."
     }
   ],
   "4cSnUS": [
@@ -273,6 +265,12 @@
     {
       "type": 0,
       "value": "Unknown"
+    }
+  ],
+  "5lVaeB": [
+    {
+      "type": 0,
+      "value": "No description"
     }
   ],
   "5y98eS": [
@@ -365,12 +363,6 @@
     {
       "type": 0,
       "value": "Amount to Stake"
-    }
-  ],
-  "6lc5Lh": [
-    {
-      "type": 0,
-      "value": "Transaction Time"
     }
   ],
   "7CPiAt": [
@@ -703,6 +695,12 @@
       "value": "Abstain"
     }
   ],
+  "KaxXiQ": [
+    {
+      "type": 0,
+      "value": "Processing approval"
+    }
+  ],
   "KjK2z3": [
     {
       "type": 0,
@@ -713,12 +711,6 @@
     {
       "type": 0,
       "value": "Succeeded"
-    }
-  ],
-  "LRJJAc": [
-    {
-      "type": 0,
-      "value": "Transaction Hash"
     }
   ],
   "LsLfrw": [
@@ -909,6 +901,12 @@
     {
       "type": 0,
       "value": "Expired"
+    }
+  ],
+  "RxMChd": [
+    {
+      "type": 0,
+      "value": "On-chain proposal"
     }
   ],
   "S+gf+n": [
@@ -1111,12 +1109,6 @@
       "value": "Redeem"
     }
   ],
-  "Y7WXOT": [
-    {
-      "type": 0,
-      "value": "Transaction history"
-    }
-  ],
   "YGiRwq": [
     {
       "type": 0,
@@ -1233,12 +1225,6 @@
     {
       "type": 0,
       "value": "Connect Wallet"
-    }
-  ],
-  "ck/Gd6": [
-    {
-      "type": 0,
-      "value": "Vote Delegation"
     }
   ],
   "d0O17Z": [
@@ -1483,12 +1469,6 @@
       "value": "Approving"
     }
   ],
-  "m1czzY": [
-    {
-      "type": 0,
-      "value": "Event"
-    }
-  ],
   "mcotxc": [
     {
       "type": 1,
@@ -1501,6 +1481,12 @@
     {
       "type": 1,
       "value": "symbol"
+    }
+  ],
+  "nPWAZD": [
+    {
+      "type": 0,
+      "value": "On-chain Vote Delegation"
     }
   ],
   "nc8QpJ": [
@@ -1677,6 +1663,12 @@
     {
       "type": 0,
       "value": "Executed"
+    }
+  ],
+  "yphS5C": [
+    {
+      "type": 0,
+      "value": "Processing transaction"
     }
   ],
   "yvxbM+": [

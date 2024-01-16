@@ -89,11 +89,11 @@
   "3townk": {
     "defaultMessage": "Max vAPY"
   },
-  "40/oSs": {
-    "defaultMessage": "If you plan to restake your rewards, you can save on transaction fees by selecting the {restake} option."
-  },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
+  },
+  "4OE2Tb": {
+    "defaultMessage": "Your transaction is being processed on-chain."
   },
   "4cSnUS": {
     "defaultMessage": "3y"
@@ -109,6 +109,9 @@
   },
   "5jeq8P": {
     "defaultMessage": "Unknown"
+  },
+  "5lVaeB": {
+    "defaultMessage": "No description"
   },
   "5y98eS": {
     "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
@@ -130,9 +133,6 @@
   },
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
-  },
-  "6lc5Lh": {
-    "defaultMessage": "Transaction Time"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
@@ -275,14 +275,14 @@
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
+  "KaxXiQ": {
+    "defaultMessage": "Processing approval"
+  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
   "LOghU6": {
     "defaultMessage": "Succeeded"
-  },
-  "LRJJAc": {
-    "defaultMessage": "Transaction Hash"
   },
   "LsLfrw": {
     "defaultMessage": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
@@ -356,6 +356,9 @@
   "RahCRH": {
     "defaultMessage": "Expired"
   },
+  "RxMChd": {
+    "defaultMessage": "On-chain proposal"
+  },
   "S+gf+n": {
     "defaultMessage": "Defeated"
   },
@@ -425,9 +428,6 @@
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
-  "Y7WXOT": {
-    "defaultMessage": "Transaction history"
-  },
   "YGiRwq": {
     "defaultMessage": "Voting Power"
   },
@@ -472,9 +472,6 @@
   },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
-  },
-  "ck/Gd6": {
-    "defaultMessage": "Vote Delegation"
   },
   "d0O17Z": {
     "defaultMessage": "2y"
@@ -563,11 +560,11 @@
   "m/L3sK": {
     "defaultMessage": "Approving"
   },
-  "m1czzY": {
-    "defaultMessage": "Event"
-  },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
+  },
+  "nPWAZD": {
+    "defaultMessage": "On-chain Vote Delegation"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
@@ -646,6 +643,9 @@
   },
   "yWtbSZ": {
     "defaultMessage": "Executed"
+  },
+  "yphS5C": {
+    "defaultMessage": "Processing transaction"
   },
   "yvxbM+": {
     "defaultMessage": "Next Emissions Reduction Event:"

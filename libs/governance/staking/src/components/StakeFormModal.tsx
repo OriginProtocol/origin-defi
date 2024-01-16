@@ -96,6 +96,7 @@ export const StakeFormModal = (props: DialogProps) => {
   const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.veOgvTotalSupply ?? 0n, tokens.mainnet.OGV.decimals);
+  const showRewardLabel = (info?.veOgvRewards ?? 0n) > 0n;
   const showApprove =
     isConnected &&
     !isInfoLoading &&
@@ -128,7 +129,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <CgClose fontSize={14} />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <DialogContent>
         <Stack pt={3}>
           <Stack
             direction="row"
@@ -231,7 +232,7 @@ export const StakeFormModal = (props: DialogProps) => {
             }}
           />
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}&nbsp;
             <InfoTooltip
@@ -308,7 +309,7 @@ export const StakeFormModal = (props: DialogProps) => {
             </Box>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
             &nbsp;
@@ -369,7 +370,7 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Stack>
+        <Stack pt={3}>
           <Typography fontWeight={700} mb={1.5}>
             {intl.formatMessage({
               defaultMessage: 'Locked Tokens Received Now',
@@ -438,21 +439,49 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Collapse in={showApprove}>
-          <Stack>
-            <ApprovalButton
-              token={tokens.mainnet.OGV}
-              spender={tokens.mainnet.veOGV}
-              amount={amount}
-              variant="action"
-              disabled={isInfoLoading}
-              onSuccess={() => {
-                queryClient.invalidateQueries({
-                  queryKey: ['useGovernanceInfo'],
-                });
-              }}
-            />
+        {showRewardLabel && (
+          <Stack bgcolor="grey.900" px={3} py={2} spacing={1} mt={3}>
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'OGV Rewards Will be Collected',
+              })}
+            </Typography>
+            <Typography
+              color="text.secondary"
+              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
+            >
+              {intl.formatMessage(
+                {
+                  defaultMessage:
+                    'You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake.',
+                },
+                {
+                  reward: formatAmount(
+                    info?.veOgvRewards,
+                    tokens.mainnet.OGV.decimals,
+                    undefined,
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  ),
+                },
+              )}
+            </Typography>
           </Stack>
+        )}
+        <Collapse in={showApprove}>
+          <ApprovalButton
+            token={tokens.mainnet.OGV}
+            spender={tokens.mainnet.veOGV}
+            amount={amount}
+            variant="action"
+            fullWidth
+            disabled={isInfoLoading}
+            onSuccess={() => {
+              queryClient.invalidateQueries({
+                queryKey: ['useGovernanceInfo'],
+              });
+            }}
+            sx={{ mt: 3 }}
+          />
         </Collapse>
         <TransactionButton
           contract={tokens.mainnet.veOGV}
@@ -491,6 +520,8 @@ export const StakeFormModal = (props: DialogProps) => {
               queryKey: [useUserLockupsQuery.getKey({ address })],
             });
           }}
+          fullWidth
+          sx={{ mt: 3 }}
         />
       </DialogContent>
     </Dialog>
