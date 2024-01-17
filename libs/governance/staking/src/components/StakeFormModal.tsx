@@ -56,13 +56,17 @@ export const StakeFormModal = (props: DialogProps) => {
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useStakingAPY(amount, duration, {
-    enabled: false,
-  });
+  const { data: staking, refetch } = useStakingAPY(
+    amount === 0n ? 100n : amount,
+    duration,
+    {
+      enabled: false,
+    },
+  );
 
   useDebouncedEffect(
     () => {
-      if (amount > 0n && duration > 0) {
+      if (duration > 0) {
         refetch();
       }
     },
@@ -71,10 +75,7 @@ export const StakeFormModal = (props: DialogProps) => {
   );
 
   useEffect(() => {
-    if (
-      isLoading &&
-      (!isNilOrEmpty(staking?.stakingAPY) || amount === 0n || duration === 0)
-    ) {
+    if (isLoading && (!isNilOrEmpty(staking?.stakingAPY) || duration === 0)) {
       setIsLoading(false);
     }
   }, [amount, staking, duration, isLoading]);
@@ -85,7 +86,7 @@ export const StakeFormModal = (props: DialogProps) => {
   };
 
   const handleDurationChange = (_, newValue: number | number[]) => {
-    setIsLoading(amount > 0n);
+    setIsLoading(true);
     setDuration(newValue as number);
   };
 
@@ -399,10 +400,12 @@ export const StakeFormModal = (props: DialogProps) => {
                 <LoadingLabel
                   variant="h3"
                   mr={0.5}
-                  isLoading={isLoading}
+                  isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {formatQuantity(staking?.veOGVReceived)}
+                  {amount > 0n
+                    ? formatQuantity(staking?.veOGVReceived)
+                    : '0.00'}
                 </LoadingLabel>
                 &nbsp;
                 <Typography color="text.secondary">
@@ -420,13 +423,18 @@ export const StakeFormModal = (props: DialogProps) => {
                     defaultMessage: 'Voting Power:',
                   })}
                 </Typography>
-                <LoadingLabel fontWeight={700} isLoading={isLoading}>
+                <LoadingLabel
+                  fontWeight={700}
+                  isLoading={isLoading && amount > 0n}
+                >
                   {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
-                  {intl.formatNumber(votingPowerPercent, {
-                    style: 'percent',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 5,
-                  })}
+                  {amount > 0n
+                    ? intl.formatNumber(votingPowerPercent, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 5,
+                      })
+                    : '0.00%'}
                 </LoadingLabel>
                 <InfoTooltip
                   sx={{ ml: 0.75 }}
