@@ -12,12 +12,12 @@ To start the development server run `pnpm nx serve <APP_NAME>`
 
 ## Apps
 
-| Status | App Name     | Port | Public hosts                                                         |
-| :----: | :----------- | :--- | :------------------------------------------------------------------- |
-|   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/) |
-|   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/) |
-|   🚧   | `defi`       | 4202 | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)                    |
-|   🚧   | `governance` | 4203 | [aws](https://next.d11mo0k0jspnpd.amplifyapp.com/)                   |
+| Status | App Name   | Port | Public hosts |
+|:------:|:-------------|:-----|:-------------|
+|   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
+|   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
+|   🚧   | `defi`       | 4202 | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    |
+|   🚧   | `governance` | 4203 | [aws](https://governance.ousd.com/)   |
 
 ## Storybook
 

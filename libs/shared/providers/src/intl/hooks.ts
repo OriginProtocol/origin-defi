@@ -105,11 +105,13 @@ export const useFormat = () => {
       const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
 
-      return intl.formatNumber(amt, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 4,
-        ...options,
-      });
+      return amt > 0
+        ? intl.formatNumber(amt, {
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 4,
+            ...options,
+          })
+        : zeroPlaceholder;
     },
     [intl],
   );

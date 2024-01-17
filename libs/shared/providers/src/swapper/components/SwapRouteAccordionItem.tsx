@@ -1,6 +1,5 @@
 import { alpha, Skeleton, Stack, Typography } from '@mui/material';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
-import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -24,7 +23,7 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
-  const { formatCurrency, formatQuantity } = useFormat();
+  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = usePrices();
   const {
@@ -111,7 +110,7 @@ export function SwapRouteAccordionItem({
         >
           <Stack direction="row" spacing={0.5} alignItems="baseline">
             <LoadingLabel variant="body2" isLoading={isSwapRoutesLoading}>
-              {formatAmount(estimatedAmount)}
+              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
             </LoadingLabel>
             <LoadingLabel
               variant="body2"

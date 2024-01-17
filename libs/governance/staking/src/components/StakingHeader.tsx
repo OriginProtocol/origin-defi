@@ -11,6 +11,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { useFormat } from '@origin/shared/providers';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
@@ -25,6 +26,7 @@ import type { ValueLabelProps } from '@origin/shared/components';
 
 export const StakingHeader = () => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
   const navigate = useNavigate();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
@@ -268,12 +270,9 @@ export const StakingHeader = () => {
                       sWidth={80}
                       isLoading={isInfoLoading}
                     >
-                      {intl.formatNumber(
-                        +formatUnits(
-                          info?.veOgvRewards ?? 0n,
-                          tokens.mainnet.OGV.decimals,
-                        ),
-                        { notation: 'compact', maximumSignificantDigits: 4 },
+                      {formatAmount(
+                        info?.veOgvRewards ?? 0n,
+                        tokens.mainnet.OGV.decimals,
                       )}
                     </LoadingLabel>
                   </Stack>
