@@ -3,6 +3,8 @@ query SnapshotProposals {
     orderBy: "created"
     orderDirection: desc
     where: { space_in: "ousdgov.eth" }
+    skip: 0
+    first: 1000
   ) {
     id
     title
@@ -23,10 +25,12 @@ query SnapshotUserVotes($address: String!) {
     orderBy: "created"
     orderDirection: desc
     where: { space_in: "ousdgov.eth", voter: $address }
+    skip: 0
+    first: 1000
   ) {
     id
     created
-    choice    
+    choice
     proposal {
       id
       title
