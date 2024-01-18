@@ -41,7 +41,7 @@ export const OUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OUSDSvg} viewBox="0 0 300 300" />
 );
 export const rETH = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={rETHSvg} viewBox="0 0 24 24" />
+  <SvgIcon {...props} component={rETHSvg} viewBox="0 0 600 600" />
 );
 export const sfrxETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={sfrxETHSvg} viewBox="0 0 24 24" />
