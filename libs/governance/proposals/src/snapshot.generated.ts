@@ -664,6 +664,8 @@ export const SnapshotProposalsDocument = `
     orderBy: "created"
     orderDirection: desc
     where: {space_in: "ousdgov.eth"}
+    skip: 0
+    first: 1000
   ) {
     id
     title
@@ -707,6 +709,8 @@ export const SnapshotUserVotesDocument = `
     orderBy: "created"
     orderDirection: desc
     where: {space_in: "ousdgov.eth", voter: $address}
+    skip: 0
+    first: 1000
   ) {
     id
     created

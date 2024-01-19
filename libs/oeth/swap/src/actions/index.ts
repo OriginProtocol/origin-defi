@@ -3,6 +3,7 @@ import { defineMessage } from 'react-intl';
 import mintVault from './mintVault';
 import swapCurve from './swapCurve';
 import swapCurveEth from './swapCurveEth';
+import swapCurveSfrxeth from './swapCurveSfrxeth';
 import swapZapperEth from './swapZapperEth';
 import swapZapperSfrxeth from './swapZapperSfrxeth';
 import unwrapWOETH from './unwrapWOETH';
@@ -69,6 +70,12 @@ export const swapActions: Record<SwapAction, SwapApi> = {
     ...defaultApi,
     ...swapCurveEth,
     routeLabel: defineMessage({ defaultMessage: 'Swap with CurvePool' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-curve-sfrxeth': {
+    ...defaultApi,
+    ...swapCurveSfrxeth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Curve' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-zapper-eth': {

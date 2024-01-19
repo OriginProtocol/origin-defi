@@ -4,6 +4,7 @@ import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
+import { CurveRouterABI } from './abis/CurveRouter';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
@@ -32,6 +33,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: CurveAddressProviderABI,
       name: 'CurveAddressProvider',
+    },
+    CurveRouter: {
+      address: '0xF0d4c12A5768D806021F80a262B4d39d26C58b8D',
+      chainId: mainnet.id,
+      abi: CurveRouterABI,
+      name: 'CurveRouter',
     },
     // OETH
     OETHCurvePool: {
