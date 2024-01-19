@@ -42,7 +42,7 @@ import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../hooks';
 import { useUserLockupsQuery } from '../queries.generated';
-import { getNextEmissionDate } from '../utils';
+import { getNextEmissionDate, getVAPY } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -102,6 +102,17 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     }
   };
 
+  const vAPY =
+    duration === initialMonthDuration
+      ? getVAPY(
+          +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals),
+          +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGV.decimals),
+          +formatUnits(
+            BigInt(info.veOgvTotalSupply),
+            tokens.mainnet.veOGV.decimals,
+          ),
+        ) / 100
+      : (staking?.stakingAPY ?? 0) / 100;
   const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.veOgvTotalSupply ?? 1n, tokens.mainnet.OGV.decimals);
@@ -333,7 +344,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 sWidth={60}
                 isLoading={isLoading}
               >
-                {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                {intl.formatNumber(vAPY, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
