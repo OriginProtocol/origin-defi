@@ -89,9 +89,7 @@ export const StakeOGVCard = (props: StackProps) => {
       <Stack width={0.25} justifyContent="center" alignItems="center">
         <TokenIcon
           symbol={tokens.mainnet.OGV.symbol}
-          width={216}
-          height={216}
-          sx={{ zIndex: 1 }}
+          sx={{ zIndex: 1, width: 216, height: 216 }}
         />
       </Stack>
       <Box

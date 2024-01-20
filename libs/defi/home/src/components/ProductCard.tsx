@@ -19,7 +19,7 @@ import type { StackProps } from '@mui/material';
 import type { products } from '../constants';
 
 export type ProductCardProps = {
-  product: (typeof products)[0];
+  product: (typeof products)[number];
   href?: string;
 } & StackProps;
 
@@ -100,7 +100,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           )}
         </Typography>
       </Stack>
-      <Stack pt={3} pb={6} px={3} flexGrow={1}>
+      <Stack pt={3} pb={6} px={3} flexGrow={1} justifyContent="flex-end">
         {!isNilOrEmpty(href) && (
           <Button
             onClick={() => {
@@ -123,7 +123,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
       >
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'TVL' })}
-          value={formatCurrency(queryData.tvl)}
+          value={formatCurrency(queryData?.tvl)}
           isLoading={isQueryDataLoading}
           sx={{
             width: 0.33,
@@ -132,7 +132,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Current price' })}
-          value={formatCurrency(prices[product.token.symbol])}
+          value={formatCurrency(prices?.[product.token.symbol])}
           isLoading={isPricesLoading}
           sx={{
             width: 0.33,

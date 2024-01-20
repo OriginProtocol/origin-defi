@@ -34,7 +34,7 @@ import { routes } from './routes';
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
 
-logWelcomeMessage('defi');
+logWelcomeMessage('DeFi');
 
 registerChart();
 
@@ -61,7 +61,7 @@ root.render(
       [
         GeoFenceProvider,
         {
-          name: 'defi',
+          name: 'DeFi',
           fullName: 'Origin DeFi',
           href: 'https://www.originprotocol.com',
         },
