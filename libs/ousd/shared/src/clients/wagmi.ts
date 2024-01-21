@@ -10,6 +10,7 @@ import {
   metaMaskWallet,
   rabbyWallet,
   rainbowWallet,
+  safepalWallet,
   safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
@@ -68,6 +69,10 @@ const connectors = connectorsForWallets([
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
       }),
       safeWallet({ chains }),
+      safepalWallet({
+        chains,
+        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
+      }),
       rainbowWallet({
         chains,
         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
