@@ -12,7 +12,6 @@ export const graphqlClient =
   ) =>
   async () => {
     const res = await axiosInstance<TData>({
-      url: '/graphql',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

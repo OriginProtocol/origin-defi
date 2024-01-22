@@ -71,7 +71,7 @@ export const Topnav = () => {
                 img: { height: { xs: 16, md: 24 } },
               }}
             >
-              <img src="/images/protocols/origin-long.svg" alt="Origin logo" />
+              <img src="/images/origin-defi-logo.svg" alt="Origin logo" />
             </Box>
           </Grid2>
           <Grid2

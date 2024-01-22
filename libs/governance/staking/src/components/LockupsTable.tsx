@@ -59,7 +59,14 @@ export const LockupsTable = () => {
     () => [
       columnHelper.accessor('amount', {
         header: intl.formatMessage({ defaultMessage: 'OGV' }),
-        cell: (info) => formatAmount(BigInt(info.getValue())),
+        cell: (info) =>
+          intl.formatNumber(
+            +formatUnits(BigInt(info.getValue()), tokens.mainnet.OGV.decimals),
+            {
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            },
+          ),
       }),
       ...(isSm
         ? []
@@ -89,7 +96,17 @@ export const LockupsTable = () => {
             columnHelper.accessor('veogv', {
               id: 'veogv',
               header: tokens.mainnet.veOGV.symbol,
-              cell: (info) => formatAmount(BigInt(info.getValue())),
+              cell: (info) =>
+                intl.formatNumber(
+                  +formatUnits(
+                    BigInt(info.getValue()),
+                    tokens.mainnet.veOGV.decimals,
+                  ),
+                  {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 0,
+                  },
+                ),
             }),
           ]),
       columnHelper.accessor('veogv', {
@@ -113,7 +130,7 @@ export const LockupsTable = () => {
               {
                 style: 'percent',
                 minimumFractionDigits: 2,
-                maximumFractionDigits: 5,
+                maximumFractionDigits: 6,
               },
             )}
           </LoadingLabel>

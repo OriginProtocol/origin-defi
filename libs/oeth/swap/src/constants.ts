@@ -91,6 +91,11 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
   },
   {
     tokenIn: tokens.mainnet.OETH,
+    tokenOut: tokens.mainnet.sfrxETH,
+    action: 'swap-curve-sfrxeth',
+  },
+  {
+    tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.ETH,
     action: 'swap-curve',
   },
