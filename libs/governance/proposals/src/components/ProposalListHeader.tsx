@@ -1,4 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { GOVERNANCE_SNAPSHOT_VOTES } from '@origin/shared/constants';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 
@@ -21,6 +22,21 @@ export const ProposalListHeader = (props: StackProps) => {
         })}
       </Typography>
       <Stack direction="row" spacing={{ xs: 1, sm: 2 }}>
+        <Button
+          href={GOVERNANCE_SNAPSHOT_VOTES}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          sx={{
+            backgroundColor: 'secondary.main',
+            ':hover': { backgroundColor: 'secondary.dark' },
+          }}
+        >
+          {intl.formatMessage({
+            defaultMessage: 'New Snapshot Proposal',
+          })}
+          &nbsp;
+          <GoArrowUpRight />
+        </Button>
         <Button
           variant="outlined"
           color="secondary"
