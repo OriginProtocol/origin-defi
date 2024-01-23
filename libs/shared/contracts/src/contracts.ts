@@ -5,6 +5,7 @@ import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
 import { CurveRouterABI } from './abis/CurveRouter';
+import { DIAOracleABI } from './abis/DIAOracle';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
@@ -39,6 +40,13 @@ export const contracts = {
       chainId: mainnet.id,
       abi: CurveRouterABI,
       name: 'CurveRouter',
+    },
+    // DIA Oracle
+    DIAOracle: {
+      address: '0xafA00E7Eff2EA6D216E432d99807c159d08C2b79',
+      chainId: mainnet.id,
+      abi: DIAOracleABI,
+      name: 'DIAOracle',
     },
     // OETH
     OETHCurvePool: {

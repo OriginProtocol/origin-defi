@@ -1,5 +1,6 @@
 import {
   ChainlinkAggregatorABI,
+  contracts,
   tokens as toks,
 } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
@@ -25,12 +26,7 @@ const chainlinkOracles = {
   rETH_ETH: '0x536218f9e9eb48863970252233c8f271f554c2d0',
 } as const;
 
-const coinGeckoTokens = [
-  coingeckoTokenIds.OETH,
-  coingeckoTokenIds.OUSD,
-  coingeckoTokenIds.WETH,
-  coingeckoTokenIds.OGN,
-];
+const coinGeckoTokens = [coingeckoTokenIds.WETH, coingeckoTokenIds.OGN];
 
 export const usePrices = (
   options?: UseQueryOptions<
@@ -43,7 +39,6 @@ export const usePrices = (
   return useQuery({
     queryKey: ['usePrices'],
     staleTime: import.meta.env.DEV ? 1000 * 60 * 30 : 1000 * 30,
-    cacheTime: import.meta.env.DEV ? 1000 * 60 * 60 : 1000 * 60,
     queryFn: async () => {
       const res = await Promise.allSettled([
         readContracts({
@@ -71,6 +66,18 @@ export const usePrices = (
               functionName: 'previewRedeem',
               args: [parseUnits('1', toks.mainnet.sfrxETH.decimals)],
             },
+            {
+              address: contracts.mainnet.DIAOracle.address,
+              abi: contracts.mainnet.DIAOracle.abi,
+              functionName: 'getValue',
+              args: ['OETH/USD'],
+            },
+            {
+              address: contracts.mainnet.DIAOracle.address,
+              abi: contracts.mainnet.DIAOracle.abi,
+              functionName: 'getValue',
+              args: ['OUSD/USD'],
+            },
           ],
           allowFailure: true,
         }),
@@ -84,12 +91,12 @@ export const usePrices = (
       const coinGecko = res[1].status === 'fulfilled' ? res[1].value.data : {};
 
       const WETH = coinGecko?.[coingeckoTokenIds.WETH]?.usd ?? 0;
-      const OETH = coinGecko?.[coingeckoTokenIds.OETH]?.usd ?? 0;
-      const OUSD = coinGecko?.[coingeckoTokenIds.OUSD]?.usd ?? 0;
       const OGN = coinGecko?.[coingeckoTokenIds.OGN]?.usd ?? 0;
 
       const multi = res[0].status === 'fulfilled' ? res[0].value : [];
 
+      const OETH = +formatUnits(multi?.[11]?.result?.[0] ?? 0n, 8);
+      const OUSD = +formatUnits(multi?.[12]?.result?.[0] ?? 0n, 8);
       const ETH = +formatUnits(multi?.[0]?.result?.[1] ?? 0n, 8);
       const DAI = +formatUnits(multi?.[1]?.result?.[1] ?? 0n, 8);
       const USDC = +formatUnits(multi?.[2]?.result?.[1] ?? 0n, 8);
