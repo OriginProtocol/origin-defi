@@ -5,6 +5,7 @@ export * from './Inputs';
 export * from './Icons';
 export * from './Labels';
 export * from './Links';
+export * from './Menus';
 export * from './MiddleTruncated';
 export * from './Mix';
 export * from './Notifications';
