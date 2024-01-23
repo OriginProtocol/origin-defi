@@ -1,22 +1,28 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-import { alpha, Box, Link } from '@mui/material';
+import { alpha, Box, Button, MenuItem } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
+import { ClickAwayMenu } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { OriginLabel } from '@origin/shared/icons';
 import {
   AccountPopover,
   ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';
 
+import type { ButtonProps } from '@mui/material';
+import type { RouteObject } from 'react-router-dom';
+
 export const Topnav = () => {
-  const intl = useIntl();
   const { isConnected } = useAccount();
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
@@ -68,10 +74,10 @@ export const Topnav = () => {
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
-                img: { height: { xs: 16, md: 24 } },
+                svg: { height: { xs: 16, md: 24 }, width: 1 },
               }}
             >
-              <img src="/images/origin-defi-logo.svg" alt="Origin logo" />
+              <OriginLabel />
             </Box>
           </Grid2>
           <Grid2
@@ -83,14 +89,11 @@ export const Topnav = () => {
               gap: 2,
             }}
           >
-            {routes[0].children.map((route) => (
-              <Link
-                key={route?.path ?? '/'}
-                component={RouterLink}
-                to={route?.path ?? '/'}
-              >
-                {intl.formatMessage(route.handle.label)}
-              </Link>
+            {routes[0].children.map((route, i) => (
+              <NavItem
+                key={`${route?.path ?? 'topButton'}-${i}`}
+                route={route}
+              />
             ))}
           </Grid2>
           <Grid2
@@ -161,6 +164,69 @@ export const Topnav = () => {
           </Grid2>
         </Grid2>
       </Box>
+    </>
+  );
+};
+
+type NavItemProps = {
+  route: RouteObject;
+} & Omit<ButtonProps, 'onClick'>;
+
+const NavItem = ({ route, ...rest }: NavItemProps) => {
+  const intl = useIntl();
+  const anchorEl = useRef(null);
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleMenuClick = (path: string) => () => {
+    setOpen(false);
+    navigate(`${route.path}/${path ?? ''}`);
+  };
+
+  if (isNilOrEmpty(route?.children)) {
+    return (
+      <Button
+        variant="text"
+        {...rest}
+        onClick={() => {
+          navigate(`${route?.path ?? ''}/`);
+        }}
+      >
+        {intl.formatMessage(route.handle.label)}
+      </Button>
+    );
+  }
+
+  return (
+    <>
+      <Button
+        variant="text"
+        {...rest}
+        ref={anchorEl}
+        onClick={() => {
+          setOpen(not);
+        }}
+      >
+        {intl.formatMessage(route.handle.label)}
+      </Button>
+      <ClickAwayMenu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        PopperProps={{ placement: 'bottom-start' }}
+        PaperProps={{ sx: { mt: 2, borderRadius: 2 } }}
+      >
+        {route?.children?.map((r, i) => (
+          <MenuItem
+            key={`${r?.handle?.label ?? 'menu'}-${i}`}
+            onClick={handleMenuClick(r?.path ?? '')}
+          >
+            {intl.formatMessage(r?.handle?.label)}
+          </MenuItem>
+        ))}
+      </ClickAwayMenu>
     </>
   );
 };

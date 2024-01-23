@@ -9,7 +9,7 @@ export const HomeView = () => {
   const intl = useIntl();
 
   return (
-    <Stack px={{ xs: 2, sm: 4, md: 8, lg: 16, xl: 24 }} spacing={4} mb={5}>
+    <Stack spacing={4} mb={5}>
       <Stack spacing={3} sx={{ justifyContent: 'center', py: 15 }}>
         <Typography variant="h1" textAlign="center">
           {intl.formatMessage({ defaultMessage: 'Origin products' })}

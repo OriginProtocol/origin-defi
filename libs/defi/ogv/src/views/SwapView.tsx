@@ -1,14 +1,12 @@
 import { Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-export const PoyView = () => {
+export const SwapView = () => {
   const intl = useIntl();
 
   return (
     <Stack>
-      <Typography>
-        {intl.formatMessage({ defaultMessage: 'Proof of yield' })}
-      </Typography>
+      <Typography>{intl.formatMessage({ defaultMessage: 'Swap' })}</Typography>
     </Stack>
   );
 };

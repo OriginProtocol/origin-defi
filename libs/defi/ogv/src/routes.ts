@@ -1,12 +1,12 @@
 import { defineMessage } from 'react-intl';
 
 import { PortfolioView } from './views/PortfolioView';
-import { RedeemView } from './views/RedeemView';
+import { StakingView } from './views/StakingView';
 import { SwapView } from './views/SwapView';
 
 import type { RouteObject } from 'react-router-dom';
 
-export const ousdRoute: Partial<RouteObject> = {
+export const ogvRoute: Partial<RouteObject> = {
   children: [
     {
       index: true,
@@ -14,14 +14,14 @@ export const ousdRoute: Partial<RouteObject> = {
       handle: { label: defineMessage({ defaultMessage: 'Swap' }) },
     },
     {
+      path: 'staking',
+      Component: StakingView,
+      handle: { label: defineMessage({ defaultMessage: 'Staking' }) },
+    },
+    {
       path: 'portfolio',
       Component: PortfolioView,
       handle: { label: defineMessage({ defaultMessage: 'Portfolio' }) },
-    },
-    {
-      path: 'redeem',
-      Component: RedeemView,
-      handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
     },
   ],
 };
