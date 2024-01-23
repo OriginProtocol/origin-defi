@@ -30,6 +30,9 @@ export const statusLabels = {
   closed: defineMessage({
     defaultMessage: 'Closed',
   }),
+  pending: defineMessage({
+    defaultMessage: 'Pending',
+  }),
 };
 
 export const governanceSupport = {
