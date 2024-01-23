@@ -21,7 +21,11 @@ export const ProposalListHeader = (props: StackProps) => {
           defaultMessage: 'Origin DeFi Governance',
         })}
       </Typography>
-      <Stack direction="row" spacing={{ xs: 1, sm: 2 }}>
+      <Stack
+        direction="row"
+        flexWrap="wrap"
+        sx={{ rowGap: 2, columnGap: { xs: 1, sm: 2 } }}
+      >
         <Button
           href={GOVERNANCE_SNAPSHOT_VOTES}
           target="_blank"
