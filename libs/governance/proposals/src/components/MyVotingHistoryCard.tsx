@@ -142,7 +142,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
     Abstain: (
       <RiErrorWarningLine color={theme.palette.warning.main} fontSize={14} />
     ),
-  }[vote.choice] ?? <Snapshot fontSize="inherit" />;
+  }[vote.choice] ?? <Snapshot color="warning" />;
 
   return (
     <Stack spacing={1.5} px={3} py={1.5} {...rest}>

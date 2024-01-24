@@ -500,6 +500,11 @@ export const theme = createTheme(base, {
         }),
       },
     },
+    MuiSvgIcon: {
+      defaultProps: {
+        fontSize: 'inherit',
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -564,7 +569,10 @@ export const theme = createTheme(base, {
   },
   mixins: {
     toolbar: {
-      height: 75,
+      height: 72,
+      [base.breakpoints.down('sm')]: {
+        height: 56,
+      },
     },
   },
 });

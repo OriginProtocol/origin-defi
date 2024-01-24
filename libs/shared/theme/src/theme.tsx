@@ -598,6 +598,11 @@ export const theme = createTheme({
         }),
       },
     },
+    MuiSvgIcon: {
+      defaultProps: {
+        fontSize: 'inherit',
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
