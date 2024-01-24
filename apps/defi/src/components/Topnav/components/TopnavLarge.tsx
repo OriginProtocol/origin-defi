@@ -22,6 +22,7 @@ import {
   OpenAccountModalButton,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { FaChevronDown } from 'react-icons/fa';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
@@ -88,6 +89,7 @@ export const TopnavLarge = () => {
             display: 'flex',
             flexDirection: 'row',
             alignItems: 'center',
+            justifyContent: 'center',
             gap: 2,
           }}
         >
@@ -226,6 +228,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         {...rest}
         sx={{
           color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
+          svg: { ml: 0.75 },
           ...rest?.sx,
         }}
         ref={anchorEl}
@@ -237,6 +240,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         }}
       >
         {intl.formatMessage(route.handle.title)}
+        <FaChevronDown />
       </Button>
       <Popper
         transition
