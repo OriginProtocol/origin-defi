@@ -1,14 +1,12 @@
 import { defineMessage } from 'react-intl';
 
 import { AboutView } from './views/AboutView';
-import { GovernanceView } from './views/GovernanceView';
 import { OverviewView } from './views/OverviewView';
 import { ProposalsView } from './views/ProposalsView';
 
 import type { RouteObject } from 'react-router-dom';
 
 export const governanceRoute: Partial<RouteObject> = {
-  Component: GovernanceView,
   children: [
     {
       index: true,

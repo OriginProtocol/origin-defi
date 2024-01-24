@@ -32,6 +32,7 @@ export const StatusBadge = ({
       [OgvProposalState.Queued.toLowerCase()]: theme.palette.text.secondary,
       [OgvProposalState.Succeeded.toLowerCase()]: theme.palette.success.main,
       closed: theme.palette.success.main,
+      pending: theme.palette.info.main,
     }[status?.toLowerCase()] ?? theme.palette.grey[600];
 
   return (
