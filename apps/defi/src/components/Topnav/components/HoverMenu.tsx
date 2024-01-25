@@ -12,7 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { FaChevronDown } from 'react-icons/fa';
+import { FaChevronDown } from 'react-icons/fa6';
 import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useMatch, useNavigate } from 'react-router-dom';
