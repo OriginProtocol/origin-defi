@@ -4,7 +4,13 @@ import * as oeth from '@origin/defi/oeth';
 import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
-import { ArrowDownFromArc, CoinsLight } from '@origin/shared/icons';
+import {
+  ArrowDownFromArc,
+  CoinsLight,
+  OETH,
+  OGV,
+  OUSD,
+} from '@origin/shared/icons';
 import {
   FaArrowRightArrowLeft,
   FaGavel,
@@ -30,7 +36,10 @@ export const routes: RouteObject[] = [
       {
         index: false,
         path: 'oeth',
-        handle: { title: defineMessage({ defaultMessage: 'OETH' }) },
+        handle: {
+          title: defineMessage({ defaultMessage: 'OETH' }),
+          icon: OETH,
+        },
         children: [
           {
             index: true,
@@ -70,7 +79,10 @@ export const routes: RouteObject[] = [
       {
         index: false,
         path: 'ousd',
-        handle: { title: defineMessage({ defaultMessage: 'OUSD' }) },
+        handle: {
+          title: defineMessage({ defaultMessage: 'OUSD' }),
+          icon: OUSD,
+        },
         children: [
           {
             index: true,
@@ -110,7 +122,7 @@ export const routes: RouteObject[] = [
       {
         index: false,
         path: 'ogv',
-        handle: { title: defineMessage({ defaultMessage: 'OGV' }) },
+        handle: { title: defineMessage({ defaultMessage: 'OGV' }), icon: OGV },
         children: [
           {
             index: true,
@@ -148,7 +160,10 @@ export const routes: RouteObject[] = [
       {
         index: false,
         path: 'governance',
-        handle: { title: defineMessage({ defaultMessage: 'Governance' }) },
+        handle: {
+          title: defineMessage({ defaultMessage: 'Governance' }),
+          icon: FaGavel,
+        },
         children: [
           {
             index: true,

@@ -28,7 +28,7 @@ export const ActivityButton = (props: Omit<IconButtonProps, 'children'>) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          img: {
+          svg: {
             height: 24,
             width: 24,
           },

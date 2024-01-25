@@ -20,7 +20,7 @@ const base = createTheme({
     },
     divider: '#282A32',
     background: {
-      paper: '#171619',
+      paper: '#1E1F25',
       default: '#141214',
       header: '#19191D',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
@@ -63,65 +63,127 @@ const base = createTheme({
 
 export const theme = createTheme(base, {
   typography: {
-    fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
 
     fontSize: 14,
+    fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
 
-    allVariants: {},
-
     h1: {
       fontFamily: 'Sailec',
-      fontSize: 32,
-      fontStyle: 'normal',
+      fontSize: 40,
+      lineHeight: 1.4,
       fontWeight: 700,
-      lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 20,
+        fontFamily: 'Inter',
+        fontSize: 32,
+        lineHeight: 1.25,
+      },
+    },
+    h2: {
+      fontFamily: 'Sailec',
+      fontSize: 32,
+      lineHeight: 1.4,
+      fontWeight: 700,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 28,
+        lineHeight: 1.25,
       },
     },
     h3: {
       fontFamily: 'Sailec',
-      fontSize: 24,
-      fontStyle: 'normal',
+      fontSize: 28,
+      lineHeight: 1.4,
       fontWeight: 700,
-      lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 20,
+        fontFamily: 'Inter',
+        fontSize: 24,
+        lineHeight: 1.25,
       },
     },
     h4: {
       fontFamily: 'Sailec',
-      fontSize: 20,
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: 1.6,
+      fontSize: 24,
+      lineHeight: 1.4,
+      fontWeight: 500,
       [base.breakpoints.down('sm')]: {
-        fontSize: 18,
-        lineHeight: 1.5,
+        fontFamily: 'Inter',
+        fontSize: 20,
+        lineHeight: 1.25,
+      },
+    },
+    h5: {
+      fontFamily: 'Sailec',
+      fontSize: 20,
+      lineHeight: 1.4,
+      fontWeight: 500,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 14,
+        lineHeight: 1.25,
+      },
+    },
+    h6: {
+      fontFamily: 'Sailec',
+      fontSize: 18,
+      lineHeight: 1.4,
+      fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 13,
+        lineHeight: 1.25,
       },
     },
     subtitle1: {
-      fontSize: 16,
-      color: base.palette.text.secondary,
+      fontFamily: 'Sailec',
+      fontSize: 20,
+      fontWeight: 500,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontFamily: 'Inter',
+        fontSize: 16,
+        lineHeight: 1.25,
+      },
+    },
+    subtitle2: {
+      fontFamily: 'Sailec',
+      fontSize: 12,
+      fontWeight: 400,
+      lineHeight: 1.4,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 11,
+        lineHeight: 1.25,
       },
     },
     body1: {
+      fontFamily: 'Sailec',
       fontSize: 14,
       lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontFamily: 'Inter',
+        fontSize: 13,
+        lineHeight: 1.4,
       },
     },
     body2: {
+      fontFamily: 'Sailec',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      fontStyle: 'normal',
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 11,
+      },
+    },
+
+    button: {
+      fontFamily: 'Sailec',
+      fontSize: 14,
+      lineHeight: 1.5,
     },
   },
   shape: {
@@ -200,16 +262,13 @@ export const theme = createTheme(base, {
           boxShadow: 'none',
         }),
         containedPrimary: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), #1E1F25;`,
+          background: theme.palette.primary.main,
           '&:hover': {
-            background: theme.palette.background.paper,
+            background: theme.palette.primary.dark,
           },
         }),
         containedSecondary: ({ theme }) => ({
-          background: theme.palette.grey[700],
+          background: theme.palette.grey[800],
           '&:hover': {
             background: theme.palette.grey[900],
           },
