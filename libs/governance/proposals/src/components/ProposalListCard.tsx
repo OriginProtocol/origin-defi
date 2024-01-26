@@ -183,7 +183,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                     py: 0.2,
                   }}
                 >
-                  <Snapshot color="warning" />
+                  <Snapshot color="warning" sx={{ fontSize: 14 }} />
                   <Typography variant="body2" color="warning.main">
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
