@@ -19,7 +19,6 @@ import {
   TablePagination,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
 import {
   createColumnHelper,
   flexRender,
@@ -42,7 +41,6 @@ const columnHelper = createColumnHelper<Lockup>();
 
 export const LockupsTable = () => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
@@ -174,14 +172,7 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [
-      formatAmount,
-      govInfo?.veOgvTotalSupply,
-      intl,
-      isGovInfoLoading,
-      isLoading,
-      isSm,
-    ],
+    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
   );
 
   const table = useReactTable({

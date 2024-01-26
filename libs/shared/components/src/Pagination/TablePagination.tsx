@@ -14,7 +14,7 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="baseline"
+      alignItems="center"
       justifyContent="flex-end"
       gap={1}
       {...rest}
