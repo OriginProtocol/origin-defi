@@ -17,10 +17,22 @@
       "value": "Connect"
     }
   ],
+  "/6/sPX": [
+    {
+      "type": 0,
+      "value": "Docs"
+    }
+  ],
   "/GCoTA": [
     {
       "type": 0,
       "value": "Clear"
+    }
+  ],
+  "/NHgZw": [
+    {
+      "type": 0,
+      "value": "In-depth OGV analytics"
     }
   ],
   "/xvR4F": [
@@ -39,12 +51,6 @@
     {
       "type": 0,
       "value": "Swapped"
-    }
-  ],
-  "0KIAYU": [
-    {
-      "type": 0,
-      "value": "View my stake"
     }
   ],
   "0fR+fE": [
@@ -87,18 +93,6 @@
     {
       "type": 0,
       "value": "Liquid staking"
-    }
-  ],
-  "3a5wL8": [
-    {
-      "type": 0,
-      "value": "Active"
-    }
-  ],
-  "3wsVWF": [
-    {
-      "type": 0,
-      "value": "Cancelled"
     }
   ],
   "45EvZ3": [
@@ -179,6 +173,12 @@
       "value": "Insufficient funds"
     }
   ],
+  "70QJXI": [
+    {
+      "type": 0,
+      "value": "Voting history"
+    }
+  ],
   "7CPiAt": [
     {
       "type": 0,
@@ -201,6 +201,12 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "8lmFbk": [
+    {
+      "type": 0,
+      "value": "Balance, earnings and history"
     }
   ],
   "8nvhZ9": [
@@ -259,12 +265,6 @@
       "value": "lastPage"
     }
   ],
-  "Bm4aQN": [
-    {
-      "type": 0,
-      "value": "Percentage of total voting power"
-    }
-  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -289,6 +289,12 @@
     {
       "type": 0,
       "value": "Go back home"
+    }
+  ],
+  "DzgeN/": [
+    {
+      "type": 0,
+      "value": "Discussion forum"
     }
   ],
   "E2sGaF": [
@@ -327,6 +333,12 @@
       "value": "symbolOut"
     }
   ],
+  "EVmlnF": [
+    {
+      "type": 0,
+      "value": "OGV"
+    }
+  ],
   "EpAQ64": [
     {
       "type": 0,
@@ -339,12 +351,6 @@
     {
       "type": 0,
       "value": " APY"
-    }
-  ],
-  "Fv1ZSz": [
-    {
-      "type": 0,
-      "value": "Closed"
     }
   ],
   "GZJpDf": [
@@ -365,16 +371,22 @@
       "value": "Ethereum network"
     }
   ],
-  "HJLofA": [
+  "HlkjJI": [
     {
       "type": 0,
-      "value": "My voting history"
+      "value": "Snapshot vote"
     }
   ],
   "HyhkDr": [
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+    }
+  ],
+  "IAZCOw": [
+    {
+      "type": 0,
+      "value": "Origin protocol"
     }
   ],
   "JA3MsG": [
@@ -387,12 +399,6 @@
     {
       "type": 0,
       "value": "Governance"
-    }
-  ],
-  "JYOKXD": [
-    {
-      "type": 0,
-      "value": "Snapshot Vote"
     }
   ],
   "JrepQU": [
@@ -433,12 +439,6 @@
     {
       "type": 0,
       "value": "Ooops..."
-    }
-  ],
-  "Mt/W73": [
-    {
-      "type": 0,
-      "value": "Voting addresses"
     }
   ],
   "NQOjUX": [
@@ -489,12 +489,6 @@
       "value": "Best"
     }
   ],
-  "Q8Qw5B": [
-    {
-      "type": 0,
-      "value": "Description"
-    }
-  ],
   "Qz1fcp": [
     {
       "type": 0,
@@ -505,16 +499,16 @@
       "value": "number"
     }
   ],
-  "RE9KvP": [
-    {
-      "type": 0,
-      "value": "Vote supply"
-    }
-  ],
   "RoqJiX": [
     {
       "type": 0,
       "value": "Collateral"
+    }
+  ],
+  "S1eClp": [
+    {
+      "type": 0,
+      "value": "Governance Overview"
     }
   ],
   "S45aoc": [
@@ -587,6 +581,12 @@
       "value": "OUSD"
     }
   ],
+  "VfXPp7": [
+    {
+      "type": 0,
+      "value": "Redeem from OETH vault"
+    }
+  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -599,10 +599,10 @@
       "value": "Stake OGV"
     }
   ],
-  "W/z9WD": [
+  "Vu1Cgf": [
     {
       "type": 0,
-      "value": "My voting power"
+      "value": "Stake to earn rewards"
     }
   ],
   "W87PYU": [
@@ -621,16 +621,22 @@
       "value": "Approve"
     }
   ],
-  "WtvQnb": [
-    {
-      "type": 0,
-      "value": "Delegate my voting power"
-    }
-  ],
   "XSdWHA": [
     {
       "type": 0,
       "value": "Redeem"
+    }
+  ],
+  "XtKL5U": [
+    {
+      "type": 0,
+      "value": "In-depth OETH analytics"
+    }
+  ],
+  "Yr+Yll": [
+    {
+      "type": 0,
+      "value": "Swap in and out of OUSD"
     }
   ],
   "ZmLuI/": [
@@ -657,6 +663,18 @@
       "value": "Show more"
     }
   ],
+  "aaJ9Pk": [
+    {
+      "type": 0,
+      "value": "Swap in and out of OETH"
+    }
+  ],
+  "b4tTvf": [
+    {
+      "type": 0,
+      "value": "Redeem from OUSD vault"
+    }
+  ],
   "c31Feo": [
     {
       "type": 0,
@@ -675,22 +693,22 @@
       "value": "Processing Transaction"
     }
   ],
-  "dWjKid": [
-    {
-      "type": 0,
-      "value": "All proposals"
-    }
-  ],
   "dtJo4Y": [
     {
       "type": 0,
       "value": "Exchange rate"
     }
   ],
-  "ejEGdx": [
+  "e02ROc": [
     {
       "type": 0,
-      "value": "Home"
+      "value": "Staking and rewards history"
+    }
+  ],
+  "fnDCIF": [
+    {
+      "type": 0,
+      "value": "In-depth OUSD analytics"
     }
   ],
   "fuV7zb": [
@@ -707,22 +725,10 @@
       "value": "symbolIn"
     }
   ],
-  "g5pX+a": [
-    {
-      "type": 0,
-      "value": "About"
-    }
-  ],
   "gBm7FQ": [
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
-    }
-  ],
-  "hE0rba": [
-    {
-      "type": 0,
-      "value": "Discussion Forum"
     }
   ],
   "hzfM3P": [
@@ -773,6 +779,12 @@
       "value": "Yield bearing"
     }
   ],
+  "oP23Lj": [
+    {
+      "type": 0,
+      "value": "Horem ipsum dolor"
+    }
+  ],
   "qQ/SRd": [
     {
       "type": 0,
@@ -783,12 +795,6 @@
     {
       "type": 0,
       "value": "Disconnect"
-    }
-  ],
-  "qyJtWy": [
-    {
-      "type": 0,
-      "value": "Show less"
     }
   ],
   "s49boM": [
@@ -813,6 +819,18 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "tp4nGh": [
+    {
+      "type": 0,
+      "value": "Info page"
+    }
+  ],
+  "uNOJ2Q": [
+    {
+      "type": 0,
+      "value": "Portfolio"
     }
   ],
   "upk2hm": [
@@ -843,12 +861,6 @@
     {
       "type": 0,
       "value": "Error while redeeming"
-    }
-  ],
-  "wcWIOX": [
-    {
-      "type": 0,
-      "value": "Proof of yield"
     }
   ],
   "wqlXwW": [
