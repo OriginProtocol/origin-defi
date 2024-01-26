@@ -77,7 +77,6 @@ export const theme = createTheme(base, {
       lineHeight: 1.4,
       fontWeight: 700,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 32,
         lineHeight: 1.25,
       },
@@ -88,7 +87,6 @@ export const theme = createTheme(base, {
       lineHeight: 1.4,
       fontWeight: 700,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 28,
         lineHeight: 1.25,
       },
@@ -99,7 +97,6 @@ export const theme = createTheme(base, {
       lineHeight: 1.4,
       fontWeight: 700,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 24,
         lineHeight: 1.25,
       },
@@ -110,7 +107,6 @@ export const theme = createTheme(base, {
       lineHeight: 1.4,
       fontWeight: 500,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 20,
         lineHeight: 1.25,
       },
@@ -143,7 +139,6 @@ export const theme = createTheme(base, {
       fontWeight: 500,
       lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 16,
         lineHeight: 1.25,
       },
@@ -160,22 +155,20 @@ export const theme = createTheme(base, {
       },
     },
     body1: {
-      fontFamily: 'Sailec',
+      fontFamily: 'Inter',
       fontSize: 14,
       lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 13,
         lineHeight: 1.4,
       },
     },
     body2: {
-      fontFamily: 'Sailec',
+      fontFamily: 'Inter',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
       [base.breakpoints.down('sm')]: {
-        fontFamily: 'Inter',
         fontSize: 11,
       },
     },
