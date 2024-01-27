@@ -11,12 +11,14 @@ import {
 } from '@mui/material';
 import { TokenIcon, TooltipLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { Snapshot } from '@origin/shared/icons';
+import {
+  FaCircleCheckRegular,
+  FaCircleXmarkRegular,
+  FaMinusRegular,
+  Snapshot,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { take } from 'ramda';
-import { FaCheckCircle } from 'react-icons/fa';
-import { IoCloseCircle } from 'react-icons/io5';
-import { RiErrorWarningLine } from 'react-icons/ri';
 import { useIntl } from 'react-intl';
 import { Link, useSearchParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -137,10 +139,20 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
       Abstain: intl.formatMessage({ defaultMessage: 'Abstain' }),
     }[vote.choice] ?? vote.choice;
   const icon = {
-    For: <FaCheckCircle color={theme.palette.success.main} fontSize={14} />,
-    Against: <IoCloseCircle color={theme.palette.error.main} fontSize={14} />,
+    For: (
+      <FaCircleCheckRegular
+        sx={{ color: theme.palette.success.main, fontSize: 14 }}
+      />
+    ),
+    Against: (
+      <FaCircleXmarkRegular
+        sx={{ color: theme.palette.error.main, fontSize: 14 }}
+      />
+    ),
     Abstain: (
-      <RiErrorWarningLine color={theme.palette.warning.main} fontSize={14} />
+      <FaMinusRegular
+        sx={{ color: theme.palette.warning.main, fontSize: 14 }}
+      />
     ),
   }[vote.choice] ?? <Snapshot color="warning" sx={{ fontSize: 14 }} />;
 

@@ -1,5 +1,8 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa6';
+import {
+  FaChevronLeftRegular,
+  FaChevronRightRegular,
+} from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
@@ -38,7 +41,7 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
         }}
         disabled={!table.getCanPreviousPage()}
       >
-        <FaChevronLeft />
+        <FaChevronLeftRegular />
       </Button>
       <Typography fontSize={13} px={2}>
         {intl.formatMessage(
@@ -57,7 +60,7 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
         }}
         disabled={!table.getCanNextPage()}
       >
-        <FaChevronRight />
+        <FaChevronRightRegular />
       </Button>
       <Button
         size="small"

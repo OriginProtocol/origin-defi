@@ -1,5 +1,5 @@
-import { SvgIcon, Tooltip, Typography } from '@mui/material';
-import { MdOutlineInfo } from 'react-icons/md';
+import { Tooltip, Typography } from '@mui/material';
+import { FaIcon } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -23,17 +23,16 @@ export function InfoTooltip({
         </Typography>
       }
     >
-      <SvgIcon
+      <FaIcon
         {...rest}
+        name="circle-info"
         sx={{
           width: iconSize,
           height: iconSize,
           color: iconColor,
           ...rest?.sx,
         }}
-      >
-        <MdOutlineInfo />
-      </SvgIcon>
+      />
     </Tooltip>
   );
 }

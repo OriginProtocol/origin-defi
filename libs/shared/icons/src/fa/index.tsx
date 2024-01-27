@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 import { Box, SvgIcon } from '@mui/material';
 
@@ -52,25 +52,46 @@ type FaName =
   | 'rotate-left'
   | 'square-list'
   | 'user'
-  | 'xmark;';
+  | 'xmark';
 
 export type FaIconProps = { name: FaName; light?: boolean } & SvgIconProps;
 
-export const FaIcon = ({ name, light, ...rest }: FaIconProps) => {
-  const [icon, setIcon] = useState(null);
+export const FaIcon = forwardRef<SVGSVGElement, FaIconProps>(
+  ({ name, light, ...rest }, ref) => {
+    const [icon, setIcon] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      const module = await import(
-        `./${light ? 'light' : 'regular'}/${name}.svg?raw`
-      );
-      setIcon(module.default);
-    })();
-  }, [name, light]);
+    useEffect(() => {
+      (async () => {
+        let modules: { [s: string]: unknown } | ArrayLike<unknown>;
+        if (light) {
+          modules = import.meta.glob('./light/*.svg', {
+            import: 'default',
+            as: 'raw',
+            eager: true,
+          });
+        } else {
+          modules = import.meta.glob('./regular/*.svg', {
+            import: 'default',
+            as: 'raw',
+            eager: true,
+          });
+        }
+        setIcon(
+          await Object.entries(modules).find(
+            ([path]) => path === `./${light ? 'light' : 'regular'}/${name}.svg`,
+          )[1],
+        );
+      })();
+    }, [name, light]);
 
-  return icon ? (
-    <SvgIcon {...rest} inheritViewBox>
-      <Box component="svg" dangerouslySetInnerHTML={{ __html: icon }} />
-    </SvgIcon>
-  ) : null;
-};
+    return (
+      <SvgIcon ref={ref} fontSize="inherit" {...rest} inheritViewBox>
+        <Box component="svg" dangerouslySetInnerHTML={{ __html: icon }} />
+      </SvgIcon>
+    );
+  },
+);
+FaIcon.displayName = 'FaIcon';
+
+export * from './regular';
+export * from './light';

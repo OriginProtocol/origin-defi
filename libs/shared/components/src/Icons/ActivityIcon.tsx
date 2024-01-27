@@ -1,8 +1,11 @@
 import { keyframes } from '@emotion/react';
 import { SvgIcon, useTheme } from '@mui/material';
-import { Activity, Pending } from '@origin/shared/icons';
-import { FaCircleCheck } from 'react-icons/fa6';
-import { IoCloseCircle } from 'react-icons/io5';
+import {
+  Activity,
+  FaCircleCheckRegular,
+  FaCircleXmarkRegular,
+  Pending,
+} from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -41,12 +44,12 @@ export const ActivityIcon = ({
     ),
     error: (
       <SvgIcon {...rest}>
-        <IoCloseCircle color={theme.palette.error.main} />
+        <FaCircleXmarkRegular sx={{ color: theme.palette.error.main }} />
       </SvgIcon>
     ),
     success: (
       <SvgIcon {...rest}>
-        <FaCircleCheck color={theme.palette.success.main} />
+        <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />
       </SvgIcon>
     ),
   }[status];

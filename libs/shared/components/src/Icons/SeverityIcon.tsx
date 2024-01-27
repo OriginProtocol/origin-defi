@@ -1,8 +1,10 @@
-import { keyframes, SvgIcon, useTheme } from '@mui/material';
-import { Pending } from '@origin/shared/icons';
-import { FaCircleCheck } from 'react-icons/fa6';
-import { IoCloseCircle } from 'react-icons/io5';
-import { RiErrorWarningLine } from 'react-icons/ri';
+import { keyframes } from '@mui/material';
+import {
+  FaCircleCheckRegular,
+  FaCircleExclamationRegular,
+  FaCircleXmarkRegular,
+  Pending,
+} from '@origin/shared/icons';
 
 import type { AlertColor, SvgIconProps } from '@mui/material';
 
@@ -22,8 +24,6 @@ export const SeverityIcon = ({
   disablePendingSpin,
   ...rest
 }: SeverityIconProps) => {
-  const theme = useTheme();
-
   return {
     info: (
       <Pending
@@ -37,19 +37,22 @@ export const SeverityIcon = ({
       />
     ),
     warning: (
-      <SvgIcon {...rest}>
-        <RiErrorWarningLine color={theme.palette.warning.main} fontSize={20} />
-      </SvgIcon>
+      <FaCircleExclamationRegular
+        {...rest}
+        sx={{ color: 'warning.main', fontSize: 20, ...rest?.sx }}
+      />
     ),
     error: (
-      <SvgIcon {...rest}>
-        <IoCloseCircle color={theme.palette.error.main} fontSize={20} />
-      </SvgIcon>
+      <FaCircleXmarkRegular
+        {...rest}
+        sx={{ color: 'error.main', fontSize: 20, ...rest?.sx }}
+      />
     ),
     success: (
-      <SvgIcon {...rest}>
-        <FaCircleCheck color={theme.palette.success.main} fontSize={20} />
-      </SvgIcon>
+      <FaCircleCheckRegular
+        {...rest}
+        sx={{ color: 'success.main', fontSize: 20, ...rest?.sx }}
+      />
     ),
   }[severity];
 };

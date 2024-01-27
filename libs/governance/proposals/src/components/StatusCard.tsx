@@ -10,11 +10,14 @@ import {
   useTheme,
 } from '@mui/material';
 import { ExternalLink } from '@origin/shared/components';
+import {
+  FaCircleCheckRegular,
+  FaCircleQuestionRegular,
+  FaCircleXmarkRegular,
+  FaClockRegular,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, prop, sort } from 'ramda';
-import { FaRegQuestionCircle } from 'react-icons/fa';
-import { FaCircleCheck, FaClock } from 'react-icons/fa6';
-import { IoCloseCircle } from 'react-icons/io5';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
@@ -99,12 +102,16 @@ function LogItem({ log, ...rest }: LogItemProps) {
   const theme = useTheme();
 
   const eventIcon = {
-    Canceled: <IoCloseCircle color={theme.palette.grey['600']} />,
-    Created: <FaCircleCheck color={theme.palette.grey['400']} />,
-    Executed: <FaCircleCheck color={theme.palette.success.main} />,
-    Extended: <FaClock color={theme.palette.warning.main} />,
-    Queued: <FaCircleCheck color={theme.palette.success.main} />,
-  }[log?.event] ?? <FaRegQuestionCircle />;
+    Canceled: (
+      <FaCircleXmarkRegular sx={{ color: theme.palette.grey['600'] }} />
+    ),
+    Created: <FaCircleCheckRegular sx={{ color: theme.palette.grey['400'] }} />,
+    Executed: (
+      <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />
+    ),
+    Extended: <FaClockRegular sx={{ color: theme.palette.warning.main }} />,
+    Queued: <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />,
+  }[log?.event] ?? <FaCircleQuestionRegular />;
 
   return (
     <Stack {...rest} direction="row" spacing={2} alignItems="center">

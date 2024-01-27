@@ -13,6 +13,7 @@ import {
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TransactionButton,
@@ -20,7 +21,6 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { isAddressEqual } from 'viem';
 import { useAccount } from 'wagmi';
@@ -54,7 +54,7 @@ export const DelegateModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose fontSize={12} />
+          <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>

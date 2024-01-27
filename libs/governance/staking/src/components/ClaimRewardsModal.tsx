@@ -11,13 +11,13 @@ import {
 import { useGovernanceInfo } from '@origin/governance/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
-import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
@@ -41,7 +41,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             props?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose fontSize={14} />
+          <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>

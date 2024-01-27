@@ -1,6 +1,6 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { GOVERNANCE_SNAPSHOT_VOTES } from '@origin/shared/constants';
-import { GoArrowUpRight } from 'react-icons/go';
+import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
@@ -39,7 +39,7 @@ export const ProposalListHeader = (props: StackProps) => {
             defaultMessage: 'New Snapshot Proposal',
           })}
           &nbsp;
-          <GoArrowUpRight />
+          <FaArrowUpRightRegular />
         </Button>
         <Button
           variant="outlined"
@@ -52,7 +52,7 @@ export const ProposalListHeader = (props: StackProps) => {
             defaultMessage: 'Learn about Governance',
           })}
           &nbsp;
-          <GoArrowUpRight />
+          <FaArrowUpRightRegular />
         </Button>
         <Button
           variant="outlined"
@@ -65,7 +65,7 @@ export const ProposalListHeader = (props: StackProps) => {
             defaultMessage: 'Discord Forum',
           })}
           &nbsp;
-          <GoArrowUpRight />
+          <FaArrowUpRightRegular />
         </Button>
       </Stack>
     </Stack>

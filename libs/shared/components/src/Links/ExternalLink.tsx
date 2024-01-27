@@ -1,5 +1,5 @@
-import { Link, SvgIcon } from '@mui/material';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
+import { Link } from '@mui/material';
+import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
 
 import type { LinkProps } from '@mui/material';
 
@@ -24,9 +24,9 @@ export const ExternalLink = ({
       }}
     >
       {children}
-      <SvgIcon sx={{ height: iconSize, width: iconSize }}>
-        <FaArrowUpRightFromSquare />
-      </SvgIcon>
+      <FaArrowUpRightFromSquareRegular
+        sx={{ height: iconSize, width: iconSize }}
+      />
     </Link>
   );
 };

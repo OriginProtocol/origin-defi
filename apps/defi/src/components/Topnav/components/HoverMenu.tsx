@@ -11,9 +11,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import {
+  FaArrowUpRightRegular,
+  FaChevronDownRegular,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { FaChevronDown } from 'react-icons/fa6';
-import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useMatch, useNavigate } from 'react-router-dom';
 
@@ -119,7 +121,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         }}
       >
         {intl.formatMessage(route.handle.title)}
-        <FaChevronDown />
+        <FaChevronDownRegular />
       </Button>
       <Popper
         transition
@@ -211,7 +213,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                       </Typography>
                     </Stack>
                     {!isNilOrEmpty(r?.href) && (
-                      <GoArrowUpRight className="arrow" />
+                      <FaArrowUpRightRegular className="arrow" />
                     )}
                   </MenuItem>
                 ))}

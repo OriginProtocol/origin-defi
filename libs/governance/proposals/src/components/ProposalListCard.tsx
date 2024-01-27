@@ -17,11 +17,14 @@ import {
   TooltipLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { Snapshot } from '@origin/shared/icons';
+import {
+  FaArrowUpRightFromSquareRegular,
+  FaLinkRegular,
+  Snapshot,
+} from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
-import { FaArrowUpRightFromSquare, FaLink } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
@@ -206,7 +209,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                     },
                   }}
                 >
-                  <FaLink />
+                  <FaLinkRegular sx={{ fontSize: 14 }} />
                   <Typography variant="body2" color="secondary.light">
                     {intl.formatMessage({
                       defaultMessage: 'On-chain proposal',
@@ -231,7 +234,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             >
               {proposal.title}
               {proposal.type === 'snapshot' && (
-                <FaArrowUpRightFromSquare fontSize={12} />
+                <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
               )}
             </TooltipLabel>
             <TooltipLabel

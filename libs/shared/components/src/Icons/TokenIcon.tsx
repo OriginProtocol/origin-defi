@@ -1,7 +1,7 @@
-import { SvgIcon } from '@mui/material';
 import {
   DAI,
   ETH,
+  FaCircleDollarRegular,
   frxETH,
   OETH,
   OGN,
@@ -17,7 +17,6 @@ import {
   wOETH,
   wOUSD,
 } from '@origin/shared/icons';
-import { AiOutlineDollar } from 'react-icons/ai';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -47,11 +46,5 @@ export const supportedTokens = {
 export const TokenIcon = ({ symbol, ...rest }: TokenIconProps) => {
   const Icon = supportedTokens[symbol];
 
-  return Icon ? (
-    <Icon {...rest} />
-  ) : (
-    <SvgIcon {...rest} sx={{ fontSize: 24, ...rest?.sx }}>
-      <AiOutlineDollar />
-    </SvgIcon>
-  );
+  return Icon ? <Icon {...rest} /> : <FaCircleDollarRegular {...rest} />;
 };

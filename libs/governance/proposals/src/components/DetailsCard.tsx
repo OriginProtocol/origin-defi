@@ -159,13 +159,13 @@ function Actions(props: StackProps) {
     args: [BigInt(proposalId)],
     enabled: !!proposalId,
     select: (data) =>
-      data?.[0]?.map((_, i) => {
+      data?.[0].map((_, i) => {
         const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
 
         return {
           address: data[0][i],
-          functionName: res[1],
-          argumentType: res[2],
+          functionName: res?.[1],
+          argumentType: res?.[2],
           args: data[3][i],
         };
       }),
@@ -203,74 +203,76 @@ function Actions(props: StackProps) {
           </Typography>
         </Box>
       ) : (
-        actions.map((a, i) => (
-          <Accordion
-            key={getKey(a.address, i)}
-            expanded={expanded.includes(getKey(a.address, i))}
-            onChange={handleToggleActionRow(getKey(a.address, i))}
-            sx={{
-              p: 0,
-              background: 'transparent',
-              borderTop: (theme) =>
-                i === 0 ? 'none' : `1px solid ${theme.palette.divider}`,
-              borderBottom: (theme) =>
-                i === actions.length - 1
-                  ? 'none'
-                  : `1px solid ${theme.palette.divider}`,
-              borderRight: 'none',
-              borderLeft: 'none',
-              borderColor: 'divider',
-              ...props?.sx,
-            }}
-            disableGutters
-          >
-            <AccordionSummary sx={{ px: 0 }}>
-              <Grid2 container width={1} spacing={2}>
-                <Grid2 xs={3}>
-                  <ExternalLink
-                    href={`https://etherscan.io/address/${a.address}`}
-                    sx={{ maxWidth: 120, color: 'secondary.main' }}
+        actions
+          .filter((a) => !isNilOrEmpty(a.functionName))
+          .map((a, i) => (
+            <Accordion
+              key={getKey(a.address, i)}
+              expanded={expanded.includes(getKey(a.address, i))}
+              onChange={handleToggleActionRow(getKey(a.address, i))}
+              sx={{
+                p: 0,
+                background: 'transparent',
+                borderTop: (theme) =>
+                  i === 0 ? 'none' : `1px solid ${theme.palette.divider}`,
+                borderBottom: (theme) =>
+                  i === actions.length - 1
+                    ? 'none'
+                    : `1px solid ${theme.palette.divider}`,
+                borderRight: 'none',
+                borderLeft: 'none',
+                borderColor: 'divider',
+                ...props?.sx,
+              }}
+              disableGutters
+            >
+              <AccordionSummary sx={{ px: 0 }}>
+                <Grid2 container width={1} spacing={2}>
+                  <Grid2 xs={3}>
+                    <ExternalLink
+                      href={`https://etherscan.io/address/${a.address}`}
+                      sx={{ maxWidth: 120, color: 'secondary.main' }}
+                    >
+                      <MiddleTruncated>{a.address}</MiddleTruncated>
+                    </ExternalLink>
+                  </Grid2>
+                  <Grid2 xs={4}>
+                    <TooltipLabel maxChars={23} noWrap>
+                      {a.functionName}
+                    </TooltipLabel>
+                  </Grid2>
+                  <Grid2 xs={4}>
+                    <TooltipLabel maxChars={30} noWrap>
+                      {a.argumentType}
+                    </TooltipLabel>
+                  </Grid2>
+                  <Grid2
+                    xs={1}
+                    sx={{ display: 'flex', justifyContent: 'flex-end' }}
                   >
-                    <MiddleTruncated>{a.address}</MiddleTruncated>
-                  </ExternalLink>
+                    <ExpandIcon
+                      isExpanded={expanded.includes(getKey(a.address, i))}
+                      sx={{ width: 12 }}
+                    />
+                  </Grid2>
                 </Grid2>
-                <Grid2 xs={4}>
-                  <TooltipLabel maxChars={23} noWrap>
-                    {a.functionName}
-                  </TooltipLabel>
-                </Grid2>
-                <Grid2 xs={4}>
-                  <TooltipLabel maxChars={30} noWrap>
-                    {a.argumentType}
-                  </TooltipLabel>
-                </Grid2>
-                <Grid2
-                  xs={1}
-                  sx={{ display: 'flex', justifyContent: 'flex-end' }}
+              </AccordionSummary>
+              <AccordionDetails>
+                <Typography
+                  component="pre"
+                  sx={{
+                    fontFamily: 'monospace',
+                    whiteSpace: 'pre-wrap',
+                    wordBreak: 'break-all',
+                    overflowY: 'auto',
+                    overflowX: 'hidden',
+                  }}
                 >
-                  <ExpandIcon
-                    isExpanded={expanded.includes(getKey(a.address, i))}
-                    sx={{ width: 12 }}
-                  />
-                </Grid2>
-              </Grid2>
-            </AccordionSummary>
-            <AccordionDetails>
-              <Typography
-                component="pre"
-                sx={{
-                  fontFamily: 'monospace',
-                  whiteSpace: 'pre-wrap',
-                  wordBreak: 'break-all',
-                  overflowY: 'auto',
-                  overflowX: 'hidden',
-                }}
-              >
-                {a.args}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))
+                  {a.args}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          ))
       )}
     </Stack>
   );

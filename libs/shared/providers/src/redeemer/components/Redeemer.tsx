@@ -16,9 +16,8 @@ import {
   ErrorCard,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown } from '@origin/shared/icons';
+import { ArrowDown, FaIcon } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
-import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
@@ -131,7 +130,7 @@ function RedeemerWrapped({
                     svg: { width: 16, height: 16 },
                   }}
                 >
-                  <FiSettings />
+                  <FaIcon name="gear-complex" />
                 </IconButton>
                 <PriceTolerancePopover
                   open={!!anchorEl}

@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
+import { FaUserRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { FaUser } from 'react-icons/fa6';
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
@@ -28,7 +28,7 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   if (isNilOrEmpty(adr)) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" {...rest}>
-        <FaUser fontSize={24} />
+        <FaUserRegular sx={{ fontSize: 24 }} />
       </Box>
     );
   }

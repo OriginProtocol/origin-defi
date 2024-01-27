@@ -16,11 +16,13 @@ import {
 } from '@mui/material';
 import { ExpandIcon } from '@origin/shared/components';
 import { DOCS_URL } from '@origin/shared/constants';
+import {
+  FaArrowUpRightRegular,
+  FaBarsRegular,
+  FaIcon,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
-import { CgClose } from 'react-icons/cg';
-import { FaBars, FaBook } from 'react-icons/fa6';
-import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -50,7 +52,7 @@ export const ModalMenuButton = (props: IconButtonProps) => {
           ...props?.sx,
         }}
       >
-        <FaBars />
+        <FaBarsRegular />
       </IconButton>
       <MenuDialog
         open={open}
@@ -94,7 +96,7 @@ const MenuDialog = (props: DialogProps) => {
             border: (theme) => `1px solid ${theme.palette.divider}`,
           }}
         >
-          <CgClose fontSize={16} />
+          <FaIcon name="xmark" sx={{ fontSize: 16 }} />
         </IconButton>
       </Stack>
       <DialogContent
@@ -234,7 +236,7 @@ const MenuDialog = (props: DialogProps) => {
                           </Typography>
                         </Stack>
                         {!isNilOrEmpty(r?.href) && (
-                          <GoArrowUpRight className="arrow" />
+                          <FaArrowUpRightRegular className="arrow" />
                         )}
                       </MenuItem>
                     ))}
@@ -260,12 +262,12 @@ const MenuDialog = (props: DialogProps) => {
           }}
         >
           <Stack direction="row" flexGrow={1} alignItems="center" spacing={1}>
-            <FaBook fontSize={16} />
+            <FaIcon name="book" sx={{ fontSize: 16 }} />
             <Typography fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'Docs' })}
             </Typography>
           </Stack>
-          <GoArrowUpRight className="arrow" />
+          <FaIcon name="arrow-up-right" className="arrow" />
         </Button>
       </DialogContent>
     </Dialog>

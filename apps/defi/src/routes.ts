@@ -5,18 +5,16 @@ import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
 import {
-  ArrowDownFromArc,
   CoinsLight,
+  FaArrowDownFromArcRegular,
+  FaArrowRightArrowLeftRegular,
+  FaFileLinesRegular,
+  FaGavelLight,
+  FaSquareListRegular,
   OETH,
   OGV,
   OUSD,
 } from '@origin/shared/icons';
-import {
-  FaArrowRightArrowLeft,
-  FaGavel,
-  FaRegFileLines,
-  FaRegRectangleList,
-} from 'react-icons/fa6';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
@@ -49,7 +47,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Swap in and out of OETH',
               }),
-              icon: FaArrowRightArrowLeft,
+              icon: FaArrowRightArrowLeftRegular,
             },
           },
           {
@@ -60,7 +58,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Balance, earnings and history',
               }),
-              icon: FaRegRectangleList,
+              icon: FaSquareListRegular,
             },
           },
           {
@@ -71,7 +69,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Redeem from OETH vault',
               }),
-              icon: ArrowDownFromArc,
+              icon: FaArrowDownFromArcRegular,
             },
           },
         ],
@@ -92,7 +90,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Swap in and out of OUSD',
               }),
-              icon: FaArrowRightArrowLeft,
+              icon: FaArrowRightArrowLeftRegular,
             },
           },
           {
@@ -103,7 +101,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Balance, earnings and history',
               }),
-              icon: FaRegRectangleList,
+              icon: FaSquareListRegular,
             },
           },
           {
@@ -114,7 +112,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Redeem from OUSD vault',
               }),
-              icon: ArrowDownFromArc,
+              icon: FaArrowDownFromArcRegular,
             },
           },
         ],
@@ -130,7 +128,7 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
               subtitle: defineMessage({ defaultMessage: 'Get OGV' }),
-              icon: FaArrowRightArrowLeft,
+              icon: FaArrowRightArrowLeftRegular,
             },
           },
           {
@@ -152,7 +150,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Staking and rewards history',
               }),
-              icon: FaRegRectangleList,
+              icon: FaSquareListRegular,
             },
           },
         ],
@@ -162,7 +160,7 @@ export const routes: RouteObject[] = [
         path: 'governance',
         handle: {
           title: defineMessage({ defaultMessage: 'Governance' }),
-          icon: FaGavel,
+          icon: FaGavelLight,
         },
         children: [
           {
@@ -171,7 +169,7 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Governance Overview' }),
               subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
-              icon: FaGavel,
+              icon: FaGavelLight,
             },
           },
           {
@@ -182,7 +180,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Voting history',
               }),
-              icon: FaRegFileLines,
+              icon: FaFileLinesRegular,
             },
           },
         ],

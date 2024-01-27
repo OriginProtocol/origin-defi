@@ -1,8 +1,11 @@
 import { alpha, createTheme } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
-import { FaArrowsRotate, FaCircleCheck } from 'react-icons/fa6';
-import { IoCloseCircle } from 'react-icons/io5';
-import { RiErrorWarningLine } from 'react-icons/ri';
+import {
+  FaArrowsRotateRegular,
+  FaCircleCheckRegular,
+  FaCircleExclamationRegular,
+  FaCircleXmarkRegular,
+} from '@origin/shared/icons';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
@@ -209,18 +212,23 @@ export const theme = createTheme(base, {
         variant: 'standard',
         iconMapping: {
           error: (
-            <IoCloseCircle color={base.palette.error.main} fontSize={20} />
+            <FaCircleXmarkRegular
+              sx={{ color: base.palette.error.main, fontSize: 20 }}
+            />
           ),
           info: (
-            <FaArrowsRotate color={base.palette.success.main} fontSize={20} />
+            <FaArrowsRotateRegular
+              sx={{ color: base.palette.success.main, fontSize: 20 }}
+            />
           ),
           success: (
-            <FaCircleCheck color={base.palette.success.main} fontSize={20} />
+            <FaCircleCheckRegular
+              sx={{ color: base.palette.success.main, fontSize: 20 }}
+            />
           ),
           warning: (
-            <RiErrorWarningLine
-              color={base.palette.warning.main}
-              fontSize={20}
+            <FaCircleExclamationRegular
+              sx={{ color: base.palette.warning.main, fontSize: 20 }}
             />
           ),
         },
