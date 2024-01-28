@@ -1,5 +1,5 @@
-import { Tooltip, Typography } from '@mui/material';
-import { FaIcon } from '@origin/shared/icons';
+import { SvgIcon, Tooltip, Typography } from '@mui/material';
+import { FaCircleInfoLight } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -23,16 +23,17 @@ export function InfoTooltip({
         </Typography>
       }
     >
-      <FaIcon
+      <SvgIcon
         {...rest}
-        name="circle-info"
         sx={{
           width: iconSize,
           height: iconSize,
           color: iconColor,
           ...rest?.sx,
         }}
-      />
+      >
+        <FaCircleInfoLight />
+      </SvgIcon>
     </Tooltip>
   );
 }

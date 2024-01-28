@@ -19,7 +19,8 @@ import { DOCS_URL } from '@origin/shared/constants';
 import {
   FaArrowUpRightRegular,
   FaBarsRegular,
-  FaIcon,
+  FaBookRegular,
+  FaXmarkRegular,
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
@@ -96,7 +97,7 @@ const MenuDialog = (props: DialogProps) => {
             border: (theme) => `1px solid ${theme.palette.divider}`,
           }}
         >
-          <FaIcon name="xmark" sx={{ fontSize: 16 }} />
+          <FaXmarkRegular sx={{ fontSize: 16 }} />
         </IconButton>
       </Stack>
       <DialogContent
@@ -262,12 +263,12 @@ const MenuDialog = (props: DialogProps) => {
           }}
         >
           <Stack direction="row" flexGrow={1} alignItems="center" spacing={1}>
-            <FaIcon name="book" sx={{ fontSize: 16 }} />
+            <FaBookRegular sx={{ fontSize: 16 }} />
             <Typography fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'Docs' })}
             </Typography>
           </Stack>
-          <FaIcon name="arrow-up-right" className="arrow" />
+          <FaArrowUpRightRegular className="arrow" />
         </Button>
       </DialogContent>
     </Dialog>

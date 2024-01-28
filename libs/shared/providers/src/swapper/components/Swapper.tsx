@@ -19,7 +19,7 @@ import {
   LoadingLabel,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown, FaIcon } from '@origin/shared/icons';
+import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
 import {
   composeContexts,
   isNilOrEmpty,
@@ -196,7 +196,7 @@ function SwapperWrapped({
                     svg: { width: 16, height: 16 },
                   }}
                 >
-                  <FaIcon name="gear-complex" />
+                  <FaGearComplexRegular />
                 </IconButton>
                 <PriceTolerancePopover
                   open={!!anchorEl}

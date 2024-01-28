@@ -1,6 +1,5 @@
 import { Box, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { FaIcon } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
@@ -15,7 +14,6 @@ export const HomeView = () => {
       <Stack spacing={3} sx={{ justifyContent: 'center', py: 15 }}>
         <Typography variant="h1" textAlign="center">
           {intl.formatMessage({ defaultMessage: 'Origin products' })}
-          <FaIcon name="arrow-down" />
         </Typography>
         <Typography
           variant="subtitle1"
