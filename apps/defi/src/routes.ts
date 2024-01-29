@@ -5,11 +5,11 @@ import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
 import {
-  CoinsLight,
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
+  FaCoinsRegular,
   FaFileLinesRegular,
-  FaGavelLight,
+  FaGavelRegular,
   FaSquareListRegular,
   OETH,
   OGV,
@@ -139,7 +139,7 @@ export const routes: RouteObject[] = [
               subtitle: defineMessage({
                 defaultMessage: 'Stake to earn rewards',
               }),
-              icon: CoinsLight,
+              icon: FaCoinsRegular,
             },
           },
           {
@@ -160,7 +160,7 @@ export const routes: RouteObject[] = [
         path: 'governance',
         handle: {
           title: defineMessage({ defaultMessage: 'Governance' }),
-          icon: FaGavelLight,
+          icon: FaGavelRegular,
         },
         children: [
           {
@@ -169,7 +169,7 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Governance Overview' }),
               subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
-              icon: FaGavelLight,
+              icon: FaGavelRegular,
             },
           },
           {

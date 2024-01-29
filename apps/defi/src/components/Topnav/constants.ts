@@ -4,9 +4,9 @@ import {
   GOVERNANCE_SNAPSHOT_VOTES,
 } from '@origin/shared/constants';
 import {
-  FaChartPieLight,
+  FaChartPieRegular,
   FaCircleExclamationRegular,
-  FaCommentsLight,
+  FaCommentsRegular,
   Snapshot,
 } from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
@@ -20,7 +20,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
       subtitle: defineMessage({
         defaultMessage: 'In-depth OETH analytics',
       }),
-      icon: FaChartPieLight,
+      icon: FaChartPieRegular,
       href: ANALYTICS_URL,
     },
   ],
@@ -30,7 +30,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
       subtitle: defineMessage({
         defaultMessage: 'In-depth OUSD analytics',
       }),
-      icon: FaChartPieLight,
+      icon: FaChartPieRegular,
       href: ANALYTICS_URL,
     },
   ],
@@ -40,7 +40,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
       subtitle: defineMessage({
         defaultMessage: 'In-depth OGV analytics',
       }),
-      icon: FaChartPieLight,
+      icon: FaChartPieRegular,
       href: ANALYTICS_URL,
     },
   ],
@@ -58,7 +58,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
       subtitle: defineMessage({
         defaultMessage: 'Horem ipsum dolor ',
       }),
-      icon: FaCommentsLight,
+      icon: FaCommentsRegular,
       href: GOVERNANCE_DISCUSSION_FORUM,
     },
     {
