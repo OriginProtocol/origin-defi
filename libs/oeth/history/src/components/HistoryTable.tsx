@@ -17,6 +17,7 @@ import {
   TransactionIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import {
@@ -27,7 +28,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { FaArrowUpRightFromSquare } from 'react-icons/fa6';
 import { useIntl } from 'react-intl';
 
 import { useAggregatedHistory } from '../hooks';
@@ -121,7 +121,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
                 target="_blank"
                 rel="noopener noreferrer nofollow"
               >
-                <FaArrowUpRightFromSquare fontSize={12} />
+                <FaArrowUpRightRegular sx={{ fontSize: 12 }} />
               </Link>
             )
           );

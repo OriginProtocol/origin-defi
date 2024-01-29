@@ -19,13 +19,12 @@ import {
   LoadingLabel,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown } from '@origin/shared/icons';
+import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
 import {
   composeContexts,
   isNilOrEmpty,
   subtractSlippage,
 } from '@origin/shared/utils';
-import { FiSettings } from 'react-icons/fi';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
@@ -197,7 +196,7 @@ function SwapperWrapped({
                     svg: { width: 16, height: 16 },
                   }}
                 >
-                  <FiSettings />
+                  <FaGearComplexRegular />
                 </IconButton>
                 <PriceTolerancePopover
                   open={!!anchorEl}

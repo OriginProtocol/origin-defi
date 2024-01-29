@@ -1,10 +1,9 @@
-import { SvgIcon } from '@mui/material';
 import {
-  FaChevronDown,
-  FaChevronLeft,
-  FaChevronRight,
-  FaChevronUp,
-} from 'react-icons/fa6';
+  FaChevronDownRegular,
+  FaChevronLeftRegular,
+  FaChevronRightRegular,
+  FaChevronUpRegular,
+} from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -18,19 +17,15 @@ export const ExpandIcon = ({
   direction = 'vertical',
   ...rest
 }: ExpandIconProps) => {
-  return (
-    <SvgIcon {...rest}>
-      {isExpanded ? (
-        direction === 'vertical' ? (
-          <FaChevronUp />
-        ) : (
-          <FaChevronLeft />
-        )
-      ) : direction === 'vertical' ? (
-        <FaChevronDown />
-      ) : (
-        <FaChevronRight />
-      )}
-    </SvgIcon>
+  return isExpanded ? (
+    direction === 'vertical' ? (
+      <FaChevronUpRegular {...rest} />
+    ) : (
+      <FaChevronLeftRegular {...rest} />
+    )
+  ) : direction === 'vertical' ? (
+    <FaChevronDownRegular {...rest} />
+  ) : (
+    <FaChevronRightRegular {...rest} />
   );
 };

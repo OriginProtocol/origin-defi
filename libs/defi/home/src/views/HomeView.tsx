@@ -1,4 +1,5 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
@@ -25,20 +26,24 @@ export const HomeView = () => {
           })}
         </Typography>
       </Stack>
-      <Stack direction="row" spacing={2} alignItems="stretch">
-        {products.map((product) => (
-          <ProductCard
-            key={product.token.symbol}
-            href={
-              product.token.symbol !== 'OGN'
-                ? product.token.symbol.toLowerCase()
-                : undefined
-            }
-            product={product}
-            width={0.33}
-          />
-        ))}
-      </Stack>
+      <Box>
+        <Grid2 container spacing={2}>
+          {products.map((product) => (
+            <Grid2 key={product.token.symbol} xs={12} sm={6} md={4}>
+              <ProductCard
+                href={
+                  product.token.symbol !== 'OGN'
+                    ? product.token.symbol.toLowerCase()
+                    : undefined
+                }
+                product={product}
+                height={1}
+              />
+            </Grid2>
+          ))}
+        </Grid2>
+      </Box>
+
       <StakeOGVCard />
     </Stack>
   );

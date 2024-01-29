@@ -1,4 +1,5 @@
 export * from './chains';
+export * from './fa';
 export * from './origin';
 export * from './protocols';
 export * from './tokens';

@@ -8,8 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
+import { FaCheckRegular } from '@origin/shared/icons';
 import { ascend, descend, prop, sortWith } from 'ramda';
-import { FaCheck } from 'react-icons/fa6';
 import { useAccount, useBalance } from 'wagmi';
 
 import { useFormat } from '../../intl';
@@ -125,7 +125,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       <Stack direction="row" spacing={2}>
         {token?.isSelected && (
           <Stack display="flex" justifyContent="center" alignItems="center">
-            <FaCheck fontSize={16} color="#fff" />
+            <FaCheckRegular sx={{ color: '#fff', fontSize: 16 }} />
           </Stack>
         )}
         <Box sx={{ textAlign: 'right' }}>

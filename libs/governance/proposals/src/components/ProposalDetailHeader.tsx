@@ -5,11 +5,13 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import {
+  FaArrowUpRightRegular,
+  FaChevronLeftRegular,
+} from '@origin/shared/icons';
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, last, prop, sort } from 'ramda';
-import { FaChevronLeft } from 'react-icons/fa6';
-import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
@@ -59,7 +61,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
           gap: 1,
         }}
       >
-        <FaChevronLeft fontSize={10} />
+        <FaChevronLeftRegular sx={{ fontSize: 10 }} />
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -95,7 +97,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
             defaultMessage: 'Snapshot post',
           })}
           &nbsp;
-          <GoArrowUpRight />
+          <FaArrowUpRightRegular />
         </Button>
         <Button
           variant="outlined"
@@ -108,7 +110,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
             defaultMessage: 'Discord discussion',
           })}
           &nbsp;
-          <GoArrowUpRight />
+          <FaArrowUpRightRegular />
         </Button>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>

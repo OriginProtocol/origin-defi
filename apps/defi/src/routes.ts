@@ -1,9 +1,20 @@
-import { governanceRoute } from '@origin/defi/governance';
+import * as governance from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
-import { oethRoute } from '@origin/defi/oeth';
-import { ogvRoute } from '@origin/defi/ogv';
-import { ousdRoute } from '@origin/defi/ousd';
+import * as oeth from '@origin/defi/oeth';
+import * as ogv from '@origin/defi/ogv';
+import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
+import {
+  FaArrowDownFromArcRegular,
+  FaArrowRightArrowLeftRegular,
+  FaCoinsRegular,
+  FaFileLinesRegular,
+  FaGavelRegular,
+  FaSquareListRegular,
+  OETH,
+  OGV,
+  OUSD,
+} from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
@@ -18,31 +29,161 @@ export const routes: RouteObject[] = [
       {
         index: true,
         Component: HomeView,
-        handle: { label: defineMessage({ defaultMessage: 'Home' }) },
+        handle: { title: defineMessage({ defaultMessage: 'Overview' }) },
       },
       {
         index: false,
         path: 'oeth',
-        handle: { label: defineMessage({ defaultMessage: 'OETH' }) },
-        ...oethRoute,
+        handle: {
+          title: defineMessage({ defaultMessage: 'OETH' }),
+          icon: OETH,
+        },
+        children: [
+          {
+            index: true,
+            Component: oeth.SwapView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Swap' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Swap in and out of OETH',
+              }),
+              icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'portfolio',
+            Component: oeth.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Portfolio' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Balance, earnings and history',
+              }),
+              icon: FaSquareListRegular,
+            },
+          },
+          {
+            path: 'redeem',
+            Component: oeth.RedeemView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Redeem' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Redeem from OETH vault',
+              }),
+              icon: FaArrowDownFromArcRegular,
+            },
+          },
+        ],
       },
       {
         index: false,
         path: 'ousd',
-        handle: { label: defineMessage({ defaultMessage: 'OUSD' }) },
-        ...ousdRoute,
+        handle: {
+          title: defineMessage({ defaultMessage: 'OUSD' }),
+          icon: OUSD,
+        },
+        children: [
+          {
+            index: true,
+            Component: ousd.SwapView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Swap' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Swap in and out of OUSD',
+              }),
+              icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'portfolio',
+            Component: ousd.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Portfolio' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Balance, earnings and history',
+              }),
+              icon: FaSquareListRegular,
+            },
+          },
+          {
+            path: 'redeem',
+            Component: ousd.RedeemView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Redeem' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Redeem from OUSD vault',
+              }),
+              icon: FaArrowDownFromArcRegular,
+            },
+          },
+        ],
       },
       {
         index: false,
         path: 'ogv',
-        handle: { label: defineMessage({ defaultMessage: 'OGV' }) },
-        ...ogvRoute,
+        handle: { title: defineMessage({ defaultMessage: 'OGV' }), icon: OGV },
+        children: [
+          {
+            index: true,
+            Component: ogv.SwapView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Swap' }),
+              subtitle: defineMessage({ defaultMessage: 'Get OGV' }),
+              icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'staking',
+            Component: ogv.StakingView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Staking' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Stake to earn rewards',
+              }),
+              icon: FaCoinsRegular,
+            },
+          },
+          {
+            path: 'portfolio',
+            Component: ogv.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Portfolio' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Staking and rewards history',
+              }),
+              icon: FaSquareListRegular,
+            },
+          },
+        ],
       },
       {
         index: false,
         path: 'governance',
-        handle: { label: defineMessage({ defaultMessage: 'Governance' }) },
-        ...governanceRoute,
+        handle: {
+          title: defineMessage({ defaultMessage: 'Governance' }),
+          icon: FaGavelRegular,
+        },
+        children: [
+          {
+            index: true,
+            Component: governance.OverviewView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Governance Overview' }),
+              subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
+              icon: FaGavelRegular,
+            },
+          },
+          {
+            path: 'proposals',
+            Component: governance.ProposalsView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Proposals' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Voting history',
+              }),
+              icon: FaFileLinesRegular,
+            },
+          },
+        ],
       },
     ],
   },

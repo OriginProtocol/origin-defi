@@ -11,8 +11,8 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { GoArrowUpRight } from 'react-icons/go';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 import { formatUnits } from 'viem';
@@ -54,7 +54,7 @@ export const StakingHeader = () => {
               >
                 {intl.formatMessage({ defaultMessage: 'OGV Dashboard' })}
                 &nbsp;
-                <GoArrowUpRight />
+                <FaArrowUpRightRegular />
               </Button>
             </Stack>
           </Grid2>
@@ -242,7 +242,7 @@ export const StakingHeader = () => {
                 >
                   {intl.formatMessage({ defaultMessage: 'Get OGV' })}
                   &nbsp;
-                  <GoArrowUpRight />
+                  <FaArrowUpRightRegular />
                 </Button>
               </Stack>
             </Stack>

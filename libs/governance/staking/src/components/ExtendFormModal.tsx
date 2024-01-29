@@ -20,6 +20,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TransactionButton,
@@ -35,7 +36,6 @@ import {
   isPast,
 } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
-import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -147,7 +147,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose fontSize={14} />
+          <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>

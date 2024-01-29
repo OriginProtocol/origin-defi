@@ -1,8 +1,11 @@
 import { alpha, createTheme } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
-import { FaArrowsRotate, FaCircleCheck } from 'react-icons/fa6';
-import { IoCloseCircle } from 'react-icons/io5';
-import { RiErrorWarningLine } from 'react-icons/ri';
+import {
+  FaArrowsRotateRegular,
+  FaCircleCheckRegular,
+  FaCircleExclamationRegular,
+  FaCircleXmarkRegular,
+} from '@origin/shared/icons';
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
@@ -20,7 +23,7 @@ const base = createTheme({
     },
     divider: '#282A32',
     background: {
-      paper: '#171619',
+      paper: '#1E1F25',
       default: '#141214',
       header: '#19191D',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
@@ -63,65 +66,120 @@ const base = createTheme({
 
 export const theme = createTheme(base, {
   typography: {
-    fontFamily: 'Inter, Helvetica, Arial, sans-serif',
+    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
 
     fontSize: 14,
+    fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 500,
     fontWeightBold: 700,
 
-    allVariants: {},
-
     h1: {
       fontFamily: 'Sailec',
-      fontSize: 32,
-      fontStyle: 'normal',
+      fontSize: 40,
+      lineHeight: 1.4,
       fontWeight: 700,
-      lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 20,
+        fontSize: 32,
+        lineHeight: 1.25,
+      },
+    },
+    h2: {
+      fontFamily: 'Sailec',
+      fontSize: 32,
+      lineHeight: 1.4,
+      fontWeight: 700,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 28,
+        lineHeight: 1.25,
       },
     },
     h3: {
       fontFamily: 'Sailec',
-      fontSize: 24,
-      fontStyle: 'normal',
+      fontSize: 28,
+      lineHeight: 1.4,
       fontWeight: 700,
-      lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 20,
+        fontSize: 24,
+        lineHeight: 1.25,
       },
     },
     h4: {
       fontFamily: 'Sailec',
-      fontSize: 20,
-      fontStyle: 'normal',
-      fontWeight: 700,
-      lineHeight: 1.6,
+      fontSize: 24,
+      lineHeight: 1.4,
+      fontWeight: 500,
       [base.breakpoints.down('sm')]: {
-        fontSize: 18,
-        lineHeight: 1.5,
+        fontSize: 20,
+        lineHeight: 1.25,
+      },
+    },
+    h5: {
+      fontFamily: 'Sailec',
+      fontSize: 20,
+      lineHeight: 1.4,
+      fontWeight: 500,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 14,
+        lineHeight: 1.25,
+      },
+    },
+    h6: {
+      fontFamily: 'Sailec',
+      fontSize: 18,
+      lineHeight: 1.4,
+      fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 13,
+        lineHeight: 1.25,
       },
     },
     subtitle1: {
-      fontSize: 16,
-      color: base.palette.text.secondary,
+      fontFamily: 'Sailec',
+      fontSize: 20,
+      fontWeight: 500,
+      lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 16,
+        lineHeight: 1.25,
+      },
+    },
+    subtitle2: {
+      fontFamily: 'Sailec',
+      fontSize: 12,
+      fontWeight: 400,
+      lineHeight: 1.4,
+      [base.breakpoints.down('sm')]: {
+        fontFamily: 'Inter',
+        fontSize: 11,
+        lineHeight: 1.25,
       },
     },
     body1: {
+      fontFamily: 'Inter',
       fontSize: 14,
       lineHeight: 1.5,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 13,
+        lineHeight: 1.4,
       },
     },
     body2: {
+      fontFamily: 'Inter',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      fontStyle: 'normal',
+      [base.breakpoints.down('sm')]: {
+        fontSize: 11,
+      },
+    },
+
+    button: {
+      fontFamily: 'Sailec',
+      fontSize: 14,
+      lineHeight: 1.5,
     },
   },
   shape: {
@@ -154,18 +212,23 @@ export const theme = createTheme(base, {
         variant: 'standard',
         iconMapping: {
           error: (
-            <IoCloseCircle color={base.palette.error.main} fontSize={20} />
+            <FaCircleXmarkRegular
+              sx={{ color: base.palette.error.main, fontSize: 20 }}
+            />
           ),
           info: (
-            <FaArrowsRotate color={base.palette.success.main} fontSize={20} />
+            <FaArrowsRotateRegular
+              sx={{ color: base.palette.success.main, fontSize: 20 }}
+            />
           ),
           success: (
-            <FaCircleCheck color={base.palette.success.main} fontSize={20} />
+            <FaCircleCheckRegular
+              sx={{ color: base.palette.success.main, fontSize: 20 }}
+            />
           ),
           warning: (
-            <RiErrorWarningLine
-              color={base.palette.warning.main}
-              fontSize={20}
+            <FaCircleExclamationRegular
+              sx={{ color: base.palette.warning.main, fontSize: 20 }}
             />
           ),
         },
@@ -200,16 +263,13 @@ export const theme = createTheme(base, {
           boxShadow: 'none',
         }),
         containedPrimary: ({ theme }) => ({
-          background: `linear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), #1E1F25;`,
+          background: theme.palette.primary.main,
           '&:hover': {
-            background: theme.palette.background.paper,
+            background: theme.palette.primary.dark,
           },
         }),
         containedSecondary: ({ theme }) => ({
-          background: theme.palette.grey[700],
+          background: theme.palette.grey[800],
           '&:hover': {
             background: theme.palette.grey[900],
           },
@@ -500,6 +560,11 @@ export const theme = createTheme(base, {
         }),
       },
     },
+    MuiSvgIcon: {
+      defaultProps: {
+        fontSize: 'inherit',
+      },
+    },
     MuiTab: {
       styleOverrides: {
         root: ({ theme }) => ({
@@ -564,7 +629,10 @@ export const theme = createTheme(base, {
   },
   mixins: {
     toolbar: {
-      height: 75,
+      height: 72,
+      [base.breakpoints.down('sm')]: {
+        height: 56,
+      },
     },
   },
 });

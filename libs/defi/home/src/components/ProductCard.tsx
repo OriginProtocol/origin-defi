@@ -43,13 +43,21 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
     >
       <Stack
         direction="row"
-        sx={{ backgroundColor: 'background.header', px: 3, pt: 3 }}
+        sx={{
+          flexWrap: 'wrap',
+          backgroundColor: 'background.header',
+          rowGap: 1,
+          columnGap: 1,
+          px: 3,
+          pt: 3,
+        }}
       >
         {product.tags.map((tag) => (
           <Chip
             key={intl.formatMessage(tag.label)}
             label={intl.formatMessage(tag.label)}
             symbol={tag.symbol}
+            labelProps={{ noWrap: true }}
           />
         ))}
       </Stack>

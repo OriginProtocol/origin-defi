@@ -15,6 +15,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TransactionButton,
@@ -22,7 +23,6 @@ import {
 } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { differenceInMonths } from 'date-fns';
-import { CgClose } from 'react-icons/cg';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -69,7 +69,7 @@ export const UnstakeFormModal = ({
             rest?.onClose?.(evt, 'backdropClick');
           }}
         >
-          <CgClose fontSize={14} />
+          <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>

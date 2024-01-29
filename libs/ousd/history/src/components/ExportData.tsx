@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 
 import { Button, Link } from '@mui/material';
-import { FiDownload } from 'react-icons/fi';
+import { FaArrowDownToBracketRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -36,7 +36,7 @@ export function ExportData() {
         download="transaction_history.csv"
       ></Link>
       <Button onClick={generateCSV} sx={{ gap: 0.75 }} size="small">
-        <FiDownload />
+        <FaArrowDownToBracketRegular />
         {intl.formatMessage({ defaultMessage: 'CSV' })}
       </Button>
     </>
