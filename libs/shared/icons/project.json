@@ -8,6 +8,13 @@
     "lint": {
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"]
+    },
+    "generate-icons": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm tsx libs/shared/icons/scripts/generateSvgIcons.ts",
+        "parallel": false
+      }
     }
   }
 }
