@@ -45,7 +45,7 @@ import { SwapProvider, useSwapState } from '../state';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { IconButtonProps, StackProps } from '@mui/material';
+import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { MouseEvent } from 'react';
 
@@ -57,6 +57,7 @@ export type SwapperProps = Pick<
   'swapActions' | 'swapRoutes' | 'trackEvent'
 > & {
   onError?: (error: Error) => void;
+  buttonsProps?: ButtonProps;
 } & Omit<StackProps, 'onError'>;
 
 export const Swapper = ({
@@ -72,6 +73,7 @@ export const Swapper = ({
 
 function SwapperWrapped({
   onError,
+  buttonsProps,
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
@@ -204,6 +206,16 @@ function SwapperWrapped({
                   onClose={() => setAnchorEl(null)}
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
+                  buttonProps={{
+                    sx: {
+                      background:
+                        'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
+                      '&:hover': {
+                        background:
+                          'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                      },
+                    },
+                  }}
                 />
               </Stack>
             }
@@ -346,8 +358,8 @@ function SwapperWrapped({
 
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
-                variant="action"
                 fullWidth
+                {...buttonsProps}
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
               >
@@ -365,8 +377,8 @@ function SwapperWrapped({
               </Button>
             </Collapse>
             <ConnectedButton
-              variant="action"
               fullWidth
+              {...buttonsProps}
               disabled={swapButtonDisabled}
               onClick={handleSwap}
               sx={{ mt: 1.5 }}

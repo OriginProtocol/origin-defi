@@ -138,6 +138,16 @@ function RedeemerWrapped({
                   onClose={() => setAnchorEl(null)}
                   slippage={slippage}
                   onSlippageChange={handleSlippageChange}
+                  buttonProps={{
+                    sx: {
+                      background:
+                        'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
+                      '&:hover': {
+                        background:
+                          'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                      },
+                    },
+                  }}
                 />
               </Stack>
             }
@@ -206,11 +216,18 @@ function RedeemerWrapped({
               }}
             />
             <ConnectedButton
-              variant="action"
               fullWidth
               disabled={redeemButtonDisabled}
               onClick={handleRedeem}
-              sx={{ mt: 1.5 }}
+              sx={{
+                mt: 1.5,
+                background:
+                  'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
+                '&:hover': {
+                  background:
+                    'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                },
+              }}
             >
               {isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />

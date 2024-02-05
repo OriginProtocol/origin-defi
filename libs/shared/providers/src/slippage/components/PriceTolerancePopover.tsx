@@ -11,7 +11,7 @@ import {
 import { InfoTooltip, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
-import type { PopoverProps } from '@mui/material';
+import type { ButtonProps, PopoverProps } from '@mui/material';
 
 const DEFAULT_SLIPPAGE = 0.001;
 const WARNING_THRESHOLD = 0.05;
@@ -19,11 +19,13 @@ const WARNING_THRESHOLD = 0.05;
 export type PriceTolerancePopoverProps = {
   slippage: number;
   onSlippageChange: (value: number) => void;
+  buttonProps?: ButtonProps;
 } & PopoverProps;
 
 export function PriceTolerancePopover({
   slippage,
   onSlippageChange,
+  buttonProps,
   ...rest
 }: PriceTolerancePopoverProps) {
   const theme = useTheme();
@@ -93,11 +95,12 @@ export function PriceTolerancePopover({
             }}
           />
           <Button
-            variant="action"
+            {...buttonProps}
             sx={{
               borderRadius: 8,
               fontSize: 14,
               height: '38px',
+              ...buttonProps?.sx,
             }}
             fullWidth
             disabled={slippage === DEFAULT_SLIPPAGE}
