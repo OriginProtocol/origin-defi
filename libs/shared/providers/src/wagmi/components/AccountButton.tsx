@@ -37,7 +37,6 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
           address={address}
           enableEnsName
           short
-          fontFamily="Inter"
           fontStyle="normal"
           fontWeight={500}
           fontSize={{
