@@ -387,7 +387,7 @@ function SwapperWrapped({
               {...buttonsProps}
               disabled={swapButtonDisabled}
               onClick={handleSwap}
-              sx={{ mt: 1.5 }}
+              sx={{ mt: 1.5, ...buttonsProps?.sx }}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
