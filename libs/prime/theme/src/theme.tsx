@@ -443,6 +443,11 @@ export const theme = createTheme({
       defaultProps: {
         fontSize: 'inherit',
       },
+      styleOverrides: {
+        root: {
+          fill: 'none',
+        },
+      },
     },
     MuiTab: {
       styleOverrides: {

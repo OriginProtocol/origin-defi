@@ -1,0 +1,10 @@
+query PointRecipientStats($address: String!) {
+  lrtPointRecipientStats(address: $address) {
+    elPoints
+    points
+  }
+  lrtSummaries(limit: 1, orderBy: id_DESC) {
+    points
+  }
+  totalEigenLayerPoints
+}

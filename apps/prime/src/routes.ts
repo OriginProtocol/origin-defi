@@ -1,4 +1,5 @@
-import { DashboardView, RestakeView } from '@origin/prime/restake';
+import { DashboardView } from '@origin/prime/dashboard';
+import { RestakeView } from '@origin/prime/restake';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
 

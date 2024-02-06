@@ -35,6 +35,7 @@
       "@origin/ousd/history": ["libs/ousd/history/src/index.ts"],
       "@origin/ousd/shared": ["libs/ousd/shared/src/index.ts"],
       "@origin/ousd/swap": ["libs/ousd/swap/src/index.ts"],
+      "@origin/prime/dashboard": ["libs/prime/dashboard/src/index.ts"],
       "@origin/prime/restake": ["libs/prime/restake/src/index.ts"],
       "@origin/prime/shared": ["libs/prime/shared/src/index.ts"],
       "@origin/prime/theme": ["libs/prime/theme/src/index.ts"],

@@ -44,7 +44,7 @@ export const AssetDepositedCard = (props: CardProps) => {
       <CardContent>
         <Grid2 container spacing={3}>
           {assets.map((a, i) => (
-            <Grid2 key={a.symbol} xs={12} sm={6}>
+            <Grid2 key={a.symbol} xs={6}>
               <Stack spacing={1}>
                 <Stack direction="row" gap={1} alignItems="center">
                   <TokenIcon symbol={a.symbol} sx={{ width: 20, height: 20 }} />

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_SUBSQUID_URL,
+  baseURL: 'https://squid.subsquid.io/origin-squid/v/v69420/graphql',
 });
 
 export const graphqlClient =
