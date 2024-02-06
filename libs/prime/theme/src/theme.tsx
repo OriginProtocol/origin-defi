@@ -6,7 +6,9 @@ import {
   FaCircleXmarkRegular,
 } from '@origin/shared/icons';
 
-const base = createTheme({
+const base = createTheme();
+
+export const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
@@ -19,8 +21,8 @@ const base = createTheme({
     },
     divider: '#B5BECA',
     background: {
-      paper: '#FFF',
-      default: '#6F8FE',
+      paper: '#F7FAFF',
+      default: '#F6F8FE',
     },
     text: {
       primary: '#1E293B',
@@ -46,10 +48,11 @@ const base = createTheme({
     error: {
       main: '#FF4E4E',
     },
+    action: {
+      hover: '#F3F5FC',
+      selected: '#EAF0F9',
+    },
   },
-});
-
-export const theme = createTheme(base, {
   typography: {
     fontFamily: [
       '"ui-sans-serif"',
@@ -479,7 +482,7 @@ export const theme = createTheme(base, {
   },
   mixins: {
     toolbar: {
-      height: 72,
+      height: 75,
       [base.breakpoints.down('sm')]: {
         height: 56,
       },

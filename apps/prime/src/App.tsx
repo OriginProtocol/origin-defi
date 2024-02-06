@@ -1,9 +1,10 @@
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/prime/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
+import { LeftDrawer } from './components/LeftDrawer';
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
@@ -20,9 +21,10 @@ export const App = () => {
       >
         <Stack minWidth={370} mb={5}>
           <Topnav />
-          <Container>
+          <Stack direction="row">
+            <LeftDrawer />
             <Outlet />
-          </Container>
+          </Stack>
         </Stack>
       </TrackingProvider>
     </ErrorBoundary>

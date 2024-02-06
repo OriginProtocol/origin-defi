@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { alpha, Box, Divider } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import { PrimeStake } from '@origin/shared/icons';
@@ -23,10 +23,7 @@ export function Topnav(props: BoxProps) {
     <>
       <Box
         sx={{
-          height: (theme) => ({
-            xs: '112px',
-            md: `${theme.mixins.toolbar.height}px`,
-          }),
+          height: (theme) => `${theme.mixins.toolbar.height}px`,
         }}
       />
       <Box
@@ -38,17 +35,8 @@ export function Topnav(props: BoxProps) {
           left: 0,
           width: 1,
           zIndex: theme.zIndex.appBar,
-          backgroundColor: alpha(theme.palette.background.default, 0.6),
-          backdropFilter: 'blur(15px)',
-          height: {
-            xs: '112px',
-            md: `${theme.mixins.toolbar.height}px`,
-          },
+          height: `${theme.mixins.toolbar.height}px`,
           display: 'grid',
-          borderBottom: {
-            xs: 'none',
-            md: `1px solid ${theme.palette.background.paper}`,
-          },
           columnGap: { xs: 1, md: 6 },
           rowGap: 0,
           alignItems: 'center',
@@ -56,19 +44,17 @@ export function Topnav(props: BoxProps) {
             xs: 1.5,
             md: 3,
           },
-          pt: {
-            xs: 1.5,
-            md: 0,
-          },
-          gridTemplateColumns: {
-            xs: '1fr 1fr',
-            md: 'auto 1fr auto',
-          },
+          gridTemplateColumns: '1fr 1fr',
         })}
       >
-        <Box component={Link} to="/">
-          <PrimeStake sx={{ width: 1, height: 40 }} />
-        </Box>
+        <Stack
+          direction="row"
+          component={Link}
+          to="/"
+          justifyContent="flex-start"
+        >
+          <PrimeStake sx={{ width: 147, height: { xs: 36, sm: 44 } }} />
+        </Stack>
         <Box
           sx={{
             display: 'flex',
@@ -125,18 +111,6 @@ export function Topnav(props: BoxProps) {
             }}
           />
         </Box>
-        <Divider
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            gridColumn: 'span 2',
-            gridRowStart: 1,
-            borderColor: (theme) => theme.palette.background.paper,
-            position: 'relative',
-            width: 'calc(100% + 1.5rem)',
-            bottom: '-3rem',
-            left: '-0.75rem',
-          }}
-        />
       </Box>
     </>
   );
