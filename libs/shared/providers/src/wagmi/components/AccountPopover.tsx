@@ -106,10 +106,10 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
         <Stack alignItems="center" sx={{ px: 2, py: 3 }} direction="row">
           <WalletIcon
             walletName={connector?.name}
-            sx={{ width: 20, height: 20 }}
+            sx={{ width: 20, height: 20, mr: 1.5 }}
           />
           <ExternalLink href={`https://etherscan.io/address/${address}`}>
-            <AddressLabel address={address} short sx={{ ml: 1.5 }} />
+            <AddressLabel address={address} short />
           </ExternalLink>
         </Stack>
         <Divider />
