@@ -237,12 +237,14 @@ export const theme = createTheme({
           boxShadow: 'none',
         }),
         containedPrimary: ({ theme }) => ({
+          color: theme.palette.primary.contrastText,
           background: theme.palette.primary.main,
           '&:hover': {
             background: theme.palette.primary.dark,
           },
         }),
         containedSecondary: ({ theme }) => ({
+          color: theme.palette.secondary.contrastText,
           background: theme.palette.grey[800],
           '&:hover': {
             background: theme.palette.grey[900],
@@ -443,11 +445,6 @@ export const theme = createTheme({
       defaultProps: {
         fontSize: 'inherit',
       },
-      styleOverrides: {
-        root: {
-          fill: 'none',
-        },
-      },
     },
     MuiTab: {
       styleOverrides: {
@@ -473,14 +470,18 @@ export const theme = createTheme({
       },
     },
     MuiTooltip: {
+      defaultProps: {
+        placement: 'top',
+      },
       styleOverrides: {
         tooltip: ({ theme }) => ({
-          paddingInline: theme.spacing(2),
-          paddingBlock: theme.spacing(1.5),
+          px: theme.spacing(2),
+          py: theme.spacing(1.5),
           borderRadius: theme.shape.borderRadius * 2,
           border: '1px solid',
           borderColor: theme.palette.grey[500],
           boxShadow: theme.shadows[23],
+          background: theme.palette.background.paper,
         }),
       },
     },

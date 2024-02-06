@@ -36,12 +36,12 @@ export const DashboardView = () => {
     BigInt(stats?.totalEigenLayerPoints ?? '1');
 
   return (
-    <Stack>
+    <Stack alignItems="center">
       <Typography variant="h3" pb={3}>
         {intl.formatMessage({ defaultMessage: 'Dashboard' })}
       </Typography>
-      <Card>
-        <Grid2 container sx={{ p: 3 }}>
+      <Card sx={{ width: 1 }}>
+        <Grid2 container sx={{ p: 2 }}>
           <Grid2 xs={4} sx={gridStyles}>
             <TokenIcon
               symbol={tokens.mainnet.primeETH.symbol}
@@ -49,8 +49,8 @@ export const DashboardView = () => {
             />
           </Grid2>
           <Grid2 xs={4} sx={gridStyles}>
-            <Stack spacing={1}>
-              <Typography>
+            <Stack spacing={1} alignItems="center">
+              <Typography fontWeight="medium">
                 {intl.formatMessage({ defaultMessage: 'primeETH Balance' })}
               </Typography>
               {isConnected ? (
@@ -75,15 +75,15 @@ export const DashboardView = () => {
       <Typography variant="h3" py={3}>
         {intl.formatMessage({ defaultMessage: 'Your rewards' })}
       </Typography>
-      <Stack spacing={2}>
-        <Card>
-          <Grid2 container sx={{ p: 3 }}>
+      <Stack spacing={2} sx={{ width: 1 }}>
+        <Card sx={{ width: 1 }}>
+          <Grid2 container sx={{ p: 2 }}>
             <Grid2 xs={4} sx={gridStyles}>
               <EigenPoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 xs={4} sx={gridStyles}>
-              <Stack spacing={1}>
-                <Typography>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
@@ -98,8 +98,8 @@ export const DashboardView = () => {
               </Stack>
             </Grid2>
             <Grid2 xs={4} sx={gridStyles}>
-              <Stack spacing={1}>
-                <Typography>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
@@ -115,14 +115,14 @@ export const DashboardView = () => {
             </Grid2>
           </Grid2>
         </Card>
-        <Card>
-          <Grid2 container sx={{ p: 3 }}>
+        <Card sx={{ width: 1 }}>
+          <Grid2 container sx={{ p: 2 }}>
             <Grid2 xs={4} sx={gridStyles}>
               <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 xs={4} sx={gridStyles}>
-              <Stack spacing={1}>
-                <Typography>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
                 </Typography>
                 {isConnected ? (
@@ -137,8 +137,8 @@ export const DashboardView = () => {
               </Stack>
             </Grid2>
             <Grid2 xs={4} sx={gridStyles}>
-              <Stack spacing={1}>
-                <Typography>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (

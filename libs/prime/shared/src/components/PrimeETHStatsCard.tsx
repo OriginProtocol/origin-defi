@@ -26,7 +26,7 @@ export const PrimeETHStatsCard = (props: CardProps) => {
             })}
           />
         </Typography>
-        <LoadingLabel isLoading={isLoading}>
+        <LoadingLabel isLoading={isLoading} fontWeight="medium">
           {intl.formatMessage(
             { defaultMessage: '{tvl} ETH' },
             { tvl: formatAmount(data?.tvl) },
