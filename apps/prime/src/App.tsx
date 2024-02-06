@@ -1,6 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  AssetDepositedCard,
   PrimeETHStatsCard,
   trackEvent,
   trackPage,
@@ -36,8 +37,9 @@ export const App = () => {
                 <Outlet />
               </Grid2>
               <Grid2 xs={12} sm={9} md={3} smOffset={3} mdOffset={0}>
-                <Stack>
+                <Stack spacing={3}>
                   <PrimeETHStatsCard />
+                  <AssetDepositedCard />
                 </Stack>
               </Grid2>
             </Grid2>
