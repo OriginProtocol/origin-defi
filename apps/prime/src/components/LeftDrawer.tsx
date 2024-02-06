@@ -12,11 +12,7 @@ export const LeftDrawer = (props: StackProps) => {
   const navigate = useNavigate();
 
   return (
-    <Stack
-      direction="column"
-      {...props}
-      sx={{ width: { xs: 0, sm: 0.25 }, px: { xs: 0, sm: 3 } }}
-    >
+    <Stack direction="column" {...props}>
       <Tabs
         orientation="vertical"
         value={location.pathname}

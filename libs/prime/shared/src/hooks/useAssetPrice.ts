@@ -25,10 +25,8 @@ export const useAssetPrice = (asset: Token) => {
         ],
       });
 
-      const primeETHPrice =
-        (data?.[0] as unknown as bigint) ?? parseUnits('10', 18);
-      const assetPrice =
-        (data?.[1] as unknown as bigint) ?? parseUnits('10', 18);
+      const primeETHPrice = data?.[0]?.result ?? parseUnits('1', 18);
+      const assetPrice = data?.[1]?.result ?? parseUnits('1', 18);
 
       return primeETHPrice / assetPrice;
     },
