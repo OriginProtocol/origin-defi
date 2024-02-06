@@ -1,20 +1,21 @@
 import { useState } from 'react';
 
-import { Box, Stack } from '@mui/material';
+import { Box, Button, Stack } from '@mui/material';
 import { trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
-import { PrimeStake } from '@origin/shared/icons';
+import { FaArrowUpRightRegular, PrimeStake } from '@origin/shared/icons';
 import {
   AccountPopover,
-  ActivityButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import type { BoxProps } from '@mui/material';
 
 export function Topnav(props: BoxProps) {
+  const intl = useIntl();
   const { isConnected } = useAccount();
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
@@ -63,6 +64,28 @@ export function Topnav(props: BoxProps) {
             gap: { xs: 1, md: 2 },
           }}
         >
+          <Button
+            variant="outlined"
+            href="https://docs.primestaked.com/prime-staked-eth/intro-to-primeeth"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            color="secondary"
+            sx={{
+              borderRadius: 25,
+              paddingX: {
+                md: 3,
+                xs: 2,
+              },
+              paddingY: {
+                md: 1,
+                xs: 0.75,
+              },
+              minHeight: { xs: 36, md: 44 },
+            }}
+          >
+            {intl.formatMessage({ defaultMessage: 'Docs' })}&nbsp;
+            <FaArrowUpRightRegular />
+          </Button>
           <OpenAccountModalButton
             onClick={(e) => {
               if (isConnected) {
@@ -88,27 +111,14 @@ export function Topnav(props: BoxProps) {
               },
               minWidth: 36,
               maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-              color: 'primary.contrastText',
               minHeight: { xs: 36, md: 44 },
             }}
+            connectedProps={{ variant: 'outlined', color: 'secondary' }}
           />
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
             balanceTokens={[tokens.mainnet.OGV, tokens.mainnet.veOGV]}
-          />
-          <ActivityButton
-            onClick={() => {
-              trackEvent({ name: 'open_activity' });
-            }}
-            sx={{
-              width: { xs: 36, md: 44 },
-              height: { xs: 36, md: 44 },
-              padding: {
-                xs: 0.75,
-                md: 1,
-              },
-            }}
           />
         </Box>
       </Box>

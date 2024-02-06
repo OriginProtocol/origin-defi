@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  alpha,
   Box,
   Button,
   Card,
@@ -9,35 +8,26 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  ErrorBoundary,
-  ErrorCard,
-  LoadingLabel,
-} from '@origin/shared/components';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { ArrowDown } from '@origin/shared/icons';
 import {
   ConnectedButton,
   SwapProvider,
   TokenSelectModal,
-  useFormat,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   usePrices,
-  useSlippage,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
 } from '@origin/shared/providers';
-import {
-  composeContexts,
-  isNilOrEmpty,
-  subtractSlippage,
-} from '@origin/shared/utils';
+import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
@@ -70,8 +60,6 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const { value: slippage } = useSlippage();
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
@@ -158,17 +146,11 @@ function SwapperWrapped({
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
-            title={
-              <Stack direction="row" alignItems="center">
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Restake LST' })}
-                </Typography>
-              </Stack>
-            }
+            title={intl.formatMessage({ defaultMessage: 'Restake LST' })}
           />
-          <CardContent>
-            <Box position="relative">
-              <ArrowButton />
+          <Box position="relative">
+            <ArrowButton />
+            <CardContent sx={{ backgroundColor: '#fff' }}>
               <TokenInput
                 amount={amountIn}
                 decimals={tokenIn.decimals}
@@ -189,17 +171,10 @@ function SwapperWrapped({
                 isConnected={isConnected}
                 isAmountDisabled={amountInInputDisabled}
                 inputProps={{ sx: tokenInputStyles }}
-                sx={{
-                  paddingBlock: 2.5,
-                  paddingBlockStart: 2.625,
-                  paddingInline: 2,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                  borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                  borderBottomColor: 'transparent',
-                }}
               />
+            </CardContent>
+            <Divider />
+            <CardContent>
               <TokenInput
                 amount={amountOut}
                 decimals={tokenOut.decimals}
@@ -220,61 +195,33 @@ function SwapperWrapped({
                 isConnected={isConnected}
                 hideMaxButton
                 inputProps={{ readOnly: true, sx: tokenInputStyles }}
-                sx={{
-                  paddingBlock: 2.5,
-                  paddingBlockStart: 2.625,
-                  paddingInline: 2,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                  borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.grey[400], 0.2),
-                }}
               />
-            </Box>
-            <Collapse in={amountOut > 0n}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                pt={2}
-                pb={1}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  {intl.formatMessage(
-                    {
-                      defaultMessage:
-                        'Minimum received with {slippage} slippage:',
-                    },
-                    {
-                      slippage: intl.formatNumber(slippage, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
-                    },
-                  )}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel
-                    variant="body2"
-                    isLoading={isSwapRoutesLoading}
-                    sWidth={60}
-                  >
-                    {formatAmount(
-                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                    )}
-                  </LoadingLabel>
-                  <Typography variant="body2">{tokenOut.symbol}</Typography>
-                </Stack>
-              </Stack>
-            </Collapse>
+            </CardContent>
+          </Box>
+          <Divider />
+          <CardContent>
+            <Stack direction="row" justifyContent="space-between">
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
+              </Typography>
+              <Typography>
+                {intl.formatMessage(
+                  {
+                    defaultMessage: '1 primeETH = {rate} {token}',
+                  },
+                  { rate: 1.0001, token: 'OETH' },
+                )}
+              </Typography>
+            </Stack>
+          </CardContent>
+          <Divider />
+          <CardContent>
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 fullWidth
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
+                sx={{ fontSize: 20, py: 2, borderRadius: 8 }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />
@@ -293,7 +240,7 @@ function SwapperWrapped({
               fullWidth
               disabled={swapButtonDisabled}
               onClick={handleSwap}
-              sx={{ mt: 1.5 }}
+              sx={{ mt: 1.5, fontSize: 20, py: 2, borderRadius: 8 }}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />

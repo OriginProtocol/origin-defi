@@ -252,12 +252,13 @@ export const theme = createTheme({
         }),
         outlinedSecondary: ({ theme }) => ({
           borderColor: theme.palette.divider,
-          ':hover': {
-            borderColor: theme.palette.primary.main,
+          '&:hover': {
+            borderColor: theme.palette.divider,
+            backgroundColor: theme.palette.grey[100],
           },
         }),
         text: ({ theme }) => ({
-          ':hover': {
+          '&:hover': {
             color: theme.palette.common.white,
             background: 'transparent',
           },
@@ -294,7 +295,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
-          fontSize: theme.typography.fontSize,
+          fontSize: 16,
           fontWeight: 500,
         }),
       },
