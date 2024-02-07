@@ -1,0 +1,6 @@
+{
+  "name": "Prime Staked ETH",
+  "description": "Welcome to Prime Staked ETH!",
+  "iconPath": "https://raw.githubusercontent.com/OriginProtocol/origin-defi/next/libs/shared/icons/src/prime/prime-stake.svg",
+  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+}
