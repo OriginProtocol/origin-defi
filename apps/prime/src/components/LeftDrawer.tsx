@@ -1,4 +1,5 @@
 import { Stack, Tab, Tabs } from '@mui/material';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useLocation, useNavigate } from 'react-router-dom';
 
@@ -11,11 +12,13 @@ export const LeftDrawer = (props: StackProps) => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const loc = `/${location.pathname.split('/')[1]}`;
+
   return (
     <Stack direction="column" {...props}>
       <Tabs
         orientation="vertical"
-        value={location.pathname}
+        value={loc}
         onChange={(_, value) => {
           navigate(value);
         }}
@@ -27,25 +30,27 @@ export const LeftDrawer = (props: StackProps) => {
           },
         }}
       >
-        {routes[0].children.map((route) => (
-          <Tab
-            key={route?.path ?? '/'}
-            value={route?.path ?? '/'}
-            label={intl.formatMessage(route.handle.label)}
-            sx={{
-              py: 1,
-              '.MuiTab-root': {
-                justifyContent: 'flex-start',
-              },
-              ':hover': {
-                backgroundColor: (theme) => theme.palette.action.hover,
-              },
-              '&.Mui-selected': {
-                backgroundColor: (theme) => theme.palette.action.selected,
-              },
-            }}
-          />
-        ))}
+        {routes[0].children
+          .filter((c) => !isNilOrEmpty(c?.handle?.label))
+          .map((route) => (
+            <Tab
+              key={route?.path ?? '/'}
+              value={route?.path ?? '/'}
+              label={intl.formatMessage(route.handle.label)}
+              sx={{
+                py: 1,
+                '.MuiTab-root': {
+                  justifyContent: 'flex-start',
+                },
+                ':hover': {
+                  backgroundColor: (theme) => theme.palette.action.hover,
+                },
+                '&.Mui-selected': {
+                  backgroundColor: (theme) => theme.palette.action.selected,
+                },
+              }}
+            />
+          ))}
       </Tabs>
     </Stack>
   );

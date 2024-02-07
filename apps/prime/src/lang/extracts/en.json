@@ -1,12 +1,12 @@
 {
-  "+14VoL": {
-    "defaultMessage": "Staking"
-  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "/6/sPX": {
+    "defaultMessage": "Docs"
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
@@ -29,8 +29,17 @@
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
   },
+  "1hzUpu": {
+    "defaultMessage": "{tvl} ETH"
+  },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
+  },
+  "2Gox/R": {
+    "defaultMessage": "EigenLayer Points"
+  },
+  "3fTTLv": {
+    "defaultMessage": "Unstake"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -50,17 +59,11 @@
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
-  "6WMuFp": {
-    "defaultMessage": "Proposals"
-  },
   "6XFO/C": {
     "defaultMessage": "Approved"
   },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
-  },
-  "70QJXI": {
-    "defaultMessage": "Voting history"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
@@ -71,11 +74,11 @@
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
-  "8lmFbk": {
-    "defaultMessage": "Balance, earnings and history"
-  },
   "8nvhZ9": {
     "defaultMessage": "Last"
+  },
+  "8vKit3": {
+    "defaultMessage": "Restake {when}"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -83,14 +86,14 @@
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
   },
-  "9uOFF3": {
-    "defaultMessage": "Overview"
-  },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "CU66wI": {
+    "defaultMessage": "1 primeETH = {rate} {token}"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -98,8 +101,14 @@
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
   },
+  "DUR59o": {
+    "defaultMessage": "Total Value Locked"
+  },
   "DupNoS": {
     "defaultMessage": "Go back home"
+  },
+  "DyhgPJ": {
+    "defaultMessage": "primeETH Balance"
   },
   "E2sGaF": {
     "defaultMessage": "Exit"
@@ -107,23 +116,14 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
-  "EVmlnF": {
-    "defaultMessage": "OGV"
-  },
-  "GtMIIe": {
-    "defaultMessage": "Get OGV"
+  "G9iNne": {
+    "defaultMessage": "Exchange rate:"
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
-  "IAZCOw": {
-    "defaultMessage": "Origin protocol"
-  },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
-  },
-  "JLmDla": {
-    "defaultMessage": "Governance"
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
@@ -133,6 +133,12 @@
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
+  },
+  "LUdwbC": {
+    "defaultMessage": "Restake"
+  },
+  "LiHQih": {
+    "defaultMessage": "Coming Soon"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -152,6 +158,9 @@
   "PKgDoL": {
     "defaultMessage": "Estimating..."
   },
+  "PXAur5": {
+    "defaultMessage": "Withdraw"
+  },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
@@ -161,14 +170,14 @@
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
-  "S1eClp": {
-    "defaultMessage": "Governance Overview"
-  },
   "S45aoc": {
     "defaultMessage": "First"
   },
-  "SGXihn": {
-    "defaultMessage": "OETH"
+  "S5tBcz": {
+    "defaultMessage": "Stake"
+  },
+  "SKB/G9": {
+    "defaultMessage": "TVL"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -185,17 +194,8 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
-  "VK+Ydv": {
-    "defaultMessage": "OUSD"
-  },
-  "VfXPp7": {
-    "defaultMessage": "Redeem from OETH vault"
-  },
   "Vn/9nH": {
     "defaultMessage": "Est gas:"
-  },
-  "Vu1Cgf": {
-    "defaultMessage": "Stake to earn rewards"
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"
@@ -206,8 +206,8 @@
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
-  "Yr+Yll": {
-    "defaultMessage": "Swap in and out of OUSD"
+  "ZGsb9H": {
+    "defaultMessage": "Assets Deposited"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -221,11 +221,8 @@
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
-  "aaJ9Pk": {
-    "defaultMessage": "Swap in and out of OETH"
-  },
-  "b4tTvf": {
-    "defaultMessage": "Redeem from OUSD vault"
+  "aXTK45": {
+    "defaultMessage": "primeETH XP"
   },
   "c31Feo": {
     "defaultMessage": "Swapping"
@@ -239,14 +236,20 @@
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
-  "e02ROc": {
-    "defaultMessage": "Staking and rewards history"
+  "fZ5HRc": {
+    "defaultMessage": "Your rewards"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "hWyxI7": {
+    "defaultMessage": "% of total"
+  },
+  "hzSNj4": {
+    "defaultMessage": "Dashboard"
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
@@ -256,6 +259,9 @@
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
+  },
+  "jE/EMf": {
+    "defaultMessage": "Restake LST"
   },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
@@ -284,9 +290,6 @@
   "tFriEi": {
     "defaultMessage": "Transaction error"
   },
-  "uNOJ2Q": {
-    "defaultMessage": "Portfolio"
-  },
   "vugtF7": {
     "defaultMessage": "No Activity"
   },
@@ -304,6 +307,9 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
+  },
+  "ycC07u": {
+    "defaultMessage": "primeETH Stats"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"

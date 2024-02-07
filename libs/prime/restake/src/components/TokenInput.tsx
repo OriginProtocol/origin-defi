@@ -11,7 +11,7 @@ import type { StackProps } from '@mui/material';
 import type { BigintInputProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
-// When clicking max on native currency, we leave this amount of token
+// When clicking max on native currency, we leave this amount of eth
 // on the wallet so the user can afford the transaction gas fees
 const MIN_ETH_FOR_GAS = '0.015';
 
@@ -26,13 +26,11 @@ export type TokenInputProps = {
   balance?: bigint;
   isBalanceLoading?: boolean;
   hideMaxButton?: boolean;
-  disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
   isNativeCurrency?: boolean;
-  isTokenClickDisabled?: boolean;
-  tokenPriceUsd?: number;
-  isPriceLoading?: boolean;
+  disableTokenClick?: boolean;
+  displayDecimals?: number;
   inputProps?: Omit<
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
@@ -53,15 +51,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       balance = 0n,
       isBalanceLoading,
       hideMaxButton,
-      disableMaxButton,
       token,
       onTokenClick,
       isNativeCurrency = false,
-      isTokenClickDisabled,
-      tokenPriceUsd = 0,
-      isPriceLoading,
+      disableTokenClick,
       inputProps,
       tokenButtonProps,
+      displayDecimals,
       ...rest
     },
     ref,
@@ -78,7 +74,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const maxVisible =
       !hideMaxButton &&
       balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
-    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
+    const maxDisabled = !isConnected || isBalanceLoading;
 
     return (
       <Stack {...rest}>
@@ -93,7 +89,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           <TokenButton
             token={token}
             onClick={onTokenClick}
-            isDisabled={isTokenClickDisabled}
+            isDisabled={disableTokenClick}
             {...tokenButtonProps}
             sx={{
               ...(!isConnected && { transform: 'translateY(50%)' }),
@@ -194,7 +190,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         border: (theme) => `1px solid ${theme.palette.divider}`,
         paddingY: 0.25,
         fontStyle: 'normal',
-        cursor: 'pointer',
+        cursor: isDisabled ? 'default' : 'pointer',
         fontWeight: 500,
         boxSizing: 'border-box',
         position: 'relative',

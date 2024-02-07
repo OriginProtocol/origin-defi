@@ -1,10 +1,4 @@
 {
-  "+14VoL": [
-    {
-      "type": 0,
-      "value": "Staking"
-    }
-  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -15,6 +9,12 @@
     {
       "type": 0,
       "value": "Connect"
+    }
+  ],
+  "/6/sPX": [
+    {
+      "type": 0,
+      "value": "Docs"
     }
   ],
   "/GCoTA": [
@@ -71,10 +71,32 @@
       "value": "defaultChain"
     }
   ],
+  "1hzUpu": [
+    {
+      "type": 1,
+      "value": "tvl"
+    },
+    {
+      "type": 0,
+      "value": " ETH"
+    }
+  ],
   "1nxJrQ": [
     {
       "type": 0,
       "value": "Return to Home Page"
+    }
+  ],
+  "2Gox/R": [
+    {
+      "type": 0,
+      "value": "EigenLayer Points"
+    }
+  ],
+  "3fTTLv": [
+    {
+      "type": 0,
+      "value": "Unstake"
     }
   ],
   "45EvZ3": [
@@ -121,12 +143,6 @@
       "value": "The selected network is not supported by the application."
     }
   ],
-  "6WMuFp": [
-    {
-      "type": 0,
-      "value": "Proposals"
-    }
-  ],
   "6XFO/C": [
     {
       "type": 0,
@@ -137,12 +153,6 @@
     {
       "type": 0,
       "value": "Insufficient funds"
-    }
-  ],
-  "70QJXI": [
-    {
-      "type": 0,
-      "value": "Voting history"
     }
   ],
   "7CPiAt": [
@@ -163,16 +173,20 @@
       "value": "Redeem for mix via Origin Vault"
     }
   ],
-  "8lmFbk": [
-    {
-      "type": 0,
-      "value": "Balance, earnings and history"
-    }
-  ],
   "8nvhZ9": [
     {
       "type": 0,
       "value": "Last"
+    }
+  ],
+  "8vKit3": [
+    {
+      "type": 0,
+      "value": "Restake "
+    },
+    {
+      "type": 1,
+      "value": "when"
     }
   ],
   "9ghOJK": [
@@ -185,12 +199,6 @@
     {
       "type": 0,
       "value": "Discord support channel"
-    }
-  ],
-  "9uOFF3": [
-    {
-      "type": 0,
-      "value": "Overview"
     }
   ],
   "ASNc/h": [
@@ -213,6 +221,24 @@
       "value": "lastPage"
     }
   ],
+  "CU66wI": [
+    {
+      "type": 0,
+      "value": "1 primeETH = "
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "token"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -233,10 +259,22 @@
       "value": " for the basket of underlying assets"
     }
   ],
+  "DUR59o": [
+    {
+      "type": 0,
+      "value": "Total Value Locked"
+    }
+  ],
   "DupNoS": [
     {
       "type": 0,
       "value": "Go back home"
+    }
+  ],
+  "DyhgPJ": [
+    {
+      "type": 0,
+      "value": "primeETH Balance"
     }
   ],
   "E2sGaF": [
@@ -275,16 +313,10 @@
       "value": "symbolOut"
     }
   ],
-  "EVmlnF": [
+  "G9iNne": [
     {
       "type": 0,
-      "value": "OGV"
-    }
-  ],
-  "GtMIIe": [
-    {
-      "type": 0,
-      "value": "Get OGV"
+      "value": "Exchange rate:"
     }
   ],
   "HyhkDr": [
@@ -293,22 +325,10 @@
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
     }
   ],
-  "IAZCOw": [
-    {
-      "type": 0,
-      "value": "Origin protocol"
-    }
-  ],
   "JA3MsG": [
     {
       "type": 0,
       "value": "Operation Cancelled"
-    }
-  ],
-  "JLmDla": [
-    {
-      "type": 0,
-      "value": "Governance"
     }
   ],
   "JrepQU": [
@@ -327,6 +347,18 @@
     {
       "type": 0,
       "value": "Sorry, we can't seem to find that page"
+    }
+  ],
+  "LUdwbC": [
+    {
+      "type": 0,
+      "value": "Restake"
+    }
+  ],
+  "LiHQih": [
+    {
+      "type": 0,
+      "value": "Coming Soon"
     }
   ],
   "MSTVqC": [
@@ -365,6 +397,12 @@
       "value": "Estimating..."
     }
   ],
+  "PXAur5": [
+    {
+      "type": 0,
+      "value": "Withdraw"
+    }
+  ],
   "PmkP1H": [
     {
       "type": 0,
@@ -387,22 +425,22 @@
       "value": "number"
     }
   ],
-  "S1eClp": [
-    {
-      "type": 0,
-      "value": "Governance Overview"
-    }
-  ],
   "S45aoc": [
     {
       "type": 0,
       "value": "First"
     }
   ],
-  "SGXihn": [
+  "S5tBcz": [
     {
       "type": 0,
-      "value": "OETH"
+      "value": "Stake"
+    }
+  ],
+  "SKB/G9": [
+    {
+      "type": 0,
+      "value": "TVL"
     }
   ],
   "TrKxvg": [
@@ -451,28 +489,10 @@
       "value": "Finding the best route..."
     }
   ],
-  "VK+Ydv": [
-    {
-      "type": 0,
-      "value": "OUSD"
-    }
-  ],
-  "VfXPp7": [
-    {
-      "type": 0,
-      "value": "Redeem from OETH vault"
-    }
-  ],
   "Vn/9nH": [
     {
       "type": 0,
       "value": "Est gas:"
-    }
-  ],
-  "Vu1Cgf": [
-    {
-      "type": 0,
-      "value": "Stake to earn rewards"
     }
   ],
   "W87PYU": [
@@ -497,10 +517,10 @@
       "value": "Redeem"
     }
   ],
-  "Yr+Yll": [
+  "ZGsb9H": [
     {
       "type": 0,
-      "value": "Swap in and out of OUSD"
+      "value": "Assets Deposited"
     }
   ],
   "ZmLuI/": [
@@ -527,16 +547,10 @@
       "value": "Show more"
     }
   ],
-  "aaJ9Pk": [
+  "aXTK45": [
     {
       "type": 0,
-      "value": "Swap in and out of OETH"
-    }
-  ],
-  "b4tTvf": [
-    {
-      "type": 0,
-      "value": "Redeem from OUSD vault"
+      "value": "primeETH XP"
     }
   ],
   "c31Feo": [
@@ -563,10 +577,10 @@
       "value": "Exchange rate"
     }
   ],
-  "e02ROc": [
+  "fZ5HRc": [
     {
       "type": 0,
-      "value": "Staking and rewards history"
+      "value": "Your rewards"
     }
   ],
   "fuV7zb": [
@@ -589,6 +603,18 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "hWyxI7": [
+    {
+      "type": 0,
+      "value": "% of total"
+    }
+  ],
+  "hzSNj4": [
+    {
+      "type": 0,
+      "value": "Dashboard"
+    }
+  ],
   "hzfM3P": [
     {
       "type": 0,
@@ -605,6 +631,12 @@
     {
       "type": 0,
       "value": "I have read and agree to the above terms"
+    }
+  ],
+  "jE/EMf": [
+    {
+      "type": 0,
+      "value": "Restake LST"
     }
   ],
   "k3YWIR": [
@@ -661,12 +693,6 @@
       "value": "Transaction error"
     }
   ],
-  "uNOJ2Q": [
-    {
-      "type": 0,
-      "value": "Portfolio"
-    }
-  ],
   "vugtF7": [
     {
       "type": 0,
@@ -701,6 +727,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "ycC07u": [
+    {
+      "type": 0,
+      "value": "primeETH Stats"
     }
   ],
   "yphS5C": [

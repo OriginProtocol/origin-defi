@@ -1,1 +1,1 @@
-export * from './views/RestakeView';
+export * from './routes';

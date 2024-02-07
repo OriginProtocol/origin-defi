@@ -11,7 +11,7 @@ import { useAccount, useContractRead } from 'wagmi';
 
 import { usePointRecipientStatsQuery } from '../queries.generated';
 
-import type { SxProps } from '@mui/material';
+import type { Grid2Props } from '@mui/material';
 
 export const DashboardView = () => {
   const intl = useIntl();
@@ -36,19 +36,19 @@ export const DashboardView = () => {
     BigInt(stats?.totalEigenLayerPoints ?? '1');
 
   return (
-    <Stack alignItems="center">
-      <Typography variant="h3" pb={3}>
+    <Stack>
+      <Typography variant="h3" pb={3} textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Dashboard' })}
       </Typography>
-      <Card sx={{ width: 1 }}>
-        <Grid2 container sx={{ p: 2 }}>
-          <Grid2 xs={4} sx={gridStyles}>
+      <Card>
+        <Grid2 {...gridContainerProps}>
+          <Grid2 {...gridItemProps}>
             <TokenIcon
               symbol={tokens.mainnet.primeETH.symbol}
               sx={{ width: 48, height: 48 }}
             />
           </Grid2>
-          <Grid2 xs={4} sx={gridStyles}>
+          <Grid2 {...gridItemProps}>
             <Stack spacing={1} alignItems="center">
               <Typography fontWeight="medium">
                 {intl.formatMessage({ defaultMessage: 'primeETH Balance' })}
@@ -62,7 +62,7 @@ export const DashboardView = () => {
               )}
             </Stack>
           </Grid2>
-          <Grid2 xs={4} sx={gridStyles}>
+          <Grid2 {...gridItemProps}>
             <Button component={Link} to="/">
               {intl.formatMessage(
                 { defaultMessage: 'Restake {when}' },
@@ -72,16 +72,16 @@ export const DashboardView = () => {
           </Grid2>
         </Grid2>
       </Card>
-      <Typography variant="h3" py={3}>
+      <Typography variant="h3" py={3} textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Your rewards' })}
       </Typography>
-      <Stack spacing={2} sx={{ width: 1 }}>
-        <Card sx={{ width: 1 }}>
-          <Grid2 container sx={{ p: 2 }}>
-            <Grid2 xs={4} sx={gridStyles}>
+      <Stack spacing={2}>
+        <Card>
+          <Grid2 {...gridContainerProps}>
+            <Grid2 {...gridItemProps}>
               <EigenPoints sx={{ width: 48, height: 48 }} />
             </Grid2>
-            <Grid2 xs={4} sx={gridStyles}>
+            <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
                 <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
@@ -97,7 +97,7 @@ export const DashboardView = () => {
                 )}
               </Stack>
             </Grid2>
-            <Grid2 xs={4} sx={gridStyles}>
+            <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
                 <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
@@ -115,12 +115,12 @@ export const DashboardView = () => {
             </Grid2>
           </Grid2>
         </Card>
-        <Card sx={{ width: 1 }}>
-          <Grid2 container sx={{ p: 2 }}>
-            <Grid2 xs={4} sx={gridStyles}>
+        <Card>
+          <Grid2 {...gridContainerProps}>
+            <Grid2 {...gridItemProps}>
               <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
-            <Grid2 xs={4} sx={gridStyles}>
+            <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
                 <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
@@ -136,7 +136,7 @@ export const DashboardView = () => {
                 )}
               </Stack>
             </Grid2>
-            <Grid2 xs={4} sx={gridStyles}>
+            <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
                 <Typography fontWeight="medium">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
@@ -159,7 +159,15 @@ export const DashboardView = () => {
   );
 };
 
-const gridStyles: SxProps = {
-  display: 'flex',
-  justifyContent: 'center',
+const gridContainerProps: Grid2Props = {
+  container: true,
+  rowSpacing: 2,
+  columnSpacing: 1,
+  sx: { p: 2 },
+};
+
+const gridItemProps: Grid2Props = {
+  xs: 12,
+  sm: 4,
+  sx: { display: 'flex', justifyContent: 'center' },
 };

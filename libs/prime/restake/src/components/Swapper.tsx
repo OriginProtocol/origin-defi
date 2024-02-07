@@ -13,7 +13,6 @@ import {
   Typography,
 } from '@mui/material';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
-import { ArrowDown } from '@origin/shared/icons';
 import {
   ConnectedButton,
   SwapProvider,
@@ -22,7 +21,6 @@ import {
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
-  usePrices,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
@@ -33,7 +31,7 @@ import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
 import { TokenInput } from './TokenInput';
 
-import type { BoxProps, StackProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { SwapState, TokenSource } from '@origin/shared/providers';
 
@@ -79,7 +77,6 @@ function SwapperWrapped({
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
-  const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useBalance({
     address,
@@ -148,8 +145,7 @@ function SwapperWrapped({
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Restake LST' })}
           />
-          <Box position="relative">
-            <ArrowButton />
+          <Box>
             <CardContent sx={{ backgroundColor: '#fff' }}>
               <TokenInput
                 amount={amountIn}
@@ -166,8 +162,6 @@ function SwapperWrapped({
                   (chain?.nativeCurrency.symbol ??
                     mainnet.nativeCurrency.symbol)
                 }
-                tokenPriceUsd={prices?.[tokenIn.symbol]}
-                isPriceLoading={isPriceLoading}
                 isConnected={isConnected}
                 isAmountDisabled={amountInInputDisabled}
                 inputProps={{ sx: tokenInputStyles }}
@@ -182,18 +176,14 @@ function SwapperWrapped({
                 isAmountLoading={isSwapRoutesLoading}
                 isBalanceLoading={isBalTokenOutLoading}
                 token={tokenOut}
-                onTokenClick={() => {
-                  setTokenSource('tokenOut');
-                }}
                 isNativeCurrency={
                   tokenOut.symbol ===
                   (chain?.nativeCurrency.symbol ??
                     mainnet.nativeCurrency.symbol)
                 }
-                tokenPriceUsd={prices?.[tokenOut.symbol]}
-                isPriceLoading={isSwapRoutesLoading || isPriceLoading}
                 isConnected={isConnected}
                 hideMaxButton
+                disableTokenClick
                 inputProps={{ readOnly: true, sx: tokenInputStyles }}
               />
             </CardContent>
@@ -232,7 +222,10 @@ function SwapperWrapped({
                 ) : isApprovalLoading ? (
                   intl.formatMessage({ defaultMessage: 'Processing Approval' })
                 ) : (
-                  intl.formatMessage({ defaultMessage: 'Approve' })
+                  intl.formatMessage(
+                    { defaultMessage: 'Approve {token}' },
+                    { token: tokenIn.symbol },
+                  )
                 )}
               </Button>
             </Collapse>
@@ -262,39 +255,6 @@ function SwapperWrapped({
         />
       </ErrorBoundary>
     </Stack>
-  );
-}
-
-function ArrowButton(props: BoxProps) {
-  return (
-    <Box
-      {...props}
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        margin: 'auto',
-        width: { md: 40, xs: 36 },
-        height: { md: 40, xs: 36 },
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2,
-        borderRadius: '50%',
-        backgroundColor: 'background.paper',
-        border: '1px solid',
-        borderColor: 'divider',
-      }}
-    >
-      <ArrowDown
-        sx={{
-          width: { md: 20, xs: 18 },
-          height: { md: 20, xs: 18 },
-        }}
-      />
-    </Box>
   );
 }
 

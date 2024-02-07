@@ -1,7 +1,8 @@
 import { DashboardView } from '@origin/prime/dashboard';
-import { RestakeView } from '@origin/prime/restake';
+import { restakeRoute } from '@origin/prime/restake';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
+import { Navigate } from 'react-router-dom';
 
 import { App } from './App';
 
@@ -12,16 +13,13 @@ export const routes: RouteObject[] = [
     path: '/',
     Component: App,
     children: [
-      {
-        index: true,
-        Component: RestakeView,
-        handle: { label: defineMessage({ defaultMessage: 'Restake' }) },
-      },
+      restakeRoute,
       {
         path: '/dashboard',
         Component: DashboardView,
         handle: { label: defineMessage({ defaultMessage: 'Dashboard' }) },
       },
+      { index: true, element: <Navigate to="/restake" /> },
     ],
   },
   {
