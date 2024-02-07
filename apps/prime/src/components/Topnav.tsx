@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Box, Button, Stack } from '@mui/material';
+import { alpha, Box, Button, Stack } from '@mui/material';
 import { trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, PrimeStake } from '@origin/shared/icons';
@@ -46,6 +46,9 @@ export function Topnav(props: BoxProps) {
             md: 3,
           },
           gridTemplateColumns: '1fr 1fr',
+          backgroundColor: (theme) =>
+            alpha(theme.palette.background.paper, 0.6),
+          backdropFilter: 'blur(15px)',
         })}
       >
         <Stack
