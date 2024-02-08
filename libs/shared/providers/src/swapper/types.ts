@@ -116,6 +116,7 @@ export type SwapState = {
   isApprovalLoading: boolean;
   isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
+  debounceTime?: number;
 };
 
 export type SwapTrackEvent =

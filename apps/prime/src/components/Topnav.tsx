@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 import { alpha, Box, Button, Stack } from '@mui/material';
 import { trackEvent } from '@origin/governance/shared';
-import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, PrimeStake } from '@origin/shared/icons';
 import {
   AccountPopover,
@@ -121,7 +120,6 @@ export function Topnav(props: BoxProps) {
           <AccountPopover
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
-            balanceTokens={[tokens.mainnet.OGV, tokens.mainnet.veOGV]}
           />
         </Box>
       </Box>

@@ -242,6 +242,11 @@ export const theme = createTheme({
           '&:hover': {
             background: theme.palette.primary.dark,
           },
+          '&.Mui-disabled': {
+            color: theme.palette.primary.contrastText,
+            background: theme.palette.primary.main,
+            opacity: 0.6,
+          },
         }),
         containedSecondary: ({ theme }) => ({
           color: theme.palette.secondary.contrastText,

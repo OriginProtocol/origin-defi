@@ -1,14 +1,16 @@
 import { forwardRef } from 'react';
 
 import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import { BigIntInput, TokenIcon } from '@origin/shared/components';
-import { Dropdown } from '@origin/shared/icons';
+import { BigIntInput, TokenButton } from '@origin/shared/components';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { parseEther } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { BigintInputProps } from '@origin/shared/components';
+import type {
+  BigintInputProps,
+  TokenButtonProps,
+} from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 // When clicking max on native currency, we leave this amount of eth
@@ -91,10 +93,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             onClick={onTokenClick}
             isDisabled={disableTokenClick}
             {...tokenButtonProps}
-            sx={{
-              ...(!isConnected && { transform: 'translateY(50%)' }),
-              ...tokenButtonProps?.sx,
-            }}
           />
           <Stack
             direction="row"
@@ -169,40 +167,3 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 );
 
 TokenInput.displayName = 'TokenInput';
-
-type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
-
-function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
-  return (
-    <Stack
-      direction="row"
-      role="button"
-      gap={1}
-      {...rest}
-      sx={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        minHeight: 32,
-        borderRadius: 25,
-        fontSize: '1rem',
-        paddingLeft: 0.25,
-        paddingRight: isDisabled ? 2 : 1,
-        border: (theme) => `1px solid ${theme.palette.divider}`,
-        paddingY: 0.25,
-        fontStyle: 'normal',
-        cursor: isDisabled ? 'default' : 'pointer',
-        fontWeight: 500,
-        boxSizing: 'border-box',
-        position: 'relative',
-        ...rest?.sx,
-      }}
-    >
-      <TokenIcon
-        symbol={token.symbol}
-        sx={{ width: '1.75rem', height: 'auto' }}
-      />
-      <Typography variant="inherit">{token.symbol}</Typography>
-      {!isDisabled && <Dropdown />}
-    </Stack>
-  );
-}

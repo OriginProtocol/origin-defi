@@ -18,8 +18,11 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
   createContainer<
     SwapState,
     Dispatch<SetStateAction<SwapState>>,
-    Pick<SwapState, 'swapActions' | 'swapRoutes' | 'trackEvent'>
-  >(({ swapActions, swapRoutes, trackEvent }) => {
+    Pick<
+      SwapState,
+      'swapActions' | 'swapRoutes' | 'trackEvent' | 'debounceTime'
+    >
+  >(({ swapActions, swapRoutes, trackEvent, debounceTime }) => {
     const [state, setState] = useState<SwapState>({
       swapActions,
       swapRoutes,
@@ -34,6 +37,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       isApprovalWaitingForSignature: false,
       isApprovalLoading: false,
       isSwapLoading: false,
+      debounceTime: debounceTime ?? 800,
       trackEvent,
     });
     const queryClient = useQueryClient();
@@ -154,7 +158,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         });
       },
       [state.amountIn],
-      state.amountIn === 0n ? 0 : 800,
+      state.amountIn === 0n ? 0 : state.debounceTime,
     );
 
     return [state, setState];

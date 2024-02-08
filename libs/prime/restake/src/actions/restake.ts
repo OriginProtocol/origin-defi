@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable unused-imports/no-unused-vars */
 import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
 import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
@@ -44,7 +46,7 @@ const estimateAmount: EstimateAmount = async ({
           },
         ],
       }),
-    staleTime: Infinity,
+    staleTime: 60e3,
   });
 
   return ((assetPrice.result ?? 1n) * amountIn) / (primeETHPrice.result ?? 1n);
@@ -85,25 +87,17 @@ const estimateRoute: EstimateRoute = async ({
   route,
   slippage,
 }) => {
-  const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
+  const [estimatedAmount, allowanceAmount] = await Promise.all([
     estimateAmount({ tokenIn, tokenOut, amountIn }),
     allowance({ tokenIn, tokenOut }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
-  const gas = await estimateGas({
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut: estimatedAmount,
-    slippage,
-  });
 
   return {
     ...route,
     estimatedAmount,
     allowanceAmount,
-    approvalGas,
-    gas,
+    approvalGas: 0n,
+    gas: 0n,
     rate:
       +formatUnits(estimatedAmount, tokenOut.decimals) /
       +formatUnits(amountIn, tokenIn.decimals),
@@ -117,11 +111,16 @@ const allowance: Allowance = async ({ tokenIn }) => {
     return 0n;
   }
 
-  const allowance = await readContract({
-    address: tokenIn.address,
-    abi: tokenIn.abi,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.lrtDepositPool.address],
+  const allowance = await queryClient.fetchQuery({
+    queryKey: ['allowance', tokenIn.symbol],
+    queryFn: () =>
+      readContract({
+        address: tokenIn.address,
+        abi: tokenIn.abi,
+        functionName: 'allowance',
+        args: [address, contracts.mainnet.lrtDepositPool.address],
+      }),
+    staleTime: 15e3,
   });
 
   return allowance as unknown as bigint;
@@ -201,10 +200,8 @@ const swap: Swap = async ({
 
 export default {
   estimateAmount,
-  estimateGas,
   estimateRoute,
   allowance,
-  estimateApprovalGas,
   approve,
   swap,
 };

@@ -92,9 +92,6 @@
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
-  "CU66wI": {
-    "defaultMessage": "1 primeETH = {rate} {token}"
-  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -137,14 +134,14 @@
   "LUdwbC": {
     "defaultMessage": "Restake"
   },
-  "LiHQih": {
-    "defaultMessage": "Coming Soon"
-  },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "Mgjww/": {
+    "defaultMessage": "Still cooking..."
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -154,6 +151,9 @@
   },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
+  },
+  "OkXVGX": {
+    "defaultMessage": "Approve {token}"
   },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
@@ -169,6 +169,9 @@
   },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
+  },
+  "R0R6sx": {
+    "defaultMessage": "You can always {link}"
   },
   "S45aoc": {
     "defaultMessage": "First"
@@ -245,6 +248,9 @@
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
+  "h88CQM": {
+    "defaultMessage": "sell primeETH on Uniswap."
+  },
   "hWyxI7": {
     "defaultMessage": "% of total"
   },
@@ -284,11 +290,17 @@
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
+  "sokm79": {
+    "defaultMessage": "{rate} {token} = 1 primeETH"
+  },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "vclhrb": {
+    "defaultMessage": "Balance: {balance}"
   },
   "vugtF7": {
     "defaultMessage": "No Activity"

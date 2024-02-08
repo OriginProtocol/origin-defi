@@ -1,7 +1,7 @@
 import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { parseUnits } from 'viem';
+import { formatUnits } from 'viem';
 
 import type { Token } from '@origin/shared/contracts';
 
@@ -25,10 +25,11 @@ export const useAssetPrice = (asset: Token) => {
         ],
       });
 
-      const primeETHPrice = data?.[0]?.result ?? parseUnits('1', 18);
-      const assetPrice = data?.[1]?.result ?? parseUnits('1', 18);
+      const primeETHPrice = +formatUnits(data?.[0]?.result ?? 0n, 18);
+      const assetPrice = +formatUnits(data?.[1]?.result ?? 1n, 18);
 
       return primeETHPrice / assetPrice;
     },
+    staleTime: 30e3,
   });
 };

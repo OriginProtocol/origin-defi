@@ -221,24 +221,6 @@
       "value": "lastPage"
     }
   ],
-  "CU66wI": [
-    {
-      "type": 0,
-      "value": "1 primeETH = "
-    },
-    {
-      "type": 1,
-      "value": "rate"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    }
-  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -355,12 +337,6 @@
       "value": "Restake"
     }
   ],
-  "LiHQih": [
-    {
-      "type": 0,
-      "value": "Coming Soon"
-    }
-  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -371,6 +347,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "Mgjww/": [
+    {
+      "type": 0,
+      "value": "Still cooking..."
     }
   ],
   "NXFAgE": [
@@ -389,6 +371,16 @@
     {
       "type": 0,
       "value": "Your operation has been executed"
+    }
+  ],
+  "OkXVGX": [
+    {
+      "type": 0,
+      "value": "Approve "
+    },
+    {
+      "type": 1,
+      "value": "token"
     }
   ],
   "PKgDoL": [
@@ -423,6 +415,16 @@
     {
       "type": 1,
       "value": "number"
+    }
+  ],
+  "R0R6sx": [
+    {
+      "type": 0,
+      "value": "You can always "
+    },
+    {
+      "type": 1,
+      "value": "link"
     }
   ],
   "S45aoc": [
@@ -603,6 +605,12 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "h88CQM": [
+    {
+      "type": 0,
+      "value": "sell primeETH on Uniswap."
+    }
+  ],
   "hWyxI7": [
     {
       "type": 0,
@@ -681,6 +689,24 @@
       "value": "Swap"
     }
   ],
+  "sokm79": [
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "token"
+    },
+    {
+      "type": 0,
+      "value": " = 1 primeETH"
+    }
+  ],
   "stTYBM": [
     {
       "type": 0,
@@ -691,6 +717,16 @@
     {
       "type": 0,
       "value": "Transaction error"
+    }
+  ],
+  "vclhrb": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "balance"
     }
   ],
   "vugtF7": [

@@ -9,6 +9,7 @@ import {
 } from '@mui/material';
 import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { map, prop } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -20,7 +21,7 @@ import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 interface Props {
-  balanceTokens: Token[];
+  balanceTokens?: Token[];
   anchor: HTMLElement | null;
   setAnchor: (value: HTMLButtonElement | null) => void;
 }
@@ -38,14 +39,14 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
     watch: true,
   });
   const { data: balances, isLoading: balancesLoading } = useContractReads({
-    contracts: balanceTokens.map((t) => ({
+    contracts: balanceTokens?.map((t) => ({
       address: t.address,
       abi: t.abi,
       functionName: 'balanceOf',
       args: [address],
     })),
     watch: true,
-    enabled: isConnected,
+    enabled: isConnected && !isNilOrEmpty(balanceTokens),
     select: map(prop('result')),
   });
 
@@ -119,19 +120,20 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
             balance={+formatUnits(eth?.value ?? 0n, 18)}
             isBalanceLoading={ethLoading}
           />
-          {balanceTokens.map((tok, i) => (
-            <BalanceRow
-              key={tok.symbol}
-              token={tok}
-              balance={
-                +formatUnits(
-                  (balances?.[i] as unknown as bigint) ?? 0n,
-                  tok.decimals,
-                )
-              }
-              isBalanceLoading={balancesLoading}
-            />
-          ))}
+          {!isNilOrEmpty(balanceTokens) &&
+            balanceTokens.map((tok, i) => (
+              <BalanceRow
+                key={tok.symbol}
+                token={tok}
+                balance={
+                  +formatUnits(
+                    (balances?.[i] as unknown as bigint) ?? 0n,
+                    tok.decimals,
+                  )
+                }
+                isBalanceLoading={balancesLoading}
+              />
+            ))}
         </Stack>
       </Stack>
     </Popover>
@@ -154,7 +156,7 @@ function BalanceRow({
 
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
-      <TokenIcon symbol={token.symbol} sx={{ width: 20 }} />
+      <TokenIcon symbol={token.symbol} sx={{ width: 20, height: 20 }} />
       <Typography>
         {isBalanceLoading ? (
           <Skeleton width={38} />

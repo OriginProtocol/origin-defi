@@ -29,7 +29,7 @@ export const App = () => {
         <Stack minWidth={370} mb={5}>
           <Topnav />
           <Container maxWidth="xl" sx={{ pt: 3 }}>
-            <Grid2 container spacing={3} disableEqualOverflow>
+            <Grid2 container spacing={3}>
               <Grid2 xs={0} sm={3} height={{ xs: 0, sm: 1 }}>
                 <LeftDrawer />
               </Grid2>

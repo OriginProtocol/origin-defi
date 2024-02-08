@@ -12,7 +12,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
+import {
+  ErrorBoundary,
+  ErrorCard,
+  LoadingLabel,
+  TokenButton,
+} from '@origin/shared/components';
 import {
   ConnectedButton,
   SwapProvider,
@@ -25,10 +30,16 @@ import {
   useSwapState,
   useTokenOptions,
 } from '@origin/shared/providers';
-import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  composeContexts,
+  formatAmount,
+  isNilOrEmpty,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
+import { useAssetPrice } from '../hooks';
 import { TokenInput } from './TokenInput';
 
 import type { StackProps } from '@mui/material';
@@ -49,7 +60,12 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) =>
   composeContexts(
-    [[SwapProvider, { swapActions, swapRoutes, trackEvent }]],
+    [
+      [
+        SwapProvider,
+        { swapActions, swapRoutes, trackEvent, debounceTime: 400 },
+      ],
+    ],
     <SwapperWrapped {...rest} />,
   );
 
@@ -90,6 +106,8 @@ function SwapperWrapped({
     watch: true,
     scopeKey: 'swap_balance',
   });
+  const { data: assetPrice, isLoading: isAssetPriceLoading } =
+    useAssetPrice(tokenIn);
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();
@@ -169,23 +187,36 @@ function SwapperWrapped({
             </CardContent>
             <Divider />
             <CardContent>
-              <TokenInput
-                amount={amountOut}
-                decimals={tokenOut.decimals}
-                balance={balTokenOut?.value}
-                isAmountLoading={isSwapRoutesLoading}
-                isBalanceLoading={isBalTokenOutLoading}
-                token={tokenOut}
-                isNativeCurrency={
-                  tokenOut.symbol ===
-                  (chain?.nativeCurrency.symbol ??
-                    mainnet.nativeCurrency.symbol)
-                }
-                isConnected={isConnected}
-                hideMaxButton
-                disableTokenClick
-                inputProps={{ readOnly: true, sx: tokenInputStyles }}
-              />
+              <Stack spacing={2.5}>
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                >
+                  <TokenButton token={tokenOut} isDisabled />
+                  <LoadingLabel isLoading={isBalTokenOutLoading} sWidth={80}>
+                    {intl.formatMessage(
+                      { defaultMessage: 'Balance: {balance}' },
+                      { balance: formatAmount(balTokenOut?.value, 18) },
+                    )}
+                  </LoadingLabel>
+                </Stack>
+                <LoadingLabel
+                  isLoading={isSwapRoutesLoading}
+                  sWidth={100}
+                  sx={{
+                    fontSize: 24,
+                    lineHeight: 1.5,
+                    fontWeight: 700,
+                    color: amountOut === 0n ? 'text.secondary' : 'text.primary',
+                  }}
+                >
+                  {intl.formatNumber(
+                    +formatUnits(amountOut, tokenOut.decimals),
+                    { maximumFractionDigits: 4, roundingMode: 'floor' },
+                  )}
+                </LoadingLabel>
+              </Stack>
             </CardContent>
           </Box>
           <Divider />
@@ -194,27 +225,34 @@ function SwapperWrapped({
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
-              <Typography>
+              <LoadingLabel isLoading={isAssetPriceLoading} sWidth={60}>
                 {intl.formatMessage(
                   {
-                    defaultMessage: '1 primeETH = {rate} {token}',
+                    defaultMessage: '{rate} {token} = 1 primeETH',
                   },
-                  { rate: 1.0001, token: 'OETH' },
+                  {
+                    rate: intl.formatNumber(assetPrice ?? 0 / 100, {
+                      roundingMode: 'floor',
+                      maximumFractionDigits: 4,
+                      minimumFractionDigits: 4,
+                    }),
+                    token: tokenIn.symbol,
+                  },
                 )}
-              </Typography>
+              </LoadingLabel>
             </Stack>
           </CardContent>
           <Divider />
-          <CardContent>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+          <Collapse in={needsApproval}>
+            <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
               <Button
                 fullWidth
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
-                sx={{ fontSize: 20, py: 2, borderRadius: 8 }}
+                sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
               >
                 {isSwapRoutesLoading ? (
-                  <CircularProgress size={32} color="inherit" />
+                  <CircularProgress size={28} color="inherit" />
                 ) : isApprovalWaitingForSignature ? (
                   intl.formatMessage({
                     defaultMessage: 'Waiting for signature',
@@ -228,15 +266,19 @@ function SwapperWrapped({
                   )
                 )}
               </Button>
-            </Collapse>
+            </Box>
+          </Collapse>
+          <CardContent sx={{ backgroundColor: '#fff' }}>
             <ConnectedButton
               fullWidth
               disabled={swapButtonDisabled}
               onClick={handleSwap}
-              sx={{ mt: 1.5, fontSize: 20, py: 2, borderRadius: 8 }}
+              sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
             >
-              {isSwapRoutesLoading ? (
-                <CircularProgress size={32} color="inherit" />
+              {amountIn > balTokenIn?.value ? (
+                swapButtonLabel
+              ) : isSwapRoutesLoading ? (
+                <CircularProgress size={28} color="inherit" />
               ) : isSwapWaitingForSignature ? (
                 intl.formatMessage({ defaultMessage: 'Waiting for signature' })
               ) : isSwapLoading ? (
@@ -262,15 +304,11 @@ const tokenInputStyles = {
   border: 'none',
   backgroundColor: 'transparent',
   borderRadius: 0,
-  paddingBlock: 0,
-  paddingInline: 0,
-  borderImageWidth: 0,
-  boxSizing: 'border-box',
+  p: 0,
   '& .MuiInputBase-input': {
-    padding: 0,
+    p: 0,
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, sans-serif',
     fontSize: 24,
     lineHeight: 1.5,
     fontWeight: 700,
