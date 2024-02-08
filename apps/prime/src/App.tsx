@@ -1,6 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  AdCards,
   AssetDepositedCard,
   PrimeETHStatsCard,
   trackEvent,
@@ -11,7 +12,6 @@ import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
-import { LeftDrawer } from './components/LeftDrawer';
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
@@ -29,14 +29,19 @@ export const App = () => {
         <Stack minWidth={370} mb={5}>
           <Topnav />
           <Container maxWidth="xl" sx={{ pt: 3 }}>
-            <Grid2 container spacing={3}>
-              <Grid2 xs={0} sm={3} height={{ xs: 0, sm: 1 }}>
-                <LeftDrawer />
+            <Grid2 container spacing={{ xs: 3, md: 6 }}>
+              <Grid2
+                xs={0}
+                md={3}
+                height={1}
+                display={{ xs: 'none', md: 'block' }}
+              >
+                <AdCards />
               </Grid2>
-              <Grid2 xs={12} sm={9} md={6}>
+              <Grid2 xs={12} md={6}>
                 <Outlet />
               </Grid2>
-              <Grid2 xs={12} sm={9} md={3} smOffset={3} mdOffset={0}>
+              <Grid2 xs={12} md={3}>
                 <Stack spacing={3}>
                   <PrimeETHStatsCard />
                   <AssetDepositedCard />

@@ -1,23 +1,44 @@
 import { useState } from 'react';
 
-import { alpha, Box, Button, Stack } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Button,
+  Drawer,
+  Link,
+  Stack,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/governance/shared';
-import { FaArrowUpRightRegular, PrimeStake } from '@origin/shared/icons';
+import {
+  FaArrowUpRightRegular,
+  FaBarsRegular,
+  PrimeStake,
+} from '@origin/shared/icons';
 import {
   AccountPopover,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link as RouterLink, useMatch } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import type { BoxProps } from '@mui/material';
+import { routes } from '../routes';
+
+import type { BoxProps, StackProps } from '@mui/material';
+import type { RouteObject } from 'react-router-dom';
 
 export function Topnav(props: BoxProps) {
-  const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const { isConnected } = useAccount();
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
@@ -36,93 +57,197 @@ export function Topnav(props: BoxProps) {
           width: 1,
           zIndex: theme.zIndex.appBar,
           height: `${theme.mixins.toolbar.height}px`,
-          display: 'grid',
-          columnGap: { xs: 1, md: 6 },
-          rowGap: 0,
+          display: 'flex',
+          flexDirection: 'row',
           alignItems: 'center',
           px: {
             xs: 1.5,
             md: 3,
           },
-          gridTemplateColumns: '1fr 1fr',
           backgroundColor: (theme) =>
             alpha(theme.palette.background.paper, 0.6),
           backdropFilter: 'blur(15px)',
         })}
       >
-        <Stack
-          direction="row"
-          component={Link}
-          to="/"
-          justifyContent="flex-start"
-        >
-          <PrimeStake sx={{ width: 147, height: { xs: 36, sm: 44 } }} />
-        </Stack>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'flex-end',
-            alignItems: 'center',
-            gap: { xs: 1, md: 2 },
-          }}
-        >
-          <Button
-            variant="outlined"
-            href="https://docs.primestaked.com/prime-staked-eth/intro-to-primeeth"
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-            color="secondary"
-            sx={{
-              borderRadius: 25,
-              paddingX: {
-                md: 3,
-                xs: 2,
-              },
-              paddingY: {
-                md: 1,
-                xs: 0.75,
-              },
-              minHeight: { xs: 36, md: 44 },
-            }}
-          >
-            {intl.formatMessage({ defaultMessage: 'Docs' })}&nbsp;
-            <FaArrowUpRightRegular />
-          </Button>
-          <OpenAccountModalButton
-            onClick={(e) => {
-              if (isConnected) {
-                setAccountModalAnchor(e.currentTarget);
-                trackEvent({
-                  name: 'open_account',
-                });
-              } else {
-                trackEvent({
-                  name: 'connect_click',
-                });
-              }
-            }}
-            sx={{
-              borderRadius: 25,
-              paddingX: {
-                md: 3,
-                xs: 2,
-              },
-              paddingY: {
-                md: 1,
-                xs: 0.75,
-              },
-              minWidth: 36,
-              maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-              minHeight: { xs: 36, md: 44 },
-            }}
-            connectedProps={{ variant: 'outlined', color: 'secondary' }}
-          />
-          <AccountPopover
-            anchor={accountModalAnchor}
-            setAnchor={setAccountModalAnchor}
-          />
-        </Box>
+        <Grid2 container sx={{ width: 1 }}>
+          <Grid2 xs={3}>
+            <Stack
+              direction="row"
+              component={RouterLink}
+              to="/"
+              justifyContent="flex-start"
+            >
+              <PrimeStake
+                sx={{ width: { xs: 140, md: 160 }, height: { xs: 36, md: 44 } }}
+              />
+            </Stack>
+          </Grid2>
+          <Grid2 xs={5}>
+            {!isSm && (
+              <Navigation
+                direction="row"
+                spacing={3}
+                alignItems="center"
+                height={1}
+              />
+            )}
+          </Grid2>
+          <Grid2 xs={4}>
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'flex-end',
+                alignItems: 'center',
+                gap: 1,
+              }}
+            >
+              <OpenAccountModalButton
+                onClick={(e) => {
+                  if (isConnected) {
+                    setAccountModalAnchor(e.currentTarget);
+                    trackEvent({
+                      name: 'open_account',
+                    });
+                  } else {
+                    trackEvent({
+                      name: 'connect_click',
+                    });
+                  }
+                }}
+                sx={{
+                  borderRadius: 25,
+                  paddingX: {
+                    md: 3,
+                    xs: 2,
+                  },
+                  paddingY: {
+                    md: 1,
+                    xs: 0.75,
+                  },
+                  minWidth: 36,
+                  maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
+                  minHeight: { xs: 36, md: 44 },
+                }}
+                connectedProps={{ variant: 'outlined', color: 'secondary' }}
+              />
+              {isSm && (
+                <Button
+                  onClick={() => {
+                    setDrawerOpen(not);
+                  }}
+                  variant="outlined"
+                  color="secondary"
+                  sx={{
+                    borderRadius: '50%',
+                    width: 36,
+                    height: 36,
+                    minWidth: 0,
+                    p: 0,
+                  }}
+                >
+                  <FaBarsRegular />
+                </Button>
+              )}
+              <AccountPopover
+                anchor={accountModalAnchor}
+                setAnchor={setAccountModalAnchor}
+              />
+            </Box>
+          </Grid2>
+        </Grid2>
       </Box>
+      {isSm && (
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={() => {
+            setDrawerOpen(false);
+          }}
+          PaperProps={{ sx: { minWidth: 250, p: 3 } }}
+        >
+          <PrimeStake sx={{ width: 140, height: 36, mb: 4 }} />
+          <Navigation
+            direction="column"
+            spacing={3}
+            alignItems="flex-start"
+            width={1}
+            onLinkClick={() => {
+              setDrawerOpen(false);
+            }}
+          />
+        </Drawer>
+      )}
     </>
   );
 }
+
+type NavigationProps = {
+  onLinkClick?: () => void;
+} & StackProps;
+
+const Navigation = ({ onLinkClick, ...rest }: NavigationProps) => {
+  const intl = useIntl();
+
+  return (
+    <Stack {...rest}>
+      {routes[0].children
+        .filter((c) => !isNilOrEmpty(c?.handle?.label))
+        .map((route) => (
+          <NavLink
+            key={route?.path ?? 'index'}
+            route={route}
+            onLinkClick={onLinkClick}
+          />
+        ))}
+      <Link
+        href="https://docs.primestaked.com/prime-staked-eth/intro-to-primeeth"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
+        sx={{
+          fontSize: 16,
+          fontWeight: 'medium',
+          color: (theme) => alpha(theme.palette.text.primary, 0.6),
+          ':hover': {
+            color: `text.primary`,
+          },
+        }}
+      >
+        {intl.formatMessage({ defaultMessage: 'Docs' })}&nbsp;
+        <FaArrowUpRightRegular />
+      </Link>
+    </Stack>
+  );
+};
+
+type NavLinkProps = {
+  route: RouteObject;
+  onLinkClick?: () => void;
+};
+
+const NavLink = ({ route, onLinkClick }: NavLinkProps) => {
+  const intl = useIntl();
+  const match = useMatch(route.index ? '' : route.path);
+
+  return (
+    <Link
+      component={RouterLink}
+      to={route.path}
+      onClick={() => {
+        onLinkClick?.();
+      }}
+      sx={{
+        fontSize: 16,
+        fontWeight: 'medium',
+        color: (theme) =>
+          isNilOrEmpty(match)
+            ? alpha(theme.palette.text.primary, 0.6)
+            : theme.palette.text.primary,
+        ':hover': {
+          color: `text.primary`,
+        },
+      }}
+    >
+      {intl.formatMessage(route.handle.label)}
+    </Link>
+  );
+};
