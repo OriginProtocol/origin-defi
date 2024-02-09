@@ -2,7 +2,10 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import {
+  getReferrerId,
+  prepareWriteContractWithTxTracker,
+} from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
@@ -174,6 +177,7 @@ const swap: Swap = async ({
   amountOut,
 }) => {
   const { address } = getAccount();
+  const referrerId = getReferrerId();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
@@ -191,7 +195,7 @@ const swap: Swap = async ({
     address: contracts.mainnet.lrtDepositPool.address,
     abi: contracts.mainnet.lrtDepositPool.abi,
     functionName: 'depositAsset',
-    args: [tokenIn.address, amountIn, minAmountOut, 'Origin'],
+    args: [tokenIn.address, amountIn, minAmountOut, referrerId],
   });
   const { hash } = await writeContract(request);
 

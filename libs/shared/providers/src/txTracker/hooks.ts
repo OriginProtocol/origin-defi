@@ -48,3 +48,53 @@ export function useTxTracker(defaultTrackId: string) {
 
   return null;
 }
+
+const referrerRegex = /^[0-9A-Z]{4,42}$/i;
+
+export const useReferrerTracker = (defaultReferrerId: string) => {
+  const { value: storedTxReferrerId, set: setTxReferrerId } =
+    useLocalStorageValue(`@origin/referrer-track`);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const referrerId = searchParams.get('r');
+
+  useEffect(() => {
+    if (!referrerId) {
+      if (!storedTxReferrerId) {
+        setTxReferrerId({ id: defaultReferrerId, timestamp: Date.now() });
+      }
+      return;
+    }
+
+    if (referrerId.match(referrerRegex)) {
+      console.log(`Track ID ${referrerId}`);
+      setTxReferrerId({ id: referrerId, timestamp: Date.now() });
+    } else {
+      console.log(`Invalid Track ID ${referrerId}`);
+    }
+
+    searchParams.delete('r');
+    setSearchParams(searchParams);
+  }, [
+    referrerId,
+    setSearchParams,
+    setTxReferrerId,
+    storedTxReferrerId,
+    searchParams,
+    defaultReferrerId,
+  ]);
+
+  return null;
+};
+
+export const getReferrerId = () => {
+  let value: string;
+  try {
+    const raw = window.localStorage.getItem(`@origin/referrer-track`);
+    const id = JSON.parse(raw).id as string;
+    if (id.match(referrerRegex)) {
+      value = id;
+    }
+  } catch {}
+
+  return value;
+};

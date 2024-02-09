@@ -9,12 +9,14 @@ import {
   trackSentryError,
 } from '@origin/prime/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { TrackingProvider } from '@origin/shared/providers';
+import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
+  useReferrerTracker('Origin');
+
   return (
     <ErrorBoundary
       ErrorComponent={<ErrorPage height={1} width={1} />}
