@@ -2,8 +2,6 @@ import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { MessageDescriptor } from 'react-intl';
 
-import type { CurveState } from '../curve';
-
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
 export type SwapAction = string;
@@ -16,47 +14,40 @@ type Args = {
   slippage: number;
   route: SwapRoute;
   estimatedRoute: EstimatedSwapRoute;
-  curve?: CurveState;
 };
 
 export type IsRouteAvailable = (
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
   args: Pick<
     Args,
-    'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'curve'
+    'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage'
   >,
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
   args: Pick<
     Args,
-    | 'tokenIn'
-    | 'tokenOut'
-    | 'amountIn'
-    | 'amountOut'
-    | 'slippage'
-    | 'route'
-    | 'curve'
+    'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
   >,
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
-  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'curve'>,
+  args?: Pick<Args, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
-  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'curve'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<HexAddress>;
 
 export type Swap = (
@@ -68,7 +59,6 @@ export type Swap = (
     | 'amountOut'
     | 'slippage'
     | 'estimatedRoute'
-    | 'curve'
   >,
 ) => Promise<HexAddress>;
 

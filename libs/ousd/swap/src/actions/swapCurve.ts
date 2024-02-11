@@ -1,5 +1,9 @@
+import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import {
+  prepareWriteContractWithTxTracker,
+  useCurve,
+} from '@origin/shared/providers';
 import {
   isAddressEqual,
   isNilOrEmpty,
@@ -31,8 +35,12 @@ const isRouteAvailable: IsRouteAvailable = async ({
   amountIn,
   tokenIn,
   tokenOut,
-  curve,
 }) => {
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
   try {
     const estimate = await readContract({
       address: curve.CurveRegistryExchange.address,
@@ -59,12 +67,16 @@ const estimateAmount: EstimateAmount = async ({
   amountIn,
   tokenIn,
   tokenOut,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
   const estimate = await readContract({
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
@@ -86,7 +98,6 @@ const estimateGas: EstimateGas = async ({
   amountIn,
   amountOut,
   slippage,
-  curve,
 }) => {
   let gasEstimate = 0n;
 
@@ -97,6 +108,11 @@ const estimateGas: EstimateGas = async ({
   const publicClient = getPublicClient();
   const { address } = getAccount();
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -132,12 +148,11 @@ const estimateRoute: EstimateRoute = async ({
   amountIn,
   slippage,
   route,
-  curve,
 }) => {
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn, curve }),
-    allowance({ tokenIn, tokenOut, curve }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut, curve }),
+    estimateAmount({ tokenIn, tokenOut, amountIn }),
+    allowance({ tokenIn, tokenOut }),
+    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
   const gas = await estimateGas({
     tokenIn,
@@ -145,7 +160,6 @@ const estimateRoute: EstimateRoute = async ({
     amountIn,
     amountOut: estimatedAmount,
     slippage,
-    curve,
   });
 
   return {
@@ -223,7 +237,6 @@ const swap: Swap = async ({
   amountIn,
   slippage,
   amountOut,
-  curve,
 }) => {
   const { address } = getAccount();
 
@@ -245,9 +258,13 @@ const swap: Swap = async ({
     amountIn,
     amountOut,
     slippage,
-    curve,
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
 
   const { request } = await prepareWriteContractWithTxTracker({
     address: contracts.mainnet.OUSDCurveMetaPool.address,

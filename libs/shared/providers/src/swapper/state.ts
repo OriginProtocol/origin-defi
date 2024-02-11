@@ -6,7 +6,6 @@ import { useQueryClient } from '@tanstack/react-query';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
 
-import { useCurve } from '../curve';
 import { useSlippage } from '../slippage';
 import { getAvailableRoutes } from './utils';
 
@@ -42,7 +41,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
     });
     const queryClient = useQueryClient();
     const { value: slippage } = useSlippage();
-    const { data: curve } = useCurve();
 
     useDebouncedEffect(
       async () => {
@@ -73,7 +71,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               amountIn: state.amountIn,
               tokenIn: r.tokenIn,
               tokenOut: r.tokenOut,
-              curve,
             }),
           ),
         );
@@ -104,7 +101,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                     amountOut: state.amountOut,
                     route,
                     slippage,
-                    curve,
                   });
                 } catch (error) {
                   console.error(

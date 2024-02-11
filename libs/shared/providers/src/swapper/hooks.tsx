@@ -15,7 +15,6 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../activities';
-import { useCurve } from '../curve';
 import { usePushNotification } from '../notifications';
 import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
@@ -157,7 +156,6 @@ export const useHandleTokenFlip = () => {
   ] = useSwapState();
   const { value: slippage } = useSlippage();
   const queryClient = useQueryClient();
-  const { data: curve } = useCurve();
 
   return useCallback(async () => {
     trackEvent({ name: 'change_input_output' });
@@ -175,7 +173,6 @@ export const useHandleTokenFlip = () => {
           amountIn: amountIn,
           tokenIn: r.tokenIn,
           tokenOut: r.tokenOut,
-          curve,
         }),
       ),
     );
@@ -243,7 +240,6 @@ export const useHandleTokenFlip = () => {
                     amountOut: scaledAmountOut,
                     route,
                     slippage,
-                    curve,
                   });
                 } catch (error) {
                   console.error(
@@ -296,7 +292,6 @@ export const useHandleTokenFlip = () => {
   }, [
     amountIn,
     amountOut,
-    curve,
     queryClient,
     setSwapState,
     slippage,
@@ -330,7 +325,6 @@ export const useHandleSelectSwapRoute = () => {
 
 export const useSwapRouteAllowance = (route: SwapRoute) => {
   const [{ swapActions }] = useSwapState();
-  const { data: curve } = useCurve();
 
   return useQuery({
     queryKey: [
@@ -345,7 +339,6 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
         res = await swapActions[route.action].allowance({
           tokenIn: route.tokenIn,
           tokenOut: route.tokenOut,
-          curve,
         });
       } catch {}
 
@@ -359,7 +352,6 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
 export const useHandleApprove = () => {
   const intl = useIntl();
   const { address } = useAccount();
-  const { data: curve } = useCurve();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
@@ -406,7 +398,6 @@ export const useHandleApprove = () => {
         tokenIn,
         tokenOut,
         amountIn,
-        curve,
       });
       setSwapState(
         produce((draft) => {
@@ -494,7 +485,6 @@ export const useHandleApprove = () => {
     address,
     amountIn,
     amountOut,
-    curve,
     deleteActivity,
     intl,
     pushActivity,
@@ -515,7 +505,6 @@ export const useHandleSwap = () => {
   const intl = useIntl();
   const { value: slippage } = useSlippage();
   const { address } = useAccount();
-  const { data: curve } = useCurve();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
   const pushNotification = usePushNotification();
@@ -568,7 +557,6 @@ export const useHandleSwap = () => {
         estimatedRoute: selectedSwapRoute,
         slippage,
         amountOut,
-        curve,
       });
       setSwapState(
         produce((draft) => {
@@ -669,7 +657,6 @@ export const useHandleSwap = () => {
     address,
     amountIn,
     amountOut,
-    curve,
     deleteActivity,
     intl,
     pushActivity,
