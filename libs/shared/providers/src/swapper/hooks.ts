@@ -412,7 +412,7 @@ export const useHandleApprove = () => {
     }));
 
     const trackId = onApproveStart?.(state);
-    trackEvent({
+    trackEvent?.({
       name: 'approve_started',
       approval_token: tokenIn.symbol,
     });

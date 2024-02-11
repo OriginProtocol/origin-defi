@@ -2,6 +2,9 @@
   "+LmzMn": {
     "defaultMessage": "max"
   },
+  "+WtZxF": {
+    "defaultMessage": "Earn an XP multiplier for larger deposits for the duration of the campaign"
+  },
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
@@ -10,6 +13,9 @@
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
+  },
+  "/NeKGm": {
+    "defaultMessage": "ETH amount"
   },
   "/xvR4F": {
     "defaultMessage": "Opt in"
@@ -68,6 +74,9 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
+  "7sJjbC": {
+    "defaultMessage": "Deposit day"
+  },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
@@ -91,6 +100,9 @@
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "CrVbZD": {
+    "defaultMessage": "Bonus multiplier"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -143,6 +155,9 @@
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
   },
+  "MzEf/Z": {
+    "defaultMessage": "*2x bonus applies only to primeETH minted with OETH and held in the same wallet"
+  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -181,6 +196,9 @@
   },
   "SKB/G9": {
     "defaultMessage": "TVL"
+  },
+  "THMhv1": {
+    "defaultMessage": "Go BIG!"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -221,6 +239,9 @@
   "aDYxXF": {
     "defaultMessage": "New transaction"
   },
+  "aO+vIL": {
+    "defaultMessage": "Deposit with OETH and earn<br></br><strong>2X REWARDS*</strong>"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -250,6 +271,9 @@
   },
   "h88CQM": {
     "defaultMessage": "sell primeETH on Uniswap."
+  },
+  "hRhk8d": {
+    "defaultMessage": "Early depositers will earn an XP multiplier on their deposit"
   },
   "hWyxI7": {
     "defaultMessage": "% of total"
@@ -310,6 +334,9 @@
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
+  },
+  "wOIoAM": {
+    "defaultMessage": "Be early!"
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"

@@ -5,6 +5,12 @@
       "value": "max"
     }
   ],
+  "+WtZxF": [
+    {
+      "type": 0,
+      "value": "Earn an XP multiplier for larger deposits for the duration of the campaign"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
@@ -21,6 +27,12 @@
     {
       "type": 0,
       "value": "Clear"
+    }
+  ],
+  "/NeKGm": [
+    {
+      "type": 0,
+      "value": "ETH amount"
     }
   ],
   "/xvR4F": [
@@ -161,6 +173,12 @@
       "value": "Redeemed"
     }
   ],
+  "7sJjbC": [
+    {
+      "type": 0,
+      "value": "Deposit day"
+    }
+  ],
   "8XZjyW": [
     {
       "type": 0,
@@ -219,6 +237,12 @@
     {
       "type": 1,
       "value": "lastPage"
+    }
+  ],
+  "CrVbZD": [
+    {
+      "type": 0,
+      "value": "Bonus multiplier"
     }
   ],
   "DKaqyQ": [
@@ -355,6 +379,12 @@
       "value": "Still cooking..."
     }
   ],
+  "MzEf/Z": [
+    {
+      "type": 0,
+      "value": "*2x bonus applies only to primeETH minted with OETH and held in the same wallet"
+    }
+  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -443,6 +473,12 @@
     {
       "type": 0,
       "value": "TVL"
+    }
+  ],
+  "THMhv1": [
+    {
+      "type": 0,
+      "value": "Go BIG!"
     }
   ],
   "TrKxvg": [
@@ -543,6 +579,28 @@
       "value": "New transaction"
     }
   ],
+  "aO+vIL": [
+    {
+      "type": 0,
+      "value": "Deposit with OETH and earn"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "children": [
+        {
+          "type": 0,
+          "value": "2X REWARDS*"
+        }
+      ],
+      "type": 8,
+      "value": "strong"
+    }
+  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -609,6 +667,12 @@
     {
       "type": 0,
       "value": "sell primeETH on Uniswap."
+    }
+  ],
+  "hRhk8d": [
+    {
+      "type": 0,
+      "value": "Early depositers will earn an XP multiplier on their deposit"
     }
   ],
   "hWyxI7": [
@@ -745,6 +809,12 @@
     {
       "type": 0,
       "value": "Error while redeeming"
+    }
+  ],
+  "wOIoAM": [
+    {
+      "type": 0,
+      "value": "Be early!"
     }
   ],
   "wqlXwW": [
