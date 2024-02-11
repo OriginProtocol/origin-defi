@@ -107,7 +107,6 @@ export type SwapState = {
   isApprovalLoading: boolean;
   isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
-  slippage?: number;
   debounceTime?: number;
   trackEvent?: (event: SwapTrackEvent) => void;
   onInputAmountChange?: (state: SwapState) => void;

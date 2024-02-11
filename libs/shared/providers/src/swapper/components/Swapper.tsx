@@ -36,7 +36,7 @@ import {
 import { useFormat } from '../../intl';
 import { usePushNotification } from '../../notifications';
 import { usePrices } from '../../prices';
-import { PriceTolerancePopover, useSlippage } from '../../slippage';
+import { useSlippage } from '../../slippage';
 import { ConnectedButton } from '../../wagmi';
 import {
   useHandleAmountInChange,
@@ -48,6 +48,7 @@ import {
   useTokenOptions,
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
+import { SettingsPopover } from './SettingsPopover';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
@@ -196,7 +197,6 @@ function SwapperWrapped({
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
@@ -232,6 +232,7 @@ function SwapperWrapped({
     watch: true,
     scopeKey: 'swap_balance',
   });
+  const { value: slippage } = useSlippage();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -249,14 +250,6 @@ function SwapperWrapped({
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(evt.currentTarget);
     trackEvent?.({ name: 'open_settings' });
-  };
-
-  const handleSlippageChange = (val: number) => {
-    setSlippage(val);
-    trackEvent?.({
-      name: 'change_price_tolerance',
-      price_tolerance: val,
-    });
   };
 
   const needsApproval =
@@ -318,28 +311,10 @@ function SwapperWrapped({
                 >
                   <FaGearComplexRegular />
                 </IconButton>
-                <PriceTolerancePopover
+                <SettingsPopover
                   open={!!anchorEl}
                   anchorEl={anchorEl}
                   onClose={() => setAnchorEl(null)}
-                  slippage={slippage}
-                  onSlippageChange={handleSlippageChange}
-                  buttonProps={{
-                    sx: {
-                      color: 'text.primary',
-                      background:
-                        'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                      '&:hover': {
-                        background:
-                          'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                        opacity: 1,
-                      },
-                      '&:disabled': {
-                        opacity: 0.5,
-                        color: 'text.primary',
-                      },
-                    },
-                  }}
                 />
               </Stack>
             }

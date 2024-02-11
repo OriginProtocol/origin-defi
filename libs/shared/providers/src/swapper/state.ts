@@ -5,6 +5,7 @@ import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
 
+import { useSlippage } from '../slippage';
 import { getAvailableRoutes } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
@@ -20,7 +21,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       | 'swapActions'
       | 'swapRoutes'
       | 'debounceTime'
-      | 'slippage'
       | 'trackEvent'
       | 'onInputAmountChange'
       | 'onInputTokenChange'
@@ -40,7 +40,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
     ({
       swapActions,
       swapRoutes,
-      slippage,
       debounceTime,
       trackEvent,
       onInputAmountChange,
@@ -71,7 +70,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         isApprovalWaitingForSignature: false,
         isApprovalLoading: false,
         isSwapLoading: false,
-        slippage: slippage ?? 0.001,
         debounceTime: debounceTime ?? 800,
         trackEvent,
         onInputAmountChange,
@@ -89,6 +87,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         onSwapFailure,
       });
       const queryClient = useQueryClient();
+      const { value: slippage } = useSlippage();
 
       useDebouncedEffect(
         async () => {
@@ -137,7 +136,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                   state.tokenIn.symbol,
                   state.tokenOut.symbol,
                   route.action,
-                  state.slippage,
+                  slippage,
                   state.amountIn.toString(),
                 ] as const,
                 queryFn: async () => {
@@ -149,7 +148,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                       amountIn: state.amountIn,
                       amountOut: state.amountOut,
                       route,
-                      slippage: state.slippage,
+                      slippage: slippage,
                     });
                   } catch (error) {
                     console.error(

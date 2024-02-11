@@ -5,6 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransaction } from '@wagmi/core';
 import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
 
+import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
 import {
   getAllAvailableTokens,
@@ -18,19 +19,6 @@ import type {
   Token,
   TokenSource,
 } from './types';
-
-export const useSwapperSlippage = () => {
-  const [{ slippage }, setSwapState] = useSwapState();
-
-  const setSlippage = useCallback(
-    (slippage: number) => {
-      setSwapState((state) => ({ ...state, slippage }));
-    },
-    [setSwapState],
-  );
-
-  return [slippage, setSlippage];
-};
 
 export const useHandleAmountInChange = () => {
   const [, setSwapState] = useSwapState();
@@ -178,11 +166,11 @@ export const useHandleTokenFlip = () => {
     amountOut,
     swapActions,
     swapRoutes,
-    slippage,
     trackEvent,
     onTokenFlip,
   } = state;
   const queryClient = useQueryClient();
+  const { value: slippage } = useSlippage();
 
   return useCallback(async () => {
     const scaledAmountIn = scale(amountIn, tokenIn.decimals, tokenOut.decimals);
@@ -487,6 +475,7 @@ export const useHandleSwap = () => {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
+  const { value: slippage } = useSlippage();
 
   const [state, setSwapState] = useSwapState();
   const {
@@ -496,7 +485,6 @@ export const useHandleSwap = () => {
     tokenIn,
     tokenOut,
     swapActions,
-    slippage,
     trackEvent,
     onSwapStart,
     onSwapFailure,
