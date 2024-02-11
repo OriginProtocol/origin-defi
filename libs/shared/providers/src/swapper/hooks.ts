@@ -19,7 +19,7 @@ import type {
   TokenSource,
 } from './types';
 
-export const useSlippage = () => {
+export const useSwapperSlippage = () => {
   const [{ slippage }, setSwapState] = useSwapState();
 
   const setSlippage = useCallback(
@@ -100,7 +100,7 @@ export const useTokenOptions = () => {
 
 export const useHandleTokenChange = () => {
   const [
-    { swapRoutes, onInputTokenChange, onOutputTokenChange },
+    { swapRoutes, trackEvent, onInputTokenChange, onOutputTokenChange },
     setSwapState,
   ] = useSwapState();
 
@@ -122,7 +122,7 @@ export const useHandleTokenChange = () => {
           if (isNilOrEmpty(found)) {
             tokenOut = availableTokensOut[0];
           }
-          onInputTokenChange?.(token);
+          onInputTokenChange?.(state);
         } else {
           tokenOut = token;
           const availableTokensIn = getAvailableTokensForSource(
@@ -136,8 +136,17 @@ export const useHandleTokenChange = () => {
           if (isNilOrEmpty(found)) {
             tokenIn = availableTokensIn[0];
           }
-          onOutputTokenChange?.(token);
+          onOutputTokenChange?.(state);
         }
+
+        trackEvent?.(
+          source === 'tokenIn'
+            ? { name: 'change_input_currency', change_input_to: token.symbol }
+            : {
+                name: 'change_output_currency',
+                change_output_to: token.symbol,
+              },
+        );
 
         return {
           ...state,
@@ -150,28 +159,32 @@ export const useHandleTokenChange = () => {
         };
       });
     },
-    [onInputTokenChange, onOutputTokenChange, setSwapState, swapRoutes],
+    [
+      onInputTokenChange,
+      onOutputTokenChange,
+      setSwapState,
+      swapRoutes,
+      trackEvent,
+    ],
   );
 };
 
 export const useHandleTokenFlip = () => {
-  const [
-    {
-      tokenIn,
-      tokenOut,
-      amountIn,
-      amountOut,
-      swapActions,
-      swapRoutes,
-      slippage,
-      onTokenFlip,
-    },
-    setSwapState,
-  ] = useSwapState();
+  const [state, setSwapState] = useSwapState();
+  const {
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    swapActions,
+    swapRoutes,
+    slippage,
+    trackEvent,
+    onTokenFlip,
+  } = state;
   const queryClient = useQueryClient();
 
   return useCallback(async () => {
-    onTokenFlip?.(tokenIn, tokenOut);
     const scaledAmountIn = scale(amountIn, tokenIn.decimals, tokenOut.decimals);
     const scaledAmountOut = scale(
       amountOut,
@@ -301,7 +314,11 @@ export const useHandleTokenFlip = () => {
         ...state,
         isSwapRoutesLoading: false,
       }));
+
+      onTokenFlip?.(state);
+      trackEvent?.({ name: 'change_input_output' });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     amountIn,
     amountOut,
@@ -313,11 +330,13 @@ export const useHandleTokenFlip = () => {
     swapRoutes,
     tokenIn,
     tokenOut,
+    trackEvent,
   ]);
 };
 
 export const useHandleSelectSwapRoute = () => {
-  const [{ onSwapRouteChange }, setSwapState] = useSwapState();
+  const [state, setSwapState] = useSwapState();
+  const { trackEvent, onSwapRouteChange } = state;
 
   return useCallback(
     (route: EstimatedSwapRoute) => {
@@ -326,9 +345,14 @@ export const useHandleSelectSwapRoute = () => {
         selectedSwapRoute: route,
         amountOut: route.estimatedAmount,
       }));
-      onSwapRouteChange?.(route.action);
+      onSwapRouteChange?.(state);
+      trackEvent?.({
+        name: 'change_swap_route',
+        change_route_to: route.action,
+      });
     },
-    [onSwapRouteChange, setSwapState],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [onSwapRouteChange, setSwapState, trackEvent],
   );
 };
 
@@ -363,20 +387,19 @@ export const useHandleApprove = () => {
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
 
-  const [
-    {
-      amountIn,
-      selectedSwapRoute,
-      tokenIn,
-      tokenOut,
-      swapActions,
-      onApproveStart,
-      onApproveFailure,
-      onApproveReject,
-      onApproveSuccess,
-    },
-    setSwapState,
-  ] = useSwapState();
+  const [state, setSwapState] = useSwapState();
+  const {
+    amountIn,
+    selectedSwapRoute,
+    tokenIn,
+    tokenOut,
+    swapActions,
+    trackEvent,
+    onApproveStart,
+    onApproveFailure,
+    onApproveReject,
+    onApproveSuccess,
+  } = state;
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
@@ -387,7 +410,13 @@ export const useHandleApprove = () => {
       ...state,
       isApprovalWaitingForSignature: true,
     }));
-    const trackId = onApproveStart?.(tokenIn);
+
+    const trackId = onApproveStart?.(state);
+    trackEvent({
+      name: 'approve_started',
+      approval_token: tokenIn.symbol,
+    });
+
     try {
       const hash = await swapActions[selectedSwapRoute.action].approve({
         tokenIn,
@@ -407,7 +436,11 @@ export const useHandleApprove = () => {
           ...state,
           isApprovalLoading: false,
         }));
-        onApproveSuccess?.(tokenIn, txReceipt, trackId);
+        onApproveSuccess?.({ ...state, txReceipt, trackId });
+        trackEvent?.({
+          name: 'approve_complete',
+          approval_token: tokenIn.symbol,
+        });
       }
     } catch (error) {
       setSwapState((state) => ({
@@ -417,15 +450,21 @@ export const useHandleApprove = () => {
       }));
 
       if (isUserRejected(error)) {
-        onApproveReject?.(tokenIn, trackId);
+        onApproveReject?.({ ...state, trackId });
+        trackEvent?.({
+          name: 'approve_rejected',
+          approval_token: tokenIn.symbol,
+        });
       } else {
-        onApproveFailure?.(
-          tokenIn,
-          error?.shortMessage ?? error.message,
-          trackId,
-        );
+        onApproveFailure?.({ ...state, error, trackId });
+        trackEvent?.({
+          name: 'approve_failed',
+          approval_token: tokenIn.symbol,
+          approve_error: error?.shortMessage ?? error.message,
+        });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,
@@ -439,6 +478,7 @@ export const useHandleApprove = () => {
     swapActions,
     tokenIn,
     tokenOut,
+    trackEvent,
     wagmiClient,
   ]);
 };
@@ -448,22 +488,21 @@ export const useHandleSwap = () => {
   const queryClient = useQueryClient();
   const wagmiClient = useWagmiClient();
 
-  const [
-    {
-      amountIn,
-      amountOut,
-      selectedSwapRoute,
-      tokenIn,
-      tokenOut,
-      swapActions,
-      slippage,
-      onSwapStart,
-      onSwapFailure,
-      onSwapReject,
-      onSwapSuccess,
-    },
-    setSwapState,
-  ] = useSwapState();
+  const [state, setSwapState] = useSwapState();
+  const {
+    amountIn,
+    amountOut,
+    selectedSwapRoute,
+    tokenIn,
+    tokenOut,
+    swapActions,
+    slippage,
+    trackEvent,
+    onSwapStart,
+    onSwapFailure,
+    onSwapReject,
+    onSwapSuccess,
+  } = state;
 
   return useCallback(async () => {
     if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
@@ -471,12 +510,16 @@ export const useHandleSwap = () => {
     }
 
     setSwapState((state) => ({ ...state, isSwapWaitingForSignature: true }));
-    const trackId = onSwapStart?.(
-      tokenIn,
-      tokenOut,
-      selectedSwapRoute.action,
-      amountIn,
-    );
+
+    const trackId = onSwapStart?.(state);
+    trackEvent?.({
+      name: 'swap_started',
+      swap_route: selectedSwapRoute.action,
+      swap_token: tokenIn.symbol,
+      swap_to: tokenOut.symbol,
+      swap_amount: amountIn,
+    });
+
     try {
       const hash = await swapActions[selectedSwapRoute.action].swap({
         tokenIn,
@@ -503,14 +546,14 @@ export const useHandleSwap = () => {
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
         }));
-        onSwapSuccess?.(
-          tokenIn,
-          tokenOut,
-          selectedSwapRoute.action,
-          amountIn,
-          txReceipt,
-          trackId,
-        );
+        onSwapSuccess?.({ ...state, txReceipt, trackId });
+        trackEvent?.({
+          name: 'swap_complete',
+          swap_route: selectedSwapRoute.action,
+          swap_token: tokenIn.symbol,
+          swap_to: tokenOut.symbol,
+          swap_amount: amountIn,
+        });
       }
     } catch (error) {
       setSwapState((state) => ({
@@ -519,24 +562,27 @@ export const useHandleSwap = () => {
         isSwapLoading: false,
       }));
       if (isUserRejected(error)) {
-        onSwapReject?.(
-          tokenIn,
-          tokenOut,
-          selectedSwapRoute.action,
-          amountIn,
-          trackId,
-        );
+        onSwapReject?.({ ...state, trackId });
+        trackEvent?.({
+          name: 'swap_rejected',
+          swap_token: tokenIn.symbol,
+          swap_amount: amountIn,
+          swap_to: tokenOut.symbol,
+          swap_route: selectedSwapRoute.action,
+        });
       } else {
-        onSwapFailure?.(
-          tokenIn,
-          tokenOut,
-          selectedSwapRoute.action,
-          amountIn,
-          error?.shortMessage ?? error.message,
-          trackId,
-        );
+        onSwapFailure?.({ ...state, error, trackId });
+        trackEvent?.({
+          name: 'swap_failed',
+          swap_token: tokenIn.symbol,
+          swap_amount: amountIn,
+          swap_to: tokenOut.symbol,
+          swap_route: selectedSwapRoute.action,
+          swap_error: error?.shortMessage ?? error.message,
+        });
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     address,
     amountIn,
@@ -552,6 +598,7 @@ export const useHandleSwap = () => {
     swapActions,
     tokenIn,
     tokenOut,
+    trackEvent,
     wagmiClient,
   ]);
 };

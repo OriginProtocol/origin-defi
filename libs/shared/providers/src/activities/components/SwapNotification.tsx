@@ -67,12 +67,12 @@ export const SwapNotification = ({
               {
                 amountIn: intl.formatNumber(
                   +formatUnits(amountIn, tokenIn.decimals),
-                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
                 symbolIn: tokenIn.symbol,
                 amountOut: intl.formatNumber(
                   +formatUnits(amountOut, tokenOut.decimals),
-                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
                 symbolOut: tokenOut.symbol,
               },
@@ -84,9 +84,9 @@ export const SwapNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon symbol={tokenIn.symbol} />
+          <TokenIcon symbol={tokenIn.symbol} sx={{ fontSize: 20 }} />
           <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon symbol={tokenIn.symbol} />
+          <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 20 }} />
         </Stack>
       }
     />

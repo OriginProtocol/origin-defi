@@ -17,18 +17,24 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
+  NotificationSnack,
+  SeverityIcon,
   TokenInput,
 } from '@origin/shared/components';
 import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
-import {
-  composeContexts,
-  isNilOrEmpty,
-  subtractSlippage,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
+import {
+  ApprovalNotification,
+  SwapNotification,
+  useDeleteActivity,
+  usePushActivity,
+  useUpdateActivity,
+} from '../../activities';
 import { useFormat } from '../../intl';
+import { usePushNotification } from '../../notifications';
 import { usePrices } from '../../prices';
 import { PriceTolerancePopover, useSlippage } from '../../slippage';
 import { ConnectedButton } from '../../wagmi';
@@ -65,11 +71,123 @@ export const Swapper = ({
   swapRoutes,
   trackEvent,
   ...rest
-}: SwapperProps) =>
-  composeContexts(
-    [[SwapProvider, { swapActions, swapRoutes, trackEvent }]],
-    <SwapperWrapped {...rest} />,
+}: SwapperProps) => {
+  const intl = useIntl();
+  const pushNotification = usePushNotification();
+  const pushActivity = usePushActivity();
+  const updateActivity = useUpdateActivity();
+  const deleteActivity = useDeleteActivity();
+
+  return (
+    <SwapProvider
+      swapActions={swapActions}
+      swapRoutes={swapRoutes}
+      trackEvent={trackEvent}
+      onApproveStart={(state) => {
+        const activity = pushActivity({
+          ...state,
+          type: 'approval',
+          status: 'pending',
+        });
+
+        return activity.id;
+      }}
+      onApproveSuccess={(state) => {
+        const { trackId } = state;
+        updateActivity({ ...state, id: trackId, status: 'success' });
+        pushNotification({
+          content: <ApprovalNotification {...state} status="success" />,
+        });
+      }}
+      onApproveReject={({ trackId }) => {
+        deleteActivity(trackId);
+        pushNotification({
+          content: (
+            <NotificationSnack
+              icon={<SeverityIcon severity="warning" />}
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
+        });
+      }}
+      onApproveFailure={(state) => {
+        const { error, trackId } = state;
+        updateActivity({
+          ...state,
+          id: trackId,
+          status: 'success',
+          error: error?.['shortMessage'] ?? error.message,
+        });
+        pushNotification({
+          content: (
+            <ApprovalNotification
+              {...state}
+              status="error"
+              error={error?.['shortMessage'] ?? error.message}
+            />
+          ),
+        });
+      }}
+      onSwapStart={(state) => {
+        const activity = pushActivity({
+          ...state,
+          type: 'swap',
+          status: 'pending',
+        });
+
+        return activity.id;
+      }}
+      onSwapSuccess={(state) => {
+        const { trackId } = state;
+        updateActivity({ ...state, id: trackId, status: 'success' });
+        pushNotification({
+          content: <SwapNotification {...state} status="success" />,
+        });
+      }}
+      onSwapReject={({ trackId }) => {
+        deleteActivity(trackId);
+        pushNotification({
+          content: (
+            <NotificationSnack
+              icon={<SeverityIcon severity="warning" />}
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
+        });
+      }}
+      onSwapFailure={(state) => {
+        const { error, trackId } = state;
+        updateActivity({
+          ...state,
+          id: trackId,
+          status: 'error',
+          error: error?.['shortMessage'] ?? error.message,
+        });
+        pushNotification({
+          content: (
+            <SwapNotification
+              {...state}
+              status="error"
+              error={error?.['shortMessage'] ?? error.message}
+            />
+          ),
+        });
+      }}
+    >
+      <SwapperWrapped {...rest} />
+    </SwapProvider>
   );
+};
 
 function SwapperWrapped({
   onError,
@@ -130,12 +248,12 @@ function SwapperWrapped({
 
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(evt.currentTarget);
-    trackEvent({ name: 'open_settings' });
+    trackEvent?.({ name: 'open_settings' });
   };
 
   const handleSlippageChange = (val: number) => {
     setSlippage(val);
-    trackEvent({
+    trackEvent?.({
       name: 'change_price_tolerance',
       price_tolerance: val,
     });

@@ -41,7 +41,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
       <AccordionSummary
         onClick={() => {
           setShowMore(not);
-          trackEvent({ name: 'show_swap_routes' });
+          trackEvent?.({ name: 'show_swap_routes' });
         }}
         sx={{
           minHeight: 0,

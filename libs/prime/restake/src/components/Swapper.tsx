@@ -16,31 +16,32 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
+  NotificationSnack,
+  SeverityIcon,
   TokenButton,
 } from '@origin/shared/components';
 import {
+  ApprovalNotification,
   ConnectedButton,
+  SwapNotification,
   SwapProvider,
-  TokenSelectModal,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
+  usePushNotification,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
 } from '@origin/shared/providers';
-import {
-  composeContexts,
-  formatAmount,
-  isNilOrEmpty,
-} from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { mainnet, useAccount, useBalance, useNetwork } from 'wagmi';
 
 import { useAssetPrice } from '../hooks';
 import { TokenInput } from './TokenInput';
+import { TokenSelectModal } from './TokenSelectModal';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -58,21 +59,75 @@ export const Swapper = ({
   swapRoutes,
   trackEvent,
   ...rest
-}: SwapperProps) =>
-  composeContexts(
-    [
-      [
-        SwapProvider,
-        { swapActions, swapRoutes, trackEvent, debounceTime: 400 },
-      ],
-    ],
-    <SwapperWrapped {...rest} />,
+}: SwapperProps) => {
+  const intl = useIntl();
+  const pushNotification = usePushNotification();
+
+  return (
+    <SwapProvider
+      swapActions={swapActions}
+      swapRoutes={swapRoutes}
+      debounceTime={400}
+      trackEvent={trackEvent}
+      onApproveSuccess={(state) => {
+        pushNotification({
+          content: <ApprovalNotification {...state} status="success" />,
+        });
+      }}
+      onApproveReject={() => {
+        pushNotification({
+          content: (
+            <NotificationSnack
+              icon={<SeverityIcon severity="warning" />}
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
+        });
+      }}
+      onApproveFailure={(state) => {
+        const { error } = state;
+        pushNotification({
+          content: (
+            <ApprovalNotification
+              {...state}
+              status="error"
+              error={error?.['shortMessage'] ?? error.message}
+            />
+          ),
+        });
+      }}
+      onSwapSuccess={(state) => {
+        pushNotification({
+          content: <SwapNotification {...state} status="success" />,
+        });
+      }}
+      onSwapFailure={(state) => {
+        const { error } = state;
+        pushNotification({
+          content: (
+            <SwapNotification
+              {...state}
+              status="error"
+              error={error?.['shortMessage'] ?? error.message}
+            />
+          ),
+        });
+      }}
+    >
+      <SwapperWrapped {...rest} />
+    </SwapProvider>
   );
+};
 
 function SwapperWrapped({
   onError,
   ...rest
-}: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
+}: Omit<SwapperProps, 'swapActions' | 'swapRoutes'>) {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
   const { chain } = useNetwork();
