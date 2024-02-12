@@ -6,9 +6,9 @@ import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import {
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
 
 import {
@@ -45,7 +45,7 @@ export type TransactionButtonProps = {
   onUserReject?: () => void;
   disableActivity?: boolean;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick'>;
+} & Omit<ButtonProps, 'onClick' | 'value'>;
 
 export const TransactionButton = ({
   contract,
@@ -75,26 +75,28 @@ export const TransactionButton = ({
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
-  const { config, error: prepareError } = usePrepareContractWrite({
+  const { data: prepareData, error: prepareError } = useSimulateContract({
     address: contract.address,
     abi: contract.abi,
     functionName,
     args,
     value,
-    enabled: isConnected && !!contract?.address && !disabled,
+    query: {
+      enabled: isConnected && !!contract?.address && !disabled,
+    },
   });
   const {
-    write,
-    data: writeData,
+    writeContract,
+    data: hash,
     error: writeError,
-    isLoading: isWriteLoading,
-  } = useContractWrite(config);
+    isPending: isWriteLoading,
+  } = useWriteContract();
   const {
     data: txData,
     error: txError,
     isLoading: isTxLoading,
     isSuccess: isTxSuccess,
-  } = useWaitForTransaction({ hash: writeData?.hash });
+  } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
     if (isTxLoading && !disableNotification) {
@@ -119,12 +121,12 @@ export const TransactionButton = ({
 
   useEffect(() => {
     if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
-      onSuccess?.(txData);
+      onSuccess?.(txData as TransactionReceipt);
       if (!disableActivity) {
         updateActivity({
           ...activity,
           status: 'success',
-          txReceipt: txData,
+          txReceipt: txData as TransactionReceipt,
         });
       }
       if (!disableNotification) {
@@ -148,7 +150,7 @@ export const TransactionButton = ({
               }
               endIcon={activityEndIcon}
               status="success"
-              txReceipt={txData}
+              txReceipt={txData as TransactionReceipt}
             />
           ),
         });
@@ -249,7 +251,7 @@ export const TransactionButton = ({
   ]);
 
   const handleClick = () => {
-    write?.();
+    writeContract(prepareData?.request);
     onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({

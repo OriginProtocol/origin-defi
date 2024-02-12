@@ -6,10 +6,11 @@ import {
   isUserRejected,
   subtractSlippage,
 } from '@origin/shared/utils';
-import { waitForTransaction, writeContract } from '@wagmi/core';
+import { useQueryClient } from '@tanstack/react-query';
+import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { produce } from 'immer';
 import { useIntl } from 'react-intl';
-import { useAccount, useQueryClient } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import {
   RedeemNotification,
@@ -19,9 +20,11 @@ import {
 } from '../activities';
 import { usePushNotification } from '../notifications';
 import { useSlippage } from '../slippage';
-import { prepareWriteContractWithTxTracker } from '../txTracker';
+import { simulateContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
+
+import type { TransactionReceipt } from 'viem';
 
 export const useHandleAmountInChange = () => {
   const [, setRedeemState] = useRedeemState();
@@ -43,6 +46,8 @@ export const useHandleAmountInChange = () => {
 
 export const useHandleRedeem = () => {
   const intl = useIntl();
+  const config = useConfig();
+  const queryClient = useQueryClient();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -52,7 +57,6 @@ export const useHandleRedeem = () => {
     { amountIn, amountOut, gas, trackEvent, tokenIn, vaultContract, gasBuffer },
     setRedeemState,
   ] = useRedeemState();
-  const wagmiClient = useQueryClient();
   const { value: slippage } = useSlippage();
 
   return useCallback(async () => {
@@ -85,22 +89,22 @@ export const useHandleRedeem = () => {
       redeem_amount: amountIn,
     });
     try {
-      const { request } = await prepareWriteContractWithTxTracker({
+      const { request } = await simulateContractWithTxTracker(config, {
         address: vaultContract.address,
         abi: vaultContract.abi,
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
         gas: gas + (gas * gasBuffer) / 100n,
       });
-      const { hash } = await writeContract(request);
+      const hash = await writeContract(config, request);
       setRedeemState(
         produce((draft) => {
           draft.isRedeemWaitingForSignature = false;
           draft.isRedeemLoading = true;
         }),
       );
-      const txReceipt = await waitForTransaction({ hash });
-      wagmiClient.invalidateQueries({ queryKey: ['redeem_balance'] });
+      const txReceipt = await waitForTransactionReceipt(config, { hash });
+      queryClient.invalidateQueries({ queryKey: ['redeem_balance'] });
       setRedeemState(
         produce((draft) => {
           draft.isRedeemLoading = false;
@@ -109,13 +113,17 @@ export const useHandleRedeem = () => {
           draft.split.forEach((a) => (a.amount = 0n));
         }),
       );
-      updateActivity({ ...activity, status: 'success', txReceipt });
+      updateActivity({
+        ...activity,
+        status: 'success',
+        txReceipt: txReceipt as unknown as TransactionReceipt,
+      });
       pushNotification({
         content: (
           <RedeemNotification
             {...activity}
             status="success"
-            txReceipt={txReceipt}
+            txReceipt={txReceipt as unknown as TransactionReceipt}
           />
         ),
       });
@@ -175,12 +183,14 @@ export const useHandleRedeem = () => {
     address,
     amountIn,
     amountOut,
+    config,
     deleteActivity,
     gas,
     gasBuffer,
     intl,
     pushActivity,
     pushNotification,
+    queryClient,
     setRedeemState,
     slippage,
     tokenIn,
@@ -188,6 +198,5 @@ export const useHandleRedeem = () => {
     updateActivity,
     vaultContract.abi,
     vaultContract.address,
-    wagmiClient,
   ]);
 };

@@ -1,14 +1,16 @@
 import { contracts } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
-import { mainnet, readContracts } from 'wagmi';
+import { readContracts } from '@wagmi/core';
+import { mainnet } from 'wagmi/chains';
 
 import { CurveFactoryABI } from './abis/CurveFactory';
 import { CurveRegistryExchangeABI } from './abis/CurveRegistryExchange';
 
 import type { HexAddress } from '@origin/shared/utils';
+import type { Config } from 'wagmi';
 
-const fetcher = async () => {
-  const addresses = await readContracts({
+const fetcher = async ({ queryKey: [, config] }) => {
+  const addresses = await readContracts(config, {
     contracts: [
       {
         address: contracts.mainnet.CurveAddressProvider.address,
@@ -25,7 +27,7 @@ const fetcher = async () => {
     ],
   });
 
-  const underlyings = await readContracts({
+  const underlyings = await readContracts(config, {
     contracts: [
       {
         address: addresses[1].result,
@@ -54,13 +56,13 @@ const fetcher = async () => {
   };
 };
 
-export const useCurve = () => {
+export const useCurve = (config: Config) => {
   return useQuery({
-    queryKey: ['useCurve'],
+    queryKey: ['useCurve', config],
     staleTime: Infinity,
     queryFn: fetcher,
   });
 };
 
-useCurve.getKey = () => ['useCurve'];
+useCurve.getKey = (config: Config) => ['useCurve', config];
 useCurve.fetcher = fetcher;

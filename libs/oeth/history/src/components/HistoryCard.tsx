@@ -21,9 +21,7 @@ export function HistoryCard() {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState([]);
-  const { data, isFetching } = useAggregatedHistory(filters, {
-    keepPreviousData: true,
-  });
+  const { data, isFetching } = useAggregatedHistory(filters);
 
   return (
     <Card>

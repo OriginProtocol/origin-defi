@@ -10,10 +10,11 @@ import {
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
 import { ascend, descend, prop, sortWith } from 'ramda';
-import { useAccount, useBalance } from 'wagmi';
+import { formatUnits } from 'viem';
 
 import { useFormat } from '../../intl';
 import { usePrices } from '../../prices';
+import { useWatchBalance } from '../../wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -84,14 +85,12 @@ type TokenListItemProps = {
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
   const { formatAmount, formatCurrency } = useFormat();
-  const { address } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: token.address,
   });
   const { data: prices } = usePrices();
 
-  const bal = parseFloat(balance?.formatted ?? '0');
+  const bal = +formatUnits(balance ?? 0n, token.decimals);
   const balUsd = bal * (prices?.[token.symbol] ?? 0);
 
   return (
@@ -133,7 +132,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
-              formatAmount(balance?.value, balance?.decimals)
+              formatAmount(balance as unknown as bigint, token.decimals)
             )}
           </Typography>
           <Typography color="text.secondary" variant="body2">

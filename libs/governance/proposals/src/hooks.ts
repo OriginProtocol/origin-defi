@@ -20,7 +20,9 @@ import type {
 } from './snapshot.generated';
 import type { GovernanceChoice, Proposal, ProposalType, Vote } from './types';
 
-export const useProposals = (options?: UseQueryOptions<Proposal[], Error>) => {
+export const useProposals = (
+  options?: Partial<UseQueryOptions<Proposal[], Error>>,
+) => {
   return useQuery({
     queryKey: ['useProposals'],
     queryFn: async () => {
@@ -88,7 +90,9 @@ export const useProposals = (options?: UseQueryOptions<Proposal[], Error>) => {
   });
 };
 
-export const useUserVotes = (options?: UseQueryOptions<Vote[], Error>) => {
+export const useUserVotes = (
+  options?: Partial<UseQueryOptions<Vote[], Error>>,
+) => {
   const { address } = useAccount();
 
   return useQuery({

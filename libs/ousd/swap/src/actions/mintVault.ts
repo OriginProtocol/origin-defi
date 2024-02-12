@@ -1,13 +1,13 @@
 import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   readContracts,
+  simulateContract,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
@@ -24,9 +24,12 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
+const isRouteAvailable: IsRouteAvailable = async (
+  config,
+  { amountIn, tokenIn },
+) => {
   try {
-    const priceUnitMint = await readContract({
+    const priceUnitMint = await readContract(config, {
       address: contracts.mainnet.OUSDVault.address,
       abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'priceUnitMint',
@@ -43,16 +46,15 @@ const isRouteAvailable: IsRouteAvailable = async ({ amountIn, tokenIn }) => {
   return false;
 };
 
-const estimateAmount: EstimateAmount = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-}) => {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
-  const priceUnitMint = await readContract({
+  const priceUnitMint = await readContract(config, {
     address: contracts.mainnet.OUSDVault.address,
     abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'priceUnitMint',
@@ -67,21 +69,18 @@ const estimateAmount: EstimateAmount = async ({
   );
 };
 
-const estimateGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-}) => {
+const estimateGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+) => {
   let gasEstimate = 0n;
 
   if (amountIn === 0n) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
-  const { address } = getAccount();
+  const publicClient = getPublicClient(config);
+  const { address } = getAccount(config);
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
@@ -101,7 +100,7 @@ const estimateGas = async ({
     {
       queryKey: ['vault-info', tokenOut.address],
       queryFn: () =>
-        readContracts({
+        readContracts(config, {
           contracts: [
             {
               address: contracts.mainnet.OUSDVault.address,
@@ -129,13 +128,10 @@ const estimateGas = async ({
   return gasEstimate;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, route, slippage },
+) => {
   if (amountIn === 0n) {
     return {
       ...route,
@@ -148,11 +144,11 @@ const estimateRoute: EstimateRoute = async ({
   }
 
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    allowance({ tokenIn, tokenOut }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+    allowance(config, { tokenIn, tokenOut }),
+    estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
   ]);
-  const gas = await estimateGas({
+  const gas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -172,14 +168,14 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const allowance: Allowance = async ({ tokenIn }) => {
-  const { address } = getAccount();
+const allowance: Allowance = async (config, { tokenIn }) => {
+  const { address } = getAccount(config);
 
   if (isNilOrEmpty(address)) {
     return 0n;
   }
 
-  const allowance = await readContract({
+  const allowance = await readContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
@@ -189,18 +185,18 @@ const allowance: Allowance = async ({ tokenIn }) => {
   return allowance as unknown as bigint;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  amountIn,
-}) => {
+const estimateApprovalGas: EstimateApprovalGas = async (
+  config,
+  { tokenIn, amountIn },
+) => {
   let approvalEstimate = 0n;
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return approvalEstimate;
   }
 
-  const publicClient = getPublicClient();
+  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -217,32 +213,29 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+  const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDVault.address, amountIn],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-}) => {
-  const { address } = getAccount();
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+) => {
+  const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut });
+  const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`Mint vault is not approved`);
@@ -250,7 +243,7 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const estimatedGas = await estimateGas({
+  const estimatedGas = await estimateGas(config, {
     amountIn,
     slippage,
     tokenIn,
@@ -259,14 +252,14 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OUSDVault.address,
     abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

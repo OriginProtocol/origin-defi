@@ -4,12 +4,12 @@ import { Button } from '@mui/material';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { erc20Abi } from 'viem';
 import {
-  erc20ABI,
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
 
 import {
@@ -66,24 +66,26 @@ export const ApprovalButton = ({
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
-  const { config, error: prepareError } = usePrepareContractWrite({
+  const { data: prepareData, error: prepareError } = useSimulateContract({
     address: token.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
     args: [spender.address, amount],
-    enabled: isConnected && amount > 0n && !disabled,
+    query: {
+      enabled: isConnected && amount > 0n && !disabled,
+    },
   });
   const {
-    write,
-    data: writeData,
+    writeContract,
+    data: hash,
     error: writeError,
-    isLoading: isWriteLoading,
-  } = useContractWrite(config);
+    isPending: isWriteLoading,
+  } = useWriteContract();
   const {
     data: approvalData,
     isLoading: isApprovalLoading,
     isSuccess: isApprovalSuccess,
-  } = useWaitForTransaction({ hash: writeData?.hash });
+  } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
     if (isApprovalLoading && !disableNotification) {
@@ -113,12 +115,12 @@ export const ApprovalButton = ({
       isApprovalSuccess &&
       !done.current
     ) {
-      onSuccess?.(approvalData);
+      onSuccess?.(approvalData as TransactionReceipt);
       if (!disableActivity) {
         updateActivity({
           ...activity,
           status: 'success',
-          txReceipt: approvalData,
+          txReceipt: approvalData as TransactionReceipt,
         });
       }
       if (!disableNotification) {
@@ -131,7 +133,7 @@ export const ApprovalButton = ({
             <ApprovalNotification
               {...activity}
               status="success"
-              txReceipt={approvalData}
+              txReceipt={approvalData as TransactionReceipt}
             />
           ),
         });
@@ -217,7 +219,7 @@ export const ApprovalButton = ({
   ]);
 
   const handleClick = () => {
-    write?.();
+    writeContract(prepareData?.request);
     onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({

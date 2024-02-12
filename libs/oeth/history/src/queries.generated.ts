@@ -23,6 +23,7 @@ export type HistoryTransactionQueryVariables = Types.Exact<{
 export type HistoryTransactionQuery = { __typename?: 'Query', oethHistories: Array<{ __typename?: 'OETHHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
 
 
+
 export const HistoryUserStatDocument = `
     query HistoryUserStat($address: String!) {
   oethAddresses(where: {id_containsInsensitive: $address}) {
@@ -34,23 +35,28 @@ export const HistoryUserStatDocument = `
   }
 }
     `;
+
 export const useHistoryUserStatQuery = <
       TData = HistoryUserStatQuery,
       TError = unknown
     >(
       variables: HistoryUserStatQueryVariables,
-      options?: UseQueryOptions<HistoryUserStatQuery, TError, TData>
-    ) =>
-    useQuery<HistoryUserStatQuery, TError, TData>(
-      ['HistoryUserStat', variables],
-      graphqlClient<HistoryUserStatQuery, HistoryUserStatQueryVariables>(HistoryUserStatDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<HistoryUserStatQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<HistoryUserStatQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<HistoryUserStatQuery, TError, TData>(
+      {
+    queryKey: ['HistoryUserStat', variables],
+    queryFn: graphqlClient<HistoryUserStatQuery, HistoryUserStatQueryVariables>(HistoryUserStatDocument, variables),
+    ...options
+  }
+    )};
 
 useHistoryUserStatQuery.getKey = (variables: HistoryUserStatQueryVariables) => ['HistoryUserStat', variables];
-;
+
 
 useHistoryUserStatQuery.fetcher = (variables: HistoryUserStatQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryUserStatQuery, HistoryUserStatQueryVariables>(HistoryUserStatDocument, variables, options);
+
 export const HistoryApyDocument = `
     query HistoryApy {
   oethapies(limit: 1, orderBy: timestamp_DESC) {
@@ -59,23 +65,28 @@ export const HistoryApyDocument = `
   }
 }
     `;
+
 export const useHistoryApyQuery = <
       TData = HistoryApyQuery,
       TError = unknown
     >(
       variables?: HistoryApyQueryVariables,
-      options?: UseQueryOptions<HistoryApyQuery, TError, TData>
-    ) =>
-    useQuery<HistoryApyQuery, TError, TData>(
-      variables === undefined ? ['HistoryApy'] : ['HistoryApy', variables],
-      graphqlClient<HistoryApyQuery, HistoryApyQueryVariables>(HistoryApyDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<HistoryApyQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<HistoryApyQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<HistoryApyQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['HistoryApy'] : ['HistoryApy', variables],
+    queryFn: graphqlClient<HistoryApyQuery, HistoryApyQueryVariables>(HistoryApyDocument, variables),
+    ...options
+  }
+    )};
 
 useHistoryApyQuery.getKey = (variables?: HistoryApyQueryVariables) => variables === undefined ? ['HistoryApy'] : ['HistoryApy', variables];
-;
+
 
 useHistoryApyQuery.fetcher = (variables?: HistoryApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryApyQuery, HistoryApyQueryVariables>(HistoryApyDocument, variables, options);
+
 export const HistoryTransactionDocument = `
     query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
   oethHistories(
@@ -92,20 +103,24 @@ export const HistoryTransactionDocument = `
   }
 }
     `;
+
 export const useHistoryTransactionQuery = <
       TData = HistoryTransactionQuery,
       TError = unknown
     >(
       variables: HistoryTransactionQueryVariables,
-      options?: UseQueryOptions<HistoryTransactionQuery, TError, TData>
-    ) =>
-    useQuery<HistoryTransactionQuery, TError, TData>(
-      ['HistoryTransaction', variables],
-      graphqlClient<HistoryTransactionQuery, HistoryTransactionQueryVariables>(HistoryTransactionDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<HistoryTransactionQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<HistoryTransactionQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<HistoryTransactionQuery, TError, TData>(
+      {
+    queryKey: ['HistoryTransaction', variables],
+    queryFn: graphqlClient<HistoryTransactionQuery, HistoryTransactionQueryVariables>(HistoryTransactionDocument, variables),
+    ...options
+  }
+    )};
 
 useHistoryTransactionQuery.getKey = (variables: HistoryTransactionQueryVariables) => ['HistoryTransaction', variables];
-;
+
 
 useHistoryTransactionQuery.fetcher = (variables: HistoryTransactionQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryTransactionQuery, HistoryTransactionQueryVariables>(HistoryTransactionDocument, variables, options);

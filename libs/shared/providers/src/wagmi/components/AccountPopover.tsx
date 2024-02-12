@@ -10,11 +10,11 @@ import {
 import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { map, prop } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
-import { useAccount, useBalance, useContractReads, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect } from 'wagmi';
 
+import { useWatchBalance, useWatchContracts } from '../hooks';
 import { AddressLabel } from './AddressLabel';
 
 import type { StackProps } from '@mui/material';
@@ -31,23 +31,17 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
   const theme = useTheme();
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-
-  const { data: eth, isLoading: ethLoading } = useBalance({
-    address,
-    token: tokens.mainnet.ETH.address,
-    enabled: isConnected,
-    watch: true,
-  });
-  const { data: balances, isLoading: balancesLoading } = useContractReads({
+  const { data: eth, isLoading: ethLoading } = useWatchBalance();
+  const { data: balances, isLoading: balancesLoading } = useWatchContracts({
     contracts: balanceTokens?.map((t) => ({
       address: t.address,
       abi: t.abi,
       functionName: 'balanceOf',
       args: [address],
     })),
-    watch: true,
-    enabled: isConnected && !isNilOrEmpty(balanceTokens),
-    select: map(prop('result')),
+    query: {
+      enabled: isConnected,
+    },
   });
 
   function close() {
@@ -117,7 +111,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
         <Stack sx={{ px: 2, py: 3 }} gap={2}>
           <BalanceRow
             token={tokens.mainnet.ETH}
-            balance={+formatUnits(eth?.value ?? 0n, 18)}
+            balance={+formatUnits(eth ?? 0n, 18)}
             isBalanceLoading={ethLoading}
           />
           {!isNilOrEmpty(balanceTokens) &&

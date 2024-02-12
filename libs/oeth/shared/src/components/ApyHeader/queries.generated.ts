@@ -10,6 +10,7 @@ export type ApiesQueryVariables = Types.Exact<{
 export type ApiesQuery = { __typename?: 'Query', oethapies: Array<{ __typename?: 'OETHAPY', id: string, timestamp: string, apy7DayAvg: number, apy30DayAvg: number }> };
 
 
+
 export const ApiesDocument = `
     query Apies($limit: Int) {
   oethapies(
@@ -24,20 +25,24 @@ export const ApiesDocument = `
   }
 }
     `;
+
 export const useApiesQuery = <
       TData = ApiesQuery,
       TError = unknown
     >(
       variables?: ApiesQueryVariables,
-      options?: UseQueryOptions<ApiesQuery, TError, TData>
-    ) =>
-    useQuery<ApiesQuery, TError, TData>(
-      variables === undefined ? ['Apies'] : ['Apies', variables],
-      graphqlClient<ApiesQuery, ApiesQueryVariables>(ApiesDocument, variables),
-      options
-    );
+      options?: Omit<UseQueryOptions<ApiesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ApiesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ApiesQuery, TError, TData>(
+      {
+    queryKey: variables === undefined ? ['Apies'] : ['Apies', variables],
+    queryFn: graphqlClient<ApiesQuery, ApiesQueryVariables>(ApiesDocument, variables),
+    ...options
+  }
+    )};
 
 useApiesQuery.getKey = (variables?: ApiesQueryVariables) => variables === undefined ? ['Apies'] : ['Apies', variables];
-;
+
 
 useApiesQuery.fetcher = (variables?: ApiesQueryVariables, options?: RequestInit['headers']) => graphqlClient<ApiesQuery, ApiesQueryVariables>(ApiesDocument, variables, options);

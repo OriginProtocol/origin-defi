@@ -18,11 +18,15 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   const adr = address ?? self;
   const { data: ensName } = useEnsName({
     address: adr,
-    enabled: !isNilOrEmpty(adr),
+    query: {
+      enabled: !isNilOrEmpty(adr),
+    },
   });
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName,
-    enabled: !!ensName,
+    query: {
+      enabled: !!ensName,
+    },
   });
 
   if (isNilOrEmpty(adr)) {

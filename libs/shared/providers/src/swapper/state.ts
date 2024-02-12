@@ -4,6 +4,7 @@ import { scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
+import { useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
 import { getAvailableRoutes } from './utils';
@@ -87,6 +88,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         onSwapFailure,
       });
       const queryClient = useQueryClient();
+      const config = useConfig();
       const { value: slippage } = useSlippage();
 
       useDebouncedEffect(
@@ -115,7 +117,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           );
           const availabilities = await Promise.allSettled(
             availableRoutes.map((r) =>
-              swapActions[r.action].isRouteAvailable({
+              swapActions[r.action].isRouteAvailable(config, {
                 amountIn: state.amountIn,
                 tokenIn: r.tokenIn,
                 tokenOut: r.tokenOut,
@@ -142,14 +144,17 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                 queryFn: async () => {
                   let res: EstimatedSwapRoute;
                   try {
-                    res = await swapActions[route.action].estimateRoute({
-                      tokenIn: route.tokenIn,
-                      tokenOut: route.tokenOut,
-                      amountIn: state.amountIn,
-                      amountOut: state.amountOut,
-                      route,
-                      slippage: slippage,
-                    });
+                    res = await swapActions[route.action].estimateRoute(
+                      config,
+                      {
+                        tokenIn: route.tokenIn,
+                        tokenOut: route.tokenOut,
+                        amountIn: state.amountIn,
+                        amountOut: state.amountOut,
+                        route,
+                        slippage,
+                      },
+                    );
                   } catch (error) {
                     console.error(
                       `Fail to estimate route ${route.action}\n${error.message}`,

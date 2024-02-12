@@ -26,7 +26,7 @@ There is a shared storybook aggregator that can run all the stories across all t
 
 ## Translations
 
-After modifying a library or a module, you should run the according `i18-compile` script on the application project. There's  convenient `i18n` script at the root of the repo for running this on all apps.
+After modifying a library or a module, you should run the according `i18-compile` script on the application project. There's a convenient `i18n` script at the root of the repo for running this on all apps.
 
 ## Running tasks
 
@@ -48,7 +48,7 @@ pnpm nx run-many -t <target1> <target2>
 pnpm nx run-many -t <target1> <target2> -p <proj1> <proj2>
 ```
 
-Targets can be defined in the `package.json` or `projects.json`. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
+Targets are defined in the `apps/<APP_NAME>/projects.json` files. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
 
 ## graphQl
 
@@ -56,12 +56,13 @@ We use `react-query` in conjunction with `graphql-codegen` for interacting with 
 
 - write gql colocated to your components, in respective `queries|mutations|subscriptions|fragments.graphql` file
 - you get graphql autocompletion based on the schema located in `.graphqlconfig` at the root of the repo
-- run the graphql-codegen task with `pnpm nx run oeth-shared:codegen-graphql`, it will generate 
-  - the global types in `libs/oeth/shared/src/generated/graphql.ts` and 
+- run the graphql-codegen task with `pnpm nx run oeth-shared:codegen-graphql`, it will generate
+  - the global types in `libs/oeth/shared/src/generated/graphql.ts` and
   - the generated hooks next to your graphql file (i.e. `/libs/oeth/history/src/queries.generated.tsx`)
 - use the generated hooks in your component with fully typed args and results
 
 Couple of things to note:
+
 - generated hooks receives args as first param, second param exposes all react-query api for controlling execution
 - react-query http client is automatically injected via codegen, it is defined here `libs/oeth/shared/src/clients/graphql.ts`
 - autocompletion is ensured by `.graphqlconfig`, you'll probably need the proper IDE plugin to handle it

@@ -1,93 +1,44 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
-  argentWallet,
-  braveWallet,
   coinbaseWallet,
-  injectedWallet,
   ledgerWallet,
   metaMaskWallet,
   rabbyWallet,
-  rainbowWallet,
   safepalWallet,
-  safeWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-import { configureChains, createConfig } from 'wagmi';
+import { createConfig, fallback, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import { publicProvider } from 'wagmi/providers/public';
 
-const providers = [
-  ...(isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
-    ? []
-    : [
-        jsonRpcProvider({
-          rpc: () => ({
-            http: import.meta.env.VITE_CUSTOM_RPC,
-          }),
-        }),
-      ]),
-  alchemyProvider({ apiKey: import.meta.env.VITE_ALCHEMY_ID }),
-  publicProvider(),
-];
-
-export const { chains, publicClient, webSocketPublicClient } = configureChains(
-  [mainnet],
-  providers as any,
+const connectors = connectorsForWallets(
+  [
+    {
+      groupName: 'Supported',
+      wallets: [
+        metaMaskWallet,
+        rabbyWallet,
+        walletConnectWallet,
+        coinbaseWallet,
+        ledgerWallet,
+        safepalWallet,
+      ],
+    },
+  ],
   {
-    stallTimeout: import.meta.env.DEV ? 60000 : 3000,
+    appName: 'OETH',
+    projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
   },
 );
 
-const connectors = connectorsForWallets([
-  {
-    groupName: 'Recommended',
-    wallets: [
-      metaMaskWallet({
-        chains,
-        shimDisconnect: true,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      walletConnectWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      coinbaseWallet({ appName: 'Origin DeFi', chains }),
-      rabbyWallet({ chains }),
-      braveWallet({ chains, shimDisconnect: true }),
-    ],
-  },
-  {
-    groupName: 'Others',
-    wallets: [
-      injectedWallet({ chains, shimDisconnect: true }),
-      ledgerWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      safeWallet({ chains }),
-      safepalWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      rainbowWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-      argentWallet({
-        chains,
-        projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-      }),
-    ],
-  },
-]);
-
 export const wagmiConfig = createConfig({
-  autoConnect: true,
+  chains: [mainnet],
   connectors,
-  publicClient,
-  webSocketPublicClient,
+  transports: {
+    [mainnet.id]: fallback([
+      http(
+        `${import.meta.env.VITE_ALCHEMY_RPC}${import.meta.env.VITE_ALCHEMY_ID}`,
+      ),
+      http(),
+    ]),
+  },
 });

@@ -7,12 +7,13 @@ import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useHistoryTransactionQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 import type { HistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
@@ -23,13 +24,14 @@ export const usePendingYield = (
     number,
     Error,
     number,
-    ['usePendingYield', boolean, HexAddress, boolean]
+    ['usePendingYield', boolean, HexAddress, boolean, Config]
   >,
 ) => {
+  const config = useConfig();
   const { address, isConnected } = useAccount();
 
   return useQuery({
-    queryKey: ['usePendingYield', isWrapped, address, isConnected],
+    queryKey: ['usePendingYield', isWrapped, address, isConnected, config],
     queryFn: async () => {
       if (!isConnected) {
         return 0;
@@ -42,7 +44,7 @@ export const usePendingYield = (
         nonRebasingSupply,
         balance,
       ] = (
-        await readContracts({
+        await readContracts(config, {
           contracts: [
             {
               address: contracts.mainnet.OETHVault.address,

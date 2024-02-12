@@ -1,8 +1,8 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
+import { useFormat, useWatchContract } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
 import { useHistoryUserStatQuery } from '../queries.generated';
@@ -13,10 +13,11 @@ export function APYContainer() {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
-  const { data: oethBalance, isLoading: oethLoading } = useBalance({
-    address,
-    token: tokens.mainnet.OETH.address,
-    watch: true,
+  const { data: oethBalance, isLoading: oethLoading } = useWatchContract({
+    address: tokens.mainnet.OETH.address,
+    abi: tokens.mainnet.OETH.abi,
+    functionName: 'balanceOf',
+    args: [address],
   });
   const { data, isLoading } = useHistoryUserStatQuery(
     { address },
@@ -39,7 +40,10 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-        value={formatAmount(oethBalance?.value, oethBalance?.decimals)}
+        value={formatAmount(
+          oethBalance as unknown as bigint,
+          tokens.mainnet.OETH.decimals,
+        )}
         isLoading={isConnected && oethLoading}
       />
       <Divider orientation="vertical" flexItem />

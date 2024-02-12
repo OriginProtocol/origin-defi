@@ -5,7 +5,6 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
-  chains,
   queryClient,
   registerGoogleTagManager,
   registerSentry,
@@ -26,7 +25,7 @@ import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
-import { WagmiConfig } from 'wagmi';
+import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';
 import { routes } from './routes';
@@ -52,10 +51,10 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [QueryClientProvider, { client: queryClient }],
       [ThemeProvider, { theme }],
-      [WagmiConfig, { config: wagmiConfig }],
-      [RainbowKitProvider, { chains: chains, theme: darkTheme() }],
+      [WagmiProvider, { config: wagmiConfig }],
+      [QueryClientProvider, { client: queryClient }],
+      [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
       [NotificationsProvider],
       [ActivityProvider],
       [

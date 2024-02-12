@@ -8,6 +8,7 @@ import { readContracts } from '@wagmi/core';
 import axios from 'axios';
 import { map } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
+import { useConfig } from 'wagmi';
 
 import { coingeckoApiEndpoint, coingeckoTokenIds } from './constants';
 
@@ -36,12 +37,15 @@ export const usePrices = (
     ['usePrices']
   >,
 ) => {
+  const config = useConfig();
+
   return useQuery({
-    queryKey: ['usePrices'],
+    queryKey: ['usePrices', config],
     staleTime: import.meta.env.DEV ? 1000 * 60 * 30 : 1000 * 30,
+    gcTime: import.meta.env.DEV ? 1000 * 60 * 60 : 1000 * 60,
     queryFn: async () => {
       const res = await Promise.allSettled([
-        readContracts({
+        readContracts(config, {
           contracts: [
             ...Object.values(chainlinkOracles).map((address) => ({
               address,

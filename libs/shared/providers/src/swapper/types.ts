@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
+import type { Config } from 'wagmi';
 
 export type HexAddress = `0x${string}`;
 
@@ -19,14 +20,17 @@ type Args = {
 };
 
 export type IsRouteAvailable = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
+  config: Config,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage'
@@ -34,6 +38,7 @@ export type EstimateGas = (
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
+  config: Config,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
@@ -41,18 +46,22 @@ export type EstimateRoute = (
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
+  config: Config,
   args?: Pick<Args, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
+  config: Config,
   args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<HexAddress>;
 
 export type Swap = (
+  config: Config,
   args: Pick<
     Args,
     | 'tokenIn'
