@@ -1,9 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { uniq } from 'ramda';
 
-import type { Token } from '@origin/shared/contracts';
-
-import type { SwapRoute, TokenSource } from './types';
+import type { SwapRoute, Token, TokenSource } from './types';
 
 export const getAllAvailableTokens = (
   swapRoutes: SwapRoute[],

@@ -108,13 +108,13 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         background: (theme) => theme.palette.background.paper,
         borderRadius: 1,
         '&:hover': {
-          background: (theme) => theme.palette.grey[700],
+          background: (theme) => theme.palette.action.hover,
         },
         ...rest?.sx,
       }}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
-        <TokenIcon symbol={token?.symbol} width="2rem" height="2rem" />
+        <TokenIcon symbol={token?.symbol} sx={{ width: 20, height: 20 }} />
         <Box>
           <Typography fontWeight={500}>{token?.name}</Typography>
           <Typography variant="body2" color="text.secondary">

@@ -41,7 +41,28 @@ export const NotFoundPage = () => {
           defaultMessage: `Sorry, we can't seem to find that page`,
         })}
       </Typography>
-      <Button href="/" variant="action" sx={{ borderRadius: 8, minWidth: 300 }}>
+      <Button
+        href="/"
+        sx={{
+          borderRadius: 8,
+          minWidth: 300,
+          color: 'text.primary',
+          padding: 2,
+          fontSize: { xs: 18, md: 20 },
+          lineHeight: 1.6,
+          fontWeight: 500,
+          fontStyle: 'normal',
+          '&:hover': {
+            background:
+              'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+            opacity: 1,
+          },
+          '&:disabled': {
+            opacity: 0.5,
+            color: 'text.primary',
+          },
+        }}
+      >
         {intl.formatMessage({
           defaultMessage: 'Go back home',
         })}

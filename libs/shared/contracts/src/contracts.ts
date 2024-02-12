@@ -9,6 +9,9 @@ import { DIAOracleABI } from './abis/DIAOracle';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { IVaultABI } from './abis/IVault';
+import { LrtConfigABI } from './abis/LrtConfig';
+import { LrtDepositPoolABI } from './abis/LrtDepositPool';
+import { LrtOracleABI } from './abis/LrtOracle';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
@@ -47,6 +50,25 @@ export const contracts = {
       chainId: mainnet.id,
       abi: DIAOracleABI,
       name: 'DIAOracle',
+    },
+    // LRT
+    lrtOracle: {
+      address: '0xA755c18CD2376ee238daA5Ce88AcF17Ea74C1c32',
+      chainId: mainnet.id,
+      abi: LrtOracleABI,
+      name: 'lrtOracle',
+    },
+    lrtDepositPool: {
+      address: '0xA479582c8b64533102F6F528774C536e354B8d32',
+      chainId: mainnet.id,
+      abi: LrtDepositPoolABI,
+      name: 'lrtDepositPool',
+    },
+    lrtConfig: {
+      address: '0xF879c7859b6DE6FAdaFB74224Ff05b16871646bF',
+      chainId: mainnet.id,
+      abi: LrtConfigABI,
+      name: 'lrtConfig',
     },
     // OETH
     OETHCurvePool: {

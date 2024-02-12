@@ -16,6 +16,7 @@ export const RedeemView = () => {
           vaultContract={contracts.mainnet.OUSDVault}
           trackEvent={trackEvent}
           onError={trackSentryError}
+          buttonsProps={{ variant: 'action' }}
         />
       </ErrorBoundary>
     </Stack>

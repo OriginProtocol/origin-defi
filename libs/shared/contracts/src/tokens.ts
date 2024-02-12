@@ -29,6 +29,14 @@ export const tokens = {
       decimals: 18,
       symbol: 'ETH',
     },
+    ETHx: {
+      address: '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Stader ETHx',
+      decimals: 18,
+      symbol: 'ETHx',
+    },
     frxETH: {
       address: '0x5E8422345238F34275888049021821E8E08CAa1f',
       chainId: mainnet.id,
@@ -36,6 +44,14 @@ export const tokens = {
       name: 'Frax Ether',
       decimals: 18,
       symbol: 'frxETH',
+    },
+    mETH: {
+      address: '0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Mantle Staked Ether',
+      decimals: 18,
+      symbol: 'mETH',
     },
     OETH: {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3',
@@ -69,6 +85,14 @@ export const tokens = {
       decimals: 18,
       symbol: 'OUSD',
     },
+    primeETH: {
+      address: '0x6ef3D766Dfe02Dc4bF04aAe9122EB9A0Ded25615',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Prime ETH',
+      decimals: 18,
+      symbol: 'primeETH',
+    },
     rETH: {
       address: '0xae78736Cd615f374D3085123A210448E74Fc6393',
       chainId: mainnet.id,
@@ -92,6 +116,14 @@ export const tokens = {
       name: 'Liquid Staked Ether 2.0',
       decimals: 18,
       symbol: 'stETH',
+    },
+    swETH: {
+      address: '0xf951e335afb289353dc249e82926178eac7ded78',
+      chainId: mainnet.id,
+      abi: erc20ABI,
+      name: 'Swell ETH',
+      decimals: 18,
+      symbol: 'swETH',
     },
     USDC: {
       address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',

@@ -108,19 +108,21 @@ export const GeoFenceProvider = ({
         <DialogActions sx={{ gap: 3, px: 3, pt: { xs: 2, sm: 0 }, pb: 3 }}>
           <Button
             href={href}
-            variant="action"
             fullWidth
             sx={{
               fontSize: 16,
               borderRadius: 8,
               padding: 1,
+              '&:disabled': {
+                opacity: 0.5,
+                color: 'text.primary',
+              },
             }}
           >
             {intl.formatMessage({ defaultMessage: 'Exit' })}
           </Button>
           <Button
             disabled={!checked}
-            variant="action"
             fullWidth
             onClick={() => {
               setGeoCheck(true);
@@ -129,6 +131,17 @@ export const GeoFenceProvider = ({
               fontSize: 16,
               borderRadius: 8,
               padding: 1,
+              color: 'text.primary',
+              background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+              '&:hover': {
+                background:
+                  'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                opacity: 1,
+              },
+              '&:disabled': {
+                opacity: 0.5,
+                color: 'text.primary',
+              },
             }}
           >
             {intl.formatMessage({ defaultMessage: 'I agree' })}

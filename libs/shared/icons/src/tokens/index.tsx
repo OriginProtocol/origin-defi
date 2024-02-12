@@ -2,14 +2,18 @@ import { SvgIcon } from '@mui/material';
 
 import DAISvg from './DAI.svg?react';
 import ETHSvg from './ETH.svg?react';
+import ETHxSvg from './ETHx.svg?react';
 import frxETHSvg from './frxETH.svg?react';
+import mETHSvg from './mETH.svg?react';
 import OETHSvg from './OETH.svg?react';
 import OGNSvg from './OGN.svg?react';
 import OGVSvg from './OGV.svg?react';
 import OUSDSvg from './OUSD.svg?react';
+import primeETHSvg from './primeETH.svg?react';
 import rETHSvg from './rETH.svg?react';
 import sfrxETHSvg from './sfrxETH.svg?react';
 import stETHSvg from './stETH.svg?react';
+import swETHSvg from './swETH.svg?react';
 import USDCSvg from './USDC.svg?react';
 import USDTSvg from './USDT.svg?react';
 import veOGVSvg from './veOGV.svg?react';
@@ -25,8 +29,17 @@ export const DAI = (props: SvgIconProps) => (
 export const ETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ETHSvg} viewBox="0 0 24 24" />
 );
+export const ETHx = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ETHxSvg} inheritViewBox />
+);
 export const frxETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={frxETHSvg} viewBox="0 0 24 24" />
+);
+export const mETH = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={mETHSvg} inheritViewBox />
+);
+export const primeETH = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={primeETHSvg} inheritViewBox />
 );
 export const OETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={OETHSvg} viewBox="0 0 24 24" />
@@ -48,6 +61,9 @@ export const sfrxETH = (props: SvgIconProps) => (
 );
 export const stETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={stETHSvg} viewBox="0 0 24 24" />
+);
+export const swETH = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={swETHSvg} inheritViewBox />
 );
 export const USDC = (props: SvgIconProps) => (
   <SvgIcon {...props} component={USDCSvg} viewBox="0 0 30 30" />

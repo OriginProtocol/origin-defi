@@ -54,7 +54,6 @@ const estimateAmount: EstimateAmount = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return 0n;
@@ -74,7 +73,6 @@ const estimateGas: EstimateGas = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  curve,
   amountOut,
   slippage,
 }) => {
@@ -104,7 +102,7 @@ const estimateGas: EstimateGas = async ({
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ tokenIn, tokenOut, curve }) => {
+const allowance: Allowance = async ({ tokenIn, tokenOut }) => {
   const { address } = getAccount();
 
   if (isNilOrEmpty(address)) {
@@ -124,7 +122,6 @@ const allowance: Allowance = async ({ tokenIn, tokenOut, curve }) => {
 const estimateApprovalGas: EstimateApprovalGas = async ({
   tokenIn,
   amountIn,
-  curve,
 }) => {
   let approvalEstimate = 0n;
   const { address } = getAccount();
@@ -156,7 +153,6 @@ const estimateRoute: EstimateRoute = async ({
   amountIn,
   route,
   slippage,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return {
@@ -174,10 +170,9 @@ const estimateRoute: EstimateRoute = async ({
       tokenIn,
       tokenOut,
       amountIn,
-      curve,
     }),
-    allowance({ tokenIn, tokenOut, curve }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut, curve }),
+    allowance({ tokenIn, tokenOut }),
+    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
   ]);
   const gas = await estimateGas({
     tokenIn,
@@ -185,7 +180,6 @@ const estimateRoute: EstimateRoute = async ({
     amountIn,
     amountOut: estimatedAmount,
     slippage,
-    curve,
   });
 
   return {
@@ -200,7 +194,7 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: erc20ABI,
@@ -218,7 +212,6 @@ const swap: Swap = async ({
   amountIn,
   amountOut,
   slippage,
-  curve,
 }) => {
   const { address } = getAccount();
 
@@ -226,7 +219,7 @@ const swap: Swap = async ({
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut, curve });
+  const approved = await allowance({ tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`Swap curve is not approved`);
@@ -240,7 +233,6 @@ const swap: Swap = async ({
     tokenIn,
     tokenOut,
     amountOut,
-    curve,
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 

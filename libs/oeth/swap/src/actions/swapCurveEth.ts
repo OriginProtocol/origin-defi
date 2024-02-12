@@ -1,5 +1,9 @@
+import { queryClient } from '@origin/oeth/shared';
 import { contracts } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
+import {
+  prepareWriteContractWithTxTracker,
+  useCurve,
+} from '@origin/shared/providers';
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
@@ -29,12 +33,16 @@ const estimateAmount: EstimateAmount = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
   const amountOut = await readContract({
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
@@ -54,7 +62,6 @@ const estimateGas: EstimateGas = async ({
   tokenIn,
   tokenOut,
   amountIn,
-  curve,
   amountOut,
   slippage,
 }) => {
@@ -68,6 +75,12 @@ const estimateGas: EstimateGas = async ({
   const { address } = getAccount();
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -114,7 +127,6 @@ const estimateRoute: EstimateRoute = async ({
   amountIn,
   route,
   slippage,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return {
@@ -132,7 +144,6 @@ const estimateRoute: EstimateRoute = async ({
       tokenIn,
       tokenOut,
       amountIn,
-      curve,
     }),
     allowance(),
     estimateApprovalGas(),
@@ -143,7 +154,6 @@ const estimateRoute: EstimateRoute = async ({
     amountIn,
     amountOut: estimatedAmount,
     slippage,
-    curve,
   });
 
   return {
@@ -169,7 +179,6 @@ const swap: Swap = async ({
   amountIn,
   amountOut,
   slippage,
-  curve,
 }) => {
   if (amountIn === 0n) {
     return null;
@@ -177,13 +186,17 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
+  const curve = await queryClient.fetchQuery({
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher,
+    staleTime: Infinity,
+  });
   const estimatedGas = await estimateGas({
     amountIn,
     slippage,
     tokenIn,
     tokenOut,
     amountOut,
-    curve,
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 

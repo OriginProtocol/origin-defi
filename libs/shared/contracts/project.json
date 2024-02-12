@@ -12,21 +12,21 @@
     "generate-abis-json": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --esm libs/shared/contracts/scripts/generateAbisJson.mts",
+        "command": "pnpm tsx libs/shared/contracts/scripts/generateAbisJson.ts",
         "parallel": false
       }
     },
     "generate-abis-ts": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --esm libs/shared/contracts/scripts/generateAbisTs.mts",
+        "command": "pnpm tsx libs/shared/contracts/scripts/generateAbisTs.ts",
         "parallel": false
       }
     },
     "generate-contracts": {
       "executor": "nx:run-commands",
       "options": {
-        "command": "ts-node --esm libs/shared/contracts/scripts/generateContracts.mts",
+        "command": "pnpm tsx libs/shared/contracts/scripts/generateContracts.ts",
         "parallel": false
       }
     }

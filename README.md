@@ -17,7 +17,8 @@ To start the development server run `pnpm nx serve <APP_NAME>`
 |   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
 |   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
 |   🚧   | `defi`       | 4202 | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    |
-|   🚧   | `governance` | 4203 | [aws](https://governance.ousd.com/)   |
+|   ✅   | `governance` | 4203 | [aws](https://governance.ousd.com/)   |
+|   🚧   | `prime`      | 4204 | [aws](https://next.d3ekvisba9ol3t.amplifyapp.com/#/restake)   |
 
 ## Storybook
 

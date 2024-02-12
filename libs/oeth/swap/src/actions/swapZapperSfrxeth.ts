@@ -152,7 +152,7 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
   if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
     return null;
   }

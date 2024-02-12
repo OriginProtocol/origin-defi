@@ -18,6 +18,7 @@ export const SwapView = () => {
           swapRoutes={swapRoutes}
           onError={trackSentryError}
           trackEvent={trackEvent}
+          buttonsProps={{ variant: 'action' }}
         />
       </ErrorBoundary>
     </Stack>

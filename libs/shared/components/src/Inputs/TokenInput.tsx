@@ -217,7 +217,6 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         minHeight: 32,
         borderRadius: 25,
         fontSize: '1rem',
-        fontFamily: 'Inter',
         paddingLeft: 0.25,
         paddingRight: isDisabled ? 2 : 1,
         border: '1px solid transparent',

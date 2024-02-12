@@ -60,8 +60,8 @@ export const ApprovalNotification = ({
               },
               {
                 amountIn: intl.formatNumber(
-                  +formatUnits(amountIn, tokenIn.decimals),
-                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                  +formatUnits(amountIn ?? 0n, tokenIn.decimals),
+                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
                 symbolIn: tokenIn.symbol,
               },
@@ -71,7 +71,7 @@ export const ApprovalNotification = ({
           <Typography color="error">{error}</Typography>
         )
       }
-      endIcon={<TokenIcon symbol={tokenIn.symbol} />}
+      endIcon={<TokenIcon symbol={tokenIn.symbol} sx={{ fontSize: 20 }} />}
     />
   );
 };

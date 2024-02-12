@@ -1,0 +1,41 @@
+import * as Types from '@origin/prime/shared';
+
+import { useQuery, UseQueryOptions } from '@tanstack/react-query';
+import { graphqlClient } from '@origin/prime/shared';
+export type PointRecipientStatsQueryVariables = Types.Exact<{
+  address: Types.Scalars['String']['input'];
+}>;
+
+
+export type PointRecipientStatsQuery = { __typename?: 'Query', totalEigenLayerPoints: string, lrtPointRecipientStats: { __typename?: 'LRTPointRecipientStats', elPoints: string, points: string }, lrtSummaries: Array<{ __typename?: 'LRTSummary', points: string }> };
+
+
+export const PointRecipientStatsDocument = `
+    query PointRecipientStats($address: String!) {
+  lrtPointRecipientStats(address: $address) {
+    elPoints
+    points
+  }
+  lrtSummaries(limit: 1, orderBy: id_DESC) {
+    points
+  }
+  totalEigenLayerPoints
+}
+    `;
+export const usePointRecipientStatsQuery = <
+      TData = PointRecipientStatsQuery,
+      TError = unknown
+    >(
+      variables: PointRecipientStatsQueryVariables,
+      options?: UseQueryOptions<PointRecipientStatsQuery, TError, TData>
+    ) =>
+    useQuery<PointRecipientStatsQuery, TError, TData>(
+      ['PointRecipientStats', variables],
+      graphqlClient<PointRecipientStatsQuery, PointRecipientStatsQueryVariables>(PointRecipientStatsDocument, variables),
+      options
+    );
+
+usePointRecipientStatsQuery.getKey = (variables: PointRecipientStatsQueryVariables) => ['PointRecipientStats', variables];
+;
+
+usePointRecipientStatsQuery.fetcher = (variables: PointRecipientStatsQueryVariables, options?: RequestInit['headers']) => graphqlClient<PointRecipientStatsQuery, PointRecipientStatsQueryVariables>(PointRecipientStatsDocument, variables, options);

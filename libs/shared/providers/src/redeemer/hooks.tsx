@@ -43,7 +43,6 @@ export const useHandleAmountInChange = () => {
 
 export const useHandleRedeem = () => {
   const intl = useIntl();
-  const { value: slippage } = useSlippage();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -54,6 +53,7 @@ export const useHandleRedeem = () => {
     setRedeemState,
   ] = useRedeemState();
   const wagmiClient = useQueryClient();
+  const { value: slippage } = useSlippage();
 
   return useCallback(async () => {
     if (amountIn === 0n || isNilOrEmpty(address)) {

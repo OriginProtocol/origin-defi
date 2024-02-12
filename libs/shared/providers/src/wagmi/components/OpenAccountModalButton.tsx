@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { mergeDeepRight } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { AccountButton } from './AccountButton';
@@ -9,10 +11,14 @@ import type { MouseEvent } from 'react';
 
 interface OpenAccountModalButtonProps extends ButtonProps {
   connectLabel?: string;
+  connectedProps?: ButtonProps;
+  disconnectedProps?: ButtonProps;
 }
 
 export const OpenAccountModalButton = ({
   connectLabel,
+  connectedProps,
+  disconnectedProps,
   ...props
 }: OpenAccountModalButtonProps) => {
   const intl = useIntl();
@@ -31,15 +37,7 @@ export const OpenAccountModalButton = ({
         if (!mounted || !account || !chain) {
           return (
             <Button
-              {...props}
-              sx={{
-                background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                '&:hover': {
-                  background:
-                    'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                },
-                ...props?.sx,
-              }}
+              {...(mergeDeepRight(props, disconnectedProps) as any)}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -64,7 +62,7 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
-            {...props}
+            {...(mergeDeepRight(props, connectedProps) as any)}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
               if (props?.onClick) {
                 props.onClick(evt);

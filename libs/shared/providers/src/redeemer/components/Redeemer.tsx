@@ -22,13 +22,13 @@ import { useIntl } from 'react-intl';
 import { useAccount, useBalance } from 'wagmi';
 
 import { usePrices } from '../../prices';
-import { PriceTolerancePopover, useSlippage } from '../../slippage';
 import { ConnectedButton } from '../../wagmi';
 import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
+import { SettingsPopover } from './SettingsPopover';
 
-import type { BoxProps, StackProps } from '@mui/material';
+import type { BoxProps, ButtonProps, StackProps } from '@mui/material';
 import type { MouseEvent } from 'react';
 
 import type { RedeemState } from '../types';
@@ -39,6 +39,7 @@ export type RedeemerProps = Pick<
 > & {
   gasBuffer?: bigint;
   onError?: (error: Error) => void;
+  buttonsProps?: ButtonProps;
 } & Omit<StackProps, 'onError'>;
 
 export const Redeemer = ({
@@ -55,10 +56,10 @@ export const Redeemer = ({
 
 function RedeemerWrapped({
   onError,
+  buttonsProps,
   ...rest
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
-  const { value: slippage, set: setSlippage } = useSlippage();
   const { address, isConnected } = useAccount();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
@@ -84,14 +85,6 @@ function RedeemerWrapped({
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(evt.currentTarget);
     trackEvent({ name: 'open_settings' });
-  };
-
-  const handleSlippageChange = (val: number) => {
-    setSlippage(val);
-    trackEvent({
-      name: 'change_price_tolerance',
-      price_tolerance: val,
-    });
   };
 
   const redeemButtonLabel =
@@ -132,12 +125,10 @@ function RedeemerWrapped({
                 >
                   <FaGearComplexRegular />
                 </IconButton>
-                <PriceTolerancePopover
+                <SettingsPopover
                   open={!!anchorEl}
                   anchorEl={anchorEl}
                   onClose={() => setAnchorEl(null)}
-                  slippage={slippage}
-                  onSlippageChange={handleSlippageChange}
                 />
               </Stack>
             }
@@ -206,11 +197,11 @@ function RedeemerWrapped({
               }}
             />
             <ConnectedButton
-              variant="action"
               fullWidth
+              {...buttonsProps}
               disabled={redeemButtonDisabled}
               onClick={handleRedeem}
-              sx={{ mt: 1.5 }}
+              sx={{ mt: 1.5, ...buttonsProps?.sx }}
             >
               {isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />

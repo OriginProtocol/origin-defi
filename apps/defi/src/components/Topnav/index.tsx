@@ -109,6 +109,16 @@ export const Topnav = () => {
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
                 minHeight: { xs: 36, md: 44 },
               }}
+              disconnectedProps={{
+                sx: {
+                  background:
+                    'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                  '&:hover': {
+                    background:
+                      'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                  },
+                },
+              }}
             />
             <AccountPopover
               anchor={accountModalAnchor}

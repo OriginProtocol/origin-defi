@@ -1,2 +1,2 @@
-export * from './components/PriceTolerancePopover';
+export * from './components/SlippageFormControl';
 export * from './hooks';

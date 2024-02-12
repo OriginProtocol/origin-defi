@@ -217,7 +217,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn, curve }) => {
+const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
   const { request } = await prepareWriteContract({
     address: tokenIn.address,
     abi: tokenIn.abi,
