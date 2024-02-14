@@ -93,6 +93,7 @@ export const StakingHeader = () => {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
+                  roundingMode: 'floor',
                 })}
                 isLoading={isInfoLoading}
                 {...valueLabelProps}
