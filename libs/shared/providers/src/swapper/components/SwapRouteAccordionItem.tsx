@@ -56,7 +56,7 @@ export function SwapRouteAccordionItem({
     (approvalGasPriceLoading && approvalGasPriceFetching);
   const gasPrice =
     (swapGasPrice?.gasCostUsd ?? 0) +
-    (allowance < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+    ((allowance ?? 0n) < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -68,7 +68,6 @@ export function SwapRouteAccordionItem({
         borderRadius: 1,
         backgroundColor: 'background.paper',
         border: '1px solid',
-        borderColor: 'grey.800',
         px: 2,
         py: 1,
         ...(isSelected
@@ -79,6 +78,7 @@ export function SwapRouteAccordionItem({
               linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
+              borderColor: 'grey.800',
               ':hover': {
                 borderColor: 'transparent',
                 background: (theme) =>

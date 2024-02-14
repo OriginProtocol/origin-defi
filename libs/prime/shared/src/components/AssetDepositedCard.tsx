@@ -10,7 +10,7 @@ import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
-import { useContractReads } from 'wagmi';
+import { useReadContracts } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
 
@@ -27,7 +27,7 @@ export const assets = [
 export const AssetDepositedCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { data, isLoading } = useContractReads({
+  const { data, isLoading } = useReadContracts({
     contracts: assets.map((a) => ({
       address: contracts.mainnet.lrtDepositPool.address,
       abi: contracts.mainnet.lrtDepositPool.abi,

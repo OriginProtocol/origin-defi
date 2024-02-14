@@ -33,19 +33,21 @@ const analytics = Analytics({
 });
 
 export const registerGoogleTagManager = () => {
-  analytics.ready(() => {
-    console.log('Analytics enabled');
-  });
+  if (import.meta.env.PROD) {
+    analytics.ready(() => {
+      console.log('Analytics enabled');
+    });
+  }
 };
 
 export const trackEvent = ({ name, ...rest }: TrackEvent) => {
-  if (analytics.ready /*&& import.meta.env.PROD */) {
+  if (import.meta.env.PROD) {
     analytics.track(name, map(formatParams, rest));
   }
 };
 
 export const trackPage = () => {
-  if (analytics.ready /*&& import.meta.env.PROD */) {
+  if (import.meta.env.PROD) {
     analytics.page();
   }
 };

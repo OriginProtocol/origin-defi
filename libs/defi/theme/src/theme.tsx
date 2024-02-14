@@ -10,7 +10,9 @@ import {
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
 
-const base = createTheme({
+const base = createTheme();
+
+export const theme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
@@ -62,9 +64,6 @@ const base = createTheme({
       main: '#FF4E4E',
     },
   },
-});
-
-export const theme = createTheme(base, {
   typography: {
     fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
 
@@ -186,6 +185,7 @@ export const theme = createTheme(base, {
     borderRadius: 4,
   },
   shadows: [
+    // @ts-expect-error remove one box shadow
     ...shadows.slice(0, -2),
     '0px 6px 12px 0px rgba(0, 0, 0, 0.20)',
     'rgba(0, 0, 0, 0.25) 0px 4px 4px 0px',

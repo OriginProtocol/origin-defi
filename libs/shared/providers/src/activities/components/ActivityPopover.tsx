@@ -47,7 +47,7 @@ export const ActivityPopover = ({
   };
 
   const sortedActivities = pipe(
-    sort(descend((a) => a['createdOn'] as number)),
+    sort(descend((a: Activity) => a.createdOn)),
     take(maxVisible),
   )(activities) as Activity[];
 

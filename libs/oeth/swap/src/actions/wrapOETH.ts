@@ -32,7 +32,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     args: [amountIn],
   });
 
-  return data;
+  return data as unknown as bigint;
 };
 
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
@@ -46,28 +46,31 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 
   const { address } = getAccount(config);
 
-  if (!isNilOrEmpty(address)) {
+  if (address) {
     try {
-      gasEstimate = await publicClient.estimateContractGas({
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
-        functionName: 'deposit',
-        args: [amountIn, address],
-        account: address,
-      });
+      gasEstimate =
+        (await publicClient?.estimateContractGas({
+          address: tokens.mainnet.wOETH.address,
+          abi: tokens.mainnet.wOETH.abi,
+          functionName: 'deposit',
+          args: [amountIn, address],
+          account: address,
+        })) ?? 0n;
 
       return gasEstimate;
     } catch {}
   }
 
   try {
-    gasEstimate = await publicClient.estimateContractGas({
-      address: tokens.mainnet.wOETH.address,
-      abi: tokens.mainnet.wOETH.abi,
-      functionName: 'deposit',
-      args: [amountIn, whales.mainnet.OETH],
-      account: whales.mainnet.OETH,
-    });
+    if (publicClient) {
+      gasEstimate = await publicClient.estimateContractGas({
+        address: tokens.mainnet.wOETH.address,
+        abi: tokens.mainnet.wOETH.abi,
+        functionName: 'deposit',
+        args: [amountIn, whales.mainnet.OETH],
+        account: whales.mainnet.OETH,
+      });
+    }
   } catch {
     gasEstimate = 21000n;
   }
@@ -78,7 +81,7 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -99,20 +102,22 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !tokenIn?.address) {
     return approvalEstimate;
   }
 
   const publicClient = getPublicClient(config);
 
   try {
-    approvalEstimate = await publicClient.estimateContractGas({
-      address: tokenIn.address,
-      abi: erc20Abi,
-      functionName: 'approve',
-      args: [tokens.mainnet.wOETH.address, amountIn],
-      account: address,
-    });
+    if (publicClient) {
+      approvalEstimate = await publicClient?.estimateContractGas({
+        address: tokenIn.address,
+        abi: erc20Abi,
+        functionName: 'approve',
+        args: [tokens.mainnet.wOETH.address, amountIn],
+        account: address,
+      });
+    }
   } catch {
     approvalEstimate = 200000n;
   }
@@ -155,7 +160,11 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,

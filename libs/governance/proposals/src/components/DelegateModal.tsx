@@ -19,7 +19,7 @@ import {
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { isAddressEqual } from 'viem';
@@ -27,19 +27,21 @@ import { useAccount } from 'wagmi';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 import type { HexAddress } from '@origin/shared/utils';
+import type { ChangeEvent } from 'react';
 
 export const DelegateModal = (props: DialogProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address } = useAccount();
   const queryClient = useQueryClient();
-  const [delegatee, setDelegatee] = useState('');
+  const [delegatee, setDelegatee] = useState<HexAddress | null>(null);
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
 
   const delegateDisabled =
-    isNilOrEmpty(delegatee) ||
+    !delegatee ||
     !/^0x[a-fA-F0-9]{40}$/.test(delegatee) ||
-    isAddressEqual(delegatee as HexAddress, address);
+    !address ||
+    isAddressEqual(delegatee, address);
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth>
@@ -126,8 +128,8 @@ export const DelegateModal = (props: DialogProps) => {
           </Typography>
           <InputBase
             value={delegatee}
-            onChange={(evt) => {
-              setDelegatee(evt.target.value);
+            onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+              setDelegatee(evt.target.value as HexAddress);
             }}
             placeholder={intl.formatMessage({
               defaultMessage: 'Enter address',
@@ -163,12 +165,14 @@ export const DelegateModal = (props: DialogProps) => {
             },
           )}
           onSuccess={() => {
-            props.onClose(null, 'backdropClick');
+            props?.onClose?.({}, 'backdropClick');
             queryClient.invalidateQueries({
               queryKey: ['useGovernanceInfo'],
             });
             queryClient.invalidateQueries({
-              queryKey: [useUserInfoQuery.getKey({ address })],
+              queryKey: [
+                useUserInfoQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+              ],
             });
           }}
         />

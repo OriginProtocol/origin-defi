@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { scale } from '@origin/shared/utils';
+import { formatError, isFulfilled, scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
@@ -21,7 +21,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       SwapState,
       | 'swapActions'
       | 'swapRoutes'
-      | 'debounceTime'
       | 'trackEvent'
       | 'onInputAmountChange'
       | 'onInputTokenChange'
@@ -36,7 +35,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       | 'onSwapSuccess'
       | 'onSwapReject'
       | 'onSwapFailure'
-    >
+    > & { debounceTime?: number }
   >(
     ({
       swapActions,
@@ -157,7 +156,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                     );
                   } catch (error) {
                     console.error(
-                      `Fail to estimate route ${route.action}\n${error.message}`,
+                      `Fail to estimate route ${route.action}\n${formatError(error)}`,
                     );
                     res = {
                       tokenIn: route.tokenIn,
@@ -178,7 +177,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           );
 
           const sortedRoutes = routes
-            .map((r) => (r.status === 'fulfilled' ? r.value : null))
+            .filter(isFulfilled)
+            .map((r) => r.value)
             .sort((a, b) => {
               const valA =
                 scale(a.estimatedAmount, a.tokenOut.decimals, 18) -

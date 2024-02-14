@@ -22,7 +22,11 @@ import {
   TokenInput,
 } from '@origin/shared/components';
 import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import {
+  formatError,
+  isNilOrEmpty,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -123,14 +127,14 @@ export const Swapper = ({
           ...state,
           id: trackId,
           status: 'success',
-          error: error?.['shortMessage'] ?? error.message,
+          error: formatError(error),
         });
         pushNotification({
           content: (
             <ApprovalNotification
               {...state}
               status="error"
-              error={error?.['shortMessage'] ?? error.message}
+              error={formatError(error)}
             />
           ),
         });
@@ -173,14 +177,14 @@ export const Swapper = ({
           ...state,
           id: trackId,
           status: 'error',
-          error: error?.['shortMessage'] ?? error.message,
+          error: formatError(error),
         });
         pushNotification({
           content: (
             <SwapNotification
               {...state}
               status="error"
-              error={error?.['shortMessage'] ?? error.message}
+              error={formatError(error)}
             />
           ),
         });
@@ -198,7 +202,7 @@ function SwapperWrapped({
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { value: slippage, set: setSlippage } = useSlippage();
+  const { value: slippage } = useSlippage();
   const { isConnected, chain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
@@ -221,7 +225,6 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = usePrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
@@ -254,8 +257,8 @@ function SwapperWrapped({
     !isBalTokenInLoading &&
     (balTokenIn as unknown as bigint) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
-    selectedSwapRoute?.allowanceAmount < amountIn &&
-    allowance < amountIn;
+    (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
+    (allowance ?? 0n) < amountIn;
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
@@ -263,7 +266,9 @@ function SwapperWrapped({
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : !isNilOrEmpty(selectedSwapRoute)
           ? intl.formatMessage(
-              swapActions[selectedSwapRoute.action].buttonLabel,
+              swapActions[selectedSwapRoute?.action ?? '']?.buttonLabel ?? {
+                defaultMessage: 'Swap',
+              },
             )
           : '';
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;

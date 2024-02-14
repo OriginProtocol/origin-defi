@@ -6,13 +6,14 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import axios from 'axios';
-import { map } from 'ramda';
+import { pathOr } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
 import { coingeckoApiEndpoint, coingeckoTokenIds } from './constants';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 import type { SupportedToken } from './types';
 
@@ -34,7 +35,7 @@ export const usePrices = (
     Record<SupportedToken, number>,
     Error,
     Record<SupportedToken, number>,
-    ['usePrices']
+    ['usePrices', Config]
   >,
 ) => {
   const config = useConfig();
@@ -99,35 +100,41 @@ export const usePrices = (
 
       const multi = res[0].status === 'fulfilled' ? res[0].value : [];
 
-      const OETH = +formatUnits(multi?.[11]?.result?.[0] ?? 0n, 8);
-      const OUSD = +formatUnits(multi?.[12]?.result?.[0] ?? 0n, 8);
-      const ETH = +formatUnits(multi?.[0]?.result?.[1] ?? 0n, 8);
-      const DAI = +formatUnits(multi?.[1]?.result?.[1] ?? 0n, 8);
-      const USDC = +formatUnits(multi?.[2]?.result?.[1] ?? 0n, 8);
-      const USDT = +formatUnits(multi?.[3]?.result?.[1] ?? 0n, 8);
-      const FRAX = +formatUnits(multi?.[4]?.result?.[1] ?? 0n, 8);
+      const OETH = +formatUnits(pathOr(0n, [11, 'result', 0], multi), 8);
+      const OUSD = +formatUnits(pathOr(0n, [12, 'result', 0], multi), 8);
+      const ETH = +formatUnits(pathOr(0n, [0, 'result', 1], multi), 8);
+      const DAI = +formatUnits(pathOr(0n, [1, 'result', 1], multi), 8);
+      const USDC = +formatUnits(pathOr(0n, [2, 'result', 1], multi), 8);
+      const USDT = +formatUnits(pathOr(0n, [3, 'result', 1], multi), 8);
+      const FRAX = +formatUnits(pathOr(0n, [4, 'result', 1], multi), 8);
       const frxETH =
-        +formatUnits(multi?.[5]?.result?.[1] ?? 0n, toks.mainnet.ETH.decimals) *
-        ETH;
+        +formatUnits(
+          pathOr(0n, [5, 'result', 1], multi),
+          toks.mainnet.ETH.decimals,
+        ) * ETH;
       const stETH =
-        +formatUnits(multi?.[6]?.result?.[1] ?? 0n, toks.mainnet.ETH.decimals) *
-        ETH;
+        +formatUnits(
+          pathOr(0n, [6, 'result', 1], multi),
+          toks.mainnet.ETH.decimals,
+        ) * ETH;
       const rETH =
-        +formatUnits(multi?.[7]?.result?.[1] ?? 0n, toks.mainnet.ETH.decimals) *
-        ETH;
+        +formatUnits(
+          pathOr(0n, [7, 'result', 1], multi),
+          toks.mainnet.ETH.decimals,
+        ) * ETH;
       const wOETH =
         +formatUnits(
-          (multi?.[8]?.result as unknown as bigint) ?? 0n,
+          pathOr(0n, [8, 'result'], multi),
           toks.mainnet.wOETH.decimals,
         ) * OETH;
       const wOUSD =
         +formatUnits(
-          (multi?.[9]?.result as unknown as bigint) ?? 0n,
+          pathOr(0n, [9, 'result'], multi),
           toks.mainnet.wOUSD.decimals,
         ) * OUSD;
       const sfrxETH =
         +formatUnits(
-          (multi?.[10]?.result as unknown as bigint) ?? 0n,
+          pathOr(0n, [10, 'result'], multi),
           toks.mainnet.sfrxETH.decimals,
         ) * frxETH;
 
@@ -152,24 +159,3 @@ export const usePrices = (
     ...options,
   });
 };
-
-export const useConvertedPrices = (
-  target: SupportedToken,
-  options?: Omit<
-    UseQueryOptions<
-      Record<SupportedToken, number>,
-      Error,
-      Record<SupportedToken, number>,
-      ['usePrices']
-    >,
-    'select'
-  >,
-) =>
-  usePrices({
-    ...options,
-    select: (data) => {
-      const priceOut = data[target] === 0 ? 1 : data[target];
-
-      return map((usdPrice) => usdPrice / priceOut, data);
-    },
-  });

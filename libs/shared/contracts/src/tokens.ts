@@ -32,7 +32,7 @@ export const tokens = {
     ETHx: {
       address: '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Stader ETHx',
       decimals: 18,
       symbol: 'ETHx',
@@ -48,7 +48,7 @@ export const tokens = {
     mETH: {
       address: '0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Mantle Staked Ether',
       decimals: 18,
       symbol: 'mETH',
@@ -88,7 +88,7 @@ export const tokens = {
     primeETH: {
       address: '0x6ef3D766Dfe02Dc4bF04aAe9122EB9A0Ded25615',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Prime ETH',
       decimals: 18,
       symbol: 'primeETH',
@@ -120,7 +120,7 @@ export const tokens = {
     swETH: {
       address: '0xf951e335afb289353dc249e82926178eac7ded78',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Swell ETH',
       decimals: 18,
       symbol: 'swETH',

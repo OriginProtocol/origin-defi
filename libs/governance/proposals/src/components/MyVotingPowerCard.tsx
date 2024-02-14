@@ -3,6 +3,7 @@ import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
 import { InfoTooltip, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -15,7 +16,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const { data: user, isLoading: isUserLoading } = useUserInfoQuery(
-    { address: address?.toLowerCase() },
+    { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
 

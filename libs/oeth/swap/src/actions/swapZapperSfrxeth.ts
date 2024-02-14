@@ -50,8 +50,14 @@ const estimateAmount: EstimateAmount = async (
 
   return parseUnits(
     (
-      +formatUnits(previewRedeem?.result, tokens.mainnet.frxETH.decimals) *
-      +formatUnits(priceUnitMint?.result, tokenOut.decimals)
+      +formatUnits(
+        previewRedeem?.result as unknown as bigint,
+        tokens.mainnet.frxETH.decimals,
+      ) *
+      +formatUnits(
+        priceUnitMint?.result as unknown as bigint,
+        tokenOut.decimals,
+      )
     ).toString(),
     tokenOut.decimals,
   );
@@ -64,11 +70,11 @@ const estimateGas: EstimateGas = async () => {
 const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address) {
     return 0n;
   }
 
-  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+  if (!tokenIn?.address || !tokenOut?.address) {
     return maxUint256;
   }
 
@@ -88,17 +94,17 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
   if (
     amountIn === 0n ||
-    isNilOrEmpty(address) ||
-    isNilOrEmpty(tokenIn.address) ||
-    isNilOrEmpty(tokenOut.address)
+    !address ||
+    !tokenIn?.address ||
+    !tokenOut?.address ||
+    !publicClient
   ) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -151,7 +157,7 @@ const estimateRoute: EstimateRoute = async (
 };
 
 const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
-  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+  if (!tokenIn?.address || !tokenOut?.address) {
     return null;
   }
 
@@ -173,7 +179,7 @@ const swap: Swap = async (
   const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
-    return;
+    return null;
   }
 
   const approved = await allowance(config, { tokenIn, tokenOut });

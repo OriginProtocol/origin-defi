@@ -8,7 +8,7 @@ import type { MiddleTruncatedProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
 
 type AddressLabelProps = {
-  address: HexAddress;
+  address?: HexAddress;
   enableEnsName?: boolean;
   monospace?: boolean;
   short?: boolean;
@@ -28,6 +28,8 @@ export const AddressLabel = ({
       enabled: enableEnsName,
     },
   });
+
+  if (!address) return null;
 
   const label =
     enableEnsName && !isNilOrEmpty(ensName)

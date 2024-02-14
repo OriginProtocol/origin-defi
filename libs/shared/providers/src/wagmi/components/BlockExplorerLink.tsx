@@ -25,12 +25,12 @@ export const BlockExplorerLink = ({
   const baseUrl =
     blockExplorer?.url ??
     chain?.blockExplorers?.default?.url ??
-    chains[0].blockExplorers.default.url ??
+    chains?.[0]?.blockExplorers?.default?.url ??
     mainnet.blockExplorers.default.url;
   const name =
     blockExplorer?.name ??
     chain?.blockExplorers?.default?.name ??
-    chains[0].blockExplorers.default.name ??
+    chains?.[0]?.blockExplorers?.default?.name ??
     mainnet.blockExplorers.default.name;
 
   return (

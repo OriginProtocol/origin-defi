@@ -1,6 +1,7 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchContract } from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -17,12 +18,15 @@ export function APYContainer() {
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
     functionName: 'balanceOf',
-    args: [address],
+    args: [address ?? ZERO_ADDRESS],
+    query: {
+      enabled: !!address,
+    },
   });
   const { data, isLoading } = useHistoryUserStatQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     {
-      enabled: isConnected,
+      enabled: !!address,
       select: (data) => data?.oethAddresses?.at(0),
     },
   );

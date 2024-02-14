@@ -26,7 +26,7 @@ import {
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import {
@@ -94,7 +94,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     }
   }, [duration, initialMonthDuration, isLoading, staking?.stakingAPY]);
 
-  const handleDurationChange = (_, newValue: number | number[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleDurationChange = (_: any, newValue: number | number[]) => {
     const val = newValue as number;
     if (val >= (initialMonthDuration ?? 0)) {
       setIsLoading(true);
@@ -108,7 +109,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals),
           +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGV.decimals),
           +formatUnits(
-            BigInt(info.veOgvTotalSupply),
+            BigInt(info?.veOgvTotalSupply ?? '0'),
             tokens.mainnet.veOGV.decimals,
           ),
         ) / 100
@@ -118,9 +119,13 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       ? +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals)
       : staking?.veOGVReceived;
   const votingPowerPercent =
-    veOGVReceived /
-    +formatUnits(info?.veOgvTotalSupply ?? 1n, tokens.mainnet.OGV.decimals);
-  const showRewardLabel = (info?.veOgvRewards ?? 0n) > 0n;
+    (veOGVReceived ?? 0) /
+    +formatUnits(
+      (info?.veOgvTotalSupply as unknown as bigint) ?? 1n,
+      tokens.mainnet.OGV.decimals,
+    );
+  const showRewardLabel =
+    ((info?.veOgvRewards as unknown as bigint) ?? 0n) > 0n;
   const stakeDisabled =
     !isConnected ||
     isInfoLoading ||
@@ -465,7 +470,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 },
                 {
                   reward: formatAmount(
-                    info?.veOgvRewards,
+                    (info?.veOgvRewards as unknown as bigint) ?? 0n,
                     tokens.mainnet.OGV.decimals,
                     undefined,
                     { notation: 'compact', maximumSignificantDigits: 4 },
@@ -499,9 +504,13 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             />
           }
           onSuccess={() => {
-            rest.onClose(null, 'backdropClick');
+            rest?.onClose?.({}, 'backdropClick');
             queryClient.invalidateQueries({
-              queryKey: [useUserLockupsQuery.getKey({ address })],
+              queryKey: [
+                useUserLockupsQuery.getKey({
+                  address: address ?? ZERO_ADDRESS,
+                }),
+              ],
             });
           }}
         />

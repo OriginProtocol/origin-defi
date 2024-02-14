@@ -1,6 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, scale } from '@origin/shared/utils';
+import { scale, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -43,7 +43,7 @@ const isRouteAvailable: IsRouteAvailable = async (
 ) => {
   const amtIn = +formatUnits(amountIn, tokenIn.decimals);
 
-  if (amtIn > 25000) {
+  if (amtIn > 25000 || !tokenOut?.address) {
     return false;
   }
 
@@ -68,19 +68,22 @@ const estimateAmount: EstimateAmount = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   const publicClient = getPublicClient(config);
-  const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
+  const functionName = getFunctionName(tokenIn, tokenOut);
 
   try {
-    const estimate = (
-      await publicClient.simulateContract({
-        address: contracts.mainnet.OUSDFlipper.address,
-        abi: contracts.mainnet.OUSDFlipper.abi,
-        functionName: getFunctionName(tokenIn, tokenOut),
-        args: [scaledAmount],
-      })
-    )?.result;
+    if (publicClient && functionName) {
+      const scaledAmount = scale(amountIn, tokenIn.decimals, 18);
+      const estimate = (
+        await publicClient.simulateContract({
+          address: contracts.mainnet.OUSDFlipper.address,
+          abi: contracts.mainnet.OUSDFlipper.abi,
+          functionName,
+          args: [scaledAmount],
+        })
+      )?.result;
 
-    return scale(estimate as unknown as bigint, 18, tokenIn.decimals);
+      return scale(estimate as unknown as bigint, 18, tokenIn.decimals);
+    }
   } catch {}
 
   return scale(amountIn, tokenIn.decimals, tokenOut.decimals);
@@ -117,7 +120,7 @@ const estimateRoute: EstimateRoute = async (
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -137,12 +140,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -150,7 +152,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.OUSDFlipper.address, amountIn],
-      account: address,
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 60000n;
@@ -159,7 +161,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
@@ -173,8 +179,9 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
 
 const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
   const { address } = getAccount(config);
+  const functionName = getFunctionName(tokenIn, tokenOut);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !functionName) {
     return null;
   }
 
@@ -189,7 +196,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
   const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OUSDFlipper.address,
     abi: contracts.mainnet.OUSDFlipper.abi,
-    functionName: getFunctionName(tokenIn, tokenOut),
+    functionName,
     args: [scaledAmount],
   });
   const hash = await writeContract(config, request);

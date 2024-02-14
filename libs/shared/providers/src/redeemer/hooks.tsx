@@ -2,6 +2,7 @@ import { useCallback } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import {
+  formatError,
   isNilOrEmpty,
   isUserRejected,
   subtractSlippage,
@@ -161,21 +162,21 @@ export const useHandleRedeem = () => {
         updateActivity({
           ...activity,
           status: 'error',
-          error: error?.shortMessage ?? error.message,
+          error: formatError(error),
         });
         pushNotification({
           content: (
             <RedeemNotification
               {...activity}
               status="error"
-              error={error?.shortMessage ?? error.message}
+              error={formatError(error)}
             />
           ),
         });
         trackEvent({
           name: 'redeem_failed',
           redeem_amount: amountIn,
-          redeem_error: error?.shortMessage ?? error.message,
+          redeem_error: formatError(error),
         });
       }
     }

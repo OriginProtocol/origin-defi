@@ -38,7 +38,7 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -62,18 +62,18 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient(config);
   const { address } = getAccount(config);
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -138,8 +138,15 @@ const estimateRoute: EstimateRoute = async (
       tokenOut,
       amountIn,
     }),
-    allowance(config),
-    estimateApprovalGas(config),
+    allowance(config, {
+      tokenIn,
+      tokenOut,
+    }),
+    estimateApprovalGas(config, {
+      tokenIn,
+      tokenOut,
+      amountIn,
+    }),
   ]);
   const gas = await estimateGas(config, {
     tokenIn,
@@ -177,7 +184,7 @@ const swap: Swap = async (
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });

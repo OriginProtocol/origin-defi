@@ -30,7 +30,9 @@ const trailingOptions = [
 export const ApyHeader = (props: StackProps) => {
   const intl = useIntl();
   const once = useRef(false);
-  const [trailing, setTrailing] = useState(null);
+  const [trailing, setTrailing] = useState<
+    (typeof trailingOptions)[number] | null
+  >(null);
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const { data: apy, isLoading: apyLoading } = useApiesQuery(
     {
@@ -42,10 +44,8 @@ export const ApyHeader = (props: StackProps) => {
   );
 
   useEffect(() => {
-    if (!once.current && !apyLoading && !isNilOrEmpty(apy)) {
-      setTrailing(
-        trailingOptions.at(apy?.apy30DayAvg > apy?.apy7DayAvg ? 0 : 1),
-      );
+    if (!once.current && !apyLoading && apy?.apy30DayAvg && apy?.apy7DayAvg) {
+      setTrailing(trailingOptions[apy?.apy30DayAvg > apy?.apy7DayAvg ? 0 : 1]);
       once.current = true;
     }
   }, [apy, apyLoading]);
@@ -92,7 +92,7 @@ export const ApyHeader = (props: StackProps) => {
           },
         }}
       >
-        {apyLoading || isNilOrEmpty(trailing) ? (
+        {apyLoading || !trailing ? (
           <Skeleton height={16} width={100} />
         ) : (
           intl.formatMessage(trailing?.label)

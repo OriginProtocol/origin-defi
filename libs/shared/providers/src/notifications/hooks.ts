@@ -14,7 +14,7 @@ type NotificationOptions = {
   message?: string;
   content?: ReactNode;
   visible?: boolean;
-  hideDuration?: number | null;
+  hideDuration?: number | undefined;
 };
 
 export const usePushNotification = () => {

@@ -2,12 +2,13 @@ import { Box, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { SxProps, Theme, TypographyProps } from '@mui/material';
+import type { ReactNode } from 'react';
 
 export type MiddleTruncatedProps = {
-  children: string;
+  children: ReactNode;
   textProps?: Omit<TypographyProps, 'children'>;
   end?: number;
-} & TypographyProps;
+} & Omit<TypographyProps, 'children'>;
 
 const truncate: SxProps<Theme> = {
   overflow: 'hidden',
@@ -21,7 +22,7 @@ export const MiddleTruncated = ({
   end = 4,
   ...rest
 }: MiddleTruncatedProps) => {
-  if (isNilOrEmpty(children)) return null;
+  if (isNilOrEmpty(children) || typeof children !== 'string') return null;
 
   if (children.length <= end) {
     return (

@@ -27,14 +27,16 @@ import type { EstimateAmount } from '@origin/shared/providers';
 
 const isRouteAvailable: IsRouteAvailable = async (config, { tokenIn }) => {
   try {
-    await readContract(config, {
-      address: contracts.mainnet.OETHVault.address,
-      abi: contracts.mainnet.OETHVault.abi,
-      functionName: 'priceUnitMint',
-      args: [tokenIn.address],
-    });
+    if (tokenIn?.address) {
+      await readContract(config, {
+        address: contracts.mainnet.OETHVault.address,
+        abi: contracts.mainnet.OETHVault.abi,
+        functionName: 'priceUnitMint',
+        args: [tokenIn.address],
+      });
 
-    return true;
+      return true;
+    }
   } catch {}
 
   return false;
@@ -44,7 +46,7 @@ const estimateAmount: EstimateAmount = async (
   config,
   { tokenIn, tokenOut, amountIn },
 ) => {
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !tokenIn?.address) {
     return 0n;
   }
 
@@ -57,7 +59,8 @@ const estimateAmount: EstimateAmount = async (
 
   return parseUnits(
     (
-      +formatUnits(amountIn, tokenIn.decimals) * +formatUnits(priceUnitMint, 18)
+      +formatUnits(amountIn, tokenIn.decimals) *
+      +formatUnits(priceUnitMint as unknown as bigint, 18)
     ).toString(),
     tokenOut.decimals,
   );
@@ -68,12 +71,12 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient(config);
   const { address } = getAccount(config);
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
@@ -113,9 +116,9 @@ const estimateGas: EstimateGas = async (
   );
 
   gasEstimate = 220000n;
-  if (amountIn > autoAllocateThreshold?.result) {
+  if (amountIn > (autoAllocateThreshold?.result as bigint)) {
     gasEstimate = 2900000n;
-  } else if (amountIn > rebaseThreshold?.result) {
+  } else if (amountIn > (rebaseThreshold?.result as bigint)) {
     gasEstimate = 510000n;
   }
 
@@ -125,7 +128,7 @@ const estimateGas: EstimateGas = async (
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -145,12 +148,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -208,6 +210,10 @@ const estimateRoute: EstimateRoute = async (
 };
 
 const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,

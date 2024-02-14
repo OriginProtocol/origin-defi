@@ -4,10 +4,10 @@ import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { scale } from '@origin/shared/utils';
+import { scale, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { useAccount, useContractRead } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 
 import { usePointRecipientStatsQuery } from '../queries.generated';
 
@@ -18,15 +18,20 @@ export const DashboardView = () => {
   const { formatBalance, formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
   const { data: primeBalance, isLoading: isPrimeBalanceLoading } =
-    useContractRead({
+    useReadContract({
       address: tokens.mainnet.primeETH.address,
       abi: tokens.mainnet.primeETH.abi,
       functionName: 'balanceOf',
-      args: [address],
-      enabled: isConnected,
+      args: [address ?? ZERO_ADDRESS],
+      query: {
+        enabled: !!address,
+      },
     });
   const { data: stats, isLoading: isStatsLoading } =
-    usePointRecipientStatsQuery({ address }, { enabled: isConnected });
+    usePointRecipientStatsQuery(
+      { address: address ?? ZERO_ADDRESS },
+      { enabled: !!address },
+    );
 
   const percentTotalXp =
     scale(BigInt(stats?.lrtPointRecipientStats?.points ?? '0'), 0, 18) /

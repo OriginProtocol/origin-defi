@@ -1,6 +1,6 @@
 import { tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -40,13 +40,13 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 
   const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
   const { address } = getAccount(config);
 
-  if (!isNilOrEmpty(address)) {
+  if (address) {
     try {
       gasEstimate = await publicClient.estimateContractGas({
         address: tokens.mainnet.wOUSD.address,
@@ -78,7 +78,7 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -98,12 +98,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -111,7 +110,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       abi: erc20Abi,
       functionName: 'approve',
       args: [tokens.mainnet.wOUSD.address, amountIn],
-      account: address,
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 200000n;
@@ -155,7 +154,11 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,

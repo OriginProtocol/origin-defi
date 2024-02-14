@@ -10,7 +10,6 @@ import {
   FaChevronLeftRegular,
 } from '@origin/shared/icons';
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, last, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -28,9 +27,9 @@ export const ProposalDetailHeader = (props: StackProps) => {
   const { proposalId } = useParams();
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
-      proposalId,
+      proposalId: proposalId ?? '',
     },
-    { enabled: !isNilOrEmpty(proposalId) },
+    { enabled: !!proposalId },
   );
 
   const handleBack = () => {

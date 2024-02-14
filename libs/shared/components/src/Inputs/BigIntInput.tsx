@@ -31,7 +31,9 @@ export const BigIntInput = forwardRef<HTMLInputElement, BigintInputProps>(
       }
 
       if (
+        !strVal ||
         isNilOrEmpty(strVal) ||
+        !prev ||
         isNilOrEmpty(prev) ||
         strVal === '0.' ||
         value !== parseUnits(prev, decimals)

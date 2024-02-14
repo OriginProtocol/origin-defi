@@ -1,7 +1,8 @@
 import axios from 'axios';
+import { pathOr } from 'ramda';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://squid.subsquid.io/origin-squid/v/v69420/graphql',
+  baseURL: 'https://squid.subsquid.io/prime-eth-squid/graphql',
 });
 
 export const graphqlClient =
@@ -20,5 +21,5 @@ export const graphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'];
+    return pathOr<TData>({} as TData, ['data', 'data'], res);
   };

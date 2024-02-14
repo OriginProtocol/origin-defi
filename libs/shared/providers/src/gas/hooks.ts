@@ -33,7 +33,7 @@ export const useGasPrice = (
         estimateFeesPerGas(config, { formatUnits: 'gwei' }),
       ]);
 
-      const gweiUsd = +formatUnits(price, 6) * 1e-9;
+      const gweiUsd = +formatUnits(price as unknown as bigint, 6) * 1e-9;
       const gasPrice =
         +formatUnits(data.maxFeePerGas, 9) +
         +formatUnits(data.maxPriorityFeePerGas, 9);

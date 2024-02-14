@@ -1,16 +1,36 @@
 import { contracts } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
+import { useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 import { CurveFactoryABI } from './abis/CurveFactory';
 import { CurveRegistryExchangeABI } from './abis/CurveRegistryExchange';
 
 import type { HexAddress } from '@origin/shared/utils';
+import type { QueryFunction } from '@tanstack/react-query';
+import type { Abi } from 'viem';
 import type { Config } from 'wagmi';
 
-const fetcher = async ({ queryKey: [, config] }) => {
-  const addresses = await readContracts(config, {
+type Key = ['useCurve', Config];
+
+const getKey = (config: Config): Key => ['useCurve', config];
+
+const fetcher: QueryFunction<
+  {
+    CurveRegistryExchange: {
+      address: HexAddress;
+      chainId: number;
+      abi: Abi;
+      name: 'CurveRegistryExchange';
+    };
+    OethPoolUnderlyings: HexAddress[];
+    OusdMetaPoolUnderlyings: HexAddress[];
+  },
+  Key
+> = async ({ queryKey }) => {
+  const addresses = await readContracts(queryKey[1], {
     contracts: [
       {
         address: contracts.mainnet.CurveAddressProvider.address,
@@ -27,16 +47,16 @@ const fetcher = async ({ queryKey: [, config] }) => {
     ],
   });
 
-  const underlyings = await readContracts(config, {
+  const underlyings = await readContracts(queryKey[1], {
     contracts: [
       {
-        address: addresses[1].result,
+        address: addresses[1].result ?? ZERO_ADDRESS,
         abi: CurveFactoryABI,
         functionName: 'get_coins',
         args: [contracts.mainnet.OETHCurvePool.address],
       },
       {
-        address: addresses[1].result,
+        address: addresses[1].result ?? ZERO_ADDRESS,
         abi: CurveFactoryABI,
         functionName: 'get_underlying_coins',
         args: [contracts.mainnet.OUSDCurveMetaPool.address],
@@ -46,7 +66,7 @@ const fetcher = async ({ queryKey: [, config] }) => {
 
   return {
     CurveRegistryExchange: {
-      address: addresses[0].result,
+      address: addresses[0].result as HexAddress,
       chainId: mainnet.id,
       abi: CurveRegistryExchangeABI,
       name: 'CurveRegistryExchange',
@@ -56,13 +76,14 @@ const fetcher = async ({ queryKey: [, config] }) => {
   };
 };
 
-export const useCurve = (config: Config) => {
+export const useCurve = () => {
+  const config = useConfig();
+
   return useQuery({
-    queryKey: ['useCurve', config],
+    queryKey: getKey(config),
     staleTime: Infinity,
     queryFn: fetcher,
   });
 };
-
-useCurve.getKey = (config: Config) => ['useCurve', config];
+useCurve.getKey = getKey;
 useCurve.fetcher = fetcher;

@@ -1,7 +1,13 @@
-import type { governanceChoices } from './constants';
-import type { ProposalQuery } from './queries.generated';
+import type { OgvProposalEvent } from '@origin/governance/shared';
 
-export type ProposalLog = ProposalQuery['ogvProposalById']['logs'][number];
+import type { governanceChoices } from './constants';
+
+export type ProposalLog = {
+  id: string;
+  hash: string;
+  event: OgvProposalEvent;
+  timestamp: string;
+};
 
 export type GovernanceChoice = (typeof governanceChoices)[number];
 
@@ -18,7 +24,7 @@ export type Proposal = {
   updated?: string;
   status: string;
   choices: GovernanceChoice[];
-  scores?: number[];
+  scores: number[] | undefined | null;
   quorum?: number;
   link?: string;
 };

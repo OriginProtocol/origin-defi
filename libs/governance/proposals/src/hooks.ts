@@ -1,4 +1,5 @@
-import { isNilOrEmpty } from '@origin/shared/utils';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
@@ -13,15 +14,18 @@ import { parseProposalContent } from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import type { ProposalsQuery, UserVotesQuery } from './queries.generated';
+import type { UserVotesQuery } from './queries.generated';
 import type {
   SnapshotProposalsQuery,
   SnapshotUserVotesQuery,
 } from './snapshot.generated';
-import type { GovernanceChoice, Proposal, ProposalType, Vote } from './types';
+import type { GovernanceChoice, Proposal, ProposalType } from './types';
 
 export const useProposals = (
-  options?: Partial<UseQueryOptions<Proposal[], Error>>,
+  options?: Omit<
+    UseQueryOptions<Proposal[], Error, Proposal[], ['useProposals']>,
+    'queryKey'
+  >,
 ) => {
   return useQuery({
     queryKey: ['useProposals'],
@@ -31,16 +35,19 @@ export const useProposals = (
         useSnapshotProposalsQuery.fetcher()(),
       ]);
 
-      const onChainProposals =
+      const onChainProposals: Proposal[] =
         res[0].status === 'fulfilled'
-          ? (res[0].value as ProposalsQuery)?.ogvProposals?.map((p) => {
+          ? res[0]?.value?.ogvProposals?.map((p) => {
               const { title, description } = parseProposalContent(
                 p?.description,
               );
               const votes = {
                 For: 0,
                 Against: 0,
-                ...zipObj(p.choices, p.scores),
+                ...zipObj(
+                  p?.choices?.map((c) => c ?? 'key'),
+                  p.scores,
+                ),
               };
 
               return {
@@ -61,23 +68,21 @@ export const useProposals = (
             }) ?? []
           : [];
 
-      const offChainProposals =
+      const offChainProposals: Proposal[] =
         res[1].status === 'fulfilled'
           ? (res[1].value as SnapshotProposalsQuery)?.proposals?.map((p) => ({
-              id: p.id,
+              id: p?.id ?? 'id',
               type: 'snapshot' as ProposalType,
-              title: p.title,
-              created: fromUnixTime(p.created).toISOString(),
-              start: fromUnixTime(p.start).toISOString(),
-              end: fromUnixTime(p.end).toISOString(),
-              updated: isNilOrEmpty(p?.updated)
-                ? null
-                : fromUnixTime(p.updated).toISOString(),
-              status: p.state,
-              choices: p.choices as GovernanceChoice[],
-              scores: p.scores,
-              quorum: p.quorum,
-              link: p.link,
+              title: p?.title ?? '',
+              created: p?.created ? fromUnixTime(p.created).toISOString() : '',
+              start: p?.start ? fromUnixTime(p.start).toISOString() : '',
+              end: p?.end ? fromUnixTime(p.end).toISOString() : '',
+              updated: p?.updated ? fromUnixTime(p.updated).toISOString() : '',
+              status: p?.state ?? '',
+              choices: p?.choices as any,
+              scores: p?.scores as any,
+              quorum: p?.quorum,
+              link: p?.link as any,
             })) ?? []
           : [];
 
@@ -90,23 +95,24 @@ export const useProposals = (
   });
 };
 
-export const useUserVotes = (
-  options?: Partial<UseQueryOptions<Vote[], Error>>,
-) => {
+export const useUserVotes = () => {
   const { address } = useAccount();
 
   return useQuery({
     queryKey: ['useUserVotes', address],
+    enabled: !!address,
     queryFn: async () => {
       const res = await Promise.allSettled([
-        useUserVotesQuery.fetcher({ address })(),
-        useSnapshotUserVotesQuery.fetcher({ address })(),
+        useUserVotesQuery.fetcher({ address: address ?? ZERO_ADDRESS })(),
+        useSnapshotUserVotesQuery.fetcher({
+          address: address ?? ZERO_ADDRESS,
+        })(),
       ]);
 
       const onChainVotes =
         res[0].status === 'fulfilled'
           ? (res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
-              const { title } = parseProposalContent(v.proposal.description);
+              const { title } = parseProposalContent(v?.proposal?.description);
 
               return {
                 id: v.id,
@@ -126,19 +132,22 @@ export const useUserVotes = (
         res[1].status === 'fulfilled'
           ? (res[1].value as SnapshotUserVotesQuery)?.votes?.map((v) => {
               const idx =
-                Number(Array.isArray(v.choice) ? v.choice.at(0) : v.choice) - 1;
-              const choice = v.proposal?.choices?.at?.(idx) ?? '';
+                Number(Array.isArray(v?.choice) ? v.choice.at(0) : v?.choice) -
+                1;
+              const choice = v?.proposal?.choices?.at?.(idx) ?? '';
 
               return {
-                id: v.id,
-                created: fromUnixTime(v.created).toISOString(),
+                id: v?.id,
+                created: v?.created
+                  ? fromUnixTime(v.created).toISOString()
+                  : '',
                 choice,
                 proposal: {
-                  id: v.proposal.id,
+                  id: v?.proposal?.id,
                   type: 'snapshot' as ProposalType,
-                  title: v.proposal.title,
-                  status: v.proposal.state,
-                  link: v.proposal.link,
+                  title: v?.proposal?.title,
+                  status: v?.proposal?.state,
+                  link: v?.proposal?.link,
                 },
               };
             }) ?? []
@@ -149,6 +158,5 @@ export const useUserVotes = (
         ...offChainVotes,
       ]);
     },
-    ...options,
   });
 };

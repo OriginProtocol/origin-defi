@@ -1,7 +1,7 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchContract } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -18,12 +18,15 @@ export function APYContainer() {
     address: tokens.mainnet.OUSD.address,
     abi: tokens.mainnet.OUSD.abi,
     functionName: 'balanceOf',
-    args: [address],
+    args: [address ?? ZERO_ADDRESS],
+    query: {
+      enabled: !!address,
+    },
   });
   const { data, isLoading } = useHistoryUserStatQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     {
-      enabled: isConnected && !isNilOrEmpty(address),
+      enabled: !!address,
       select: (data) => data?.ousdAddresses?.at(0),
     },
   );

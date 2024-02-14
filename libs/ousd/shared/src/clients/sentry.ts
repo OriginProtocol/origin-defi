@@ -1,17 +1,18 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
-import * as Sentry from '@sentry/react';
+import {
+  captureException,
+  globalHandlersIntegration,
+  init,
+} from '@sentry/react';
 
 export const registerSentry = () => {
-  if (
-    !isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN) &&
-    !isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN.replace(' ', ''))
-  ) {
-    Sentry.init({
+  if (!isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN)) {
+    init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
       enableTracing: false,
       defaultIntegrations: false,
       integrations: [
-        new Sentry.Integrations.GlobalHandlers({
+        globalHandlersIntegration({
           onerror: false,
           onunhandledrejection: false,
         }),
@@ -22,5 +23,5 @@ export const registerSentry = () => {
 };
 
 export const trackSentryError = (error: Error) => {
-  Sentry.captureException(error);
+  captureException(error);
 };

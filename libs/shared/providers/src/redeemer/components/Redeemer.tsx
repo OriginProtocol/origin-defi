@@ -61,7 +61,6 @@ function RedeemerWrapped({
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { value: slippage, set: setSlippage } = useSlippage();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
@@ -88,7 +87,7 @@ function RedeemerWrapped({
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > balance
+      : amountIn > (balance ?? 0n)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
@@ -96,7 +95,7 @@ function RedeemerWrapped({
     isEstimateLoading ||
     isRedeemWaitingForSignature ||
     isRedeemLoading ||
-    amountIn > balance ||
+    amountIn > (balance ?? 0n) ||
     amountIn === 0n;
 
   return (

@@ -132,7 +132,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
   );
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     state: {
       expanded,

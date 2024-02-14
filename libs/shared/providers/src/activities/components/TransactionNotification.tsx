@@ -25,8 +25,8 @@ export const TransactionNotification = ({
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       href={
         isNilOrEmpty(txReceipt?.transactionHash)
-          ? null
-          : `https://etherscan.io/tx/${txReceipt.transactionHash}`
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (

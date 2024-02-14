@@ -5,62 +5,12 @@ import {
   metaMaskWallet,
   rabbyWallet,
   safepalWallet,
+  safeWallet,
+  trustWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
-// import { connectorsForWallets } from '@rainbow-me/rainbowkit';
-// import {
-//   argentWallet,
-//   braveWallet,
-//   coinbaseWallet,
-//   injectedWallet,
-//   ledgerWallet,
-//   metaMaskWallet,
-//   rabbyWallet,
-//   rainbowWallet,
-//   safeWallet,
-//   walletConnectWallet,
-// } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig, fallback, http } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
-
-// const connectors = connectorsForWallets([
-//   {
-//     groupName: 'Recommended',
-//     wallets: [
-//       metaMaskWallet({
-//         chains,
-//         shimDisconnect: true,
-//         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-//       }),
-//       walletConnectWallet({
-//         chains,
-//         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-//       }),
-//       coinbaseWallet({ appName: 'OETH', chains }),
-//       rabbyWallet({ chains }),
-//       braveWallet({ chains, shimDisconnect: true }),
-//     ],
-//   },
-//   {
-//     groupName: 'Others',
-//     wallets: [
-//       injectedWallet({ chains, shimDisconnect: true }),
-//       ledgerWallet({
-//         chains,
-//         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-//       }),
-//       safeWallet({ chains }),
-//       rainbowWallet({
-//         chains,
-//         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-//       }),
-//       argentWallet({
-//         chains,
-//         projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
-//       }),
-//     ],
-//   },
-// ]);
 
 const connectors = connectorsForWallets(
   [
@@ -71,8 +21,10 @@ const connectors = connectorsForWallets(
         rabbyWallet,
         walletConnectWallet,
         coinbaseWallet,
+        safeWallet,
         ledgerWallet,
         safepalWallet,
+        trustWallet,
       ],
     },
   ],

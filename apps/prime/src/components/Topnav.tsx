@@ -190,9 +190,9 @@ const Navigation = ({ onLinkClick, ...rest }: NavigationProps) => {
 
   return (
     <Stack {...rest}>
-      {routes[0].children
-        .filter((c) => !isNilOrEmpty(c?.handle?.label))
-        .map((route) => (
+      {routes?.[0]?.children
+        ?.filter((c) => !isNilOrEmpty(c?.handle?.label))
+        ?.map((route) => (
           <NavLink
             key={route?.path ?? 'index'}
             route={route}
@@ -226,12 +226,12 @@ type NavLinkProps = {
 
 const NavLink = ({ route, onLinkClick }: NavLinkProps) => {
   const intl = useIntl();
-  const match = useMatch(route.index ? '' : route.path);
+  const match = useMatch(route?.path ?? '');
 
   return (
     <Link
       component={RouterLink}
-      to={route.path}
+      to={route?.path ?? ''}
       onClick={() => {
         onLinkClick?.();
       }}

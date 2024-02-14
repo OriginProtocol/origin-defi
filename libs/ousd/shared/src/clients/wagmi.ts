@@ -6,6 +6,8 @@ import {
   metaMaskWallet,
   rabbyWallet,
   safepalWallet,
+  safeWallet,
+  trustWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig, fallback, http } from 'wagmi';
@@ -20,8 +22,10 @@ const connectors = connectorsForWallets(
         rabbyWallet,
         walletConnectWallet,
         coinbaseWallet,
+        safeWallet,
         ledgerWallet,
         safepalWallet,
+        trustWallet,
       ],
     },
   ],

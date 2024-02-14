@@ -1,9 +1,15 @@
 import { useCallback, useMemo } from 'react';
 
-import { isNilOrEmpty, isUserRejected, scale } from '@origin/shared/utils';
+import {
+  formatError,
+  isFulfilled,
+  isNilOrEmpty,
+  isUserRejected,
+  scale,
+} from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { waitForTransaction } from '@wagmi/core';
-import { useAccount, useQueryClient as useWagmiClient } from 'wagmi';
+import { waitForTransactionReceipt } from '@wagmi/core';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
@@ -12,6 +18,8 @@ import {
   getAvailableRoutes,
   getAvailableTokensForSource,
 } from './utils';
+
+import type { TransactionReceipt } from 'viem';
 
 import type {
   EstimatedSwapRoute,
@@ -93,8 +101,14 @@ export const useHandleTokenChange = () => {
   ] = useSwapState();
 
   return useCallback(
-    (source: TokenSource, token: Token) => {
+    (
+      source: TokenSource | undefined | null,
+      token: Token | undefined | null,
+    ) => {
       setSwapState((state) => {
+        if (!source || !token) {
+          return state;
+        }
         let tokenIn = state.tokenIn;
         let tokenOut = state.tokenOut;
         if (source === 'tokenIn') {
@@ -169,6 +183,7 @@ export const useHandleTokenFlip = () => {
     trackEvent,
     onTokenFlip,
   } = state;
+  const config = useConfig();
   const queryClient = useQueryClient();
   const { value: slippage } = useSlippage();
 
@@ -182,7 +197,7 @@ export const useHandleTokenFlip = () => {
     const newRoutes = getAvailableRoutes(swapRoutes, tokenOut, tokenIn);
     const availabilities = await Promise.allSettled(
       newRoutes.map((r) =>
-        swapActions[r.action].isRouteAvailable({
+        swapActions[r.action].isRouteAvailable(config, {
           amountIn: amountIn,
           tokenIn: r.tokenIn,
           tokenOut: r.tokenOut,
@@ -249,7 +264,7 @@ export const useHandleTokenFlip = () => {
               queryFn: async () => {
                 let res: EstimatedSwapRoute;
                 try {
-                  res = await swapActions[route.action].estimateRoute({
+                  res = await swapActions[route.action].estimateRoute(config, {
                     tokenIn: route.tokenIn,
                     tokenOut: route.tokenOut,
                     amountIn: scaledAmountIn,
@@ -259,7 +274,7 @@ export const useHandleTokenFlip = () => {
                   });
                 } catch (error) {
                   console.error(
-                    `Fail to estimate route ${route.action}\n${error.message}`,
+                    `Fail to estimate route ${route.action}\n${formatError(error)}`,
                   );
                   res = {
                     tokenIn: route.tokenIn,
@@ -280,7 +295,8 @@ export const useHandleTokenFlip = () => {
         );
 
         const sortedRoutes = routes
-          .map((r) => (r.status === 'fulfilled' ? r.value : null))
+          .filter(isFulfilled)
+          .map((r) => r.value)
           .sort((a, b) => {
             const valA =
               scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
@@ -291,6 +307,7 @@ export const useHandleTokenFlip = () => {
 
             return valA < valB ? 1 : valA > valB ? -1 : 0;
           });
+
         setSwapState((state) => ({
           ...state,
           estimatedSwapRoutes: sortedRoutes,
@@ -298,6 +315,7 @@ export const useHandleTokenFlip = () => {
           amountOut: sortedRoutes[0].estimatedAmount ?? 0n,
         }));
       }
+
       setSwapState((state) => ({
         ...state,
         isSwapRoutesLoading: false,
@@ -310,6 +328,7 @@ export const useHandleTokenFlip = () => {
   }, [
     amountIn,
     amountOut,
+    config,
     onTokenFlip,
     queryClient,
     setSwapState,
@@ -344,7 +363,8 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
-export const useSwapRouteAllowance = (route: SwapRoute) => {
+export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
+  const config = useConfig();
   const [{ swapActions }] = useSwapState();
 
   return useQuery({
@@ -353,11 +373,15 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
       route?.tokenIn.symbol,
       route?.tokenOut.symbol,
       route?.action,
+      config,
     ],
     queryFn: async () => {
+      if (!route) {
+        return 0n;
+      }
       let res = 0n;
       try {
-        res = await swapActions[route.action].allowance({
+        res = await swapActions[route.action].allowance(config, {
           tokenIn: route.tokenIn,
           tokenOut: route.tokenOut,
         });
@@ -371,10 +395,9 @@ export const useSwapRouteAllowance = (route: SwapRoute) => {
 };
 
 export const useHandleApprove = () => {
+  const config = useConfig();
   const { address } = useAccount();
   const queryClient = useQueryClient();
-  const wagmiClient = useWagmiClient();
-
   const [state, setSwapState] = useSwapState();
   const {
     amountIn,
@@ -390,7 +413,7 @@ export const useHandleApprove = () => {
   } = state;
 
   return useCallback(async () => {
-    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
+    if (!selectedSwapRoute || !address) {
       return;
     }
 
@@ -406,7 +429,7 @@ export const useHandleApprove = () => {
     });
 
     try {
-      const hash = await swapActions[selectedSwapRoute.action].approve({
+      const hash = await swapActions[selectedSwapRoute.action].approve(config, {
         tokenIn,
         tokenOut,
         amountIn,
@@ -416,15 +439,18 @@ export const useHandleApprove = () => {
         isApprovalWaitingForSignature: false,
         isApprovalLoading: true,
       }));
-      if (!isNilOrEmpty(hash)) {
-        const txReceipt = await waitForTransaction({ hash });
-        wagmiClient.invalidateQueries();
+      if (hash) {
+        const txReceipt = await waitForTransactionReceipt(config, { hash });
         queryClient.invalidateQueries();
         setSwapState((state) => ({
           ...state,
           isApprovalLoading: false,
         }));
-        onApproveSuccess?.({ ...state, txReceipt, trackId });
+        onApproveSuccess?.({
+          ...state,
+          txReceipt: txReceipt as unknown as TransactionReceipt,
+          trackId,
+        });
         trackEvent?.({
           name: 'approve_complete',
           approval_token: tokenIn.symbol,
@@ -444,11 +470,11 @@ export const useHandleApprove = () => {
           approval_token: tokenIn.symbol,
         });
       } else {
-        onApproveFailure?.({ ...state, error, trackId });
+        onApproveFailure?.({ ...state, error: error as Error, trackId });
         trackEvent?.({
           name: 'approve_failed',
           approval_token: tokenIn.symbol,
-          approve_error: error?.shortMessage ?? error.message,
+          approve_error: formatError(error),
         });
       }
     }
@@ -456,6 +482,7 @@ export const useHandleApprove = () => {
   }, [
     address,
     amountIn,
+    config,
     onApproveFailure,
     onApproveReject,
     onApproveStart,
@@ -467,16 +494,14 @@ export const useHandleApprove = () => {
     tokenIn,
     tokenOut,
     trackEvent,
-    wagmiClient,
   ]);
 };
 
 export const useHandleSwap = () => {
+  const config = useConfig();
   const { address } = useAccount();
   const queryClient = useQueryClient();
-  const wagmiClient = useWagmiClient();
   const { value: slippage } = useSlippage();
-
   const [state, setSwapState] = useSwapState();
   const {
     amountIn,
@@ -493,7 +518,7 @@ export const useHandleSwap = () => {
   } = state;
 
   return useCallback(async () => {
-    if (isNilOrEmpty(selectedSwapRoute) || isNilOrEmpty(address)) {
+    if (!selectedSwapRoute || !address) {
       return;
     }
 
@@ -509,7 +534,7 @@ export const useHandleSwap = () => {
     });
 
     try {
-      const hash = await swapActions[selectedSwapRoute.action].swap({
+      const hash = await swapActions[selectedSwapRoute.action].swap(config, {
         tokenIn,
         tokenOut,
         amountIn,
@@ -522,9 +547,8 @@ export const useHandleSwap = () => {
         isSwapWaitingForSignature: false,
         isSwapLoading: true,
       }));
-      if (!isNilOrEmpty(hash)) {
-        const txReceipt = await waitForTransaction({ hash });
-        wagmiClient.invalidateQueries();
+      if (hash) {
+        const txReceipt = await waitForTransactionReceipt(config, { hash });
         queryClient.invalidateQueries();
         setSwapState((state) => ({
           ...state,
@@ -534,7 +558,11 @@ export const useHandleSwap = () => {
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
         }));
-        onSwapSuccess?.({ ...state, txReceipt, trackId });
+        onSwapSuccess?.({
+          ...state,
+          txReceipt: txReceipt as unknown as TransactionReceipt,
+          trackId,
+        });
         trackEvent?.({
           name: 'swap_complete',
           swap_route: selectedSwapRoute.action,
@@ -559,14 +587,14 @@ export const useHandleSwap = () => {
           swap_route: selectedSwapRoute.action,
         });
       } else {
-        onSwapFailure?.({ ...state, error, trackId });
+        onSwapFailure?.({ ...state, error: error as Error, trackId });
         trackEvent?.({
           name: 'swap_failed',
           swap_token: tokenIn.symbol,
           swap_amount: amountIn,
           swap_to: tokenOut.symbol,
           swap_route: selectedSwapRoute.action,
-          swap_error: error?.shortMessage ?? error.message,
+          swap_error: formatError(error),
         });
       }
     }
@@ -575,6 +603,7 @@ export const useHandleSwap = () => {
     address,
     amountIn,
     amountOut,
+    config,
     onSwapFailure,
     onSwapReject,
     onSwapStart,
@@ -587,6 +616,5 @@ export const useHandleSwap = () => {
     tokenIn,
     tokenOut,
     trackEvent,
-    wagmiClient,
   ]);
 };

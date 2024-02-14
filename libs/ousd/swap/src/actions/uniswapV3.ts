@@ -1,6 +1,10 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subtractSlippage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -83,12 +87,18 @@ const estimateAmount: EstimateAmount = async (
   config,
   { amountIn, tokenIn, tokenOut },
 ) => {
-  if (amountIn === 0n) {
-    return 0n;
-  }
-
   let estimate = 0n;
   const publicClient = getPublicClient(config);
+  if (
+    amountIn === 0n ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !tokenOut?.address
+  ) {
+    return estimate;
+  }
+
+  const path = getPath(tokenIn, tokenOut);
 
   if ([tokenIn.symbol, tokenOut.symbol].includes(tokens.mainnet.USDT.symbol)) {
     estimate = (
@@ -99,13 +109,13 @@ const estimateAmount: EstimateAmount = async (
         args: [tokenIn.address, tokenOut.address, 500, amountIn, 0n],
       })
     )?.result;
-  } else {
+  } else if (path) {
     estimate = (
       await publicClient.simulateContract({
         address: contracts.mainnet.uniswapV3Quoter.address,
         abi: contracts.mainnet.uniswapV3Quoter.abi,
         functionName: 'quoteExactInput',
-        args: [getPath(tokenIn, tokenOut), amountIn],
+        args: [path, amountIn],
       })
     )?.result;
   }
@@ -118,14 +128,20 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (
+    amountIn === 0n ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !tokenOut?.address
+  ) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient(config);
   const { address } = getAccount(config);
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const path = getPath(tokenIn, tokenOut);
 
   try {
     if (
@@ -143,23 +159,23 @@ const estimateGas: EstimateGas = async (
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             fee: 500,
-            recipient: address,
+            recipient: address ?? ZERO_ADDRESS,
             sqrtPriceLimitX96: 0n,
           },
         ],
       });
-    } else {
+    } else if (path) {
       gasEstimate = await publicClient.estimateContractGas({
         address: contracts.mainnet.uniswapV3Router.address,
         abi: contracts.mainnet.uniswapV3Router.abi,
         functionName: 'exactInput',
         args: [
           {
-            path: getPath(tokenIn, tokenOut),
+            path,
             amountIn,
             amountOutMinimum: minAmountOut,
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
-            recipient: address,
+            recipient: address ?? ZERO_ADDRESS,
           },
         ],
       });
@@ -203,7 +219,7 @@ const estimateRoute: EstimateRoute = async (
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -223,12 +239,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -236,7 +251,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.uniswapV3Router.address, amountIn],
-      account: address,
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 60000n;
@@ -246,6 +261,10 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 };
 
 const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,

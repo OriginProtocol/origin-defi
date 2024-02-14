@@ -1,40 +1,22 @@
 import { simulateContract } from '@wagmi/core';
-import { useSimulateContract } from 'wagmi';
+import { mergeDeepRight } from 'ramda';
 
 import type { Config, SimulateContractParameters } from '@wagmi/core';
-import type { UseSimulateContractParameters } from 'wagmi';
+import type { Hex } from 'viem';
 
 interface TxTrackerValue {
   id: string;
   timestamp: number;
 }
 
-/**
- * This function wraps the original `simulateContract` function from wagmi,
- * appending 4 bytes to the calldata which can be used on chain for tracking
- * transaction sources.
- */
 export function simulateContractWithTxTracker(
   config: Config,
   opts: Omit<SimulateContractParameters, 'dataSuffix'>,
 ) {
   const dataSuffix = getDataSuffix();
 
-  return simulateContract(config, {
-    ...opts,
-    dataSuffix,
-  });
-}
-
-export function useSimulateContractWithTxTracker(
-  opts: Omit<UseSimulateContractParameters, 'dataSuffix'>,
-) {
-  const dataSuffix = getDataSuffix();
-
-  return useSimulateContract({
-    ...opts,
-    dataSuffix,
-  });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return simulateContract(config, mergeDeepRight(opts, { dataSuffix }) as any);
 }
 
 function getDataSuffix() {
@@ -51,5 +33,7 @@ function getDataSuffix() {
     }
   }
 
-  return value?.id.match(/^[0-9a-f]{8}$/) ? `0x${value.id}` : undefined;
+  return value?.id.match(/^[0-9a-f]{8}$/)
+    ? (`0x${value.id}` as Hex)
+    : undefined;
 }

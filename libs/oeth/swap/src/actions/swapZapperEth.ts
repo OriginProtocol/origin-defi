@@ -30,12 +30,11 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 200000n;
 
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !publicClient) {
     return gasEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -53,11 +52,11 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address) {
     return 0n;
   }
 
-  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+  if (!tokenIn?.address || !tokenOut?.address) {
     return maxUint256;
   }
 
@@ -77,17 +76,17 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
   if (
     amountIn === 0n ||
-    isNilOrEmpty(address) ||
-    isNilOrEmpty(tokenIn.address) ||
-    isNilOrEmpty(tokenOut.address)
+    !address ||
+    !tokenIn?.address ||
+    !tokenOut?.address ||
+    !publicClient
   ) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -140,7 +139,7 @@ const estimateRoute: EstimateRoute = async (
 };
 
 const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
-  if (isNilOrEmpty(tokenIn.address) || isNilOrEmpty(tokenOut.address)) {
+  if (!tokenIn?.address || !tokenOut?.address) {
     return null;
   }
 

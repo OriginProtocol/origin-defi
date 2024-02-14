@@ -35,7 +35,7 @@ export const ConnectedButton = ({
       <Button
         {...rest}
         onClick={() => {
-          openConnectModal();
+          openConnectModal?.();
         }}
       >
         {intl.formatMessage({ defaultMessage: 'Connect Wallet' })}

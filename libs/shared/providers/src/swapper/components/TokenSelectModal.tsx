@@ -66,7 +66,7 @@ export const TokenSelectModal = ({
             token={token}
             disabled={token.isSelected}
             onClick={() => {
-              onClose({}, 'backdropClick');
+              onClose?.({}, 'backdropClick');
               onSelectToken(token);
             }}
             sx={{

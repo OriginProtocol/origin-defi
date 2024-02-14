@@ -4,15 +4,19 @@ import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
 import {
   getReferrerId,
-  prepareWriteContractWithTxTracker,
+  simulateContractWithTxTracker,
 } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subtractSlippage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
   readContracts,
+  simulateContract,
   writeContract,
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
@@ -22,19 +26,23 @@ import type {
   Approve,
   EstimateAmount,
   EstimateApprovalGas,
+  EstimateGas,
   EstimateRoute,
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-}) => {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
+  if (amountIn === 0n || !tokenIn?.address) {
+    return 0n;
+  }
+
   const [primeETHPrice, assetPrice] = await queryClient.fetchQuery({
     queryKey: ['asset-price', tokenOut.address],
     queryFn: () =>
-      readContracts({
+      readContracts(config, {
         contracts: [
           {
             address: contracts.mainnet.lrtOracle.address,
@@ -45,30 +53,30 @@ const estimateAmount: EstimateAmount = async ({
             address: contracts.mainnet.lrtOracle.address,
             abi: contracts.mainnet.lrtOracle.abi,
             functionName: 'getAssetPrice',
-            args: [tokenIn.address],
+            args: [tokenIn.address ?? ZERO_ADDRESS],
           },
         ],
       }),
     staleTime: 60e3,
   });
 
-  return ((assetPrice.result ?? 1n) * amountIn) / (primeETHPrice.result ?? 1n);
+  return (
+    (((assetPrice?.result as unknown as bigint) ?? 1n) * amountIn) /
+    ((primeETHPrice?.result as unknown as bigint) ?? 1n)
+  );
 };
 
-const estimateGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amountOut,
-  slippage,
-}) => {
+const estimateGas: EstimateGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
@@ -83,16 +91,13 @@ const estimateGas = async ({
   return gasEstimate;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, route },
+) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    allowance({ tokenIn, tokenOut }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+    allowance(config, { tokenIn, tokenOut }),
   ]);
 
   return {
@@ -107,18 +112,18 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const allowance: Allowance = async ({ tokenIn }) => {
-  const { address } = getAccount();
+const allowance: Allowance = async (config, { tokenIn }) => {
+  const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
   const allowance = await queryClient.fetchQuery({
     queryKey: ['allowance', tokenIn.symbol],
     queryFn: () =>
-      readContract({
-        address: tokenIn.address,
+      readContract(config, {
+        address: tokenIn.address ?? ZERO_ADDRESS,
         abi: tokenIn.abi,
         functionName: 'allowance',
         args: [address, contracts.mainnet.lrtDepositPool.address],
@@ -129,18 +134,17 @@ const allowance: Allowance = async ({ tokenIn }) => {
   return allowance as unknown as bigint;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  amountIn,
-}) => {
+const estimateApprovalGas: EstimateApprovalGas = async (
+  config,
+  { tokenIn, amountIn },
+) => {
   let approvalEstimate = 0n;
-  const { address } = getAccount();
+  const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient();
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -157,33 +161,34 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
+  const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.lrtDepositPool.address, amountIn],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-}) => {
-  const { address } = getAccount();
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+) => {
+  const { address } = getAccount(config);
   const referrerId = getReferrerId();
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut });
+  const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`Flipper is not approved`);
@@ -191,13 +196,13 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.lrtDepositPool.address,
     abi: contracts.mainnet.lrtDepositPool.abi,
     functionName: 'depositAsset',
     args: [tokenIn.address, amountIn, minAmountOut, referrerId],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

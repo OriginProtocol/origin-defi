@@ -2,7 +2,12 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+import {
+  formatError,
+  isNilOrEmpty,
+  isUserRejected,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { erc20Abi } from 'viem';
 import {
@@ -58,8 +63,8 @@ export const ApprovalButton = ({
 }: ApprovalButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [notifId, setNotifId] = useState(null);
-  const [activity, setActivity] = useState<Activity>(null);
+  const [notifId, setNotifId] = useState<string | null>(null);
+  const [activity, setActivity] = useState<Activity | null>(null);
   const done = useRef(false);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
@@ -70,7 +75,7 @@ export const ApprovalButton = ({
     address: token.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [spender.address, amount],
+    args: [spender?.address ?? ZERO_ADDRESS, amount],
     query: {
       enabled: isConnected && amount > 0n && !disabled,
     },
@@ -91,7 +96,7 @@ export const ApprovalButton = ({
     if (isApprovalLoading && !disableNotification) {
       setNotifId(
         pushNotification({
-          hideDuration: null,
+          hideDuration: undefined,
           content: (
             <NotificationSnack
               icon={<SeverityIcon severity="info" />}
@@ -124,7 +129,7 @@ export const ApprovalButton = ({
         });
       }
       if (!disableNotification) {
-        if (!isNilOrEmpty(notifId)) {
+        if (notifId) {
           deleteNotification(notifId);
           setNotifId(null);
         }
@@ -156,13 +161,13 @@ export const ApprovalButton = ({
 
   useEffect(() => {
     if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity) && !done.current) {
-      if (!isNilOrEmpty(notifId)) {
+      if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
       if (isUserRejected(writeError)) {
         onUserReject?.();
-        if (!disableActivity) {
+        if (!disableActivity && activity?.id) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -181,7 +186,9 @@ export const ApprovalButton = ({
           });
         }
       } else {
-        onError?.(writeError);
+        if (writeError) {
+          onError?.(writeError);
+        }
         if (!disableActivity) {
           updateActivity({
             ...activity,
@@ -195,7 +202,7 @@ export const ApprovalButton = ({
               <ApprovalNotification
                 {...activity}
                 status="error"
-                error={writeError.message}
+                error={formatError(writeError)}
               />
             ),
           });
@@ -219,7 +226,9 @@ export const ApprovalButton = ({
   ]);
 
   const handleClick = () => {
-    writeContract(prepareData?.request);
+    if (prepareData?.request) {
+      writeContract(prepareData?.request);
+    }
     onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({

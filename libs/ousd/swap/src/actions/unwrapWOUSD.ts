@@ -1,6 +1,5 @@
 import { tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -39,13 +38,13 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 
   const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
   const { address } = getAccount(config);
 
-  if (!isNilOrEmpty(address)) {
+  if (address) {
     try {
       gasEstimate = await publicClient.estimateContractGas({
         address: tokens.mainnet.wOUSD.address,
@@ -103,8 +102,8 @@ const estimateRoute: EstimateRoute = async (
     await Promise.all([
       estimateAmount(config, { tokenIn, tokenOut, amountIn }),
       estimateGas(config, { tokenIn, tokenOut, amountIn, slippage }),
-      allowance(config),
-      estimateApprovalGas(config),
+      allowance(config, { tokenIn, tokenOut }),
+      estimateApprovalGas(config, { tokenIn, tokenOut, amountIn }),
     ]);
 
   return {
@@ -127,8 +126,8 @@ const approve: Approve = async () => {
 const swap: Swap = async (config, { amountIn }) => {
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
-    return;
+  if (amountIn === 0n || !address) {
+    return null;
   }
 
   const { request } = await simulateContractWithTxTracker(config, {

@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -40,7 +39,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
       args: [address],
     })),
     query: {
-      enabled: isConnected,
+      enabled: !!address,
     },
   });
 
@@ -114,14 +113,14 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
             balance={+formatUnits(eth ?? 0n, 18)}
             isBalanceLoading={ethLoading}
           />
-          {!isNilOrEmpty(balanceTokens) &&
+          {!!balanceTokens &&
             balanceTokens.map((tok, i) => (
               <BalanceRow
                 key={tok.symbol}
                 token={tok}
                 balance={
                   +formatUnits(
-                    (balances?.[i] as unknown as bigint) ?? 0n,
+                    (balances?.[i]?.result as unknown as bigint) ?? 0n,
                     tok.decimals,
                   )
                 }

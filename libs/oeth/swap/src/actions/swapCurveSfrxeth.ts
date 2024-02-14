@@ -49,10 +49,7 @@ const curveConfig = {
   ],
 } as const;
 
-const estimateAmount: EstimateAmount = async (
-  config,
-  { tokenIn, tokenOut, amountIn },
-) => {
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -69,16 +66,15 @@ const estimateAmount: EstimateAmount = async (
 
 const estimateGas: EstimateGas = async (
   config,
-  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+  { tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
+  const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
-
-  const publicClient = getPublicClient(config);
-  const { address } = getAccount(config);
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
@@ -97,10 +93,10 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
+const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -120,12 +116,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !tokenIn?.address || !publicClient) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -186,7 +181,11 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (!tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: erc20Abi,

@@ -23,12 +23,13 @@ import {
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
+import type { ComponentType } from 'react';
 
 export type TokenIconProps = {
   symbol?: string;
 } & SvgIconProps;
 
-export const supportedTokens = {
+export const supportedTokens: Record<string, ComponentType<SvgIconProps>> = {
   DAI: DAI,
   ETH: ETH,
   ETHx: ETHx,
@@ -52,7 +53,11 @@ export const supportedTokens = {
 } as const;
 
 export const TokenIcon = ({ symbol, ...rest }: TokenIconProps) => {
+  if (!symbol || !supportedTokens[symbol]) {
+    return <FaCircleDollarRegular {...rest} />;
+  }
+
   const Icon = supportedTokens[symbol];
 
-  return Icon ? <Icon {...rest} /> : <FaCircleDollarRegular {...rest} />;
+  return <Icon {...rest} />;
 };

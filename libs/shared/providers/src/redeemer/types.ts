@@ -1,4 +1,4 @@
-import type { Contract, IVaultABI, Token } from '@origin/shared/contracts';
+import type { Contract, Token } from '@origin/shared/contracts';
 
 export type RedeemEstimate = {
   token: Token;
@@ -7,7 +7,7 @@ export type RedeemEstimate = {
 
 export type RedeemState = {
   tokenIn: Token;
-  vaultContract: Contract<IVaultABI>;
+  vaultContract: Contract;
   gasBuffer: bigint;
   trackEvent: (event: RedeemTrackEvent) => void;
   amountIn: bigint;

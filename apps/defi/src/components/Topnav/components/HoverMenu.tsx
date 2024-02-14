@@ -41,7 +41,7 @@ export const HoverMenu = () => {
         gap: 2,
       }}
     >
-      {routes[0].children.map((route, i) => (
+      {routes?.[0]?.children?.map((route, i) => (
         <NavMenuItem key={`${route?.path ?? 'topButton'}-${i}`} route={route} />
       ))}
     </Stack>
@@ -89,7 +89,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   }
 
   const items = [
-    ...(route?.children.map(
+    ...(route?.children?.map(
       (r) =>
         ({
           title: r.handle.title,
@@ -97,9 +97,9 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
           icon: r.handle.icon,
           path: r.path,
           href: null,
-        }) as NavItem,
+        }) as unknown as NavItem,
     ) ?? []),
-    ...(additionalLinks?.[route.path] ?? []),
+    ...(additionalLinks?.[route?.path ?? ''] ?? []),
   ];
 
   return (
@@ -174,7 +174,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                   <MenuItem
                     key={`${r?.path ?? r?.href}-${i}`}
                     {...(isNilOrEmpty(r.href)
-                      ? { onClick: handleMenuClick(r?.path) }
+                      ? { onClick: handleMenuClick(r?.path ?? '') }
                       : {
                           href: r.href,
                           target: '_blank',

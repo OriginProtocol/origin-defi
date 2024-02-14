@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 
 import { capitalize } from '@mui/material';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+import {
+  formatError,
+  isNilOrEmpty,
+  isUserRejected,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import {
   useAccount,
@@ -67,8 +71,8 @@ export const TransactionButton = ({
 }: TransactionButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [notifId, setNotifId] = useState(null);
-  const [activity, setActivity] = useState<Activity>(null);
+  const [notifId, setNotifId] = useState<string | null>(null);
+  const [activity, setActivity] = useState<Activity | null>(null);
   const done = useRef(false);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
@@ -100,22 +104,21 @@ export const TransactionButton = ({
 
   useEffect(() => {
     if (isTxLoading && !disableNotification) {
-      setNotifId(
-        pushNotification({
-          hideDuration: null,
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="info" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Processing transaction',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'Your transaction is being processed on-chain.',
-              })}
-            />
-          ),
-        }),
-      );
+      const id = pushNotification({
+        hideDuration: undefined,
+        content: (
+          <NotificationSnack
+            icon={<SeverityIcon severity="info" />}
+            title={intl.formatMessage({
+              defaultMessage: 'Processing transaction',
+            })}
+            subtitle={intl.formatMessage({
+              defaultMessage: 'Your transaction is being processed on-chain.',
+            })}
+          />
+        ),
+      });
+      setNotifId(id);
     }
   }, [disableNotification, intl, isTxLoading, pushNotification]);
 
@@ -130,7 +133,7 @@ export const TransactionButton = ({
         });
       }
       if (!disableNotification) {
-        if (!isNilOrEmpty(notifId)) {
+        if (notifId) {
           deleteNotification(notifId);
           setNotifId(null);
         }
@@ -182,13 +185,13 @@ export const TransactionButton = ({
       !done.current
     ) {
       const err = isNilOrEmpty(writeError) ? txError : writeError;
-      if (!isNilOrEmpty(notifId)) {
+      if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
       if (isUserRejected(err)) {
         onUserReject?.();
-        if (!disableActivity) {
+        if (!disableActivity && activity?.id) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -207,7 +210,9 @@ export const TransactionButton = ({
           });
         }
       } else {
-        onError?.(err);
+        if (err) {
+          onError?.(err);
+        }
         if (!disableActivity) {
           updateActivity({
             ...activity,
@@ -223,9 +228,9 @@ export const TransactionButton = ({
                 title={intl.formatMessage({
                   defaultMessage: 'Transaction error',
                 })}
-                subtitle={err.message}
+                subtitle={formatError(err)}
                 status="error"
-                error={err.message}
+                error={formatError(err)}
               />
             ),
           });
@@ -251,29 +256,31 @@ export const TransactionButton = ({
   ]);
 
   const handleClick = () => {
-    writeContract(prepareData?.request);
-    onClick?.();
-    if (!disableActivity) {
-      const activity = pushActivity({
-        title: activityTitle,
-        subtitle: activitySubtitle,
-        type: 'transaction',
-        status: 'pending',
-        endIcon: activityEndIcon,
-      });
-      setActivity(activity);
-    } else {
-      setActivity({
-        id: Date.now().toString(),
-        createdOn: Date.now(),
-        title: activityTitle,
-        subtitle: activitySubtitle,
-        type: 'transaction',
-        status: 'pending',
-        endIcon: activityEndIcon,
-      });
+    if (prepareData?.request) {
+      writeContract(prepareData.request);
+      onClick?.();
+      if (!disableActivity) {
+        const activity = pushActivity({
+          title: activityTitle,
+          subtitle: activitySubtitle,
+          type: 'transaction',
+          status: 'pending',
+          endIcon: activityEndIcon,
+        });
+        setActivity(activity);
+      } else {
+        setActivity({
+          id: Date.now().toString(),
+          createdOn: Date.now(),
+          title: activityTitle,
+          subtitle: activitySubtitle,
+          type: 'transaction',
+          status: 'pending',
+          endIcon: activityEndIcon,
+        });
+      }
+      done.current = false;
     }
-    done.current = false;
   };
 
   const buttonLabel = isWriteLoading

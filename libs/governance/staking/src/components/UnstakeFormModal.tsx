@@ -21,6 +21,7 @@ import {
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { differenceInMonths } from 'date-fns';
 import { useIntl } from 'react-intl';
@@ -170,9 +171,13 @@ export const UnstakeFormModal = ({
             />
           }
           onSuccess={() => {
-            rest.onClose(null, 'backdropClick');
+            rest?.onClose?.({}, 'backdropClick');
             queryClient.invalidateQueries({
-              queryKey: [useUserLockupsQuery.getKey({ address })],
+              queryKey: [
+                useUserLockupsQuery.getKey({
+                  address: address ?? ZERO_ADDRESS,
+                }),
+              ],
             });
           }}
         />

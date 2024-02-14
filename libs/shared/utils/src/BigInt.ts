@@ -15,11 +15,7 @@ export const scale = (
   return parseUnits(formatUnits(value, originDecimals), targetDecimals);
 };
 
-export const subtractSlippage = (
-  value: bigint,
-  decimals: number,
-  slippage: number,
-) => {
+export const subtractSlippage = (value = 0n, decimals = 18, slippage = 0) => {
   if (+formatUnits(value, decimals) <= +formatUnits(1n, decimals)) {
     return value;
   }

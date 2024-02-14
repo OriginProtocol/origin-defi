@@ -9,7 +9,7 @@ import type { Notification } from './types';
 type NotificationsState = {
   notifications: Notification[];
   maxVisible: number;
-  autoHideDuration: number | null;
+  autoHideDuration: number | undefined;
 };
 
 export const { Provider, useTracked } = createContainer<

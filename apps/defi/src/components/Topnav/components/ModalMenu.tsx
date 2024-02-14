@@ -31,6 +31,7 @@ import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
 import type { DialogProps, IconButtonProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 
 import type { NavItem } from '../types';
 
@@ -68,7 +69,7 @@ export const ModalMenuButton = (props: IconButtonProps) => {
 const MenuDialog = (props: DialogProps) => {
   const intl = useIntl();
   const navigate = useNavigate();
-  const [expanded, setExpanded] = useState([]);
+  const [expanded, setExpanded] = useState<string[]>([]);
 
   const handleToggle = (key: string) => () => {
     const idx = expanded.findIndex((a) => a === key);
@@ -111,11 +112,11 @@ const MenuDialog = (props: DialogProps) => {
             px: 2,
           }}
         >
-          {routes[0].children.map((route, i) => {
+          {routes?.[0]?.children?.map((route, i) => {
             const key = route?.path ?? `index-${i}}`;
 
-            const handleMenuClick = (path: string) => (evt) => {
-              props.onClose(evt, 'backdropClick');
+            const handleMenuClick = (path: string) => (evt: MouseEvent) => {
+              props?.onClose?.(evt, 'backdropClick');
               navigate(`${route.path}/${path ?? ''}`);
             };
 
@@ -126,7 +127,7 @@ const MenuDialog = (props: DialogProps) => {
                   key={`index-${i}`}
                   onClick={() => {
                     navigate(`${route?.path ?? ''}/`);
-                    props?.onClose?.(null, 'backdropClick');
+                    props?.onClose?.({}, 'backdropClick');
                   }}
                   sx={{
                     display: 'flex',
@@ -143,7 +144,7 @@ const MenuDialog = (props: DialogProps) => {
             }
 
             const items = [
-              ...(route?.children.map(
+              ...(route?.children?.map(
                 (r) =>
                   ({
                     title: r.handle.title,
@@ -151,9 +152,9 @@ const MenuDialog = (props: DialogProps) => {
                     icon: r.handle.icon,
                     path: r.path,
                     href: null,
-                  }) as NavItem,
+                  }) as unknown as NavItem,
               ) ?? []),
-              ...(additionalLinks?.[route.path] ?? []),
+              ...(additionalLinks?.[route?.path ?? ''] ?? []),
             ];
 
             return (
@@ -199,7 +200,7 @@ const MenuDialog = (props: DialogProps) => {
                       <MenuItem
                         key={`${r?.path ?? r?.href}-${i}`}
                         {...(isNilOrEmpty(r.href)
-                          ? { onClick: handleMenuClick(r?.path) }
+                          ? { onClick: handleMenuClick(r?.path ?? '') }
                           : {
                               href: r.href,
                               target: '_blank',

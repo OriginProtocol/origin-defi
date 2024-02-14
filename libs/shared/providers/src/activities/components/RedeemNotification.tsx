@@ -53,8 +53,8 @@ export const RedeemNotification = ({
       title={intl.formatMessage(title[status])}
       href={
         isNilOrEmpty(txReceipt?.transactionHash)
-          ? null
-          : `https://etherscan.io/tx/${txReceipt.transactionHash}`
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (
@@ -65,12 +65,12 @@ export const RedeemNotification = ({
               },
               {
                 amountIn: intl.formatNumber(
-                  +formatUnits(amountIn, tokenIn.decimals),
+                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
                   { minimumFractionDigits: 4, maximumFractionDigits: 4 },
                 ),
-                symbolIn: tokenIn.symbol,
+                symbolIn: tokenIn?.symbol,
                 amountOut: intl.formatNumber(
-                  +formatUnits(amountOut, tokenOut.decimals),
+                  +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
                   { minimumFractionDigits: 4, maximumFractionDigits: 4 },
                 ),
               },
@@ -82,7 +82,7 @@ export const RedeemNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon symbol={tokenIn.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />
           <FaArrowRightRegular sx={{ fontSize: 14 }} />
         </Stack>
       }

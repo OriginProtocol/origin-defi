@@ -6,8 +6,8 @@ import {
 } from '@origin/shared/providers';
 import {
   isAddressEqual,
-  isNilOrEmpty,
   subtractSlippage,
+  ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
   getAccount,
@@ -33,10 +33,10 @@ import type {
 
 const isRouteAvailable: IsRouteAvailable = async (
   config,
-  { amountIn, tokenIn, tokenOut, curve },
+  { amountIn, tokenIn, tokenOut },
 ) => {
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -71,7 +71,7 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -95,16 +95,21 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (
+    amountIn === 0n ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !tokenOut?.address
+  ) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient(config);
   const { address } = getAccount(config);
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -117,12 +122,12 @@ const estimateGas: EstimateGas = async (
       args: [
         BigInt(
           curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenIn.address),
+            isAddressEqual(t, tokenIn.address ?? ZERO_ADDRESS),
           ),
         ),
         BigInt(
           curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenOut.address),
+            isAddressEqual(t, tokenOut.address ?? ZERO_ADDRESS),
           ),
         ),
         amountIn,
@@ -169,7 +174,7 @@ const estimateRoute: EstimateRoute = async (
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
@@ -189,12 +194,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient(config);
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -211,7 +215,11 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, amountIn }) => {
+  if (amountIn === 0n || !tokenIn?.address) {
+    return null;
+  }
+
   const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
@@ -229,7 +237,7 @@ const swap: Swap = async (
 ) => {
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !tokenIn?.address || !tokenOut?.address) {
     return null;
   }
 
@@ -250,7 +258,7 @@ const swap: Swap = async (
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -262,12 +270,12 @@ const swap: Swap = async (
     args: [
       BigInt(
         curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenIn.address),
+          isAddressEqual(t, tokenIn.address ?? ZERO_ADDRESS),
         ),
       ),
       BigInt(
         curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenOut.address),
+          isAddressEqual(t, tokenOut.address ?? ZERO_ADDRESS),
         ),
       ),
       amountIn,

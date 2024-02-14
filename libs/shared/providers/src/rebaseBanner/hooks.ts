@@ -1,4 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useAccount, useReadContract } from 'wagmi';
 
 export const useIsRebaseBannerVisible = () => {
@@ -7,7 +8,7 @@ export const useIsRebaseBannerVisible = () => {
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
     functionName: 'rebaseState',
-    args: [address],
+    args: [address ?? ZERO_ADDRESS],
     query: { enabled: !!address },
   });
 

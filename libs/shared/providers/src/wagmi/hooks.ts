@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { erc20Abi } from 'viem';
 import {
@@ -34,7 +34,9 @@ export const useWatchContract = <T extends Abi | readonly unknown[]>(
   return res;
 };
 
-export const useWatchContracts = (config: UseReadContractsParameters) => {
+export const useWatchContracts = <T extends Abi | readonly unknown[]>(
+  config: UseReadContractsParameters<T>,
+) => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const prev = usePrevious(Number(blockNumber));
   const res = useReadContracts(config);
@@ -70,7 +72,7 @@ export const useWatchBalance = (config?: {
     address: config?.token,
     abi: erc20Abi,
     functionName: 'balanceOf',
-    args: [addr],
+    args: [addr ?? ZERO_ADDRESS],
     query: {
       enabled: !!config?.token && !!addr,
     },

@@ -1,5 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
 import { secondsInMonth } from 'date-fns/constants';
@@ -18,7 +18,7 @@ export const useTotalLockedUp = () => {
   const { address } = useAccount();
 
   return useUserLockupsQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     {
       select: (data) =>
         data?.ogvLockups?.reduce(
@@ -104,10 +104,13 @@ export const useMyVApy = () => {
 
   return useQuery({
     queryKey: ['useMyVApy', address, config],
+    enabled: !!address,
     queryFn: async () => {
       const data = await Promise.all([
         queryClient.fetchQuery<UserLockupsQuery>({
-          queryKey: useUserLockupsQuery.getKey({ address }),
+          queryKey: useUserLockupsQuery.getKey({
+            address: address ?? ZERO_ADDRESS,
+          }),
         }),
         readContract(config, {
           address: tokens.mainnet.veOGV.address,
@@ -141,6 +144,5 @@ export const useMyVApy = () => {
         return acc + weight * vAPY;
       }, 0);
     },
-    enabled: !!address,
   });
 };

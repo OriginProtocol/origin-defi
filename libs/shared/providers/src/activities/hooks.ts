@@ -21,7 +21,8 @@ export const usePushActivity = () => {
       };
       setState(
         produce((state) => {
-          state.activities.unshift(activity);
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          state.activities.unshift(activity as any);
         }),
       );
 
@@ -35,18 +36,21 @@ export const useUpdateActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (activity: Partial<Activity>) => {
-      setState(
-        produce((state) => {
-          const idx = state.activities.findIndex(propEq(activity.id, 'id'));
-          if (idx > -1) {
-            state.activities[idx] = {
-              ...state.activities[idx],
-              ...activity,
-            };
-          }
-        }),
-      );
+    (activity: Partial<Activity> | undefined | null) => {
+      if (activity) {
+        setState(
+          produce((state) => {
+            const idx = state.activities.findIndex(propEq(activity.id, 'id'));
+            if (idx > -1) {
+              state.activities[idx] = {
+                ...state.activities[idx],
+                ...activity,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              } as any;
+            }
+          }),
+        );
+      }
     },
     [setState],
   );
@@ -56,15 +60,17 @@ export const useDeleteActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (id: string) => {
-      setState(
-        produce((state) => {
-          const idx = state.activities.findIndex(propEq(id, 'id'));
-          if (idx > -1) {
-            state.activities.splice(idx, 1);
-          }
-        }),
-      );
+    (id: string | undefined | null) => {
+      if (id) {
+        setState(
+          produce((state) => {
+            const idx = state.activities.findIndex(propEq(id, 'id'));
+            if (idx > -1) {
+              state.activities.splice(idx, 1);
+            }
+          }),
+        );
+      }
     },
     [setState],
   );

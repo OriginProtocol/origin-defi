@@ -37,7 +37,9 @@ export const OpenAccountModalButton = ({
         if (!mounted || !account || !chain) {
           return (
             <Button
-              {...(mergeDeepRight(props, disconnectedProps) as any)}
+              {...(disconnectedProps
+                ? (mergeDeepRight(props, disconnectedProps) as any)
+                : props)}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -62,7 +64,9 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
-            {...(mergeDeepRight(props, connectedProps) as any)}
+            {...(connectedProps
+              ? (mergeDeepRight(props, connectedProps) as any)
+              : props)}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
               if (props?.onClick) {
                 props.onClick(evt);

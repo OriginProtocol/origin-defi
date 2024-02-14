@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { HexAddress } from '@origin/shared/utils';
 import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
 import type { Config } from 'wagmi';
-
-export type HexAddress = `0x${string}`;
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
@@ -47,18 +46,18 @@ export type EstimateRoute = (
 
 export type Allowance = (
   config: Config,
-  args?: Pick<Args, 'tokenIn' | 'tokenOut'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
   config: Config,
-  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
   config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
-) => Promise<HexAddress>;
+) => Promise<HexAddress | null>;
 
 export type Swap = (
   config: Config,
@@ -71,7 +70,7 @@ export type Swap = (
     | 'slippage'
     | 'estimatedRoute'
   >,
-) => Promise<HexAddress>;
+) => Promise<HexAddress | null>;
 
 export type SwapApi = {
   isRouteAvailable: IsRouteAvailable;
@@ -116,7 +115,7 @@ export type SwapState = {
   isApprovalLoading: boolean;
   isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
-  debounceTime?: number;
+  debounceTime: number;
   trackEvent?: (event: SwapTrackEvent) => void;
   onInputAmountChange?: (state: SwapState) => void;
   onInputTokenChange?: (state: SwapState) => void;
