@@ -22,7 +22,7 @@ export type TrackEvent =
 const analytics = Analytics({
   app: 'oeth-dapp',
   plugins: [
-    ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID)
+    ...(isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
       ? []
       : [
           googleTagManager({
@@ -33,7 +33,10 @@ const analytics = Analytics({
 });
 
 export const registerGoogleTagManager = () => {
-  if (import.meta.env.PROD) {
+  if (
+    import.meta.env.PROD &&
+    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
+  ) {
     analytics.ready(() => {
       console.log('Analytics enabled');
     });
@@ -41,13 +44,19 @@ export const registerGoogleTagManager = () => {
 };
 
 export const trackEvent = ({ name, ...rest }: TrackEvent) => {
-  if (import.meta.env.PROD) {
+  if (
+    import.meta.env.PROD &&
+    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
+  ) {
     analytics.track(name, map(formatParams, rest));
   }
 };
 
 export const trackPage = () => {
-  if (import.meta.env.PROD) {
+  if (
+    import.meta.env.PROD &&
+    !isNilOrEmpty(import.meta.env.VITE_GTM_CONTAINER_ID?.trim())
+  ) {
     analytics.page();
   }
 };

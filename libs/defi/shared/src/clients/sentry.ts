@@ -6,7 +6,7 @@ import {
 } from '@sentry/react';
 
 export const registerSentry = () => {
-  if (!isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN)) {
+  if (!isNilOrEmpty(import.meta.env.VITE_SENTRY_DSN?.trim())) {
     init({
       dsn: import.meta.env.VITE_SENTRY_DSN,
       enableTracing: false,
