@@ -7,7 +7,7 @@ import { statusLabels } from '../constants';
 import type { TypographyProps } from '@mui/material';
 
 export type StatusBadgeProps = {
-  status: string;
+  status: string | undefined | null;
   isLoading?: boolean;
 } & TypographyProps;
 
@@ -20,7 +20,7 @@ export const StatusBadge = ({
   const theme = useTheme();
 
   const label =
-    statusLabels[status] ?? defineMessage({ defaultMessage: 'Unknown' });
+    statusLabels[status ?? ''] ?? defineMessage({ defaultMessage: 'Unknown' });
   const color =
     {
       [OgvProposalState.Active.toLowerCase()]: theme.palette.secondary.main,
@@ -33,7 +33,7 @@ export const StatusBadge = ({
       [OgvProposalState.Succeeded.toLowerCase()]: theme.palette.success.main,
       closed: theme.palette.success.main,
       pending: theme.palette.info.main,
-    }[status?.toLowerCase()] ?? theme.palette.grey[600];
+    }[status?.toLowerCase() ?? ''] ?? theme.palette.grey[600];
 
   return (
     <Typography

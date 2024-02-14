@@ -23,7 +23,7 @@ export const useFormat = () => {
 
   const formatAmount = useCallback(
     (
-      amount: bigint | number,
+      amount: bigint | number | undefined | null,
       decimals = 18,
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
@@ -50,7 +50,7 @@ export const useFormat = () => {
 
   const formatBalance = useCallback(
     (
-      amount: bigint | number,
+      amount: bigint | number | undefined | null,
       decimals = 18,
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
@@ -71,7 +71,7 @@ export const useFormat = () => {
 
   const formatCurrency = useCallback(
     (
-      amount: bigint | number,
+      amount: bigint | number | undefined | null,
       decimals = 18,
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
@@ -95,7 +95,7 @@ export const useFormat = () => {
 
   const formatQuantity = useCallback(
     (
-      amount: bigint | number,
+      amount: bigint | number | undefined | null,
       decimals = 18,
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,

@@ -29,7 +29,7 @@ const config: CodegenConfig = {
       },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
-        addInfiniteQuery: true,
+        reactQueryVersion: 5,
         exposeFetcher: true,
         exposeQueryKeys: true,
         fetcher: {
@@ -50,7 +50,7 @@ const config: CodegenConfig = {
         'typescript-react-query',
       ],
       config: {
-        addInfiniteQuery: true,
+        reactQueryVersion: 5,
         exposeFetcher: true,
         exposeQueryKeys: true,
         fetcher: {

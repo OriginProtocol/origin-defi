@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { pathOr } from 'ramda';
 
 export const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SUBSQUID_URL,
@@ -20,5 +21,5 @@ export const graphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'];
+    return pathOr<TData>({} as TData, ['data', 'data'], res);
   };

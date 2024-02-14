@@ -1,11 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: 'https://squid.subsquid.io/origin-squid/v/v69420/graphql',
+  schema: 'https://squid.subsquid.io/prime-eth-squid/graphql',
   documents: 'libs/prime/**/src/**/*.graphql',
   generates: {
     'libs/prime/shared/src/generated/graphql.ts': {
-      schema: 'https://squid.subsquid.io/origin-squid/v/v69420/graphql',
+      schema: 'https://squid.subsquid.io/prime-eth-squid/graphql',
       plugins: ['typescript'],
       config: {
         scalars: {
@@ -22,6 +22,7 @@ const config: CodegenConfig = {
       },
       plugins: ['typescript-operations', 'typescript-react-query'],
       config: {
+        reactQueryVersion: 5,
         exposeFetcher: true,
         exposeQueryKeys: true,
         fetcher: {

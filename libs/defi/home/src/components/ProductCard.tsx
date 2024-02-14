@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { Chip, Mix, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { useFormat, usePrices } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -100,7 +99,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           {isQueryDataLoading ? (
             <Skeleton width={80} />
           ) : (
-            intl.formatNumber(queryData.apy30DayAvg, {
+            intl.formatNumber(queryData?.apy30DayAvg ?? 0, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
               style: 'percent',
@@ -109,7 +108,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         </Typography>
       </Stack>
       <Stack pt={3} pb={6} px={3} flexGrow={1} justifyContent="flex-end">
-        {!isNilOrEmpty(href) && (
+        {!!href && (
           <Button
             onClick={() => {
               navigate(href);

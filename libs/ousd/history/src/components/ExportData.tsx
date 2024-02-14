@@ -2,6 +2,7 @@ import { useCallback, useRef } from 'react';
 
 import { Button, Link } from '@mui/material';
 import { FaArrowDownToBracketRegular } from '@origin/shared/icons';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -12,11 +13,14 @@ export function ExportData() {
   const intl = useIntl();
   const { address } = useAccount();
   const { data } = useHistoryTransactionQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     { select: (data) => data?.ousdHistories ?? [] },
   );
 
   const generateCSV = useCallback(() => {
+    if (!data || !link?.current) {
+      return;
+    }
     const rows = [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']];
     data.forEach((row) =>
       rows.push([row.timestamp, row.type, row.value, row.balance, row.txHash]),

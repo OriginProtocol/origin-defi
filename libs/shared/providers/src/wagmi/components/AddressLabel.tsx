@@ -1,13 +1,14 @@
 import { Skeleton } from '@mui/material';
 import { MiddleTruncated } from '@origin/shared/components';
 import { isNilOrEmpty, middleTruncate } from '@origin/shared/utils';
-import { mainnet, useEnsName } from 'wagmi';
+import { useEnsName } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import type { MiddleTruncatedProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
 
 type AddressLabelProps = {
-  address: HexAddress;
+  address?: HexAddress;
   enableEnsName?: boolean;
   monospace?: boolean;
   short?: boolean;
@@ -22,9 +23,13 @@ export const AddressLabel = ({
 }: AddressLabelProps) => {
   const { data: ensName, isLoading: isEnsNameLoading } = useEnsName({
     address,
-    enabled: enableEnsName,
     chainId: mainnet.id,
+    query: {
+      enabled: enableEnsName,
+    },
   });
+
+  if (!address) return null;
 
   const label =
     enableEnsName && !isNilOrEmpty(ensName)

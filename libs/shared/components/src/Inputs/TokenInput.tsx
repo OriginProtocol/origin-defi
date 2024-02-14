@@ -75,7 +75,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       const max = isNativeCurrency
         ? balance - parseEther(MIN_ETH_FOR_GAS)
         : balance;
-      onAmountChange(max);
+      onAmountChange?.(max);
     };
 
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;

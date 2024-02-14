@@ -19,10 +19,10 @@ import {
 import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { usePrices } from '../../prices';
-import { ConnectedButton } from '../../wagmi';
+import { ConnectedButton, useWatchBalance } from '../../wagmi';
 import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
@@ -60,7 +60,7 @@ function RedeemerWrapped({
   ...rest
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
-  const { address, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
@@ -73,11 +73,8 @@ function RedeemerWrapped({
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = usePrices();
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({
-    address,
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: tokenIn.address,
-    watch: true,
-    scopeKey: 'redeem_balance',
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
@@ -90,7 +87,7 @@ function RedeemerWrapped({
   const redeemButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > balance?.value
+      : amountIn > (balance ?? 0n)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : intl.formatMessage({ defaultMessage: 'Redeem' });
   const redeemButtonDisabled =
@@ -98,7 +95,7 @@ function RedeemerWrapped({
     isEstimateLoading ||
     isRedeemWaitingForSignature ||
     isRedeemLoading ||
-    amountIn > balance?.value ||
+    amountIn > (balance ?? 0n) ||
     amountIn === 0n;
 
   return (
@@ -137,7 +134,7 @@ function RedeemerWrapped({
             <TokenInput
               amount={amountIn}
               onAmountChange={handleAmountInChange}
-              balance={balance?.value}
+              balance={balance}
               isBalanceLoading={isBalanceLoading}
               token={tokenIn}
               isTokenClickDisabled

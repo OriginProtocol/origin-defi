@@ -1,6 +1,6 @@
 import { Box } from '@mui/material';
 import { FaUserRegular } from '@origin/shared/icons';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
@@ -18,11 +18,15 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   const adr = address ?? self;
   const { data: ensName } = useEnsName({
     address: adr,
-    enabled: !isNilOrEmpty(adr),
+    query: {
+      enabled: !isNilOrEmpty(adr),
+    },
   });
   const { data: ensAvatar } = useEnsAvatar({
-    name: ensName,
-    enabled: !!ensName,
+    name: ensName ?? undefined,
+    query: {
+      enabled: !!ensName,
+    },
   });
 
   if (isNilOrEmpty(adr)) {
@@ -61,7 +65,10 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
         ...rest?.sx,
       }}
     >
-      <Jazzicon diameter={rest?.width ?? 24} seed={jsNumberForAddress(adr)} />
+      <Jazzicon
+        diameter={rest?.width ?? 24}
+        seed={jsNumberForAddress(adr ?? ZERO_ADDRESS)}
+      />
     </Box>
   );
 };

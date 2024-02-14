@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { Box, Card, CardHeader, LinearProgress, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { OgvProposalState, useUserInfoQuery } from '@origin/governance/shared';
 import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { TransactionButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
@@ -21,25 +22,27 @@ export const CurrentResultsCard = (props: CardProps) => {
   const { proposalId } = useParams();
   const { data: user } = useUserInfoQuery(
     {
-      address,
+      address: address ?? ZERO_ADDRESS,
     },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
-      proposalId,
+      proposalId: proposalId ?? '',
     },
-    { enabled: !isNilOrEmpty(proposalId) },
+    { enabled: !!proposalId },
   );
 
   const hasVoted =
-    proposal?.ogvProposalVotes?.filter((v) => v.voter.id === address)?.length >
-    0;
+    (proposal?.ogvProposalVotes?.filter((v) => v.voter.id === address)
+      ?.length ?? 0) > 0;
   const isProposalActive =
     proposal?.ogvProposalById?.status === OgvProposalState.Active;
   const totalVotes =
-    proposal?.ogvProposalById?.scores?.reduce((acc, curr) => acc + curr, 1) ??
-    1;
+    proposal?.ogvProposalById?.scores.reduce?.(
+      (acc, curr) => (acc ?? 0) + (curr ?? 0),
+      1,
+    ) ?? 1;
   const isVotingEnabled =
     isConnected &&
     !hasVoted &&
@@ -56,7 +59,7 @@ export const CurrentResultsCard = (props: CardProps) => {
           {governanceChoices.map((choice, i) => {
             const idx =
               proposal?.ogvProposalById?.choices?.findIndex(
-                (c) => c.toLowerCase() === choice.toLowerCase(),
+                (c) => c!.toLowerCase() === choice.toLowerCase(),
               ) ?? -1;
             const score =
               idx > -1 ? proposal?.ogvProposalById?.scores?.at(idx) ?? 0 : 0;
@@ -176,10 +179,14 @@ function VoteCard({
             )}
             onSuccess={() => {
               queryClient.invalidateQueries({
-                queryKey: [useProposalQuery.getKey({ proposalId })],
+                queryKey: [
+                  useProposalQuery.getKey({ proposalId: proposalId ?? '' }),
+                ],
               });
               queryClient.invalidateQueries({
-                queryKey: [useUserInfoQuery.getKey({ address })],
+                queryKey: [
+                  useUserInfoQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+                ],
               });
             }}
           />

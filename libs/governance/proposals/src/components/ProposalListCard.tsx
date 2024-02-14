@@ -48,7 +48,7 @@ export const ProposalListCard = (props: CardProps) => {
   const filter = search.get('filter') ?? '';
   const { data: proposals, isLoading: isProposalsLoading } = useProposals({
     select: (data) => {
-      if (isNilOrEmpty(filter) || isNilOrEmpty(data)) {
+      if (!filter || isNilOrEmpty(data)) {
         return data;
       }
 
@@ -71,7 +71,7 @@ export const ProposalListCard = (props: CardProps) => {
     setSearch((params) => {
       params.set(
         'limit',
-        Math.min(Number(limit) + PAGE_SIZE, proposals.length).toString(),
+        Math.min(Number(limit) + PAGE_SIZE, proposals?.length ?? 0).toString(),
       );
       return params;
     });
@@ -276,7 +276,10 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
           </Stack>
         </Grid2>
         <Grid2 xs={12} sm={4}>
-          <VotesGauge choices={proposal.choices} scores={proposal.scores} />
+          <VotesGauge
+            choices={proposal?.choices ?? []}
+            scores={proposal?.scores ?? []}
+          />
         </Grid2>
       </Grid2>
     </Stack>
@@ -293,7 +296,7 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
   const { formatAmount } = useFormat();
 
   const scoreVote = sort(
-    descend((i) => i[1]),
+    descend((i: [string, number]) => i[1]),
     zip(choices, scores),
   );
   const total = scores.reduce((acc, curr) => acc + curr, 1);

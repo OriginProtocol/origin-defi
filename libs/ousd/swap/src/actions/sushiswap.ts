@@ -1,11 +1,11 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { prepareWriteContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
+import { subtractSlippage, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
-  prepareWriteContract,
   readContract,
+  simulateContract,
   writeContract,
 } from '@wagmi/core';
 import { last } from 'ramda';
@@ -19,6 +19,7 @@ import type {
   Approve,
   EstimateAmount,
   EstimateApprovalGas,
+  EstimateGas,
   EstimateRoute,
   IsRouteAvailable,
   Swap,
@@ -62,103 +63,103 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
   }
 };
 
-const isRouteAvailable: IsRouteAvailable = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-}) => {
+const isRouteAvailable: IsRouteAvailable = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
+  const path = getPath(tokenIn, tokenOut);
   try {
-    const estimate = await readContract({
-      address: contracts.mainnet.sushiswapRouter.address,
-      abi: contracts.mainnet.sushiswapRouter.abi,
-      functionName: 'getAmountsOut',
-      args: [amountIn, getPath(tokenIn, tokenOut)],
-    });
+    if (path) {
+      const estimate = await readContract(config, {
+        address: contracts.mainnet.sushiswapRouter.address,
+        abi: contracts.mainnet.sushiswapRouter.abi,
+        functionName: 'getAmountsOut',
+        args: [amountIn, path],
+      });
 
-    return (
-      +formatUnits(amountIn, tokenIn.decimals) /
-        +formatUnits(last(estimate), tokenOut.decimals) <
-      MAX_PRICE
-    );
+      return (
+        +formatUnits(amountIn, tokenIn.decimals) /
+          +formatUnits(last(estimate) ?? 1n, tokenOut.decimals) <
+        MAX_PRICE
+      );
+    }
   } catch {}
 
   return false;
 };
 
-const estimateAmount: EstimateAmount = async ({
-  amountIn,
-  tokenIn,
-  tokenOut,
-}) => {
-  if (amountIn === 0n) {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
+  const path = getPath(tokenIn, tokenOut);
+
+  if (amountIn === 0n || !path) {
     return 0n;
   }
 
-  const estimate = await readContract({
+  const estimate = await readContract(config, {
     address: contracts.mainnet.sushiswapRouter.address,
     abi: contracts.mainnet.sushiswapRouter.abi,
     functionName: 'getAmountsOut',
-    args: [amountIn, getPath(tokenIn, tokenOut)],
+    args: [amountIn, path],
   });
 
-  return last(estimate);
+  return last(estimate) ?? 0n;
 };
 
-const estimateGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amountOut,
-  slippage,
-}) => {
+const estimateGas: EstimateGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
-  const { address } = getAccount();
+  const { address } = getAccount(config);
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const path = getPath(tokenIn, tokenOut);
+
+  gasEstimate =
+    tokenIn.symbol === tokens.mainnet.USDT.symbol ||
+    tokenOut.symbol === tokens.mainnet.USDT.symbol
+      ? 175000n
+      : 230000n;
 
   try {
-    gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.sushiswapRouter.address,
-      abi: contracts.mainnet.sushiswapRouter.abi,
-      functionName: 'swapExactTokensForTokens',
-      args: [
-        amountIn,
-        minAmountOut,
-        getPath(tokenIn, tokenOut),
-        address,
-        BigInt(Date.now() + 2 * 60 * 1000),
-      ],
-      account: address,
-    });
-  } catch {
-    gasEstimate =
-      tokenIn.symbol === tokens.mainnet.USDT.symbol ||
-      tokenOut.symbol === tokens.mainnet.USDT.symbol
-        ? 175000n
-        : 230000n;
-  }
+    if (path) {
+      gasEstimate = await publicClient.estimateContractGas({
+        address: contracts.mainnet.sushiswapRouter.address,
+        abi: contracts.mainnet.sushiswapRouter.abi,
+        functionName: 'swapExactTokensForTokens',
+        args: [
+          amountIn,
+          minAmountOut,
+          path,
+          address ?? ZERO_ADDRESS,
+          BigInt(Date.now() + 2 * 60 * 1000),
+        ],
+        account: address,
+      });
+    }
+  } catch {}
 
   return gasEstimate;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  route,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, route },
+) => {
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({ tokenIn, tokenOut, amountIn }),
-    allowance({ tokenIn, tokenOut }),
-    estimateApprovalGas({ amountIn, tokenIn, tokenOut }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+    allowance(config, { tokenIn, tokenOut }),
+    estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
   ]);
-  const gas = await estimateGas({
+  const gas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -178,14 +179,14 @@ const estimateRoute: EstimateRoute = async ({
   };
 };
 
-const allowance: Allowance = async ({ tokenIn }) => {
-  const { address } = getAccount();
+const allowance: Allowance = async (config, { tokenIn }) => {
+  const { address } = getAccount(config);
 
-  if (isNilOrEmpty(address)) {
+  if (!address || !tokenIn?.address) {
     return 0n;
   }
 
-  const allowance = await readContract({
+  const allowance = await readContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
@@ -195,18 +196,17 @@ const allowance: Allowance = async ({ tokenIn }) => {
   return allowance as unknown as bigint;
 };
 
-const estimateApprovalGas: EstimateApprovalGas = async ({
-  tokenIn,
-  amountIn,
-}) => {
+const estimateApprovalGas: EstimateApprovalGas = async (
+  config,
+  { tokenIn, amountIn },
+) => {
   let approvalEstimate = 0n;
-  const { address } = getAccount();
+  const { address } = getAccount(config);
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
-
-  const publicClient = getPublicClient();
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
@@ -214,7 +214,7 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
       abi: tokenIn.abi,
       functionName: 'approve',
       args: [contracts.mainnet.sushiswapRouter.address, amountIn],
-      account: address,
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 60000n;
@@ -223,32 +223,33 @@ const estimateApprovalGas: EstimateApprovalGas = async ({
   return approvalEstimate;
 };
 
-const approve: Approve = async ({ tokenIn, tokenOut, amountIn }) => {
-  const { request } = await prepareWriteContract({
+const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+  if (amountIn === 0n || !tokenIn?.address) {
+    return null;
+  }
+
+  const { request } = await simulateContract(config, {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.sushiswapRouter.address, amountIn],
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  slippage,
-  amountOut,
-}) => {
-  const { address } = getAccount();
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+) => {
+  const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address) {
     return null;
   }
 
-  const approved = await allowance({ tokenIn, tokenOut });
+  const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
     throw new Error(`SushiSwap is not approved`);
@@ -256,7 +257,7 @@ const swap: Swap = async ({
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const estimatedGas = await estimateGas({
+  const estimatedGas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -265,7 +266,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.sushiswapRouter.address,
     abi: contracts.mainnet.sushiswapRouter.abi,
     functionName: 'swapExactTokensForTokens',
@@ -279,7 +280,7 @@ const swap: Swap = async ({
     account: address,
     gas,
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

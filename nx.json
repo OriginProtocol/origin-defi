@@ -39,7 +39,7 @@
         "e2eTestRunner": "none",
         "unitTestRunner": "none",
         "minimal": true,
-        "strict": false
+        "strict": true
       },
       "component": {
         "style": "css"
@@ -51,7 +51,7 @@
         "test": "none",
         "component": false,
         "minimal": true,
-        "strict": false
+        "strict": true
       }
     }
   }

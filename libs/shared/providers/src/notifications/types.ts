@@ -10,5 +10,5 @@ export type Notification = {
   createdOn: number;
   read: boolean;
   visible: boolean;
-  hideDuration: number | null;
+  hideDuration: number | undefined;
 };

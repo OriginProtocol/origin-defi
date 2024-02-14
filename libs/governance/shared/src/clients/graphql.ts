@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { pathOr } from 'ramda';
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_SUBSQUID_URL,
@@ -15,7 +16,7 @@ export const graphqlClient =
     options?: RequestInit['headers'],
   ) =>
   async () => {
-    const res = await axiosInstance<TData>({
+    const res = await axiosInstance<TData, TVariables>({
       url: '/graphql',
       method: 'POST',
       headers: {
@@ -25,7 +26,7 @@ export const graphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'] as TData;
+    return pathOr<TData>({} as TData, ['data', 'data'], res);
   };
 
 export const snapshotGraphqlClient =
@@ -45,5 +46,5 @@ export const snapshotGraphqlClient =
       data: { query, variables },
     });
 
-    return res.data['data'] as TData;
+    return pathOr<TData>({} as TData, ['data', 'data'], res);
   };

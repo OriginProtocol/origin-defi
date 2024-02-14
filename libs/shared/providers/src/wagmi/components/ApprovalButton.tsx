@@ -2,14 +2,19 @@ import { useEffect, useRef, useState } from 'react';
 
 import { Button } from '@mui/material';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
-import { useIntl } from 'react-intl';
 import {
-  erc20ABI,
+  formatError,
+  isNilOrEmpty,
+  isUserRejected,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
+import { useIntl } from 'react-intl';
+import { erc20Abi } from 'viem';
+import {
   useAccount,
-  useContractWrite,
-  usePrepareContractWrite,
-  useWaitForTransaction,
+  useSimulateContract,
+  useWaitForTransactionReceipt,
+  useWriteContract,
 } from 'wagmi';
 
 import {
@@ -58,38 +63,40 @@ export const ApprovalButton = ({
 }: ApprovalButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [notifId, setNotifId] = useState(null);
-  const [activity, setActivity] = useState<Activity>(null);
+  const [notifId, setNotifId] = useState<string | null>(null);
+  const [activity, setActivity] = useState<Activity | null>(null);
   const done = useRef(false);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
-  const { config, error: prepareError } = usePrepareContractWrite({
+  const { data: prepareData, error: prepareError } = useSimulateContract({
     address: token.address,
-    abi: erc20ABI,
+    abi: erc20Abi,
     functionName: 'approve',
-    args: [spender.address, amount],
-    enabled: isConnected && amount > 0n && !disabled,
+    args: [spender?.address ?? ZERO_ADDRESS, amount],
+    query: {
+      enabled: isConnected && amount > 0n && !disabled,
+    },
   });
   const {
-    write,
-    data: writeData,
+    writeContract,
+    data: hash,
     error: writeError,
-    isLoading: isWriteLoading,
-  } = useContractWrite(config);
+    isPending: isWriteLoading,
+  } = useWriteContract();
   const {
     data: approvalData,
     isLoading: isApprovalLoading,
     isSuccess: isApprovalSuccess,
-  } = useWaitForTransaction({ hash: writeData?.hash });
+  } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
     if (isApprovalLoading && !disableNotification) {
       setNotifId(
         pushNotification({
-          hideDuration: null,
+          hideDuration: undefined,
           content: (
             <NotificationSnack
               icon={<SeverityIcon severity="info" />}
@@ -113,16 +120,16 @@ export const ApprovalButton = ({
       isApprovalSuccess &&
       !done.current
     ) {
-      onSuccess?.(approvalData);
+      onSuccess?.(approvalData as TransactionReceipt);
       if (!disableActivity) {
         updateActivity({
           ...activity,
           status: 'success',
-          txReceipt: approvalData,
+          txReceipt: approvalData as TransactionReceipt,
         });
       }
       if (!disableNotification) {
-        if (!isNilOrEmpty(notifId)) {
+        if (notifId) {
           deleteNotification(notifId);
           setNotifId(null);
         }
@@ -131,7 +138,7 @@ export const ApprovalButton = ({
             <ApprovalNotification
               {...activity}
               status="success"
-              txReceipt={approvalData}
+              txReceipt={approvalData as TransactionReceipt}
             />
           ),
         });
@@ -154,13 +161,13 @@ export const ApprovalButton = ({
 
   useEffect(() => {
     if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity) && !done.current) {
-      if (!isNilOrEmpty(notifId)) {
+      if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
       if (isUserRejected(writeError)) {
         onUserReject?.();
-        if (!disableActivity) {
+        if (!disableActivity && activity?.id) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -179,7 +186,9 @@ export const ApprovalButton = ({
           });
         }
       } else {
-        onError?.(writeError);
+        if (writeError) {
+          onError?.(writeError);
+        }
         if (!disableActivity) {
           updateActivity({
             ...activity,
@@ -193,7 +202,7 @@ export const ApprovalButton = ({
               <ApprovalNotification
                 {...activity}
                 status="error"
-                error={writeError.message}
+                error={formatError(writeError)}
               />
             ),
           });
@@ -217,7 +226,9 @@ export const ApprovalButton = ({
   ]);
 
   const handleClick = () => {
-    write?.();
+    if (prepareData?.request) {
+      writeContract(prepareData?.request);
+    }
     onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({

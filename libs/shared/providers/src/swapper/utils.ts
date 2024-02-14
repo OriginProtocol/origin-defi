@@ -14,7 +14,7 @@ export const getAllAvailableTokens = (
 
   return swapRoutes.reduce((acc, curr) => {
     return uniq([...acc, curr[source]]);
-  }, []);
+  }, [] as Token[]);
 };
 
 export const getAvailableTokensForSource = (
@@ -36,7 +36,7 @@ export const getAvailableTokensForSource = (
     }
 
     return acc;
-  }, []);
+  }, [] as Token[]);
 };
 
 export const getAvailableRoutes = (
@@ -55,8 +55,11 @@ export const getAvailableRoutes = (
   );
 };
 
-export const routeEq = (a: SwapRoute, b: SwapRoute) => {
-  if (isNilOrEmpty(a) || isNilOrEmpty(b)) {
+export const routeEq = (
+  a: SwapRoute | undefined | null,
+  b: SwapRoute | undefined | null,
+) => {
+  if (!a || !b) {
     return false;
   }
 

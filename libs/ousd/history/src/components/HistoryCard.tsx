@@ -17,13 +17,13 @@ import { ExportData } from './ExportData';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
+import type { HistoryType } from '@origin/ousd/shared';
+
 export function HistoryCard() {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [filters, setFilters] = useState([]);
-  const { data, isFetching } = useAggregatedHistory(filters, {
-    keepPreviousData: true,
-  });
+  const [filters, setFilters] = useState<HistoryType[]>([]);
+  const { data, isFetching } = useAggregatedHistory(filters);
 
   return (
     <Card>

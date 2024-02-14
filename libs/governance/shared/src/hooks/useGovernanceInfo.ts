@@ -1,16 +1,18 @@
 import { tokens } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { formatUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 export const useGovernanceInfo = () => {
   const { address } = useAccount();
+  const config = useConfig();
 
   return useQuery({
-    queryKey: ['useGovernanceInfo', address],
+    queryKey: ['useGovernanceInfo', address, config],
     queryFn: async () => {
-      const data = await readContracts({
+      const data = await readContracts(config, {
         contracts: [
           {
             address: tokens.mainnet.OGV.address,
@@ -26,19 +28,19 @@ export const useGovernanceInfo = () => {
             address: tokens.mainnet.OGV.address,
             abi: tokens.mainnet.OGV.abi,
             functionName: 'balanceOf',
-            args: [address],
+            args: [address ?? ZERO_ADDRESS],
           },
           {
             address: tokens.mainnet.veOGV.address,
             abi: tokens.mainnet.veOGV.abi,
             functionName: 'balanceOf',
-            args: [address],
+            args: [address ?? ZERO_ADDRESS],
           },
           {
             address: tokens.mainnet.veOGV.address,
             abi: tokens.mainnet.veOGV.abi,
             functionName: 'previewRewards',
-            args: [address],
+            args: [address ?? ZERO_ADDRESS],
           },
           {
             address: tokens.mainnet.OGV.address,
@@ -50,7 +52,7 @@ export const useGovernanceInfo = () => {
             address: tokens.mainnet.OGV.address,
             abi: tokens.mainnet.OGV.abi,
             functionName: 'allowance',
-            args: [address, tokens.mainnet.veOGV.address],
+            args: [address ?? ZERO_ADDRESS, tokens.mainnet.veOGV.address],
           },
         ],
         allowFailure: true,

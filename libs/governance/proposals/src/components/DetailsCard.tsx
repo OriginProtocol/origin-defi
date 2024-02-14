@@ -27,7 +27,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
-import { useContractRead } from 'wagmi';
+import { useReadContract } from 'wagmi';
 
 import { useProposalQuery } from '../queries.generated';
 import { parseProposalContent } from '../utils';
@@ -40,11 +40,17 @@ export const DetailsCard = (props: CardProps) => {
   const { formatAmount } = useFormat();
   const { proposalId } = useParams();
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
-    { proposalId },
+    { proposalId: proposalId ?? '' },
     { enabled: !!proposalId, select: (data) => data?.ogvProposalById },
   );
 
   const { description } = parseProposalContent(proposal?.description);
+  const createdOn = proposal?.timestamp
+    ? new Date(proposal.timestamp)
+    : new Date();
+  const lastUpdated = proposal?.lastUpdated
+    ? new Date(proposal.lastUpdated)
+    : new Date();
 
   return (
     <Card {...props}>
@@ -72,7 +78,7 @@ export const DetailsCard = (props: CardProps) => {
             <ValueLabel
               {...vl}
               label={intl.formatMessage({ defaultMessage: 'Created' })}
-              value={intl.formatDate(new Date(proposal?.timestamp), {
+              value={intl.formatDate(createdOn, {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric',
@@ -85,7 +91,7 @@ export const DetailsCard = (props: CardProps) => {
             <ValueLabel
               {...vl}
               label={intl.formatMessage({ defaultMessage: 'Last updated' })}
-              value={intl.formatDate(new Date(proposal?.lastUpdated), {
+              value={intl.formatDate(lastUpdated, {
                 day: '2-digit',
                 month: 'short',
                 year: 'numeric',
@@ -151,24 +157,26 @@ const vl: Partial<ValueLabelProps> = {
 function Actions(props: StackProps) {
   const intl = useIntl();
   const { proposalId } = useParams();
-  const [expanded, setExpanded] = useState([]);
-  const { data: actions, isLoading: isActionsLoading } = useContractRead({
+  const [expanded, setExpanded] = useState<string[]>([]);
+  const { data: actions, isLoading: isActionsLoading } = useReadContract({
     address: contracts.mainnet.OUSDGovernance.address,
     abi: contracts.mainnet.OUSDGovernance.abi,
     functionName: 'getActions',
-    args: [BigInt(proposalId)],
-    enabled: !!proposalId,
-    select: (data) =>
-      data?.[0].map((_, i) => {
-        const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
+    args: [BigInt(proposalId ?? '')],
+    query: {
+      enabled: !!proposalId,
+      select: (data) =>
+        data?.[0]?.map((_, i) => {
+          const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
 
-        return {
-          address: data[0][i],
-          functionName: res?.[1],
-          argumentType: res?.[2],
-          args: data[3][i],
-        };
-      }),
+          return {
+            address: data[0][i],
+            functionName: res?.[1],
+            argumentType: res?.[2],
+            args: data[3][i],
+          };
+        }),
+    },
   });
 
   const handleToggleActionRow = (actionKey: string) => () => {
@@ -204,7 +212,7 @@ function Actions(props: StackProps) {
         </Box>
       ) : (
         actions
-          .filter((a) => !isNilOrEmpty(a.functionName))
+          ?.filter((a) => !isNilOrEmpty(a.functionName))
           .map((a, i) => (
             <Accordion
               key={getKey(a.address, i)}

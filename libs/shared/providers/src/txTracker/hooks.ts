@@ -87,9 +87,12 @@ export const useReferrerTracker = (defaultReferrerId: string) => {
 };
 
 export const getReferrerId = () => {
-  let value: string;
+  let value: string | undefined = undefined;
   try {
     const raw = window.localStorage.getItem(`@origin/referrer-track`);
+    if (!raw) {
+      return value;
+    }
     const id = JSON.parse(raw).id as string;
     if (id.match(referrerRegex)) {
       value = id;

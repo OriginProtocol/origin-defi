@@ -19,6 +19,7 @@ import {
   TablePagination,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -46,7 +47,7 @@ export const LockupsTable = () => {
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
   const { data, isLoading } = useUserLockupsQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     {
       select: (data) => data?.ogvLockups,
       enabled: !!address,
@@ -176,7 +177,7 @@ export const LockupsTable = () => {
   );
 
   const table = useReactTable({
-    data,
+    data: data ?? [],
     columns,
     initialState: {
       pagination: {

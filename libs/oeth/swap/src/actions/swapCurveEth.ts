@@ -1,7 +1,7 @@
 import { queryClient } from '@origin/oeth/shared';
 import { contracts } from '@origin/shared/contracts';
 import {
-  prepareWriteContractWithTxTracker,
+  simulateContractWithTxTracker,
   useCurve,
 } from '@origin/shared/providers';
 import {
@@ -29,21 +29,20 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-}) => {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { tokenIn, tokenOut, amountIn },
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
-  const amountOut = await readContract({
+  const amountOut = await readContract(config, {
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_amount',
@@ -58,26 +57,23 @@ const estimateAmount: EstimateAmount = async ({
   return amountOut as unknown as bigint;
 };
 
-const estimateGas: EstimateGas = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amountOut,
-  slippage,
-}) => {
+const estimateGas: EstimateGas = async (
+  config,
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+) => {
   let gasEstimate = 0n;
+  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
-  const publicClient = getPublicClient();
-  const { address } = getAccount();
+  const { address } = getAccount(config);
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
@@ -121,13 +117,10 @@ const estimateApprovalGas: EstimateApprovalGas = async () => {
   return 0n;
 };
 
-const estimateRoute: EstimateRoute = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  route,
-  slippage,
-}) => {
+const estimateRoute: EstimateRoute = async (
+  config,
+  { tokenIn, tokenOut, amountIn, route, slippage },
+) => {
   if (amountIn === 0n) {
     return {
       ...route,
@@ -140,15 +133,22 @@ const estimateRoute: EstimateRoute = async ({
   }
 
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount({
+    estimateAmount(config, {
       tokenIn,
       tokenOut,
       amountIn,
     }),
-    allowance(),
-    estimateApprovalGas(),
+    allowance(config, {
+      tokenIn,
+      tokenOut,
+    }),
+    estimateApprovalGas(config, {
+      tokenIn,
+      tokenOut,
+      amountIn,
+    }),
   ]);
-  const gas = await estimateGas({
+  const gas = await estimateGas(config, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -173,13 +173,10 @@ const approve: Approve = async () => {
   return null;
 };
 
-const swap: Swap = async ({
-  tokenIn,
-  tokenOut,
-  amountIn,
-  amountOut,
-  slippage,
-}) => {
+const swap: Swap = async (
+  config,
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+) => {
   if (amountIn === 0n) {
     return null;
   }
@@ -187,11 +184,11 @@ const swap: Swap = async ({
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
+    queryKey: useCurve.getKey(config),
     queryFn: useCurve.fetcher,
     staleTime: Infinity,
   });
-  const estimatedGas = await estimateGas({
+  const estimatedGas = await estimateGas(config, {
     amountIn,
     slippage,
     tokenIn,
@@ -200,7 +197,7 @@ const swap: Swap = async ({
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await prepareWriteContractWithTxTracker({
+  const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OETHCurvePool.address,
     abi: contracts.mainnet.OETHCurvePool.abi,
     functionName: 'exchange',
@@ -221,7 +218,7 @@ const swap: Swap = async ({
     gas,
     ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
   });
-  const { hash } = await writeContract(request);
+  const hash = await writeContract(config, request);
 
   return hash;
 };

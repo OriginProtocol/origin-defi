@@ -1,6 +1,6 @@
 import { Link } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { useNetwork } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
 import type { LinkProps } from '@mui/material';
@@ -19,17 +19,18 @@ export const BlockExplorerLink = ({
   ...rest
 }: BlockExplorerLinkProps) => {
   const intl = useIntl();
-  const { chain, chains } = useNetwork();
+  const { chains } = useConfig();
+  const { chain } = useAccount();
 
   const baseUrl =
     blockExplorer?.url ??
     chain?.blockExplorers?.default?.url ??
-    chains[0].blockExplorers.default.url ??
+    chains?.[0]?.blockExplorers?.default?.url ??
     mainnet.blockExplorers.default.url;
   const name =
     blockExplorer?.name ??
     chain?.blockExplorers?.default?.name ??
-    chains[0].blockExplorers.default.name ??
+    chains?.[0]?.blockExplorers?.default?.name ??
     mainnet.blockExplorers.default.name;
 
   return (

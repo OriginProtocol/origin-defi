@@ -25,11 +25,11 @@ export function Topnav(props: BoxProps) {
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
 
-  const visibleRoutes = routes[0].children.filter(
+  const visibleRoutes = routes?.[0]?.children?.filter(
     (route) => !isNilOrEmpty(route?.handle?.label),
   );
   const selectedTab = visibleRoutes
-    .map((r) => r.path)
+    ?.map((r) => r.path)
     .includes(location.pathname)
     ? location.pathname
     : '/';
@@ -121,7 +121,7 @@ export function Topnav(props: BoxProps) {
             },
           }}
         >
-          {visibleRoutes.map((route) => (
+          {visibleRoutes?.map((route) => (
             <Tab
               key={route?.path ?? '/'}
               value={route?.path ?? '/'}

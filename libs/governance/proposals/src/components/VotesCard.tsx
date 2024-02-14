@@ -32,15 +32,15 @@ export const VoteCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const theme = useTheme();
-  const [limit, setLimit] = useState(DEFAULT_VISIBLE);
+  const [limit, setLimit] = useState<number | null>(DEFAULT_VISIBLE);
   const [filter, setFilter] = useState(governanceChoices[0]);
   const { proposalId } = useParams();
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
-      proposalId,
+      proposalId: proposalId ?? '',
     },
     {
-      enabled: !isNilOrEmpty(proposalId),
+      enabled: !!proposalId,
       select: (data) => groupBy(prop('type'), data?.ogvProposalVotes ?? []),
     },
   );
@@ -50,7 +50,7 @@ export const VoteCard = (props: CardProps) => {
   };
 
   const votes = proposal?.[filter] ?? [];
-  const visibileVotes = isNilOrEmpty(limit) ? votes : take(limit, votes);
+  const visibileVotes = !limit ? votes : take(limit, votes);
   const totalVotes = votes.reduce(
     (acc, curr) =>
       acc + +formatUnits(BigInt(curr.weight), tokens.mainnet.veOGV.decimals),
@@ -118,7 +118,7 @@ export const VoteCard = (props: CardProps) => {
                 count:
                   totalVotes === 0
                     ? '-'
-                    : formatAmount(totalVotes, null, null, {
+                    : formatAmount(totalVotes, undefined, undefined, {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       }),

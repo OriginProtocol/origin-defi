@@ -1,4 +1,4 @@
-import { erc20ABI } from 'wagmi';
+import { erc20Abi } from 'viem';
 import { mainnet } from 'wagmi/chains';
 
 import { DAIABI } from './abis/DAI';
@@ -24,7 +24,7 @@ export const tokens = {
     ETH: {
       address: undefined,
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'ETH',
       decimals: 18,
       symbol: 'ETH',
@@ -32,7 +32,7 @@ export const tokens = {
     ETHx: {
       address: '0xa35b1b31ce002fbf2058d22f30f95d405200a15b',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Stader ETHx',
       decimals: 18,
       symbol: 'ETHx',
@@ -40,7 +40,7 @@ export const tokens = {
     frxETH: {
       address: '0x5E8422345238F34275888049021821E8E08CAa1f',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Frax Ether',
       decimals: 18,
       symbol: 'frxETH',
@@ -48,7 +48,7 @@ export const tokens = {
     mETH: {
       address: '0xd5f7838f5c461feff7fe49ea5ebaf7728bb0adfa',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Mantle Staked Ether',
       decimals: 18,
       symbol: 'mETH',
@@ -64,7 +64,7 @@ export const tokens = {
     OGN: {
       address: '0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Origin Token',
       decimals: 18,
       symbol: 'OGN',
@@ -72,7 +72,7 @@ export const tokens = {
     OGV: {
       address: '0x9c354503C38481a7A7a51629142963F98eCC12D0',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Origin Dollar Governance',
       decimals: 18,
       symbol: 'OGV',
@@ -88,7 +88,7 @@ export const tokens = {
     primeETH: {
       address: '0x6ef3D766Dfe02Dc4bF04aAe9122EB9A0Ded25615',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Prime ETH',
       decimals: 18,
       symbol: 'primeETH',
@@ -96,7 +96,7 @@ export const tokens = {
     rETH: {
       address: '0xae78736Cd615f374D3085123A210448E74Fc6393',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Rocket Pool ETH',
       decimals: 18,
       symbol: 'rETH',
@@ -112,7 +112,7 @@ export const tokens = {
     stETH: {
       address: '0xae7ab96520DE3A18E5e111B5EaAb095312D7fE84',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Liquid Staked Ether 2.0',
       decimals: 18,
       symbol: 'stETH',
@@ -120,7 +120,7 @@ export const tokens = {
     swETH: {
       address: '0xf951e335afb289353dc249e82926178eac7ded78',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Swell ETH',
       decimals: 18,
       symbol: 'swETH',
@@ -152,7 +152,7 @@ export const tokens = {
     WETH: {
       address: '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2',
       chainId: mainnet.id,
-      abi: erc20ABI,
+      abi: erc20Abi,
       name: 'Wrapped Ether',
       decimals: 18,
       symbol: 'WETH',

@@ -22,8 +22,8 @@ export const SliderSwitch = ({
   onChange,
   ...rest
 }: SliderSwitchProps) => {
-  const refs = useRef([]);
-  const [itemsWidth, setItemsWidth] = useState([]);
+  const refs = useRef<HTMLButtonElement[]>([]);
+  const [itemsWidth, setItemsWidth] = useState<number[]>([]);
 
   useLayoutEffect(() => {
     setItemsWidth(refs.current.map((o) => o.offsetWidth));
@@ -57,7 +57,9 @@ export const SliderSwitch = ({
         <SwitchButton
           key={o.label}
           ref={(el) => {
-            refs.current[i] = el;
+            if (el) {
+              refs.current[i] = el;
+            }
           }}
           option={o}
           isSelected={value === o.value}

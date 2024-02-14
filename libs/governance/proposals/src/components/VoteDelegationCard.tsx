@@ -19,7 +19,7 @@ import {
   useFormat,
   UserAvatar,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { take } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -37,18 +37,23 @@ export const VoteDelegationCard = (props: CardProps) => {
   const { address, isConnected } = useAccount();
   const queryClient = useQueryClient();
   const { data: userInfo, isLoading: isUserInfoLoading } = useUserInfoQuery(
-    { address: address },
+    { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
   const { data: delegators, isLoading: isDelegatorsLoading } =
-    useUserDelegatorsQuery({ address: address }, { enabled: !!address });
+    useUserDelegatorsQuery(
+      { address: address ?? ZERO_ADDRESS },
+      { enabled: !!address },
+    );
 
-  const visibleDelegators = take(
-    5,
-    delegators?.ogvAddresses?.filter(
-      (d) => !isAddressEqual(d.id as HexAddress, address),
-    ) ?? [],
-  );
+  const visibleDelegators = address
+    ? take(
+        5,
+        delegators?.ogvAddresses?.filter(
+          (d) => !isAddressEqual(d.id as HexAddress, address),
+        ) ?? [],
+      )
+    : [];
   const isSelfDelegating =
     userInfo?.delegatee?.id?.toLowerCase() === address?.toLowerCase();
   const delegatee = userInfo?.delegatee?.id as HexAddress;
@@ -170,7 +175,11 @@ export const VoteDelegationCard = (props: CardProps) => {
                       queryKey: ['useGovernanceInfo'],
                     });
                     queryClient.invalidateQueries({
-                      queryKey: [useUserInfoQuery.getKey({ address })],
+                      queryKey: [
+                        useUserInfoQuery.getKey({
+                          address: address ?? ZERO_ADDRESS,
+                        }),
+                      ],
                     });
                   }}
                   sx={{ height: 44 }}

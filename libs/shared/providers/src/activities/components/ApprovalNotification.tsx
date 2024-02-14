@@ -48,8 +48,8 @@ export const ApprovalNotification = ({
       title={intl.formatMessage(title[status])}
       href={
         isNilOrEmpty(txReceipt?.transactionHash)
-          ? null
-          : `https://etherscan.io/tx/${txReceipt.transactionHash}`
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (
@@ -60,10 +60,10 @@ export const ApprovalNotification = ({
               },
               {
                 amountIn: intl.formatNumber(
-                  +formatUnits(amountIn ?? 0n, tokenIn.decimals),
+                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
                   { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
-                symbolIn: tokenIn.symbol,
+                symbolIn: tokenIn?.symbol,
               },
             )}
           </Typography>
@@ -71,7 +71,7 @@ export const ApprovalNotification = ({
           <Typography color="error">{error}</Typography>
         )
       }
-      endIcon={<TokenIcon symbol={tokenIn.symbol} sx={{ fontSize: 20 }} />}
+      endIcon={<TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />}
     />
   );
 };

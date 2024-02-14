@@ -122,7 +122,7 @@ export function Topnav(props: BoxProps) {
             },
           }}
         >
-          {routes[0].children.map((route) => (
+          {routes?.[0]?.children?.map((route) => (
             <Tab
               key={route?.path ?? '/'}
               value={route?.path ?? '/'}

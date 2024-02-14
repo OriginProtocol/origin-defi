@@ -39,15 +39,13 @@ export const MyVotingHistoryCard = (props: CardProps) => {
     lv: PAGE_SIZE.toString(),
   });
   const limit = search.get('lv') ? Number(search.get('lv')) : PAGE_SIZE;
-  const { data: votes, isLoading: isVotesLoading } = useUserVotes({
-    enabled: isConnected,
-  });
+  const { data: votes, isLoading: isVotesLoading } = useUserVotes();
 
   const handleShowMoreClick = () => {
     setSearch((params) => {
       params.set(
         'lv',
-        Math.min(Number(limit) + PAGE_SIZE, votes.length).toString(),
+        Math.min(Number(limit) + PAGE_SIZE, votes?.length ?? 0).toString(),
       );
       return params;
     });
@@ -90,7 +88,8 @@ export const MyVotingHistoryCard = (props: CardProps) => {
           <>
             <Stack spacing={1.5} divider={<Divider />}>
               {paginatedVotes.map((vote) => (
-                <VoteHistory key={vote.id} vote={vote} />
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                <VoteHistory key={vote.id} vote={vote as any} />
               ))}
             </Stack>
             <Stack justifyContent="center" alignItems="center" py={2}>

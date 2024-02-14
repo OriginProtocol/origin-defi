@@ -30,7 +30,7 @@ import {
   TransactionButton,
   useFormat,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
@@ -85,7 +85,8 @@ export const StakeFormModal = (props: DialogProps) => {
     setAmount(val);
   };
 
-  const handleDurationChange = (_, newValue: number | number[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleDurationChange = (_: any, newValue: number | number[]) => {
     setIsLoading(true);
     setDuration(newValue as number);
   };
@@ -523,9 +524,13 @@ export const StakeFormModal = (props: DialogProps) => {
             />
           }
           onSuccess={() => {
-            props.onClose(null, 'backdropClick');
+            props?.onClose?.({}, 'backdropClick');
             queryClient.invalidateQueries({
-              queryKey: [useUserLockupsQuery.getKey({ address })],
+              queryKey: [
+                useUserLockupsQuery.getKey({
+                  address: address ?? ZERO_ADDRESS,
+                }),
+              ],
             });
           }}
           fullWidth

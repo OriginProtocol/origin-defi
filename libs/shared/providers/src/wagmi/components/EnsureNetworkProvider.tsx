@@ -1,17 +1,18 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useConfig, useSwitchChain } from 'wagmi';
 
 import type { RequiredChildren } from '@origin/shared/utils';
 
 export const EnsureNetworkProvider = ({ children }: RequiredChildren) => {
   const intl = useIntl();
-  const { chain, chains } = useNetwork();
-  const { switchNetwork } = useSwitchNetwork();
+  const { chains } = useConfig();
+  const { chain } = useAccount();
+  const { switchChain } = useSwitchChain();
 
   const handleSwitchToDefaultNetwork = () => {
-    switchNetwork(chains[0].id);
+    switchChain({ chainId: chains[0].id });
   };
 
   const found = chains.find((c) => c.id === chain?.id);

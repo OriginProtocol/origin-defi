@@ -31,9 +31,9 @@ export const StatusCard = (props: CardProps) => {
   const intl = useIntl();
   const { proposalId } = useParams();
   const { data: logs, isLoading: isLogsLoading } = useProposalQuery(
-    { proposalId },
+    { proposalId: proposalId ?? '' },
     {
-      enabled: !isNilOrEmpty(proposalId),
+      enabled: !!proposalId,
       select: (data) =>
         sort(ascend(prop('timestamp')), data?.ogvProposalById?.logs ?? []),
     },
@@ -71,10 +71,8 @@ export const StatusCard = (props: CardProps) => {
           </Stack>
         ) : (
           <Stack position="relative" spacing={3}>
-            {logs.map((log) => (
-              <LogItem key={log.id} log={log} />
-            ))}
-            {logs.length > 1 && (
+            {logs?.map((log) => <LogItem key={log.id} log={log} />)}
+            {(logs?.length ?? 0) > 1 && (
               <Box
                 sx={{
                   position: 'absolute',

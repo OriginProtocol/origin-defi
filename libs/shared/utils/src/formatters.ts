@@ -38,3 +38,8 @@ export function formatAmount(
 
   return `~${zeroPlaceholder}`;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const formatError = (error: Error | any) => {
+  return error?.shortMessage ?? error?.message;
+};

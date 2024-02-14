@@ -2,17 +2,18 @@ import { useCallback } from 'react';
 
 import { HistoryType } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useHistoryTransactionQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 import type { HistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
@@ -23,15 +24,22 @@ export const usePendingYield = (
     number,
     Error,
     number,
-    ['usePendingYield', boolean, HexAddress, boolean]
+    ['usePendingYield', boolean, HexAddress, boolean, Config]
   >,
 ) => {
+  const config = useConfig();
   const { address, isConnected } = useAccount();
 
   return useQuery({
-    queryKey: ['usePendingYield', isWrapped, address, isConnected],
+    queryKey: [
+      'usePendingYield',
+      isWrapped,
+      address ?? ZERO_ADDRESS,
+      isConnected,
+      config,
+    ],
     queryFn: async () => {
-      if (!isConnected) {
+      if (!isConnected || !address) {
         return 0;
       }
 
@@ -42,7 +50,7 @@ export const usePendingYield = (
         nonRebasingSupply,
         balance,
       ] = (
-        await readContracts({
+        await readContracts(config, {
           contracts: [
             {
               address: contracts.mainnet.OETHVault.address,
@@ -72,7 +80,11 @@ export const usePendingYield = (
             },
           ],
         })
-      ).map((res) => (res.status === 'success' ? +formatEther(res.result) : 0));
+      ).map((res) =>
+        res.status === 'success'
+          ? +formatEther(res?.result as unknown as bigint)
+          : 0,
+      );
 
       const vaultYield = totalValue - totalSupply;
       const expectedYield = vaultYield + availableFunds;
@@ -94,15 +106,15 @@ export const useAggregatedHistory = (
 
   return useHistoryTransactionQuery(
     {
-      address,
+      address: address ?? ZERO_ADDRESS,
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
       refetchOnWindowFocus: false,
       ...options,
-      enabled: isConnected && !isNilOrEmpty(address),
+      enabled: isConnected && !!address,
       placeholderData: { oethHistories: [] },
-      select: useCallback((data) => {
+      select: useCallback((data: HistoryTransactionQuery) => {
         const history = data?.oethHistories;
 
         const grouped = groupBy(
@@ -117,7 +129,7 @@ export const useAggregatedHistory = (
 
         const aggregated = Object.entries(grouped).reduce(
           (acc, [day, values]) => {
-            if (isNilOrEmpty(values)) {
+            if (!values) {
               return acc;
             }
 
@@ -145,7 +157,7 @@ export const useAggregatedHistory = (
                   ) {
                     a.balance = c.balance;
                   }
-                  a.transactions = [...a.transactions, c];
+                  a.transactions?.push(c);
                 }
 
                 return a;
@@ -166,7 +178,7 @@ export const useAggregatedHistory = (
               dailyYield,
             ];
           },
-          [],
+          [] as DailyHistory[],
         );
 
         return sort(

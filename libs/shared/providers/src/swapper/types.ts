@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { HexAddress } from '@origin/shared/utils';
 import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
-
-export type HexAddress = `0x${string}`;
+import type { Config } from 'wagmi';
 
 export type TokenSource = 'tokenIn' | 'tokenOut';
 
@@ -19,14 +19,17 @@ type Args = {
 };
 
 export type IsRouteAvailable = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
+  config: Config,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage'
@@ -34,6 +37,7 @@ export type EstimateGas = (
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
+  config: Config,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
@@ -41,18 +45,22 @@ export type EstimateRoute = (
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
-  args?: Pick<Args, 'tokenIn' | 'tokenOut'>,
+  config: Config,
+  args: Pick<Args, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
-  args?: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  config: Config,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
+  config: Config,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
-) => Promise<HexAddress>;
+) => Promise<HexAddress | null>;
 
 export type Swap = (
+  config: Config,
   args: Pick<
     Args,
     | 'tokenIn'
@@ -62,7 +70,7 @@ export type Swap = (
     | 'slippage'
     | 'estimatedRoute'
   >,
-) => Promise<HexAddress>;
+) => Promise<HexAddress | null>;
 
 export type SwapApi = {
   isRouteAvailable: IsRouteAvailable;
@@ -107,7 +115,7 @@ export type SwapState = {
   isApprovalLoading: boolean;
   isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
-  debounceTime?: number;
+  debounceTime: number;
   trackEvent?: (event: SwapTrackEvent) => void;
   onInputAmountChange?: (state: SwapState) => void;
   onInputTokenChange?: (state: SwapState) => void;

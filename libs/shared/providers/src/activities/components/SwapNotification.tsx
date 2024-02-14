@@ -53,8 +53,8 @@ export const SwapNotification = ({
       title={intl.formatMessage(title[status])}
       href={
         isNilOrEmpty(txReceipt?.transactionHash)
-          ? null
-          : `https://etherscan.io/tx/${txReceipt.transactionHash}`
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (
@@ -66,15 +66,15 @@ export const SwapNotification = ({
               },
               {
                 amountIn: intl.formatNumber(
-                  +formatUnits(amountIn, tokenIn.decimals),
+                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
                   { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
-                symbolIn: tokenIn.symbol,
+                symbolIn: tokenIn?.symbol,
                 amountOut: intl.formatNumber(
-                  +formatUnits(amountOut, tokenOut.decimals),
+                  +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
                   { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
-                symbolOut: tokenOut.symbol,
+                symbolOut: tokenOut?.symbol,
               },
             )}
           </Typography>
@@ -84,9 +84,9 @@ export const SwapNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon symbol={tokenIn.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />
           <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon symbol={tokenOut?.symbol} sx={{ fontSize: 20 }} />
         </Stack>
       }
     />

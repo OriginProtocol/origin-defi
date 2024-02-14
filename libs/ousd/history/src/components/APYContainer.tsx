@@ -1,9 +1,9 @@
 import { Divider, Skeleton, Stack, Typography } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { useFormat, useWatchContract } from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount, useBalance } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
 import { useHistoryUserStatQuery } from '../queries.generated';
@@ -14,15 +14,19 @@ export function APYContainer() {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
-  const { data: ousdBalance, isLoading: ousdLoading } = useBalance({
-    address,
-    token: tokens.mainnet.OUSD.address,
-    watch: true,
+  const { data: ousdBalance, isLoading: ousdLoading } = useWatchContract({
+    address: tokens.mainnet.OUSD.address,
+    abi: tokens.mainnet.OUSD.abi,
+    functionName: 'balanceOf',
+    args: [address ?? ZERO_ADDRESS],
+    query: {
+      enabled: !!address,
+    },
   });
   const { data, isLoading } = useHistoryUserStatQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     {
-      enabled: isConnected && !isNilOrEmpty(address),
+      enabled: !!address,
       select: (data) => data?.ousdAddresses?.at(0),
     },
   );
@@ -40,7 +44,10 @@ export function APYContainer() {
     >
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'OUSD Balance' })}
-        value={formatAmount(ousdBalance?.value ?? 0n, ousdBalance?.decimals)}
+        value={formatAmount(
+          ousdBalance as unknown as bigint,
+          tokens.mainnet.OUSD.decimals,
+        )}
         isLoading={isConnected && ousdLoading}
       />
       <Divider orientation="vertical" flexItem />

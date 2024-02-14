@@ -37,7 +37,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           return (
             acc +
             +formatUnits(curr.amount, curr.token.decimals) *
-              (prices[curr.token.symbol] ?? 0)
+              (prices?.[curr.token.symbol] ?? 0)
           );
         }, 0);
   const imgSrc = split.map((s) => s.token.symbol);
@@ -150,7 +150,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
 
 type SplitRowProps = {
   estimate: RedeemEstimate;
-  price: number;
+  price?: number;
   isEstimateLoading: boolean;
   isPricesLoading: boolean;
 } & StackProps;
@@ -165,7 +165,7 @@ function SplitRow({
   const { formatAmount, formatCurrency } = useFormat();
 
   const converted =
-    +formatUnits(estimate.amount, estimate.token.decimals) * price;
+    +formatUnits(estimate.amount, estimate.token.decimals) * (price ?? 0);
 
   return (
     <Stack

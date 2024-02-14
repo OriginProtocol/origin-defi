@@ -24,7 +24,7 @@ export const RestakeView = () => {
             borderRadius: 25,
           }}
         >
-          {restakeRoute.children.map((r) => (
+          {restakeRoute?.children?.map((r) => (
             <NavLink key={r?.path ?? 'index'} route={r} />
           ))}
         </Stack>

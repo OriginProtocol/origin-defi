@@ -100,7 +100,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             },
           )}
           onSuccess={() => {
-            props.onClose(null, 'backdropClick');
+            props?.onClose?.({}, 'backdropClick');
             queryClient.invalidateQueries({
               queryKey: ['useGovernanceInfo'],
             });

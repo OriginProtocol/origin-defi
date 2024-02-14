@@ -2,7 +2,7 @@ import { Button, CircularProgress } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useIntl } from 'react-intl';
-import { useAccount, useNetwork, useSwitchNetwork } from 'wagmi';
+import { useAccount, useConfig, useSwitchChain } from 'wagmi';
 
 import type { ButtonProps } from '@mui/material';
 
@@ -20,13 +20,14 @@ export const ConnectedButton = ({
   ...rest
 }: ConnectedButtonProps) => {
   const intl = useIntl();
-  const { chain, chains } = useNetwork();
+  const { chains } = useConfig();
+  const { chain } = useAccount();
   const { isConnected, isConnecting } = useAccount();
   const { openConnectModal } = useConnectModal();
-  const { switchNetwork } = useSwitchNetwork();
+  const { switchChain } = useSwitchChain();
 
   const handleSwitchToDefaultNetwork = () => {
-    switchNetwork(targetChainId ?? chains[0].id);
+    switchChain({ chainId: targetChainId ?? chains[0].id });
   };
 
   if (!isConnected) {
@@ -34,7 +35,7 @@ export const ConnectedButton = ({
       <Button
         {...rest}
         onClick={() => {
-          openConnectModal();
+          openConnectModal?.();
         }}
       >
         {intl.formatMessage({ defaultMessage: 'Connect Wallet' })}

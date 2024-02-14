@@ -59,7 +59,7 @@ export function getNextEmissionDate() {
     ([startTime, endTime]) => now > startTime && now < endTime,
   );
 
-  return fromUnixTime(range[1]);
+  return fromUnixTime(range?.[1] ?? 1862352000);
 }
 
 export const getVAPY = (

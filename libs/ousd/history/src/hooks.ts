@@ -2,12 +2,12 @@ import { useCallback } from 'react';
 
 import { HistoryType } from '@origin/ousd/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useHistoryTransactionQuery } from './queries.generated';
 
@@ -26,12 +26,18 @@ export const usePendingYield = (
     ['usePendingYield', boolean, HexAddress, boolean]
   >,
 ) => {
+  const config = useConfig();
   const { address, isConnected } = useAccount();
 
   return useQuery({
-    queryKey: ['usePendingYield', isWrapped, address, isConnected],
+    queryKey: [
+      'usePendingYield',
+      isWrapped,
+      address ?? ZERO_ADDRESS,
+      isConnected,
+    ],
     queryFn: async () => {
-      if (!isConnected) {
+      if (!isConnected || !address) {
         return 0;
       }
 
@@ -42,7 +48,7 @@ export const usePendingYield = (
         nonRebasingSupply,
         balance,
       ] = (
-        await readContracts({
+        await readContracts(config, {
           contracts: [
             {
               address: contracts.mainnet.OUSDVault.address,
@@ -97,7 +103,7 @@ export const useAggregatedHistory = (
 
   return useHistoryTransactionQuery(
     {
-      address,
+      address: address ?? ZERO_ADDRESS,
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
@@ -105,7 +111,7 @@ export const useAggregatedHistory = (
       ...options,
       enabled: isConnected && !isNilOrEmpty(address),
       placeholderData: { ousdHistories: [] },
-      select: useCallback((data) => {
+      select: useCallback((data: HistoryTransactionQuery) => {
         const history = data?.ousdHistories;
 
         const grouped = groupBy(
@@ -120,7 +126,7 @@ export const useAggregatedHistory = (
 
         const aggregated = Object.entries(grouped).reduce(
           (acc, [day, values]) => {
-            if (isNilOrEmpty(values)) {
+            if (!values) {
               return acc;
             }
 
@@ -148,7 +154,7 @@ export const useAggregatedHistory = (
                   ) {
                     a.balance = c.balance;
                   }
-                  a.transactions = [...a.transactions, c];
+                  a.transactions?.push(c);
                 }
 
                 return a;
@@ -169,7 +175,7 @@ export const useAggregatedHistory = (
               dailyYield,
             ];
           },
-          [],
+          [] as DailyHistory[],
         );
 
         return sort(

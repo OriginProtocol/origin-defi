@@ -7,7 +7,7 @@ import {
 } from '@mui/material';
 import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { ConnectedButton } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -21,7 +21,7 @@ export const LockupsCard = (props: CardProps) => {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
   const { data, isFetching } = useUserLockupsQuery(
-    { address },
+    { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data.ogvLockups },
   );
   const { data: myvAPY, isLoading: isMyvAPYLoading } = useMyVApy();
@@ -52,7 +52,7 @@ export const LockupsCard = (props: CardProps) => {
                   WebkitTextFillColor: 'transparent',
                 }}
               >
-                {intl.formatNumber(myvAPY / 100, {
+                {intl.formatNumber((myvAPY ?? 0) / 100, {
                   style: 'percent',
                   maximumFractionDigits: 2,
                   minimumFractionDigits: 2,
