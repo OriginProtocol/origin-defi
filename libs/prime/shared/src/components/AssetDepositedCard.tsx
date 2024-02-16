@@ -6,7 +6,11 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import {
+  InfoTooltip,
+  LoadingLabel,
+  TokenIcon,
+} from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -51,6 +55,7 @@ export const AssetDepositedCard = (props: CardProps) => {
                   <Typography fontWeight="medium" color="text.secondary">
                     {a.symbol}
                   </Typography>
+                  <InfoTooltip tooltipLabel={a.name} />
                 </Stack>
                 <LoadingLabel
                   isLoading={isLoading}

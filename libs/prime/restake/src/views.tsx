@@ -1,5 +1,11 @@
-import { Link, Stack, Typography } from '@mui/material';
-import { trackEvent } from '@origin/prime/shared';
+import {
+  Link,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { InviteCard, trackEvent } from '@origin/prime/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, Outlet, useMatch } from 'react-router-dom';
@@ -12,6 +18,9 @@ import { restakeRoute } from './routes';
 import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+
   return (
     <Stack>
       <Stack sx={{ mb: 6, alignItems: 'center' }}>
@@ -30,6 +39,7 @@ export const RestakeView = () => {
         </Stack>
       </Stack>
       <Outlet />
+      {isSm && <InviteCard mt={3} />}
     </Stack>
   );
 };

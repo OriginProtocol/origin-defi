@@ -28,8 +28,26 @@ import type {
   EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+
+const isRouteAvailable: IsRouteAvailable = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
+  try {
+    const paused = await readContract(config, {
+      address: contracts.mainnet.lrtDepositPool.address,
+      abi: contracts.mainnet.lrtDepositPool.abi,
+      functionName: 'paused',
+    });
+
+    return !paused;
+  } catch {}
+
+  return true;
+};
 
 const estimateAmount: EstimateAmount = async (
   config,
@@ -208,6 +226,7 @@ const swap: Swap = async (
 };
 
 export default {
+  isRouteAvailable,
   estimateAmount,
   estimateRoute,
   allowance,

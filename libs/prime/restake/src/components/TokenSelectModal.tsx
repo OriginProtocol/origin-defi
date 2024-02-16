@@ -1,28 +1,29 @@
 import {
   Box,
   Dialog,
+  DialogContent,
+  DialogTitle,
   MenuItem,
   MenuList,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
+import { BoostChip } from '@origin/prime/shared';
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
-import { useFormat, usePrices } from '@origin/shared/providers';
-import { ascend, descend, prop, sortWith } from 'ramda';
-import { useAccount, useBalance } from 'wagmi';
+import { useFormat, useWatchBalance } from '@origin/shared/providers';
+import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { TokenOption } from '@origin/shared/providers';
 
-export type TokenOption = {
-  isSwappable: boolean;
-  isSelected: boolean;
-} & Token;
+import type { Meta } from '../types';
 
 export type TokenSelectModalProps = {
-  tokens: TokenOption[];
+  tokens: TokenOption<Meta>[];
   onSelectToken: (value: Token) => void;
 } & DialogProps;
 
@@ -32,36 +33,18 @@ export const TokenSelectModal = ({
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
-  const sortedTokens = sortWith<TokenOption>([
-    ascend(prop('isSelected')),
-    descend(prop('isSwappable')),
-  ])(tokens);
+  const intl = useIntl();
 
   return (
-    <Dialog
-      maxWidth="sm"
-      PaperProps={{
-        elevation: 23,
-        sx: {
-          background: (theme) => theme.palette.background.paper,
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: (theme) => theme.palette.grey[800],
-          backgroundImage: 'none',
-          margin: 0,
-          minWidth: 'min(90vw, 33rem)',
-          py: 1,
-        },
-      }}
-      {...rest}
-      onClose={onClose}
-    >
-      <MenuList disablePadding>
-        {sortedTokens.map((token, i) => (
+    <Dialog maxWidth="sm" fullWidth {...rest} onClose={onClose}>
+      <DialogTitle>
+        {intl.formatMessage({ defaultMessage: 'Select a token' })}
+      </DialogTitle>
+      <MenuList>
+        {tokens.map((token, i) => (
           <TokenListItem
             key={`token-${token.address || 'eth'}-${i}`}
             token={token}
-            disabled={token.isSelected}
             onClick={() => {
               onClose?.({}, 'backdropClick');
               onSelectToken(token);
@@ -72,34 +55,37 @@ export const TokenSelectModal = ({
           />
         ))}
       </MenuList>
+      <DialogContent>
+        <Typography fontWeight="medium">
+          {intl.formatMessage({
+            defaultMessage: 'More EigenLayer assets coming soon...',
+          })}
+        </Typography>
+      </DialogContent>
     </Dialog>
   );
 };
 
 type TokenListItemProps = {
-  token: TokenOption;
+  token: TokenOption<Meta>;
 } & MenuItemProps;
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
-  const { formatAmount, formatCurrency } = useFormat();
+  const { formatAmount } = useFormat();
   const { address } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useBalance({
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     address,
     token: token.address,
   });
-  const { data: prices } = usePrices();
-
-  const bal = parseFloat(balance?.formatted ?? '0');
-  const balUsd = bal * (prices?.[token.symbol] ?? 0);
 
   return (
     <MenuItem
       {...rest}
-      disabled={token.isSelected}
       sx={{
         display: 'flex',
-        paddingInline: 2,
-        paddingBlock: 1,
+        px: 3,
+        py: 1.2,
+        flexDirection: 'row',
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
@@ -111,16 +97,17 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         ...rest?.sx,
       }}
     >
-      <Stack direction="row" gap={1.5} alignItems="center">
-        <TokenIcon symbol={token?.symbol} sx={{ width: 20, height: 20 }} />
-        <Box>
-          <Typography fontWeight={500}>{token?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {token.symbol}
-          </Typography>
-        </Box>
+      <Stack direction="row" gap={2} alignItems="center">
+        <TokenIcon symbol={token?.symbol} sx={{ width: 28, height: 28 }} />
+        <Stack spacing={0.25}>
+          <Stack direction="row" spacing={1} alignItems="baseline">
+            <Typography fontWeight="medium">{token?.name}</Typography>
+            <Typography color="text.secondary">{token.symbol}</Typography>
+          </Stack>
+          {token?.meta?.boost && <BoostChip boost={token.meta.boost} />}
+        </Stack>
       </Stack>
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} alignItems="center">
         {token?.isSelected && (
           <Stack display="flex" justifyContent="center" alignItems="center">
             <FaCheckRegular sx={{ color: '#fff', fontSize: 16 }} />
@@ -131,11 +118,8 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
-              formatAmount(balance?.value, balance?.decimals)
+              formatAmount(balance, token?.decimals)
             )}
-          </Typography>
-          <Typography color="text.secondary" variant="body2">
-            {formatCurrency(balUsd)}
           </Typography>
         </Box>
       </Stack>

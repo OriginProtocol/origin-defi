@@ -1,4 +1,5 @@
 export * from './addresses';
+export * from './base62';
 export * from './BigInt';
 export * from './composeContext';
 export * from './errors';

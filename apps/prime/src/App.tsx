@@ -3,7 +3,8 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   AdCards,
   AssetDepositedCard,
-  PrimeETHStatsCard,
+  GlobalStatsCard,
+  InviteCard,
   trackEvent,
   trackPage,
   trackSentryError,
@@ -38,6 +39,7 @@ export const App = () => {
                 height={1}
                 display={{ xs: 'none', md: 'block' }}
               >
+                <InviteCard mb={3} />
                 <AdCards />
               </Grid2>
               <Grid2 xs={12} md={6}>
@@ -45,7 +47,7 @@ export const App = () => {
               </Grid2>
               <Grid2 xs={12} md={3}>
                 <Stack spacing={3}>
-                  <PrimeETHStatsCard />
+                  <GlobalStatsCard />
                   <AssetDepositedCard />
                 </Stack>
               </Grid2>

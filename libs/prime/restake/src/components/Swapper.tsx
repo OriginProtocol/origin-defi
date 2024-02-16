@@ -12,17 +12,20 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { BoostChip } from '@origin/prime/shared';
 import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
-  TokenButton,
+  TokenIcon,
 } from '@origin/shared/components';
+import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   ApprovalNotification,
   ConnectedButton,
+  getAvailableRoutes,
   SwapNotification,
   SwapProvider,
   useHandleAmountInChange,
@@ -37,7 +40,6 @@ import {
 } from '@origin/shared/providers';
 import { formatAmount, formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
@@ -47,7 +49,13 @@ import { TokenSelectModal } from './TokenSelectModal';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type { SwapState, TokenSource } from '@origin/shared/providers';
+import type {
+  SwapRoute,
+  SwapState,
+  TokenSource,
+} from '@origin/shared/providers';
+
+import type { Meta, RestakeAction } from '../types';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -146,17 +154,14 @@ function SwapperWrapped({
       isApprovalLoading,
       isApprovalWaitingForSignature,
       swapActions,
+      swapRoutes,
     },
   ] = useSwapState();
-  const { tokensIn, tokensOut } = useTokenOptions();
+  const { tokensIn } = useTokenOptions<Meta>();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
   const { data: assetPrice, isLoading: isAssetPriceLoading } =
     useAssetPrice(tokenIn);
   const handleAmountInChange = useHandleAmountInChange();
@@ -206,6 +211,15 @@ function SwapperWrapped({
     isSwapWaitingForSignature ||
     amountIn > (balTokenIn as unknown as bigint) ||
     amountIn === 0n;
+  const availableRoute = getAvailableRoutes<RestakeAction, Meta>(
+    swapRoutes as SwapRoute<RestakeAction, Meta>[],
+    tokenIn,
+    tokenOut,
+  )[0];
+  const route = intl.formatMessage(
+    swapActions[availableRoute?.action]?.routeLabel ?? '',
+  );
+  const boost = availableRoute?.meta?.boost;
 
   return (
     <Stack spacing={3} {...rest}>
@@ -214,70 +228,114 @@ function SwapperWrapped({
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Restake LST' })}
           />
-          <Box>
-            <CardContent sx={{ backgroundColor: '#fff' }}>
-              <TokenInput
-                amount={amountIn}
-                decimals={tokenIn.decimals}
-                onAmountChange={handleAmountInChange}
-                balance={balTokenIn as unknown as bigint}
-                isBalanceLoading={isBalTokenInLoading}
-                token={tokenIn}
-                onTokenClick={() => {
-                  setTokenSource('tokenIn');
-                }}
-                isNativeCurrency={
-                  tokenIn.symbol ===
-                  (chain?.nativeCurrency.symbol ??
-                    mainnet.nativeCurrency.symbol)
-                }
-                isConnected={isConnected}
-                isAmountDisabled={amountInInputDisabled}
-                inputProps={{ sx: tokenInputStyles }}
-              />
-            </CardContent>
-            <Divider />
-            <CardContent>
-              <Stack spacing={2.5}>
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <TokenButton token={tokenOut} isDisabled />
-                  <LoadingLabel isLoading={isBalTokenOutLoading} sWidth={80}>
-                    {intl.formatMessage(
-                      { defaultMessage: 'Balance: {balance}' },
-                      {
-                        balance: formatAmount(
-                          balTokenOut as unknown as bigint,
-                          18,
-                        ),
-                      },
-                    )}
-                  </LoadingLabel>
-                </Stack>
-                <LoadingLabel
-                  isLoading={isSwapRoutesLoading}
-                  sWidth={100}
+          <CardContent>
+            <Typography pb={2} fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Select the asset' })}
+            </Typography>
+            <Button
+              color="inherit"
+              variant="outlined"
+              fullWidth
+              onClick={() => {
+                setTokenSource('tokenIn');
+              }}
+              sx={{
+                py: 1.5,
+                borderRadius: 4,
+                borderColor: 'divider',
+                backgroundColor: 'common.white',
+                display: 'flex',
+                justifyContent: 'space-between',
+              }}
+            >
+              <Stack direction="row" spacing={1}>
+                <TokenIcon
+                  symbol={tokenIn?.symbol}
+                  sx={{ width: 34, height: 34 }}
+                />
+                <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
+              </Stack>
+
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="flex-end"
+                spacing={1}
+              >
+                {boost && <BoostChip boost={boost} />}
+                <Box
                   sx={{
-                    fontSize: 24,
-                    lineHeight: 1.5,
-                    fontWeight: 700,
-                    color: amountOut === 0n ? 'text.secondary' : 'text.primary',
+                    borderRadius: '50%',
+                    border: (theme) => `1px solid ${theme.palette.divider}`,
+                    backgroundColor: 'background.paper',
+                    p: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  {intl.formatNumber(
-                    +formatUnits(amountOut, tokenOut.decimals),
-                    { maximumFractionDigits: 4, roundingMode: 'floor' },
-                  )}
-                </LoadingLabel>
+                  <FaChevronDownRegular sx={{ fontSize: 16 }} />
+                </Box>
               </Stack>
-            </CardContent>
-          </Box>
+            </Button>
+            <Typography pt={4} pb={2} fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Enter amount' })}
+            </Typography>
+            <TokenInput
+              amount={amountIn}
+              decimals={tokenIn.decimals}
+              onAmountChange={handleAmountInChange}
+              balance={balTokenIn as unknown as bigint}
+              isBalanceLoading={isBalTokenInLoading}
+              token={tokenIn}
+              onTokenClick={() => {
+                setTokenSource('tokenIn');
+              }}
+              isNativeCurrency={
+                tokenIn.symbol ===
+                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+              }
+              isConnected={isConnected}
+              isAmountDisabled={amountInInputDisabled}
+            />
+          </CardContent>
           <Divider />
-          <CardContent>
-            <Stack direction="row" justifyContent="space-between">
+          <CardContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
+          >
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'You will receive:' })}
+              </Typography>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                spacing={1}
+              >
+                <LoadingLabel
+                  isLoading={isSwapRoutesLoading}
+                  sWidth={60}
+                  fontWeight="medium"
+                  fontSize={16}
+                >
+                  {formatAmount(amountOut)}
+                </LoadingLabel>
+                <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 20 }} />
+                <Typography fontWeight="medium" fontSize={16}>
+                  {tokenOut.symbol}
+                </Typography>
+              </Stack>
+            </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
@@ -297,6 +355,20 @@ function SwapperWrapped({
                 )}
               </LoadingLabel>
             </Stack>
+            <Collapse in={!isNilOrEmpty(route)}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
+                <Typography>
+                  {intl.formatMessage({ defaultMessage: 'Route:' })}
+                </Typography>
+                <Stack>
+                  <Typography>{route}</Typography>
+                </Stack>
+              </Stack>
+            </Collapse>
           </CardContent>
           <Divider />
           <Collapse in={needsApproval}>
@@ -348,29 +420,10 @@ function SwapperWrapped({
         <TokenSelectModal
           open={!isNilOrEmpty(tokenSource)}
           onClose={handleCloseSelectionModal}
-          tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
+          tokens={tokensIn}
           onSelectToken={handleSelectToken}
         />
       </ErrorBoundary>
     </Stack>
   );
 }
-
-const tokenInputStyles = {
-  border: 'none',
-  backgroundColor: 'transparent',
-  borderRadius: 0,
-  p: 0,
-  '& .MuiInputBase-input': {
-    p: 0,
-    boxSizing: 'border-box',
-    fontStyle: 'normal',
-    fontSize: 24,
-    lineHeight: 1.5,
-    fontWeight: 700,
-    '&::placeholder': {
-      color: 'text.secondary',
-      opacity: 1,
-    },
-  },
-};

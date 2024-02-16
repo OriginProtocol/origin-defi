@@ -95,8 +95,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           if (state.amountIn === 0n) {
             setState((state) => ({
               ...state,
-              estimatedSwapRoutes: [],
-              selectedSwapRoute: null,
               amountOut: 0n,
               isSwapRoutesLoading: false,
               isSwapWaitingForSignature: false,
@@ -196,7 +194,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             ...state,
             estimatedSwapRoutes: sortedRoutes,
             selectedSwapRoute: sortedRoutes[0],
-            amountOut: sortedRoutes[0].estimatedAmount ?? 0n,
+            amountOut: sortedRoutes?.[0]?.estimatedAmount ?? 0n,
             isSwapRoutesLoading: false,
           }));
 

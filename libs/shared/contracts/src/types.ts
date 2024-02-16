@@ -3,17 +3,17 @@ import type { Abi } from 'viem';
 
 import type { IVaultABI as VaultABI } from './abis/IVault';
 
-export type Contract = {
+export type Contract<A = Abi> = {
   address: HexAddress;
   chainId: number;
-  abi: Abi;
+  abi: A;
   name?: string;
 };
 
-export type Token = {
+export type Token<A = Abi> = {
   address: HexAddress | undefined;
   chainId: number;
-  abi: Abi;
+  abi: A;
   name?: string;
   symbol: string;
   decimals: number;

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
@@ -87,10 +88,11 @@ export type SwapApi = {
 
 export type SwapActions = Record<SwapAction, SwapApi>;
 
-export type SwapRoute<S = SwapAction> = {
+export type SwapRoute<S = SwapAction, M = object> = {
   tokenIn: Token;
   tokenOut: Token;
   action: S;
+  meta?: M;
 };
 
 export type EstimatedSwapRoute = {
@@ -140,13 +142,10 @@ export type SwapState = {
   ) => void;
 };
 
-export type Token<Abi = any> = {
-  chainId: number;
-  address: undefined | HexAddress;
-  abi: Abi;
-  symbol: string;
-  decimals: number;
-  name?: string;
+export type TokenOption<M = object> = Token & {
+  isSwappable: boolean;
+  isSelected: boolean;
+  meta?: M;
 };
 
 export type SwapTrackEvent =
