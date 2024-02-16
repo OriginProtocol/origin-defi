@@ -51,8 +51,6 @@ export const useAssetPrice = (asset: Token) => {
         functionName: 'primeETHPrice',
       });
 
-      console.log(prime, assetEstimate);
-
       const primeETHPrice = +formatUnits(prime ?? 0n, 18);
       const assetPrice = +formatUnits(assetEstimate ?? 1n, 18);
 
