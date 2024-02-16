@@ -1,11 +1,5 @@
-import {
-  Link,
-  Stack,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
-import { InviteCard, trackEvent } from '@origin/prime/shared';
+import { Card, Divider, Link, Stack, Typography } from '@mui/material';
+import { trackEvent } from '@origin/prime/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, Outlet, useMatch } from 'react-router-dom';
@@ -18,15 +12,12 @@ import { restakeRoute } from './routes';
 import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
-
   return (
-    <Stack>
-      <Stack sx={{ mb: 6, alignItems: 'center' }}>
+    <Card>
+      <Stack sx={{ p: 2, alignItems: 'center' }}>
         <Stack
           direction="row"
-          spacing={3}
+          spacing={1}
           sx={{
             alignItems: 'center',
             border: (theme) => `1px solid ${theme.palette.divider}`,
@@ -38,21 +29,19 @@ export const RestakeView = () => {
           ))}
         </Stack>
       </Stack>
+      <Divider />
       <Outlet />
-      {isSm && <InviteCard mt={3} />}
-    </Stack>
+    </Card>
   );
 };
 
 export const StakeView = () => {
   return (
-    <Stack>
-      <Swapper
-        swapRoutes={restakeRoutes}
-        swapActions={restakeActions}
-        trackEvent={trackEvent}
-      />
-    </Stack>
+    <Swapper
+      swapRoutes={restakeRoutes}
+      swapActions={restakeActions}
+      trackEvent={trackEvent}
+    />
   );
 };
 
@@ -80,7 +69,8 @@ const NavLink = ({ route }: NavLinkProps) => {
       to={`${restakeRoute.path}/${route.index ? '' : route.path}`}
       sx={{
         px: 3,
-        py: 1.5,
+        py: 1.25,
+        color: 'text.secondary',
         fontWeight: 'medium',
         ...(!isNilOrEmpty(match) && {
           color: 'primary.contrastText',

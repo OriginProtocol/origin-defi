@@ -27,10 +27,10 @@ export const InviteCard = (props: StackProps) => {
       }}
     >
       <Friends sx={{ width: 40, height: 40, color: 'primary.main' }} />
-      <Typography variant="h5" textAlign="center">
+      <Typography variant="h6" textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Invite your friends' })}
       </Typography>
-      <Typography textAlign="center">
+      <Typography textAlign="center" variant="body2" color="text.secondary">
         {intl.formatMessage({
           defaultMessage:
             'Get even more primeETH XP when you invite your friends',

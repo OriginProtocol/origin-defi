@@ -1,11 +1,10 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Button,
-  Card,
   CardContent,
-  CardHeader,
   CircularProgress,
   Collapse,
   Divider,
@@ -177,40 +176,6 @@ function SwapperWrapped({
     handleTokenChange(tokenSource, value);
   };
 
-  const needsApproval =
-    isConnected &&
-    amountIn > 0n &&
-    !isBalTokenInLoading &&
-    (balTokenIn as unknown as bigint) >= amountIn &&
-    !isNilOrEmpty(selectedSwapRoute) &&
-    (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
-    (allowance ?? 0n) < amountIn;
-  const swapButtonLabel =
-    amountIn === 0n
-      ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > (balTokenIn as unknown as bigint)
-        ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-        : selectedSwapRoute?.action
-          ? intl.formatMessage(
-              swapActions[selectedSwapRoute.action].buttonLabel,
-            )
-          : '';
-  const amountInInputDisabled = isSwapLoading || isApprovalLoading;
-  const approveButtonDisabled =
-    isNilOrEmpty(selectedSwapRoute) ||
-    isSwapRoutesLoading ||
-    isApprovalLoading ||
-    isApprovalWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint);
-  const swapButtonDisabled =
-    needsApproval ||
-    isNilOrEmpty(selectedSwapRoute) ||
-    isBalTokenInLoading ||
-    isSwapRoutesLoading ||
-    isSwapLoading ||
-    isSwapWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint) ||
-    amountIn === 0n;
   const availableRoute = getAvailableRoutes<RestakeAction, Meta>(
     swapRoutes as SwapRoute<RestakeAction, Meta>[],
     tokenIn,
@@ -219,87 +184,152 @@ function SwapperWrapped({
   const route = swapActions[availableRoute?.action]?.routeLabel
     ? intl.formatMessage(swapActions[availableRoute?.action]?.routeLabel)
     : null;
+
+  const isPaused = availableRoute.action === 'restake';
+
+  const needsApproval =
+    isConnected &&
+    amountIn > 0n &&
+    !isBalTokenInLoading &&
+    (balTokenIn as unknown as bigint) >= amountIn &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
+    (allowance ?? 0n) < amountIn;
+  const swapButtonLabel = isPaused
+    ? intl.formatMessage({
+        defaultMessage: 'Deposits are currently closed',
+      })
+    : amountIn === 0n
+      ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
+      : amountIn > (balTokenIn as unknown as bigint)
+        ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+        : selectedSwapRoute?.action
+          ? intl.formatMessage(
+              swapActions[selectedSwapRoute.action].buttonLabel,
+            )
+          : '';
+  const amountInInputDisabled = isSwapLoading || isApprovalLoading || isPaused;
+  const approveButtonDisabled =
+    isPaused ||
+    isNilOrEmpty(selectedSwapRoute) ||
+    isSwapRoutesLoading ||
+    isApprovalLoading ||
+    isApprovalWaitingForSignature ||
+    amountIn > (balTokenIn as unknown as bigint);
+  const swapButtonDisabled =
+    isPaused ||
+    needsApproval ||
+    isNilOrEmpty(selectedSwapRoute) ||
+    isBalTokenInLoading ||
+    isSwapRoutesLoading ||
+    isSwapLoading ||
+    isSwapWaitingForSignature ||
+    amountIn > (balTokenIn as unknown as bigint) ||
+    amountIn === 0n;
+
   const boost = availableRoute?.meta?.boost;
 
   return (
-    <Stack spacing={3} {...rest}>
+    <Stack {...rest}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
-        <Card>
-          <CardHeader
-            title={intl.formatMessage({ defaultMessage: 'Restake LST' })}
-          />
+        {isPaused && (
           <CardContent>
-            <Typography pb={2} fontWeight="medium">
-              {intl.formatMessage({ defaultMessage: 'Select the asset' })}
-            </Typography>
-            <Button
-              color="inherit"
-              variant="outlined"
-              fullWidth
-              onClick={() => {
-                setTokenSource('tokenIn');
-              }}
+            <Stack
               sx={{
-                py: 1.5,
-                borderRadius: 4,
-                borderColor: 'divider',
-                backgroundColor: 'common.white',
-                display: 'flex',
-                justifyContent: 'space-between',
+                border: '1px solid',
+                borderColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.7),
+                borderRadius: 2,
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.1),
+                p: 1,
+                width: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
-              <Stack direction="row" spacing={1}>
-                <TokenIcon
-                  symbol={tokenIn?.symbol}
-                  sx={{ width: 34, height: 34 }}
-                />
-                <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
-              </Stack>
-
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="flex-end"
-                spacing={1}
-              >
-                {boost && <BoostChip boost={boost} />}
-                <Box
-                  sx={{
-                    borderRadius: '50%',
-                    border: (theme) => `1px solid ${theme.palette.divider}`,
-                    backgroundColor: 'background.paper',
-                    p: 1,
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <FaChevronDownRegular sx={{ fontSize: 16 }} />
-                </Box>
-              </Stack>
-            </Button>
-            <Typography pt={4} pb={2} fontWeight="medium">
-              {intl.formatMessage({ defaultMessage: 'Enter amount' })}
-            </Typography>
-            <TokenInput
-              amount={amountIn}
-              decimals={tokenIn.decimals}
-              onAmountChange={handleAmountInChange}
-              balance={balTokenIn as unknown as bigint}
-              isBalanceLoading={isBalTokenInLoading}
-              token={tokenIn}
-              onTokenClick={() => {
-                setTokenSource('tokenIn');
-              }}
-              isNativeCurrency={
-                tokenIn.symbol ===
-                (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
-              }
-              isConnected={isConnected}
-              isAmountDisabled={amountInInputDisabled}
-            />
+              <Typography>
+                {intl.formatMessage({
+                  defaultMessage: 'Deposits are currently closed',
+                })}
+              </Typography>
+            </Stack>
           </CardContent>
-          <Divider />
+        )}
+        <CardContent>
+          <Typography pb={2} fontWeight="medium">
+            {intl.formatMessage({ defaultMessage: 'Select the asset' })}
+          </Typography>
+          <Button
+            color="inherit"
+            variant="outlined"
+            fullWidth
+            onClick={() => {
+              setTokenSource('tokenIn');
+            }}
+            sx={{
+              py: 1.5,
+              borderRadius: 4,
+              borderColor: 'divider',
+              backgroundColor: 'common.white',
+              display: 'flex',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Stack direction="row" spacing={1}>
+              <TokenIcon
+                symbol={tokenIn?.symbol}
+                sx={{ width: 34, height: 34 }}
+              />
+              <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
+            </Stack>
+
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="flex-end"
+              spacing={1}
+            >
+              {boost && <BoostChip boost={boost} />}
+              <Box
+                sx={{
+                  borderRadius: '50%',
+                  border: (theme) => `1px solid ${theme.palette.divider}`,
+                  backgroundColor: 'background.paper',
+                  p: 1,
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}
+              >
+                <FaChevronDownRegular sx={{ fontSize: 16 }} />
+              </Box>
+            </Stack>
+          </Button>
+          <Typography pt={4} pb={2} fontWeight="medium">
+            {intl.formatMessage({ defaultMessage: 'Enter amount' })}
+          </Typography>
+          <TokenInput
+            amount={amountIn}
+            decimals={tokenIn.decimals}
+            onAmountChange={handleAmountInChange}
+            balance={balTokenIn as unknown as bigint}
+            isBalanceLoading={isBalTokenInLoading}
+            disableMaxButton={amountInInputDisabled}
+            token={tokenIn}
+            onTokenClick={() => {
+              setTokenSource('tokenIn');
+            }}
+            isNativeCurrency={
+              tokenIn.symbol ===
+              (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+            }
+            isConnected={isConnected}
+            isAmountDisabled={amountInInputDisabled}
+          />
+        </CardContent>
+        <Divider />
+        <Collapse in={!isPaused}>
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
@@ -369,52 +399,52 @@ function SwapperWrapped({
             </Stack>
           </CardContent>
           <Divider />
-          <Collapse in={needsApproval}>
-            <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
-              <Button
-                fullWidth
-                disabled={approveButtonDisabled}
-                onClick={handleApprove}
-                sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-              >
-                {isSwapRoutesLoading ? (
-                  <CircularProgress size={28} color="inherit" />
-                ) : isApprovalWaitingForSignature ? (
-                  intl.formatMessage({
-                    defaultMessage: 'Waiting for signature',
-                  })
-                ) : isApprovalLoading ? (
-                  intl.formatMessage({ defaultMessage: 'Processing Approval' })
-                ) : (
-                  intl.formatMessage(
-                    { defaultMessage: 'Approve {token}' },
-                    { token: tokenIn.symbol },
-                  )
-                )}
-              </Button>
-            </Box>
-          </Collapse>
-          <CardContent sx={{ backgroundColor: '#fff' }}>
-            <ConnectedButton
+        </Collapse>
+        <Collapse in={needsApproval}>
+          <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
+            <Button
               fullWidth
-              disabled={swapButtonDisabled}
-              onClick={handleSwap}
+              disabled={approveButtonDisabled}
+              onClick={handleApprove}
               sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
             >
-              {amountIn > (balTokenIn as unknown as bigint) ? (
-                swapButtonLabel
-              ) : isSwapRoutesLoading ? (
+              {isSwapRoutesLoading ? (
                 <CircularProgress size={28} color="inherit" />
-              ) : isSwapWaitingForSignature ? (
-                intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-              ) : isSwapLoading ? (
-                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+              ) : isApprovalWaitingForSignature ? (
+                intl.formatMessage({
+                  defaultMessage: 'Waiting for signature',
+                })
+              ) : isApprovalLoading ? (
+                intl.formatMessage({ defaultMessage: 'Processing Approval' })
               ) : (
-                swapButtonLabel
+                intl.formatMessage(
+                  { defaultMessage: 'Approve {token}' },
+                  { token: tokenIn.symbol },
+                )
               )}
-            </ConnectedButton>
-          </CardContent>
-        </Card>
+            </Button>
+          </Box>
+        </Collapse>
+        <CardContent sx={{ backgroundColor: '#fff' }}>
+          <ConnectedButton
+            fullWidth
+            disabled={swapButtonDisabled}
+            onClick={handleSwap}
+            sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
+          >
+            {amountIn > (balTokenIn as unknown as bigint) ? (
+              swapButtonLabel
+            ) : isSwapRoutesLoading ? (
+              <CircularProgress size={28} color="inherit" />
+            ) : isSwapWaitingForSignature ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            ) : isSwapLoading ? (
+              intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+            ) : (
+              swapButtonLabel
+            )}
+          </ConnectedButton>
+        </CardContent>
         <TokenSelectModal
           open={!isNilOrEmpty(tokenSource)}
           onClose={handleCloseSelectionModal}

@@ -36,10 +36,10 @@ export const DashboardView = () => {
 
   return (
     <Stack>
-      <Typography variant="h3" pb={3} textAlign="center">
-        {intl.formatMessage({ defaultMessage: 'Dashboard' })}
+      <Typography variant="h5" pb={3} textAlign="center">
+        {intl.formatMessage({ defaultMessage: 'Your Balance' })}
       </Typography>
-      <Card>
+      <Card sx={{ backgroundColor: 'common.white' }}>
         <Grid2 {...gridContainerProps}>
           <Grid2 {...gridItemProps}>
             <TokenIcon
@@ -75,18 +75,18 @@ export const DashboardView = () => {
           </Grid2>
         </Grid2>
       </Card>
-      <Typography variant="h3" py={3} textAlign="center">
+      <Typography variant="h5" py={3} textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Your rewards' })}
       </Typography>
       <Stack spacing={2}>
-        <Card>
+        <Card sx={{ backgroundColor: 'common.white' }}>
           <Grid2 {...gridContainerProps}>
             <Grid2 {...gridItemProps}>
               <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
                 </Typography>
                 {isConnected ? (
@@ -104,7 +104,7 @@ export const DashboardView = () => {
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
@@ -125,14 +125,14 @@ export const DashboardView = () => {
             </Grid2>
           </Grid2>
         </Card>
-        <Card>
+        <Card sx={{ backgroundColor: 'common.white' }}>
           <Grid2 {...gridContainerProps}>
             <Grid2 {...gridItemProps}>
               <EigenPoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
@@ -150,7 +150,7 @@ export const DashboardView = () => {
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
@@ -179,7 +179,7 @@ const gridContainerProps: Grid2Props = {
   container: true,
   rowSpacing: 2,
   columnSpacing: 1,
-  sx: { p: 2 },
+  sx: { py: 3, px: 2 },
 };
 
 const gridItemProps: Grid2Props = {

@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, useMediaQuery, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   AdCards,
@@ -16,6 +16,9 @@ import { Outlet } from 'react-router-dom';
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+
   useReferrerTracker('Origin');
 
   return (
@@ -47,6 +50,7 @@ export const App = () => {
               </Grid2>
               <Grid2 xs={12} md={3}>
                 <Stack spacing={3}>
+                  {isSm && <InviteCard mt={3} />}
                   <GlobalStatsCard />
                   <AssetDepositedCard />
                 </Stack>

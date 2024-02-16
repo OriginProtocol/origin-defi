@@ -27,6 +27,7 @@ export type TokenInputProps = {
   isConnected: boolean;
   balance?: bigint;
   isBalanceLoading?: boolean;
+  disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
   isNativeCurrency?: boolean;
@@ -51,6 +52,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isConnected,
       balance = 0n,
       isBalanceLoading,
+      disableMaxButton,
       token,
       onTokenClick,
       isNativeCurrency = false,
@@ -74,12 +76,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 
     const maxVisible =
       balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
-    const maxDisabled = !isConnected || isBalanceLoading;
+    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
       <Stack
         direction="row"
-        alignItems="stre"
+        alignItems="center"
+        spacing={2}
         {...rest}
         sx={{
           border: '1px solid',
@@ -87,9 +90,11 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           borderRadius: 5,
           backgroundColor: 'common.white',
           p: 2,
-          '&:hover, &:focus-within': {
-            outline: (theme) => `2px solid ${theme.palette.text.primary}`,
-          },
+          ...(!isAmountDisabled && {
+            '&:hover, &:focus-within': {
+              outline: (theme) => `2px solid ${theme.palette.text.primary}`,
+            },
+          }),
         }}
       >
         <Stack direction="row" alignItems="center" sx={{ flexGrow: 1, py: 1 }}>

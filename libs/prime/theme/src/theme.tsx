@@ -19,7 +19,7 @@ export const theme = createTheme({
       main: '#0074F0',
       contrastText: '#FFF',
     },
-    divider: '#B5BECA',
+    divider: '#D8DEE5',
     background: {
       paper: '#F7FAFF',
       default: '#F6F8FE',
@@ -100,17 +100,17 @@ export const theme = createTheme({
     },
     h5: {
       fontSize: 20,
-      lineHeight: 1.4,
+      lineHeight: 1.625,
       fontWeight: 500,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 16,
         lineHeight: 1.25,
       },
     },
     h6: {
-      fontSize: 18,
+      fontSize: 16,
       lineHeight: 1.4,
-      fontWeight: 400,
+      fontWeight: 500,
       [base.breakpoints.down('sm')]: {
         fontSize: 13,
         lineHeight: 1.25,
