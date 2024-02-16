@@ -8,6 +8,7 @@ import { useFormat } from '@origin/shared/providers';
 import { scale } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import type { Grid2Props } from '@mui/material';
@@ -18,11 +19,20 @@ export const DashboardView = () => {
   const { isConnected } = useAccount();
   const { data: points, isLoading: isPointsLoading } = usePoints();
 
-  const percentTotalXp =
-    scale(points?.xpPoints ?? 0n, 0, 18) / BigInt(points?.totalXpPoints ?? '1');
-  const percentTotalELPoints =
+  const percentTotalXp = +formatUnits(
+    scale(points?.xpPoints ?? 0n, 0, 18) /
+      (!points?.totalXpPoints || points?.totalXpPoints === 0n
+        ? 1n
+        : points?.totalXpPoints),
+    18,
+  );
+  const percentTotalELPoints = +formatUnits(
     scale(BigInt(points?.elPoints ?? '0'), 0, 18) /
-    BigInt(points?.totalELPoints ?? '1');
+      (!points?.totalELPoints || points?.totalELPoints === 0n
+        ? 1n
+        : points?.totalELPoints),
+    18,
+  );
 
   return (
     <Stack>
@@ -43,7 +53,11 @@ export const DashboardView = () => {
                 {intl.formatMessage({ defaultMessage: 'primeETH Balance' })}
               </Typography>
               {isConnected ? (
-                <LoadingLabel isLoading={isPointsLoading}>
+                <LoadingLabel
+                  isLoading={isPointsLoading}
+                  fontSize={24}
+                  fontWeight="medium"
+                >
                   {formatBalance(points?.primePoints)}
                 </LoadingLabel>
               ) : (
@@ -76,7 +90,11 @@ export const DashboardView = () => {
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isPointsLoading}>
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
                     {formatAmount(points?.xpPoints)}
                   </LoadingLabel>
                 ) : (
@@ -90,8 +108,12 @@ export const DashboardView = () => {
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isPointsLoading}>
-                    {formatAmount(percentTotalXp, undefined, undefined, {
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {intl.formatNumber(percentTotalXp, {
                       style: 'percent',
                     })}
                   </LoadingLabel>
@@ -113,7 +135,11 @@ export const DashboardView = () => {
                   {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isPointsLoading}>
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
                     {formatAmount(points?.xpPoints)}
                   </LoadingLabel>
                 ) : (
@@ -127,9 +153,14 @@ export const DashboardView = () => {
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isPointsLoading}>
-                    {formatAmount(percentTotalELPoints, undefined, undefined, {
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {intl.formatNumber(percentTotalELPoints, {
                       style: 'percent',
+                      maximumFractionDigits: 6,
                     })}
                   </LoadingLabel>
                 ) : (
@@ -154,5 +185,10 @@ const gridContainerProps: Grid2Props = {
 const gridItemProps: Grid2Props = {
   xs: 12,
   sm: 4,
-  sx: { display: 'flex', justifyContent: 'center' },
+  sx: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };
