@@ -82,51 +82,6 @@ export const DashboardView = () => {
         <Card>
           <Grid2 {...gridContainerProps}>
             <Grid2 {...gridItemProps}>
-              <EigenPoints sx={{ width: 48, height: 48 }} />
-            </Grid2>
-            <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
-                  {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
-                </Typography>
-                {isConnected ? (
-                  <LoadingLabel
-                    isLoading={isPointsLoading}
-                    fontSize={24}
-                    fontWeight="medium"
-                  >
-                    {formatAmount(points?.xpPoints)}
-                  </LoadingLabel>
-                ) : (
-                  '-'
-                )}
-              </Stack>
-            </Grid2>
-            <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
-                  {intl.formatMessage({ defaultMessage: '% of total' })}
-                </Typography>
-                {isConnected ? (
-                  <LoadingLabel
-                    isLoading={isPointsLoading}
-                    fontSize={24}
-                    fontWeight="medium"
-                  >
-                    {intl.formatNumber(percentTotalXp, {
-                      style: 'percent',
-                    })}
-                  </LoadingLabel>
-                ) : (
-                  '-'
-                )}
-              </Stack>
-            </Grid2>
-          </Grid2>
-        </Card>
-        <Card>
-          <Grid2 {...gridContainerProps}>
-            <Grid2 {...gridItemProps}>
               <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
@@ -158,9 +113,54 @@ export const DashboardView = () => {
                     fontSize={24}
                     fontWeight="medium"
                   >
-                    {intl.formatNumber(percentTotalELPoints, {
+                    {intl.formatNumber(percentTotalXp, {
                       style: 'percent',
                       maximumFractionDigits: 6,
+                    })}
+                  </LoadingLabel>
+                ) : (
+                  '-'
+                )}
+              </Stack>
+            </Grid2>
+          </Grid2>
+        </Card>
+        <Card>
+          <Grid2 {...gridContainerProps}>
+            <Grid2 {...gridItemProps}>
+              <EigenPoints sx={{ width: 48, height: 48 }} />
+            </Grid2>
+            <Grid2 {...gridItemProps}>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
+                  {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
+                </Typography>
+                {isConnected ? (
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {formatAmount(points?.elPoints)}
+                  </LoadingLabel>
+                ) : (
+                  '-'
+                )}
+              </Stack>
+            </Grid2>
+            <Grid2 {...gridItemProps}>
+              <Stack spacing={1} alignItems="center">
+                <Typography fontWeight="medium">
+                  {intl.formatMessage({ defaultMessage: '% of total' })}
+                </Typography>
+                {isConnected ? (
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {intl.formatNumber(percentTotalELPoints, {
+                      style: 'percent',
                     })}
                   </LoadingLabel>
                 ) : (
