@@ -240,6 +240,14 @@ export const theme = createTheme({
             background: theme.palette.grey[900],
           },
         }),
+        outlinedPrimary: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          borderColor: theme.palette.primary.main,
+          '&:hover': {
+            color: theme.palette.primary.contrastText,
+            backgroundColor: theme.palette.primary.main,
+          },
+        }),
         outlinedSecondary: ({ theme }) => ({
           borderColor: theme.palette.divider,
           '&:hover': {

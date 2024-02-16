@@ -46,7 +46,7 @@ export const ClipboardButton = ({
     <Button
       {...rest}
       onClick={handleCopyToClipboard}
-      disabled={['copied', 'error'].includes(status)}
+      disabled={['copied', 'error'].includes(status) || rest?.disabled}
     >
       {status === 'idle' ? (
         rest?.children

@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { ClipboardButton } from '@origin/shared/components';
 import { Friends } from '@origin/shared/icons';
+import { ConnectedButton } from '@origin/shared/providers';
 import { hexToBase62 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -35,22 +36,26 @@ export const InviteCard = (props: StackProps) => {
             'Get even more primeETH XP when you invite your friends',
         })}
       </Typography>
-      <ClipboardButton
-        value={hexToBase62(address)}
-        disabled={!address}
-        variant="outlined"
-        sx={{
-          minWidth: 160,
-          py: 1.25,
-          color: 'primary.main',
-          ':hover': {
-            color: 'primary.contrastText',
-            backgroundColor: 'primary.main',
-          },
-        }}
-      >
-        {intl.formatMessage({ defaultMessage: 'Copy Referral Link' })}
-      </ClipboardButton>
+      {isConnected ? (
+        <ClipboardButton
+          value={hexToBase62(address)}
+          variant="outlined"
+          sx={{
+            minWidth: 160,
+            py: 1.25,
+          }}
+        >
+          {intl.formatMessage({ defaultMessage: 'Copy Referral Link' })}
+        </ClipboardButton>
+      ) : (
+        <ConnectedButton
+          variant="outlined"
+          sx={{
+            minWidth: 160,
+            py: 1.25,
+          }}
+        />
+      )}
     </Stack>
   );
 };

@@ -216,9 +216,9 @@ function SwapperWrapped({
     tokenIn,
     tokenOut,
   )[0];
-  const route = intl.formatMessage(
-    swapActions[availableRoute?.action]?.routeLabel ?? '',
-  );
+  const route = swapActions[availableRoute?.action]?.routeLabel
+    ? intl.formatMessage(swapActions[availableRoute?.action]?.routeLabel)
+    : null;
   const boost = availableRoute?.meta?.boost;
 
   return (
@@ -355,20 +355,18 @@ function SwapperWrapped({
                 )}
               </LoadingLabel>
             </Stack>
-            <Collapse in={!isNilOrEmpty(route)}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-              >
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Route:' })}
-                </Typography>
-                <Stack>
-                  <Typography>{route}</Typography>
-                </Stack>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+            >
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'Route:' })}
+              </Typography>
+              <Stack>
+                <Typography>{route}</Typography>
               </Stack>
-            </Collapse>
+            </Stack>
           </CardContent>
           <Divider />
           <Collapse in={needsApproval}>
