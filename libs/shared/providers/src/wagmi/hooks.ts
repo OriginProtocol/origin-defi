@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { erc20Abi } from 'viem';
+import { mainnet } from 'viem/chains';
 import {
   useAccount,
   useBalance,
@@ -11,6 +12,7 @@ import {
   useReadContracts,
 } from 'wagmi';
 
+import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Abi } from 'viem';
 import type {
@@ -89,4 +91,13 @@ export const useWatchBalance = (config?: {
   }, [addr, blockNumber, config?.token, prev, resNative, resToken]);
 
   return isNilOrEmpty(config?.token) ? resNative : resToken;
+};
+
+export const useIsNative = (token: Token) => {
+  const { chain } = useAccount();
+
+  return (
+    token.symbol ===
+    (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+  );
 };
