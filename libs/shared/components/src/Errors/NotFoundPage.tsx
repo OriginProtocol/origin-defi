@@ -23,7 +23,7 @@ export const NotFoundPage = () => {
         sx={(theme) => ({
           fontSize: { xs: 32, sm: 56 },
           fontWeight: 800,
-          background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
           backgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
         })}
@@ -53,8 +53,8 @@ export const NotFoundPage = () => {
           fontWeight: 500,
           fontStyle: 'normal',
           '&:hover': {
-            background:
-              'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+            background: (theme) =>
+              `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
             opacity: 1,
           },
           '&:disabled': {
