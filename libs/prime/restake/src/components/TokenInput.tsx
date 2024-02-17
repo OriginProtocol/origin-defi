@@ -31,8 +31,6 @@ export type TokenInputProps = {
   token: Token;
   onTokenClick?: () => void;
   isNativeCurrency?: boolean;
-  disableTokenClick?: boolean;
-  displayDecimals?: number;
   inputProps?: Omit<
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
@@ -56,10 +54,8 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       token,
       onTokenClick,
       isNativeCurrency = false,
-      disableTokenClick,
       inputProps,
       tokenButtonProps,
-      displayDecimals,
       ...rest
     },
     ref,

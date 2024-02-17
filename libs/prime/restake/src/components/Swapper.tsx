@@ -341,12 +341,7 @@ function SwapperWrapped({
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'You will receive:' })}
               </Typography>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                spacing={1}
-              >
+              <Stack direction="row" alignItems="center" spacing={1}>
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
@@ -355,7 +350,7 @@ function SwapperWrapped({
                 >
                   {formatAmount(amountOut)}
                 </LoadingLabel>
-                <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 20 }} />
+                <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
                   {tokenOut.symbol}
                 </Typography>
@@ -369,7 +364,11 @@ function SwapperWrapped({
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
-              <LoadingLabel isLoading={isAssetPriceLoading} sWidth={60}>
+              <LoadingLabel
+                isLoading={isAssetPriceLoading}
+                sWidth={140}
+                fontWeight="medium"
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage: '{rate} {token} = 1 primeETH',
@@ -394,7 +393,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Route:' })}
               </Typography>
               <Stack>
-                <Typography>{route}</Typography>
+                <Typography fontWeight="medium">{route}</Typography>
               </Stack>
             </Stack>
           </CardContent>

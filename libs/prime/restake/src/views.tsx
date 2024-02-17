@@ -13,25 +13,27 @@ import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
   return (
-    <Card>
-      <Stack sx={{ p: 2, alignItems: 'center' }}>
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{
-            alignItems: 'center',
-            border: (theme) => `1px solid ${theme.palette.divider}`,
-            borderRadius: 25,
-          }}
-        >
-          {restakeRoute?.children?.map((r) => (
-            <NavLink key={r?.path ?? 'index'} route={r} />
-          ))}
+    <Stack alignItems="center">
+      <Card sx={{ maxWidth: 520 }}>
+        <Stack sx={{ p: 2, alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              border: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRadius: 25,
+            }}
+          >
+            {restakeRoute?.children?.map((r) => (
+              <NavLink key={r?.path ?? 'index'} route={r} />
+            ))}
+          </Stack>
         </Stack>
-      </Stack>
-      <Divider />
-      <Outlet />
-    </Card>
+        <Divider />
+        <Outlet />
+      </Card>
+    </Stack>
   );
 };
 

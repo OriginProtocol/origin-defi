@@ -9,7 +9,7 @@ import {
   trackPage,
   trackSentryError,
 } from '@origin/prime/shared';
-import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
+import { ErrorBoundary, ErrorCard, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
@@ -45,25 +45,24 @@ export const App = () => {
                 <InviteCard mb={3} />
                 <AdCards />
               </Grid2>
-              <Grid2
-                xs={12}
-                md={6}
-                sx={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  '>*': {
-                    maxWidth: 520,
-                  },
-                }}
-              >
+              <Grid2 xs={12} md={6}>
                 <Outlet />
               </Grid2>
               <Grid2 xs={12} md={3}>
                 <Stack spacing={3}>
                   {isSm && <InviteCard mt={3} />}
-                  <GlobalStatsCard />
-                  <AssetDepositedCard />
+                  <ErrorBoundary
+                    ErrorComponent={<ErrorCard />}
+                    onError={trackSentryError}
+                  >
+                    <GlobalStatsCard />
+                  </ErrorBoundary>{' '}
+                  <ErrorBoundary
+                    ErrorComponent={<ErrorCard />}
+                    onError={trackSentryError}
+                  >
+                    <AssetDepositedCard />
+                  </ErrorBoundary>
                 </Stack>
               </Grid2>
             </Grid2>
