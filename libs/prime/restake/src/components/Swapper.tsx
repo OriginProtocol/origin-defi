@@ -276,7 +276,7 @@ function SwapperWrapped({
               justifyContent: 'space-between',
             }}
           >
-            <Stack direction="row" spacing={1}>
+            <Stack direction="row" spacing={1} alignItems="center">
               <TokenIcon
                 symbol={tokenIn?.symbol}
                 sx={{ width: 34, height: 34 }}

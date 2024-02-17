@@ -45,7 +45,18 @@ export const App = () => {
                 <InviteCard mb={3} />
                 <AdCards />
               </Grid2>
-              <Grid2 xs={12} md={6}>
+              <Grid2
+                xs={12}
+                md={6}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  '>*': {
+                    maxWidth: 520,
+                  },
+                }}
+              >
                 <Outlet />
               </Grid2>
               <Grid2 xs={12} md={3}>
