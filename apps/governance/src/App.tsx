@@ -5,7 +5,7 @@ import {
   trackSentryError,
 } from '@origin/governance/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { useCurve, usePrices } from '@origin/shared/providers';
+import { useCurve } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
@@ -13,7 +13,6 @@ import { Topnav } from './components/Topnav';
 
 export const App = () => {
   useCurve();
-  usePrices();
 
   return (
     <ErrorBoundary

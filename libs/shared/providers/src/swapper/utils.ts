@@ -1,10 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { mergeDeepRight, uniq } from 'ramda';
+import { mainnet } from 'viem/chains';
 
 import type { Token } from '@origin/shared/contracts';
+import type { Chain } from 'viem';
 
 import type { SwapAction, SwapRoute, TokenSource } from './types';
+
+export const getFilteredSwapRoutes = (
+  swapRoutes: SwapRoute[],
+  chain: Chain | undefined | null,
+) => {
+  if (isNilOrEmpty(swapRoutes)) {
+    return swapRoutes;
+  }
+  const chainId = chain?.id ?? mainnet.id;
+
+  return swapRoutes.filter((r) => r.tokenIn.chainId === chainId);
+};
 
 export const getAllAvailableTokens = (
   swapRoutes: SwapRoute[],

@@ -13,8 +13,9 @@ import { ascend, descend, prop, sortWith } from 'ramda';
 import { formatUnits } from 'viem';
 
 import { useFormat } from '../../intl';
-import { usePrices } from '../../prices';
+import { getTokenPriceKey } from '../../prices';
 import { useWatchBalance } from '../../wagmi';
+import { useSwapperPrices } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -88,10 +89,10 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: token.address,
   });
-  const { data: prices } = usePrices();
+  const { data: prices } = useSwapperPrices();
 
   const bal = +formatUnits(balance ?? 0n, token.decimals);
-  const balUsd = bal * (prices?.[token.symbol] ?? 0);
+  const balUsd = bal * (prices?.[getTokenPriceKey(token)] ?? 0);
 
   return (
     <MenuItem

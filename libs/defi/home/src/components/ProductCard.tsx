@@ -7,15 +7,18 @@ import {
   Typography,
 } from '@mui/material';
 import { Chip, Mix, TokenIcon, ValueLabel } from '@origin/shared/components';
-import { useFormat, usePrices } from '@origin/shared/providers';
+import {
+  getTokenPriceKey,
+  useFormat,
+  useTokenPrices,
+} from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
+import { products } from '../constants';
 import { useTokenInfo } from '../hooks';
 
 import type { StackProps } from '@mui/material';
-
-import type { products } from '../constants';
 
 export type ProductCardProps = {
   product: (typeof products)[number];
@@ -26,7 +29,9 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
   const intl = useIntl();
   const { formatCurrency } = useFormat();
   const navigate = useNavigate();
-  const { data: prices, isLoading: isPricesLoading } = usePrices();
+  const { data: prices, isLoading: isPricesLoading } = useTokenPrices(
+    products.map((p) => getTokenPriceKey(p.token)),
+  );
   const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
     product.token,
   );
@@ -139,7 +144,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Current price' })}
-          value={formatCurrency(prices?.[product.token.symbol])}
+          value={formatCurrency(prices?.[getTokenPriceKey(product.token)])}
           isLoading={isPricesLoading}
           sx={{
             width: 0.33,

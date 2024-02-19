@@ -9,8 +9,10 @@ import {
 } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt } from '@wagmi/core';
+import { uniq } from 'ramda';
 import { useAccount, useConfig } from 'wagmi';
 
+import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
 import {
@@ -631,4 +633,16 @@ export const useHandleSwap = () => {
     tokenOut,
     trackEvent,
   ]);
+};
+
+export const useSwapperPrices = () => {
+  const [{ swapRoutes }] = useSwapState();
+  const tokensIn = getAllAvailableTokens(swapRoutes, 'tokenIn');
+  const tokensOut = getAllAvailableTokens(swapRoutes, 'tokenOut');
+  const keys = uniq([
+    ...tokensIn.map((t) => getTokenPriceKey(t)),
+    ...tokensOut.map((t) => getTokenPriceKey(t)),
+  ]);
+
+  return useTokenPrices(keys);
 };

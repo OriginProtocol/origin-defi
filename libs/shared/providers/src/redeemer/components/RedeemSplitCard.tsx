@@ -13,8 +13,9 @@ import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
 import { useFormat } from '../../intl';
-import { usePrices } from '../../prices';
+import { getTokenPriceKey } from '../../prices';
 import { MIX_TOKEN } from '../constants';
+import { useRedeemerPrices } from '../hooks';
 import { useRedeemState } from '../state';
 
 import type { StackProps } from '@mui/material';
@@ -26,7 +27,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
-  const { data: prices, isLoading: isPricesLoading } = usePrices();
+  const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
   const [{ amountOut, gas, rate, split, isEstimateLoading }] = useRedeemState();
   const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
 
@@ -37,7 +38,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           return (
             acc +
             +formatUnits(curr.amount, curr.token.decimals) *
-              (prices?.[curr.token.symbol] ?? 0)
+              (prices?.[getTokenPriceKey(curr.token)] ?? 0)
           );
         }, 0);
   const imgSrc = split.map((s) => s.token.symbol);
@@ -138,7 +139,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
           <SplitRow
             key={s.token.symbol}
             estimate={s}
-            price={prices?.[s.token.symbol]}
+            price={prices?.[getTokenPriceKey(s.token)]}
             isEstimateLoading={isEstimateLoading}
             isPricesLoading={isPricesLoading}
           />

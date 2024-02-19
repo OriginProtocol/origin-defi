@@ -29,7 +29,6 @@ import {
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import {
   ApprovalNotification,
@@ -40,15 +39,20 @@ import {
 } from '../../activities';
 import { useFormat } from '../../intl';
 import { usePushNotification } from '../../notifications';
-import { usePrices } from '../../prices';
+import { getTokenPriceKey } from '../../prices';
 import { useSlippage } from '../../slippage';
-import { ConnectedButton, useWatchBalance } from '../../wagmi';
+import {
+  ConnectedButton,
+  useIsNativeCurrency,
+  useWatchBalance,
+} from '../../wagmi';
 import {
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
+  useSwapperPrices,
   useSwapRouteAllowance,
   useTokenOptions,
 } from '../hooks';
@@ -203,7 +207,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
-  const { isConnected, chain } = useAccount();
+  const { isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
@@ -223,7 +227,7 @@ function SwapperWrapped({
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
-  const { data: prices, isLoading: isPriceLoading } = usePrices();
+  const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
@@ -232,6 +236,7 @@ function SwapperWrapped({
     useWatchBalance({
       token: tokenOut.address,
     });
+  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -336,12 +341,8 @@ function SwapperWrapped({
                 onTokenClick={() => {
                   setTokenSource('tokenIn');
                 }}
-                isNativeCurrency={
-                  tokenIn.symbol ===
-                  (chain?.nativeCurrency.symbol ??
-                    mainnet.nativeCurrency.symbol)
-                }
-                tokenPriceUsd={prices?.[tokenIn.symbol]}
+                isNativeCurrency={isNativeCurrency(tokenIn)}
+                tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
                 isPriceLoading={isPriceLoading}
                 isConnected={isConnected}
                 isAmountDisabled={amountInInputDisabled}
@@ -387,12 +388,8 @@ function SwapperWrapped({
                 onTokenClick={() => {
                   setTokenSource('tokenOut');
                 }}
-                isNativeCurrency={
-                  tokenOut.symbol ===
-                  (chain?.nativeCurrency.symbol ??
-                    mainnet.nativeCurrency.symbol)
-                }
-                tokenPriceUsd={prices?.[tokenOut.symbol]}
+                isNativeCurrency={isNativeCurrency(tokenOut)}
+                tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
                 isPriceLoading={isSwapRoutesLoading || isPriceLoading}
                 isConnected={isConnected}
                 hideMaxButton

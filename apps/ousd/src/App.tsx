@@ -4,7 +4,6 @@ import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import {
   TrackingProvider,
   useCurve,
-  usePrices,
   useTxTracker,
 } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
@@ -13,7 +12,6 @@ import { Topnav } from './components/Topnav';
 
 export const App = () => {
   useCurve();
-  usePrices();
   useTxTracker('ousd.com');
 
   return (

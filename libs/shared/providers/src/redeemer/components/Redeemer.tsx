@@ -21,9 +21,13 @@ import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { usePrices } from '../../prices';
+import { getTokenPriceKey } from '../../prices';
 import { ConnectedButton, useWatchBalance } from '../../wagmi';
-import { useHandleAmountInChange, useHandleRedeem } from '../hooks';
+import {
+  useHandleAmountInChange,
+  useHandleRedeem,
+  useRedeemerPrices,
+} from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
 import { SettingsPopover } from './SettingsPopover';
@@ -72,7 +76,7 @@ function RedeemerWrapped({
       trackEvent,
     },
   ] = useRedeemState();
-  const { data: prices, isLoading: isPricesLoading } = usePrices();
+  const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: tokenIn.address,
   });
@@ -138,7 +142,7 @@ function RedeemerWrapped({
               isBalanceLoading={isBalanceLoading}
               token={tokenIn}
               isTokenClickDisabled
-              tokenPriceUsd={prices?.[tokenIn.symbol]}
+              tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
               isPriceLoading={isPricesLoading}
               isConnected={isConnected}
               isAmountDisabled={isRedeemLoading}

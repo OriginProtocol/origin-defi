@@ -6,8 +6,8 @@ import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
 import { useFormat } from '../../intl';
-import { usePrices } from '../../prices';
-import { useSwapRouteAllowance } from '../hooks';
+import { getTokenPriceKey } from '../../prices';
+import { useSwapperPrices, useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
 
 import type { CardProps } from '@mui/material';
@@ -32,7 +32,7 @@ export function SwapRouteCard({
   const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
-  const { data: prices } = usePrices();
+  const { data: prices } = useSwapperPrices();
   const {
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
@@ -56,7 +56,7 @@ export function SwapRouteCard({
     route.tokenOut.decimals,
   );
   const convertedAmount =
-    (prices?.[route.tokenOut.symbol] ?? 1) * estimatedAmount;
+    (prices?.[getTokenPriceKey(route.tokenOut)] ?? 1) * estimatedAmount;
   const isGasLoading =
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
