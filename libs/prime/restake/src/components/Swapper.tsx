@@ -31,6 +31,7 @@ import {
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
+  useIsNativeCurrency,
   usePushNotification,
   useSwapRouteAllowance,
   useSwapState,
@@ -40,7 +41,6 @@ import {
 import { formatAmount, formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import { useAssetPrice } from '../hooks';
 import { TokenInput } from './TokenInput';
@@ -163,6 +163,7 @@ function SwapperWrapped({
   });
   const { data: assetPrice, isLoading: isAssetPriceLoading } =
     useAssetPrice(tokenIn);
+  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();
@@ -320,10 +321,7 @@ function SwapperWrapped({
             onTokenClick={() => {
               setTokenSource('tokenIn');
             }}
-            isNativeCurrency={
-              tokenIn.symbol ===
-              (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
-            }
+            isNativeCurrency={isNativeCurrency(tokenIn)}
             isConnected={isConnected}
             isAmountDisabled={amountInInputDisabled}
           />

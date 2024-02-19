@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
@@ -93,11 +93,20 @@ export const useWatchBalance = (config?: {
   return isNilOrEmpty(config?.token) ? resNative : resToken;
 };
 
-export const useIsNative = (token: Token) => {
+export const useIsNativeCurrency = () => {
   const { chain } = useAccount();
 
-  return (
-    token.symbol ===
-    (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+  return useCallback(
+    (token: Token | undefined | null) => {
+      if (!token?.symbol) {
+        return false;
+      }
+
+      return (
+        token.symbol ===
+        (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
+      );
+    },
+    [chain?.nativeCurrency.symbol],
   );
 };

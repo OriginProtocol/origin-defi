@@ -1,5 +1,5 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { useIsNative } from '@origin/shared/providers';
+import { useIsNativeCurrency } from '@origin/shared/providers';
 import { useQuery } from '@tanstack/react-query';
 import { getPublicClient, readContract } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
@@ -9,7 +9,9 @@ import type { Token } from '@origin/shared/contracts';
 
 export const useAssetPrice = (asset: Token) => {
   const config = useConfig();
-  const isNative = useIsNative(asset);
+  const isNativeCurrency = useIsNativeCurrency();
+
+  const isNative = isNativeCurrency(asset);
 
   return useQuery({
     queryKey: ['useAssetPrice', asset.address, config, isNative],
