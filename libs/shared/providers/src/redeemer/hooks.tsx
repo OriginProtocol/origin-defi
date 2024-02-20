@@ -10,6 +10,7 @@ import {
 import { useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { produce } from 'immer';
+import { uniq } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -20,6 +21,7 @@ import {
   useUpdateActivity,
 } from '../activities';
 import { usePushNotification } from '../notifications';
+import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { simulateContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
@@ -200,4 +202,14 @@ export const useHandleRedeem = () => {
     vaultContract.abi,
     vaultContract.address,
   ]);
+};
+
+export const useRedeemerPrices = () => {
+  const [{ tokenIn, split }] = useRedeemState();
+  const keys = uniq([
+    getTokenPriceKey(tokenIn),
+    ...split.map((s) => getTokenPriceKey(s.token)),
+  ]);
+
+  return useTokenPrices(keys);
 };

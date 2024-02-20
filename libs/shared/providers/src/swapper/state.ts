@@ -4,10 +4,10 @@ import { formatError, isFulfilled, scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
-import { useConfig } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
-import { getAvailableRoutes } from './utils';
+import { getAvailableRoutes, getFilteredSwapRoutes } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -56,13 +56,15 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       onSwapReject,
       onSwapFailure,
     }) => {
+      const { chain } = useAccount();
+      const filteredSwapRoutes = getFilteredSwapRoutes(swapRoutes, chain);
       const [state, setState] = useState<SwapState>({
         swapActions,
-        swapRoutes,
+        swapRoutes: filteredSwapRoutes,
         amountIn: 0n,
-        tokenIn: swapRoutes[0].tokenIn,
+        tokenIn: filteredSwapRoutes[0].tokenIn,
         amountOut: 0n,
-        tokenOut: swapRoutes[0].tokenOut,
+        tokenOut: filteredSwapRoutes[0].tokenOut,
         estimatedSwapRoutes: [],
         selectedSwapRoute: null,
         isSwapWaitingForSignature: false,
@@ -95,8 +97,6 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           if (state.amountIn === 0n) {
             setState((state) => ({
               ...state,
-              estimatedSwapRoutes: [],
-              selectedSwapRoute: null,
               amountOut: 0n,
               isSwapRoutesLoading: false,
               isSwapWaitingForSignature: false,
@@ -196,7 +196,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             ...state,
             estimatedSwapRoutes: sortedRoutes,
             selectedSwapRoute: sortedRoutes[0],
-            amountOut: sortedRoutes[0].estimatedAmount ?? 0n,
+            amountOut: sortedRoutes?.[0]?.estimatedAmount ?? 0n,
             isSwapRoutesLoading: false,
           }));
 

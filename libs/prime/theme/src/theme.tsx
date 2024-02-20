@@ -19,7 +19,7 @@ export const theme = createTheme({
       main: '#0074F0',
       contrastText: '#FFF',
     },
-    divider: '#B5BECA',
+    divider: '#D8DEE5',
     background: {
       paper: '#F7FAFF',
       default: '#F6F8FE',
@@ -40,7 +40,7 @@ export const theme = createTheme({
       900: '#18191C',
     },
     success: {
-      main: '#66FE90',
+      main: '#07C166',
     },
     warning: {
       main: '#FFDC86',
@@ -54,15 +54,7 @@ export const theme = createTheme({
     },
   },
   typography: {
-    fontFamily: [
-      '"ui-sans-serif"',
-      '"system-ui"',
-      '"sans-serif"',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-      '"Noto Color Emoji"',
-    ].join(','),
+    fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
 
     fontSize: 14,
     fontWeightLight: 300,
@@ -108,17 +100,17 @@ export const theme = createTheme({
     },
     h5: {
       fontSize: 20,
-      lineHeight: 1.4,
+      lineHeight: 1.625,
       fontWeight: 500,
       [base.breakpoints.down('sm')]: {
-        fontSize: 14,
+        fontSize: 16,
         lineHeight: 1.25,
       },
     },
     h6: {
-      fontSize: 18,
+      fontSize: 16,
       lineHeight: 1.4,
-      fontWeight: 400,
+      fontWeight: 500,
       [base.breakpoints.down('sm')]: {
         fontSize: 13,
         lineHeight: 1.25,
@@ -145,18 +137,11 @@ export const theme = createTheme({
     body1: {
       fontSize: 14,
       lineHeight: 1.5,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 13,
-        lineHeight: 1.4,
-      },
     },
     body2: {
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 11,
-      },
     },
     button: {
       fontSize: 14,
@@ -255,6 +240,14 @@ export const theme = createTheme({
             background: theme.palette.grey[900],
           },
         }),
+        outlinedPrimary: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          borderColor: theme.palette.primary.main,
+          '&:hover': {
+            color: theme.palette.primary.contrastText,
+            backgroundColor: theme.palette.primary.main,
+          },
+        }),
         outlinedSecondary: ({ theme }) => ({
           borderColor: theme.palette.divider,
           '&:hover': {
@@ -315,6 +308,18 @@ export const theme = createTheme({
         }),
       },
     },
+    MuiChip: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
+        }),
+        sizeSmall: {
+          fontSize: 13,
+          fontWeight: 600,
+          maxHeight: 20,
+        },
+      },
+    },
     MuiCssBaseline: {
       defaultProps: {
         enableColorScheme: true,
@@ -342,24 +347,34 @@ export const theme = createTheme({
       },
       styleOverrides: {
         paper: ({ theme }) => ({
-          borderRadius: theme.shape.borderRadius * 2,
+          borderRadius: theme.shape.borderRadius * 5,
         }),
       },
     },
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({
-          py: 3,
-          fontSize: 16,
-          fontWeight: 700,
-          lineHeight: 1.75,
-          color: theme.palette.text.primary,
+          padding: theme.spacing(3, 2),
+          fontSize: 14,
+          fontWeight: 500,
+          lineHeight: 1.5,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        }),
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: theme.spacing(3, 2),
         }),
       },
     },
     MuiDialogContentText: {
       styleOverrides: {
-        root: ({ theme }) => ({ color: theme.palette.text.primary }),
+        root: ({ theme }) => ({
+          padding: theme.spacing(3, 2),
+          color: theme.palette.text.primary,
+        }),
       },
     },
     MuiFormControl: {

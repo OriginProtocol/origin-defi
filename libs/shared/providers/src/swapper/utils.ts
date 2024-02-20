@@ -1,8 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { uniq } from 'ramda';
+import { mergeDeepRight, uniq } from 'ramda';
+import { mainnet } from 'viem/chains';
 
-import type { SwapRoute, Token, TokenSource } from './types';
+import type { Token } from '@origin/shared/contracts';
+import type { Chain } from 'viem';
+
+import type { SwapAction, SwapRoute, TokenSource } from './types';
+
+export const getFilteredSwapRoutes = (
+  swapRoutes: SwapRoute[],
+  chain: Chain | undefined | null,
+) => {
+  if (isNilOrEmpty(swapRoutes)) {
+    return swapRoutes;
+  }
+  const chainId = chain?.id ?? mainnet.id;
+
+  return swapRoutes.filter((r) => r.tokenIn.chainId === chainId);
+};
 
 export const getAllAvailableTokens = (
   swapRoutes: SwapRoute[],
@@ -39,8 +55,8 @@ export const getAvailableTokensForSource = (
   }, [] as Token[]);
 };
 
-export const getAvailableRoutes = (
-  swapRoutes: SwapRoute[],
+export const getAvailableRoutes = <S = SwapAction, M = object>(
+  swapRoutes: SwapRoute<S, M>[],
   tokenIn: Token,
   tokenOut: Token,
 ) => {
@@ -53,6 +69,30 @@ export const getAvailableRoutes = (
       r.tokenIn.symbol === tokenIn.symbol &&
       r.tokenOut.symbol === tokenOut.symbol,
   );
+};
+
+export const getTokenMeta = (
+  swapRoutes: SwapRoute[],
+  source: TokenSource,
+  token: Token,
+) => {
+  if (isNilOrEmpty(swapRoutes) || isNilOrEmpty(source) || isNilOrEmpty(token)) {
+    return undefined;
+  }
+
+  const meta = swapRoutes.reduce((acc, curr) => {
+    if (source === 'tokenIn' && curr.tokenIn.symbol === token.symbol) {
+      return mergeDeepRight(acc, curr?.meta ?? {});
+    }
+
+    if (source === 'tokenOut' && curr.tokenOut.symbol === token.symbol) {
+      return mergeDeepRight(acc, curr?.meta ?? {});
+    }
+
+    return acc;
+  }, {});
+
+  return isNilOrEmpty(meta) ? undefined : meta;
 };
 
 export const routeEq = (

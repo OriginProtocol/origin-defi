@@ -12,14 +12,20 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/governance/shared';
+import { PauseBanner, usePoints } from '@origin/prime/shared';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
+  EigenPoints,
   FaArrowUpRightRegular,
   FaBarsRegular,
+  PrimePoints,
   PrimeStake,
 } from '@origin/shared/icons';
 import {
   AccountPopover,
   OpenAccountModalButton,
+  useFormat,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not } from 'ramda';
@@ -47,6 +53,7 @@ export function Topnav(props: BoxProps) {
           height: (theme) => `${theme.mixins.toolbar.height}px`,
         }}
       />
+      <PauseBanner />
       <Box
         component="nav"
         {...props}
@@ -82,7 +89,7 @@ export function Topnav(props: BoxProps) {
               />
             </Stack>
           </Grid2>
-          <Grid2 xs={5}>
+          <Grid2 xs={3}>
             {!isSm && (
               <Navigation
                 direction="row"
@@ -92,7 +99,7 @@ export function Topnav(props: BoxProps) {
               />
             )}
           </Grid2>
-          <Grid2 xs={4}>
+          <Grid2 xs={6}>
             <Box
               sx={{
                 display: 'flex',
@@ -101,6 +108,7 @@ export function Topnav(props: BoxProps) {
                 gap: 1,
               }}
             >
+              {!isSm && <PointsBadges mr={2} />}
               <OpenAccountModalButton
                 onClick={(e) => {
                   if (isConnected) {
@@ -203,6 +211,7 @@ const Navigation = ({ onLinkClick, ...rest }: NavigationProps) => {
         href="https://docs.primestaked.com/prime-staked-eth/intro-to-primeeth"
         target="_blank"
         rel="noopener noreferrer nofollow"
+        noWrap
         sx={{
           fontSize: 16,
           fontWeight: 'medium',
@@ -249,5 +258,36 @@ const NavLink = ({ route, onLinkClick }: NavLinkProps) => {
     >
       {intl.formatMessage(route.handle.label)}
     </Link>
+  );
+};
+
+const PointsBadges = (props: StackProps) => {
+  const { formatBalance, formatAmount } = useFormat();
+  const { data: points, isLoading: isPointsLoading } = usePoints();
+
+  return (
+    <Stack direction="row" alignItems="center" spacing={3} {...props}>
+      <Stack direction="row" alignItems="center" spacing={0.5}>
+        <TokenIcon
+          symbol={tokens.mainnet.primeETH.symbol}
+          sx={{ width: 28, height: 28 }}
+        />
+        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+          {formatBalance(points?.primePoints)}
+        </LoadingLabel>
+      </Stack>
+      <Stack direction="row" alignItems="center" spacing={0.5}>
+        <PrimePoints sx={{ width: 28, height: 28 }} />
+        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+          {formatAmount(points?.xpPoints)}
+        </LoadingLabel>
+      </Stack>
+      <Stack direction="row" alignItems="center" spacing={0.5}>
+        <EigenPoints sx={{ width: 28, height: 28 }} />
+        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+          {formatAmount(points?.elPoints)}
+        </LoadingLabel>
+      </Stack>
+    </Stack>
   );
 };

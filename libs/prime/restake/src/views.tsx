@@ -1,4 +1,4 @@
-import { Link, Stack, Typography } from '@mui/material';
+import { Card, Divider, Link, Stack, Typography } from '@mui/material';
 import { trackEvent } from '@origin/prime/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -13,36 +13,37 @@ import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
   return (
-    <Stack>
-      <Stack sx={{ mb: 6, alignItems: 'center' }}>
-        <Stack
-          direction="row"
-          spacing={3}
-          sx={{
-            alignItems: 'center',
-            border: (theme) => `1px solid ${theme.palette.divider}`,
-            borderRadius: 25,
-          }}
-        >
-          {restakeRoute?.children?.map((r) => (
-            <NavLink key={r?.path ?? 'index'} route={r} />
-          ))}
+    <Stack alignItems="center">
+      <Card sx={{ maxWidth: 520 }}>
+        <Stack sx={{ p: 2, alignItems: 'center' }}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              border: (theme) => `1px solid ${theme.palette.divider}`,
+              borderRadius: 25,
+            }}
+          >
+            {restakeRoute?.children?.map((r) => (
+              <NavLink key={r?.path ?? 'index'} route={r} />
+            ))}
+          </Stack>
         </Stack>
-      </Stack>
-      <Outlet />
+        <Divider />
+        <Outlet />
+      </Card>
     </Stack>
   );
 };
 
 export const StakeView = () => {
   return (
-    <Stack>
-      <Swapper
-        swapRoutes={restakeRoutes}
-        swapActions={restakeActions}
-        trackEvent={trackEvent}
-      />
-    </Stack>
+    <Swapper
+      swapRoutes={restakeRoutes}
+      swapActions={restakeActions}
+      trackEvent={trackEvent}
+    />
   );
 };
 
@@ -70,7 +71,8 @@ const NavLink = ({ route }: NavLinkProps) => {
       to={`${restakeRoute.path}/${route.index ? '' : route.path}`}
       sx={{
         px: 3,
-        py: 1.5,
+        py: 1.25,
+        color: 'text.secondary',
         fontWeight: 'medium',
         ...(!isNilOrEmpty(match) && {
           color: 'primary.contrastText',

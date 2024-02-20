@@ -1,12 +1,7 @@
 import { Container, Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import {
-  RebaseBanner,
-  useCurve,
-  usePrices,
-  useTxTracker,
-} from '@origin/shared/providers';
+import { RebaseBanner, useCurve, useTxTracker } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
@@ -14,7 +9,6 @@ import { Topnav } from './components/Topnav';
 
 export const App = () => {
   useCurve();
-  usePrices();
   useTxTracker('oeth.com');
 
   return (

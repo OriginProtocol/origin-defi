@@ -1,15 +1,15 @@
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Card, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
 import { FaClockRegular, OETH, Whale } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
-import type { StackProps } from '@mui/material';
+import type { CardProps, StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
 type Ad = {
   icon: ReactNode;
-  title: string;
-  subtitle: string;
+  title?: string;
+  subtitle?: string;
   tooltip: ReactNode;
 };
 
@@ -57,11 +57,11 @@ export const AdCards = (props: StackProps) => {
     },
     {
       icon: <OETH sx={{ width: 40, height: 40 }} />,
-      title: '',
-      subtitle: intl.formatMessage({
+      title: intl.formatMessage({
         defaultMessage:
           'Deposit with OETH and earn<br></br><strong>2X REWARDS*</strong>',
       }),
+      subtitle: '',
       tooltip: (
         <Typography>
           {intl.formatMessage({
@@ -82,28 +82,35 @@ export const AdCards = (props: StackProps) => {
   );
 };
 
-type AdCardProps = { ad: Ad } & StackProps;
+type AdCardProps = { ad: Ad } & CardProps;
 
 const AdCard = ({ ad, ...rest }: AdCardProps) => {
   return (
-    <Stack
-      spacing={1}
+    <Card
       {...rest}
       sx={{
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        gap: 1,
         p: 3,
         border: (theme) => `1px solid ${theme.palette.divider}`,
         borderRadius: 5,
-        minHeight: 200,
         ...rest?.sx,
       }}
     >
       {ad.icon}
-      <Typography variant="h5" textAlign="center">
-        {ad.title}
-      </Typography>
-      <Typography textAlign="center">{ad.subtitle}</Typography>
+      {ad?.title && (
+        <Typography variant="h6" textAlign="center" gutterBottom>
+          {ad.title}
+        </Typography>
+      )}
+      {ad?.subtitle && (
+        <Typography textAlign="center" variant="body2" color="text.secondary">
+          {ad.subtitle}
+        </Typography>
+      )}
       <InfoTooltip
         tooltipLabel={ad.tooltip}
         tooltipProps={{
@@ -111,6 +118,6 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
           slotProps: { tooltip: { sx: { backgroundColor: '#fff' } } },
         }}
       />
-    </Stack>
+    </Card>
   );
 };

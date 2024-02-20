@@ -1,8 +1,8 @@
 import { forwardRef } from 'react';
 
-import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import { BigIntInput, TokenButton } from '@origin/shared/components';
-import { formatAmount } from '@origin/shared/utils';
+import { Button, Skeleton, Stack, Typography } from '@mui/material';
+import { BigIntInput } from '@origin/shared/components';
+import { useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { parseEther } from 'viem';
 
@@ -27,12 +27,10 @@ export type TokenInputProps = {
   isConnected: boolean;
   balance?: bigint;
   isBalanceLoading?: boolean;
-  hideMaxButton?: boolean;
+  disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
   isNativeCurrency?: boolean;
-  disableTokenClick?: boolean;
-  displayDecimals?: number;
   inputProps?: Omit<
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
@@ -52,19 +50,18 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isConnected,
       balance = 0n,
       isBalanceLoading,
-      hideMaxButton,
+      disableMaxButton,
       token,
       onTokenClick,
       isNativeCurrency = false,
-      disableTokenClick,
       inputProps,
       tokenButtonProps,
-      displayDecimals,
       ...rest
     },
     ref,
   ) => {
     const intl = useIntl();
+    const { formatAmount } = useFormat();
 
     const handleMaxClick = () => {
       const max = isNativeCurrency
@@ -74,79 +71,29 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     };
 
     const maxVisible =
-      !hideMaxButton &&
       balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
-    const maxDisabled = !isConnected || isBalanceLoading;
+    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
-      <Stack {...rest}>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 2.5,
-            mb: 2,
-          }}
-        >
-          <TokenButton
-            token={token}
-            onClick={onTokenClick}
-            isDisabled={disableTokenClick}
-            {...tokenButtonProps}
-          />
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            overflow="hidden"
-            whiteSpace="nowrap"
-          >
-            {isConnected ? (
-              isBalanceLoading ? (
-                <Skeleton width={38} />
-              ) : (
-                <>
-                  <Typography
-                    noWrap
-                    color="text.secondary"
-                    sx={{
-                      justifySelf: 'flex-end',
-                      visibility: balance === undefined ? 'hidden' : 'visible',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {intl.formatMessage(
-                      { defaultMessage: 'Balance: {number}' },
-                      {
-                        number: formatAmount(balance, decimals),
-                      },
-                    )}
-                  </Typography>
-                  {maxVisible && (
-                    <Button
-                      onClick={handleMaxClick}
-                      disabled={maxDisabled}
-                      variant="outlined"
-                      color="secondary"
-                      size="small"
-                      sx={{ minWidth: 0, px: 1, py: 0.25 }}
-                    >
-                      {intl.formatMessage({ defaultMessage: 'max' })}
-                    </Button>
-                  )}
-                </>
-              )
-            ) : null}
-          </Stack>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 1,
-          }}
-        >
+      <Stack
+        direction="row"
+        alignItems="center"
+        spacing={2}
+        {...rest}
+        sx={{
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 5,
+          backgroundColor: 'common.white',
+          p: 2,
+          ...(!isAmountDisabled && {
+            '&:hover, &:focus-within': {
+              outline: (theme) => `2px solid ${theme.palette.text.primary}`,
+            },
+          }),
+        }}
+      >
+        <Stack direction="row" alignItems="center" sx={{ flexGrow: 1, py: 1 }}>
           {isAmountLoading ? (
             <Skeleton width={100} height={36} />
           ) : (
@@ -157,10 +104,78 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               onChange={onAmountChange}
               disabled={isAmountDisabled}
               ref={ref}
-              sx={{ flexGrow: 1, height: 36, ...inputProps?.sx }}
+              sx={{
+                flexGrow: 1,
+                height: 36,
+                border: 'none',
+                backgroundColor: 'transparent',
+                borderRadius: 0,
+                p: 0,
+                '& .MuiInputBase-input': {
+                  p: 0,
+                  boxSizing: 'border-box',
+                  fontStyle: 'normal',
+                  fontSize: 32,
+                  lineHeight: 1,
+                  fontWeight: 500,
+                  '&::placeholder': {
+                    color: 'text.secondary',
+                    opacity: 1,
+                  },
+                },
+              }}
             />
           )}
-        </Box>
+        </Stack>
+        <Stack alignItems="flex-end" spacing={1}>
+          {isConnected ? (
+            isBalanceLoading ? (
+              <Skeleton width={38} />
+            ) : (
+              <>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <Typography
+                    noWrap
+                    color="text.secondary"
+                    sx={{
+                      visibility: balance === undefined ? 'hidden' : 'visible',
+                    }}
+                  >
+                    {intl.formatMessage({ defaultMessage: 'Balance' })}
+                  </Typography>
+                  {maxVisible && (
+                    <Button
+                      onClick={handleMaxClick}
+                      disabled={maxDisabled}
+                      variant="outlined"
+                      color="secondary"
+                      sx={{
+                        fontSize: 12,
+                        minWidth: 0,
+                        minHeight: 0,
+                        px: 0.5,
+                        pt: 0.2,
+                        pb: 0.4,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {intl.formatMessage({ defaultMessage: 'max' })}
+                    </Button>
+                  )}
+                </Stack>
+                <Typography noWrap>
+                  {intl.formatMessage(
+                    { defaultMessage: '{amount} {symbol}' },
+                    {
+                      amount: formatAmount(balance, decimals),
+                      symbol: token.symbol,
+                    },
+                  )}
+                </Typography>
+              </>
+            )
+          ) : null}
+        </Stack>
       </Stack>
     );
   },

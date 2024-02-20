@@ -21,6 +21,7 @@ import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
+import { UniswapV3WETHPrimeETHPoolABI } from './abis/UniswapV3WETHPrimeETHPool';
 
 export const contracts = {
   mainnet: {
@@ -159,6 +160,12 @@ export const contracts = {
       name: 'sushiswapRouter',
     },
     // Uniswap
+    uniswapV3WETHPrimeETHPool: {
+      address: '0xb6934f4cf655c93e897514dc7c2af5a143b9ca22',
+      chainId: mainnet.id,
+      abi: UniswapV3WETHPrimeETHPoolABI,
+      name: 'uniswapV3WETHPrimeETHPool',
+    },
     uniswapV2Router: {
       address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
       chainId: mainnet.id,

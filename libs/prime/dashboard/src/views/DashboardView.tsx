@@ -1,51 +1,45 @@
 import { Button, Card, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { usePoints } from '@origin/prime/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { scale, ZERO_ADDRESS } from '@origin/shared/utils';
+import { scale } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
-import { useAccount, useReadContract } from 'wagmi';
-
-import { usePointRecipientStatsQuery } from '../queries.generated';
+import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { Grid2Props } from '@mui/material';
 
 export const DashboardView = () => {
   const intl = useIntl();
   const { formatBalance, formatAmount } = useFormat();
-  const { address, isConnected } = useAccount();
-  const { data: primeBalance, isLoading: isPrimeBalanceLoading } =
-    useReadContract({
-      address: tokens.mainnet.primeETH.address,
-      abi: tokens.mainnet.primeETH.abi,
-      functionName: 'balanceOf',
-      args: [address ?? ZERO_ADDRESS],
-      query: {
-        enabled: !!address,
-      },
-    });
-  const { data: stats, isLoading: isStatsLoading } =
-    usePointRecipientStatsQuery(
-      { address: address ?? ZERO_ADDRESS },
-      { enabled: !!address },
-    );
+  const { isConnected } = useAccount();
+  const { data: points, isLoading: isPointsLoading } = usePoints();
 
-  const percentTotalXp =
-    scale(BigInt(stats?.lrtPointRecipientStats?.points ?? '0'), 0, 18) /
-    BigInt(stats?.lrtSummaries?.[0]?.points ?? '1');
-  const percentTotalELPoints =
-    scale(BigInt(stats?.lrtPointRecipientStats?.elPoints ?? '0'), 0, 18) /
-    BigInt(stats?.totalEigenLayerPoints ?? '1');
+  const percentTotalXp = +formatUnits(
+    scale(points?.xpPoints ?? 0n, 0, 18) /
+      (!points?.totalXpPoints || points?.totalXpPoints === 0n
+        ? 1n
+        : points?.totalXpPoints),
+    18,
+  );
+  const percentTotalELPoints = +formatUnits(
+    scale(BigInt(points?.elPoints ?? '0'), 0, 18) /
+      (!points?.totalELPoints || points?.totalELPoints === 0n
+        ? 1n
+        : points?.totalELPoints),
+    18,
+  );
 
   return (
     <Stack>
-      <Typography variant="h3" pb={3} textAlign="center">
-        {intl.formatMessage({ defaultMessage: 'Dashboard' })}
+      <Typography variant="h5" pb={3} textAlign="center">
+        {intl.formatMessage({ defaultMessage: 'Your Balance' })}
       </Typography>
-      <Card>
+      <Card sx={{ backgroundColor: 'common.white' }}>
         <Grid2 {...gridContainerProps}>
           <Grid2 {...gridItemProps}>
             <TokenIcon
@@ -59,8 +53,12 @@ export const DashboardView = () => {
                 {intl.formatMessage({ defaultMessage: 'primeETH Balance' })}
               </Typography>
               {isConnected ? (
-                <LoadingLabel isLoading={isPrimeBalanceLoading}>
-                  {formatBalance(primeBalance)}
+                <LoadingLabel
+                  isLoading={isPointsLoading}
+                  fontSize={24}
+                  fontWeight="medium"
+                >
+                  {formatBalance(points?.primePoints)}
                 </LoadingLabel>
               ) : (
                 '-'
@@ -71,31 +69,33 @@ export const DashboardView = () => {
             <Button component={Link} to="/">
               {intl.formatMessage(
                 { defaultMessage: 'Restake {when}' },
-                { when: primeBalance === 0n ? 'now' : 'more' },
+                { when: points?.primePoints === 0n ? 'now' : 'more' },
               )}
             </Button>
           </Grid2>
         </Grid2>
       </Card>
-      <Typography variant="h3" py={3} textAlign="center">
+      <Typography variant="h5" py={3} textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Your rewards' })}
       </Typography>
       <Stack spacing={2}>
-        <Card>
+        <Card sx={{ backgroundColor: 'common.white' }}>
           <Grid2 {...gridContainerProps}>
             <Grid2 {...gridItemProps}>
-              <EigenPoints sx={{ width: 48, height: 48 }} />
+              <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
-                  {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
+                <Typography fontWeight="medium" color="text.secondary">
+                  {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isStatsLoading}>
-                    {formatAmount(
-                      BigInt(stats?.lrtPointRecipientStats?.elPoints ?? '0'),
-                    )}
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {formatAmount(points?.xpPoints)}
                   </LoadingLabel>
                 ) : (
                   '-'
@@ -104,13 +104,18 @@ export const DashboardView = () => {
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isStatsLoading}>
-                    {formatAmount(percentTotalXp, undefined, undefined, {
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {intl.formatNumber(percentTotalXp, {
                       style: 'percent',
+                      maximumFractionDigits: 6,
                     })}
                   </LoadingLabel>
                 ) : (
@@ -120,21 +125,23 @@ export const DashboardView = () => {
             </Grid2>
           </Grid2>
         </Card>
-        <Card>
+        <Card sx={{ backgroundColor: 'common.white' }}>
           <Grid2 {...gridContainerProps}>
             <Grid2 {...gridItemProps}>
-              <PrimePoints sx={{ width: 48, height: 48 }} />
+              <EigenPoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
-                  {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
+                <Typography fontWeight="medium" color="text.secondary">
+                  {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isStatsLoading}>
-                    {formatAmount(
-                      BigInt(stats?.lrtPointRecipientStats?.points ?? '0'),
-                    )}
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {formatAmount(points?.elPoints)}
                   </LoadingLabel>
                 ) : (
                   '-'
@@ -143,12 +150,16 @@ export const DashboardView = () => {
             </Grid2>
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium">
+                <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel isLoading={isStatsLoading}>
-                    {formatAmount(percentTotalELPoints, undefined, undefined, {
+                  <LoadingLabel
+                    isLoading={isPointsLoading}
+                    fontSize={24}
+                    fontWeight="medium"
+                  >
+                    {intl.formatNumber(percentTotalELPoints, {
                       style: 'percent',
                     })}
                   </LoadingLabel>
@@ -168,11 +179,16 @@ const gridContainerProps: Grid2Props = {
   container: true,
   rowSpacing: 2,
   columnSpacing: 1,
-  sx: { p: 2 },
+  sx: { py: 3, px: 2 },
 };
 
 const gridItemProps: Grid2Props = {
   xs: 12,
   sm: 4,
-  sx: { display: 'flex', justifyContent: 'center' },
+  sx: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 };

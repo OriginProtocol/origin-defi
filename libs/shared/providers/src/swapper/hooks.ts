@@ -9,22 +9,26 @@ import {
 } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt } from '@wagmi/core';
+import { uniq } from 'ramda';
 import { useAccount, useConfig } from 'wagmi';
 
+import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
 import {
   getAllAvailableTokens,
   getAvailableRoutes,
   getAvailableTokensForSource,
+  getTokenMeta,
 } from './utils';
 
+import type { Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
 import type {
   EstimatedSwapRoute,
   SwapRoute,
-  Token,
+  TokenOption,
   TokenSource,
 } from './types';
 
@@ -49,7 +53,10 @@ export const useHandleAmountInChange = () => {
   );
 };
 
-export const useTokenOptions = () => {
+export const useTokenOptions = <M = object>(): {
+  tokensIn: TokenOption<M>[];
+  tokensOut: TokenOption<M>[];
+} => {
   const [{ tokenIn, tokenOut, swapRoutes }] = useSwapState();
   const tokensIn = getAllAvailableTokens(swapRoutes, 'tokenIn');
   const tokensOut = getAllAvailableTokens(swapRoutes, 'tokenOut');
@@ -66,26 +73,35 @@ export const useTokenOptions = () => {
 
   return useMemo(
     () => ({
-      tokensIn: tokensIn.map((t) => ({
-        ...t,
-        isSelected: t.symbol === tokenIn.symbol,
-        isSwappable: availableTokensIn.reduce(
-          (acc, curr) => acc || curr.symbol === t.symbol,
-          false,
-        ),
-      })),
-      tokensOut: tokensOut.map((t) => ({
-        ...t,
-        isSelected: t.symbol === tokenOut.symbol,
-        isSwappable: availableTokensOut.reduce(
-          (acc, curr) => acc || curr.symbol === t.symbol,
-          false,
-        ),
-      })),
+      tokensIn: tokensIn.map(
+        (t) =>
+          ({
+            ...t,
+            isSelected: t.symbol === tokenIn.symbol,
+            isSwappable: availableTokensIn.reduce(
+              (acc, curr) => acc || curr.symbol === t.symbol,
+              false,
+            ),
+            meta: getTokenMeta(swapRoutes, 'tokenIn', t),
+          }) as TokenOption<M>,
+      ),
+      tokensOut: tokensOut.map(
+        (t) =>
+          ({
+            ...t,
+            isSelected: t.symbol === tokenOut.symbol,
+            isSwappable: availableTokensOut.reduce(
+              (acc, curr) => acc || curr.symbol === t.symbol,
+              false,
+            ),
+            meta: getTokenMeta(swapRoutes, 'tokenIn', t),
+          }) as TokenOption<M>,
+      ),
     }),
     [
       availableTokensIn,
       availableTokensOut,
+      swapRoutes,
       tokenIn.symbol,
       tokenOut.symbol,
       tokensIn,
@@ -617,4 +633,16 @@ export const useHandleSwap = () => {
     tokenOut,
     trackEvent,
   ]);
+};
+
+export const useSwapperPrices = () => {
+  const [{ swapRoutes }] = useSwapState();
+  const tokensIn = getAllAvailableTokens(swapRoutes, 'tokenIn');
+  const tokensOut = getAllAvailableTokens(swapRoutes, 'tokenOut');
+  const keys = uniq([
+    ...tokensIn.map((t) => getTokenPriceKey(t)),
+    ...tokensOut.map((t) => getTokenPriceKey(t)),
+  ]);
+
+  return useTokenPrices(keys);
 };

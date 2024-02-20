@@ -1,20 +1,24 @@
-import { Container, Stack } from '@mui/material';
+import { Container, Stack, useMediaQuery, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   AdCards,
   AssetDepositedCard,
-  PrimeETHStatsCard,
+  GlobalStatsCard,
+  InviteCard,
   trackEvent,
   trackPage,
   trackSentryError,
 } from '@origin/prime/shared';
-import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
+import { ErrorBoundary, ErrorCard, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+
   useReferrerTracker('Origin');
 
   return (
@@ -38,6 +42,7 @@ export const App = () => {
                 height={1}
                 display={{ xs: 'none', md: 'block' }}
               >
+                <InviteCard mb={3} />
                 <AdCards />
               </Grid2>
               <Grid2 xs={12} md={6}>
@@ -45,8 +50,19 @@ export const App = () => {
               </Grid2>
               <Grid2 xs={12} md={3}>
                 <Stack spacing={3}>
-                  <PrimeETHStatsCard />
-                  <AssetDepositedCard />
+                  {isSm && <InviteCard mt={3} />}
+                  <ErrorBoundary
+                    ErrorComponent={<ErrorCard />}
+                    onError={trackSentryError}
+                  >
+                    <GlobalStatsCard />
+                  </ErrorBoundary>
+                  <ErrorBoundary
+                    ErrorComponent={<ErrorCard />}
+                    onError={trackSentryError}
+                  >
+                    <AssetDepositedCard />
+                  </ErrorBoundary>
                 </Stack>
               </Grid2>
             </Grid2>

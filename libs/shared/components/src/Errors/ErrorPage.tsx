@@ -39,7 +39,7 @@ export const ErrorPage = ({
             fontSize: 64,
             fontWeight: 800,
             lineHeight: '64px',
-            background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+            background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
           })}
