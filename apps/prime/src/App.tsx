@@ -56,7 +56,7 @@ export const App = () => {
                     onError={trackSentryError}
                   >
                     <GlobalStatsCard />
-                  </ErrorBoundary>{' '}
+                  </ErrorBoundary>
                   <ErrorBoundary
                     ErrorComponent={<ErrorCard />}
                     onError={trackSentryError}
