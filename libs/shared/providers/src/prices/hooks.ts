@@ -79,7 +79,7 @@ export const useTokenPrices = (
 
       const deps = tokenPrices
         .map((t) => priceOptions.mainnet[t])
-        .filter((o) => !isNilOrEmpty(o.dependsOn));
+        .filter((o) => !isNilOrEmpty(o?.dependsOn));
       if (!isNilOrEmpty(deps)) {
         try {
           deps.forEach((dep) => {

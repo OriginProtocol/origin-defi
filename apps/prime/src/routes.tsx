@@ -19,7 +19,10 @@ export const routes: RouteObject[] = [
         Component: DashboardView,
         handle: { label: defineMessage({ defaultMessage: 'Dashboard' }) },
       },
-      { index: true, element: <Navigate to="/restake" /> },
+      {
+        index: true,
+        element: <Navigate to={restakeRoute?.path ?? '/restake'} />,
+      },
     ],
   },
   {

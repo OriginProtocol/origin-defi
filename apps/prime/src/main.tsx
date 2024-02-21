@@ -18,7 +18,7 @@ import {
   ThemeProvider,
 } from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
-import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
 import { createHashRouter, RouterProvider } from 'react-router-dom';
@@ -47,7 +47,7 @@ root.render(
       [ThemeProvider, { theme }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
-      [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
+      [RainbowKitProvider, { modalSize: 'compact' }],
       [NotificationsProvider],
       [ActivityProvider],
     ],
