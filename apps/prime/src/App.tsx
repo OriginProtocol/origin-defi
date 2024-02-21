@@ -1,5 +1,5 @@
-import { Container, Stack, useMediaQuery, useTheme } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Stack, useMediaQuery, useTheme } from '@mui/material';
+import Box from '@mui/material/Box';
 import {
   AdCards,
   AssetDepositedCard,
@@ -34,39 +34,63 @@ export const App = () => {
       >
         <Stack minWidth={370} mb={5}>
           <Topnav />
-          <Container maxWidth="xl" sx={{ pt: 3 }}>
-            <Grid2 container spacing={{ xs: 3, md: 6 }}>
-              <Grid2
-                xs={0}
-                md={3}
-                height={1}
-                display={{ xs: 'none', md: 'block' }}
-              >
-                <InviteCard mb={3} />
-                <AdCards />
-              </Grid2>
-              <Grid2 xs={12} md={6}>
-                <Outlet />
-              </Grid2>
-              <Grid2 xs={12} md={3}>
-                <Stack spacing={3}>
-                  {isSm && <InviteCard mt={3} />}
-                  <ErrorBoundary
-                    ErrorComponent={<ErrorCard />}
-                    onError={trackSentryError}
-                  >
-                    <GlobalStatsCard />
-                  </ErrorBoundary>
-                  <ErrorBoundary
-                    ErrorComponent={<ErrorCard />}
-                    onError={trackSentryError}
-                  >
-                    <AssetDepositedCard />
-                  </ErrorBoundary>
-                </Stack>
-              </Grid2>
-            </Grid2>
-          </Container>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', sm: 'row' },
+              px: { xs: 2, md: 3 },
+              alignItems: 'start',
+              gap: { xs: 8, sm: 0 },
+            }}
+          >
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'block' },
+                width: '100%',
+                maxWidth: '250px',
+              }}
+            >
+              <InviteCard mb={3} />
+              <AdCards />
+            </Box>
+            <Box
+              sx={{
+                flexBasis: 'auto',
+                flexGrow: 1,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'stretch',
+                px: { sm: 8 },
+              }}
+            >
+              <Outlet />
+            </Box>
+            <Box
+              sx={{
+                width: { sm: '250px' },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 6,
+                pb: 12,
+              }}
+            >
+              <Stack spacing={3}>
+                {isSm && <InviteCard mt={3} />}
+                <ErrorBoundary
+                  ErrorComponent={<ErrorCard />}
+                  onError={trackSentryError}
+                >
+                  <GlobalStatsCard />
+                </ErrorBoundary>
+                <ErrorBoundary
+                  ErrorComponent={<ErrorCard />}
+                  onError={trackSentryError}
+                >
+                  <AssetDepositedCard />
+                </ErrorBoundary>
+              </Stack>
+            </Box>
+          </Box>
         </Stack>
       </TrackingProvider>
     </ErrorBoundary>

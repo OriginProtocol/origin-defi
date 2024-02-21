@@ -35,7 +35,14 @@ export const DashboardView = () => {
   );
 
   return (
-    <Stack>
+    <Stack
+      sx={{
+        maxWidth: 700,
+        width: '100%',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+      }}
+    >
       <Typography variant="h5" pb={3} textAlign="center">
         {intl.formatMessage({ defaultMessage: 'Your Balance' })}
       </Typography>
