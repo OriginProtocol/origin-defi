@@ -343,21 +343,21 @@ export const theme = createTheme({
           @font-face {
             font-family: Sailec;
             font-weight: 400;
-            src: url(/fonts/Sailec/Sailec-Regular.otf) format('opentype');
+            src: url(/fonts/Sailec-Regular.otf) format('opentype');
             font-display: swap;
           }
 
           @font-face {
             font-family: Sailec;
             font-weight: 500;
-            src: url(/fonts/Sailec/Sailec-Medium.otf) format('opentype');
+            src: url(/fonts/Sailec-Medium.otf) format('opentype');
             font-display: swap;
           }
 
           @font-face {
             font-family: Sailec;
             font-weight: 700;
-            src: url(/fonts/Sailec/Sailec-Bold.otf) format('opentype');
+            src: url(/fonts/Sailec-Bold.otf) format('opentype');
             font-display: swap;
           }
         `,
