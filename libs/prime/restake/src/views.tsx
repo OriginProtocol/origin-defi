@@ -14,14 +14,14 @@ import type { RouteObject } from 'react-router-dom';
 export const RestakeView = () => {
   return (
     <Stack alignItems="center">
-      <Card sx={{ maxWidth: 520 }}>
+      <Card sx={{ maxWidth: 540, width: 1 }}>
         <Stack sx={{ p: 2, alignItems: 'center' }}>
           <Stack
             direction="row"
-            spacing={1}
             sx={{
               alignItems: 'center',
-              border: (theme) => `1px solid ${theme.palette.divider}`,
+              boxShadow: (theme) =>
+                `inset 0px 0px 0px 1px ${theme.palette.divider}`,
               borderRadius: 25,
             }}
           >
@@ -71,7 +71,8 @@ const NavLink = ({ route }: NavLinkProps) => {
       to={`${restakeRoute.path}/${route.index ? '' : route.path}`}
       sx={{
         px: 3,
-        py: 1.25,
+        py: 1,
+        lineHeight: '1.625',
         color: 'text.secondary',
         fontWeight: 'medium',
         ...(!isNilOrEmpty(match) && {
