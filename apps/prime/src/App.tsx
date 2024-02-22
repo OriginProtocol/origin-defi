@@ -46,7 +46,7 @@ export const App = () => {
             <Box
               sx={{
                 display: { xs: 'none', md: 'block' },
-                width: '100%',
+                width: 1,
                 maxWidth: '250px',
               }}
             >

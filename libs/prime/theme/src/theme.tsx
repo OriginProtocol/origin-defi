@@ -339,6 +339,27 @@ export const theme = createTheme({
             -webkit-appearance: none;
             margin: 0;
           }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 400;
+            src: url(/fonts/Sailec/Sailec-Regular.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 500;
+            src: url(/fonts/Sailec/Sailec-Medium.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 700;
+            src: url(/fonts/Sailec/Sailec-Bold.otf) format('opentype');
+            font-display: swap;
+          }
         `,
     },
     MuiDialog: {

@@ -39,8 +39,7 @@ export const DashboardView = () => {
       sx={{
         maxWidth: 700,
         width: '100%',
-        marginLeft: 'auto',
-        marginRight: 'auto',
+        mx: 'auto',
       }}
     >
       <Typography variant="h5" pb={3} textAlign="center">

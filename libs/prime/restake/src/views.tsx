@@ -14,7 +14,7 @@ import type { RouteObject } from 'react-router-dom';
 export const RestakeView = () => {
   return (
     <Stack alignItems="center">
-      <Card sx={{ maxWidth: 540, width: '100%' }}>
+      <Card sx={{ maxWidth: 540, width: 1 }}>
         <Stack sx={{ p: 2, alignItems: 'center' }}>
           <Stack
             direction="row"
