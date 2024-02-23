@@ -1,5 +1,5 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { simulateContractWithTxTracker } from '@origin/shared/providers';
+import { simulateContractWithReferral } from '@origin/shared/providers';
 import { subtractSlippage, ZERO_ADDRESS } from '@origin/shared/utils';
 import { getAccount, getPublicClient, writeContract } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
@@ -111,7 +111,7 @@ const swap: Swap = async (
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const { request } = await simulateContractWithTxTracker(config, {
+  const { request } = await simulateContractWithReferral(config, {
     address: contracts.mainnet.uniswapV3Router.address,
     abi: contracts.mainnet.uniswapV3Router.abi,
     functionName: 'exactInputSingle',

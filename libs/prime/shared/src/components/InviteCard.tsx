@@ -38,7 +38,7 @@ export const InviteCard = (props: StackProps) => {
       </Typography>
       {isConnected ? (
         <ClipboardButton
-          value={hexToBase62(address)}
+          value={`${window.location.origin}#/restake/?r=${hexToBase62(address)}`}
           variant="outlined"
           sx={{
             minWidth: 160,
