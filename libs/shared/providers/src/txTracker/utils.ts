@@ -1,6 +1,6 @@
 import { simulateContract } from '@wagmi/core';
 import { mergeDeepRight } from 'ramda';
-import { toHex } from 'viem';
+import { pad, toHex } from 'viem';
 
 import type { Config, SimulateContractParameters } from '@wagmi/core';
 import type { Hex } from 'viem';
@@ -44,16 +44,17 @@ export function simulateContractWithReferral(
   opts: Omit<SimulateContractParameters, 'dataSuffix'>,
 ) {
   const referrerId = getReferrerId() ?? '';
+  const refCode = pad(toHex(referrerId), { size: 32 });
 
-  return simulateContract(
-    config,
+  return simulateContract(config, {
+    ...opts,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    mergeDeepRight(opts, { dataSuffix: toHex(referrerId) }) as any,
-  );
+    ...(referrerId.length ? ({ dataSuffix: refCode } as any) : {}),
+  });
 }
 
 export function getReferrerId() {
-  let value: string | undefined = undefined;
+  let value = undefined;
   try {
     const raw = window.localStorage.getItem(`@origin/referrer-track`);
     if (!raw) {
