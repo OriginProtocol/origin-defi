@@ -1,47 +1,37 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ReadContractParameters } from 'viem';
 
-export type PriceOption = {
+export type WagmiOption = {
   id: SupportedTokenPrice;
-  wagmi?: ReadContractParameters;
-  dependsOn?: SupportedTokenPrice[];
-  coinGeckoId?: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mapResult?: (...args: any[]) => number;
-};
-
-export type WagmiCall = {
-  type: 'wagmi';
   config: ReadContractParameters;
+  mapResult?: (args: any) => number;
+  type: 'wagmi';
 };
 
-export type CoingeckoCall = { type: 'coingecko'; config: string };
+export type RestOption = {
+  id: SupportedTokenPrice;
+  config: () => Promise<number>;
+  mapResult?: (args: any) => number;
+  type: 'rest';
+};
 
-export type PriceCall = WagmiCall | CoingeckoCall;
+export type CoingeckoOption = {
+  id: SupportedTokenPrice;
+  config: string;
+  type: 'coingecko';
+};
 
-export type SupportedTokenPrice =
-  | 'DAI_USD'
-  | 'ETH_USD'
-  | 'FRAX_USD'
-  | 'frxETH_USD'
-  | 'OETH_USD'
-  | 'OGN_USD'
-  | 'OUSD_USD'
-  | 'rETH_USD'
-  | 'sfrxETH_USD'
-  | 'stETH_USD'
-  | 'USDC_USD'
-  | 'USDT_USD'
-  | 'WETH_USD'
-  | 'wOETH_USD'
-  | 'wOUSD_USD'
-  | 'frxETH_ETH'
-  | 'rETH_ETH'
-  | 'stETH_ETH'
-  | 'wOETH_OETH'
-  | 'wOUSD_OUSD'
-  | 'sfrxETH_frxETH';
+export type DerivedOption = {
+  id: SupportedTokenPrice;
+  dependsOn?: SupportedTokenPrice[];
+  type: 'derived';
+};
 
-export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH';
+export type PriceOption =
+  | WagmiOption
+  | RestOption
+  | CoingeckoOption
+  | DerivedOption;
 
 export type SupportedToken =
   | 'DAI'
@@ -58,5 +48,8 @@ export type SupportedToken =
   | 'USDT'
   | 'WETH'
   | 'wOETH'
-  | 'wOUSD'
-  | string;
+  | 'wOUSD';
+
+export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH';
+
+export type SupportedTokenPrice = `${SupportedToken}_${Currency}`;

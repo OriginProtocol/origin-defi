@@ -4,6 +4,8 @@ import { useLocalStorageValue } from '@react-hookz/web';
 import { useSearchParams } from 'react-router-dom';
 import { keccak256, toBytes } from 'viem';
 
+import { referrerRegex } from './utils';
+
 /**
  * This hook is used to store any 4 byte hex string passed in a query param
  * named 'r' in local storage. This code is used later to track transaction
@@ -49,8 +51,6 @@ export function useTxTracker(defaultTrackId: string) {
   return null;
 }
 
-const referrerRegex = /^[0-9A-Z]{4,42}$/i;
-
 export const useReferrerTracker = (defaultReferrerId: string) => {
   const { value: storedTxReferrerId, set: setTxReferrerId } =
     useLocalStorageValue(`@origin/referrer-track`);
@@ -66,10 +66,10 @@ export const useReferrerTracker = (defaultReferrerId: string) => {
     }
 
     if (referrerId.match(referrerRegex)) {
-      console.log(`Track ID ${referrerId}`);
+      console.log(`Referrer ID ${referrerId}`);
       setTxReferrerId({ id: referrerId, timestamp: Date.now() });
     } else {
-      console.log(`Invalid Track ID ${referrerId}`);
+      console.log(`Invalid Referrer ID ${referrerId}`);
     }
 
     searchParams.delete('r');
@@ -84,20 +84,4 @@ export const useReferrerTracker = (defaultReferrerId: string) => {
   ]);
 
   return null;
-};
-
-export const getReferrerId = () => {
-  let value: string | undefined = undefined;
-  try {
-    const raw = window.localStorage.getItem(`@origin/referrer-track`);
-    if (!raw) {
-      return value;
-    }
-    const id = JSON.parse(raw).id as string;
-    if (id.match(referrerRegex)) {
-      value = id;
-    }
-  } catch {}
-
-  return value;
 };

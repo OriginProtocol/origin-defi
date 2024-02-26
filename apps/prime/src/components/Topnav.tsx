@@ -48,21 +48,11 @@ export function Topnav(props: BoxProps) {
 
   return (
     <>
-      <Box
-        sx={{
-          height: (theme) => `${theme.mixins.toolbar.height}px`,
-        }}
-      />
       <PauseBanner />
       <Box
         component="nav"
         {...props}
         sx={(theme) => ({
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: 1,
-          zIndex: theme.zIndex.appBar,
           height: `${theme.mixins.toolbar.height}px`,
           display: 'flex',
           flexDirection: 'row',
@@ -70,6 +60,9 @@ export function Topnav(props: BoxProps) {
           px: {
             xs: 1.5,
             md: 3,
+          },
+          mb: {
+            md: 4,
           },
           backgroundColor: (theme) =>
             alpha(theme.palette.background.paper, 0.6),

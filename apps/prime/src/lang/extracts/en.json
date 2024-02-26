@@ -1,4 +1,7 @@
 {
+  "+HMSZw": {
+    "defaultMessage": "Enter amount"
+  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -26,11 +29,23 @@
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
+  "0ZAmW8": {
+    "defaultMessage": "Swap with Uniswap"
+  },
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "1OYHoE": {
+    "defaultMessage": "+ primeETH XP"
+  },
+  "1RqSR8": {
+    "defaultMessage": "2x primeETH XP Boost"
+  },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+  },
+  "1VoYgy": {
+    "defaultMessage": "The yield from the underlying LSTs, calculated daily."
   },
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
@@ -50,8 +65,14 @@
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
   },
+  "4K1INe": {
+    "defaultMessage": "Your Balance"
+  },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
+  },
+  "4pFaoD": {
+    "defaultMessage": "EigenLayer Deposits Have Closed"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -101,6 +122,15 @@
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
+  "Awi257": {
+    "defaultMessage": "{amount} {symbol}"
+  },
+  "BONcjO": {
+    "defaultMessage": "Uniswap V3"
+  },
+  "CFpVX2": {
+    "defaultMessage": "1.1 primeETH XP Boost"
+  },
   "CrVbZD": {
     "defaultMessage": "Bonus multiplier"
   },
@@ -109,6 +139,9 @@
   },
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
+  },
+  "DTYtQP": {
+    "defaultMessage": "Deposits are currently closed"
   },
   "DUR59o": {
     "defaultMessage": "Total Value Locked"
@@ -125,17 +158,35 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
+  "F9pOEE": {
+    "defaultMessage": "More EigenLayer assets coming soon..."
+  },
   "G9iNne": {
     "defaultMessage": "Exchange rate:"
   },
+  "GHdek4": {
+    "defaultMessage": "Get even more primeETH XP when you invite your friends"
+  },
+  "H5+NAX": {
+    "defaultMessage": "Balance"
+  },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+  },
+  "IxGtTe": {
+    "defaultMessage": "+ EigenLayer Points"
+  },
+  "J3hdeJ": {
+    "defaultMessage": "Eigen Turbocharge"
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
+  },
+  "KN7zKn": {
+    "defaultMessage": "Error"
   },
   "KaxXiQ": {
     "defaultMessage": "Processing approval"
@@ -145,6 +196,9 @@
   },
   "LUdwbC": {
     "defaultMessage": "Restake"
+  },
+  "MLTKb6": {
+    "defaultMessage": "APY"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -179,6 +233,9 @@
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
+  "PwetLJ": {
+    "defaultMessage": "Select the asset"
+  },
   "PzlMqG": {
     "defaultMessage": "Best"
   },
@@ -199,6 +256,9 @@
   },
   "THMhv1": {
     "defaultMessage": "Go BIG!"
+  },
+  "Tf5HxU": {
+    "defaultMessage": "Follow us on social media to stay up to date on deposits."
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -223,6 +283,9 @@
   },
   "WCaf5C": {
     "defaultMessage": "Approve"
+  },
+  "XRPY5F": {
+    "defaultMessage": "Global Stats"
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
@@ -257,6 +320,9 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "dciLty": {
+    "defaultMessage": "Route:"
+  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
@@ -290,11 +356,11 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
-  "jE/EMf": {
-    "defaultMessage": "Restake LST"
-  },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
+  },
+  "l3H1EK": {
+    "defaultMessage": "Invite your friends"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -302,8 +368,17 @@
   "m/L3sK": {
     "defaultMessage": "Approving"
   },
+  "nCbhFU": {
+    "defaultMessage": "Copy Referral Link"
+  },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
+  },
+  "p556q3": {
+    "defaultMessage": "Copied"
+  },
+  "paprll": {
+    "defaultMessage": "You will receive:"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
@@ -323,8 +398,14 @@
   "tFriEi": {
     "defaultMessage": "Transaction error"
   },
-  "vclhrb": {
-    "defaultMessage": "Balance: {balance}"
+  "tQxA15": {
+    "defaultMessage": "Visit PrimeStaked on X"
+  },
+  "u8Ngfh": {
+    "defaultMessage": "1M Extra EigenLayer pts - 50 extra EL pts per ETHx minted and restaked"
+  },
+  "ugjHU2": {
+    "defaultMessage": "Select a token"
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
@@ -346,9 +427,6 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
-  },
-  "ycC07u": {
-    "defaultMessage": "primeETH Stats"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"

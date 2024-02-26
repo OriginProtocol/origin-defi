@@ -275,6 +275,9 @@
   "JyPAH1": {
     "defaultMessage": "No one voted for this choice"
   },
+  "KN7zKn": {
+    "defaultMessage": "Error"
+  },
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
@@ -577,6 +580,9 @@
   },
   "ox/9Hn": {
     "defaultMessage": "Unstake lock-up {stake}"
+  },
+  "p556q3": {
+    "defaultMessage": "Copied"
   },
   "pSYtOY": {
     "defaultMessage": "Delegate {votingPower} veOGV to {delegatee}"

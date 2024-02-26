@@ -1,4 +1,10 @@
 {
+  "+HMSZw": [
+    {
+      "type": 0,
+      "value": "Enter amount"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -53,10 +59,28 @@
       "value": "Swapped"
     }
   ],
+  "0ZAmW8": [
+    {
+      "type": 0,
+      "value": "Swap with Uniswap"
+    }
+  ],
   "0fR+fE": [
     {
       "type": 0,
       "value": "Route"
+    }
+  ],
+  "1OYHoE": [
+    {
+      "type": 0,
+      "value": "+ primeETH XP"
+    }
+  ],
+  "1RqSR8": [
+    {
+      "type": 0,
+      "value": "2x primeETH XP Boost"
     }
   ],
   "1VDppm": [
@@ -71,6 +95,12 @@
     {
       "type": 0,
       "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+    }
+  ],
+  "1VoYgy": [
+    {
+      "type": 0,
+      "value": "The yield from the underlying LSTs, calculated daily."
     }
   ],
   "1XVJUl": [
@@ -125,10 +155,22 @@
       "value": " slippage:"
     }
   ],
+  "4K1INe": [
+    {
+      "type": 0,
+      "value": "Your Balance"
+    }
+  ],
   "4OE2Tb": [
     {
       "type": 0,
       "value": "Your transaction is being processed on-chain."
+    }
+  ],
+  "4pFaoD": [
+    {
+      "type": 0,
+      "value": "EigenLayer Deposits Have Closed"
     }
   ],
   "5RMD2G": [
@@ -239,6 +281,32 @@
       "value": "lastPage"
     }
   ],
+  "Awi257": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "BONcjO": [
+    {
+      "type": 0,
+      "value": "Uniswap V3"
+    }
+  ],
+  "CFpVX2": [
+    {
+      "type": 0,
+      "value": "1.1 primeETH XP Boost"
+    }
+  ],
   "CrVbZD": [
     {
       "type": 0,
@@ -263,6 +331,12 @@
     {
       "type": 0,
       "value": " for the basket of underlying assets"
+    }
+  ],
+  "DTYtQP": [
+    {
+      "type": 0,
+      "value": "Deposits are currently closed"
     }
   ],
   "DUR59o": [
@@ -319,16 +393,46 @@
       "value": "symbolOut"
     }
   ],
+  "F9pOEE": [
+    {
+      "type": 0,
+      "value": "More EigenLayer assets coming soon..."
+    }
+  ],
   "G9iNne": [
     {
       "type": 0,
       "value": "Exchange rate:"
     }
   ],
+  "GHdek4": [
+    {
+      "type": 0,
+      "value": "Get even more primeETH XP when you invite your friends"
+    }
+  ],
+  "H5+NAX": [
+    {
+      "type": 0,
+      "value": "Balance"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+    }
+  ],
+  "IxGtTe": [
+    {
+      "type": 0,
+      "value": "+ EigenLayer Points"
+    }
+  ],
+  "J3hdeJ": [
+    {
+      "type": 0,
+      "value": "Eigen Turbocharge"
     }
   ],
   "JA3MsG": [
@@ -341,6 +445,12 @@
     {
       "type": 0,
       "value": "Gas:"
+    }
+  ],
+  "KN7zKn": [
+    {
+      "type": 0,
+      "value": "Error"
     }
   ],
   "KaxXiQ": [
@@ -359,6 +469,12 @@
     {
       "type": 0,
       "value": "Restake"
+    }
+  ],
+  "MLTKb6": [
+    {
+      "type": 0,
+      "value": "APY"
     }
   ],
   "MSTVqC": [
@@ -431,6 +547,12 @@
       "value": "Unsupported Network"
     }
   ],
+  "PwetLJ": [
+    {
+      "type": 0,
+      "value": "Select the asset"
+    }
+  ],
   "PzlMqG": [
     {
       "type": 0,
@@ -479,6 +601,12 @@
     {
       "type": 0,
       "value": "Go BIG!"
+    }
+  ],
+  "Tf5HxU": [
+    {
+      "type": 0,
+      "value": "Follow us on social media to stay up to date on deposits."
     }
   ],
   "TrKxvg": [
@@ -547,6 +675,12 @@
     {
       "type": 0,
       "value": "Approve"
+    }
+  ],
+  "XRPY5F": [
+    {
+      "type": 0,
+      "value": "Global Stats"
     }
   ],
   "XSdWHA": [
@@ -631,6 +765,12 @@
       "value": "Processing Transaction"
     }
   ],
+  "dciLty": [
+    {
+      "type": 0,
+      "value": "Route:"
+    }
+  ],
   "dtJo4Y": [
     {
       "type": 0,
@@ -705,16 +845,16 @@
       "value": "I have read and agree to the above terms"
     }
   ],
-  "jE/EMf": [
-    {
-      "type": 0,
-      "value": "Restake LST"
-    }
-  ],
   "k3YWIR": [
     {
       "type": 0,
       "value": "Max slippage"
+    }
+  ],
+  "l3H1EK": [
+    {
+      "type": 0,
+      "value": "Invite your friends"
     }
   ],
   "lozEho": [
@@ -729,10 +869,28 @@
       "value": "Approving"
     }
   ],
+  "nCbhFU": [
+    {
+      "type": 0,
+      "value": "Copy Referral Link"
+    }
+  ],
   "nc8QpJ": [
     {
       "type": 0,
       "value": "Recent Activity"
+    }
+  ],
+  "p556q3": [
+    {
+      "type": 0,
+      "value": "Copied"
+    }
+  ],
+  "paprll": [
+    {
+      "type": 0,
+      "value": "You will receive:"
     }
   ],
   "qQ/SRd": [
@@ -783,14 +941,22 @@
       "value": "Transaction error"
     }
   ],
-  "vclhrb": [
+  "tQxA15": [
     {
       "type": 0,
-      "value": "Balance: "
-    },
+      "value": "Visit PrimeStaked on X"
+    }
+  ],
+  "u8Ngfh": [
     {
-      "type": 1,
-      "value": "balance"
+      "type": 0,
+      "value": "1M Extra EigenLayer pts - 50 extra EL pts per ETHx minted and restaked"
+    }
+  ],
+  "ugjHU2": [
+    {
+      "type": 0,
+      "value": "Select a token"
     }
   ],
   "vugtF7": [
@@ -833,12 +999,6 @@
     {
       "type": 0,
       "value": "Restricted Access"
-    }
-  ],
-  "ycC07u": [
-    {
-      "type": 0,
-      "value": "primeETH Stats"
     }
   ],
   "yphS5C": [

@@ -2,9 +2,9 @@ import { defineMessage } from 'react-intl';
 
 import { RestakeView, StakeView, UnstakeView, WithdrawView } from './views';
 
-import type { RouteObject } from 'react-router-dom';
+import type { NonIndexRouteObject } from 'react-router-dom';
 
-export const restakeRoute: RouteObject = {
+export const restakeRoute: NonIndexRouteObject = {
   path: '/restake',
   Component: RestakeView,
   handle: { label: defineMessage({ defaultMessage: 'Restake' }) },

@@ -695,6 +695,12 @@
       "value": "No one voted for this choice"
     }
   ],
+  "KN7zKn": [
+    {
+      "type": 0,
+      "value": "Error"
+    }
+  ],
   "KXTAK8": [
     {
       "type": 0,
@@ -1515,6 +1521,12 @@
     {
       "type": 1,
       "value": "stake"
+    }
+  ],
+  "p556q3": [
+    {
+      "type": 0,
+      "value": "Copied"
     }
   ],
   "pSYtOY": [

@@ -9,7 +9,7 @@ export const PauseBanner = () => {
   return (
     <Stack
       sx={{
-        height: { xs: 220, md: 120 },
+        height: { xs: 220, md: 118 },
         px: 6,
         py: 4,
         backgroundColor: 'common.black',

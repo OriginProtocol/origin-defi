@@ -115,6 +115,21 @@ export const Swapper = ({
           content: <SwapNotification {...state} status="success" />,
         });
       }}
+      onSwapReject={() => {
+        pushNotification({
+          content: (
+            <NotificationSnack
+              icon={<SeverityIcon severity="warning" />}
+              title={intl.formatMessage({
+                defaultMessage: 'Operation Cancelled',
+              })}
+              subtitle={intl.formatMessage({
+                defaultMessage: 'User rejected operation',
+              })}
+            />
+          ),
+        });
+      }}
       onSwapFailure={(state) => {
         const { error } = state;
         pushNotification({
@@ -138,7 +153,7 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes'>) {
   const intl = useIntl();
-  const { chain, isConnected } = useAccount();
+  const { isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [
     {
@@ -185,11 +200,12 @@ function SwapperWrapped({
   const route = swapActions[availableRoute?.action]?.routeLabel
     ? intl.formatMessage(swapActions[availableRoute?.action]?.routeLabel)
     : null;
-
   const isPaused = availableRoute.action === 'restake';
+  const boost = availableRoute?.meta?.boost;
 
   const needsApproval =
     isConnected &&
+    !isPaused &&
     amountIn > 0n &&
     !isBalTokenInLoading &&
     (balTokenIn as unknown as bigint) >= amountIn &&
@@ -227,8 +243,6 @@ function SwapperWrapped({
     isSwapWaitingForSignature ||
     amountIn > (balTokenIn as unknown as bigint) ||
     amountIn === 0n;
-
-  const boost = availableRoute?.meta?.boost;
 
   return (
     <Stack {...rest}>

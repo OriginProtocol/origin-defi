@@ -1,5 +1,6 @@
 import { simulateContract } from '@wagmi/core';
 import { mergeDeepRight } from 'ramda';
+import { pad, toHex } from 'viem';
 
 import type { Config, SimulateContractParameters } from '@wagmi/core';
 import type { Hex } from 'viem';
@@ -8,6 +9,8 @@ interface TxTrackerValue {
   id: string;
   timestamp: number;
 }
+
+export const referrerRegex = /^[0-9A-Z]{4,42}$/i;
 
 export function simulateContractWithTxTracker(
   config: Config,
@@ -28,12 +31,40 @@ function getDataSuffix() {
       if (rawValue) {
         value = JSON.parse(rawValue) as TxTrackerValue;
       }
-    } catch (e) {
-      /* Ignore */
-    }
+    } catch {}
   }
 
   return value?.id.match(/^[0-9a-f]{8}$/)
     ? (`0x${value.id}` as Hex)
     : undefined;
+}
+
+export function simulateContractWithReferral(
+  config: Config,
+  opts: Omit<SimulateContractParameters, 'dataSuffix'>,
+) {
+  const referrerId = getReferrerId() ?? '';
+  const refCode = pad(toHex(referrerId), { size: 32 });
+
+  return simulateContract(config, {
+    ...opts,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ...(referrerId.length ? ({ dataSuffix: refCode } as any) : {}),
+  });
+}
+
+export function getReferrerId() {
+  let value = undefined;
+  try {
+    const raw = window.localStorage.getItem(`@origin/referrer-track`);
+    if (!raw) {
+      return value;
+    }
+    const id = JSON.parse(raw).id as string;
+    if (id.match(referrerRegex)) {
+      value = id;
+    }
+  } catch {}
+
+  return value;
 }
