@@ -19,7 +19,10 @@ export const useAssetPrice = (asset: Token) => {
       const publicClient = getPublicClient(config);
       let assetEstimate = 1n;
 
-      if (isNative && publicClient) {
+      if (
+        (isNative || asset.symbol === tokens.mainnet.WETH.symbol) &&
+        publicClient
+      ) {
         assetEstimate = (
           await publicClient.simulateContract({
             address: contracts.mainnet.uniswapV3Quoter.address,
