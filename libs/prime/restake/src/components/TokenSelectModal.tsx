@@ -1,20 +1,21 @@
 import {
   Box,
+  CircularProgress,
   Dialog,
   DialogContent,
   DialogTitle,
   MenuItem,
   MenuList,
-  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { BoostChip } from '@origin/prime/shared';
 import { TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { FaCheckRegular } from '@origin/shared/icons';
-import { useFormat, useWatchBalance } from '@origin/shared/providers';
+import { useFormat, useWatchBalances } from '@origin/shared/providers';
+import { descend, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { formatUnits } from 'viem';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -34,6 +35,12 @@ export const TokenSelectModal = ({
   ...rest
 }: TokenSelectModalProps) => {
   const intl = useIntl();
+  const { data: balances, isLoading: isBalancesLoading } =
+    useWatchBalances(tokens);
+
+  const sortedTokens = sortWith<TokenOption>([
+    descend((t) => +formatUnits(balances?.[t.symbol] ?? 0n, t.decimals)),
+  ])(tokens);
 
   return (
     <Dialog maxWidth="sm" fullWidth {...rest} onClose={onClose}>
@@ -41,19 +48,26 @@ export const TokenSelectModal = ({
         {intl.formatMessage({ defaultMessage: 'Select a token' })}
       </DialogTitle>
       <MenuList>
-        {tokens.map((token, i) => (
-          <TokenListItem
-            key={`token-${token.address || 'eth'}-${i}`}
-            token={token}
-            onClick={() => {
-              onClose?.({}, 'backdropClick');
-              onSelectToken(token);
-            }}
-            sx={{
-              opacity: token.isSwappable ? 1 : 0.5,
-            }}
-          />
-        ))}
+        {isBalancesLoading ? (
+          <Stack justifyContent="center" alignItems="center" p={3}>
+            <CircularProgress size={24} />
+          </Stack>
+        ) : (
+          sortedTokens.map((token, i) => (
+            <TokenListItem
+              key={`token-${token.address || 'eth'}-${i}`}
+              token={token}
+              balance={balances?.[token.symbol] ?? 0n}
+              onClick={() => {
+                onClose?.({}, 'backdropClick');
+                onSelectToken(token);
+              }}
+              sx={{
+                opacity: token.isSwappable ? 1 : 0.5,
+              }}
+            />
+          ))
+        )}
       </MenuList>
       <DialogContent>
         <Typography fontWeight="medium">
@@ -68,19 +82,20 @@ export const TokenSelectModal = ({
 
 type TokenListItemProps = {
   token: TokenOption<Meta>;
+  balance: bigint;
 } & MenuItemProps;
 
-function TokenListItem({ token, ...rest }: TokenListItemProps) {
+function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
   const { formatAmount } = useFormat();
-  const { address } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    address,
-    token: token.address,
-  });
 
   return (
     <MenuItem
       {...rest}
+      disabled={
+        ![tokens.mainnet.ETH.symbol, tokens.mainnet.WETH.symbol].includes(
+          token.symbol as any,
+        )
+      }
       sx={{
         display: 'flex',
         px: 3,
@@ -104,7 +119,6 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             <Typography fontWeight="medium">{token?.name}</Typography>
             <Typography color="text.secondary">{token.symbol}</Typography>
           </Stack>
-          {token?.meta?.boost && <BoostChip boost={token.meta.boost} />}
         </Stack>
       </Stack>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -115,11 +129,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         )}
         <Box sx={{ textAlign: 'right' }}>
           <Typography fontWeight={500}>
-            {isBalanceLoading ? (
-              <Skeleton width={30} />
-            ) : (
-              formatAmount(balance, token?.decimals)
-            )}
+            {formatAmount(balance, token?.decimals)}
           </Typography>
         </Box>
       </Stack>
