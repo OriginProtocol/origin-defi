@@ -26,7 +26,6 @@ export const assets = [
   tokens.mainnet.sfrxETH,
   tokens.mainnet.swETH,
   tokens.mainnet.rETH,
-  tokens.mainnet.WETH,
 ];
 
 export const AssetDepositedCard = (props: CardProps) => {
