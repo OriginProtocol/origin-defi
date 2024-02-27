@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { FaCheckRegular } from '@origin/shared/icons';
 import { useFormat, useWatchBalances } from '@origin/shared/providers';
 import { ascend, descend, sortWith } from 'ramda';
@@ -39,6 +38,7 @@ export const TokenSelectModal = ({
     useWatchBalances(tokens);
 
   const sortedTokens = sortWith<TokenOption>([
+    ascend((t) => !['ETH', 'WETH'].includes(t.symbol)),
     descend((t) => +formatUnits(balances?.[t.symbol] ?? 0n, t.decimals)),
     descend((t) => t.symbol === 'OETH'),
     ascend((t) => t.name ?? ''),
@@ -60,6 +60,7 @@ export const TokenSelectModal = ({
               key={`token-${token.address || 'eth'}-${i}`}
               token={token}
               balance={balances?.[token.symbol] ?? 0n}
+              disabled={!['ETH', 'WETH'].includes(token.symbol)}
               onClick={() => {
                 onClose?.({}, 'backdropClick');
                 onSelectToken(token);
@@ -93,11 +94,6 @@ function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
   return (
     <MenuItem
       {...rest}
-      disabled={
-        ![tokens.mainnet.ETH.symbol, tokens.mainnet.WETH.symbol].includes(
-          token.symbol as any,
-        )
-      }
       sx={{
         display: 'flex',
         px: 3,
