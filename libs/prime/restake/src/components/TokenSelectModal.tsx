@@ -13,7 +13,7 @@ import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaCheckRegular } from '@origin/shared/icons';
 import { useFormat, useWatchBalances } from '@origin/shared/providers';
-import { descend, sortWith } from 'ramda';
+import { ascend, descend, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -40,6 +40,8 @@ export const TokenSelectModal = ({
 
   const sortedTokens = sortWith<TokenOption>([
     descend((t) => +formatUnits(balances?.[t.symbol] ?? 0n, t.decimals)),
+    descend((t) => t.symbol === 'OETH'),
+    ascend((t) => t.name ?? ''),
   ])(tokens);
 
   return (
