@@ -2,12 +2,16 @@ import { useCallback, useEffect } from 'react';
 
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
+import { useQuery } from '@tanstack/react-query';
+import { getBalance, readContracts } from '@wagmi/core';
+import { groupBy } from 'ramda';
 import { erc20Abi } from 'viem';
 import { mainnet } from 'viem/chains';
 import {
   useAccount,
   useBalance,
   useBlockNumber,
+  useConfig,
   useReadContract,
   useReadContracts,
 } from 'wagmi';
@@ -91,6 +95,73 @@ export const useWatchBalance = (config?: {
   }, [addr, blockNumber, config?.token, prev, resNative, resToken]);
 
   return isNilOrEmpty(config?.token) ? resNative : resToken;
+};
+
+export const useWatchBalances = (tokens: Token[]) => {
+  const config = useConfig();
+  const isNative = useIsNativeCurrency();
+  const { address } = useAccount();
+  const { data: blockNumber } = useBlockNumber({
+    watch: true,
+    query: { enabled: !isNilOrEmpty(tokens) },
+  });
+  const prev = usePrevious(Number(blockNumber));
+  const res = useQuery({
+    queryKey: [
+      'useWatchBalances',
+      address,
+      tokens.map((t) => t.symbol),
+      config,
+    ],
+    queryFn: async () => {
+      if (isNilOrEmpty(tokens) || !address) {
+        return null;
+      }
+
+      let res = {} as Record<string, bigint>;
+
+      const { native, others } = groupBy(
+        (t) => (isNative(t) ? 'native' : 'others'),
+        tokens,
+      );
+
+      if (native?.length === 1) {
+        try {
+          const nativeBalance = await getBalance(config, { address });
+          res = { [native[0].symbol]: nativeBalance.value };
+        } catch {}
+      }
+
+      if (others) {
+        try {
+          const bals = await readContracts(config, {
+            contracts: others?.map((t) => ({
+              address: t.address as HexAddress,
+              abi: t.abi,
+              functionName: 'balanceOf',
+              args: [address],
+            })),
+            allowFailure: true,
+          });
+          others.forEach((t, i) => {
+            if (bals[i].status === 'success' && bals[i].result) {
+              res = { ...res, [t.symbol]: bals[i].result };
+            }
+          });
+        } catch {}
+      }
+
+      return res;
+    },
+  });
+
+  useEffect(() => {
+    if (Number(blockNumber) !== prev && !isNilOrEmpty(tokens)) {
+      res?.refetch();
+    }
+  }, [blockNumber, prev, res, tokens]);
+
+  return res;
 };
 
 export const useIsNativeCurrency = () => {
