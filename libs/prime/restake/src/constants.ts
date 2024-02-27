@@ -20,6 +20,9 @@ export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'uniswap',
+    meta: {
+      boost: 'primeETH15xp',
+    },
   },
   {
     tokenIn: tokens.mainnet.OETH,
