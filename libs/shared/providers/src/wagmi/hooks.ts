@@ -145,7 +145,7 @@ export const useWatchBalances = (tokens: Token[]) => {
           });
           others.forEach((t, i) => {
             if (bals[i].status === 'success' && bals[i].result) {
-              res = { ...res, [t.symbol]: bals[i].result };
+              res = { ...res, [t.symbol]: bals[i].result as unknown as bigint };
             }
           });
         } catch {}
