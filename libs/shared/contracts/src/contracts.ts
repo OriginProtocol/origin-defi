@@ -1,3 +1,4 @@
+import { DEAD_ADDRESS } from '@origin/shared/utils';
 import { mainnet } from 'wagmi/chains';
 
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
@@ -18,6 +19,7 @@ import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
 import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
+import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
@@ -151,6 +153,14 @@ export const contracts = {
       chainId: mainnet.id,
       abi: IVaultABI,
       name: 'OUSDVault',
+    },
+    // PrimeETH
+    // TODO add address when defined on mainnet
+    PrimeETHZapper: {
+      address: DEAD_ADDRESS,
+      chainId: mainnet.id,
+      abi: PrimeETHZapperABI,
+      name: 'PrimeETHZapper',
     },
     // SushiSwap
     sushiswapRouter: {

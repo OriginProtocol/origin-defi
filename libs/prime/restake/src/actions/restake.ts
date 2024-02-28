@@ -2,10 +2,7 @@
 /* eslint-disable unused-imports/no-unused-vars */
 import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
-import {
-  getReferrerId,
-  simulateContractWithTxTracker,
-} from '@origin/shared/providers';
+import { getReferrerId } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
   subtractSlippage,
@@ -31,6 +28,7 @@ import type {
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+import type { HexAddress } from '@origin/shared/utils';
 
 const isRouteAvailable: IsRouteAvailable = async (
   config,
@@ -214,11 +212,16 @@ const swap: Swap = async (
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
-  const { request } = await simulateContractWithTxTracker(config, {
+  const { request } = await simulateContract(config, {
     address: contracts.mainnet.lrtDepositPool.address,
     abi: contracts.mainnet.lrtDepositPool.abi,
     functionName: 'depositAsset',
-    args: [tokenIn.address, amountIn, minAmountOut, referrerId],
+    args: [
+      tokenIn.address as HexAddress,
+      amountIn,
+      minAmountOut,
+      referrerId ?? '',
+    ],
   });
   const hash = await writeContract(config, request);
 
