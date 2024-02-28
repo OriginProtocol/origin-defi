@@ -1,14 +1,11 @@
 import { queryClient } from '@origin/oeth/shared';
 import { contracts } from '@origin/shared/contracts';
 import {
+  isNativeCurrency,
   simulateContractWithTxTracker,
   useCurve,
 } from '@origin/shared/providers';
-import {
-  ETH_ADDRESS_CURVE,
-  isNilOrEmpty,
-  subtractSlippage,
-} from '@origin/shared/utils';
+import { ETH_ADDRESS_CURVE, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -78,6 +75,8 @@ const estimateGas: EstimateGas = async (
     staleTime: Infinity,
   });
 
+  const isTokenInNative = isNativeCurrency(config, tokenIn);
+
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OETHCurvePool.address,
@@ -97,7 +96,7 @@ const estimateGas: EstimateGas = async (
         amountIn,
         minAmountOut,
       ],
-      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
+      ...(isTokenInNative && { value: amountIn }),
       account: address ?? ETH_ADDRESS_CURVE,
     });
   } catch (e) {
@@ -197,6 +196,8 @@ const swap: Swap = async (
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
+  const isTokenInNative = isNativeCurrency(config, tokenIn);
+
   const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OETHCurvePool.address,
     abi: contracts.mainnet.OETHCurvePool.abi,
@@ -216,7 +217,7 @@ const swap: Swap = async (
       minAmountOut,
     ],
     gas,
-    ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
+    ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);
 

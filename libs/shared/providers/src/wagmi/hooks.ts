@@ -6,7 +6,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getBalance, readContracts } from '@wagmi/core';
 import { groupBy } from 'ramda';
 import { erc20Abi } from 'viem';
-import { mainnet } from 'viem/chains';
 import {
   useAccount,
   useBalance,
@@ -15,6 +14,8 @@ import {
   useReadContract,
   useReadContracts,
 } from 'wagmi';
+
+import { isNativeCurrency } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
@@ -165,19 +166,10 @@ export const useWatchBalances = (tokens: Token[]) => {
 };
 
 export const useIsNativeCurrency = () => {
-  const { chain } = useAccount();
+  const config = useConfig();
 
   return useCallback(
-    (token: Token | undefined | null) => {
-      if (!token?.symbol) {
-        return false;
-      }
-
-      return (
-        token.symbol ===
-        (chain?.nativeCurrency.symbol ?? mainnet.nativeCurrency.symbol)
-      );
-    },
-    [chain?.nativeCurrency.symbol],
+    (token: Token | undefined | null) => isNativeCurrency(config, token),
+    [config],
   );
 };
