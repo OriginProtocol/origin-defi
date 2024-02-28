@@ -136,6 +136,7 @@ const estimateRoute: EstimateRoute = async (
       tokenIn,
       tokenOut,
       amountIn,
+      slippage,
     }),
     allowance(config, {
       tokenIn,

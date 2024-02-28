@@ -26,7 +26,7 @@ export type IsRouteAvailable = (
 
 export type EstimateAmount = (
   config: Config,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'slippage'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
