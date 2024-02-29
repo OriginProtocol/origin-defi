@@ -11,10 +11,10 @@
       "value": "max"
     }
   ],
-  "+WtZxF": [
+  "+eqQvs": [
     {
       "type": 0,
-      "value": "Earn an XP multiplier for larger deposits for the duration of the campaign"
+      "value": "for a limited time"
     }
   ],
   "+vVZ/G": [
@@ -33,12 +33,6 @@
     {
       "type": 0,
       "value": "Clear"
-    }
-  ],
-  "/NeKGm": [
-    {
-      "type": 0,
-      "value": "ETH amount"
     }
   ],
   "/xvR4F": [
@@ -141,6 +135,18 @@
       "value": "Unstake"
     }
   ],
+  "3pRuZG": [
+    {
+      "type": 0,
+      "value": "Start earning now"
+    }
+  ],
+  "3uuR4F": [
+    {
+      "type": 0,
+      "value": "1.5 primeETH XP Boost"
+    }
+  ],
   "45EvZ3": [
     {
       "type": 0,
@@ -165,12 +171,6 @@
     {
       "type": 0,
       "value": "Your transaction is being processed on-chain."
-    }
-  ],
-  "4pFaoD": [
-    {
-      "type": 0,
-      "value": "EigenLayer Deposits Have Closed"
     }
   ],
   "5RMD2G": [
@@ -213,12 +213,6 @@
     {
       "type": 0,
       "value": "Redeemed"
-    }
-  ],
-  "7sJjbC": [
-    {
-      "type": 0,
-      "value": "Deposit day"
     }
   ],
   "8XZjyW": [
@@ -295,6 +289,12 @@
       "value": "symbol"
     }
   ],
+  "B+gCQ4": [
+    {
+      "type": 0,
+      "value": "EigenLayer Points Bonus"
+    }
+  ],
   "BONcjO": [
     {
       "type": 0,
@@ -305,12 +305,6 @@
     {
       "type": 0,
       "value": "1.1 primeETH XP Boost"
-    }
-  ],
-  "CrVbZD": [
-    {
-      "type": 0,
-      "value": "Bonus multiplier"
     }
   ],
   "DKaqyQ": [
@@ -399,6 +393,12 @@
       "value": "More EigenLayer assets coming soon..."
     }
   ],
+  "FNgMBo": [
+    {
+      "type": 0,
+      "value": "Swap with Zapper"
+    }
+  ],
   "G9iNne": [
     {
       "type": 0,
@@ -421,6 +421,12 @@
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+    }
+  ],
+  "I0B0+W": [
+    {
+      "type": 0,
+      "value": "Zapper"
     }
   ],
   "IxGtTe": [
@@ -471,6 +477,12 @@
       "value": "Restake"
     }
   ],
+  "LVlEJT": [
+    {
+      "type": 0,
+      "value": "1.5X XP Bonus"
+    }
+  ],
   "MLTKb6": [
     {
       "type": 0,
@@ -493,12 +505,6 @@
     {
       "type": 0,
       "value": "Still cooking..."
-    }
-  ],
-  "MzEf/Z": [
-    {
-      "type": 0,
-      "value": "*2x bonus applies only to primeETH minted with OETH and held in the same wallet"
     }
   ],
   "NXFAgE": [
@@ -545,6 +551,12 @@
     {
       "type": 0,
       "value": "Unsupported Network"
+    }
+  ],
+  "Pspetf": [
+    {
+      "type": 0,
+      "value": "Add primeETH"
     }
   ],
   "PwetLJ": [
@@ -595,18 +607,6 @@
     {
       "type": 0,
       "value": "TVL"
-    }
-  ],
-  "THMhv1": [
-    {
-      "type": 0,
-      "value": "Go BIG!"
-    }
-  ],
-  "Tf5HxU": [
-    {
-      "type": 0,
-      "value": "Follow us on social media to stay up to date on deposits."
     }
   ],
   "TrKxvg": [
@@ -677,6 +677,12 @@
       "value": "Approve"
     }
   ],
+  "Wt2imN": [
+    {
+      "type": 0,
+      "value": "Native ETH Restaking is Live!"
+    }
+  ],
   "XRPY5F": [
     {
       "type": 0,
@@ -713,28 +719,6 @@
       "value": "New transaction"
     }
   ],
-  "aO+vIL": [
-    {
-      "type": 0,
-      "value": "Deposit with OETH and earn"
-    },
-    {
-      "children": [
-      ],
-      "type": 8,
-      "value": "br"
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "2X REWARDS*"
-        }
-      ],
-      "type": 8,
-      "value": "strong"
-    }
-  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -757,6 +741,12 @@
     {
       "type": 0,
       "value": "Connect Wallet"
+    }
+  ],
+  "cqBJ3O": [
+    {
+      "type": 0,
+      "value": "Up to 1,000,000 EL points distributed to early ETH depositors"
     }
   ],
   "dUJwm/": [
@@ -809,12 +799,6 @@
       "value": "sell primeETH on Uniswap."
     }
   ],
-  "hRhk8d": [
-    {
-      "type": 0,
-      "value": "Early depositers will earn an XP multiplier on their deposit"
-    }
-  ],
   "hWyxI7": [
     {
       "type": 0,
@@ -837,6 +821,12 @@
     {
       "type": 0,
       "value": "Error while estimating"
+    }
+  ],
+  "iMePpi": [
+    {
+      "type": 0,
+      "value": "Earn Boosted EigenLayer points and maximize your XP"
     }
   ],
   "iaS0YY": [
@@ -977,12 +967,6 @@
       "value": "Error while redeeming"
     }
   ],
-  "wOIoAM": [
-    {
-      "type": 0,
-      "value": "Be early!"
-    }
-  ],
   "wqlXwW": [
     {
       "type": 0,
@@ -993,6 +977,12 @@
     {
       "type": 0,
       "value": "Your transaction may be frontrun"
+    }
+  ],
+  "xiRpug": [
+    {
+      "type": 0,
+      "value": "Point boost are activated during certain periods."
     }
   ],
   "xwfunk": [
