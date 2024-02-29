@@ -34,7 +34,6 @@ import {
 import {
   AddressLabel,
   OpenAccountModalButton,
-  useFormat,
   useWatchBalance,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -234,7 +233,7 @@ const NavLink = ({ route, onLinkClick }: NavLinkProps) => {
 };
 
 const PointsBadges = (props: StackProps) => {
-  const { formatBalance, formatAmount } = useFormat();
+  const intl = useIntl();
   const { data: points, isLoading: isPointsLoading } = usePoints();
 
   return (
@@ -245,19 +244,28 @@ const PointsBadges = (props: StackProps) => {
           sx={{ width: 28, height: 28 }}
         />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
-          {formatBalance(points?.primePoints)}
+          {intl.formatNumber(+formatUnits(points?.primePoints ?? 0n, 18), {
+            maximumFractionDigits: 3,
+            roundingMode: 'floor',
+          })}
         </LoadingLabel>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={0.5}>
         <PrimePoints sx={{ width: 28, height: 28 }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
-          {formatAmount(points?.xpPoints)}
+          {intl.formatNumber(+formatUnits(points?.xpPoints ?? 0n, 18), {
+            maximumFractionDigits: 0,
+            roundingMode: 'floor',
+          })}
         </LoadingLabel>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={0.5}>
         <EigenPoints sx={{ width: 28, height: 28 }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
-          {formatAmount(points?.elPoints)}
+          {intl.formatNumber(+formatUnits(points?.elPoints ?? 0n, 18), {
+            maximumFractionDigits: 2,
+            roundingMode: 'floor',
+          })}
         </LoadingLabel>
       </Stack>
     </Stack>
