@@ -78,7 +78,7 @@ export const AdCards = (props: StackProps) => {
       }),
       subtitle: intl.formatMessage({ defaultMessage: 'for a limited time' }),
       tooltip: (
-        <Typography>
+        <Typography variant="body2">
           {intl.formatMessage({
             defaultMessage:
               'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST.',
@@ -96,7 +96,7 @@ export const AdCards = (props: StackProps) => {
           'Up to 1,000,000 EL points distributed to early ETH depositors',
       }),
       tooltip: (
-        <Typography>
+        <Typography variant="body2">
           {intl.formatMessage(
             {
               defaultMessage:
@@ -105,6 +105,7 @@ export const AdCards = (props: StackProps) => {
             {
               link: (
                 <Link
+                  color="primary.main"
                   href=""
                   target="_blank"
                   rel="noopener noreferrer nofollow"
