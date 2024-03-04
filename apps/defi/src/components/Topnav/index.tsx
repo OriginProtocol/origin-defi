@@ -124,6 +124,7 @@ export const Topnav = () => {
               anchor={accountModalAnchor}
               setAnchor={setAccountModalAnchor}
               balanceTokens={[
+                tokens.mainnet.ETH,
                 tokens.mainnet.OETH,
                 tokens.mainnet.wOETH,
                 tokens.mainnet.WETH,

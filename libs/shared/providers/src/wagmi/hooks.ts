@@ -98,7 +98,7 @@ export const useWatchBalance = (config?: {
   return isNilOrEmpty(config?.token) ? resNative : resToken;
 };
 
-export const useWatchBalances = (tokens: Token[]) => {
+export const useWatchBalances = (tokens: Token[] | undefined | null) => {
   const config = useConfig();
   const isNative = useIsNativeCurrency();
   const { address } = useAccount();
@@ -111,11 +111,11 @@ export const useWatchBalances = (tokens: Token[]) => {
     queryKey: [
       'useWatchBalances',
       address,
-      tokens.map((t) => t.symbol),
+      tokens?.map((t) => t.symbol),
       config,
     ],
     queryFn: async () => {
-      if (isNilOrEmpty(tokens) || !address) {
+      if (!tokens || isNilOrEmpty(tokens) || !address) {
         return null;
       }
 

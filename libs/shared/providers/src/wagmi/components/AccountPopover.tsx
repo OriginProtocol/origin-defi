@@ -8,12 +8,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
-import { useWatchBalance, useWatchContracts } from '../hooks';
+import { useWatchBalances } from '../hooks';
 import { AddressLabel } from './AddressLabel';
 
 import type { StackProps } from '@mui/material';
@@ -30,18 +29,8 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
   const theme = useTheme();
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: eth, isLoading: ethLoading } = useWatchBalance();
-  const { data: balances, isLoading: balancesLoading } = useWatchContracts({
-    contracts: balanceTokens?.map((t) => ({
-      address: t.address,
-      abi: t.abi,
-      functionName: 'balanceOf',
-      args: [address],
-    })),
-    query: {
-      enabled: !!address,
-    },
-  });
+  const { data: balances, isLoading: balancesLoading } =
+    useWatchBalances(balanceTokens);
 
   function close() {
     setAnchor(null);
@@ -108,21 +97,13 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
         </Stack>
         <Divider />
         <Stack sx={{ px: 2, py: 3 }} gap={2}>
-          <BalanceRow
-            token={tokens.mainnet.ETH}
-            balance={+formatUnits(eth ?? 0n, 18)}
-            isBalanceLoading={ethLoading}
-          />
           {!!balanceTokens &&
-            balanceTokens.map((tok, i) => (
+            balanceTokens.map((tok) => (
               <BalanceRow
                 key={tok.symbol}
                 token={tok}
                 balance={
-                  +formatUnits(
-                    (balances?.[i]?.result as unknown as bigint) ?? 0n,
-                    tok.decimals,
-                  )
+                  +formatUnits(balances?.[tok.symbol] ?? 0n, tok.decimals)
                 }
                 isBalanceLoading={balancesLoading}
               />
