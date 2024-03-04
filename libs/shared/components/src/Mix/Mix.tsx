@@ -4,15 +4,16 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { TokenIcon } from '../Icons';
 
 import type { SxProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
 interface MixProps {
-  imgSrc: string[];
+  tokens: Token[];
   size?: number;
   sx?: SxProps;
 }
 
-export function Mix({ imgSrc, size = 1.5, sx }: MixProps) {
-  if (isNilOrEmpty(imgSrc)) {
+export function Mix({ tokens, size = 1.5, sx }: MixProps) {
+  if (isNilOrEmpty(tokens)) {
     return null;
   }
 
@@ -20,16 +21,16 @@ export function Mix({ imgSrc, size = 1.5, sx }: MixProps) {
     <Stack
       direction="row"
       sx={{
-        width: `calc(${imgSrc.length * size}rem - ${
-          (size / 2.66666) * (imgSrc.length - 1)
+        width: `calc(${tokens.length * size}rem - ${
+          (size / 2.66666) * (tokens.length - 1)
         }rem)`,
         ...sx,
       }}
     >
-      {imgSrc.map((symbol, index, arr) => (
+      {tokens.map((token, index, arr) => (
         <TokenIcon
-          key={symbol}
-          symbol={symbol}
+          key={token.symbol}
+          token={token}
           sx={{
             height: `${size}rem`,
             width: `${size}rem`,

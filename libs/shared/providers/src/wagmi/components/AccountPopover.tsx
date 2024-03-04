@@ -130,7 +130,7 @@ function BalanceRow({
 
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
-      <TokenIcon symbol={token.symbol} sx={{ width: 20, height: 20 }} />
+      <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
       <Typography>
         {isBalanceLoading ? (
           <Skeleton width={38} />

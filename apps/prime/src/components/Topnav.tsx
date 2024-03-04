@@ -240,7 +240,7 @@ const PointsBadges = (props: StackProps) => {
     <Stack direction="row" alignItems="center" spacing={3} {...props}>
       <Stack direction="row" alignItems="center" spacing={0.5}>
         <TokenIcon
-          symbol={tokens.mainnet.primeETH.symbol}
+          token={tokens.mainnet.primeETH}
           sx={{ width: 28, height: 28 }}
         />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
@@ -388,7 +388,7 @@ const AccountPopoverButton = () => {
               color="secondary"
             >
               <TokenIcon
-                symbol={tokens.mainnet.primeETH.symbol}
+                token={tokens.mainnet.primeETH}
                 sx={{ fontSize: 20, mr: 1 }}
               />
               {intl.formatMessage({
@@ -427,7 +427,7 @@ function BalanceRow({
 
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
-      <TokenIcon symbol={token.symbol} sx={{ width: 20, height: 20 }} />
+      <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
       <Typography>
         {isBalanceLoading ? (
           <Skeleton width={38} />

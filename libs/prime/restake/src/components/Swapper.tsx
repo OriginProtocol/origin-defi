@@ -229,10 +229,7 @@ function SwapperWrapped({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <TokenIcon
-                symbol={tokenIn?.symbol}
-                sx={{ width: 34, height: 34 }}
-              />
+              <TokenIcon token={tokenIn} sx={{ width: 34, height: 34 }} />
               <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
             </Stack>
 
@@ -299,7 +296,7 @@ function SwapperWrapped({
                 >
                   {formatAmount(amountOut)}
                 </LoadingLabel>
-                <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 22 }} />
+                <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
                   {tokenOut.symbol}
                 </Typography>

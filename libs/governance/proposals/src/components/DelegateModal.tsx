@@ -82,7 +82,7 @@ export const DelegateModal = (props: DialogProps) => {
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
                 <TokenIcon
-                  symbol={tokens.mainnet.veOGV.symbol}
+                  token={tokens.mainnet.veOGV}
                   sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">

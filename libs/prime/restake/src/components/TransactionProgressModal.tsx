@@ -117,7 +117,7 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
           color="secondary"
         >
           <TokenIcon
-            symbol={tokens.mainnet.primeETH.symbol}
+            token={tokens.mainnet.primeETH}
             sx={{ fontSize: 20, mr: 1 }}
           />
           {intl.formatMessage({

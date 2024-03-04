@@ -111,7 +111,7 @@ function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
       }}
     >
       <Stack direction="row" gap={2} alignItems="center">
-        <TokenIcon symbol={token?.symbol} sx={{ width: 28, height: 28 }} />
+        <TokenIcon token={token} sx={{ width: 28, height: 28 }} />
         <Stack spacing={0.25}>
           <Stack direction="row" spacing={1} alignItems="baseline">
             <Typography fontWeight="medium">{token?.name}</Typography>

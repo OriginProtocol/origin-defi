@@ -158,7 +158,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
   return (
     <Stack spacing={1.5} px={3} py={1.5} {...rest}>
       <Stack direction="row" spacing={2} alignItems="center">
-        <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
+        <TokenIcon token={tokens.mainnet.OETH} />
         <StatusBadge status={vote?.proposal?.status} />
         {vote.proposal.type === 'snapshot' && (
           <Typography variant="body2" color="warning.main">

@@ -4,14 +4,15 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { TokenIcon } from '../Icons';
 
 import type { StackProps, TypographyProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
 type ChipProps = {
   label: string;
-  symbol?: string;
+  token?: Token;
   labelProps?: TypographyProps;
 } & StackProps;
 
-export const Chip = ({ label, symbol, labelProps, ...rest }: ChipProps) => {
+export const Chip = ({ label, token, labelProps, ...rest }: ChipProps) => {
   return (
     <Stack
       direction="row"
@@ -26,7 +27,7 @@ export const Chip = ({ label, symbol, labelProps, ...rest }: ChipProps) => {
       <Typography fontSize={12} {...labelProps}>
         {label}
       </Typography>
-      {!isNilOrEmpty(symbol) && <TokenIcon symbol={symbol} />}
+      {!isNilOrEmpty(token?.symbol) && <TokenIcon token={token} />}
     </Stack>
   );
 };

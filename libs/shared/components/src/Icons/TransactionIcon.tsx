@@ -5,6 +5,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { TokenIcon } from './TokenIcon';
 
 import type { BoxProps, SvgIconProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
 enum HistoryType {
   Received = 'Received',
@@ -15,14 +16,14 @@ enum HistoryType {
 
 export type TransactionIconProps = {
   type: HistoryType;
-  tokenSymbol: string;
-  swapTokenSymbol?: string;
+  token: Token;
+  swapToken?: Token;
 } & BoxProps;
 
 export function TransactionIcon({
   type,
-  tokenSymbol,
-  swapTokenSymbol,
+  token,
+  swapToken,
   ...rest
 }: TransactionIconProps) {
   return (
@@ -44,7 +45,7 @@ export function TransactionIcon({
         />
       ) : (
         <TokenIcon
-          symbol={tokenSymbol}
+          token={token}
           sx={{
             width: 1,
             height: 1,
@@ -58,7 +59,7 @@ export function TransactionIcon({
       ) : (
         <Swap {...subIconProps} />
       )}
-      {type === HistoryType.Swap && !isNilOrEmpty(swapTokenSymbol) && (
+      {type === HistoryType.Swap && !isNilOrEmpty(swapToken) && (
         <Box
           sx={{
             position: 'absolute',
@@ -70,7 +71,7 @@ export function TransactionIcon({
           }}
         >
           <TokenIcon
-            symbol={swapTokenSymbol}
+            token={swapToken}
             sx={{
               width: { xs: '1.375rem', md: '2rem' },
               height: { xs: '1.375rem', md: '2rem' },

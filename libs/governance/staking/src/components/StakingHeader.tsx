@@ -174,7 +174,7 @@ export const StakingHeader = () => {
                   value={
                     <Stack direction="row" alignItems="center" spacing={0.75}>
                       <TokenIcon
-                        symbol={tokens.mainnet.OGV.symbol}
+                        token={tokens.mainnet.OGV}
                         sx={{ width: 20 }}
                       />
                       <LoadingLabel
@@ -202,7 +202,7 @@ export const StakingHeader = () => {
                   labelProps={{ fontSize: 14 }}
                   value={
                     <Stack direction="row" alignItems="center" spacing={0.75}>
-                      <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
+                      <TokenIcon token={tokens.mainnet.OGV} />
                       <LoadingLabel
                         variant="h3"
                         sWidth={80}
@@ -265,7 +265,7 @@ export const StakingHeader = () => {
                 labelProps={{ fontSize: 14 }}
                 value={
                   <Stack direction="row" alignItems="center" spacing={0.75}>
-                    <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
+                    <TokenIcon token={tokens.mainnet.OGV} />
                     <LoadingLabel
                       variant="h3"
                       sWidth={80}
@@ -315,7 +315,7 @@ export const StakingHeader = () => {
                 value={
                   <Stack direction="row" spacing={0.75} alignItems="flex-start">
                     <TokenIcon
-                      symbol={tokens.mainnet.veOGV.symbol}
+                      token={tokens.mainnet.veOGV}
                       sx={{ transform: 'translateY(4px)' }}
                     />
                     <Stack>

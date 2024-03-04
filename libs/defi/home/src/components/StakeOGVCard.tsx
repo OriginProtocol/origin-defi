@@ -9,7 +9,7 @@ import type { StackProps } from '@mui/material';
 const tags = [
   {
     label: defineMessage({ defaultMessage: 'Ethereum network' }),
-    symbol: tokens.mainnet.ETH.symbol,
+    token: tokens.mainnet.ETH,
   },
   {
     label: defineMessage({ defaultMessage: 'Governance' }),
@@ -54,7 +54,7 @@ export const StakeOGVCard = (props: StackProps) => {
               <Chip
                 key={intl.formatMessage(tag.label)}
                 label={intl.formatMessage(tag.label)}
-                symbol={tag.symbol}
+                token={tag.token}
                 borderColor="grey.200"
                 labelProps={{ noWrap: true }}
               />
@@ -114,7 +114,7 @@ export const StakeOGVCard = (props: StackProps) => {
         >
           <Stack justifyContent="center" alignItems="center">
             <TokenIcon
-              symbol={tokens.mainnet.OGV.symbol}
+              token={tokens.mainnet.OGV}
               sx={{
                 zIndex: 1,
                 width: { xs: 160, md: 216 },

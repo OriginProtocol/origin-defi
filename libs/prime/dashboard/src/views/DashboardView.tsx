@@ -55,7 +55,7 @@ export const DashboardView = () => {
         <Grid2 {...gridContainerProps}>
           <Grid2 {...gridItemProps}>
             <TokenIcon
-              symbol={tokens.mainnet.primeETH.symbol}
+              token={tokens.mainnet.primeETH}
               sx={{ width: 48, height: 48 }}
             />
           </Grid2>

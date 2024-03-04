@@ -1,6 +1,7 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -28,7 +29,7 @@ export const PauseBanner = () => {
           }}
         >
           <TokenIcon
-            symbol="ETH"
+            token={tokens.mainnet.ETH}
             sx={{ width: { xs: 32, md: 48 }, height: { xs: 36, md: 54 } }}
           />
         </Grid2>

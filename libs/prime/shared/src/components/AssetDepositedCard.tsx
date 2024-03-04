@@ -51,7 +51,7 @@ export const AssetDepositedCard = (props: CardProps) => {
             <Grid2 key={a.symbol} xs={6}>
               <Stack spacing={0.5}>
                 <Stack direction="row" gap={0.5} alignItems="center">
-                  <TokenIcon symbol={a.symbol} sx={{ width: 20, height: 20 }} />
+                  <TokenIcon token={a} sx={{ width: 20, height: 20 }} />
                   <Typography fontWeight="medium" color="text.secondary">
                     {a.symbol}
                   </Typography>

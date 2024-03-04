@@ -171,7 +171,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         <Grid2 xs={12} sm={8}>
           <Stack spacing={1.5}>
             <Stack direction="row" spacing={2}>
-              <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
+              <TokenIcon token={tokens.mainnet.OETH} />
               <StatusBadge status={proposal?.status} />
               {proposal.type === 'snapshot' ? (
                 <Stack

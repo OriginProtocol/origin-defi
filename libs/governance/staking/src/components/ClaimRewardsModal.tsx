@@ -67,7 +67,7 @@ export const ClaimRewardsModal = (props: DialogProps) => {
               </LoadingLabel>
               <Stack direction="row" alignItems="baseline">
                 <TokenIcon
-                  symbol={tokens.mainnet.OGV.symbol}
+                  token={tokens.mainnet.OGV}
                   sx={{ width: 30, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">
