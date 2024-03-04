@@ -73,6 +73,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         isApprovalLoading: false,
         isSwapLoading: false,
         debounceTime: debounceTime ?? 800,
+        status: 'idle',
         trackEvent,
         onInputAmountChange,
         onInputTokenChange,
@@ -103,6 +104,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               isApprovalLoading: false,
               isSwapLoading: false,
               isApprovalWaitingForSignature: false,
+              status: 'idle',
             }));
             state?.onInputAmountChange?.({ ...state, amountIn: 0n });
 
@@ -198,6 +200,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             selectedSwapRoute: sortedRoutes[0],
             amountOut: sortedRoutes?.[0]?.estimatedAmount ?? 0n,
             isSwapRoutesLoading: false,
+            status: 'idle',
           }));
 
           trackEvent?.({

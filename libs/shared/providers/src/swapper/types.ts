@@ -103,6 +103,15 @@ export type EstimatedSwapRoute = {
   approvalGas: bigint;
 } & SwapRoute;
 
+export type SwapStatus =
+  | 'idle'
+  | 'swapRoutesLoading'
+  | 'waitingForSignature'
+  | 'waitingForTransaction'
+  | 'transactionSuccess'
+  | 'transactionRejected'
+  | 'transactionFailure';
+
 export type SwapState = {
   swapActions: SwapActions;
   swapRoutes: SwapRoute[];
@@ -118,6 +127,7 @@ export type SwapState = {
   isApprovalWaitingForSignature: boolean;
   isSwapLoading: boolean;
   debounceTime: number;
+  status: SwapStatus;
   trackEvent?: (event: SwapTrackEvent) => void;
   onInputAmountChange?: (state: SwapState) => void;
   onInputTokenChange?: (state: SwapState) => void;
