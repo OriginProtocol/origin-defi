@@ -1,4 +1,4 @@
-import { Card, Stack, Typography } from '@mui/material';
+import { Card, Link, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
 import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -80,7 +80,8 @@ export const AdCards = (props: StackProps) => {
       tooltip: (
         <Typography>
           {intl.formatMessage({
-            defaultMessage: 'Point boost are activated during certain periods.',
+            defaultMessage:
+              'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST.',
           })}
         </Typography>
       ),
@@ -96,9 +97,23 @@ export const AdCards = (props: StackProps) => {
       }),
       tooltip: (
         <Typography>
-          {intl.formatMessage({
-            defaultMessage: 'Start earning now',
-          })}
+          {intl.formatMessage(
+            {
+              defaultMessage:
+                'Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}',
+            },
+            {
+              link: (
+                <Link
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  {intl.formatMessage({ defaultMessage: 'Learn More.' })}
+                </Link>
+              ),
+            },
+          )}
         </Typography>
       ),
     },
