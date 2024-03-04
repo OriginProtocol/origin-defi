@@ -1,4 +1,7 @@
 {
+  "+7wtzY": {
+    "defaultMessage": "Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}"
+  },
   "+HMSZw": {
     "defaultMessage": "Enter amount"
   },
@@ -53,14 +56,14 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "20X0BC": {
+    "defaultMessage": "Transaction Cancelled"
+  },
   "2Gox/R": {
     "defaultMessage": "EigenLayer Points"
   },
   "3fTTLv": {
     "defaultMessage": "Unstake"
-  },
-  "3pRuZG": {
-    "defaultMessage": "Start earning now"
   },
   "3uuR4F": {
     "defaultMessage": "1.5 primeETH XP Boost"
@@ -161,6 +164,9 @@
   "FNgMBo": {
     "defaultMessage": "Swap with Zapper"
   },
+  "FcLgSc": {
+    "defaultMessage": "Learn More."
+  },
   "G9iNne": {
     "defaultMessage": "Exchange rate:"
   },
@@ -188,6 +194,9 @@
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
+  "KMWJ3D": {
+    "defaultMessage": "Transaction Complete"
+  },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
@@ -196,6 +205,9 @@
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
+  },
+  "L14L9A": {
+    "defaultMessage": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST."
   },
   "LUdwbC": {
     "defaultMessage": "Restake"
@@ -251,6 +263,9 @@
   "R0R6sx": {
     "defaultMessage": "You can always {link}"
   },
+  "Rt3X+n": {
+    "defaultMessage": "Transaction Failure"
+  },
   "S45aoc": {
     "defaultMessage": "First"
   },
@@ -295,6 +310,9 @@
   },
   "ZGsb9H": {
     "defaultMessage": "Assets Deposited"
+  },
+  "ZdCdo5": {
+    "defaultMessage": "Last updated: {date}"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -425,9 +443,6 @@
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"
   },
-  "xiRpug": {
-    "defaultMessage": "Point boost are activated during certain periods."
-  },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
@@ -436,6 +451,9 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
+  },
+  "zO5VTT": {
+    "defaultMessage": "Transaction in progress"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

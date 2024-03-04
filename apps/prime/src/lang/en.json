@@ -1,4 +1,14 @@
 {
+  "+7wtzY": [
+    {
+      "type": 0,
+      "value": "Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. "
+    },
+    {
+      "type": 1,
+      "value": "link"
+    }
+  ],
   "+HMSZw": [
     {
       "type": 0,
@@ -123,6 +133,12 @@
       "value": "Return to Home Page"
     }
   ],
+  "20X0BC": [
+    {
+      "type": 0,
+      "value": "Transaction Cancelled"
+    }
+  ],
   "2Gox/R": [
     {
       "type": 0,
@@ -133,12 +149,6 @@
     {
       "type": 0,
       "value": "Unstake"
-    }
-  ],
-  "3pRuZG": [
-    {
-      "type": 0,
-      "value": "Start earning now"
     }
   ],
   "3uuR4F": [
@@ -399,6 +409,12 @@
       "value": "Swap with Zapper"
     }
   ],
+  "FcLgSc": [
+    {
+      "type": 0,
+      "value": "Learn More."
+    }
+  ],
   "G9iNne": [
     {
       "type": 0,
@@ -453,6 +469,12 @@
       "value": "Gas:"
     }
   ],
+  "KMWJ3D": [
+    {
+      "type": 0,
+      "value": "Transaction Complete"
+    }
+  ],
   "KN7zKn": [
     {
       "type": 0,
@@ -469,6 +491,12 @@
     {
       "type": 0,
       "value": "Sorry, we can't seem to find that page"
+    }
+  ],
+  "L14L9A": [
+    {
+      "type": 0,
+      "value": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST."
     }
   ],
   "LUdwbC": [
@@ -591,6 +619,12 @@
       "value": "link"
     }
   ],
+  "Rt3X+n": [
+    {
+      "type": 0,
+      "value": "Transaction Failure"
+    }
+  ],
   "S45aoc": [
     {
       "type": 0,
@@ -699,6 +733,16 @@
     {
       "type": 0,
       "value": "Assets Deposited"
+    }
+  ],
+  "ZdCdo5": [
+    {
+      "type": 0,
+      "value": "Last updated: "
+    },
+    {
+      "type": 1,
+      "value": "date"
     }
   ],
   "ZmLuI/": [
@@ -979,12 +1023,6 @@
       "value": "Your transaction may be frontrun"
     }
   ],
-  "xiRpug": [
-    {
-      "type": 0,
-      "value": "Point boost are activated during certain periods."
-    }
-  ],
   "xwfunk": [
     {
       "type": 0,
@@ -1001,6 +1039,12 @@
     {
       "type": 0,
       "value": "Error while swapping"
+    }
+  ],
+  "zO5VTT": [
+    {
+      "type": 0,
+      "value": "Transaction in progress"
     }
   ],
   "zmWQIG": [
