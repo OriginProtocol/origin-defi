@@ -1,6 +1,8 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { EigenLogo, FaArrowUpRightRegular } from '@origin/shared/icons';
+import { TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
+import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 export const PauseBanner = () => {
@@ -20,40 +22,51 @@ export const PauseBanner = () => {
         <Grid2
           xs={12}
           md={1}
-          sx={{ display: 'flex', justifyContent: 'center' }}
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
-          <EigenLogo
+          <TokenIcon
+            token={tokens.mainnet.ETH}
             sx={{ width: { xs: 32, md: 48 }, height: { xs: 36, md: 54 } }}
           />
         </Grid2>
-        <Grid2 xs={12} md={7}>
-          <Stack>
+        <Grid2 xs={12} md={8}>
+          <Stack
+            sx={{
+              display: 'flex',
+              flexDirection: { xs: 'column', lg: 'row' },
+              justifyContent: { xs: 'center', lg: 'flex-start' },
+              alignItems: 'center',
+              gap: { xs: 1, lg: 4 },
+              height: 1,
+            }}
+          >
             <Typography
-              fontSize={{ xs: 16, md: 20 }}
+              fontSize={{ xs: 20, md: 24 }}
               fontWeight="medium"
-              textAlign={{ xs: 'center', md: 'start' }}
+              noWrap
             >
               {intl.formatMessage({
-                defaultMessage: 'EigenLayer Deposits Have Closed',
+                defaultMessage: 'Native ETH Restaking is Live!',
               })}
             </Typography>
-            <Typography
-              fontSize={{ xs: 14, md: 18 }}
-              textAlign={{ xs: 'center', md: 'start' }}
-            >
+            <Typography fontSize={{ xs: 14, md: 18 }} noWrap>
               {intl.formatMessage({
                 defaultMessage:
-                  'Follow us on social media to stay up to date on deposits.',
+                  'Earn Boosted EigenLayer points and maximize your XP',
               })}
             </Typography>
           </Stack>
         </Grid2>
         <Grid2
           xs={12}
-          md={4}
+          md={3}
           sx={{
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: { xs: 'center', md: 'flex-end' },
             alignItems: 'center',
           }}
         >

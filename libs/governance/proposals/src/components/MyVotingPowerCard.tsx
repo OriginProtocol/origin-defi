@@ -48,7 +48,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
             isConnected ? (
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
                 <TokenIcon
-                  symbol={tokens.mainnet.veOGV.symbol}
+                  token={tokens.mainnet.veOGV}
                   sx={{ width: 26, transform: 'translateY(4px)' }}
                 />
                 <Typography variant="h3">

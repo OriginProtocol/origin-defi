@@ -1,6 +1,6 @@
-import { Box, Card, Stack, Typography } from '@mui/material';
+import { Card, Link, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { FaClockRegular, OETH, Whale } from '@origin/shared/icons';
+import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -17,57 +17,104 @@ export const AdCards = (props: StackProps) => {
   const intl = useIntl();
 
   const ads: Ad[] = [
+    // {
+    //   icon: <FaClockRegular color="primary" sx={{ width: 40, height: 40 }} />,
+    //   title: intl.formatMessage({ defaultMessage: 'Be early!' }),
+    //   subtitle: intl.formatMessage({
+    //     defaultMessage:
+    //       'Early depositers will earn an XP multiplier on their deposit',
+    //   }),
+    //   tooltip: (
+    //     <Stack spacing={1} py={1}>
+    //       <Typography textAlign="center">
+    //         {intl.formatMessage({ defaultMessage: 'Bonus multiplier' })}
+    //       </Typography>
+    //       <Box component="img" src="/images/beEarly.webp" sx={{ width: 1 }} />
+    //       <Typography textAlign="center">
+    //         {intl.formatMessage({ defaultMessage: 'Deposit day' })}
+    //       </Typography>
+    //     </Stack>
+    //   ),
+    // },
+    // {
+    //   icon: <Whale color="primary" sx={{ width: 40, height: 40 }} />,
+    //   title: intl.formatMessage({ defaultMessage: 'Go BIG!' }),
+    //   subtitle: intl.formatMessage({
+    //     defaultMessage:
+    //       'Earn an XP multiplier for larger deposits for the duration of the campaign',
+    //   }),
+    //   tooltip: (
+    //     <Stack spacing={1} py={1}>
+    //       <Typography textAlign="center">
+    //         {intl.formatMessage({ defaultMessage: 'Bonus multiplier' })}
+    //       </Typography>
+    //       <Box component="img" src="/images/goBig.webp" sx={{ width: 1 }} />
+    //       <Typography textAlign="center">
+    //         {intl.formatMessage({ defaultMessage: 'ETH amount' })}
+    //       </Typography>
+    //     </Stack>
+    //   ),
+    // },
+    // {
+    //   icon: <OETH sx={{ width: 40, height: 40 }} />,
+    //   title: intl.formatMessage({
+    //     defaultMessage:
+    //       'Deposit with OETH and earn<br></br><strong>2X REWARDS*</strong>',
+    //   }),
+    //   subtitle: '',
+    //   tooltip: (
+    //     <Typography>
+    //       {intl.formatMessage({
+    //         defaultMessage:
+    //           '*2x bonus applies only to primeETH minted with OETH and held in the same wallet',
+    //       })}
+    //     </Typography>
+    //   ),
+    // },
     {
-      icon: <FaClockRegular color="primary" sx={{ width: 40, height: 40 }} />,
-      title: intl.formatMessage({ defaultMessage: 'Be early!' }),
-      subtitle: intl.formatMessage({
-        defaultMessage:
-          'Early depositers will earn an XP multiplier on their deposit',
-      }),
-      tooltip: (
-        <Stack spacing={1} py={1}>
-          <Typography textAlign="center">
-            {intl.formatMessage({ defaultMessage: 'Bonus multiplier' })}
-          </Typography>
-          <Box component="img" src="/images/beEarly.webp" sx={{ width: 1 }} />
-          <Typography textAlign="center">
-            {intl.formatMessage({ defaultMessage: 'Deposit day' })}
-          </Typography>
-        </Stack>
-      ),
-    },
-    {
-      icon: <Whale color="primary" sx={{ width: 40, height: 40 }} />,
-      title: intl.formatMessage({ defaultMessage: 'Go BIG!' }),
-      subtitle: intl.formatMessage({
-        defaultMessage:
-          'Earn an XP multiplier for larger deposits for the duration of the campaign',
-      }),
-      tooltip: (
-        <Stack spacing={1} py={1}>
-          <Typography textAlign="center">
-            {intl.formatMessage({ defaultMessage: 'Bonus multiplier' })}
-          </Typography>
-          <Box component="img" src="/images/goBig.webp" sx={{ width: 1 }} />
-          <Typography textAlign="center">
-            {intl.formatMessage({ defaultMessage: 'ETH amount' })}
-          </Typography>
-        </Stack>
-      ),
-    },
-    {
-      icon: <OETH sx={{ width: 40, height: 40 }} />,
+      icon: <PrimePoints sx={{ width: 40, height: 40 }} />,
       title: intl.formatMessage({
-        defaultMessage:
-          'Deposit with OETH and earn<br></br><strong>2X REWARDS*</strong>',
+        defaultMessage: '1.5X XP Bonus',
       }),
-      subtitle: '',
+      subtitle: intl.formatMessage({ defaultMessage: 'for a limited time' }),
       tooltip: (
-        <Typography>
+        <Typography variant="body2">
           {intl.formatMessage({
             defaultMessage:
-              '*2x bonus applies only to primeETH minted with OETH and held in the same wallet',
+              'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST.',
           })}
+        </Typography>
+      ),
+    },
+    {
+      icon: <EigenPoints sx={{ width: 40, height: 40 }} />,
+      title: intl.formatMessage({
+        defaultMessage: 'EigenLayer Points Bonus',
+      }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'Up to 1,000,000 EL points distributed to early ETH depositors',
+      }),
+      tooltip: (
+        <Typography variant="body2">
+          {intl.formatMessage(
+            {
+              defaultMessage:
+                'Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}',
+            },
+            {
+              link: (
+                <Link
+                  color="primary.main"
+                  href=""
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                >
+                  {intl.formatMessage({ defaultMessage: 'Learn More.' })}
+                </Link>
+              ),
+            },
+          )}
         </Typography>
       ),
     },
@@ -102,7 +149,7 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
     >
       {ad.icon}
       {ad?.title && (
-        <Typography variant="h6" textAlign="center" gutterBottom>
+        <Typography variant="h6" textAlign="center">
           {ad.title}
         </Typography>
       )}

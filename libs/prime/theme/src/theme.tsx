@@ -517,6 +517,10 @@ export const theme = createTheme({
       },
       styleOverrides: {
         tooltip: ({ theme }) => ({
+          color: theme.palette.text.secondary,
+          fontSize: 12,
+          fontWeight: 400,
+          lineHeight: 1.6,
           px: theme.spacing(2),
           py: theme.spacing(1.5),
           borderRadius: theme.shape.borderRadius * 2,

@@ -1,5 +1,6 @@
 import { queryClient } from '@origin/oeth/shared';
 import {
+  isNativeCurrency,
   simulateContractWithTxTracker,
   useCurve,
 } from '@origin/shared/providers';
@@ -98,6 +99,8 @@ const estimateGas: EstimateGas = async (
     staleTime: Infinity,
   });
 
+  const isTokenInNative = isNativeCurrency(config, tokenIn);
+
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: curve.CurveRegistryExchange.address,
@@ -110,7 +113,7 @@ const estimateGas: EstimateGas = async (
         minAmountOut,
       ],
       account: address ?? ETH_ADDRESS_CURVE,
-      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
+      ...(isTokenInNative && { value: amountIn }),
     });
   } catch (e) {
     gasEstimate = 350000n;
@@ -198,6 +201,7 @@ const estimateRoute: EstimateRoute = async (
       tokenIn,
       tokenOut,
       amountIn,
+      slippage,
     }),
     allowance(config, { tokenIn, tokenOut }),
     estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
@@ -285,13 +289,15 @@ const swap: Swap = async (
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
+  const isTokenInNative = isNativeCurrency(config, tokenIn);
+
   const { request } = await simulateContractWithTxTracker(config, {
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'exchange_multiple',
     args: [curveConfig.routes, curveConfig.swapParams, amountIn, minAmountOut],
     gas,
-    ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
+    ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);
 

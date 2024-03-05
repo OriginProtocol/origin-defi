@@ -41,7 +41,6 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
               (prices?.[getTokenPriceKey(curr.token)] ?? 0)
           );
         }, 0);
-  const imgSrc = split.map((s) => s.token.symbol);
 
   return (
     <Stack
@@ -59,7 +58,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
         {!isXs && (
           <Stack justifyContent="center">
-            <Mix imgSrc={imgSrc} />
+            <Mix tokens={split.map((s) => s.token)} />
           </Stack>
         )}
         <Stack flex={1} direction="column" gap={0.5}>
@@ -177,7 +176,7 @@ function SplitRow({
       {...rest}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
-        <TokenIcon symbol={estimate.token.symbol} />
+        <TokenIcon token={estimate.token} />
         <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
       </Stack>
       <Stack

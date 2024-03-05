@@ -7,7 +7,7 @@
     "codegen": "pnpm nx run-many --target=codegen-graphql",
     "i18n": "pnpm nx run-many --target=i18n-compile",
     "lint-fix": "pnpm nx run-many --target=lint -- --fix",
-    "prepare": "husky install"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,mdx}": "eslint --cache --fix"
@@ -35,7 +35,6 @@
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
-    "react-icons": "^5.0.1",
     "react-intl": "^6.6.1",
     "react-jazzicon": "^1.0.4",
     "react-router-dom": "6.22.1",

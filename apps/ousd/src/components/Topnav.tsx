@@ -220,6 +220,7 @@ export function Topnav(props: BoxProps) {
             anchor={accountModalAnchor}
             setAnchor={setAccountModalAnchor}
             balanceTokens={[
+              tokens.mainnet.ETH,
               tokens.mainnet.OUSD,
               tokens.mainnet.wOUSD,
               tokens.mainnet.USDT,

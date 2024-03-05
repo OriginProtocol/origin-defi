@@ -64,7 +64,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
       <Stack direction="row" spacing={2} alignItems="center">
-        <TokenIcon symbol={tokens.mainnet.OETH.symbol} />
+        <TokenIcon token={tokens.mainnet.OETH} />
         <StatusBadge
           status={proposal?.ogvProposalById?.status}
           isLoading={isProposalLoading}

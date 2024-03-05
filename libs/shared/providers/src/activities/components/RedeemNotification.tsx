@@ -82,7 +82,7 @@ export const RedeemNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
           <FaArrowRightRegular sx={{ fontSize: 14 }} />
         </Stack>
       }

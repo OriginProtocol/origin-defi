@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   alpha,
@@ -16,35 +16,31 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  NotificationSnack,
-  SeverityIcon,
   TokenIcon,
 } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
-  ApprovalNotification,
   ConnectedButton,
   getAvailableRoutes,
-  SwapNotification,
   SwapProvider,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   useIsNativeCurrency,
-  usePushNotification,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, formatError, isNilOrEmpty } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useAssetPrice } from '../hooks';
 import { TokenInput } from './TokenInput';
 import { TokenSelectModal } from './TokenSelectModal';
+import { TransactionProgressModal } from './TransactionProgressModal';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -69,79 +65,12 @@ export const Swapper = ({
   trackEvent,
   ...rest
 }: SwapperProps) => {
-  const intl = useIntl();
-  const pushNotification = usePushNotification();
-
   return (
     <SwapProvider
       swapActions={swapActions}
       swapRoutes={swapRoutes}
       debounceTime={400}
       trackEvent={trackEvent}
-      onApproveSuccess={(state) => {
-        pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
-        });
-      }}
-      onApproveReject={() => {
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
-        });
-      }}
-      onApproveFailure={(state) => {
-        const { error } = state;
-        pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
-      }}
-      onSwapSuccess={(state) => {
-        pushNotification({
-          content: <SwapNotification {...state} status="success" />,
-        });
-      }}
-      onSwapReject={() => {
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
-        });
-      }}
-      onSwapFailure={(state) => {
-        const { error } = state;
-        pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
-      }}
     >
       <SwapperWrapped {...rest} />
     </SwapProvider>
@@ -155,6 +84,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
+  const [txProgressOpen, setTxProgressOpen] = useState(false);
   const [
     {
       amountIn,
@@ -169,6 +99,7 @@ function SwapperWrapped({
       isApprovalWaitingForSignature,
       swapActions,
       swapRoutes,
+      status,
     },
   ] = useSwapState();
   const { tokensIn } = useTokenOptions<Meta>();
@@ -183,6 +114,12 @@ function SwapperWrapped({
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
+
+  useEffect(() => {
+    if (status === 'waitingForSignature') {
+      setTxProgressOpen(true);
+    }
+  }, [status]);
 
   const handleCloseSelectionModal = () => {
     setTokenSource(null);
@@ -292,10 +229,7 @@ function SwapperWrapped({
             }}
           >
             <Stack direction="row" spacing={1} alignItems="center">
-              <TokenIcon
-                symbol={tokenIn?.symbol}
-                sx={{ width: 34, height: 34 }}
-              />
+              <TokenIcon token={tokenIn} sx={{ width: 34, height: 34 }} />
               <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
             </Stack>
 
@@ -362,7 +296,7 @@ function SwapperWrapped({
                 >
                   {formatAmount(amountOut)}
                 </LoadingLabel>
-                <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 22 }} />
+                <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
                   {tokenOut.symbol}
                 </Typography>
@@ -461,6 +395,13 @@ function SwapperWrapped({
           onClose={handleCloseSelectionModal}
           tokens={tokensIn}
           onSelectToken={handleSelectToken}
+        />
+        <TransactionProgressModal
+          key={txProgressOpen ? '' : 'reset'}
+          open={txProgressOpen}
+          onClose={() => {
+            setTxProgressOpen(false);
+          }}
         />
       </ErrorBoundary>
     </Stack>

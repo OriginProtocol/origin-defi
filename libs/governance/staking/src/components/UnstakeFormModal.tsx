@@ -101,7 +101,7 @@ export const UnstakeFormModal = ({
               sx={{ '> *': { width: 1 } }}
             >
               <Stack direction="row" spacing={1} alignItems="baseline">
-                <TokenIcon symbol={tokens.mainnet.OGV.symbol} />
+                <TokenIcon token={tokens.mainnet.OGV} />
                 <Typography variant="h3">
                   {formatAmount(
                     BigInt(lockup.amount),
@@ -129,7 +129,7 @@ export const UnstakeFormModal = ({
                 justifyContent="flex-end"
               >
                 <TokenIcon
-                  symbol={tokens.mainnet.veOGV.symbol}
+                  token={tokens.mainnet.veOGV}
                   sx={{ transform: 'translateY(4px)' }}
                 />
                 <Typography fontWeight={700}>
@@ -166,7 +166,7 @@ export const UnstakeFormModal = ({
           )}
           activityEndIcon={
             <TokenIcon
-              symbol={tokens.mainnet.veOGV.symbol}
+              token={tokens.mainnet.veOGV}
               sx={{ transform: 'translateY(4px)' }}
             />
           }

@@ -6,6 +6,7 @@ import type { ChipProps } from '@mui/material';
 
 export type SupportedBoost =
   | 'primeETH20xp'
+  | 'primeETH15xp'
   | 'primeETH11xp'
   | 'eigenTurboCharge';
 
@@ -46,6 +47,17 @@ export const BoostChip = ({ boost, ...rest }: BoostChipProps) => {
           {...rest}
           label={intl.formatMessage({
             defaultMessage: '1.1 primeETH XP Boost',
+          })}
+          color="primary"
+          variant="outlined"
+        />
+      ),
+      primeETH15xp: (
+        <Chip
+          size="small"
+          {...rest}
+          label={intl.formatMessage({
+            defaultMessage: '1.5 primeETH XP Boost',
           })}
           color="primary"
           variant="outlined"

@@ -228,11 +228,7 @@ function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon
-        type={type}
-        zIndex={1}
-        tokenSymbol={tokens.mainnet.OETH.symbol}
-      />
+      <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
       <Stack>
         <Typography fontWeight="500">{type}</Typography>
         <Typography color="text.secondary" variant="body2">

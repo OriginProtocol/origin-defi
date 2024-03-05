@@ -4,10 +4,10 @@ import { formatError, isFulfilled, scale } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
-import { useAccount, useConfig } from 'wagmi';
+import { useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
-import { getAvailableRoutes, getFilteredSwapRoutes } from './utils';
+import { getAvailableRoutes } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -56,15 +56,13 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       onSwapReject,
       onSwapFailure,
     }) => {
-      const { chain } = useAccount();
-      const filteredSwapRoutes = getFilteredSwapRoutes(swapRoutes, chain);
       const [state, setState] = useState<SwapState>({
         swapActions,
-        swapRoutes: filteredSwapRoutes,
+        swapRoutes: swapRoutes,
         amountIn: 0n,
-        tokenIn: filteredSwapRoutes[0].tokenIn,
+        tokenIn: swapRoutes[0]?.tokenIn,
         amountOut: 0n,
-        tokenOut: filteredSwapRoutes[0].tokenOut,
+        tokenOut: swapRoutes[0]?.tokenOut,
         estimatedSwapRoutes: [],
         selectedSwapRoute: null,
         isSwapWaitingForSignature: false,
@@ -73,6 +71,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         isApprovalLoading: false,
         isSwapLoading: false,
         debounceTime: debounceTime ?? 800,
+        status: 'idle',
         trackEvent,
         onInputAmountChange,
         onInputTokenChange,
@@ -103,6 +102,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               isApprovalLoading: false,
               isSwapLoading: false,
               isApprovalWaitingForSignature: false,
+              status: 'idle',
             }));
             state?.onInputAmountChange?.({ ...state, amountIn: 0n });
 
@@ -198,6 +198,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             selectedSwapRoute: sortedRoutes[0],
             amountOut: sortedRoutes?.[0]?.estimatedAmount ?? 0n,
             isSwapRoutesLoading: false,
+            status: 'idle',
           }));
 
           trackEvent?.({

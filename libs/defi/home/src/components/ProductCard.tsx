@@ -60,7 +60,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           <Chip
             key={intl.formatMessage(tag.label)}
             label={intl.formatMessage(tag.label)}
-            symbol={tag.symbol}
+            token={tag.token}
             labelProps={{ noWrap: true }}
           />
         ))}
@@ -78,7 +78,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           }}
         />
         <TokenIcon
-          symbol={product.token.symbol}
+          token={product.token}
           sx={{ width: 68, height: 68, zIndex: 1 }}
         />
       </Stack>
@@ -153,7 +153,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Collateral' })}
-          value={<Mix imgSrc={product.collaterals.map((t) => t.symbol)} />}
+          value={<Mix tokens={product.collaterals} />}
           sx={{
             width: 0.33,
             py: 2,

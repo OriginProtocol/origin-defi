@@ -84,9 +84,9 @@ export const SwapNotification = ({
       }
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
           <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon symbol={tokenOut?.symbol} sx={{ fontSize: 20 }} />
+          <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
         </Stack>
       }
     />

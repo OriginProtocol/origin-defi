@@ -1,3 +1,4 @@
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { connectorsForWallets } from '@rainbow-me/rainbowkit';
 import {
   coinbaseWallet,
@@ -29,7 +30,7 @@ const connectors = connectorsForWallets(
     },
   ],
   {
-    appName: 'OETH',
+    appName: 'Origin DeFi',
     projectId: import.meta.env.VITE_WALLET_CONNECT_PROJECT_ID,
   },
 );
@@ -38,11 +39,15 @@ export const wagmiConfig = createConfig({
   chains: [mainnet],
   connectors,
   transports: {
-    [mainnet.id]: fallback([
-      http(
-        `${import.meta.env.VITE_ALCHEMY_RPC}${import.meta.env.VITE_ALCHEMY_ID}`,
-      ),
-      http(),
-    ]),
+    [mainnet.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
+      ? fallback([
+          http(
+            `${import.meta.env.VITE_ALCHEMY_RPC}${
+              import.meta.env.VITE_ALCHEMY_ID
+            }`,
+          ),
+          http(),
+        ])
+      : http(import.meta.env.VITE_CUSTOM_RPC),
   },
 });

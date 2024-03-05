@@ -5,5 +5,6 @@ export * from './BlockExplorerLink';
 export * from './ConnectedButton';
 export * from './EnsureNetworkProvider';
 export * from './OpenAccountModalButton';
+export * from './OpenChainModalButton';
 export * from './TransactionButton';
 export * from './UserAvatar';

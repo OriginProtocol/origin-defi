@@ -130,7 +130,7 @@ export function SwapRouteCard({
             {isSwapRoutesLoading ? (
               <Skeleton variant="circular" width={16} height={16} />
             ) : (
-              <TokenIcon symbol={tokenOut.symbol} sx={{ fontSize: 16 }} />
+              <TokenIcon token={tokenOut} sx={{ fontSize: 16 }} />
             )}
           </Grid2>
           <Grid2 display="flex" alignItems="center">

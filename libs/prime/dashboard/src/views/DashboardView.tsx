@@ -1,4 +1,4 @@
-import { Button, Card, Stack, Typography } from '@mui/material';
+import { Button, Card, Stack, Tooltip, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { usePoints } from '@origin/prime/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
@@ -11,28 +11,34 @@ import { Link } from 'react-router-dom';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useUserPointsQuery } from '../queries.generated';
+
 import type { Grid2Props } from '@mui/material';
 
 export const DashboardView = () => {
   const intl = useIntl();
-  const { formatBalance, formatAmount } = useFormat();
-  const { isConnected } = useAccount();
+  const { formatAmount } = useFormat();
+  const { address, isConnected } = useAccount();
   const { data: points, isLoading: isPointsLoading } = usePoints();
+  const { data: userPoints } = useUserPointsQuery(
+    { address },
+    { enabled: isConnected },
+  );
 
-  const percentTotalXp = +formatUnits(
-    scale(points?.xpPoints ?? 0n, 0, 18) /
-      (!points?.totalXpPoints || points?.totalXpPoints === 0n
-        ? 1n
-        : points?.totalXpPoints),
-    18,
-  );
-  const percentTotalELPoints = +formatUnits(
-    scale(BigInt(points?.elPoints ?? '0'), 0, 18) /
-      (!points?.totalELPoints || points?.totalELPoints === 0n
-        ? 1n
-        : points?.totalELPoints),
-    18,
-  );
+  const percentTotalXp =
+    points?.totalXpPoints && points?.totalXpPoints > 0n
+      ? +formatUnits(
+          scale(points?.xpPoints ?? 0n, 0, 18) / points.totalXpPoints,
+          18,
+        )
+      : undefined;
+  const percentTotalELPoints =
+    points?.totalELPoints && points?.totalELPoints > 0n
+      ? +formatUnits(
+          scale(BigInt(points?.elPoints ?? '0'), 0, 18) / points.totalELPoints,
+          18,
+        )
+      : undefined;
 
   return (
     <Stack
@@ -49,7 +55,7 @@ export const DashboardView = () => {
         <Grid2 {...gridContainerProps}>
           <Grid2 {...gridItemProps}>
             <TokenIcon
-              symbol={tokens.mainnet.primeETH.symbol}
+              token={tokens.mainnet.primeETH}
               sx={{ width: 48, height: 48 }}
             />
           </Grid2>
@@ -64,7 +70,10 @@ export const DashboardView = () => {
                   fontSize={24}
                   fontWeight="medium"
                 >
-                  {formatBalance(points?.primePoints)}
+                  {intl.formatNumber(
+                    +formatUnits(points?.primePoints ?? 0n, 18),
+                    { maximumFractionDigits: 2, roundingMode: 'floor' },
+                  )}
                 </LoadingLabel>
               ) : (
                 '-'
@@ -101,19 +110,23 @@ export const DashboardView = () => {
                     fontSize={24}
                     fontWeight="medium"
                   >
-                    {formatAmount(points?.xpPoints)}
+                    {intl.formatNumber(
+                      +formatUnits(points?.xpPoints ?? 0n, 18),
+                      { maximumFractionDigits: 0, roundingMode: 'floor' },
+                    )}
                   </LoadingLabel>
                 ) : (
                   '-'
                 )}
               </Stack>
             </Grid2>
+
             <Grid2 {...gridItemProps}>
               <Stack spacing={1} alignItems="center">
                 <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
-                {isConnected ? (
+                {isConnected && !!percentTotalXp ? (
                   <LoadingLabel
                     isLoading={isPointsLoading}
                     fontSize={24}
@@ -142,13 +155,39 @@ export const DashboardView = () => {
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
-                  <LoadingLabel
-                    isLoading={isPointsLoading}
-                    fontSize={24}
-                    fontWeight="medium"
+                  <Tooltip
+                    title={intl.formatMessage(
+                      {
+                        defaultMessage: 'Last updated: {date}',
+                      },
+                      {
+                        date: userPoints?.lrtPointRecipients[0]?.pointsDate
+                          ? intl.formatDate(
+                              new Date(
+                                userPoints?.lrtPointRecipients[0].pointsDate,
+                              ),
+                              {
+                                day: '2-digit',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                second: '2-digit',
+                                hourCycle: 'h23',
+                              },
+                            )
+                          : '-',
+                      },
+                    )}
                   >
-                    {formatAmount(points?.elPoints)}
-                  </LoadingLabel>
+                    <LoadingLabel
+                      isLoading={isPointsLoading}
+                      fontSize={24}
+                      fontWeight="medium"
+                    >
+                      {formatAmount(points?.elPoints)}
+                    </LoadingLabel>
+                  </Tooltip>
                 ) : (
                   '-'
                 )}
@@ -159,7 +198,7 @@ export const DashboardView = () => {
                 <Typography fontWeight="medium" color="text.secondary">
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
-                {isConnected ? (
+                {isConnected && !!percentTotalELPoints ? (
                   <LoadingLabel
                     isLoading={isPointsLoading}
                     fontSize={24}

@@ -2,6 +2,7 @@ import { defineMessage } from 'react-intl';
 
 import restake from './restake';
 import uniswap from './uniwsap';
+import zapper from './zapper';
 
 import type { SwapApi } from '@origin/shared/providers';
 
@@ -63,5 +64,11 @@ export const restakeActions: Record<RestakeAction, SwapApi> = {
     ...uniswap,
     buttonLabel: defineMessage({ defaultMessage: 'Swap with Uniswap' }),
     routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
+  },
+  zapper: {
+    ...defaultApi,
+    ...zapper,
+    buttonLabel: defineMessage({ defaultMessage: 'Swap with Zapper' }),
+    routeLabel: defineMessage({ defaultMessage: 'Zapper' }),
   },
 };

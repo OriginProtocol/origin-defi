@@ -239,10 +239,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         ...rest?.sx,
       }}
     >
-      <TokenIcon
-        symbol={token.symbol}
-        sx={{ width: '1.75rem', height: 'auto' }}
-      />
+      <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
       <Typography variant="inherit">{token.symbol}</Typography>
       {!isDisabled && <Dropdown />}
     </Stack>

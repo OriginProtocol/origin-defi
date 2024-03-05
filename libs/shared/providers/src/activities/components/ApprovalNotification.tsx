@@ -71,7 +71,7 @@ export const ApprovalNotification = ({
           <Typography color="error">{error}</Typography>
         )
       }
-      endIcon={<TokenIcon symbol={tokenIn?.symbol} sx={{ fontSize: 20 }} />}
+      endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}
     />
   );
 };

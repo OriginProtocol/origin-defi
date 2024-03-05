@@ -1,12 +1,15 @@
 {
+  "+7wtzY": {
+    "defaultMessage": "Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}"
+  },
   "+HMSZw": {
     "defaultMessage": "Enter amount"
   },
   "+LmzMn": {
     "defaultMessage": "max"
   },
-  "+WtZxF": {
-    "defaultMessage": "Earn an XP multiplier for larger deposits for the duration of the campaign"
+  "+eqQvs": {
+    "defaultMessage": "for a limited time"
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
@@ -16,9 +19,6 @@
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
-  },
-  "/NeKGm": {
-    "defaultMessage": "ETH amount"
   },
   "/xvR4F": {
     "defaultMessage": "Opt in"
@@ -56,11 +56,17 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "20X0BC": {
+    "defaultMessage": "Transaction Cancelled"
+  },
   "2Gox/R": {
     "defaultMessage": "EigenLayer Points"
   },
   "3fTTLv": {
     "defaultMessage": "Unstake"
+  },
+  "3uuR4F": {
+    "defaultMessage": "1.5 primeETH XP Boost"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -70,9 +76,6 @@
   },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
-  },
-  "4pFaoD": {
-    "defaultMessage": "EigenLayer Deposits Have Closed"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -94,9 +97,6 @@
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
-  },
-  "7sJjbC": {
-    "defaultMessage": "Deposit day"
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
@@ -125,14 +125,14 @@
   "Awi257": {
     "defaultMessage": "{amount} {symbol}"
   },
+  "B+gCQ4": {
+    "defaultMessage": "EigenLayer Points Bonus"
+  },
   "BONcjO": {
     "defaultMessage": "Uniswap V3"
   },
   "CFpVX2": {
     "defaultMessage": "1.1 primeETH XP Boost"
-  },
-  "CrVbZD": {
-    "defaultMessage": "Bonus multiplier"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -161,6 +161,12 @@
   "F9pOEE": {
     "defaultMessage": "More EigenLayer assets coming soon..."
   },
+  "FNgMBo": {
+    "defaultMessage": "Swap with Zapper"
+  },
+  "FcLgSc": {
+    "defaultMessage": "Learn More."
+  },
   "G9iNne": {
     "defaultMessage": "Exchange rate:"
   },
@@ -172,6 +178,9 @@
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
+  },
+  "I0B0+W": {
+    "defaultMessage": "Zapper"
   },
   "IxGtTe": {
     "defaultMessage": "+ EigenLayer Points"
@@ -185,6 +194,9 @@
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
+  "KMWJ3D": {
+    "defaultMessage": "Transaction Complete"
+  },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
@@ -194,8 +206,14 @@
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
+  "L14L9A": {
+    "defaultMessage": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST."
+  },
   "LUdwbC": {
     "defaultMessage": "Restake"
+  },
+  "LVlEJT": {
+    "defaultMessage": "1.5X XP Bonus"
   },
   "MLTKb6": {
     "defaultMessage": "APY"
@@ -208,9 +226,6 @@
   },
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
-  },
-  "MzEf/Z": {
-    "defaultMessage": "*2x bonus applies only to primeETH minted with OETH and held in the same wallet"
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -233,6 +248,9 @@
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
+  "Pspetf": {
+    "defaultMessage": "Add primeETH"
+  },
   "PwetLJ": {
     "defaultMessage": "Select the asset"
   },
@@ -245,6 +263,9 @@
   "R0R6sx": {
     "defaultMessage": "You can always {link}"
   },
+  "Rt3X+n": {
+    "defaultMessage": "Transaction Failure"
+  },
   "S45aoc": {
     "defaultMessage": "First"
   },
@@ -253,12 +274,6 @@
   },
   "SKB/G9": {
     "defaultMessage": "TVL"
-  },
-  "THMhv1": {
-    "defaultMessage": "Go BIG!"
-  },
-  "Tf5HxU": {
-    "defaultMessage": "Follow us on social media to stay up to date on deposits."
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -284,6 +299,9 @@
   "WCaf5C": {
     "defaultMessage": "Approve"
   },
+  "Wt2imN": {
+    "defaultMessage": "Native ETH Restaking is Live!"
+  },
   "XRPY5F": {
     "defaultMessage": "Global Stats"
   },
@@ -293,6 +311,9 @@
   "ZGsb9H": {
     "defaultMessage": "Assets Deposited"
   },
+  "ZdCdo5": {
+    "defaultMessage": "Last updated: {date}"
+  },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
   },
@@ -301,9 +322,6 @@
   },
   "aDYxXF": {
     "defaultMessage": "New transaction"
-  },
-  "aO+vIL": {
-    "defaultMessage": "Deposit with OETH and earn<br></br><strong>2X REWARDS*</strong>"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
@@ -316,6 +334,9 @@
   },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
+  },
+  "cqBJ3O": {
+    "defaultMessage": "Up to 1,000,000 EL points distributed to early ETH depositors"
   },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
@@ -338,9 +359,6 @@
   "h88CQM": {
     "defaultMessage": "sell primeETH on Uniswap."
   },
-  "hRhk8d": {
-    "defaultMessage": "Early depositers will earn an XP multiplier on their deposit"
-  },
   "hWyxI7": {
     "defaultMessage": "% of total"
   },
@@ -352,6 +370,9 @@
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
+  },
+  "iMePpi": {
+    "defaultMessage": "Earn Boosted EigenLayer points and maximize your XP"
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
@@ -416,9 +437,6 @@
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
   },
-  "wOIoAM": {
-    "defaultMessage": "Be early!"
-  },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
@@ -433,6 +451,9 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
+  },
+  "zO5VTT": {
+    "defaultMessage": "Transaction in progress"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

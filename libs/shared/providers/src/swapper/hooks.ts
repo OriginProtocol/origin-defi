@@ -43,6 +43,7 @@ export const useHandleAmountInChange = () => {
             ...state,
             amountIn: amount,
             isSwapRoutesLoading: amount !== 0n,
+            status: amount !== 0n ? 'swapRoutesLoading' : 'idle',
           };
         }
 
@@ -174,6 +175,7 @@ export const useHandleTokenChange = () => {
           amountOut: 0n,
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
+          status: 'idle',
         };
       });
     },
@@ -244,6 +246,7 @@ export const useHandleTokenFlip = () => {
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
           isSwapRoutesLoading: false,
+          status: 'idle',
         };
       });
     } else {
@@ -264,6 +267,7 @@ export const useHandleTokenFlip = () => {
           isSwapRoutesLoading: true,
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
+          status: 'swapRoutesLoading',
         }));
         const routes = await Promise.allSettled(
           newRoutes.map((route) =>
@@ -335,6 +339,7 @@ export const useHandleTokenFlip = () => {
       setSwapState((state) => ({
         ...state,
         isSwapRoutesLoading: false,
+        status: 'idle',
       }));
 
       onTokenFlip?.(state);
@@ -436,6 +441,7 @@ export const useHandleApprove = () => {
     setSwapState((state) => ({
       ...state,
       isApprovalWaitingForSignature: true,
+      status: 'waitingForSignature',
     }));
 
     const trackId = onApproveStart?.(state);
@@ -454,6 +460,7 @@ export const useHandleApprove = () => {
         ...state,
         isApprovalWaitingForSignature: false,
         isApprovalLoading: true,
+        status: 'waitingForTransaction',
       }));
       if (hash) {
         const txReceipt = await waitForTransactionReceipt(config, { hash });
@@ -461,6 +468,7 @@ export const useHandleApprove = () => {
         setSwapState((state) => ({
           ...state,
           isApprovalLoading: false,
+          status: 'transactionSuccess',
         }));
         onApproveSuccess?.({
           ...state,
@@ -480,12 +488,20 @@ export const useHandleApprove = () => {
       }));
 
       if (isUserRejected(error)) {
+        setSwapState((state) => ({
+          ...state,
+          status: 'transactionRejected',
+        }));
         onApproveReject?.({ ...state, trackId });
         trackEvent?.({
           name: 'approve_rejected',
           approval_token: tokenIn.symbol,
         });
       } else {
+        setSwapState((state) => ({
+          ...state,
+          status: 'transactionFailure',
+        }));
         onApproveFailure?.({ ...state, error: error as Error, trackId });
         trackEvent?.({
           name: 'approve_failed',
@@ -538,7 +554,11 @@ export const useHandleSwap = () => {
       return;
     }
 
-    setSwapState((state) => ({ ...state, isSwapWaitingForSignature: true }));
+    setSwapState((state) => ({
+      ...state,
+      isSwapWaitingForSignature: true,
+      status: 'waitingForSignature',
+    }));
 
     const trackId = onSwapStart?.(state);
     trackEvent?.({
@@ -562,6 +582,7 @@ export const useHandleSwap = () => {
         ...state,
         isSwapWaitingForSignature: false,
         isSwapLoading: true,
+        status: 'waitingForTransaction',
       }));
       if (hash) {
         const txReceipt = await waitForTransactionReceipt(config, { hash });
@@ -573,6 +594,7 @@ export const useHandleSwap = () => {
           amountOut: 0n,
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
+          status: 'transactionSuccess',
         }));
         onSwapSuccess?.({
           ...state,
@@ -594,6 +616,10 @@ export const useHandleSwap = () => {
         isSwapLoading: false,
       }));
       if (isUserRejected(error)) {
+        setSwapState((state) => ({
+          ...state,
+          status: 'transactionRejected',
+        }));
         onSwapReject?.({ ...state, trackId });
         trackEvent?.({
           name: 'swap_rejected',
@@ -603,6 +629,10 @@ export const useHandleSwap = () => {
           swap_route: selectedSwapRoute.action,
         });
       } else {
+        setSwapState((state) => ({
+          ...state,
+          status: 'transactionFailure',
+        }));
         onSwapFailure?.({ ...state, error: error as Error, trackId });
         trackEvent?.({
           name: 'swap_failed',

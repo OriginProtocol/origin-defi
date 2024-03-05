@@ -42,7 +42,7 @@ export const TokenButton = ({
     >
       <TokenIcon
         {...tokenIconProps}
-        symbol={token.symbol}
+        token={token}
         sx={{ width: 28, height: 28, ...tokenIconProps?.sx }}
       />
       <Typography variant="inherit">{token.symbol}</Typography>

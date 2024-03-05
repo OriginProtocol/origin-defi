@@ -76,10 +76,10 @@ const estimateGas: EstimateGas = async (
 
 const estimateRoute: EstimateRoute = async (
   config,
-  { tokenIn, tokenOut, amountIn, route },
+  { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn, slippage }),
     allowance(config, { tokenIn, tokenOut }),
   ]);
 

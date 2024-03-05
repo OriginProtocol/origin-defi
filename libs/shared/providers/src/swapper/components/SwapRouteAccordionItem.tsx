@@ -102,7 +102,7 @@ export function SwapRouteAccordionItem({
         {isSwapRoutesLoading ? (
           <Skeleton variant="circular" width={24} height={24} />
         ) : (
-          <TokenIcon symbol={route.tokenOut.symbol} />
+          <TokenIcon token={route.tokenOut} />
         )}
         <Stack
           direction={{ xs: 'row', sm: 'column' }}
