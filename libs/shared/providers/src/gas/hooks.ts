@@ -1,10 +1,16 @@
-import { contracts } from '@origin/shared/contracts';
-import { useQuery } from '@tanstack/react-query';
-import { estimateFeesPerGas, readContract } from '@wagmi/core';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { estimateFeesPerGas } from '@wagmi/core';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
-import type { UseQueryOptions } from '@tanstack/react-query';
+import { useTokenPrices } from '../prices';
+
+import type {
+  QueryClient,
+  QueryFunction,
+  UseQueryOptions,
+} from '@tanstack/react-query';
+import type { Config } from '@wagmi/core';
 
 type GasPrice = {
   gweiUsd: number;
@@ -13,40 +19,52 @@ type GasPrice = {
   gasCostGwei: number;
 };
 
+type Key = ['useGasPrice', string, QueryClient, Config];
+
+const getKey = (
+  gasAmount: bigint,
+  queryClient: QueryClient,
+  config: Config,
+): Key => ['useGasPrice', gasAmount.toString(), queryClient, config];
+
+const fetcher: QueryFunction<GasPrice, Key> = async ({
+  queryKey: [, gasAmount, queryClient, config],
+}) => {
+  const [price, data] = await Promise.all([
+    queryClient.fetchQuery({
+      queryKey: useTokenPrices.getKey(['ETH_USD'], config),
+      queryFn: useTokenPrices.fetcher,
+    }),
+    estimateFeesPerGas(config, { formatUnits: 'gwei' }),
+  ]);
+
+  const gweiUsd = price.ETH_USD * 1e-9;
+  const gasPrice =
+    +formatUnits(data.maxFeePerGas, 9) +
+    +formatUnits(data.maxPriorityFeePerGas, 9);
+  const gasCostGwei = Number(gasAmount) * gasPrice;
+  const gasCostUsd = gasCostGwei * gweiUsd;
+
+  return {
+    gweiUsd,
+    gasPrice,
+    gasCostUsd,
+    gasCostGwei,
+  };
+};
+
 export const useGasPrice = (
   gasAmount = 0n,
-  options?: Partial<
-    UseQueryOptions<GasPrice, Error, GasPrice, ['useGasPrice', string]>
-  >,
+  options?: Partial<UseQueryOptions<GasPrice, Error, GasPrice, Key>>,
 ) => {
+  const queryClient = useQueryClient();
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useGasPrice', gasAmount?.toString()] as const,
-    queryFn: async () => {
-      const [price, data] = await Promise.all([
-        readContract(config, {
-          address: contracts.mainnet.ChainlinkOracle.address,
-          abi: contracts.mainnet.ChainlinkOracle.abi,
-          functionName: 'ethUsdPrice',
-        }),
-        estimateFeesPerGas(config, { formatUnits: 'gwei' }),
-      ]);
-
-      const gweiUsd = +formatUnits(price as unknown as bigint, 6) * 1e-9;
-      const gasPrice =
-        +formatUnits(data.maxFeePerGas, 9) +
-        +formatUnits(data.maxPriorityFeePerGas, 9);
-      const gasCostGwei = Number(gasAmount) * gasPrice;
-      const gasCostUsd = gasCostGwei * gweiUsd;
-
-      return {
-        gweiUsd,
-        gasPrice,
-        gasCostUsd,
-        gasCostGwei,
-      };
-    },
+    queryKey: getKey(gasAmount, queryClient, config),
+    queryFn: fetcher,
     ...options,
   });
 };
+useGasPrice.getKey = getKey;
+useGasPrice.fetcher = fetcher;
