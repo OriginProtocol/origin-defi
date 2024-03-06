@@ -67,7 +67,7 @@ const fetcher: QueryFunction<
   if (rest) {
     try {
       const restRes = await Promise.allSettled(
-        Object.values(rest.map((o) => (o as RestOption).config)),
+        rest.map((o) => (o as RestOption).config()),
       );
       restRes.forEach((res, i) => {
         const key = rest[i].id;
