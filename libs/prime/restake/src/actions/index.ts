@@ -68,7 +68,7 @@ export const restakeActions: Record<RestakeAction, SwapApi> = {
   zapper: {
     ...defaultApi,
     ...zapper,
-    buttonLabel: defineMessage({ defaultMessage: 'Swap with Zapper' }),
-    routeLabel: defineMessage({ defaultMessage: 'Zapper' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Stake' }),
+    routeLabel: defineMessage({ defaultMessage: 'PrimeStaked' }),
   },
 };

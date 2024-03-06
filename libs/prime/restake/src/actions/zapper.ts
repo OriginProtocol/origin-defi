@@ -23,11 +23,11 @@ import type {
 
 const estimateAmount: EstimateAmount = async (
   config,
-  { amountIn, tokenIn, slippage },
+  { amountIn, tokenIn },
 ) => {
   const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || !tokenIn?.address || !publicClient) {
+  if (amountIn === 0n || !publicClient) {
     return 0n;
   }
 
@@ -47,7 +47,7 @@ const estimateRoute: EstimateRoute = async (
   { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn, slippage }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
     allowance(config, { tokenIn, tokenOut }),
   ]);
 
