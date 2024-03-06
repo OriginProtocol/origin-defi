@@ -30,10 +30,7 @@ import type {
 } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 
-const isRouteAvailable: IsRouteAvailable = async (
-  config,
-  { amountIn, tokenIn, tokenOut },
-) => {
+const isRouteAvailable: IsRouteAvailable = async (config) => {
   try {
     const paused = await readContract(config, {
       address: contracts.mainnet.lrtDepositPool.address,
@@ -109,7 +106,7 @@ const estimateGas: EstimateGas = async (
 
 const estimateRoute: EstimateRoute = async (
   config,
-  { tokenIn, tokenOut, amountIn, route, slippage },
+  { tokenIn, tokenOut, amountIn, route },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
     estimateAmount(config, { tokenIn, tokenOut, amountIn }),

@@ -76,7 +76,7 @@ const estimateGas: EstimateGas = async (
 
 const estimateRoute: EstimateRoute = async (
   config,
-  { tokenIn, tokenOut, amountIn, route, slippage },
+  { tokenIn, tokenOut, amountIn, route },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
     estimateAmount(config, { tokenIn, tokenOut, amountIn }),
@@ -95,7 +95,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async () => {
   return maxUint256;
 };
 

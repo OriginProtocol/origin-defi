@@ -11,20 +11,40 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, maxUint256 } from 'viem';
+import { formatUnits, maxUint256, parseEther } from 'viem';
 
 import type {
   Allowance,
   Approve,
   EstimateAmount,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async (
-  config,
-  { amountIn, tokenIn },
-) => {
+const isRouteAvailable: IsRouteAvailable = async (config) => {
+  const publicClient = getPublicClient(config);
+
+  if (!publicClient) {
+    return false;
+  }
+
+  try {
+    await publicClient.simulateContract({
+      address: contracts.mainnet.PrimeETHZapper.address,
+      abi: contracts.mainnet.PrimeETHZapper.abi,
+      functionName: 'deposit',
+      args: [0n, ZERO_ADDRESS],
+      value: parseEther('1'),
+    });
+
+    return true;
+  } catch {}
+
+  return false;
+};
+
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   const publicClient = getPublicClient(config);
 
   if (amountIn === 0n || !publicClient) {
@@ -97,6 +117,7 @@ const swap: Swap = async (
 };
 
 export default {
+  isRouteAvailable,
   estimateAmount,
   estimateRoute,
   allowance,
