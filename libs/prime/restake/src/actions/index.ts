@@ -50,8 +50,8 @@ const defaultApi: SwapApi = {
     console.log('Route swap operation not implemented');
     return null;
   },
-  routeLabel: defineMessage({ defaultMessage: 'Stake' }),
   buttonLabel: defineMessage({ defaultMessage: 'Stake' }),
+  routeLabel: defineMessage({ defaultMessage: 'PrimeStaked' }),
 };
 
 export const restakeActions: Record<RestakeAction, SwapApi> = {
@@ -68,7 +68,5 @@ export const restakeActions: Record<RestakeAction, SwapApi> = {
   zapper: {
     ...defaultApi,
     ...zapper,
-    buttonLabel: defineMessage({ defaultMessage: 'Swap with Zapper' }),
-    routeLabel: defineMessage({ defaultMessage: 'Zapper' }),
   },
 };

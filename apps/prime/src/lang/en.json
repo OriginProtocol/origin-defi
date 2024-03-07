@@ -317,6 +317,12 @@
       "value": "1.1 primeETH XP Boost"
     }
   ],
+  "DGg45W": [
+    {
+      "type": 0,
+      "value": "PrimeStaked"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -403,12 +409,6 @@
       "value": "More EigenLayer assets coming soon..."
     }
   ],
-  "FNgMBo": [
-    {
-      "type": 0,
-      "value": "Swap with Zapper"
-    }
-  ],
   "FcLgSc": [
     {
       "type": 0,
@@ -437,12 +437,6 @@
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-    }
-  ],
-  "I0B0+W": [
-    {
-      "type": 0,
-      "value": "Zapper"
     }
   ],
   "IxGtTe": [

@@ -134,6 +134,9 @@
   "CFpVX2": {
     "defaultMessage": "1.1 primeETH XP Boost"
   },
+  "DGg45W": {
+    "defaultMessage": "PrimeStaked"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -161,9 +164,6 @@
   "F9pOEE": {
     "defaultMessage": "More EigenLayer assets coming soon..."
   },
-  "FNgMBo": {
-    "defaultMessage": "Swap with Zapper"
-  },
   "FcLgSc": {
     "defaultMessage": "Learn More."
   },
@@ -178,9 +178,6 @@
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-  },
-  "I0B0+W": {
-    "defaultMessage": "Zapper"
   },
   "IxGtTe": {
     "defaultMessage": "+ EigenLayer Points"

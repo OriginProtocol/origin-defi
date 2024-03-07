@@ -220,13 +220,89 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     dependsOn: ['sfrxETH_frxETH', 'frxETH_ETH', 'ETH_USD'],
   },
   WETH_USD: {
-    type: 'coingecko',
+    type: 'derived',
     id: 'WETH_USD',
-    config: coingeckoTokenIds.WETH,
+    dependsOn: ['WETH_ETH', 'ETH_USD'],
   },
   OGN_USD: {
     type: 'coingecko',
     id: 'OGN_USD',
     config: coingeckoTokenIds.OGN,
+  },
+  primeETH_ETH: {
+    id: 'primeETH_ETH',
+    type: 'wagmi',
+    config: {
+      address: contracts.mainnet.lrtOracle.address,
+      abi: contracts.mainnet.lrtOracle.abi,
+      functionName: 'primeETHPrice',
+    },
+    mapResult: (primeETH_ETH: bigint) => {
+      return +formatUnits(primeETH_ETH, tokens.mainnet.primeETH.decimals);
+    },
+  },
+  primeETH_USD: {
+    id: 'primeETH_USD',
+    type: 'derived',
+    dependsOn: ['primeETH_ETH', 'ETH_USD'],
+  },
+  mETH_ETH: {
+    id: 'mETH_ETH',
+    type: 'wagmi',
+    config: {
+      address: contracts.mainnet.lrtOracle.address,
+      abi: contracts.mainnet.lrtOracle.abi,
+      functionName: 'getAssetPrice',
+      args: [tokens.mainnet.mETH.address],
+    },
+    mapResult: (meth_eth: bigint) => {
+      return +formatUnits(meth_eth, tokens.mainnet.mETH.decimals);
+    },
+  },
+  mETH_USD: {
+    id: 'mETH_USD',
+    type: 'derived',
+    dependsOn: ['mETH_ETH', 'ETH_USD'],
+  },
+  ETHx_ETH: {
+    id: 'ETHx_ETH',
+    type: 'wagmi',
+    config: {
+      address: contracts.mainnet.lrtOracle.address,
+      abi: contracts.mainnet.lrtOracle.abi,
+      functionName: 'getAssetPrice',
+      args: [tokens.mainnet.ETHx.address],
+    },
+    mapResult: (ethx_eth: bigint) => {
+      return +formatUnits(ethx_eth, tokens.mainnet.ETHx.decimals);
+    },
+  },
+  ETHx_USD: {
+    id: 'ETHx_USD',
+    type: 'derived',
+    dependsOn: ['ETHx_ETH', 'ETH_USD'],
+  },
+  swETH_ETH: {
+    id: 'swETH_ETH',
+    type: 'wagmi',
+    config: {
+      address: contracts.mainnet.lrtOracle.address,
+      abi: contracts.mainnet.lrtOracle.abi,
+      functionName: 'getAssetPrice',
+      args: [tokens.mainnet.swETH.address],
+    },
+    mapResult: (sweth_eth: bigint) => {
+      return +formatUnits(sweth_eth, tokens.mainnet.swETH.decimals);
+    },
+  },
+  swETH_USD: {
+    id: 'swETH_USD',
+    type: 'derived',
+    dependsOn: ['swETH_ETH', 'ETH_USD'],
+  },
+  WETH_ETH: {
+    id: 'WETH_ETH',
+    type: 'rest',
+    config: async () => 1,
   },
 };

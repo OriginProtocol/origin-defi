@@ -1,4 +1,3 @@
-import { DEAD_ADDRESS } from '@origin/shared/utils';
 import { mainnet } from 'wagmi/chains';
 
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
@@ -155,9 +154,8 @@ export const contracts = {
       name: 'OUSDVault',
     },
     // PrimeETH
-    // TODO add address when defined on mainnet
     PrimeETHZapper: {
-      address: DEAD_ADDRESS,
+      address: '0x3cf4Db4c59dCB082d1A9719C54dF3c04Db93C6b7',
       chainId: mainnet.id,
       abi: PrimeETHZapperABI,
       name: 'PrimeETHZapper',

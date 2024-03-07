@@ -21,13 +21,11 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async (
-  config,
-  { amountIn, tokenIn, slippage },
-) => {
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
+  const { address } = getAccount(config);
   const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || !tokenIn?.address || !publicClient) {
+  if (amountIn === 0n || !publicClient) {
     return 0n;
   }
 
@@ -35,8 +33,9 @@ const estimateAmount: EstimateAmount = async (
     address: contracts.mainnet.PrimeETHZapper.address,
     abi: contracts.mainnet.PrimeETHZapper.abi,
     functionName: 'deposit',
-    args: [0n, ZERO_ADDRESS],
+    args: [0n, ''],
     value: amountIn,
+    account: address ?? ZERO_ADDRESS,
   });
 
   return estimate?.result;
@@ -47,7 +46,7 @@ const estimateRoute: EstimateRoute = async (
   { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn, slippage }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
     allowance(config, { tokenIn, tokenOut }),
   ]);
 
@@ -90,6 +89,7 @@ const swap: Swap = async (
     functionName: 'deposit',
     args: [minAmountOut, referrerId ?? ''],
     value: amountIn,
+    account: address ?? ZERO_ADDRESS,
   });
   const hash = await writeContract(config, request);
 

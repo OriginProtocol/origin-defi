@@ -21,13 +21,13 @@ import {
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
-  getAvailableRoutes,
   SwapProvider,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   useIsNativeCurrency,
+  useRoutingSwapState,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
@@ -37,18 +37,14 @@ import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useAssetPrice } from '../hooks';
+import { useExchangeRate } from '../hooks';
 import { TokenInput } from './TokenInput';
 import { TokenSelectModal } from './TokenSelectModal';
 import { TransactionProgressModal } from './TransactionProgressModal';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type {
-  SwapRoute,
-  SwapState,
-  TokenSource,
-} from '@origin/shared/providers';
+import type { SwapState, TokenSource } from '@origin/shared/providers';
 
 import type { Meta, RestakeAction } from '../types';
 
@@ -98,17 +94,17 @@ function SwapperWrapped({
       isApprovalLoading,
       isApprovalWaitingForSignature,
       swapActions,
-      swapRoutes,
       status,
     },
   ] = useSwapState();
+  const { action, route } = useRoutingSwapState<RestakeAction, Meta>();
   const { tokensIn } = useTokenOptions<Meta>();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: assetPrice, isLoading: isAssetPriceLoading } =
-    useAssetPrice(tokenIn);
+  const { data: exchangeRate, isLoading: isExchangeRateLoading } =
+    useExchangeRate();
   const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
@@ -129,16 +125,11 @@ function SwapperWrapped({
     handleTokenChange(tokenSource, value);
   };
 
-  const availableRoute = getAvailableRoutes<RestakeAction, Meta>(
-    swapRoutes as SwapRoute<RestakeAction, Meta>[],
-    tokenIn,
-    tokenOut,
-  )[0];
-  const route = swapActions[availableRoute?.action]?.routeLabel
-    ? intl.formatMessage(swapActions[availableRoute?.action]?.routeLabel)
+  const routeLabel = action?.routeLabel
+    ? intl.formatMessage(action.routeLabel)
     : null;
-  const isPaused = availableRoute.action === 'restake';
-  const boost = availableRoute?.meta?.boost;
+  const isPaused = route?.action === 'restake';
+  const boost = route?.meta?.boost;
 
   const needsApproval =
     isConnected &&
@@ -311,7 +302,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
               <LoadingLabel
-                isLoading={isAssetPriceLoading}
+                isLoading={isExchangeRateLoading}
                 sWidth={140}
                 fontWeight="medium"
               >
@@ -320,7 +311,7 @@ function SwapperWrapped({
                     defaultMessage: '{rate} {token} = 1 primeETH',
                   },
                   {
-                    rate: intl.formatNumber(assetPrice ?? 0 / 100, {
+                    rate: intl.formatNumber(exchangeRate ?? 0, {
                       roundingMode: 'floor',
                       maximumFractionDigits: 4,
                       minimumFractionDigits: 4,
@@ -339,7 +330,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Route:' })}
               </Typography>
               <Stack>
-                <Typography fontWeight="medium">{route}</Typography>
+                <Typography fontWeight="medium">{routeLabel}</Typography>
               </Stack>
             </Stack>
           </CardContent>
