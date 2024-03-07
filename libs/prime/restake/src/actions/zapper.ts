@@ -1,46 +1,28 @@
 import { contracts } from '@origin/shared/contracts';
 import { getReferrerId } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subtractSlippage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { formatUnits, maxUint256, parseEther } from 'viem';
+import { formatUnits, maxUint256 } from 'viem';
 
 import type {
   Allowance,
   Approve,
   EstimateAmount,
   EstimateRoute,
-  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async (config) => {
-  const publicClient = getPublicClient(config);
-
-  if (!publicClient) {
-    return false;
-  }
-
-  try {
-    await publicClient.simulateContract({
-      address: contracts.mainnet.PrimeETHZapper.address,
-      abi: contracts.mainnet.PrimeETHZapper.abi,
-      functionName: 'deposit',
-      args: [0n, ''],
-      value: parseEther('1'),
-    });
-
-    return true;
-  } catch {}
-
-  return false;
-};
-
 const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
+  const { address } = getAccount(config);
   const publicClient = getPublicClient(config);
 
   if (amountIn === 0n || !publicClient) {
@@ -53,6 +35,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     functionName: 'deposit',
     args: [0n, ''],
     value: amountIn,
+    account: address ?? ZERO_ADDRESS,
   });
 
   return estimate?.result;
@@ -106,6 +89,7 @@ const swap: Swap = async (
     functionName: 'deposit',
     args: [minAmountOut, referrerId ?? ''],
     value: amountIn,
+    account: address ?? ZERO_ADDRESS,
   });
   const hash = await writeContract(config, request);
 
@@ -113,7 +97,6 @@ const swap: Swap = async (
 };
 
 export default {
-  isRouteAvailable,
   estimateAmount,
   estimateRoute,
   allowance,
