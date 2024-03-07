@@ -1,10 +1,6 @@
 import { contracts } from '@origin/shared/contracts';
 import { getReferrerId } from '@origin/shared/providers';
-import {
-  isNilOrEmpty,
-  subtractSlippage,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -34,7 +30,7 @@ const isRouteAvailable: IsRouteAvailable = async (config) => {
       address: contracts.mainnet.PrimeETHZapper.address,
       abi: contracts.mainnet.PrimeETHZapper.abi,
       functionName: 'deposit',
-      args: [0n, ZERO_ADDRESS],
+      args: [0n, ''],
       value: parseEther('1'),
     });
 
@@ -55,7 +51,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     address: contracts.mainnet.PrimeETHZapper.address,
     abi: contracts.mainnet.PrimeETHZapper.abi,
     functionName: 'deposit',
-    args: [0n, ZERO_ADDRESS],
+    args: [0n, ''],
     value: amountIn,
   });
 
