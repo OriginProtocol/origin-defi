@@ -1,21 +1,22 @@
 import { alpha, Stack, Typography } from '@mui/material';
 import { Dropdown } from '@origin/shared/icons';
+import { arbitrum } from 'viem/chains';
 
-import { TokenIcon } from '../Icons';
+import { ChainIcon } from '../Icons';
 
 import type { StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { Chain } from 'viem';
 
-export type TokenButtonProps = {
-  token: Token;
+export type ChainButtonProps = {
+  chain: Chain;
   isDisabled?: boolean;
 } & StackProps;
 
-export const TokenButton = ({
-  token,
+export const ChainButton = ({
+  chain,
   isDisabled,
   ...rest
-}: TokenButtonProps) => {
+}: ChainButtonProps) => {
   return (
     <Stack
       direction="row"
@@ -26,6 +27,7 @@ export const TokenButton = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         minHeight: 32,
+        maxHeight: 32,
         borderRadius: 25,
         fontSize: '1rem',
         paddingLeft: 0.25,
@@ -40,18 +42,17 @@ export const TokenButton = ({
         position: 'relative',
         ':hover': {
           background: (theme) =>
-            `linear-gradient(${theme.palette.grey[600]}, ${
-              theme.palette.grey[600]
-            }) padding-box, linear-gradient(90deg, ${alpha(
-              theme.palette.primary.main,
-              0.4,
-            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
+            `linear-gradient(${theme.palette.grey[600]}, ${theme.palette.grey[600]}) padding-box, ` +
+            `linear-gradient(90deg, ${alpha(theme.palette.primary.main, 0.4)} 0%, ` +
+            `${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
         },
         ...rest?.sx,
       }}
     >
-      <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
-      <Typography variant="inherit">{token.symbol}</Typography>
+      <ChainIcon chainId={chain.id} sx={{ height: '28px' }} />
+      <Typography variant="inherit">
+        {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
+      </Typography>
       {!isDisabled && <Dropdown />}
     </Stack>
   );

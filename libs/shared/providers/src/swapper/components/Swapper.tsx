@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  ArrowButton,
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
@@ -21,7 +22,7 @@ import {
   SeverityIcon,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
+import { FaGearComplexRegular } from '@origin/shared/icons';
 import {
   formatError,
   isNilOrEmpty,
@@ -61,7 +62,7 @@ import { SettingsPopover } from './SettingsPopover';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
+import type { ButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { MouseEvent } from 'react';
 
@@ -500,45 +501,6 @@ function SwapperWrapped({
         />
       </ErrorBoundary>
     </Stack>
-  );
-}
-
-function ArrowButton(props: IconButtonProps) {
-  return (
-    <IconButton
-      {...props}
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: { md: 40, xs: 36 },
-        height: { md: 40, xs: 36 },
-        margin: 'auto',
-        zIndex: 2,
-        backgroundColor: (theme) => theme.palette.background.paper,
-        border: '1px solid',
-        borderColor: 'divider',
-        svg: {
-          transition: (theme) => theme.transitions.create('transform'),
-        },
-        '&:hover': {
-          backgroundColor: (theme) => theme.palette.grey[900],
-          svg: {
-            transform: 'rotate(-180deg)',
-          },
-        },
-        ...props?.sx,
-      }}
-    >
-      <ArrowDown
-        sx={{
-          width: { md: 20, xs: 18 },
-          height: { md: 20, xs: 18 },
-        }}
-      />
-    </IconButton>
   );
 }
 
