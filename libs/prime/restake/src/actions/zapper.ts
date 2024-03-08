@@ -1,4 +1,4 @@
-import { contracts } from '@origin/shared/contracts';
+import { contracts, whales } from '@origin/shared/contracts';
 import { getReferrerId } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
@@ -22,7 +22,6 @@ import type {
 } from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
-  const { address } = getAccount(config);
   const publicClient = getPublicClient(config);
 
   if (amountIn === 0n || !publicClient) {
@@ -35,7 +34,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     functionName: 'deposit',
     args: [0n, ''],
     value: amountIn,
-    account: address ?? ZERO_ADDRESS,
+    account: whales.mainnet.ETH,
   });
 
   return estimate?.result;
