@@ -1,17 +1,9 @@
-import { contracts, whales } from '@origin/shared/contracts';
-import { getReferrerId } from '@origin/shared/providers';
-import {
-  isNilOrEmpty,
-  subtractSlippage,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
-import {
-  getAccount,
-  getPublicClient,
-  simulateContract,
-  writeContract,
-} from '@wagmi/core';
-import { formatUnits, maxUint256 } from 'viem';
+import { queryClient } from '@origin/prime/shared';
+import { contracts } from '@origin/shared/contracts';
+import { getReferrerId, useTokenPrices } from '@origin/shared/providers';
+import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { getAccount, simulateContract, writeContract } from '@wagmi/core';
+import { formatUnits, maxUint256, parseUnits } from 'viem';
 
 import type {
   Allowance,
@@ -21,28 +13,32 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
-  const publicClient = getPublicClient(config);
-
-  if (amountIn === 0n || !publicClient) {
+const estimateAmount: EstimateAmount = async (
+  config,
+  { amountIn, tokenIn, tokenOut },
+) => {
+  if (amountIn === 0n) {
     return 0n;
   }
 
-  const estimate = await publicClient.simulateContract({
-    address: contracts.mainnet.PrimeETHZapper.address,
-    abi: contracts.mainnet.PrimeETHZapper.abi,
-    functionName: 'deposit',
-    args: [0n, ''],
-    value: amountIn,
-    account: whales.mainnet.ETH,
+  const price = await queryClient.fetchQuery({
+    queryKey: useTokenPrices.getKey(['primeETH_ETH'], config),
+    queryFn: useTokenPrices.fetcher,
   });
 
-  return estimate?.result;
+  if (!price?.primeETH_ETH || price.primeETH_ETH === 0) {
+    return 0n;
+  }
+
+  const estimate =
+    +formatUnits(amountIn, tokenIn.decimals) / price.primeETH_ETH;
+
+  return parseUnits(estimate.toString(), tokenOut.decimals);
 };
 
 const estimateRoute: EstimateRoute = async (
   config,
-  { tokenIn, tokenOut, amountIn, route, slippage },
+  { tokenIn, tokenOut, amountIn, route },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
     estimateAmount(config, { tokenIn, tokenOut, amountIn }),
@@ -61,17 +57,17 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async () => {
   return maxUint256;
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async () => {
   return null;
 };
 
 const swap: Swap = async (
   config,
-  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+  { tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
   const referrerId = getReferrerId();
@@ -88,7 +84,7 @@ const swap: Swap = async (
     functionName: 'deposit',
     args: [minAmountOut, referrerId ?? ''],
     value: amountIn,
-    account: address ?? ZERO_ADDRESS,
+    account: address,
   });
   const hash = await writeContract(config, request);
 
