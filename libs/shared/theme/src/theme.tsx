@@ -523,11 +523,14 @@ export const theme = createTheme({
       },
     },
     MuiLink: {
+      defaultProps: {
+        underline: 'none',
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           backgroundImage: 'none',
           color: theme.palette.text.primary,
-          textDecoration: 'none',
+          textDecorationColor: 'inherit',
         }),
       },
     },

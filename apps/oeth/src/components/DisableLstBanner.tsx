@@ -42,6 +42,7 @@ export const DisableLstBanner = (props: StackProps) => {
                 href="https://vote.ousd.com/#/proposal/0x76f64251d37310c5d241ec84a892751c7a34874faff7af848db193141ea24a6f"
                 target="_blank"
                 rel="noopener noreferrer nofollow"
+                underline="always"
               >
                 {intl.formatMessage({ defaultMessage: 'Learn More.' })}
               </Link>
