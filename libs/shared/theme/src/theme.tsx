@@ -404,10 +404,6 @@ export const theme = createTheme({
         enableColorScheme: true,
       },
       styleOverrides: `
-          html {
-            scrollbar-gutter: stable;
-          }
-
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
