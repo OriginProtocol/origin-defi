@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
-import { formatError, isFulfilled, scale } from '@origin/shared/utils';
+import {
+  formatError,
+  isFulfilled,
+  isNilOrEmpty,
+  scale,
+} from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
@@ -128,6 +133,19 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               availabilities[i].status === 'fulfilled' &&
               (availabilities[i] as PromiseFulfilledResult<boolean>).value,
           );
+
+          if (isNilOrEmpty(filteredRoutes)) {
+            setState((state) => ({
+              ...state,
+              estimatedSwapRoutes: [],
+              selectedSwapRoute: null,
+              amountOut: 0n,
+              isSwapRoutesLoading: false,
+              status: 'noAvailableRoute',
+            }));
+
+            return;
+          }
 
           const routes = await Promise.allSettled(
             filteredRoutes.map((route) =>

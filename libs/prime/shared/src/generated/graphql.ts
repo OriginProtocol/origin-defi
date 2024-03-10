@@ -22,11 +22,12 @@ export type LrtBalanceData = {
   balance: Scalars['BigInt']['output'];
   balanceDate: Scalars['DateTime']['output'];
   id: Scalars['String']['output'];
+  points: Scalars['BigInt']['output'];
+  pointsDate: Scalars['DateTime']['output'];
   recipient: LrtPointRecipient;
   referralId?: Maybe<Scalars['String']['output']>;
-  staticPoints: Scalars['BigInt']['output'];
-  staticPointsDate: Scalars['DateTime']['output'];
-  staticReferralPointsBase: Scalars['BigInt']['output'];
+  referralPointsBase: Scalars['BigInt']['output'];
+  source?: Maybe<Scalars['String']['output']>;
 };
 
 export type LrtBalanceDataConnection = {
@@ -59,6 +60,14 @@ export enum LrtBalanceDataOrderByInput {
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdDesc = 'id_DESC',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  PointsDateAsc = 'pointsDate_ASC',
+  PointsDateAscNullsFirst = 'pointsDate_ASC_NULLS_FIRST',
+  PointsDateDesc = 'pointsDate_DESC',
+  PointsDateDescNullsLast = 'pointsDate_DESC_NULLS_LAST',
+  PointsAsc = 'points_ASC',
+  PointsAscNullsFirst = 'points_ASC_NULLS_FIRST',
+  PointsDesc = 'points_DESC',
+  PointsDescNullsLast = 'points_DESC_NULLS_LAST',
   RecipientBalanceAsc = 'recipient_balance_ASC',
   RecipientBalanceAscNullsFirst = 'recipient_balance_ASC_NULLS_FIRST',
   RecipientBalanceDesc = 'recipient_balance_DESC',
@@ -95,18 +104,14 @@ export enum LrtBalanceDataOrderByInput {
   ReferralIdAscNullsFirst = 'referralId_ASC_NULLS_FIRST',
   ReferralIdDesc = 'referralId_DESC',
   ReferralIdDescNullsLast = 'referralId_DESC_NULLS_LAST',
-  StaticPointsDateAsc = 'staticPointsDate_ASC',
-  StaticPointsDateAscNullsFirst = 'staticPointsDate_ASC_NULLS_FIRST',
-  StaticPointsDateDesc = 'staticPointsDate_DESC',
-  StaticPointsDateDescNullsLast = 'staticPointsDate_DESC_NULLS_LAST',
-  StaticPointsAsc = 'staticPoints_ASC',
-  StaticPointsAscNullsFirst = 'staticPoints_ASC_NULLS_FIRST',
-  StaticPointsDesc = 'staticPoints_DESC',
-  StaticPointsDescNullsLast = 'staticPoints_DESC_NULLS_LAST',
-  StaticReferralPointsBaseAsc = 'staticReferralPointsBase_ASC',
-  StaticReferralPointsBaseAscNullsFirst = 'staticReferralPointsBase_ASC_NULLS_FIRST',
-  StaticReferralPointsBaseDesc = 'staticReferralPointsBase_DESC',
-  StaticReferralPointsBaseDescNullsLast = 'staticReferralPointsBase_DESC_NULLS_LAST'
+  ReferralPointsBaseAsc = 'referralPointsBase_ASC',
+  ReferralPointsBaseAscNullsFirst = 'referralPointsBase_ASC_NULLS_FIRST',
+  ReferralPointsBaseDesc = 'referralPointsBase_DESC',
+  ReferralPointsBaseDescNullsLast = 'referralPointsBase_DESC_NULLS_LAST',
+  SourceAsc = 'source_ASC',
+  SourceAscNullsFirst = 'source_ASC_NULLS_FIRST',
+  SourceDesc = 'source_DESC',
+  SourceDescNullsLast = 'source_DESC_NULLS_LAST'
 }
 
 export type LrtBalanceDataWhereInput = {
@@ -164,6 +169,24 @@ export type LrtBalanceDataWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  pointsDate_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  pointsDate_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  pointsDate_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  pointsDate_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  points_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  points_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  points_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  points_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  points_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  points_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  points_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  points_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  points_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   recipient?: InputMaybe<LrtPointRecipientWhereInput>;
   recipient_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   referralId_contains?: InputMaybe<Scalars['String']['input']>;
@@ -183,33 +206,373 @@ export type LrtBalanceDataWhereInput = {
   referralId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   referralId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   referralId_startsWith?: InputMaybe<Scalars['String']['input']>;
-  staticPointsDate_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  staticPointsDate_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  staticPointsDate_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  staticPointsDate_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  staticPoints_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  staticPoints_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  staticPoints_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  staticPoints_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  staticReferralPointsBase_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  staticReferralPointsBase_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  staticReferralPointsBase_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  staticReferralPointsBase_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  referralPointsBase_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  referralPointsBase_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  referralPointsBase_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  referralPointsBase_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  source_contains?: InputMaybe<Scalars['String']['input']>;
+  source_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  source_endsWith?: InputMaybe<Scalars['String']['input']>;
+  source_eq?: InputMaybe<Scalars['String']['input']>;
+  source_gt?: InputMaybe<Scalars['String']['input']>;
+  source_gte?: InputMaybe<Scalars['String']['input']>;
+  source_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  source_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  source_lt?: InputMaybe<Scalars['String']['input']>;
+  source_lte?: InputMaybe<Scalars['String']['input']>;
+  source_not_contains?: InputMaybe<Scalars['String']['input']>;
+  source_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  source_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  source_not_eq?: InputMaybe<Scalars['String']['input']>;
+  source_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  source_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  source_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LrtCampaign = {
+  __typename?: 'LRTCampaign';
+  balance: Scalars['BigInt']['output'];
+  campaign: Scalars['String']['output'];
+  elPoints: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+};
+
+export type LrtCampaignEdge = {
+  __typename?: 'LRTCampaignEdge';
+  cursor: Scalars['String']['output'];
+  node: LrtCampaign;
+};
+
+export type LrtCampaignHistoriesConnection = {
+  __typename?: 'LRTCampaignHistoriesConnection';
+  edges: Array<LrtCampaignHistoryEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type LrtCampaignHistory = {
+  __typename?: 'LRTCampaignHistory';
+  balance: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  campaign: Scalars['String']['output'];
+  elPoints: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+};
+
+export type LrtCampaignHistoryEdge = {
+  __typename?: 'LRTCampaignHistoryEdge';
+  cursor: Scalars['String']['output'];
+  node: LrtCampaignHistory;
+};
+
+export enum LrtCampaignHistoryOrderByInput {
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  CampaignAsc = 'campaign_ASC',
+  CampaignAscNullsFirst = 'campaign_ASC_NULLS_FIRST',
+  CampaignDesc = 'campaign_DESC',
+  CampaignDescNullsLast = 'campaign_DESC_NULLS_LAST',
+  ElPointsAsc = 'elPoints_ASC',
+  ElPointsAscNullsFirst = 'elPoints_ASC_NULLS_FIRST',
+  ElPointsDesc = 'elPoints_DESC',
+  ElPointsDescNullsLast = 'elPoints_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+}
+
+export type LrtCampaignHistoryWhereInput = {
+  AND?: InputMaybe<Array<LrtCampaignHistoryWhereInput>>;
+  OR?: InputMaybe<Array<LrtCampaignHistoryWhereInput>>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  campaign_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_gt?: InputMaybe<Scalars['String']['input']>;
+  campaign_gte?: InputMaybe<Scalars['String']['input']>;
+  campaign_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  campaign_lt?: InputMaybe<Scalars['String']['input']>;
+  campaign_lte?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_startsWith?: InputMaybe<Scalars['String']['input']>;
+  elPoints_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  elPoints_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  elPoints_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export enum LrtCampaignOrderByInput {
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
+  CampaignAsc = 'campaign_ASC',
+  CampaignAscNullsFirst = 'campaign_ASC_NULLS_FIRST',
+  CampaignDesc = 'campaign_DESC',
+  CampaignDescNullsLast = 'campaign_DESC_NULLS_LAST',
+  ElPointsAsc = 'elPoints_ASC',
+  ElPointsAscNullsFirst = 'elPoints_ASC_NULLS_FIRST',
+  ElPointsDesc = 'elPoints_DESC',
+  ElPointsDescNullsLast = 'elPoints_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST'
+}
+
+export type LrtCampaignRecipient = {
+  __typename?: 'LRTCampaignRecipient';
+  balance: Scalars['BigInt']['output'];
+  campaign: Scalars['String']['output'];
+  elPoints: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  recipient: Scalars['String']['output'];
+};
+
+export type LrtCampaignRecipientEdge = {
+  __typename?: 'LRTCampaignRecipientEdge';
+  cursor: Scalars['String']['output'];
+  node: LrtCampaignRecipient;
+};
+
+export enum LrtCampaignRecipientOrderByInput {
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
+  CampaignAsc = 'campaign_ASC',
+  CampaignAscNullsFirst = 'campaign_ASC_NULLS_FIRST',
+  CampaignDesc = 'campaign_DESC',
+  CampaignDescNullsLast = 'campaign_DESC_NULLS_LAST',
+  ElPointsAsc = 'elPoints_ASC',
+  ElPointsAscNullsFirst = 'elPoints_ASC_NULLS_FIRST',
+  ElPointsDesc = 'elPoints_DESC',
+  ElPointsDescNullsLast = 'elPoints_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  RecipientAsc = 'recipient_ASC',
+  RecipientAscNullsFirst = 'recipient_ASC_NULLS_FIRST',
+  RecipientDesc = 'recipient_DESC',
+  RecipientDescNullsLast = 'recipient_DESC_NULLS_LAST'
+}
+
+export type LrtCampaignRecipientWhereInput = {
+  AND?: InputMaybe<Array<LrtCampaignRecipientWhereInput>>;
+  OR?: InputMaybe<Array<LrtCampaignRecipientWhereInput>>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  campaign_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_gt?: InputMaybe<Scalars['String']['input']>;
+  campaign_gte?: InputMaybe<Scalars['String']['input']>;
+  campaign_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  campaign_lt?: InputMaybe<Scalars['String']['input']>;
+  campaign_lte?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_startsWith?: InputMaybe<Scalars['String']['input']>;
+  elPoints_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  elPoints_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  elPoints_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  recipient_contains?: InputMaybe<Scalars['String']['input']>;
+  recipient_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  recipient_endsWith?: InputMaybe<Scalars['String']['input']>;
+  recipient_eq?: InputMaybe<Scalars['String']['input']>;
+  recipient_gt?: InputMaybe<Scalars['String']['input']>;
+  recipient_gte?: InputMaybe<Scalars['String']['input']>;
+  recipient_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  recipient_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  recipient_lt?: InputMaybe<Scalars['String']['input']>;
+  recipient_lte?: InputMaybe<Scalars['String']['input']>;
+  recipient_not_contains?: InputMaybe<Scalars['String']['input']>;
+  recipient_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  recipient_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  recipient_not_eq?: InputMaybe<Scalars['String']['input']>;
+  recipient_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  recipient_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  recipient_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LrtCampaignRecipientsConnection = {
+  __typename?: 'LRTCampaignRecipientsConnection';
+  edges: Array<LrtCampaignRecipientEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type LrtCampaignWhereInput = {
+  AND?: InputMaybe<Array<LrtCampaignWhereInput>>;
+  OR?: InputMaybe<Array<LrtCampaignWhereInput>>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  campaign_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_gt?: InputMaybe<Scalars['String']['input']>;
+  campaign_gte?: InputMaybe<Scalars['String']['input']>;
+  campaign_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  campaign_lt?: InputMaybe<Scalars['String']['input']>;
+  campaign_lte?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_contains?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_eq?: InputMaybe<Scalars['String']['input']>;
+  campaign_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  campaign_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  campaign_startsWith?: InputMaybe<Scalars['String']['input']>;
+  elPoints_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  elPoints_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  elPoints_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  elPoints_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LrtCampaignsConnection = {
+  __typename?: 'LRTCampaignsConnection';
+  edges: Array<LrtCampaignEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export type LrtDeposit = {
@@ -631,7 +994,7 @@ export type LrtNodeDelegatorsConnection = {
 export type LrtPointRecipient = {
   __typename?: 'LRTPointRecipient';
   balance: Scalars['BigInt']['output'];
-  balanceData: Array<LrtBalanceData>;
+  balanceDatas: Array<LrtBalanceData>;
   elPoints: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   points: Scalars['BigInt']['output'];
@@ -642,7 +1005,7 @@ export type LrtPointRecipient = {
 };
 
 
-export type LrtPointRecipientBalanceDataArgs = {
+export type LrtPointRecipientBalanceDatasArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
   orderBy?: InputMaybe<Array<LrtBalanceDataOrderByInput>>;
@@ -895,9 +1258,9 @@ export type LrtPointRecipientStats = {
 export type LrtPointRecipientWhereInput = {
   AND?: InputMaybe<Array<LrtPointRecipientWhereInput>>;
   OR?: InputMaybe<Array<LrtPointRecipientWhereInput>>;
-  balanceData_every?: InputMaybe<LrtBalanceDataWhereInput>;
-  balanceData_none?: InputMaybe<LrtBalanceDataWhereInput>;
-  balanceData_some?: InputMaybe<LrtBalanceDataWhereInput>;
+  balanceDatas_every?: InputMaybe<LrtBalanceDataWhereInput>;
+  balanceDatas_none?: InputMaybe<LrtBalanceDataWhereInput>;
+  balanceDatas_some?: InputMaybe<LrtBalanceDataWhereInput>;
   balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -1119,6 +1482,21 @@ export type Query = {
   /** @deprecated Use lrtBalanceDataById */
   lrtBalanceDataByUniqueInput?: Maybe<LrtBalanceData>;
   lrtBalanceDataConnection: LrtBalanceDataConnection;
+  lrtCampaignById?: Maybe<LrtCampaign>;
+  /** @deprecated Use lrtCampaignById */
+  lrtCampaignByUniqueInput?: Maybe<LrtCampaign>;
+  lrtCampaignHistories: Array<LrtCampaignHistory>;
+  lrtCampaignHistoriesConnection: LrtCampaignHistoriesConnection;
+  lrtCampaignHistoryById?: Maybe<LrtCampaignHistory>;
+  /** @deprecated Use lrtCampaignHistoryById */
+  lrtCampaignHistoryByUniqueInput?: Maybe<LrtCampaignHistory>;
+  lrtCampaignRecipientById?: Maybe<LrtCampaignRecipient>;
+  /** @deprecated Use lrtCampaignRecipientById */
+  lrtCampaignRecipientByUniqueInput?: Maybe<LrtCampaignRecipient>;
+  lrtCampaignRecipients: Array<LrtCampaignRecipient>;
+  lrtCampaignRecipientsConnection: LrtCampaignRecipientsConnection;
+  lrtCampaigns: Array<LrtCampaign>;
+  lrtCampaignsConnection: LrtCampaignsConnection;
   lrtDepositById?: Maybe<LrtDeposit>;
   /** @deprecated Use lrtDepositById */
   lrtDepositByUniqueInput?: Maybe<LrtDeposit>;
@@ -1178,6 +1556,84 @@ export type QueryLrtBalanceDataConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<LrtBalanceDataOrderByInput>;
   where?: InputMaybe<LrtBalanceDataWhereInput>;
+};
+
+
+export type QueryLrtCampaignByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryLrtCampaignByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryLrtCampaignHistoriesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<LrtCampaignHistoryOrderByInput>>;
+  where?: InputMaybe<LrtCampaignHistoryWhereInput>;
+};
+
+
+export type QueryLrtCampaignHistoriesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<LrtCampaignHistoryOrderByInput>;
+  where?: InputMaybe<LrtCampaignHistoryWhereInput>;
+};
+
+
+export type QueryLrtCampaignHistoryByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryLrtCampaignHistoryByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryLrtCampaignRecipientByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryLrtCampaignRecipientByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryLrtCampaignRecipientsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<LrtCampaignRecipientOrderByInput>>;
+  where?: InputMaybe<LrtCampaignRecipientWhereInput>;
+};
+
+
+export type QueryLrtCampaignRecipientsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<LrtCampaignRecipientOrderByInput>;
+  where?: InputMaybe<LrtCampaignRecipientWhereInput>;
+};
+
+
+export type QueryLrtCampaignsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<LrtCampaignOrderByInput>>;
+  where?: InputMaybe<LrtCampaignWhereInput>;
+};
+
+
+export type QueryLrtCampaignsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<LrtCampaignOrderByInput>;
+  where?: InputMaybe<LrtCampaignWhereInput>;
 };
 
 

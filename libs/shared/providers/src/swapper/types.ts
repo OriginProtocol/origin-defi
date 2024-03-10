@@ -110,7 +110,8 @@ export type SwapStatus =
   | 'waitingForTransaction'
   | 'transactionSuccess'
   | 'transactionRejected'
-  | 'transactionFailure';
+  | 'transactionFailure'
+  | 'noAvailableRoute';
 
 export type SwapState = {
   swapActions: SwapActions;
