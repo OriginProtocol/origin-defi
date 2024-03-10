@@ -132,7 +132,7 @@ function SwapperWrapped({
   const isPaused = route?.action === 'restake';
   const boost = route?.meta?.boost;
   const exchangeRate =
-    amountIn === 0n ? defaultExchangeRate : selectedSwapRoute?.rate;
+    amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
   const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
 
   const needsApproval =
