@@ -35,6 +35,7 @@ import {
 } from '@origin/shared/providers';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useExchangeRate } from '../hooks';
@@ -103,7 +104,7 @@ function SwapperWrapped({
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: exchangeRate, isLoading: isExchangeRateLoading } =
+  const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
     useExchangeRate();
   const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
@@ -130,6 +131,12 @@ function SwapperWrapped({
     : null;
   const isPaused = route?.action === 'restake';
   const boost = route?.meta?.boost;
+  const exchangeRate =
+    amountIn === 0n
+      ? defaultExchangeRate
+      : +formatUnits(amountIn, tokenIn.decimals) /
+        +formatUnits(amountOut ?? 1n, tokenOut.decimals);
+  const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
 
   const needsApproval =
     isConnected &&
@@ -266,7 +273,7 @@ function SwapperWrapped({
           />
         </CardContent>
         <Divider />
-        <Collapse in={!isPaused}>
+        <Collapse in={isInfoPanelVisible}>
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
@@ -302,7 +309,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
               <LoadingLabel
-                isLoading={isExchangeRateLoading}
+                isLoading={isSwapRoutesLoading || isDefaultExchangeRateLoading}
                 sWidth={140}
                 fontWeight="medium"
               >
