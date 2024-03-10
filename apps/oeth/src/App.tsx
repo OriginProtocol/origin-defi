@@ -5,7 +5,6 @@ import { RebaseBanner, useCurve, useTxTracker } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
-import { DisableLstBanner } from './components/DisableLstBanner';
 import { Topnav } from './components/Topnav';
 
 export const App = () => {
@@ -25,7 +24,6 @@ export const App = () => {
       >
         <Stack minWidth={370}>
           <Topnav />
-          <DisableLstBanner />
           <RebaseBanner />
           <Container
             sx={{

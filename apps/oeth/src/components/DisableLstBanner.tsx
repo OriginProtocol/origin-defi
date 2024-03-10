@@ -17,8 +17,7 @@ export const DisableLstBanner = (props: StackProps) => {
   return (
     <Stack
       {...props}
-      direction={{ xs: 'column', md: 'row' }}
-      spacing={{ xs: 1, md: 3 }}
+      direction="row"
       sx={{
         backgroundColor: (theme) => theme.palette.secondary.main,
         color: 'text.primary',
