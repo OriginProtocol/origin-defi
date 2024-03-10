@@ -33,8 +33,9 @@ import {
   useTokenOptions,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useExchangeRate } from '../hooks';
@@ -288,7 +289,14 @@ function SwapperWrapped({
                   fontWeight="medium"
                   fontSize={16}
                 >
-                  {formatAmount(amountOut)}
+                  {intl.formatNumber(
+                    +formatUnits(amountOut, tokenOut.decimals) ?? 0,
+                    {
+                      roundingMode: 'floor',
+                      maximumFractionDigits: 4,
+                      minimumFractionDigits: 2,
+                    },
+                  )}
                 </LoadingLabel>
                 <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
@@ -317,7 +325,7 @@ function SwapperWrapped({
                     rate: intl.formatNumber(exchangeRate ?? 0, {
                       roundingMode: 'floor',
                       maximumFractionDigits: 4,
-                      minimumFractionDigits: 4,
+                      minimumFractionDigits: 2,
                     }),
                     token: tokenIn.symbol,
                   },
