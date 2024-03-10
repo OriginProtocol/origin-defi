@@ -141,7 +141,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               selectedSwapRoute: null,
               amountOut: 0n,
               isSwapRoutesLoading: false,
-              status: 'idle',
+              status: 'noAvailableRoute',
             }));
 
             return;
