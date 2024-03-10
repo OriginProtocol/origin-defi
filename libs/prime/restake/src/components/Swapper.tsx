@@ -35,7 +35,6 @@ import {
 } from '@origin/shared/providers';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useExchangeRate } from '../hooks';
@@ -132,10 +131,7 @@ function SwapperWrapped({
   const isPaused = route?.action === 'restake';
   const boost = route?.meta?.boost;
   const exchangeRate =
-    amountIn === 0n
-      ? defaultExchangeRate
-      : +formatUnits(amountIn, tokenIn.decimals) /
-        +formatUnits(amountOut ?? 1n, tokenOut.decimals);
+    amountIn === 0n ? defaultExchangeRate : selectedSwapRoute?.rate;
   const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
 
   const needsApproval =
