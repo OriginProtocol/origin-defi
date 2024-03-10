@@ -152,7 +152,7 @@ function SwapperWrapped({
           ? intl.formatMessage(
               swapActions[selectedSwapRoute.action].buttonLabel,
             )
-          : '';
+          : intl.formatMessage({ defaultMessage: 'No available route' });
   const amountInInputDisabled = isSwapLoading || isApprovalLoading || isPaused;
   const approveButtonDisabled =
     isPaused ||
