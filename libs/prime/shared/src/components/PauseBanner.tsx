@@ -11,9 +11,9 @@ export const PauseBanner = () => {
   return (
     <Stack
       sx={{
+        justifyContent: 'center',
         height: { xs: 220, md: 118 },
         px: 6,
-        py: 4,
         backgroundColor: 'common.black',
         color: 'common.white',
       }}
@@ -35,14 +35,7 @@ export const PauseBanner = () => {
         </Grid2>
         <Grid2 xs={12} md={8}>
           <Stack
-            sx={{
-              display: 'flex',
-              flexDirection: { xs: 'column', lg: 'row' },
-              justifyContent: { xs: 'center', lg: 'flex-start' },
-              alignItems: 'center',
-              gap: { xs: 1, lg: 4 },
-              height: 1,
-            }}
+            sx={{ alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}
           >
             <Typography
               fontSize={{ xs: 20, md: 24 }}
