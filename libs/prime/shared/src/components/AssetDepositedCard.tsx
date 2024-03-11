@@ -19,14 +19,14 @@ import { useReadContracts } from 'wagmi';
 import type { CardProps } from '@mui/material';
 
 export const assets = [
+  tokens.mainnet.WETH,
   tokens.mainnet.OETH,
   tokens.mainnet.stETH,
-  tokens.mainnet.mETH,
-  tokens.mainnet.ETHx,
-  tokens.mainnet.sfrxETH,
-  tokens.mainnet.swETH,
   tokens.mainnet.rETH,
-  tokens.mainnet.WETH,
+  tokens.mainnet.ETHx,
+  tokens.mainnet.swETH,
+  tokens.mainnet.sfrxETH,
+  tokens.mainnet.mETH,
 ];
 
 export const AssetDepositedCard = (props: CardProps) => {
