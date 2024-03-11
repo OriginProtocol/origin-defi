@@ -129,7 +129,7 @@ function SwapperWrapped({
   const routeLabel = action?.routeLabel
     ? intl.formatMessage(action.routeLabel)
     : null;
-  const isPaused = route?.action === 'restake';
+  const isPaused = route?.action === 'restake' && tokenIn.symbol !== 'WETH';
   const boost = route?.meta?.boost;
   const exchangeRate =
     amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
@@ -290,7 +290,7 @@ function SwapperWrapped({
                   fontSize={16}
                 >
                   {intl.formatNumber(
-                    +formatUnits(amountOut, tokenOut.decimals) ?? 0,
+                    +formatUnits(amountOut, tokenOut.decimals),
                     {
                       roundingMode: 'floor',
                       maximumFractionDigits: 5,
