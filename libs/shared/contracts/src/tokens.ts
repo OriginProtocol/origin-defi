@@ -25,7 +25,7 @@ export const tokens = {
       address: undefined,
       chainId: mainnet.id,
       abi: erc20Abi,
-      name: 'ETH',
+      name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',
     },
