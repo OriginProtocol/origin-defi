@@ -93,5 +93,6 @@
 // );
 // FaIcon.displayName = 'FaIcon';
 
+export * from './duotone';
 export * from './regular';
 export * from './light';

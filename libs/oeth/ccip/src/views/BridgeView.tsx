@@ -18,8 +18,8 @@ export function BridgeView() {
       >
         <Stack
           spacing={3}
-          alignContent={'center'}
-          direction={{ xs: 'column-reverse', md: 'row' }}
+          alignItems={{ xs: 'center', lg: 'start' }}
+          direction={{ xs: 'column-reverse', lg: 'row' }}
         >
           <Stack spacing={3} direction={'column'}>
             <ErrorBoundary
