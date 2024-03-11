@@ -275,7 +275,7 @@ function SwapperWrapped({
                 defaultMessage: 'Swap',
               },
             )
-          : '';
+          : intl.formatMessage({ defaultMessage: 'No available route' });
   const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||

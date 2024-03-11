@@ -33,67 +33,67 @@ export const swapRoutes: SwapRoute<SwapAction>[] = [
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-curve',
   },
-  {
-    tokenIn: tokens.mainnet.stETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'mint-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.stETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.rETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.rETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'mint-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.frxETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'mint-vault',
-  },
-  {
-    tokenIn: tokens.mainnet.frxETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.sfrxETH,
-    tokenOut: tokens.mainnet.OETH,
-    action: 'swap-zapper-sfrxeth',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.stETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'mint-vault',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.stETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.rETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.rETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'mint-vault',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.frxETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'mint-vault',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.frxETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.sfrxETH,
+  //   tokenOut: tokens.mainnet.OETH,
+  //   action: 'swap-zapper-sfrxeth',
+  // },
   // Redeem
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
     action: 'swap-curve',
   },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.stETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.rETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.frxETH,
-    action: 'swap-curve',
-  },
-  {
-    tokenIn: tokens.mainnet.OETH,
-    tokenOut: tokens.mainnet.sfrxETH,
-    action: 'swap-curve-sfrxeth',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: tokens.mainnet.stETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: tokens.mainnet.rETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: tokens.mainnet.frxETH,
+  //   action: 'swap-curve',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.OETH,
+  //   tokenOut: tokens.mainnet.sfrxETH,
+  //   action: 'swap-curve-sfrxeth',
+  // },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.ETH,

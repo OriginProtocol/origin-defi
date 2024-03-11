@@ -33,8 +33,9 @@ import {
   useTokenOptions,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useExchangeRate } from '../hooks';
@@ -103,7 +104,7 @@ function SwapperWrapped({
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: exchangeRate, isLoading: isExchangeRateLoading } =
+  const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
     useExchangeRate();
   const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
@@ -128,8 +129,11 @@ function SwapperWrapped({
   const routeLabel = action?.routeLabel
     ? intl.formatMessage(action.routeLabel)
     : null;
-  const isPaused = route?.action === 'restake';
+  const isPaused = route?.action === 'restake' && tokenIn.symbol !== 'WETH';
   const boost = route?.meta?.boost;
+  const exchangeRate =
+    amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
+  const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
 
   const needsApproval =
     isConnected &&
@@ -152,7 +156,7 @@ function SwapperWrapped({
           ? intl.formatMessage(
               swapActions[selectedSwapRoute.action].buttonLabel,
             )
-          : '';
+          : intl.formatMessage({ defaultMessage: 'No available route' });
   const amountInInputDisabled = isSwapLoading || isApprovalLoading || isPaused;
   const approveButtonDisabled =
     isPaused ||
@@ -266,7 +270,7 @@ function SwapperWrapped({
           />
         </CardContent>
         <Divider />
-        <Collapse in={!isPaused}>
+        <Collapse in={isInfoPanelVisible}>
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
@@ -285,7 +289,14 @@ function SwapperWrapped({
                   fontWeight="medium"
                   fontSize={16}
                 >
-                  {formatAmount(amountOut)}
+                  {intl.formatNumber(
+                    +formatUnits(amountOut, tokenOut.decimals),
+                    {
+                      roundingMode: 'floor',
+                      maximumFractionDigits: 5,
+                      minimumFractionDigits: 2,
+                    },
+                  )}
                 </LoadingLabel>
                 <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
@@ -302,7 +313,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
               <LoadingLabel
-                isLoading={isExchangeRateLoading}
+                isLoading={isSwapRoutesLoading || isDefaultExchangeRateLoading}
                 sWidth={140}
                 fontWeight="medium"
               >
@@ -313,8 +324,8 @@ function SwapperWrapped({
                   {
                     rate: intl.formatNumber(exchangeRate ?? 0, {
                       roundingMode: 'floor',
-                      maximumFractionDigits: 4,
-                      minimumFractionDigits: 4,
+                      maximumFractionDigits: 5,
+                      minimumFractionDigits: 2,
                     }),
                     token: tokenIn.symbol,
                   },
