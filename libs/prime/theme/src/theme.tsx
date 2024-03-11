@@ -293,6 +293,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
+          display: 'inline',
           fontSize: 14,
           fontWeight: 500,
         }),

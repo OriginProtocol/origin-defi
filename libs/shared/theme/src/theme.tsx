@@ -9,6 +9,7 @@ import {
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
+
 const base = createTheme();
 
 export const theme = createTheme({
@@ -371,6 +372,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
+          display: 'inline',
           fontSize: theme.typography.fontSize,
           fontWeight: 500,
         }),
@@ -411,7 +413,7 @@ export const theme = createTheme({
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;            
+            text-rendering: optimizeLegibility;
           }
 
           input[type=number] {
