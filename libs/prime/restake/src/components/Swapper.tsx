@@ -293,7 +293,7 @@ function SwapperWrapped({
                     +formatUnits(amountOut, tokenOut.decimals) ?? 0,
                     {
                       roundingMode: 'floor',
-                      maximumFractionDigits: 4,
+                      maximumFractionDigits: 5,
                       minimumFractionDigits: 2,
                     },
                   )}
@@ -324,7 +324,7 @@ function SwapperWrapped({
                   {
                     rate: intl.formatNumber(exchangeRate ?? 0, {
                       roundingMode: 'floor',
-                      maximumFractionDigits: 4,
+                      maximumFractionDigits: 5,
                       minimumFractionDigits: 2,
                     }),
                     token: tokenIn.symbol,
