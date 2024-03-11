@@ -75,7 +75,7 @@ export const TokenSelectModal = ({
       <DialogContent>
         <Typography fontWeight="medium">
           {intl.formatMessage({
-            defaultMessage: 'More EigenLayer assets coming soon...',
+            defaultMessage: 'LST deposits currently paused',
           })}
         </Typography>
       </DialogContent>
