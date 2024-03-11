@@ -299,6 +299,12 @@
       "value": "Apply"
     }
   ],
+  "FcLgSc": [
+    {
+      "type": 0,
+      "value": "Learn More."
+    }
+  ],
   "H5+NAX": [
     {
       "type": 0,
@@ -585,6 +591,16 @@
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "fMe6+p": [
+    {
+      "type": 0,
+      "value": "We're working to simplify and strengthen OETH, using LSTs to mint is disabled. "
+    },
+    {
+      "type": 1,
+      "value": "link"
     }
   ],
   "fuV7zb": [
