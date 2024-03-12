@@ -34,6 +34,7 @@ import {
   useWatchBalance,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { isBefore } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -134,6 +135,9 @@ function SwapperWrapped({
   const exchangeRate =
     amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
   const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
+  const isWarningLabelVisible =
+    selectedSwapRoute?.action === 'uniswap' &&
+    isBefore(new Date(), new Date('25 March 2024 12:00 PDT'));
 
   const needsApproval =
     isConnected &&
@@ -347,6 +351,32 @@ function SwapperWrapped({
           </CardContent>
           <Divider />
         </Collapse>
+        <Collapse in={isWarningLabelVisible}>
+          <Stack px={3} pt={3}>
+            <Stack
+              sx={{
+                border: '1px solid',
+                borderColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.7),
+                borderRadius: 2,
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.1),
+                p: 1,
+                width: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography>
+                {intl.formatMessage({
+                  defaultMessage:
+                    'Swaps are eligible for bonus XP & EigenLayer points',
+                })}
+              </Typography>
+            </Stack>
+          </Stack>
+        </Collapse>
+
         <Collapse in={needsApproval}>
           <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
             <Button
@@ -372,6 +402,7 @@ function SwapperWrapped({
             </Button>
           </Box>
         </Collapse>
+
         <CardContent sx={{ backgroundColor: '#fff' }}>
           <ConnectedButton
             fullWidth
