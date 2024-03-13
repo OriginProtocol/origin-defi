@@ -412,6 +412,40 @@ export const useHandleSelectSwapRoute = () => {
   );
 };
 
+export const useIsSwapRouteAvailable = (
+  route: SwapRoute | undefined | null,
+) => {
+  const config = useConfig();
+  const [{ amountIn, swapActions }] = useSwapState();
+
+  return useQuery({
+    queryKey: [
+      'swap_available',
+      amountIn?.toString(),
+      route?.tokenIn.symbol,
+      route?.tokenOut.symbol,
+      route?.action,
+      config,
+    ],
+    queryFn: async () => {
+      if (!route) {
+        return false;
+      }
+      let res = false;
+      try {
+        res = await swapActions[route.action].isRouteAvailable(config, {
+          tokenIn: route.tokenIn,
+          tokenOut: route.tokenOut,
+          amountIn,
+        });
+      } catch {}
+
+      return res;
+    },
+    enabled: !isNilOrEmpty(route),
+  });
+};
+
 export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
   const config = useConfig();
   const [{ swapActions }] = useSwapState();

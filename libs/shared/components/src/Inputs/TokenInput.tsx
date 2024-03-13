@@ -223,19 +223,21 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         paddingY: 0.25,
         background: (theme) => alpha(theme.palette.common.white, 0.1),
         fontStyle: 'normal',
-        cursor: 'pointer',
+        cursor: isDisabled ? 'default' : 'pointer',
         fontWeight: 500,
         boxSizing: 'border-box',
         position: 'relative',
-        ':hover': {
-          background: (theme) =>
-            `linear-gradient(${theme.palette.grey[600]}, ${
-              theme.palette.grey[600]
-            }) padding-box, linear-gradient(90deg, ${alpha(
-              theme.palette.primary.main,
-              0.4,
-            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
-        },
+        ...(!isDisabled && {
+          ':hover': {
+            background: (theme) =>
+              `linear-gradient(${theme.palette.grey[600]}, ${
+                theme.palette.grey[600]
+              }) padding-box, linear-gradient(90deg, ${alpha(
+                theme.palette.primary.main,
+                0.4,
+              )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
+          },
+        }),
         ...rest?.sx,
       }}
     >
