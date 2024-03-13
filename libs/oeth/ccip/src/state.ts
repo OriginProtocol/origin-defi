@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
 import { createContainer } from 'react-tracked';
@@ -62,16 +62,17 @@ const defaultState: BridgeState = {
 
 const container = createContainer(() => useState(defaultState));
 export const BridgeProvider = container.Provider;
+
 export const useBridgeState = () => {
   const [state, setState] = container.useTracked();
   return {
     state,
-    toggleChain: () => {
+    toggleChain: useCallback(() => {
       setState((state) => ({
         ...state,
         srcChain: state.dstChain,
         dstChain: state.srcChain,
       }));
-    },
+    }, [setState]),
   };
 };

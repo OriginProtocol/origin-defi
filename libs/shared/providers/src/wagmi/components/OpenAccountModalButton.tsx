@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { mergeDeepRight } from 'ramda';
@@ -38,8 +37,9 @@ export const OpenAccountModalButton = ({
           return (
             <Button
               {...(disconnectedProps
-                ? (mergeDeepRight(props, disconnectedProps) as any)
+                ? (mergeDeepRight(props, disconnectedProps) as ButtonProps)
                 : props)}
+              variant={'nav'}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -52,8 +52,9 @@ export const OpenAccountModalButton = ({
           return (
             <Button
               {...props}
-              onClick={handleClick(openChainModal)}
+              variant={'nav'}
               color="warning"
+              onClick={handleClick(openChainModal)}
             >
               {intl.formatMessage({
                 defaultMessage: 'Wrong Network',
@@ -65,8 +66,9 @@ export const OpenAccountModalButton = ({
         return (
           <AccountButton
             {...(connectedProps
-              ? (mergeDeepRight(props, connectedProps) as any)
+              ? (mergeDeepRight(props, connectedProps) as ButtonProps)
               : props)}
+            variant={'nav'}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
               if (props?.onClick) {
                 props.onClick(evt);

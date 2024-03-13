@@ -1,4 +1,4 @@
-import { alpha, createTheme } from '@mui/material';
+import { alpha, createTheme, lighten } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
 import {
   FaCircleCheckRegular,
@@ -341,6 +341,23 @@ export const theme = createTheme({
             '&:disabled': {
               opacity: 0.5,
               color: theme.palette.text.primary,
+            },
+          }),
+        },
+        {
+          props: { variant: 'nav' },
+          style: ({ theme }) => ({
+            background: lighten(theme.palette.background.paper, 0.05),
+            '&:hover': {
+              background: lighten(theme.palette.background.paper, 0.1),
+            },
+            minWidth: 36,
+            minHeight: 36,
+            [base.breakpoints.up('md')]: {
+              paddingX: 2,
+              paddingY: 0,
+              minWidth: 44,
+              minHeight: 44,
             },
           }),
         },

@@ -21,10 +21,14 @@ import type { Chain } from 'viem/chains';
 
 import type { BridgeActivity } from '../state';
 
-const activityRowSx: SxProps = { height: 56 };
 const activityHeaderSx: SxProps = {
-  ...activityRowSx,
-  borderBottom: 'solid 1px divider',
+  color: 'text.secondary',
+};
+const activityContentSx: SxProps = {
+  height: { xs: 40, sm: 56 },
+  fontSize: '.75rem',
+  display: 'flex',
+  alignItems: 'center',
 };
 export const BridgeActivityCard = () => {
   const intl = useIntl();
@@ -32,41 +36,62 @@ export const BridgeActivityCard = () => {
   return (
     <Card sx={{ width: { xs: 350, sm: 550 } }}>
       <CardHeader title={'Bridging activity'} />
-      <CardContent>
+      {/* Table Header */}
+      <CardContent
+        sx={{
+          paddingY: 2,
+          borderBottomWidth: 1,
+          borderBottomStyle: 'solid',
+          borderBottomColor: 'divider',
+        }}
+      >
         <Grid2 container spacing={1} columns={15}>
-          {/* Header */}
-          <Grid2 xs={4} sx={activityHeaderSx} color={'text.secondary'}>
+          <Grid2 xs={5} sm={4} sx={activityHeaderSx}>
             Amount
           </Grid2>
-          <Grid2 xs={3} sx={activityHeaderSx} color={'text.secondary'}>
+          <Grid2 xs={4} sm={3} sx={activityHeaderSx}>
             Route
           </Grid2>
-          <Grid2 xs={3} sx={activityHeaderSx} color={'text.secondary'}>
+          <Grid2 xs={3} sx={activityHeaderSx}>
             Date
           </Grid2>
-          <Grid2 xs={4} sx={activityHeaderSx} color={'text.secondary'}>
+          <Grid2
+            xs={2}
+            sm={4}
+            sx={activityHeaderSx}
+            textAlign={{ xs: 'center', sm: 'left' }}
+          >
             Status
           </Grid2>
-          <Grid2 xs={1} sx={activityHeaderSx} color={'text.secondary'}>
-            Txn
+          <Grid2 xs={1} sm={1} sx={activityHeaderSx} textAlign={'center'}>
+            Tx
           </Grid2>
-          {/* Content */}
+        </Grid2>
+      </CardContent>
+      {/* Table Content */}
+      <CardContent>
+        <Grid2 container spacing={1} columns={15}>
           {state.activity.map((a: BridgeActivity, i: number) => {
             return (
               <Fragment key={`${a.tx}-${i}`}>
-                <Grid2 xs={4} sx={activityRowSx}>
+                <Grid2 xs={5} sm={4} sx={activityContentSx}>
                   <BridgeAmount token={a.token} amount={a.amount} />
                 </Grid2>
-                <Grid2 xs={3} sx={activityRowSx}>
+                <Grid2 xs={4} sm={3} sx={activityContentSx}>
                   <BridgeRoute srcChain={a.srcChain} dstChain={a.dstChain} />
                 </Grid2>
-                <Grid2 xs={3} sx={activityRowSx}>
+                <Grid2 xs={3} sx={activityContentSx}>
                   {intl.formatDate(new Date(a.timestamp))}
                 </Grid2>
-                <Grid2 xs={4} sx={activityRowSx}>
+                <Grid2
+                  xs={2}
+                  sm={4}
+                  sx={activityContentSx}
+                  justifyContent={{ xs: 'center', sm: 'left' }}
+                >
                   <BridgeStatus status={a.status} />
                 </Grid2>
-                <Grid2 xs={1} sx={activityRowSx}>
+                <Grid2 xs={1} sx={activityContentSx} justifyContent={'center'}>
                   <Link
                     href={`https://etherscan.io/tx/${a.tx}`}
                     target="_blank"
@@ -103,10 +128,20 @@ export const BridgeAmount = (props: { token: Token; amount: bigint }) => {
 };
 
 export const BridgeRoute = (props: { srcChain: Chain; dstChain: Chain }) => (
-  <Stack direction={'row'} spacing={'3px'} alignItems={'center'}>
-    <ChainIcon chainId={props.srcChain.id} sx={{ height: 20 }} />
-    <FaArrowRightRegular sx={{ height: 18 }} />
-    <ChainIcon chainId={props.dstChain.id} sx={{ height: 20 }} />
+  <Stack
+    direction={'row'}
+    spacing={{ xs: '1px', sm: '3px' }}
+    alignItems={'center'}
+  >
+    <ChainIcon
+      chainId={props.srcChain.id}
+      sx={{ height: { xs: 14, sm: 20 } }}
+    />
+    <FaArrowRightRegular sx={{ height: { xs: 12, sm: 18 } }} />
+    <ChainIcon
+      chainId={props.dstChain.id}
+      sx={{ height: { xs: 14, sm: 20 } }}
+    />
   </Stack>
 );
 
@@ -115,45 +150,69 @@ export const BridgeStatus = (props: {
   eta?: number;
 }) => {
   const intl = useIntl();
+  const hideWhenXs: SxProps = { display: { xs: 'none', sm: 'inherit' } };
   if (props.status === 'complete') {
     return (
-      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        spacing={1}
+        justifyContent={{ xs: 'center', sm: 'left' }}
+      >
         <FaCircleCheckRegular
           sx={{
             color: '#66FE90AA',
             fontSize: 20,
           }}
         />
-        <Box>{intl.formatMessage({ defaultMessage: 'Transferred' })}</Box>
+        <Box sx={hideWhenXs}>
+          {intl.formatMessage({ defaultMessage: 'Transferred' })}
+        </Box>
       </Stack>
     );
   }
   if (props.status === 'processing') {
     return (
       <Box>
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        <Stack
+          direction={'row'}
+          alignItems={'center'}
+          spacing={1}
+          justifyContent={{ xs: 'center', sm: 'left' }}
+        >
           <FaLoaderDuotone
             sx={{
               color: '#FFD84E',
               fontSize: 20,
             }}
           />
-          <Box>{intl.formatMessage({ defaultMessage: 'Processing' })}</Box>
+          <Box sx={hideWhenXs}>
+            {intl.formatMessage({ defaultMessage: 'Processing' })}
+          </Box>
         </Stack>
-        <Box color={'text.secondary'}>~5 mins left</Box>
+        <Box sx={hideWhenXs} color={'text.secondary'}>
+          ~5 mins left
+        </Box>
       </Box>
     );
   }
   if (props.status === 'failed') {
     return (
-      <Stack direction={'row'} alignItems={'center'} spacing={1}>
+      <Stack
+        direction={'row'}
+        alignItems={'center'}
+        spacing={1}
+        justifyContent={{ xs: 'center', sm: 'left' }}
+      >
         <FaCircleExclamationRegular
           sx={{
             color: '#FF4E4E',
             fontSize: 20,
           }}
         />
-        <Box>{intl.formatMessage({ defaultMessage: 'Failed' })}</Box>
+        <Box sx={hideWhenXs}>
+          {intl.formatMessage({ defaultMessage: 'Failed' })}
+        </Box>
       </Stack>
     );
   }
