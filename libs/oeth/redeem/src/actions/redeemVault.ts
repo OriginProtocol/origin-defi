@@ -1,4 +1,4 @@
-import { contracts, tokens } from '@origin/shared/contracts';
+import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import {
@@ -58,8 +58,6 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const { address } = getAccount(config);
-
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   try {
@@ -68,10 +66,8 @@ const estimateGas: EstimateGas = async (
       abi: contracts.mainnet.OETHVault.abi,
       functionName: 'redeem',
       args: [amountIn, minAmountOut],
-      account: address,
+      account: whales.mainnet.OETH,
     });
-
-    return gasEstimate;
   } catch {
     gasEstimate = 1500000n;
   }
