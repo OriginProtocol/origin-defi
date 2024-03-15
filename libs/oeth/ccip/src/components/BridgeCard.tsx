@@ -68,7 +68,7 @@ export const BridgeCard = () => {
           {state.approval && (
             <ConnectedButton
               fullWidth
-              disabled={state.approval.status === 'disabled'}
+              disabled={!state.approval.enabled}
               onClick={state.approval.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
@@ -79,7 +79,7 @@ export const BridgeCard = () => {
           {state.bridge && (
             <ConnectedButton
               fullWidth
-              disabled={state.bridge.status === 'disabled'}
+              disabled={!state.bridge.enabled}
               onClick={state.bridge.action}
               sx={{ mt: 1.5 }}
               variant={'action'}

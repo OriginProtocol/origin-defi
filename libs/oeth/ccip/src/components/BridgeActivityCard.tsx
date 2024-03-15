@@ -93,7 +93,7 @@ export const BridgeActivityCard = () => {
                 </Grid2>
                 <Grid2 xs={1} sx={activityContentSx} justifyContent={'center'}>
                   <Link
-                    href={`https://etherscan.io/tx/${a.tx}`}
+                    href={`https://ccip.chain.link/msg/${a.tx}`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                   >

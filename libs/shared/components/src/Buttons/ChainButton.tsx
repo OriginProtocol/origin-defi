@@ -32,6 +32,7 @@ export const ChainButton = ({
         gap: 1,
         alignItems: 'center',
         ...rest?.sx,
+        paddingLeft: 1,
       }}
     >
       <ChainIcon chainId={chain.id} sx={{ height: '28px' }} {...iconProps} />

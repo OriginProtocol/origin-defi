@@ -256,7 +256,7 @@ export const theme = createTheme({
         containedPrimary: ({ theme }) => ({
           background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
-            background: alpha(theme.palette.common.white, 0.01),
+            background: alpha(theme.palette.common.white, 0.1),
           },
         }),
         containedSecondary: ({ theme }) => ({

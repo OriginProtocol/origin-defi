@@ -9,30 +9,45 @@ import {
 } from '@mui/material';
 import { ChainIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useWatchBalance } from '@origin/shared/providers';
+import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
 import { formatAmount } from '@origin/shared/utils';
+import { useIntl } from 'react-intl';
 import { arbitrum, mainnet } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
 export const BalancesCard = (params: { title: string }) => {
+  const intl = useIntl();
+  const { isConnected } = useAccount();
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader title={params.title} />
       <CardContent>
-        <Stack spacing={3}>
-          <BalanceRow
-            chain={mainnet}
-            token={tokens.mainnet.wOETH}
-            amount={0n}
-          />
-          <BalanceRow
-            chain={arbitrum}
-            token={tokens.arbitrum.wOETH}
-            amount={0n}
-          />
-        </Stack>
+        {isConnected ? (
+          <Stack spacing={3}>
+            <BalanceRow
+              chain={mainnet}
+              token={tokens.mainnet.wOETH}
+              amount={0n}
+            />
+            <BalanceRow
+              chain={arbitrum}
+              token={tokens.arbitrum.wOETH}
+              amount={0n}
+            />
+          </Stack>
+        ) : (
+          <Stack spacing={3} alignItems={'center'}>
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'Connect your wallet to see your balances',
+              })}
+            </Typography>
+            <ConnectedButton />
+          </Stack>
+        )}
       </CardContent>
     </Card>
   );
