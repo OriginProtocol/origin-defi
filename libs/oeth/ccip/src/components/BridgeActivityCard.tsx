@@ -34,7 +34,7 @@ export const BridgeActivityCard = () => {
   const intl = useIntl();
   const { state } = useBridgeState();
   return (
-    <Card sx={{ width: { xs: 350, sm: 550 } }}>
+    <Card sx={{ width: '100%' }}>
       <CardHeader title={'Bridging activity'} />
       {/* Table Header */}
       <CardContent

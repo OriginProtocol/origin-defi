@@ -157,7 +157,7 @@ const NavButtons = () => {
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
-          gap: { xs: 1, md: 2 },
+          gap: { xs: 1, sm: 1.5, lg: 2 },
         }}
       >
         <Button
@@ -187,6 +187,9 @@ const NavButtons = () => {
             fontWeight: 500,
             padding: {
               xs: 0,
+            },
+            paddingX: {
+              xs: !isConnected ? 2 : undefined,
             },
             paddingLeft: {
               lg: 1.5,
@@ -226,16 +229,18 @@ const NavButtons = () => {
           ]}
         />
         <ChainSwitcherButton />
-        <ActivityButton
-          onClick={() => {
-            trackEvent({ name: 'open_activity' });
-          }}
-          sx={{
-            padding: {
-              xs: 0,
-            },
-          }}
-        />
+        {isConnected && (
+          <ActivityButton
+            onClick={() => {
+              trackEvent({ name: 'open_activity' });
+            }}
+            sx={{
+              padding: {
+                xs: 0,
+              },
+            }}
+          />
+        )}
       </Box>
       <Divider
         sx={{

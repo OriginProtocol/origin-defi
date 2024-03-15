@@ -3,7 +3,12 @@ import type { Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-export type ActivityType = 'swap' | 'approval' | 'redeem' | 'transaction';
+export type ActivityType =
+  | 'swap'
+  | 'approval'
+  | 'redeem'
+  | 'transaction'
+  | 'bridge';
 
 export type ActivityStatus = 'pending' | 'success' | 'error';
 

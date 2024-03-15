@@ -60,40 +60,44 @@ export const useWatchContracts = <T extends Abi | readonly unknown[]>(
 export const useWatchBalance = (config?: {
   token?: HexAddress;
   address?: HexAddress;
+  chainId?: number;
 }) => {
-  const { address } = useAccount();
-  const addr = config?.address ?? address;
+  const { address: connectedAddress } = useAccount();
+  const address = config?.address ?? connectedAddress;
   const { data: blockNumber } = useBlockNumber({
     watch: true,
-    query: { enabled: !!addr },
+    query: { enabled: !!address },
+    chainId: config?.chainId,
   });
   const prev = usePrevious(Number(blockNumber));
   const resNative = useBalance({
-    address: config?.address ?? address,
+    address,
     query: {
-      enabled: isNilOrEmpty(config?.token) && !!addr,
+      enabled: isNilOrEmpty(config?.token) && !!address,
       select: (data) => data.value,
     },
+    chainId: config?.chainId,
   });
   const resToken = useReadContract({
     address: config?.token,
     abi: erc20Abi,
     functionName: 'balanceOf',
-    args: [addr ?? ZERO_ADDRESS],
+    args: [address ?? ZERO_ADDRESS],
     query: {
-      enabled: !!config?.token && !!addr,
+      enabled: !!config?.token && !!address,
     },
+    chainId: config?.chainId,
   });
 
   useEffect(() => {
-    if (Number(blockNumber) !== prev && !isNilOrEmpty(addr)) {
+    if (Number(blockNumber) !== prev && !isNilOrEmpty(address)) {
       if (isNilOrEmpty(config?.token)) {
         resNative?.refetch();
       } else {
         resToken?.refetch();
       }
     }
-  }, [addr, blockNumber, config?.token, prev, resNative, resToken]);
+  }, [address, blockNumber, config?.token, prev, resNative, resToken]);
 
   return isNilOrEmpty(config?.token) ? resNative : resToken;
 };

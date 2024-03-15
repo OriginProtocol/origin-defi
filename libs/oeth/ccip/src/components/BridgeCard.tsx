@@ -17,10 +17,10 @@ import type { Chain } from 'viem/chains';
 
 export const BridgeCard = () => {
   const intl = useIntl();
-  const { state } = useBridgeState();
+  const { state, changeAmount } = useBridgeState();
 
   return (
-    <Card sx={{ width: { xs: 350, sm: 550 } }}>
+    <Card sx={{ width: '100%' }}>
       <CardHeader title={'Bridge'} />
       <CardContent>
         <Stack spacing={2}>
@@ -28,7 +28,10 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={true}
-            amount={0n}
+            amount={state.amount}
+            onAmountChange={changeAmount}
+            balance={state.srcBalance}
+            isBalanceLoading={state.isSrcBalanceLoading}
             token={tokens.mainnet.wOETH}
             {...tokenInputStyleProps}
           />
@@ -45,6 +48,8 @@ export const BridgeCard = () => {
             isConnected={true}
             isTokenClickDisabled={true}
             amount={0n}
+            balance={state.dstBalance}
+            isBalanceLoading={state.isDstBalanceLoading}
             token={tokens.mainnet.wOETH}
             {...disabledTokenInputStyleProps}
           />
@@ -60,15 +65,29 @@ export const BridgeCard = () => {
             </Box>
             <Box>7 minutes (TODO)</Box>
           </Stack>
-          <ConnectedButton
-            fullWidth
-            disabled={true}
-            onClick={undefined}
-            sx={{ mt: 1.5 }}
-            variant={'action'}
-          >
-            {intl.formatMessage({ defaultMessage: 'Enter an amount' })}
-          </ConnectedButton>
+          {state.approval && (
+            <ConnectedButton
+              fullWidth
+              disabled={state.approval.status === 'disabled'}
+              onClick={state.approval.action}
+              sx={{ mt: 1.5 }}
+              variant={'action'}
+            >
+              {state.approval.message}
+            </ConnectedButton>
+          )}
+          {state.bridge && (
+            <ConnectedButton
+              fullWidth
+              disabled={state.bridge.status === 'disabled'}
+              onClick={state.bridge.action}
+              sx={{ mt: 1.5 }}
+              variant={'action'}
+            >
+              {state.bridge.message}
+            </ConnectedButton>
+          )}
+
           <Stack
             direction={'row'}
             justifyContent={'center'}
