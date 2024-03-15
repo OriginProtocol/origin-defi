@@ -25,6 +25,7 @@ import {
 import type { Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
+import type { Currency } from '../prices/types';
 import type {
   EstimatedSwapRoute,
   SwapRoute,
@@ -32,26 +33,31 @@ import type {
   TokenSource,
 } from './types';
 
-export const useHandleAmountInChange = () => {
-  const [, setSwapState] = useSwapState();
+export const useRoutingSwapState = <S = string, M = object>() => {
+  const [{ tokenIn, tokenOut, selectedSwapRoute, swapActions, swapRoutes }] =
+    useSwapState();
 
-  return useCallback(
-    (amount: bigint) => {
-      setSwapState((state) => {
-        if (state.amountIn !== amount) {
-          return {
-            ...state,
-            amountIn: amount,
-            isSwapRoutesLoading: amount !== 0n,
-            status: amount !== 0n ? 'swapRoutesLoading' : 'idle',
-          };
-        }
+  if (!swapActions || !tokenIn || !tokenOut) {
+    return { action: null, route: null };
+  }
 
-        return state;
-      });
-    },
-    [setSwapState],
-  );
+  if (selectedSwapRoute) {
+    return {
+      action: swapActions[selectedSwapRoute.action],
+      route: selectedSwapRoute as unknown as SwapRoute<S, M>,
+    };
+  }
+
+  const availableRoutes = getAvailableRoutes(swapRoutes, tokenIn, tokenOut);
+
+  if (availableRoutes) {
+    return {
+      action: swapActions[availableRoutes[0].action],
+      route: availableRoutes[0] as SwapRoute<S, M>,
+    };
+  }
+
+  return { action: null, route: null };
 };
 
 export const useTokenOptions = <M = object>(): {
@@ -108,6 +114,28 @@ export const useTokenOptions = <M = object>(): {
       tokensIn,
       tokensOut,
     ],
+  );
+};
+
+export const useHandleAmountInChange = () => {
+  const [, setSwapState] = useSwapState();
+
+  return useCallback(
+    (amount: bigint) => {
+      setSwapState((state) => {
+        if (state.amountIn !== amount) {
+          return {
+            ...state,
+            amountIn: amount,
+            isSwapRoutesLoading: amount !== 0n,
+            status: amount !== 0n ? 'swapRoutesLoading' : 'idle',
+          };
+        }
+
+        return state;
+      });
+    },
+    [setSwapState],
   );
 };
 
@@ -665,13 +693,13 @@ export const useHandleSwap = () => {
   ]);
 };
 
-export const useSwapperPrices = () => {
+export const useSwapperPrices = (currency?: Currency) => {
   const [{ swapRoutes }] = useSwapState();
   const tokensIn = getAllAvailableTokens(swapRoutes, 'tokenIn');
   const tokensOut = getAllAvailableTokens(swapRoutes, 'tokenOut');
   const keys = uniq([
-    ...tokensIn.map((t) => getTokenPriceKey(t)),
-    ...tokensOut.map((t) => getTokenPriceKey(t)),
+    ...tokensIn.map((t) => getTokenPriceKey(t, currency)),
+    ...tokensOut.map((t) => getTokenPriceKey(t, currency)),
   ]);
 
   return useTokenPrices(keys);

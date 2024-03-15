@@ -1,7 +1,12 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithReferral } from '@origin/shared/providers';
 import { subtractSlippage, ZERO_ADDRESS } from '@origin/shared/utils';
-import { getAccount, getPublicClient, writeContract } from '@wagmi/core';
+import {
+  getAccount,
+  getPublicClient,
+  readContract,
+  writeContract,
+} from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
 
 import type {
@@ -9,8 +14,24 @@ import type {
   EstimateAmount,
   EstimateGas,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+
+const isRouteAvailable: IsRouteAvailable = async (config, { amountIn }) => {
+  try {
+    const poolBalance = await readContract(config, {
+      address: tokens.mainnet.primeETH.address,
+      abi: tokens.mainnet.primeETH.abi,
+      functionName: 'balanceOf',
+      args: [contracts.mainnet.uniswapV3WETHPrimeETHPool.address],
+    });
+
+    return poolBalance > amountIn;
+  } catch {}
+
+  return false;
+};
 
 const estimateAmount: EstimateAmount = async (
   config,
@@ -76,10 +97,10 @@ const estimateGas: EstimateGas = async (
 
 const estimateRoute: EstimateRoute = async (
   config,
-  { tokenIn, tokenOut, amountIn, route, slippage },
+  { tokenIn, tokenOut, amountIn, route },
 ) => {
   const [estimatedAmount, allowanceAmount] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn, slippage }),
+    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
     allowance(config, { tokenIn, tokenOut }),
   ]);
 
@@ -95,7 +116,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async () => {
   return maxUint256;
 };
 
@@ -136,6 +157,7 @@ const swap: Swap = async (
 };
 
 export default {
+  isRouteAvailable,
   estimateAmount,
   estimateGas,
   estimateRoute,

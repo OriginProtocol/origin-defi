@@ -423,10 +423,6 @@ export const theme = createTheme({
         enableColorScheme: true,
       },
       styleOverrides: `
-          html {
-            scrollbar-gutter: stable;
-          }
-
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
@@ -542,11 +538,14 @@ export const theme = createTheme({
       },
     },
     MuiLink: {
+      defaultProps: {
+        underline: 'none',
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           backgroundImage: 'none',
           color: theme.palette.text.primary,
-          textDecoration: 'none',
+          textDecorationColor: 'inherit',
         }),
       },
     },

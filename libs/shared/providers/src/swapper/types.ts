@@ -26,7 +26,7 @@ export type IsRouteAvailable = (
 
 export type EstimateAmount = (
   config: Config,
-  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn' | 'slippage'>,
+  args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
@@ -110,7 +110,8 @@ export type SwapStatus =
   | 'waitingForTransaction'
   | 'transactionSuccess'
   | 'transactionRejected'
-  | 'transactionFailure';
+  | 'transactionFailure'
+  | 'noAvailableRoute';
 
 export type SwapState = {
   swapActions: SwapActions;

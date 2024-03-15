@@ -81,7 +81,7 @@ export const AdCards = (props: StackProps) => {
         <Typography variant="body2">
           {intl.formatMessage({
             defaultMessage:
-              'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST.',
+              'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 25th at 12pm PDT.',
           })}
         </Typography>
       ),
@@ -106,7 +106,7 @@ export const AdCards = (props: StackProps) => {
               link: (
                 <Link
                   color="primary.main"
-                  href=""
+                  href="https://twitter.com/PrimeStaked/status/1767265161876824362"
                   target="_blank"
                   rel="noopener noreferrer nofollow"
                 >

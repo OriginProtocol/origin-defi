@@ -201,6 +201,12 @@
       "value": "I agree"
     }
   ],
+  "6D95sz": [
+    {
+      "type": 0,
+      "value": "LST deposits currently paused"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
@@ -223,6 +229,12 @@
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "7iWIz9": [
+    {
+      "type": 0,
+      "value": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 25th at 12pm PDT."
     }
   ],
   "8XZjyW": [
@@ -317,6 +329,12 @@
       "value": "1.1 primeETH XP Boost"
     }
   ],
+  "DGg45W": [
+    {
+      "type": 0,
+      "value": "PrimeStaked"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -397,18 +415,6 @@
       "value": "symbolOut"
     }
   ],
-  "F9pOEE": [
-    {
-      "type": 0,
-      "value": "More EigenLayer assets coming soon..."
-    }
-  ],
-  "FNgMBo": [
-    {
-      "type": 0,
-      "value": "Swap with Zapper"
-    }
-  ],
   "FcLgSc": [
     {
       "type": 0,
@@ -437,12 +443,6 @@
     {
       "type": 0,
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-    }
-  ],
-  "I0B0+W": [
-    {
-      "type": 0,
-      "value": "Zapper"
     }
   ],
   "IxGtTe": [
@@ -491,12 +491,6 @@
     {
       "type": 0,
       "value": "Sorry, we can't seem to find that page"
-    }
-  ],
-  "L14L9A": [
-    {
-      "type": 0,
-      "value": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST."
     }
   ],
   "LUdwbC": [
@@ -551,6 +545,12 @@
     {
       "type": 0,
       "value": "Your operation has been executed"
+    }
+  ],
+  "OBfWz0": [
+    {
+      "type": 0,
+      "value": "No available route"
     }
   ],
   "OkXVGX": [

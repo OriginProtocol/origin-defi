@@ -19,13 +19,14 @@ import { useReadContracts } from 'wagmi';
 import type { CardProps } from '@mui/material';
 
 export const assets = [
+  tokens.mainnet.WETH,
   tokens.mainnet.OETH,
   tokens.mainnet.stETH,
-  tokens.mainnet.mETH,
-  tokens.mainnet.ETHx,
-  tokens.mainnet.sfrxETH,
-  tokens.mainnet.swETH,
   tokens.mainnet.rETH,
+  tokens.mainnet.ETHx,
+  tokens.mainnet.swETH,
+  tokens.mainnet.sfrxETH,
+  tokens.mainnet.mETH,
 ];
 
 export const AssetDepositedCard = (props: CardProps) => {
@@ -51,11 +52,18 @@ export const AssetDepositedCard = (props: CardProps) => {
             <Grid2 key={a.symbol} xs={6}>
               <Stack spacing={0.5}>
                 <Stack direction="row" gap={0.5} alignItems="center">
-                  <TokenIcon token={a} sx={{ width: 20, height: 20 }} />
+                  <TokenIcon
+                    token={a.symbol === 'WETH' ? tokens.mainnet.ETH : a}
+                    sx={{ width: 20, height: 20 }}
+                  />
                   <Typography fontWeight="medium" color="text.secondary">
-                    {a.symbol}
+                    {a.symbol === 'WETH' ? tokens.mainnet.ETH.symbol : a.symbol}
                   </Typography>
-                  <InfoTooltip tooltipLabel={a.name} />
+                  <InfoTooltip
+                    tooltipLabel={
+                      a.symbol === 'WETH' ? tokens.mainnet.ETH.name : a.name
+                    }
+                  />
                 </Stack>
                 <LoadingLabel
                   isLoading={isLoading}

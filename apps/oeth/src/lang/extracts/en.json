@@ -119,6 +119,9 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
+  "FcLgSc": {
+    "defaultMessage": "Learn More."
+  },
   "H5+NAX": {
     "defaultMessage": "Balance"
   },
@@ -163,6 +166,9 @@
   },
   "O1F5Cx": {
     "defaultMessage": "Connect your wallet to see your history"
+  },
+  "OBfWz0": {
+    "defaultMessage": "No available route"
   },
   "OwO+Nr": {
     "defaultMessage": "Mint"
@@ -247,6 +253,9 @@
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "fMe6+p": {
+    "defaultMessage": "We're working to simplify and strengthen OETH, using LSTs to mint is disabled. {link}"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"

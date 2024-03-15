@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Divider,
+  Stack,
   Tab,
   Tabs,
   useMediaQuery,
@@ -23,6 +24,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';
+import { DisableLstBanner } from './DisableLstBanner';
 
 import type { BoxProps } from '@mui/material';
 
@@ -32,14 +34,12 @@ export function Topnav(props: BoxProps) {
       <Box
         sx={{
           height: (theme) => ({
-            xs: '112px',
-            md: `${theme.mixins.toolbar.height}px`,
+            xs: '162px',
+            md: `105px`,
           }),
         }}
       />
-      <Box
-        component="nav"
-        {...props}
+      <Stack
         sx={(theme) => ({
           position: 'fixed',
           top: 0,
@@ -49,8 +49,8 @@ export function Topnav(props: BoxProps) {
           backgroundColor: alpha(theme.palette.background.default, 0.6),
           backdropFilter: 'blur(15px)',
           height: {
-            xs: '112px',
-            md: `${theme.mixins.toolbar.height}px`,
+            xs: '162px',
+            md: `105px`,
           },
           display: 'grid',
           borderBottom: {
@@ -74,10 +74,11 @@ export function Topnav(props: BoxProps) {
           },
         })}
       >
+        <DisableLstBanner />
         <OriginEtherLogo />
         <RouteLinks />
         <NavButtons />
-      </Box>
+      </Stack>
     </>
   );
 }

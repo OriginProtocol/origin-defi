@@ -21,34 +21,32 @@ import {
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
-  getAvailableRoutes,
   SwapProvider,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
   useIsNativeCurrency,
+  useRoutingSwapState,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { isBefore } from 'date-fns';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useAssetPrice } from '../hooks';
+import { useExchangeRate } from '../hooks';
 import { TokenInput } from './TokenInput';
 import { TokenSelectModal } from './TokenSelectModal';
 import { TransactionProgressModal } from './TransactionProgressModal';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type {
-  SwapRoute,
-  SwapState,
-  TokenSource,
-} from '@origin/shared/providers';
+import type { SwapState, TokenSource } from '@origin/shared/providers';
 
 import type { Meta, RestakeAction } from '../types';
 
@@ -98,17 +96,17 @@ function SwapperWrapped({
       isApprovalLoading,
       isApprovalWaitingForSignature,
       swapActions,
-      swapRoutes,
       status,
     },
   ] = useSwapState();
+  const { action, route } = useRoutingSwapState<RestakeAction, Meta>();
   const { tokensIn } = useTokenOptions<Meta>();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: assetPrice, isLoading: isAssetPriceLoading } =
-    useAssetPrice(tokenIn);
+  const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
+    useExchangeRate();
   const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
@@ -129,16 +127,17 @@ function SwapperWrapped({
     handleTokenChange(tokenSource, value);
   };
 
-  const availableRoute = getAvailableRoutes<RestakeAction, Meta>(
-    swapRoutes as SwapRoute<RestakeAction, Meta>[],
-    tokenIn,
-    tokenOut,
-  )[0];
-  const route = swapActions[availableRoute?.action]?.routeLabel
-    ? intl.formatMessage(swapActions[availableRoute?.action]?.routeLabel)
+  const routeLabel = action?.routeLabel
+    ? intl.formatMessage(action.routeLabel)
     : null;
-  const isPaused = availableRoute.action === 'restake';
-  const boost = availableRoute?.meta?.boost;
+  const isPaused = route?.action === 'restake' && tokenIn.symbol !== 'WETH';
+  const boost = route?.meta?.boost;
+  const exchangeRate =
+    amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
+  const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
+  const isWarningLabelVisible =
+    selectedSwapRoute?.action === 'uniswap' &&
+    isBefore(new Date(), new Date('25 March 2024 12:00 PDT'));
 
   const needsApproval =
     isConnected &&
@@ -161,7 +160,7 @@ function SwapperWrapped({
           ? intl.formatMessage(
               swapActions[selectedSwapRoute.action].buttonLabel,
             )
-          : '';
+          : intl.formatMessage({ defaultMessage: 'No available route' });
   const amountInInputDisabled = isSwapLoading || isApprovalLoading || isPaused;
   const approveButtonDisabled =
     isPaused ||
@@ -275,7 +274,7 @@ function SwapperWrapped({
           />
         </CardContent>
         <Divider />
-        <Collapse in={!isPaused}>
+        <Collapse in={isInfoPanelVisible}>
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
           >
@@ -294,7 +293,14 @@ function SwapperWrapped({
                   fontWeight="medium"
                   fontSize={16}
                 >
-                  {formatAmount(amountOut)}
+                  {intl.formatNumber(
+                    +formatUnits(amountOut, tokenOut.decimals),
+                    {
+                      roundingMode: 'floor',
+                      maximumFractionDigits: 5,
+                      minimumFractionDigits: 2,
+                    },
+                  )}
                 </LoadingLabel>
                 <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
                 <Typography fontWeight="medium" fontSize={16}>
@@ -311,7 +317,7 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
               </Typography>
               <LoadingLabel
-                isLoading={isAssetPriceLoading}
+                isLoading={isSwapRoutesLoading || isDefaultExchangeRateLoading}
                 sWidth={140}
                 fontWeight="medium"
               >
@@ -320,10 +326,10 @@ function SwapperWrapped({
                     defaultMessage: '{rate} {token} = 1 primeETH',
                   },
                   {
-                    rate: intl.formatNumber(assetPrice ?? 0 / 100, {
+                    rate: intl.formatNumber(exchangeRate ?? 0, {
                       roundingMode: 'floor',
-                      maximumFractionDigits: 4,
-                      minimumFractionDigits: 4,
+                      maximumFractionDigits: 5,
+                      minimumFractionDigits: 2,
                     }),
                     token: tokenIn.symbol,
                   },
@@ -339,12 +345,38 @@ function SwapperWrapped({
                 {intl.formatMessage({ defaultMessage: 'Route:' })}
               </Typography>
               <Stack>
-                <Typography fontWeight="medium">{route}</Typography>
+                <Typography fontWeight="medium">{routeLabel}</Typography>
               </Stack>
             </Stack>
           </CardContent>
           <Divider />
         </Collapse>
+        <Collapse in={isWarningLabelVisible}>
+          <Stack px={3} pt={3}>
+            <Stack
+              sx={{
+                border: '1px solid',
+                borderColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.7),
+                borderRadius: 2,
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.secondary.main, 0.1),
+                p: 1,
+                width: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Typography>
+                {intl.formatMessage({
+                  defaultMessage:
+                    'Swaps are eligible for bonus XP & EigenLayer points',
+                })}
+              </Typography>
+            </Stack>
+          </Stack>
+        </Collapse>
+
         <Collapse in={needsApproval}>
           <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
             <Button
@@ -370,6 +402,7 @@ function SwapperWrapped({
             </Button>
           </Box>
         </Collapse>
+
         <CardContent sx={{ backgroundColor: '#fff' }}>
           <ConnectedButton
             fullWidth

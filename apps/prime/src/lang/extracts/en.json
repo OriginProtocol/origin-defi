@@ -86,6 +86,9 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
+  "6D95sz": {
+    "defaultMessage": "LST deposits currently paused"
+  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
@@ -97,6 +100,9 @@
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
+  },
+  "7iWIz9": {
+    "defaultMessage": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 25th at 12pm PDT."
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
@@ -134,6 +140,9 @@
   "CFpVX2": {
     "defaultMessage": "1.1 primeETH XP Boost"
   },
+  "DGg45W": {
+    "defaultMessage": "PrimeStaked"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -158,12 +167,6 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
-  "F9pOEE": {
-    "defaultMessage": "More EigenLayer assets coming soon..."
-  },
-  "FNgMBo": {
-    "defaultMessage": "Swap with Zapper"
-  },
   "FcLgSc": {
     "defaultMessage": "Learn More."
   },
@@ -178,9 +181,6 @@
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-  },
-  "I0B0+W": {
-    "defaultMessage": "Zapper"
   },
   "IxGtTe": {
     "defaultMessage": "+ EigenLayer Points"
@@ -205,9 +205,6 @@
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
-  },
-  "L14L9A": {
-    "defaultMessage": "The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 20th at 12pm PST."
   },
   "LUdwbC": {
     "defaultMessage": "Restake"
@@ -235,6 +232,9 @@
   },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
+  },
+  "OBfWz0": {
+    "defaultMessage": "No available route"
   },
   "OkXVGX": {
     "defaultMessage": "Approve {token}"
