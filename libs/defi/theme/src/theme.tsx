@@ -25,9 +25,10 @@ export const theme = createTheme({
     },
     divider: '#282A32',
     background: {
-      paper: '#1E1F25',
+      paper: '#171619',
       default: '#141214',
       header: '#19191D',
+      highlight: '#1E1F25',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
@@ -390,6 +391,34 @@ export const theme = createTheme({
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+          }
+
+          @font-face { 
+            font-family: "Inter"; 
+            font-weight: 400;
+            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 400;
+            src: url(/fonts/Sailec-Regular.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 500;
+            src: url(/fonts/Sailec-Medium.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 700;
+            src: url(/fonts/Sailec-Bold.otf) format('opentype');
+            font-display: swap;
           }
         `,
     },

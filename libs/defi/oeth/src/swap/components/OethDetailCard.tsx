@@ -15,12 +15,14 @@ import {
   Mix,
   SliderSwitch,
 } from '@origin/shared/components';
+import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   AuraFull,
   BalancerFull,
   ConvexFull,
   CurveFull,
+  FaArrowUpRightRegular,
   FraxFull,
   LidoFull,
   MorphoFull,
@@ -51,8 +53,16 @@ export const OethDetailCard = () => {
         <Collateral />
         <YieldSource />
         <CardContent>
-          <Button>
-            {intl.formatMessage({ defaultMessage: 'OETH analytics' })}
+          <Button
+            color="inherit"
+            fullWidth
+            href={OETH_ANALYTICS_URL}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            sx={{ height: 44, px: 3 }}
+          >
+            {intl.formatMessage({ defaultMessage: 'OETH analytics' })}&nbsp;
+            <FaArrowUpRightRegular />
           </Button>
         </CardContent>
       </Stack>
@@ -138,7 +148,7 @@ function Price() {
         </Typography>
         <InfoTooltip
           tooltipLabel={intl.formatMessage({
-            defaultMessage: 'Asset price in USD',
+            defaultMessage: 'OETH price',
           })}
         />
       </Stack>
@@ -226,7 +236,7 @@ function YieldSource() {
         </Typography>
         <InfoTooltip
           tooltipLabel={intl.formatMessage({
-            defaultMessage: 'Protocols involved in yield generation',
+            defaultMessage: 'Yield strategy protocols',
           })}
         />
       </Stack>

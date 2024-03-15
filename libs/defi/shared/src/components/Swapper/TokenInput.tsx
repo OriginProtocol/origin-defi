@@ -82,7 +82,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
-      <Stack {...rest}>
+      <Stack spacing={2} {...rest}>
         <Box
           sx={{
             display: 'flex',
@@ -91,20 +91,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             gap: 1,
           }}
         >
-          {isAmountLoading ? (
-            <Skeleton width={100} height={36} />
-          ) : (
-            <BigIntInput
-              {...inputProps}
-              value={amount}
-              decimals={decimals}
-              onChange={onAmountChange}
-              disabled={isAmountDisabled}
-              ref={ref}
-              sx={{ flexGrow: 1, height: 36, ...inputProps?.sx }}
-            />
-          )}
-
           <TokenButton
             token={token}
             onClick={onTokenClick}
@@ -115,27 +101,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               ...tokenButtonProps?.sx,
             }}
           />
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            gap: 2.5,
-            marginBlockStart: 1,
-          }}
-        >
-          {isPriceLoading ? (
-            <Skeleton width={50} />
-          ) : !isNilOrEmpty(tokenPriceUsd) ? (
-            <Typography color="text.secondary">
-              {intl.formatNumber(amountUsd, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                currencyDisplay: 'narrowSymbol',
-              })}
-            </Typography>
-          ) : null}
           <Stack
             direction="row"
             alignItems="center"
@@ -166,22 +131,19 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   </Typography>
                   {maxVisible && (
                     <Button
+                      variant="outlined"
+                      color="secondary"
                       onClick={handleMaxClick}
                       disabled={maxDisabled}
                       sx={{
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        borderRadius: 1,
-                        minWidth: 36,
+                        borderRadius: 8,
+                        minWidth: 40,
                         lineHeight: 1,
                         color: 'text.secondary',
                         padding: (theme) => theme.spacing(0.25, 0.5),
-                        background: (theme) =>
-                          alpha(theme.palette.common.white, 0.1),
-                        ':hover': {
-                          background: (theme) => theme.palette.grey[600],
-                        },
                       }}
                     >
                       {intl.formatMessage({ defaultMessage: 'max' })}
@@ -191,6 +153,41 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               )
             ) : null}
           </Stack>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'baseline',
+            gap: 2.5,
+            marginBlockStart: 1,
+          }}
+        >
+          {isAmountLoading ? (
+            <Skeleton width={100} height={36} />
+          ) : (
+            <BigIntInput
+              {...inputProps}
+              value={amount}
+              decimals={decimals}
+              onChange={onAmountChange}
+              disabled={isAmountDisabled}
+              ref={ref}
+              sx={{ flexGrow: 1, height: 36, ...inputProps?.sx }}
+            />
+          )}
+          {isPriceLoading ? (
+            <Skeleton width={50} />
+          ) : !isNilOrEmpty(tokenPriceUsd) ? (
+            <Typography color="text.secondary">
+              {intl.formatNumber(amountUsd, {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                currencyDisplay: 'narrowSymbol',
+              })}
+            </Typography>
+          ) : null}
         </Box>
       </Stack>
     );

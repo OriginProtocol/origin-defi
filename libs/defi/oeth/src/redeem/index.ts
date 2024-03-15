@@ -1,1 +1,1 @@
-export * from './views/RedeemView';
+export * from './routes';

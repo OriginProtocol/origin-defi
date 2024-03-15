@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import {
-  Box,
+  alpha,
   Button,
   Card,
   CardContent,
@@ -18,12 +18,15 @@ import {
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
+  TokenIcon,
+  TokenInput,
 } from '@origin/shared/components';
-import { FaArrowDownRegular, FaGearComplexRegular } from '@origin/shared/icons';
+import { FaGearComplexRegular } from '@origin/shared/icons';
 import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
+  SettingsPopover,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -31,35 +34,23 @@ import {
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
-  useHandleTokenChange,
-  useHandleTokenFlip,
-  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
-  useSlippage,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
-  useTokenOptions,
   useUpdateActivity,
   useWatchBalance,
 } from '@origin/shared/providers';
-import {
-  formatError,
-  isNilOrEmpty,
-  subtractSlippage,
-} from '@origin/shared/utils';
+import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { SettingsPopover } from './SettingsPopover';
-import { SwapRoute } from './SwapRoute';
-import { TokenInput } from './TokenInput';
-import { TokenSelectModal } from './TokenSelectModal';
+import { RedeemActionCard } from './RedeemActionCard';
 
-import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
-import type { SwapState, TokenSource } from '@origin/shared/providers';
+import type { StackProps } from '@mui/material';
+import type { SwapState } from '@origin/shared/providers';
 import type { MouseEvent } from 'react';
 
 export type SwapperProps = Pick<
@@ -67,7 +58,6 @@ export type SwapperProps = Pick<
   'swapActions' | 'swapRoutes' | 'trackEvent'
 > & {
   onError?: (error: Error) => void;
-  buttonsProps?: ButtonProps;
 } & Omit<StackProps, 'onError'>;
 
 export const Swapper = ({
@@ -90,7 +80,7 @@ export const Swapper = ({
       onApproveStart={(state) => {
         const activity = pushActivity({
           ...state,
-          type: 'approval',
+          type: 'redeem',
           status: 'pending',
         });
 
@@ -140,7 +130,7 @@ export const Swapper = ({
       onSwapStart={(state) => {
         const activity = pushActivity({
           ...state,
-          type: 'swap',
+          type: 'redeem',
           status: 'pending',
         });
 
@@ -195,14 +185,11 @@ export const Swapper = ({
 
 function SwapperWrapped({
   onError,
-  buttonsProps,
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const { value: slippage } = useSlippage();
+  const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
-  const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
@@ -220,36 +207,26 @@ function SwapperWrapped({
       trackEvent,
     },
   ] = useSwapState();
-  const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn.address,
   });
-  const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
-  const handleTokenChange = useHandleTokenChange();
-  const handleTokenFlip = useHandleTokenFlip();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
-
-  const handleCloseSelectionModal = () => {
-    setTokenSource(null);
-  };
-
-  const handleSelectToken = (value: Token) => {
-    handleTokenChange(tokenSource, value);
-  };
 
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(evt.currentTarget);
     trackEvent?.({ name: 'open_settings' });
   };
 
+  const estimatedAmount = +formatUnits(
+    selectedSwapRoute?.estimatedAmount ?? 0n,
+    tokenOut.decimals,
+  );
+  const amountOutUsd =
+    (prices?.[getTokenPriceKey(tokenOut)] ?? 1) * estimatedAmount;
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
@@ -292,9 +269,15 @@ function SwapperWrapped({
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
-            title={intl.formatMessage({ defaultMessage: 'Swap' })}
-            action={
-              <>
+            title={
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+              >
+                <Typography>
+                  {intl.formatMessage({ defaultMessage: 'Redeem' })}
+                </Typography>
                 <IconButton
                   onClick={handleSettingClick}
                   sx={{
@@ -310,15 +293,15 @@ function SwapperWrapped({
                   anchorEl={anchorEl}
                   onClose={() => setAnchorEl(null)}
                 />
-              </>
+              </Stack>
             }
           />
-
-          <Box
-            sx={{
-              position: 'relative',
-            }}
+          <CardContent
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
           >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Unstake amount' })}
+            </Typography>
             <TokenInput
               amount={amountIn}
               decimals={tokenIn.decimals}
@@ -326,97 +309,99 @@ function SwapperWrapped({
               balance={balTokenIn as unknown as bigint}
               isBalanceLoading={isBalTokenInLoading}
               token={tokenIn}
-              onTokenClick={() => {
-                setTokenSource('tokenIn');
-              }}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+              isTokenClickDisabled
               isPriceLoading={isPriceLoading}
               isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
               inputProps={{ sx: tokenInputStyles }}
               sx={{
-                p: 3,
+                paddingBlock: 2.5,
+                paddingBlockStart: 2.625,
+                paddingInline: 2,
+                border: '1px solid',
+                borderColor: 'divider',
                 borderTopLeftRadius: (theme) => theme.shape.borderRadius,
                 borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.default',
+                backgroundColor: 'grey.900',
+                borderBottomColor: 'transparent',
+                '&:hover, &:focus-within': {
+                  borderColor: 'transparent',
+                },
+                '&:hover': {
+                  background: (theme) =>
+                    `linear-gradient(${theme.palette.grey[900]}, ${
+                      theme.palette.grey[900]
+                    }) padding-box, linear-gradient(90deg, ${alpha(
+                      theme.palette.primary.main,
+                      0.4,
+                    )} 0%, ${alpha(
+                      theme.palette.primary.dark,
+                      0.4,
+                    )} 100%) border-box;`,
+                },
+                '&:focus-within': {
+                  background: (theme) =>
+                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+                },
               }}
             />
-            <TokenInput
-              amount={amountOut}
-              decimals={tokenOut.decimals}
-              balance={balTokenOut as unknown as bigint}
-              isAmountLoading={isSwapRoutesLoading}
-              isBalanceLoading={isBalTokenOutLoading}
-              token={tokenOut}
-              onTokenClick={() => {
-                setTokenSource('tokenOut');
-              }}
-              isNativeCurrency={isNativeCurrency(tokenOut)}
-              tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
-              isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-              isConnected={isConnected}
-              hideMaxButton
-              inputProps={{ readOnly: true, sx: tokenInputStyles }}
-              sx={{
-                p: 3,
-                borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.highlight',
-              }}
-            />
-            <ArrowButton onClick={handleTokenFlip} />
-          </Box>
-          <CardContent>
-            <Collapse in={amountOut > 0n}>
-              <SwapRoute
-                sx={{
-                  mt: 1.5,
-                  borderRadius: 1,
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
-                }}
-              />
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                pt={2}
-                pb={1}
-              >
-                <Typography variant="body2" color="text.secondary">
-                  {intl.formatMessage(
+            <Typography pt={1.5}>
+              {intl.formatMessage({ defaultMessage: 'Route' })}
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <RedeemActionCard action="redeem-vault" sx={{ width: 1 }} />
+              <RedeemActionCard action="swap-curve" sx={{ width: 1 }} />
+            </Stack>
+            <Typography pt={1.5}>
+              {intl.formatMessage({ defaultMessage: 'Receive amount' })}
+            </Typography>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              sx={{ backgroundColor: 'grey.900', p: 2 }}
+            >
+              <Stack spacing={1}>
+                <LoadingLabel
+                  isLoading={isSwapRoutesLoading}
+                  sWidth={60}
+                  sx={{
+                    fontFamily: 'Sailec, sans-serif',
+                    fontSize: 24,
+                    lineHeight: 1.5,
+                    fontWeight: 700,
+                    color: amountIn === 0n ? 'text.secondary' : 'text.primary',
+                  }}
+                >
+                  {intl.formatNumber(
+                    +formatUnits(amountOut, tokenOut.decimals),
                     {
-                      defaultMessage:
-                        'Minimum received with {slippage} slippage:',
-                    },
-                    {
-                      slippage: intl.formatNumber(slippage, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
+                      roundingMode: 'floor',
+                      maximumFractionDigits: 5,
+                      minimumFractionDigits: 0,
                     },
                   )}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel
-                    variant="body2"
-                    isLoading={isSwapRoutesLoading}
-                    sWidth={60}
-                  >
-                    {formatAmount(
-                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                    )}
-                  </LoadingLabel>
-                  <Typography variant="body2">{tokenOut.symbol}</Typography>
-                </Stack>
+                </LoadingLabel>
+                <LoadingLabel
+                  isLoading={isSwapRoutesLoading}
+                  sWidth={60}
+                  color="text.secondary"
+                >
+                  {amountIn === 0n ? '$0.00' : formatCurrency(amountOutUsd)}
+                </LoadingLabel>
               </Stack>
-            </Collapse>
-
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <TokenIcon token={tokenOut} sx={{ fontSize: 28 }} />
+                <Typography fontWeight="medium" fontSize={16}>
+                  {tokenOut.symbol}
+                </Typography>
+              </Stack>
+            </Stack>
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 fullWidth
-                {...buttonsProps}
+                variant="action"
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
               >
@@ -435,10 +420,9 @@ function SwapperWrapped({
             </Collapse>
             <ConnectedButton
               fullWidth
-              {...buttonsProps}
+              variant="action"
               disabled={swapButtonDisabled}
               onClick={handleSwap}
-              sx={{ mt: 1.5, ...buttonsProps?.sx }}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
@@ -452,52 +436,8 @@ function SwapperWrapped({
             </ConnectedButton>
           </CardContent>
         </Card>
-        <TokenSelectModal
-          open={!isNilOrEmpty(tokenSource)}
-          onClose={handleCloseSelectionModal}
-          tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
-          onSelectToken={handleSelectToken}
-        />
       </ErrorBoundary>
     </Stack>
-  );
-}
-
-function ArrowButton(props: IconButtonProps) {
-  return (
-    <IconButton
-      {...props}
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: { md: 48, xs: 36 },
-        height: { md: 48, xs: 36 },
-        margin: 'auto',
-        zIndex: 2,
-        backgroundColor: 'background.default',
-        border: '1px solid',
-        borderColor: 'divider',
-        svg: {
-          transition: (theme) => theme.transitions.create('transform'),
-        },
-        '&:hover': {
-          svg: {
-            transform: 'rotate(-180deg)',
-          },
-        },
-        ...props?.sx,
-      }}
-    >
-      <FaArrowDownRegular
-        sx={{
-          width: { md: 20, xs: 18 },
-          height: { md: 20, xs: 18 },
-        }}
-      />
-    </IconButton>
   );
 }
 
@@ -514,11 +454,11 @@ const tokenInputStyles = {
     boxSizing: 'border-box',
     fontStyle: 'normal',
     fontFamily: 'Sailec, sans-serif',
-    fontSize: 32,
+    fontSize: 24,
     lineHeight: 1.5,
-    fontWeight: 400,
+    fontWeight: 700,
     '&::placeholder': {
-      color: 'text.primary',
+      color: 'text.secondary',
       opacity: 1,
     },
   },
