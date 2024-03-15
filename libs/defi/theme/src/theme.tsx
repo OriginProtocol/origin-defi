@@ -334,15 +334,17 @@ export const theme = createTheme({
     MuiCardHeader: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2.5, 3),
-          borderBottom: `1px solid ${theme.palette.divider}`,
+          minHeight: 72,
+          padding: theme.spacing(3),
           backgroundColor: theme.palette.background.header,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.25, 1.5),
+            minHeight: 56,
+            padding: theme.spacing(2, 3),
           },
         }),
         title: ({ theme }) => ({
           fontSize: theme.typography.fontSize,
+          lineHeight: 1.5,
           fontWeight: 500,
         }),
       },
