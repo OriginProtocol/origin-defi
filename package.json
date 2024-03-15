@@ -93,6 +93,7 @@
     "nx": "18.0.7",
     "prettier": "^3.2.4",
     "ts-node": "10.9.2",
+    "tsx": "^4.7.1",
     "typescript": "~5.4.2",
     "vite": "5.1.5",
     "vite-plugin-dts": "~3.7.3",
