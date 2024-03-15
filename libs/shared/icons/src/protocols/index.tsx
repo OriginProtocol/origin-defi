@@ -3,6 +3,7 @@ import { SvgIcon } from '@mui/material';
 import AuraFullWebp from './aura-full.webp';
 import BalancerFullSvg from './balancer-full.svg?react';
 import ConvexFullSvg from './convex-full.svg?react';
+import CRVWebp from './curve.webp';
 import CurveFullWebp from './curve-full.webp';
 import FraxFullSvg from './frax-full.svg?react';
 import LidoFullSvg from './lido-full.svg?react';
@@ -24,6 +25,11 @@ export const BalancerFull = (props: SvgIconProps) => (
 );
 export const ConvexFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ConvexFullSvg} inheritViewBox />
+);
+export const Curve = (props: SvgIconProps) => (
+  <SvgIcon {...props} viewBox="0 0 100 100">
+    <image href={CRVWebp} height="100" width="100" />
+  </SvgIcon>
 );
 export const CurveFull = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 59.2 16">
