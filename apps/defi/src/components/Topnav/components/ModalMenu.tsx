@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { ExpandIcon } from '@origin/shared/components';
-import { DOCS_URL } from '@origin/shared/constants';
+import { OUSD_DOCS_URL } from '@origin/shared/constants';
 import {
   FaArrowUpRightRegular,
   FaBarsRegular,
@@ -249,7 +249,7 @@ const MenuDialog = (props: DialogProps) => {
           })}
         </Stack>
         <Button
-          href={DOCS_URL}
+          href={OUSD_DOCS_URL}
           target="_blank"
           rel="noopener noreferrer nofollow"
           variant="text"
