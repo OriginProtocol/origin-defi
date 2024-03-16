@@ -1,12 +1,11 @@
 import { getAccount } from '@wagmi/core';
 import { mainnet } from 'viem/chains';
 
-import type { Token } from '@origin/shared/contracts';
 import type { Config } from '@wagmi/core';
 
 export const isNativeCurrency = (
   config: Config,
-  token: Token | undefined | null,
+  token: { symbol: string } | undefined | null,
 ) => {
   const { chain } = getAccount(config);
 

@@ -22,9 +22,7 @@ export const tokens = {
       symbol: 'DAI',
     },
     ETH: {
-      address: undefined,
       chainId: mainnet.id,
-      abi: erc20Abi,
       name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',

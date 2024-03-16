@@ -17,7 +17,7 @@ import {
 
 import { isNativeCurrency } from './utils';
 
-import type { Token } from '@origin/shared/contracts';
+import type { NativeToken, Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Abi } from 'viem';
 import type {
@@ -102,7 +102,9 @@ export const useWatchBalance = (config?: {
   return isNilOrEmpty(config?.token) ? resNative : resToken;
 };
 
-export const useWatchBalances = (tokens: Token[] | undefined | null) => {
+export const useWatchBalances = (
+  tokens: (NativeToken | Token)[] | undefined | null,
+) => {
   const config = useConfig();
   const isNative = useIsNativeCurrency();
   const { address } = useAccount();
@@ -128,7 +130,7 @@ export const useWatchBalances = (tokens: Token[] | undefined | null) => {
       const { native, others } = groupBy(
         (t) => (isNative(t) ? 'native' : 'others'),
         tokens,
-      );
+      ) as { native: NativeToken[]; others: Token[] };
 
       if (native?.length === 1) {
         try {
@@ -173,7 +175,8 @@ export const useIsNativeCurrency = () => {
   const config = useConfig();
 
   return useCallback(
-    (token: Token | undefined | null) => isNativeCurrency(config, token),
+    (token: { symbol: string } | undefined | null) =>
+      isNativeCurrency(config, token),
     [config],
   );
 };
