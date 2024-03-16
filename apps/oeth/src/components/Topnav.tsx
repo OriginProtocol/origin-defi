@@ -39,46 +39,51 @@ export function Topnav(props: BoxProps) {
           }),
         }}
       />
-      <Stack
+      <Box
         sx={(theme) => ({
           position: 'fixed',
           top: 0,
           left: 0,
           width: 1,
           zIndex: theme.zIndex.appBar,
-          backgroundColor: alpha(theme.palette.background.default, 0.6),
-          backdropFilter: 'blur(15px)',
           height: {
             xs: '162px',
             md: `105px`,
           },
-          display: 'grid',
-          borderBottom: {
-            xs: 'none',
-            md: `1px solid ${theme.palette.background.paper}`,
-          },
-          columnGap: { xs: 1, md: 3, xl: 6 },
-          rowGap: 0,
-          alignItems: 'center',
-          px: {
-            xs: 1.5,
-            lg: 3,
-          },
-          pt: {
-            xs: 1,
-            md: 0,
-          },
-          gridTemplateColumns: {
-            xs: '1fr 1fr',
-            md: 'auto 1fr auto',
-          },
         })}
       >
         <DisableLstBanner />
-        <OriginEtherLogo />
-        <RouteLinks />
-        <NavButtons />
-      </Stack>
+        <Stack
+          sx={(theme) => ({
+            backgroundColor: alpha(theme.palette.background.default, 0.6),
+            backdropFilter: 'blur(15px)',
+            display: 'grid',
+            borderBottom: {
+              xs: 'none',
+              md: `1px solid ${theme.palette.background.paper}`,
+            },
+            columnGap: { xs: 1, md: 3, xl: 6 },
+            rowGap: 0,
+            alignItems: 'center',
+            px: {
+              xs: 1.5,
+              lg: 3,
+            },
+            pt: {
+              xs: 1,
+              md: 0,
+            },
+            gridTemplateColumns: {
+              xs: '1fr 1fr',
+              md: 'auto 1fr auto',
+            },
+          })}
+        >
+          <OriginEtherLogo />
+          <RouteLinks />
+          <NavButtons />
+        </Stack>
+      </Box>
     </>
   );
 }
