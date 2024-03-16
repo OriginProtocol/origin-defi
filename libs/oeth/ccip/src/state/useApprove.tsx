@@ -42,12 +42,13 @@ export const useApprove = () => {
         status: 'pending',
         approval: statuses.bridge.waitingForSignature(),
       }));
+      const srcRouter = ccipRouter[state.srcChain.id];
       const hash = await writeContract(config, {
         chainId: state.srcToken.chainId,
         address: state.srcToken.address,
         abi: state.srcToken.abi as typeof erc20Abi,
         functionName: 'approve',
-        args: [ccipRouter[state.srcToken.chainId].address, state.amount],
+        args: [srcRouter.address, state.amount],
       });
       setState((state) => ({
         ...state,

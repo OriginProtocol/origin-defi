@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 
 import { trackEvent } from '@origin/oeth/shared';
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { contracts } from '@origin/shared/contracts';
 import {
   BridgeNotification,
   useDeleteActivity,
@@ -60,19 +59,21 @@ export const useBridge = () => {
         feeToken: ZERO_ADDRESS,
         extraArgs: '0x',
       } as const;
+      const srcRouter = ccipRouter[state.srcChain.id];
+      const dstRouter = ccipRouter[state.dstChain.id];
       const fees = await readContract(config, {
-        address: contracts.mainnet.ccipRouter.address,
-        abi: contracts.mainnet.ccipRouter.abi,
+        address: srcRouter.address,
+        abi: srcRouter.abi,
         functionName: 'getFee',
-        args: [ccipRouter[state.dstChain.id].chainSelectorId, message],
-        chainId: state.srcChain.id,
+        args: [dstRouter.chainSelectorId, message],
+        chainId: srcRouter.chainId,
       });
       const { request } = await simulateContract(config, {
-        address: contracts.mainnet.ccipRouter.address,
-        abi: contracts.mainnet.ccipRouter.abi,
+        address: srcRouter.address,
+        abi: srcRouter.abi,
         functionName: 'ccipSend',
-        args: [ccipRouter[state.dstChain.id].chainSelectorId, message],
-        chainId: state.srcChain.id,
+        args: [dstRouter.chainSelectorId, message],
+        chainId: srcRouter.chainId,
         value: fees,
       });
       const hash = await writeContract(config, request);

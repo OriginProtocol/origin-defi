@@ -1,3 +1,4 @@
+import { contracts } from '@origin/shared/contracts';
 import { arbitrum, mainnet } from 'viem/chains';
 
 import type { HexAddress } from '@origin/shared/utils';
@@ -7,14 +8,20 @@ export const ccipRouter: Record<
   {
     address: HexAddress;
     chainSelectorId: bigint;
+    abi: typeof contracts.mainnet.ccipRouter.abi;
+    chainId: number;
   }
 > = {
   [mainnet.id]: {
-    address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
+    address: contracts.mainnet.ccipRouter.address,
     chainSelectorId: 5009297550715157269n,
+    abi: contracts.mainnet.ccipRouter.abi,
+    chainId: contracts.mainnet.ccipRouter.chainId,
   },
   [arbitrum.id]: {
-    address: '0x141fa059441E0ca23ce184B6A78bafD2A517DdE8',
+    address: contracts.arbitrum.ccipRouter.address,
     chainSelectorId: 4949039107694359620n,
+    abi: contracts.arbitrum.ccipRouter.abi,
+    chainId: contracts.arbitrum.ccipRouter.chainId,
   },
 };

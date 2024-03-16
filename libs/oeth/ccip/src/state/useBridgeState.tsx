@@ -34,19 +34,20 @@ export const useBridgeState = () => {
   useDebouncedEffect(
     async () => {
       if (!userAddress) return;
+      const srcRouter = ccipRouter[state.srcChain.id];
       const allowance = await readContract(config, {
         chainId: state.srcToken.chainId,
         address: state.srcToken.address,
         abi: state.srcToken.abi as typeof erc20Abi,
         functionName: 'allowance',
-        args: [userAddress, ccipRouter[state.srcToken.chainId].address],
+        args: [userAddress, srcRouter.address],
       });
       setState((state) => ({
         ...state,
         allowance,
       }));
     },
-    [state.srcToken, userAddress],
+    [state.srcToken, state.srcToken.chainId, userAddress],
     200,
   );
 
