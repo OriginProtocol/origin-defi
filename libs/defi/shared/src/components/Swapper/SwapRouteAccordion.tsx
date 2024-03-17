@@ -63,12 +63,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           },
         }}
       >
-        <Typography
-          component="span"
-          sx={{ flex: 1 }}
-          variant="body2"
-          color="text.secondary"
-        >
+        <Typography sx={{ flex: 1 }} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
         <ExpandIcon

@@ -1,14 +1,17 @@
 import { forwardRef } from 'react';
 
-import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import { BigIntInput, TokenIcon } from '@origin/shared/components';
+import { alpha, Button, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  BigIntInput,
+  LoadingLabel,
+  TokenIcon,
+} from '@origin/shared/components';
 import { Dropdown } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { BigintInputProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 // When clicking max on native currency, we leave this amount of token
@@ -33,11 +36,8 @@ export type TokenInputProps = {
   isTokenClickDisabled?: boolean;
   tokenPriceUsd?: number;
   isPriceLoading?: boolean;
-  inputProps?: Omit<
-    BigintInputProps,
-    'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
-  >;
   tokenButtonProps?: Omit<TokenButtonProps, 'token'>;
+  readOnly?: boolean;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -60,8 +60,8 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isTokenClickDisabled,
       tokenPriceUsd = 0,
       isPriceLoading,
-      inputProps,
       tokenButtonProps,
+      readOnly = false,
       ...rest
     },
     ref,
@@ -82,14 +82,11 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
-      <Stack spacing={2} {...rest}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 1,
-          }}
+      <Stack spacing={1} {...rest}>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
         >
           <TokenButton
             token={token}
@@ -104,7 +101,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           <Stack
             direction="row"
             alignItems="center"
-            spacing={0.5}
+            spacing={1}
             overflow="hidden"
             whiteSpace="nowrap"
           >
@@ -153,48 +150,83 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               )
             ) : null}
           </Stack>
-        </Box>
-        <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'baseline',
-            gap: 2.5,
-            marginBlockStart: 1,
-          }}
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="flex-end"
+          justifyContent="space-between"
         >
-          {isAmountLoading ? (
-            <Skeleton width={100} height={36} />
+          {readOnly ? (
+            <LoadingLabel
+              isLoading={isAmountLoading}
+              sWidth={100}
+              sx={valueStyles}
+            >
+              {intl.formatNumber(+formatUnits(amount, decimals), {
+                roundingMode: 'floor',
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 8,
+                useGrouping: false,
+              })}
+            </LoadingLabel>
           ) : (
             <BigIntInput
-              {...inputProps}
+              readOnly={readOnly}
               value={amount}
               decimals={decimals}
               onChange={onAmountChange}
               disabled={isAmountDisabled}
               ref={ref}
-              sx={{ flexGrow: 1, height: 36, ...inputProps?.sx }}
+              sx={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                borderRadius: 0,
+                padding: 0,
+                borderImageWidth: 0,
+                boxSizing: 'border-box',
+                '& .MuiInputBase-input': {
+                  padding: 0,
+                  boxSizing: 'border-box',
+                  ...valueStyles,
+                  '&::placeholder': {
+                    color: 'text.primary',
+                    opacity: 1,
+                  },
+                },
+              }}
             />
           )}
-          {isPriceLoading ? (
-            <Skeleton width={50} />
-          ) : !isNilOrEmpty(tokenPriceUsd) ? (
-            <Typography color="text.secondary">
+          {!isNilOrEmpty(tokenPriceUsd) ? (
+            <LoadingLabel
+              isLoading={isPriceLoading}
+              sWidth={50}
+              color="text.secondary"
+            >
               {intl.formatNumber(amountUsd, {
                 style: 'currency',
                 currency: 'USD',
                 minimumFractionDigits: 2,
                 currencyDisplay: 'narrowSymbol',
               })}
-            </Typography>
+            </LoadingLabel>
           ) : null}
-        </Box>
+        </Stack>
       </Stack>
     );
   },
 );
 
 TokenInput.displayName = 'TokenInput';
+
+const valueStyles = {
+  flexGrow: 1,
+  fontStyle: 'normal',
+  fontFamily: 'Sailec, sans-serif',
+  fontSize: 32,
+  lineHeight: 1.5,
+  fontWeight: 400,
+  height: 48,
+};
 
 type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
 
@@ -211,10 +243,10 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         minHeight: 32,
         borderRadius: 25,
         fontSize: '1rem',
+        paddingY: 0.25,
         paddingLeft: 0.25,
         paddingRight: isDisabled ? 2 : 1,
         border: '1px solid transparent',
-        paddingY: 0.25,
         background: (theme) => alpha(theme.palette.common.white, 0.1),
         fontStyle: 'normal',
         cursor: 'pointer',

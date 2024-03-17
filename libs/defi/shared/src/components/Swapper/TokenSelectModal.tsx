@@ -101,8 +101,8 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       disabled={token.isSelected}
       sx={{
         display: 'flex',
-        paddingInline: 2,
-        paddingBlock: 1,
+        px: 2,
+        py: 1,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',

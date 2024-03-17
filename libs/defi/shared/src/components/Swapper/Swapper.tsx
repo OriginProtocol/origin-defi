@@ -334,7 +334,6 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
-              inputProps={{ sx: tokenInputStyles }}
               sx={{
                 p: 3,
                 borderTopLeftRadius: (theme) => theme.shape.borderRadius,
@@ -343,6 +342,7 @@ function SwapperWrapped({
               }}
             />
             <TokenInput
+              readOnly
               amount={amountOut}
               decimals={tokenOut.decimals}
               balance={balTokenOut as unknown as bigint}
@@ -357,7 +357,6 @@ function SwapperWrapped({
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               isConnected={isConnected}
               hideMaxButton
-              inputProps={{ readOnly: true, sx: tokenInputStyles }}
               sx={{
                 p: 3,
                 borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
@@ -383,7 +382,7 @@ function SwapperWrapped({
                 pt={2}
                 pb={1}
               >
-                <Typography variant="body2" color="text.secondary">
+                <Typography color="text.secondary">
                   {intl.formatMessage(
                     {
                       defaultMessage:
@@ -399,16 +398,12 @@ function SwapperWrapped({
                   )}
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel
-                    variant="body2"
-                    isLoading={isSwapRoutesLoading}
-                    sWidth={60}
-                  >
+                  <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
                     {formatAmount(
                       subtractSlippage(amountOut, tokenOut.decimals, slippage),
                     )}
                   </LoadingLabel>
-                  <Typography variant="body2">{tokenOut.symbol}</Typography>
+                  <Typography>{tokenOut.symbol}</Typography>
                 </Stack>
               </Stack>
             </Collapse>
@@ -493,33 +488,10 @@ function ArrowButton(props: IconButtonProps) {
     >
       <FaArrowDownRegular
         sx={{
-          width: { md: 20, xs: 18 },
-          height: { md: 20, xs: 18 },
+          width: { md: 18, xs: 16 },
+          height: { md: 18, xs: 16 },
         }}
       />
     </IconButton>
   );
 }
-
-const tokenInputStyles = {
-  border: 'none',
-  backgroundColor: 'transparent',
-  borderRadius: 0,
-  paddingBlock: 0,
-  paddingInline: 0,
-  borderImageWidth: 0,
-  boxSizing: 'border-box',
-  '& .MuiInputBase-input': {
-    padding: 0,
-    boxSizing: 'border-box',
-    fontStyle: 'normal',
-    fontFamily: 'Sailec, sans-serif',
-    fontSize: 32,
-    lineHeight: 1.5,
-    fontWeight: 400,
-    '&::placeholder': {
-      color: 'text.primary',
-      opacity: 1,
-    },
-  },
-};
