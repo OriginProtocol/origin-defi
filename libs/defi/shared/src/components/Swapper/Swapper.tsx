@@ -366,14 +366,13 @@ function SwapperWrapped({
             <ArrowButton onClick={handleTokenFlip} />
           </Box>
           <CardContent>
+            <SwapRoute
+              sx={{
+                mt: 1.5,
+                border: (theme) => `1px solid ${theme.palette.divider}`,
+              }}
+            />
             <Collapse in={amountOut > 0n}>
-              <SwapRoute
-                sx={{
-                  mt: 1.5,
-                  borderRadius: 1,
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
-                }}
-              />
               <Stack
                 direction="row"
                 justifyContent="space-between"

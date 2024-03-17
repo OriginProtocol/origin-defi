@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ExpandIcon } from '@origin/shared/components';
+import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   routeEq,
   useHandleSelectSwapRoute,
@@ -31,13 +31,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
     <Accordion
       {...props}
       expanded={showMore}
-      sx={{
-        px: 2,
-        py: 1,
-        backgroundColor: 'grey.900',
-        borderColor: 'grey.800',
-        ...props?.sx,
-      }}
+      sx={{ px: 1, ...props?.sx }}
       disableGutters
     >
       <AccordionSummary
@@ -45,39 +39,17 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           setShowMore(not);
           trackEvent?.({ name: 'show_swap_routes' });
         }}
-        sx={{
-          minHeight: 0,
-          fontSize: 14,
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          '& .MuiAccordionSummary-content': {
-            margin: 0,
-          },
-          padding: 0,
-          '&.Mui-expanded': {
-            minHeight: 0,
-            '& img': {
-              transform: 'rotate(-180deg)',
-            },
-          },
-        }}
+        expandIcon={
+          <FaChevronDownRegular
+            sx={{ fontSize: 16, color: 'text.secondary' }}
+          />
+        }
       >
-        <Typography sx={{ flex: 1 }} color="text.secondary">
+        <Typography sx={{ pl: 1, flex: 1 }} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
-        <ExpandIcon
-          isExpanded={showMore}
-          sx={{ width: 12, color: 'text.secondary' }}
-        />
       </AccordionSummary>
-      <AccordionDetails
-        sx={{
-          pt: 1,
-          pb: 0,
-          px: 0,
-        }}
-      >
+      <AccordionDetails sx={{ pb: 1, px: 0 }}>
         <Stack gap={0.25} mt={1.5}>
           {estimatedSwapRoutes.slice(2).map((route, index) => (
             <SwapRouteAccordionItem

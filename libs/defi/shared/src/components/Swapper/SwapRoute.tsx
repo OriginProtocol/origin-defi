@@ -19,20 +19,16 @@ export function SwapRoute(
   props: Omit<AccordionProps, 'children' | 'expanded'>,
 ) {
   const intl = useIntl();
-  const [{ estimatedSwapRoutes, isSwapRoutesLoading }] = useSwapState();
+  const [{ amountIn, estimatedSwapRoutes, isSwapRoutesLoading }] =
+    useSwapState();
+
+  const isExpanded = estimatedSwapRoutes.length > 0 && amountIn > 0n;
 
   return (
     <Accordion
       {...props}
-      expanded={estimatedSwapRoutes.length > 0}
-      sx={{
-        px: 2,
-        py: 0,
-        backgroundColor: 'grey.900',
-        borderRadius: 1,
-        ...props?.sx,
-      }}
-      disableGutters
+      expanded={isExpanded}
+      sx={{ px: 2, borderRadius: 1, ...props?.sx }}
     >
       <AccordionSummary
         sx={{ p: 0, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
@@ -58,7 +54,6 @@ export function SwapRoute(
             direction="row"
             gap={0.5}
             component={Typography}
-            variant="body2"
             alignItems="center"
           >
             {intl.formatMessage({ defaultMessage: 'Route' })}

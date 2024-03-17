@@ -112,9 +112,9 @@ export function SwapRouteCard({
         <Stack {...rowProps} pb={0.5}>
           <Stack direction="row" spacing={0.5} alignItems="center">
             {isSwapRoutesLoading ? (
-              <Skeleton variant="circular" width={16} height={16} />
+              <Skeleton variant="circular" width={24} height={24} />
             ) : (
-              <TokenIcon token={tokenOut} sx={{ fontSize: 16 }} />
+              <TokenIcon token={tokenOut} sx={{ fontSize: 24 }} />
             )}
             <LoadingLabel
               fontWeight={500}
