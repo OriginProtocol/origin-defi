@@ -1,1 +1,1 @@
-export type RedeemAction = 'swap-curve' | 'redeem-vault';
+export type OethRedeemAction = 'swap-curve' | 'redeem-vault';

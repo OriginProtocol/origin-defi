@@ -11,11 +11,7 @@ export type OethApyQuery = { __typename?: 'Query', oethapies: Array<{ __typename
 
 export const OethApyDocument = `
     query OethApy {
-  oethapies(
-    limit: 1
-    orderBy: timestamp_DESC
-    where: {timestamp_gt: "2023-06-06T12:38:47.000000Z"}
-  ) {
+  oethapies(limit: 1, orderBy: timestamp_DESC) {
     apy7DayAvg
     apy30DayAvg
   }

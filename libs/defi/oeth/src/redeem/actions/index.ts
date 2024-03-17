@@ -5,7 +5,7 @@ import swapCurve from './swapCurve';
 
 import type { SwapApi } from '@origin/shared/providers';
 
-import type { RedeemAction } from '../types';
+import type { OethRedeemAction } from '../types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
@@ -53,7 +53,7 @@ const defaultApi: SwapApi = {
   routeLabel: defineMessage({ defaultMessage: 'Redeem' }),
 };
 
-export const redeemActions: Record<RedeemAction, SwapApi> = {
+export const redeemActions: Record<OethRedeemAction, SwapApi> = {
   'swap-curve': {
     ...defaultApi,
     ...swapCurve,
