@@ -5,4 +5,5 @@ export * from './SwapRoute';
 export * from './SwapRouteAccordion';
 export * from './SwapRouteAccordionItem';
 export * from './SwapRouteCard';
+export * from './TokenInput';
 export * from './TokenSelectModal';

@@ -153,8 +153,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         </Stack>
         <Stack
           direction="row"
-          alignItems="flex-end"
+          alignItems="baseline"
           justifyContent="space-between"
+          gap={1}
         >
           {readOnly ? (
             <LoadingLabel
@@ -178,6 +179,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               disabled={isAmountDisabled}
               ref={ref}
               sx={{
+                width: 1,
                 border: 'none',
                 backgroundColor: 'transparent',
                 borderRadius: 0,

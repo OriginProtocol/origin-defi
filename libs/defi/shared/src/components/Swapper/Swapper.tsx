@@ -313,7 +313,6 @@ function SwapperWrapped({
               </>
             }
           />
-
           <Box
             sx={{
               position: 'relative',
@@ -407,7 +406,6 @@ function SwapperWrapped({
                 </Stack>
               </Stack>
             </Collapse>
-
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 fullWidth

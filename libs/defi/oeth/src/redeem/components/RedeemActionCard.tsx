@@ -1,4 +1,4 @@
-import { alpha, Card, Stack, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { Curve, Origin } from '@origin/shared/icons';
 import {
@@ -84,36 +84,19 @@ export const RedeemActionCard = ({
       sx={{
         px: 1.5,
         py: 2,
-        border: `1px solid transparent`,
-        boxShadow: 'none',
+        borderWidth: 1,
+        borderColor: 'divider',
+        ...(amountIn > 0n && {
+          cursor: 'pointer',
+          '&:hover': {
+            borderColor: 'primary.main',
+          },
+        }),
         ...(isDisabled
-          ? { opacity: 0.5, borderColor: 'grey.600', cursor: 'default' }
+          ? { opacity: 0.5, cursor: 'default' }
           : isSelected
-            ? {
-                cursor: 'pointer',
-                borderColor: 'transparent',
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-              }
-            : amountIn > 0n
-              ? {
-                  cursor: 'pointer',
-                  borderColor: 'grey.800',
-                  '&:hover': {
-                    borderColor: `transparent`,
-                    background: (theme) =>
-                      `linear-gradient(${theme.palette.grey['800']}, ${
-                        theme.palette.grey['800']
-                      }) padding-box, linear-gradient(90deg, ${alpha(
-                        theme.palette.primary.main,
-                        0.4,
-                      )} 0%, ${alpha(
-                        theme.palette.primary.dark,
-                        0.4,
-                      )} 100%) border-box;`,
-                  },
-                }
-              : {}),
+            ? { borderColor: 'primary.main' }
+            : {}),
         ...rest?.sx,
       }}
       role="button"
@@ -143,7 +126,7 @@ export const RedeemActionCard = ({
         ) : (
           <>
             <Stack {...rowProps}>
-              <Typography color="text.secondary">
+              <Typography {...labelProps}>
                 {intl.formatMessage({ defaultMessage: 'Wait time:' })}
               </Typography>
               {isEmptyValue ? (
@@ -155,7 +138,7 @@ export const RedeemActionCard = ({
               )}
             </Stack>
             <Stack {...rowProps}>
-              <Typography color="text.secondary">
+              <Typography {...labelProps}>
                 {intl.formatMessage({ defaultMessage: 'Rate:' })}
               </Typography>
               {isEmptyValue ? (
@@ -167,7 +150,7 @@ export const RedeemActionCard = ({
               )}
             </Stack>
             <Stack {...rowProps}>
-              <Typography color="text.secondary">
+              <Typography {...labelProps}>
                 {intl.formatMessage({ defaultMessage: 'Gas:' })}
               </Typography>
               {isEmptyValue ? (
@@ -195,7 +178,13 @@ function EmptyValue(props: TypographyProps) {
 
 const rowProps: StackProps = {
   direction: 'row',
-  gap: 1,
-  alignItems: 'center',
-  justifyContent: 'space-between',
+  sx: {
+    gap: 1,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+};
+
+const labelProps: TypographyProps = {
+  color: 'text.secondary',
 };

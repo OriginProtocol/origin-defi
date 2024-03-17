@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  alpha,
   Button,
   Card,
   CardContent,
@@ -12,6 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { TokenInput } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -19,7 +19,6 @@ import {
   NotificationSnack,
   SeverityIcon,
   TokenIcon,
-  TokenInput,
 } from '@origin/shared/components';
 import { FaGearComplexRegular } from '@origin/shared/icons';
 import {
@@ -314,36 +313,11 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
-              inputProps={{ sx: tokenInputStyles }}
               sx={{
-                paddingBlock: 2.5,
-                paddingBlockStart: 2.625,
-                paddingInline: 2,
-                border: '1px solid',
-                borderColor: 'divider',
+                p: 3,
                 borderTopLeftRadius: (theme) => theme.shape.borderRadius,
                 borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'grey.900',
-                borderBottomColor: 'transparent',
-                '&:hover, &:focus-within': {
-                  borderColor: 'transparent',
-                },
-                '&:hover': {
-                  background: (theme) =>
-                    `linear-gradient(${theme.palette.grey[900]}, ${
-                      theme.palette.grey[900]
-                    }) padding-box, linear-gradient(90deg, ${alpha(
-                      theme.palette.primary.main,
-                      0.4,
-                    )} 0%, ${alpha(
-                      theme.palette.primary.dark,
-                      0.4,
-                    )} 100%) border-box;`,
-                },
-                '&:focus-within': {
-                  background: (theme) =>
-                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-                },
+                backgroundColor: 'background.default',
               }}
             />
             <Typography pt={1.5}>
@@ -440,26 +414,3 @@ function SwapperWrapped({
     </Stack>
   );
 }
-
-const tokenInputStyles = {
-  border: 'none',
-  backgroundColor: 'transparent',
-  borderRadius: 0,
-  paddingBlock: 0,
-  paddingInline: 0,
-  borderImageWidth: 0,
-  boxSizing: 'border-box',
-  '& .MuiInputBase-input': {
-    padding: 0,
-    boxSizing: 'border-box',
-    fontStyle: 'normal',
-    fontFamily: 'Sailec, sans-serif',
-    fontSize: 24,
-    lineHeight: 1.5,
-    fontWeight: 700,
-    '&::placeholder': {
-      color: 'text.secondary',
-      opacity: 1,
-    },
-  },
-};

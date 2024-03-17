@@ -167,6 +167,7 @@ const rowProps: StackProps = {
   sx: {
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 1,
   },
 };
 
