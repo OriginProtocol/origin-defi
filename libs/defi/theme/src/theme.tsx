@@ -161,19 +161,12 @@ export const theme = createTheme({
       fontFamily: 'Inter',
       fontSize: 14,
       lineHeight: 1.71429,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 13,
-        lineHeight: 1.4,
-      },
     },
     body2: {
       fontFamily: 'Inter',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 11,
-      },
     },
     button: {
       fontFamily: 'Sailec',
@@ -326,6 +319,7 @@ export const theme = createTheme({
           backgroundImage: 'none',
           backgroundColor: theme.palette.background.paper,
           border: `1px solid ${theme.palette.divider}`,
+          boxShadow: 'none',
         }),
       },
     },
