@@ -1,4 +1,4 @@
-import { Stack, Tab, Tabs } from '@mui/material';
+import { Container, Tab, Tabs } from '@mui/material';
 import { PageTitle } from '@origin/defi/shared';
 import { OETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -12,7 +12,7 @@ export const RedeemView = () => {
   const location = useLocation();
 
   return (
-    <Stack>
+    <Container maxWidth="md">
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
@@ -43,6 +43,6 @@ export const RedeemView = () => {
         })}
       </Tabs>
       <Outlet />
-    </Stack>
+    </Container>
   );
 };

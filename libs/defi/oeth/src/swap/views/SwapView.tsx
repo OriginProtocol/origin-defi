@@ -1,4 +1,4 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Container, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { PageTitle, Swapper } from '@origin/defi/shared';
 import { OETH } from '@origin/shared/icons';
@@ -14,7 +14,7 @@ export const SwapView = () => {
   const intl = useIntl();
 
   return (
-    <Stack>
+    <Container>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Swap' })}
         subtitle={intl.formatMessage({
@@ -41,6 +41,6 @@ export const SwapView = () => {
           </Grid2>
         </Grid2>
       </Box>
-    </Stack>
+    </Container>
   );
 };
