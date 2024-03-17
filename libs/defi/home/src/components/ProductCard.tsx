@@ -6,7 +6,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Chip, Mix, TokenIcon, ValueLabel } from '@origin/shared/components';
+import {
+  Chip,
+  MultiTokenIcon,
+  TokenIcon,
+  ValueLabel,
+} from '@origin/shared/components';
 import {
   getTokenPriceKey,
   useFormat,
@@ -153,7 +158,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Collateral' })}
-          value={<Mix tokens={product.collaterals} />}
+          value={<MultiTokenIcon tokens={product.collaterals} />}
           sx={{
             width: 0.33,
             py: 2,

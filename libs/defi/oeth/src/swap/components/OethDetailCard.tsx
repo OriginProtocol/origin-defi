@@ -12,7 +12,7 @@ import {
 import {
   InfoTooltip,
   LoadingLabel,
-  Mix,
+  MultiTokenIcon,
   SliderSwitch,
 } from '@origin/shared/components';
 import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
@@ -213,7 +213,9 @@ function Collateral() {
           })}
         />
       </Stack>
-      <Mix
+      <MultiTokenIcon
+        zOrder="last"
+        spacing={4}
         tokens={[
           tokens.mainnet.ETH,
           tokens.mainnet.rETH,
@@ -262,7 +264,7 @@ const cardContentProps: CardContentProps = {
   sx: {
     display: 'flex',
     flexDirection: 'column',
-    gap: 2,
+    gap: 1,
   },
 };
 
