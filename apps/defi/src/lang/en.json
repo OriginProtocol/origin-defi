@@ -41,6 +41,12 @@
       "value": "Opt in"
     }
   ],
+  "00AJDy": [
+    {
+      "type": 0,
+      "value": "Origin Vault"
+    }
+  ],
   "024MfN": [
     {
       "type": 0,
@@ -89,10 +95,34 @@
       "value": "Return to Home Page"
     }
   ],
+  "26tyS2": [
+    {
+      "type": 0,
+      "value": "7d"
+    }
+  ],
   "2R/YHR": [
     {
       "type": 0,
       "value": "Liquid staking"
+    }
+  ],
+  "2W3kP3": [
+    {
+      "type": 0,
+      "value": "~1min"
+    }
+  ],
+  "2ahSeJ": [
+    {
+      "type": 0,
+      "value": "OETH analytics"
+    }
+  ],
+  "3Lr8o5": [
+    {
+      "type": 0,
+      "value": "Larger redemptions coming soon"
     }
   ],
   "45EvZ3": [
@@ -107,6 +137,12 @@
     {
       "type": 0,
       "value": " slippage:"
+    }
+  ],
+  "4D9M13": [
+    {
+      "type": 0,
+      "value": "Swap with CurvePool"
     }
   ],
   "4OE2Tb": [
@@ -149,10 +185,22 @@
       "value": "Control the future of Origin products and profit from its growth."
     }
   ],
+  "5x6HGl": [
+    {
+      "type": 0,
+      "value": "OETH price"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
       "value": "The selected network is not supported by the application."
+    }
+  ],
+  "6Sj2lN": [
+    {
+      "type": 0,
+      "value": "Claim"
     }
   ],
   "6WMuFp": [
@@ -173,6 +221,12 @@
       "value": "Insufficient funds"
     }
   ],
+  "6nFK6a": [
+    {
+      "type": 0,
+      "value": "Yield sources"
+    }
+  ],
   "70QJXI": [
     {
       "type": 0,
@@ -183,6 +237,12 @@
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "8AtqNm": [
+    {
+      "type": 0,
+      "value": "OETH Portfolio"
     }
   ],
   "8NtrKz": [
@@ -265,6 +325,24 @@
       "value": "lastPage"
     }
   ],
+  "AtWUBa": [
+    {
+      "type": 0,
+      "value": "Redeem via OETH Vault"
+    }
+  ],
+  "BONcjO": [
+    {
+      "type": 0,
+      "value": "Uniswap V3"
+    }
+  ],
+  "C73Nbd": [
+    {
+      "type": 0,
+      "value": "Swap with Curve"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -283,6 +361,18 @@
     {
       "type": 0,
       "value": " for the basket of underlying assets"
+    }
+  ],
+  "DUR59o": [
+    {
+      "type": 0,
+      "value": "Total Value Locked"
+    }
+  ],
+  "DriTx1": [
+    {
+      "type": 0,
+      "value": "Request redemptions to ETH or a mix of LSTs"
     }
   ],
   "DupNoS": [
@@ -407,6 +497,12 @@
       "value": "Gas:"
     }
   ],
+  "KE0cl6": [
+    {
+      "type": 0,
+      "value": "Curve"
+    }
+  ],
   "KN7zKn": [
     {
       "type": 0,
@@ -435,6 +531,12 @@
       "value": "symbol"
     }
   ],
+  "MLTKb6": [
+    {
+      "type": 0,
+      "value": "APY"
+    }
+  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -445,6 +547,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "NNBdoh": [
+    {
+      "type": 0,
+      "value": "Uniswap V2"
     }
   ],
   "NQOjUX": [
@@ -477,6 +585,24 @@
       "value": "No available route"
     }
   ],
+  "OhU4K0": [
+    {
+      "type": 0,
+      "value": "SushiSwap"
+    }
+  ],
+  "OwO+Nr": [
+    {
+      "type": 0,
+      "value": "Mint"
+    }
+  ],
+  "Ozw3aL": [
+    {
+      "type": 0,
+      "value": "Mint with Vault"
+    }
+  ],
   "PKgDoL": [
     {
       "type": 0,
@@ -487,6 +613,18 @@
     {
       "type": 0,
       "value": "Current price"
+    }
+  ],
+  "PVa0Ba": [
+    {
+      "type": 0,
+      "value": "Yield strategy protocols"
+    }
+  ],
+  "PiI2Yo": [
+    {
+      "type": 0,
+      "value": "OETH details"
     }
   ],
   "PmkP1H": [
@@ -545,6 +683,12 @@
     {
       "type": 0,
       "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+    }
+  ],
+  "TrXNPz": [
+    {
+      "type": 0,
+      "value": "Flipper"
     }
   ],
   "TwyMau": [
@@ -627,10 +771,22 @@
       "value": "name"
     }
   ],
+  "W8nHSd": [
+    {
+      "type": 0,
+      "value": "FAQ"
+    }
+  ],
   "WCaf5C": [
     {
       "type": 0,
       "value": "Approve"
+    }
+  ],
+  "WQ+oM6": [
+    {
+      "type": 0,
+      "value": "Backing collateral"
     }
   ],
   "XSdWHA": [
@@ -643,6 +799,12 @@
     {
       "type": 0,
       "value": "In-depth OETH analytics"
+    }
+  ],
+  "YnftYz": [
+    {
+      "type": 0,
+      "value": "Wait time:"
     }
   ],
   "Yr+Yll": [
@@ -681,10 +843,22 @@
       "value": "Swap in and out of OETH"
     }
   ],
+  "b1zuN9": [
+    {
+      "type": 0,
+      "value": "Price"
+    }
+  ],
   "b4tTvf": [
     {
       "type": 0,
       "value": "Redeem from OUSD vault"
+    }
+  ],
+  "c0+sy5": [
+    {
+      "type": 0,
+      "value": "OUSD details"
     }
   ],
   "c31Feo": [
@@ -705,6 +879,12 @@
       "value": "Processing Transaction"
     }
   ],
+  "dciLty": [
+    {
+      "type": 0,
+      "value": "Route:"
+    }
+  ],
   "dtJo4Y": [
     {
       "type": 0,
@@ -715,6 +895,12 @@
     {
       "type": 0,
       "value": "Staking and rewards history"
+    }
+  ],
+  "fOUChR": [
+    {
+      "type": 0,
+      "value": "Trading pairs on centralized exchanges"
     }
   ],
   "fnDCIF": [
@@ -743,10 +929,22 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "hccOVh": [
+    {
+      "type": 0,
+      "value": "OUSD price"
+    }
+  ],
   "hzfM3P": [
     {
       "type": 0,
       "value": "Transaction executed"
+    }
+  ],
+  "iGcPXd": [
+    {
+      "type": 0,
+      "value": "OUSD analytics"
     }
   ],
   "iLgjES": [
@@ -767,16 +965,40 @@
       "value": "Max slippage"
     }
   ],
+  "lQmZjB": [
+    {
+      "type": 0,
+      "value": "Swap via Curve"
+    }
+  ],
   "lozEho": [
     {
       "type": 0,
       "value": "Error while approving"
     }
   ],
+  "lwXdsC": [
+    {
+      "type": 0,
+      "value": "Secure the most competitive rates when swapping in and out of OETH using our swap form."
+    }
+  ],
   "m/L3sK": [
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "n6nILs": [
+    {
+      "type": 0,
+      "value": "Receive amount"
+    }
+  ],
+  "nZ1VHG": [
+    {
+      "type": 0,
+      "value": "30d"
     }
   ],
   "nc8QpJ": [
@@ -791,16 +1013,34 @@
       "value": "Yield bearing"
     }
   ],
+  "nzbOyn": [
+    {
+      "type": 0,
+      "value": "Underlyings assets"
+    }
+  ],
   "oP23Lj": [
     {
       "type": 0,
       "value": "Horem ipsum dolor"
     }
   ],
+  "p1P+hQ": [
+    {
+      "type": 0,
+      "value": "Request"
+    }
+  ],
   "p556q3": [
     {
       "type": 0,
       "value": "Copied"
+    }
+  ],
+  "qNe+Iz": [
+    {
+      "type": 0,
+      "value": "Wrap with Origin"
     }
   ],
   "qQ/SRd": [
@@ -813,6 +1053,18 @@
     {
       "type": 0,
       "value": "Disconnect"
+    }
+  ],
+  "r7kiOG": [
+    {
+      "type": 0,
+      "value": "Wrap"
+    }
+  ],
+  "riAanx": [
+    {
+      "type": 0,
+      "value": "Annual Percentage Yield"
     }
   ],
   "s49boM": [
@@ -851,6 +1103,12 @@
       "value": "Portfolio"
     }
   ],
+  "uaols3": [
+    {
+      "type": 0,
+      "value": "Unwrap"
+    }
+  ],
   "upk2hm": [
     {
       "type": 0,
@@ -881,6 +1139,12 @@
       "value": "Error while redeeming"
     }
   ],
+  "wf1EAp": [
+    {
+      "type": 0,
+      "value": "Unwrap with Origin"
+    }
+  ],
   "wqlXwW": [
     {
       "type": 0,
@@ -897,6 +1161,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "yKbi98": [
+    {
+      "type": 0,
+      "value": "Unstake amount"
     }
   ],
   "yphS5C": [
