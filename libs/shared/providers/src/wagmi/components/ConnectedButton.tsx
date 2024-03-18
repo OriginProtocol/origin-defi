@@ -3,6 +3,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useConnectModal } from '@rainbow-me/rainbowkit';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig, useSwitchChain } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import type { ButtonProps } from '@mui/material';
 
@@ -27,7 +28,7 @@ export const ConnectedButton = ({
   const { switchChain } = useSwitchChain();
 
   const handleSwitchToDefaultNetwork = () => {
-    switchChain({ chainId: targetChainId ?? chains[0].id });
+    switchChain({ chainId: targetChainId ?? mainnet.id });
   };
 
   if (!isConnected) {
@@ -53,7 +54,8 @@ export const ConnectedButton = ({
 
   if (
     !disableNetworkCheck &&
-    isNilOrEmpty(chains.find((c) => c.id === chain?.id))
+    ((targetChainId && targetChainId !== chain?.id) ||
+      isNilOrEmpty(chains.find((c) => c.id === chain?.id)))
   ) {
     return (
       <Button onClick={handleSwitchToDefaultNetwork} {...rest}>

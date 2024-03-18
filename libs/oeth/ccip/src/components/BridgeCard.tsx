@@ -8,16 +8,20 @@ import {
 import { ChainButton } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
-import { ConnectedButton } from '@origin/shared/providers';
+import { ConnectedButton, getTokenPriceKey } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
 import { useBridgeState } from '../state';
+import { useBridgePrices } from '../state/useBridgePrices';
 
 import type { Chain } from 'viem/chains';
 
 export const BridgeCard = () => {
   const intl = useIntl();
+  const { chain: currentChain } = useAccount();
   const { state, changeAmount } = useBridgeState();
+  const prices = useBridgePrices();
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -32,6 +36,8 @@ export const BridgeCard = () => {
             onAmountChange={changeAmount}
             balance={state.srcBalance}
             isBalanceLoading={state.isSrcBalanceLoading}
+            tokenPriceUsd={prices.data?.[getTokenPriceKey(state.srcToken)]}
+            isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
             {...tokenInputStyleProps}
           />
@@ -47,9 +53,11 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={true}
-            amount={0n}
+            amount={state.amount}
             balance={state.dstBalance}
             isBalanceLoading={state.isDstBalanceLoading}
+            tokenPriceUsd={prices.data?.[getTokenPriceKey(state.dstToken)]}
+            isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
             {...disabledTokenInputStyleProps}
           />
@@ -65,13 +73,14 @@ export const BridgeCard = () => {
             </Box>
             <Box>7 minutes (TODO)</Box>
           </Stack>
-          {state.approval && (
+          {currentChain?.id === state.srcChain.id && state.approval && (
             <ConnectedButton
               fullWidth
               disabled={!state.approval.enabled}
               onClick={state.approval.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
+              targetChainId={state.srcChain.id}
             >
               {state.approval.message}
             </ConnectedButton>
@@ -83,6 +92,7 @@ export const BridgeCard = () => {
               onClick={state.bridge.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
+              targetChainId={state.srcChain.id}
             >
               {state.bridge.message}
             </ConnectedButton>

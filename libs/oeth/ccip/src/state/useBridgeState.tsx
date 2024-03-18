@@ -62,7 +62,10 @@ export const useBridgeState = () => {
         } else if (srcBalance !== undefined && srcBalance < state.amount) {
           approval = undefined;
           bridge = statuses.bridge.insufficientAmount();
-        } else if (state.allowance && state.allowance < state.amount) {
+        } else if (
+          state.allowance !== undefined &&
+          state.allowance < state.amount
+        ) {
           approval = statuses.approval.idle(doApprove);
           bridge = statuses.bridge.disabled();
         } else {
