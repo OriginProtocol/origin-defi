@@ -33,7 +33,6 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
-  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSlippage,
@@ -230,7 +229,6 @@ function SwapperWrapped({
     useWatchBalance({
       token: tokenOut.address,
     });
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -322,16 +320,14 @@ function SwapperWrapped({
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
-              balance={balTokenIn as unknown as bigint}
+              balance={balTokenIn}
               isBalanceLoading={isBalTokenInLoading}
               token={tokenIn}
               onTokenClick={() => {
                 setTokenSource('tokenIn');
               }}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
               isPriceLoading={isPriceLoading}
-              isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
               sx={{
                 p: 3,
@@ -344,17 +340,15 @@ function SwapperWrapped({
               readOnly
               amount={amountOut}
               decimals={tokenOut.decimals}
-              balance={balTokenOut as unknown as bigint}
+              balance={balTokenOut}
               isAmountLoading={isSwapRoutesLoading}
               isBalanceLoading={isBalTokenOutLoading}
               token={tokenOut}
               onTokenClick={() => {
                 setTokenSource('tokenOut');
               }}
-              isNativeCurrency={isNativeCurrency(tokenOut)}
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-              isConnected={isConnected}
               hideMaxButton
               sx={{
                 p: 3,

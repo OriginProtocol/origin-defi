@@ -7,9 +7,11 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { Dropdown } from '@origin/shared/icons';
+import { useIsNativeCurrency } from '@origin/shared/providers';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -25,18 +27,15 @@ export type TokenInputProps = {
   isAmountLoading?: boolean;
   isAmountDisabled?: boolean;
   isAmountError?: boolean;
-  isConnected: boolean;
   balance?: bigint;
   isBalanceLoading?: boolean;
   hideMaxButton?: boolean;
   disableMaxButton?: boolean;
   token: Token;
   onTokenClick?: () => void;
-  isNativeCurrency?: boolean;
   isTokenClickDisabled?: boolean;
   tokenPriceUsd?: number;
   isPriceLoading?: boolean;
-  tokenButtonProps?: Omit<TokenButtonProps, 'token'>;
   readOnly?: boolean;
 } & StackProps;
 
@@ -49,27 +48,26 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isAmountLoading,
       isAmountDisabled,
       isAmountError,
-      isConnected,
       balance = 0n,
       isBalanceLoading,
       hideMaxButton,
       disableMaxButton,
       token,
       onTokenClick,
-      isNativeCurrency = false,
       isTokenClickDisabled,
       tokenPriceUsd = 0,
       isPriceLoading,
-      tokenButtonProps,
       readOnly = false,
       ...rest
     },
     ref,
   ) => {
     const intl = useIntl();
+    const { isConnected } = useAccount();
+    const isNativeCurrency = useIsNativeCurrency();
 
     const handleMaxClick = () => {
-      const max = isNativeCurrency
+      const max = isNativeCurrency(token)
         ? balance - parseEther(MIN_ETH_FOR_GAS)
         : balance;
       onAmountChange?.(max);
@@ -78,7 +76,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
     const maxVisible =
       !hideMaxButton &&
-      balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
+      balance > (isNativeCurrency(token) ? parseEther(MIN_ETH_FOR_GAS) : 0n);
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
@@ -92,11 +90,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             token={token}
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}
-            {...tokenButtonProps}
-            sx={{
-              ...(!isConnected && { transform: 'translateY(50%)' }),
-              ...tokenButtonProps?.sx,
-            }}
           />
           <Stack
             direction="row"
@@ -107,7 +100,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           >
             {isConnected ? (
               isBalanceLoading ? (
-                <Skeleton width={38} />
+                <Skeleton />
               ) : (
                 <>
                   <Typography
