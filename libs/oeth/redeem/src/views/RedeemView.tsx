@@ -1,17 +1,14 @@
-import { Stack, Tab, Tabs } from '@mui/material';
-import { useIntl } from 'react-intl';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import { redeemRoute } from '../routes';
+import { Stack } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
 export const RedeemView = () => {
-  const intl = useIntl();
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const intl = useIntl();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   return (
     <Stack spacing={3}>
-      <Tabs
+      {/* <Tabs
         centered
         value={location.pathname}
         onChange={(_, value) => {
@@ -31,7 +28,7 @@ export const RedeemView = () => {
             />
           );
         })}
-      </Tabs>
+      </Tabs> */}
       <Outlet />
     </Stack>
   );
