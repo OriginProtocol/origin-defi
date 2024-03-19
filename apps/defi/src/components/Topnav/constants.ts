@@ -1,7 +1,8 @@
 import {
-  ANALYTICS_URL,
   GOVERNANCE_DISCUSSION_FORUM,
   GOVERNANCE_SNAPSHOT_VOTES,
+  OETH_ANALYTICS_URL,
+  OUSD_ANALYTICS_URL,
 } from '@origin/shared/constants';
 import {
   FaChartPieRegular,
@@ -21,7 +22,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'In-depth OETH analytics',
       }),
       icon: FaChartPieRegular,
-      href: ANALYTICS_URL,
+      href: OETH_ANALYTICS_URL,
     },
   ],
   ousd: [
@@ -31,7 +32,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'In-depth OUSD analytics',
       }),
       icon: FaChartPieRegular,
-      href: ANALYTICS_URL,
+      href: OUSD_ANALYTICS_URL,
     },
   ],
   ogv: [
@@ -41,7 +42,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'In-depth OGV analytics',
       }),
       icon: FaChartPieRegular,
-      href: ANALYTICS_URL,
+      href: OUSD_ANALYTICS_URL,
     },
   ],
   governance: [
@@ -51,7 +52,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'Horem ipsum dolor ',
       }),
       icon: FaCircleExclamationRegular,
-      href: ANALYTICS_URL,
+      href: OUSD_ANALYTICS_URL,
     },
     {
       title: defineMessage({ defaultMessage: 'Discussion forum' }),

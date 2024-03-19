@@ -340,6 +340,13 @@ export const theme = createTheme({
             margin: 0;
           }
 
+          @font-face { 
+            font-family: "Inter"; 
+            font-weight: 400;
+            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            font-display: swap;
+          }
+
           @font-face {
             font-family: Sailec;
             font-weight: 400;
