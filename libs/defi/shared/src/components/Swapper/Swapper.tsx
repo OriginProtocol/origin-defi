@@ -340,7 +340,6 @@ function SwapperWrapped({
           <CardContent>
             <SwapRoute
               sx={{
-                mt: 1.5,
                 border: (theme) => `1px solid ${theme.palette.divider}`,
               }}
             />

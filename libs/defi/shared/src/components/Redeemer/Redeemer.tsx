@@ -169,7 +169,6 @@ function RedeemerWrapped({
           <CardContent>
             <RedeemRoute
               sx={{
-                mt: 1.5,
                 border: (theme) => `1px solid ${theme.palette.divider}`,
               }}
             />
