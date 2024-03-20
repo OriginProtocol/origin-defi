@@ -7,6 +7,7 @@ declare module '@mui/material/styles' {
     gradientBlue: string;
     gradientOrange: string;
     header: string;
+    highlight: string;
   }
 
   interface TypeBackgroundOptions {
@@ -14,6 +15,7 @@ declare module '@mui/material/styles' {
     gradientBlue?: string;
     gradientOrange?: string;
     header?: string;
+    highlight?: string;
   }
 
   interface TypeText {

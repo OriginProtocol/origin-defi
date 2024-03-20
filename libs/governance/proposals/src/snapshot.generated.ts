@@ -43,6 +43,12 @@ export type AliasWhere = {
   ipfs_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
 
+export type BoostSettings = {
+  __typename?: 'BoostSettings';
+  bribeEnabled?: Maybe<Scalars['Boolean']['output']>;
+  enabled?: Maybe<Scalars['Boolean']['output']>;
+};
+
 export type DelegationPortal = {
   __typename?: 'DelegationPortal';
   delegationApi: Scalars['String']['output'];
@@ -404,6 +410,7 @@ export type Space = {
   activeProposals?: Maybe<Scalars['Int']['output']>;
   admins?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   avatar?: Maybe<Scalars['String']['output']>;
+  boost?: Maybe<BoostSettings>;
   categories?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   children?: Maybe<Array<Maybe<Space>>>;
   coingecko?: Maybe<Scalars['String']['output']>;

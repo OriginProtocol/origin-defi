@@ -25,9 +25,10 @@ export const theme = createTheme({
     },
     divider: '#282A32',
     background: {
-      paper: '#1E1F25',
+      paper: '#171619',
       default: '#141214',
       header: '#19191D',
+      highlight: '#1E1F25',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
@@ -146,7 +147,7 @@ export const theme = createTheme({
       },
     },
     subtitle2: {
-      fontFamily: 'Sailec',
+      fontFamily: 'Inter',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.4,
@@ -159,22 +160,14 @@ export const theme = createTheme({
     body1: {
       fontFamily: 'Inter',
       fontSize: 14,
-      lineHeight: 1.5,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 13,
-        lineHeight: 1.4,
-      },
+      lineHeight: 1.71429,
     },
     body2: {
       fontFamily: 'Inter',
       fontSize: 12,
       fontWeight: 400,
       lineHeight: 1.6,
-      [base.breakpoints.down('sm')]: {
-        fontSize: 11,
-      },
     },
-
     button: {
       fontFamily: 'Sailec',
       fontSize: 14,
@@ -193,18 +186,32 @@ export const theme = createTheme({
   ],
   components: {
     MuiAccordion: {
+      defaultProps: {
+        disableGutters: true,
+      },
       styleOverrides: {
         root: ({ theme }) => ({
-          borderRadius: theme.shape.borderRadius,
-          backgroundColor: theme.palette.grey[900],
+          borderRadius: 4,
           border: '1px solid',
-          borderColor: theme.palette.grey[800],
+          borderColor: theme.palette.divider,
           boxShadow: 'none',
           '&:before': {
             height: 0,
           },
           backgroundImage: 'none',
         }),
+      },
+    },
+    MuiAccordionSummary: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: 0,
+          borderRadius: theme.shape.borderRadius,
+        }),
+        content: {
+          marginTop: 0,
+          marginBottom: 0,
+        },
       },
     },
     MuiAlert: {
@@ -235,7 +242,7 @@ export const theme = createTheme({
       },
       styleOverrides: {
         root: ({ theme }) => ({
-          backgroundColor: theme.palette.grey['900'],
+          backgroundColor: theme.palette.background.highlight,
           color: theme.palette.text.primary,
           '&&&': { border: 'none' },
         }),
@@ -291,8 +298,7 @@ export const theme = createTheme({
         {
           props: { variant: 'action' },
           style: ({ theme }) => ({
-            background:
-              'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
+            background: theme.palette.primary.main,
             color: theme.palette.text.primary,
             padding: theme.spacing(2),
             fontSize: 20,
@@ -302,8 +308,7 @@ export const theme = createTheme({
             fontWeight: 500,
             fontStyle: 'normal',
             '&:hover': {
-              background:
-                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+              background: theme.palette.primary.dark,
               opacity: 1,
             },
             '&:disabled': {
@@ -328,21 +333,24 @@ export const theme = createTheme({
           backgroundImage: 'none',
           backgroundColor: theme.palette.background.paper,
           border: `1px solid ${theme.palette.divider}`,
+          boxShadow: 'none',
         }),
       },
     },
     MuiCardHeader: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2.5, 3),
-          borderBottom: `1px solid ${theme.palette.divider}`,
+          minHeight: 72,
+          padding: theme.spacing(3),
           backgroundColor: theme.palette.background.header,
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.25, 1.5),
+            minHeight: 56,
+            padding: theme.spacing(2, 3),
           },
         }),
         title: ({ theme }) => ({
           fontSize: theme.typography.fontSize,
+          lineHeight: 1.5,
           fontWeight: 500,
         }),
       },
@@ -388,6 +396,34 @@ export const theme = createTheme({
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
+          }
+
+          @font-face { 
+            font-family: "Inter"; 
+            font-weight: 400;
+            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 400;
+            src: url(/fonts/Sailec-Regular.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 500;
+            src: url(/fonts/Sailec-Medium.otf) format('opentype');
+            font-display: swap;
+          }
+
+          @font-face {
+            font-family: Sailec;
+            font-weight: 700;
+            src: url(/fonts/Sailec-Bold.otf) format('opentype');
+            font-display: swap;
           }
         `,
     },
@@ -463,8 +499,7 @@ export const theme = createTheme({
           borderColor: theme.palette.info.main,
           backgroundColor: theme.palette.background.default,
           width: 'auto',
-          paddingBlock: theme.spacing(0.5),
-          paddingInline: theme.spacing(1.5),
+          padding: theme.spacing(0.5, 1.5),
 
           '& .MuiInputBase-input': {
             color: theme.palette.text.primary,
@@ -591,8 +626,7 @@ export const theme = createTheme({
     MuiTableCell: {
       styleOverrides: {
         root: ({ theme }) => ({
-          paddingInline: theme.spacing(3),
-          paddingBlock: theme.spacing(2),
+          padding: theme.spacing(2, 3),
           fontSize: theme.typography.fontSize,
           fontStyle: 'normal',
           fontWeight: 400,
@@ -617,8 +651,7 @@ export const theme = createTheme({
     MuiTooltip: {
       styleOverrides: {
         tooltip: ({ theme }) => ({
-          paddingInline: theme.spacing(2),
-          paddingBlock: theme.spacing(1.5),
+          padding: theme.spacing(1.5, 2),
           borderRadius: theme.shape.borderRadius * 2,
           border: '1px solid',
           borderColor: theme.palette.grey[500],
