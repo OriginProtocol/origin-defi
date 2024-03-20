@@ -1,5 +1,4 @@
 import {
-  alpha,
   Button,
   FormControl,
   FormHelperText,
@@ -55,9 +54,6 @@ export function SlippageFormControl({
           onChange={handleSlippageChange}
           fullWidth
           sx={{
-            borderColor: (theme) => theme.palette.secondary.main,
-            backgroundColor: (theme) =>
-              alpha(theme.palette.secondary.main, 0.05),
             paddingInlineEnd: 2,
             '& .MuiInputBase-input': {
               textAlign: 'right',

@@ -477,7 +477,7 @@ export const theme = createTheme({
             transformOrigin: 'initial',
             fontSize: theme.typography.fontSize,
             marginBlockEnd: theme.spacing(1),
-            color: `${theme.palette.text.primary}`,
+            color: theme.palette.text.primary,
           },
         }),
       },
@@ -488,12 +488,9 @@ export const theme = createTheme({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: `liear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), #1E1F25;`,
-          '&:hover': {
-            background: theme.palette.background.paper,
+          backgroundColor: theme.palette.grey['800'],
+          ':hover': {
+            backgroundColor: theme.palette.background.highlight,
           },
         }),
       },
@@ -503,7 +500,7 @@ export const theme = createTheme({
         root: ({ theme }) => ({
           borderRadius: 20,
           border: '1px solid',
-          borderColor: theme.palette.info.main,
+          borderColor: theme.palette.primary.main,
           backgroundColor: theme.palette.background.default,
           width: 'auto',
           padding: theme.spacing(0.5, 1.5),
@@ -647,7 +644,7 @@ export const theme = createTheme({
     MuiTabs: {
       styleOverrides: {
         indicator: ({ theme }) => ({
-          background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+          background: theme.palette.primary.main,
           transition: theme.transitions.create('all', {
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.easeInOut,
