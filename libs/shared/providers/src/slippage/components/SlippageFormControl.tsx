@@ -39,7 +39,7 @@ export function SlippageFormControl({
       <InputLabel
         htmlFor="slippage"
         shrink
-        sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}
+        sx={{ display: 'flex', alignItems: 'center', gap: 0.5, pb: 1 }}
       >
         {intl.formatMessage({ defaultMessage: 'Max slippage' })}
         <InfoTooltip

@@ -1,17 +1,23 @@
 import { Popover, useTheme } from '@mui/material';
 
 import { SlippageFormControl } from '../../slippage';
-import { useSwapState } from '../state';
 
 import type { ButtonProps, PopoverProps } from '@mui/material';
 
 export type SettingsPopoverProps = {
-  buttonProps?: ButtonProps;
+  formButtonProps?: ButtonProps;
+  trackEvent?: (args: {
+    name: 'change_price_tolerance';
+    price_tolerance: number;
+  }) => void;
 } & PopoverProps;
 
-export function SettingsPopover(props: PopoverProps) {
+export const SettingsPopover = ({
+  formButtonProps,
+  trackEvent,
+  ...rest
+}: SettingsPopoverProps) => {
   const theme = useTheme();
-  const [{ trackEvent }] = useSwapState();
 
   const handleSlippageChange = (val: number) => {
     trackEvent?.({
@@ -22,7 +28,7 @@ export function SettingsPopover(props: PopoverProps) {
 
   return (
     <Popover
-      {...props}
+      {...rest}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'center',
@@ -48,27 +54,13 @@ export function SettingsPopover(props: PopoverProps) {
             marginInline: 'auto',
           },
         },
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
       <SlippageFormControl
         onChange={handleSlippageChange}
-        buttonProps={{
-          sx: {
-            color: 'text.primary',
-            background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-            '&:hover': {
-              background:
-                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-              opacity: 1,
-            },
-            '&:disabled': {
-              opacity: 0.5,
-              color: 'text.primary',
-            },
-          },
-        }}
+        buttonProps={formButtonProps}
       />
     </Popover>
   );
-}
+};

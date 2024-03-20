@@ -21,7 +21,7 @@ import {
   SeverityIcon,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
+import { ArrowDown } from '@origin/shared/icons';
 import {
   formatError,
   isNilOrEmpty,
@@ -40,6 +40,7 @@ import {
 import { useFormat } from '../../intl';
 import { usePushNotification } from '../../notifications';
 import { getTokenPriceKey } from '../../prices';
+import { SettingsButton } from '../../settings';
 import { useSlippage } from '../../slippage';
 import {
   ConnectedButton,
@@ -57,7 +58,6 @@ import {
   useTokenOptions,
 } from '../hooks';
 import { SwapProvider, useSwapState } from '../state';
-import { SettingsPopover } from './SettingsPopover';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
@@ -209,7 +209,6 @@ function SwapperWrapped({
   const { value: slippage } = useSlippage();
   const { isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
       amountIn,
@@ -252,7 +251,6 @@ function SwapperWrapped({
   };
 
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(evt.currentTarget);
     trackEvent?.({ name: 'open_settings' });
   };
 
@@ -298,31 +296,17 @@ function SwapperWrapped({
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
-            title={
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Swap' })}
-                </Typography>
-                <IconButton
-                  onClick={handleSettingClick}
-                  sx={{
-                    position: 'relative',
-                    right: (theme) => theme.spacing(-0.75),
-                    svg: { width: 16, height: 16 },
-                  }}
-                >
-                  <FaGearComplexRegular />
-                </IconButton>
-                <SettingsPopover
-                  open={!!anchorEl}
-                  anchorEl={anchorEl}
-                  onClose={() => setAnchorEl(null)}
-                />
-              </Stack>
+            title={intl.formatMessage({ defaultMessage: 'Swap' })}
+            action={
+              <SettingsButton
+                onClick={handleSettingClick}
+                popoverProps={{
+                  formButtonProps: {
+                    variant: 'outlined',
+                    color: 'secondary',
+                  },
+                }}
+              />
             }
           />
           <CardContent>
@@ -452,7 +436,6 @@ function SwapperWrapped({
                 </Stack>
               </Stack>
             </Collapse>
-
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 fullWidth
