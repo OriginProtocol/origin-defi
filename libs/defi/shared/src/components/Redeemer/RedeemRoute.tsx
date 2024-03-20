@@ -7,33 +7,29 @@ import {
   Typography,
 } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { useSwapState } from '@origin/shared/providers';
+import { useRedeemState } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
-import { BestRoutes } from './BestRoutes';
-import { SwapRouteAccordion } from './SwapRouteAccordion';
+import { RedeemSplitCard } from './RedeemSplitCard';
 
 import type { AccordionProps } from '@mui/material';
 
-export function SwapRoute(
+export function RedeemRoute(
   props: Omit<AccordionProps, 'children' | 'expanded'>,
 ) {
   const intl = useIntl();
-  const [{ amountIn, estimatedSwapRoutes, isSwapRoutesLoading }] =
-    useSwapState();
-
-  const isExpanded = estimatedSwapRoutes.length > 0 && amountIn > 0n;
+  const [{ amountOut, isEstimateLoading, tokenIn }] = useRedeemState();
 
   return (
     <Accordion
       {...props}
-      expanded={isExpanded}
+      expanded={amountOut > 0n}
       sx={{ px: 2, borderRadius: 1, ...props?.sx }}
     >
       <AccordionSummary
         sx={{ py: 2, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
       >
-        {isSwapRoutesLoading ? (
+        {isEstimateLoading ? (
           <Stack direction="row" alignItems="center" gap={1}>
             <Skeleton
               variant="circular"
@@ -45,7 +41,7 @@ export function SwapRoute(
             />
             <Typography>
               {intl.formatMessage({
-                defaultMessage: 'Finding the best route...',
+                defaultMessage: 'Estimating...',
               })}
             </Typography>
           </Stack>
@@ -58,19 +54,19 @@ export function SwapRoute(
           >
             {intl.formatMessage({ defaultMessage: 'Route' })}
             <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The best swap route factors in the best price after transaction costs',
-              })}
+              tooltipLabel={intl.formatMessage(
+                {
+                  defaultMessage:
+                    'Redeem {token} for the basket of underlying assets',
+                },
+                { token: tokenIn.symbol },
+              )}
             />
           </Stack>
         )}
       </AccordionSummary>
       <AccordionDetails sx={{ pt: 1, pb: 2, px: 0 }}>
-        <BestRoutes />
-        {estimatedSwapRoutes.length > 2 && (
-          <SwapRouteAccordion sx={{ mt: 2 }} />
-        )}
+        <RedeemSplitCard />
       </AccordionDetails>
     </Accordion>
   );

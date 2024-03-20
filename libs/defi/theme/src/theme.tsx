@@ -206,6 +206,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           padding: 0,
+          minHeight: 0,
           borderRadius: theme.shape.borderRadius,
         }),
         content: {

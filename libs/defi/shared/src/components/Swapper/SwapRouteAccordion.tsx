@@ -39,11 +39,8 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           setShowMore(not);
           trackEvent?.({ name: 'show_swap_routes' });
         }}
-        expandIcon={
-          <FaChevronDownRegular
-            sx={{ fontSize: 16, color: 'text.secondary' }}
-          />
-        }
+        expandIcon={<FaChevronDownRegular sx={{ color: 'text.secondary' }} />}
+        sx={{ py: 1 }}
       >
         <Typography sx={{ pl: 1, flex: 1 }} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Show more' })}

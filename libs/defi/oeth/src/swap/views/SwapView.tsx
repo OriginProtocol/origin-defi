@@ -1,6 +1,6 @@
 import { Box, Container, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { PageTitle, Swapper } from '@origin/defi/shared';
+import { PageTitle, Swapper, trackEvent } from '@origin/defi/shared';
 import { OETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -31,6 +31,7 @@ export const SwapView = () => {
                 swapActions={oethSwapActions}
                 swapRoutes={oethSwapRoutes}
                 buttonsProps={{ variant: 'action' }}
+                trackEvent={trackEvent}
               />
               <CexCard />
               <FAQCard />

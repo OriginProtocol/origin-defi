@@ -78,7 +78,7 @@ export function SwapRouteCard({
         boxShadow: 'none',
         height: 1,
         borderWidth: 1,
-        borderColor: 'grey.800',
+        borderColor: 'divider',
         '&:hover': {
           borderColor: 'primary.main',
         },
