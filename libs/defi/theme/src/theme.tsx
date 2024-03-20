@@ -434,6 +434,11 @@ export const theme = createTheme({
         disableScrollLock: true,
       },
       styleOverrides: {
+        root: ({ theme }) => ({
+          border: '1px solid',
+          borderColor: theme.palette.divider,
+          backgroundImage: 'none',
+        }),
         paper: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 2,
         }),
@@ -442,11 +447,12 @@ export const theme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({
-          py: 3,
-          fontSize: 16,
-          fontWeight: 700,
-          lineHeight: 1.75,
+          padding: theme.spacing(2.5, 3),
+          fontSize: 14,
+          fontWeight: 500,
+          lineHeight: 1.71429,
           color: theme.palette.text.primary,
+          borderBottom: `1px solid ${theme.palette.divider}`,
         }),
       },
     },
