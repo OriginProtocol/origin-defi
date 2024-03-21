@@ -153,6 +153,7 @@ export type Proposal = {
   plugins: Scalars['Any']['output'];
   privacy?: Maybe<Scalars['String']['output']>;
   quorum: Scalars['Float']['output'];
+  quorumType: Scalars['String']['output'];
   scores?: Maybe<Array<Maybe<Scalars['Float']['output']>>>;
   scores_by_strategy?: Maybe<Scalars['Any']['output']>;
   scores_state?: Maybe<Scalars['String']['output']>;
@@ -469,6 +470,7 @@ export type SpaceVoting = {
   period?: Maybe<Scalars['Int']['output']>;
   privacy?: Maybe<Scalars['String']['output']>;
   quorum?: Maybe<Scalars['Float']['output']>;
+  quorumType: Scalars['String']['output'];
   type?: Maybe<Scalars['String']['output']>;
 };
 
