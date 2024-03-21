@@ -33,7 +33,7 @@ import { useIntl } from 'react-intl';
 import { useAggregatedHistory } from '../hooks';
 
 import type { StackProps } from '@mui/material';
-import type { HistoryType } from '@origin/oeth/shared';
+import type { HistoryType } from '@origin/defi/shared';
 import type { ExpandedState } from '@tanstack/react-table';
 
 import type { DailyHistory } from '../types';

@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { HistoryType } from '@origin/oeth/shared';
+import { HistoryType } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';

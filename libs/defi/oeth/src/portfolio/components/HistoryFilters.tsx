@@ -11,7 +11,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { HistoryType } from '@origin/oeth/shared';
+import { HistoryType } from '@origin/defi/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';

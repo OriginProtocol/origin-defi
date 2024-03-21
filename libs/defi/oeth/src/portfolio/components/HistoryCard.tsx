@@ -23,7 +23,7 @@ import { useOethHistoryTransactionQuery } from '../queries.generated';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
-import type { HistoryType } from '@origin/oeth/shared';
+import type { HistoryType } from '@origin/defi/shared';
 import type { Option } from '@origin/shared/components';
 
 export function HistoryCard() {
