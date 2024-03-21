@@ -7,15 +7,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { SliderSwitch, TokenIcon } from '@origin/shared/components';
+import {
+  DownloadCsvButton,
+  SliderSwitch,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useAggregatedHistory } from '../hooks';
-import { ExportData } from './ExportData';
+import { useOethHistoryTransactionQuery } from '../queries.generated';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
@@ -80,7 +84,7 @@ export function HistoryCard() {
             />
             <Stack direction="row" alignItems="center" gap={1}>
               <HistoryFilters filters={filters} setFilters={setFilters} />
-              <ExportData />
+              <ExportDataButton />
             </Stack>
           </Stack>
         }
@@ -133,5 +137,37 @@ export function HistoryCard() {
         </Stack>
       )}
     </Card>
+  );
+}
+
+function ExportDataButton() {
+  const { address, isConnected } = useAccount();
+  const { data: txData } = useOethHistoryTransactionQuery(
+    { address: address ?? ZERO_ADDRESS },
+    {
+      enabled: isConnected,
+      select: (data) => {
+        if (!data?.oethHistories) {
+          return;
+        }
+
+        return data.oethHistories.reduce(
+          (acc, curr) => [
+            ...acc,
+            [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],
+          ],
+          [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']],
+        );
+      },
+    },
+  );
+
+  return (
+    <DownloadCsvButton
+      data={txData}
+      filename="oeth_transaction_history.csv"
+      hideIcon
+      variant="outlined"
+    />
   );
 }
