@@ -11,6 +11,8 @@ import { veOGVABI } from './abis/veOGV';
 import { WOETHABI } from './abis/WOETH';
 import { WrappedOusdABI } from './abis/WrappedOusd';
 
+import type { Token } from './types';
+
 export const tokens = {
   mainnet: {
     DAI: {
@@ -183,3 +185,26 @@ export const tokens = {
     },
   },
 } as const;
+
+export const tokenMap = {
+  mainnet: new Map<string, Token>(),
+  arbitrum: new Map<string, Token>(),
+};
+for (const token of Object.values(tokens.mainnet)) {
+  if ('address' in token) {
+    tokenMap.mainnet.set(token.address.toLowerCase(), token);
+  }
+}
+for (const token of Object.values(tokens.arbitrum)) {
+  if ('address' in token) {
+    tokenMap.arbitrum.set(token.address.toLowerCase(), token);
+  }
+}
+
+export const getTokenByAddress = (chainId: number, address: string) => {
+  if (chainId === mainnet.id) {
+    return tokenMap.mainnet.get(address.toLowerCase());
+  } else if (chainId === arbitrum.id) {
+    return tokenMap.arbitrum.get(address.toLowerCase());
+  }
+};

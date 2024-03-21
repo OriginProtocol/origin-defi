@@ -1,8 +1,19 @@
 import { Fragment } from 'react';
 
-import { Box, Card, CardContent, CardHeader, Link, Stack } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  keyframes,
+  Link,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2';
 import { ChainIcon, TokenIcon } from '@origin/shared/components';
+import { getTokenByAddress } from '@origin/shared/contracts';
 import {
   FaArrowRightRegular,
   FaArrowUpRightFromSquareRegular,
@@ -10,16 +21,21 @@ import {
   FaCircleExclamationRegular,
   FaLoaderDuotone,
 } from '@origin/shared/icons';
-import { useFormat } from '@origin/shared/providers';
+import { getChain, useFormat } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
+import { useConfig } from 'wagmi';
 
-import { useBridgeState } from '../state';
+import { useBridgeActivity } from '../state/useBridgeActivity';
 
 import type { SxProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
-import type { BridgeActivity } from '../state';
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
 
 const activityHeaderSx: SxProps = {
   color: 'text.secondary',
@@ -32,7 +48,9 @@ const activityContentSx: SxProps = {
 };
 export const BridgeActivityCard = () => {
   const intl = useIntl();
-  const { state } = useBridgeState();
+  const activity = useBridgeActivity();
+  const config = useConfig();
+
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader title={'Bridging activity'} />
@@ -70,15 +88,33 @@ export const BridgeActivityCard = () => {
       </CardContent>
       {/* Table Content */}
       <CardContent>
+        {activity.data?.length === 0 && (
+          <Stack alignItems={'center'}>
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'No activity yet.' })}
+            </Typography>
+          </Stack>
+        )}
+        {activity.isLoading && (
+          <Stack alignItems={'center'}>
+            <Skeleton width={120} />
+          </Stack>
+        )}
         <Grid2 container spacing={1} columns={15}>
-          {state.activity.map((a: BridgeActivity, i: number) => {
+          {activity.data?.map((a, i: number) => {
+            const token = getTokenByAddress(a.chainIn, a.tokenIn);
             return (
-              <Fragment key={`${a.tx}-${i}`}>
+              <Fragment key={`${a.messageId}-${i}`}>
                 <Grid2 xs={5} sm={4} sx={activityContentSx}>
-                  <BridgeAmount token={a.token} amount={a.amount} />
+                  {token && (
+                    <BridgeAmount token={token} amount={BigInt(a.amountIn)} />
+                  )}
                 </Grid2>
                 <Grid2 xs={4} sm={3} sx={activityContentSx}>
-                  <BridgeRoute srcChain={a.srcChain} dstChain={a.dstChain} />
+                  <BridgeRoute
+                    srcChain={getChain(config, a.chainIn)}
+                    dstChain={getChain(config, a.chainOut)}
+                  />
                 </Grid2>
                 <Grid2 xs={3} sx={activityContentSx}>
                   {intl.formatDate(new Date(a.timestamp))}
@@ -89,11 +125,11 @@ export const BridgeActivityCard = () => {
                   sx={activityContentSx}
                   justifyContent={{ xs: 'center', sm: 'left' }}
                 >
-                  <BridgeStatus status={a.status} />
+                  <BridgeStatus state={a.state} />
                 </Grid2>
                 <Grid2 xs={1} sx={activityContentSx} justifyContent={'center'}>
                   <Link
-                    href={`https://ccip.chain.link/msg/${a.tx}`}
+                    href={`https://ccip.chain.link/msg/${a.messageId}`}
                     target="_blank"
                     rel="noopener noreferrer nofollow"
                   >
@@ -127,31 +163,31 @@ export const BridgeAmount = (props: { token: Token; amount: bigint }) => {
   );
 };
 
-export const BridgeRoute = (props: { srcChain: Chain; dstChain: Chain }) => (
+export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
   <Stack
     direction={'row'}
     spacing={{ xs: '1px', sm: '3px' }}
     alignItems={'center'}
   >
     <ChainIcon
-      chainId={props.srcChain.id}
+      chainId={props.srcChain?.id}
       sx={{ height: { xs: 14, sm: 20 } }}
     />
     <FaArrowRightRegular sx={{ height: { xs: 12, sm: 18 } }} />
     <ChainIcon
-      chainId={props.dstChain.id}
+      chainId={props.dstChain?.id}
       sx={{ height: { xs: 14, sm: 20 } }}
     />
   </Stack>
 );
 
 export const BridgeStatus = (props: {
-  status: 'complete' | 'failed' | 'processing';
+  state?: 'complete' | 'failed' | 'processing' | 'untouched';
   eta?: number;
 }) => {
   const intl = useIntl();
   const hideWhenXs: SxProps = { display: { xs: 'none', sm: 'inherit' } };
-  if (props.status === 'complete') {
+  if (props.state === 'complete') {
     return (
       <Stack
         direction={'row'}
@@ -171,7 +207,7 @@ export const BridgeStatus = (props: {
       </Stack>
     );
   }
-  if (props.status === 'processing') {
+  if (props.state === 'untouched' || props.state === 'processing') {
     return (
       <Box>
         <Stack
@@ -184,19 +220,22 @@ export const BridgeStatus = (props: {
             sx={{
               color: '#FFD84E',
               fontSize: 20,
+              animation: `${spin} 1s linear infinite`,
             }}
           />
           <Box sx={hideWhenXs}>
             {intl.formatMessage({ defaultMessage: 'Processing' })}
           </Box>
         </Stack>
-        <Box sx={hideWhenXs} color={'text.secondary'}>
-          ~5 mins left
-        </Box>
+        {props.state === 'processing' && (
+          <Box sx={hideWhenXs} color={'text.secondary'}>
+            ~5 mins left
+          </Box>
+        )}
       </Box>
     );
   }
-  if (props.status === 'failed') {
+  if (props.state === 'failed') {
     return (
       <Stack
         direction={'row'}

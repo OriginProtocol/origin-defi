@@ -47,7 +47,7 @@ export const useBridgeState = () => {
         allowance,
       }));
     },
-    [state.srcToken, state.srcToken.chainId, userAddress],
+    [state.srcToken, state.srcToken.chainId, state.srcChain.id, userAddress],
     200,
   );
 

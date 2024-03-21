@@ -1,0 +1,25 @@
+query BridgeTransfers($account: String!) {
+  bridgeTransfers(orderBy: timestamp_DESC, where: {sender_eq: $account, receiver_eq: $account} ) {
+    id
+    blockNumber
+    timestamp
+    messageId
+    bridge
+    chainIn
+    chainOut
+    amountIn
+    amountOut
+    receiver
+    sender
+    tokenIn
+    tokenOut
+    txHash
+  }
+}
+
+query BridgeTransferStates($messageIds: [String!]) {
+  bridgeTransferStates(where: {id_in: $messageIds}) {
+    id
+    state
+  }
+}

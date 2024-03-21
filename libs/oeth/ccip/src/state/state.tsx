@@ -43,7 +43,7 @@ export interface BridgeState {
   activity: BridgeActivity[];
 }
 
-const defaultState: BridgeState = {
+export const defaultState: BridgeState = {
   approval: undefined,
   bridge: statuses.bridge.enterAmount(),
   status: 'idle',
@@ -62,7 +62,7 @@ const defaultState: BridgeState = {
       timestamp: Date.parse('2024-03-05'),
       status: 'processing',
       eta: 60000 * 5,
-      tx: '0x217b6f78cee671bb61451ec59b1576e6cdfd0009f84ffd1deb5596da7a5d3c98',
+      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
     },
     {
       token: tokens.mainnet.wOETH,
@@ -71,7 +71,7 @@ const defaultState: BridgeState = {
       dstChain: arbitrum,
       timestamp: Date.parse('2024-03-05'),
       status: 'complete',
-      tx: '0x217b6f78cee671bb61451ec59b1576e6cdfd0009f84ffd1deb5596da7a5d3c98',
+      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
     },
     {
       token: tokens.mainnet.wOETH,
@@ -80,7 +80,7 @@ const defaultState: BridgeState = {
       dstChain: arbitrum,
       timestamp: Date.parse('2024-03-05'),
       status: 'failed',
-      tx: '0x217b6f78cee671bb61451ec59b1576e6cdfd0009f84ffd1deb5596da7a5d3c98',
+      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
     },
   ],
 };

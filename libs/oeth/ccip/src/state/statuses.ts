@@ -9,7 +9,7 @@ export const statuses = {
     waitingForSignature: () =>
       ({ enabled: false, message: 'Waiting for signature' }) as const,
     waitingForTransaction: () =>
-      ({ enabled: false, message: 'Waiting for transaction' }) as const,
+      ({ enabled: false, message: 'Processing Approval' }) as const,
   },
   bridge: {
     enterAmount: () =>
@@ -37,7 +37,5 @@ export const statuses = {
       ({ enabled: false, message: 'Waiting for signature' }) as const,
     waitingForTransaction: () =>
       ({ enabled: false, message: 'Waiting for transaction' }) as const,
-    complete: () =>
-      ({ enabled: false, message: 'Transaction Successful' }) as const,
   },
 };

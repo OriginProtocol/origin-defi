@@ -130,7 +130,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         >
           {isPriceLoading ? (
             <Skeleton width={50} />
-          ) : !isNilOrEmpty(tokenPriceUsd) ? (
+          ) : !isNilOrEmpty(tokenPriceUsd) && !isNaN(tokenPriceUsd) ? (
             <Typography color="text.secondary">
               {intl.formatNumber(amountUsd, {
                 style: 'currency',
@@ -139,7 +139,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 currencyDisplay: 'narrowSymbol',
               })}
             </Typography>
-          ) : null}
+          ) : (
+            <Box />
+          )}
           <Stack
             direction="row"
             alignItems="center"

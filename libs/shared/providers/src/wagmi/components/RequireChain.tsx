@@ -47,7 +47,8 @@ export const RequireChain = ({
           <Typography variant="h3">
             {intl.formatMessage(
               {
-                defaultMessage: 'The selected network is not by {sectionName}.',
+                defaultMessage:
+                  'The selected network is not supported by {sectionName}.',
               },
               { sectionName },
             )}

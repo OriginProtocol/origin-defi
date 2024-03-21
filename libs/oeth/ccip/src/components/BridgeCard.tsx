@@ -8,7 +8,7 @@ import {
 import { ChainButton } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
-import { ConnectedButton, getTokenPriceKey } from '@origin/shared/providers';
+import { ConnectedButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -36,7 +36,7 @@ export const BridgeCard = () => {
             onAmountChange={changeAmount}
             balance={state.srcBalance}
             isBalanceLoading={state.isSrcBalanceLoading}
-            tokenPriceUsd={prices.data?.[getTokenPriceKey(state.srcToken)]}
+            tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
             {...tokenInputStyleProps}
@@ -56,9 +56,10 @@ export const BridgeCard = () => {
             amount={state.amount}
             balance={state.dstBalance}
             isBalanceLoading={state.isDstBalanceLoading}
-            tokenPriceUsd={prices.data?.[getTokenPriceKey(state.dstToken)]}
+            tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
+            hideMaxButton
             {...disabledTokenInputStyleProps}
           />
           <Stack direction={'row'}>
@@ -71,7 +72,12 @@ export const BridgeCard = () => {
             <Box flex={1} color={'text.secondary'}>
               {intl.formatMessage({ defaultMessage: 'Est. time' })}
             </Box>
-            <Box>7 minutes (TODO)</Box>
+            <Box>
+              {intl.formatMessage(
+                { defaultMessage: '~{minutes} minutes' },
+                { minutes: 15 },
+              )}
+            </Box>
           </Stack>
           {currentChain?.id === state.srcChain.id && state.approval && (
             <ConnectedButton

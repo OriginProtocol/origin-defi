@@ -27,16 +27,21 @@ import { useAccount, useConfig } from 'wagmi';
 import { ccipRouter } from '../ccip';
 import { bridgeStateContainer } from './state';
 import { statuses } from './statuses';
+import { useBridgeActivity } from './useBridgeActivity';
+import { useResetBridgeState } from './useResetBridgeState';
 
 export const useBridge = () => {
   const [state, setState] = bridgeStateContainer.useTracked();
   const { address: userAddress } = useAccount();
+  const resetState = useResetBridgeState();
   const intl = useIntl();
   const config = useConfig();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
+  const bridgeActivity = useBridgeActivity();
+
   return useCallback(async () => {
     if (!userAddress) return;
     const activity = pushActivity({
@@ -87,11 +92,8 @@ export const useBridge = () => {
           ...activity,
           status: 'success',
         });
-        setState((state) => ({
-          ...state,
-          status: 'complete',
-          bridge: statuses.bridge.complete(),
-        }));
+        resetState();
+        bridgeActivity.waitForTx(hash);
       } else {
         updateActivity({
           ...activity,

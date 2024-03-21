@@ -15,3 +15,7 @@ export const isNativeCurrency = (
       (chain?.nativeCurrency?.symbol ?? mainnet.nativeCurrency.symbol)
   );
 };
+
+export const getChain = (config: Config, chainId: number) => {
+  return config.chains.find((c) => c.id === chainId);
+};
