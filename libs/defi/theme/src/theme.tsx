@@ -5,10 +5,9 @@ import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
   FaCircleXmarkRegular,
+  FaSquareCheckRegular,
+  FaSquareRegular,
 } from '@origin/shared/icons';
-
-import { CheckboxIcon } from './components/CheckboxIcon';
-import { EmptyCheckbox } from './components/EmptyCheckbox';
 
 const base = createTheme();
 
@@ -368,15 +367,8 @@ export const theme = createTheme({
     },
     MuiCheckbox: {
       defaultProps: {
-        checkedIcon: <CheckboxIcon />,
-        icon: <EmptyCheckbox />,
-      },
-      styleOverrides: {
-        root: ({ theme }) => ({
-          ':hover': {
-            backgroundColor: 'transparent',
-          },
-        }),
+        checkedIcon: <FaSquareCheckRegular />,
+        icon: <FaSquareRegular />,
       },
     },
     MuiCssBaseline: {
