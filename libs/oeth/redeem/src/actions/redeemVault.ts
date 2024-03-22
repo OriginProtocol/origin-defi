@@ -44,7 +44,8 @@ const isRouteAvailable: IsRouteAvailable = async (
 };
 
 const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
-  return amountIn;
+  // 0.1% redeem fee
+  return amountIn - amountIn / 1000n;
 };
 
 const estimateGas: EstimateGas = async (
