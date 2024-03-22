@@ -9,6 +9,7 @@ import MetamaskSvg from './metamask.svg?react';
 import RabbySvg from './rabby.svg?react';
 import RainbowSvg from './rainbow.svg?react';
 import SafeSvg from './safe.svg?react';
+import TrustSvg from './trust.svg?react';
 import WalletconnectSvg from './walletconnect.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
@@ -39,6 +40,9 @@ export const Rainbow = (props: SvgIconProps) => (
 );
 export const Safe = (props: SvgIconProps) => (
   <SvgIcon {...props} component={SafeSvg} viewBox="0 0 280 280" />
+);
+export const Trust = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={TrustSvg} inheritViewBox />
 );
 export const WalletConnect = (props: SvgIconProps) => (
   <SvgIcon {...props} component={WalletconnectSvg} viewBox="0 0 40 25" />

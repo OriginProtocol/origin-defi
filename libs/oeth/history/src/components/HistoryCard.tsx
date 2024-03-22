@@ -7,13 +7,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { DownloadCsvButton } from '@origin/shared/components';
 import { ConnectedButton } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useAggregatedHistory } from '../hooks';
-import { ExportData } from './ExportData';
+import { useHistoryTransactionQuery } from '../queries.generated';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
@@ -84,5 +85,37 @@ export function HistoryCard() {
         </Stack>
       )}
     </Card>
+  );
+}
+
+function ExportData() {
+  const intl = useIntl();
+  const { address } = useAccount();
+  const { data } = useHistoryTransactionQuery(
+    { address: address ?? ZERO_ADDRESS },
+    {
+      enabled: !!address,
+      select: (data) => {
+        if (!data?.oethHistories) {
+          return;
+        }
+
+        return data.oethHistories.reduce(
+          (acc, curr) => [
+            ...acc,
+            [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],
+          ],
+          [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']],
+        );
+      },
+    },
+  );
+
+  return (
+    <DownloadCsvButton
+      data={data}
+      buttonLabel={intl.formatMessage({ defaultMessage: 'CSV' })}
+      filename="transaction_history.csv"
+    />
   );
 }

@@ -9,6 +9,7 @@ import type { ButtonProps } from '@mui/material';
 export type ConnectedButtonProps = {
   targetChainId?: number;
   disableNetworkCheck?: boolean;
+  connectLabel?: string;
 } & ButtonProps;
 
 export const ConnectedButton = ({
@@ -17,6 +18,7 @@ export const ConnectedButton = ({
   disabled,
   targetChainId,
   disableNetworkCheck,
+  connectLabel,
   ...rest
 }: ConnectedButtonProps) => {
   const intl = useIntl();
@@ -38,7 +40,8 @@ export const ConnectedButton = ({
           openConnectModal?.();
         }}
       >
-        {intl.formatMessage({ defaultMessage: 'Connect Wallet' })}
+        {connectLabel ??
+          intl.formatMessage({ defaultMessage: 'Connect Wallet' })}
       </Button>
     );
   }

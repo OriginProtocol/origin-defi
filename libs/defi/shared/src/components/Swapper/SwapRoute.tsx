@@ -31,7 +31,7 @@ export function SwapRoute(
       sx={{ px: 2, borderRadius: 1, ...props?.sx }}
     >
       <AccordionSummary
-        sx={{ p: 0, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
+        sx={{ py: 2, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
       >
         {isSwapRoutesLoading ? (
           <Stack direction="row" alignItems="center" gap={1}>
@@ -43,7 +43,7 @@ export function SwapRoute(
                 backgroundColor: (theme) => theme.palette.primary.contrastText,
               }}
             />
-            <Typography variant="body2">
+            <Typography>
               {intl.formatMessage({
                 defaultMessage: 'Finding the best route...',
               })}

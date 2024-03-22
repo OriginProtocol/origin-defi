@@ -18,12 +18,14 @@ import {
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
+  TokenInput2,
 } from '@origin/shared/components';
-import { FaArrowDownRegular, FaGearComplexRegular } from '@origin/shared/icons';
+import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
+  SettingsButton,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -33,6 +35,7 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
+  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSlippage,
@@ -51,15 +54,12 @@ import {
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { SettingsPopover } from './SettingsPopover';
 import { SwapRoute } from './SwapRoute';
-import { TokenInput } from './TokenInput';
 import { TokenSelectModal } from './TokenSelectModal';
 
 import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { SwapState, TokenSource } from '@origin/shared/providers';
-import type { MouseEvent } from 'react';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -202,7 +202,6 @@ function SwapperWrapped({
   const { value: slippage } = useSlippage();
   const { isConnected } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
       amountIn,
@@ -216,7 +215,6 @@ function SwapperWrapped({
       isApprovalLoading,
       isApprovalWaitingForSignature,
       swapActions,
-      trackEvent,
     },
   ] = useSwapState();
   const { tokensIn, tokensOut } = useTokenOptions();
@@ -234,6 +232,7 @@ function SwapperWrapped({
   const handleTokenFlip = useHandleTokenFlip();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
+  const isNativeCurrency = useIsNativeCurrency();
 
   const handleCloseSelectionModal = () => {
     setTokenSource(null);
@@ -241,11 +240,6 @@ function SwapperWrapped({
 
   const handleSelectToken = (value: Token) => {
     handleTokenChange(tokenSource, value);
-  };
-
-  const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(evt.currentTarget);
-    trackEvent?.({ name: 'open_settings' });
   };
 
   const needsApproval =
@@ -291,37 +285,20 @@ function SwapperWrapped({
         <Card>
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Swap' })}
-            action={
-              <>
-                <IconButton
-                  onClick={handleSettingClick}
-                  sx={{
-                    position: 'relative',
-                    right: (theme) => theme.spacing(-0.75),
-                    svg: { width: 16, height: 16 },
-                  }}
-                >
-                  <FaGearComplexRegular />
-                </IconButton>
-                <SettingsPopover
-                  open={!!anchorEl}
-                  anchorEl={anchorEl}
-                  onClose={() => setAnchorEl(null)}
-                />
-              </>
-            }
+            action={<SettingsButton />}
           />
           <Box
             sx={{
               position: 'relative',
             }}
           >
-            <TokenInput
+            <TokenInput2
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
               balance={balTokenIn}
               isBalanceLoading={isBalTokenInLoading}
+              isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
               onTokenClick={() => {
                 setTokenSource('tokenIn');
@@ -336,13 +313,14 @@ function SwapperWrapped({
                 backgroundColor: 'background.default',
               }}
             />
-            <TokenInput
+            <TokenInput2
               readOnly
               amount={amountOut}
               decimals={tokenOut.decimals}
               balance={balTokenOut}
               isAmountLoading={isSwapRoutesLoading}
               isBalanceLoading={isBalTokenOutLoading}
+              isNativeCurrency={isNativeCurrency(tokenOut)}
               token={tokenOut}
               onTokenClick={() => {
                 setTokenSource('tokenOut');
@@ -362,7 +340,6 @@ function SwapperWrapped({
           <CardContent>
             <SwapRoute
               sx={{
-                mt: 1.5,
                 border: (theme) => `1px solid ${theme.palette.divider}`,
               }}
             />

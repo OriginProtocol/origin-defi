@@ -8,6 +8,7 @@ import {
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
+import type { ReactNode } from 'react';
 
 export type ActivityIconStatus = 'idle' | 'pending' | 'success' | 'error';
 
@@ -17,17 +18,25 @@ const spin = keyframes`
   }
 `;
 
-type ActivityIconProps = {
+export type ActivityIconProps = {
   status: ActivityIconStatus;
   disablePendingSpin?: boolean;
+  iconMapping?: Partial<Record<ActivityIconStatus, ReactNode>>;
 } & SvgIconProps;
 
 export const ActivityIcon = ({
   status,
   disablePendingSpin,
+  iconMapping,
   ...rest
 }: ActivityIconProps) => {
   const theme = useTheme();
+
+  const custom = iconMapping
+    ? Object.fromEntries(
+        Object.entries(iconMapping).filter(([k, v]) => !!k && !!v),
+      )
+    : {};
 
   return {
     idle: <Activity {...rest} />,
@@ -52,5 +61,6 @@ export const ActivityIcon = ({
         <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />
       </SvgIcon>
     ),
+    ...custom,
   }[status];
 };

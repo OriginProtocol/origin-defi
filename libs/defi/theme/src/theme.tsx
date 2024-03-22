@@ -5,10 +5,9 @@ import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
   FaCircleXmarkRegular,
+  FaSquareCheckRegular,
+  FaSquareRegular,
 } from '@origin/shared/icons';
-
-import { CheckboxIcon } from './components/CheckboxIcon';
-import { EmptyCheckbox } from './components/EmptyCheckbox';
 
 const base = createTheme();
 
@@ -206,6 +205,7 @@ export const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           padding: 0,
+          minHeight: 0,
           borderRadius: theme.shape.borderRadius,
         }),
         content: {
@@ -367,15 +367,8 @@ export const theme = createTheme({
     },
     MuiCheckbox: {
       defaultProps: {
-        checkedIcon: <CheckboxIcon />,
-        icon: <EmptyCheckbox />,
-      },
-      styleOverrides: {
-        root: ({ theme }) => ({
-          ':hover': {
-            backgroundColor: 'transparent',
-          },
-        }),
+        checkedIcon: <FaSquareCheckRegular />,
+        icon: <FaSquareRegular />,
       },
     },
     MuiCssBaseline: {
@@ -433,6 +426,11 @@ export const theme = createTheme({
         disableScrollLock: true,
       },
       styleOverrides: {
+        root: ({ theme }) => ({
+          border: '1px solid',
+          borderColor: theme.palette.divider,
+          backgroundImage: 'none',
+        }),
         paper: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 2,
         }),
@@ -441,11 +439,12 @@ export const theme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({
-          py: 3,
-          fontSize: 16,
-          fontWeight: 700,
-          lineHeight: 1.75,
+          padding: theme.spacing(2.5, 3),
+          fontSize: 14,
+          fontWeight: 500,
+          lineHeight: 1.71429,
           color: theme.palette.text.primary,
+          borderBottom: `1px solid ${theme.palette.divider}`,
         }),
       },
     },
@@ -470,7 +469,7 @@ export const theme = createTheme({
             transformOrigin: 'initial',
             fontSize: theme.typography.fontSize,
             marginBlockEnd: theme.spacing(1),
-            color: `${theme.palette.text.primary}`,
+            color: theme.palette.text.primary,
           },
         }),
       },
@@ -481,12 +480,9 @@ export const theme = createTheme({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          background: `liear-gradient(0deg, ${alpha('#fff', 0.05)} 0%, ${alpha(
-            '#fff',
-            0.05,
-          )} 100%), #1E1F25;`,
-          '&:hover': {
-            background: theme.palette.background.paper,
+          backgroundColor: theme.palette.grey['800'],
+          ':hover': {
+            backgroundColor: theme.palette.background.highlight,
           },
         }),
       },
@@ -496,7 +492,7 @@ export const theme = createTheme({
         root: ({ theme }) => ({
           borderRadius: 20,
           border: '1px solid',
-          borderColor: theme.palette.info.main,
+          borderColor: theme.palette.primary.main,
           backgroundColor: theme.palette.background.default,
           width: 'auto',
           padding: theme.spacing(0.5, 1.5),
@@ -640,7 +636,7 @@ export const theme = createTheme({
     MuiTabs: {
       styleOverrides: {
         indicator: ({ theme }) => ({
-          background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+          background: theme.palette.primary.main,
           transition: theme.transitions.create('all', {
             duration: theme.transitions.duration.shortest,
             easing: theme.transitions.easing.easeInOut,

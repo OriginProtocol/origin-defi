@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   Button,
   Card,
@@ -7,11 +5,9 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
-  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -19,13 +15,13 @@ import {
   NotificationSnack,
   SeverityIcon,
   TokenIcon,
+  TokenInput2,
 } from '@origin/shared/components';
-import { FaGearComplexRegular } from '@origin/shared/icons';
 import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
-  SettingsPopover,
+  SettingsButton,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -33,6 +29,7 @@ import {
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
+  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSwapperPrices,
@@ -50,7 +47,6 @@ import { RedeemActionCard } from './RedeemActionCard';
 
 import type { StackProps } from '@mui/material';
 import type { SwapState } from '@origin/shared/providers';
-import type { MouseEvent } from 'react';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -189,7 +185,6 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
       amountIn,
@@ -203,7 +198,6 @@ function SwapperWrapped({
       isApprovalLoading,
       isApprovalWaitingForSignature,
       swapActions,
-      trackEvent,
     },
   ] = useSwapState();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
@@ -214,11 +208,7 @@ function SwapperWrapped({
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
-
-  const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(evt.currentTarget);
-    trackEvent?.({ name: 'open_settings' });
-  };
+  const isNativeCurrency = useIsNativeCurrency();
 
   const estimatedAmount = +formatUnits(
     selectedSwapRoute?.estimatedAmount ?? 0n,
@@ -268,32 +258,8 @@ function SwapperWrapped({
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
-            title={
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Redeem' })}
-                </Typography>
-                <IconButton
-                  onClick={handleSettingClick}
-                  sx={{
-                    position: 'relative',
-                    right: (theme) => theme.spacing(-0.75),
-                    svg: { width: 16, height: 16 },
-                  }}
-                >
-                  <FaGearComplexRegular />
-                </IconButton>
-                <SettingsPopover
-                  open={!!anchorEl}
-                  anchorEl={anchorEl}
-                  onClose={() => setAnchorEl(null)}
-                />
-              </Stack>
-            }
+            title={intl.formatMessage({ defaultMessage: 'Redeem' })}
+            action={<SettingsButton />}
           />
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
@@ -301,17 +267,17 @@ function SwapperWrapped({
             <Typography>
               {intl.formatMessage({ defaultMessage: 'Unstake amount' })}
             </Typography>
-            <TokenInput
+            <TokenInput2
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
               balance={balTokenIn as unknown as bigint}
               isBalanceLoading={isBalTokenInLoading}
+              isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
               isTokenClickDisabled
               isPriceLoading={isPriceLoading}
-              isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
               sx={{
                 p: 3,

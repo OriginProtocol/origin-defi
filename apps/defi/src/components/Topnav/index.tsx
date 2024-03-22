@@ -4,7 +4,7 @@ import { alpha, Box, useMediaQuery, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
-import { OriginLabel } from '@origin/shared/icons';
+import { FaArrowUpArrowDownLight, OriginLabel } from '@origin/shared/icons';
 import {
   AccountPopover,
   ActivityButton,
@@ -87,7 +87,7 @@ export const Topnav = () => {
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-end',
-              gap: 1,
+              gap: 1.25,
             }}
           >
             <OpenAccountModalButton
@@ -107,18 +107,9 @@ export const Topnav = () => {
               sx={{
                 minWidth: 36,
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-                minHeight: { xs: 36, md: 44 },
+                minHeight: { xs: 36, md: 40 },
               }}
-              disconnectedProps={{
-                sx: {
-                  background:
-                    'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                  '&:hover': {
-                    background:
-                      'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                  },
-                },
-              }}
+              disconnectedProps={{ color: 'primary' }}
             />
             <AccountPopover
               anchor={accountModalAnchor}
@@ -136,9 +127,15 @@ export const Topnav = () => {
             />
             {isConnected && (
               <ActivityButton
+                iconSize={20}
+                activityIcon={
+                  <FaArrowUpArrowDownLight
+                    sx={{ transform: 'rotate(45deg)' }}
+                  />
+                }
                 sx={{
-                  width: { xs: 36, md: 44 },
-                  height: { xs: 36, md: 44 },
+                  width: { xs: 36, md: 40 },
+                  height: { xs: 36, md: 40 },
                   padding: {
                     xs: 0.75,
                     md: 1,

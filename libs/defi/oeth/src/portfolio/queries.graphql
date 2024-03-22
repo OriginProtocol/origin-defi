@@ -1,0 +1,34 @@
+query OethHistoryUserStat($address: String!) {
+  oethAddresses(where: { id_containsInsensitive: $address }) {
+    balance
+    earned
+    isContract
+    rebasingOption
+    lastUpdated
+  }
+}
+
+query OethHistoryTransaction($address: String!, $filters: [HistoryType!]) {
+  oethHistories(
+    orderBy: timestamp_DESC
+    offset: 0
+    limit: 2000
+    where: {
+      AND: { address: { id_containsInsensitive: $address }, type_in: $filters }
+    }
+  ) {
+    type
+    value
+    txHash
+    timestamp
+    balance
+  }
+}
+
+query OethDailyYield($start: DateTime!) {
+  oethDailyStats(orderBy: timestamp_DESC, where: { timestamp_gte: $start }) {
+    yieldETH
+    yieldETH7Day
+    yieldETHAllTime
+  }
+}
