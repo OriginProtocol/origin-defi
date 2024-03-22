@@ -84,10 +84,11 @@ export const RedeemActionCard = ({
       sx={{
         px: 1.5,
         py: 2,
-        border: `1px solid transparent`,
+        border: `1px solid`,
+        borderColor: 'grey.800',
         boxShadow: 'none',
         ...(isDisabled
-          ? { opacity: 0.5, borderColor: 'grey.600', cursor: 'default' }
+          ? { opacity: 0.5, cursor: 'default' }
           : isSelected
             ? {
                 cursor: 'pointer',
@@ -98,9 +99,8 @@ export const RedeemActionCard = ({
             : amountIn > 0n
               ? {
                   cursor: 'pointer',
-                  borderColor: 'grey.800',
                   '&:hover': {
-                    borderColor: `transparent`,
+                    borderColor: 'grey.600',
                     background: (theme) =>
                       `linear-gradient(${theme.palette.grey['800']}, ${
                         theme.palette.grey['800']
