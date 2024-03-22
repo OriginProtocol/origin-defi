@@ -53,7 +53,11 @@ export const BridgeActivityCard = () => {
 
   return (
     <Card sx={{ width: '100%' }}>
-      <CardHeader title={'Bridging activity'} />
+      <CardHeader
+        title={intl.formatMessage({
+          defaultMessage: 'Bridging activity',
+        })}
+      />
       {/* Table Header */}
       <CardContent
         sx={{
@@ -65,13 +69,19 @@ export const BridgeActivityCard = () => {
       >
         <Grid2 container spacing={1} columns={15}>
           <Grid2 xs={5} sm={4} sx={activityHeaderSx}>
-            Amount
+            {intl.formatMessage({
+              defaultMessage: 'Amount',
+            })}
           </Grid2>
           <Grid2 xs={4} sm={3} sx={activityHeaderSx}>
-            Route
+            {intl.formatMessage({
+              defaultMessage: 'Route',
+            })}
           </Grid2>
           <Grid2 xs={3} sx={activityHeaderSx}>
-            Date
+            {intl.formatMessage({
+              defaultMessage: 'Date',
+            })}
           </Grid2>
           <Grid2
             xs={2}
@@ -79,10 +89,14 @@ export const BridgeActivityCard = () => {
             sx={activityHeaderSx}
             textAlign={{ xs: 'center', sm: 'left' }}
           >
-            Status
+            {intl.formatMessage({
+              defaultMessage: 'Status',
+            })}
           </Grid2>
           <Grid2 xs={1} sm={1} sx={activityHeaderSx} textAlign={'center'}>
-            Tx
+            {intl.formatMessage({
+              defaultMessage: 'Tx',
+            })}
           </Grid2>
         </Grid2>
       </CardContent>

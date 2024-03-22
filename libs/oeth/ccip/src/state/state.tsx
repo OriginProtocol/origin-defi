@@ -1,8 +1,8 @@
 import { useState } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
+import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
-import { parseEther } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 
 import { statuses } from './statuses';
@@ -40,52 +40,25 @@ export interface BridgeState {
   srcToken: Token;
   dstChain: Chain;
   dstToken: Token;
-  activity: BridgeActivity[];
 }
 
-export const defaultState: BridgeState = {
-  approval: undefined,
-  bridge: statuses.bridge.enterAmount(),
-  status: 'idle',
-  amount: 0n,
-  allowance: undefined,
-  srcChain: mainnet,
-  srcToken: tokens.mainnet.wOETH,
-  dstChain: arbitrum,
-  dstToken: tokens.arbitrum.wOETH,
-  activity: [
-    {
-      token: tokens.mainnet.wOETH,
-      amount: parseEther('250.291'),
-      srcChain: mainnet,
-      dstChain: arbitrum,
-      timestamp: Date.parse('2024-03-05'),
-      status: 'processing',
-      eta: 60000 * 5,
-      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
-    },
-    {
-      token: tokens.mainnet.wOETH,
-      amount: parseEther('.0291'),
-      srcChain: mainnet,
-      dstChain: arbitrum,
-      timestamp: Date.parse('2024-03-05'),
-      status: 'complete',
-      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
-    },
-    {
-      token: tokens.mainnet.wOETH,
-      amount: parseEther('23250.291'),
-      srcChain: mainnet,
-      dstChain: arbitrum,
-      timestamp: Date.parse('2024-03-05'),
-      status: 'failed',
-      tx: '0xd937a58e1262a17a67a2c75885210336cccd754265ed2615e5d7b9aeef7fa564',
-    },
-  ],
+export const useDefaultState = () => {
+  const intl = useIntl();
+  return {
+    approval: undefined,
+    bridge: statuses.bridge.enterAmount(intl),
+    status: 'idle',
+    amount: 0n,
+    allowance: undefined,
+    srcChain: mainnet,
+    srcToken: tokens.mainnet.wOETH,
+    dstChain: arbitrum,
+    dstToken: tokens.arbitrum.wOETH,
+  } as BridgeState;
 };
 
-export const bridgeStateContainer = createContainer(() =>
-  useState(defaultState),
-);
+export const bridgeStateContainer = createContainer(() => {
+  const defaultState = useDefaultState();
+  return useState(defaultState);
+});
 export const BridgeProvider = bridgeStateContainer.Provider;

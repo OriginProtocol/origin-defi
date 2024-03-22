@@ -40,7 +40,7 @@ export const useApprove = () => {
       setState((state) => ({
         ...state,
         status: 'pending',
-        approval: statuses.bridge.waitingForSignature(),
+        approval: statuses.bridge.waitingForSignature(intl),
       }));
       const srcRouter = ccipRouter[state.srcChain.id];
       const hash = await writeContract(config, {
@@ -52,7 +52,7 @@ export const useApprove = () => {
       });
       setState((state) => ({
         ...state,
-        approval: statuses.bridge.waitingForTransaction(),
+        approval: statuses.bridge.waitingForTransaction(intl),
       }));
       const txReceipt = await waitForTransactionReceipt(config, { hash });
       setState((state) => ({

@@ -15,8 +15,6 @@ import { useAccount } from 'wagmi';
 import { useBridgeState } from '../state';
 import { useBridgePrices } from '../state/useBridgePrices';
 
-import type { Chain } from 'viem/chains';
-
 export const BridgeCard = () => {
   const intl = useIntl();
   const { chain: currentChain } = useAccount();
@@ -28,7 +26,10 @@ export const BridgeCard = () => {
       <CardHeader title={'Bridge'} />
       <CardContent>
         <Stack spacing={2}>
-          <BridgeFrom chain={state.srcChain} />
+          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+            <Box> {intl.formatMessage({ defaultMessage: 'From' })}</Box>
+            <ChainButton chain={state.srcChain} isDisabled />
+          </Stack>
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={true}
@@ -46,7 +47,10 @@ export const BridgeCard = () => {
       <BridgeDivider />
       <CardContent>
         <Stack spacing={2}>
-          <BridgeTo chain={state.dstChain} />
+          <Stack direction={'row'} alignItems={'center'} spacing={2}>
+            <Box> {intl.formatMessage({ defaultMessage: 'To' })}</Box>
+            <ChainButton chain={state.dstChain} isDisabled />
+          </Stack>
           <Box>
             {intl.formatMessage({ defaultMessage: 'You will receive' })}
           </Box>
@@ -123,23 +127,10 @@ export const BridgeCard = () => {
   );
 };
 
-export const BridgeFrom = (props: { chain: Chain }) => (
-  <Stack direction={'row'} alignItems={'center'} spacing={2}>
-    <Box>From</Box>
-    <ChainButton chain={props.chain} isDisabled />
-  </Stack>
-);
-export const BridgeTo = (props: { chain: Chain }) => (
-  <Stack direction={'row'} alignItems={'center'} spacing={2}>
-    <Box>To</Box>
-    <ChainButton chain={props.chain} isDisabled />
-  </Stack>
-);
-
 export const BridgeDivider = () => {
   const { toggleChain } = useBridgeState();
   return (
-    <Stack direction={'row'} position={'relative'} marginY={1}>
+    <Stack direction={'row'} position={'relative'} marginY={{ sm: 2, md: 1 }}>
       <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />
       <ArrowButton onClick={toggleChain} />
     </Stack>

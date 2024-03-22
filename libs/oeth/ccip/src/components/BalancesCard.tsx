@@ -94,14 +94,14 @@ export const BalanceRow = (props: {
           <Typography>wOETH</Typography>
         </Stack>
         {balance !== undefined && props.usdRate && (
-          <Box color={'text.secondary'} fontStyle={'italic'}>
-            {`($${formatAmount(
+          <Box color={'text.secondary'}>
+            {`$${formatAmount(
               (balance * parseEther(props.usdRate.toString())) /
                 1_000000000_000000000n,
               18,
               '0.00',
               { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-            )})`}
+            )}`}
           </Box>
         )}
       </Stack>

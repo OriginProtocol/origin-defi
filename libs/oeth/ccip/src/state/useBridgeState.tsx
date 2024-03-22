@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { useWatchBalance } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { readContract } from '@wagmi/core';
+import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 
 import { ccipRouter } from '../ccip';
@@ -15,6 +16,7 @@ import type { erc20Abi } from 'viem';
 
 export const useBridgeState = () => {
   const config = useConfig();
+  const intl = useIntl();
   const { address: userAddress } = useAccount();
   const [state, setState] = bridgeStateContainer.useTracked();
 
@@ -58,19 +60,19 @@ export const useBridgeState = () => {
         let bridge: typeof state.bridge;
         if (state.amount === 0n) {
           approval = undefined;
-          bridge = statuses.bridge.enterAmount();
+          bridge = statuses.bridge.enterAmount(intl);
         } else if (srcBalance !== undefined && srcBalance < state.amount) {
           approval = undefined;
-          bridge = statuses.bridge.insufficientAmount();
+          bridge = statuses.bridge.insufficientAmount(intl);
         } else if (
           state.allowance !== undefined &&
           state.allowance < state.amount
         ) {
-          approval = statuses.approval.idle(doApprove);
-          bridge = statuses.bridge.disabled();
+          approval = statuses.approval.idle(intl, doApprove);
+          bridge = statuses.bridge.disabled(intl);
         } else {
           approval = undefined;
-          bridge = statuses.bridge.idle(doBridge);
+          bridge = statuses.bridge.idle(intl, doBridge);
         }
 
         setState((state) => ({
