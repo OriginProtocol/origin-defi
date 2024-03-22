@@ -6,7 +6,6 @@ import {
   trackSentryError,
 } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { OUSD } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 export const RedeemView = () => {
@@ -19,7 +18,7 @@ export const RedeemView = () => {
         subtitle={intl.formatMessage({
           defaultMessage: 'Redeem to a mix of stablecoins',
         })}
-        icon={OUSD}
+        token={tokens.mainnet.OUSD}
       />
       <Redeemer
         tokenIn={tokens.mainnet.OUSD}

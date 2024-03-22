@@ -1,7 +1,7 @@
 import { Box, Container, Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { PageTitle, Swapper, trackEvent } from '@origin/defi/shared';
-import { OETH } from '@origin/shared/icons';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
@@ -21,7 +21,7 @@ export const SwapView = () => {
           defaultMessage:
             'Secure the most competitive rates when swapping in and out of OETH using our swap form.',
         })}
-        icon={OETH}
+        token={tokens.mainnet.OETH}
       />
       <Box>
         <Grid2 container spacing={4}>

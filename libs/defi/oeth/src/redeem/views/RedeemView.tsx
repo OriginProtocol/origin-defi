@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import { PageTitle } from '@origin/defi/shared';
-import { OETH } from '@origin/shared/icons';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Outlet } from 'react-router-dom';
 
@@ -16,7 +16,7 @@ export const RedeemView = () => {
         subtitle={intl.formatMessage({
           defaultMessage: 'Request redemptions to ETH or a mix of LSTs',
         })}
-        icon={OETH}
+        token={tokens.mainnet.OETH}
       />
       {/* <Tabs
         centered

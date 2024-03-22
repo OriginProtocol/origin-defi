@@ -1,6 +1,6 @@
 import { Container, Stack } from '@mui/material';
 import { PageTitle } from '@origin/defi/shared';
-import { OETH } from '@origin/shared/icons';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { BalanceCard } from '../components/BalanceHeader';
@@ -14,8 +14,8 @@ export const PortfolioView = () => {
   return (
     <Container>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'OETH Portfolio' })}
-        icon={OETH}
+        title={intl.formatMessage({ defaultMessage: 'Portfolio' })}
+        token={tokens.mainnet.OETH}
       />
       <Stack spacing={5}>
         <BalanceCard />
