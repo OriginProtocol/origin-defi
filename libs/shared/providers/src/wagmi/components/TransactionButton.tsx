@@ -40,6 +40,8 @@ export type TransactionButtonProps = {
   args?: unknown[];
   value?: bigint;
   label?: string;
+  waitingSignatureLabel?: string;
+  waitingTxLabel?: string;
   activityTitle?: ReactNode;
   activitySubtitle?: ReactNode;
   activityEndIcon?: ReactNode;
@@ -57,6 +59,8 @@ export const TransactionButton = ({
   args,
   value,
   label,
+  waitingSignatureLabel,
+  waitingTxLabel,
   activityTitle,
   activitySubtitle,
   activityEndIcon,
@@ -284,9 +288,11 @@ export const TransactionButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
     : isTxLoading
-      ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
         ? capitalize(functionName)
         : label;
