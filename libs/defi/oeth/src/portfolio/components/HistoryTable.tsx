@@ -108,7 +108,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           if (info.row.getCanExpand()) {
             return (
               <ExpandIcon
-                sx={{ width: 12, color: (theme) => theme.palette.primary.main }}
+                sx={{ width: 12 }}
                 isExpanded={info.row.getIsExpanded()}
               />
             );
