@@ -139,7 +139,10 @@ export const BridgeActivityCard = () => {
                   sx={activityContentSx}
                   justifyContent={{ xs: 'center', sm: 'left' }}
                 >
-                  <BridgeStatus state={a.state} />
+                  <BridgeStatus
+                    state={a.state}
+                    timestamp={Date.parse(a.timestamp)}
+                  />
                 </Grid2>
                 <Grid2 xs={1} sx={activityContentSx} justifyContent={'center'}>
                   <Link
@@ -197,7 +200,7 @@ export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
 
 export const BridgeStatus = (props: {
   state?: 'complete' | 'failed' | 'processing' | 'untouched';
-  eta?: number;
+  timestamp: number;
 }) => {
   const intl = useIntl();
   const hideWhenXs: SxProps = { display: { xs: 'none', sm: 'inherit' } };
@@ -222,6 +225,7 @@ export const BridgeStatus = (props: {
     );
   }
   if (props.state === 'untouched' || props.state === 'processing') {
+    const remaining = Math.floor(22 - (Date.now() - props.timestamp) / 60000);
     return (
       <Box>
         <Stack
@@ -241,9 +245,12 @@ export const BridgeStatus = (props: {
             {intl.formatMessage({ defaultMessage: 'Processing' })}
           </Box>
         </Stack>
-        {props.state === 'processing' && (
+        {remaining > 0 && (
           <Box sx={hideWhenXs} color={'text.secondary'}>
-            ~5 mins left
+            {intl.formatMessage(
+              { defaultMessage: '~{remaining} mins left' },
+              { remaining },
+            )}
           </Box>
         )}
       </Box>

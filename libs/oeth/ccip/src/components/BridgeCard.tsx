@@ -78,8 +78,11 @@ export const BridgeCard = () => {
             </Box>
             <Box>
               {intl.formatMessage(
-                { defaultMessage: '~{minutes} minutes' },
-                { minutes: 15 },
+                { defaultMessage: '~{from} to {to} minutes' },
+                {
+                  from: 15,
+                  to: 30,
+                },
               )}
             </Box>
           </Stack>
