@@ -19,12 +19,13 @@ export function SwapRoute(
   props: Omit<AccordionProps, 'children' | 'expanded'>,
 ) {
   const intl = useIntl();
-  const [{ estimatedSwapRoutes, isSwapRoutesLoading }] = useSwapState();
+  const [{ amountIn, estimatedSwapRoutes, isSwapRoutesLoading }] =
+    useSwapState();
 
   return (
     <Accordion
       {...props}
-      expanded={estimatedSwapRoutes.length > 0}
+      expanded={estimatedSwapRoutes.length > 0 && amountIn > 0n}
       sx={{
         px: 2,
         py: 0,

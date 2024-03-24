@@ -102,6 +102,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
             setState((state) => ({
               ...state,
               amountOut: 0n,
+              selectedSwapRoute: null,
               isSwapRoutesLoading: false,
               isSwapWaitingForSignature: false,
               isApprovalLoading: false,

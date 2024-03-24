@@ -6,7 +6,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { InfoTooltip, Mix, TokenIcon } from '@origin/shared/components';
+import {
+  InfoTooltip,
+  MultiTokenIcon,
+  TokenIcon,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -58,7 +62,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
         {!isXs && (
           <Stack justifyContent="center">
-            <Mix tokens={split.map((s) => s.token)} />
+            <MultiTokenIcon tokens={split.map((s) => s.token)} />
           </Stack>
         )}
         <Stack flex={1} direction="column" gap={0.5}>

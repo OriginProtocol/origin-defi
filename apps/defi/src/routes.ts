@@ -62,8 +62,7 @@ export const routes: RouteObject[] = [
             },
           },
           {
-            path: 'redeem',
-            Component: oeth.RedeemView,
+            ...oeth.oethRedeemRoute,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
               subtitle: defineMessage({

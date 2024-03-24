@@ -1,0 +1,6 @@
+query OusdApy {
+  ousdapies(limit: 1, orderBy: timestamp_DESC) {
+    apy7DayAvg
+    apy30DayAvg
+  }
+}

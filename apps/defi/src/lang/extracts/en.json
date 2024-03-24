@@ -20,6 +20,9 @@
   "/xvR4F": {
     "defaultMessage": "Opt in"
   },
+  "00AJDy": {
+    "defaultMessage": "Origin Vault"
+  },
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
@@ -38,11 +41,26 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "26tyS2": {
+    "defaultMessage": "7d"
+  },
   "2R/YHR": {
     "defaultMessage": "Liquid staking"
   },
+  "2W3kP3": {
+    "defaultMessage": "~1min"
+  },
+  "2ahSeJ": {
+    "defaultMessage": "OETH analytics"
+  },
+  "3Lr8o5": {
+    "defaultMessage": "Larger redemptions coming soon"
+  },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
+  },
+  "4D9M13": {
+    "defaultMessage": "Swap with CurvePool"
   },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
@@ -59,8 +77,14 @@
   "5m9ETS": {
     "defaultMessage": "Fees and voting rights accrue to OGV stakers.<br></br>Control the future of Origin products and profit from its growth."
   },
+  "5x6HGl": {
+    "defaultMessage": "OETH price"
+  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
+  },
+  "6Sj2lN": {
+    "defaultMessage": "Claim"
   },
   "6WMuFp": {
     "defaultMessage": "Proposals"
@@ -71,11 +95,17 @@
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
   },
+  "6nFK6a": {
+    "defaultMessage": "Yield sources"
+  },
   "70QJXI": {
     "defaultMessage": "Voting history"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
+  },
+  "8AtqNm": {
+    "defaultMessage": "OETH Portfolio"
   },
   "8NtrKz": {
     "defaultMessage": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
@@ -113,11 +143,26 @@
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
+  "AtWUBa": {
+    "defaultMessage": "Redeem via OETH Vault"
+  },
+  "BONcjO": {
+    "defaultMessage": "Uniswap V3"
+  },
+  "C73Nbd": {
+    "defaultMessage": "Swap with Curve"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
+  },
+  "DUR59o": {
+    "defaultMessage": "Total Value Locked"
+  },
+  "DriTx1": {
+    "defaultMessage": "Request redemptions to ETH or a mix of LSTs"
   },
   "DupNoS": {
     "defaultMessage": "Go back home"
@@ -164,6 +209,9 @@
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
+  "KE0cl6": {
+    "defaultMessage": "Curve"
+  },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
@@ -176,11 +224,17 @@
   "Kw1jw2": {
     "defaultMessage": "Get {symbol}"
   },
+  "MLTKb6": {
+    "defaultMessage": "APY"
+  },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "NNBdoh": {
+    "defaultMessage": "Uniswap V2"
   },
   "NQOjUX": {
     "defaultMessage": "Origin Governance Token"
@@ -197,11 +251,26 @@
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
+  "OhU4K0": {
+    "defaultMessage": "SushiSwap"
+  },
+  "OwO+Nr": {
+    "defaultMessage": "Mint"
+  },
+  "Ozw3aL": {
+    "defaultMessage": "Mint with Vault"
+  },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
   },
   "POmYVs": {
     "defaultMessage": "Current price"
+  },
+  "PVa0Ba": {
+    "defaultMessage": "Yield strategy protocols"
+  },
+  "PiI2Yo": {
+    "defaultMessage": "OETH details"
   },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
@@ -229,6 +298,9 @@
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+  },
+  "TrXNPz": {
+    "defaultMessage": "Flipper"
   },
   "TwyMau": {
     "defaultMessage": "Account"
@@ -260,14 +332,23 @@
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
+  "W8nHSd": {
+    "defaultMessage": "FAQ"
+  },
   "WCaf5C": {
     "defaultMessage": "Approve"
+  },
+  "WQ+oM6": {
+    "defaultMessage": "Backing collateral"
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
   "XtKL5U": {
     "defaultMessage": "In-depth OETH analytics"
+  },
+  "YnftYz": {
+    "defaultMessage": "Wait time:"
   },
   "Yr+Yll": {
     "defaultMessage": "Swap in and out of OUSD"
@@ -287,8 +368,14 @@
   "aaJ9Pk": {
     "defaultMessage": "Swap in and out of OETH"
   },
+  "b1zuN9": {
+    "defaultMessage": "Price"
+  },
   "b4tTvf": {
     "defaultMessage": "Redeem from OUSD vault"
+  },
+  "c0+sy5": {
+    "defaultMessage": "OUSD details"
   },
   "c31Feo": {
     "defaultMessage": "Swapping"
@@ -299,11 +386,17 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "dciLty": {
+    "defaultMessage": "Route:"
+  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
   "e02ROc": {
     "defaultMessage": "Staking and rewards history"
+  },
+  "fOUChR": {
+    "defaultMessage": "Trading pairs on centralized exchanges"
   },
   "fnDCIF": {
     "defaultMessage": "In-depth OUSD analytics"
@@ -314,8 +407,14 @@
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
+  "hccOVh": {
+    "defaultMessage": "OUSD price"
+  },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
+  },
+  "iGcPXd": {
+    "defaultMessage": "OUSD analytics"
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
@@ -326,11 +425,23 @@
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
+  "lQmZjB": {
+    "defaultMessage": "Swap via Curve"
+  },
   "lozEho": {
     "defaultMessage": "Error while approving"
   },
+  "lwXdsC": {
+    "defaultMessage": "Secure the most competitive rates when swapping in and out of OETH using our swap form."
+  },
   "m/L3sK": {
     "defaultMessage": "Approving"
+  },
+  "n6nILs": {
+    "defaultMessage": "Receive amount"
+  },
+  "nZ1VHG": {
+    "defaultMessage": "30d"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
@@ -338,17 +449,32 @@
   "ntQz2o": {
     "defaultMessage": "Yield bearing"
   },
+  "nzbOyn": {
+    "defaultMessage": "Underlyings assets"
+  },
   "oP23Lj": {
     "defaultMessage": "Horem ipsum dolor"
   },
+  "p1P+hQ": {
+    "defaultMessage": "Request"
+  },
   "p556q3": {
     "defaultMessage": "Copied"
+  },
+  "qNe+Iz": {
+    "defaultMessage": "Wrap with Origin"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
   },
   "qj1uhz": {
     "defaultMessage": "Disconnect"
+  },
+  "r7kiOG": {
+    "defaultMessage": "Wrap"
+  },
+  "riAanx": {
+    "defaultMessage": "Annual Percentage Yield"
   },
   "s49boM": {
     "defaultMessage": "Ethereum liquid staking token"
@@ -368,6 +494,9 @@
   "uNOJ2Q": {
     "defaultMessage": "Portfolio"
   },
+  "uaols3": {
+    "defaultMessage": "Unwrap"
+  },
   "upk2hm": {
     "defaultMessage": "Origin products"
   },
@@ -383,6 +512,9 @@
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
   },
+  "wf1EAp": {
+    "defaultMessage": "Unwrap with Origin"
+  },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
@@ -391,6 +523,9 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
+  },
+  "yKbi98": {
+    "defaultMessage": "Unstake amount"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"

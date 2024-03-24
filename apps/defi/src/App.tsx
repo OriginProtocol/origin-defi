@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
@@ -20,9 +20,7 @@ export const App = () => {
       >
         <Stack minWidth={370} mb={5}>
           <Topnav />
-          <Container>
-            <Outlet />
-          </Container>
+          <Outlet />
         </Stack>
       </TrackingProvider>
     </ErrorBoundary>
