@@ -1,0 +1,1 @@
+export type OgvSwapAction = 'uniswap';

@@ -1,3 +1,3 @@
 export * from './staking';
+export * from './swap';
 export * from './views/PortfolioView';
-export * from './views/SwapView';
