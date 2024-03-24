@@ -1,5 +1,7 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 
+import { InfoTooltip } from '../InfoTooltip';
+
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
@@ -8,6 +10,7 @@ export type ValueLabelProps = {
   value: ReactNode;
   labelProps?: TypographyProps;
   valueProps?: TypographyProps;
+  labelInfoTooltip?: string;
   isLoading?: boolean;
 } & StackProps;
 
@@ -16,6 +19,7 @@ export const ValueLabel = ({
   value,
   labelProps,
   valueProps,
+  labelInfoTooltip,
   isLoading,
   ...rest
 }: ValueLabelProps) => {
@@ -24,6 +28,12 @@ export const ValueLabel = ({
       {typeof label === 'string' ? (
         <Typography color="text.secondary" variant="body2" {...labelProps}>
           {label}
+          {labelInfoTooltip ? (
+            <InfoTooltip
+              tooltipLabel={labelInfoTooltip}
+              sx={{ ml: 0.75, transform: 'translateY(2px)' }}
+            />
+          ) : null}
         </Typography>
       ) : (
         label
