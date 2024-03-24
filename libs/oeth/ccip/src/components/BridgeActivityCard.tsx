@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useState } from 'react';
 
 import {
   Box,
@@ -22,6 +22,7 @@ import {
   FaLoaderDuotone,
 } from '@origin/shared/icons';
 import { getChain, useFormat } from '@origin/shared/providers';
+import { useIntervalEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
@@ -203,6 +204,15 @@ export const BridgeStatus = (props: {
   timestamp: number;
 }) => {
   const intl = useIntl();
+  const [now, setNow] = useState(Date.now());
+  const remaining = Math.floor(22 - (now - props.timestamp) / 60000);
+  useIntervalEffect(
+    () => {
+      setNow(Date.now());
+    },
+    remaining > 0 ? 5000 : undefined,
+  );
+
   const hideWhenXs: SxProps = { display: { xs: 'none', sm: 'inherit' } };
   if (props.state === 'complete') {
     return (
@@ -225,7 +235,6 @@ export const BridgeStatus = (props: {
     );
   }
   if (props.state === 'untouched' || props.state === 'processing') {
-    const remaining = Math.floor(22 - (Date.now() - props.timestamp) / 60000);
     return (
       <Box>
         <Stack

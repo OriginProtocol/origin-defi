@@ -10,17 +10,6 @@ import { statuses } from './statuses';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
-export interface BridgeActivity {
-  token: Token;
-  amount: bigint;
-  srcChain: Chain;
-  dstChain: Chain;
-  timestamp: number;
-  status: 'complete' | 'failed' | 'processing';
-  eta?: number;
-  tx: string;
-}
-
 export interface BridgeState {
   approval?: {
     enabled: boolean;
