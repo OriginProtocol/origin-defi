@@ -432,6 +432,7 @@ export const theme = createTheme({
           backgroundImage: 'none',
         }),
         paper: ({ theme }) => ({
+          backgroundColor: theme.palette.background.paper,
           borderRadius: theme.shape.borderRadius * 2,
         }),
       },
@@ -444,6 +445,7 @@ export const theme = createTheme({
           fontWeight: 500,
           lineHeight: 1.71429,
           color: theme.palette.text.primary,
+          backgroundColor: theme.palette.background.header,
           borderBottom: `1px solid ${theme.palette.divider}`,
         }),
       },
