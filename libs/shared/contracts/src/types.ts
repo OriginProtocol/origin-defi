@@ -11,7 +11,7 @@ export type Contract<A = Abi> = {
 };
 
 export type Token<A = Abi> = {
-  address: HexAddress;
+  address: HexAddress | undefined;
   chainId: number;
   abi: A;
   name?: string;

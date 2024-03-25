@@ -45,7 +45,7 @@ import { getTokenPriceKey } from '../../prices';
 import { useSlippage } from '../../slippage';
 import {
   ConnectedButton,
-  useIsNativeCurrency,
+  isNativeCurrency,
   useWatchBalance,
 } from '../../wagmi';
 import {
@@ -235,7 +235,6 @@ function SwapperWrapped({
     useWatchBalance(tokenIn);
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
     useWatchBalance(tokenOut);
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();

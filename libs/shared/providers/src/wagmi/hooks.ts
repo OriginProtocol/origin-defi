@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
@@ -78,35 +78,32 @@ export const useWatchBalance = (
     },
     chainId: token.chainId,
   });
-  const tokenAddress =
-    token.address !== ZERO_ADDRESS ? token.address : undefined;
   const resToken = useReadContract({
-    address: tokenAddress,
+    address: token.address,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? ZERO_ADDRESS],
     query: {
-      enabled: !!tokenAddress && !!address,
+      enabled: !!token.address && !!address,
     },
     chainId: token.chainId,
   });
 
   useEffect(() => {
     if (Number(blockNumber) !== prev && !isNilOrEmpty(address)) {
-      if (isNilOrEmpty(tokenAddress)) {
+      if (isNilOrEmpty(token.address)) {
         resNative?.refetch();
       } else {
         resToken?.refetch();
       }
     }
-  }, [address, blockNumber, tokenAddress, prev, resNative, resToken]);
+  }, [address, blockNumber, token.address, prev, resNative, resToken]);
 
-  return isNilOrEmpty(tokenAddress) ? resNative : resToken;
+  return isNilOrEmpty(token.address) ? resNative : resToken;
 };
 
 export const useWatchBalances = (tokens: Token[] | undefined | null) => {
   const config = useConfig();
-  const isNative = useIsNativeCurrency();
   const { address } = useAccount();
   const { data: blockNumber } = useBlockNumber({
     watch: true,
@@ -128,7 +125,7 @@ export const useWatchBalances = (tokens: Token[] | undefined | null) => {
       let res = {} as Record<string, bigint>;
 
       const { natives, others } = groupBy(
-        (t) => (isNative(t) ? 'natives' : 'others'),
+        (t) => (isNativeCurrency(t) ? 'natives' : 'others'),
         tokens,
       ) as { natives: Token[]; others: Token[] };
 
@@ -179,13 +176,4 @@ export const useWatchBalances = (tokens: Token[] | undefined | null) => {
   }, [blockNumber, prev, res, tokens]);
 
   return res;
-};
-
-export const useIsNativeCurrency = () => {
-  const config = useConfig();
-
-  return useCallback(
-    (token: Token | undefined | null) => isNativeCurrency(config, token),
-    [config],
-  );
 };

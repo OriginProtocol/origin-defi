@@ -43,7 +43,7 @@ export const useBridge = () => {
   const bridgeActivity = useBridgeActivity();
 
   return useCallback(async () => {
-    if (!userAddress) return;
+    if (!userAddress || !state.srcToken.address) return;
     const activity = pushActivity({
       type: 'bridge',
       status: 'pending',
@@ -154,15 +154,17 @@ export const useBridge = () => {
     }
   }, [
     userAddress,
-    pushActivity,
-    state.amount,
     state.srcToken,
+    state.amount,
     state.dstToken,
-    state.dstChain,
-    state.srcChain,
+    state.srcChain.id,
+    state.dstChain.id,
+    pushActivity,
+    setState,
     config,
     updateActivity,
-    setState,
+    resetState,
+    bridgeActivity,
     deleteActivity,
     pushNotification,
     intl,

@@ -29,6 +29,7 @@ export const useApprove = () => {
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   return useCallback(async () => {
+    if (!state.srcToken.address) return;
     const activity = pushActivity({
       type: 'approval',
       status: 'pending',
@@ -123,13 +124,14 @@ export const useApprove = () => {
       throw error;
     }
   }, [
-    pushActivity,
-    state.amount,
     state.srcToken,
+    state.amount,
     state.dstToken,
+    state.srcChain.id,
+    pushActivity,
+    setState,
     config,
     updateActivity,
-    setState,
     deleteActivity,
     pushNotification,
     intl,

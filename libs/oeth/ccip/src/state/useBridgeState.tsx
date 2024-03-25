@@ -26,7 +26,7 @@ export const useBridgeState = () => {
 
   useDebouncedEffect(
     async () => {
-      if (!userAddress) return;
+      if (!userAddress || !state.srcToken.address) return;
       const srcRouter = ccipRouter[state.srcChain.id];
       const allowance = await readContract(config, {
         chainId: state.srcToken.chainId,

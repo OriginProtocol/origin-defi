@@ -21,12 +21,12 @@ import {
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
+  isNativeCurrency,
   SwapProvider,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
-  useIsNativeCurrency,
   useRoutingSwapState,
   useSwapRouteAllowance,
   useSwapState,
@@ -106,7 +106,6 @@ function SwapperWrapped({
     useWatchBalance(tokenIn);
   const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
     useExchangeRate();
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();

@@ -1,4 +1,3 @@
-import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
@@ -25,7 +24,7 @@ export const tokens = {
       symbol: 'DAI',
     },
     ETH: {
-      address: ZERO_ADDRESS,
+      address: undefined,
       chainId: mainnet.id,
       abi: erc20Abi,
       name: 'Ethereum',
@@ -178,6 +177,14 @@ export const tokens = {
     },
   },
   arbitrum: {
+    ETH: {
+      address: undefined,
+      chainId: arbitrum.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
     wOETH: {
       address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
       chainId: arbitrum.id,
@@ -194,12 +201,12 @@ export const tokenMap = {
   arbitrum: new Map<string, Token>(),
 };
 for (const token of Object.values(tokens.mainnet)) {
-  if ('address' in token) {
+  if ('address' in token && token.address) {
     tokenMap.mainnet.set(token.address.toLowerCase(), token);
   }
 }
 for (const token of Object.values(tokens.arbitrum)) {
-  if ('address' in token) {
+  if ('address' in token && token.address) {
     tokenMap.arbitrum.set(token.address.toLowerCase(), token);
   }
 }

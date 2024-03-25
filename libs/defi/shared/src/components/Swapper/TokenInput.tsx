@@ -7,7 +7,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { Dropdown } from '@origin/shared/icons';
-import { useIsNativeCurrency } from '@origin/shared/providers';
+import { isNativeCurrency } from '@origin/shared/providers';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
@@ -64,8 +64,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
     const { isConnected } = useAccount();
-    const isNativeCurrency = useIsNativeCurrency();
-
     const handleMaxClick = () => {
       const max = isNativeCurrency(token)
         ? balance - parseEther(MIN_ETH_FOR_GAS)
