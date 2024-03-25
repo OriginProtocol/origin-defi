@@ -40,6 +40,7 @@ export const BridgeNotification = ({
   sx,
 }: BridgeNotificationProps) => {
   const intl = useIntl();
+  const amount = +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18);
 
   return (
     <NotificationSnack
@@ -59,10 +60,11 @@ export const BridgeNotification = ({
                 defaultMessage: '{amountIn} {symbolIn}',
               },
               {
-                amountIn: intl.formatNumber(
-                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
-                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
-                ),
+                amountIn: intl.formatNumber(amount, {
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits:
+                    amount.toString().split('.')[1]?.length ?? 0,
+                }),
                 symbolIn: tokenIn?.symbol,
               },
             )}
