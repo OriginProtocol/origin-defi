@@ -167,7 +167,7 @@ function Actions(props: StackProps) {
       enabled: !!proposalId,
       select: (data) =>
         data?.[0]?.map((_, i) => {
-          const res = /^([a-zA-Z0-9]+)\((.+)\)$/.exec(data[2][i]);
+          const res = /^([a-zA-Z0-9]+)\((.*)\)$/.exec(data[2][i]);
 
           return {
             address: data[0][i],
