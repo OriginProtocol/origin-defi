@@ -21,14 +21,12 @@ export const useBridgeState = () => {
   const [state, setState] = bridgeStateContainer.useTracked();
 
   // Get Balances
-  const { data: srcBalance, isLoading: isSrcBalanceLoading } = useWatchBalance({
-    token: state.srcToken.address,
-    chainId: state.srcChain.id,
-  });
-  const { data: dstBalance, isLoading: isDstBalanceLoading } = useWatchBalance({
-    token: state.dstToken.address,
-    chainId: state.dstChain.id,
-  });
+  const { data: srcBalance, isLoading: isSrcBalanceLoading } = useWatchBalance(
+    state.srcToken,
+  );
+  const { data: dstBalance, isLoading: isDstBalanceLoading } = useWatchBalance(
+    state.dstToken,
+  );
 
   const doApprove = useApprove();
   const doBridge = useBridge();

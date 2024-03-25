@@ -68,10 +68,7 @@ export const BalanceRow = (props: {
   token: Token;
   usdRate: number | undefined;
 }) => {
-  const { data: balance, isLoading } = useWatchBalance({
-    token: props.token.address,
-    chainId: props.chain.id,
-  });
+  const { data: balance, isLoading } = useWatchBalance(props.token);
   return (
     <Stack
       direction={'row'}

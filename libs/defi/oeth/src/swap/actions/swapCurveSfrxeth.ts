@@ -13,6 +13,7 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { erc20Abi, formatUnits } from 'viem';
+import { mainnet } from 'wagmi/chains';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -59,6 +60,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: contracts.mainnet.CurveRouter.abi,
     functionName: 'get_dy',
     args: [curveConfig.routes, curveConfig.params, amountIn],
+    chainId: mainnet.id,
   });
 
   return amountOut as unknown as bigint;
@@ -70,7 +72,9 @@ const estimateGas: EstimateGas = async (
 ) => {
   let gasEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -105,6 +109,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.CurveRouter.address],
+    chainId: mainnet.id,
   });
 
   return allowance;
@@ -116,7 +121,9 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n || !address || !tokenIn?.address || !publicClient) {
     return approvalEstimate;
@@ -187,6 +194,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.CurveRouter.address, amountIn],
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 
@@ -227,6 +235,7 @@ const swap: Swap = async (
     args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut],
     account: address,
     gas,
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 

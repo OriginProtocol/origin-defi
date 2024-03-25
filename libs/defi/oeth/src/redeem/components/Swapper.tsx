@@ -45,6 +45,7 @@ import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { RedeemActionCard } from './RedeemActionCard';
 
@@ -208,9 +209,8 @@ function SwapperWrapped({
   ] = useSwapState();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
-  });
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } =
+    useWatchBalance(tokenIn);
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
@@ -397,6 +397,7 @@ function SwapperWrapped({
               variant="action"
               disabled={swapButtonDisabled}
               onClick={handleSwap}
+              targetChainId={mainnet.id}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />

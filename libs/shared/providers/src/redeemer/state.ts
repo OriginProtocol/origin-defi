@@ -15,6 +15,7 @@ import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
 import { formatUnits, isAddressEqual } from 'viem';
 import { useConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { usePushNotification } from '../notifications';
 import { useSlippage } from '../slippage';
@@ -58,6 +59,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
           address: vaultContract.address,
           abi: vaultContract.abi,
           functionName: 'getAllAssets',
+          chainId: mainnet.id,
         });
 
         return assets;
@@ -109,6 +111,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
                 abi: vaultContract.abi,
                 functionName: 'calculateRedeemOutputs',
                 args: [state.amountIn],
+                chainId: mainnet.id,
               }),
           });
         } catch (error) {
@@ -142,7 +145,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         }, 0n);
 
         let gasEstimate = 0n;
-        const publicClient = getPublicClient(config);
+        const publicClient = getPublicClient(config, { chainId: mainnet.id });
         const { address } = getAccount(config);
 
         const minAmountOut = subtractSlippage(

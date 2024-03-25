@@ -13,6 +13,7 @@ import { produce } from 'immer';
 import { uniq } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import {
   RedeemNotification,
@@ -98,6 +99,7 @@ export const useHandleRedeem = () => {
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
         gas: gas + (gas * gasBuffer) / 100n,
+        chainId: mainnet.id,
       });
       const hash = await writeContract(config, request);
       setRedeemState(

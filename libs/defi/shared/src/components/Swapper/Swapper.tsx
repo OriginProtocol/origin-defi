@@ -222,13 +222,10 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
-  });
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } =
+    useWatchBalance(tokenIn);
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
+    useWatchBalance(tokenOut);
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();

@@ -30,6 +30,7 @@ import {
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import {
   ApprovalNotification,
@@ -208,7 +209,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
-  const { isConnected } = useAccount();
+  const { isConnected, chain: currentChain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
@@ -230,13 +231,10 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
-  });
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } =
+    useWatchBalance(tokenIn);
   const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
+    useWatchBalance(tokenOut);
   const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
@@ -259,6 +257,7 @@ function SwapperWrapped({
 
   const needsApproval =
     isConnected &&
+    currentChain?.id === mainnet.id &&
     amountIn > 0n &&
     !isBalTokenInLoading &&
     (balTokenIn as unknown as bigint) >= amountIn &&
@@ -336,7 +335,7 @@ function SwapperWrapped({
                 amount={amountIn}
                 decimals={tokenIn.decimals}
                 onAmountChange={handleAmountInChange}
-                balance={balTokenIn as unknown as bigint}
+                balance={balTokenIn}
                 isBalanceLoading={isBalTokenInLoading}
                 token={tokenIn}
                 onTokenClick={() => {
@@ -468,7 +467,9 @@ function SwapperWrapped({
                     defaultMessage: 'Waiting for signature',
                   })
                 ) : isApprovalLoading ? (
-                  intl.formatMessage({ defaultMessage: 'Processing Approval' })
+                  intl.formatMessage({
+                    defaultMessage: 'Processing Approval',
+                  })
                 ) : (
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
@@ -480,6 +481,7 @@ function SwapperWrapped({
               disabled={swapButtonDisabled}
               onClick={handleSwap}
               sx={{ mt: 1.5, ...buttonsProps?.sx }}
+              targetChainId={mainnet.id}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />

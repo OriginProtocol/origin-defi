@@ -7,6 +7,7 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
+import { mainnet } from 'wagmi/chains';
 
 import type {
   Allowance,
@@ -28,6 +29,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'convertToAssets',
     args: [amountIn],
+    chainId: mainnet.id,
   });
 
   return data as unknown as bigint;
@@ -36,7 +38,9 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n) {
     return gasEstimate;
@@ -137,6 +141,7 @@ const swap: Swap = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 

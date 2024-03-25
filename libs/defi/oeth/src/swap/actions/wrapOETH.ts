@@ -9,6 +9,7 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { erc20Abi, formatUnits } from 'viem';
+import { mainnet } from 'wagmi/chains';
 
 import type {
   Allowance,
@@ -30,6 +31,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'convertToShares',
     args: [amountIn],
+    chainId: mainnet.id,
   });
 
   return data as unknown as bigint;
@@ -38,7 +40,9 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n) {
     return gasEstimate;
@@ -90,6 +94,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, tokens.mainnet.wOETH.address],
+    chainId: mainnet.id,
   });
 
   return allowance;
@@ -106,7 +111,9 @@ const estimateApprovalGas: EstimateApprovalGas = async (
     return approvalEstimate;
   }
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   try {
     if (publicClient) {
@@ -170,6 +177,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [tokens.mainnet.wOETH.address, amountIn],
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 
@@ -194,6 +202,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'deposit',
     args: [amountIn, address],
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 

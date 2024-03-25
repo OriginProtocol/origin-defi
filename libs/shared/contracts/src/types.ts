@@ -11,6 +11,7 @@ export type Contract<A = Abi> = {
 };
 
 export type NativeToken = {
+  address: '0x0000000000000000000000000000000000000000';
   chainId: number;
   name?: string;
   symbol: string;

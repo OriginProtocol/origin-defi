@@ -19,6 +19,7 @@ import {
 } from '@wagmi/core';
 import { path } from 'ramda';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
+import { mainnet } from 'wagmi/chains';
 
 import { GAS_BUFFER } from '../../constants';
 import { curveRoutes } from './curveRoutes';
@@ -62,6 +63,7 @@ const estimateAmount: EstimateAmount = async (
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_multiple_amount',
     args: [curveConfig.routes, curveConfig.swapParams, amountIn],
+    chainId: mainnet.id,
   });
 
   return amountOut as unknown as bigint;
@@ -72,7 +74,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -143,6 +147,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, curve.CurveRegistryExchange.address],
+    chainId: mainnet.id,
   });
 
   return allowance;
@@ -154,7 +159,9 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: mainnet.id,
+  });
 
   if (amountIn === 0n || !address || !publicClient) {
     return approvalEstimate;
@@ -235,6 +242,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [curve.CurveRegistryExchange.address, amountIn],
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 
@@ -293,6 +301,7 @@ const swap: Swap = async (
     args: [curveConfig.routes, curveConfig.swapParams, amountIn, minAmountOut],
     gas,
     ...(isTokenInNative && { value: amountIn }),
+    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 

@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { useTokenPrices } from '../prices';
 
@@ -35,7 +36,7 @@ const fetcher: QueryFunction<GasPrice, Key> = async ({
       queryKey: useTokenPrices.getKey(['ETH_USD'], config),
       queryFn: useTokenPrices.fetcher,
     }),
-    estimateFeesPerGas(config, { formatUnits: 'gwei' }),
+    estimateFeesPerGas(config, { formatUnits: 'gwei', chainId: mainnet.id }),
   ]);
 
   const gweiUsd = price.ETH_USD * 1e-9;

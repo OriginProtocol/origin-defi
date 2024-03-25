@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
+import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useQuery } from '@tanstack/react-query';
@@ -57,49 +58,50 @@ export const useWatchContracts = <T extends Abi | readonly unknown[]>(
   return res;
 };
 
-export const useWatchBalance = (config?: {
-  token?: HexAddress;
-  address?: HexAddress;
-  chainId?: number;
-}) => {
+export const useWatchBalance = (
+  token: Token | NativeToken = tokens.mainnet.ETH,
+  watchAddress?: `0x${string}`,
+) => {
   const { address: connectedAddress } = useAccount();
-  const address = config?.address ?? connectedAddress;
+  const address = watchAddress ?? connectedAddress;
   const { data: blockNumber } = useBlockNumber({
     watch: true,
     query: { enabled: !!address },
-    chainId: config?.chainId,
+    chainId: token.chainId,
   });
   const prev = usePrevious(Number(blockNumber));
   const resNative = useBalance({
     address,
     query: {
-      enabled: isNilOrEmpty(config?.token) && !!address,
+      enabled: !!address,
       select: (data) => data.value,
     },
-    chainId: config?.chainId,
+    chainId: token.chainId,
   });
+  const tokenAddress =
+    token.address !== ZERO_ADDRESS ? token.address : undefined;
   const resToken = useReadContract({
-    address: config?.token,
+    address: tokenAddress,
     abi: erc20Abi,
     functionName: 'balanceOf',
     args: [address ?? ZERO_ADDRESS],
     query: {
-      enabled: !!config?.token && !!address,
+      enabled: !!tokenAddress && !!address,
     },
-    chainId: config?.chainId,
+    chainId: token.chainId,
   });
 
   useEffect(() => {
     if (Number(blockNumber) !== prev && !isNilOrEmpty(address)) {
-      if (isNilOrEmpty(config?.token)) {
+      if (isNilOrEmpty(tokenAddress)) {
         resNative?.refetch();
       } else {
         resToken?.refetch();
       }
     }
-  }, [address, blockNumber, config?.token, prev, resNative, resToken]);
+  }, [address, blockNumber, tokenAddress, prev, resNative, resToken]);
 
-  return isNilOrEmpty(config?.token) ? resNative : resToken;
+  return isNilOrEmpty(tokenAddress) ? resNative : resToken;
 };
 
 export const useWatchBalances = (
@@ -127,15 +129,24 @@ export const useWatchBalances = (
 
       let res = {} as Record<string, bigint>;
 
-      const { native, others } = groupBy(
+      const { natives, others } = groupBy(
         (t) => (isNative(t) ? 'native' : 'others'),
         tokens,
-      ) as { native: NativeToken[]; others: Token[] };
+      ) as { natives: NativeToken[]; others: Token[] };
 
-      if (native?.length === 1) {
+      for (const native of natives) {
         try {
-          const nativeBalance = await getBalance(config, { address });
-          res = { [native[0].symbol]: nativeBalance.value };
+          if (res[native.symbol]) {
+            console.log(
+              'Multiple natives with the same symbol received. Skipping...',
+            );
+            continue;
+          }
+          const nativeBalance = await getBalance(config, {
+            address,
+            chainId: native.chainId,
+          });
+          res = { ...res, [native.symbol]: nativeBalance.value };
         } catch {}
       }
 
@@ -147,6 +158,7 @@ export const useWatchBalances = (
               abi: t.abi,
               functionName: 'balanceOf',
               args: [address],
+              chainId: t.chainId,
             })),
             allowFailure: true,
           });

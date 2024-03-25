@@ -78,9 +78,8 @@ function RedeemerWrapped({
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokenIn.address,
-  });
+  const { data: balance, isLoading: isBalanceLoading } =
+    useWatchBalance(tokenIn);
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
 
