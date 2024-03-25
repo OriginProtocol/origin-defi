@@ -1,3 +1,4 @@
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
@@ -24,7 +25,9 @@ export const tokens = {
       symbol: 'DAI',
     },
     ETH: {
+      address: ZERO_ADDRESS,
       chainId: mainnet.id,
+      abi: erc20Abi,
       name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',
