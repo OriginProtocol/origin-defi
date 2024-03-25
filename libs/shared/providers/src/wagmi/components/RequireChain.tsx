@@ -25,13 +25,12 @@ export const RequireChain = ({
   const correctChain = currentChain?.id === chain.id;
 
   let overlay: ReactNode = null;
-  if (!correctChain) {
+  if (currentChain && !correctChain) {
     overlay = (
       <Box
         sx={(theme) => ({
           position: 'fixed',
           inset: 0,
-          top: 105,
           zIndex: 5,
           backgroundColor: alpha(theme.palette.background.default, 0.6),
           backdropFilter: 'blur(15px)',
