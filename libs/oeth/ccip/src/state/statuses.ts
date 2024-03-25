@@ -35,12 +35,12 @@ export const statuses = {
     disabled: () =>
       ({
         enabled: false,
-        message: defineMessage({ defaultMessage: 'Bridge' }),
+        message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
       }) as const,
     idle: (doBridge: () => Promise<void>) =>
       ({
         enabled: true,
-        message: defineMessage({ defaultMessage: 'Bridge' }),
+        message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
         action: doBridge,
       }) as const,
     waitingForSignature: () =>

@@ -129,7 +129,9 @@ export const BridgeCard = () => {
               variant={'action'}
               targetChainId={state.srcChain.id}
             >
-              {intl.formatMessage(state.bridge.message)}
+              {intl.formatMessage(state.bridge.message, {
+                symbol: state.srcToken.symbol,
+              })}
             </ConnectedButton>
           )}
 
