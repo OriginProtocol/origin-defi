@@ -4,7 +4,7 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, txLink } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
@@ -43,9 +43,6 @@ export const BridgeNotification = ({
   const intl = useIntl();
   const config = useConfig();
   const amount = +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18);
-  const blockExplorerUrl =
-    config.chains.find((c) => c.id === tokenIn?.chainId)?.blockExplorers
-      ?.default.url ?? 'https://etherscan.io';
   return (
     <NotificationSnack
       sx={sx}
@@ -54,7 +51,10 @@ export const BridgeNotification = ({
       href={
         isNilOrEmpty(txReceipt?.transactionHash)
           ? undefined
-          : `${blockExplorerUrl}/tx/${txReceipt?.transactionHash}`
+          : txLink(
+              config.chains.find((c) => c.id === tokenIn?.chainId),
+              txReceipt?.transactionHash,
+            )
       }
       subtitle={
         isNilOrEmpty(error) ? (
