@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { tokens } from '@origin/shared/contracts';
-import { useIntl } from 'react-intl';
 import { createContainer } from 'react-tracked';
 import { arbitrum, mainnet } from 'viem/chains';
 
@@ -13,12 +12,12 @@ import type { Chain } from 'viem/chains';
 export interface BridgeState {
   approval?: {
     enabled: boolean;
-    message: string;
+    message: { defaultMessage: string };
     action?: () => Promise<void>;
   };
   bridge?: {
     enabled: boolean;
-    message: string;
+    message: { defaultMessage: string };
     action?: () => Promise<void>;
   };
   status: 'idle' | 'pending' | 'complete';
@@ -31,11 +30,10 @@ export interface BridgeState {
   dstToken: Token;
 }
 
-export const useDefaultState = () => {
-  const intl = useIntl();
+export const getDefaultState = () => {
   return {
     approval: undefined,
-    bridge: statuses.bridge.enterAmount(intl),
+    bridge: statuses.bridge.enterAmount(),
     status: 'idle',
     amount: 0n,
     allowance: undefined,
@@ -47,7 +45,7 @@ export const useDefaultState = () => {
 };
 
 export const bridgeStateContainer = createContainer(() => {
-  const defaultState = useDefaultState();
+  const defaultState = getDefaultState();
   return useState(defaultState);
 });
 export const BridgeProvider = bridgeStateContainer.Provider;

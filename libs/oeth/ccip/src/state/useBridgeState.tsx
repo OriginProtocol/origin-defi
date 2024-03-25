@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { useWatchBalance } from '@origin/shared/providers';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { readContract } from '@wagmi/core';
-import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 
 import { ccipRouter } from '../constants';
@@ -16,17 +15,11 @@ import type { erc20Abi } from 'viem';
 
 export const useBridgeState = () => {
   const config = useConfig();
-  const intl = useIntl();
   const { address: userAddress } = useAccount();
   const [state, setState] = bridgeStateContainer.useTracked();
 
   // Get Balances
-  const { data: srcBalance, isLoading: isSrcBalanceLoading } = useWatchBalance(
-    state.srcToken,
-  );
-  const { data: dstBalance, isLoading: isDstBalanceLoading } = useWatchBalance(
-    state.dstToken,
-  );
+  const { data: srcBalance } = useWatchBalance(state.srcToken);
 
   const doApprove = useApprove();
   const doBridge = useBridge();
@@ -58,19 +51,19 @@ export const useBridgeState = () => {
         let bridge: typeof state.bridge;
         if (state.amount === 0n) {
           approval = undefined;
-          bridge = statuses.bridge.enterAmount(intl);
+          bridge = statuses.bridge.enterAmount();
         } else if (srcBalance !== undefined && srcBalance < state.amount) {
           approval = undefined;
-          bridge = statuses.bridge.insufficientAmount(intl);
+          bridge = statuses.bridge.insufficientAmount();
         } else if (
           state.allowance !== undefined &&
           state.allowance < state.amount
         ) {
-          approval = statuses.approval.idle(intl, doApprove);
-          bridge = statuses.bridge.disabled(intl);
+          approval = statuses.approval.idle(doApprove);
+          bridge = statuses.bridge.disabled();
         } else {
           approval = undefined;
-          bridge = statuses.bridge.idle(intl, doBridge);
+          bridge = statuses.bridge.idle(doBridge);
         }
 
         setState((state) => ({
@@ -93,13 +86,7 @@ export const useBridgeState = () => {
   );
 
   return {
-    state: {
-      ...state,
-      srcBalance,
-      isSrcBalanceLoading,
-      dstBalance,
-      isDstBalanceLoading,
-    },
+    state,
     changeAmount: useCallback(
       (amount: bigint) => {
         setState((state) => ({
@@ -109,14 +96,5 @@ export const useBridgeState = () => {
       },
       [setState],
     ),
-    toggleChain: useCallback(() => {
-      setState((state) => ({
-        ...state,
-        srcChain: state.dstChain,
-        srcToken: state.dstToken,
-        dstChain: state.srcChain,
-        dstToken: state.srcToken,
-      }));
-    }, [setState]),
   };
 };

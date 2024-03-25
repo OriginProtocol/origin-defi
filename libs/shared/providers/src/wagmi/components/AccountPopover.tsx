@@ -16,9 +16,10 @@ import { useWatchBalances } from '../hooks';
 import { AddressLabel } from './AddressLabel';
 
 import type { StackProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
 interface Props {
-  balanceTokens?: Parameters<typeof useWatchBalances>[0];
+  balanceTokens?: Token[];
   anchor: HTMLElement | null;
   setAnchor: (value: HTMLButtonElement | null) => void;
 }
@@ -114,7 +115,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
 }
 
 type BalanceRowProps = {
-  token: { symbol: string };
+  token: Token;
   balance: number;
   isBalanceLoading: boolean;
 } & StackProps;

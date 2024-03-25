@@ -23,10 +23,11 @@ import {
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 import type { ComponentType } from 'react';
 
 export type TokenIconProps = {
-  token?: { symbol: string };
+  token?: Token;
 } & SvgIconProps;
 
 export const supportedTokens: Record<string, ComponentType<SvgIconProps>> = {

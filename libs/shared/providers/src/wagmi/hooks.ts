@@ -18,7 +18,7 @@ import {
 
 import { isNativeCurrency } from './utils';
 
-import type { NativeToken, Token } from '@origin/shared/contracts';
+import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Abi } from 'viem';
 import type {
@@ -59,7 +59,7 @@ export const useWatchContracts = <T extends Abi | readonly unknown[]>(
 };
 
 export const useWatchBalance = (
-  token: Token | NativeToken = tokens.mainnet.ETH,
+  token: Token = tokens.mainnet.ETH,
   watchAddress?: `0x${string}`,
 ) => {
   const { address: connectedAddress } = useAccount();
@@ -104,9 +104,7 @@ export const useWatchBalance = (
   return isNilOrEmpty(tokenAddress) ? resNative : resToken;
 };
 
-export const useWatchBalances = (
-  tokens: (NativeToken | Token)[] | undefined | null,
-) => {
+export const useWatchBalances = (tokens: Token[] | undefined | null) => {
   const config = useConfig();
   const isNative = useIsNativeCurrency();
   const { address } = useAccount();
@@ -132,7 +130,7 @@ export const useWatchBalances = (
       const { natives, others } = groupBy(
         (t) => (isNative(t) ? 'native' : 'others'),
         tokens,
-      ) as { natives: NativeToken[]; others: Token[] };
+      ) as { natives: Token[]; others: Token[] };
 
       for (const native of natives) {
         try {
@@ -187,8 +185,7 @@ export const useIsNativeCurrency = () => {
   const config = useConfig();
 
   return useCallback(
-    (token: { symbol: string } | undefined | null) =>
-      isNativeCurrency(config, token),
+    (token: Token | undefined | null) => isNativeCurrency(config, token),
     [config],
   );
 };

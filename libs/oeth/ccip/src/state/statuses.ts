@@ -1,59 +1,59 @@
-import type { IntlShape } from 'react-intl';
+import { defineMessage } from 'react-intl';
 
 export const statuses = {
   approval: {
-    idle: (intl: IntlShape, doApprove: () => Promise<void>) =>
+    idle: (doApprove: () => Promise<void>) =>
       ({
         enabled: true,
-        message: intl.formatMessage({ defaultMessage: 'Approve' }),
+        message: defineMessage({ defaultMessage: 'Approve' }),
         action: doApprove,
       }) as const,
-    waitingForSignature: (intl: IntlShape) =>
+    waitingForSignature: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({
+        message: defineMessage({
           defaultMessage: 'Waiting for signature',
         }),
       }) as const,
-    waitingForTransaction: (intl: IntlShape) =>
+    waitingForTransaction: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({ defaultMessage: 'Processing Approval' }),
+        message: defineMessage({ defaultMessage: 'Processing Approval' }),
       }) as const,
   },
   bridge: {
-    enterAmount: (intl: IntlShape) =>
+    enterAmount: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({ defaultMessage: 'Enter an amount' }),
+        message: defineMessage({ defaultMessage: 'Enter an amount' }),
       }) as const,
-    insufficientAmount: (intl: IntlShape) =>
+    insufficientAmount: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({ defaultMessage: 'Insufficient amount' }),
+        message: defineMessage({ defaultMessage: 'Insufficient amount' }),
       }) as const,
-    disabled: (intl: IntlShape) =>
+    disabled: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({ defaultMessage: 'Bridge' }),
+        message: defineMessage({ defaultMessage: 'Bridge' }),
       }) as const,
-    idle: (intl: IntlShape, doBridge: () => Promise<void>) =>
+    idle: (doBridge: () => Promise<void>) =>
       ({
         enabled: true,
-        message: intl.formatMessage({ defaultMessage: 'Bridge' }),
+        message: defineMessage({ defaultMessage: 'Bridge' }),
         action: doBridge,
       }) as const,
-    waitingForSignature: (intl: IntlShape) =>
+    waitingForSignature: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({
+        message: defineMessage({
           defaultMessage: 'Waiting for signature',
         }),
       }) as const,
-    waitingForTransaction: (intl: IntlShape) =>
+    waitingForTransaction: () =>
       ({
         enabled: false,
-        message: intl.formatMessage({
+        message: defineMessage({
           defaultMessage: 'Waiting for transaction',
         }),
       }) as const,

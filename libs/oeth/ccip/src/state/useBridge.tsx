@@ -55,7 +55,7 @@ export const useBridge = () => {
       setState((state) => ({
         ...state,
         status: 'pending',
-        bridge: statuses.bridge.waitingForSignature(intl),
+        bridge: statuses.bridge.waitingForSignature(),
       }));
       const message = {
         receiver: encodeAbiParameters([{ type: 'address' }], [userAddress]),
@@ -84,7 +84,7 @@ export const useBridge = () => {
       const hash = await writeContract(config, request);
       setState((state) => ({
         ...state,
-        bridge: statuses.bridge.waitingForTransaction(intl),
+        bridge: statuses.bridge.waitingForTransaction(),
       }));
       const txReceipt = await waitForTransactionReceipt(config, { hash });
       if (txReceipt.status === 'success') {

@@ -145,7 +145,7 @@ function RedeemerWrapped({
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
               isPriceLoading={isPricesLoading}
               isConnected={isConnected}
-              isAmountDisabled={isRedeemLoading || chainId !== mainnet.id}
+              isAmountDisabled={isRedeemLoading}
               inputProps={{ sx: tokenInputStyles }}
               tokenButtonProps={{
                 sx: {

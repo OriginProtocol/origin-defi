@@ -1,7 +1,7 @@
-import { bridgeStateContainer, useDefaultState } from './state';
+import { bridgeStateContainer, getDefaultState } from './state';
 
 export const useResetBridgeState = () => {
-  const [, setState] = bridgeStateContainer.useTracked();
-  const defaultState = useDefaultState();
+  const setState = bridgeStateContainer.useUpdate();
+  const defaultState = getDefaultState();
   return () => setState(defaultState);
 };

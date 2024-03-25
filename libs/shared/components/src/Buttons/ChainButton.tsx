@@ -3,17 +3,13 @@ import { arbitrum } from 'viem/chains';
 
 import { ChainIcon } from '../Icons';
 
-import type { ButtonProps } from '@mui/material';
-import type { OverridableComponent } from '@mui/material/OverridableComponent';
-import type { TypographyTypeMap } from '@mui/material/Typography/Typography';
+import type { ButtonProps, SvgIconProps, TypographyProps } from '@mui/material';
 import type { Chain } from 'viem';
-
-import type { ChainIconProps } from '../Icons';
 
 export type ChainButtonProps = {
   chain: Chain;
-  iconProps?: Partial<ChainIconProps>;
-  labelProps?: Partial<OverridableComponent<TypographyTypeMap>>;
+  iconProps?: SvgIconProps;
+  labelProps?: TypographyProps;
   isDisabled?: boolean;
 } & ButtonProps;
 

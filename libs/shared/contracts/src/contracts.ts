@@ -198,7 +198,7 @@ export const contracts = {
       address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
       chainId: mainnet.id,
       abi: CCIPRouterABI,
-      name: 'Router',
+      name: 'ccipRouter',
     },
   },
   arbitrum: {
@@ -207,7 +207,7 @@ export const contracts = {
       address: '0x141fa059441E0ca23ce184B6A78bafD2A517DdE8',
       chainId: arbitrum.id,
       abi: CCIPRouterABI,
-      name: 'Router',
+      name: 'ccipRouter',
     },
   },
 } as const;

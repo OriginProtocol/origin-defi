@@ -36,10 +36,10 @@ export const OpenAccountModalButton = ({
         if (!mounted || !account || !chain) {
           return (
             <Button
+              variant={'nav'}
               {...(disconnectedProps
                 ? (mergeDeepRight(props, disconnectedProps) as ButtonProps)
                 : props)}
-              variant={'nav'}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -51,8 +51,8 @@ export const OpenAccountModalButton = ({
         if (chain.unsupported) {
           return (
             <Button
-              {...props}
               variant={'nav'}
+              {...props}
               color="warning"
               onClick={handleClick(openChainModal)}
             >
@@ -65,10 +65,10 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
+            variant={'nav'}
             {...(connectedProps
               ? (mergeDeepRight(props, connectedProps) as ButtonProps)
               : props)}
-            variant={'nav'}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
               if (props?.onClick) {
                 props.onClick(evt);

@@ -1,4 +1,11 @@
-import { Box, Card, CardContent, CardHeader, Stack } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {
   ArrowButton,
   disabledTokenInputStyleProps,
@@ -8,12 +15,13 @@ import {
 import { ChainButton } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
-import { ConnectedButton } from '@origin/shared/providers';
+import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useBridgeState } from '../state';
 import { useBridgePrices } from '../state/useBridgePrices';
+import { useToggleBridgeChain } from '../state/useToggleBridgeChain';
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -21,13 +29,23 @@ export const BridgeCard = () => {
   const { state, changeAmount } = useBridgeState();
   const prices = useBridgePrices();
 
+  // Get Balances
+  const { data: srcBalance, isLoading: isSrcBalanceLoading } = useWatchBalance(
+    state.srcToken,
+  );
+  const { data: dstBalance, isLoading: isDstBalanceLoading } = useWatchBalance(
+    state.dstToken,
+  );
+
   return (
     <Card sx={{ width: '100%' }}>
-      <CardHeader title={'Bridge'} />
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'Bridge' })} />
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Box> {intl.formatMessage({ defaultMessage: 'From' })}</Box>
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'From' })}
+            </Typography>
             <ChainButton chain={state.srcChain} isDisabled />
           </Stack>
           <TokenInput
@@ -35,8 +53,8 @@ export const BridgeCard = () => {
             isTokenClickDisabled={true}
             amount={state.amount}
             onAmountChange={changeAmount}
-            balance={state.srcBalance}
-            isBalanceLoading={state.isSrcBalanceLoading}
+            balance={srcBalance}
+            isBalanceLoading={isSrcBalanceLoading}
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
@@ -48,7 +66,9 @@ export const BridgeCard = () => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Box> {intl.formatMessage({ defaultMessage: 'To' })}</Box>
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'To' })}
+            </Typography>
             <ChainButton chain={state.dstChain} isDisabled />
           </Stack>
           <Box>
@@ -58,8 +78,8 @@ export const BridgeCard = () => {
             isConnected={true}
             isTokenClickDisabled={true}
             amount={state.amount}
-            balance={state.dstBalance}
-            isBalanceLoading={state.isDstBalanceLoading}
+            balance={dstBalance}
+            isBalanceLoading={isDstBalanceLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
@@ -70,7 +90,9 @@ export const BridgeCard = () => {
             <Box flex={1} color={'text.secondary'}>
               {intl.formatMessage({ defaultMessage: 'Router' })}
             </Box>
-            <Box>Chainlink CCIP</Box>
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Chainlink CCIP' })}
+            </Typography>
           </Stack>
           <Stack direction={'row'}>
             <Box flex={1} color={'text.secondary'}>
@@ -95,7 +117,7 @@ export const BridgeCard = () => {
               variant={'action'}
               targetChainId={state.srcChain.id}
             >
-              {state.approval.message}
+              {intl.formatMessage(state.approval.message)}
             </ConnectedButton>
           )}
           {state.bridge && (
@@ -107,7 +129,7 @@ export const BridgeCard = () => {
               variant={'action'}
               targetChainId={state.srcChain.id}
             >
-              {state.bridge.message}
+              {intl.formatMessage(state.bridge.message)}
             </ConnectedButton>
           )}
 
@@ -131,7 +153,7 @@ export const BridgeCard = () => {
 };
 
 export const BridgeDivider = () => {
-  const { toggleChain } = useBridgeState();
+  const toggleChain = useToggleBridgeChain();
   return (
     <Stack direction={'row'} position={'relative'} marginY={{ sm: 2, md: 1 }}>
       <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />

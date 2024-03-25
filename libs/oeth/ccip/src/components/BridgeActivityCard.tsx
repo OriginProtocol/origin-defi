@@ -275,7 +275,7 @@ export const BridgeStatus = (props: {
       >
         <FaCircleExclamationRegular
           sx={{
-            color: '#FF4E4E',
+            color: 'error.main',
             fontSize: 20,
           }}
         />

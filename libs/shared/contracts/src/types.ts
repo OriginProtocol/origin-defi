@@ -10,14 +10,6 @@ export type Contract<A = Abi> = {
   name?: string;
 };
 
-export type NativeToken = {
-  address: '0x0000000000000000000000000000000000000000';
-  chainId: number;
-  name?: string;
-  symbol: string;
-  decimals: number;
-};
-
 export type Token<A = Abi> = {
   address: HexAddress;
   chainId: number;

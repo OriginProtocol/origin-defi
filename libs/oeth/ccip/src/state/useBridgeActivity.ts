@@ -19,6 +19,7 @@ export const useBridgeActivity = () => {
   const { address: currentAddress } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
   const [waitForTx, setWaitForTx] = useState<string>();
+  // TODO: Add a max retry limit?
 
   // Query via GraphQL!
   const bridgeTransfers = useBridgeTransfersQuery(

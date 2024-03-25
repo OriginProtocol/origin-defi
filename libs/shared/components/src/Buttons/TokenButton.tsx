@@ -27,7 +27,7 @@ export const TokenButton = ({
         justifyContent: 'space-between',
         minHeight: 32,
         borderRadius: 25,
-        fontSize: '1rem',
+        fontSize: 16,
         paddingLeft: 0.25,
         paddingRight: isDisabled ? 2 : 1,
         border: '1px solid transparent',

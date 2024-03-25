@@ -49,7 +49,7 @@ export const wagmiConfig = createConfig({
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_RPC),
-    [arbitrum.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
+    [arbitrum.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_ARBITRUM_RPC)
       ? fallback([
           http(
             `${import.meta.env.VITE_ALCHEMY_ARBITRUM_RPC}${
