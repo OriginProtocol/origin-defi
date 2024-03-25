@@ -27,7 +27,7 @@ interface Props {
 export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
   const intl = useIntl();
   const theme = useTheme();
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected, connector, chain } = useAccount();
   const { disconnect } = useDisconnect();
   const { data: balances, isLoading: balancesLoading } =
     useWatchBalances(balanceTokens);
@@ -91,7 +91,9 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
             walletName={connector?.name}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
-          <ExternalLink href={`https://etherscan.io/address/${address}`}>
+          <ExternalLink
+            href={`${chain?.blockExplorers?.default.url ?? 'https://etherscan.io'}/address/${address}`}
+          >
             <AddressLabel address={address} short />
           </ExternalLink>
         </Stack>
