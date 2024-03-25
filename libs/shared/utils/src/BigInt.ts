@@ -20,11 +20,8 @@ export const subtractSlippage = (value = 0n, decimals = 18, slippage = 0) => {
     return value;
   }
 
-  return parseUnits(
-    (
-      +formatUnits(value, decimals) -
-      +formatUnits(value, decimals) * slippage
-    ).toString(),
-    decimals,
-  );
+  const slippageFactor = BigInt(Math.floor(slippage * 10000));
+  const slippageAmount = (value * slippageFactor) / 10000n;
+
+  return value - slippageAmount;
 };
