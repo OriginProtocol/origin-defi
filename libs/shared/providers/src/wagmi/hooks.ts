@@ -128,7 +128,7 @@ export const useWatchBalances = (tokens: Token[] | undefined | null) => {
       let res = {} as Record<string, bigint>;
 
       const { natives, others } = groupBy(
-        (t) => (isNative(t) ? 'native' : 'others'),
+        (t) => (isNative(t) ? 'natives' : 'others'),
         tokens,
       ) as { natives: Token[]; others: Token[] };
 
