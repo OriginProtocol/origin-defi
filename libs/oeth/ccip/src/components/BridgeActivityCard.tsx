@@ -184,17 +184,17 @@ export const BridgeAmount = (props: { token: Token; amount: bigint }) => {
 export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
   <Stack
     direction={'row'}
-    spacing={{ xs: '1px', sm: '3px' }}
+    spacing={{ xs: '3px', sm: '5px' }}
     alignItems={'center'}
   >
     <ChainIcon
       chainId={props.srcChain?.id}
-      sx={{ height: { xs: 14, sm: 20 } }}
+      sx={{ fontSize: { xs: 14, sm: 20 } }}
     />
     <FaArrowRightRegular sx={{ height: { xs: 12, sm: 18 } }} />
     <ChainIcon
       chainId={props.dstChain?.id}
-      sx={{ height: { xs: 14, sm: 20 } }}
+      sx={{ fontSize: { xs: 14, sm: 20 } }}
     />
   </Stack>
 );

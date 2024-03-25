@@ -6,7 +6,7 @@ import { readContract } from '@wagmi/core';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 
-import { ccipRouter } from '../ccip';
+import { ccipRouter } from '../constants';
 import { bridgeStateContainer } from './state';
 import { statuses } from './statuses';
 import { useApprove } from './useApprove';

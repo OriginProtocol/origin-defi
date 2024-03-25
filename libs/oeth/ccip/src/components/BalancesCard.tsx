@@ -3,11 +3,10 @@ import {
   Card,
   CardContent,
   CardHeader,
-  Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { ChainIcon } from '@origin/shared/components';
+import { ChainIcon, LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -83,11 +82,12 @@ export const BalanceRow = (props: {
       </Stack>
       <Stack direction={'column'} alignItems={'end'}>
         <Stack direction={'row'} spacing={1}>
-          {!isLoading && balance !== undefined ? (
-            <Typography>{formatAmount(balance)}</Typography>
-          ) : (
-            <Skeleton width={60} />
-          )}
+          <LoadingLabel
+            isLoading={isLoading || balance === undefined}
+            sWidth={60}
+          >
+            {balance !== undefined && formatAmount(balance)}
+          </LoadingLabel>
           <Typography>wOETH</Typography>
         </Stack>
         {balance !== undefined && props.usdRate && (
