@@ -45,6 +45,8 @@ import MagnifyingGlassDollarSvg from './magnifying-glass-dollar.svg?react';
 import MinusSvg from './minus.svg?react';
 import PercentSvg from './percent.svg?react';
 import RotateLeftSvg from './rotate-left.svg?react';
+import SquareSvg from './square.svg?react';
+import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
@@ -363,6 +365,17 @@ export const FaRotateLeftLight = (props: SvgIconProps) => (
     fontSize="inherit"
     {...props}
     component={RotateLeftSvg}
+    inheritViewBox
+  />
+);
+export const FaSquareLight = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={SquareSvg} inheritViewBox />
+);
+export const FaSquareCheckLight = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SquareCheckSvg}
     inheritViewBox
   />
 );

@@ -76,7 +76,7 @@ export const useDeleteActivity = () => {
   );
 };
 
-export const useGlobalStatus = () => {
+export const useActivitiesStatus = () => {
   const [{ activities }] = useActivityState();
   const [status, setStatus] = useState<GlobalActivityStatus>('idle');
   const prev = usePrevious(activities);

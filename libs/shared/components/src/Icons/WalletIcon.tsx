@@ -8,6 +8,7 @@ import {
   Rabby,
   Rainbow,
   Safe,
+  Trust,
   WalletConnect,
 } from '@origin/shared/icons';
 
@@ -29,6 +30,7 @@ const wallets: Record<string, ComponentType<SvgIconProps>> = {
   rainbow: Rainbow,
   connect: WalletConnect,
   defaultWallet: DefaultWallet,
+  trust: Trust,
 };
 
 export const WalletIcon = ({ walletName, ...rest }: WalletIconProps) => {

@@ -5,29 +5,41 @@ import {
 } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
-import type { StackProps } from '@mui/material';
+import type { ButtonProps, StackProps } from '@mui/material';
 import type { Table } from '@tanstack/react-table';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type TablePaginationProps = { table: Table<any> } & StackProps;
+export type TablePaginationProps = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  table: Table<any>;
+  disableScrollToTop?: boolean;
+  buttonsProps?: Omit<ButtonProps, 'onClick' | 'children' | 'disabled'>;
+} & StackProps;
 
-export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
+export const TablePagination = ({
+  table,
+  disableScrollToTop,
+  buttonsProps,
+  ...rest
+}: TablePaginationProps) => {
   const intl = useIntl();
 
   return (
     <Stack
       direction="row"
-      alignItems="center"
+      alignItems="stretch"
       justifyContent="flex-end"
-      gap={1}
+      spacing={1}
       {...rest}
       sx={{ px: { xs: 2, md: 3 }, py: 2, ...rest?.sx }}
     >
       <Button
         size="small"
+        {...buttonsProps}
         onClick={() => {
           table.setPageIndex(0);
-          window.scrollTo(0, 0);
+          if (!disableScrollToTop) {
+            window.scrollTo(0, 0);
+          }
         }}
         disabled={!table.getCanPreviousPage()}
       >
@@ -35,15 +47,18 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
       </Button>
       <Button
         size="small"
+        {...buttonsProps}
         onClick={() => {
           table.previousPage();
-          window.scrollTo(0, 0);
+          if (!disableScrollToTop) {
+            window.scrollTo(0, 0);
+          }
         }}
         disabled={!table.getCanPreviousPage()}
       >
         <FaChevronLeftRegular />
       </Button>
-      <Typography fontSize={13} px={2}>
+      <Typography fontSize={13} px={2} sx={{ alignSelf: 'center' }}>
         {intl.formatMessage(
           { defaultMessage: '{page} of {lastPage}' },
           {
@@ -54,9 +69,12 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
       </Typography>
       <Button
         size="small"
+        {...buttonsProps}
         onClick={() => {
           table.nextPage();
-          window.scrollTo(0, 0);
+          if (!disableScrollToTop) {
+            window.scrollTo(0, 0);
+          }
         }}
         disabled={!table.getCanNextPage()}
       >
@@ -64,9 +82,12 @@ export const TablePagination = ({ table, ...rest }: TablePaginationProps) => {
       </Button>
       <Button
         size="small"
+        {...buttonsProps}
         onClick={() => {
           table.setPageIndex(table.getPageCount() - 1);
-          window.scrollTo(0, 0);
+          if (!disableScrollToTop) {
+            window.scrollTo(0, 0);
+          }
         }}
         disabled={!table.getCanNextPage()}
       >

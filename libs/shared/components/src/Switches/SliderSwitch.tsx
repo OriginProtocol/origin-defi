@@ -4,9 +4,10 @@ import { Box, Button, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { ButtonProps, StackProps } from '@mui/material';
+import type { ReactNode } from 'react';
 
 export type Option = {
-  label: string;
+  label: ReactNode;
   value: string | number;
 };
 
@@ -55,7 +56,7 @@ export const SliderSwitch = ({
     >
       {options.map((o, i) => (
         <SwitchButton
-          key={o.label}
+          key={o.value}
           ref={(el) => {
             if (el) {
               refs.current[i] = el;
@@ -105,7 +106,11 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
           ...rest?.sx,
         }}
       >
-        <Typography>{option.label}</Typography>
+        {typeof option.label === 'string' ? (
+          <Typography>{option.label}</Typography>
+        ) : (
+          option.label
+        )}
       </Button>
     );
   },

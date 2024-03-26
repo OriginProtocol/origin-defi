@@ -1,26 +1,25 @@
 import { forwardRef } from 'react';
 
-import { alpha, Button, Skeleton, Stack, Typography } from '@mui/material';
-import {
-  BigIntInput,
-  LoadingLabel,
-  TokenIcon,
-} from '@origin/shared/components';
-import { Dropdown } from '@origin/shared/icons';
-import { isNativeCurrency } from '@origin/shared/providers';
+import { Button, Skeleton, Stack, Typography } from '@mui/material';
+import { FaChevronDownRegular } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
 
-import type { StackProps } from '@mui/material';
+import { TokenIcon } from '../Icons';
+import { LoadingLabel } from '../Labels';
+import { BigIntInput } from './BigIntInput';
+
+import type { ButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { ReactNode } from 'react';
 
 // When clicking max on native currency, we leave this amount of token
 // on the wallet so the user can afford the transaction gas fees
 const MIN_ETH_FOR_GAS = '0.015';
 
-export type TokenInputProps = {
+export type TokenInput2Props = {
   amount: bigint;
   decimals?: number;
   onAmountChange?: (value: bigint) => void;
@@ -31,7 +30,9 @@ export type TokenInputProps = {
   isBalanceLoading?: boolean;
   hideMaxButton?: boolean;
   disableMaxButton?: boolean;
-  token: Token;
+  isNativeCurrency?: boolean;
+  token?: Token;
+  tokenButton?: ReactNode;
   onTokenClick?: () => void;
   isTokenClickDisabled?: boolean;
   tokenPriceUsd?: number;
@@ -39,7 +40,7 @@ export type TokenInputProps = {
   readOnly?: boolean;
 } & StackProps;
 
-export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
+export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
   (
     {
       amount,
@@ -48,11 +49,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isAmountLoading,
       isAmountDisabled,
       isAmountError,
-      balance = 0n,
+      balance,
       isBalanceLoading,
       hideMaxButton,
       disableMaxButton,
+      isNativeCurrency,
       token,
+      tokenButton,
       onTokenClick,
       isTokenClickDisabled,
       tokenPriceUsd = 0,
@@ -64,17 +67,21 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
     const { isConnected } = useAccount();
+
     const handleMaxClick = () => {
-      const max = isNativeCurrency(token)
-        ? balance - parseEther(MIN_ETH_FOR_GAS)
-        : balance;
-      onAmountChange?.(max);
+      if (balance !== undefined) {
+        const max = isNativeCurrency
+          ? balance - parseEther(MIN_ETH_FOR_GAS)
+          : balance;
+        onAmountChange?.(max);
+      }
     };
 
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
     const maxVisible =
       !hideMaxButton &&
-      balance > (isNativeCurrency(token) ? parseEther(MIN_ETH_FOR_GAS) : 0n);
+      balance !== undefined &&
+      balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
     const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
 
     return (
@@ -84,11 +91,14 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           alignItems="center"
           justifyContent="space-between"
         >
-          <TokenButton
-            token={token}
-            onClick={onTokenClick}
-            isDisabled={isTokenClickDisabled}
-          />
+          {tokenButton ?? (
+            <TokenButton
+              token={token}
+              onClick={onTokenClick}
+              isDisabled={isTokenClickDisabled}
+            />
+          )}
+
           <Stack
             direction="row"
             alignItems="center"
@@ -96,7 +106,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             overflow="hidden"
             whiteSpace="nowrap"
           >
-            {isConnected ? (
+            {isConnected && balance !== undefined ? (
               isBalanceLoading ? (
                 <Skeleton />
               ) : (
@@ -106,7 +116,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     color="text.secondary"
                     sx={{
                       justifySelf: 'flex-end',
-                      visibility: balance === undefined ? 'hidden' : 'visible',
                       textOverflow: 'ellipsis',
                     }}
                   >
@@ -200,6 +209,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 currency: 'USD',
                 minimumFractionDigits: 2,
                 currencyDisplay: 'narrowSymbol',
+                roundingMode: 'floor',
               })}
             </LoadingLabel>
           ) : null}
@@ -209,7 +219,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   },
 );
 
-TokenInput.displayName = 'TokenInput';
+TokenInput2.displayName = 'TokenInput';
 
 const valueStyles = {
   flexGrow: 1,
@@ -221,46 +231,41 @@ const valueStyles = {
   height: 48,
 };
 
-type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
+type TokenButtonProps = { token?: Token; isDisabled?: boolean } & ButtonProps;
 
 function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
+  const intl = useIntl();
+
+  if (!token) {
+    return (
+      <Button variant="contained" color="inherit" {...(rest as any)}>
+        {intl.formatMessage({ defaultMessage: 'Select token' })}
+      </Button>
+    );
+  }
+
   return (
-    <Stack
-      direction="row"
-      role="button"
-      gap={1}
+    <Button
+      color="inherit"
+      disabled={isDisabled}
+      size="small"
       {...rest}
       sx={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        gap: 1,
         minHeight: 32,
-        borderRadius: 25,
+        borderRadius: 8,
         fontSize: '1rem',
-        paddingY: 0.25,
-        paddingLeft: 0.25,
-        paddingRight: isDisabled ? 2 : 1,
-        border: '1px solid transparent',
-        background: (theme) => alpha(theme.palette.common.white, 0.1),
-        fontStyle: 'normal',
-        cursor: 'pointer',
         fontWeight: 500,
-        boxSizing: 'border-box',
-        position: 'relative',
-        ':hover': {
-          background: (theme) =>
-            `linear-gradient(${theme.palette.grey[600]}, ${
-              theme.palette.grey[600]
-            }) padding-box, linear-gradient(90deg, ${alpha(
-              theme.palette.primary.main,
-              0.4,
-            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
+        '&.Mui-disabled': {
+          color: 'text.primary',
+          pr: 2,
         },
         ...rest?.sx,
       }}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
       <Typography variant="inherit">{token.symbol}</Typography>
-      {!isDisabled && <Dropdown />}
-    </Stack>
+      {!isDisabled && <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />}
+    </Button>
   );
 }

@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   alpha,
   Box,
@@ -7,30 +5,28 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
-  IconButton,
   Stack,
-  Typography,
 } from '@mui/material';
 import {
   ErrorBoundary,
   ErrorCard,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
+import { ArrowDown } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { getTokenPriceKey } from '../../prices';
+import { SettingsButton } from '../../settings';
 import { ConnectedButton, useWatchBalance } from '../../wagmi';
 import {
-  useHandleAmountInChange,
   useHandleRedeem,
+  useHandleRedeemAmountInChange,
   useRedeemerPrices,
 } from '../hooks';
 import { RedeemProvider, useRedeemState } from '../state';
 import { RedeemRoute } from './RedeemRoute';
-import { SettingsPopover } from './SettingsPopover';
 
 import type { BoxProps, ButtonProps, StackProps } from '@mui/material';
 import type { MouseEvent } from 'react';
@@ -65,7 +61,6 @@ function RedeemerWrapped({
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
       vaultContract,
@@ -81,11 +76,10 @@ function RedeemerWrapped({
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: tokenIn,
   });
-  const handleAmountInChange = useHandleAmountInChange();
+  const handleAmountInChange = useHandleRedeemAmountInChange();
   const handleRedeem = useHandleRedeem();
 
   const handleSettingClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(evt.currentTarget);
     trackEvent({ name: 'open_settings' });
   };
 
@@ -108,31 +102,17 @@ function RedeemerWrapped({
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <Card>
           <CardHeader
-            title={
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-              >
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Redeem' })}
-                </Typography>
-                <IconButton
-                  onClick={handleSettingClick}
-                  sx={{
-                    position: 'relative',
-                    right: (theme) => theme.spacing(-0.75),
-                    svg: { width: 16, height: 16 },
-                  }}
-                >
-                  <FaGearComplexRegular />
-                </IconButton>
-                <SettingsPopover
-                  open={!!anchorEl}
-                  anchorEl={anchorEl}
-                  onClose={() => setAnchorEl(null)}
-                />
-              </Stack>
+            title={intl.formatMessage({ defaultMessage: 'Redeem' })}
+            action={
+              <SettingsButton
+                onClick={handleSettingClick}
+                popoverProps={{
+                  formButtonProps: {
+                    variant: 'outlined',
+                    color: 'secondary',
+                  },
+                }}
+              />
             }
           />
           <CardContent>

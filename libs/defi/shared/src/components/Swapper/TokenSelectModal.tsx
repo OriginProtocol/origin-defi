@@ -1,6 +1,7 @@
 import {
   Box,
   Dialog,
+  DialogTitle,
   MenuItem,
   MenuList,
   Skeleton,
@@ -16,6 +17,7 @@ import {
   useWatchBalance,
 } from '@origin/shared/providers';
 import { ascend, descend, prop, sortWith } from 'ramda';
+import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -37,30 +39,18 @@ export const TokenSelectModal = ({
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
+  const intl = useIntl();
+
   const sortedTokens = sortWith<TokenOption>([
     ascend(prop('isSelected')),
     descend(prop('isSwappable')),
   ])(tokens);
 
   return (
-    <Dialog
-      maxWidth="sm"
-      PaperProps={{
-        elevation: 23,
-        sx: {
-          background: (theme) => theme.palette.background.paper,
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: (theme) => theme.palette.grey[800],
-          backgroundImage: 'none',
-          margin: 0,
-          minWidth: 'min(90vw, 33rem)',
-          py: 1,
-        },
-      }}
-      {...rest}
-      onClose={onClose}
-    >
+    <Dialog fullWidth maxWidth="sm" {...rest} onClose={onClose}>
+      <DialogTitle>
+        {intl.formatMessage({ defaultMessage: 'Select a token' })}
+      </DialogTitle>
       <MenuList disablePadding>
         {sortedTokens.map((token, i) => (
           <TokenListItem

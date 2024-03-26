@@ -237,6 +237,7 @@ const NavButtons = () => {
         <ChainSwitcherButton />
         {isConnected && (
           <ActivityButton
+            variant="nav"
             onClick={() => {
               trackEvent({ name: 'open_activity' });
             }}
