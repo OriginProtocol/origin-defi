@@ -60,15 +60,15 @@ export const getTokenById = (tokenId: string) => {
 };
 
 export const getTokenId = (token: Token) => {
-  if (token.chainId === mainnet.id) {
-    return token.symbol;
-  }
-
   return `${token.symbol}:${token.chainId}`;
 };
 
-export const parseTokenId = (tokenId: string) => {
-  if (isNilOrEmpty(tokenId) || !/^[a-zA-Z0-9]+:[0-9]+$/.test(tokenId)) {
+export const parseTokenId = (tokenId?: string) => {
+  if (
+    !tokenId ||
+    isNilOrEmpty(tokenId) ||
+    !/^[a-zA-Z0-9]+:[0-9]+$/.test(tokenId)
+  ) {
     return undefined;
   }
 

@@ -26,6 +26,7 @@ import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
+  isNativeCurrency,
   SettingsButton,
   SwapNotification,
   SwapProvider,
@@ -36,7 +37,6 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
-  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSlippage,
@@ -229,7 +229,6 @@ function SwapperWrapped({
   const handleTokenFlip = useHandleTokenFlip();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
-  const isNativeCurrency = useIsNativeCurrency();
 
   const handleCloseSelectionModal = () => {
     setTokenSource(null);

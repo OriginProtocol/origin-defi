@@ -1,3 +1,4 @@
+import { getTokenId, parseTokenId } from '@origin/shared/contracts';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import { priceOptions } from './constants';
@@ -15,15 +16,15 @@ import type {
 } from './types';
 
 export const getTokenPriceKey = (token: Token, currency = 'USD' as Currency) =>
-  `${token.symbol}_${currency}` as SupportedTokenPrice;
+  `${getTokenId(token)}_${currency}` as SupportedTokenPrice;
 
 export const parseTokenPriceKey = (key: SupportedTokenPrice) => {
-  if (isNilOrEmpty(key) || !/^\w*_\w*$/.test(key)) {
+  if (isNilOrEmpty(key) || !/^\w*:\w*_\w*$/.test(key)) {
     return null;
   }
-  const [symbol, currency] = key.split('_');
+  const [tokenId, currency] = key.split('_');
 
-  return { symbol, currency };
+  return { tokenId, currency };
 };
 
 export const reduceOptions = (
@@ -31,8 +32,9 @@ export const reduceOptions = (
   curr: SupportedTokenPrice,
 ) => {
   const parsedOption = parseTokenPriceKey(curr);
+  const parsedToken = parseTokenId(parsedOption?.tokenId);
 
-  if (parsedOption && parsedOption.symbol === parsedOption.currency) {
+  if (parsedOption && parsedToken?.symbol === parsedOption.currency) {
     return { ...acc, [curr]: { type: 'rest', id: curr, config: () => 1n } };
   }
 
