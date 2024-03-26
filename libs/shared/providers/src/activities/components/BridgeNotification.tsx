@@ -4,7 +4,7 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
-import { isNilOrEmpty, txLink } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty, txLink } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
@@ -64,11 +64,7 @@ export const BridgeNotification = ({
                 defaultMessage: '{amountIn} {symbolIn}',
               },
               {
-                amountIn: intl.formatNumber(amount, {
-                  minimumFractionDigits: 0,
-                  maximumFractionDigits:
-                    amount.toString().split('.')[1]?.length ?? 0,
-                }),
+                amountIn: formatAmount(amount),
                 symbolIn: tokenIn?.symbol,
               },
             )}
