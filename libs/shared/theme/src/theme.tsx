@@ -389,7 +389,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
-          display: 'inline',
+          lineHeight: 1.5,
           fontSize: theme.typography.fontSize,
           fontWeight: 500,
         }),
