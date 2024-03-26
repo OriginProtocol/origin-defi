@@ -45,7 +45,6 @@ import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import { RedeemActionCard } from './RedeemActionCard';
 
@@ -312,7 +311,6 @@ function SwapperWrapped({
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
               isTokenClickDisabled
               isPriceLoading={isPriceLoading}
-              isConnected={isConnected}
               isAmountDisabled={amountInInputDisabled}
               sx={{
                 p: 3,
@@ -398,7 +396,7 @@ function SwapperWrapped({
               variant="action"
               disabled={swapButtonDisabled}
               onClick={handleSwap}
-              targetChainId={mainnet.id}
+              targetChainId={tokenIn.chainId}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />

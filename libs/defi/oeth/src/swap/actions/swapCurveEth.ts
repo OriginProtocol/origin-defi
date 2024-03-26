@@ -13,7 +13,6 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, isAddressEqual, maxUint256 } from 'viem';
-import { mainnet } from 'wagmi/chains';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -50,7 +49,6 @@ const estimateAmount: EstimateAmount = async (
       tokenOut.address ?? ETH_ADDRESS_CURVE,
       amountIn,
     ],
-    chainId: mainnet.id,
   });
 
   return amountOut as unknown as bigint;
@@ -61,9 +59,7 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config, {
-    chainId: mainnet.id,
-  });
+  const publicClient = getPublicClient(config);
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -211,7 +207,6 @@ const swap: Swap = async (
     ],
     gas,
     ...(isTokenInNative && { value: amountIn }),
-    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 

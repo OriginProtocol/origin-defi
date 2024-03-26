@@ -10,7 +10,6 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { erc20Abi, formatUnits, maxUint256, parseUnits } from 'viem';
-import { mainnet } from 'wagmi/chains';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -39,14 +38,12 @@ const estimateAmount: EstimateAmount = async (
         abi: tokens.mainnet.sfrxETH.abi,
         functionName: 'previewRedeem',
         args: [amountIn],
-        chainId: mainnet.id,
       },
       {
         address: contracts.mainnet.OETHVault.address,
         abi: contracts.mainnet.OETHVault.abi,
         functionName: 'priceUnitMint',
         args: [tokens.mainnet.frxETH.address],
-        chainId: mainnet.id,
       },
     ],
   });
@@ -86,7 +83,6 @@ const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OETHZapper.address],
-    chainId: mainnet.id,
   });
 
   return allowance;
@@ -98,9 +94,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config, {
-    chainId: mainnet.id,
-  });
+  const publicClient = getPublicClient(config);
 
   if (
     amountIn === 0n ||
@@ -172,7 +166,6 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
-    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 
@@ -212,7 +205,6 @@ const swap: Swap = async (
     functionName: 'depositSFRXETH',
     args: [amountIn, minAmountOut],
     gas,
-    chainId: mainnet.id,
   });
   const hash = await writeContract(config, request);
 
