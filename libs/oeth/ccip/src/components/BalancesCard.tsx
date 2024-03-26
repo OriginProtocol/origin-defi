@@ -16,23 +16,23 @@ import {
 } from '@origin/shared/providers';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { parseEther } from 'viem';
+import { formatUnits } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
-export const BalancesCard = (params: { title: string }) => {
+export const BalancesCard = ({ title }: { title: string }) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const priceKey = getTokenPriceKey(tokens.mainnet.wOETH, 'USD');
+  const priceKey = getTokenPriceKey(tokens.mainnet.wOETH);
   const result = useTokenPrices([priceKey]);
   const srcPrice = result.data?.[priceKey];
 
   return (
     <Card sx={{ width: '100%' }}>
-      <CardHeader title={params.title} />
+      <CardHeader title={title} />
       <CardContent>
         {isConnected ? (
           <Stack spacing={3}>
@@ -62,12 +62,21 @@ export const BalancesCard = (params: { title: string }) => {
   );
 };
 
-export const BalanceRow = (props: {
+export const BalanceRow = ({
+  chain,
+  token,
+  usdRate,
+}: {
   chain: Chain;
   token: Token;
   usdRate: number | undefined;
 }) => {
-  const { data: balance, isLoading } = useWatchBalance(props.token);
+  const intl = useIntl();
+  const { data: balance, isLoading } = useWatchBalance({ token });
+
+  const converted =
+    +formatUnits(balance ?? 0n, token.decimals) * (usdRate ?? 0);
+
   return (
     <Stack
       direction={'row'}
@@ -75,30 +84,25 @@ export const BalanceRow = (props: {
       justifyContent={'space-between'}
     >
       <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
-        <ChainIcon chainId={props.chain.id} />
-        <Box>
-          {props.chain.id === arbitrum.id ? 'Arbitrum' : props.chain.name}
-        </Box>
+        <ChainIcon chainId={chain.id} />
+        <Box>{chain.id === arbitrum.id ? 'Arbitrum' : chain.name}</Box>
       </Stack>
       <Stack direction={'column'} alignItems={'end'}>
         <Stack direction={'row'} spacing={1}>
-          <LoadingLabel
-            isLoading={isLoading || balance === undefined}
-            sWidth={60}
-          >
-            {balance !== undefined && formatAmount(balance)}
+          <LoadingLabel isLoading={isLoading} sWidth={60}>
+            {formatAmount(balance ?? 0n)}
           </LoadingLabel>
-          <Typography>wOETH</Typography>
+          <Typography>{tokens.mainnet.wOETH.symbol}</Typography>
         </Stack>
-        {balance !== undefined && props.usdRate && (
+        {balance !== undefined && usdRate && (
           <Box color={'text.secondary'}>
-            {`$${formatAmount(
-              (balance * parseEther(props.usdRate.toString())) /
-                1_000000000_000000000n,
-              18,
-              '0.00',
-              { minimumFractionDigits: 2, maximumFractionDigits: 2 },
-            )}`}
+            {intl.formatNumber(converted, {
+              style: 'currency',
+              currency: 'USD',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+              currencyDisplay: 'narrowSymbol',
+            })}
           </Box>
         )}
       </Stack>

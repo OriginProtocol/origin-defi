@@ -18,20 +18,23 @@ export const useBridgeState = () => {
   const { address: userAddress } = useAccount();
   const [state, setState] = bridgeStateContainer.useTracked();
 
+  const { srcToken, srcChain, status, approval, bridge, amount, allowance } =
+    state;
+
   // Get Balances
-  const { data: srcBalance } = useWatchBalance(state.srcToken);
+  const { data: srcBalance } = useWatchBalance({ token: srcToken });
 
   const doApprove = useApprove();
   const doBridge = useBridge();
 
   useDebouncedEffect(
     async () => {
-      if (!userAddress || !state.srcToken.address) return;
-      const srcRouter = ccipRouter[state.srcChain.id];
+      if (!userAddress || !srcToken.address) return;
+      const srcRouter = ccipRouter[srcChain.id];
       const allowance = await readContract(config, {
-        chainId: state.srcToken.chainId,
-        address: state.srcToken.address,
-        abi: state.srcToken.abi as typeof erc20Abi,
+        chainId: srcToken.chainId,
+        address: srcToken.address,
+        abi: srcToken.abi as typeof erc20Abi,
         functionName: 'allowance',
         args: [userAddress, srcRouter.address],
       });
@@ -40,48 +43,37 @@ export const useBridgeState = () => {
         allowance,
       }));
     },
-    [state.srcToken, state.srcToken.chainId, state.srcChain.id, userAddress],
+    [srcToken, srcToken.chainId, srcChain.id, userAddress],
     200,
   );
 
   useDebouncedEffect(
     async () => {
-      if (state.status === 'idle') {
-        let approval: typeof state.approval;
-        let bridge: typeof state.bridge;
-        if (state.amount === 0n) {
-          approval = undefined;
-          bridge = statuses.bridge.enterAmount();
-        } else if (srcBalance !== undefined && srcBalance < state.amount) {
-          approval = undefined;
-          bridge = statuses.bridge.insufficientAmount();
-        } else if (
-          state.allowance !== undefined &&
-          state.allowance < state.amount
-        ) {
-          approval = statuses.approval.idle(doApprove);
-          bridge = statuses.bridge.disabled();
+      if (status === 'idle') {
+        let appr: typeof approval;
+        let brid: typeof bridge;
+        if (amount === 0n) {
+          appr = undefined;
+          brid = statuses.bridge.enterAmount();
+        } else if (srcBalance !== undefined && srcBalance < amount) {
+          appr = undefined;
+          brid = statuses.bridge.insufficientAmount();
+        } else if (allowance !== undefined && allowance < amount) {
+          appr = statuses.approval.idle(doApprove);
+          brid = statuses.bridge.disabled();
         } else {
-          approval = undefined;
-          bridge = statuses.bridge.idle(doBridge);
+          appr = undefined;
+          brid = statuses.bridge.idle(doBridge);
         }
 
         setState((state) => ({
           ...state,
-          approval,
-          bridge,
+          approval: appr,
+          bridge: brid,
         }));
       }
     },
-    [
-      config,
-      state.srcToken,
-      state.allowance,
-      state.amount,
-      state.approval,
-      state.bridge,
-      srcBalance,
-    ],
+    [status, srcBalance, amount, allowance],
     200,
   );
 

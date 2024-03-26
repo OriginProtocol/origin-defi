@@ -13,9 +13,9 @@ import {
   tokenInputStyleProps,
 } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
-import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
+import { ConnectedButton, useWatchBalances } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -26,16 +26,15 @@ import { useToggleBridgeChain } from '../state/useToggleBridgeChain';
 export const BridgeCard = () => {
   const intl = useIntl();
   const { chain: currentChain } = useAccount();
-  const { state, changeAmount } = useBridgeState();
+  const {
+    state: { amount, srcChain, srcToken, dstChain, dstToken, approval, bridge },
+    changeAmount,
+  } = useBridgeState();
   const prices = useBridgePrices();
 
-  // Get Balances
-  const { data: srcBalance, isLoading: isSrcBalanceLoading } = useWatchBalance(
-    state.srcToken,
-  );
-  const { data: dstBalance, isLoading: isDstBalanceLoading } = useWatchBalance(
-    state.dstToken,
-  );
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [srcToken, dstToken],
+  });
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -46,15 +45,15 @@ export const BridgeCard = () => {
             <Typography>
               {intl.formatMessage({ defaultMessage: 'From' })}
             </Typography>
-            <ChainButton chain={state.srcChain} isDisabled />
+            <ChainButton chain={srcChain} isDisabled />
           </Stack>
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={true}
-            amount={state.amount}
+            amount={amount}
             onAmountChange={changeAmount}
-            balance={srcBalance}
-            isBalanceLoading={isSrcBalanceLoading}
+            balance={balances?.[getTokenId(srcToken)]}
+            isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
@@ -69,7 +68,7 @@ export const BridgeCard = () => {
             <Typography>
               {intl.formatMessage({ defaultMessage: 'To' })}
             </Typography>
-            <ChainButton chain={state.dstChain} isDisabled />
+            <ChainButton chain={dstChain} isDisabled />
           </Stack>
           <Box>
             {intl.formatMessage({ defaultMessage: 'You will receive' })}
@@ -77,9 +76,9 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={true}
-            amount={state.amount}
-            balance={dstBalance}
-            isBalanceLoading={isDstBalanceLoading}
+            amount={amount}
+            balance={balances?.[getTokenId(dstToken)]}
+            isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
             token={tokens.mainnet.wOETH}
@@ -108,29 +107,29 @@ export const BridgeCard = () => {
               )}
             </Box>
           </Stack>
-          {currentChain?.id === state.srcChain.id && state.approval && (
+          {currentChain?.id === srcChain.id && approval && (
             <ConnectedButton
               fullWidth
-              disabled={!state.approval.enabled}
-              onClick={state.approval.action}
+              disabled={!approval.enabled}
+              onClick={approval.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
-              targetChainId={state.srcChain.id}
+              targetChainId={srcChain.id}
             >
-              {intl.formatMessage(state.approval.message)}
+              {intl.formatMessage(approval.message)}
             </ConnectedButton>
           )}
-          {state.bridge && (
+          {bridge && (
             <ConnectedButton
               fullWidth
-              disabled={!state.bridge.enabled}
-              onClick={state.bridge.action}
+              disabled={!bridge.enabled}
+              onClick={bridge.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
-              targetChainId={state.srcChain.id}
+              targetChainId={srcChain.id}
             >
-              {intl.formatMessage(state.bridge.message, {
-                symbol: state.srcToken.symbol,
+              {intl.formatMessage(bridge.message, {
+                symbol: srcToken.symbol,
               })}
             </ConnectedButton>
           )}

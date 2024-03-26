@@ -1,5 +1,11 @@
-query BridgeTransfers($account: String!) {
-  bridgeTransfers(orderBy: timestamp_DESC, where: {sender_eq: $account, receiver_eq: $account} ) {
+query BridgeTransfers($address: String!) {
+  bridgeTransfers(
+    orderBy: timestamp_DESC
+    where: {
+      sender_containsInsensitive: $address
+      receiver_containsInsensitive: $address
+    }
+  ) {
     id
     blockNumber
     timestamp
@@ -18,7 +24,7 @@ query BridgeTransfers($account: String!) {
 }
 
 query BridgeTransferStates($messageIds: [String!]) {
-  bridgeTransferStates(where: {id_in: $messageIds}) {
+  bridgeTransferStates(where: { id_in: $messageIds }) {
     id
     state
   }

@@ -3,7 +3,7 @@ import * as Types from '@origin/oeth/shared';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/oeth/shared';
 export type BridgeTransfersQueryVariables = Types.Exact<{
-  account: Types.Scalars['String']['input'];
+  address: Types.Scalars['String']['input'];
 }>;
 
 
@@ -19,10 +19,10 @@ export type BridgeTransferStatesQuery = { __typename?: 'Query', bridgeTransferSt
 
 
 export const BridgeTransfersDocument = `
-    query BridgeTransfers($account: String!) {
+    query BridgeTransfers($address: String!) {
   bridgeTransfers(
     orderBy: timestamp_DESC
-    where: {sender_eq: $account, receiver_eq: $account}
+    where: {sender_containsInsensitive: $address, receiver_containsInsensitive: $address}
   ) {
     id
     blockNumber

@@ -87,7 +87,9 @@ type TokenListItemProps = {
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
   const { formatAmount, formatCurrency } = useFormat();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance(token);
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token,
+  });
   const { data: prices } = useSwapperPrices();
 
   const bal = +formatUnits(balance ?? 0n, token.decimals);

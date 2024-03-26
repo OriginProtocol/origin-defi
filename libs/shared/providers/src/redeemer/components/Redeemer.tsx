@@ -65,7 +65,7 @@ function RedeemerWrapped({
   ...rest
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
-  const { isConnected, chainId } = useAccount();
+  const { isConnected } = useAccount();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
@@ -78,8 +78,9 @@ function RedeemerWrapped({
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
-  const { data: balance, isLoading: isBalanceLoading } =
-    useWatchBalance(tokenIn);
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokenIn,
+  });
   const handleAmountInChange = useHandleAmountInChange();
   const handleRedeem = useHandleRedeem();
 

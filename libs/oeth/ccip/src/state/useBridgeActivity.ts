@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useAccount } from 'wagmi';
 
 import {
@@ -16,16 +17,16 @@ const states: Record<number, State> = {
 };
 
 export const useBridgeActivity = () => {
-  const { address: currentAddress } = useAccount();
+  const { address } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
   const [waitForTx, setWaitForTx] = useState<string>();
   // TODO: Add a max retry limit?
 
   // Query via GraphQL!
   const bridgeTransfers = useBridgeTransfersQuery(
-    { account: currentAddress?.toLowerCase() as string },
+    { address: address ?? ZERO_ADDRESS },
     {
-      enabled: !!currentAddress,
+      enabled: !!address,
       refetchInterval: waitForTx ? 5000 : false,
     },
   );

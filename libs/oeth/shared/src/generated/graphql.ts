@@ -600,8 +600,10 @@ export enum BridgeTransferOrderByInput {
 
 export type BridgeTransferState = {
   __typename?: 'BridgeTransferState';
+  blockNumber: Scalars['Int']['output'];
   id: Scalars['String']['output'];
   state: Scalars['Int']['output'];
+  timestamp: Scalars['DateTime']['output'];
 };
 
 export type BridgeTransferStateEdge = {
@@ -611,6 +613,10 @@ export type BridgeTransferStateEdge = {
 };
 
 export enum BridgeTransferStateOrderByInput {
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdDesc = 'id_DESC',
@@ -618,12 +624,25 @@ export enum BridgeTransferStateOrderByInput {
   StateAsc = 'state_ASC',
   StateAscNullsFirst = 'state_ASC_NULLS_FIRST',
   StateDesc = 'state_DESC',
-  StateDescNullsLast = 'state_DESC_NULLS_LAST'
+  StateDescNullsLast = 'state_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
 }
 
 export type BridgeTransferStateWhereInput = {
   AND?: InputMaybe<Array<BridgeTransferStateWhereInput>>;
   OR?: InputMaybe<Array<BridgeTransferStateWhereInput>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -650,6 +669,15 @@ export type BridgeTransferStateWhereInput = {
   state_lte?: InputMaybe<Scalars['Int']['input']>;
   state_not_eq?: InputMaybe<Scalars['Int']['input']>;
   state_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
 export type BridgeTransferStatesConnection = {

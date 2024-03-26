@@ -102,8 +102,9 @@ function SwapperWrapped({
   const { action, route } = useRoutingSwapState<RestakeAction, Meta>();
   const { tokensIn } = useTokenOptions<Meta>();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } =
-    useWatchBalance(tokenIn);
+  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
+    token: tokenIn,
+  });
   const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
     useExchangeRate();
   const handleAmountInChange = useHandleAmountInChange();
