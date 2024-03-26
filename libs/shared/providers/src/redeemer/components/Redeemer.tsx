@@ -20,7 +20,6 @@ import { ArrowDown, FaGearComplexRegular } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import { getTokenPriceKey } from '../../prices';
 import { ConnectedButton, useWatchBalance } from '../../wagmi';
@@ -69,6 +68,7 @@ function RedeemerWrapped({
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
     {
+      vaultContract,
       amountIn,
       tokenIn,
       isRedeemLoading,
@@ -204,7 +204,7 @@ function RedeemerWrapped({
               disabled={redeemButtonDisabled}
               onClick={handleRedeem}
               sx={{ mt: 1.5, ...buttonsProps?.sx }}
-              targetChainId={mainnet.id}
+              targetChainId={vaultContract.chainId}
             >
               {isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />

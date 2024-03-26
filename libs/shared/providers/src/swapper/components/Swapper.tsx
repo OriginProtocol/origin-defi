@@ -31,7 +31,6 @@ import {
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import {
   ApprovalNotification,
@@ -256,7 +255,7 @@ function SwapperWrapped({
 
   const needsApproval =
     isConnected &&
-    currentChain?.id === mainnet.id &&
+    currentChain?.id === tokenIn.chainId &&
     amountIn > 0n &&
     !isBalancesLoading &&
     (balances?.[getTokenId(tokenIn)] ?? 0n) >= amountIn &&
@@ -480,7 +479,7 @@ function SwapperWrapped({
               disabled={swapButtonDisabled}
               onClick={handleSwap}
               sx={{ mt: 1.5, ...buttonsProps?.sx }}
-              targetChainId={mainnet.id}
+              targetChainId={tokenIn.chainId}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
