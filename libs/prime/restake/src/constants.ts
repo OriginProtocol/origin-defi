@@ -12,41 +12,26 @@ export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'zapper',
-    meta: {
-      boost: 'primeETH15xp',
-    },
   },
   {
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'uniswap',
-    meta: {
-      boost: 'primeETH15xp',
-    },
   },
   {
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'uniswap',
-    meta: {
-      boost: 'primeETH15xp',
-    },
   },
   {
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'restake',
-    meta: {
-      boost: 'primeETH15xp',
-    },
   },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'restake',
-    meta: {
-      boost: 'primeETH20xp',
-    },
   },
   {
     tokenIn: tokens.mainnet.stETH,
@@ -62,9 +47,6 @@ export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
     tokenIn: tokens.mainnet.ETHx,
     tokenOut: tokens.mainnet.primeETH,
     action: 'restake',
-    meta: {
-      boost: 'eigenTurboCharge',
-    },
   },
   {
     tokenIn: tokens.mainnet.sfrxETH,
@@ -80,6 +62,5 @@ export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
     tokenIn: tokens.mainnet.rETH,
     tokenOut: tokens.mainnet.primeETH,
     action: 'restake',
-    meta: { boost: 'primeETH11xp' },
   },
 ];
