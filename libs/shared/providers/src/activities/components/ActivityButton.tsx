@@ -6,12 +6,13 @@ import { ActivityIcon } from '@origin/shared/components';
 import { useActivitiesStatus } from '../hooks';
 import { ActivityPopover } from './ActivityPopover';
 
+import type { ButtonProps } from '@mui/material';
 import type { MouseEvent, ReactNode } from 'react';
 
 export type ActivityButtonProps = {
   activityIcon?: ReactNode;
   iconSize?: number;
-} & Omit<IconButtonProps, 'children'>;
+} & Omit<ButtonProps, 'children'>;
 
 export const ActivityButton = ({
   activityIcon,

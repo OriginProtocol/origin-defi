@@ -30,8 +30,9 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
   const theme = useTheme();
   const { address, isConnected, connector, chain } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: balances, isLoading: balancesLoading } =
-    useWatchBalances(balanceTokens);
+  const { data: balances, isLoading: balancesLoading } = useWatchBalances({
+    tokens: balanceTokens ?? [],
+  });
 
   function close() {
     setAnchor(null);

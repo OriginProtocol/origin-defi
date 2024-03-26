@@ -1,5 +1,6 @@
 import {
   isAddressEqual,
+  isHexAddress,
   isNilOrEmpty,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
@@ -21,13 +22,16 @@ export const getChainNameById = (chainId?: number) => {
 };
 
 export const getTokenByAddress = (
-  address: HexAddress | undefined,
+  address: string | undefined,
   chainId?: number,
 ) => {
+  if (!isHexAddress(address)) {
+    return undefined;
+  }
   const chainName = getChainNameById(chainId) ?? 'mainnet';
 
   return Object.values(tokens[chainName])?.find?.((t) =>
-    isAddressEqual(t?.address ?? ZERO_ADDRESS, address ?? ZERO_ADDRESS),
+    isAddressEqual(t?.address ?? ZERO_ADDRESS, address as HexAddress),
   );
 };
 
