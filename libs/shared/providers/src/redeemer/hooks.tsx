@@ -203,7 +203,6 @@ export const useHandleRedeem = () => {
     updateActivity,
     vaultContract.abi,
     vaultContract.address,
-    vaultContract.chainId,
   ]);
 };
 

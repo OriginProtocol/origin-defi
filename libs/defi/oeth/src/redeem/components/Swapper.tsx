@@ -21,7 +21,6 @@ import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
-  isNativeCurrency,
   SettingsButton,
   SwapNotification,
   SwapProvider,
@@ -30,6 +29,7 @@ import {
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
+  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSwapperPrices,
@@ -208,6 +208,7 @@ function SwapperWrapped({
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
+  const isNativeCurrency = useIsNativeCurrency();
 
   const estimatedAmount = +formatUnits(
     selectedSwapRoute?.estimatedAmount ?? 0n,

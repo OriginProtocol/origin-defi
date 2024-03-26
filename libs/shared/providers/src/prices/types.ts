@@ -58,4 +58,4 @@ export type SupportedToken =
 
 export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH';
 
-export type SupportedTokenPrice = `${SupportedToken}:${number}_${Currency}`;
+export type SupportedTokenPrice = `${SupportedToken}_${Currency}`;

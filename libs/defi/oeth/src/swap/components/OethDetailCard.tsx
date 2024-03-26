@@ -137,7 +137,7 @@ function Price() {
   const intl = useIntl();
   const { formatCurrency } = useFormat();
   const { data: prices, isLoading: isPricesLoading } = useTokenPrices([
-    'OETH:1_USD',
+    'OETH_USD',
   ]);
 
   return (
@@ -153,7 +153,7 @@ function Price() {
         />
       </Stack>
       <LoadingLabel isLoading={isPricesLoading} {...valueProps}>
-        {formatCurrency(prices?.['OETH:1_USD'])}
+        {formatCurrency(prices?.OETH_USD)}
       </LoadingLabel>
     </CardContent>
   );
@@ -169,12 +169,12 @@ function Tvl() {
       functionName: 'totalSupply',
     });
   const { data: prices, isLoading: isPricesLoading } = useTokenPrices([
-    'OETH:1_USD',
+    'OETH_USD',
   ]);
 
   const tvl =
     +formatUnits(totalSupply ?? 0n, tokens.mainnet.OETH.decimals) *
-    (prices?.['OETH:1_USD'] ?? 0);
+    (prices?.OETH_USD ?? 0);
 
   return (
     <CardContent {...cardContentProps}>

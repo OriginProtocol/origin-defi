@@ -34,13 +34,13 @@ const fetcher: QueryFunction<GasPrice, Key> = async ({
 }) => {
   const [price, data] = await Promise.all([
     queryClient.fetchQuery({
-      queryKey: useTokenPrices.getKey(['ETH:1_USD'], config),
+      queryKey: useTokenPrices.getKey(['ETH_USD'], config),
       queryFn: useTokenPrices.fetcher,
     }),
     estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
   ]);
 
-  const gweiUsd = price?.['ETH:1_USD'] * 1e-9;
+  const gweiUsd = price.ETH_USD * 1e-9;
   const gasPrice =
     +formatUnits(data.maxFeePerGas, 9) +
     +formatUnits(data.maxPriorityFeePerGas, 9);

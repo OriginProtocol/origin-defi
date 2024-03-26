@@ -22,16 +22,16 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const price = await queryClient.fetchQuery({
-    queryKey: useTokenPrices.getKey(['primeETH:1_ETH'], config),
+    queryKey: useTokenPrices.getKey(['primeETH_ETH'], config),
     queryFn: useTokenPrices.fetcher,
   });
 
-  if (!price?.['primeETH:1_ETH'] || price?.['primeETH:1_ETH'] === 0) {
+  if (!price?.primeETH_ETH || price.primeETH_ETH === 0) {
     return 0n;
   }
 
   const estimate =
-    +formatUnits(amountIn, tokenIn.decimals) / price?.['primeETH:1_ETH'];
+    +formatUnits(amountIn, tokenIn.decimals) / price.primeETH_ETH;
 
   return parseUnits(estimate.toString(), tokenOut.decimals);
 };
