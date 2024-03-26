@@ -31,7 +31,7 @@ export const ChainButton = ({
         paddingLeft: 1,
       }}
     >
-      <ChainIcon chainId={chain.id} sx={{ height: '28px' }} {...iconProps} />
+      <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} {...iconProps} />
       <Typography variant="inherit" {...labelProps}>
         {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
       </Typography>

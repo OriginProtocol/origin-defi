@@ -117,7 +117,7 @@ export const BridgeActivityCard = () => {
         )}
         <Grid2 container spacing={1} columns={15}>
           {activity.data?.map((a, i: number) => {
-            const token = getTokenByAddress(a.chainIn, a.tokenIn);
+            const token = getTokenByAddress(a.tokenIn, a.chainIn);
             return (
               <Fragment key={`${a.messageId}-${i}`}>
                 <Grid2 xs={5} sm={4} sx={activityContentSx}>
