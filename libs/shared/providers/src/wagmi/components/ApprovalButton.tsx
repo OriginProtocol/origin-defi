@@ -29,14 +29,14 @@ import {
 } from '../../notifications';
 
 import type { ButtonProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { Contract, Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity } from '../../activities';
 
 export type ApprovalButtonProps = {
   token: Token;
-  spender: Token;
+  spender: Token | Contract;
   amount: bigint;
   label?: string;
   onClick?: () => void;

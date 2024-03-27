@@ -1,15 +1,79 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { getTokenPriceKey, useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { uniq } from 'ramda';
 import { useAccount } from 'wagmi';
 
 import {
   useBridgeTransfersQuery,
   useBridgeTransferStatesQuery,
-} from '../queries.generated';
+} from './queries.generated';
+import { initialState, useBridgeState } from './state';
 
-type State = 'untouched' | 'processing' | 'complete' | 'failed';
-const states: Record<number, State> = {
+export const useHandleChangeAmount = () => {
+  const [, setState] = useBridgeState();
+
+  return useCallback(
+    (amount: bigint) => {
+      setState((state) => ({ ...state, amount }));
+    },
+    [setState],
+  );
+};
+
+export const useHandleToggleBridgeChain = () => {
+  const [, setState] = useBridgeState();
+
+  return useCallback(() => {
+    setState((state) => {
+      const oldDstToken = state.dstToken;
+      const oldDstChain = state.dstChain;
+      const oldDstRouter = state.dstRouter;
+
+      return {
+        ...state,
+        dstToken: state.srcToken,
+        dstChain: state.srcChain,
+        dstRouter: state.srcRouter,
+        srcToken: oldDstToken,
+        srcChain: oldDstChain,
+        srcRouter: oldDstRouter,
+      };
+    });
+  }, [setState]);
+};
+
+export const useHandleResetBridgeState = () => {
+  const [, setState] = useBridgeState();
+
+  return useCallback(() => {
+    setState(initialState);
+  }, [setState]);
+};
+
+export const useBridgePrices = () => {
+  const [state] = useBridgeState();
+  const result = useTokenPrices(
+    uniq([
+      getTokenPriceKey(state.dstToken, 'USD'),
+      getTokenPriceKey(state.srcToken, 'USD'),
+    ]),
+  );
+  const srcPrice = result.data?.[getTokenPriceKey(state.srcToken)];
+  const dstPrice = result.data?.[getTokenPriceKey(state.dstToken)];
+
+  return {
+    isLoading: result.isLoading,
+    isError: result.isError,
+    srcPrice,
+    dstPrice,
+  };
+};
+
+type Status = 'untouched' | 'processing' | 'complete' | 'failed';
+
+const status: Record<number, Status> = {
   0: 'untouched',
   1: 'processing',
   2: 'complete',
@@ -61,11 +125,11 @@ export const useBridgeActivity = () => {
   const data = useMemo(
     () =>
       bridgeTransfers.data?.bridgeTransfers.map((bt) => {
-        let state: State | undefined = undefined;
+        let state: Status | undefined = undefined;
         const data = bridgeTransferStates.data?.bridgeTransferStates.find(
           (bts) => bt.messageId === bts.id,
         ) ?? { state: 0 };
-        state = states[data.state];
+        state = status[data.state];
         return {
           ...bt,
           state,

@@ -11,16 +11,6 @@ import { BridgeProvider } from '../state';
 import type { SxProps } from '@mui/material';
 
 export function BridgeView() {
-  const cellSx: SxProps = {
-    display: {
-      xs: 'flex',
-      md: 'block',
-    },
-    justifyContent: {
-      xs: 'center',
-      md: 'inherit',
-    },
-  };
   return (
     <BridgeProvider>
       <Container
@@ -65,3 +55,14 @@ export function BridgeView() {
     </BridgeProvider>
   );
 }
+
+const cellSx: SxProps = {
+  display: {
+    xs: 'flex',
+    md: 'block',
+  },
+  justifyContent: {
+    xs: 'center',
+    md: 'inherit',
+  },
+};
