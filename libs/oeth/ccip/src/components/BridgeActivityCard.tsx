@@ -26,27 +26,12 @@ import { useIntervalEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
-import { useBridgeActivity } from '../state/useBridgeActivity';
+import { useBridgeActivity } from '../hooks';
 
 import type { SxProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
-const spin = keyframes`
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-const activityHeaderSx: SxProps = {
-  color: 'text.secondary',
-};
-const activityContentSx: SxProps = {
-  height: { xs: 40, sm: 56 },
-  fontSize: '.75rem',
-  display: 'flex',
-  alignItems: 'center',
-};
 export const BridgeActivityCard = () => {
   const intl = useIntl();
   const activity = useBridgeActivity();
@@ -285,4 +270,21 @@ export const BridgeStatus = (props: {
       </Stack>
     );
   }
+};
+
+const spin = keyframes`
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+const activityHeaderSx: SxProps = {
+  color: 'text.secondary',
+};
+
+const activityContentSx: SxProps = {
+  height: { xs: 40, sm: 56 },
+  fontSize: '.75rem',
+  display: 'flex',
+  alignItems: 'center',
 };

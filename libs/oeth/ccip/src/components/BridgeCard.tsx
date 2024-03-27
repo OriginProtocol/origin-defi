@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Collapse,
   Stack,
   Typography,
 } from '@mui/material';
@@ -13,28 +14,85 @@ import {
   tokenInputStyleProps,
 } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { getTokenId, tokens } from '@origin/shared/contracts';
+import { contracts, getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
-import { ConnectedButton, useWatchBalances } from '@origin/shared/providers';
+import {
+  ApprovalButton,
+  TransactionButton,
+  useWatchBalances,
+} from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { encodeAbiParameters } from 'viem';
+import { mainnet } from 'viem/chains';
+import { useAccount, useReadContract } from 'wagmi';
 
+import { selectorIds } from '../constants';
+import {
+  useBridgePrices,
+  useHandleChangeAmount,
+  useHandleToggleBridgeChain,
+} from '../hooks';
 import { useBridgeState } from '../state';
-import { useBridgePrices } from '../state/useBridgePrices';
-import { useToggleBridgeChain } from '../state/useToggleBridgeChain';
+
+import type { erc20Abi } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
-  const { chain: currentChain } = useAccount();
-  const {
-    state: { amount, srcChain, srcToken, dstChain, dstToken, approval, bridge },
-    changeAmount,
-  } = useBridgeState();
+  const { chain, address, isConnected } = useAccount();
+  const [
+    { amount, srcChain, srcToken, srcRouter, dstChain, dstToken },
+    setState,
+  ] = useBridgeState();
   const prices = useBridgePrices();
-
+  const handleChangeAmount = useHandleChangeAmount();
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [srcToken, dstToken],
   });
+  const {
+    data: allowance,
+    isLoading: isAllowanceLoading,
+    refetch: refetchAllowance,
+  } = useReadContract({
+    chainId: srcToken.chainId,
+    address: srcToken.address,
+    abi: srcToken.abi as typeof erc20Abi,
+    functionName: 'allowance',
+    args: [address ?? ZERO_ADDRESS, srcRouter.address],
+    query: {
+      enabled: isConnected,
+    },
+  });
+  const message = {
+    receiver: encodeAbiParameters(
+      [{ type: 'address' }],
+      [address ?? ZERO_ADDRESS],
+    ),
+    data: '0x',
+    tokenAmounts: [{ token: srcToken.address ?? ZERO_ADDRESS, amount }],
+    feeToken: ZERO_ADDRESS,
+    extraArgs: '0x',
+  } as const;
+  const { data: fees, isLoading: isFeesLoading } = useReadContract({
+    address: srcRouter.address,
+    abi: srcRouter.abi,
+    functionName: 'getFee',
+    args: [selectorIds[dstChain?.id ?? -1], message],
+    chainId: srcRouter.chainId,
+  });
+
+  const needsApproval =
+    chain?.id === srcChain.id &&
+    isConnected &&
+    !isAllowanceLoading &&
+    (allowance ?? 0n) < amount;
+  const bridgeDisabled =
+    !isConnected ||
+    chain?.id !== srcChain.id ||
+    needsApproval ||
+    isFeesLoading ||
+    amount === 0n ||
+    amount > (balances?.[getTokenId(srcToken)] ?? 0n);
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -51,7 +109,7 @@ export const BridgeCard = () => {
             isConnected={true}
             isTokenClickDisabled={true}
             amount={amount}
-            onAmountChange={changeAmount}
+            onAmountChange={handleChangeAmount}
             balance={balances?.[getTokenId(srcToken)]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.srcPrice}
@@ -107,33 +165,48 @@ export const BridgeCard = () => {
               )}
             </Box>
           </Stack>
-          {currentChain?.id === srcChain.id && approval && (
-            <ConnectedButton
+          <Collapse in={needsApproval}>
+            <ApprovalButton
+              amount={amount}
+              token={
+                chain?.id === mainnet.id
+                  ? tokens.mainnet.wOETH
+                  : tokens.arbitrum.wOETH
+              }
+              spender={
+                chain?.id === mainnet.id
+                  ? contracts.mainnet.ccipRouter
+                  : contracts.arbitrum.ccipRouter
+              }
               fullWidth
-              disabled={!approval.enabled}
-              onClick={approval.action}
               sx={{ mt: 1.5 }}
               variant={'action'}
-              targetChainId={srcChain.id}
-            >
-              {intl.formatMessage(approval.message)}
-            </ConnectedButton>
-          )}
-          {bridge && (
-            <ConnectedButton
-              fullWidth
-              disabled={!bridge.enabled}
-              onClick={bridge.action}
-              sx={{ mt: 1.5 }}
-              variant={'action'}
-              targetChainId={srcChain.id}
-            >
-              {intl.formatMessage(bridge.message, {
-                symbol: srcToken.symbol,
-              })}
-            </ConnectedButton>
-          )}
-
+              onSuccess={() => {
+                refetchAllowance?.();
+              }}
+            />
+          </Collapse>
+          <TransactionButton
+            contract={
+              chain?.id === mainnet.id
+                ? contracts.mainnet.ccipRouter
+                : contracts.arbitrum.ccipRouter
+            }
+            functionName="ccipSend"
+            args={[selectorIds[dstChain?.id ?? -1], message]}
+            value={fees as unknown as bigint}
+            fullWidth
+            disabled={bridgeDisabled}
+            sx={{ mt: 1.5 }}
+            variant={'action'}
+            label={intl.formatMessage({ defaultMessage: 'Bridge' })}
+            onSuccess={(txReceipt) => {
+              setState((state) => ({
+                ...state,
+                actionTx: txReceipt.transactionHash,
+              }));
+            }}
+          />
           <Stack
             direction={'row'}
             justifyContent={'center'}
@@ -154,11 +227,12 @@ export const BridgeCard = () => {
 };
 
 export const BridgeDivider = () => {
-  const toggleChain = useToggleBridgeChain();
+  const handleToggleChain = useHandleToggleBridgeChain();
+
   return (
     <Stack direction={'row'} position={'relative'} marginY={{ sm: 2, md: 1 }}>
       <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />
-      <ArrowButton onClick={toggleChain} />
+      <ArrowButton onClick={handleToggleChain} />
     </Stack>
   );
 };
