@@ -14,7 +14,7 @@ import {
   tokenInputStyleProps,
 } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { contracts, getTokenId, tokens } from '@origin/shared/contracts';
+import { getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
@@ -24,7 +24,6 @@ import {
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { encodeAbiParameters } from 'viem';
-import { mainnet } from 'viem/chains';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { selectorIds } from '../constants';
@@ -168,16 +167,8 @@ export const BridgeCard = () => {
           <Collapse in={needsApproval}>
             <ApprovalButton
               amount={amount}
-              token={
-                chain?.id === mainnet.id
-                  ? tokens.mainnet.wOETH
-                  : tokens.arbitrum.wOETH
-              }
-              spender={
-                chain?.id === mainnet.id
-                  ? contracts.mainnet.ccipRouter
-                  : contracts.arbitrum.ccipRouter
-              }
+              token={srcToken}
+              spender={srcRouter}
               fullWidth
               sx={{ mt: 1.5 }}
               variant={'action'}
@@ -187,11 +178,7 @@ export const BridgeCard = () => {
             />
           </Collapse>
           <TransactionButton
-            contract={
-              chain?.id === mainnet.id
-                ? contracts.mainnet.ccipRouter
-                : contracts.arbitrum.ccipRouter
-            }
+            contract={srcRouter}
             functionName="ccipSend"
             args={[selectorIds[dstChain?.id ?? -1], message]}
             value={fees as unknown as bigint}
