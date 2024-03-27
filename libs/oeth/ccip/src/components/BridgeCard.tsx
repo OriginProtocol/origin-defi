@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import {
   Box,
   Card,
@@ -16,6 +18,7 @@ import { ChainButton } from '@origin/shared/components';
 import { getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import { ConnectedButton, useWatchBalances } from '@origin/shared/providers';
+import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -26,6 +29,8 @@ import { useToggleBridgeChain } from '../state/useToggleBridgeChain';
 export const BridgeCard = () => {
   const intl = useIntl();
   const { chain: currentChain } = useAccount();
+  const previousChain = usePrevious(currentChain);
+  const toggleChain = useToggleBridgeChain();
   const {
     state: { amount, srcChain, srcToken, dstChain, dstToken, approval, bridge },
     changeAmount,
@@ -35,6 +40,16 @@ export const BridgeCard = () => {
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [srcToken, dstToken],
   });
+
+  // Toggle chain if the network has switched and dstChain is the network we switched to.
+  useEffect(() => {
+    if (
+      previousChain?.id !== currentChain?.id &&
+      dstChain.id === currentChain?.id
+    ) {
+      toggleChain();
+    }
+  }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
   return (
     <Card sx={{ width: '100%' }}>

@@ -25,14 +25,14 @@ export const routes: RouteObject[] = [
         handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
       },
       {
-        path: '/history',
-        Component: HistoryView,
-        handle: { label: defineMessage({ defaultMessage: 'History' }) },
-      },
-      {
         path: '/bridge',
         Component: BridgeView,
         handle: { label: defineMessage({ defaultMessage: 'Bridge' }) },
+      },
+      {
+        path: '/history',
+        Component: HistoryView,
+        handle: { label: defineMessage({ defaultMessage: 'History' }) },
       },
     ],
   },

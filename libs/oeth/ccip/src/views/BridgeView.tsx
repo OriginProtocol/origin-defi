@@ -25,6 +25,8 @@ export function BridgeView() {
     <BridgeProvider>
       <Container
         sx={{
+          display: 'flex',
+          justifyContent: 'center',
           mt: 3,
           mb: 10,
           maxWidth: {
@@ -35,8 +37,8 @@ export function BridgeView() {
           },
         }}
       >
-        <Grid2 container spacing={3}>
-          <Grid2 xs={12} lg={8} sx={cellSx}>
+        <Grid2 container spacing={3} justifyContent={'center'}>
+          <Grid2 xs={12} lg={8} sx={cellSx} maxWidth="sm">
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -44,7 +46,7 @@ export function BridgeView() {
               <BridgeCard />
             </ErrorBoundary>
           </Grid2>
-          <Grid2 xs={12} lg={4} sx={cellSx}>
+          <Grid2 xs={12} lg={4} sx={cellSx} maxWidth="sm">
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -52,7 +54,7 @@ export function BridgeView() {
               <BalancesCard title={'Your wOETH balances'} />
             </ErrorBoundary>
           </Grid2>
-          <Grid2 xs={12} lg={8} sx={cellSx}>
+          <Grid2 xs={12} lg={8} sx={cellSx} maxWidth="sm">
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -60,6 +62,7 @@ export function BridgeView() {
               <BridgeActivityCard />
             </ErrorBoundary>
           </Grid2>
+          <Grid2 xs={12} lg={4} sx={cellSx} maxWidth="sm" />
         </Grid2>
       </Container>
     </BridgeProvider>
