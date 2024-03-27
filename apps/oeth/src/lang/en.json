@@ -77,6 +77,18 @@
       "value": "Return to Home Page"
     }
   ],
+  "2W3kP3": [
+    {
+      "type": 0,
+      "value": "~1min"
+    }
+  ],
+  "3Lr8o5": [
+    {
+      "type": 0,
+      "value": "Larger redemptions coming soon"
+    }
+  ],
   "45EvZ3": [
     {
       "type": 0,
@@ -131,6 +143,12 @@
     {
       "type": 0,
       "value": "The selected network is not supported by the application."
+    }
+  ],
+  "6Sj2lN": [
+    {
+      "type": 0,
+      "value": "Claim"
     }
   ],
   "6XFO/C": [
@@ -211,6 +229,12 @@
     {
       "type": 1,
       "value": "lastPage"
+    }
+  ],
+  "AtWUBa": [
+    {
+      "type": 0,
+      "value": "Redeem via OETH Vault"
     }
   ],
   "BY343C": [
@@ -527,6 +551,12 @@
       "value": "Redeem"
     }
   ],
+  "YnftYz": [
+    {
+      "type": 0,
+      "value": "Wait time:"
+    }
+  ],
   "ZmLuI/": [
     {
       "type": 0,
@@ -659,6 +689,12 @@
       "value": "30-Day Trailing APY"
     }
   ],
+  "lQmZjB": [
+    {
+      "type": 0,
+      "value": "Swap via Curve"
+    }
+  ],
   "lozEho": [
     {
       "type": 0,
@@ -671,10 +707,22 @@
       "value": "Approving"
     }
   ],
+  "n6nILs": [
+    {
+      "type": 0,
+      "value": "Receive amount"
+    }
+  ],
   "nc8QpJ": [
     {
       "type": 0,
       "value": "Recent Activity"
+    }
+  ],
+  "p1P+hQ": [
+    {
+      "type": 0,
+      "value": "Request"
     }
   ],
   "p556q3": [
@@ -777,6 +825,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "yKbi98": [
+    {
+      "type": 0,
+      "value": "Unstake amount"
     }
   ],
   "yphS5C": [

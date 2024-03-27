@@ -37,14 +37,16 @@ export function Topnav(props: BoxProps) {
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
 
+  const topLevelPath = `/${location.pathname.split('/')[1]}`;
+
   return (
     <>
       <Box
         sx={{
-          height: (theme) => ({
-            xs: '162px',
-            md: `105px`,
-          }),
+          height: {
+            xs: 162,
+            md: 105,
+          },
         }}
       />
       <Stack
@@ -57,8 +59,8 @@ export function Topnav(props: BoxProps) {
           backgroundColor: alpha(theme.palette.background.default, 0.6),
           backdropFilter: 'blur(15px)',
           height: {
-            xs: '162px',
-            md: `105px`,
+            xs: 162,
+            md: 105,
           },
         }}
       >
@@ -104,7 +106,7 @@ export function Topnav(props: BoxProps) {
             <img src="/images/origin-ether-logo.svg" alt="Origin logo" />
           </Box>
           <Tabs
-            value={location.pathname}
+            value={topLevelPath}
             onChange={(_, value) => {
               navigate(value);
             }}
