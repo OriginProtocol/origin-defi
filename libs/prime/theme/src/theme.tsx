@@ -293,6 +293,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
+          lineHeight: 1.5,
           fontSize: 14,
           fontWeight: 500,
         }),

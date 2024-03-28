@@ -30,3 +30,14 @@ export type RedeemTrackEvent =
   | { name: 'open_settings' }
   | { name: 'show_swap_routes' }
   | { name: 'change_price_tolerance'; price_tolerance: number };
+
+export type BridgeTrackEvent =
+  | { name: 'bridge_started'; bridge_amount: bigint; bridge_token: string }
+  | { name: 'bridge_complete'; bridge_amount: bigint; bridge_token: string }
+  | {
+      name: 'bridge_failed';
+      bridge_amount: bigint;
+      bridge_token: string;
+      bridge_error: string;
+    }
+  | { name: 'bridge_rejected'; bridge_amount: bigint; bridge_token: string };

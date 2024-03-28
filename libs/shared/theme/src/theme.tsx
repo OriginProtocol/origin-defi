@@ -1,4 +1,4 @@
-import { alpha, createTheme } from '@mui/material';
+import { alpha, createTheme, lighten } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
 import {
   FaCircleCheckRegular,
@@ -9,6 +9,7 @@ import {
 
 import { CheckboxIcon } from './components/CheckboxIcon';
 import { EmptyCheckbox } from './components/EmptyCheckbox';
+
 const base = createTheme();
 
 export const theme = createTheme({
@@ -255,7 +256,7 @@ export const theme = createTheme({
         containedPrimary: ({ theme }) => ({
           background: alpha(theme.palette.common.white, 0.05),
           '&:hover': {
-            background: alpha(theme.palette.common.white, 0.01),
+            background: alpha(theme.palette.common.white, 0.1),
           },
         }),
         containedSecondary: ({ theme }) => ({
@@ -343,6 +344,23 @@ export const theme = createTheme({
             },
           }),
         },
+        {
+          props: { variant: 'nav' },
+          style: ({ theme }) => ({
+            background: lighten(theme.palette.background.paper, 0.05),
+            '&:hover': {
+              background: lighten(theme.palette.background.paper, 0.1),
+            },
+            minWidth: 36,
+            minHeight: 36,
+            [base.breakpoints.up('md')]: {
+              paddingX: 2,
+              paddingY: 0,
+              minWidth: 44,
+              minHeight: 44,
+            },
+          }),
+        },
       ],
     },
     MuiButtonBase: {
@@ -371,6 +389,7 @@ export const theme = createTheme({
           },
         }),
         title: ({ theme }) => ({
+          lineHeight: 1.5,
           fontSize: theme.typography.fontSize,
           fontWeight: 500,
         }),
@@ -407,7 +426,7 @@ export const theme = createTheme({
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;            
+            text-rendering: optimizeLegibility;
           }
 
           input[type=number] {
@@ -419,10 +438,10 @@ export const theme = createTheme({
             margin: 0;
           }
 
-          @font-face { 
-            font-family: "Inter"; 
+          @font-face {
+            font-family: "Inter";
             font-weight: 400;
-            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
 
@@ -555,6 +574,9 @@ export const theme = createTheme({
           backgroundImage: 'none',
           color: theme.palette.text.primary,
           textDecorationColor: 'inherit',
+          ':hover': {
+            color: lighten(theme.palette.primary.light, 0.5),
+          },
         }),
       },
     },

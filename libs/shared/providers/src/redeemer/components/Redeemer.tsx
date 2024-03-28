@@ -63,6 +63,7 @@ function RedeemerWrapped({
   const { isConnected } = useAccount();
   const [
     {
+      vaultContract,
       amountIn,
       tokenIn,
       isRedeemLoading,
@@ -73,7 +74,7 @@ function RedeemerWrapped({
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokenIn.address,
+    token: tokenIn,
   });
   const handleAmountInChange = useHandleRedeemAmountInChange();
   const handleRedeem = useHandleRedeem();
@@ -183,6 +184,7 @@ function RedeemerWrapped({
               disabled={redeemButtonDisabled}
               onClick={handleRedeem}
               sx={{ mt: 1.5, ...buttonsProps?.sx }}
+              targetChainId={vaultContract.chainId}
             >
               {isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />

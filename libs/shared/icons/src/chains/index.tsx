@@ -11,7 +11,7 @@ import ZkSvg from './Zk.svg?react';
 import type { SvgIconProps } from '@mui/material';
 
 export const Arbitrum = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={ArbitrumSvg} viewBox="0 0 84 84" />
+  <SvgIcon {...props} component={ArbitrumSvg} viewBox="0 0 1080 1218.5" />
 );
 export const Ethereum = (props: SvgIconProps) => (
   <SvgIcon {...props} component={EthIconSvg} viewBox="0 0 32 32" />

@@ -56,7 +56,8 @@ export const ConnectedButton = ({
 
   if (
     !disableNetworkCheck &&
-    isNilOrEmpty(chains.find((c) => c.id === chain?.id))
+    ((targetChainId && targetChainId !== chain?.id) ||
+      isNilOrEmpty(chains.find((c) => c.id === chain?.id)))
   ) {
     return (
       <Button onClick={handleSwitchToDefaultNetwork} {...rest}>

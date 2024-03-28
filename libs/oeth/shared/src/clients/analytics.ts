@@ -5,6 +5,7 @@ import { map } from 'ramda';
 import { formatEther } from 'viem';
 
 import type {
+  BridgeTrackEvent,
   RedeemTrackEvent,
   SwapTrackEvent,
 } from '@origin/shared/providers';
@@ -13,6 +14,7 @@ import type { HexAddress } from '@origin/shared/utils';
 export type TrackEvent =
   | SwapTrackEvent
   | RedeemTrackEvent
+  | BridgeTrackEvent
   | { name: 'open_account' }
   | { name: 'change_apy'; change_apy_to: number }
   | { name: 'connect'; connect_address: HexAddress; connect_wallet: string }

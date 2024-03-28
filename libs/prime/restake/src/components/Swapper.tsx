@@ -21,12 +21,12 @@ import {
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
+  isNativeCurrency,
   SwapProvider,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
-  useIsNativeCurrency,
   useRoutingSwapState,
   useSwapRouteAllowance,
   useSwapState,
@@ -103,11 +103,10 @@ function SwapperWrapped({
   const { tokensIn } = useTokenOptions<Meta>();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
+    token: tokenIn,
   });
   const { data: defaultExchangeRate, isLoading: isDefaultExchangeRateLoading } =
     useExchangeRate();
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();

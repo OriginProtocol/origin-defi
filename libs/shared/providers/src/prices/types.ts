@@ -3,7 +3,9 @@ import type { ReadContractParameters } from 'viem';
 
 export type WagmiOption = {
   id: SupportedTokenPrice;
-  config: ReadContractParameters;
+  config: ReadContractParameters & {
+    chainId: number;
+  };
   mapResult?: (args: any) => number;
   type: 'wagmi';
 };

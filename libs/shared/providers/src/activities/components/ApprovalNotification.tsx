@@ -4,7 +4,7 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -40,6 +40,7 @@ export const ApprovalNotification = ({
   sx,
 }: ApprovalNotificationProps) => {
   const intl = useIntl();
+  const amount = +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18);
 
   return (
     <NotificationSnack
@@ -59,10 +60,7 @@ export const ApprovalNotification = ({
                 defaultMessage: '{amountIn} {symbolIn}',
               },
               {
-                amountIn: intl.formatNumber(
-                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
-                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
-                ),
+                amountIn: formatAmount(amount),
                 symbolIn: tokenIn?.symbol,
               },
             )}

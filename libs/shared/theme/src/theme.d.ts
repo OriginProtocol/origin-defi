@@ -23,5 +23,6 @@ declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     action: true;
     connect: true;
+    nav: true;
   }
 }

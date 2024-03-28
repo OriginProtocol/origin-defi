@@ -1,5 +1,6 @@
-import { mainnet } from 'wagmi/chains';
+import { arbitrum, mainnet } from 'wagmi/chains';
 
+import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
@@ -191,6 +192,22 @@ export const contracts = {
       chainId: mainnet.id,
       abi: UniswapV3RouterABI,
       name: 'uniswapV3Router',
+    },
+    // Chainlink CCIP
+    ccipRouter: {
+      address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
+      chainId: mainnet.id,
+      abi: CCIPRouterABI,
+      name: 'ccipRouter',
+    },
+  },
+  arbitrum: {
+    // Chainlink CCIP
+    ccipRouter: {
+      address: '0x141fa059441E0ca23ce184B6A78bafD2A517DdE8',
+      chainId: arbitrum.id,
+      abi: CCIPRouterABI,
+      name: 'ccipRouter',
     },
   },
 } as const;

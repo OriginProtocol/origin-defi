@@ -8,7 +8,7 @@ import type { ButtonProps } from '@mui/material';
 
 export function AccountButton(props: Omit<ButtonProps, 'children'>) {
   const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('sm'));
+  const isSmall = useMediaQuery(theme.breakpoints.down('lg'));
   const { address } = useAccount();
 
   return (
@@ -20,15 +20,6 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
         alignItems: 'center',
         ...props?.sx,
         gap: 0.75,
-        paddingLeft: {
-          md: 1,
-          xs: 0.75,
-        },
-        paddingRight: {
-          md: 2,
-          sm: 1.5,
-          xs: 0.75,
-        },
       }}
     >
       <UserAvatar />

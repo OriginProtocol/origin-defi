@@ -1,5 +1,5 @@
 import { erc20Abi } from 'viem';
-import { mainnet } from 'wagmi/chains';
+import { arbitrum, mainnet } from 'wagmi/chains';
 
 import { DAIABI } from './abis/DAI';
 import { OETHABI } from './abis/OETH';
@@ -172,6 +172,24 @@ export const tokens = {
       name: 'Wrapped Origin Dollar',
       decimals: 18,
       symbol: 'wOUSD',
+    },
+  },
+  arbitrum: {
+    ETH: {
+      address: undefined,
+      chainId: arbitrum.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    wOETH: {
+      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
+      chainId: arbitrum.id,
+      abi: WOETHABI,
+      name: 'Wrapped Origin Ether',
+      decimals: 18,
+      symbol: 'wOETH',
     },
   },
 } as const;

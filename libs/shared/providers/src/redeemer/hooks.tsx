@@ -99,6 +99,7 @@ export const useHandleRedeem = () => {
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
         gas: gas + (gas * gasBuffer) / 100n,
+        chainId: vaultContract.chainId,
       });
       const hash = await writeContract(config, request);
       setRedeemState(

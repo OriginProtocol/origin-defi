@@ -1,0 +1,31 @@
+query BridgeTransfers($address: String!) {
+  bridgeTransfers(
+    orderBy: timestamp_DESC
+    where: {
+      sender_containsInsensitive: $address
+      receiver_containsInsensitive: $address
+    }
+  ) {
+    id
+    blockNumber
+    timestamp
+    messageId
+    bridge
+    chainIn
+    chainOut
+    amountIn
+    amountOut
+    receiver
+    sender
+    tokenIn
+    tokenOut
+    txHash
+  }
+}
+
+query BridgeTransferStates($messageIds: [String!]) {
+  bridgeTransferStates(where: { id_in: $messageIds }) {
+    id
+    state
+  }
+}

@@ -13,6 +13,7 @@ import { useIntl } from 'react-intl';
 
 import { useActivityState } from '../state';
 import { ApprovalNotification } from './ApprovalNotification';
+import { BridgeNotification } from './BridgeNotification';
 import { RedeemNotification } from './RedeemNotification';
 import { SwapNotification } from './SwapNotification';
 import { TransactionNotification } from './TransactionNotification';
@@ -108,6 +109,13 @@ export const ActivityPopover = ({
                 ({
                   approval: (
                     <ApprovalNotification
+                      key={a.id}
+                      {...a}
+                      sx={{ px: 3, py: 2 }}
+                    />
+                  ),
+                  bridge: (
+                    <BridgeNotification
                       key={a.id}
                       {...a}
                       sx={{ px: 3, py: 2 }}

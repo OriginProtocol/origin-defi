@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     id="uuid-63cda861-552e-451a-8db5-f5d5af169ff7" width="113.44" height="130.99"
+     viewBox="0 0 113.44 130.99">
+  <defs>
+    <linearGradient id="uuid-4881705a-2ec9-4d2e-bfe5-f4a749835b01" x1="51.43" y1="74.62" x2="28.35" y2="114.61"
+                    gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#7790e2"/>
+      <stop offset="1" stop-color="#486ddc"/>
+    </linearGradient>
+    <linearGradient id="uuid-b51b39cd-8736-4b6b-bd19-18bc16bb2767" x1="85.09" y1="16.38" x2="61.96" y2="56.45"
+                    xlink:href="#uuid-4881705a-2ec9-4d2e-bfe5-f4a749835b01"/>
+  </defs>
+  <g id="uuid-893e6d23-7314-4915-acb0-39870a443ded">
+    <g>
+      <polygon
+        points="56.72 101.13 56.72 83.31 41.29 92.22 41.29 74.4 25.86 83.31 25.86 59.92 0 44.93 0 98.24 56.72 130.99 102.83 104.37 77.02 89.4 56.72 101.13"
+        style="fill: url(#uuid-4881705a-2ec9-4d2e-bfe5-f4a749835b01);"/>
+      <polygon
+        points="56.72 0 10.52 26.68 36.33 41.64 56.72 29.86 56.72 47.68 72.15 38.77 72.15 56.59 87.58 47.68 87.58 71.17 113.44 86.17 113.44 32.75 56.72 0"
+        style="fill: url(#uuid-b51b39cd-8736-4b6b-bd19-18bc16bb2767);"/>
+      <polygon points="41.29 56.59 56.72 47.68 56.72 29.86 25.86 47.68 25.86 83.31 41.29 74.4 41.29 56.59"/>
+      <polygon
+        points="66.89 83.52 66.89 71.36 77.42 65.28 87.59 71.17 87.59 47.68 56.73 65.49 56.73 101.13 77.03 89.4 66.89 83.52"/>
+    </g>
+  </g>
+</svg>

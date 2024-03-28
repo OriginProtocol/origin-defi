@@ -55,26 +55,31 @@ export const usePendingYield = (
             {
               address: contracts.mainnet.OETHVault.address,
               abi: contracts.mainnet.OETHVault.abi,
+              chainId: contracts.mainnet.OETHVault.chainId,
               functionName: 'totalValue',
             },
             {
               address: tokens.mainnet.OETH.address,
               abi: tokens.mainnet.OETH.abi,
+              chainId: tokens.mainnet.OETH.chainId,
               functionName: 'totalSupply',
             },
             {
               address: contracts.mainnet.OETHDripper.address,
               abi: contracts.mainnet.OETHDripper.abi,
+              chainId: contracts.mainnet.OETHDripper.chainId,
               functionName: 'availableFunds',
             },
             {
               address: tokens.mainnet.OETH.address,
               abi: tokens.mainnet.OETH.abi,
+              chainId: tokens.mainnet.OETH.chainId,
               functionName: 'nonRebasingSupply',
             },
             {
               address: tokens.mainnet.OETH.address,
               abi: tokens.mainnet.OETH.abi,
+              chainId: tokens.mainnet.OETH.chainId,
               functionName: 'balanceOf',
               args: [address],
             },

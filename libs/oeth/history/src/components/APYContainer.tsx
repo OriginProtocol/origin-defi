@@ -17,6 +17,7 @@ export function APYContainer() {
   const { data: oethBalance, isLoading: oethLoading } = useWatchContract({
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
+    chainId: tokens.mainnet.OETH.chainId,
     functionName: 'balanceOf',
     args: [address ?? ZERO_ADDRESS],
     query: {

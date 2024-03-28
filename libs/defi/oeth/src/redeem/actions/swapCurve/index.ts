@@ -99,7 +99,7 @@ const estimateGas: EstimateGas = async (
     staleTime: Infinity,
   });
 
-  const isTokenInNative = isNativeCurrency(config, tokenIn);
+  const isTokenInNative = isNativeCurrency(tokenIn);
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -284,7 +284,7 @@ const swap: Swap = async (
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const isTokenInNative = isNativeCurrency(config, tokenIn);
+  const isTokenInNative = isNativeCurrency(tokenIn);
 
   const { request } = await simulateContractWithTxTracker(config, {
     address: curve.CurveRegistryExchange.address,
