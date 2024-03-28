@@ -8,8 +8,8 @@ import {
   useBridgeTransferStatesQuery,
 } from '../queries.generated';
 
-type State = 'untouched' | 'processing' | 'complete' | 'failed';
-const states: Record<number, State> = {
+type BridgeTransferState = 'untouched' | 'processing' | 'complete' | 'failed';
+const states: Record<number, BridgeTransferState> = {
   0: 'untouched',
   1: 'processing',
   2: 'complete',
@@ -61,7 +61,7 @@ export const useBridgeActivity = () => {
   const data = useMemo(
     () =>
       bridgeTransfers.data?.bridgeTransfers.map((bt) => {
-        let state: State | undefined = undefined;
+        let state: BridgeTransferState | undefined = undefined;
         const data = bridgeTransferStates.data?.bridgeTransferStates.find(
           (bts) => bt.messageId === bts.id,
         ) ?? { state: 0 };

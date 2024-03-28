@@ -1,10 +1,10 @@
 import { getTokenPriceKey, useTokenPrices } from '@origin/shared/providers';
 import { uniq } from 'ramda';
 
-import { bridgeStateContainer } from './state';
+import { useBridgeState } from '../state';
 
 export const useBridgePrices = () => {
-  const [state] = bridgeStateContainer.useTracked();
+  const [state] = useBridgeState();
   const result = useTokenPrices(
     uniq([
       getTokenPriceKey(state.dstToken, 'USD'),

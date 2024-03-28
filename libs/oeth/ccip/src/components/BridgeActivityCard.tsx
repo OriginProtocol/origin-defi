@@ -26,7 +26,7 @@ import { useIntervalEffect } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
-import { useBridgeActivity } from '../state/useBridgeActivity';
+import { useBridgeActivity } from '../hooks/useBridgeActivity';
 
 import type { SxProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

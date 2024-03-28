@@ -24,14 +24,13 @@ import { useIntl } from 'react-intl';
 import { encodeAbiParameters } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { ccipRouter } from '../constants';
-import { bridgeStateContainer } from './state';
-import { statuses } from './statuses';
+import { ccipRouter, statuses } from '../constants';
+import { useBridgeState } from '../state';
 import { useBridgeActivity } from './useBridgeActivity';
 import { useResetBridgeState } from './useResetBridgeState';
 
 export const useBridge = () => {
-  const [state, setState] = bridgeStateContainer.useTracked();
+  const [state, setState] = useBridgeState();
   const { address: userAddress } = useAccount();
   const resetState = useResetBridgeState();
   const intl = useIntl();

@@ -14,14 +14,13 @@ import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
-import { ccipRouter } from '../constants';
-import { bridgeStateContainer } from './state';
-import { statuses } from './statuses';
+import { ccipRouter, statuses } from '../constants';
+import { useBridgeState } from '../state';
 
 import type { erc20Abi } from 'viem';
 
 export const useApprove = () => {
-  const [state, setState] = bridgeStateContainer.useTracked();
+  const [state, setState] = useBridgeState();
   const intl = useIntl();
   const config = useConfig();
   const pushNotification = usePushNotification();

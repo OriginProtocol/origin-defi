@@ -1,7 +1,7 @@
-import { bridgeStateContainer, getDefaultState } from './state';
+import { getDefaultState, useBridgeState } from '../state';
 
 export const useResetBridgeState = () => {
-  const setState = bridgeStateContainer.useUpdate();
+  const [, setState] = useBridgeState();
   const defaultState = getDefaultState();
   return () => setState(defaultState);
 };

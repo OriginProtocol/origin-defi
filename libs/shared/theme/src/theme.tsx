@@ -438,10 +438,10 @@ export const theme = createTheme({
             margin: 0;
           }
 
-          @font-face { 
-            font-family: "Inter"; 
+          @font-face {
+            font-family: "Inter";
             font-weight: 400;
-            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
 
@@ -574,6 +574,9 @@ export const theme = createTheme({
           backgroundImage: 'none',
           color: theme.palette.text.primary,
           textDecorationColor: 'inherit',
+          ':hover': {
+            color: lighten(theme.palette.primary.light, 0.5),
+          },
         }),
       },
     },

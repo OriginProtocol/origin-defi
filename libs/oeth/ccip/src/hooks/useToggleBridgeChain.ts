@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
-import { bridgeStateContainer } from './state';
+import { useBridgeState } from '../state';
 
 export const useToggleBridgeChain = () => {
-  const setState = bridgeStateContainer.useUpdate();
+  const [, setState] = useBridgeState();
   return useCallback(() => {
     setState((state) => ({
       ...state,
@@ -11,6 +11,7 @@ export const useToggleBridgeChain = () => {
       srcToken: state.dstToken,
       dstChain: state.srcChain,
       dstToken: state.srcToken,
+      approval: undefined,
     }));
   }, [setState]);
 };
