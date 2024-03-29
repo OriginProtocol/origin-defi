@@ -81,16 +81,18 @@ export const BridgeCard = () => {
     args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
     query: { enabled: !!userAddress },
   });
-  const { data: fees, isLoading: isFeesLoading } = useReadContract({
-    address: srcRouter.address,
-    abi: srcRouter.abi,
-    functionName: 'getFee',
-    args: [dstRouter.chainSelectorId, message],
-    chainId: srcRouter.chainId,
-    query: {
-      enabled: !!userAddress && !!message,
+  const { data: fees, isLoading: isFeesLoading } = useReadContract(
+    message && {
+      address: srcRouter.address,
+      abi: srcRouter.abi,
+      functionName: 'getFee',
+      args: [dstRouter.chainSelectorId, message],
+      chainId: srcRouter.chainId,
+      query: {
+        enabled: !!userAddress && !!message,
+      },
     },
-  });
+  );
 
   // Toggle chain if the network has switched and dstChain is the network we switched to.
   useEffect(() => {
