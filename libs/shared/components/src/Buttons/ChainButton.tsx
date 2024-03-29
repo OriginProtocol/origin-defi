@@ -10,20 +10,17 @@ export type ChainButtonProps = {
   chain: Chain;
   iconProps?: SvgIconProps;
   labelProps?: TypographyProps;
-  isDisabled?: boolean;
 } & ButtonProps;
 
 export const ChainButton = ({
   chain,
   iconProps,
   labelProps,
-  isDisabled,
   ...rest
 }: ChainButtonProps) => {
   return (
     <Button
       {...rest}
-      disabled={isDisabled}
       sx={{
         display: 'flex',
         gap: 1,

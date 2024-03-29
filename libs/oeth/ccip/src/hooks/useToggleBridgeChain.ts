@@ -11,7 +11,6 @@ export const useToggleBridgeChain = () => {
       srcToken: state.dstToken,
       dstChain: state.srcChain,
       dstToken: state.srcToken,
-      approval: undefined,
     }));
   }, [setState]);
 };

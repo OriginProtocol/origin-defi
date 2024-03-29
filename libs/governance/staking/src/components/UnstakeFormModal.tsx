@@ -150,8 +150,8 @@ export const UnstakeFormModal = ({
           args={[lockup.lockupId]}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Unstake' })}
-          activityTitle={intl.formatMessage({ defaultMessage: 'Unstake' })}
-          activitySubtitle={intl.formatMessage(
+          notificationTitle={intl.formatMessage({ defaultMessage: 'Unstake' })}
+          notificationSubtitle={intl.formatMessage(
             {
               defaultMessage: 'Unstake lock-up {stake}',
             },
@@ -164,7 +164,7 @@ export const UnstakeFormModal = ({
               duration,
             },
           )}
-          activityEndIcon={
+          notificationEndIcon={
             <TokenIcon
               token={tokens.mainnet.veOGV}
               sx={{ transform: 'translateY(4px)' }}

@@ -103,15 +103,15 @@ export const BridgeActivityCard = () => {
       </CardContent>
       {/* Table Content */}
       <CardContent>
-        {activity.data?.length === 0 && (
-          <Stack alignItems={'center'}>
+        {(!activity.data || activity.data?.length === 0) && (
+          <Stack alignItems={'center'} marginBottom={1}>
             <Typography>
               {intl.formatMessage({ defaultMessage: 'No activity yet.' })}
             </Typography>
           </Stack>
         )}
         {activity.isLoading && (
-          <Stack alignItems={'center'}>
+          <Stack alignItems={'center'} marginBottom={1}>
             <Skeleton width={120} />
           </Stack>
         )}

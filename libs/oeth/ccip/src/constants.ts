@@ -29,58 +29,49 @@ export const ccipRouter: Record<
 
 export const statuses = {
   approval: {
-    idle: () =>
-      ({
-        enabled: true,
-        message: defineMessage({ defaultMessage: 'Approve' }),
-      }) as const,
-    waitingForSignature: () =>
-      ({
-        enabled: false,
-        message: defineMessage({
-          defaultMessage: 'Waiting for signature',
-        }),
-      }) as const,
-    waitingForTransaction: () =>
-      ({
-        enabled: false,
-        message: defineMessage({ defaultMessage: 'Processing Approval' }),
-      }) as const,
+    idle: () => ({
+      enabled: true,
+      message: defineMessage({ defaultMessage: 'Approve' }),
+    }),
+    waitingForSignature: () => ({
+      enabled: false,
+      message: defineMessage({
+        defaultMessage: 'Waiting for signature',
+      }),
+    }),
+    waitingForTransaction: () => ({
+      enabled: false,
+      message: defineMessage({ defaultMessage: 'Processing Approval' }),
+    }),
   },
   bridge: {
-    enterAmount: () =>
-      ({
-        enabled: false,
-        message: defineMessage({ defaultMessage: 'Enter an amount' }),
-      }) as const,
-    insufficientAmount: () =>
-      ({
-        enabled: false,
-        message: defineMessage({ defaultMessage: 'Insufficient amount' }),
-      }) as const,
-    disabled: () =>
-      ({
-        enabled: false,
-        message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
-      }) as const,
-    idle: () =>
-      ({
-        enabled: true,
-        message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
-      }) as const,
-    waitingForSignature: () =>
-      ({
-        enabled: false,
-        message: defineMessage({
-          defaultMessage: 'Waiting for signature',
-        }),
-      }) as const,
-    waitingForTransaction: () =>
-      ({
-        enabled: false,
-        message: defineMessage({
-          defaultMessage: 'Waiting for transaction',
-        }),
-      }) as const,
+    enterAmount: () => ({
+      enabled: false,
+      message: defineMessage({ defaultMessage: 'Enter an amount' }),
+    }),
+    insufficientAmount: () => ({
+      enabled: false,
+      message: defineMessage({ defaultMessage: 'Insufficient amount' }),
+    }),
+    disabled: () => ({
+      enabled: false,
+      message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
+    }),
+    idle: () => ({
+      enabled: true,
+      message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
+    }),
+    waitingForSignature: () => ({
+      enabled: false,
+      message: defineMessage({
+        defaultMessage: 'Waiting for signature',
+      }),
+    }),
+    waitingForTransaction: () => ({
+      enabled: false,
+      message: defineMessage({
+        defaultMessage: 'Waiting for transaction',
+      }),
+    }),
   },
 };

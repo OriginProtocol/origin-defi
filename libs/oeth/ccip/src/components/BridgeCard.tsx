@@ -6,51 +6,74 @@ import {
   CardContent,
   CardHeader,
   Collapse,
-  Dialog,
-  DialogContent,
-  DialogTitle,
   Stack,
   Typography,
 } from '@mui/material';
 import {
   ArrowButton,
   disabledTokenInputStyleProps,
-  ExternalLink,
   TokenInput,
   tokenInputStyleProps,
 } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
 import { getTokenId, tokens } from '@origin/shared/contracts';
-import { ChainlinkCCIP, FaCircleCheckRegular } from '@origin/shared/icons';
-import { ConnectedButton, useWatchBalances } from '@origin/shared/providers';
-import { formatAmount } from '@origin/shared/utils';
+import { ChainlinkCCIP } from '@origin/shared/icons';
+import {
+  ApprovalButton,
+  ConnectedButton,
+  TransactionButton,
+  useWatchBalances,
+} from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { encodeAbiParameters } from 'viem';
+import { useAccount, useReadContract } from 'wagmi';
 
-import { useApprove } from '../hooks/useApprove';
-import { useBridge } from '../hooks/useBridge';
+import { ccipRouter } from '../constants';
 import { useBridgePrices } from '../hooks/useBridgePrices';
 import { useChangeAmount } from '../hooks/useChangeAmount';
+import { useResetBridgeState } from '../hooks/useResetBridgeState';
 import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
+import type { HexAddress } from '@origin/shared/utils';
+import type { erc20Abi } from 'viem';
+
 export const BridgeCard = () => {
   const intl = useIntl();
-  const { chain: currentChain } = useAccount();
+  const { chain: currentChain, address: userAddress } = useAccount();
   const previousChain = usePrevious(currentChain);
-  const [{ amount, srcChain, srcToken, dstChain, dstToken, approval, bridge }] =
-    useBridgeState();
+
+  const [{ amount, srcChain, srcToken, dstChain, dstToken }] = useBridgeState();
   const toggleChain = useToggleBridgeChain();
   const handleChangeAmount = useChangeAmount();
-  const doApproval = useApprove();
-  const doBridge = useBridge();
+  const reset = useResetBridgeState();
 
   const prices = useBridgePrices();
 
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [srcToken, dstToken],
   });
+  const srcBalance = balances?.[getTokenId(srcToken)];
+
+  const srcRouter = ccipRouter[srcChain.id];
+  const dstRouter = ccipRouter[dstChain.id];
+  const {
+    data: allowance,
+    isLoading: isAllowanceLoading,
+    refetch: refetchAllowance,
+  } = useReadContract(
+    userAddress
+      ? {
+          chainId: srcToken.chainId,
+          address: srcToken.address,
+          abi: srcToken.abi as typeof erc20Abi,
+          functionName: 'allowance',
+          args: [userAddress, srcRouter.address],
+        }
+      : undefined,
+  );
 
   // Toggle chain if the network has switched and dstChain is the network we switched to.
   useEffect(() => {
@@ -62,6 +85,47 @@ export const BridgeCard = () => {
     }
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
+  const insufficientAmount = srcBalance !== undefined && srcBalance < amount;
+  const requiresApproval = allowance !== undefined && allowance < amount;
+
+  const message = userAddress
+    ? ({
+        receiver: encodeAbiParameters([{ type: 'address' }], [userAddress]),
+        data: '0x',
+        tokenAmounts: [
+          { token: srcToken.address as HexAddress, amount: amount },
+        ],
+        feeToken: ZERO_ADDRESS,
+        extraArgs: '0x',
+      } as const)
+    : undefined;
+
+  const { data: fees, isLoading: isFeesLoading } = useReadContract(
+    message
+      ? {
+          address: srcRouter.address,
+          abi: srcRouter.abi,
+          functionName: 'getFee',
+          args: [dstRouter.chainSelectorId, message],
+          chainId: srcRouter.chainId,
+        }
+      : undefined,
+  );
+
+  const bridgeButtonLabel =
+    amount === 0n
+      ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
+      : insufficientAmount
+        ? intl.formatMessage({
+            defaultMessage: 'Insufficient amount',
+          })
+        : intl.formatMessage(
+            { defaultMessage: 'Bridge {symbol}' },
+            {
+              symbol: srcToken.symbol,
+            },
+          );
+
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Bridge' })} />
@@ -71,7 +135,7 @@ export const BridgeCard = () => {
             <Typography>
               {intl.formatMessage({ defaultMessage: 'From' })}
             </Typography>
-            <ChainButton chain={srcChain} isDisabled />
+            <ChainButton chain={srcChain} disabled />
           </Stack>
           <TokenInput
             isConnected={true}
@@ -94,7 +158,7 @@ export const BridgeCard = () => {
             <Typography>
               {intl.formatMessage({ defaultMessage: 'To' })}
             </Typography>
-            <ChainButton chain={dstChain} isDisabled />
+            <ChainButton chain={dstChain} disabled />
           </Stack>
           <Box>
             {intl.formatMessage({ defaultMessage: 'You will receive' })}
@@ -138,33 +202,42 @@ export const BridgeCard = () => {
           ) : (
             <>
               <Collapse
-                in={Boolean(currentChain?.id === srcChain.id && approval)}
+                in={Boolean(
+                  currentChain?.id === srcChain.id && requiresApproval,
+                )}
               >
-                <ConnectedButton
+                <ApprovalButton
+                  amount={amount}
+                  token={srcToken}
+                  spender={srcRouter.address}
                   fullWidth
-                  disabled={!approval?.enabled}
-                  onClick={doApproval}
                   sx={{ mt: 1.5 }}
                   variant={'action'}
-                  targetChainId={srcChain.id}
-                >
-                  {approval && intl.formatMessage(approval.message)}
-                </ConnectedButton>
+                  onSuccess={() => refetchAllowance()}
+                />
               </Collapse>
-              {bridge && (
-                <ConnectedButton
-                  fullWidth
-                  disabled={!bridge?.enabled}
-                  onClick={bridge?.enabled ? doBridge : undefined}
-                  sx={{ mt: 1.5 }}
-                  variant={'action'}
-                >
-                  {bridge &&
-                    intl.formatMessage(bridge.message, {
-                      symbol: srcToken.symbol,
-                    })}
-                </ConnectedButton>
-              )}
+              <TransactionButton
+                contract={srcRouter}
+                functionName="ccipSend"
+                args={[dstRouter.chainSelectorId, message]}
+                value={fees as unknown as bigint}
+                disabled={requiresApproval}
+                createActivityFn={() => ({
+                  type: 'bridge',
+                  status: 'pending',
+                  amountIn: amount,
+                  tokenIn: srcToken,
+                  tokenOut: dstToken,
+                })}
+                onSuccess={() => {
+                  reset();
+                  refetchAllowance();
+                }}
+                fullWidth
+                sx={{ mt: 1.5 }}
+                variant={'action'}
+                label={bridgeButtonLabel}
+              />
             </>
           )}
 
@@ -183,7 +256,6 @@ export const BridgeCard = () => {
           </Stack>
         </Stack>
       </CardContent>
-      <BridgeSuccessDialog />
     </Card>
   );
 };
@@ -195,59 +267,5 @@ export const BridgeDivider = () => {
       <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />
       <ArrowButton onClick={toggleChain} />
     </Stack>
-  );
-};
-
-export const BridgeSuccessDialog = () => {
-  const intl = useIntl();
-  return null;
-  return (
-    <Dialog open={true}>
-      <DialogTitle display={'flex'} alignItems={'center'} gap={1}>
-        <FaCircleCheckRegular sx={{ color: 'success.main', fontSize: 18 }} />
-        <Typography>
-          {intl.formatMessage({ defaultMessage: 'Bridge Request Successful' })}
-        </Typography>
-      </DialogTitle>
-      <DialogContent>
-        <Stack spacing={1}>
-          <Stack direction={'row'}>
-            <Typography>
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    'Sending {amountIn} {tokenIn} from {chainIn} to {chainOut}.',
-                },
-                {
-                  amountIn: formatAmount(0n),
-                },
-              )}
-            </Typography>
-            <Typography></Typography>
-          </Stack>
-          <ExternalLink
-            href={
-              'https://ccip.chain.link/msg/0xa07ca8c734bf23ac8e6b332e629a13c6bbc2b10b2c8e4f6673f38612021f3ec1'
-            }
-          >
-            {intl.formatMessage({ defaultMessage: 'CCIP Explorer Status' })}
-          </ExternalLink>
-          <ExternalLink
-            href={
-              'https://ccip.chain.link/msg/0xa07ca8c734bf23ac8e6b332e629a13c6bbc2b10b2c8e4f6673f38612021f3ec1'
-            }
-          >
-            {intl.formatMessage({ defaultMessage: 'Transaction' })}
-          </ExternalLink>
-          <Typography fontSize={14} color={'text.secondary'}>
-            {intl.formatMessage({
-              defaultMessage:
-                'Your transfer is expected to take between 15 and 30 minutes. ' +
-                'This is an estimate and actual times may vary due to network conditions.',
-            })}
-          </Typography>
-        </Stack>
-      </DialogContent>
-    </Dialog>
   );
 };

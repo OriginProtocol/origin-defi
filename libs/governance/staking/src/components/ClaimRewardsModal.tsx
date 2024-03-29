@@ -83,10 +83,10 @@ export const ClaimRewardsModal = (props: DialogProps) => {
           args={undefined}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Collect Rewards' })}
-          activityTitle={intl.formatMessage({
+          notificationTitle={intl.formatMessage({
             defaultMessage: 'Collect Rewards',
           })}
-          activitySubtitle={intl.formatMessage(
+          notificationSubtitle={intl.formatMessage(
             {
               defaultMessage: 'Collect {rewards} rewards OGV',
             },

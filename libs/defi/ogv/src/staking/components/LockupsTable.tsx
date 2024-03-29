@@ -170,13 +170,13 @@ export const LockupsTable = () => {
                 waitingTxLabel={intl.formatMessage({
                   defaultMessage: 'Unstaking',
                 })}
-                activityTitle={intl.formatMessage({
+                notificationTitle={intl.formatMessage({
                   defaultMessage: 'Unstake',
                 })}
-                activitySubtitle={intl.formatMessage({
+                notificationSubtitle={intl.formatMessage({
                   defaultMessage: 'Unstake lock-up',
                 })}
-                activityEndIcon={
+                notificationEndIcon={
                   <TokenIcon
                     token={tokens.mainnet.veOGV}
                     sx={{ transform: 'translateY(4px)' }}

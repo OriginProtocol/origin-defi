@@ -6,7 +6,6 @@ import {
   formatError,
   isNilOrEmpty,
   isUserRejected,
-  ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { erc20Abi } from 'viem';
@@ -30,13 +29,14 @@ import {
 
 import type { ButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { HexAddress } from '@origin/shared/utils';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity } from '../../activities';
 
 export type ApprovalButtonProps = {
   token: Token;
-  spender: Token;
+  spender: HexAddress;
   amount: bigint;
   label?: string;
   onClick?: () => void;
@@ -75,7 +75,7 @@ export const ApprovalButton = ({
     address: token.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [spender?.address ?? ZERO_ADDRESS, amount],
+    args: [spender, amount],
     query: {
       enabled: isConnected && amount > 0n && !disabled,
     },
@@ -118,7 +118,8 @@ export const ApprovalButton = ({
       !isNilOrEmpty(approvalData) &&
       !isApprovalLoading &&
       isApprovalSuccess &&
-      !done.current
+      !done.current &&
+      activity
     ) {
       onSuccess?.(approvalData as TransactionReceipt);
       if (!disableActivity) {
@@ -189,7 +190,7 @@ export const ApprovalButton = ({
         if (writeError) {
           onError?.(writeError);
         }
-        if (!disableActivity) {
+        if (!disableActivity && activity) {
           updateActivity({
             ...activity,
             status: 'error',
@@ -233,7 +234,6 @@ export const ApprovalButton = ({
     if (!disableActivity) {
       const activity = pushActivity({
         tokenIn: token,
-        tokenOut: spender,
         type: 'approval',
         status: 'pending',
         amountIn: amount,
@@ -244,7 +244,6 @@ export const ApprovalButton = ({
         id: Date.now().toString(),
         createdOn: Date.now(),
         tokenIn: token,
-        tokenOut: spender,
         type: 'approval',
         status: 'pending',
         amountIn: amount,

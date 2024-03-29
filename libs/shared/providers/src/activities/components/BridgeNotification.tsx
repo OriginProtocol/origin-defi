@@ -27,7 +27,7 @@ type BridgeNotificationProps = {
 
 const title: Record<GlobalActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Bridging' }),
-  success: defineMessage({ defaultMessage: 'Bridged' }),
+  success: defineMessage({ defaultMessage: 'Bridge Started' }),
   error: defineMessage({ defaultMessage: 'Error while bridging' }),
   idle: defineMessage({ defaultMessage: 'Bridge' }),
 };

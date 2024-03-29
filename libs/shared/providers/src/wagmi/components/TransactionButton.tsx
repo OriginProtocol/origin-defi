@@ -32,7 +32,7 @@ import type { Contract, Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity } from '../../activities';
+import type { Activity, ActivityInput } from '../../activities';
 
 export type TransactionButtonProps = {
   contract: Contract | Token;
@@ -42,14 +42,15 @@ export type TransactionButtonProps = {
   label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
-  activityTitle?: ReactNode;
-  activitySubtitle?: ReactNode;
-  activityEndIcon?: ReactNode;
+  notificationTitle?: ReactNode;
+  notificationSubtitle?: ReactNode;
+  notificationEndIcon?: ReactNode;
   onClick?: () => void;
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
   disableActivity?: boolean;
+  createActivityFn?: () => ActivityInput;
   disableNotification?: boolean;
 } & Omit<ButtonProps, 'onClick' | 'value'>;
 
@@ -61,15 +62,16 @@ export const TransactionButton = ({
   label,
   waitingSignatureLabel,
   waitingTxLabel,
-  activityTitle,
-  activitySubtitle,
-  activityEndIcon,
+  notificationTitle,
+  notificationSubtitle,
+  notificationEndIcon,
   onClick,
   onSuccess,
   onError,
   onUserReject,
   disabled,
   disableActivity,
+  createActivityFn,
   disableNotification,
   ...rest
 }: TransactionButtonProps) => {
@@ -127,7 +129,13 @@ export const TransactionButton = ({
   }, [disableNotification, intl, isTxLoading, pushNotification]);
 
   useEffect(() => {
-    if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
+    if (
+      !isNilOrEmpty(txData) &&
+      !isTxLoading &&
+      isTxSuccess &&
+      !done.current &&
+      activity
+    ) {
       onSuccess?.(txData as TransactionReceipt);
       if (!disableActivity) {
         updateActivity({
@@ -146,16 +154,16 @@ export const TransactionButton = ({
             <TransactionNotification
               {...activity}
               title={
-                activityTitle ??
+                notificationTitle ??
                 intl.formatMessage({ defaultMessage: 'Transaction executed' })
               }
               subtitle={
-                activitySubtitle ??
+                notificationSubtitle ??
                 intl.formatMessage({
                   defaultMessage: 'Your operation has been executed',
                 })
               }
-              endIcon={activityEndIcon}
+              endIcon={notificationEndIcon}
               status="success"
               txReceipt={txData as TransactionReceipt}
             />
@@ -166,9 +174,9 @@ export const TransactionButton = ({
     }
   }, [
     activity,
-    activityEndIcon,
-    activitySubtitle,
-    activityTitle,
+    notificationEndIcon,
+    notificationSubtitle,
+    notificationTitle,
     deleteNotification,
     disableActivity,
     disableNotification,
@@ -185,7 +193,7 @@ export const TransactionButton = ({
   useEffect(() => {
     if (
       (!isNilOrEmpty(writeError) || !isNilOrEmpty(txError)) &&
-      !isNilOrEmpty(activity) &&
+      activity &&
       !done.current
     ) {
       const err = isNilOrEmpty(writeError) ? txError : writeError;
@@ -195,7 +203,7 @@ export const TransactionButton = ({
       }
       if (isUserRejected(err)) {
         onUserReject?.();
-        if (!disableActivity && activity?.id) {
+        if (!disableActivity) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -244,7 +252,7 @@ export const TransactionButton = ({
     }
   }, [
     activity,
-    activityEndIcon,
+    notificationEndIcon,
     deleteActivity,
     deleteNotification,
     disableActivity,
@@ -264,23 +272,25 @@ export const TransactionButton = ({
       writeContract(prepareData.request);
       onClick?.();
       if (!disableActivity) {
-        const activity = pushActivity({
-          title: activityTitle,
-          subtitle: activitySubtitle,
-          type: 'transaction',
-          status: 'pending',
-          endIcon: activityEndIcon,
-        });
+        const activity = pushActivity(
+          createActivityFn?.() ?? {
+            title: notificationTitle,
+            subtitle: notificationSubtitle,
+            type: 'transaction',
+            status: 'pending',
+            endIcon: notificationEndIcon,
+          },
+        );
         setActivity(activity);
       } else {
         setActivity({
           id: Date.now().toString(),
           createdOn: Date.now(),
-          title: activityTitle,
-          subtitle: activitySubtitle,
+          title: notificationTitle,
+          subtitle: notificationSubtitle,
           type: 'transaction',
           status: 'pending',
-          endIcon: activityEndIcon,
+          endIcon: notificationEndIcon,
         });
       }
       done.current = false;
@@ -296,6 +306,13 @@ export const TransactionButton = ({
       : isNilOrEmpty(label)
         ? capitalize(functionName)
         : label;
+
+  // Alert if an error has occurred.
+  useEffect(() => {
+    if (!prepareError) return;
+    console.log(prepareError);
+  }, [prepareError]);
+
   const buttonDisabled =
     !isConnected ||
     !isNilOrEmpty(prepareError) ||
