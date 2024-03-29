@@ -15,15 +15,13 @@ export interface BridgeState {
   dstToken: Token;
 }
 
-export const getDefaultState = () => {
-  return {
-    amount: 0n,
-    srcChain: mainnet,
-    srcToken: tokens.mainnet.wOETH,
-    dstChain: arbitrum,
-    dstToken: tokens.arbitrum.wOETH,
-  } as BridgeState;
+export const defaultState: BridgeState = {
+  amount: 0n,
+  srcChain: mainnet,
+  srcToken: tokens.mainnet.wOETH,
+  dstChain: arbitrum,
+  dstToken: tokens.arbitrum.wOETH,
 };
 
 export const { Provider: BridgeProvider, useTracked: useBridgeState } =
-  createContainer(() => useState(getDefaultState()));
+  createContainer(() => useState(defaultState));

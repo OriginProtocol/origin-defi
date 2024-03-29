@@ -36,7 +36,7 @@ export const useUpdateActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (activity: (Partial<Activity> & { id: string }) | undefined | null) => {
+    (activity: Partial<Activity> | undefined | null) => {
       if (activity) {
         setState(
           produce((state) => {

@@ -27,12 +27,12 @@ import {
 } from '../../notifications';
 import { ConnectedButton } from './ConnectedButton';
 
-import type { ButtonProps } from '@mui/material';
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity, ActivityInput } from '../../activities';
+import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type TransactionButtonProps = {
   contract: Contract | Token;
@@ -49,10 +49,10 @@ export type TransactionButtonProps = {
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
+  activityInput?: ActivityInput;
   disableActivity?: boolean;
-  createActivityFn?: () => ActivityInput;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick' | 'value'>;
+} & Omit<ConnectedButtonProps, 'onClick' | 'value'>;
 
 export const TransactionButton = ({
   contract,
@@ -70,8 +70,8 @@ export const TransactionButton = ({
   onError,
   onUserReject,
   disabled,
+  activityInput,
   disableActivity,
-  createActivityFn,
   disableNotification,
   ...rest
 }: TransactionButtonProps) => {
@@ -129,15 +129,9 @@ export const TransactionButton = ({
   }, [disableNotification, intl, isTxLoading, pushNotification]);
 
   useEffect(() => {
-    if (
-      !isNilOrEmpty(txData) &&
-      !isTxLoading &&
-      isTxSuccess &&
-      !done.current &&
-      activity
-    ) {
+    if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
       onSuccess?.(txData as TransactionReceipt);
-      if (!disableActivity) {
+      if (!disableActivity && activity) {
         updateActivity({
           ...activity,
           status: 'success',
@@ -193,7 +187,6 @@ export const TransactionButton = ({
   useEffect(() => {
     if (
       (!isNilOrEmpty(writeError) || !isNilOrEmpty(txError)) &&
-      activity &&
       !done.current
     ) {
       const err = isNilOrEmpty(writeError) ? txError : writeError;
@@ -203,7 +196,7 @@ export const TransactionButton = ({
       }
       if (isUserRejected(err)) {
         onUserReject?.();
-        if (!disableActivity) {
+        if (!disableActivity && activity) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -225,7 +218,7 @@ export const TransactionButton = ({
         if (err) {
           onError?.(err);
         }
-        if (!disableActivity) {
+        if (!disableActivity && activity) {
           updateActivity({
             ...activity,
             status: 'error',
@@ -273,7 +266,7 @@ export const TransactionButton = ({
       onClick?.();
       if (!disableActivity) {
         const activity = pushActivity(
-          createActivityFn?.() ?? {
+          activityInput ?? {
             title: notificationTitle,
             subtitle: notificationSubtitle,
             type: 'transaction',
@@ -306,13 +299,6 @@ export const TransactionButton = ({
       : isNilOrEmpty(label)
         ? capitalize(functionName)
         : label;
-
-  // Alert if an error has occurred.
-  useEffect(() => {
-    if (!prepareError) return;
-    console.log(prepareError);
-  }, [prepareError]);
-
   const buttonDisabled =
     !isConnected ||
     !isNilOrEmpty(prepareError) ||

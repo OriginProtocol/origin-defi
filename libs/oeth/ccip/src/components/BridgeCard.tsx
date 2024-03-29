@@ -20,7 +20,6 @@ import { getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
-  ConnectedButton,
   TransactionButton,
   useWatchBalances,
 } from '@origin/shared/providers';
@@ -42,52 +41,23 @@ import type { erc20Abi } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
-  const { chain: currentChain, address: userAddress } = useAccount();
+  const {
+    chain: currentChain,
+    address: userAddress,
+    isConnected,
+  } = useAccount();
   const previousChain = usePrevious(currentChain);
-
   const [{ amount, srcChain, srcToken, dstChain, dstToken }] = useBridgeState();
   const toggleChain = useToggleBridgeChain();
   const handleChangeAmount = useChangeAmount();
   const reset = useResetBridgeState();
-
   const prices = useBridgePrices();
-
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [srcToken, dstToken],
   });
   const srcBalance = balances?.[getTokenId(srcToken)];
-
   const srcRouter = ccipRouter[srcChain.id];
   const dstRouter = ccipRouter[dstChain.id];
-  const {
-    data: allowance,
-    isLoading: isAllowanceLoading,
-    refetch: refetchAllowance,
-  } = useReadContract(
-    userAddress
-      ? {
-          chainId: srcToken.chainId,
-          address: srcToken.address,
-          abi: srcToken.abi as typeof erc20Abi,
-          functionName: 'allowance',
-          args: [userAddress, srcRouter.address],
-        }
-      : undefined,
-  );
-
-  // Toggle chain if the network has switched and dstChain is the network we switched to.
-  useEffect(() => {
-    if (
-      previousChain?.id !== currentChain?.id &&
-      dstChain.id === currentChain?.id
-    ) {
-      toggleChain();
-    }
-  }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
-
-  const insufficientAmount = srcBalance !== undefined && srcBalance < amount;
-  const requiresApproval = allowance !== undefined && allowance < amount;
-
   const message = userAddress
     ? ({
         receiver: encodeAbiParameters([{ type: 'address' }], [userAddress]),
@@ -99,23 +69,54 @@ export const BridgeCard = () => {
         extraArgs: '0x',
       } as const)
     : undefined;
+  const {
+    data: allowance,
+    isLoading: isAllowanceLoading,
+    refetch: refetchAllowance,
+  } = useReadContract({
+    chainId: srcToken.chainId,
+    address: srcToken.address,
+    abi: srcToken.abi as typeof erc20Abi,
+    functionName: 'allowance',
+    args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
+    query: { enabled: !!userAddress },
+  });
+  const { data: fees, isLoading: isFeesLoading } = useReadContract({
+    address: srcRouter.address,
+    abi: srcRouter.abi,
+    functionName: 'getFee',
+    args: [dstRouter.chainSelectorId, message],
+    chainId: srcRouter.chainId,
+    query: {
+      enabled: !!userAddress && !!message,
+    },
+  });
 
-  const { data: fees, isLoading: isFeesLoading } = useReadContract(
-    message
-      ? {
-          address: srcRouter.address,
-          abi: srcRouter.abi,
-          functionName: 'getFee',
-          args: [dstRouter.chainSelectorId, message],
-          chainId: srcRouter.chainId,
-        }
-      : undefined,
-  );
+  // Toggle chain if the network has switched and dstChain is the network we switched to.
+  useEffect(() => {
+    if (
+      previousChain?.id !== currentChain?.id &&
+      dstChain.id === currentChain?.id
+    ) {
+      toggleChain();
+    }
+  }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
+  const requiresApproval =
+    !isAllowanceLoading &&
+    currentChain?.id === srcChain.id &&
+    allowance !== undefined &&
+    allowance < amount;
+  const bridgeButtonDisabled =
+    !isConnected ||
+    (allowance ?? 0n) < amount ||
+    isFeesLoading ||
+    amount === 0n ||
+    amount > (balances?.[getTokenId(srcToken)] ?? 0n);
   const bridgeButtonLabel =
     amount === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : insufficientAmount
+      : srcBalance !== undefined && srcBalance < amount
         ? intl.formatMessage({
             defaultMessage: 'Insufficient amount',
           })
@@ -197,50 +198,42 @@ export const BridgeCard = () => {
               )}
             </Box>
           </Stack>
-          {currentChain?.id !== srcChain.id ? (
-            <ConnectedButton variant={'action'} targetChainId={srcChain.id} />
-          ) : (
-            <>
-              <Collapse
-                in={Boolean(
-                  currentChain?.id === srcChain.id && requiresApproval,
-                )}
-              >
-                <ApprovalButton
-                  amount={amount}
-                  token={srcToken}
-                  spender={srcRouter.address}
-                  fullWidth
-                  sx={{ mt: 1.5 }}
-                  variant={'action'}
-                  onSuccess={() => refetchAllowance()}
-                />
-              </Collapse>
-              <TransactionButton
-                contract={srcRouter}
-                functionName="ccipSend"
-                args={[dstRouter.chainSelectorId, message]}
-                value={fees as unknown as bigint}
-                disabled={requiresApproval}
-                createActivityFn={() => ({
-                  type: 'bridge',
-                  status: 'pending',
-                  amountIn: amount,
-                  tokenIn: srcToken,
-                  tokenOut: dstToken,
-                })}
-                onSuccess={() => {
-                  reset();
-                  refetchAllowance();
-                }}
-                fullWidth
-                sx={{ mt: 1.5 }}
-                variant={'action'}
-                label={bridgeButtonLabel}
-              />
-            </>
-          )}
-
+          <Collapse in={requiresApproval}>
+            <ApprovalButton
+              amount={amount}
+              token={srcToken}
+              spender={srcRouter.address}
+              fullWidth
+              sx={{ mt: 1.5 }}
+              variant={'action'}
+              onSuccess={() => {
+                refetchAllowance?.();
+              }}
+            />
+          </Collapse>
+          <TransactionButton
+            contract={srcRouter}
+            functionName="ccipSend"
+            args={[dstRouter.chainSelectorId, message]}
+            value={fees as unknown as bigint}
+            disabled={bridgeButtonDisabled}
+            targetChainId={srcChain.id}
+            activityInput={{
+              type: 'bridge',
+              status: 'pending',
+              amountIn: amount,
+              tokenIn: srcToken,
+              tokenOut: dstToken,
+            }}
+            onSuccess={() => {
+              reset();
+              refetchAllowance?.();
+            }}
+            fullWidth
+            sx={{ mt: 1.5 }}
+            variant={'action'}
+            label={bridgeButtonLabel}
+          />
           <Stack
             direction={'row'}
             justifyContent={'center'}

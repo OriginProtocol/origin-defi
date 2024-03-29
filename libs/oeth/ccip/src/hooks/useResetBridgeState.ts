@@ -1,7 +1,11 @@
-import { getDefaultState, useBridgeState } from '../state';
+import { useCallback } from 'react';
+
+import { defaultState, useBridgeState } from '../state';
 
 export const useResetBridgeState = () => {
   const [, setState] = useBridgeState();
-  const defaultState = getDefaultState();
-  return () => setState(defaultState);
+
+  return useCallback(() => {
+    setState(defaultState);
+  }, [setState]);
 };

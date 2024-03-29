@@ -27,31 +27,35 @@ import {
   usePushNotification,
 } from '../../notifications';
 
-import type { ButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity } from '../../activities';
+import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type ApprovalButtonProps = {
   token: Token;
   spender: HexAddress;
   amount: bigint;
   label?: string;
+  waitingSignatureLabel?: string;
+  waitingTxLabel?: string;
   onClick?: () => void;
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
   disableActivity?: boolean;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick'>;
+} & Omit<ConnectedButtonProps, 'onClick'>;
 
 export const ApprovalButton = ({
   token,
   spender,
   amount,
   label,
+  waitingSignatureLabel,
+  waitingTxLabel,
   onClick,
   onSuccess,
   onError,
@@ -118,11 +122,10 @@ export const ApprovalButton = ({
       !isNilOrEmpty(approvalData) &&
       !isApprovalLoading &&
       isApprovalSuccess &&
-      !done.current &&
-      activity
+      !done.current
     ) {
       onSuccess?.(approvalData as TransactionReceipt);
-      if (!disableActivity) {
+      if (!disableActivity && activity) {
         updateActivity({
           ...activity,
           status: 'success',
@@ -253,9 +256,11 @@ export const ApprovalButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
     : isApprovalLoading
-      ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
         ? intl.formatMessage({ defaultMessage: 'Approve' })
         : label;
