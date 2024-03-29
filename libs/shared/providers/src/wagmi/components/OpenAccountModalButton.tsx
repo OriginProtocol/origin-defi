@@ -18,15 +18,13 @@ export const OpenAccountModalButton = ({
   connectLabel,
   connectedProps,
   disconnectedProps,
-  ...props
+  ...rest
 }: OpenAccountModalButtonProps) => {
   const intl = useIntl();
 
   const handleClick =
     (handler: () => void) => (evt: MouseEvent<HTMLButtonElement>) => {
-      if (props?.onClick) {
-        props.onClick(evt);
-      }
+      rest?.onClick?.(evt);
       handler();
     };
 
@@ -36,10 +34,9 @@ export const OpenAccountModalButton = ({
         if (!mounted || !account || !chain) {
           return (
             <Button
-              variant={'nav'}
               {...(disconnectedProps
-                ? (mergeDeepRight(props, disconnectedProps) as ButtonProps)
-                : props)}
+                ? (mergeDeepRight(rest, disconnectedProps) as ButtonProps)
+                : rest)}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -51,9 +48,8 @@ export const OpenAccountModalButton = ({
         if (chain.unsupported) {
           return (
             <Button
-              variant={'nav'}
-              {...props}
               color="warning"
+              {...rest}
               onClick={handleClick(openChainModal)}
             >
               {intl.formatMessage({
@@ -65,14 +61,11 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
-            variant={'nav'}
             {...(connectedProps
-              ? (mergeDeepRight(props, connectedProps) as ButtonProps)
-              : props)}
+              ? (mergeDeepRight(rest, connectedProps) as ButtonProps)
+              : rest)}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
-              if (props?.onClick) {
-                props.onClick(evt);
-              }
+              rest?.onClick?.(evt);
             }}
           />
         );

@@ -176,6 +176,7 @@ const NavButtons = () => {
             : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
         </Button>
         <OpenAccountModalButton
+          variant="nav"
           onClick={(e) => {
             if (isConnected) {
               setAccountModalAnchor(e.currentTarget);
