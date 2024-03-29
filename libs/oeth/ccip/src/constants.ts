@@ -4,10 +4,8 @@ import { arbitrum, mainnet } from 'viem/chains';
 import type { Contract } from '@origin/shared/contracts';
 
 export const ccipRouter: Record<
-  string,
-  Contract & {
-    chainSelectorId: bigint;
-  }
+  number,
+  Contract & { chainSelectorId: bigint }
 > = {
   [mainnet.id]: {
     chainSelectorId: 5009297550715157269n,

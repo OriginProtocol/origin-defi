@@ -25,11 +25,11 @@ export const ChainButton = ({
         display: 'flex',
         gap: 1,
         alignItems: 'center',
-        ...rest?.sx,
         paddingLeft: 1,
         '&.Mui-disabled': {
           color: 'text.primary',
         },
+        ...rest?.sx,
       }}
     >
       <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} {...iconProps} />

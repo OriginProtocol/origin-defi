@@ -34,7 +34,7 @@ export const ChainSwitcherButton = () => {
         }}
         onClick={(e) => setPopoverAnchor(e.currentTarget)}
       >
-        <ChainIcon chainId={chain.id} sx={{ height: '25px' }} />
+        <ChainIcon chainId={chain.id} sx={{ fonTSize: 24 }} />
         <Typography
           variant="inherit"
           sx={{ display: { xs: 'none', lg: 'block' } }}
