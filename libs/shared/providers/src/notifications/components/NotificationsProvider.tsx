@@ -28,7 +28,7 @@ const NotificationsWrapped = ({ children, ...rest }: StackProps) => {
           {...rest}
           sx={{
             position: 'fixed',
-            top: (theme) => theme.spacing(8),
+            top: (theme) => theme.spacing(16), // Adjusted lower to look good while simplify OETH banner exists.
             right: (theme) => theme.spacing(1),
             zIndex: (theme) => theme.zIndex.modal + 1,
             ...rest?.sx,
