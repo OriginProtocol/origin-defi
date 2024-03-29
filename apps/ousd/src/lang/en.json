@@ -115,6 +115,12 @@
       "value": "Switch network"
     }
   ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
@@ -155,6 +161,12 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -359,6 +371,12 @@
       "value": "Ooops..."
     }
   ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
+    }
+  ],
   "NNBdoh": [
     {
       "type": 0,
@@ -499,6 +517,20 @@
       "value": "Finding the best route..."
     }
   ],
+  "VRMwcI": [
+    {
+      "type": 0,
+      "value": "The selected network is not supported by "
+    },
+    {
+      "type": 1,
+      "value": "sectionName"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -599,6 +631,12 @@
       "value": "Lifetime Earnings (OUSD)"
     }
   ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
+    }
+  ],
   "fuV7zb": [
     {
       "type": 1,
@@ -643,6 +681,12 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -685,6 +729,12 @@
       "value": "Copied"
     }
   ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
+    }
+  ],
   "qNe+Iz": [
     {
       "type": 0,
@@ -713,6 +763,16 @@
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sp7Hxk": [
+    {
+      "type": 0,
+      "value": "Switch to "
+    },
+    {
+      "type": 1,
+      "value": "chain"
     }
   ],
   "stTYBM": [
