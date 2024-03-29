@@ -6,9 +6,10 @@ import { FaCheckRegular } from '@origin/shared/icons';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
+import type { ButtonProps } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
 
-export const ChainSwitcherButton = () => {
+export const ChainSwitcherButton = (props: Omit<ButtonProps, 'onClick'>) => {
   const { chain } = useAccount();
   const [popoverAnchor, setPopoverAnchor] = useState<HTMLElement>();
   if (!chain) {
@@ -17,7 +18,7 @@ export const ChainSwitcherButton = () => {
   return (
     <>
       <Button
-        variant={'nav'}
+        {...props}
         sx={{
           display: 'flex',
           alignItems: 'center',
@@ -31,6 +32,7 @@ export const ChainSwitcherButton = () => {
           paddingRight: {
             lg: 2,
           },
+          ...props?.sx,
         }}
         onClick={(e) => setPopoverAnchor(e.currentTarget)}
       >

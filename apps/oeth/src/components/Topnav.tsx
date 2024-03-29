@@ -234,7 +234,7 @@ const NavButtons = () => {
             tokens.mainnet.stETH,
           ]}
         />
-        <ChainSwitcherButton />
+        <ChainSwitcherButton variant="nav" />
         {isConnected && (
           <ActivityButton
             variant="nav"
