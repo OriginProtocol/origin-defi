@@ -100,6 +100,7 @@ export const TransactionButton = ({
     data: hash,
     error: writeError,
     isPending: isWriteLoading,
+    reset: resetWriteContract,
   } = useWriteContract();
   const {
     data: txData,
@@ -164,6 +165,7 @@ export const TransactionButton = ({
           ),
         });
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
@@ -241,6 +243,7 @@ export const TransactionButton = ({
           });
         }
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [

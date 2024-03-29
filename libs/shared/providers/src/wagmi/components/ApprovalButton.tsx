@@ -89,6 +89,7 @@ export const ApprovalButton = ({
     data: hash,
     error: writeError,
     isPending: isWriteLoading,
+    reset: resetWriteContract,
   } = useWriteContract();
   const {
     data: approvalData,
@@ -147,6 +148,7 @@ export const ApprovalButton = ({
           ),
         });
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
@@ -212,6 +214,7 @@ export const ApprovalButton = ({
           });
         }
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
