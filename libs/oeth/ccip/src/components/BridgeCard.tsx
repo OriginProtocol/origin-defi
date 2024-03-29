@@ -263,7 +263,7 @@ export const BridgeCard = () => {
 export const BridgeDivider = () => {
   const toggleChain = useToggleBridgeChain();
   return (
-    <Stack direction={'row'} position={'relative'} marginY={{ sm: 2, md: 1 }}>
+    <Stack direction={'row'} position={'relative'} marginY={{ xs: 2, md: 1 }}>
       <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />
       <ArrowButton onClick={toggleChain} />
     </Stack>
