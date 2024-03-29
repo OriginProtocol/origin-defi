@@ -11,6 +11,7 @@ import { BridgeProvider } from '../state';
 
 export function BridgeView() {
   const intl = useIntl();
+  const cardWidth = 552;
   return (
     <BridgeProvider>
       <Container
@@ -21,8 +22,8 @@ export function BridgeView() {
           mb: 10,
         }}
       >
-        <Grid2 container spacing={3} justifyContent={'center'}>
-          <Grid2 xs={12} lg={8} maxWidth="sm">
+        <Grid2 container gap={3} justifyContent={'center'}>
+          <Grid2 xs={12} lg={8} maxWidth={cardWidth}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -30,7 +31,7 @@ export function BridgeView() {
               <BridgeCard />
             </ErrorBoundary>
           </Grid2>
-          <Grid2 xs={12} lg={4} maxWidth="sm">
+          <Grid2 xs={12} lg={4} maxWidth={cardWidth}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -42,7 +43,7 @@ export function BridgeView() {
               />
             </ErrorBoundary>
           </Grid2>
-          <Grid2 xs={12} lg={8} maxWidth="sm">
+          <Grid2 xs={12} lg={8} maxWidth={cardWidth}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -50,7 +51,7 @@ export function BridgeView() {
               <BridgeActivityCard />
             </ErrorBoundary>
           </Grid2>
-          <Grid2 xs={12} lg={4} maxWidth="sm" />
+          <Grid2 xs={12} lg={4} maxWidth={cardWidth} />
         </Grid2>
       </Container>
     </BridgeProvider>
