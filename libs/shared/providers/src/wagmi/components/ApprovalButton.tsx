@@ -80,6 +80,7 @@ export const ApprovalButton = ({
     abi: erc20Abi,
     functionName: 'approve',
     args: [spender, amount],
+    chainId: token.chainId,
     query: {
       enabled: isConnected && amount > 0n && !disabled,
     },
@@ -162,6 +163,7 @@ export const ApprovalButton = ({
     notifId,
     onSuccess,
     pushNotification,
+    resetWriteContract,
     updateActivity,
   ]);
 
@@ -228,6 +230,7 @@ export const ApprovalButton = ({
     onError,
     onUserReject,
     pushNotification,
+    resetWriteContract,
     updateActivity,
     writeError,
   ]);

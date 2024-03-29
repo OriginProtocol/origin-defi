@@ -91,6 +91,7 @@ export const TransactionButton = ({
     functionName,
     args,
     value,
+    chainId: contract.chainId,
     query: {
       enabled: isConnected && !!contract?.address && !disabled,
     },
@@ -184,6 +185,7 @@ export const TransactionButton = ({
     pushNotification,
     txData,
     updateActivity,
+    resetWriteContract,
   ]);
 
   useEffect(() => {
@@ -261,6 +263,7 @@ export const TransactionButton = ({
     txError,
     updateActivity,
     writeError,
+    resetWriteContract,
   ]);
 
   const handleClick = () => {

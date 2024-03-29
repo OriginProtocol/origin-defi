@@ -106,9 +106,11 @@ export const BridgeCard = () => {
 
   const requiresApproval =
     !isAllowanceLoading &&
+    !isBalancesLoading &&
     currentChain?.id === srcChain.id &&
     allowance !== undefined &&
-    allowance < amount;
+    allowance < amount &&
+    amount <= (balances?.[getTokenId(srcToken)] ?? 0n);
   const bridgeButtonDisabled =
     !isConnected ||
     (allowance ?? 0n) < amount ||
