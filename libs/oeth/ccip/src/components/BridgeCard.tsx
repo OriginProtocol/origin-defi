@@ -39,6 +39,8 @@ import { useBridgeState } from '../state';
 import type { HexAddress } from '@origin/shared/utils';
 import type { erc20Abi } from 'viem';
 
+const feePaddingBps = 100n;
+
 export const BridgeCard = () => {
   const intl = useIntl();
   const {
@@ -81,7 +83,7 @@ export const BridgeCard = () => {
     args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
     query: { enabled: !!userAddress },
   });
-  const { data: fees, isLoading: isFeesLoading } = useReadContract(
+  const { data: suggestedFee, isLoading: isFeesLoading } = useReadContract(
     message && {
       address: srcRouter.address,
       abi: srcRouter.abi,
@@ -104,6 +106,7 @@ export const BridgeCard = () => {
     }
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
+  const fee = ((suggestedFee ?? 0n) * (10000n + feePaddingBps)) / 10000n;
   const requiresApproval =
     !isAllowanceLoading &&
     !isBalancesLoading &&
@@ -219,7 +222,7 @@ export const BridgeCard = () => {
             contract={srcRouter}
             functionName="ccipSend"
             args={[dstRouter.chainSelectorId, message]}
-            value={fees as unknown as bigint}
+            value={fee}
             disabled={bridgeButtonDisabled}
             targetChainId={srcChain.id}
             activityInput={{

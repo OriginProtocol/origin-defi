@@ -5,7 +5,9 @@ import type { Contract } from '@origin/shared/contracts';
 
 export const ccipRouter: Record<
   number,
-  Contract & { chainSelectorId: bigint }
+  Contract<typeof contracts.arbitrum.ccipRouter.abi> & {
+    chainSelectorId: bigint;
+  }
 > = {
   [mainnet.id]: {
     chainSelectorId: 5009297550715157269n,
@@ -16,54 +18,3 @@ export const ccipRouter: Record<
     ...contracts.arbitrum.ccipRouter,
   },
 };
-
-// TODO: remove?
-//
-// export const statuses = {
-//   approval: {
-//     idle: () => ({
-//       enabled: true,
-//       message: defineMessage({ defaultMessage: 'Approve' }),
-//     }),
-//     waitingForSignature: () => ({
-//       enabled: false,
-//       message: defineMessage({
-//         defaultMessage: 'Waiting for signature',
-//       }),
-//     }),
-//     waitingForTransaction: () => ({
-//       enabled: false,
-//       message: defineMessage({ defaultMessage: 'Processing Approval' }),
-//     }),
-//   },
-//   bridge: {
-//     enterAmount: () => ({
-//       enabled: false,
-//       message: defineMessage({ defaultMessage: 'Enter an amount' }),
-//     }),
-//     insufficientAmount: () => ({
-//       enabled: false,
-//       message: defineMessage({ defaultMessage: 'Insufficient amount' }),
-//     }),
-//     disabled: () => ({
-//       enabled: false,
-//       message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
-//     }),
-//     idle: () => ({
-//       enabled: true,
-//       message: defineMessage({ defaultMessage: 'Bridge {symbol}' }),
-//     }),
-//     waitingForSignature: () => ({
-//       enabled: false,
-//       message: defineMessage({
-//         defaultMessage: 'Waiting for signature',
-//       }),
-//     }),
-//     waitingForTransaction: () => ({
-//       enabled: false,
-//       message: defineMessage({
-//         defaultMessage: 'Waiting for transaction',
-//       }),
-//     }),
-//   },
-// };
