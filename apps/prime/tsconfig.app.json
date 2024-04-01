@@ -10,7 +10,7 @@
     ]
   },
   "files": [
-    "../../libs/shared/theme/src/theme.d.ts"
+    "../../libs/prime/theme/src/theme.d.ts"
   ],
   "exclude": [
     "src/**/*.spec.ts",
