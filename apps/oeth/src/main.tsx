@@ -30,6 +30,8 @@ import { WagmiProvider } from 'wagmi';
 import { messages } from './lang';
 import { routes } from './routes';
 
+import type { Theme } from '@mui/material';
+
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
 
@@ -55,7 +57,12 @@ root.render(
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
-      [NotificationsProvider],
+      [
+        NotificationsProvider,
+        {
+          containerProps: { sx: { top: (theme: Theme) => theme.spacing(16) } },
+        },
+      ],
       [ActivityProvider],
       [
         GeoFenceProvider,
