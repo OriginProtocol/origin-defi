@@ -37,7 +37,7 @@ export function SwapRouteCard({
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
     isFetching: swapGasPriceFetching,
-  } = useGasPrice(route.gas, undefined, {
+  } = useGasPrice(route.gas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.gas > 0n,
   });
@@ -45,7 +45,7 @@ export function SwapRouteCard({
     data: approvalGasPrice,
     isLoading: approvalGasPriceLoading,
     isFetching: approvalGasPriceFetching,
-  } = useGasPrice(route.approvalGas, undefined, {
+  } = useGasPrice(route.approvalGas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.approvalGas > 0n,
   });

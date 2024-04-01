@@ -57,7 +57,7 @@ const fetcher: QueryFunction<GasPrice, Key> = async ({
 
 export const useGasPrice = (
   gasAmount = 0n,
-  chainId = mainnet.id,
+  chainId: number | undefined = mainnet.id,
   options?: Partial<UseQueryOptions<GasPrice, Error, GasPrice, Key>>,
 ) => {
   const queryClient = useQueryClient();
