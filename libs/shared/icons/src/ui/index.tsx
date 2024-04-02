@@ -4,6 +4,8 @@ import ActivitySvg from './activity.svg?react';
 import ArrowDownSvg from './arrowDown.svg?react';
 import ArrowDownFromArcSvg from './arrowDownFromArc.svg?react';
 import ArrowUpRightSvg from './arrowUpRight.svg?react';
+import CheckboxSvg from './checkbox.svg?react';
+import CheckboxEmptySvg from './checkboxEmpty.svg?react';
 import CoinsLightSvg from './coinsLight.svg?react';
 import DropdownSvg from './dropdown.svg?react';
 import PendingSvg from './pending.svg?react';
@@ -30,6 +32,12 @@ export const ArrowUpRight = (props: SvgIconProps) => (
     component={ArrowUpRightSvg}
     viewBox="10.67 10.66 10.67 10.67"
   />
+);
+export const Checkbox = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CheckboxSvg} inheritViewBox />
+);
+export const CheckboxEmpty = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CheckboxEmptySvg} inheritViewBox />
 );
 export const CoinsLight = (props: SvgIconProps) => (
   <SvgIcon {...props} component={CoinsLightSvg} viewBox="0 0 16 16" />

@@ -58,6 +58,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
           address: vaultContract.address,
           abi: vaultContract.abi,
           functionName: 'getAllAssets',
+          chainId: vaultContract.chainId,
         });
 
         return assets;
@@ -109,6 +110,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
                 abi: vaultContract.abi,
                 functionName: 'calculateRedeemOutputs',
                 args: [state.amountIn],
+                chainId: vaultContract.chainId,
               }),
           });
         } catch (error) {
@@ -142,7 +144,9 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         }, 0n);
 
         let gasEstimate = 0n;
-        const publicClient = getPublicClient(config);
+        const publicClient = getPublicClient(config, {
+          chainId: vaultContract.chainId,
+        });
         const { address } = getAccount(config);
 
         const minAmountOut = subtractSlippage(

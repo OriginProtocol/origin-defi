@@ -9,7 +9,7 @@
       "vite/client"
     ]
   },
-  "files": ["../../libs/shared/theme/src/theme.d.ts"],
+  "files": ["../../libs/governance/theme/src/theme.d.ts"],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",

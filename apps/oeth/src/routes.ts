@@ -1,3 +1,4 @@
+import { BridgeView } from '@origin/oeth/ccip';
 import { HistoryView } from '@origin/oeth/history';
 import { SwapView } from '@origin/oeth/swap';
 import { NotFoundPage } from '@origin/shared/components';
@@ -22,6 +23,11 @@ export const routes: RouteObject[] = [
         path: '/redeem',
         Component: RedeemView,
         handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
+      },
+      {
+        path: '/bridge',
+        Component: BridgeView,
+        handle: { label: defineMessage({ defaultMessage: 'Bridge' }) },
       },
       {
         path: '/history',

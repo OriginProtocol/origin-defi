@@ -154,10 +154,10 @@ export const VoteDelegationCard = (props: CardProps) => {
                   label={intl.formatMessage({
                     defaultMessage: 'Delegate to self',
                   })}
-                  activityTitle={intl.formatMessage({
+                  notificationTitle={intl.formatMessage({
                     defaultMessage: 'Delegate',
                   })}
-                  activitySubtitle={intl.formatMessage(
+                  notificationSubtitle={intl.formatMessage(
                     {
                       defaultMessage: 'Delegate {balance} veOGV to self',
                     },

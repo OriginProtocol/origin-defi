@@ -5,16 +5,46 @@
       "value": "Staking"
     }
   ],
+  "+3F+BA": [
+    {
+      "type": 0,
+      "value": "veOGV holders"
+    }
+  ],
+  "+7UEXM": [
+    {
+      "type": 0,
+      "value": "My Lock-ups"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
       "value": "max"
     }
   ],
+  "+U6ozc": [
+    {
+      "type": 0,
+      "value": "Type"
+    }
+  ],
+  "+XdNoc": [
+    {
+      "type": 0,
+      "value": "Show breakdown"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
       "value": "Connect"
+    }
+  ],
+  "/23BOU": [
+    {
+      "type": 0,
+      "value": "Pending yield"
     }
   ],
   "/6/sPX": [
@@ -53,10 +83,46 @@
       "value": "Processing Approval"
     }
   ],
+  "0AYOgf": [
+    {
+      "type": 0,
+      "value": "You have accrued "
+    },
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "reward"
+        },
+        {
+          "type": 0,
+          "value": " OGV"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
+    }
+  ],
   "0Go4jI": [
     {
       "type": 0,
       "value": "Swapped"
+    }
+  ],
+  "0STEwK": [
+    {
+      "type": 0,
+      "value": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
+    }
+  ],
+  "0ZAmW8": [
+    {
+      "type": 0,
+      "value": "Swap with Uniswap"
     }
   ],
   "0fR+fE": [
@@ -87,6 +153,12 @@
     {
       "type": 1,
       "value": "defaultChain"
+    }
+  ],
+  "1lkU0S": [
+    {
+      "type": 0,
+      "value": "1y"
     }
   ],
   "1nxJrQ": [
@@ -125,6 +197,18 @@
       "value": "Larger redemptions coming soon"
     }
   ],
+  "3fTTLv": [
+    {
+      "type": 0,
+      "value": "Unstake"
+    }
+  ],
+  "3townk": [
+    {
+      "type": 0,
+      "value": "Max vAPY"
+    }
+  ],
   "45EvZ3": [
     {
       "type": 0,
@@ -151,6 +235,24 @@
       "value": "Your transaction is being processed on-chain."
     }
   ],
+  "4cSnUS": [
+    {
+      "type": 0,
+      "value": "3y"
+    }
+  ],
+  "4cdhFd": [
+    {
+      "type": 0,
+      "value": "Instant"
+    }
+  ],
+  "4ycy0/": [
+    {
+      "type": 0,
+      "value": "Daily yield"
+    }
+  ],
   "5RMD2G": [
     {
       "type": 0,
@@ -161,6 +263,12 @@
     {
       "type": 0,
       "value": "Switch network"
+    }
+  ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
     }
   ],
   "5h3TFE": [
@@ -189,6 +297,62 @@
     {
       "type": 0,
       "value": "OETH price"
+    }
+  ],
+  "5y98eS": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " OGV for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
     }
   ],
   "6GZbSi": [
@@ -221,6 +385,12 @@
       "value": "Insufficient funds"
     }
   ],
+  "6fzXU+": [
+    {
+      "type": 0,
+      "value": "Amount to Stake"
+    }
+  ],
   "6nFK6a": [
     {
       "type": 0,
@@ -233,16 +403,22 @@
       "value": "Voting history"
     }
   ],
+  "71Nfj1": [
+    {
+      "type": 0,
+      "value": "7d earnings"
+    }
+  ],
   "7CPiAt": [
     {
       "type": 0,
       "value": "Redeemed"
     }
   ],
-  "8AtqNm": [
+  "8EhWB4": [
     {
       "type": 0,
-      "value": "OETH Portfolio"
+      "value": "wOETH Transaction history"
     }
   ],
   "8NtrKz": [
@@ -251,10 +427,28 @@
       "value": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
     }
   ],
+  "8UzT6d": [
+    {
+      "type": 0,
+      "value": "CSV"
+    }
+  ],
+  "8Vr/2f": [
+    {
+      "type": 0,
+      "value": "Current Staking vAPY"
+    }
+  ],
   "8XZjyW": [
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -273,6 +467,12 @@
     {
       "type": 0,
       "value": "Last"
+    }
+  ],
+  "9/afiv": [
+    {
+      "type": 0,
+      "value": "Signing"
     }
   ],
   "9ghOJK": [
@@ -331,16 +531,76 @@
       "value": "Redeem via OETH Vault"
     }
   ],
+  "BBCjbl": [
+    {
+      "type": 0,
+      "value": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
+    }
+  ],
+  "BLAy25": [
+    {
+      "type": 0,
+      "value": "Extend"
+    }
+  ],
   "BONcjO": [
     {
       "type": 0,
       "value": "Uniswap V3"
     }
   ],
+  "BY343C": [
+    {
+      "type": 0,
+      "value": "Change"
+    }
+  ],
+  "Bih77e": [
+    {
+      "type": 0,
+      "value": "Total OGV staked"
+    }
+  ],
+  "BorrCB": [
+    {
+      "type": 0,
+      "value": "Voting Power:"
+    }
+  ],
   "C73Nbd": [
     {
       "type": 0,
       "value": "Swap with Curve"
+    }
+  ],
+  "CKr0mb": [
+    {
+      "type": 0,
+      "value": "Locked Tokens Received Now"
+    }
+  ],
+  "CcqmCh": [
+    {
+      "type": 0,
+      "value": "OETH Balance"
+    }
+  ],
+  "Cd75LB": [
+    {
+      "type": 0,
+      "value": "OUSD Transactions"
+    }
+  ],
+  "Cdsqgz": [
+    {
+      "type": 0,
+      "value": "Extended Lock up Ends:"
+    }
+  ],
+  "DBP9Xf": [
+    {
+      "type": 0,
+      "value": "Stablecoin mix"
     }
   ],
   "DKaqyQ": [
@@ -393,6 +653,12 @@
       "value": "Exit"
     }
   ],
+  "EBxIt1": [
+    {
+      "type": 0,
+      "value": "No Lock-ups"
+    }
+  ],
   "EEwopl": [
     {
       "type": 1,
@@ -429,6 +695,12 @@
       "value": "OGV"
     }
   ],
+  "EWw/tK": [
+    {
+      "type": 0,
+      "value": "Apply"
+    }
+  ],
   "EpAQ64": [
     {
       "type": 0,
@@ -443,6 +715,18 @@
       "value": " APY"
     }
   ],
+  "F6lS59": [
+    {
+      "type": 0,
+      "value": "0 months"
+    }
+  ],
+  "FVfYnP": [
+    {
+      "type": 0,
+      "value": "The variable APY currently being earned on staked OGV."
+    }
+  ],
   "GZJpDf": [
     {
       "type": 0,
@@ -455,10 +739,22 @@
       "value": "Get OGV"
     }
   ],
+  "H5+NAX": [
+    {
+      "type": 0,
+      "value": "Balance"
+    }
+  ],
   "H6QzKn": [
     {
       "type": 0,
       "value": "Ethereum network"
+    }
+  ],
+  "HDDJSh": [
+    {
+      "type": 0,
+      "value": "Total accrued rewards"
     }
   ],
   "HlkjJI": [
@@ -477,6 +773,12 @@
     {
       "type": 0,
       "value": "Origin protocol"
+    }
+  ],
+  "IToIaT": [
+    {
+      "type": 0,
+      "value": "Get OETH"
     }
   ],
   "JA3MsG": [
@@ -531,6 +833,18 @@
       "value": "symbol"
     }
   ],
+  "LpWMOQ": [
+    {
+      "type": 0,
+      "value": "No transaction"
+    }
+  ],
+  "MJ2jZQ": [
+    {
+      "type": 0,
+      "value": "Total"
+    }
+  ],
   "MLTKb6": [
     {
       "type": 0,
@@ -547,6 +861,18 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
+    }
+  ],
+  "N5g7Qy": [
+    {
+      "type": 0,
+      "value": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
     }
   ],
   "NNBdoh": [
@@ -579,6 +905,26 @@
       "value": "Your operation has been executed"
     }
   ],
+  "O1F5Cx": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to see your history"
+    }
+  ],
+  "O6UApS": [
+    {
+      "type": 0,
+      "value": "Collect "
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " rewards OGV"
+    }
+  ],
   "OBfWz0": [
     {
       "type": 0,
@@ -589,6 +935,12 @@
     {
       "type": 0,
       "value": "SushiSwap"
+    }
+  ],
+  "OmyPDW": [
+    {
+      "type": 0,
+      "value": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
     }
   ],
   "OwO+Nr": [
@@ -639,6 +991,30 @@
       "value": "Best"
     }
   ],
+  "QW+Q5N": [
+    {
+      "type": 0,
+      "value": "Clear all"
+    }
+  ],
+  "QakQcS": [
+    {
+      "type": 0,
+      "value": "Total OGV buybacks"
+    }
+  ],
+  "Qf27Qg": [
+    {
+      "type": 0,
+      "value": "Connected wallet OETH balance"
+    }
+  ],
+  "Qpksmn": [
+    {
+      "type": 0,
+      "value": "24hr earnings"
+    }
+  ],
   "Qz1fcp": [
     {
       "type": 0,
@@ -667,6 +1043,18 @@
       "value": "First"
     }
   ],
+  "S5tBcz": [
+    {
+      "type": 0,
+      "value": "Stake"
+    }
+  ],
+  "S7CBOR": [
+    {
+      "type": 0,
+      "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
   "SGXihn": [
     {
       "type": 0,
@@ -679,6 +1067,12 @@
       "value": "TVL"
     }
   ],
+  "StkfYK": [
+    {
+      "type": 0,
+      "value": "30d earnings"
+    }
+  ],
   "TrKxvg": [
     {
       "type": 0,
@@ -689,6 +1083,12 @@
     {
       "type": 0,
       "value": "Flipper"
+    }
+  ],
+  "TtRt/7": [
+    {
+      "type": 0,
+      "value": "Lock-up Ends"
     }
   ],
   "TwyMau": [
@@ -761,6 +1161,12 @@
       "value": "Stake to earn rewards"
     }
   ],
+  "W/z9WD": [
+    {
+      "type": 0,
+      "value": "My voting power"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -813,10 +1219,22 @@
       "value": "Swap in and out of OUSD"
     }
   ],
+  "YvbZVM": [
+    {
+      "type": 0,
+      "value": "Time Remaining"
+    }
+  ],
   "ZmLuI/": [
     {
       "type": 0,
       "value": "Rate:"
+    }
+  ],
+  "ZvO1m7": [
+    {
+      "type": 0,
+      "value": "Connect a wallet to see your balance"
     }
   ],
   "aA9zvD": [
@@ -843,6 +1261,12 @@
       "value": "Swap in and out of OETH"
     }
   ],
+  "b0+k6i": [
+    {
+      "type": 0,
+      "value": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
+    }
+  ],
   "b1zuN9": [
     {
       "type": 0,
@@ -867,10 +1291,22 @@
       "value": "Swapping"
     }
   ],
+  "cOB9Jx": [
+    {
+      "type": 0,
+      "value": "Yield"
+    }
+  ],
   "cg1VJ2": [
     {
       "type": 0,
       "value": "Connect Wallet"
+    }
+  ],
+  "d0O17Z": [
+    {
+      "type": 0,
+      "value": "2y"
     }
   ],
   "dUJwm/": [
@@ -895,6 +1331,24 @@
     {
       "type": 0,
       "value": "Staking and rewards history"
+    }
+  ],
+  "e8UIVj": [
+    {
+      "type": 0,
+      "value": "4y"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
+    }
+  ],
+  "fFXn5l": [
+    {
+      "type": 0,
+      "value": "Collect Rewards"
     }
   ],
   "fOUChR": [
@@ -923,10 +1377,66 @@
       "value": "symbolIn"
     }
   ],
+  "fvroLn": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
+  "g+YZVZ": [
+    {
+      "type": 0,
+      "value": "The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
   "gBm7FQ": [
     {
       "type": 0,
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "gcuDcH": [
+    {
+      "type": 0,
+      "value": "Sent"
+    }
+  ],
+  "hKc0hO": [
+    {
+      "type": 0,
+      "value": "Get OUSD"
+    }
+  ],
+  "hZA4Ul": [
+    {
+      "type": 0,
+      "value": "Current Lock-up Ends:"
     }
   ],
   "hccOVh": [
@@ -939,6 +1449,12 @@
     {
       "type": 0,
       "value": "Transaction executed"
+    }
+  ],
+  "i9rSSQ": [
+    {
+      "type": 0,
+      "value": "OGV Rewards Will be Collected"
     }
   ],
   "iGcPXd": [
@@ -957,6 +1473,70 @@
     {
       "type": 0,
       "value": "I have read and agree to the above terms"
+    }
+  ],
+  "j07TC/": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lock-up to "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "duration"
+    }
+  ],
+  "jFZ2w9": [
+    {
+      "type": 0,
+      "value": "OETH Transaction history"
+    }
+  ],
+  "jfexoW": [
+    {
+      "type": 0,
+      "value": "Lock-up Duration"
+    }
+  ],
+  "jngAIm": [
+    {
+      "type": 0,
+      "value": "Extend Stake"
+    }
+  ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
     }
   ],
   "k3YWIR": [
@@ -989,10 +1569,22 @@
       "value": "Approving"
     }
   ],
+  "mVILQT": [
+    {
+      "type": 0,
+      "value": "OUSD Balance"
+    }
+  ],
   "n6nILs": [
     {
       "type": 0,
       "value": "Receive amount"
+    }
+  ],
+  "nV7ezK": [
+    {
+      "type": 0,
+      "value": "Your APY"
     }
   ],
   "nZ1VHG": [
@@ -1037,6 +1629,30 @@
       "value": "Copied"
     }
   ],
+  "p8X0WD": [
+    {
+      "type": 0,
+      "value": "Percentage of total votes"
+    }
+  ],
+  "pGciHf": [
+    {
+      "type": 0,
+      "value": "Buyback history"
+    }
+  ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
+    }
+  ],
+  "qIoHXA": [
+    {
+      "type": 0,
+      "value": "Lifetime earnings"
+    }
+  ],
   "qNe+Iz": [
     {
       "type": 0,
@@ -1049,6 +1665,12 @@
       "value": "User rejected operation"
     }
   ],
+  "qivQ44": [
+    {
+      "type": 0,
+      "value": "Unstake lock-up"
+    }
+  ],
   "qj1uhz": [
     {
       "type": 0,
@@ -1059,6 +1681,18 @@
     {
       "type": 0,
       "value": "Wrap"
+    }
+  ],
+  "rFWd1Y": [
+    {
+      "type": 0,
+      "value": "Lock up Ends:"
+    }
+  ],
+  "rbd1S8": [
+    {
+      "type": 0,
+      "value": "Stake to earn rewards and help govern OETH and OUSD"
     }
   ],
   "riAanx": [
@@ -1079,6 +1713,12 @@
       "value": "Swap"
     }
   ],
+  "sRkHek": [
+    {
+      "type": 0,
+      "value": "OGV rewards available to claim"
+    }
+  ],
   "stTYBM": [
     {
       "type": 0,
@@ -1091,10 +1731,22 @@
       "value": "Transaction error"
     }
   ],
+  "tZtBsJ": [
+    {
+      "type": 0,
+      "value": "Redeem to a mix of stablecoins"
+    }
+  ],
   "tp4nGh": [
     {
       "type": 0,
       "value": "Info page"
+    }
+  ],
+  "u4BAsU": [
+    {
+      "type": 0,
+      "value": "View proposals"
     }
   ],
   "uNOJ2Q": [
@@ -1109,10 +1761,32 @@
       "value": "Unwrap"
     }
   ],
+  "ugjHU2": [
+    {
+      "type": 0,
+      "value": "Select a token"
+    }
+  ],
   "upk2hm": [
     {
       "type": 0,
       "value": "Origin products"
+    }
+  ],
+  "v06At3": [
+    {
+      "type": 0,
+      "value": "Unstaking"
+    }
+  ],
+  "vclhrb": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "balance"
     }
   ],
   "viL6nH": [
@@ -1137,6 +1811,12 @@
     {
       "type": 0,
       "value": "Error while redeeming"
+    }
+  ],
+  "weP/oT": [
+    {
+      "type": 0,
+      "value": "Voting power"
     }
   ],
   "wf1EAp": [
@@ -1175,10 +1855,34 @@
       "value": "Processing transaction"
     }
   ],
+  "yvxbM+": [
+    {
+      "type": 0,
+      "value": "Next Emissions Reduction Event:"
+    }
+  ],
+  "z/wUXE": [
+    {
+      "type": 0,
+      "value": "Received"
+    }
+  ],
   "z1bu+z": [
     {
       "type": 0,
       "value": "Error while swapping"
+    }
+  ],
+  "zC5UyT": [
+    {
+      "type": 0,
+      "value": "Connected wallet OUSD balance"
+    }
+  ],
+  "zSOvI0": [
+    {
+      "type": 0,
+      "value": "Filters"
     }
   ],
   "zmWQIG": [

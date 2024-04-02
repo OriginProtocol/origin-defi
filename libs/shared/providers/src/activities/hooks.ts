@@ -7,13 +7,13 @@ import { groupBy, prop, propEq } from 'ramda';
 
 import { useActivityState } from './state';
 
-import type { Activity, GlobalActivityStatus } from './types';
+import type { Activity, ActivityInput, GlobalActivityStatus } from './types';
 
 export const usePushActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (value: Omit<Activity, 'id' | 'createdOn'>) => {
+    (value: ActivityInput) => {
       const activity = {
         ...value,
         id: Date.now().toString(),
@@ -42,11 +42,8 @@ export const useUpdateActivity = () => {
           produce((state) => {
             const idx = state.activities.findIndex(propEq(activity.id, 'id'));
             if (idx > -1) {
-              state.activities[idx] = {
-                ...state.activities[idx],
-                ...activity,
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              } as any;
+              const existing = state.activities[idx];
+              Object.assign(existing, activity);
             }
           }),
         );
@@ -76,7 +73,7 @@ export const useDeleteActivity = () => {
   );
 };
 
-export const useGlobalStatus = () => {
+export const useActivitiesStatus = () => {
   const [{ activities }] = useActivityState();
   const [status, setStatus] = useState<GlobalActivityStatus>('idle');
   const prev = usePrevious(activities);

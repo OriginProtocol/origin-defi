@@ -17,6 +17,12 @@
       "value": "Connect"
     }
   ],
+  "/0TOL5": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
   "/GCoTA": [
     {
       "type": 0,
@@ -47,6 +53,12 @@
       "value": "Route"
     }
   ],
+  "1Ia8qN": [
+    {
+      "type": 0,
+      "value": "Processing"
+    }
+  ],
   "1VDppm": [
     {
       "type": 0,
@@ -75,6 +87,12 @@
     {
       "type": 0,
       "value": "Return to Home Page"
+    }
+  ],
+  "2CoE53": [
+    {
+      "type": 0,
+      "value": "Powered by Chainlink CCIP"
     }
   ],
   "45EvZ3": [
@@ -121,6 +139,12 @@
       "value": "Switch network"
     }
   ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
@@ -163,6 +187,12 @@
       "value": "There was an error while loading this component, you can try to reload."
     }
   ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
+    }
+  ],
   "8cCxx8": [
     {
       "type": 0,
@@ -187,10 +217,22 @@
       "value": "Lifetime Earnings (OETH)"
     }
   ],
+  "9j3hXO": [
+    {
+      "type": 0,
+      "value": "To"
+    }
+  ],
   "9lt7g1": [
     {
       "type": 0,
       "value": "Discord support channel"
+    }
+  ],
+  "A9UqOc": [
+    {
+      "type": 0,
+      "value": "Est. time"
     }
   ],
   "ASNc/h": [
@@ -211,6 +253,12 @@
     {
       "type": 1,
       "value": "lastPage"
+    }
+  ],
+  "BB94QK": [
+    {
+      "type": 0,
+      "value": "Bridging activity"
     }
   ],
   "BY343C": [
@@ -323,6 +371,12 @@
       "value": "Operation Cancelled"
     }
   ],
+  "JkjhX0": [
+    {
+      "type": 0,
+      "value": "No activity yet."
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
@@ -359,6 +413,12 @@
       "value": "No transaction"
     }
   ],
+  "LxxUDn": [
+    {
+      "type": 0,
+      "value": "Tx"
+    }
+  ],
   "MSTVqC": [
     {
       "type": 0,
@@ -369,6 +429,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
     }
   ],
   "NXFAgE": [
@@ -387,6 +453,12 @@
     {
       "type": 0,
       "value": "Your operation has been executed"
+    }
+  ],
+  "NhHJRb": [
+    {
+      "type": 0,
+      "value": "Insufficient amount"
     }
   ],
   "O1F5Cx": [
@@ -411,6 +483,12 @@
     {
       "type": 0,
       "value": "Mint with Vault"
+    }
+  ],
+  "P7PLVj": [
+    {
+      "type": 0,
+      "value": "Date"
     }
   ],
   "PKgDoL": [
@@ -451,6 +529,12 @@
     {
       "type": 0,
       "value": "First"
+    }
+  ],
+  "SM1qll": [
+    {
+      "type": 0,
+      "value": "Router"
     }
   ],
   "TrKxvg": [
@@ -557,6 +641,18 @@
       "value": "Show more"
     }
   ],
+  "bh6lBg": [
+    {
+      "type": 0,
+      "value": "You will receive"
+    }
+  ],
+  "bjLKH/": [
+    {
+      "type": 0,
+      "value": "Chainlink CCIP"
+    }
+  ],
   "c31Feo": [
     {
       "type": 0,
@@ -575,6 +671,12 @@
       "value": "Connect Wallet"
     }
   ],
+  "dM+p3/": [
+    {
+      "type": 0,
+      "value": "From"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -591,6 +693,18 @@
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "e+yfm6": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to see your balances"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
     }
   ],
   "fMe6+p": [
@@ -647,6 +761,12 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -657,6 +777,12 @@
     {
       "type": 0,
       "value": "30-Day Trailing APY"
+    }
+  ],
+  "lgy8my": [
+    {
+      "type": 0,
+      "value": "Transferred"
     }
   ],
   "lozEho": [
@@ -681,6 +807,12 @@
     {
       "type": 0,
       "value": "Copied"
+    }
+  ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
     }
   ],
   "qNe+Iz": [
@@ -731,10 +863,38 @@
       "value": "IPFS"
     }
   ],
+  "tzMNF3": [
+    {
+      "type": 0,
+      "value": "Status"
+    }
+  ],
+  "u0A7z1": [
+    {
+      "type": 0,
+      "value": "Your wOETH balances"
+    }
+  ],
   "uaols3": [
     {
       "type": 0,
       "value": "Unwrap"
+    }
+  ],
+  "vLIiaK": [
+    {
+      "type": 0,
+      "value": "Bridge "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "vXCeIi": [
+    {
+      "type": 0,
+      "value": "Failed"
     }
   ],
   "vugtF7": [
@@ -779,6 +939,28 @@
       "value": "Restricted Access"
     }
   ],
+  "yWb29t": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "from"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "to"
+    },
+    {
+      "type": 0,
+      "value": " minutes"
+    }
+  ],
   "yphS5C": [
     {
       "type": 0,
@@ -801,6 +983,20 @@
     {
       "type": 0,
       "value": "Filters"
+    }
+  ],
+  "zWTM5F": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "remaining"
+    },
+    {
+      "type": 0,
+      "value": " mins left"
     }
   ],
   "zbaTLV": [

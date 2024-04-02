@@ -1,3 +1,3 @@
-export * from './views/PortfolioView';
-export * from './views/RedeemView';
+export * from './portfolio';
+export * from './redeem';
 export * from './swap';

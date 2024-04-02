@@ -8,6 +8,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { ExternalLink, TokenIcon, WalletIcon } from '@origin/shared/components';
+import { addressLink } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
@@ -27,10 +28,11 @@ interface Props {
 export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
   const intl = useIntl();
   const theme = useTheme();
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected, connector, chain } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: balances, isLoading: balancesLoading } =
-    useWatchBalances(balanceTokens);
+  const { data: balances, isLoading: balancesLoading } = useWatchBalances({
+    tokens: balanceTokens ?? [],
+  });
 
   function close() {
     setAnchor(null);
@@ -91,7 +93,7 @@ export function AccountPopover({ anchor, setAnchor, balanceTokens }: Props) {
             walletName={connector?.name}
             sx={{ width: 20, height: 20, mr: 1.5 }}
           />
-          <ExternalLink href={`https://etherscan.io/address/${address}`}>
+          <ExternalLink href={addressLink(chain, address)}>
             <AddressLabel address={address} short />
           </ExternalLink>
         </Stack>

@@ -1,43 +1,47 @@
 import { useState } from 'react';
 
-import { IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import { ActivityIcon } from '@origin/shared/components';
 
-import { useGlobalStatus } from '../hooks';
+import { useActivitiesStatus } from '../hooks';
 import { ActivityPopover } from './ActivityPopover';
 
-import type { IconButtonProps } from '@mui/material';
-import type { MouseEvent } from 'react';
+import type { ButtonProps } from '@mui/material';
+import type { MouseEvent, ReactNode } from 'react';
 
-export const ActivityButton = (props: Omit<IconButtonProps, 'children'>) => {
+export type ActivityButtonProps = {
+  activityIcon?: ReactNode;
+  iconSize?: number;
+} & Omit<ButtonProps, 'children'>;
+
+export const ActivityButton = ({
+  activityIcon,
+  iconSize = 24,
+  ...rest
+}: ActivityButtonProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
-  const status = useGlobalStatus();
+  const status = useActivitiesStatus();
 
   const handleClick = (evt: MouseEvent<HTMLButtonElement>) => {
-    if (props?.onClick) {
-      props.onClick(evt);
-    }
+    rest?.onClick?.(evt);
     setAnchorEl(evt.currentTarget);
   };
 
   return (
     <>
-      <IconButton
-        {...props}
+      <Button
+        {...rest}
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
           svg: {
-            height: 24,
-            width: 24,
+            height: iconSize,
+            width: iconSize,
           },
-          ...props?.sx,
+          ...rest?.sx,
         }}
         onClick={handleClick}
       >
-        <ActivityIcon status={status} />
-      </IconButton>
+        <ActivityIcon status={status} iconMapping={{ idle: activityIcon }} />
+      </Button>
       <ActivityPopover anchor={anchorEl} setAnchor={setAnchorEl} />
     </>
   );

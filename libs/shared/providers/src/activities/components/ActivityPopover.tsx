@@ -13,13 +13,14 @@ import { useIntl } from 'react-intl';
 
 import { useActivityState } from '../state';
 import { ApprovalNotification } from './ApprovalNotification';
+import { BridgeNotification } from './BridgeNotification';
 import { RedeemNotification } from './RedeemNotification';
 import { SwapNotification } from './SwapNotification';
 import { TransactionNotification } from './TransactionNotification';
 
 import type { StackProps } from '@mui/material';
 
-import type { Activity } from '../types';
+import type { Activity, SwapActivity } from '../types';
 
 export type AcitivityPopoverProps = {
   anchor: HTMLElement | null;
@@ -113,6 +114,13 @@ export const ActivityPopover = ({
                       sx={{ px: 3, py: 2 }}
                     />
                   ),
+                  bridge: (
+                    <BridgeNotification
+                      key={a.id}
+                      {...a}
+                      sx={{ px: 3, py: 2 }}
+                    />
+                  ),
                   redeem: (
                     <RedeemNotification
                       key={a.id}
@@ -128,12 +136,12 @@ export const ActivityPopover = ({
                       key={a.id}
                       {...a}
                       title={
-                        a?.title ??
+                        (a as SwapActivity)?.title ??
                         intl.formatMessage({
                           defaultMessage: 'New transaction',
                         })
                       }
-                      subtitle={a?.subtitle ?? ''}
+                      subtitle={(a as SwapActivity)?.subtitle ?? ''}
                       sx={{ px: 3, py: 2 }}
                     />
                   ),

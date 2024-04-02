@@ -107,6 +107,9 @@
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
+  "5adJBo": {
+    "defaultMessage": "Select token"
+  },
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
@@ -154,6 +157,9 @@
   },
   "8Y0yUM": {
     "defaultMessage": "Snapshot"
+  },
+  "8YcGAy": {
+    "defaultMessage": "Bridge Started"
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
@@ -304,6 +310,9 @@
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "MZCNjq": {
+    "defaultMessage": "Bridge"
   },
   "N5g7Qy": {
     "defaultMessage": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
@@ -503,6 +512,9 @@
   "eOs6lG": {
     "defaultMessage": "My Voting Power"
   },
+  "fBhctx": {
+    "defaultMessage": "Download CSV"
+  },
   "fFXn5l": {
     "defaultMessage": "Collect Rewards"
   },
@@ -554,6 +566,9 @@
   "jngAIm": {
     "defaultMessage": "Extend Stake"
   },
+  "jvnqxK": {
+    "defaultMessage": "Bridging"
+  },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
@@ -589,6 +604,9 @@
   },
   "pSYtOY": {
     "defaultMessage": "Delegate {votingPower} veOGV to {delegatee}"
+  },
+  "pYbH7c": {
+    "defaultMessage": "Error while bridging"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"

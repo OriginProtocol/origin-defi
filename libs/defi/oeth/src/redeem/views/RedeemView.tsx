@@ -1,26 +1,24 @@
-import { Container, Tab, Tabs } from '@mui/material';
+import { Container } from '@mui/material';
 import { PageTitle } from '@origin/defi/shared';
-import { OETH } from '@origin/shared/icons';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-import { oethRedeemRoute } from '../routes';
+import { Outlet } from 'react-router-dom';
 
 export const RedeemView = () => {
   const intl = useIntl();
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="sm">
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
           defaultMessage: 'Request redemptions to ETH or a mix of LSTs',
         })}
-        icon={OETH}
+        token={tokens.mainnet.OETH}
       />
-      <Tabs
+      {/* <Tabs
         centered
         value={location.pathname}
         onChange={(_, value) => {
@@ -41,7 +39,7 @@ export const RedeemView = () => {
             />
           );
         })}
-      </Tabs>
+      </Tabs> */}
       <Outlet />
     </Container>
   );

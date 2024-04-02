@@ -1,0 +1,20 @@
+query OgvLockups($address: String!) {
+  ogvLockups(
+    where: {
+      address: { id_containsInsensitive: $address }
+      logs_none: { event_eq: Unstaked }
+    }
+    orderBy: end_ASC
+  ) {
+    id
+    lockupId
+    amount
+    end
+    veogv
+    timestamp
+    logs(orderBy: timestamp_DESC, limit: 1) {
+      event
+      hash
+    }
+  }
+}

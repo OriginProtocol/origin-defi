@@ -8,6 +8,9 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
+  "/0TOL5": {
+    "defaultMessage": "Amount"
+  },
   "/GCoTA": {
     "defaultMessage": "Clear"
   },
@@ -23,6 +26,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "1Ia8qN": {
+    "defaultMessage": "Processing"
+  },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
@@ -31,6 +37,9 @@
   },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
+  },
+  "2CoE53": {
+    "defaultMessage": "Powered by Chainlink CCIP"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -49,6 +58,9 @@
   },
   "5X3I7d": {
     "defaultMessage": "Switch network"
+  },
+  "5adJBo": {
+    "defaultMessage": "Select token"
   },
   "5h3TFE": {
     "defaultMessage": "I agree"
@@ -71,6 +83,9 @@
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
+  "8YcGAy": {
+    "defaultMessage": "Bridge Started"
+  },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
@@ -83,14 +98,23 @@
   "9iP/A8": {
     "defaultMessage": "Lifetime Earnings (OETH)"
   },
+  "9j3hXO": {
+    "defaultMessage": "To"
+  },
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
+  },
+  "A9UqOc": {
+    "defaultMessage": "Est. time"
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "BB94QK": {
+    "defaultMessage": "Bridging activity"
   },
   "BY343C": {
     "defaultMessage": "Change"
@@ -131,6 +155,9 @@
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
   },
+  "JkjhX0": {
+    "defaultMessage": "No activity yet."
+  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
@@ -149,11 +176,17 @@
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
+  "LxxUDn": {
+    "defaultMessage": "Tx"
+  },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "MZCNjq": {
+    "defaultMessage": "Bridge"
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -163,6 +196,9 @@
   },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
+  },
+  "NhHJRb": {
+    "defaultMessage": "Insufficient amount"
   },
   "O1F5Cx": {
     "defaultMessage": "Connect your wallet to see your history"
@@ -175,6 +211,9 @@
   },
   "Ozw3aL": {
     "defaultMessage": "Mint with Vault"
+  },
+  "P7PLVj": {
+    "defaultMessage": "Date"
   },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
@@ -193,6 +232,9 @@
   },
   "S45aoc": {
     "defaultMessage": "First"
+  },
+  "SM1qll": {
+    "defaultMessage": "Router"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -236,6 +278,12 @@
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
+  "bh6lBg": {
+    "defaultMessage": "You will receive"
+  },
+  "bjLKH/": {
+    "defaultMessage": "Chainlink CCIP"
+  },
   "c31Feo": {
     "defaultMessage": "Swapping"
   },
@@ -245,6 +293,9 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
+  "dM+p3/": {
+    "defaultMessage": "From"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
@@ -253,6 +304,12 @@
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "e+yfm6": {
+    "defaultMessage": "Connect your wallet to see your balances"
+  },
+  "fBhctx": {
+    "defaultMessage": "Download CSV"
   },
   "fMe6+p": {
     "defaultMessage": "We're working to simplify and strengthen OETH, using LSTs to mint is disabled. {link}"
@@ -275,11 +332,17 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
+  "jvnqxK": {
+    "defaultMessage": "Bridging"
+  },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
   "kF1zxQ": {
     "defaultMessage": "30-Day Trailing APY"
+  },
+  "lgy8my": {
+    "defaultMessage": "Transferred"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -292,6 +355,9 @@
   },
   "p556q3": {
     "defaultMessage": "Copied"
+  },
+  "pYbH7c": {
+    "defaultMessage": "Error while bridging"
   },
   "qNe+Iz": {
     "defaultMessage": "Wrap with Origin"
@@ -317,8 +383,20 @@
   "tio9Gt": {
     "defaultMessage": "IPFS"
   },
+  "tzMNF3": {
+    "defaultMessage": "Status"
+  },
+  "u0A7z1": {
+    "defaultMessage": "Your wOETH balances"
+  },
   "uaols3": {
     "defaultMessage": "Unwrap"
+  },
+  "vLIiaK": {
+    "defaultMessage": "Bridge {symbol}"
+  },
+  "vXCeIi": {
+    "defaultMessage": "Failed"
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
@@ -341,6 +419,9 @@
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
+  "yWb29t": {
+    "defaultMessage": "~{from} to {to} minutes"
+  },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
   },
@@ -352,6 +433,9 @@
   },
   "zSOvI0": {
     "defaultMessage": "Filters"
+  },
+  "zWTM5F": {
+    "defaultMessage": "~{remaining} mins left"
   },
   "zbaTLV": {
     "defaultMessage": "View on IPFS"

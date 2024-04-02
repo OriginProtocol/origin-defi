@@ -34,8 +34,9 @@ export const TokenSelectModal = ({
   ...rest
 }: TokenSelectModalProps) => {
   const intl = useIntl();
-  const { data: balances, isLoading: isBalancesLoading } =
-    useWatchBalances(tokens);
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens,
+  });
 
   const sortedTokens = sortWith<TokenOption>([
     ascend((t) => !['ETH', 'WETH'].includes(t.symbol)),

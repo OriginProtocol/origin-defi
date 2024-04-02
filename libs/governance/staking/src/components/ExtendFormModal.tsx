@@ -487,8 +487,10 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           disabled={stakeDisabled}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
-          activityTitle={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
-          activitySubtitle={intl.formatMessage(
+          notificationTitle={intl.formatMessage({
+            defaultMessage: 'Extend Stake',
+          })}
+          notificationSubtitle={intl.formatMessage(
             {
               defaultMessage:
                 'Extend lock-up to {duration,plural,=1{# month} other{# months}}',
@@ -497,7 +499,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               duration,
             },
           )}
-          activityEndIcon={
+          notificationEndIcon={
             <TokenIcon
               token={tokens.mainnet.veOGV}
               sx={{ transform: 'translateY(4px)' }}

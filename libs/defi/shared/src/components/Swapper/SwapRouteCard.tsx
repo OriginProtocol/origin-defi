@@ -37,7 +37,7 @@ export function SwapRouteCard({
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
     isFetching: swapGasPriceFetching,
-  } = useGasPrice(route.gas, {
+  } = useGasPrice(route.gas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.gas > 0n,
   });
@@ -45,7 +45,7 @@ export function SwapRouteCard({
     data: approvalGasPrice,
     isLoading: approvalGasPriceLoading,
     isFetching: approvalGasPriceFetching,
-  } = useGasPrice(route.approvalGas, {
+  } = useGasPrice(route.approvalGas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.approvalGas > 0n,
   });
@@ -78,7 +78,7 @@ export function SwapRouteCard({
         boxShadow: 'none',
         height: 1,
         borderWidth: 1,
-        borderColor: 'grey.800',
+        borderColor: 'divider',
         '&:hover': {
           borderColor: 'primary.main',
         },

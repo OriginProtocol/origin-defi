@@ -12,6 +12,7 @@ import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { produce } from 'immer';
 import { uniq } from 'ramda';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import {
@@ -29,7 +30,7 @@ import { useRedeemState } from './state';
 
 import type { TransactionReceipt } from 'viem';
 
-export const useHandleAmountInChange = () => {
+export const useHandleRedeemAmountInChange = () => {
   const [, setRedeemState] = useRedeemState();
 
   return useCallback(
@@ -98,6 +99,7 @@ export const useHandleRedeem = () => {
         functionName: 'redeem',
         args: [amountIn, minAmountOut],
         gas: gas + (gas * gasBuffer) / 100n,
+        chainId: vaultContract.chainId,
       });
       const hash = await writeContract(config, request);
       setRedeemState(
@@ -212,4 +214,26 @@ export const useRedeemerPrices = () => {
   ]);
 
   return useTokenPrices(keys);
+};
+
+export const useMixTokenPrice = () => {
+  const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
+  const [{ split, isEstimateLoading }] = useRedeemState();
+
+  const [total, price] =
+    isPricesLoading || isEstimateLoading || isNilOrEmpty(prices)
+      ? [0, 0]
+      : split.reduce(
+          (acc, curr) => {
+            const val = +formatUnits(curr.amount, curr.token.decimals);
+
+            return [
+              acc[0] + val,
+              acc[1] + val * (prices?.[getTokenPriceKey(curr.token)] ?? 0),
+            ];
+          },
+          [0, 0],
+        );
+
+  return total > 0 ? price / total : 0;
 };

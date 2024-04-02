@@ -1,4 +1,4 @@
-import { Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { RebaseBanner, useCurve, useTxTracker } from '@origin/shared/providers';
@@ -25,15 +25,7 @@ export const App = () => {
         <Stack minWidth={370}>
           <Topnav />
           <RebaseBanner />
-          <Container
-            sx={{
-              mt: 3,
-              mb: 10,
-            }}
-            maxWidth="sm"
-          >
-            <Outlet />
-          </Container>
+          <Outlet />
         </Stack>
       </TrackingProvider>
     </ErrorBoundary>
