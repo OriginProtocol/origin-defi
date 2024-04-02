@@ -1,14 +1,13 @@
 import { alpha, createTheme, lighten } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
 import {
+  Checkbox,
+  CheckboxEmpty,
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
   FaCircleInfoRegular,
   FaCircleXmarkRegular,
 } from '@origin/shared/icons';
-
-import { CheckboxIcon } from './components/CheckboxIcon';
-import { EmptyCheckbox } from './components/EmptyCheckbox';
 
 const base = createTheme();
 
@@ -407,8 +406,8 @@ export const theme = createTheme({
     },
     MuiCheckbox: {
       defaultProps: {
-        checkedIcon: <CheckboxIcon />,
-        icon: <EmptyCheckbox />,
+        checkedIcon: <Checkbox />,
+        icon: <CheckboxEmpty />,
       },
       styleOverrides: {
         root: ({ theme }) => ({

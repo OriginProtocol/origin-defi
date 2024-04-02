@@ -10,6 +10,7 @@ import {
   registerSentry,
   wagmiConfig,
 } from '@origin/oeth/shared';
+import { theme } from '@origin/oeth/theme';
 import {
   ActivityProvider,
   GeoFenceProvider,
@@ -19,7 +20,6 @@ import {
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
-import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';

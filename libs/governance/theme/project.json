@@ -1,13 +1,12 @@
 {
-  "name": "shared-theme",
+  "name": "governance-theme",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/theme/src",
+  "sourceRoot": "libs/governance/theme/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nx/eslint:lint",
-      "outputs": ["{options.outputFile}"]
+      "executor": "@nx/eslint:lint"
     }
   }
 }

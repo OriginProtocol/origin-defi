@@ -5,10 +5,10 @@
     "types": [
       "node",
       "@nx/react/typings/cssmodule.d.ts",
-      "@nx/react/typings/image.d.ts",
-      "../../../libs/shared/theme/src/theme.d.ts"
+      "@nx/react/typings/image.d.ts"
     ]
   },
+  "files": ["../theme/src/theme.d.ts"],
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",
