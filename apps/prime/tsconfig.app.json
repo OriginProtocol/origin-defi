@@ -9,9 +9,6 @@
       "vite/client"
     ]
   },
-  "files": [
-    "../../libs/prime/theme/src/theme.d.ts"
-  ],
   "exclude": [
     "src/**/*.spec.ts",
     "src/**/*.test.ts",
