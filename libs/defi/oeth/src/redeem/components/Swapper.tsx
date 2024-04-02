@@ -21,6 +21,7 @@ import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
+  isNativeCurrency,
   SettingsButton,
   SwapNotification,
   SwapProvider,
@@ -29,7 +30,6 @@ import {
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
-  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSwapperPrices,
@@ -203,12 +203,11 @@ function SwapperWrapped({
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
+    token: tokenIn,
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
-  const isNativeCurrency = useIsNativeCurrency();
 
   const estimatedAmount = +formatUnits(
     selectedSwapRoute?.estimatedAmount ?? 0n,
@@ -363,6 +362,7 @@ function SwapperWrapped({
               variant="action"
               disabled={swapButtonDisabled}
               onClick={handleSwap}
+              targetChainId={tokenIn.chainId}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />

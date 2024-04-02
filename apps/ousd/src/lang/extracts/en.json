@@ -47,6 +47,9 @@
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
+  "5adJBo": {
+    "defaultMessage": "Select token"
+  },
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
@@ -67,6 +70,9 @@
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
+  },
+  "8YcGAy": {
+    "defaultMessage": "Bridge Started"
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
@@ -149,6 +155,9 @@
   "MW9FHt": {
     "defaultMessage": "Ooops..."
   },
+  "MZCNjq": {
+    "defaultMessage": "Bridge"
+  },
   "NNBdoh": {
     "defaultMessage": "Uniswap V2"
   },
@@ -209,6 +218,9 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
+  "VRMwcI": {
+    "defaultMessage": "The selected network is not supported by {sectionName}."
+  },
   "Vn/9nH": {
     "defaultMessage": "Est gas:"
   },
@@ -257,6 +269,9 @@
   "f0gqO4": {
     "defaultMessage": "Lifetime Earnings (OUSD)"
   },
+  "fBhctx": {
+    "defaultMessage": "Download CSV"
+  },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
   },
@@ -274,6 +289,9 @@
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
+  },
+  "jvnqxK": {
+    "defaultMessage": "Bridging"
   },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
@@ -296,6 +314,9 @@
   "p556q3": {
     "defaultMessage": "Copied"
   },
+  "pYbH7c": {
+    "defaultMessage": "Error while bridging"
+  },
   "qNe+Iz": {
     "defaultMessage": "Wrap with Origin"
   },
@@ -310,6 +331,9 @@
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
+  },
+  "sp7Hxk": {
+    "defaultMessage": "Switch to {chain}"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."

@@ -165,10 +165,10 @@ function VoteCard({
             variant="outlined"
             color={color}
             label={label}
-            activityTitle={intl.formatMessage({
+            notificationTitle={intl.formatMessage({
               defaultMessage: 'Cast vote',
             })}
-            activitySubtitle={intl.formatMessage(
+            notificationSubtitle={intl.formatMessage(
               {
                 defaultMessage: 'Vote {choice} on proposal {proposalId}',
               },

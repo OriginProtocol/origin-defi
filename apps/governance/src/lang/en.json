@@ -261,6 +261,12 @@
       "value": "Switch network"
     }
   ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
@@ -405,6 +411,12 @@
     {
       "type": 0,
       "value": "Snapshot"
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -755,6 +767,12 @@
       "value": "Ooops..."
     }
   ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
+    }
+  ],
   "N5g7Qy": [
     {
       "type": 0,
@@ -1069,6 +1087,20 @@
       "value": "Finding the best route..."
     }
   ],
+  "VRMwcI": [
+    {
+      "type": 0,
+      "value": "The selected network is not supported by "
+    },
+    {
+      "type": 1,
+      "value": "sectionName"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -1287,6 +1319,12 @@
       "value": "My Voting Power"
     }
   ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
+    }
+  ],
   "fFXn5l": [
     {
       "type": 0,
@@ -1457,6 +1495,12 @@
       "value": "Extend Stake"
     }
   ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -1553,6 +1597,12 @@
       "value": "delegatee"
     }
   ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
+    }
+  ],
   "qQ/SRd": [
     {
       "type": 0,
@@ -1587,6 +1637,16 @@
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sp7Hxk": [
+    {
+      "type": 0,
+      "value": "Switch to "
+    },
+    {
+      "type": 1,
+      "value": "chain"
     }
   ],
   "stTYBM": [

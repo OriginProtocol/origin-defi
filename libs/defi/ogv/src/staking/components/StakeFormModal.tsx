@@ -444,7 +444,7 @@ export const StakeFormModal = (props: DialogProps) => {
         <Collapse in={showApprove}>
           <ApprovalButton
             token={tokens.mainnet.OGV}
-            spender={tokens.mainnet.veOGV}
+            spender={tokens.mainnet.veOGV.address}
             amount={amount}
             variant="action"
             fullWidth
@@ -468,8 +468,10 @@ export const StakeFormModal = (props: DialogProps) => {
               ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
               : intl.formatMessage({ defaultMessage: 'Stake' })
           }
-          activityTitle={intl.formatMessage({ defaultMessage: 'Stake OGV' })}
-          activitySubtitle={intl.formatMessage(
+          notificationTitle={intl.formatMessage({
+            defaultMessage: 'Stake OGV',
+          })}
+          notificationSubtitle={intl.formatMessage(
             {
               defaultMessage:
                 'Lock {amount} OGV for {duration,plural,=1{# month} other{# months}}',
@@ -482,7 +484,7 @@ export const StakeFormModal = (props: DialogProps) => {
               duration,
             },
           )}
-          activityEndIcon={
+          notificationEndIcon={
             <TokenIcon
               token={tokens.mainnet.veOGV}
               sx={{ width: 28, transform: 'translateY(4px)' }}

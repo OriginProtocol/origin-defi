@@ -20,11 +20,13 @@ import {
   SeverityIcon,
   TokenInput2,
 } from '@origin/shared/components';
+import { getTokenId } from '@origin/shared/contracts';
 import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
+  isNativeCurrency,
   SettingsButton,
   SwapNotification,
   SwapProvider,
@@ -35,7 +37,6 @@ import {
   useHandleSwap,
   useHandleTokenChange,
   useHandleTokenFlip,
-  useIsNativeCurrency,
   usePushActivity,
   usePushNotification,
   useSlippage,
@@ -44,7 +45,7 @@ import {
   useSwapState,
   useTokenOptions,
   useUpdateActivity,
-  useWatchBalance,
+  useWatchBalances,
 } from '@origin/shared/providers';
 import {
   formatError,
@@ -220,19 +221,14 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [tokenIn, tokenOut],
   });
-  const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
-  const isNativeCurrency = useIsNativeCurrency();
 
   const handleCloseSelectionModal = () => {
     setTokenSource(null);
@@ -245,15 +241,15 @@ function SwapperWrapped({
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
-    !isBalTokenInLoading &&
-    (balTokenIn as unknown as bigint) >= amountIn &&
+    !isBalancesLoading &&
+    (balances?.[getTokenId(tokenIn)] ?? 0n) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
     (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
     (allowance ?? 0n) < amountIn;
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > (balTokenIn as unknown as bigint)
+      : amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : !isNilOrEmpty(selectedSwapRoute)
           ? intl.formatMessage(
@@ -268,15 +264,15 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isApprovalLoading ||
     isApprovalWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint);
+    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n);
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
-    isBalTokenInLoading ||
+    isBalancesLoading ||
     isSwapRoutesLoading ||
     isSwapLoading ||
     isSwapWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint) ||
+    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n) ||
     amountIn === 0n;
 
   return (
@@ -296,8 +292,8 @@ function SwapperWrapped({
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
-              balance={balTokenIn}
-              isBalanceLoading={isBalTokenInLoading}
+              balance={balances?.[getTokenId(tokenIn)] ?? 0n}
+              isBalanceLoading={isBalancesLoading}
               isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
               onTokenClick={() => {
@@ -317,9 +313,9 @@ function SwapperWrapped({
               readOnly
               amount={amountOut}
               decimals={tokenOut.decimals}
-              balance={balTokenOut}
+              balance={balances?.[getTokenId(tokenOut)] ?? 0n}
               isAmountLoading={isSwapRoutesLoading}
-              isBalanceLoading={isBalTokenOutLoading}
+              isBalanceLoading={isBalancesLoading}
               isNativeCurrency={isNativeCurrency(tokenOut)}
               token={tokenOut}
               onTokenClick={() => {

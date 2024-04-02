@@ -3,6 +3,7 @@ import { SvgIcon } from '@mui/material';
 import AaveFullSvg from './aave-full.svg?react';
 import AuraFullWebp from './aura-full.webp';
 import BalancerFullSvg from './balancer-full.svg?react';
+import ChainlinkCCIPSvg from './chainlink-ccip.svg?react';
 import CompoundFullSvg from './compound-full.svg?react';
 import ConvexFullSvg from './convex-full.svg?react';
 import CRVWebp from './curve.webp';
@@ -76,4 +77,11 @@ export const Snapshot = (props: SvgIconProps) => (
 );
 export const Uniswap = (props: SvgIconProps) => (
   <SvgIcon {...props} component={UniswapSvg} inheritViewBox />
+);
+export const ChainlinkCCIP = (props: SvgIconProps) => (
+  <SvgIcon
+    {...props}
+    component={ChainlinkCCIPSvg}
+    viewBox="0 0 113.44 130.99"
+  />
 );

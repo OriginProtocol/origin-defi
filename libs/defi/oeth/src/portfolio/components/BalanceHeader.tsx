@@ -19,7 +19,7 @@ export const BalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet.OETH.address,
+    token: tokens.mainnet.OETH,
   });
 
   return (

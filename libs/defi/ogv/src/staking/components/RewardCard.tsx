@@ -56,10 +56,10 @@ export const RewardCard = (props: CardProps) => {
             variant="outlined"
             color="primary"
             disabled={info?.veOgvRewards === 0n}
-            activityTitle={intl.formatMessage({
+            notificationTitle={intl.formatMessage({
               defaultMessage: 'Collect Rewards',
             })}
-            activitySubtitle={intl.formatMessage(
+            notificationSubtitle={intl.formatMessage(
               {
                 defaultMessage: 'Collect {rewards} rewards OGV',
               },

@@ -6,7 +6,6 @@ import {
   formatError,
   isNilOrEmpty,
   isUserRejected,
-  ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { erc20Abi } from 'viem';
@@ -28,30 +27,35 @@ import {
   usePushNotification,
 } from '../../notifications';
 
-import type { ButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { HexAddress } from '@origin/shared/utils';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity } from '../../activities';
+import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type ApprovalButtonProps = {
   token: Token;
-  spender: Token;
+  spender: HexAddress;
   amount: bigint;
   label?: string;
+  waitingSignatureLabel?: string;
+  waitingTxLabel?: string;
   onClick?: () => void;
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
   disableActivity?: boolean;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick'>;
+} & Omit<ConnectedButtonProps, 'onClick'>;
 
 export const ApprovalButton = ({
   token,
   spender,
   amount,
   label,
+  waitingSignatureLabel,
+  waitingTxLabel,
   onClick,
   onSuccess,
   onError,
@@ -75,7 +79,8 @@ export const ApprovalButton = ({
     address: token.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [spender?.address ?? ZERO_ADDRESS, amount],
+    args: [spender, amount],
+    chainId: token.chainId,
     query: {
       enabled: isConnected && amount > 0n && !disabled,
     },
@@ -85,6 +90,7 @@ export const ApprovalButton = ({
     data: hash,
     error: writeError,
     isPending: isWriteLoading,
+    reset: resetWriteContract,
   } = useWriteContract();
   const {
     data: approvalData,
@@ -121,7 +127,7 @@ export const ApprovalButton = ({
       !done.current
     ) {
       onSuccess?.(approvalData as TransactionReceipt);
-      if (!disableActivity) {
+      if (!disableActivity && activity) {
         updateActivity({
           ...activity,
           status: 'success',
@@ -143,6 +149,7 @@ export const ApprovalButton = ({
           ),
         });
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
@@ -156,6 +163,7 @@ export const ApprovalButton = ({
     notifId,
     onSuccess,
     pushNotification,
+    resetWriteContract,
     updateActivity,
   ]);
 
@@ -189,7 +197,7 @@ export const ApprovalButton = ({
         if (writeError) {
           onError?.(writeError);
         }
-        if (!disableActivity) {
+        if (!disableActivity && activity) {
           updateActivity({
             ...activity,
             status: 'error',
@@ -208,6 +216,7 @@ export const ApprovalButton = ({
           });
         }
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
@@ -221,6 +230,7 @@ export const ApprovalButton = ({
     onError,
     onUserReject,
     pushNotification,
+    resetWriteContract,
     updateActivity,
     writeError,
   ]);
@@ -233,7 +243,6 @@ export const ApprovalButton = ({
     if (!disableActivity) {
       const activity = pushActivity({
         tokenIn: token,
-        tokenOut: spender,
         type: 'approval',
         status: 'pending',
         amountIn: amount,
@@ -244,7 +253,6 @@ export const ApprovalButton = ({
         id: Date.now().toString(),
         createdOn: Date.now(),
         tokenIn: token,
-        tokenOut: spender,
         type: 'approval',
         status: 'pending',
         amountIn: amount,
@@ -254,9 +262,11 @@ export const ApprovalButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
     : isApprovalLoading
-      ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
         ? intl.formatMessage({ defaultMessage: 'Approve' })
         : label;

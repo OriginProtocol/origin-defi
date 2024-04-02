@@ -20,7 +20,7 @@ import type { CardProps } from '@mui/material';
 export const BalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet.OGV.address,
+    token: tokens.mainnet.OGV,
   });
 
   return (

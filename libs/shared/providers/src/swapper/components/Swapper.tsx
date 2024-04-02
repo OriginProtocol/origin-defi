@@ -9,11 +9,11 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
-  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
 import {
+  ArrowButton,
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
@@ -21,7 +21,7 @@ import {
   SeverityIcon,
   TokenInput,
 } from '@origin/shared/components';
-import { ArrowDown } from '@origin/shared/icons';
+import { getTokenId } from '@origin/shared/contracts';
 import {
   formatError,
   isNilOrEmpty,
@@ -44,8 +44,8 @@ import { SettingsButton } from '../../settings';
 import { useSlippage } from '../../slippage';
 import {
   ConnectedButton,
-  useIsNativeCurrency,
-  useWatchBalance,
+  isNativeCurrency,
+  useWatchBalances,
 } from '../../wagmi';
 import {
   useHandleAmountInChange,
@@ -61,7 +61,7 @@ import { SwapProvider, useSwapState } from '../state';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
+import type { ButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { MouseEvent } from 'react';
 
@@ -207,7 +207,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
-  const { isConnected } = useAccount();
+  const { isConnected, chain: currentChain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [
     {
@@ -228,14 +228,9 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
-  const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [tokenIn, tokenOut],
   });
-  const { data: balTokenOut, isLoading: isBalTokenOutLoading } =
-    useWatchBalance({
-      token: tokenOut.address,
-    });
-  const isNativeCurrency = useIsNativeCurrency();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleTokenFlip = useHandleTokenFlip();
@@ -256,16 +251,17 @@ function SwapperWrapped({
 
   const needsApproval =
     isConnected &&
+    currentChain?.id === tokenIn.chainId &&
     amountIn > 0n &&
-    !isBalTokenInLoading &&
-    (balTokenIn as unknown as bigint) >= amountIn &&
+    !isBalancesLoading &&
+    (balances?.[getTokenId(tokenIn)] ?? 0n) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
     (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
     (allowance ?? 0n) < amountIn;
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > (balTokenIn as unknown as bigint)
+      : amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : !isNilOrEmpty(selectedSwapRoute)
           ? intl.formatMessage(
@@ -280,15 +276,15 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isApprovalLoading ||
     isApprovalWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint);
+    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n);
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
-    isBalTokenInLoading ||
+    isBalancesLoading ||
     isSwapRoutesLoading ||
     isSwapLoading ||
     isSwapWaitingForSignature ||
-    amountIn > (balTokenIn as unknown as bigint) ||
+    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n) ||
     amountIn === 0n;
 
   return (
@@ -319,8 +315,8 @@ function SwapperWrapped({
                 amount={amountIn}
                 decimals={tokenIn.decimals}
                 onAmountChange={handleAmountInChange}
-                balance={balTokenIn as unknown as bigint}
-                isBalanceLoading={isBalTokenInLoading}
+                balance={balances?.[getTokenId(tokenIn)] ?? 0n}
+                isBalanceLoading={isBalancesLoading}
                 token={tokenIn}
                 onTokenClick={() => {
                   setTokenSource('tokenIn');
@@ -365,9 +361,9 @@ function SwapperWrapped({
               <TokenInput
                 amount={amountOut}
                 decimals={tokenOut.decimals}
-                balance={balTokenOut as unknown as bigint}
+                balance={balances?.[getTokenId(tokenOut)] ?? 0n}
                 isAmountLoading={isSwapRoutesLoading}
-                isBalanceLoading={isBalTokenOutLoading}
+                isBalanceLoading={isBalancesLoading}
                 token={tokenOut}
                 onTokenClick={() => {
                   setTokenSource('tokenOut');
@@ -450,7 +446,9 @@ function SwapperWrapped({
                     defaultMessage: 'Waiting for signature',
                   })
                 ) : isApprovalLoading ? (
-                  intl.formatMessage({ defaultMessage: 'Processing Approval' })
+                  intl.formatMessage({
+                    defaultMessage: 'Processing Approval',
+                  })
                 ) : (
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
@@ -462,6 +460,7 @@ function SwapperWrapped({
               disabled={swapButtonDisabled}
               onClick={handleSwap}
               sx={{ mt: 1.5, ...buttonsProps?.sx }}
+              targetChainId={tokenIn.chainId}
             >
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
@@ -483,45 +482,6 @@ function SwapperWrapped({
         />
       </ErrorBoundary>
     </Stack>
-  );
-}
-
-function ArrowButton(props: IconButtonProps) {
-  return (
-    <IconButton
-      {...props}
-      sx={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: { md: 40, xs: 36 },
-        height: { md: 40, xs: 36 },
-        margin: 'auto',
-        zIndex: 2,
-        backgroundColor: (theme) => theme.palette.background.paper,
-        border: '1px solid',
-        borderColor: 'divider',
-        svg: {
-          transition: (theme) => theme.transitions.create('transform'),
-        },
-        '&:hover': {
-          backgroundColor: (theme) => theme.palette.grey[900],
-          svg: {
-            transform: 'rotate(-180deg)',
-          },
-        },
-        ...props?.sx,
-      }}
-    >
-      <ArrowDown
-        sx={{
-          width: { md: 20, xs: 18 },
-          height: { md: 20, xs: 18 },
-        }}
-      />
-    </IconButton>
   );
 }
 
