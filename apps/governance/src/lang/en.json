@@ -1087,20 +1087,6 @@
       "value": "Finding the best route..."
     }
   ],
-  "VRMwcI": [
-    {
-      "type": 0,
-      "value": "The selected network is not supported by "
-    },
-    {
-      "type": 1,
-      "value": "sectionName"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
   "Vn/9nH": [
     {
       "type": 0,
@@ -1637,16 +1623,6 @@
     {
       "type": 0,
       "value": "Swap"
-    }
-  ],
-  "sp7Hxk": [
-    {
-      "type": 0,
-      "value": "Switch to "
-    },
-    {
-      "type": 1,
-      "value": "chain"
     }
   ],
   "stTYBM": [

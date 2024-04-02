@@ -479,9 +479,6 @@
   "VK+Ydv": {
     "defaultMessage": "OUSD"
   },
-  "VRMwcI": {
-    "defaultMessage": "The selected network is not supported by {sectionName}."
-  },
   "VfXPp7": {
     "defaultMessage": "Redeem from OETH vault"
   },
@@ -736,9 +733,6 @@
   },
   "sRkHek": {
     "defaultMessage": "OGV rewards available to claim"
-  },
-  "sp7Hxk": {
-    "defaultMessage": "Switch to {chain}"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."

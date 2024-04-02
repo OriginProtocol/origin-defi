@@ -1137,20 +1137,6 @@
       "value": "OUSD"
     }
   ],
-  "VRMwcI": [
-    {
-      "type": 0,
-      "value": "The selected network is not supported by "
-    },
-    {
-      "type": 1,
-      "value": "sectionName"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
   "VfXPp7": [
     {
       "type": 0,
@@ -1731,16 +1717,6 @@
     {
       "type": 0,
       "value": "OGV rewards available to claim"
-    }
-  ],
-  "sp7Hxk": [
-    {
-      "type": 0,
-      "value": "Switch to "
-    },
-    {
-      "type": 1,
-      "value": "chain"
     }
   ],
   "stTYBM": [
