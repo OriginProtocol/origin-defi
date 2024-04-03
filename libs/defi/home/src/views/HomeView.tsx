@@ -1,5 +1,14 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { tokens } from '@origin/shared/contracts';
+import { TxButton, useTxButtonConfig } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
@@ -8,6 +17,13 @@ import { products } from '../constants';
 
 export const HomeView = () => {
   const intl = useIntl();
+  const config = useTxButtonConfig({
+    callbacks: {
+      onClick: () => {
+        alert('Plop');
+      },
+    },
+  });
 
   return (
     <Container>
@@ -44,7 +60,20 @@ export const HomeView = () => {
             ))}
           </Grid2>
         </Box>
-
+        <Card>
+          <CardContent>
+            <TxButton
+              contract={tokens.mainnet.veOGV}
+              functionName="delegate"
+              args={[
+                '0x57B0DD7967955c92b6e34A038b47Fee63E1eFd1a' /* '0x3bB354a1E0621F454c5D5CE98f6ea21a53bf2d7d' */,
+              ]}
+              variant="action"
+              label="Delegate"
+              {...config}
+            />
+          </CardContent>
+        </Card>
         <StakeOGVCard />
       </Stack>
     </Container>
