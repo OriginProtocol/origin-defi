@@ -16,7 +16,7 @@ import { useDeleteNotification, usePushNotification } from '../notifications';
 import type { TransactionReceipt } from 'viem';
 
 import type { Activity, SwapActivity } from '../activities';
-import type { TxButtonProps } from './components/TxButton';
+import type { WriteTransactionCallbacks } from '../wagmi';
 
 export type TxButtonConfig = {
   disableActivity?: boolean;
@@ -24,20 +24,12 @@ export type TxButtonConfig = {
   activity?: Partial<
     Pick<SwapActivity, 'title' | 'subtitle' | 'endIcon' | 'type'>
   >;
-  callbacks?: Partial<
-    Pick<
-      TxButtonProps,
-      | 'onClick'
-      | 'onTxSigned'
-      | 'onUserReject'
-      | 'onSimulateError'
-      | 'onWriteSuccess'
-      | 'onWriteError'
-    >
-  >;
+  callbacks?: WriteTransactionCallbacks;
 };
 
-export const useTxButtonConfig = (args: TxButtonConfig | undefined) => {
+export const useTxButtonCallbacks = (
+  args: TxButtonConfig | undefined,
+): WriteTransactionCallbacks => {
   const intl = useIntl();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [act, setAct] = useState<Activity | null>(null);
@@ -54,7 +46,7 @@ export const useTxButtonConfig = (args: TxButtonConfig | undefined) => {
     callbacks = {},
   } = args ?? {};
 
-  const onClick = useCallback(() => {
+  const onWrite = useCallback(() => {
     const act = {
       type: activity?.type ?? 'transaction',
       title:
@@ -76,7 +68,7 @@ export const useTxButtonConfig = (args: TxButtonConfig | undefined) => {
         ...act,
       });
     }
-    callbacks?.onClick?.();
+    callbacks?.onWrite?.();
   }, [
     activity?.endIcon,
     activity?.subtitle,
@@ -255,7 +247,7 @@ export const useTxButtonConfig = (args: TxButtonConfig | undefined) => {
   );
 
   return {
-    onClick,
+    onWrite,
     onTxSigned,
     onUserReject,
     onSimulateError,
