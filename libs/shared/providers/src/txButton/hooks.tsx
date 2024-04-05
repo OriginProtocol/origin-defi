@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { OETH } from '@origin/shared/icons';
-import { formatError } from '@origin/shared/utils';
+import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
+import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import {
   TransactionNotification,
@@ -11,26 +12,30 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../activities';
+import { useGasPrice } from '../gas';
 import { useDeleteNotification, usePushNotification } from '../notifications';
 
+import type { SimulateContractReturnType } from '@wagmi/core';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity, SwapActivity } from '../activities';
-import type { WriteTransactionCallbacks } from '../wagmi';
+import type { Activity, ActivityInput } from '../activities';
+import type {
+  WriteTransactionCallbacks,
+  WriteTransactionParameters,
+} from '../wagmi';
 
-export type TxButtonConfig = {
+export type UseTxButton = {
+  params: WriteTransactionParameters;
+  callbacks?: WriteTransactionCallbacks;
+  activity?: Partial<ActivityInput>;
   disableActivity?: boolean;
   disableNotification?: boolean;
-  activity?: Partial<
-    Pick<SwapActivity, 'title' | 'subtitle' | 'endIcon' | 'type'>
-  >;
-  callbacks?: WriteTransactionCallbacks;
+  enableGas?: boolean;
 };
 
-export const useTxButtonCallbacks = (
-  args: TxButtonConfig | undefined,
-): WriteTransactionCallbacks => {
+export const useTxButton = (args: UseTxButton) => {
   const intl = useIntl();
+  const { isConnected } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
@@ -38,27 +43,52 @@ export const useTxButtonCallbacks = (
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
+  const config = useConfig();
+  const publicClient = usePublicClient({
+    chainId: args.params.contract.chainId,
+  });
+  const queryClient = useQueryClient();
+  const { data: gasPrice, refetch: refetchGas } = useQuery({
+    queryKey: ['txButton', args.params],
+    queryFn: async () => {
+      if (publicClient) {
+        const res = await publicClient.estimateContractGas({
+          address: args.params.contract.address ?? ZERO_ADDRESS,
+          abi: args.params.contract.abi,
+          functionName: args.params.functionName,
+          args: args.params?.args,
+          value: args.params?.value,
+        });
 
-  const {
-    disableActivity = false,
-    disableNotification = false,
-    activity = {},
-    callbacks = {},
-  } = args ?? {};
+        const gasPrice = await queryClient.fetchQuery({
+          queryKey: useGasPrice.getKey(
+            BigInt(res),
+            args.params.contract.chainId,
+            queryClient,
+            config,
+          ),
+          queryFn: useGasPrice.fetcher,
+        });
+
+        return gasPrice;
+      }
+    },
+    enabled: false,
+  });
 
   const onWrite = useCallback(() => {
     const act = {
-      type: activity?.type ?? 'transaction',
+      type: args?.activity?.type ?? 'transaction',
       title:
-        activity?.title ??
+        args?.activity?.title ??
         intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
       subtitle:
-        activity?.subtitle ??
+        args?.activity?.subtitle ??
         intl.formatMessage({ defaultMessage: 'Transaction' }),
-      endIcon: activity?.endIcon ?? <OETH />,
+      endIcon: args?.activity?.endIcon,
       status: 'pending',
     } as const;
-    if (!disableActivity) {
+    if (!args?.disableActivity) {
       const activity = pushActivity(act);
       setAct(activity);
     } else {
@@ -68,30 +98,33 @@ export const useTxButtonCallbacks = (
         ...act,
       });
     }
-    callbacks?.onWrite?.();
+    args?.callbacks?.onWrite?.();
   }, [
-    activity?.endIcon,
-    activity?.subtitle,
-    activity?.title,
-    activity?.type,
-    callbacks,
-    disableActivity,
+    args?.activity?.endIcon,
+    args?.activity?.subtitle,
+    args?.activity?.title,
+    args?.activity?.type,
+    args?.callbacks,
+    args?.disableActivity,
     intl,
     pushActivity,
   ]);
 
   const onTxSigned = useCallback(() => {
-    if (!disableNotification) {
+    if (!args?.disableNotification) {
       const id = pushNotification({
         hideDuration: undefined,
         content: (
           <NotificationSnack
             icon={<SeverityIcon severity="info" />}
-            title={intl.formatMessage({
-              defaultMessage: 'Processing transaction',
-            })}
+            title={
+              act?.title ??
+              intl.formatMessage({
+                defaultMessage: 'Processing transaction',
+              })
+            }
             subtitle={
-              activity?.title ??
+              act?.subtitle ??
               intl.formatMessage({
                 defaultMessage: 'Your transaction is being processed on-chain.',
               })
@@ -101,18 +134,25 @@ export const useTxButtonCallbacks = (
       });
       setNotifId(id);
     }
-    callbacks?.onTxSigned?.();
-  }, [activity?.title, callbacks, disableNotification, intl, pushNotification]);
+    args?.callbacks?.onTxSigned?.();
+  }, [
+    act?.subtitle,
+    act?.title,
+    args?.callbacks,
+    args?.disableNotification,
+    intl,
+    pushNotification,
+  ]);
 
   const onUserReject = useCallback(() => {
-    if (!disableActivity && act?.id) {
+    if (!args?.disableActivity && act?.id) {
       deleteActivity(act.id);
     }
     if (notifId) {
       deleteNotification(notifId);
       setNotifId(null);
     }
-    if (!disableNotification) {
+    if (!args?.disableNotification) {
       pushNotification({
         content: (
           <NotificationSnack
@@ -123,26 +163,38 @@ export const useTxButtonCallbacks = (
             subtitle={intl.formatMessage({
               defaultMessage: 'User rejected operation',
             })}
+            endIcon={act?.endIcon}
           />
         ),
       });
     }
-    callbacks?.onUserReject?.();
+    args?.callbacks?.onUserReject?.();
   }, [
+    act?.endIcon,
     act?.id,
-    callbacks,
+    args?.callbacks,
+    args?.disableActivity,
+    args?.disableNotification,
     deleteActivity,
     deleteNotification,
-    disableActivity,
-    disableNotification,
     intl,
     notifId,
     pushNotification,
   ]);
 
+  const onSimulateSuccess = useCallback(
+    (data: SimulateContractReturnType) => {
+      if (args?.enableGas && isConnected) {
+        refetchGas();
+      }
+      args?.callbacks?.onSimulateSuccess?.(data);
+    },
+    [args?.callbacks, args?.enableGas, isConnected, refetchGas],
+  );
+
   const onSimulateError = useCallback(
     (error: Error) => {
-      if (!disableNotification) {
+      if (!args?.disableNotification) {
         pushNotification({
           content: (
             <NotificationSnack
@@ -155,14 +207,14 @@ export const useTxButtonCallbacks = (
           ),
         });
       }
-      callbacks?.onSimulateError?.(error);
+      args?.callbacks?.onSimulateError?.(error);
     },
-    [callbacks, disableNotification, intl, pushNotification],
+    [args?.callbacks, args?.disableNotification, intl, pushNotification],
   );
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      if (!disableActivity) {
+      if (!args?.disableActivity) {
         updateActivity({
           ...act,
           status: 'success',
@@ -173,7 +225,7 @@ export const useTxButtonCallbacks = (
         deleteNotification(notifId);
         setNotifId(null);
       }
-      if (!disableNotification) {
+      if (!args?.disableNotification) {
         pushNotification({
           content: (
             <TransactionNotification
@@ -189,14 +241,14 @@ export const useTxButtonCallbacks = (
           ),
         });
       }
-      callbacks?.onWriteSuccess?.(txReceipt);
+      args?.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
       act,
-      callbacks,
+      args?.callbacks,
+      args?.disableActivity,
+      args?.disableNotification,
       deleteNotification,
-      disableActivity,
-      disableNotification,
       intl,
       notifId,
       pushNotification,
@@ -206,7 +258,7 @@ export const useTxButtonCallbacks = (
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (!disableActivity && act?.id) {
+      if (!args?.disableActivity && act?.id) {
         updateActivity({
           ...act,
           status: 'error',
@@ -217,7 +269,7 @@ export const useTxButtonCallbacks = (
         deleteNotification(notifId);
         setNotifId(null);
       }
-      if (!disableNotification) {
+      if (!args?.disableNotification) {
         pushNotification({
           content: (
             <TransactionNotification
@@ -231,14 +283,14 @@ export const useTxButtonCallbacks = (
           ),
         });
       }
-      callbacks?.onWriteError?.(error);
+      args?.callbacks?.onWriteError?.(error);
     },
     [
       act,
-      callbacks,
+      args?.callbacks,
+      args?.disableActivity,
+      args?.disableNotification,
       deleteNotification,
-      disableActivity,
-      disableNotification,
       intl,
       notifId,
       pushNotification,
@@ -246,12 +298,30 @@ export const useTxButtonCallbacks = (
     ],
   );
 
-  return {
-    onWrite,
-    onTxSigned,
-    onUserReject,
-    onSimulateError,
-    onWriteSuccess,
-    onWriteError,
-  };
+  return useMemo(
+    () => ({
+      gasPrice,
+      params: args.params,
+      callbacks: {
+        onWrite,
+        onTxSigned,
+        onUserReject,
+        onSimulateSuccess,
+        onSimulateError,
+        onWriteSuccess,
+        onWriteError,
+      },
+    }),
+    [
+      args.params,
+      gasPrice,
+      onSimulateError,
+      onSimulateSuccess,
+      onTxSigned,
+      onUserReject,
+      onWrite,
+      onWriteError,
+      onWriteSuccess,
+    ],
+  );
 };

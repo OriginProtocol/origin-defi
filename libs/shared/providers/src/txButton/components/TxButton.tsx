@@ -25,7 +25,7 @@ export type TxButtonProps = {
   label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
-  parameters: WriteTransactionParameters;
+  params: WriteTransactionParameters;
   callbacks?: WriteTransactionCallbacks;
 } & Omit<
   ConnectedButtonProps,
@@ -36,7 +36,7 @@ export const TxButton = ({
   label,
   waitingSignatureLabel,
   waitingTxLabel,
-  parameters,
+  params,
   callbacks,
   disabled,
   ...rest
@@ -44,22 +44,22 @@ export const TxButton = ({
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
   const [txButtonState, setTxButtonState] = useState({
-    label: label ?? capitalize(parameters.functionName),
+    label: label ?? capitalize(params.functionName),
     disabled,
   });
   const { data: simulateData, error: simulateError } = useSimulateContract({
-    address: parameters.contract.address,
-    abi: parameters.contract.abi,
-    functionName: parameters.functionName,
-    args: parameters?.args,
-    value: parameters?.value,
-    chainId: parameters.contract.chainId,
+    address: params.contract.address,
+    abi: params.contract.abi,
+    functionName: params.functionName,
+    args: params?.args,
+    value: params?.value,
+    chainId: params.contract.chainId,
     query: {
       enabled:
         isConnected &&
         !disabled &&
-        !!parameters.contract?.address &&
-        parameters.contract.chainId === chain?.id,
+        !!params.contract?.address &&
+        params.contract.chainId === chain?.id,
     },
   });
   const {
@@ -78,10 +78,10 @@ export const TxButton = ({
   const prevWaitTxStatus = usePrevious(waitTxStatus);
 
   useEffect(() => {
-    if (chain?.id !== parameters.contract.chainId) {
+    if (chain?.id !== params.contract.chainId) {
       resetWriteContract();
       setTxButtonState({
-        label: label ?? capitalize(parameters.functionName),
+        label: label ?? capitalize(params.functionName),
         disabled: disabled || false,
       });
     }
@@ -89,10 +89,16 @@ export const TxButton = ({
     chain?.id,
     disabled,
     label,
-    parameters.contract.chainId,
-    parameters.functionName,
+    params.contract.chainId,
+    params.functionName,
     resetWriteContract,
   ]);
+
+  useEffect(() => {
+    if (simulateData) {
+      callbacks?.onSimulateSuccess?.(simulateData);
+    }
+  }, [callbacks, simulateData]);
 
   useEffect(() => {
     if (writeStatus === 'pending') {
@@ -136,7 +142,7 @@ export const TxButton = ({
     ) {
       callbacks?.onWriteSuccess?.(waitTxData as TransactionReceipt);
       setTxButtonState({
-        label: label ?? capitalize(parameters.functionName),
+        label: label ?? capitalize(params.functionName),
         disabled: disabled || false,
       });
     }
@@ -144,7 +150,7 @@ export const TxButton = ({
     callbacks,
     disabled,
     label,
-    parameters.functionName,
+    params.functionName,
     prevWaitTxStatus,
     waitTxData,
     waitTxStatus,
@@ -164,7 +170,7 @@ export const TxButton = ({
         callbacks?.onWriteError?.(err);
       }
       setTxButtonState({
-        label: label ?? capitalize(parameters.functionName),
+        label: label ?? capitalize(params.functionName),
         disabled: disabled || false,
       });
     }
@@ -172,7 +178,7 @@ export const TxButton = ({
     callbacks,
     disabled,
     label,
-    parameters.functionName,
+    params.functionName,
     prevWaitTxStatus,
     prevWriteStatus,
     waitTxError,
@@ -195,7 +201,7 @@ export const TxButton = ({
       {...rest}
       disabled={txButtonState.disabled}
       onClick={handleClick}
-      targetChainId={parameters.contract.chainId}
+      targetChainId={params.contract.chainId}
     >
       {txButtonState.label}
     </ConnectedButton>

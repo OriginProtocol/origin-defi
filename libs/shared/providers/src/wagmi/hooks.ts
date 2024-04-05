@@ -184,6 +184,12 @@ export const useWriteTransaction = (args: {
     },
   });
 
+  useEffect(() => {
+    if (simulateData) {
+      args?.callbacks?.onSimulateSuccess?.(simulateData);
+    }
+  }, [args?.callbacks, simulateData]);
+
   const writeTransaction = useCallback(async () => {
     let hash;
     let txReceipt;
