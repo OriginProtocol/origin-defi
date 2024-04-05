@@ -20,7 +20,7 @@ import { TransactionNotification } from './TransactionNotification';
 
 import type { StackProps } from '@mui/material';
 
-import type { Activity, SwapActivity } from '../types';
+import type { Activity } from '../types';
 
 export type AcitivityPopoverProps = {
   anchor: HTMLElement | null;
@@ -136,12 +136,12 @@ export const ActivityPopover = ({
                       key={a.id}
                       {...a}
                       title={
-                        (a as SwapActivity)?.title ??
+                        a?.title ??
                         intl.formatMessage({
                           defaultMessage: 'New transaction',
                         })
                       }
-                      subtitle={(a as SwapActivity)?.subtitle ?? ''}
+                      subtitle={a?.subtitle ?? ''}
                       sx={{ px: 3, py: 2 }}
                     />
                   ),

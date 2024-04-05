@@ -13,7 +13,7 @@ import type {
 } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-type GasPrice = {
+export type GasPrice = {
   gweiUsd: number;
   gasPrice: number;
   gasCostUsd: number;
