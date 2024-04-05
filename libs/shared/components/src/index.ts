@@ -1,5 +1,6 @@
 export * from './Buttons';
 export * from './Chip';
+export * from './Countdown';
 export * from './Errors';
 export * from './InfoTooltip';
 export * from './Inputs';
