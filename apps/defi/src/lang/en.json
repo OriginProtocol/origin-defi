@@ -131,6 +131,12 @@
       "value": "Route"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "1VDppm": [
     {
       "type": 0,
@@ -171,6 +177,12 @@
     {
       "type": 0,
       "value": "7d"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
     }
   ],
   "2R/YHR": [
@@ -757,6 +769,12 @@
       "value": "Total accrued rewards"
     }
   ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
+    }
+  ],
   "HlkjJI": [
     {
       "type": 0,
@@ -1309,6 +1327,12 @@
       "value": "2y"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -1515,6 +1539,12 @@
       "value": "duration"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
   "jFZ2w9": [
     {
       "type": 0,
@@ -1549,6 +1579,12 @@
     {
       "type": 0,
       "value": "Swap via Curve"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [

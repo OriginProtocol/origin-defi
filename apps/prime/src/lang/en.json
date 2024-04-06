@@ -75,6 +75,12 @@
       "value": "Route"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "1OYHoE": [
     {
       "type": 0,
@@ -143,6 +149,12 @@
     {
       "type": 0,
       "value": "EigenLayer Points"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
     }
   ],
   "3fTTLv": [
@@ -449,6 +461,12 @@
     {
       "type": 0,
       "value": "Balance"
+    }
+  ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
     }
   ],
   "HyhkDr": [
@@ -817,6 +835,12 @@
       "value": "Up to 1,000,000 EL points distributed to early ETH depositors"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -909,6 +933,12 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
   "jvnqxK": [
     {
       "type": 0,
@@ -925,6 +955,12 @@
     {
       "type": 0,
       "value": "Invite your friends"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [
