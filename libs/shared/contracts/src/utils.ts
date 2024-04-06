@@ -25,10 +25,17 @@ export const getTokenByAddress = (
   address: string | undefined,
   chainId?: number,
 ) => {
+  const chainName = getChainNameById(chainId) ?? 'mainnet';
+
+  if (address === undefined) {
+    return Object.values(tokens[chainName]).find(
+      (v) => v.address === undefined,
+    );
+  }
+
   if (!isHexAddress(address)) {
     return undefined;
   }
-  const chainName = getChainNameById(chainId) ?? 'mainnet';
 
   return Object.values(tokens[chainName])?.find?.((t) =>
     isAddressEqual(t?.address ?? ZERO_ADDRESS, address as HexAddress),
