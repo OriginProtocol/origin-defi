@@ -191,7 +191,7 @@ export function Topnav(props: BoxProps) {
               borderRadius: 25,
               paddingX: {
                 md: 2,
-                xs: 0.75,
+                xs: isConnected ? 0.75 : 2,
               },
               paddingY: 0.75,
               minWidth: 36,

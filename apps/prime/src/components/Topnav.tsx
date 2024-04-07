@@ -315,7 +315,7 @@ const AccountPopoverButton = () => {
           borderRadius: 25,
           paddingX: {
             md: 3,
-            xs: 0.75,
+            xs: isConnected ? 0.75 : 3,
           },
           paddingY: {
             md: 1,

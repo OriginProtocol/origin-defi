@@ -110,7 +110,7 @@ export const Topnav = () => {
                 minHeight: { xs: 36, md: 40 },
                 paddingX: {
                   md: 2,
-                  xs: 0.75,
+                  xs: isConnected ? 0.75 : 2,
                 },
                 paddingY: 0.75,
               }}
