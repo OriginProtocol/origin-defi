@@ -27,6 +27,7 @@ import type { BoxProps } from '@mui/material';
 
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const intl = useIntl();
   const navigate = useNavigate();
@@ -173,6 +174,7 @@ export function Topnav(props: BoxProps) {
               : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
           </MuiLink>
           <OpenAccountModalButton
+            hideAddress={isSm}
             onClick={(e) => {
               if (isConnected) {
                 setAccountModalAnchor(e.currentTarget);
@@ -188,13 +190,10 @@ export function Topnav(props: BoxProps) {
             sx={{
               borderRadius: 25,
               paddingX: {
-                md: 3,
-                xs: 2,
-              },
-              paddingY: {
-                md: 1,
+                md: 2,
                 xs: 0.75,
               },
+              paddingY: 0.75,
               minWidth: 36,
               maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
               fontWeight: 500,

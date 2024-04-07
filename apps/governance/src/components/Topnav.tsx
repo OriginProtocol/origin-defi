@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-import { alpha, Box, Divider, Tab, Tabs } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Divider,
+  Tab,
+  Tabs,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -19,6 +27,8 @@ import type { BoxProps } from '@mui/material';
 
 export function Topnav(props: BoxProps) {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const location = useLocation();
   const { isConnected } = useAccount();
@@ -137,41 +147,8 @@ export function Topnav(props: BoxProps) {
             gap: { xs: 1, md: 2 },
           }}
         >
-          {/* <MuiLink
-            href="https://oeth.on.fleek.co/"
-            target="_blank"
-            noWrap
-            sx={{
-              borderRadius: 25,
-              paddingX: {
-                md: 3,
-                xs: 2,
-              },
-              paddingY: {
-                md: 1,
-                xs: 0.75,
-              },
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 500,
-              minHeight: { xs: 36, md: 44 },
-              background: `linear-gradient(0deg, ${alpha(
-                theme.palette.common.white,
-                0.05,
-              )} 0%, ${alpha(theme.palette.common.white, 0.05)} 100%), ${
-                theme.palette.background.paper
-              };`,
-              '&:hover': {
-                background: (theme) => theme.palette.background.paper,
-              },
-            }}
-          >
-            {isMd
-              ? intl.formatMessage({ defaultMessage: 'IPFS' })
-              : intl.formatMessage({ defaultMessage: 'View on IPFS' })}
-          </MuiLink> */}
           <OpenAccountModalButton
+            hideAddress={isSm}
             onClick={(e) => {
               if (isConnected) {
                 setAccountModalAnchor(e.currentTarget);
@@ -187,13 +164,10 @@ export function Topnav(props: BoxProps) {
             sx={{
               borderRadius: 25,
               paddingX: {
-                md: 3,
-                xs: 2,
-              },
-              paddingY: {
-                md: 1,
+                md: 2,
                 xs: 0.75,
               },
+              paddingY: 0.75,
               minWidth: 36,
               maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
               fontWeight: 500,
