@@ -13,7 +13,12 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
-import type { TransactionReceipt } from 'viem';
+import type {
+  Abi,
+  ContractFunctionArgs,
+  ContractFunctionName,
+  TransactionReceipt,
+} from 'viem';
 
 import type {
   ConnectedButtonProps,
@@ -21,18 +26,40 @@ import type {
   WriteTransactionParameters,
 } from '../../wagmi';
 
-export type TxButtonProps = {
+export type TxButtonProps<
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+> = {
   label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
-  params: WriteTransactionParameters;
+  params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
 } & Omit<
   ConnectedButtonProps,
   'onClick' | 'value' | 'children' | 'targetChainId'
 >;
 
-export const TxButton = ({
+export const TxButton = <
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+>({
   label,
   waitingSignatureLabel,
   waitingTxLabel,
@@ -40,7 +67,7 @@ export const TxButton = ({
   callbacks,
   disabled,
   ...rest
-}: TxButtonProps) => {
+}: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
   const [txButtonState, setTxButtonState] = useState({
@@ -49,9 +76,9 @@ export const TxButton = ({
   });
   const { data: simulateData, error: simulateError } = useSimulateContract({
     address: params.contract.address,
-    abi: params.contract.abi,
-    functionName: params.functionName,
-    args: params?.args,
+    abi: params.contract.abi as Abi,
+    functionName: params.functionName as functionName,
+    args: params?.args as readonly unknown[],
     value: params?.value,
     chainId: params.contract.chainId,
     query: {
