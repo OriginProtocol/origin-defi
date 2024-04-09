@@ -53,6 +53,12 @@
       "value": "Route"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "1Ia8qN": [
     {
       "type": 0,
@@ -93,6 +99,12 @@
     {
       "type": 0,
       "value": "Powered by Chainlink CCIP"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
     }
   ],
   "45EvZ3": [
@@ -357,6 +369,12 @@
     {
       "type": 0,
       "value": "Balance"
+    }
+  ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
     }
   ],
   "HyhkDr": [
@@ -671,6 +689,12 @@
       "value": "Connect Wallet"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dM+p3/": [
     {
       "type": 0,
@@ -761,6 +785,12 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
   "jvnqxK": [
     {
       "type": 0,
@@ -777,6 +807,12 @@
     {
       "type": 0,
       "value": "30-Day Trailing APY"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lgy8my": [

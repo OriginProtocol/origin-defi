@@ -12,12 +12,14 @@ interface OpenAccountModalButtonProps extends ButtonProps {
   connectLabel?: string;
   connectedProps?: ButtonProps;
   disconnectedProps?: ButtonProps;
+  hideAddress?: boolean;
 }
 
 export const OpenAccountModalButton = ({
   connectLabel,
   connectedProps,
   disconnectedProps,
+  hideAddress,
   ...rest
 }: OpenAccountModalButtonProps) => {
   const intl = useIntl();
@@ -61,6 +63,7 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
+            hideAddress={hideAddress}
             {...(connectedProps
               ? (mergeDeepRight(rest, connectedProps) as ButtonProps)
               : rest)}

@@ -125,6 +125,12 @@
       "value": "No actions"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -191,6 +197,12 @@
     {
       "type": 0,
       "value": "Registered Voters"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
     }
   ],
   "3WcLXG": [
@@ -645,6 +657,12 @@
     {
       "type": 0,
       "value": "Get OGV"
+    }
+  ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
     }
   ],
   "HyhkDr": [
@@ -1269,6 +1287,12 @@
       "value": "2y"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -1457,6 +1481,12 @@
       "value": "label"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
   "jab7Gg": [
     {
       "type": 0,
@@ -1503,6 +1533,12 @@
     {
       "type": 0,
       "value": "Connect wallet to view"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [

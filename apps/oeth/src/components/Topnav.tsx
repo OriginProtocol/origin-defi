@@ -177,6 +177,7 @@ const NavButtons = () => {
         </Button>
         <OpenAccountModalButton
           variant="nav"
+          hideAddress={isMd}
           onClick={(e) => {
             if (isConnected) {
               setAccountModalAnchor(e.currentTarget);
@@ -191,19 +192,15 @@ const NavButtons = () => {
           }}
           sx={{
             borderRadius: 25,
-            fontWeight: 500,
-            padding: {
-              xs: 0,
-            },
             paddingX: {
-              xs: !isConnected ? 2 : undefined,
-            },
-            paddingLeft: {
-              lg: 1.5,
-            },
-            paddingRight: {
               lg: 2,
+              xs: isConnected ? 0.75 : 2,
             },
+            paddingY: 0.75,
+            minWidth: 36,
+            maxWidth: { xs: isConnected ? 36 : 160, lg: 220 },
+            fontWeight: 500,
+            minHeight: { xs: 36, md: 44 },
           }}
           disconnectedProps={{
             sx: {

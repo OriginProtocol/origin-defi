@@ -24,18 +24,28 @@ export const getChainNameById = (chainId?: number) => {
 export const getTokenByAddress = (
   address: string | undefined,
   chainId?: number,
-) => {
+): Token | undefined => {
+  const chainName = getChainNameById(chainId) ?? 'mainnet';
+
+  if (address === undefined) {
+    return Object.values(tokens[chainName]).find(
+      (v) => v.address === undefined,
+    );
+  }
+
   if (!isHexAddress(address)) {
     return undefined;
   }
-  const chainName = getChainNameById(chainId) ?? 'mainnet';
 
   return Object.values(tokens[chainName])?.find?.((t) =>
     isAddressEqual(t?.address ?? ZERO_ADDRESS, address as HexAddress),
   );
 };
 
-export const getTokenBySymbol = (symbol: string, chainId?: number) => {
+export const getTokenBySymbol = (
+  symbol: string,
+  chainId?: number,
+): Token | undefined => {
   if (!symbol || isNilOrEmpty(symbol)) {
     return undefined;
   }
@@ -45,7 +55,7 @@ export const getTokenBySymbol = (symbol: string, chainId?: number) => {
   return Object.values(tokens[chainName])?.find?.((t) => t.symbol === symbol);
 };
 
-export const getTokenById = (tokenId: string) => {
+export const getTokenById = (tokenId: string): Token | undefined => {
   if (isNilOrEmpty(tokenId)) {
     return undefined;
   }
@@ -68,11 +78,15 @@ export const getTokenId = (token: Token) => {
 };
 
 export const parseTokenId = (tokenId: string) => {
-  if (isNilOrEmpty(tokenId) || !/^[a-zA-Z0-9]+:[0-9]+$/.test(tokenId)) {
+  if (isNilOrEmpty(tokenId)) {
     return undefined;
   }
 
-  const res = /^(\w+):(\d+)$/.exec(tokenId);
+  if (/^\w+:\d+$/.test(tokenId)) {
+    const res = /^(\w+):(\d+)$/.exec(tokenId);
 
-  return { symbol: res?.[1], chainId: Number(res?.[2] ?? mainnet.id) };
+    return { symbol: res?.[1], chainId: Number(res?.[2]) };
+  }
+
+  return { symbol: tokenId, chainId: mainnet.id };
 };

@@ -108,8 +108,14 @@ export const Topnav = () => {
                 minWidth: 36,
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
                 minHeight: { xs: 36, md: 40 },
+                paddingX: {
+                  md: 2,
+                  xs: isConnected ? 0.75 : 2,
+                },
+                paddingY: 0.75,
               }}
               disconnectedProps={{ color: 'primary' }}
+              hideAddress={isSm}
             />
             <AccountPopover
               anchor={accountModalAnchor}
