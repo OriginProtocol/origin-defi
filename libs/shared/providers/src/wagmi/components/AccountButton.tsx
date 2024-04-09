@@ -1,4 +1,4 @@
-import { Button, useMediaQuery, useTheme } from '@mui/material';
+import { Button } from '@mui/material';
 import { useAccount } from 'wagmi';
 
 import { AddressLabel } from './AddressLabel';
@@ -6,24 +6,28 @@ import { UserAvatar } from './UserAvatar';
 
 import type { ButtonProps } from '@mui/material';
 
-export function AccountButton(props: Omit<ButtonProps, 'children'>) {
-  const theme = useTheme();
-  const isSmall = useMediaQuery(theme.breakpoints.down('lg'));
+export type AccountButtonProps = { hideAddress?: boolean } & Omit<
+  ButtonProps,
+  'children'
+>;
+
+export const AccountButton = ({ hideAddress, ...rest }: AccountButtonProps) => {
   const { address } = useAccount();
 
   return (
     <Button
-      {...props}
+      {...rest}
       sx={{
         display: 'flex',
         flexDirection: 'row',
         alignItems: 'center',
-        ...props?.sx,
         gap: 0.75,
+        minWidth: 0,
+        ...rest?.sx,
       }}
     >
       <UserAvatar />
-      {!isSmall && (
+      {!hideAddress && (
         <AddressLabel
           address={address}
           enableEnsName
@@ -31,11 +35,11 @@ export function AccountButton(props: Omit<ButtonProps, 'children'>) {
           fontStyle="normal"
           fontWeight={500}
           fontSize={{
-            xs: '0.75rem',
-            md: '1rem',
+            xs: 13,
+            md: 16,
           }}
         />
       )}
     </Button>
   );
-}
+};

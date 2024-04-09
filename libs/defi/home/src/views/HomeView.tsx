@@ -44,7 +44,6 @@ export const HomeView = () => {
             ))}
           </Grid2>
         </Box>
-
         <StakeOGVCard />
       </Stack>
     </Container>

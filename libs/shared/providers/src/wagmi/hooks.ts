@@ -1,10 +1,19 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { getTokenId } from '@origin/shared/contracts';
-import { isFulfilled, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  isFulfilled,
+  isNilOrEmpty,
+  isUserRejected,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useQuery } from '@tanstack/react-query';
-import { getBalance } from '@wagmi/core';
+import {
+  getBalance,
+  waitForTransactionReceipt,
+  writeContract,
+} from '@wagmi/core';
 import { mainnet } from 'viem/chains';
 import {
   useAccount,
@@ -12,6 +21,7 @@ import {
   useConfig,
   useReadContract,
   useReadContracts,
+  useSimulateContract,
 } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
@@ -21,6 +31,11 @@ import type {
   UseReadContractParameters,
   UseReadContractsParameters,
 } from 'wagmi';
+
+import type {
+  WriteTransactionCallbacks,
+  WriteTransactionParameters,
+} from './types';
 
 export const useWatchContract = <T extends Abi | readonly unknown[]>(
   config: UseReadContractParameters<T>,
@@ -142,4 +157,77 @@ export const useWatchBalances = (args: {
   }, [args.tokens, blockNumber, prev, res]);
 
   return res;
+};
+
+export const useWriteTransaction = (args: {
+  parameters: WriteTransactionParameters;
+  callbacks?: WriteTransactionCallbacks;
+}) => {
+  const config = useConfig();
+  const { isConnected, chain } = useAccount();
+  const [status, setStatus] = useState<
+    'idle' | 'waitingForSignature' | 'waitingForTx'
+  >('idle');
+  const { data: simulateData, error: simulateError } = useSimulateContract({
+    address: args.parameters.contract.address,
+    abi: args.parameters.contract.abi,
+    functionName: args.parameters.functionName,
+    args: args.parameters?.args,
+    value: args.parameters?.value,
+    chainId: args.parameters.contract.chainId,
+    query: {
+      enabled:
+        isConnected &&
+        !!args.parameters.contract &&
+        chain?.id === args.parameters.contract.chainId &&
+        !!args.parameters.functionName,
+    },
+  });
+
+  useEffect(() => {
+    if (simulateData) {
+      args?.callbacks?.onSimulateSuccess?.(simulateData);
+    }
+  }, [args?.callbacks, simulateData]);
+
+  const writeTransaction = useCallback(async () => {
+    let hash;
+    let txReceipt;
+    if (simulateError) {
+      args?.callbacks?.onSimulateError?.(simulateError);
+    } else if (simulateData?.request) {
+      args?.callbacks?.onWrite?.();
+      setStatus('waitingForSignature');
+      try {
+        hash = await writeContract(config, simulateData.request);
+      } catch (writeError) {
+        if (isUserRejected(writeError)) {
+          args?.callbacks?.onUserReject?.();
+        } else {
+          args?.callbacks?.onWriteError?.(writeError as unknown as Error);
+        }
+        setStatus('idle');
+      }
+      if (hash) {
+        args?.callbacks?.onTxSigned?.();
+        setStatus('waitingForTx');
+        try {
+          txReceipt = await waitForTransactionReceipt(config, { hash });
+        } catch (waitError) {
+          if (isUserRejected(waitError)) {
+            args?.callbacks?.onUserReject?.();
+          } else {
+            args?.callbacks?.onWriteError?.(waitError as unknown as Error);
+          }
+          setStatus('idle');
+        }
+      }
+      if (txReceipt) {
+        args?.callbacks?.onWriteSuccess?.(txReceipt);
+      }
+      setStatus('idle');
+    }
+  }, [args?.callbacks, config, simulateData?.request, simulateError]);
+
+  return { status, writeTransaction };
 };

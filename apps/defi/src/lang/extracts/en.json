@@ -56,6 +56,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "1+ROfp": {
+    "defaultMessage": "Transaction"
+  },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
@@ -70,6 +73,9 @@
   },
   "26tyS2": {
     "defaultMessage": "7d"
+  },
+  "2NfxfO": {
+    "defaultMessage": "Impossible to execute"
   },
   "2R/YHR": {
     "defaultMessage": "Liquid staking"
@@ -304,6 +310,9 @@
   },
   "HDDJSh": {
     "defaultMessage": "Total accrued rewards"
+  },
+  "Hiq4cG": {
+    "defaultMessage": "On-chain Transaction"
   },
   "HlkjJI": {
     "defaultMessage": "Snapshot vote"
@@ -563,6 +572,9 @@
   "d0O17Z": {
     "defaultMessage": "2y"
   },
+  "d8EqQY": {
+    "defaultMessage": "Days"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
@@ -632,6 +644,9 @@
   "j07TC/": {
     "defaultMessage": "{duration,plural,=1{Extend lock-up to # month} other{Extend lock-up to # months}}"
   },
+  "j9Y9nu": {
+    "defaultMessage": "Hours"
+  },
   "jFZ2w9": {
     "defaultMessage": "OETH Transaction history"
   },
@@ -649,6 +664,9 @@
   },
   "lQmZjB": {
     "defaultMessage": "Swap via Curve"
+  },
+  "lb8m6m": {
+    "defaultMessage": "Mins"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"

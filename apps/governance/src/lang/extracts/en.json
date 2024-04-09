@@ -53,6 +53,9 @@
   "0kn7st": {
     "defaultMessage": "No actions"
   },
+  "1+ROfp": {
+    "defaultMessage": "Transaction"
+  },
   "17g+HZ": {
     "defaultMessage": "No activity"
   },
@@ -76,6 +79,9 @@
   },
   "20KPDF": {
     "defaultMessage": "Registered Voters"
+  },
+  "2NfxfO": {
+    "defaultMessage": "Impossible to execute"
   },
   "3WcLXG": {
     "defaultMessage": "Learn about Governance"
@@ -250,6 +256,9 @@
   },
   "GtMIIe": {
     "defaultMessage": "Get OGV"
+  },
+  "Hiq4cG": {
+    "defaultMessage": "On-chain Transaction"
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
@@ -494,6 +503,9 @@
   "d0O17Z": {
     "defaultMessage": "2y"
   },
+  "d8EqQY": {
+    "defaultMessage": "Days"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
@@ -554,6 +566,9 @@
   "j8y+qc": {
     "defaultMessage": "{label}"
   },
+  "j9Y9nu": {
+    "defaultMessage": "Hours"
+  },
   "jab7Gg": {
     "defaultMessage": "Delegated to me"
   },
@@ -577,6 +592,9 @@
   },
   "ksTDub": {
     "defaultMessage": "Connect wallet to view"
+  },
+  "lb8m6m": {
+    "defaultMessage": "Mins"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
