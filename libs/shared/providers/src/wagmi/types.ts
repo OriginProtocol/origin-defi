@@ -1,11 +1,27 @@
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { SimulateContractReturnType } from '@wagmi/core';
-import type { TransactionReceipt } from 'viem';
+import type {
+  Abi,
+  ContractFunctionArgs,
+  ContractFunctionName,
+  TransactionReceipt,
+} from 'viem';
 
-export type WriteTransactionParameters = {
-  contract: Contract | Token;
-  functionName: string;
-  args?: unknown[];
+export type WriteTransactionParameters<
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+> = {
+  contract: Contract<abi> | Token<abi>;
+  functionName: functionName;
+  args: args;
   value?: bigint;
 };
 
