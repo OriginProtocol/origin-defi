@@ -1,37 +1,21 @@
 import { alpha, Stack, Typography } from '@mui/material';
+import { Dropdown } from '@origin/shared/icons';
 
 import { TokenIcon } from '../Icons';
 
-import type { StackProps, SxProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-export type TokenButtonProps = {
+export type TokenPickerProps = {
   token: Token;
-  active?: boolean;
-  disabled?: boolean;
-  size: 'sm' | 'md';
+  isDisabled?: boolean;
 } & StackProps;
 
-const sizeProps: Record<TokenButtonProps['size'], SxProps> = {
-  sm: {
-    paddingLeft: 0.25,
-    paddingRight: 1.5,
-    paddingY: 0.25,
-  },
-  md: {
-    paddingLeft: 0.75,
-    paddingRight: 2,
-    paddingY: 5 / 8, // 5px
-  },
-};
-
-export const TokenButton = ({
+export const TokenPicker = ({
   token,
-  active,
-  disabled,
-  size = 'sm',
+  isDisabled,
   ...rest
-}: TokenButtonProps) => {
+}: TokenPickerProps) => {
   return (
     <Stack
       direction="row"
@@ -44,17 +28,17 @@ export const TokenButton = ({
         minHeight: 32,
         borderRadius: 25,
         fontSize: 16,
-        border: (theme) =>
-          active
-            ? `1px solid ${theme.palette.primary.main}`
-            : '1px solid transparent',
+        paddingLeft: 0.25,
+        paddingRight: isDisabled ? 2 : 1,
+        border: '1px solid transparent',
+        paddingY: 0.25,
         background: (theme) => alpha(theme.palette.common.white, 0.1),
         fontStyle: 'normal',
-        cursor: disabled ? 'default' : 'pointer',
+        cursor: isDisabled ? 'default' : 'pointer',
         fontWeight: 500,
         boxSizing: 'border-box',
         position: 'relative',
-        ...(!disabled && {
+        ...(!isDisabled && {
           ':hover': {
             background: (theme) =>
               `linear-gradient(${theme.palette.grey[600]}, ${
@@ -65,12 +49,12 @@ export const TokenButton = ({
               )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
           },
         }),
-        ...sizeProps[size],
         ...rest?.sx,
       }}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
       <Typography variant="inherit">{token.symbol}</Typography>
+      {!isDisabled && <Dropdown />}
     </Stack>
   );
 };

@@ -26,7 +26,9 @@ import {
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
-import type { Abi } from 'viem';
+import type { Config } from '@wagmi/core';
+import type { ReadContractData } from '@wagmi/core/query';
+import type { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem';
 import type {
   UseReadContractParameters,
   UseReadContractsParameters,
@@ -37,8 +39,27 @@ import type {
   WriteTransactionParameters,
 } from './types';
 
-export const useWatchContract = <T extends Abi | readonly unknown[]>(
-  config: UseReadContractParameters<T>,
+export const useWatchContract = <
+  abi extends Abi | readonly unknown[] = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'pure' | 'view'
+  > = ContractFunctionName<abi, 'pure' | 'view'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'pure' | 'view',
+    functionName
+  > = ContractFunctionArgs<abi, 'pure' | 'view', functionName>,
+  config extends Config = Config,
+  selectData = ReadContractData<abi, functionName, args>,
+>(
+  config?: UseReadContractParameters<
+    abi,
+    functionName,
+    args,
+    config,
+    selectData
+  >,
 ) => {
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const prev = usePrevious(Number(blockNumber));

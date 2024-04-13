@@ -21,10 +21,10 @@ export const getChainNameById = (chainId?: number) => {
   )[chainId ?? mainnet.id];
 };
 
-export const getTokenByAddress = (
+export const getTokenByAddress = <T extends Token = Token>(
   address: string | undefined,
   chainId?: number,
-): Token | undefined => {
+): T | undefined => {
   const chainName = getChainNameById(chainId) ?? 'mainnet';
 
   if (address === undefined) {
@@ -42,20 +42,24 @@ export const getTokenByAddress = (
   );
 };
 
-export const getTokenBySymbol = (
+export const getTokenBySymbol = <T extends Token = Token>(
   symbol: string,
   chainId?: number,
-): Token | undefined => {
+): T | undefined => {
   if (!symbol || isNilOrEmpty(symbol)) {
     return undefined;
   }
 
   const chainName = getChainNameById(chainId) ?? 'mainnet';
 
-  return Object.values(tokens[chainName])?.find?.((t) => t.symbol === symbol);
+  return Object.values(tokens[chainName])?.find?.(
+    (t) => t.symbol === symbol,
+  ) as T | undefined;
 };
 
-export const getTokenById = (tokenId: string): Token | undefined => {
+export const getTokenById = <T extends Token = Token>(
+  tokenId: string,
+): T | undefined => {
   if (isNilOrEmpty(tokenId)) {
     return undefined;
   }

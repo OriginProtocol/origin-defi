@@ -17,7 +17,7 @@ const mappings = [
 ] as const;
 
 export function formatAmount(
-  amount: bigint | number,
+  amount: string | bigint | number,
   decimals = 18,
   zeroPlaceholder = '0.0000',
   options?: Intl.NumberFormatOptions,
@@ -25,7 +25,11 @@ export function formatAmount(
   if (!amount || amount === 0n) return zeroPlaceholder;
 
   const amt =
-    typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
+    typeof amount === 'string'
+      ? +formatUnits(BigInt(amount), decimals)
+      : typeof amount === 'bigint'
+        ? +formatUnits(amount, decimals)
+        : amount;
 
   for (const [threshold, maxDigits] of mappings) {
     if (amt >= threshold) {

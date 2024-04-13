@@ -13,8 +13,8 @@ import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useAggregatedHistory } from '../hooks';
-import { useHistoryTransactionQuery } from '../queries.generated';
+import { useAggregatedHistory } from '../../../hooks';
+import { useHistoryTransactionQuery } from '../../../queries.generated';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 

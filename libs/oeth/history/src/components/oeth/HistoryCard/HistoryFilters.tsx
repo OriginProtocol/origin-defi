@@ -28,7 +28,7 @@ const filterOptions = [
     label: defineMessage({ defaultMessage: 'Yield' }),
     value: HistoryType.Yield,
   },
-  { label: defineMessage({ defaultMessage: 'Swap' }), value: HistoryType.Swap },
+  // { label: defineMessage({ defaultMessage: 'Swap' }), value: HistoryType.Swap },
   { label: defineMessage({ defaultMessage: 'Sent' }), value: HistoryType.Sent },
   {
     label: defineMessage({ defaultMessage: 'Received' }),

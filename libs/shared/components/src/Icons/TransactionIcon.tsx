@@ -1,7 +1,9 @@
 import { Box } from '@mui/material';
 import { Received, Send, Swap, Yield } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { mainnet } from 'viem/chains';
 
+import { ChainIcon } from './ChainIcon';
 import { TokenIcon } from './TokenIcon';
 
 import type { BoxProps, SvgIconProps } from '@mui/material';
@@ -26,6 +28,39 @@ export function TransactionIcon({
   swapToken,
   ...rest
 }: TransactionIconProps) {
+  const icon =
+    type === HistoryType.Yield ? (
+      <Yield
+        sx={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+        }}
+      />
+    ) : (
+      <TokenIcon
+        token={token}
+        sx={{
+          position: 'absolute',
+          width: 1,
+          height: 1,
+        }}
+      />
+    );
+
+  const chainIcon = token.chainId !== mainnet.id && (
+    <ChainIcon chainId={token.chainId} {...chainIconProps} />
+  );
+
+  const subIcon =
+    type === HistoryType.Sent ? (
+      <Send {...subIconProps} />
+    ) : type === HistoryType.Received || type === HistoryType.Yield ? (
+      <Received {...subIconProps} />
+    ) : (
+      <Swap {...subIconProps} />
+    );
+
   return (
     <Box
       {...rest}
@@ -36,29 +71,9 @@ export function TransactionIcon({
         ...rest?.sx,
       }}
     >
-      {type === HistoryType.Yield ? (
-        <Yield
-          sx={{
-            width: 1,
-            height: 1,
-          }}
-        />
-      ) : (
-        <TokenIcon
-          token={token}
-          sx={{
-            width: 1,
-            height: 1,
-          }}
-        />
-      )}
-      {type === HistoryType.Sent ? (
-        <Send {...subIconProps} />
-      ) : type === HistoryType.Received || type === HistoryType.Yield ? (
-        <Received {...subIconProps} />
-      ) : (
-        <Swap {...subIconProps} />
-      )}
+      {icon}
+      {chainIcon}
+      {subIcon}
       {type === HistoryType.Swap && !isNilOrEmpty(swapToken) && (
         <Box
           sx={{
@@ -83,13 +98,27 @@ export function TransactionIcon({
   );
 }
 
+const chainIconProps: Partial<SvgIconProps> = {
+  sx: {
+    width: 14 / 32,
+    height: 14 / 32,
+    position: 'absolute',
+    right: `${(-4 / 32) * 100}%`,
+    top: `${(-1 / 32) * 100}%`,
+    zIndex: 1,
+    backgroundColor: '#1E1F25',
+    border: 'solid 1px #1E1F25',
+    borderRadius: 999,
+  },
+};
+
 const subIconProps: Partial<SvgIconProps> = {
   sx: {
-    width: { xs: 12, md: 16 },
-    height: { xs: 12, md: 16 },
+    width: 16 / 32,
+    height: 16 / 32,
     position: 'absolute',
-    right: '-0.4rem',
-    bottom: 0,
+    right: `${(-6 / 32) * 100}%`,
+    bottom: `${(-2 / 32) * 100}%`,
     zIndex: 1,
   },
 };
