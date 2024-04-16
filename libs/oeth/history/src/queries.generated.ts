@@ -145,6 +145,9 @@ useHistoryTransactionQuery.fetcher = (variables: HistoryTransactionQueryVariable
 export const TransfersDocument = `
     query Transfers($tokens: [String!], $account: String!) {
   erc20Transfers(
+    orderBy: timestamp_DESC
+    offset: 0
+    limit: 2000
     where: {OR: {address_in: $tokens, from_containsInsensitive: $account}, address_in: $tokens, to_containsInsensitive: $account}
   ) {
     id
