@@ -57,7 +57,7 @@ export function Topnav(props: BoxProps) {
 
   return (
     <>
-      <PauseBanner />
+      {/*<PauseBanner />*/}
       <Box
         component="nav"
         {...props}
