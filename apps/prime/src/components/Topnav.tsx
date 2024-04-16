@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/governance/shared';
-import { PauseBanner, usePoints } from '@origin/prime/shared';
+import { usePoints } from '@origin/prime/shared';
 import {
   ExternalLink,
   LoadingLabel,
@@ -57,7 +57,6 @@ export function Topnav(props: BoxProps) {
 
   return (
     <>
-      {/*<PauseBanner />*/}
       <Box
         component="nav"
         {...props}

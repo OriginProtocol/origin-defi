@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   Dialog,
-  DialogContent,
   DialogTitle,
   MenuItem,
   MenuList,
@@ -72,13 +71,6 @@ export const TokenSelectModal = ({
           ))
         )}
       </MenuList>
-      <DialogContent>
-        <Typography fontWeight="medium">
-          {intl.formatMessage({
-            defaultMessage: 'LST deposits currently paused',
-          })}
-        </Typography>
-      </DialogContent>
     </Dialog>
   );
 };
