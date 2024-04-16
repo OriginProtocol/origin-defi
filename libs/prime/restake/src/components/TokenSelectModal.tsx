@@ -61,7 +61,6 @@ export const TokenSelectModal = ({
               key={`token-${token.address || 'eth'}-${i}`}
               token={token}
               balance={balances?.[token.symbol] ?? 0n}
-              disabled={!['ETH', 'WETH'].includes(token.symbol)}
               onClick={() => {
                 onClose?.({}, 'backdropClick');
                 onSelectToken(token);

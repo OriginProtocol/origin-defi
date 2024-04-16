@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { capitalize } from '@mui/material';
 import { isUserRejected } from '@origin/shared/utils';
@@ -13,7 +13,12 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
-import type { TransactionReceipt } from 'viem';
+import type {
+  Abi,
+  ContractFunctionArgs,
+  ContractFunctionName,
+  TransactionReceipt,
+} from 'viem';
 
 import type {
   ConnectedButtonProps,
@@ -21,18 +26,40 @@ import type {
   WriteTransactionParameters,
 } from '../../wagmi';
 
-export type TxButtonProps = {
+export type TxButtonProps<
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+> = {
   label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
-  params: WriteTransactionParameters;
+  params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
 } & Omit<
   ConnectedButtonProps,
   'onClick' | 'value' | 'children' | 'targetChainId'
 >;
 
-export const TxButton = ({
+export const TxButton = <
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+>({
   label,
   waitingSignatureLabel,
   waitingTxLabel,
@@ -40,18 +67,14 @@ export const TxButton = ({
   callbacks,
   disabled,
   ...rest
-}: TxButtonProps) => {
+}: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
-  const [txButtonState, setTxButtonState] = useState({
-    label: label ?? capitalize(params.functionName),
-    disabled,
-  });
   const { data: simulateData, error: simulateError } = useSimulateContract({
     address: params.contract.address,
-    abi: params.contract.abi,
-    functionName: params.functionName,
-    args: params?.args,
+    abi: params.contract.abi as Abi,
+    functionName: params.functionName as functionName,
+    args: params?.args as readonly unknown[],
     value: params?.value,
     chainId: params.contract.chainId,
     query: {
@@ -80,19 +103,8 @@ export const TxButton = ({
   useEffect(() => {
     if (chain?.id !== params.contract.chainId) {
       resetWriteContract();
-      setTxButtonState({
-        label: label ?? capitalize(params.functionName),
-        disabled: disabled || false,
-      });
     }
-  }, [
-    chain?.id,
-    disabled,
-    label,
-    params.contract.chainId,
-    params.functionName,
-    resetWriteContract,
-  ]);
+  }, [chain?.id, params.contract.chainId, resetWriteContract]);
 
   useEffect(() => {
     if (simulateData) {
@@ -101,38 +113,14 @@ export const TxButton = ({
   }, [callbacks, simulateData]);
 
   useEffect(() => {
-    if (writeStatus === 'pending') {
-      setTxButtonState({
-        label:
-          waitingSignatureLabel ??
-          intl.formatMessage({ defaultMessage: 'Waiting for signature' }),
-        disabled: true,
-      });
-    }
-  }, [intl, waitingSignatureLabel, writeStatus]);
-
-  useEffect(() => {
     if (
       writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&
       waitTxStatus === 'pending'
     ) {
       callbacks?.onTxSigned?.();
-      setTxButtonState({
-        label:
-          waitingTxLabel ??
-          intl.formatMessage({ defaultMessage: 'Processing Transaction' }),
-        disabled: true,
-      });
     }
-  }, [
-    callbacks,
-    intl,
-    prevWriteStatus,
-    waitTxStatus,
-    waitingTxLabel,
-    writeStatus,
-  ]);
+  }, [callbacks, prevWriteStatus, waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -141,21 +129,8 @@ export const TxButton = ({
       prevWaitTxStatus === 'pending'
     ) {
       callbacks?.onWriteSuccess?.(waitTxData as TransactionReceipt);
-      setTxButtonState({
-        label: label ?? capitalize(params.functionName),
-        disabled: disabled || false,
-      });
     }
-  }, [
-    callbacks,
-    disabled,
-    label,
-    params.functionName,
-    prevWaitTxStatus,
-    waitTxData,
-    waitTxStatus,
-    writeStatus,
-  ]);
+  }, [callbacks, prevWaitTxStatus, waitTxData, waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -169,16 +144,9 @@ export const TxButton = ({
       } else if (err) {
         callbacks?.onWriteError?.(err);
       }
-      setTxButtonState({
-        label: label ?? capitalize(params.functionName),
-        disabled: disabled || false,
-      });
     }
   }, [
     callbacks,
-    disabled,
-    label,
-    params.functionName,
     prevWaitTxStatus,
     prevWriteStatus,
     waitTxError,
@@ -196,14 +164,31 @@ export const TxButton = ({
     }
   };
 
+  const buttonLabel =
+    writeStatus === 'pending'
+      ? waitingSignatureLabel ??
+        intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+      : writeStatus === 'success' &&
+          prevWriteStatus === 'pending' &&
+          waitTxStatus === 'pending'
+        ? waitingTxLabel ??
+          intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+        : label ?? capitalize(params.functionName);
+  const isDisabled =
+    disabled ||
+    writeStatus === 'pending' ||
+    (writeStatus === 'success' &&
+      prevWriteStatus === 'pending' &&
+      waitTxStatus === 'pending');
+
   return (
     <ConnectedButton
       {...rest}
-      disabled={txButtonState.disabled}
+      disabled={isDisabled}
       onClick={handleClick}
       targetChainId={params.contract.chainId}
     >
-      {txButtonState.label}
+      {buttonLabel}
     </ConnectedButton>
   );
 };

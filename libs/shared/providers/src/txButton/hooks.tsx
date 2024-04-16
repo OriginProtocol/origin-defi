@@ -16,7 +16,12 @@ import { useGasPrice } from '../gas';
 import { useDeleteNotification, usePushNotification } from '../notifications';
 
 import type { SimulateContractReturnType } from '@wagmi/core';
-import type { TransactionReceipt } from 'viem';
+import type {
+  Abi,
+  ContractFunctionArgs,
+  ContractFunctionName,
+  TransactionReceipt,
+} from 'viem';
 
 import type { Activity, ActivityInput } from '../activities';
 import type {
@@ -24,8 +29,19 @@ import type {
   WriteTransactionParameters,
 } from '../wagmi';
 
-export type UseTxButton = {
-  params: WriteTransactionParameters;
+export type UseTxButton<
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+> = {
+  params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
   activity?: Partial<ActivityInput>;
   disableActivity?: boolean;
@@ -33,7 +49,20 @@ export type UseTxButton = {
   enableGas?: boolean;
 };
 
-export const useTxButton = (args: UseTxButton) => {
+export const useTxButton = <
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+>(
+  args: UseTxButton<abi, functionName, args>,
+) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
@@ -56,7 +85,8 @@ export const useTxButton = (args: UseTxButton) => {
           address: args.params.contract.address ?? ZERO_ADDRESS,
           abi: args.params.contract.abi,
           functionName: args.params.functionName,
-          args: args.params?.args,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          args: args.params?.args as any,
           value: args.params?.value,
         });
 
