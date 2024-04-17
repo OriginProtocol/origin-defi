@@ -280,7 +280,7 @@ export type QueryMessagesArgs = {
 
 
 export type QueryProposalArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -301,12 +301,12 @@ export type QueryRankingArgs = {
 
 
 export type QueryRolesArgs = {
-  where?: InputMaybe<RolesWhere>;
+  where: RolesWhere;
 };
 
 
 export type QuerySpaceArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -320,7 +320,7 @@ export type QuerySpacesArgs = {
 
 
 export type QueryStatementArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -334,7 +334,7 @@ export type QueryStatementsArgs = {
 
 
 export type QueryStrategyArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -348,7 +348,7 @@ export type QuerySubscriptionsArgs = {
 
 
 export type QueryUserArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -362,7 +362,7 @@ export type QueryUsersArgs = {
 
 
 export type QueryVoteArgs = {
-  id?: InputMaybe<Scalars['String']['input']>;
+  id: Scalars['String']['input'];
 };
 
 
@@ -392,7 +392,9 @@ export type RankingWhere = {
   id?: InputMaybe<Scalars['String']['input']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   network?: InputMaybe<Scalars['String']['input']>;
+  plugin?: InputMaybe<Scalars['String']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;
+  strategy?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Role = {
@@ -402,7 +404,7 @@ export type Role = {
 };
 
 export type RolesWhere = {
-  address?: InputMaybe<Scalars['String']['input']>;
+  address: Scalars['String']['input'];
 };
 
 export type Space = {
@@ -483,6 +485,8 @@ export type SpaceWhere = {
   created_lte?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  plugin?: InputMaybe<Scalars['String']['input']>;
+  strategy?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type Statement = {
