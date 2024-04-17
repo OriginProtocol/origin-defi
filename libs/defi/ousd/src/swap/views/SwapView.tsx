@@ -14,7 +14,7 @@ export const SwapView = () => {
   const intl = useIntl();
 
   return (
-    <Container>
+    <Container maxWidth="md">
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Swap' })}
         subtitle={intl.formatMessage({

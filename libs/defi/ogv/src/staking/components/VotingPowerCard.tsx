@@ -6,7 +6,7 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { useOgvInfo, useOgvUserInfoQuery } from '@origin/defi/shared';
+import { useOgvInfo } from '@origin/defi/shared';
 import {
   InfoTooltip,
   LoadingLabel,
@@ -19,6 +19,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useOgvUserInfoQuery } from '../../queries.generated';
 import { cardContentProps } from '../styles';
 
 import type { CardProps } from '@mui/material';

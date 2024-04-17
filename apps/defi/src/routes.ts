@@ -7,6 +7,7 @@ import { NotFoundPage } from '@origin/shared/components';
 import {
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
+  FaArrowRightRegular,
   FaCoinsRegular,
   FaFileLinesRegular,
   FaGavelRegular,
@@ -128,6 +129,17 @@ export const routes: RouteObject[] = [
               title: defineMessage({ defaultMessage: 'Swap' }),
               subtitle: defineMessage({ defaultMessage: 'Get OGV' }),
               icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'migration',
+            Component: ogv.MigrationView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Migration' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Convert OGV to OGN',
+              }),
+              icon: FaArrowRightRegular,
             },
           },
           {

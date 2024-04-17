@@ -3,7 +3,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
-import { StakeOGVCard } from '../components/StakeOGVCard';
+import { StakeOGNCard } from '../components/StakeOGNCard';
 import { products } from '../constants';
 
 export const HomeView = () => {
@@ -44,7 +44,7 @@ export const HomeView = () => {
             ))}
           </Grid2>
         </Box>
-        <StakeOGVCard />
+        <StakeOGNCard />
       </Stack>
     </Container>
   );

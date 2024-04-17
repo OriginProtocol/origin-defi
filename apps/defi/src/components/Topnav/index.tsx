@@ -105,9 +105,9 @@ export const Topnav = () => {
                 }
               }}
               sx={{
-                minWidth: 36,
+                minWidth: { xs: 36, md: 40 },
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-                minHeight: { xs: 36, md: 40 },
+                height: { xs: 36, md: 40 },
                 paddingX: {
                   md: 2,
                   xs: isConnected ? 0.75 : 2,
@@ -134,6 +134,7 @@ export const Topnav = () => {
             {isConnected && (
               <ActivityButton
                 iconSize={20}
+                color="inherit"
                 activityIcon={
                   <FaArrowUpArrowDownLight
                     sx={{ transform: 'rotate(45deg)' }}

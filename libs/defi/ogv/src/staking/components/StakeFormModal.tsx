@@ -38,9 +38,9 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useStakingAPY } from '../hooks';
+import { useStakingAPY } from '../../hooks';
+import { getNextEmissionDate } from '../../utils';
 import { cardInputStackProps } from '../styles';
-import { getNextEmissionDate } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 

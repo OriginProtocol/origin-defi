@@ -1,6 +1,9 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Stack,
@@ -10,20 +13,25 @@ import {
   TableHead,
   TableRow,
   Typography,
-  useMediaQuery,
   useTheme,
 } from '@mui/material';
 import { useOgvInfo } from '@origin/defi/shared';
 import {
+  ExpandIcon,
   LoadingLabel,
   TablePagination,
   TokenIcon,
+  ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { FaArrowUpRightRegular } from '@origin/shared/icons';
-import { TransactionButton } from '@origin/shared/providers';
+import {
+  FaArrowRightRegular,
+  FaArrowUpRightRegular,
+  VeOGVOutlined,
+} from '@origin/shared/icons';
+import { useWatchBalance } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
+import { useMediaQuery } from '@react-hookz/web';
 import {
   createColumnHelper,
   flexRender,
@@ -31,23 +39,156 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict, isFuture } from 'date-fns';
+import { formatDistanceToNowStrict } from 'date-fns';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useOgvLockupsQuery } from '../../queries.generated';
-import { ExtendButton } from './ExtendFormModal';
+import { ConvertAllBalancesButton } from './ConvertAllBalancesModal';
+
+import type { AccordionSummaryProps, StackProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 
 import type { Lockup } from '../../types';
 
+export const ConvertVeogvAccordion = (
+  props: Omit<AccordionSummaryProps, 'children'>,
+) => {
+  const intl = useIntl();
+  const [expanded, setExpanded] = useState(false);
+  const { address } = useAccount();
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokens.mainnet.veOGV,
+  });
+  const { data: lockupsCount, isLoading: isLockupsCountLoading } =
+    useOgvLockupsQuery(
+      { address: address ?? ZERO_ADDRESS },
+      {
+        select: (data) => data?.ogvLockups?.length ?? 0,
+        enabled: !!address,
+      },
+    );
+
+  return (
+    <Accordion expanded={expanded}>
+      <AccordionSummary {...props}>
+        <Stack
+          direction="row"
+          spacing={3}
+          alignItems="center"
+          justifyContent="space-between"
+          p={3}
+          width={1}
+        >
+          <Stack direction="row" alignItems="center" spacing={3} width={0.5}>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <VeOGVOutlined sx={{ fontSize: 48 }} />
+              <FaArrowRightRegular />
+              <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 48 }} />
+            </Stack>
+            <Stack alignItems="flex-start">
+              <Typography sx={{ fontSize: 24 }}>
+                {intl.formatMessage({
+                  defaultMessage: 'Convert your veOGV to xOGN',
+                })}
+              </Typography>
+              <Typography>
+                {intl.formatMessage({
+                  defaultMessage: 'You will receive xOGN',
+                })}
+              </Typography>
+              <Button
+                variant="text"
+                onClick={() => {
+                  setExpanded(not);
+                }}
+                disabled={isLockupsCountLoading || lockupsCount === 0}
+                sx={{
+                  fontSize: 14,
+                  lineHeight: 1.5,
+                  fontWeight: 400,
+                  color: 'primary.main',
+                  px: 0,
+                }}
+              >
+                {intl.formatMessage(
+                  {
+                    defaultMessage: 'View all veOGV lockups {count}',
+                  },
+                  {
+                    count: (
+                      <LoadingLabel
+                        isLoading={isLockupsCountLoading}
+                        color="inherit"
+                        sWidth={10}
+                        sx={{ ml: 0.5 }}
+                      >
+                        ({lockupsCount})
+                      </LoadingLabel>
+                    ),
+                  },
+                )}
+                &nbsp;
+                <ExpandIcon isExpanded={expanded} />
+              </Button>
+            </Stack>
+          </Stack>
+          <ValueLabel
+            label={intl.formatMessage({ defaultMessage: 'Your veOGV balance' })}
+            value={
+              <Stack direction="row" alignItems="center" spacing={1}>
+                <TokenIcon token={tokens.mainnet.veOGV} sx={{ fontSize: 24 }} />
+                <Typography sx={{ fontSize: 24 }}>
+                  {intl.formatNumber(
+                    +formatUnits(balance ?? 0n, tokens.mainnet.OGV.decimals),
+                    { notation: 'compact', maximumSignificantDigits: 4 },
+                  )}
+                </Typography>
+              </Stack>
+            }
+            isLoading={isBalanceLoading}
+            labelProps={{ color: 'text.primary', textAlign: 'center' }}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              p: 2,
+              borderRadius: 1,
+            }}
+          />
+          <Stack sx={{ width: 300 }}>
+            <ConvertAllBalancesButton variant="action">
+              {intl.formatMessage({ defaultMessage: 'Convert All veOGV' })}
+            </ConvertAllBalancesButton>
+            <Button
+              variant="text"
+              onClick={(evt: MouseEvent<HTMLButtonElement>) => {
+                evt.stopPropagation();
+              }}
+            >
+              {intl.formatMessage({
+                defaultMessage: 'Unlock your veOGV',
+              })}
+              &nbsp;
+              <FaArrowUpRightRegular />
+            </Button>
+          </Stack>
+        </Stack>
+      </AccordionSummary>
+      <AccordionDetails>
+        <LockupsTable />
+      </AccordionDetails>
+    </Accordion>
+  );
+};
+
 const columnHelper = createColumnHelper<Lockup>();
 
-export const LockupsTable = () => {
+function LockupsTable(props: StackProps) {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const queryClient = useQueryClient();
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useOgvInfo();
   const { data, isLoading } = useOgvLockupsQuery(
@@ -149,43 +290,6 @@ export const LockupsTable = () => {
               alignItems="stretch"
               justifyContent="flex-end"
             >
-              <ExtendButton
-                lockup={info.row.original}
-                variant="outlined"
-                color="secondary"
-              >
-                {intl.formatMessage({ defaultMessage: 'Extend' })}
-              </ExtendButton>
-              <TransactionButton
-                contract={tokens.mainnet.veOGV}
-                functionName="unstake"
-                args={[info.row.original.lockupId]}
-                variant="outlined"
-                color="secondary"
-                disabled={isFuture(new Date(info.row.original.end))}
-                label={intl.formatMessage({ defaultMessage: 'Unstake' })}
-                waitingSignatureLabel={intl.formatMessage({
-                  defaultMessage: 'Signing',
-                })}
-                waitingTxLabel={intl.formatMessage({
-                  defaultMessage: 'Unstaking',
-                })}
-                notificationTitle={intl.formatMessage({
-                  defaultMessage: 'Unstake',
-                })}
-                notificationSubtitle={intl.formatMessage({
-                  defaultMessage: 'Unstake lock-up',
-                })}
-                notificationEndIcon={
-                  <TokenIcon
-                    token={tokens.mainnet.veOGV}
-                    sx={{ transform: 'translateY(4px)' }}
-                  />
-                }
-                onSuccess={() => {
-                  queryClient.invalidateQueries();
-                }}
-              />
               <Button
                 variant="outlined"
                 color="secondary"
@@ -203,14 +307,7 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [
-      govInfo?.veOgvTotalSupply,
-      intl,
-      isGovInfoLoading,
-      isLoading,
-      isSm,
-      queryClient,
-    ],
+    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
   );
 
   const table = useReactTable({
@@ -227,7 +324,7 @@ export const LockupsTable = () => {
   });
 
   return (
-    <Stack>
+    <Stack {...props}>
       <Box sx={{ overflowX: 'auto' }}>
         <Table sx={{ width: 1 }}>
           <TableHead>
@@ -283,4 +380,4 @@ export const LockupsTable = () => {
       )}
     </Stack>
   );
-};
+}

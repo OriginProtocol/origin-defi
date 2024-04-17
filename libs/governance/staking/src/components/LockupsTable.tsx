@@ -27,13 +27,12 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict, isFuture } from 'date-fns';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserLockupsQuery } from '../queries.generated';
-import { ExtendButton } from './ExtendFormModal';
 import { UnstakeButton } from './UnstakeFormModal';
 
 import type { Lockup } from '../types';
@@ -46,7 +45,7 @@ export const LockupsTable = () => {
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
-  const { data, isLoading } = useUserLockupsQuery(
+  const { data: lockups, isLoading: isLockupsLoading } = useUserLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
       select: (data) => data?.ogvLockups,
@@ -113,7 +112,7 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) => (
           <LoadingLabel
-            isLoading={isLoading || isGovInfoLoading}
+            isLoading={isLockupsLoading || isGovInfoLoading}
             sWidth={50}
             sx={{ display: 'flex', justifyContent: 'flex-end' }}
           >
@@ -145,23 +144,13 @@ export const LockupsTable = () => {
               alignItems="center"
               justifyContent="flex-end"
             >
-              <ExtendButton
-                lockup={info.row.original}
-                variant="outlined"
-                color="secondary"
-              >
-                {intl.formatMessage({ defaultMessage: 'Extend' })}
-              </ExtendButton>
-
               <UnstakeButton
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={isFuture(new Date(info.row.original.end))}
               >
-                {intl.formatMessage({ defaultMessage: 'Unstake' })}
+                {intl.formatMessage({ defaultMessage: 'Unlock' })}
               </UnstakeButton>
-
               <ArrowLink
                 iconSize={12}
                 href={`https://etherscan.io/tx/${
@@ -173,11 +162,11 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
+    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLockupsLoading, isSm],
   );
 
   const table = useReactTable({
-    data: data ?? [],
+    data: lockups ?? [],
     columns,
     initialState: {
       pagination: {

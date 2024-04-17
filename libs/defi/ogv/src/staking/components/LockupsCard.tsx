@@ -13,8 +13,8 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useMyVApy, useTotalLockedUp } from '../hooks';
-import { useOgvLockupsQuery } from '../queries.generated';
+import { useMyVApy, useTotalLockedUp } from '../../hooks';
+import { useOgvLockupsQuery } from '../../queries.generated';
 import { LockupsTable } from './LockupsTable';
 
 import type { CardProps, StackProps } from '@mui/material';

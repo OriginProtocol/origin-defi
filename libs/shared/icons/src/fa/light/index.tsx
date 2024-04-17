@@ -48,6 +48,7 @@ import RotateLeftSvg from './rotate-left.svg?react';
 import SquareSvg from './square.svg?react';
 import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
+import SquareMinusSvg from './square-minus.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
@@ -384,6 +385,14 @@ export const FaSquareListLight = (props: SvgIconProps) => (
     fontSize="inherit"
     {...props}
     component={SquareListSvg}
+    inheritViewBox
+  />
+);
+export const FaSquareMinusLight = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SquareMinusSvg}
     inheritViewBox
   />
 );

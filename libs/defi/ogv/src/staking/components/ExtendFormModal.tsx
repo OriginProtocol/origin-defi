@@ -40,13 +40,13 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../hooks';
+import { useStakingAPY } from '../../hooks';
+import { getNextEmissionDate, getVAPY } from '../../utils';
 import { cardInputStackProps } from '../styles';
-import { getNextEmissionDate, getVAPY } from '../utils';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
-import type { Lockup } from '../types';
+import type { Lockup } from '../../types';
 
 export type ExtendFormModalProps = {
   lockup: Lockup;
@@ -94,8 +94,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     }
   }, [duration, initialMonthDuration, isLoading, staking?.stakingAPY]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleDurationChange = (_: any, newValue: number | number[]) => {
+  const handleDurationChange = (_: Event, newValue: number | number[]) => {
     const val = newValue as number;
     if (val >= (initialMonthDuration ?? 0)) {
       setIsLoading(true);
@@ -156,74 +155,71 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Stack pt={3}>
-          <Stack {...cardInputStackProps}>
-            <Stack
-              direction="row"
-              px={3}
-              pt={2}
-              pb={1}
-              sx={{ '> *': { width: 1, color: 'text.secondary' } }}
-            >
-              <Typography>{tokens.mainnet.OGV.symbol}</Typography>
-              <Typography textAlign="end">
-                {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
-              </Typography>
-              <Typography textAlign="end">
-                {tokens.mainnet.veOGV.symbol}
-              </Typography>
-            </Stack>
-            <Divider />
-            <Stack
-              direction="row"
-              px={3}
-              pt={1}
-              pb={2}
-              alignItems="baseline"
-              sx={{ '> *': { width: 1 } }}
-            >
-              <Stack direction="row" spacing={1} alignItems="baseline">
-                <TokenIcon
-                  token={tokens.mainnet.OGV}
-                  sx={{ transform: 'translateY(4px)', fontSize: 28 }}
-                />
-                <Typography variant="h3">
-                  {formatAmount(
-                    BigInt(lockup.amount),
-                    tokens.mainnet.OGV.decimals,
-                    undefined,
-                    { notation: 'compact', maximumSignificantDigits: 4 },
-                  )}
-                </Typography>
-              </Stack>
-              <Typography textAlign="end" fontWeight={700}>
-                {intl.formatMessage(
-                  {
-                    defaultMessage:
-                      '{count,plural, =1{# month} other{# months}}',
-                  },
-                  { count: initialMonthDuration },
+        <Stack mt={3} {...cardInputStackProps}>
+          <Stack
+            direction="row"
+            px={3}
+            pt={2}
+            pb={1}
+            sx={{ '> *': { width: 1, color: 'text.secondary' } }}
+          >
+            <Typography>{tokens.mainnet.OGV.symbol}</Typography>
+            <Typography textAlign="end">
+              {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
+            </Typography>
+            <Typography textAlign="end">
+              {tokens.mainnet.veOGV.symbol}
+            </Typography>
+          </Stack>
+          <Divider />
+          <Stack
+            direction="row"
+            px={3}
+            pt={1}
+            pb={2}
+            alignItems="baseline"
+            sx={{ '> *': { width: 1 } }}
+          >
+            <Stack direction="row" spacing={1} alignItems="baseline">
+              <TokenIcon
+                token={tokens.mainnet.OGV}
+                sx={{ transform: 'translateY(4px)', fontSize: 28 }}
+              />
+              <Typography variant="h3">
+                {formatAmount(
+                  BigInt(lockup.amount),
+                  tokens.mainnet.OGV.decimals,
+                  undefined,
+                  { notation: 'compact', maximumSignificantDigits: 4 },
                 )}
               </Typography>
-              <Stack
-                direction="row"
-                spacing={1}
-                alignItems="baseline"
-                justifyContent="flex-end"
-              >
-                <TokenIcon
-                  token={tokens.mainnet.veOGV}
-                  sx={{ transform: 'translateY(4px)' }}
-                />
-                <Typography fontWeight={700}>
-                  {formatAmount(
-                    BigInt(lockup.veogv),
-                    tokens.mainnet.veOGV.decimals,
-                    undefined,
-                    { notation: 'compact', maximumSignificantDigits: 4 },
-                  )}
-                </Typography>
-              </Stack>
+            </Stack>
+            <Typography textAlign="end" fontWeight={700}>
+              {intl.formatMessage(
+                {
+                  defaultMessage: '{count,plural, =1{# month} other{# months}}',
+                },
+                { count: initialMonthDuration },
+              )}
+            </Typography>
+            <Stack
+              direction="row"
+              spacing={1}
+              alignItems="baseline"
+              justifyContent="flex-end"
+            >
+              <TokenIcon
+                token={tokens.mainnet.veOGV}
+                sx={{ transform: 'translateY(4px)' }}
+              />
+              <Typography fontWeight={700}>
+                {formatAmount(
+                  BigInt(lockup.veogv),
+                  tokens.mainnet.veOGV.decimals,
+                  undefined,
+                  { notation: 'compact', maximumSignificantDigits: 4 },
+                )}
+              </Typography>
             </Stack>
           </Stack>
         </Stack>

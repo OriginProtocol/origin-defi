@@ -98,7 +98,7 @@ export const useStakingAPY = (
 };
 
 export const useMyVApy = () => {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
   const queryClient = useQueryClient();
   const config = useConfig();
 
@@ -106,6 +106,10 @@ export const useMyVApy = () => {
     queryKey: ['useMyVApy', address, config],
     enabled: !!address,
     queryFn: async () => {
+      if (!address) {
+        return 0;
+      }
+
       const data = await Promise.all([
         queryClient.fetchQuery<OgvLockupsQuery>({
           queryKey: useOgvLockupsQuery.getKey({
@@ -119,7 +123,7 @@ export const useMyVApy = () => {
         }),
       ]);
 
-      if (!isConnected || isNilOrEmpty(data?.[0]?.ogvLockups)) {
+      if (isNilOrEmpty(data?.[0]?.ogvLockups)) {
         return 0;
       }
 

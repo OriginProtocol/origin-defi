@@ -1,3 +1,4 @@
+import { DEAD_ADDRESS } from '@origin/shared/utils';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
@@ -172,6 +173,14 @@ export const tokens = {
       name: 'Wrapped Origin Dollar',
       decimals: 18,
       symbol: 'wOUSD',
+    },
+    xOGN: {
+      address: DEAD_ADDRESS,
+      chainId: mainnet.id,
+      abi: veOGVABI,
+      name: 'Staked OGN',
+      decimals: 18,
+      symbol: 'xOGN',
     },
   },
   arbitrum: {

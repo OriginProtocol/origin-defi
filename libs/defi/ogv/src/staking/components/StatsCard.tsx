@@ -1,9 +1,10 @@
 import { Card, Divider, Stack } from '@mui/material';
-import { useOgvHoldersCountQuery, useOgvInfo } from '@origin/defi/shared';
+import { useOgvInfo } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
-import { useStakingAPY } from '../hooks';
+import { useStakingAPY } from '../../hooks';
+import { useOgvHoldersCountQuery } from '../../queries.generated';
 import { valueLabelProps } from '../styles';
 
 import type { CardProps } from '@mui/material';

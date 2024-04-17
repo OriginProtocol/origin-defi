@@ -6,6 +6,7 @@ import {
   FaCircleExclamationRegular,
   FaCircleXmarkRegular,
   FaSquareCheckRegular,
+  FaSquareMinusRegular,
   FaSquareRegular,
 } from '@origin/shared/icons';
 
@@ -22,7 +23,7 @@ export const theme = createTheme({
       main: '#9869FB',
       contrastText: '#FAFBFB',
     },
-    divider: '#282A32',
+    divider: '#3B3C3E',
     background: {
       paper: '#171619',
       default: '#141214',
@@ -365,10 +366,25 @@ export const theme = createTheme({
         }),
       },
     },
+    MuiContainer: {
+      styleOverrides: {
+        maxWidthMd: {
+          '&&&': { maxWidth: 1000 },
+        },
+      },
+    },
     MuiCheckbox: {
       defaultProps: {
-        checkedIcon: <FaSquareCheckRegular />,
-        icon: <FaSquareRegular />,
+        indeterminateIcon: <FaSquareMinusRegular fontSize="inherit" />,
+        checkedIcon: <FaSquareCheckRegular fontSize="inherit" />,
+        icon: <FaSquareRegular fontSize="inherit" />,
+      },
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+        sizeSmall: { fontSize: 16 },
+        sizeMedium: { fontSize: 20 },
       },
     },
     MuiCssBaseline: {

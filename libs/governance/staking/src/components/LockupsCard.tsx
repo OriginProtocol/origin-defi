@@ -14,6 +14,7 @@ import { useAccount } from 'wagmi';
 import { useMyVApy } from '../hooks';
 import { useUserLockupsQuery } from '../queries.generated';
 import { LockupsTable } from './LockupsTable';
+import { UnlockAllButton } from './UnlockAllModal';
 
 import type { CardProps } from '@mui/material';
 
@@ -32,7 +33,7 @@ export const LockupsCard = (props: CardProps) => {
         title={intl.formatMessage({ defaultMessage: 'My Lock-ups' })}
         action={
           isConnected && (
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack direction="row" spacing={1} alignItems="center" useFlexGap>
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'My vAPY' })}
               </Typography>
@@ -58,6 +59,14 @@ export const LockupsCard = (props: CardProps) => {
                   minimumFractionDigits: 2,
                 })}
               </LoadingLabel>
+              <UnlockAllButton
+                variant="outlined"
+                color="secondary"
+                disabled={isNilOrEmpty(data)}
+                sx={{ ml: 2 }}
+              >
+                {intl.formatMessage({ defaultMessage: 'Unlock All' })}
+              </UnlockAllButton>
             </Stack>
           )
         }

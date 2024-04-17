@@ -19,7 +19,7 @@ const tags = [
   },
 ];
 
-export const StakeOGVCard = (props: StackProps) => {
+export const StakeOGNCard = (props: StackProps) => {
   const intl = useIntl();
 
   return (
@@ -61,13 +61,12 @@ export const StakeOGVCard = (props: StackProps) => {
             ))}
           </Stack>
           <Typography variant="h1">
-            {intl.formatMessage({ defaultMessage: 'Stake OGV' })}
+            {intl.formatMessage({ defaultMessage: 'Stake OGN' })}
           </Typography>
           <Typography
             variant="h1"
             sx={{
-              background:
-                'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+              background: (theme) => theme.palette.background.gradientOrange,
               backgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               pb: 2,
@@ -85,20 +84,19 @@ export const StakeOGVCard = (props: StackProps) => {
           </Typography>
           <Typography pb={3}>
             {intl.formatMessage({
-              defaultMessage: `Fees and voting rights accrue to OGV stakers.<br></br>Control the future of Origin products and profit from its growth.`,
+              defaultMessage: `Fees and voting rights accrue to OGN stakers.<br></br>Control the future of Origin products and profit from its growth.`,
             })}
           </Typography>
           <Button
             variant="outlined"
             sx={{
               borderColor: 'secondary.main',
-              borderWidth: 2,
               height: 56,
               fontSize: 16,
               px: 5,
             }}
           >
-            {intl.formatMessage({ defaultMessage: 'Get OGV' })}
+            {intl.formatMessage({ defaultMessage: 'Get OGN' })}
           </Button>
         </Grid2>
         <Grid2
@@ -114,7 +112,7 @@ export const StakeOGVCard = (props: StackProps) => {
         >
           <Stack justifyContent="center" alignItems="center">
             <TokenIcon
-              token={tokens.mainnet.OGV}
+              token={tokens.mainnet.OGN}
               sx={{
                 zIndex: 1,
                 width: { xs: 160, md: 216 },
