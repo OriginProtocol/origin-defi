@@ -35,6 +35,18 @@
       "value": "Show breakdown"
     }
   ],
+  "+ccpY7": [
+    {
+      "type": 0,
+      "value": "Convert all stakes"
+    }
+  ],
+  "+iy0zp": [
+    {
+      "type": 0,
+      "value": "50%"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
@@ -63,6 +75,20 @@
     {
       "type": 0,
       "value": "In-depth OGV analytics"
+    }
+  ],
+  "/sIoQc": [
+    {
+      "type": 0,
+      "value": "1 OGV = "
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    },
+    {
+      "type": 0,
+      "value": " OGN"
     }
   ],
   "/xvR4F": [
@@ -107,6 +133,12 @@
       "value": " in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
     }
   ],
+  "0Ai6WM": [
+    {
+      "type": 0,
+      "value": "Your OGV balance"
+    }
+  ],
   "0Go4jI": [
     {
       "type": 0,
@@ -137,6 +169,12 @@
       "value": "Transaction"
     }
   ],
+  "1Og5F/": [
+    {
+      "type": 0,
+      "value": "Migration"
+    }
+  ],
   "1VDppm": [
     {
       "type": 0,
@@ -159,6 +197,12 @@
     {
       "type": 1,
       "value": "defaultChain"
+    }
+  ],
+  "1gVyO8": [
+    {
+      "type": 0,
+      "value": "Unclaimed Rewards"
     }
   ],
   "1lkU0S": [
@@ -247,6 +291,12 @@
       "value": "Your transaction is being processed on-chain."
     }
   ],
+  "4R0mVR": [
+    {
+      "type": 0,
+      "value": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
+    }
+  ],
   "4cSnUS": [
     {
       "type": 0,
@@ -283,26 +333,16 @@
       "value": "Select token"
     }
   ],
+  "5cKJ7r": [
+    {
+      "type": 0,
+      "value": "Your veOGV Lockups"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
       "value": "I agree"
-    }
-  ],
-  "5m9ETS": [
-    {
-      "type": 0,
-      "value": "Fees and voting rights accrue to OGV stakers."
-    },
-    {
-      "children": [
-      ],
-      "type": 8,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Control the future of Origin products and profit from its growth."
     }
   ],
   "5x6HGl": [
@@ -367,10 +407,22 @@
       "value": "duration"
     }
   ],
+  "5zH79K": [
+    {
+      "type": 0,
+      "value": "Your veOGV staked positions"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
       "value": "The selected network is not supported by the application."
+    }
+  ],
+  "6JrFw7": [
+    {
+      "type": 0,
+      "value": "All your existing veOGV lockups will be converted to a single xOGN lockup."
     }
   ],
   "6Sj2lN": [
@@ -403,6 +455,12 @@
       "value": "Amount to Stake"
     }
   ],
+  "6ggwx/": [
+    {
+      "type": 0,
+      "value": "Convert All"
+    }
+  ],
   "6nFK6a": [
     {
       "type": 0,
@@ -425,6 +483,16 @@
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "7g+lhA": [
+    {
+      "type": 0,
+      "value": "View all veOGV lockups "
+    },
+    {
+      "type": 1,
+      "value": "count"
     }
   ],
   "8EhWB4": [
@@ -463,6 +531,12 @@
       "value": "Bridge Started"
     }
   ],
+  "8ZVfG8": [
+    {
+      "type": 0,
+      "value": "100%"
+    }
+  ],
   "8cCxx8": [
     {
       "type": 0,
@@ -481,10 +555,22 @@
       "value": "Last"
     }
   ],
+  "8w4BfJ": [
+    {
+      "type": 0,
+      "value": "The amount of OGV in your wallet"
+    }
+  ],
   "9/afiv": [
     {
       "type": 0,
       "value": "Signing"
+    }
+  ],
+  "9WOYWf": [
+    {
+      "type": 0,
+      "value": "No Lockup to convert"
     }
   ],
   "9ghOJK": [
@@ -641,6 +727,18 @@
       "value": "Total Value Locked"
     }
   ],
+  "DeWZOz": [
+    {
+      "type": 0,
+      "value": "Convert your veOGV to xOGN"
+    }
+  ],
+  "Do7020": [
+    {
+      "type": 0,
+      "value": "Conversion Rate:"
+    }
+  ],
   "DriTx1": [
     {
       "type": 0,
@@ -739,6 +837,18 @@
       "value": "The variable APY currently being earned on staked OGV."
     }
   ],
+  "FmLmFf": [
+    {
+      "type": 0,
+      "value": "Select which balances you wish to convert"
+    }
+  ],
+  "GFGLdS": [
+    {
+      "type": 0,
+      "value": "The amount of xOGN you will lockup."
+    }
+  ],
   "GZJpDf": [
     {
       "type": 0,
@@ -767,6 +877,12 @@
     {
       "type": 0,
       "value": "Total accrued rewards"
+    }
+  ],
+  "HT5D8q": [
+    {
+      "type": 0,
+      "value": "Convert OGV to OGN"
     }
   ],
   "Hiq4cG": [
@@ -811,10 +927,22 @@
       "value": "Governance"
     }
   ],
+  "Jqfi05": [
+    {
+      "type": 0,
+      "value": "All selected balance"
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
       "value": "Gas:"
+    }
+  ],
+  "Jz86Vv": [
+    {
+      "type": 0,
+      "value": "You will receive xOGN"
     }
   ],
   "KE0cl6": [
@@ -849,6 +977,18 @@
     {
       "type": 1,
       "value": "symbol"
+    }
+  ],
+  "L8cv3e": [
+    {
+      "type": 0,
+      "value": "Your Lockups"
+    }
+  ],
+  "LLHdZA": [
+    {
+      "type": 0,
+      "value": "OGV balance"
     }
   ],
   "LpWMOQ": [
@@ -1009,6 +1149,18 @@
       "value": "Best"
     }
   ],
+  "Q+JX+m": [
+    {
+      "type": 0,
+      "value": "You will receive OGN (any unclaimed OGV staking rewards will also be converted)."
+    }
+  ],
+  "QQH5h9": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to get started"
+    }
+  ],
   "QW+Q5N": [
     {
       "type": 0,
@@ -1091,6 +1243,12 @@
       "value": "30d earnings"
     }
   ],
+  "TgHRWD": [
+    {
+      "type": 0,
+      "value": "Total OGV"
+    }
+  ],
   "TrKxvg": [
     {
       "type": 0,
@@ -1113,6 +1271,12 @@
     {
       "type": 0,
       "value": "Account"
+    }
+  ],
+  "UOoR63": [
+    {
+      "type": 0,
+      "value": "Convert All Balances"
     }
   ],
   "UkXeBW": [
@@ -1159,6 +1323,18 @@
     {
       "type": 0,
       "value": "Redeem from OETH vault"
+    }
+  ],
+  "VlBWvb": [
+    {
+      "type": 0,
+      "value": "25%"
+    }
+  ],
+  "Vlf1Wn": [
+    {
+      "type": 0,
+      "value": "Get OGN"
     }
   ],
   "Vn/9nH": [
@@ -1213,6 +1389,12 @@
       "value": "Backing collateral"
     }
   ],
+  "WrGSr6": [
+    {
+      "type": 0,
+      "value": "Convert"
+    }
+  ],
   "XSdWHA": [
     {
       "type": 0,
@@ -1223,6 +1405,24 @@
     {
       "type": 0,
       "value": "In-depth OETH analytics"
+    }
+  ],
+  "YGiRwq": [
+    {
+      "type": 0,
+      "value": "Voting Power"
+    }
+  ],
+  "YGu9gd": [
+    {
+      "type": 0,
+      "value": "The amount of pending rewards allocated to you"
+    }
+  ],
+  "YS+T+s": [
+    {
+      "type": 0,
+      "value": "veOGV"
     }
   ],
   "YnftYz": [
@@ -1243,6 +1443,12 @@
       "value": "Time Remaining"
     }
   ],
+  "ZOVEEk": [
+    {
+      "type": 0,
+      "value": "The variable APY currently being earned on staked OGN."
+    }
+  ],
   "ZmLuI/": [
     {
       "type": 0,
@@ -1253,6 +1459,12 @@
     {
       "type": 0,
       "value": "Connect a wallet to see your balance"
+    }
+  ],
+  "a6zIc2": [
+    {
+      "type": 0,
+      "value": "Convert your OGV to OGN"
     }
   ],
   "aA9zvD": [
@@ -1297,6 +1509,12 @@
       "value": "Redeem from OUSD vault"
     }
   ],
+  "bwgPvE": [
+    {
+      "type": 0,
+      "value": "Convert All OGV"
+    }
+  ],
   "c0+sy5": [
     {
       "type": 0,
@@ -1313,6 +1531,18 @@
     {
       "type": 0,
       "value": "Yield"
+    }
+  ],
+  "cVJyQB": [
+    {
+      "type": 0,
+      "value": "You will be able to convert your tokens after connecting your wallet."
+    }
+  ],
+  "cfhPIG": [
+    {
+      "type": 0,
+      "value": "OGV & OGN are merging"
     }
   ],
   "cg1VJ2": [
@@ -1445,10 +1675,28 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "gF5qej": [
+    {
+      "type": 0,
+      "value": "No OGV to convert"
+    }
+  ],
+  "gQC+XM": [
+    {
+      "type": 0,
+      "value": "Start using this app by connecting your wallet."
+    }
+  ],
   "gcuDcH": [
     {
       "type": 0,
       "value": "Sent"
+    }
+  ],
+  "h7+npb": [
+    {
+      "type": 0,
+      "value": "Unlock your veOGV"
     }
   ],
   "hKc0hO": [
@@ -1473,6 +1721,12 @@
     {
       "type": 0,
       "value": "Transaction executed"
+    }
+  ],
+  "hzplNt": [
+    {
+      "type": 0,
+      "value": "Convert your OGV tokens into OGN. Conversion page will be open for 1 year."
     }
   ],
   "i9rSSQ": [
@@ -1545,6 +1799,12 @@
       "value": "Hours"
     }
   ],
+  "jFO9uo": [
+    {
+      "type": 0,
+      "value": "Your veOGV balance"
+    }
+  ],
   "jFZ2w9": [
     {
       "type": 0,
@@ -1573,6 +1833,24 @@
     {
       "type": 0,
       "value": "Max slippage"
+    }
+  ],
+  "k4P8dm": [
+    {
+      "type": 0,
+      "value": "Your OGV/veOGV is equivalent to"
+    }
+  ],
+  "kH1R79": [
+    {
+      "type": 0,
+      "value": "Stake OGN"
+    }
+  ],
+  "kr31SN": [
+    {
+      "type": 0,
+      "value": "1m"
     }
   ],
   "lQmZjB": [
@@ -1635,6 +1913,18 @@
       "value": "Recent Activity"
     }
   ],
+  "nkl3al": [
+    {
+      "type": 0,
+      "value": "75%"
+    }
+  ],
+  "nn6ywf": [
+    {
+      "type": 0,
+      "value": "You will get:"
+    }
+  ],
   "ntQz2o": [
     {
       "type": 0,
@@ -1669,6 +1959,12 @@
     {
       "type": 0,
       "value": "Percentage of total votes"
+    }
+  ],
+  "p9CMVC": [
+    {
+      "type": 0,
+      "value": "The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
     }
   ],
   "pGciHf": [
@@ -1737,6 +2033,12 @@
       "value": "Annual Percentage Yield"
     }
   ],
+  "rscf9U": [
+    {
+      "type": 0,
+      "value": "Your Unclaimed OGV Rewards"
+    }
+  ],
   "s49boM": [
     {
       "type": 0,
@@ -1767,6 +2069,12 @@
       "value": "Transaction error"
     }
   ],
+  "tQw4xK": [
+    {
+      "type": 0,
+      "value": "Staking Ratio"
+    }
+  ],
   "tZtBsJ": [
     {
       "type": 0,
@@ -1779,10 +2087,22 @@
       "value": "Info page"
     }
   ],
+  "u0rPqO": [
+    {
+      "type": 0,
+      "value": "Convert to OGN"
+    }
+  ],
   "u4BAsU": [
     {
       "type": 0,
       "value": "View proposals"
+    }
+  ],
+  "uNO1pX": [
+    {
+      "type": 0,
+      "value": "Balance to Convert"
     }
   ],
   "uNOJ2Q": [
@@ -1815,6 +2135,22 @@
       "value": "Unstaking"
     }
   ],
+  "vXr6sM": [
+    {
+      "type": 0,
+      "value": "Fees and voting rights accrue to OGN stakers."
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "Control the future of Origin products and profit from its growth."
+    }
+  ],
   "vclhrb": [
     {
       "type": 0,
@@ -1823,6 +2159,12 @@
     {
       "type": 1,
       "value": "balance"
+    }
+  ],
+  "vejVCU": [
+    {
+      "type": 0,
+      "value": "No reward to claim"
     }
   ],
   "viL6nH": [
@@ -1867,10 +2209,22 @@
       "value": "Wrong Network"
     }
   ],
+  "xCLnaU": [
+    {
+      "type": 0,
+      "value": "Convert All veOGV"
+    }
+  ],
   "xZIm6b": [
     {
       "type": 0,
       "value": "Your transaction may be frontrun"
+    }
+  ],
+  "xnQa6i": [
+    {
+      "type": 0,
+      "value": "Lock-up Ends:"
     }
   ],
   "xwfunk": [

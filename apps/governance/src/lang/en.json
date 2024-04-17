@@ -205,6 +205,12 @@
       "value": "Impossible to execute"
     }
   ],
+  "30piAb": [
+    {
+      "type": 0,
+      "value": "Convert OGV"
+    }
+  ],
   "3WcLXG": [
     {
       "type": 0,
@@ -395,6 +401,12 @@
       "value": "Redeemed"
     }
   ],
+  "7nq5ZH": [
+    {
+      "type": 0,
+      "value": "Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards."
+    }
+  ],
   "7yGjVx": [
     {
       "type": 0,
@@ -491,12 +503,6 @@
     {
       "type": 0,
       "value": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
-    }
-  ],
-  "BLAy25": [
-    {
-      "type": 0,
-      "value": "Extend"
     }
   ],
   "Bih77e": [
@@ -653,10 +659,10 @@
       "value": "My vAPY"
     }
   ],
-  "GtMIIe": [
+  "HT5D8q": [
     {
       "type": 0,
-      "value": "Get OGV"
+      "value": "Convert OGV to OGN"
     }
   ],
   "Hiq4cG": [
@@ -713,6 +719,44 @@
       "value": "No votes"
     }
   ],
+  "JXdbo8": [
+    {
+      "type": 0,
+      "value": "Done"
+    }
+  ],
+  "JmriYi": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " position unlocked"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " positions unlocked"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "count"
+    }
+  ],
   "JrepQU": [
     {
       "type": 0,
@@ -765,6 +809,12 @@
     {
       "type": 0,
       "value": "Details"
+    }
+  ],
+  "Lz6fu7": [
+    {
+      "type": 0,
+      "value": "Unlock All Stakes"
     }
   ],
   "MQq3X+": [
@@ -905,6 +955,12 @@
       "value": "Estimating..."
     }
   ],
+  "PZc1jP": [
+    {
+      "type": 0,
+      "value": "Max APY on OGN"
+    }
+  ],
   "PmkP1H": [
     {
       "type": 0,
@@ -985,6 +1041,12 @@
     {
       "type": 0,
       "value": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+    }
+  ],
+  "SVoPjp": [
+    {
+      "type": 0,
+      "value": "Unlock all"
     }
   ],
   "SqjwlJ": [
@@ -1169,6 +1231,18 @@
       "value": "Voting Power"
     }
   ],
+  "YH8KwT": [
+    {
+      "type": 0,
+      "value": "Unlock Successful"
+    }
+  ],
+  "Yl+tTX": [
+    {
+      "type": 0,
+      "value": "Conversion will be open for one year"
+    }
+  ],
   "YtTAoV": [
     {
       "type": 0,
@@ -1231,12 +1305,6 @@
       "value": "New transaction"
     }
   ],
-  "aHPD2Z": [
-    {
-      "type": 0,
-      "value": "View Proposals"
-    }
-  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -1273,6 +1341,12 @@
     {
       "type": 0,
       "value": "Swapping"
+    }
+  ],
+  "cfhPIG": [
+    {
+      "type": 0,
+      "value": "OGV & OGN are merging"
     }
   ],
   "cg1VJ2": [
@@ -1399,6 +1473,12 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "gxLDKD": [
+    {
+      "type": 0,
+      "value": "Current OGN Staking vAPY"
+    }
+  ],
   "hZA4Ul": [
     {
       "type": 0,
@@ -1523,6 +1603,12 @@
       "value": "Max slippage"
     }
   ],
+  "kY4SP1": [
+    {
+      "type": 0,
+      "value": "Unlock All"
+    }
+  ],
   "kmAKoi": [
     {
       "type": 0,
@@ -1629,6 +1715,12 @@
     {
       "type": 0,
       "value": "User rejected operation"
+    }
+  ],
+  "qXCbgZ": [
+    {
+      "type": 0,
+      "value": "Unlock"
     }
   ],
   "qivQ44": [
