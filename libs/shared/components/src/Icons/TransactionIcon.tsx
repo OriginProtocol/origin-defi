@@ -1,6 +1,5 @@
 import { Box } from '@mui/material';
 import { Received, Send, Swap, Yield } from '@origin/shared/icons';
-import { isNilOrEmpty } from '@origin/shared/utils';
 
 import { TokenIcon } from './TokenIcon';
 
@@ -58,26 +57,6 @@ export function TransactionIcon({
         <Received {...subIconProps} />
       ) : (
         <Swap {...subIconProps} />
-      )}
-      {type === HistoryType.Swap && !isNilOrEmpty(swapToken) && (
-        <Box
-          sx={{
-            position: 'absolute',
-            height: '100%',
-            width: '50%',
-            overflow: 'hidden',
-            top: 0,
-            left: 0,
-          }}
-        >
-          <TokenIcon
-            token={swapToken}
-            sx={{
-              width: { xs: '1.375rem', md: '2rem' },
-              height: { xs: '1.375rem', md: '2rem' },
-            }}
-          />
-        </Box>
       )}
     </Box>
   );
