@@ -17,7 +17,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaCircleCheckRegular } from '@origin/shared/icons';
-import { useFormat, useWatchBalance } from '@origin/shared/providers';
+import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { formatDistanceToNowStrict } from 'date-fns';
 import { remove } from 'ramda';
@@ -39,9 +39,6 @@ export const MigrationForm = (props: StackProps) => {
   const { address } = useAccount();
   const once = useRef(true);
   const { data: info, isLoading: isInfoLoading } = useOgvInfo();
-  const { data: ogvBalance, isLoading: isOgvBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet.OGV,
-  });
   const { data: lockups, isLoading: isLockupsLoading } = useOgvLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data.ogvLockups },
@@ -84,8 +81,8 @@ export const MigrationForm = (props: StackProps) => {
       Object.entries(selected).reduce((acc, [k, v]) => {
         let toAdd = 0n;
 
-        if (k === 'balance' && v && ogvBalance) {
-          toAdd += ogvBalance;
+        if (k === 'balance' && v && info?.ogvBalance) {
+          toAdd += info?.ogvBalance;
         }
         if (k === 'rewards' && v && info?.veOgvRewards) {
           toAdd += info.veOgvRewards;
@@ -99,7 +96,7 @@ export const MigrationForm = (props: StackProps) => {
 
         return acc + toAdd;
       }, 0n),
-    [info?.veOgvRewards, ogvBalance, selected],
+    [info?.veOgvRewards, info?.ogvBalance, selected],
   );
 
   const isConvertDisabled =
@@ -126,8 +123,8 @@ export const MigrationForm = (props: StackProps) => {
             {intl.formatMessage({ defaultMessage: 'Your OGV balance' })}
           </InfoTooltipLabel>
           <SuccessCard
-            isLoading={isOgvBalanceLoading}
-            isSuccess={ogvBalance === 0n}
+            isLoading={isInfoLoading}
+            isSuccess={info?.ogvBalance === 0n}
             successLabel={intl.formatMessage({
               defaultMessage: 'No OGV to convert',
             })}
@@ -156,7 +153,7 @@ export const MigrationForm = (props: StackProps) => {
                   <Typography {...valueProps}>
                     {intl.formatNumber(
                       +formatUnits(
-                        ogvBalance ?? 0n,
+                        info?.ogvBalance ?? 0n,
                         tokens.mainnet.OGV.decimals,
                       ),
                       { notation: 'compact', maximumSignificantDigits: 4 },
@@ -252,7 +249,7 @@ export const MigrationForm = (props: StackProps) => {
           <SummaryCard ogv={ogvTotal} />
           <ConvertButton
             variant="action"
-            ogvBalance={selected.balance ? ogvBalance ?? 0n : 0n}
+            ogvBalance={selected.balance ? info?.ogvBalance ?? 0n : 0n}
             ogvRewards={selected.rewards ? info?.veOgvRewards ?? 0n : 0n}
             veOgvlockups={selected.lockups}
             disabled={isConvertDisabled}
@@ -350,7 +347,7 @@ function LockupRow({
         label={
           <Stack direction="row" spacing={1} alignItems="center" pl={1.5}>
             <TokenIcon
-              token={tokens.mainnet.veOGV}
+              token={tokens.mainnet.OGV}
               outlined
               sx={{ fontSize: 24 }}
             />
