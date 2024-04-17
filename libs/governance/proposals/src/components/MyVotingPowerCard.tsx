@@ -1,6 +1,6 @@
 import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { useGovernanceInfo, useUserInfoQuery } from '@origin/governance/shared';
-import { InfoTooltip, TokenIcon, ValueLabel } from '@origin/shared/components';
+import { TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -31,18 +31,12 @@ export const MyVotingPowerCard = (props: CardProps) => {
     <Card {...props}>
       <CardContent>
         <ValueLabel
-          label={
-            <Typography color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'My Voting Power' })}&nbsp;
-              <InfoTooltip
-                tooltipLabel={intl.formatMessage({
-                  defaultMessage:
-                    'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
-                })}
-              />
-            </Typography>
-          }
-          labelProps={{ sx: { fontSize: 14 } }}
+          label={intl.formatMessage({ defaultMessage: 'My Voting Power' })}
+          labelInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'The share of total Origin DeFi DAO voting power earned by my OGV lock-ups.',
+          })}
+          labelProps={{ sx: { color: 'text.secondary', fontSize: 14 } }}
           isLoading={isInfoLoading || isUserLoading}
           value={
             isConnected ? (

@@ -1,18 +1,18 @@
 import { useState } from 'react';
 
-import { IconButton } from '@mui/material';
+import { Button } from '@mui/material';
 import { ActivityIcon } from '@origin/shared/components';
 
 import { useActivitiesStatus } from '../hooks';
 import { ActivityPopover } from './ActivityPopover';
 
-import type { IconButtonProps } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
 import type { MouseEvent, ReactNode } from 'react';
 
 export type ActivityButtonProps = {
   activityIcon?: ReactNode;
   iconSize?: number;
-} & Omit<IconButtonProps, 'children'>;
+} & Omit<ButtonProps, 'children'>;
 
 export const ActivityButton = ({
   activityIcon,
@@ -29,7 +29,7 @@ export const ActivityButton = ({
 
   return (
     <>
-      <IconButton
+      <Button
         {...rest}
         sx={{
           svg: {
@@ -41,7 +41,7 @@ export const ActivityButton = ({
         onClick={handleClick}
       >
         <ActivityIcon status={status} iconMapping={{ idle: activityIcon }} />
-      </IconButton>
+      </Button>
       <ActivityPopover anchor={anchorEl} setAnchor={setAnchorEl} />
     </>
   );

@@ -2,6 +2,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
+import { mainnet } from 'wagmi/chains';
 
 import { useTokenPrices } from '../prices';
 
@@ -12,30 +13,31 @@ import type {
 } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-type GasPrice = {
+export type GasPrice = {
   gweiUsd: number;
   gasPrice: number;
   gasCostUsd: number;
   gasCostGwei: number;
 };
 
-type Key = ['useGasPrice', string, QueryClient, Config];
+type Key = ['useGasPrice', string, number, QueryClient, Config];
 
 const getKey = (
   gasAmount: bigint,
+  chainId: number,
   queryClient: QueryClient,
   config: Config,
-): Key => ['useGasPrice', gasAmount.toString(), queryClient, config];
+): Key => ['useGasPrice', gasAmount.toString(), chainId, queryClient, config];
 
 const fetcher: QueryFunction<GasPrice, Key> = async ({
-  queryKey: [, gasAmount, queryClient, config],
+  queryKey: [, gasAmount, chainId, queryClient, config],
 }) => {
   const [price, data] = await Promise.all([
     queryClient.fetchQuery({
       queryKey: useTokenPrices.getKey(['ETH_USD'], config),
       queryFn: useTokenPrices.fetcher,
     }),
-    estimateFeesPerGas(config, { formatUnits: 'gwei' }),
+    estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
   ]);
 
   const gweiUsd = price.ETH_USD * 1e-9;
@@ -55,13 +57,14 @@ const fetcher: QueryFunction<GasPrice, Key> = async ({
 
 export const useGasPrice = (
   gasAmount = 0n,
+  chainId: number | undefined = mainnet.id,
   options?: Partial<UseQueryOptions<GasPrice, Error, GasPrice, Key>>,
 ) => {
   const queryClient = useQueryClient();
   const config = useConfig();
 
   return useQuery({
-    queryKey: getKey(gasAmount, queryClient, config),
+    queryKey: getKey(gasAmount, chainId, queryClient, config),
     queryFn: fetcher,
     ...options,
   });

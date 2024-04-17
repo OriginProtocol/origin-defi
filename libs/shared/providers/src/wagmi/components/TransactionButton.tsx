@@ -27,12 +27,12 @@ import {
 } from '../../notifications';
 import { ConnectedButton } from './ConnectedButton';
 
-import type { ButtonProps } from '@mui/material';
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity } from '../../activities';
+import type { Activity, ActivityInput } from '../../activities';
+import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type TransactionButtonProps = {
   contract: Contract | Token;
@@ -40,16 +40,19 @@ export type TransactionButtonProps = {
   args?: unknown[];
   value?: bigint;
   label?: string;
-  activityTitle?: ReactNode;
-  activitySubtitle?: ReactNode;
-  activityEndIcon?: ReactNode;
+  waitingSignatureLabel?: string;
+  waitingTxLabel?: string;
+  notificationTitle?: ReactNode;
+  notificationSubtitle?: ReactNode;
+  notificationEndIcon?: ReactNode;
   onClick?: () => void;
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
+  activityInput?: ActivityInput;
   disableActivity?: boolean;
   disableNotification?: boolean;
-} & Omit<ButtonProps, 'onClick' | 'value'>;
+} & Omit<ConnectedButtonProps, 'onClick' | 'value'>;
 
 export const TransactionButton = ({
   contract,
@@ -57,14 +60,17 @@ export const TransactionButton = ({
   args,
   value,
   label,
-  activityTitle,
-  activitySubtitle,
-  activityEndIcon,
+  waitingSignatureLabel,
+  waitingTxLabel,
+  notificationTitle,
+  notificationSubtitle,
+  notificationEndIcon,
   onClick,
   onSuccess,
   onError,
   onUserReject,
   disabled,
+  activityInput,
   disableActivity,
   disableNotification,
   ...rest
@@ -85,6 +91,7 @@ export const TransactionButton = ({
     functionName,
     args,
     value,
+    chainId: contract.chainId,
     query: {
       enabled: isConnected && !!contract?.address && !disabled,
     },
@@ -94,6 +101,7 @@ export const TransactionButton = ({
     data: hash,
     error: writeError,
     isPending: isWriteLoading,
+    reset: resetWriteContract,
   } = useWriteContract();
   const {
     data: txData,
@@ -125,7 +133,7 @@ export const TransactionButton = ({
   useEffect(() => {
     if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
       onSuccess?.(txData as TransactionReceipt);
-      if (!disableActivity) {
+      if (!disableActivity && activity) {
         updateActivity({
           ...activity,
           status: 'success',
@@ -142,29 +150,30 @@ export const TransactionButton = ({
             <TransactionNotification
               {...activity}
               title={
-                activityTitle ??
+                notificationTitle ??
                 intl.formatMessage({ defaultMessage: 'Transaction executed' })
               }
               subtitle={
-                activitySubtitle ??
+                notificationSubtitle ??
                 intl.formatMessage({
                   defaultMessage: 'Your operation has been executed',
                 })
               }
-              endIcon={activityEndIcon}
+              endIcon={notificationEndIcon}
               status="success"
               txReceipt={txData as TransactionReceipt}
             />
           ),
         });
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
     activity,
-    activityEndIcon,
-    activitySubtitle,
-    activityTitle,
+    notificationEndIcon,
+    notificationSubtitle,
+    notificationTitle,
     deleteNotification,
     disableActivity,
     disableNotification,
@@ -176,12 +185,12 @@ export const TransactionButton = ({
     pushNotification,
     txData,
     updateActivity,
+    resetWriteContract,
   ]);
 
   useEffect(() => {
     if (
       (!isNilOrEmpty(writeError) || !isNilOrEmpty(txError)) &&
-      !isNilOrEmpty(activity) &&
       !done.current
     ) {
       const err = isNilOrEmpty(writeError) ? txError : writeError;
@@ -191,7 +200,7 @@ export const TransactionButton = ({
       }
       if (isUserRejected(err)) {
         onUserReject?.();
-        if (!disableActivity && activity?.id) {
+        if (!disableActivity && activity) {
           deleteActivity(activity.id);
         }
         if (!disableNotification) {
@@ -213,7 +222,7 @@ export const TransactionButton = ({
         if (err) {
           onError?.(err);
         }
-        if (!disableActivity) {
+        if (!disableActivity && activity) {
           updateActivity({
             ...activity,
             status: 'error',
@@ -236,11 +245,12 @@ export const TransactionButton = ({
           });
         }
       }
+      resetWriteContract();
       done.current = true;
     }
   }, [
     activity,
-    activityEndIcon,
+    notificationEndIcon,
     deleteActivity,
     deleteNotification,
     disableActivity,
@@ -253,6 +263,7 @@ export const TransactionButton = ({
     txError,
     updateActivity,
     writeError,
+    resetWriteContract,
   ]);
 
   const handleClick = () => {
@@ -260,23 +271,25 @@ export const TransactionButton = ({
       writeContract(prepareData.request);
       onClick?.();
       if (!disableActivity) {
-        const activity = pushActivity({
-          title: activityTitle,
-          subtitle: activitySubtitle,
-          type: 'transaction',
-          status: 'pending',
-          endIcon: activityEndIcon,
-        });
+        const activity = pushActivity(
+          activityInput ?? {
+            title: notificationTitle,
+            subtitle: notificationSubtitle,
+            type: 'transaction',
+            status: 'pending',
+            endIcon: notificationEndIcon,
+          },
+        );
         setActivity(activity);
       } else {
         setActivity({
           id: Date.now().toString(),
           createdOn: Date.now(),
-          title: activityTitle,
-          subtitle: activitySubtitle,
+          title: notificationTitle,
+          subtitle: notificationSubtitle,
           type: 'transaction',
           status: 'pending',
-          endIcon: activityEndIcon,
+          endIcon: notificationEndIcon,
         });
       }
       done.current = false;
@@ -284,9 +297,11 @@ export const TransactionButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
     : isTxLoading
-      ? intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
       : isNilOrEmpty(label)
         ? capitalize(functionName)
         : label;

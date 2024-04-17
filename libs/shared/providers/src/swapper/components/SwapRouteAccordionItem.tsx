@@ -30,7 +30,7 @@ export function SwapRouteAccordionItem({
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
     isFetching: swapGasPriceFetching,
-  } = useGasPrice(route.gas, {
+  } = useGasPrice(route.gas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.gas > 0n,
   });
@@ -38,7 +38,7 @@ export function SwapRouteAccordionItem({
     data: approvalGasPrice,
     isLoading: approvalGasPriceLoading,
     isFetching: approvalGasPriceFetching,
-  } = useGasPrice(route.approvalGas, {
+  } = useGasPrice(route.approvalGas, route.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: route.approvalGas > 0n,
   });

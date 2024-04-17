@@ -27,8 +27,12 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
-  const [{ amountOut, gas, rate, split, isEstimateLoading }] = useRedeemState();
-  const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(gas);
+  const [{ vaultContract, amountOut, gas, rate, split, isEstimateLoading }] =
+    useRedeemState();
+  const { data: gasPrice, isLoading: gasPriceLoading } = useGasPrice(
+    gas,
+    vaultContract.chainId,
+  );
 
   const convertedAmount =
     isPricesLoading || isEstimateLoading || isNilOrEmpty(prices)

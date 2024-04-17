@@ -10,6 +10,7 @@ import {
   registerSentry,
   wagmiConfig,
 } from '@origin/oeth/shared';
+import { theme } from '@origin/oeth/theme';
 import {
   ActivityProvider,
   GeoFenceProvider,
@@ -19,7 +20,6 @@ import {
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
-import { theme } from '@origin/shared/theme';
 import { composeContexts } from '@origin/shared/utils';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { QueryClientProvider } from '@tanstack/react-query';
@@ -29,6 +29,8 @@ import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';
 import { routes } from './routes';
+
+import type { Theme } from '@mui/material';
 
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
@@ -55,7 +57,12 @@ root.render(
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
-      [NotificationsProvider],
+      [
+        NotificationsProvider,
+        {
+          containerProps: { sx: { top: (theme: Theme) => theme.spacing(16) } },
+        },
+      ],
       [ActivityProvider],
       [
         GeoFenceProvider,

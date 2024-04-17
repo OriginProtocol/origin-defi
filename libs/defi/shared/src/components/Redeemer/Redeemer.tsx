@@ -19,11 +19,11 @@ import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   getTokenPriceKey,
+  isNativeCurrency,
   RedeemProvider,
   SettingsButton,
   useHandleRedeem,
   useHandleRedeemAmountInChange,
-  useIsNativeCurrency,
   useMixTokenPrice,
   useRedeemerPrices,
   useRedeemState,
@@ -86,11 +86,10 @@ function RedeemerWrapped({
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokenIn.address,
+    token: tokenIn,
   });
   const handleAmountInChange = useHandleRedeemAmountInChange();
   const handleRedeem = useHandleRedeem();
-  const isNativeCurrency = useIsNativeCurrency();
   const mixTokenPrice = useMixTokenPrice();
 
   const redeemButtonLabel =

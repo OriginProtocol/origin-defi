@@ -75,6 +75,12 @@
       "value": "Route"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "1OYHoE": [
     {
       "type": 0,
@@ -145,6 +151,12 @@
       "value": "EigenLayer Points"
     }
   ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
+    }
+  ],
   "3fTTLv": [
     {
       "type": 0,
@@ -195,16 +207,16 @@
       "value": "Switch network"
     }
   ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
       "value": "I agree"
-    }
-  ],
-  "6D95sz": [
-    {
-      "type": 0,
-      "value": "LST deposits currently paused"
     }
   ],
   "6GZbSi": [
@@ -241,6 +253,12 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -355,12 +373,6 @@
       "value": " for the basket of underlying assets"
     }
   ],
-  "DTYtQP": [
-    {
-      "type": 0,
-      "value": "Deposits are currently closed"
-    }
-  ],
   "DUR59o": [
     {
       "type": 0,
@@ -437,6 +449,12 @@
     {
       "type": 0,
       "value": "Balance"
+    }
+  ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
     }
   ],
   "HyhkDr": [
@@ -527,6 +545,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
     }
   ],
   "Mgjww/": [
@@ -799,6 +823,12 @@
       "value": "Up to 1,000,000 EL points distributed to early ETH depositors"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -815,6 +845,12 @@
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
     }
   ],
   "fZ5HRc": [
@@ -885,6 +921,18 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -895,6 +943,12 @@
     {
       "type": 0,
       "value": "Invite your friends"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [
@@ -925,6 +979,12 @@
     {
       "type": 0,
       "value": "Copied"
+    }
+  ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
     }
   ],
   "paprll": [

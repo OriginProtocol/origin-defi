@@ -35,6 +35,9 @@
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "1+ROfp": {
+    "defaultMessage": "Transaction"
+  },
   "1OYHoE": {
     "defaultMessage": "+ primeETH XP"
   },
@@ -62,6 +65,9 @@
   "2Gox/R": {
     "defaultMessage": "EigenLayer Points"
   },
+  "2NfxfO": {
+    "defaultMessage": "Impossible to execute"
+  },
   "3fTTLv": {
     "defaultMessage": "Unstake"
   },
@@ -83,11 +89,11 @@
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
+  "5adJBo": {
+    "defaultMessage": "Select token"
+  },
   "5h3TFE": {
     "defaultMessage": "I agree"
-  },
-  "6D95sz": {
-    "defaultMessage": "LST deposits currently paused"
   },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
@@ -106,6 +112,9 @@
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
+  },
+  "8YcGAy": {
+    "defaultMessage": "Bridge Started"
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
@@ -149,9 +158,6 @@
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
   },
-  "DTYtQP": {
-    "defaultMessage": "Deposits are currently closed"
-  },
   "DUR59o": {
     "defaultMessage": "Total Value Locked"
   },
@@ -178,6 +184,9 @@
   },
   "H5+NAX": {
     "defaultMessage": "Balance"
+  },
+  "Hiq4cG": {
+    "defaultMessage": "On-chain Transaction"
   },
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
@@ -223,6 +232,9 @@
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
+  },
+  "MZCNjq": {
+    "defaultMessage": "Bridge"
   },
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
@@ -341,6 +353,9 @@
   "cqBJ3O": {
     "defaultMessage": "Up to 1,000,000 EL points distributed to early ETH depositors"
   },
+  "d8EqQY": {
+    "defaultMessage": "Days"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
@@ -349,6 +364,9 @@
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "fBhctx": {
+    "defaultMessage": "Download CSV"
   },
   "fZ5HRc": {
     "defaultMessage": "Your rewards"
@@ -380,11 +398,20 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
+  "j9Y9nu": {
+    "defaultMessage": "Hours"
+  },
+  "jvnqxK": {
+    "defaultMessage": "Bridging"
+  },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
   "l3H1EK": {
     "defaultMessage": "Invite your friends"
+  },
+  "lb8m6m": {
+    "defaultMessage": "Mins"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -400,6 +427,9 @@
   },
   "p556q3": {
     "defaultMessage": "Copied"
+  },
+  "pYbH7c": {
+    "defaultMessage": "Error while bridging"
   },
   "paprll": {
     "defaultMessage": "You will receive:"

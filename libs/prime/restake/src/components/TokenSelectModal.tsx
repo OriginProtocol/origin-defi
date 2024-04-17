@@ -2,7 +2,6 @@ import {
   Box,
   CircularProgress,
   Dialog,
-  DialogContent,
   DialogTitle,
   MenuItem,
   MenuList,
@@ -34,8 +33,9 @@ export const TokenSelectModal = ({
   ...rest
 }: TokenSelectModalProps) => {
   const intl = useIntl();
-  const { data: balances, isLoading: isBalancesLoading } =
-    useWatchBalances(tokens);
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens,
+  });
 
   const sortedTokens = sortWith<TokenOption>([
     ascend((t) => !['ETH', 'WETH'].includes(t.symbol)),
@@ -60,7 +60,6 @@ export const TokenSelectModal = ({
               key={`token-${token.address || 'eth'}-${i}`}
               token={token}
               balance={balances?.[token.symbol] ?? 0n}
-              disabled={!['ETH', 'WETH'].includes(token.symbol)}
               onClick={() => {
                 onClose?.({}, 'backdropClick');
                 onSelectToken(token);
@@ -72,13 +71,6 @@ export const TokenSelectModal = ({
           ))
         )}
       </MenuList>
-      <DialogContent>
-        <Typography fontWeight="medium">
-          {intl.formatMessage({
-            defaultMessage: 'LST deposits currently paused',
-          })}
-        </Typography>
-      </DialogContent>
     </Dialog>
   );
 };

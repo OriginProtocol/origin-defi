@@ -147,10 +147,10 @@ export const DelegateModal = (props: DialogProps) => {
           disabled={delegateDisabled}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Delegate' })}
-          activityTitle={intl.formatMessage({
+          notificationTitle={intl.formatMessage({
             defaultMessage: 'Delegate',
           })}
-          activitySubtitle={intl.formatMessage(
+          notificationSubtitle={intl.formatMessage(
             {
               defaultMessage: 'Delegate {votingPower} veOGV to {delegatee}',
             },

@@ -1,7 +1,6 @@
 import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import {
-  AdCards,
   AssetDepositedCard,
   GlobalStatsCard,
   InviteCard,
@@ -51,7 +50,6 @@ export const App = () => {
               }}
             >
               <InviteCard mb={3} />
-              <AdCards />
             </Box>
             <Box
               sx={{

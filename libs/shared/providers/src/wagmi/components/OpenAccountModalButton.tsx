@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { mergeDeepRight } from 'ramda';
@@ -13,21 +12,21 @@ interface OpenAccountModalButtonProps extends ButtonProps {
   connectLabel?: string;
   connectedProps?: ButtonProps;
   disconnectedProps?: ButtonProps;
+  hideAddress?: boolean;
 }
 
 export const OpenAccountModalButton = ({
   connectLabel,
   connectedProps,
   disconnectedProps,
-  ...props
+  hideAddress,
+  ...rest
 }: OpenAccountModalButtonProps) => {
   const intl = useIntl();
 
   const handleClick =
     (handler: () => void) => (evt: MouseEvent<HTMLButtonElement>) => {
-      if (props?.onClick) {
-        props.onClick(evt);
-      }
+      rest?.onClick?.(evt);
       handler();
     };
 
@@ -38,8 +37,8 @@ export const OpenAccountModalButton = ({
           return (
             <Button
               {...(disconnectedProps
-                ? (mergeDeepRight(props, disconnectedProps) as any)
-                : props)}
+                ? (mergeDeepRight(rest, disconnectedProps) as ButtonProps)
+                : rest)}
               onClick={handleClick(openConnectModal)}
             >
               {connectLabel ||
@@ -51,9 +50,9 @@ export const OpenAccountModalButton = ({
         if (chain.unsupported) {
           return (
             <Button
-              {...props}
-              onClick={handleClick(openChainModal)}
               color="warning"
+              {...rest}
+              onClick={handleClick(openChainModal)}
             >
               {intl.formatMessage({
                 defaultMessage: 'Wrong Network',
@@ -64,13 +63,12 @@ export const OpenAccountModalButton = ({
 
         return (
           <AccountButton
+            hideAddress={hideAddress}
             {...(connectedProps
-              ? (mergeDeepRight(props, connectedProps) as any)
-              : props)}
+              ? (mergeDeepRight(rest, connectedProps) as ButtonProps)
+              : rest)}
             onClick={(evt: MouseEvent<HTMLButtonElement>) => {
-              if (props?.onClick) {
-                props.onClick(evt);
-              }
+              rest?.onClick?.(evt);
             }}
           />
         );

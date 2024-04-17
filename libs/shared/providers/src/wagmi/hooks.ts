@@ -1,21 +1,28 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { getTokenId } from '@origin/shared/contracts';
+import {
+  isFulfilled,
+  isNilOrEmpty,
+  isUserRejected,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useQuery } from '@tanstack/react-query';
-import { getBalance, readContracts } from '@wagmi/core';
-import { groupBy } from 'ramda';
-import { erc20Abi } from 'viem';
+import {
+  getBalance,
+  waitForTransactionReceipt,
+  writeContract,
+} from '@wagmi/core';
+import { mainnet } from 'viem/chains';
 import {
   useAccount,
-  useBalance,
   useBlockNumber,
   useConfig,
   useReadContract,
   useReadContracts,
+  useSimulateContract,
 } from 'wagmi';
-
-import { isNativeCurrency } from './utils';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
@@ -24,6 +31,11 @@ import type {
   UseReadContractParameters,
   UseReadContractsParameters,
 } from 'wagmi';
+
+import type {
+  WriteTransactionCallbacks,
+  WriteTransactionParameters,
+} from './types';
 
 export const useWatchContract = <T extends Abi | readonly unknown[]>(
   config: UseReadContractParameters<T>,
@@ -57,119 +69,165 @@ export const useWatchContracts = <T extends Abi | readonly unknown[]>(
   return res;
 };
 
-export const useWatchBalance = (config?: {
-  token?: HexAddress;
+export const useWatchBalance = (args?: {
+  token: Token;
   address?: HexAddress;
 }) => {
+  const config = useConfig();
   const { address } = useAccount();
-  const addr = config?.address ?? address;
+  const addr = args?.address ?? address;
   const { data: blockNumber } = useBlockNumber({
     watch: true,
     query: { enabled: !!addr },
   });
   const prev = usePrevious(Number(blockNumber));
-  const resNative = useBalance({
-    address: config?.address ?? address,
-    query: {
-      enabled: isNilOrEmpty(config?.token) && !!addr,
-      select: (data) => data.value,
-    },
-  });
-  const resToken = useReadContract({
-    address: config?.token,
-    abi: erc20Abi,
-    functionName: 'balanceOf',
-    args: [addr ?? ZERO_ADDRESS],
-    query: {
-      enabled: !!config?.token && !!addr,
+
+  const res = useQuery({
+    queryKey: ['useWatchBalance', args?.token, addr, config],
+    queryFn: async () => {
+      const bal = await getBalance(config, {
+        address: addr ?? ZERO_ADDRESS,
+        token: args?.token.address,
+        chainId: args?.token.chainId ?? mainnet.id,
+      });
+
+      return bal.value;
     },
   });
 
   useEffect(() => {
     if (Number(blockNumber) !== prev && !isNilOrEmpty(addr)) {
-      if (isNilOrEmpty(config?.token)) {
-        resNative?.refetch();
-      } else {
-        resToken?.refetch();
-      }
+      res?.refetch();
     }
-  }, [addr, blockNumber, config?.token, prev, resNative, resToken]);
+  }, [addr, blockNumber, prev, res]);
 
-  return isNilOrEmpty(config?.token) ? resNative : resToken;
+  return res;
 };
 
-export const useWatchBalances = (tokens: Token[] | undefined | null) => {
+export const useWatchBalances = (args: {
+  tokens: Token[];
+  address?: HexAddress;
+}) => {
   const config = useConfig();
-  const isNative = useIsNativeCurrency();
   const { address } = useAccount();
+  const addr = args?.address ?? address;
   const { data: blockNumber } = useBlockNumber({
     watch: true,
-    query: { enabled: !isNilOrEmpty(tokens) },
+    query: { enabled: !isNilOrEmpty(args.tokens) },
   });
   const prev = usePrevious(Number(blockNumber));
   const res = useQuery({
     queryKey: [
       'useWatchBalances',
-      address,
-      tokens?.map((t) => t.symbol),
+      addr,
+      args.tokens?.map((t) => t.symbol),
       config,
     ],
     queryFn: async () => {
-      if (!tokens || isNilOrEmpty(tokens) || !address) {
+      if (!args.tokens || isNilOrEmpty(args.tokens) || !addr) {
         return null;
       }
 
       let res = {} as Record<string, bigint>;
 
-      const { native, others } = groupBy(
-        (t) => (isNative(t) ? 'native' : 'others'),
-        tokens,
+      const bals = await Promise.allSettled(
+        args.tokens.map((t) =>
+          getBalance(config, {
+            address: addr,
+            token: t.address,
+            chainId: t.chainId,
+          }),
+        ),
       );
 
-      if (native?.length === 1) {
-        try {
-          const nativeBalance = await getBalance(config, { address });
-          res = { [native[0].symbol]: nativeBalance.value };
-        } catch {}
-      }
-
-      if (others) {
-        try {
-          const bals = await readContracts(config, {
-            contracts: others?.map((t) => ({
-              address: t.address as HexAddress,
-              abi: t.abi,
-              functionName: 'balanceOf',
-              args: [address],
-            })),
-            allowFailure: true,
-          });
-          others.forEach((t, i) => {
-            if (bals[i].status === 'success' && bals[i].result) {
-              res = { ...res, [t.symbol]: bals[i].result as unknown as bigint };
-            }
-          });
-        } catch {}
-      }
+      bals.forEach((bal, i) => {
+        if (isFulfilled(bal)) {
+          res = { ...res, [getTokenId(args.tokens[i])]: bal.value.value };
+        }
+      });
 
       return res;
     },
   });
 
   useEffect(() => {
-    if (Number(blockNumber) !== prev && !isNilOrEmpty(tokens)) {
+    if (Number(blockNumber) !== prev && !isNilOrEmpty(args.tokens)) {
       res?.refetch();
     }
-  }, [blockNumber, prev, res, tokens]);
+  }, [args.tokens, blockNumber, prev, res]);
 
   return res;
 };
 
-export const useIsNativeCurrency = () => {
+export const useWriteTransaction = (args: {
+  parameters: WriteTransactionParameters;
+  callbacks?: WriteTransactionCallbacks;
+}) => {
   const config = useConfig();
+  const { isConnected, chain } = useAccount();
+  const [status, setStatus] = useState<
+    'idle' | 'waitingForSignature' | 'waitingForTx'
+  >('idle');
+  const { data: simulateData, error: simulateError } = useSimulateContract({
+    address: args.parameters.contract.address,
+    abi: args.parameters.contract.abi,
+    functionName: args.parameters.functionName,
+    args: args.parameters?.args,
+    value: args.parameters?.value,
+    chainId: args.parameters.contract.chainId,
+    query: {
+      enabled:
+        isConnected &&
+        !!args.parameters.contract &&
+        chain?.id === args.parameters.contract.chainId &&
+        !!args.parameters.functionName,
+    },
+  });
 
-  return useCallback(
-    (token: Token | undefined | null) => isNativeCurrency(config, token),
-    [config],
-  );
+  useEffect(() => {
+    if (simulateData) {
+      args?.callbacks?.onSimulateSuccess?.(simulateData);
+    }
+  }, [args?.callbacks, simulateData]);
+
+  const writeTransaction = useCallback(async () => {
+    let hash;
+    let txReceipt;
+    if (simulateError) {
+      args?.callbacks?.onSimulateError?.(simulateError);
+    } else if (simulateData?.request) {
+      args?.callbacks?.onWrite?.();
+      setStatus('waitingForSignature');
+      try {
+        hash = await writeContract(config, simulateData.request);
+      } catch (writeError) {
+        if (isUserRejected(writeError)) {
+          args?.callbacks?.onUserReject?.();
+        } else {
+          args?.callbacks?.onWriteError?.(writeError as unknown as Error);
+        }
+        setStatus('idle');
+      }
+      if (hash) {
+        args?.callbacks?.onTxSigned?.();
+        setStatus('waitingForTx');
+        try {
+          txReceipt = await waitForTransactionReceipt(config, { hash });
+        } catch (waitError) {
+          if (isUserRejected(waitError)) {
+            args?.callbacks?.onUserReject?.();
+          } else {
+            args?.callbacks?.onWriteError?.(waitError as unknown as Error);
+          }
+          setStatus('idle');
+        }
+      }
+      if (txReceipt) {
+        args?.callbacks?.onWriteSuccess?.(txReceipt);
+      }
+      setStatus('idle');
+    }
+  }, [args?.callbacks, config, simulateData?.request, simulateError]);
+
+  return { status, writeTransaction };
 };

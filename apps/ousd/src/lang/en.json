@@ -53,6 +53,12 @@
       "value": "Route"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "1VDppm": [
     {
       "type": 0,
@@ -81,6 +87,12 @@
     {
       "type": 0,
       "value": "Return to Home Page"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
     }
   ],
   "45EvZ3": [
@@ -113,6 +125,12 @@
     {
       "type": 0,
       "value": "Switch network"
+    }
+  ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
     }
   ],
   "5h3TFE": [
@@ -155,6 +173,12 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -293,6 +317,12 @@
       "value": "Balance"
     }
   ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -357,6 +387,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
     }
   ],
   "NNBdoh": [
@@ -575,6 +611,12 @@
       "value": "Connect Wallet"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -597,6 +639,12 @@
     {
       "type": 0,
       "value": "Lifetime Earnings (OUSD)"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
     }
   ],
   "fuV7zb": [
@@ -643,6 +691,18 @@
       "value": "I have read and agree to the above terms"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -653,6 +713,12 @@
     {
       "type": 0,
       "value": "30-Day Trailing APY"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [
@@ -683,6 +749,12 @@
     {
       "type": 0,
       "value": "Copied"
+    }
+  ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
     }
   ],
   "qNe+Iz": [

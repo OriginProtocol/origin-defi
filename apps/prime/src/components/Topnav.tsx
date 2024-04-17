@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/governance/shared';
-import { PauseBanner, usePoints } from '@origin/prime/shared';
+import { usePoints } from '@origin/prime/shared';
 import {
   ExternalLink,
   LoadingLabel,
@@ -57,7 +57,6 @@ export function Topnav(props: BoxProps) {
 
   return (
     <>
-      <PauseBanner />
       <Box
         component="nav"
         {...props}
@@ -275,6 +274,7 @@ const PointsBadges = (props: StackProps) => {
 const AccountPopoverButton = () => {
   const intl = useIntl();
   const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
   const { address, isConnected, connector } = useAccount();
@@ -296,6 +296,7 @@ const AccountPopoverButton = () => {
   return (
     <>
       <OpenAccountModalButton
+        hideAddress={isSm}
         connectedProps={{ variant: 'outlined', color: 'secondary' }}
         onClick={(e) => {
           if (isConnected) {
@@ -313,7 +314,7 @@ const AccountPopoverButton = () => {
           borderRadius: 25,
           paddingX: {
             md: 3,
-            xs: 2,
+            xs: isConnected ? 0.75 : 3,
           },
           paddingY: {
             md: 1,

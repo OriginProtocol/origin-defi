@@ -1,17 +1,18 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import { Dropdown } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
-import { TokenIcon } from '../Icons';
+import { TokenButton } from '../Buttons';
 import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { ComponentProps } from 'react';
 
+import type { TokenButtonProps } from '../Buttons';
 import type { BigintInputProps } from './BigIntInput';
 
 // When clicking max on native currency, we leave this amount of token
@@ -129,7 +130,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         >
           {isPriceLoading ? (
             <Skeleton width={50} />
-          ) : !isNilOrEmpty(tokenPriceUsd) ? (
+          ) : !isNilOrEmpty(tokenPriceUsd) && !isNaN(tokenPriceUsd) ? (
             <Typography color="text.secondary">
               {intl.formatNumber(amountUsd, {
                 style: 'currency',
@@ -138,7 +139,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 currencyDisplay: 'narrowSymbol',
               })}
             </Typography>
-          ) : null}
+          ) : (
+            <Box />
+          )}
           <Stack
             direction="row"
             alignItems="center"
@@ -202,48 +205,81 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 
 TokenInput.displayName = 'TokenInput';
 
-type TokenButtonProps = { token: Token; isDisabled?: boolean } & StackProps;
+const inputProps = {
+  sx: {
+    border: 'none',
+    backgroundColor: 'transparent',
+    borderRadius: 0,
+    paddingBlock: 0,
+    paddingInline: 0,
+    borderImageWidth: 0,
+    boxSizing: 'border-box',
+    '& .MuiInputBase-input': {
+      padding: 0,
+      boxSizing: 'border-box',
+      fontStyle: 'normal',
+      fontFamily: 'Sailec, sans-serif',
+      fontSize: 24,
+      lineHeight: 1.5,
+      fontWeight: 700,
+      '&::placeholder': {
+        color: 'text.secondary',
+        opacity: 1,
+      },
+    },
+  },
+};
 
-function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
-  return (
-    <Stack
-      direction="row"
-      role="button"
-      gap={1}
-      {...rest}
-      sx={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        minHeight: 32,
-        borderRadius: 25,
-        fontSize: '1rem',
-        paddingLeft: 0.25,
-        paddingRight: isDisabled ? 2 : 1,
-        border: '1px solid transparent',
-        paddingY: 0.25,
-        background: (theme) => alpha(theme.palette.common.white, 0.1),
-        fontStyle: 'normal',
-        cursor: isDisabled ? 'default' : 'pointer',
-        fontWeight: 500,
-        boxSizing: 'border-box',
-        position: 'relative',
-        ...(!isDisabled && {
-          ':hover': {
-            background: (theme) =>
-              `linear-gradient(${theme.palette.grey[600]}, ${
-                theme.palette.grey[600]
-              }) padding-box, linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.4,
-              )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
-          },
-        }),
-        ...rest?.sx,
-      }}
-    >
-      <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
-      <Typography variant="inherit">{token.symbol}</Typography>
-      {!isDisabled && <Dropdown />}
-    </Stack>
-  );
-}
+export const tokenInputStyleProps: Partial<ComponentProps<typeof TokenInput>> =
+  {
+    sx: {
+      paddingBlock: 2.5,
+      paddingBlockStart: 2.625,
+      paddingInline: 2,
+      border: '1px solid',
+      borderColor: 'divider',
+      borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+      borderTopRightRadius: (theme) => theme.shape.borderRadius,
+      borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+      borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+      backgroundColor: 'grey.900',
+      '&:hover, &:focus-within': {
+        borderColor: 'transparent',
+      },
+      '&:hover': {
+        background: (theme) =>
+          `linear-gradient(${theme.palette.grey[900]}, ${
+            theme.palette.grey[900]
+          }) padding-box, linear-gradient(90deg, ${alpha(
+            theme.palette.primary.main,
+            0.4,
+          )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
+      },
+      '&:focus-within': {
+        background: (theme) =>
+          `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+      },
+    },
+    inputProps,
+  };
+
+export const disabledTokenInputStyleProps: Partial<
+  ComponentProps<typeof TokenInput>
+> = {
+  sx: {
+    paddingBlock: 2.5,
+    paddingBlockStart: 2.625,
+    paddingInline: 2,
+    border: '1px solid',
+    borderColor: 'divider',
+    borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+    borderTopRightRadius: (theme) => theme.shape.borderRadius,
+    borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+    borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+    backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
+  },
+  inputProps: {
+    readOnly: true,
+    ...inputProps,
+  },
+};

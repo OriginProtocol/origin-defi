@@ -26,9 +26,9 @@ export const TablePagination = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
+      alignItems="stretch"
       justifyContent="flex-end"
-      gap={1}
+      spacing={1}
       {...rest}
       sx={{ px: { xs: 2, md: 3 }, py: 2, ...rest?.sx }}
     >
@@ -58,7 +58,7 @@ export const TablePagination = ({
       >
         <FaChevronLeftRegular />
       </Button>
-      <Typography fontSize={13} px={2}>
+      <Typography fontSize={13} px={2} sx={{ alignSelf: 'center' }}>
         {intl.formatMessage(
           { defaultMessage: '{page} of {lastPage}' },
           {

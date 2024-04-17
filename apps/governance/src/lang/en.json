@@ -125,6 +125,12 @@
       "value": "No actions"
     }
   ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -193,6 +199,12 @@
       "value": "Registered Voters"
     }
   ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
+    }
+  ],
   "3WcLXG": [
     {
       "type": 0,
@@ -259,6 +271,12 @@
     {
       "type": 0,
       "value": "Switch network"
+    }
+  ],
+  "5adJBo": [
+    {
+      "type": 0,
+      "value": "Select token"
     }
   ],
   "5h3TFE": [
@@ -405,6 +423,12 @@
     {
       "type": 0,
       "value": "Snapshot"
+    }
+  ],
+  "8YcGAy": [
+    {
+      "type": 0,
+      "value": "Bridge Started"
     }
   ],
   "8cCxx8": [
@@ -635,6 +659,12 @@
       "value": "Get OGV"
     }
   ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
+    }
+  ],
   "HyhkDr": [
     {
       "type": 0,
@@ -753,6 +783,12 @@
     {
       "type": 0,
       "value": "Ooops..."
+    }
+  ],
+  "MZCNjq": [
+    {
+      "type": 0,
+      "value": "Bridge"
     }
   ],
   "N5g7Qy": [
@@ -1251,6 +1287,12 @@
       "value": "2y"
     }
   ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
   "dUJwm/": [
     {
       "type": 0,
@@ -1285,6 +1327,12 @@
     {
       "type": 0,
       "value": "My Voting Power"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
     }
   ],
   "fFXn5l": [
@@ -1433,6 +1481,12 @@
       "value": "label"
     }
   ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
   "jab7Gg": [
     {
       "type": 0,
@@ -1457,6 +1511,12 @@
       "value": "Extend Stake"
     }
   ],
+  "jvnqxK": [
+    {
+      "type": 0,
+      "value": "Bridging"
+    }
+  ],
   "k3YWIR": [
     {
       "type": 0,
@@ -1473,6 +1533,12 @@
     {
       "type": 0,
       "value": "Connect wallet to view"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
     }
   ],
   "lozEho": [
@@ -1551,6 +1617,12 @@
     {
       "type": 1,
       "value": "delegatee"
+    }
+  ],
+  "pYbH7c": [
+    {
+      "type": 0,
+      "value": "Error while bridging"
     }
   ],
   "qQ/SRd": [

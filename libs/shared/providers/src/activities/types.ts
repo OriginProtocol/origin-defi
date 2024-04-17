@@ -1,17 +1,20 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-export type ActivityType = 'swap' | 'approval' | 'redeem' | 'transaction';
+export type ActivityType =
+  | 'swap'
+  | 'redeem'
+  | 'transaction'
+  | 'bridge'
+  | 'approval';
 
 export type ActivityStatus = 'pending' | 'success' | 'error';
 
 export type GlobalActivityStatus = 'idle' | ActivityStatus;
 
-export type Activity = {
-  id: string;
-  createdOn: number;
+export type ActivityInput = {
+  type: ActivityType;
   tokenIn?: Token;
   tokenOut?: Token;
   amountIn?: bigint;
@@ -20,7 +23,11 @@ export type Activity = {
   subtitle?: ReactNode;
   endIcon?: ReactNode;
   txReceipt?: TransactionReceipt;
-  type: ActivityType;
   status: ActivityStatus;
   error?: string;
+};
+
+export type Activity = ActivityInput & {
+  id: string;
+  createdOn: number;
 };
