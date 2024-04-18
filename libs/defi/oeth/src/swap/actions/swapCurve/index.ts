@@ -1,4 +1,4 @@
-import { queryClient } from '@origin/oeth/shared';
+import { queryClient } from '@origin/defi/shared';
 import {
   isNativeCurrency,
   simulateContractWithTxTracker,
