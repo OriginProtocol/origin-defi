@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material';
-import { trackEvent, trackSentryError } from '@origin/oeth/shared';
+import { trackEvent, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 
 import { redeemActions } from '../actions';

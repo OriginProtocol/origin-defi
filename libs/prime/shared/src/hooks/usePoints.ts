@@ -1,6 +1,6 @@
 import { tokens } from '@origin/shared/contracts';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -9,6 +9,7 @@ import { usePointRecipientStatsQuery } from '../queries.generated';
 export const usePoints = () => {
   const config = useConfig();
   const { address } = useAccount();
+  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: ['usePoints', address, config],
@@ -29,7 +30,10 @@ export const usePoints = () => {
         functionName: 'balanceOf',
         args: [address ?? ZERO_ADDRESS],
       });
-      const stats = await usePointRecipientStatsQuery.fetcher({ address })();
+      const stats = await queryClient.fetchQuery({
+        queryKey: usePointRecipientStatsQuery.getKey({ address }),
+        queryFn: usePointRecipientStatsQuery.fetcher({ address }),
+      });
 
       return {
         primePoints: primePoints,
