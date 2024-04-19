@@ -22,7 +22,7 @@ import {
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
-import type { HistoryType } from '@origin/oeth/shared';
+import type { WOETHHistoryType } from './types';
 
 export type HistoryTableProps = {
   rows: {
@@ -32,7 +32,7 @@ export type HistoryTableProps = {
     timestamp: string;
     address: string;
     txHash: string;
-    type: HistoryType;
+    type: WOETHHistoryType;
     change: string;
     balance: string;
   }[];
@@ -92,7 +92,10 @@ export function HistoryTable({ rows }: HistoryTableProps) {
                     <Box>
                       <Typography fontWeight="500">{row.type}</Typography>
                       <Typography color="text.secondary" variant="body2">
-                        {intl.formatDate(new Date(row.timestamp))}
+                        {intl.formatDate(new Date(row.timestamp), {
+                          dateStyle: 'short',
+                          timeStyle: 'short',
+                        })}
                       </Typography>
                     </Box>
                   </Stack>

@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { DownloadCsvButton } from '@origin/shared/components';
 import { ConnectedButton } from '@origin/shared/providers';
-import { indexBy } from 'ramda';
+import { sortBy } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
@@ -18,11 +18,11 @@ import { useWOETHHistory } from '../../../hooks';
 import { FilterButton } from '../../FilterButton';
 import { HistoryTable } from './HistoryTable';
 
-import type { HistoryType } from '@origin/oeth/shared';
 import type { MessageDescriptor } from 'react-intl';
 
-type FilterOption = 'Sent' | 'Received' | 'Bridge';
-const filterOptions: { label: MessageDescriptor; value: FilterOption }[] = [
+import type { WOETHHistoryType } from './types';
+
+const filterOptions: { label: MessageDescriptor; value: WOETHHistoryType }[] = [
   {
     label: defineMessage({ defaultMessage: 'Bridge' }),
     value: 'Bridge',
@@ -37,26 +37,38 @@ const filterOptions: { label: MessageDescriptor; value: FilterOption }[] = [
 export function HistoryCard() {
   const intl = useIntl();
   const { address: userAddress, isConnected } = useAccount();
-  const [filters, setFilters] = useState<FilterOption[]>([]);
-  const { transfersQuery, balancesQuery } = useWOETHHistory();
+  const [filters, setFilters] = useState<WOETHHistoryType[]>([]);
+  const { transfersQuery, balancesQuery, bridgeQuery } = useWOETHHistory();
 
-  const isFetching = transfersQuery.isFetching || balancesQuery.isFetching;
-  const isEmpty =
-    !transfersQuery.data?.erc20Transfers.length ||
-    !balancesQuery.data?.erc20Balances.length;
+  const isFetching =
+    transfersQuery.isFetching ||
+    balancesQuery.isFetching ||
+    bridgeQuery.isFetching;
 
+  const bridges = bridgeQuery.data?.bridgeTransfers;
   const transfers = transfersQuery.data?.erc20Transfers;
   const balances = balancesQuery.data?.erc20Balances;
-  const rows = useMemo(() => {
-    if (!userAddress || !transfers || !balances) return [];
-    const balanceMap = indexBy(
-      (b) =>
-        `${b.chainId}-${b.blockNumber}-${b.address}-${b.account.toLowerCase()}`,
-      balances,
-    );
 
-    return transfers
+  const rows = useMemo(() => {
+    if (!userAddress || !bridges || !transfers || !balances) return [];
+    const latestBalanceByChainId = new Map<number, string>();
+    const aggregatedBalances = sortBy((b) => b.timestamp, balances)
+      .map((b) => {
+        latestBalanceByChainId.set(b.chainId, b.balance);
+        return {
+          ...b,
+          balance: [...latestBalanceByChainId.values()]
+            .reduce((sum, b) => sum + BigInt(b), 0n)
+            .toString(),
+        };
+      })
+      .reverse();
+
+    const transferRows = transfers
       .map((t) => {
+        const balance =
+          aggregatedBalances.find((ab) => ab.timestamp <= t.timestamp)
+            ?.balance ?? '0';
         return {
           id: t.id,
           chainId: t.chainId,
@@ -66,16 +78,37 @@ export function HistoryCard() {
           txHash: t.txHash,
           type: (t.from.toLowerCase() === userAddress.toLowerCase()
             ? 'Sent'
-            : 'Received') as HistoryType,
+            : 'Received') as WOETHHistoryType,
           change: t.value,
-          balance:
-            balanceMap[
-              `${t.chainId}-${t.blockNumber}-${t.address}-${userAddress.toLowerCase()}`
-            ]?.balance,
+          balance,
         };
       })
-      .filter((t) => !filters.length || filters.includes(t.type as any)); // TODO: Fix any type
-  }, [userAddress, transfers, balances, filters]);
+      .filter((t) => !filters.length || filters.includes(t.type));
+
+    const bridgeRows = bridges.map((b) => {
+      const balance =
+        aggregatedBalances.find((ab) => ab.timestamp < b.timestamp)?.balance ??
+        '0';
+      return {
+        id: `${b.id}-bridge`,
+        chainId: b.chainIn,
+        blockNumber: b.blockNumber,
+        timestamp: b.timestamp,
+        address: b.tokenIn,
+        txHash: b.txHashIn,
+        type: 'Bridge' as WOETHHistoryType,
+        change: b.amountIn,
+        balance,
+      };
+    });
+
+    return sortBy(
+      (r) => r.timestamp,
+      [...transferRows, ...bridgeRows],
+    ).reverse();
+  }, [userAddress, bridges, transfers, balances, filters]);
+
+  const isEmpty = !rows.length;
 
   return (
     <Card>
@@ -116,7 +149,11 @@ export function HistoryCard() {
             }}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'No transaction' })}
+              {filters.length > 0
+                ? intl.formatMessage({
+                    defaultMessage: 'No transactions matching filter',
+                  })
+                : intl.formatMessage({ defaultMessage: 'No transaction' })}
             </Typography>
           </Stack>
         ) : (
@@ -153,7 +190,7 @@ function ExportData({
     timestamp: string;
     address: string;
     txHash: string;
-    type: HistoryType;
+    type: WOETHHistoryType;
     change: string;
     balance: string;
   }[];

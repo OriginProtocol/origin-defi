@@ -1,11 +1,12 @@
 import { useCallback, useMemo } from 'react';
 
+import { useBridgeTransfersQuery } from '@origin/oeth/ccip';
 import { HistoryType } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { descend, groupBy, sort } from 'ramda';
+import { descend, groupBy, sort, uniq } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -229,10 +230,20 @@ export const useWOETHHistory = () => {
       enabled: isConnected && !!address,
     },
   );
-  const blocks = useMemo(
-    () => transfersQuery.data?.erc20Transfers.map((b) => b.blockNumber),
-    [transfersQuery.data],
+  const bridgeQuery = useBridgeTransfersQuery(
+    { address: address?.toLowerCase() as HexAddress },
+    {
+      refetchOnWindowFocus: false,
+      enabled: isConnected && !!address,
+    },
   );
+  const blocks = useMemo(() => {
+    if (!transfersQuery.data || !bridgeQuery.data) return;
+    return uniq([
+      ...transfersQuery.data.erc20Transfers.map((b) => b.blockNumber),
+      ...bridgeQuery.data.bridgeTransfers.map((b) => b.blockNumber),
+    ]);
+  }, [transfersQuery.data, bridgeQuery.data]);
   const balancesQuery = useBalancesQuery(
     {
       ...transfersQueryFilter,
@@ -244,5 +255,5 @@ export const useWOETHHistory = () => {
     },
   );
 
-  return { transfersQuery, balancesQuery };
+  return { bridgeQuery, transfersQuery, balancesQuery };
 };

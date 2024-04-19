@@ -527,10 +527,12 @@ export type BridgeTransfer = {
   messageId: Scalars['String']['output'];
   receiver: Scalars['String']['output'];
   sender: Scalars['String']['output'];
+  state: Scalars['Int']['output'];
   timestamp: Scalars['DateTime']['output'];
   tokenIn: Scalars['String']['output'];
   tokenOut: Scalars['String']['output'];
-  txHash: Scalars['String']['output'];
+  txHashIn: Scalars['String']['output'];
+  txHashOut?: Maybe<Scalars['String']['output']>;
 };
 
 export type BridgeTransferEdge = {
@@ -580,6 +582,10 @@ export enum BridgeTransferOrderByInput {
   SenderAscNullsFirst = 'sender_ASC_NULLS_FIRST',
   SenderDesc = 'sender_DESC',
   SenderDescNullsLast = 'sender_DESC_NULLS_LAST',
+  StateAsc = 'state_ASC',
+  StateAscNullsFirst = 'state_ASC_NULLS_FIRST',
+  StateDesc = 'state_DESC',
+  StateDescNullsLast = 'state_DESC_NULLS_LAST',
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampDesc = 'timestamp_DESC',
@@ -592,10 +598,14 @@ export enum BridgeTransferOrderByInput {
   TokenOutAscNullsFirst = 'tokenOut_ASC_NULLS_FIRST',
   TokenOutDesc = 'tokenOut_DESC',
   TokenOutDescNullsLast = 'tokenOut_DESC_NULLS_LAST',
-  TxHashAsc = 'txHash_ASC',
-  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
-  TxHashDesc = 'txHash_DESC',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashInAsc = 'txHashIn_ASC',
+  TxHashInAscNullsFirst = 'txHashIn_ASC_NULLS_FIRST',
+  TxHashInDesc = 'txHashIn_DESC',
+  TxHashInDescNullsLast = 'txHashIn_DESC_NULLS_LAST',
+  TxHashOutAsc = 'txHashOut_ASC',
+  TxHashOutAscNullsFirst = 'txHashOut_ASC_NULLS_FIRST',
+  TxHashOutDesc = 'txHashOut_DESC',
+  TxHashOutDescNullsLast = 'txHashOut_DESC_NULLS_LAST'
 }
 
 export type BridgeTransferState = {
@@ -820,6 +830,15 @@ export type BridgeTransferWhereInput = {
   sender_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   sender_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   sender_startsWith?: InputMaybe<Scalars['String']['input']>;
+  state_eq?: InputMaybe<Scalars['Int']['input']>;
+  state_gt?: InputMaybe<Scalars['Int']['input']>;
+  state_gte?: InputMaybe<Scalars['Int']['input']>;
+  state_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  state_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  state_lt?: InputMaybe<Scalars['Int']['input']>;
+  state_lte?: InputMaybe<Scalars['Int']['input']>;
+  state_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  state_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
   timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
@@ -863,23 +882,40 @@ export type BridgeTransferWhereInput = {
   tokenOut_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   tokenOut_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   tokenOut_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_gt?: InputMaybe<Scalars['String']['input']>;
-  txHash_gte?: InputMaybe<Scalars['String']['input']>;
-  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  txHash_lt?: InputMaybe<Scalars['String']['input']>;
-  txHash_lte?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_contains?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_eq?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_gt?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_gte?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHashIn_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHashIn_lt?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_lte?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHashIn_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashIn_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_contains?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_eq?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_gt?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_gte?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHashOut_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHashOut_lt?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_lte?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHashOut_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHashOut_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type BridgeTransfersConnection = {

@@ -1,5 +1,5 @@
 import { Box } from '@mui/material';
-import { Received, Send, Swap, Yield } from '@origin/shared/icons';
+import { Bridge, Received, Send, Swap, Yield } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { mainnet } from 'viem/chains';
 
@@ -9,15 +9,8 @@ import { TokenIcon } from './TokenIcon';
 import type { BoxProps, SvgIconProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-enum HistoryType {
-  Received = 'Received',
-  Sent = 'Sent',
-  Swap = 'Swap',
-  Yield = 'Yield',
-}
-
 export type TransactionIconProps = {
-  type: HistoryType;
+  type: 'Received' | 'Sent' | 'Swap' | 'Yield' | 'Bridge';
   token: Token;
   swapToken?: Token;
 } & BoxProps;
@@ -29,7 +22,7 @@ export function TransactionIcon({
   ...rest
 }: TransactionIconProps) {
   const icon =
-    type === HistoryType.Yield ? (
+    type === 'Yield' ? (
       <Yield
         sx={{
           position: 'absolute',
@@ -53,9 +46,11 @@ export function TransactionIcon({
   );
 
   const subIcon =
-    type === HistoryType.Sent ? (
+    type === 'Bridge' ? (
+      <Bridge {...subIconProps} />
+    ) : type === 'Sent' ? (
       <Send {...subIconProps} />
-    ) : type === HistoryType.Received || type === HistoryType.Yield ? (
+    ) : type === 'Received' || type === 'Yield' ? (
       <Received {...subIconProps} />
     ) : (
       <Swap {...subIconProps} />
@@ -74,7 +69,7 @@ export function TransactionIcon({
       {icon}
       {chainIcon}
       {subIcon}
-      {type === HistoryType.Swap && !isNilOrEmpty(swapToken) && (
+      {type === 'Swap' && !isNilOrEmpty(swapToken) && (
         <Box
           sx={{
             position: 'absolute',

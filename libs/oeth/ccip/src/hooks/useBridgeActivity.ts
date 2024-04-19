@@ -3,10 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useAccount } from 'wagmi';
 
-import {
-  useBridgeTransfersQuery,
-  useBridgeTransferStatesQuery,
-} from '../queries.generated';
+import { useBridgeTransfersQuery } from '../queries.generated';
 
 type BridgeTransferState = 'untouched' | 'processing' | 'complete' | 'failed';
 const states: Record<number, BridgeTransferState> = {
@@ -27,21 +24,7 @@ export const useBridgeActivity = () => {
     { address: address ?? ZERO_ADDRESS },
     {
       enabled: !!address,
-      refetchInterval: waitForTx ? 5000 : false,
-    },
-  );
-  const bridgeTransferStates = useBridgeTransferStatesQuery(
-    {
-      messageIds: bridgeTransfers.data?.bridgeTransfers.map(
-        (bt) => bt.messageId,
-      ),
-    },
-    {
-      enabled:
-        !bridgeTransfers.isLoading &&
-        bridgeTransfers.data &&
-        bridgeTransfers.data.bridgeTransfers.length > 0,
-      refetchInterval: hasPendingTransfers ? 5000 : false,
+      refetchInterval: waitForTx ? 5000 : hasPendingTransfers ? 5000 : false,
     },
   );
 
@@ -50,7 +33,7 @@ export const useBridgeActivity = () => {
     if (
       waitForTx &&
       !!bridgeTransfers.data?.bridgeTransfers.find(
-        (bt) => bt.txHash === waitForTx,
+        (bt) => bt.txHashIn === waitForTx,
       )
     ) {
       setWaitForTx(undefined);
@@ -61,20 +44,13 @@ export const useBridgeActivity = () => {
   const data = useMemo(
     () =>
       bridgeTransfers.data?.bridgeTransfers.map((bt) => {
-        let state: BridgeTransferState | undefined = undefined;
-        const data = bridgeTransferStates.data?.bridgeTransferStates.find(
-          (bts) => bt.messageId === bts.id,
-        ) ?? { state: 0 };
-        state = states[data.state];
+        const state = states[bt.state];
         return {
           ...bt,
           state,
         };
       }),
-    [
-      bridgeTransfers.data?.bridgeTransfers,
-      bridgeTransferStates.data?.bridgeTransferStates,
-    ],
+    [bridgeTransfers.data?.bridgeTransfers],
   );
 
   // Wait for state updates
