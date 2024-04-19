@@ -54,8 +54,11 @@ export const TokenButton = ({
         fontWeight: 500,
         boxSizing: 'border-box',
         position: 'relative',
+        ...sizeProps[size],
+        ...rest?.sx,
         ...(!disabled && {
           ':hover': {
+            ...(rest.sx as any)?.[':hover'],
             background: (theme) =>
               `linear-gradient(${theme.palette.grey[600]}, ${
                 theme.palette.grey[600]
@@ -65,8 +68,6 @@ export const TokenButton = ({
               )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
           },
         }),
-        ...sizeProps[size],
-        ...rest?.sx,
       }}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />

@@ -23,8 +23,15 @@ export const ViewTabs = () => {
           <TokenButton
             token={tokens.mainnet.OETH}
             size={'md'}
-            sx={{ background: undefined }}
+            sx={{
+              background: undefined,
+              fontSize: 14,
+              ':hover': {
+                color: 'text.primary',
+              },
+            }}
             active={match?.params.otoken !== 'woeth'}
+            disabled={match?.params.otoken !== 'woeth'}
           />
         </Link>
         <Link
@@ -35,8 +42,15 @@ export const ViewTabs = () => {
           <TokenButton
             token={tokens.mainnet.wOETH}
             size={'md'}
-            sx={{ background: undefined }}
+            sx={{
+              background: undefined,
+              fontSize: 14,
+              ':hover': {
+                color: 'text.primary',
+              },
+            }}
             active={match?.params.otoken === 'woeth'}
+            disabled={match?.params.otoken === 'woeth'}
           />
         </Link>
       </Stack>
