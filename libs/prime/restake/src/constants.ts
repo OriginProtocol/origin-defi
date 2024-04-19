@@ -33,34 +33,34 @@ export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
     tokenOut: tokens.mainnet.primeETH,
     action: 'restake',
   },
-  {
-    tokenIn: tokens.mainnet.stETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
-  {
-    tokenIn: tokens.mainnet.mETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
-  {
-    tokenIn: tokens.mainnet.ETHx,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
-  {
-    tokenIn: tokens.mainnet.sfrxETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
-  {
-    tokenIn: tokens.mainnet.swETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
-  {
-    tokenIn: tokens.mainnet.rETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.stETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.mETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.ETHx,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.sfrxETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.swETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.rETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
 ];

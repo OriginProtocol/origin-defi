@@ -12,13 +12,13 @@ To start the development server run `pnpm nx serve <APP_NAME>`
 
 ## Apps
 
-| Status | App Name   | Port | Public hosts |
-|:------:|:-------------|:-----|:-------------|
-|   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/)    |
-|   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/)    |
-|   🚧   | `defi`       | 4202 | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    |
-|   ✅   | `governance` | 4203 | [aws](https://governance.ousd.com/)   |
-|   ✅   | `prime`      | 4204 | [aws](https://app.primestaked.com/)   |
+| Status | App Name   | Port | `main`  | `next`  |
+|:------:|:-------------|:-----|:-------------|:-------------|
+|   ✅   | `oeth`       | 4200 | [aws](https://app.oeth.com/) [fleek](https://defi-oeth.on.fleek.co/)    | [aws](https://next.d21cq9khxoetn4.amplifyapp.com/)    
+|   ✅   | `ousd`       | 4201 | [aws](https://app.ousd.com/) [fleek](https://defi-ousd.on.fleek.co/)    | [aws](https://next.d3vake4ybrgst8.amplifyapp.com/)  
+|   🚧   | `defi`       | 4202 |     |[aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    
+|   ✅   | `governance` | 4203 | [aws](https://governance.ousd.com/)   | [aws](https://next.d11mo0k0jspnpd.amplifyapp.com/)   
+|   ✅   | `prime`      | 4204 | [aws](https://app.primestaked.com/)   | [aws](https://next.d3ekvisba9ol3t.amplifyapp.com/#/restake)   
 
 ## Storybook
 

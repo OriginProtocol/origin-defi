@@ -129,29 +129,24 @@ function SwapperWrapped({
   const routeLabel = action?.routeLabel
     ? intl.formatMessage(action.routeLabel)
     : null;
-  const isPaused = route?.action === 'restake' && tokenIn.symbol !== 'WETH';
   const boost = route?.meta?.boost;
   const exchangeRate =
     amountIn === 0n ? defaultExchangeRate : 1 / (selectedSwapRoute?.rate ?? 1);
-  const isInfoPanelVisible = !isPaused && status !== 'noAvailableRoute';
+  const isInfoPanelVisible = status !== 'noAvailableRoute';
   const isWarningLabelVisible =
     selectedSwapRoute?.action === 'uniswap' &&
     isBefore(new Date(), new Date('25 March 2024 12:00 PDT'));
 
   const needsApproval =
     isConnected &&
-    !isPaused &&
     amountIn > 0n &&
     !isBalTokenInLoading &&
     (balTokenIn as unknown as bigint) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
     (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
     (allowance ?? 0n) < amountIn;
-  const swapButtonLabel = isPaused
-    ? intl.formatMessage({
-        defaultMessage: 'Deposits are currently closed',
-      })
-    : amountIn === 0n
+  const swapButtonLabel =
+    amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
       : amountIn > (balTokenIn as unknown as bigint)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
@@ -160,16 +155,14 @@ function SwapperWrapped({
               swapActions[selectedSwapRoute.action].buttonLabel,
             )
           : intl.formatMessage({ defaultMessage: 'No available route' });
-  const amountInInputDisabled = isSwapLoading || isApprovalLoading || isPaused;
+  const amountInInputDisabled = isSwapLoading || isApprovalLoading;
   const approveButtonDisabled =
-    isPaused ||
     isNilOrEmpty(selectedSwapRoute) ||
     isSwapRoutesLoading ||
     isApprovalLoading ||
     isApprovalWaitingForSignature ||
     amountIn > (balTokenIn as unknown as bigint);
   const swapButtonDisabled =
-    isPaused ||
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
     isBalTokenInLoading ||
@@ -182,30 +175,6 @@ function SwapperWrapped({
   return (
     <Stack {...rest}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
-        {isPaused && (
-          <CardContent>
-            <Stack
-              sx={{
-                border: '1px solid',
-                borderColor: (theme) =>
-                  alpha(theme.palette.secondary.main, 0.7),
-                borderRadius: 2,
-                backgroundColor: (theme) =>
-                  alpha(theme.palette.secondary.main, 0.1),
-                p: 1,
-                width: 1,
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography>
-                {intl.formatMessage({
-                  defaultMessage: 'Deposits are currently closed',
-                })}
-              </Typography>
-            </Stack>
-          </CardContent>
-        )}
         <CardContent>
           <Typography pb={2} fontWeight="medium">
             {intl.formatMessage({ defaultMessage: 'Select the asset' })}
