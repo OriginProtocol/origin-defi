@@ -19,8 +19,10 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
+
+import type { MessageDescriptor } from 'react-intl';
 
 import type { WOETHHistoryType } from './types';
 
@@ -36,6 +38,12 @@ export type HistoryTableProps = {
     change: string;
     balance: string;
   }[];
+};
+
+const typeLabels: Record<WOETHHistoryType, MessageDescriptor> = {
+  Sent: defineMessage({ defaultMessage: 'Sent' }),
+  Received: defineMessage({ defaultMessage: 'Received' }),
+  Bridge: defineMessage({ defaultMessage: 'Bridge' }),
 };
 
 export function HistoryTable({ rows }: HistoryTableProps) {
@@ -63,12 +71,20 @@ export function HistoryTable({ rows }: HistoryTableProps) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell sx={{ py: 3, width: '50%', ...cellSx }}>Type</TableCell>
-            <TableCell align="right" sx={cellSx}>
-              Change
+            <TableCell sx={{ py: 3, width: '50%', ...cellSx }}>
+              {intl.formatMessage({
+                defaultMessage: 'Type',
+              })}
             </TableCell>
             <TableCell align="right" sx={cellSx}>
-              Balance
+              {intl.formatMessage({
+                defaultMessage: 'Change',
+              })}
+            </TableCell>
+            <TableCell align="right" sx={cellSx}>
+              {intl.formatMessage({
+                defaultMessage: 'Balance',
+              })}
             </TableCell>
             <TableCell />
           </TableRow>
@@ -90,7 +106,9 @@ export function HistoryTable({ rows }: HistoryTableProps) {
                       }}
                     />
                     <Box>
-                      <Typography fontWeight="500">{row.type}</Typography>
+                      <Typography fontWeight="500">
+                        {intl.formatMessage(typeLabels[row.type])}
+                      </Typography>
                       <Typography color="text.secondary" variant="body2">
                         {intl.formatDate(new Date(row.timestamp), {
                           dateStyle: 'short',
