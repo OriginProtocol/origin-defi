@@ -3,9 +3,9 @@ import { tokens } from '@origin/shared/contracts';
 import {
   useFormat,
   useTokenPrice,
-  useWatchContract,
+  useWatchBalances,
 } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { applyExchangeRate } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -14,40 +14,25 @@ import type { StackProps } from '@mui/material';
 export function HistoryHeader() {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { address, isConnected } = useAccount();
-  const woethBalances = [
-    useWatchContract(
-      address && {
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
-        chainId: tokens.mainnet.wOETH.chainId,
-        functionName: 'balanceOf',
-        args: [address ?? ZERO_ADDRESS],
-        query: {
-          enabled: !!address,
-        },
-      },
-    ),
-    useWatchContract(
-      address && {
-        address: tokens.arbitrum.wOETH.address,
-        abi: tokens.arbitrum.wOETH.abi,
-        chainId: tokens.arbitrum.wOETH.chainId,
-        functionName: 'balanceOf',
-        args: [address ?? ZERO_ADDRESS],
-        query: {
-          enabled: !!address,
-        },
-      },
-    ),
-  ];
+  const { isConnected } = useAccount();
 
-  const woethLoading = !!woethBalances.find((b) => b.isLoading);
-  const woethBalance = woethBalances.reduce(
-    (sum, b) => sum + (b.data ?? 0n),
-    0n,
-  );
   const exchangeRate = useTokenPrice('wOETH_OETH');
+  const woethBalances = useWatchBalances({
+    tokens: [tokens.mainnet.wOETH, tokens.arbitrum.wOETH],
+  });
+
+  const woethLoading = woethBalances.isLoading;
+  const woethBalance =
+    woethBalances.data && exchangeRate.data
+      ? Object.values(woethBalances.data).reduce(
+          (sum, b) => sum + (b ?? 0n),
+          0n,
+        )
+      : 0n;
+  const woethOethValue = applyExchangeRate(
+    woethBalance,
+    exchangeRate.data ?? 0,
+  );
 
   return (
     <Stack
@@ -66,13 +51,7 @@ export function HistoryHeader() {
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'Current value (OETH)' })}
-        value={formatAmount(
-          woethBalance,
-          tokens.mainnet.wOETH.decimals,
-          undefined,
-          undefined,
-          exchangeRate.data,
-        )}
+        value={formatAmount(woethOethValue)}
         isLoading={isConnected && woethLoading && exchangeRate.isLoading}
       />
       <Divider orientation="vertical" flexItem />

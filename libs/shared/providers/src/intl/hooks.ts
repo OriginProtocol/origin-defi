@@ -27,16 +27,11 @@ export const useFormat = () => {
       decimals = 18,
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
-      exchangeRate?: number,
     ) => {
       if (!amount || amount === 0n) return zeroPlaceholder;
 
-      let amt =
+      const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
-
-      if (exchangeRate !== undefined) {
-        amt *= exchangeRate;
-      }
 
       for (const [threshold, maxDigits] of mappings) {
         if (amt >= threshold) {
