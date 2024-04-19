@@ -22,7 +22,6 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
-import { useFormat } from '@origin/shared/providers';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -53,7 +52,6 @@ export const ConvertModal = ({
   ...rest
 }: ConvertModalProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [ratio, setRatio] = useState(100);

@@ -16,7 +16,6 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { FaCircleCheckRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { formatDistanceToNowStrict } from 'date-fns';
@@ -53,6 +52,9 @@ export const MigrationForm = (props: StackProps) => {
     if (!isLockupsLoading && once.current) {
       setSelected((prev) => ({ ...prev, lockups: lockups ?? [] }));
       once.current = false;
+    }
+    if (isNilOrEmpty(lockups)) {
+      setSelected((prev) => ({ ...prev, lockups: [] }));
     }
   }, [isLockupsLoading, lockups]);
 
@@ -99,8 +101,10 @@ export const MigrationForm = (props: StackProps) => {
     [info?.veOgvRewards, info?.ogvBalance, selected],
   );
 
+  console.log(ogvTotal, info?.ogvBalance, info?.veOgvRewards, selected);
+
   const isConvertDisabled =
-    !selected.balance && !selected.rewards && isNilOrEmpty(selected.lockups);
+    isInfoLoading || isLockupsLoading || ogvTotal === 0n;
 
   return (
     <Stack {...props}>
@@ -128,7 +132,6 @@ export const MigrationForm = (props: StackProps) => {
             successLabel={intl.formatMessage({
               defaultMessage: 'No OGV to convert',
             })}
-            {...cardStackProps}
           >
             <FormControlLabel
               control={
@@ -176,9 +179,8 @@ export const MigrationForm = (props: StackProps) => {
             isLoading={isInfoLoading}
             isSuccess={info?.veOgvRewards === 0n}
             successLabel={intl.formatMessage({
-              defaultMessage: 'No reward to claim',
+              defaultMessage: 'No rewards available to claim',
             })}
-            {...cardStackProps}
           >
             <FormControlLabel
               control={
@@ -221,9 +223,8 @@ export const MigrationForm = (props: StackProps) => {
             isLoading={isLockupsLoading}
             isSuccess={lockups?.length === 0}
             successLabel={intl.formatMessage({
-              defaultMessage: 'No Lockup to convert',
+              defaultMessage: 'No existing lockups to convert',
             })}
-            {...cardStackProps}
             p={0}
           >
             <LockupsList
@@ -446,7 +447,7 @@ function SuccessCard({
 }: SuccessCardProps) {
   if (isLoading) {
     return (
-      <Stack {...rest} justifyContent="center">
+      <Stack {...cardStackProps} justifyContent="center" p={2} minHeight={68}>
         <CircularProgress size={24} />
       </Stack>
     );
@@ -454,14 +455,25 @@ function SuccessCard({
 
   if (isSuccess) {
     return (
-      <Stack {...rest} direction="row" alignItems="center" spacing={2}>
-        <FaCircleCheckRegular color="success" sx={{ fontSize: 20 }} />
+      <Stack
+        {...cardStackProps}
+        p={2}
+        direction="row"
+        alignItems="center"
+        spacing={2}
+        minHeight={68}
+      >
+        <TokenIcon token={tokens.mainnet.OGV} outlined sx={{ fontSize: 24 }} />
         <Typography {...valueProps}>{successLabel}</Typography>
       </Stack>
     );
   }
 
-  return <Stack {...rest}>{children}</Stack>;
+  return (
+    <Stack {...cardStackProps} {...rest}>
+      {children}
+    </Stack>
+  );
 }
 
 const valueProps: TypographyProps = {
