@@ -50,7 +50,7 @@ export const useBridgeActivity = () => {
     if (
       waitForTx &&
       !!bridgeTransfers.data?.bridgeTransfers.find(
-        (bt) => bt.txHash === waitForTx,
+        (bt) => bt.txHashIn === waitForTx,
       )
     ) {
       setWaitForTx(undefined);
