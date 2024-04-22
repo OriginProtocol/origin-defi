@@ -51,7 +51,7 @@ export const useBridgeTransfersQuery = <
       variables: BridgeTransfersQueryVariables,
       options?: Omit<UseQueryOptions<BridgeTransfersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BridgeTransfersQuery, TError, TData>['queryKey'] }
     ) => {
-    
+
     return useQuery<BridgeTransfersQuery, TError, TData>(
       {
     queryKey: ['BridgeTransfers', variables],
@@ -81,7 +81,7 @@ export const useBridgeTransferStatesQuery = <
       variables?: BridgeTransferStatesQueryVariables,
       options?: Omit<UseQueryOptions<BridgeTransferStatesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BridgeTransferStatesQuery, TError, TData>['queryKey'] }
     ) => {
-    
+
     return useQuery<BridgeTransferStatesQuery, TError, TData>(
       {
     queryKey: variables === undefined ? ['BridgeTransferStates'] : ['BridgeTransferStates', variables],
