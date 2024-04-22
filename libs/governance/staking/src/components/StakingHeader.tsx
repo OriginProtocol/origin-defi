@@ -18,7 +18,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY, useTotalLockedUp } from '../hooks';
+import { useTotalLockedUp } from '../hooks';
 import { ClaimRewardsButton } from './ClaimRewardsModal';
 
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -30,7 +30,6 @@ export const StakingHeader = () => {
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const { data: totalLockups, isLoading: isTotalLockupsLoading } =
     useTotalLockedUp();
-  const { data: staking, isLoading: isStakingLoading } = useStakingAPY(100, 48);
   const { data: holdersCount, isLoading: isHoldersCountLoading } =
     useHoldersCountQuery();
 
