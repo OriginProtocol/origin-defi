@@ -127,3 +127,19 @@ export const useTokenPrices = (
 };
 useTokenPrices.getKey = getKey;
 useTokenPrices.fetcher = fetcher;
+
+export const useTokenPrice = (
+  tokenPrice: SupportedTokenPrice,
+  options?: UseQueryOptions<
+    Record<SupportedTokenPrice, number>,
+    Error,
+    Record<SupportedTokenPrice, number>,
+    Key
+  >,
+) => {
+  const result = useTokenPrices([tokenPrice], options);
+  return {
+    ...result,
+    data: result.data?.[tokenPrice],
+  };
+};

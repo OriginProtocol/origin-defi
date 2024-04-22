@@ -23,7 +23,7 @@ import {
   TransactionButton,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { encodeAbiParameters } from 'viem';
@@ -203,6 +203,14 @@ export const BridgeCard = () => {
                   to: 30,
                 },
               )}
+            </Box>
+          </Stack>
+          <Stack direction={'row'}>
+            <Box flex={1} color={'text.secondary'}>
+              {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
+            </Box>
+            <Box>
+              {formatAmount(fee)} {srcChain.nativeCurrency.symbol}
             </Box>
           </Stack>
           <Collapse in={requiresApproval}>

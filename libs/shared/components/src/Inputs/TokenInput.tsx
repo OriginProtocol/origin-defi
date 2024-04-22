@@ -5,14 +5,14 @@ import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
-import { TokenButton } from '../Buttons';
+import { TokenPicker } from '../Buttons';
 import { BigIntInput } from './BigIntInput';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { ComponentProps } from 'react';
 
-import type { TokenButtonProps } from '../Buttons';
+import type { TokenPickerProps } from '../Buttons';
 import type { BigintInputProps } from './BigIntInput';
 
 // When clicking max on native currency, we leave this amount of token
@@ -41,7 +41,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
-  tokenButtonProps?: Omit<TokenButtonProps, 'token'>;
+  tokenButtonProps?: Omit<TokenPickerProps, 'token'>;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -109,7 +109,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             />
           )}
 
-          <TokenButton
+          <TokenPicker
             token={token}
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}

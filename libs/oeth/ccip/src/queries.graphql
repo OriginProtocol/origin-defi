@@ -20,6 +20,8 @@ query BridgeTransfers($address: String!) {
     tokenIn
     tokenOut
     txHashIn
+    txHashOut
+    state
   }
 }
 
