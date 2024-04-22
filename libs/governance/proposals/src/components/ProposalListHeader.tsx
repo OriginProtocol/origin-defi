@@ -44,19 +44,6 @@ export const ProposalListHeader = (props: StackProps) => {
         <Button
           variant="outlined"
           color="secondary"
-          href="https://docs.oeth.com/governance/admin-privileges"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          {intl.formatMessage({
-            defaultMessage: 'Learn about Governance',
-          })}
-          &nbsp;
-          <FaArrowUpRightRegular />
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
           href="https://discord.com/channels/404673842007506945/872600469959245826"
           target="_blank"
           rel="noopener noreferrer nofollow"
