@@ -4,7 +4,6 @@ export * from './BigInt';
 export * from './blockExplorerLinks';
 export * from './composeContext';
 export * from './csv';
-export * from './exchangeRates';
 export * from './errors';
 export * from './formatters';
 export * from './promises';

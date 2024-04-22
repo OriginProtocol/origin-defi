@@ -5,8 +5,8 @@ import {
   useTokenPrice,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { applyExchangeRate } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
@@ -29,10 +29,7 @@ export function HistoryHeader() {
           0n,
         )
       : 0n;
-  const woethOethValue = applyExchangeRate(
-    woethBalance,
-    exchangeRate.data ?? 0,
-  );
+  const woethOethValue = +formatEther(woethBalance) * (exchangeRate.data ?? 0);
 
   return (
     <Stack
