@@ -2,7 +2,7 @@ import axios from 'axios';
 import { pathOr } from 'ramda';
 
 export const axiosInstance = axios.create({
-  baseURL: 'https://origin.squids.live/origin-squid/v/v28/graphql', // import.meta.env.VITE_SUBSQUID_URL,
+  baseURL: import.meta.env.VITE_SUBSQUID_URL,
 });
 
 export const graphqlClient =
