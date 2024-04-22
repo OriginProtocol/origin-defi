@@ -50,7 +50,7 @@ export const RedeemActionCard = ({
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
     isFetching: swapGasPriceFetching,
-  } = useGasPrice(estimatedRoute?.gas, {
+  } = useGasPrice(estimatedRoute?.gas, estimatedRoute?.tokenIn.chainId, {
     refetchInterval: 30e3,
     enabled: !!estimatedRoute && estimatedRoute?.gas > 0n,
   });
@@ -58,10 +58,14 @@ export const RedeemActionCard = ({
     data: approvalGasPrice,
     isLoading: approvalGasPriceLoading,
     isFetching: approvalGasPriceFetching,
-  } = useGasPrice(estimatedRoute?.approvalGas, {
-    refetchInterval: 30e3,
-    enabled: !!estimatedRoute && estimatedRoute?.approvalGas > 0n,
-  });
+  } = useGasPrice(
+    estimatedRoute?.approvalGas,
+    estimatedRoute?.tokenIn.chainId,
+    {
+      refetchInterval: 30e3,
+      enabled: !!estimatedRoute && estimatedRoute?.approvalGas > 0n,
+    },
+  );
   const { data: allowance } = useSwapRouteAllowance(route);
   const { data: isRouteAvailable, isLoading: isRouteAvailableLoading } =
     useIsSwapRouteAvailable(route);

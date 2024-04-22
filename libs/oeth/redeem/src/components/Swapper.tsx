@@ -210,7 +210,7 @@ function SwapperWrapped({
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
-    token: tokenIn.address,
+    token: tokenIn,
   });
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
