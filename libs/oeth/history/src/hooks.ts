@@ -1,10 +1,10 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 
 import { useBridgeTransfersQuery } from '@origin/oeth/ccip';
 import { HistoryType } from '@origin/oeth/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort, uniq } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
@@ -209,51 +209,54 @@ export const useAggregatedHistory = (
 };
 
 export const useWOETHHistory = () => {
-  const { address, isConnected } = useAccount();
-  const transfersQueryFilter = {
-    tokens: [
-      tokens.mainnet.wOETH.address.toLowerCase(),
-      tokens.arbitrum.wOETH.address.toLowerCase(),
-    ],
-    account: address?.toLowerCase() as HexAddress,
-  };
-  const transfersQuery = useTransfersQuery(
-    {
-      tokens: [
-        tokens.mainnet.wOETH.address.toLowerCase(),
-        tokens.arbitrum.wOETH.address.toLowerCase(),
-      ],
-      account: address?.toLowerCase() as HexAddress,
-    },
-    {
-      refetchOnWindowFocus: false,
-      enabled: isConnected && !!address,
-    },
-  );
-  const bridgeQuery = useBridgeTransfersQuery(
-    { address: address?.toLowerCase() as HexAddress },
-    {
-      refetchOnWindowFocus: false,
-      enabled: isConnected && !!address,
-    },
-  );
-  const blocks = useMemo(() => {
-    if (!transfersQuery.data || !bridgeQuery.data) return;
-    return uniq([
-      ...transfersQuery.data.erc20Transfers.map((b) => b.blockNumber),
-      ...bridgeQuery.data.bridgeTransfers.map((b) => b.blockNumber),
-    ]);
-  }, [transfersQuery.data, bridgeQuery.data]);
-  const balancesQuery = useBalancesQuery(
-    {
-      ...transfersQueryFilter,
-      blocks,
-    },
-    {
-      refetchOnWindowFocus: false,
-      enabled: isConnected && !!address && !!blocks,
-    },
-  );
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
 
-  return { bridgeQuery, transfersQuery, balancesQuery };
+  return useQuery({
+    queryKey: ['useWOETHHistory', address],
+    queryFn: async () => {
+      if (!address) {
+        return undefined;
+      }
+
+      const transfersQueryFilter = {
+        tokens: [
+          tokens.mainnet.wOETH.address.toLowerCase(),
+          tokens.arbitrum.wOETH.address.toLowerCase(),
+        ],
+        account: address?.toLowerCase() as HexAddress,
+      };
+      const bridgeTransferQueryFilter = {
+        address: address?.toLowerCase() as HexAddress,
+      };
+
+      const [transfersQuery, bridgeQuery] = await Promise.all([
+        queryClient.fetchQuery({
+          queryKey: useTransfersQuery.getKey(transfersQueryFilter),
+          queryFn: useTransfersQuery.fetcher(transfersQueryFilter),
+        }),
+        queryClient.fetchQuery({
+          queryKey: useBridgeTransfersQuery.getKey(bridgeTransferQueryFilter),
+          queryFn: useBridgeTransfersQuery.fetcher(bridgeTransferQueryFilter),
+        }),
+      ]);
+
+      const balanceQueryFilter = {
+        ...transfersQueryFilter,
+        blocks: uniq([
+          ...transfersQuery.erc20Transfers.map((b) => b.blockNumber),
+          ...bridgeQuery.bridgeTransfers.map((b) => b.blockNumber),
+        ]),
+      };
+      const balancesQuery = await queryClient.fetchQuery({
+        queryKey: useBalancesQuery.getKey(balanceQueryFilter),
+        queryFn: useBalancesQuery.fetcher(balanceQueryFilter),
+      });
+      return {
+        bridgeTransfers: bridgeQuery.bridgeTransfers,
+        erc20Transfers: transfersQuery.erc20Transfers,
+        erc20Balances: balancesQuery.erc20Balances,
+      };
+    },
+  });
 };

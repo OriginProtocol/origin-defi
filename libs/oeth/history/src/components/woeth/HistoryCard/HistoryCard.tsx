@@ -38,16 +38,12 @@ export function HistoryCard() {
   const intl = useIntl();
   const { address: userAddress, isConnected } = useAccount();
   const [filters, setFilters] = useState<WOETHHistoryType[]>([]);
-  const { transfersQuery, balancesQuery, bridgeQuery } = useWOETHHistory();
+  const woethHistory = useWOETHHistory();
 
-  const isFetching =
-    transfersQuery.isFetching ||
-    balancesQuery.isFetching ||
-    bridgeQuery.isFetching;
-
-  const bridges = bridgeQuery.data?.bridgeTransfers;
-  const transfers = transfersQuery.data?.erc20Transfers;
-  const balances = balancesQuery.data?.erc20Balances;
+  const isFetching = woethHistory.isFetching;
+  const bridges = woethHistory.data?.bridgeTransfers;
+  const transfers = woethHistory.data?.erc20Transfers;
+  const balances = woethHistory.data?.erc20Balances;
 
   const rows = useMemo(() => {
     if (!userAddress || !bridges || !transfers || !balances) return [];
