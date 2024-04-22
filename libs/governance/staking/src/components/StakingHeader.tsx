@@ -104,48 +104,6 @@ export const StakingHeader = () => {
                 isLoading={isHoldersCountLoading}
                 {...valueLabelProps}
               />
-              <ValueLabel
-                label={
-                  <Typography
-                    color="text.secondary"
-                    sx={{
-                      textWrap: 'balance',
-                      textAlign: 'center',
-                      flexGrow: 1,
-                    }}
-                  >
-                    {intl.formatMessage({
-                      defaultMessage: 'Max vAPY',
-                    })}
-                    &nbsp;
-                    <InfoTooltip
-                      tooltipLabel={intl.formatMessage({
-                        defaultMessage:
-                          'The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV.',
-                      })}
-                    />
-                  </Typography>
-                }
-                value={
-                  <Typography
-                    variant="h3"
-                    sx={{
-                      background:
-                        'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
-                      backgroundClip: 'text',
-                      WebkitTextFillColor: 'transparent',
-                    }}
-                  >
-                    {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
-                      style: 'percent',
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </Typography>
-                }
-                isLoading={isStakingLoading}
-                {...valueLabelProps}
-              />
             </Stack>
           </Grid2>
         </Grid2>
