@@ -7,7 +7,7 @@ export type BridgeTransfersQueryVariables = Types.Exact<{
 }>;
 
 
-export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHash: string }> };
+export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string }> };
 
 export type BridgeTransferStatesQueryVariables = Types.Exact<{
   messageIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -37,7 +37,7 @@ export const BridgeTransfersDocument = `
     sender
     tokenIn
     tokenOut
-    txHash
+    txHashIn
   }
 }
     `;
