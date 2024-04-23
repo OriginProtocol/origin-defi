@@ -58,7 +58,7 @@ export const redeemActions: Record<RedeemAction, SwapApi> = {
     ...defaultApi,
     ...swapCurve,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
-    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'redeem-vault': {
     ...defaultApi,
