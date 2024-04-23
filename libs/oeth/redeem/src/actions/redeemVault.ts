@@ -8,7 +8,7 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits } from 'viem';
+import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 
@@ -77,20 +77,7 @@ const estimateGas: EstimateGas = async (
 };
 
 const allowance: Allowance = async (config, { tokenIn }) => {
-  const { address } = getAccount(config);
-
-  if (!address || !tokenIn?.address) {
-    return 0n;
-  }
-
-  const allowance = await readContract(config, {
-    address: tokenIn.address,
-    abi: erc20Abi,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.OETHVault.address],
-  });
-
-  return allowance;
+  return maxUint256;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
@@ -184,12 +171,6 @@ const swap: Swap = async (
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
-  }
-
-  const approved = await allowance(config, { tokenIn, tokenOut });
-
-  if (approved < amountIn) {
-    throw new Error(`Redeem vault is not approved`);
   }
 
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);

@@ -1,4 +1,4 @@
-import { Stack } from '@mui/material';
+import { Container, Stack } from '@mui/material';
 import { Outlet } from 'react-router-dom';
 
 export const RedeemView = () => {
@@ -7,8 +7,15 @@ export const RedeemView = () => {
   // const location = useLocation();
 
   return (
-    <Stack spacing={3}>
-      {/* <Tabs
+    <Container
+      sx={{
+        mt: 3,
+        mb: 10,
+      }}
+      maxWidth="sm"
+    >
+      <Stack spacing={3}>
+        {/* <Tabs
         centered
         value={location.pathname}
         onChange={(_, value) => {
@@ -29,7 +36,8 @@ export const RedeemView = () => {
           );
         })}
       </Tabs> */}
-      <Outlet />
-    </Stack>
+        <Outlet />
+      </Stack>
+    </Container>
   );
 };
