@@ -5,13 +5,17 @@ import { graphqlClient } from '@origin/defi/shared';
 export type OethApyQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type OethApyQuery = { __typename?: 'Query', oethapies: Array<{ __typename?: 'OETHAPY', apy7DayAvg: number, apy30DayAvg: number }> };
+export type OethApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy30DayAvg: number }> };
 
 
 
 export const OethApyDocument = `
     query OethApy {
-  oethapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     apy7DayAvg
     apy30DayAvg
   }

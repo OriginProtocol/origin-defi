@@ -123,9 +123,9 @@ export const useAggregatedHistory = (
       refetchOnWindowFocus: false,
       ...options,
       enabled: isConnected && !!address,
-      placeholderData: { oethHistories: [] },
+      placeholderData: { oTokenHistories: [] },
       select: useCallback((data: HistoryTransactionQuery) => {
-        const history = data?.oethHistories;
+        const history = data?.oTokenHistories;
 
         const grouped = groupBy(
           (hist) =>

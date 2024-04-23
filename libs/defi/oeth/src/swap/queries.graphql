@@ -1,5 +1,8 @@
 query OethApy {
-  oethapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(limit: 1, orderBy: timestamp_DESC, where: {
+    chainId_eq: 1,
+    otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
+  }) {
     apy7DayAvg
     apy30DayAvg
   }

@@ -7,7 +7,7 @@ export type OethHistoryUserStatQueryVariables = Types.Exact<{
 }>;
 
 
-export type OethHistoryUserStatQuery = { __typename?: 'Query', oethAddresses: Array<{ __typename?: 'OETHAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
+export type OethHistoryUserStatQuery = { __typename?: 'Query', oTokenAddresses: Array<{ __typename?: 'OTokenAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
 
 export type OethHistoryTransactionQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
@@ -15,7 +15,7 @@ export type OethHistoryTransactionQueryVariables = Types.Exact<{
 }>;
 
 
-export type OethHistoryTransactionQuery = { __typename?: 'Query', oethHistories: Array<{ __typename?: 'OETHHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
+export type OethHistoryTransactionQuery = { __typename?: 'Query', oTokenHistories: Array<{ __typename?: 'OTokenHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
 
 export type OethDailyYieldQueryVariables = Types.Exact<{
   start: Types.Scalars['DateTime']['input'];
@@ -28,7 +28,9 @@ export type OethDailyYieldQuery = { __typename?: 'Query', oethDailyStats: Array<
 
 export const OethHistoryUserStatDocument = `
     query OethHistoryUserStat($address: String!) {
-  oethAddresses(where: {id_containsInsensitive: $address}) {
+  oTokenAddresses(
+    where: {address_containsInsensitive: $address, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     balance
     earned
     isContract
@@ -61,11 +63,11 @@ useOethHistoryUserStatQuery.fetcher = (variables: OethHistoryUserStatQueryVariab
 
 export const OethHistoryTransactionDocument = `
     query OethHistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  oethHistories(
+  oTokenHistories(
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
-    where: {AND: {address: {id_containsInsensitive: $address}, type_in: $filters}}
+    where: {address: {id_containsInsensitive: $address}, type_in: $filters, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
   ) {
     type
     value
