@@ -54,7 +54,6 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         direction="row"
         sx={{
           flexWrap: 'wrap',
-          backgroundColor: 'background.header',
           rowGap: 1,
           columnGap: 1,
           px: 3,
@@ -78,7 +77,6 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
             left: 0,
             width: 1,
             height: 0.5,
-            backgroundColor: 'background.header',
             zIndex: 0,
           }}
         />

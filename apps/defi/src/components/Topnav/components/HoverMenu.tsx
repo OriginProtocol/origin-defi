@@ -195,7 +195,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                         transform: 'translateY(4px)',
                       },
                       ':hover': {
-                        backgroundColor: 'background.header',
                         '.subtitle': { color: 'text.primary' },
                       },
                     }}

@@ -81,12 +81,7 @@ const MenuDialog = (props: DialogProps) => {
   };
 
   return (
-    <Dialog
-      {...props}
-      fullWidth
-      fullScreen
-      sx={{ background: (theme) => theme.palette.background.header }}
-    >
+    <Dialog {...props} fullWidth fullScreen>
       <Stack direction="row" justifyContent="flex-end" p={3}>
         <IconButton
           onClick={(evt) => {
