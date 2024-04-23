@@ -7,7 +7,7 @@ export type BridgeTransfersQueryVariables = Types.Exact<{
 }>;
 
 
-export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string }> };
+export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string, txHashOut?: string | null, state: number }> };
 
 export type BridgeTransferStatesQueryVariables = Types.Exact<{
   messageIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -38,6 +38,8 @@ export const BridgeTransfersDocument = `
     tokenIn
     tokenOut
     txHashIn
+    txHashOut
+    state
   }
 }
     `;
@@ -49,7 +51,7 @@ export const useBridgeTransfersQuery = <
       variables: BridgeTransfersQueryVariables,
       options?: Omit<UseQueryOptions<BridgeTransfersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BridgeTransfersQuery, TError, TData>['queryKey'] }
     ) => {
-    
+
     return useQuery<BridgeTransfersQuery, TError, TData>(
       {
     queryKey: ['BridgeTransfers', variables],
@@ -79,7 +81,7 @@ export const useBridgeTransferStatesQuery = <
       variables?: BridgeTransferStatesQueryVariables,
       options?: Omit<UseQueryOptions<BridgeTransferStatesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BridgeTransferStatesQuery, TError, TData>['queryKey'] }
     ) => {
-    
+
     return useQuery<BridgeTransferStatesQuery, TError, TData>(
       {
     queryKey: variables === undefined ? ['BridgeTransferStates'] : ['BridgeTransferStates', variables],

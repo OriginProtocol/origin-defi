@@ -111,12 +111,10 @@ const RouteLinks = () => {
   const intl = useIntl();
   const navigate = useNavigate();
   const location = useLocation();
-
-  const topLevelPath = `/${location.pathname.split('/')[1]}`;
-
+  const pathroot = `/${location.pathname.split('/').filter((x) => x)[0] ?? ''}`;
   return (
     <Tabs
-      value={topLevelPath}
+      value={pathroot}
       onChange={(_, value) => {
         navigate(value);
       }}

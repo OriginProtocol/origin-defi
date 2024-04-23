@@ -9,7 +9,7 @@ import { parseEther } from 'viem';
 import type { StackProps } from '@mui/material';
 import type {
   BigintInputProps,
-  TokenButtonProps,
+  TokenPickerProps,
 } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
@@ -35,7 +35,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
-  tokenButtonProps?: Omit<TokenButtonProps, 'token'>;
+  tokenButtonProps?: Omit<TokenPickerProps, 'token'>;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
