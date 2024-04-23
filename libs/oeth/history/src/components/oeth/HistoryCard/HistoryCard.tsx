@@ -11,10 +11,11 @@ import { DownloadCsvButton } from '@origin/shared/components';
 import { ConnectedButton } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useAggregatedHistory } from '../hooks';
-import { useHistoryTransactionQuery } from '../queries.generated';
+import { useAggregatedHistory } from '../../../hooks';
+import { useHistoryTransactionQuery } from '../../../queries.generated';
 import { HistoryFilters } from './HistoryFilters';
 import { HistoryTable } from './HistoryTable';
 
@@ -103,7 +104,13 @@ function ExportData() {
         return data.oethHistories.reduce(
           (acc, curr) => [
             ...acc,
-            [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],
+            [
+              curr.timestamp,
+              curr.type,
+              formatEther(BigInt(curr.value)),
+              formatEther(BigInt(curr.balance)),
+              curr.txHash,
+            ],
           ],
           [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']],
         );

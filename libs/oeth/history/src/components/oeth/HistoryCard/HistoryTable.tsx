@@ -11,6 +11,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { HistoryType } from '@origin/oeth/shared';
 import {
   ExpandIcon,
   TablePagination,
@@ -28,17 +29,23 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
 
-import { useAggregatedHistory } from '../hooks';
+import { useAggregatedHistory } from '../../../hooks';
 
 import type { StackProps } from '@mui/material';
-import type { HistoryType } from '@origin/oeth/shared';
 import type { ExpandedState } from '@tanstack/react-table';
+import type { MessageDescriptor } from 'react-intl';
 
-import type { DailyHistory } from '../types';
+import type { DailyHistory } from '../../../types';
 
 const columnHelper = createColumnHelper<DailyHistory>();
+
+const typeLabels: Record<HistoryType, MessageDescriptor> = {
+  [HistoryType.Sent]: defineMessage({ defaultMessage: 'Sent' }),
+  [HistoryType.Received]: defineMessage({ defaultMessage: 'Received' }),
+  [HistoryType.Yield]: defineMessage({ defaultMessage: 'Yield' }),
+};
 
 export type HistoryTableProps = {
   filters: HistoryType[];
@@ -68,6 +75,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
               type={info.getValue()}
               timestamp={info.row.original.timestamp}
               sx={{ pl: info.row.depth * 2 }}
+              hasChildren={(info.row.original.transactions?.length ?? 0) > 1}
             />
           );
         },
@@ -221,18 +229,29 @@ export function HistoryTable({ filters }: HistoryTableProps) {
 type HistoryTypeCellProps = {
   timestamp: string;
   type: HistoryType;
+  hasChildren: boolean;
 } & StackProps;
 
-function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
+function HistoryTypeCell({
+  timestamp,
+  type,
+  hasChildren,
+  ...rest
+}: HistoryTypeCellProps) {
   const intl = useIntl();
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
       <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
       <Stack>
-        <Typography fontWeight="500">{type}</Typography>
+        <Typography fontWeight="500">
+          {intl.formatMessage(typeLabels[type])}
+        </Typography>
         <Typography color="text.secondary" variant="body2">
-          {intl.formatDate(new Date(timestamp))}
+          {intl.formatDate(new Date(timestamp), {
+            dateStyle: 'short',
+            timeStyle: hasChildren ? undefined : 'short',
+          })}
         </Typography>
       </Stack>
     </Stack>

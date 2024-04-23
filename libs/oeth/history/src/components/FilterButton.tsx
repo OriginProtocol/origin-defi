@@ -11,11 +11,11 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { HistoryType } from '@origin/oeth/shared';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { defineMessage, useIntl } from 'react-intl';
+import { useIntl } from 'react-intl';
 
 import type { Dispatch, SetStateAction } from 'react';
+import type { MessageDescriptor } from 'react-intl';
 
 const styles = {
   fontSize: 12,
@@ -23,32 +23,28 @@ const styles = {
   lineHeight: 1.6,
 };
 
-const filterOptions = [
-  {
-    label: defineMessage({ defaultMessage: 'Yield' }),
-    value: HistoryType.Yield,
-  },
-  { label: defineMessage({ defaultMessage: 'Sent' }), value: HistoryType.Sent },
-  {
-    label: defineMessage({ defaultMessage: 'Received' }),
-    value: HistoryType.Received,
-  },
-];
-
-export type HistoryFiltersProps = {
-  filters: HistoryType[];
-  setFilters: Dispatch<SetStateAction<HistoryType[]>>;
-};
-
-export function HistoryFilters({ filters, setFilters }: HistoryFiltersProps) {
-  const [selected, setSelectedTypes] = useState<HistoryType[]>(filters);
+export function FilterButton<FilterValue extends string>({
+  filters,
+  setFilters,
+  filterOptions,
+}: {
+  filters: FilterValue[];
+  setFilters: Dispatch<SetStateAction<FilterValue[]>>;
+  filterOptions: { label: MessageDescriptor; value: FilterValue }[];
+}) {
   const intl = useIntl();
   const theme = useTheme();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [selected, setSelectedTypes] = useState<FilterValue[]>(filters);
+
+  const applyDisabled =
+    filters.length === selected.length &&
+    filters.every((item) => selected.includes(item));
+  const clearDisabled = isNilOrEmpty(selected);
 
   const handleSelect = (
     e: React.ChangeEvent<HTMLInputElement>,
-    value: HistoryType,
+    value: FilterValue,
   ) => {
     setSelectedTypes((prev) => {
       if (e.target.checked) {
@@ -58,12 +54,6 @@ export function HistoryFilters({ filters, setFilters }: HistoryFiltersProps) {
       }
     });
   };
-
-  const applyDisabled =
-    filters.length === selected.length &&
-    filters.every((item) => selected.includes(item));
-  const clearDisabled = isNilOrEmpty(selected);
-
   return (
     <>
       <Button
