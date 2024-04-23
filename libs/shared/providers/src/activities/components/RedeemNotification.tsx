@@ -58,7 +58,7 @@ export const RedeemNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.tertiary">
+          <Typography color="text.secondary">
             {intl.formatMessage(
               {
                 defaultMessage: '{amountIn} {symbolIn}',

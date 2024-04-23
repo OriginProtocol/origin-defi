@@ -58,7 +58,7 @@ export const SwapNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.tertiary">
+          <Typography color="text.secondary">
             {intl.formatMessage(
               {
                 defaultMessage:
