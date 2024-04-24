@@ -17,6 +17,7 @@ import {
   ActivityButton,
   BalanceList,
   OpenAccountModalButton,
+  ThemeModeSwitch,
 } from '@origin/shared/providers';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -151,6 +152,8 @@ export const Topnav = () => {
                   setAccountModalAnchor(null);
                 }}
               />
+              <Divider />
+              <ThemeModeSwitch />
               <Divider />
               <BalanceList
                 balanceTokens={[

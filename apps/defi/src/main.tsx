@@ -10,7 +10,7 @@ import {
   registerSentry,
   wagmiConfig,
 } from '@origin/defi/shared';
-import { theme } from '@origin/defi/theme';
+import { dark, light } from '@origin/defi/theme';
 import {
   ActivityProvider,
   GeoFenceProvider,
@@ -51,7 +51,7 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [ThemeProvider, { theme }],
+      [ThemeProvider, { dark, light }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],

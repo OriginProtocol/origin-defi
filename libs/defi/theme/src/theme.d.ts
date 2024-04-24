@@ -6,32 +6,50 @@ declare module '@mui/material/styles' {
     gradientPurple: string;
     gradientBlue: string;
     gradientOrange: string;
-    header: string;
     highlight: string;
+    primaryFaded?: string;
   }
 
   interface TypeBackgroundOptions {
     gradientPurple?: string;
     gradientBlue?: string;
     gradientOrange?: string;
-    header?: string;
     highlight?: string;
+    primaryFaded?: string;
   }
 
   interface TypeText {
     tertiary: string;
+    success: string;
+    warning: string;
+    error: string;
   }
 
   interface TypeTextOptions {
     tertiary?: string;
+    success?: string;
+    warning?: string;
+    error?: string;
   }
 
-  interface Shape {
-    cardBorderRadius: number;
+  interface Palette {
+    chart1: string;
+    chart2: string;
+    chart3: string;
+    chart4: string;
+    chart5: string;
+    chart6: string;
+    chart7: string;
   }
 
-  interface ShapeOptions {
-    cardBorderRadius?: number;
+  interface PaletteOptions {
+    chart1?: string;
+    chart2?: string;
+    chart3?: string;
+    chart4?: string;
+    chart5?: string;
+    chart6?: string;
+    chart7?: string;
   }
 }
 
