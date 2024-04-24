@@ -132,7 +132,8 @@ export const components = (base: Theme): ThemeOptions => ({
             fontSize: 20,
             lineHeight: 1.6,
             borderRadius: theme.shape.borderRadius * 2,
-            fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+            fontFamily:
+              'DM Sans Variable, Inter Variable, Helvetica, Arial, sans-serif',
             fontWeight: 500,
             fontStyle: 'normal',
             '&:hover': {

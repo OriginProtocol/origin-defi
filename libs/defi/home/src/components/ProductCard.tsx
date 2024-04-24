@@ -99,9 +99,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
         <Typography color="text.secondary" fontSize={14}>
           {intl.formatMessage({ defaultMessage: 'APY (Trailing 30-day)' })}
         </Typography>
-        <Typography
-          sx={{ fontSize: 32, fontFamily: 'Sailec', fontWeight: 700 }}
-        >
+        <Typography sx={{ fontSize: 32, fontWeight: 700 }}>
           {isQueryDataLoading ? (
             <Skeleton width={80} />
           ) : (

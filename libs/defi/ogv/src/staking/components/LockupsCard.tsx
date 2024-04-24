@@ -145,7 +145,6 @@ const stackProps: StackProps = {
   alignItems: 'center',
   spacing: 1.5,
   sx: {
-    fontFamily: 'Sailec',
     border: '1px solid',
     borderColor: 'divider',
     borderRadius: 1,

@@ -224,7 +224,6 @@ TokenInput2.displayName = 'TokenInput';
 const valueStyles = {
   flexGrow: 1,
   fontStyle: 'normal',
-  fontFamily: 'Sailec, sans-serif',
   fontSize: 32,
   lineHeight: 1.5,
   fontWeight: 400,

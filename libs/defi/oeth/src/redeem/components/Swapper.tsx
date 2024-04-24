@@ -306,7 +306,6 @@ function SwapperWrapped({
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
                   sx={{
-                    fontFamily: 'Sailec, sans-serif',
                     fontSize: 24,
                     lineHeight: 1.5,
                     fontWeight: 700,
