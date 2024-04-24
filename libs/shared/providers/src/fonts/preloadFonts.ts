@@ -1,6 +1,6 @@
 export type Font = {
   url: string;
-  type?: `font/${string}`;
+  type?: 'woff2' | 'ttf' | 'otf' | 'woff';
 };
 
 export const preloadFonts = (fonts: Font[]) => {
@@ -8,7 +8,7 @@ export const preloadFonts = (fonts: Font[]) => {
     const link = document.createElement('link');
     link.rel = 'preload';
     link.as = 'font';
-    link.type = font.type ?? 'font/woff2';
+    link.type = `font/${font.type ?? 'woff2'}`;
     link.href = font.url;
     link.crossOrigin = 'anonymous';
 

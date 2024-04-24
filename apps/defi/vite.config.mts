@@ -2,7 +2,7 @@
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, searchForWorkspaceRoot } from 'vite';
+import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
 
@@ -20,9 +20,6 @@ export default defineConfig({
   server: {
     port: 4202,
     host: 'localhost',
-    fs: {
-      allow: [searchForWorkspaceRoot(process.cwd())],
-    },
   },
 
   preview: {
