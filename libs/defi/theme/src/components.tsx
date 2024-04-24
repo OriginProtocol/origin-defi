@@ -25,7 +25,6 @@ export const components = (base: Theme): ThemeOptions => ({
           '&:before': {
             height: 0,
           },
-          backgroundImage: 'none',
         }),
       },
     },
@@ -83,10 +82,9 @@ export const components = (base: Theme): ThemeOptions => ({
         disableElevation: true,
       },
       styleOverrides: {
-        root: ({ theme }) => ({
-          color: theme.palette.text.primary,
+        root: {
           textTransform: 'none',
-          borderRadius: 25,
+          boxShadow: 'none',
           paddingX: {
             md: 3,
             xs: 2,
@@ -95,31 +93,15 @@ export const components = (base: Theme): ThemeOptions => ({
             md: 1,
             xs: 0.75,
           },
-          boxShadow: 'none',
+        },
+        sizeSmall: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius,
         }),
-        containedPrimary: ({ theme }) => ({
-          background: theme.palette.primary.main,
-          '&:hover': {
-            background: theme.palette.primary.dark,
-          },
+        sizeMedium: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius * 3,
         }),
-        containedSecondary: ({ theme }) => ({
-          background: theme.palette.grey[800],
-          '&:hover': {
-            background: theme.palette.grey[900],
-          },
-        }),
-        outlinedSecondary: ({ theme }) => ({
-          borderColor: theme.palette.divider,
-          ':hover': {
-            borderColor: theme.palette.primary.main,
-          },
-        }),
-        text: ({ theme }) => ({
-          ':hover': {
-            color: theme.palette.common.white,
-            background: 'transparent',
-          },
+        sizeLarge: ({ theme }) => ({
+          borderRadius: theme.shape.borderRadius * 3,
         }),
       },
       variants: [
@@ -127,22 +109,18 @@ export const components = (base: Theme): ThemeOptions => ({
           props: { variant: 'action' },
           style: ({ theme }) => ({
             background: theme.palette.primary.main,
-            color: theme.palette.text.primary,
+            color: theme.palette.primary.contrastText,
             padding: theme.spacing(2),
             fontSize: 20,
             lineHeight: 1.6,
-            borderRadius: theme.shape.borderRadius * 2,
-            fontFamily:
-              'DM Sans Variable, Inter Variable, Helvetica, Arial, sans-serif',
             fontWeight: 500,
             fontStyle: 'normal',
             '&:hover': {
               background: theme.palette.primary.dark,
-              opacity: 1,
             },
             '&:disabled': {
               opacity: 0.5,
-              color: theme.palette.text.primary,
+              color: theme.palette.primary.contrastText,
             },
           }),
         },
@@ -158,10 +136,10 @@ export const components = (base: Theme): ThemeOptions => ({
       styleOverrides: {
         root: ({ theme }) => ({
           padding: 0,
-          borderRadius: '8px',
-          backgroundImage: 'none',
+          borderRadius: theme.shape.borderRadius * 4,
           backgroundColor: theme.palette.background.paper,
-          border: `1px solid ${theme.palette.divider}`,
+          border: '1px solid',
+          borderColor: theme.palette.divider,
           boxShadow: 'none',
         }),
       },
@@ -176,19 +154,15 @@ export const components = (base: Theme): ThemeOptions => ({
             padding: theme.spacing(2, 3),
           },
         }),
-        title: ({ theme }) => ({
-          fontSize: theme.typography.fontSize,
-          lineHeight: 1.5,
-          fontWeight: 500,
-        }),
+        title: ({ theme }) => theme.typography.body2,
       },
     },
     MuiCardContent: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2.5, 3),
+          padding: theme.spacing(3),
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(1.25, 1.5),
+            padding: theme.spacing(2, 3),
           },
         }),
       },
@@ -218,11 +192,14 @@ export const components = (base: Theme): ThemeOptions => ({
       defaultProps: {
         enableColorScheme: true,
       },
-      styleOverrides: `
+      styleOverrides: (theme) => `
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
+            text-rendering: optimizeLegibility;            
+            font-size: ${theme.typography.body3.fontSize}px;
+            line-height: ${theme.typography.body3.lineHeight};
+            font-weight: ${theme.typography.body3.fontWeight};
           }
   
           input[type=number] {
@@ -244,21 +221,18 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           border: '1px solid',
           borderColor: theme.palette.divider,
-          backgroundImage: 'none',
         }),
         paper: ({ theme }) => ({
-          backgroundColor: theme.palette.background.paper,
-          borderRadius: theme.shape.borderRadius * 2,
+          borderRadius: theme.shape.borderRadius * 4,
         }),
       },
     },
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2.5, 3),
-          fontSize: 14,
-          fontWeight: 500,
-          lineHeight: 1.71429,
+          padding: theme.spacing(3),
+          ...theme.typography.body2,
+          fontWeight: theme.typography.fontWeightMedium,
           color: theme.palette.text.primary,
           borderBottom: `1px solid ${theme.palette.divider}`,
         }),
@@ -276,57 +250,18 @@ export const components = (base: Theme): ThemeOptions => ({
         },
       },
     },
-    MuiFormLabel: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          '&.MuiInputLabel-root': {
-            position: 'static',
-            transform: 'none',
-            transformOrigin: 'initial',
-            fontSize: theme.typography.fontSize,
-            marginBlockEnd: theme.spacing(1),
-            color: theme.palette.text.primary,
-          },
-        }),
-      },
-    },
     MuiIconButton: {
       styleOverrides: {
-        root: ({ theme }) => ({
+        root: {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          backgroundColor: theme.palette.grey['800'],
-          ':hover': {
-            backgroundColor: theme.palette.background.highlight,
-          },
-        }),
-      },
-    },
-    MuiInputBase: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          borderRadius: 20,
-          border: '1px solid',
-          borderColor: theme.palette.primary.main,
-          backgroundColor: theme.palette.background.default,
-          width: 'auto',
-          padding: theme.spacing(0.5, 1.5),
-
-          '& .MuiInputBase-input': {
-            color: theme.palette.text.primary,
-            fontSize: theme.typography.fontSize,
-          },
-        }),
-        input: ({ theme }) => ({
-          padding: theme.spacing(0.5),
-        }),
+        },
       },
     },
     MuiLink: {
       styleOverrides: {
         root: ({ theme }) => ({
-          backgroundImage: 'none',
           color: theme.palette.text.primary,
           textDecoration: 'none',
         }),
@@ -339,7 +274,7 @@ export const components = (base: Theme): ThemeOptions => ({
       styleOverrides: {
         paper: ({ theme }) => ({
           border: '1px solid',
-          borderColor: theme.palette.background.default,
+          borderColor: theme.palette.divider,
         }),
         list: {
           padding: 0,
@@ -362,6 +297,16 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
       },
     },
+    MuiPaper: {
+      defaultProps: {
+        elevation: 0,
+      },
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
     MuiPaginationItem: {
       styleOverrides: {
         outlined: ({ theme }) => ({
@@ -372,28 +317,20 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
       },
     },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          backgroundImage: 'none',
-        },
-      },
-    },
     MuiPopover: {
       defaultProps: {
         transitionDuration: 0,
         disableScrollLock: true,
+        elevation: 0,
       },
       styleOverrides: {
         root: ({ theme }) => ({
-          boxShadow: theme.shadows[23],
-          backgroundImage: 'none',
-          borderRadius: theme.shape.borderRadius * 2.5,
-          background: 'transparent',
+          borderRadius: theme.shape.borderRadius * 4,
         }),
-        paper: {
-          backgroundImage: 'none',
-        },
+        paper: ({ theme }) => ({
+          border: '1px solid',
+          borderColor: theme.palette.divider,
+        }),
       },
     },
     MuiSkeleton: {
@@ -402,8 +339,7 @@ export const components = (base: Theme): ThemeOptions => ({
       },
       styleOverrides: {
         text: ({ theme }) => ({
-          borderRadius: 10,
-          // backgroundColor: theme.palette.grey[900],
+          borderRadius: theme.shape.borderRadius,
         }),
       },
     },
@@ -417,9 +353,8 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 0,
           padding: theme.spacing(3, 2),
-          fontSize: 16,
+          ...theme.typography.body2,
           textTransform: 'none',
-          lineHeight: 1.6875,
           ':hover': {
             color: theme.palette.text.primary,
           },
@@ -430,7 +365,7 @@ export const components = (base: Theme): ThemeOptions => ({
             padding: theme.spacing(1, 2),
           },
           [theme.breakpoints.down('sm')]: {
-            fontSize: 14,
+            ...theme.typography.body3,
           },
         }),
       },
@@ -438,11 +373,8 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiTableCell: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(2, 3),
-          fontSize: theme.typography.fontSize,
-          fontStyle: 'normal',
-          fontWeight: 400,
-          lineHeight: 1.6,
+          padding: theme.spacing(3),
+          ...theme.typography.body3,
         }),
         head: ({ theme }) => ({
           color: theme.palette.text.secondary,
@@ -463,12 +395,20 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiTooltip: {
       styleOverrides: {
         tooltip: ({ theme }) => ({
-          padding: theme.spacing(1.5, 2),
-          borderRadius: theme.shape.borderRadius * 2,
+          padding: theme.spacing(1.5),
+          background: theme.palette.background.paper,
+          color: theme.palette.text.secondary,
+          borderRadius: theme.shape.borderRadius,
           border: '1px solid',
-          borderColor: theme.palette.grey[500],
-          boxShadow: theme.shadows[23],
+          borderColor: theme.palette.divider,
+          boxShadow: theme.shadows[1],
+          '>.MuiTypography-root': theme.typography.body3,
         }),
+      },
+    },
+    MuiTypography: {
+      defaultProps: {
+        variant: 'body3',
       },
     },
   },

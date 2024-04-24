@@ -55,9 +55,9 @@ declare module '@mui/material/styles' {
 
   interface TypographyVariants {
     body3: React.CSSProperties;
-    feature1: React.CSSProperties;
-    feature2: React.CSSProperties;
-    feature3: React.CSSProperties;
+    featured1: React.CSSProperties;
+    featured2: React.CSSProperties;
+    featured3: React.CSSProperties;
     mono: React.CSSProperties;
     caption1: React.CSSProperties;
     caption2: React.CSSProperties;
@@ -65,9 +65,9 @@ declare module '@mui/material/styles' {
 
   interface TypographyVariantsOptions {
     body3?: React.CSSProperties;
-    feature1?: React.CSSProperties;
-    feature2?: React.CSSProperties;
-    feature3?: React.CSSProperties;
+    featured1?: React.CSSProperties;
+    featured2?: React.CSSProperties;
+    featured3?: React.CSSProperties;
     mono?: React.CSSProperties;
     caption1?: React.CSSProperties;
     caption2?: React.CSSProperties;
@@ -83,11 +83,15 @@ declare module '@mui/material/Button' {
 declare module '@mui/material/Typography' {
   interface TypographyPropsVariantOverrides {
     body3: true;
-    feature1: true;
-    feature2: true;
-    feature3: true;
+    featured1: true;
+    featured2: true;
+    featured3: true;
     mono: true;
     caption1: true;
     caption2: true;
+    subtitle1: false;
+    subtitle2: false;
+    caption: false;
+    overline: false;
   }
 }
