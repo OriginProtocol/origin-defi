@@ -3,7 +3,7 @@ import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
-import type { ButtonProps, StackProps } from '@mui/material';
+import type { BoxProps, ButtonProps, StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
 export type Option = {
@@ -15,12 +15,14 @@ export type SliderSwitchProps = {
   value: string | number;
   options: Option[];
   onChange: (value: string | number) => void;
+  selectedSx?: Pick<BoxProps, 'sx'>;
 } & Omit<StackProps, 'children' | 'onClick' | 'onChange'>;
 
 export const SliderSwitch = ({
   value,
   options,
   onChange,
+  selectedSx,
   ...rest
 }: SliderSwitchProps) => {
   const refs = useRef<HTMLButtonElement[]>([]);
@@ -78,10 +80,9 @@ export const SliderSwitch = ({
           left: 0,
           width: itemsWidth[idx],
           height: 1,
-          background: 'grey.800',
           transform: `translateX(${translateX}px)`,
           transition: '0.2s ease',
-          backgroundColor: 'grey.800',
+          ...selectedSx,
         }}
       />
     </Stack>
@@ -103,11 +104,15 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
           py: 1,
           zIndex: 2,
           color: isSelected ? 'text.primary' : 'text.secondary',
+          ':hover': {
+            backgroundColor: 'transparent',
+            '.label': { color: 'text.primary' },
+          },
           ...rest?.sx,
         }}
       >
         {typeof option.label === 'string' ? (
-          <Typography>{option.label}</Typography>
+          <Typography className="label">{option.label}</Typography>
         ) : (
           option.label
         )}
