@@ -281,22 +281,6 @@ export const components = (base: Theme): ThemeOptions => ({
         },
       },
     },
-    MuiMenuItem: {
-      styleOverrides: {
-        root: ({ theme }) => ({
-          '&.Mui-selected': {
-            backgroundColor: 'transparent',
-            color: theme.palette.text.secondary,
-            '&:hover': {
-              backgroundColor: theme.palette.grey[800],
-            },
-          },
-          '&:hover': {
-            backgroundColor: theme.palette.grey[800],
-          },
-        }),
-      },
-    },
     MuiPaper: {
       defaultProps: {
         elevation: 0,

@@ -77,6 +77,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         {...rest}
         sx={{
           color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
+          ':hover': { backgroundColor: 'transparent' },
           ...rest?.sx,
         }}
         onClick={() => {
@@ -110,6 +111,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         sx={{
           color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
           svg: { ml: 0.75, width: 12, height: 12 },
+          ':hover': { backgroundColor: 'transparent' },
           ...rest?.sx,
         }}
         ref={anchorEl}
@@ -188,9 +190,9 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                       gap: 1.5,
                       py: 1,
                       borderRadius: 2,
-                      '.subtitle': { color: 'text.tertiary' },
+                      '.subtitle': { color: 'text.secondary' },
                       '.arrow': {
-                        color: 'text.tertiary',
+                        color: 'text.secondary',
                         fontSize: 18,
                         transform: 'translateY(4px)',
                       },
@@ -201,7 +203,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                   >
                     <Box
                       component={r.icon}
-                      sx={{ width: 16, height: 16, color: 'text.tertiary' }}
+                      sx={{ width: 16, height: 16, color: 'text.secondary' }}
                     />
                     <Stack flexGrow={1}>
                       <Typography fontWeight="medium">

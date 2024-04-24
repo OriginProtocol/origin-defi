@@ -1,3 +1,5 @@
+import { alpha } from '@mui/material';
+
 import type { ThemeOptions } from '@mui/material';
 
 export const lightPalette: ThemeOptions = {
@@ -41,6 +43,13 @@ export const lightPalette: ThemeOptions = {
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+    },
+    action: {
+      hoverOpacity: 0.2,
+      hover: alpha('#ECEBFE', 0.5),
+      disabledOpacity: 0.5,
+      disabled: alpha('#ECEEF2', 0.5),
+      disabledBackground: '#ECEEF2',
     },
     divider: '#D8DEE5',
     chart1: '#586CF8',
@@ -94,6 +103,13 @@ export const darkPalette: ThemeOptions = {
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+    },
+    action: {
+      hoverOpacity: 0.2,
+      hover: alpha('#121316', 0.5),
+      disabledOpacity: 0.5,
+      disabled: alpha('#ECEEF2', 0.5),
+      disabledBackground: '#ECEEF2',
     },
     divider: '#282A32',
     chart1: '#586CF8',
