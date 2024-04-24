@@ -101,8 +101,6 @@ export const MigrationForm = (props: StackProps) => {
     [info?.veOgvRewards, info?.ogvBalance, selected],
   );
 
-  console.log(ogvTotal, info?.ogvBalance, info?.veOgvRewards, selected);
-
   const isConvertDisabled =
     isInfoLoading || isLockupsLoading || ogvTotal === 0n;
 

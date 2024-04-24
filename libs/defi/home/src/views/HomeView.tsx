@@ -16,11 +16,7 @@ export const HomeView = () => {
           <Typography variant="h1" textAlign="center">
             {intl.formatMessage({ defaultMessage: 'Origin products' })}
           </Typography>
-          <Typography
-            variant="subtitle1"
-            textAlign="center"
-            color="text.secondary"
-          >
+          <Typography textAlign="center" color="text.secondary">
             {intl.formatMessage({
               defaultMessage:
                 'Origin provides a decentralized suite of products helping you earn yield on your digital assets',

@@ -93,9 +93,7 @@ export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
           {product.token.name}&nbsp;
           <span className="symbol">({product.token.symbol})</span>
         </Typography>
-        <Typography variant="subtitle1">
-          {intl.formatMessage(product.description)}
-        </Typography>
+        <Typography>{intl.formatMessage(product.description)}</Typography>
       </Stack>
       <Stack p={3}>
         <Typography color="text.secondary" fontSize={14}>

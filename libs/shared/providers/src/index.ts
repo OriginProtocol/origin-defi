@@ -3,6 +3,7 @@ export * from './analytics';
 export * from './chart';
 export * from './console';
 export * from './curve';
+export * from './fonts';
 export * from './gas';
 export * from './geoFence';
 export * from './intl';

@@ -1,5 +1,6 @@
 import '@mui/material/styles';
 import '@mui/material/Button';
+import '@mui/material/Typography';
 
 declare module '@mui/material/styles' {
   interface TypeBackground {
@@ -51,10 +52,42 @@ declare module '@mui/material/styles' {
     chart6?: string;
     chart7?: string;
   }
+
+  interface TypographyVariants {
+    body3: React.CSSProperties;
+    feature1: React.CSSProperties;
+    feature2: React.CSSProperties;
+    feature3: React.CSSProperties;
+    mono: React.CSSProperties;
+    caption1: React.CSSProperties;
+    caption2: React.CSSProperties;
+  }
+
+  interface TypographyVariantsOptions {
+    body3?: React.CSSProperties;
+    feature1?: React.CSSProperties;
+    feature2?: React.CSSProperties;
+    feature3?: React.CSSProperties;
+    mono?: React.CSSProperties;
+    caption1?: React.CSSProperties;
+    caption2?: React.CSSProperties;
+  }
 }
 
 declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     action: true;
+  }
+}
+
+declare module '@mui/material/Typography' {
+  interface TypographyPropsVariantOverrides {
+    body3: true;
+    feature1: true;
+    feature2: true;
+    feature3: true;
+    mono: true;
+    caption1: true;
+    caption2: true;
   }
 }
