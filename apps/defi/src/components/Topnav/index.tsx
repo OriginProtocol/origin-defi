@@ -1,13 +1,21 @@
 import { useState } from 'react';
 
-import { alpha, Box, useMediaQuery, useTheme } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Divider,
+  Popover,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpArrowDownLight, OriginLabel } from '@origin/shared/icons';
 import {
-  AccountPopover,
+  AccountPanel,
   ActivityButton,
+  BalanceList,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
 import { Link as RouterLink } from 'react-router-dom';
@@ -117,20 +125,46 @@ export const Topnav = () => {
               disconnectedProps={{ color: 'primary' }}
               hideAddress={isSm}
             />
-            <AccountPopover
-              anchor={accountModalAnchor}
-              setAnchor={setAccountModalAnchor}
-              balanceTokens={[
-                tokens.mainnet.ETH,
-                tokens.mainnet.OETH,
-                tokens.mainnet.wOETH,
-                tokens.mainnet.WETH,
-                tokens.mainnet.rETH,
-                tokens.mainnet.frxETH,
-                tokens.mainnet.sfrxETH,
-                tokens.mainnet.stETH,
-              ]}
-            />
+            <Popover
+              open={!!accountModalAnchor}
+              anchorEl={accountModalAnchor}
+              onClose={() => {
+                setAccountModalAnchor(null);
+              }}
+              anchorOrigin={{
+                vertical: 50,
+                horizontal: 'right',
+              }}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+              }}
+              sx={{
+                '& .MuiPopover-paper': {
+                  borderRadius: 1,
+                  width: 250,
+                },
+              }}
+            >
+              <AccountPanel
+                onDisconnect={() => {
+                  setAccountModalAnchor(null);
+                }}
+              />
+              <Divider />
+              <BalanceList
+                balanceTokens={[
+                  tokens.mainnet.ETH,
+                  tokens.mainnet.OETH,
+                  tokens.mainnet.wOETH,
+                  tokens.mainnet.WETH,
+                  tokens.mainnet.rETH,
+                  tokens.mainnet.frxETH,
+                  tokens.mainnet.sfrxETH,
+                  tokens.mainnet.stETH,
+                ]}
+              />
+            </Popover>
             {isConnected && (
               <ActivityButton
                 iconSize={20}
