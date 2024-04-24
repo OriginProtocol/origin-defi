@@ -22,8 +22,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import { HoverMenu } from './components/HoverMenu';
-import { ModalMenuButton } from './components/ModalMenu';
+import { HoverMenu } from './HoverMenu';
+import { ModalMenuButton } from './ModalMenu';
 
 export const Topnav = () => {
   const { isConnected } = useAccount();
@@ -100,7 +100,6 @@ export const Topnav = () => {
             }}
           >
             <OpenAccountModalButton
-              color="secondary"
               onClick={(e) => {
                 if (isConnected) {
                   setAccountModalAnchor(e.currentTarget);
@@ -123,6 +122,7 @@ export const Topnav = () => {
                 },
                 paddingY: 0.75,
               }}
+              connectedProps={{ color: 'secondary' }}
               disconnectedProps={{ color: 'primary' }}
               hideAddress={isSm}
             />
@@ -170,8 +170,8 @@ export const Topnav = () => {
             </Popover>
             {isConnected && (
               <ActivityButton
+                color="secondary"
                 iconSize={20}
-                color="inherit"
                 activityIcon={
                   <FaArrowUpArrowDownLight
                     sx={{ transform: 'rotate(45deg)' }}
