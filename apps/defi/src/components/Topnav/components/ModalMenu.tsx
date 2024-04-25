@@ -30,32 +30,26 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
-import type { DialogProps, IconButtonProps } from '@mui/material';
+import type { ButtonProps, DialogProps } from '@mui/material';
 import type { MouseEvent } from 'react';
 
 import type { NavItem } from '../types';
 
-export const ModalMenuButton = (props: IconButtonProps) => {
+export const ModalMenuButton = (
+  props: Omit<ButtonProps, 'onClick' | 'children'>,
+) => {
   const [open, setOpen] = useState(false);
 
   return (
     <>
-      <IconButton
+      <Button
         {...props}
         onClick={() => {
           setOpen(true);
         }}
-        sx={{
-          border: (theme) => `1px solid ${theme.palette.divider}`,
-          svg: {
-            height: 16,
-            width: 16,
-          },
-          ...props?.sx,
-        }}
       >
         <FaBarsRegular />
-      </IconButton>
+      </Button>
       <MenuDialog
         open={open}
         onClose={() => {

@@ -23,14 +23,14 @@ export const PageTitle = ({
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Stack alignItems="center" spacing={2} py={5} {...rest}>
+    <Stack alignItems="center" spacing={2} py={15} {...rest}>
       <Stack direction="row" alignItems="center" spacing={2} {...rest}>
         {icon ? (
           <Box component={icon} sx={{ fontSize: 32 }} />
         ) : token ? (
           <TokenIcon token={token} sx={{ fontSize: 32 }} />
         ) : null}
-        <Typography variant="h2">
+        <Typography variant="h5">
           {isSm && token && `${token.symbol} `}
           {title}
         </Typography>

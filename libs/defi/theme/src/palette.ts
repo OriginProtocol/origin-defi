@@ -35,8 +35,8 @@ export const lightPalette: ThemeOptions = {
       error: '#FF4E4E',
     },
     background: {
-      default: '#EDEFF5',
-      paper: '#F7F9FF',
+      default: '#F7F9FF',
+      paper: '#EDEFF5',
       highlight: '#FFFFFF',
       primaryFaded: '#ECEBFE',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',

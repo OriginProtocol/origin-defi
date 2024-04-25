@@ -11,13 +11,12 @@ import {
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
-import { FaArrowUpArrowDownLight, OriginLabel } from '@origin/shared/icons';
+import { OriginLabel } from '@origin/shared/icons';
 import {
   AccountPanel,
-  ActivityButton,
   BalanceList,
   OpenAccountModalButton,
-  ThemeModeSwitch,
+  ThemeModeIconButton,
 } from '@origin/shared/providers';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -100,6 +99,7 @@ export const Topnav = () => {
             }}
           >
             <OpenAccountModalButton
+              variant="nav"
               onClick={(e) => {
                 if (isConnected) {
                   setAccountModalAnchor(e.currentTarget);
@@ -115,12 +115,10 @@ export const Topnav = () => {
               sx={{
                 minWidth: { xs: 36, md: 40 },
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-                height: { xs: 36, md: 40 },
                 paddingX: {
                   md: 2,
                   xs: isConnected ? 0.75 : 2,
                 },
-                paddingY: 0.75,
               }}
               connectedProps={{ color: 'secondary' }}
               disconnectedProps={{ color: 'primary' }}
@@ -154,8 +152,6 @@ export const Topnav = () => {
                 }}
               />
               <Divider />
-              <ThemeModeSwitch />
-              <Divider />
               <BalanceList
                 balanceTokens={[
                   tokens.mainnet.ETH,
@@ -169,26 +165,12 @@ export const Topnav = () => {
                 ]}
               />
             </Popover>
-            {isConnected && (
-              <ActivityButton
-                color="secondary"
-                iconSize={20}
-                activityIcon={
-                  <FaArrowUpArrowDownLight
-                    sx={{ transform: 'rotate(45deg)' }}
-                  />
-                }
-                sx={{
-                  width: { xs: 36, md: 40 },
-                  height: { xs: 36, md: 40 },
-                  padding: {
-                    xs: 0.75,
-                    md: 1,
-                  },
-                }}
-              />
-            )}
-            {isSm && <ModalMenuButton sx={{ minHeight: 36, minWidth: 36 }} />}
+            <ThemeModeIconButton
+              variant="nav"
+              color="secondary"
+              sx={{ fontSize: 16 }}
+            />
+            {isSm && <ModalMenuButton variant="nav" color="secondary" />}
           </Grid2>
         </Grid2>
       </Box>

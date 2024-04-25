@@ -85,6 +85,7 @@ export const components = (base: Theme): ThemeOptions => ({
         root: {
           textTransform: 'none',
           boxShadow: 'none',
+          minWidth: 0,
         },
         sizeSmall: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius,
@@ -117,6 +118,30 @@ export const components = (base: Theme): ThemeOptions => ({
               opacity: 0.5,
               color: theme.palette.primary.contrastText,
             },
+          }),
+        },
+        {
+          props: { variant: 'nav' },
+          style: ({ theme }) => ({
+            height: 40,
+            padding: theme.spacing(0.75, 2),
+            [base.breakpoints.down('md')]: {
+              width: 40,
+              borderRadius: '50%',
+            },
+            [base.breakpoints.down('sm')]: {
+              height: 36,
+              width: 36,
+              borderRadius: '50%',
+            },
+          }),
+        },
+        {
+          props: { variant: 'nav', color: 'secondary' },
+          style: ({ theme }) => ({
+            background: theme.palette.secondary.main,
+            color: theme.palette.secondary.contrastText,
+            border: `1px solid ${theme.palette.divider}}`,
           }),
         },
       ],

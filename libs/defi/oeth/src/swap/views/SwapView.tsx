@@ -14,7 +14,7 @@ export const SwapView = () => {
   const intl = useIntl();
 
   return (
-    <Container maxWidth="md">
+    <>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Swap' })}
         subtitle={intl.formatMessage({
@@ -23,25 +23,27 @@ export const SwapView = () => {
         })}
         token={tokens.mainnet.OETH}
       />
-      <Box>
-        <Grid2 container spacing={4}>
-          <Grid2 xs={12} md={8}>
-            <Stack spacing={4}>
-              <Swapper
-                swapActions={oethSwapActions}
-                swapRoutes={oethSwapRoutes}
-                buttonsProps={{ variant: 'action' }}
-                trackEvent={trackEvent}
-              />
-              <CexCard />
-              <FAQCard />
-            </Stack>
+      <Container maxWidth="md">
+        <Box>
+          <Grid2 container spacing={4}>
+            <Grid2 xs={12} md={8}>
+              <Stack spacing={4}>
+                <Swapper
+                  swapActions={oethSwapActions}
+                  swapRoutes={oethSwapRoutes}
+                  buttonsProps={{ variant: 'action' }}
+                  trackEvent={trackEvent}
+                />
+                <CexCard />
+                <FAQCard />
+              </Stack>
+            </Grid2>
+            <Grid2 xs={12} md={4}>
+              <OethDetailCard />
+            </Grid2>
           </Grid2>
-          <Grid2 xs={12} md={4}>
-            <OethDetailCard />
-          </Grid2>
-        </Grid2>
-      </Box>
-    </Container>
+        </Box>
+      </Container>
+    </>
   );
 };
