@@ -7,13 +7,17 @@ export type ApiesQueryVariables = Types.Exact<{
 }>;
 
 
-export type ApiesQuery = { __typename?: 'Query', ousdapies: Array<{ __typename?: 'OUSDAPY', id: string, timestamp: string, apy7DayAvg: number, apy30DayAvg: number }> };
+export type ApiesQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', id: string, timestamp: string, apy7DayAvg: number, apy30DayAvg: number }> };
 
 
 
 export const ApiesDocument = `
     query Apies($limit: Int) {
-  ousdapies(limit: $limit, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: $limit
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"}
+  ) {
     id
     timestamp
     apy7DayAvg

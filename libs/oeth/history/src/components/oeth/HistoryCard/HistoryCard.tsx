@@ -97,11 +97,11 @@ function ExportData() {
     {
       enabled: !!address,
       select: (data) => {
-        if (!data?.oethHistories) {
+        if (!data?.oTokenHistories) {
           return;
         }
 
-        return data.oethHistories.reduce(
+        return data.oTokenHistories.reduce(
           (acc, curr) => [
             ...acc,
             [

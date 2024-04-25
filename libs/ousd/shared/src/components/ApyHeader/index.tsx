@@ -39,7 +39,7 @@ export const ApyHeader = (props: StackProps) => {
       limit: 1,
     },
     {
-      select: (data) => data.ousdapies[0],
+      select: (data) => data.oTokenApies[0],
     },
   );
 

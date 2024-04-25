@@ -5,13 +5,17 @@ import { graphqlClient } from '@origin/defi/shared';
 export type OusdApyQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type OusdApyQuery = { __typename?: 'Query', ousdapies: Array<{ __typename?: 'OUSDAPY', apy7DayAvg: number, apy30DayAvg: number }> };
+export type OusdApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy30DayAvg: number }> };
 
 
 
 export const OusdApyDocument = `
     query OusdApy {
-  ousdapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"}
+  ) {
     apy7DayAvg
     apy30DayAvg
   }

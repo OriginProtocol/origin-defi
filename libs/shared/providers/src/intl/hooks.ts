@@ -34,7 +34,7 @@ export const useFormat = () => {
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
 
       for (const [threshold, maxDigits] of mappings) {
-        if (amt >= threshold) {
+        if (Math.abs(amt) >= threshold) {
           return intl.formatNumber(amt, {
             minimumFractionDigits: maxDigits,
             maximumFractionDigits: maxDigits,

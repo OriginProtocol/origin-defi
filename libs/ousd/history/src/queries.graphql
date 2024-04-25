@@ -1,5 +1,5 @@
 query HistoryUserStat($address: String!) {
-  ousdAddresses(where: { id_containsInsensitive: $address }) {
+  oTokenAddresses(where: { address_containsInsensitive: $address, chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86" }) {
     balance
     earned
     isContract
@@ -9,19 +9,26 @@ query HistoryUserStat($address: String!) {
 }
 
 query HistoryApy {
-  ousdapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1, orderBy:
+    timestamp_DESC,
+    where: { chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86" }
+  ) {
     apy7DayAvg
     apy30DayAvg
   }
 }
 
 query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  ousdHistories(
+  oTokenHistories(
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
     where: {
-      AND: { address: { id_containsInsensitive: $address }, type_in: $filters }
+      address: { id_containsInsensitive: $address },
+      type_in: $filters,
+      chainId_eq: 1,
+      otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"
     }
   ) {
     type

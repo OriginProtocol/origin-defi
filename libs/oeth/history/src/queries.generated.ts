@@ -7,12 +7,12 @@ export type HistoryUserStatQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryUserStatQuery = { __typename?: 'Query', oethAddresses: Array<{ __typename?: 'OETHAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
+export type HistoryUserStatQuery = { __typename?: 'Query', oTokenAddresses: Array<{ __typename?: 'OTokenAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
 
 export type HistoryApyQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type HistoryApyQuery = { __typename?: 'Query', oethapies: Array<{ __typename?: 'OETHAPY', apy7DayAvg: number, apy30DayAvg: number }> };
+export type HistoryApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy30DayAvg: number }> };
 
 export type HistoryTransactionQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
@@ -20,7 +20,7 @@ export type HistoryTransactionQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryTransactionQuery = { __typename?: 'Query', oethHistories: Array<{ __typename?: 'OETHHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
+export type HistoryTransactionQuery = { __typename?: 'Query', oTokenHistories: Array<{ __typename?: 'OTokenHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
 
 export type TransfersQueryVariables = Types.Exact<{
   tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -43,7 +43,9 @@ export type BalancesQuery = { __typename?: 'Query', erc20Balances: Array<{ __typ
 
 export const HistoryUserStatDocument = `
     query HistoryUserStat($address: String!) {
-  oethAddresses(where: {id_containsInsensitive: $address}) {
+  oTokenAddresses(
+    where: {address_containsInsensitive: $address, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     balance
     earned
     isContract
@@ -76,7 +78,11 @@ useHistoryUserStatQuery.fetcher = (variables: HistoryUserStatQueryVariables, opt
 
 export const HistoryApyDocument = `
     query HistoryApy {
-  oethapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     apy7DayAvg
     apy30DayAvg
   }
@@ -106,11 +112,11 @@ useHistoryApyQuery.fetcher = (variables?: HistoryApyQueryVariables, options?: Re
 
 export const HistoryTransactionDocument = `
     query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  oethHistories(
+  oTokenHistories(
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
-    where: {AND: {address: {id_containsInsensitive: $address}, type_in: $filters}}
+    where: {address: {id_containsInsensitive: $address}, type_in: $filters, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
   ) {
     type
     value

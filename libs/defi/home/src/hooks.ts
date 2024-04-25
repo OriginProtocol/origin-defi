@@ -19,9 +19,9 @@ export const useTokenInfo = (token: Token) =>
       }
 
       if (token.symbol === tokens.mainnet.OUSD.symbol) {
-        info.apy30DayAvg = data?.ousdapies?.at(0)?.apy30DayAvg ?? 0;
+        info.apy30DayAvg = data?.oTokenApies?.at(0)?.apy30DayAvg ?? 0;
         info.tvl = +formatUnits(
-          BigInt(data?.ousds?.at(0)?.totalSupply ?? '0'),
+          BigInt(data?.oTokens?.at(0)?.totalSupply ?? '0'),
           tokens.mainnet.OUSD.decimals,
         );
       }

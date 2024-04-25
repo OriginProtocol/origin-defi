@@ -95,11 +95,11 @@ function ExportData() {
     { address: address ?? ZERO_ADDRESS },
     {
       select: (data) => {
-        if (!data?.ousdHistories) {
+        if (!data?.oTokenHistories) {
           return;
         }
 
-        return data.ousdHistories.reduce(
+        return data.oTokenHistories.reduce(
           (acc, curr) => [
             ...acc,
             [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],

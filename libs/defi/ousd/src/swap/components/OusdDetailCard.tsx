@@ -73,7 +73,7 @@ function Apy() {
   const once = useRef(false);
   const [trailing, setTrailing] = useState(30);
   const { data: apy, isLoading: apyLoading } = useOusdApyQuery(undefined, {
-    select: (data) => data.ousdapies[0],
+    select: (data) => data.oTokenApies[0],
   });
   const trailingOptions: Option[] = useMemo(
     () => [
