@@ -75,9 +75,10 @@ export const typography = (base: Theme): ThemeOptions => ({
     },
     button: {
       fontFamily: 'Inter Variable',
-      fontSize: 14,
-      lineHeight: 1.428,
+      fontSize: 16,
+      lineHeight: 1.5,
       textTransform: 'none',
+      fontWeight: 500,
     },
     featured1: {
       fontFamily: 'Inter Variable',

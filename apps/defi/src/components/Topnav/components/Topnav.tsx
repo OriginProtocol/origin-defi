@@ -148,6 +148,7 @@ export const Topnav = () => {
               }}
             >
               <AccountPanel
+                disconnectButtonProps={{ size: 'small' }}
                 onDisconnect={() => {
                   setAccountModalAnchor(null);
                 }}

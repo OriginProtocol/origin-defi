@@ -6,14 +6,16 @@ import { useAccount, useDisconnect } from 'wagmi';
 
 import { AddressLabel } from './AddressLabel';
 
-import type { StackProps } from '@mui/material';
+import type { ButtonProps, StackProps } from '@mui/material';
 
 export type AccountPanelProps = {
+  disconnectButtonProps?: Omit<ButtonProps, 'onClick'>;
   onDisconnect?: () => void;
   px?: number;
 } & Omit<StackProps, 'px'>;
 
 export const AccountPanel = ({
+  disconnectButtonProps,
   onDisconnect,
   px = 2,
   ...rest
@@ -35,6 +37,7 @@ export const AccountPanel = ({
           {intl.formatMessage({ defaultMessage: 'Account' })}
         </Typography>
         <Button
+          {...disconnectButtonProps}
           onClick={() => {
             disconnect();
             onDisconnect?.();

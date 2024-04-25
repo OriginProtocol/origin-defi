@@ -29,7 +29,7 @@ const ThemeProviderWrapped = ({
 
   return (
     <MuiThemeProvider theme={theme}>
-      <CssBaseline />
+      <CssBaseline enableColorScheme />
       {children}
     </MuiThemeProvider>
   );

@@ -85,23 +85,18 @@ export const components = (base: Theme): ThemeOptions => ({
         root: {
           textTransform: 'none',
           boxShadow: 'none',
-          paddingX: {
-            md: 3,
-            xs: 2,
-          },
-          paddingY: {
-            md: 1,
-            xs: 0.75,
-          },
         },
         sizeSmall: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius,
+          padding: theme.spacing(0.75, 1),
         }),
         sizeMedium: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
+          padding: theme.spacing(1.5, 2),
         }),
         sizeLarge: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
+          padding: theme.spacing(2),
         }),
       },
       variants: [
