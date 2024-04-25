@@ -1,7 +1,7 @@
 {
   "name": "Subsquid GraphQL Schema",
   "schemaPath": [
-    "https://squid.subsquid.io/origin-squid/graphql",
+    "https://origin.squids.live/origin-squid/v/v29/graphql",
     "https://squid.subsquid.io/prime-eth-squid/graphql",
     "https://hub.snapshot.org/graphql"
   ]

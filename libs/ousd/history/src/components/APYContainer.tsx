@@ -27,7 +27,7 @@ export function APYContainer() {
     { address: address ?? ZERO_ADDRESS },
     {
       enabled: !!address,
-      select: (data) => data?.ousdAddresses?.at(0),
+      select: (data) => data?.oTokenAddresses?.at(0),
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =
