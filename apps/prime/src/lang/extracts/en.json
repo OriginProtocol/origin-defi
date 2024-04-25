@@ -95,9 +95,6 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
-  "6D95sz": {
-    "defaultMessage": "LST deposits currently paused"
-  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
@@ -160,9 +157,6 @@
   },
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
-  },
-  "DTYtQP": {
-    "defaultMessage": "Deposits are currently closed"
   },
   "DUR59o": {
     "defaultMessage": "Total Value Locked"
