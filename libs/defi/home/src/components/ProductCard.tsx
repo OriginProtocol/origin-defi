@@ -1,164 +1,214 @@
+import { alpha, Button, Card, Stack, Typography } from '@mui/material';
 import {
-  Box,
-  Button,
-  Divider,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import {
-  Chip,
-  MultiTokenIcon,
+  ChainIcon,
+  LoadingLabel,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
-import {
-  getTokenPriceKey,
-  useFormat,
-  useTokenPrices,
-} from '@origin/shared/providers';
+import { tokens } from '@origin/shared/contracts';
+import { FaArrowRightRegular } from '@origin/shared/icons';
+import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
-import { products } from '../constants';
-import { useTokenInfo } from '../hooks';
+import { useProductCardQuery } from '../queries.generated';
 
-import type { StackProps } from '@mui/material';
+import type { CardProps, StackProps } from '@mui/material';
+import type { Chain } from 'viem';
+
+import type { products } from '../constants';
 
 export type ProductCardProps = {
   product: (typeof products)[number];
   href?: string;
-} & StackProps;
+} & CardProps;
 
 export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
+  const { formatBalance, formatCurrency } = useFormat();
+  const { isConnected } = useAccount();
   const navigate = useNavigate();
-  const { data: prices, isLoading: isPricesLoading } = useTokenPrices(
-    products.map((p) => getTokenPriceKey(p.token)),
-  );
-  const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
-    product.token,
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: product.token,
+  });
+  const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
+  const { data: apy, isLoading: isApyLoading } = useProductCardQuery(
+    undefined,
+    {
+      enabled: isConnected,
+      select: (data) => {
+        if (product.token.symbol === tokens.mainnet.OETH.symbol) {
+          return data?.oethDailyStats[0].apy30DayAvg;
+        }
+        if (product.token.symbol === tokens.mainnet.OUSD.symbol) {
+          return data?.ousdapies[0].apy30DayAvg;
+        }
+        return 0;
+      },
+    },
   );
 
   return (
-    <Stack
+    <Card
       {...rest}
       sx={{
-        borderRadius: 1,
-        border: (theme) => `1px solid ${theme.palette.divider}`,
+        backgroundColor: 'background.highlight',
+        backgroundImage: `url(${product.icon})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: product.iconSize,
+        backgroundPosition: 'top right',
+        p: 5,
+        display: 'flex',
+        flexDirection: 'column',
         ...rest?.sx,
       }}
     >
       <Stack
         direction="row"
-        sx={{
-          flexWrap: 'wrap',
-          rowGap: 1,
-          columnGap: 1,
-          px: 3,
-          pt: 3,
-        }}
+        alignItems="center"
+        justifyContent="space-between"
+        spacing={1}
       >
-        {product.tags.map((tag) => (
-          <Chip
-            key={intl.formatMessage(tag.label)}
-            label={intl.formatMessage(tag.label)}
-            token={tag.token}
-            labelProps={{ noWrap: true }}
-          />
-        ))}
-      </Stack>
-      <Stack sx={{ position: 'relative', p: 3 }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 1,
-            height: 0.5,
-            zIndex: 0,
-          }}
-        />
+        <Typography variant="h6" pb={1}>
+          {product.token.name}
+        </Typography>
         <TokenIcon
           token={product.token}
-          sx={{ width: 68, height: 68, zIndex: 1 }}
+          sx={{ fontSize: 56, zIndex: 1 }}
+          outlined
         />
       </Stack>
-      <Stack px={3}>
-        <Typography
-          variant="h1"
-          sx={{ '.symbol': { color: 'text.secondary', fontWeight: '500' } }}
-        >
-          {product.token.name}&nbsp;
-          <span className="symbol">({product.token.symbol})</span>
+      <Typography variant="featured3" mb={2}>
+        ({product.token.symbol})
+      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <FaArrowRightRegular sx={{ fontSize: 16 }} />
+        <Typography variant="mono">
+          {intl.formatMessage(product.description)}
         </Typography>
-        <Typography>{intl.formatMessage(product.description)}</Typography>
       </Stack>
-      <Stack p={3}>
-        <Typography color="text.secondary" fontSize={14}>
-          {intl.formatMessage({ defaultMessage: 'APY (Trailing 30-day)' })}
-        </Typography>
-        <Typography sx={{ fontSize: 32, fontWeight: 700 }}>
-          {isQueryDataLoading ? (
-            <Skeleton width={80} />
-          ) : (
-            intl.formatNumber(queryData?.apy30DayAvg ?? 0, {
+      <Stack py={3} spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="baseline">
+          <LoadingLabel
+            isLoading={isApyLoading}
+            variant="featured1"
+            color="primary"
+            fontWeight="bold"
+          >
+            {intl.formatNumber(apy ?? 0, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
               style: 'percent',
-            })
+            })}
+          </LoadingLabel>
+          <Typography variant="body2" color="primary">
+            {intl.formatMessage({ defaultMessage: 'APY' })}
+          </Typography>
+        </Stack>
+        <LoadingLabel isLoading={isTvlLoading} sWidth={60}>
+          {intl.formatMessage(
+            { defaultMessage: 'TVL: {tvl}' },
+            {
+              tvl: formatCurrency(tvl, undefined, undefined, {
+                notation: 'compact',
+                minimumFractionDigits: 2,
+              }),
+            },
           )}
-        </Typography>
-      </Stack>
-      <Stack pt={3} pb={6} px={3} flexGrow={1} justifyContent="flex-end">
-        {!!href && (
-          <Button
-            onClick={() => {
-              navigate(href);
-            }}
-            variant="outlined"
-            sx={{ height: 56, fontSize: 16 }}
-          >
-            {intl.formatMessage(
-              { defaultMessage: 'Get {symbol}' },
-              { symbol: product.token.symbol },
-            )}
-          </Button>
-        )}
+        </LoadingLabel>
       </Stack>
       <Stack
         direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
+        alignItems="center"
+        justifyContent="space-between"
+        pb={3}
+      >
+        <Button
+          onClick={() => {
+            navigate(product.href);
+          }}
+        >
+          {intl.formatMessage(
+            { defaultMessage: 'Get {symbol}' },
+            { symbol: product.token.symbol },
+          )}
+        </Button>
+        <ChainsBadge chains={product.supportedChains} />
+      </Stack>
+      <Stack
+        spacing={2}
+        sx={{
+          p: 3,
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 4,
+        }}
       >
         <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'TVL' })}
-          value={formatCurrency(queryData?.tvl)}
-          isLoading={isQueryDataLoading}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
+          direction="row"
+          justifyContent="space-between"
+          label={intl.formatMessage({ defaultMessage: 'Your balance:' })}
+          labelProps={{ variant: 'mono', color: 'text.secondary' }}
+          value={
+            isConnected
+              ? intl.formatMessage(
+                  { defaultMessage: '{balance} {symbol}' },
+                  {
+                    balance: formatBalance(balance),
+                    symbol: product.token.symbol,
+                  },
+                )
+              : '-'
+          }
+          isLoading={isBalanceLoading}
         />
         <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Current price' })}
-          value={formatCurrency(prices?.[getTokenPriceKey(product.token)])}
-          isLoading={isPricesLoading}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
+          direction="row"
+          justifyContent="space-between"
+          label={intl.formatMessage({ defaultMessage: 'Yield earned:' })}
+          labelProps={{ variant: 'mono', color: 'text.secondary' }}
+          value={
+            isConnected
+              ? intl.formatMessage(
+                  { defaultMessage: '{balance} {symbol}' },
+                  { balance: 2.375, symbol: product.token.symbol },
+                )
+              : '-'
+          }
         />
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Collateral' })}
-          value={<MultiTokenIcon tokens={product.collaterals} />}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
-        />
+      </Stack>
+    </Card>
+  );
+};
+
+type ChainsBadgeProps = { chains: Chain[] } & StackProps;
+
+function ChainsBadge({ chains, ...rest }: ChainsBadgeProps) {
+  const intl = useIntl();
+
+  if (isNilOrEmpty(chains)) return null;
+
+  return (
+    <Stack
+      direction="row"
+      alignItems="center"
+      spacing={2}
+      bgcolor={(theme) => alpha(theme.palette.primary.main, 0.2)}
+      px={2}
+      py={1}
+      borderRadius={2}
+      {...rest}
+    >
+      <Typography variant="caption1" color="primary.main">
+        {intl.formatMessage({ defaultMessage: 'Available on' })}
+      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        {chains.map((c) => (
+          <ChainIcon key={c.id} chainId={c.id} sx={{ fontSize: 24 }} />
+        ))}
       </Stack>
     </Stack>
   );
-};
+}

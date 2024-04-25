@@ -11,20 +11,32 @@ export const HomeView = () => {
 
   return (
     <Container>
-      <Stack spacing={4} mb={5}>
-        <Stack spacing={3} sx={{ justifyContent: 'center', py: 15 }}>
-          <Typography variant="h1" textAlign="center">
-            {intl.formatMessage({ defaultMessage: 'Origin products' })}
+      <Stack mb={5}>
+        <Stack spacing={2} sx={{ justifyContent: 'center', py: 6 }}>
+          <Typography variant="h5" textAlign="center">
+            {intl.formatMessage({ defaultMessage: 'Origin' })}
           </Typography>
-          <Typography textAlign="center" color="text.secondary">
+          <Typography variant="mono" textAlign="center" color="text.secondary">
             {intl.formatMessage({
-              defaultMessage:
-                'Origin provides a decentralized suite of products helping you earn yield on your digital assets',
+              defaultMessage: 'The easiest way to earn more yield on-chain',
             })}
           </Typography>
         </Stack>
-        <Box>
-          <Grid2 container spacing={2}>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Box
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: 'primary.main',
+              width: 10,
+              height: 10,
+            }}
+          />
+          <Typography variant="mono">
+            {intl.formatMessage({ defaultMessage: 'Products' })}
+          </Typography>
+        </Stack>
+        <Box py={3}>
+          <Grid2 container spacing={3}>
             {products.map((product) => (
               <Grid2 key={product.token.symbol} xs={12} sm={6} md={4}>
                 <ProductCard
@@ -34,13 +46,26 @@ export const HomeView = () => {
                       : undefined
                   }
                   product={product}
-                  height={1}
+                  sx={{ height: 1 }}
                 />
               </Grid2>
             ))}
           </Grid2>
         </Box>
-        <StakeOGNCard />
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <Box
+            sx={{
+              borderRadius: '50%',
+              backgroundColor: 'primary.main',
+              width: 10,
+              height: 10,
+            }}
+          />
+          <Typography variant="mono">
+            {intl.formatMessage({ defaultMessage: 'Governance' })}
+          </Typography>
+        </Stack>
+        <StakeOGNCard sx={{ my: 3 }} />
       </Stack>
     </Container>
   );

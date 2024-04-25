@@ -1,139 +1,66 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Chip, TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import { defineMessage, useIntl } from 'react-intl';
+import { Button, Card, Stack, Typography } from '@mui/material';
+import { useIntl } from 'react-intl';
+import { useNavigate } from 'react-router-dom';
 
-import type { StackProps } from '@mui/material';
+import stakingPattern from '../bkg/stakingPattern.svg';
 
-const tags = [
-  {
-    label: defineMessage({ defaultMessage: 'Ethereum network' }),
-    token: tokens.mainnet.ETH,
-  },
-  {
-    label: defineMessage({ defaultMessage: 'Governance' }),
-  },
-  {
-    label: defineMessage({ defaultMessage: 'Staking' }),
-  },
-];
+import type { CardProps } from '@mui/material';
 
-export const StakeOGNCard = (props: StackProps) => {
+export const StakeOGNCard = (props: CardProps) => {
   const intl = useIntl();
+  const navigate = useNavigate();
 
   return (
-    <Stack
+    <Card
       {...props}
       sx={{
-        position: 'relative',
-        overflow: 'hidden',
-        borderRadius: 1,
-        background: (theme) => theme.palette.background.gradientPurple,
+        backgroundColor: 'background.highlight',
+        backgroundImage: `url(${stakingPattern})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: 'contain',
+        backgroundPosition: 'center right',
         p: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 6,
         ...props?.sx,
       }}
     >
-      <Grid2 container spacing={5}>
-        <Grid2
-          xs={12}
-          sm={9}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            order: { xs: 1, sm: 0 },
+      <Stack direction="row" alignItems="baseline" spacing={1.5}>
+        <Typography variant="h5">
+          {intl.formatMessage({ defaultMessage: 'OGN' })}
+        </Typography>
+        <Typography variant="mono">
+          {intl.formatMessage({
+            defaultMessage: 'Govern An Expansive Ecosystem',
+          })}
+        </Typography>
+      </Stack>
+      <Typography variant="featured3" maxWidth={0.6}>
+        {intl.formatMessage({
+          defaultMessage:
+            'Earn yield from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN.',
+        })}
+      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <Button
+          onClick={() => {
+            navigate('governance');
           }}
         >
-          <Stack
-            direction="row"
-            pb={4}
-            sx={{ flexWrap: 'wrap', rowGap: 1, columnGap: 1 }}
-          >
-            {tags.map((tag) => (
-              <Chip
-                key={intl.formatMessage(tag.label)}
-                label={intl.formatMessage(tag.label)}
-                token={tag.token}
-                borderColor="grey.200"
-                labelProps={{ noWrap: true }}
-              />
-            ))}
-          </Stack>
-          <Typography variant="h1">
-            {intl.formatMessage({ defaultMessage: 'Stake OGN' })}
-          </Typography>
-          <Typography
-            variant="h1"
-            sx={{
-              background: (theme) => theme.palette.background.gradientOrange,
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              pb: 2,
-            }}
-          >
-            {intl.formatMessage(
-              { defaultMessage: 'Earn {apy} APY' },
-              {
-                apy: intl.formatNumber(0.5683, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                }),
-              },
-            )}
-          </Typography>
-          <Typography pb={3}>
-            {intl.formatMessage({
-              defaultMessage: `Fees and voting rights accrue to OGN stakers.<br></br>Control the future of Origin products and profit from its growth.`,
-            })}
-          </Typography>
-          <Button
-            variant="outlined"
-            sx={{
-              borderColor: 'secondary.main',
-              height: 56,
-              fontSize: 16,
-              px: 5,
-            }}
-          >
-            {intl.formatMessage({ defaultMessage: 'Get OGN' })}
-          </Button>
-        </Grid2>
-        <Grid2
-          xs={12}
-          sm={3}
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            order: { xs: 0, sm: 1 },
+          {intl.formatMessage({ defaultMessage: 'Get OGN' })}
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={() => {
+            navigate('governance/proposals');
           }}
         >
-          <Stack justifyContent="center" alignItems="center">
-            <TokenIcon
-              token={tokens.mainnet.OGN}
-              sx={{
-                zIndex: 1,
-                width: { xs: 160, md: 216 },
-                height: { xs: 160, md: 216 },
-              }}
-            />
-          </Stack>
-        </Grid2>
-      </Grid2>
-
-      <Box
-        component="img"
-        src="images/splines21.webp"
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          right: 0,
-          width: 0.35,
-          zIndex: 0,
-        }}
-      />
-    </Stack>
+          {intl.formatMessage({
+            defaultMessage: 'View latest governance proposals',
+          })}
+        </Button>
+      </Stack>
+    </Card>
   );
 };

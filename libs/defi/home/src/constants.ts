@@ -1,72 +1,43 @@
 import { tokens } from '@origin/shared/contracts';
 import { defineMessage } from 'react-intl';
+import { arbitrum, mainnet } from 'viem/chains';
+
+import circles2Pattern from './bkg/circles2Pattern.svg';
+import circlesPattern from './bkg/circlesPattern.svg';
+import wavePattern from './bkg/wavePattern.svg';
 
 export const products = [
   {
     id: 'oeth',
     token: tokens.mainnet.OETH,
     href: 'oeth',
+    icon: circlesPattern,
+    iconSize: 120,
     description: defineMessage({
-      defaultMessage: 'Ethereum liquid staking token',
+      defaultMessage: 'Liquid staking',
     }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Liquid staking' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Yield bearing' }),
-      },
-    ],
-    collaterals: [
-      tokens.mainnet.frxETH,
-      tokens.mainnet.WETH,
-      tokens.mainnet.rETH,
-      tokens.mainnet.stETH,
-    ],
+    supportedChains: [mainnet, arbitrum],
   },
   {
     id: 'ousd',
     token: tokens.mainnet.OUSD,
-    href: 'oeth',
+    href: 'ousd',
+    icon: wavePattern,
+    iconSize: 350,
     description: defineMessage({
-      defaultMessage: 'Yield-generating stablecoin',
+      defaultMessage: 'Yield bearing stablecoin',
     }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Stablecoin' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Yield bearing' }),
-      },
-    ],
-    collaterals: [tokens.mainnet.DAI, tokens.mainnet.USDT, tokens.mainnet.USDC],
+    supportedChains: [],
   },
   {
     id: 'ogn',
     token: tokens.mainnet.OGN,
+    href: 'ogn',
+    icon: circles2Pattern,
+    iconSize: 100,
     description: defineMessage({
       defaultMessage: 'Origin Governance Token',
     }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Governance' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Staking' }),
-      },
-    ],
-    collaterals: [],
+    supportedChains: [],
   },
 ];

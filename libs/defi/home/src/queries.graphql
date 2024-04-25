@@ -1,10 +1,6 @@
 query ProductCard {
   oethDailyStats(limit: 1, orderBy: timestamp_DESC) {
     apy30DayAvg
-    totalSupply
-  }
-  ousds(limit: 1, orderBy: timestamp_DESC) {    
-    totalSupply
   }
   ousdapies(limit: 1, orderBy: timestamp_DESC) {
     apy30DayAvg
