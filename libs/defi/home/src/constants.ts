@@ -19,6 +19,17 @@ export const products = [
     supportedChains: [mainnet, arbitrum],
   },
   {
+    id: 'primeETH',
+    token: tokens.mainnet.primeETH,
+    href: 'prime',
+    icon: circles2Pattern,
+    iconSize: 100,
+    description: defineMessage({
+      defaultMessage: 'Restaking',
+    }),
+    supportedChains: [],
+  },
+  {
     id: 'ousd',
     token: tokens.mainnet.OUSD,
     href: 'ousd',
@@ -26,17 +37,6 @@ export const products = [
     iconSize: 350,
     description: defineMessage({
       defaultMessage: 'Yield bearing stablecoin',
-    }),
-    supportedChains: [],
-  },
-  {
-    id: 'ogn',
-    token: tokens.mainnet.OGN,
-    href: 'ogn',
-    icon: circles2Pattern,
-    iconSize: 100,
-    description: defineMessage({
-      defaultMessage: 'Origin Governance Token',
     }),
     supportedChains: [],
   },
