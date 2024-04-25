@@ -4,9 +4,6 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import dm from '@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2?url';
-import inter from '@fontsource-variable/inter/files/inter-latin-wght-normal.woff2?url';
-import jetbrains from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 import {
   queryClient,
   registerGoogleTagManager,
@@ -20,7 +17,6 @@ import {
   IntlProvider,
   logWelcomeMessage,
   NotificationsProvider,
-  preloadFonts,
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
@@ -33,8 +29,6 @@ import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';
 import { routes } from './routes';
-
-preloadFonts([{ url: dm }, { url: inter }, { url: jetbrains }]);
 
 // https://github.com/dai-shi/proxy-compare/pull/8
 setAutoFreeze(false);
