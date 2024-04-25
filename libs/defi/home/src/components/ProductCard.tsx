@@ -22,10 +22,9 @@ import type { products } from '../constants';
 
 export type ProductCardProps = {
   product: (typeof products)[number];
-  href?: string;
 } & CardProps;
 
-export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
+export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
   const { formatBalance, formatCurrency } = useFormat();
   const { isConnected } = useAccount();

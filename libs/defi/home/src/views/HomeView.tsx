@@ -39,15 +39,7 @@ export const HomeView = () => {
           <Grid2 container spacing={3}>
             {products.map((product) => (
               <Grid2 key={product.token.symbol} xs={12} sm={6} md={4}>
-                <ProductCard
-                  href={
-                    product.token.symbol !== 'OGN'
-                      ? product.token.symbol.toLowerCase()
-                      : undefined
-                  }
-                  product={product}
-                  sx={{ height: 1 }}
-                />
+                <ProductCard product={product} sx={{ height: 1 }} />
               </Grid2>
             ))}
           </Grid2>
