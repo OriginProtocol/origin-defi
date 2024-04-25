@@ -37,9 +37,7 @@ export const MigrationForm = (props: StackProps) => {
   const { formatAmount } = useFormat();
   const { address } = useAccount();
   const once = useRef(true);
-  const { data: info, isLoading: isInfoLoading } = useOgvInfo({
-    refetchOnWindowFocus: false,
-  });
+  const { data: info, isLoading: isInfoLoading } = useOgvInfo();
   const { data: lockups, isLoading: isLockupsLoading } = useOgvLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
