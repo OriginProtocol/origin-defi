@@ -41,9 +41,6 @@
   "0ICwq5": {
     "defaultMessage": "Last updated"
   },
-  "0STEwK": {
-    "defaultMessage": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
-  },
   "0eghlt": {
     "defaultMessage": "My Wallet Balance"
   },
@@ -86,17 +83,11 @@
   "30piAb": {
     "defaultMessage": "Convert OGV"
   },
-  "3WcLXG": {
-    "defaultMessage": "Learn about Governance"
-  },
   "3a5wL8": {
     "defaultMessage": "Active"
   },
   "3fTTLv": {
     "defaultMessage": "Unstake"
-  },
-  "3townk": {
-    "defaultMessage": "Max vAPY"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -155,9 +146,6 @@
   "7nq5ZH": {
     "defaultMessage": "Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards."
   },
-  "7yGjVx": {
-    "defaultMessage": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
-  },
   "87E0Iv": {
     "defaultMessage": "Current results"
   },
@@ -206,6 +194,9 @@
   "BorrCB": {
     "defaultMessage": "Voting Power:"
   },
+  "BuhEl+": {
+    "defaultMessage": "Theme:"
+  },
   "CKr0mb": {
     "defaultMessage": "Locked Tokens Received Now"
   },
@@ -253,9 +244,6 @@
   },
   "Fv1ZSz": {
     "defaultMessage": "Closed"
-  },
-  "GZZUyE": {
-    "defaultMessage": "My vAPY"
   },
   "HT5D8q": {
     "defaultMessage": "Convert OGV to OGN"

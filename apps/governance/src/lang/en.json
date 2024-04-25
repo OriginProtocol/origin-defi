@@ -101,12 +101,6 @@
       "value": "Last updated"
     }
   ],
-  "0STEwK": [
-    {
-      "type": 0,
-      "value": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
-    }
-  ],
   "0eghlt": [
     {
       "type": 0,
@@ -211,12 +205,6 @@
       "value": "Convert OGV"
     }
   ],
-  "3WcLXG": [
-    {
-      "type": 0,
-      "value": "Learn about Governance"
-    }
-  ],
   "3a5wL8": [
     {
       "type": 0,
@@ -227,12 +215,6 @@
     {
       "type": 0,
       "value": "Unstake"
-    }
-  ],
-  "3townk": [
-    {
-      "type": 0,
-      "value": "Max vAPY"
     }
   ],
   "45EvZ3": [
@@ -407,12 +389,6 @@
       "value": "Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards."
     }
   ],
-  "7yGjVx": [
-    {
-      "type": 0,
-      "value": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
-    }
-  ],
   "87E0Iv": [
     {
       "type": 0,
@@ -515,6 +491,12 @@
     {
       "type": 0,
       "value": "Voting Power:"
+    }
+  ],
+  "BuhEl+": [
+    {
+      "type": 0,
+      "value": "Theme:"
     }
   ],
   "CKr0mb": [
@@ -651,12 +633,6 @@
     {
       "type": 0,
       "value": "Closed"
-    }
-  ],
-  "GZZUyE": [
-    {
-      "type": 0,
-      "value": "My vAPY"
     }
   ],
   "HT5D8q": [

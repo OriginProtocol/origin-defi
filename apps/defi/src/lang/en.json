@@ -35,12 +35,6 @@
       "value": "Show breakdown"
     }
   ],
-  "+ccpY7": [
-    {
-      "type": 0,
-      "value": "Convert all stakes"
-    }
-  ],
   "+iy0zp": [
     {
       "type": 0,
@@ -199,12 +193,6 @@
       "value": "defaultChain"
     }
   ],
-  "1gVyO8": [
-    {
-      "type": 0,
-      "value": "Unclaimed Rewards"
-    }
-  ],
   "1lkU0S": [
     {
       "type": 0,
@@ -339,6 +327,12 @@
       "value": "Your veOGV Lockups"
     }
   ],
+  "5cnWDe": [
+    {
+      "type": 0,
+      "value": "View latest governance proposals"
+    }
+  ],
   "5h3TFE": [
     {
       "type": 0,
@@ -419,12 +413,6 @@
       "value": "The selected network is not supported by the application."
     }
   ],
-  "6JrFw7": [
-    {
-      "type": 0,
-      "value": "All your existing veOGV lockups will be converted to a single xOGN lockup."
-    }
-  ],
   "6Sj2lN": [
     {
       "type": 0,
@@ -455,12 +443,6 @@
       "value": "Amount to Stake"
     }
   ],
-  "6ggwx/": [
-    {
-      "type": 0,
-      "value": "Convert All"
-    }
-  ],
   "6nFK6a": [
     {
       "type": 0,
@@ -485,26 +467,16 @@
       "value": "Redeemed"
     }
   ],
-  "7g+lhA": [
+  "7NFfmz": [
     {
       "type": 0,
-      "value": "View all veOGV lockups "
-    },
-    {
-      "type": 1,
-      "value": "count"
+      "value": "Products"
     }
   ],
   "8EhWB4": [
     {
       "type": 0,
       "value": "wOETH Transaction history"
-    }
-  ],
-  "8NtrKz": [
-    {
-      "type": 0,
-      "value": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
     }
   ],
   "8UzT6d": [
@@ -567,10 +539,20 @@
       "value": "Signing"
     }
   ],
-  "9WOYWf": [
+  "94TAJq": [
     {
       "type": 0,
-      "value": "No Lockup to convert"
+      "value": "TVL: "
+    },
+    {
+      "type": 1,
+      "value": "tvl"
+    }
+  ],
+  "95nrj3": [
+    {
+      "type": 0,
+      "value": "No rewards available to claim"
     }
   ],
   "9ghOJK": [
@@ -585,28 +567,22 @@
       "value": "Discord support channel"
     }
   ],
-  "9oQCRd": [
-    {
-      "type": 0,
-      "value": "Stablecoin"
-    }
-  ],
   "9uOFF3": [
     {
       "type": 0,
       "value": "Overview"
     }
   ],
-  "A9AGhs": [
-    {
-      "type": 0,
-      "value": "APY (Trailing 30-day)"
-    }
-  ],
   "ASNc/h": [
     {
       "type": 0,
       "value": "Enter an amount"
+    }
+  ],
+  "ATvmI7": [
+    {
+      "type": 0,
+      "value": "Yield earned:"
     }
   ],
   "AdvVFR": [
@@ -663,6 +639,12 @@
     {
       "type": 0,
       "value": "Voting Power:"
+    }
+  ],
+  "BuhEl+": [
+    {
+      "type": 0,
+      "value": "Theme:"
     }
   ],
   "C73Nbd": [
@@ -725,12 +707,6 @@
     {
       "type": 0,
       "value": "Total Value Locked"
-    }
-  ],
-  "DeWZOz": [
-    {
-      "type": 0,
-      "value": "Convert your veOGV to xOGN"
     }
   ],
   "Do7020": [
@@ -811,24 +787,16 @@
       "value": "Apply"
     }
   ],
-  "EpAQ64": [
-    {
-      "type": 0,
-      "value": "Earn "
-    },
-    {
-      "type": 1,
-      "value": "apy"
-    },
-    {
-      "type": 0,
-      "value": " APY"
-    }
-  ],
   "F6lS59": [
     {
       "type": 0,
       "value": "0 months"
+    }
+  ],
+  "FGaG+u": [
+    {
+      "type": 0,
+      "value": "Govern An Expansive Ecosystem"
     }
   ],
   "FVfYnP": [
@@ -841,12 +809,6 @@
     {
       "type": 0,
       "value": "Select which balances you wish to convert"
-    }
-  ],
-  "GFGLdS": [
-    {
-      "type": 0,
-      "value": "The amount of xOGN you will lockup."
     }
   ],
   "GZJpDf": [
@@ -865,12 +827,6 @@
     {
       "type": 0,
       "value": "Balance"
-    }
-  ],
-  "H6QzKn": [
-    {
-      "type": 0,
-      "value": "Ethereum network"
     }
   ],
   "HDDJSh": [
@@ -939,12 +895,6 @@
       "value": "Gas:"
     }
   ],
-  "Jz86Vv": [
-    {
-      "type": 0,
-      "value": "You will receive xOGN"
-    }
-  ],
   "KE0cl6": [
     {
       "type": 0,
@@ -977,12 +927,6 @@
     {
       "type": 1,
       "value": "symbol"
-    }
-  ],
-  "L8cv3e": [
-    {
-      "type": 0,
-      "value": "Your Lockups"
     }
   ],
   "LLHdZA": [
@@ -1039,12 +983,6 @@
       "value": "Uniswap V2"
     }
   ],
-  "NQOjUX": [
-    {
-      "type": 0,
-      "value": "Origin Governance Token"
-    }
-  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -1061,6 +999,12 @@
     {
       "type": 0,
       "value": "Your operation has been executed"
+    }
+  ],
+  "Nvcaj3": [
+    {
+      "type": 0,
+      "value": "Your balance:"
     }
   ],
   "O1F5Cx": [
@@ -1119,12 +1063,6 @@
       "value": "Estimating..."
     }
   ],
-  "POmYVs": [
-    {
-      "type": 0,
-      "value": "Current price"
-    }
-  ],
   "PVa0Ba": [
     {
       "type": 0,
@@ -1147,12 +1085,6 @@
     {
       "type": 0,
       "value": "Best"
-    }
-  ],
-  "Q+JX+m": [
-    {
-      "type": 0,
-      "value": "You will receive OGN (any unclaimed OGV staking rewards will also be converted)."
     }
   ],
   "QQH5h9": [
@@ -1193,12 +1125,6 @@
     {
       "type": 1,
       "value": "number"
-    }
-  ],
-  "RoqJiX": [
-    {
-      "type": 0,
-      "value": "Collateral"
     }
   ],
   "S1eClp": [
@@ -1243,10 +1169,10 @@
       "value": "30d earnings"
     }
   ],
-  "TgHRWD": [
+  "TJOfi8": [
     {
       "type": 0,
-      "value": "Total OGV"
+      "value": "Yield bearing stablecoin"
     }
   ],
   "TrKxvg": [
@@ -1271,12 +1197,6 @@
     {
       "type": 0,
       "value": "Account"
-    }
-  ],
-  "UOoR63": [
-    {
-      "type": 0,
-      "value": "Convert All Balances"
     }
   ],
   "UkXeBW": [
@@ -1317,6 +1237,12 @@
     {
       "type": 0,
       "value": "OUSD"
+    }
+  ],
+  "VWG9kH": [
+    {
+      "type": 0,
+      "value": "OGN"
     }
   ],
   "VfXPp7": [
@@ -1405,12 +1331,6 @@
     {
       "type": 0,
       "value": "In-depth OETH analytics"
-    }
-  ],
-  "YGiRwq": [
-    {
-      "type": 0,
-      "value": "Voting Power"
     }
   ],
   "YGu9gd": [
@@ -1507,12 +1427,6 @@
     {
       "type": 0,
       "value": "Redeem from OUSD vault"
-    }
-  ],
-  "bwgPvE": [
-    {
-      "type": 0,
-      "value": "Convert All OGV"
     }
   ],
   "c0+sy5": [
@@ -1693,16 +1607,16 @@
       "value": "Sent"
     }
   ],
-  "h7+npb": [
-    {
-      "type": 0,
-      "value": "Unlock your veOGV"
-    }
-  ],
   "hKc0hO": [
     {
       "type": 0,
       "value": "Get OUSD"
+    }
+  ],
+  "hVUzey": [
+    {
+      "type": 0,
+      "value": "No existing lockups to convert"
     }
   ],
   "hZA4Ul": [
@@ -1799,12 +1713,6 @@
       "value": "Hours"
     }
   ],
-  "jFO9uo": [
-    {
-      "type": 0,
-      "value": "Your veOGV balance"
-    }
-  ],
   "jFZ2w9": [
     {
       "type": 0,
@@ -1841,10 +1749,16 @@
       "value": "Your OGV/veOGV is equivalent to"
     }
   ],
-  "kH1R79": [
+  "kJN4hL": [
     {
       "type": 0,
-      "value": "Stake OGN"
+      "value": "Earn yield from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN."
+    }
+  ],
+  "kWMpjI": [
+    {
+      "type": 0,
+      "value": "Available on"
     }
   ],
   "kr31SN": [
@@ -1889,6 +1803,20 @@
       "value": "OUSD Balance"
     }
   ],
+  "mcotxc": [
+    {
+      "type": 1,
+      "value": "balance"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
   "n6nILs": [
     {
       "type": 0,
@@ -1925,16 +1853,16 @@
       "value": "You will get:"
     }
   ],
-  "ntQz2o": [
-    {
-      "type": 0,
-      "value": "Yield bearing"
-    }
-  ],
   "nzbOyn": [
     {
       "type": 0,
       "value": "Underlyings assets"
+    }
+  ],
+  "oBlHij": [
+    {
+      "type": 0,
+      "value": "The easiest way to earn more yield on-chain"
     }
   ],
   "oP23Lj": [
@@ -2039,12 +1967,6 @@
       "value": "Your Unclaimed OGV Rewards"
     }
   ],
-  "s49boM": [
-    {
-      "type": 0,
-      "value": "Ethereum liquid staking token"
-    }
-  ],
   "s8BnAC": [
     {
       "type": 0,
@@ -2123,32 +2045,16 @@
       "value": "Select a token"
     }
   ],
-  "upk2hm": [
-    {
-      "type": 0,
-      "value": "Origin products"
-    }
-  ],
   "v06At3": [
     {
       "type": 0,
       "value": "Unstaking"
     }
   ],
-  "vXr6sM": [
+  "vMrueH": [
     {
       "type": 0,
-      "value": "Fees and voting rights accrue to OGN stakers."
-    },
-    {
-      "children": [
-      ],
-      "type": 8,
-      "value": "br"
-    },
-    {
-      "type": 0,
-      "value": "Control the future of Origin products and profit from its growth."
+      "value": "Restaking"
     }
   ],
   "vclhrb": [
@@ -2159,18 +2065,6 @@
     {
       "type": 1,
       "value": "balance"
-    }
-  ],
-  "vejVCU": [
-    {
-      "type": 0,
-      "value": "No reward to claim"
-    }
-  ],
-  "viL6nH": [
-    {
-      "type": 0,
-      "value": "Yield-generating stablecoin"
     }
   ],
   "vugtF7": [
@@ -2209,10 +2103,10 @@
       "value": "Wrong Network"
     }
   ],
-  "xCLnaU": [
+  "wwoByg": [
     {
       "type": 0,
-      "value": "Convert All veOGV"
+      "value": "Origin"
     }
   ],
   "xZIm6b": [
