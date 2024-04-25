@@ -38,7 +38,7 @@ export const HomeView = () => {
         <Box py={3}>
           <Grid2 container spacing={3}>
             {products.map((product) => (
-              <Grid2 key={product.token.symbol} xs={12} sm={6} md={4}>
+              <Grid2 key={product.token.symbol} xs={12} md={4}>
                 <ProductCard product={product} sx={{ height: 1 }} />
               </Grid2>
             ))}

@@ -123,6 +123,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         alignItems="center"
         justifyContent="space-between"
         pb={3}
+        flexGrow={1}
       >
         <Button
           onClick={() => {
