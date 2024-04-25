@@ -144,6 +144,17 @@ export const components = (base: Theme): ThemeOptions => ({
             border: `1px solid ${theme.palette.divider}}`,
           }),
         },
+        {
+          props: { variant: 'nav', color: 'primary' },
+          style: ({ theme }) => ({
+            background: theme.palette.primary.main,
+            color: theme.palette.primary.contrastText,
+            border: `1px solid ${theme.palette.divider}}`,
+            '.MuiButton-navPrimary:hover': {
+              background: theme.palette.primary.dark,
+            },
+          }),
+        },
       ],
     },
     MuiButtonBase: {
