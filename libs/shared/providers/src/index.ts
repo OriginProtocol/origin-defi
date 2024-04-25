@@ -15,6 +15,7 @@ export * from './settings';
 export * from './slippage';
 export * from './swapper';
 export * from './theme';
+export * from './tvl';
 export * from './txButton';
 export * from './txTracker';
 export * from './wagmi';
