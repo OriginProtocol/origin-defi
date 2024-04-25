@@ -43,12 +43,14 @@ import LinkSvg from './link.svg?react';
 import MagnifyingGlassSvg from './magnifying-glass.svg?react';
 import MagnifyingGlassDollarSvg from './magnifying-glass-dollar.svg?react';
 import MinusSvg from './minus.svg?react';
+import MoonSvg from './moon.svg?react';
 import PercentSvg from './percent.svg?react';
 import RotateLeftSvg from './rotate-left.svg?react';
 import SquareSvg from './square.svg?react';
 import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
 import SquareMinusSvg from './square-minus.svg?react';
+import SunBrightSvg from './sun-bright.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
@@ -353,6 +355,9 @@ export const FaMagnifyingGlassRegular = (props: SvgIconProps) => (
 export const FaMinusRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={MinusSvg} inheritViewBox />
 );
+export const FaMoonRegular = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={MoonSvg} inheritViewBox />
+);
 export const FaPercentRegular = (props: SvgIconProps) => (
   <SvgIcon
     fontSize="inherit"
@@ -393,6 +398,14 @@ export const FaSquareMinusRegular = (props: SvgIconProps) => (
     fontSize="inherit"
     {...props}
     component={SquareMinusSvg}
+    inheritViewBox
+  />
+);
+export const FaSunBrightRegular = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SunBrightSvg}
     inheritViewBox
   />
 );

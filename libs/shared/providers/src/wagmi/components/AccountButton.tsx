@@ -27,19 +27,7 @@ export const AccountButton = ({ hideAddress, ...rest }: AccountButtonProps) => {
       }}
     >
       <UserAvatar />
-      {!hideAddress && (
-        <AddressLabel
-          address={address}
-          enableEnsName
-          short
-          fontStyle="normal"
-          fontWeight={500}
-          fontSize={{
-            xs: 13,
-            md: 16,
-          }}
-        />
-      )}
+      {!hideAddress && <AddressLabel address={address} enableEnsName short />}
     </Button>
   );
 };
