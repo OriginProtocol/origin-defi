@@ -205,30 +205,6 @@ export const components = (base: Theme): ThemeOptions => ({
             -webkit-appearance: none;
             margin: 0;
           }
-
-          @font-face { 
-            font-family: inter; 
-            font-style: normal;
-            font-weight: 100 900;
-            src: url(/fonts/inter.woff2) format('woff2-variations');
-            font-display: swap;
-          }
-
-          @font-face {
-            font-family: dm;
-            font-style: normal;
-            font-weight: 100 1000;
-            src: url(/fonts/dm-sans.woff2) format('woff2-variations');
-            font-display: swap;
-          }
-
-          @font-face {
-            font-family: mono;
-            font-style: normal;
-            font-weight: 100 800;
-            src: url(/fonts/jetbrains-mono.woff2) format('woff2-variations');
-            font-display: swap;
-          }
         `,
     },
     MuiDialog: {
