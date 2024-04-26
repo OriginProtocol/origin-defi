@@ -75,7 +75,7 @@ function Apy() {
   const once = useRef(false);
   const [trailing, setTrailing] = useState(30);
   const { data: apy, isLoading: apyLoading } = useOethApyQuery(undefined, {
-    select: (data) => data.oethapies[0],
+    select: (data) => data.oTokenApies[0],
   });
   const trailingOptions: Option[] = useMemo(
     () => [
