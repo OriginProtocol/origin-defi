@@ -53,6 +53,14 @@ declare module '@mui/material/styles' {
     chart7?: string;
   }
 
+  interface PaletteColor {
+    faded?: string;
+  }
+
+  interface SimplePaletteColorOptions {
+    faded?: string;
+  }
+
   interface TypographyVariants {
     body3: React.CSSProperties;
     featured1: React.CSSProperties;

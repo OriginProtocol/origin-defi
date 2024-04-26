@@ -7,6 +7,7 @@ export const lightPalette: ThemeOptions = {
     mode: 'light',
     primary: {
       main: '#4356D2',
+      faded: alpha('#4356D2', 0.2),
       contrastText: '#FFFFFF',
     },
     secondary: {
@@ -15,14 +16,17 @@ export const lightPalette: ThemeOptions = {
     },
     error: {
       main: '#C42525',
+      faded: alpha('#C42525', 0.2),
       contrastText: '#FFFFFF',
     },
     warning: {
       main: '#FACC15',
+      faded: alpha('#FACC15', 0.2),
       contrastText: '#FFFFFF',
     },
     success: {
       main: '#0D7544',
+      faded: alpha('#0D7544', 0.2),
       contrastText: '#FFFFFF',
     },
     text: {
@@ -65,6 +69,7 @@ export const darkPalette: ThemeOptions = {
     mode: 'dark',
     primary: {
       main: '#5168FF',
+      faded: alpha('#5168FF', 0.2),
       contrastText: '#FFFFFF',
     },
     secondary: {
@@ -73,14 +78,17 @@ export const darkPalette: ThemeOptions = {
     },
     error: {
       main: '#F36A6A',
+      faded: alpha('#F36A6A', 0.2),
       contrastText: '#FFFFFF',
     },
     warning: {
       main: '#F1C512',
+      faded: alpha('#F1C512', 0.2),
       contrastText: '#FFFFFF',
     },
     success: {
       main: '#18AB66',
+      faded: alpha('#18AB66', 0.2),
       contrastText: '#FFFFFF',
     },
     text: {
@@ -93,8 +101,8 @@ export const darkPalette: ThemeOptions = {
       error: '#F36A6A',
     },
     background: {
-      default: '#16181D',
-      paper: '#1C1D22',
+      default: '#1C1D22',
+      paper: '#16181D',
       highlight: '#121316',
       primaryFaded: '#252544',
       gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
