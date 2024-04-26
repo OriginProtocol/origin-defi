@@ -14,6 +14,7 @@ import { oethSwapActions } from '../actions';
 import { CexCard } from '../components/CexCard';
 import { FAQCard } from '../components/FAQCard';
 import { OethDetailCard } from '../components/OethDetailCard';
+import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
@@ -22,13 +23,14 @@ export const SwapView = () => {
   return (
     <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Swap' })}
+        title={intl.formatMessage({ defaultMessage: 'Origin Ether' })}
         subtitle={intl.formatMessage({
-          defaultMessage:
-            'Secure the most competitive rates when swapping in and out of OETH using our swap form.',
+          defaultMessage: 'Ethereum liquid staking made simple',
         })}
         token={tokens.mainnet.OETH}
-      />
+      >
+        <PageTitleSection />
+      </PageTitle>
       <PageSection>
         <Grid2 container spacing={4}>
           <Grid2 xs={12} md={8}>

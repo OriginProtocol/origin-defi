@@ -1,33 +1,26 @@
-import { alpha, Stack, Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import { ChainIcon } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { ColorChip } from './ColorChip';
+
 import type { StackProps } from '@mui/material';
 
-type ChainsTagProps = {
+type ChainsChipProps = {
   chainIds: readonly number[];
   iconSize?: number;
 } & StackProps;
 
-export const ChainsTag = ({
+export const ChainsChip = ({
   chainIds,
   iconSize = 24,
   ...rest
-}: ChainsTagProps) => {
+}: ChainsChipProps) => {
   const intl = useIntl();
 
   return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={1.5}
-      bgcolor={(theme) => alpha(theme.palette.primary.main, 0.2)}
-      px={2}
-      py={1}
-      borderRadius={2}
-      {...rest}
-    >
-      <Typography variant="caption1" color="primary.main">
+    <ColorChip spacing={1.5} {...rest}>
+      <Typography variant="caption1" color="primary.light">
         {intl.formatMessage({ defaultMessage: 'Available on' })}
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1}>
@@ -35,6 +28,6 @@ export const ChainsTag = ({
           <ChainIcon key={id} chainId={id} sx={{ fontSize: iconSize }} />
         ))}
       </Stack>
-    </Stack>
+    </ColorChip>
   );
 };

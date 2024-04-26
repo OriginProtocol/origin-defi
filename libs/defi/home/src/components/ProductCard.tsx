@@ -1,5 +1,5 @@
 import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
-import { ChainsTag } from '@origin/defi/shared';
+import { ChainsChip } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
@@ -123,7 +123,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
           )}
         </Button>
         {!isNilOrEmpty(product.supportedChainIds) && (
-          <ChainsTag chainIds={product.supportedChainIds} />
+          <ChainsChip chainIds={product.supportedChainIds} />
         )}
       </Stack>
       <Collapse in={isConnected}>
