@@ -5,7 +5,7 @@ import { graphqlClient } from '@origin/defi/shared';
 export type ProductCardQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ProductCardQuery = { __typename?: 'Query', oethDailyStats: Array<{ __typename?: 'OETHDailyStat', apy30DayAvg: number, totalSupply: string }>, ousds: Array<{ __typename?: 'OUSD', totalSupply: string }>, ousdapies: Array<{ __typename?: 'OUSDAPY', apy30DayAvg: number }> };
+export type ProductCardQuery = { __typename?: 'Query', oethDailyStats: Array<{ __typename?: 'OETHDailyStat', apy30DayAvg: number, totalSupply: string }>, oTokens: Array<{ __typename?: 'OToken', totalSupply: string }>, oTokenApies: Array<{ __typename?: 'OTokenAPY', apy30DayAvg: number }> };
 
 
 
@@ -15,10 +15,18 @@ export const ProductCardDocument = `
     apy30DayAvg
     totalSupply
   }
-  ousds(limit: 1, orderBy: timestamp_DESC) {
+  oTokens(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"}
+  ) {
     totalSupply
   }
-  ousdapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"}
+  ) {
     apy30DayAvg
   }
 }

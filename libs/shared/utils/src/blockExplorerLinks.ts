@@ -8,3 +8,6 @@ export const addressLink = (
 
 export const txLink = (chain: Chain | undefined, hash: string | undefined) =>
   `${chain?.blockExplorers?.default.url ?? 'https://etherscan.io'}/tx/${hash}`;
+
+export const tokenHolderLink = (chain: Chain, token: string, account: string) =>
+  `${chain?.blockExplorers?.default.url ?? 'https://etherscan.io'}/token/${token}?a=${account}`;

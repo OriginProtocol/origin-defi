@@ -1,4 +1,4 @@
-import { queryClient } from '@origin/oeth/shared';
+import { queryClient } from '@origin/defi/shared';
 import { contracts } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';

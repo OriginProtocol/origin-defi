@@ -98,6 +98,12 @@
   "8nvhZ9": {
     "defaultMessage": "Last"
   },
+  "9GqOyW": {
+    "defaultMessage": "Current value (OETH)"
+  },
+  "9W24c9": {
+    "defaultMessage": "wOETH Balance"
+  },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
@@ -242,6 +248,9 @@
   "S45aoc": {
     "defaultMessage": "First"
   },
+  "SGXihn": {
+    "defaultMessage": "OETH"
+  },
   "SM1qll": {
     "defaultMessage": "Router"
   },
@@ -320,6 +329,9 @@
   "e+yfm6": {
     "defaultMessage": "Connect your wallet to see your balances"
   },
+  "eJNRiB": {
+    "defaultMessage": "Est. bridge fee"
+  },
   "fBhctx": {
     "defaultMessage": "Download CSV"
   },
@@ -371,6 +383,9 @@
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
   },
+  "oh7sA8": {
+    "defaultMessage": "No transactions matching filter"
+  },
   "p556q3": {
     "defaultMessage": "Copied"
   },
@@ -391,6 +406,9 @@
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
+  },
+  "sUurEn": {
+    "defaultMessage": "wOETH"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
@@ -457,6 +475,9 @@
   },
   "zbaTLV": {
     "defaultMessage": "View on IPFS"
+  },
+  "zdF6np": {
+    "defaultMessage": "wOETH Transactions"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

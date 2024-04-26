@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
 import { useAccount } from 'wagmi';
@@ -27,12 +27,20 @@ export const useProposals = (
     'queryKey'
   >,
 ) => {
+  const queryClient = useQueryClient();
+
   return useQuery({
     queryKey: ['useProposals'],
     queryFn: async () => {
       const res = await Promise.allSettled([
-        useProposalsQuery.fetcher()(),
-        useSnapshotProposalsQuery.fetcher()(),
+        queryClient.fetchQuery({
+          queryKey: useProposalsQuery.getKey(),
+          queryFn: useProposalsQuery.fetcher(),
+        }),
+        queryClient.fetchQuery({
+          queryKey: useSnapshotProposalsQuery.getKey(),
+          queryFn: useSnapshotProposalsQuery.fetcher(),
+        }),
       ]);
 
       const onChainProposals: Proposal[] =
@@ -97,16 +105,29 @@ export const useProposals = (
 
 export const useUserVotes = () => {
   const { address } = useAccount();
+  const queryClient = useQueryClient();
 
   return useQuery({
     queryKey: ['useUserVotes', address],
     enabled: !!address,
     queryFn: async () => {
       const res = await Promise.allSettled([
-        useUserVotesQuery.fetcher({ address: address ?? ZERO_ADDRESS })(),
-        useSnapshotUserVotesQuery.fetcher({
-          address: address ?? ZERO_ADDRESS,
-        })(),
+        queryClient.fetchQuery({
+          queryKey: useUserVotesQuery.getKey({
+            address: address ?? ZERO_ADDRESS,
+          }),
+          queryFn: useUserVotesQuery.fetcher({
+            address: address ?? ZERO_ADDRESS,
+          }),
+        }),
+        queryClient.fetchQuery({
+          queryKey: useSnapshotUserVotesQuery.getKey({
+            address: address ?? ZERO_ADDRESS,
+          }),
+          queryFn: useSnapshotUserVotesQuery.fetcher({
+            address: address ?? ZERO_ADDRESS,
+          }),
+        }),
       ]);
 
       const onChainVotes =

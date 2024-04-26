@@ -147,11 +147,11 @@ function ExportDataButton() {
     {
       enabled: isConnected,
       select: (data) => {
-        if (!data?.oethHistories) {
+        if (!data?.oTokenHistories) {
           return;
         }
 
-        return data.oethHistories.reduce(
+        return data.oTokenHistories.reduce(
           (acc, curr) => [
             ...acc,
             [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],

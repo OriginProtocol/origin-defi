@@ -7,12 +7,12 @@ export type HistoryUserStatQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryUserStatQuery = { __typename?: 'Query', oethAddresses: Array<{ __typename?: 'OETHAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
+export type HistoryUserStatQuery = { __typename?: 'Query', oTokenAddresses: Array<{ __typename?: 'OTokenAddress', balance: string, earned: string, isContract: boolean, rebasingOption: Types.RebasingOption, lastUpdated: string }> };
 
 export type HistoryApyQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type HistoryApyQuery = { __typename?: 'Query', oethapies: Array<{ __typename?: 'OETHAPY', apy7DayAvg: number, apy30DayAvg: number }> };
+export type HistoryApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy30DayAvg: number }> };
 
 export type HistoryTransactionQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
@@ -20,13 +20,32 @@ export type HistoryTransactionQueryVariables = Types.Exact<{
 }>;
 
 
-export type HistoryTransactionQuery = { __typename?: 'Query', oethHistories: Array<{ __typename?: 'OETHHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
+export type HistoryTransactionQuery = { __typename?: 'Query', oTokenHistories: Array<{ __typename?: 'OTokenHistory', type: Types.HistoryType, value: string, txHash: string, timestamp: string, balance: string }> };
+
+export type TransfersQueryVariables = Types.Exact<{
+  tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
+  account: Types.Scalars['String']['input'];
+}>;
+
+
+export type TransfersQuery = { __typename?: 'Query', erc20Transfers: Array<{ __typename?: 'ERC20Transfer', id: string, chainId: number, txHash: string, blockNumber: number, timestamp: string, address: string, from: string, to: string, value: string }> };
+
+export type BalancesQueryVariables = Types.Exact<{
+  tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
+  account: Types.Scalars['String']['input'];
+  blocks?: Types.InputMaybe<Array<Types.Scalars['Int']['input']> | Types.Scalars['Int']['input']>;
+}>;
+
+
+export type BalancesQuery = { __typename?: 'Query', erc20Balances: Array<{ __typename?: 'ERC20Balance', id: string, chainId: number, blockNumber: number, timestamp: string, address: string, account: string, balance: string }> };
 
 
 
 export const HistoryUserStatDocument = `
     query HistoryUserStat($address: String!) {
-  oethAddresses(where: {id_containsInsensitive: $address}) {
+  oTokenAddresses(
+    where: {address_containsInsensitive: $address, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     balance
     earned
     isContract
@@ -59,7 +78,11 @@ useHistoryUserStatQuery.fetcher = (variables: HistoryUserStatQueryVariables, opt
 
 export const HistoryApyDocument = `
     query HistoryApy {
-  oethapies(limit: 1, orderBy: timestamp_DESC) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
+  ) {
     apy7DayAvg
     apy30DayAvg
   }
@@ -89,11 +112,11 @@ useHistoryApyQuery.fetcher = (variables?: HistoryApyQueryVariables, options?: Re
 
 export const HistoryTransactionDocument = `
     query HistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  oethHistories(
+  oTokenHistories(
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
-    where: {AND: {address: {id_containsInsensitive: $address}, type_in: $filters}}
+    where: {address: {id_containsInsensitive: $address}, type_in: $filters, chainId_eq: 1, otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"}
   ) {
     type
     value
@@ -124,3 +147,82 @@ useHistoryTransactionQuery.getKey = (variables: HistoryTransactionQueryVariables
 
 
 useHistoryTransactionQuery.fetcher = (variables: HistoryTransactionQueryVariables, options?: RequestInit['headers']) => graphqlClient<HistoryTransactionQuery, HistoryTransactionQueryVariables>(HistoryTransactionDocument, variables, options);
+
+export const TransfersDocument = `
+    query Transfers($tokens: [String!], $account: String!) {
+  erc20Transfers(
+    orderBy: timestamp_DESC
+    offset: 0
+    limit: 2000
+    where: {OR: {address_in: $tokens, from_containsInsensitive: $account}, address_in: $tokens, to_containsInsensitive: $account}
+  ) {
+    id
+    chainId
+    txHash
+    blockNumber
+    timestamp
+    address
+    from
+    to
+    value
+  }
+}
+    `;
+
+export const useTransfersQuery = <
+      TData = TransfersQuery,
+      TError = unknown
+    >(
+      variables: TransfersQueryVariables,
+      options?: Omit<UseQueryOptions<TransfersQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<TransfersQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<TransfersQuery, TError, TData>(
+      {
+    queryKey: ['Transfers', variables],
+    queryFn: graphqlClient<TransfersQuery, TransfersQueryVariables>(TransfersDocument, variables),
+    ...options
+  }
+    )};
+
+useTransfersQuery.getKey = (variables: TransfersQueryVariables) => ['Transfers', variables];
+
+
+useTransfersQuery.fetcher = (variables: TransfersQueryVariables, options?: RequestInit['headers']) => graphqlClient<TransfersQuery, TransfersQueryVariables>(TransfersDocument, variables, options);
+
+export const BalancesDocument = `
+    query Balances($tokens: [String!], $account: String!, $blocks: [Int!]) {
+  erc20Balances(
+    where: {address_in: $tokens, account_containsInsensitive: $account, blockNumber_in: $blocks}
+  ) {
+    id
+    chainId
+    blockNumber
+    timestamp
+    address
+    account
+    balance
+  }
+}
+    `;
+
+export const useBalancesQuery = <
+      TData = BalancesQuery,
+      TError = unknown
+    >(
+      variables: BalancesQueryVariables,
+      options?: Omit<UseQueryOptions<BalancesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<BalancesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<BalancesQuery, TError, TData>(
+      {
+    queryKey: ['Balances', variables],
+    queryFn: graphqlClient<BalancesQuery, BalancesQueryVariables>(BalancesDocument, variables),
+    ...options
+  }
+    )};
+
+useBalancesQuery.getKey = (variables: BalancesQueryVariables) => ['Balances', variables];
+
+
+useBalancesQuery.fetcher = (variables: BalancesQueryVariables, options?: RequestInit['headers']) => graphqlClient<BalancesQuery, BalancesQueryVariables>(BalancesDocument, variables, options);

@@ -111,6 +111,9 @@ export const useMyVApy = () => {
           queryKey: useUserLockupsQuery.getKey({
             address: address ?? ZERO_ADDRESS,
           }),
+          queryFn: useUserLockupsQuery.fetcher({
+            address: address ?? ZERO_ADDRESS,
+          }),
         }),
         readContract(config, {
           address: tokens.mainnet.veOGV.address,

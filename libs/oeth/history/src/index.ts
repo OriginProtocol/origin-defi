@@ -1,1 +1,1 @@
-export * from './views/HistoryView';
+export * from './routes';

@@ -5,12 +5,12 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { usePendingYield } from '../hooks';
-import { useHistoryUserStatQuery } from '../queries.generated';
+import { usePendingYield } from '../../hooks';
+import { useHistoryUserStatQuery } from '../../queries.generated';
 
 import type { StackProps } from '@mui/material';
 
-export function APYContainer() {
+export function HistoryHeader() {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
@@ -28,7 +28,7 @@ export function APYContainer() {
     { address: address ?? ZERO_ADDRESS },
     {
       enabled: !!address,
-      select: (data) => data?.oethAddresses?.at(0),
+      select: (data) => data?.oTokenAddresses?.at(0),
     },
   );
   const { data: pendingYield, isLoading: pendingYieldLoading } =

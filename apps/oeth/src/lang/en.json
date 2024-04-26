@@ -217,6 +217,18 @@
       "value": "Last"
     }
   ],
+  "9GqOyW": [
+    {
+      "type": 0,
+      "value": "Current value (OETH)"
+    }
+  ],
+  "9W24c9": [
+    {
+      "type": 0,
+      "value": "wOETH Balance"
+    }
+  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -549,6 +561,12 @@
       "value": "First"
     }
   ],
+  "SGXihn": [
+    {
+      "type": 0,
+      "value": "OETH"
+    }
+  ],
   "SM1qll": [
     {
       "type": 0,
@@ -725,6 +743,12 @@
       "value": "Connect your wallet to see your balances"
     }
   ],
+  "eJNRiB": [
+    {
+      "type": 0,
+      "value": "Est. bridge fee"
+    }
+  ],
   "fBhctx": [
     {
       "type": 0,
@@ -839,6 +863,12 @@
       "value": "Recent Activity"
     }
   ],
+  "oh7sA8": [
+    {
+      "type": 0,
+      "value": "No transactions matching filter"
+    }
+  ],
   "p556q3": [
     {
       "type": 0,
@@ -879,6 +909,12 @@
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sUurEn": [
+    {
+      "type": 0,
+      "value": "wOETH"
     }
   ],
   "stTYBM": [
@@ -1039,6 +1075,12 @@
     {
       "type": 0,
       "value": "View on IPFS"
+    }
+  ],
+  "zdF6np": [
+    {
+      "type": 0,
+      "value": "wOETH Transactions"
     }
   ],
   "zmWQIG": [

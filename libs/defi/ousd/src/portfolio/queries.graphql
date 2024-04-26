@@ -1,5 +1,5 @@
 query OusdHistoryUserStat($address: String!) {
-  ousdAddresses(where: { id_containsInsensitive: $address }) {
+  oTokenAddresses(where: { address_containsInsensitive: $address, chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86" }) {
     balance
     earned
     isContract
@@ -9,12 +9,15 @@ query OusdHistoryUserStat($address: String!) {
 }
 
 query OusdHistoryTransaction($address: String!, $filters: [HistoryType!]) {
-  ousdHistories(
+  oTokenHistories(
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
     where: {
-      AND: { address: { id_containsInsensitive: $address }, type_in: $filters }
+      address: { id_containsInsensitive: $address },
+      type_in: $filters,
+      chainId_eq: 1,
+      otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"
     }
   ) {
     type

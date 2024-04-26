@@ -1,9 +1,7 @@
 import { Container, Stack } from '@mui/material';
-import { trackSentryError } from '@origin/oeth/shared';
-import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
+import { Outlet } from 'react-router-dom';
 
-import { APYContainer } from '../components/APYContainer';
-import { HistoryCard } from '../components/HistoryCard';
+import { ViewTabs } from '../components/ViewTabs';
 
 export function HistoryView() {
   return (
@@ -14,19 +12,9 @@ export function HistoryView() {
       }}
       maxWidth="sm"
     >
+      <ViewTabs />
       <Stack spacing={3}>
-        <ErrorBoundary
-          ErrorComponent={<ErrorCard />}
-          onError={trackSentryError}
-        >
-          <APYContainer />
-        </ErrorBoundary>
-        <ErrorBoundary
-          ErrorComponent={<ErrorCard />}
-          onError={trackSentryError}
-        >
-          <HistoryCard />
-        </ErrorBoundary>
+        <Outlet />
       </Stack>
     </Container>
   );
