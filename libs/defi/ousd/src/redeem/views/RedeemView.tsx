@@ -1,5 +1,6 @@
-import { Container } from '@mui/material';
 import {
+  Page,
+  PageSection,
   PageTitle,
   Redeemer,
   trackEvent,
@@ -12,7 +13,7 @@ export const RedeemView = () => {
   const intl = useIntl();
 
   return (
-    <Container maxWidth="sm">
+    <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
@@ -20,13 +21,15 @@ export const RedeemView = () => {
         })}
         token={tokens.mainnet.OUSD}
       />
-      <Redeemer
-        tokenIn={tokens.mainnet.OUSD}
-        vaultContract={contracts.mainnet.OUSDVault}
-        trackEvent={trackEvent}
-        onError={trackSentryError}
-        buttonsProps={{ variant: 'action' }}
-      />
-    </Container>
+      <PageSection containerProps={{ maxWidth: 'sm' }}>
+        <Redeemer
+          tokenIn={tokens.mainnet.OUSD}
+          vaultContract={contracts.mainnet.OUSDVault}
+          trackEvent={trackEvent}
+          onError={trackSentryError}
+          buttonsProps={{ variant: 'action' }}
+        />
+      </PageSection>
+    </Page>
   );
 };

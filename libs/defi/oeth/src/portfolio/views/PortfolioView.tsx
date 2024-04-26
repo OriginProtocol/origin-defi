@@ -1,5 +1,5 @@
-import { Container, Stack } from '@mui/material';
-import { PageTitle } from '@origin/defi/shared';
+import { Stack } from '@mui/material';
+import { Page, PageSection, PageTitle } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -12,17 +12,19 @@ export const PortfolioView = () => {
   const intl = useIntl();
 
   return (
-    <Container>
+    <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Portfolio' })}
         token={tokens.mainnet.OETH}
       />
-      <Stack spacing={5}>
-        <BalanceCard />
-        <StatCards />
-        <ChartCard />
-        <HistoryCard />
-      </Stack>
-    </Container>
+      <PageSection>
+        <Stack spacing={5}>
+          <BalanceCard />
+          <StatCards />
+          <ChartCard />
+          <HistoryCard />
+        </Stack>
+      </PageSection>
+    </Page>
   );
 };

@@ -1,6 +1,12 @@
-import { Box, Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { PageTitle, Swapper, trackEvent } from '@origin/defi/shared';
+import {
+  Page,
+  PageSection,
+  PageTitle,
+  Swapper,
+  trackEvent,
+} from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -14,7 +20,7 @@ export const SwapView = () => {
   const intl = useIntl();
 
   return (
-    <Container maxWidth="md">
+    <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Swap' })}
         subtitle={intl.formatMessage({
@@ -23,7 +29,7 @@ export const SwapView = () => {
         })}
         token={tokens.mainnet.OUSD}
       />
-      <Box>
+      <PageSection>
         <Grid2 container spacing={4}>
           <Grid2 xs={12} md={8}>
             <Stack spacing={4}>
@@ -41,7 +47,7 @@ export const SwapView = () => {
             <OusdDetailCard />
           </Grid2>
         </Grid2>
-      </Box>
-    </Container>
+      </PageSection>
+    </Page>
   );
 };

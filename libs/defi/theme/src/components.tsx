@@ -147,11 +147,11 @@ export const components = (base: Theme): ThemeOptions => ({
         {
           props: { variant: 'nav', color: 'primary' },
           style: ({ theme }) => ({
-            background: theme.palette.primary.main,
+            backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
             border: `1px solid ${theme.palette.divider}}`,
             '.MuiButton-navPrimary:hover': {
-              background: theme.palette.primary.dark,
+              backgroundColor: theme.palette.primary.dark,
             },
           }),
         },
@@ -168,7 +168,7 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           padding: 0,
           borderRadius: theme.shape.borderRadius * 4,
-          backgroundColor: theme.palette.background.paper,
+          backgroundColor: theme.palette.background.default,
           border: '1px solid',
           borderColor: theme.palette.divider,
           boxShadow: 'none',

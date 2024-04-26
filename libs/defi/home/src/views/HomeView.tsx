@@ -1,6 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { products } from '@origin/defi/shared';
+import { Page, products } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
@@ -10,8 +10,8 @@ export const HomeView = () => {
   const intl = useIntl();
 
   return (
-    <Container>
-      <Stack mb={5}>
+    <Page showFooterMargin>
+      <Container>
         <Stack spacing={2} sx={{ justifyContent: 'center', py: 6 }}>
           <Typography variant="h5" textAlign="center">
             {intl.formatMessage({ defaultMessage: 'Origin' })}
@@ -60,7 +60,7 @@ export const HomeView = () => {
           </Typography>
         </Stack>
         <StakeOGNCard sx={{ my: 3 }} />
-      </Stack>
-    </Container>
+      </Container>
+    </Page>
   );
 };

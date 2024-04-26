@@ -153,17 +153,6 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
             },
           },
-          {
-            path: 'portfolio',
-            Component: ogv.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Staking and rewards history',
-              }),
-              icon: FaSquareListRegular,
-            },
-          },
         ],
       },
       {
