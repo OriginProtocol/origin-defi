@@ -1,7 +1,4 @@
 query ProductCard($token: String) {
-  oethDailyStats(limit: 1, orderBy: timestamp_DESC) {
-    apy30DayAvg
-  }
   oTokenApies(
     limit: 1
     orderBy: timestamp_DESC

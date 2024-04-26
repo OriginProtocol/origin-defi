@@ -1,18 +1,6 @@
-import {
-  alpha,
-  Button,
-  Card,
-  Collapse,
-  Stack,
-  Typography,
-} from '@mui/material';
-import {
-  ChainIcon,
-  LoadingLabel,
-  TokenIcon,
-  ValueLabel,
-} from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
+import { ChainsTag } from '@origin/defi/shared';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -22,7 +10,7 @@ import { useAccount } from 'wagmi';
 
 import { useProductCardQuery } from '../queries.generated';
 
-import type { CardProps, StackProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { Product } from '@origin/defi/shared';
 
 export type ProductCardProps = {
@@ -43,9 +31,6 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     {
       enabled: isConnected,
       select: (data) => {
-        if (product.token.symbol === tokens.mainnet.OETH.symbol) {
-          return data?.oethDailyStats[0].apy30DayAvg;
-        }
         return data?.oTokenApies[0].apy30DayAvg ?? 0;
       },
     },
@@ -137,7 +122,9 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             { symbol: product.token.symbol },
           )}
         </Button>
-        <ChainsBadge chains={product.supportedChains} />
+        {!isNilOrEmpty(product.supportedChainIds) && (
+          <ChainsTag chainIds={product.supportedChainIds} />
+        )}
       </Stack>
       <Collapse in={isConnected}>
         <Stack
@@ -178,33 +165,3 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     </Card>
   );
 };
-
-type ChainsBadgeProps = { chains: Product['supportedChains'] } & StackProps;
-
-function ChainsBadge({ chains, ...rest }: ChainsBadgeProps) {
-  const intl = useIntl();
-
-  if (isNilOrEmpty(chains)) return null;
-
-  return (
-    <Stack
-      direction="row"
-      alignItems="center"
-      spacing={2}
-      bgcolor={(theme) => alpha(theme.palette.primary.main, 0.2)}
-      px={2}
-      py={1}
-      borderRadius={2}
-      {...rest}
-    >
-      <Typography variant="caption1" color="primary.main">
-        {intl.formatMessage({ defaultMessage: 'Available on' })}
-      </Typography>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {chains.map((c) => (
-          <ChainIcon key={c.id} chainId={c.id} sx={{ fontSize: 24 }} />
-        ))}
-      </Stack>
-    </Stack>
-  );
-}

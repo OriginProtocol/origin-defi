@@ -7,15 +7,12 @@ export type ProductCardQueryVariables = Types.Exact<{
 }>;
 
 
-export type ProductCardQuery = { __typename?: 'Query', oethDailyStats: Array<{ __typename?: 'OETHDailyStat', apy30DayAvg: number }>, oTokenApies: Array<{ __typename?: 'OTokenAPY', apy30DayAvg: number }> };
+export type ProductCardQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy30DayAvg: number }> };
 
 
 
 export const ProductCardDocument = `
     query ProductCard($token: String) {
-  oethDailyStats(limit: 1, orderBy: timestamp_DESC) {
-    apy30DayAvg
-  }
   oTokenApies(
     limit: 1
     orderBy: timestamp_DESC
