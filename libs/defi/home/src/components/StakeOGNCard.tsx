@@ -2,8 +2,6 @@ import { Button, Card, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
-import stakingPattern from '../bkg/stakingPattern.svg';
-
 import type { CardProps } from '@mui/material';
 
 export const StakeOGNCard = (props: CardProps) => {
@@ -15,7 +13,7 @@ export const StakeOGNCard = (props: CardProps) => {
       {...props}
       sx={{
         backgroundColor: 'background.highlight',
-        backgroundImage: `url(${stakingPattern})`,
+        backgroundImage: `url(/images/stakingPattern.svg)`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'contain',
         backgroundPosition: 'center right',
