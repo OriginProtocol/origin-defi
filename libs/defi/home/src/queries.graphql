@@ -1,12 +1,12 @@
-query ProductCard {
+query ProductCard($token: String) {
   oethDailyStats(limit: 1, orderBy: timestamp_DESC) {
     apy30DayAvg
-    totalSupply
   }
-  oTokens(limit: 1, orderBy: timestamp_DESC, where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"} ) {
-    totalSupply
-  }
-  oTokenApies(limit: 1, orderBy: timestamp_DESC, where: {chainId_eq: 1, otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"} ) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: { chainId_eq: 1, otoken_containsInsensitive: $token }
+  ) {
     apy30DayAvg
   }
 }

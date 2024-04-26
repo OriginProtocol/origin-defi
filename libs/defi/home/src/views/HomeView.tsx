@@ -1,10 +1,10 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { products } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
 import { StakeOGNCard } from '../components/StakeOGNCard';
-import { products } from '../constants';
 
 export const HomeView = () => {
   const intl = useIntl();
@@ -37,11 +37,13 @@ export const HomeView = () => {
         </Stack>
         <Box py={3}>
           <Grid2 container spacing={3}>
-            {products.map((product) => (
-              <Grid2 key={product.token.symbol} xs={12} md={4}>
-                <ProductCard product={product} sx={{ height: 1 }} />
-              </Grid2>
-            ))}
+            {[products.oeth, products.primeETH, products.ousd].map(
+              (product) => (
+                <Grid2 key={product.token.symbol} xs={12} md={4}>
+                  <ProductCard product={product} sx={{ height: 1 }} />
+                </Grid2>
+              ),
+            )}
           </Grid2>
         </Box>
         <Stack direction="row" alignItems="center" spacing={1}>

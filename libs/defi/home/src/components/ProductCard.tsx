@@ -1,4 +1,11 @@
-import { alpha, Button, Card, Stack, Typography } from '@mui/material';
+import {
+  alpha,
+  Button,
+  Card,
+  Collapse,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {
   ChainIcon,
   LoadingLabel,
@@ -16,12 +23,10 @@ import { useAccount } from 'wagmi';
 import { useProductCardQuery } from '../queries.generated';
 
 import type { CardProps, StackProps } from '@mui/material';
-import type { Chain } from 'viem';
-
-import type { products } from '../constants';
+import type { Product } from '@origin/defi/shared';
 
 export type ProductCardProps = {
-  product: (typeof products)[number];
+  product: Product;
 } & CardProps;
 
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
@@ -34,17 +39,14 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   });
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
   const { data: apy, isLoading: isApyLoading } = useProductCardQuery(
-    undefined,
+    { token: product.token.address },
     {
       enabled: isConnected,
       select: (data) => {
         if (product.token.symbol === tokens.mainnet.OETH.symbol) {
           return data?.oethDailyStats[0].apy30DayAvg;
         }
-        if (product.token.symbol === tokens.mainnet.OUSD.symbol) {
-          return data?.ousdapies[0].apy30DayAvg;
-        }
-        return 0;
+        return data?.oTokenApies[0].apy30DayAvg ?? 0;
       },
     },
   );
@@ -137,53 +139,47 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         </Button>
         <ChainsBadge chains={product.supportedChains} />
       </Stack>
-      <Stack
-        spacing={2}
-        sx={{
-          p: 3,
-          border: '1px solid',
-          borderColor: 'divider',
-          borderRadius: 4,
-        }}
-      >
-        <ValueLabel
-          direction="row"
-          justifyContent="space-between"
-          label={intl.formatMessage({ defaultMessage: 'Your balance:' })}
-          labelProps={{ variant: 'mono', color: 'text.secondary' }}
-          value={
-            isConnected
-              ? intl.formatMessage(
-                  { defaultMessage: '{balance} {symbol}' },
-                  {
-                    balance: formatBalance(balance),
-                    symbol: product.token.symbol,
-                  },
-                )
-              : '-'
-          }
-          isLoading={isBalanceLoading}
-        />
-        <ValueLabel
-          direction="row"
-          justifyContent="space-between"
-          label={intl.formatMessage({ defaultMessage: 'Yield earned:' })}
-          labelProps={{ variant: 'mono', color: 'text.secondary' }}
-          value={
-            isConnected
-              ? intl.formatMessage(
-                  { defaultMessage: '{balance} {symbol}' },
-                  { balance: 2.375, symbol: product.token.symbol },
-                )
-              : '-'
-          }
-        />
-      </Stack>
+      <Collapse in={isConnected}>
+        <Stack
+          spacing={2}
+          sx={{
+            p: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 4,
+          }}
+        >
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'Your balance:' })}
+            labelProps={{ variant: 'mono', color: 'text.secondary' }}
+            value={intl.formatMessage(
+              { defaultMessage: '{balance} {symbol}' },
+              {
+                balance: formatBalance(balance),
+                symbol: product.token.symbol,
+              },
+            )}
+            isLoading={isBalanceLoading}
+          />
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'Yield earned:' })}
+            labelProps={{ variant: 'mono', color: 'text.secondary' }}
+            value={intl.formatMessage(
+              { defaultMessage: '{balance} {symbol}' },
+              { balance: 2.375, symbol: product.token.symbol },
+            )}
+          />
+        </Stack>
+      </Collapse>
     </Card>
   );
 };
 
-type ChainsBadgeProps = { chains: Chain[] } & StackProps;
+type ChainsBadgeProps = { chains: Product['supportedChains'] } & StackProps;
 
 function ChainsBadge({ chains, ...rest }: ChainsBadgeProps) {
   const intl = useIntl();

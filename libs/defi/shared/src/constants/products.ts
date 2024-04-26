@@ -2,12 +2,16 @@ import { tokens } from '@origin/shared/contracts';
 import { defineMessage } from 'react-intl';
 import { arbitrum, mainnet } from 'viem/chains';
 
-import circles2Pattern from './bkg/circles2Pattern.svg';
-import circlesPattern from './bkg/circlesPattern.svg';
-import wavePattern from './bkg/wavePattern.svg';
+import circles2Pattern from '../assets/circles2Pattern.svg';
+import circlesPattern from '../assets/circlesPattern.svg';
+import wavePattern from '../assets/wavePattern.svg';
 
-export const products = [
-  {
+export type SupportedProduct = keyof typeof products;
+
+export type Product = (typeof products)[SupportedProduct];
+
+export const products = {
+  oeth: {
     id: 'oeth',
     token: tokens.mainnet.OETH,
     href: 'oeth',
@@ -18,7 +22,7 @@ export const products = [
     }),
     supportedChains: [mainnet, arbitrum],
   },
-  {
+  primeETH: {
     id: 'primeETH',
     token: tokens.mainnet.primeETH,
     href: 'prime',
@@ -29,7 +33,7 @@ export const products = [
     }),
     supportedChains: [],
   },
-  {
+  ousd: {
     id: 'ousd',
     token: tokens.mainnet.OUSD,
     href: 'ousd',
@@ -40,4 +44,4 @@ export const products = [
     }),
     supportedChains: [],
   },
-];
+} as const;
