@@ -80,11 +80,11 @@ export function SwapRouteCard({
         borderWidth: 1,
         borderColor: 'divider',
         borderRadius: 2,
+        backgroundColor: 'background.paper',
         '&:hover': {
           borderColor: 'primary.main',
         },
         ...(isSelected && { borderColor: 'primary.main' }),
-
         ...rest?.sx,
       }}
       role="button"

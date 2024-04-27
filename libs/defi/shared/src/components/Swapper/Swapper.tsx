@@ -301,7 +301,9 @@ function SwapperWrapped({
             display: 'flex',
             flexDirection: 'column',
             gap: 0.5,
-            p: 3,
+            px: 3,
+            pt: 3,
+            pb: 1.5,
             position: 'relative',
           }}
         >
@@ -358,7 +360,7 @@ function SwapperWrapped({
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            pt={2}
+            py={1.5}
             px={3}
           >
             <Typography color="text.secondary">
@@ -385,7 +387,7 @@ function SwapperWrapped({
             </Stack>
           </Stack>
         </Collapse>
-        <CardContent>
+        <CardContent sx={{ pt: 0 }}>
           <Accordion
             expanded={needsApproval}
             disableGutters
@@ -398,7 +400,7 @@ function SwapperWrapped({
                 {...buttonsProps}
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
-                sx={{ mb: 2, ...buttonsProps?.sx }}
+                sx={{ mb: 1.5, ...buttonsProps?.sx }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />

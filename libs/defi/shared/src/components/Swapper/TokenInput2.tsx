@@ -89,12 +89,13 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
         balance <= (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n));
 
     return (
-      <Stack spacing={2} {...rest}>
+      <Stack spacing={0.5} {...rest}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-          spacing={2}
+          spacing={1}
+          height={52}
         >
           {readOnly ? (
             <LoadingLabel
@@ -153,6 +154,7 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
           alignItems="center"
           justifyContent="space-between"
           gap={1}
+          height={24}
         >
           {!isNilOrEmpty(tokenPriceUsd) ? (
             <LoadingLabel
@@ -210,7 +212,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
 
   if (!token) {
     return (
-      <Button variant="contained" color="inherit" {...(rest as any)}>
+      <Button variant="contained" color="inherit" {...rest}>
         {intl.formatMessage({ defaultMessage: 'Select token' })}
       </Button>
     );
@@ -247,7 +249,6 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
       >
         <TokenIcon token={token} sx={{ fontSize: 28 }} />
       </Box>
-
       <Typography variant="body2" fontWeight="bold">
         {token.symbol}
       </Typography>
