@@ -1,15 +1,17 @@
 import { forwardRef } from 'react';
 
-import { Button, Skeleton, Stack, Typography } from '@mui/material';
-import { FaChevronDownRegular } from '@origin/shared/icons';
-import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
+import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  BigIntInput,
+  LoadingLabel,
+  TokenIcon,
+} from '@origin/shared/components';
+import { DefaultWallet, FaChevronDownRegular } from '@origin/shared/icons';
+import { useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
-
-import { TokenIcon } from '../Icons';
-import { LoadingLabel } from '../Labels';
-import { BigIntInput } from './BigIntInput';
 
 import type { ButtonProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -66,6 +68,7 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
     ref,
   ) => {
     const intl = useIntl();
+    const { formatBalance } = useFormat();
     const { isConnected } = useAccount();
 
     const handleMaxClick = () => {
@@ -78,90 +81,29 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
     };
 
     const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
-    const maxVisible =
-      !hideMaxButton &&
-      balance !== undefined &&
-      balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
-    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
+    const maxDisabled =
+      disableMaxButton ||
+      !isConnected ||
+      isBalanceLoading ||
+      (balance !== undefined &&
+        balance <= (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n));
 
     return (
-      <Stack spacing={1} {...rest}>
+      <Stack spacing={2} {...rest}>
         <Stack
           direction="row"
           alignItems="center"
           justifyContent="space-between"
-        >
-          {tokenButton ?? (
-            <TokenButton
-              token={token}
-              onClick={onTokenClick}
-              isDisabled={isTokenClickDisabled}
-            />
-          )}
-
-          <Stack
-            direction="row"
-            alignItems="center"
-            spacing={1}
-            overflow="hidden"
-            whiteSpace="nowrap"
-          >
-            {isConnected && balance !== undefined ? (
-              isBalanceLoading ? (
-                <Skeleton />
-              ) : (
-                <>
-                  <Typography
-                    noWrap
-                    color="text.secondary"
-                    sx={{
-                      justifySelf: 'flex-end',
-                      textOverflow: 'ellipsis',
-                    }}
-                  >
-                    {intl.formatMessage(
-                      { defaultMessage: 'Balance: {number}' },
-                      {
-                        number: formatAmount(balance, decimals),
-                      },
-                    )}
-                  </Typography>
-                  {maxVisible && (
-                    <Button
-                      variant="outlined"
-                      color="secondary"
-                      onClick={handleMaxClick}
-                      disabled={maxDisabled}
-                      sx={{
-                        display: 'flex',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 8,
-                        minWidth: 40,
-                        lineHeight: 1,
-                        color: 'text.secondary',
-                        padding: (theme) => theme.spacing(0.25, 0.5),
-                      }}
-                    >
-                      {intl.formatMessage({ defaultMessage: 'max' })}
-                    </Button>
-                  )}
-                </>
-              )
-            ) : null}
-          </Stack>
-        </Stack>
-        <Stack
-          direction="row"
-          alignItems="baseline"
-          justifyContent="space-between"
-          gap={1}
+          spacing={2}
         >
           {readOnly ? (
             <LoadingLabel
+              variant="h6"
               isLoading={isAmountLoading}
               sWidth={100}
-              sx={valueStyles}
+              sx={{
+                flexGrow: 1,
+              }}
             >
               {intl.formatNumber(+formatUnits(amount, decimals), {
                 roundingMode: 'floor',
@@ -178,8 +120,7 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
               onChange={onAmountChange}
               disabled={isAmountDisabled}
               ref={ref}
-              sx={{
-                width: 1,
+              sx={(theme) => ({
                 border: 'none',
                 backgroundColor: 'transparent',
                 borderRadius: 0,
@@ -189,15 +130,30 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
                 '& .MuiInputBase-input': {
                   padding: 0,
                   boxSizing: 'border-box',
-                  ...valueStyles,
+                  flexGrow: 1,
+                  ...theme.typography.h6,
                   '&::placeholder': {
                     color: 'text.primary',
                     opacity: 1,
                   },
                 },
-              }}
+              })}
             />
           )}
+          {tokenButton ?? (
+            <TokenButton
+              token={token}
+              onClick={onTokenClick}
+              isDisabled={isTokenClickDisabled}
+            />
+          )}
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          gap={1}
+        >
           {!isNilOrEmpty(tokenPriceUsd) ? (
             <LoadingLabel
               isLoading={isPriceLoading}
@@ -213,22 +169,39 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
               })}
             </LoadingLabel>
           ) : null}
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={1}
+            overflow="hidden"
+            whiteSpace="nowrap"
+          >
+            {isConnected && balance !== undefined
+              ? !hideMaxButton && (
+                  <Button
+                    variant="link"
+                    onClick={handleMaxClick}
+                    disabled={maxDisabled}
+                  >
+                    {isBalanceLoading ? (
+                      <Skeleton width={60} />
+                    ) : (
+                      <>
+                        <DefaultWallet sx={{ fontSize: 20, mr: 1 }} />
+                        {formatBalance(balance, decimals)}
+                      </>
+                    )}
+                  </Button>
+                )
+              : null}
+          </Stack>
         </Stack>
       </Stack>
     );
   },
 );
 
-TokenInput2.displayName = 'TokenInput';
-
-const valueStyles = {
-  flexGrow: 1,
-  fontStyle: 'normal',
-  fontSize: 32,
-  lineHeight: 1.5,
-  fontWeight: 400,
-  height: 48,
-};
+TokenInput2.displayName = 'TokenInput2';
 
 type TokenButtonProps = { token?: Token; isDisabled?: boolean } & ButtonProps;
 
@@ -245,16 +218,16 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
 
   return (
     <Button
-      color="inherit"
+      variant="outlined"
+      color="secondary"
       disabled={isDisabled}
       size="small"
       {...rest}
       sx={{
         gap: 1,
-        minHeight: 32,
-        borderRadius: 8,
-        fontSize: '1rem',
-        fontWeight: 500,
+        minHeight: 40,
+        minWidth: 125,
+        borderRadius: 120,
         '&.Mui-disabled': {
           color: 'text.primary',
           pr: 2,
@@ -262,8 +235,22 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
         ...rest?.sx,
       }}
     >
-      <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
-      <Typography variant="inherit">{token.symbol}</Typography>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '50%',
+          border: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        <TokenIcon token={token} sx={{ fontSize: 28 }} />
+      </Box>
+
+      <Typography variant="body2" fontWeight="bold">
+        {token.symbol}
+      </Typography>
       {!isDisabled && <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />}
     </Button>
   );

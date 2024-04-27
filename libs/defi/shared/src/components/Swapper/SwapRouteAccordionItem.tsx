@@ -68,7 +68,7 @@ export function SwapRouteAccordionItem({
       gap={1}
       sx={{
         borderRadius: 1,
-        backgroundColor: 'background.paper',
+        backgroundColor: 'background.default',
         border: `1px solid`,
         borderColor: 'divider',
         px: 2,

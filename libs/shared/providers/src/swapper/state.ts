@@ -109,6 +109,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               isSwapLoading: false,
               isApprovalWaitingForSignature: false,
               status: 'idle',
+              estimatedSwapRoutes: [],
             }));
             state?.onInputAmountChange?.({ ...state, amountIn: 0n });
 

@@ -13,7 +13,6 @@ import {
   ErrorBoundary,
   ErrorCard,
   MultiTokenIcon,
-  TokenInput2,
 } from '@origin/shared/components';
 import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
@@ -32,6 +31,7 @@ import {
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
+import { TokenInput2 } from '../Swapper';
 import { RedeemRoute } from './RedeemRoute';
 
 import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';

@@ -1,3 +1,4 @@
+import { emphasize } from '@mui/material';
 import {
   FaArrowsRotateRegular,
   FaCircleCheckRegular,
@@ -99,6 +100,15 @@ export const components = (base: Theme): ThemeOptions => ({
           borderRadius: theme.shape.borderRadius * 3,
           padding: theme.spacing(2),
         }),
+        outlinedSecondary: ({ theme }) => ({
+          color: theme.palette.text.primary,
+          background: theme.palette.background.default,
+          borderColor: theme.palette.divider,
+          '&:hover': {
+            borderColor: emphasize(theme.palette.divider, 0.2),
+            background: emphasize(theme.palette.background.default, 0.2),
+          },
+        }),
       },
       variants: [
         {
@@ -117,6 +127,21 @@ export const components = (base: Theme): ThemeOptions => ({
             '&:disabled': {
               opacity: 0.5,
               color: theme.palette.primary.contrastText,
+            },
+          }),
+        },
+        {
+          props: { variant: 'link' },
+          style: ({ theme }) => ({
+            padding: 0,
+            color: theme.palette.primary.main,
+            '&:hover': {
+              color: theme.palette.primary.light,
+              backgroundColor: 'transparent',
+            },
+            '&:disabled': {
+              opacity: 0.5,
+              color: theme.palette.text.secondary,
             },
           }),
         },

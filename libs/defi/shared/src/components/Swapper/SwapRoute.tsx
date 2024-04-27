@@ -28,7 +28,14 @@ export function SwapRoute(
     <Accordion
       {...props}
       expanded={isExpanded}
-      sx={{ px: 2, borderRadius: 1, ...props?.sx }}
+      sx={{
+        px: 2,
+        borderRadius: 3,
+        backgroundColor: 'background.highlight',
+        border: '1px solid',
+        borderColor: 'divider',
+        ...props?.sx,
+      }}
     >
       <AccordionSummary
         sx={{ py: 2, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}

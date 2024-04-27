@@ -86,6 +86,7 @@ declare module '@mui/material/Button' {
   interface ButtonPropsVariantOverrides {
     action: true;
     nav: true;
+    link: true;
   }
 }
 

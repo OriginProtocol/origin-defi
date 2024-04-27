@@ -12,6 +12,7 @@ export const lightPalette: ThemeOptions = {
     },
     secondary: {
       main: '#FFFFFF',
+      faded: alpha('#2D2E36', 0.2),
       contrastText: '#2E3137',
     },
     error: {
@@ -74,6 +75,7 @@ export const darkPalette: ThemeOptions = {
     },
     secondary: {
       main: '#2D2E36',
+      faded: alpha('#2D2E36', 0.2),
       contrastText: '#FFFFFF',
     },
     error: {

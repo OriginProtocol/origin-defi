@@ -8,6 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { TokenInput2 } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -15,7 +16,6 @@ import {
   NotificationSnack,
   SeverityIcon,
   TokenIcon,
-  TokenInput2,
 } from '@origin/shared/components';
 import {
   ApprovalNotification,

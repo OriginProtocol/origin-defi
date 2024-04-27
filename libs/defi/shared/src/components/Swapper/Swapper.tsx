@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Card,
@@ -8,7 +11,8 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
-  IconButton,
+  Divider,
+  emphasize,
   Stack,
   Typography,
 } from '@mui/material';
@@ -18,7 +22,6 @@ import {
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
-  TokenInput2,
 } from '@origin/shared/components';
 import { getTokenId } from '@origin/shared/contracts';
 import { FaArrowDownRegular } from '@origin/shared/icons';
@@ -56,9 +59,10 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { SwapRoute } from './SwapRoute';
+import { TokenInput2 } from './TokenInput2';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
+import type { BoxProps, ButtonProps, CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { SwapState, TokenSource } from '@origin/shared/providers';
 
@@ -68,7 +72,7 @@ export type SwapperProps = Pick<
 > & {
   onError?: (error: Error) => void;
   buttonsProps?: ButtonProps;
-} & Omit<StackProps, 'onError'>;
+} & Omit<CardProps, 'onError'>;
 
 export const Swapper = ({
   swapActions,
@@ -276,108 +280,125 @@ function SwapperWrapped({
     amountIn === 0n;
 
   return (
-    <Stack spacing={3} {...rest}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
-        <Card>
-          <CardHeader
-            title={intl.formatMessage({ defaultMessage: 'Swap' })}
-            action={<SettingsButton />}
-          />
-          <Box
-            sx={{
-              position: 'relative',
+    <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
+      <Card {...rest}>
+        <CardHeader
+          title={intl.formatMessage({ defaultMessage: 'Swap' })}
+          action={
+            <SettingsButton
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: 2,
+                color: 'text.secondary',
+              }}
+            />
+          }
+        />
+        <Divider />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 0.5,
+            p: 3,
+            position: 'relative',
+          }}
+        >
+          <TokenInput2
+            amount={amountIn}
+            decimals={tokenIn.decimals}
+            onAmountChange={handleAmountInChange}
+            balance={balances?.[getTokenId(tokenIn)] ?? 0n}
+            isBalanceLoading={isBalancesLoading}
+            isNativeCurrency={isNativeCurrency(tokenIn)}
+            token={tokenIn}
+            onTokenClick={() => {
+              setTokenSource('tokenIn');
             }}
+            tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+            isPriceLoading={isPriceLoading}
+            isAmountDisabled={amountInInputDisabled}
+            sx={{
+              p: 3,
+              borderRadius: 3,
+              backgroundColor: 'background.highlight',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          />
+          <TokenInput2
+            readOnly
+            disableMaxButton
+            amount={amountOut}
+            decimals={tokenOut.decimals}
+            balance={balances?.[getTokenId(tokenOut)] ?? 0n}
+            isAmountLoading={isSwapRoutesLoading}
+            isBalanceLoading={isBalancesLoading}
+            isNativeCurrency={isNativeCurrency(tokenOut)}
+            token={tokenOut}
+            onTokenClick={() => {
+              setTokenSource('tokenOut');
+            }}
+            tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
+            isPriceLoading={isSwapRoutesLoading || isPriceLoading}
+            sx={{
+              p: 3,
+              borderRadius: 3,
+              backgroundColor: 'background.highlight',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          />
+          <ArrowButton onClick={handleTokenFlip} />
+        </Box>
+        <SwapRoute sx={{ mx: 3 }} />
+        <Collapse in={amountOut > 0n}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            pt={2}
+            px={3}
           >
-            <TokenInput2
-              amount={amountIn}
-              decimals={tokenIn.decimals}
-              onAmountChange={handleAmountInChange}
-              balance={balances?.[getTokenId(tokenIn)] ?? 0n}
-              isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
-              token={tokenIn}
-              onTokenClick={() => {
-                setTokenSource('tokenIn');
-              }}
-              tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
-              isPriceLoading={isPriceLoading}
-              isAmountDisabled={amountInInputDisabled}
-              sx={{
-                p: 3,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.default',
-              }}
-            />
-            <TokenInput2
-              readOnly
-              amount={amountOut}
-              decimals={tokenOut.decimals}
-              balance={balances?.[getTokenId(tokenOut)] ?? 0n}
-              isAmountLoading={isSwapRoutesLoading}
-              isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenOut)}
-              token={tokenOut}
-              onTokenClick={() => {
-                setTokenSource('tokenOut');
-              }}
-              tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
-              isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-              hideMaxButton
-              sx={{
-                p: 3,
-                borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.highlight',
-              }}
-            />
-            <ArrowButton onClick={handleTokenFlip} />
-          </Box>
-          <CardContent>
-            <SwapRoute
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-              }}
-            />
-            <Collapse in={amountOut > 0n}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                pt={2}
-                pb={1}
-              >
-                <Typography color="text.secondary">
-                  {intl.formatMessage(
-                    {
-                      defaultMessage:
-                        'Minimum received with {slippage} slippage:',
-                    },
-                    {
-                      slippage: intl.formatNumber(slippage, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
-                    },
-                  )}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-                    {formatAmount(
-                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                    )}
-                  </LoadingLabel>
-                  <Typography>{tokenOut.symbol}</Typography>
-                </Stack>
-              </Stack>
-            </Collapse>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+            <Typography color="text.secondary">
+              {intl.formatMessage(
+                {
+                  defaultMessage: 'Minimum received with {slippage} slippage:',
+                },
+                {
+                  slippage: intl.formatNumber(slippage, {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }),
+                },
+              )}
+            </Typography>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
+                {formatAmount(
+                  subtractSlippage(amountOut, tokenOut.decimals, slippage),
+                )}
+              </LoadingLabel>
+              <Typography>{tokenOut.symbol}</Typography>
+            </Stack>
+          </Stack>
+        </Collapse>
+        <CardContent>
+          <Accordion
+            expanded={needsApproval}
+            disableGutters
+            sx={{ background: 'transparent', border: 'none' }}
+          >
+            <AccordionSummary />
+            <AccordionDetails sx={{ p: 0 }}>
               <Button
                 fullWidth
                 {...buttonsProps}
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
+                sx={{ mb: 2, ...buttonsProps?.sx }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />
@@ -391,71 +412,99 @@ function SwapperWrapped({
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
               </Button>
-            </Collapse>
-            <ConnectedButton
-              fullWidth
-              {...buttonsProps}
-              disabled={swapButtonDisabled}
-              onClick={handleSwap}
-              sx={{ mt: 1.5, ...buttonsProps?.sx }}
-            >
-              {isSwapRoutesLoading ? (
-                <CircularProgress size={32} color="inherit" />
-              ) : isSwapWaitingForSignature ? (
-                intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-              ) : isSwapLoading ? (
-                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-              ) : (
-                swapButtonLabel
-              )}
-            </ConnectedButton>
-          </CardContent>
-        </Card>
-        <TokenSelectModal
-          open={!isNilOrEmpty(tokenSource)}
-          onClose={handleCloseSelectionModal}
-          tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
-          onSelectToken={handleSelectToken}
-        />
-      </ErrorBoundary>
-    </Stack>
+            </AccordionDetails>
+          </Accordion>
+          <ConnectedButton
+            fullWidth
+            {...buttonsProps}
+            disabled={swapButtonDisabled}
+            onClick={handleSwap}
+          >
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isSwapWaitingForSignature ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            ) : isSwapLoading ? (
+              intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+            ) : (
+              swapButtonLabel
+            )}
+          </ConnectedButton>
+        </CardContent>
+      </Card>
+      <TokenSelectModal
+        open={!isNilOrEmpty(tokenSource)}
+        onClose={handleCloseSelectionModal}
+        tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
+        onSelectToken={handleSelectToken}
+      />
+    </ErrorBoundary>
   );
 }
 
-function ArrowButton(props: IconButtonProps) {
+function ArrowButton({ onClick, ...rest }: BoxProps) {
   return (
-    <IconButton
-      {...props}
+    <Box
+      {...rest}
       sx={{
         position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: { md: 48, xs: 36 },
-        height: { md: 48, xs: 36 },
-        margin: 'auto',
-        zIndex: 2,
-        backgroundColor: 'background.default',
+        borderRadius: '50%',
         border: '1px solid',
         borderColor: 'divider',
-        svg: {
-          transition: (theme) => theme.transitions.create('transform'),
+        backgroundColor: 'background.default',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: { md: 56, xs: 48 },
+        height: { md: 56, xs: 48 },
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '::before': {
+          position: 'absolute',
+          content: '""',
+          backgroundColor: 'background.default',
+          height: 4,
+          bottom: { md: 21, xs: 14 },
+          width: '110%',
         },
-        '&:hover': {
-          svg: {
-            transform: 'rotate(-180deg)',
-          },
-        },
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
-      <FaArrowDownRegular
+      <Box
+        onClick={onClick}
+        role="button"
         sx={{
-          width: { md: 18, xs: 16 },
-          height: { md: 18, xs: 16 },
+          borderRadius: '50%',
+          backgroundColor: 'background.highlight',
+          border: '1px solid',
+          borderColor: 'divider',
+          cursor: 'pointer',
+          width: { md: 50, xs: 42 },
+          height: { md: 50, xs: 42 },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 3,
+          svg: {
+            transition: (theme) => theme.transitions.create('transform'),
+          },
+          '&:hover': {
+            backgroundColor: (theme) =>
+              emphasize(theme.palette.background.default, 0.2),
+            svg: {
+              transform: 'rotate(-180deg)',
+            },
+          },
         }}
-      />
-    </IconButton>
+      >
+        <FaArrowDownRegular
+          sx={{
+            fontSize: { md: 18, xs: 14 },
+          }}
+        />
+      </Box>
+    </Box>
   );
 }

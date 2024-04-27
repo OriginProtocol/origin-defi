@@ -31,7 +31,7 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
     <Accordion
       {...props}
       expanded={showMore}
-      sx={{ px: 1, ...props?.sx }}
+      sx={{ px: 1, backgroundColor: 'background.highlight', ...props?.sx }}
       disableGutters
     >
       <AccordionSummary
@@ -40,14 +40,14 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           trackEvent?.({ name: 'show_swap_routes' });
         }}
         expandIcon={<FaChevronDownRegular sx={{ color: 'text.secondary' }} />}
-        sx={{ py: 1 }}
+        sx={{ py: 1, pr: 1 }}
       >
         <Typography sx={{ pl: 1, flex: 1 }} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
       </AccordionSummary>
-      <AccordionDetails sx={{ pb: 1, px: 0 }}>
-        <Stack gap={0.25} mt={1.5}>
+      <AccordionDetails sx={{ pb: 1, pt: 0, px: 0 }}>
+        <Stack gap={0.25} mt={0.5}>
           {estimatedSwapRoutes.slice(2).map((route, index) => (
             <SwapRouteAccordionItem
               key={`route-${index}`}
