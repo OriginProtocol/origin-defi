@@ -8,7 +8,11 @@ export type PageProps = {
 
 export const Page = ({ children, showFooterMargin, ...rest }: PageProps) => {
   return (
-    <Stack mb={showFooterMargin ? 6 : 0} {...rest}>
+    <Stack
+      minHeight={(theme) => `calc(100Dvh - ${theme.mixins.toolbar.height}px)`}
+      mb={showFooterMargin ? 6 : 0}
+      {...rest}
+    >
       {children}
     </Stack>
   );

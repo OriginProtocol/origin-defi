@@ -153,8 +153,8 @@ export const components = (base: Theme): ThemeOptions => ({
           style: ({ theme }) => ({
             height: 40,
             padding: theme.spacing(0.75, 2),
-            [base.breakpoints.down('lg')]: {
-              width: 58,
+            [base.breakpoints.up('md')]: {
+              minWidth: 58,
             },
             [base.breakpoints.down('md')]: {
               width: 40,

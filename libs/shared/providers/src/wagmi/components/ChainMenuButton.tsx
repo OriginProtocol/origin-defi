@@ -53,7 +53,7 @@ export const ChainMenuButton = ({
         {isPending ? (
           <Box display="flex" justifyContent="center" alignItems="center">
             <CircularProgress
-              size={Math.max(18, iconSize - 6)}
+              size={Math.max(20, iconSize - 6)}
               color="inherit"
             />
           </Box>
