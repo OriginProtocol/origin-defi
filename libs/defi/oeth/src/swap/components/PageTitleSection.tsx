@@ -3,14 +3,19 @@ import { ChainsChip, ColorChip, products } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { useSupportedChainTokens } from '../hooks';
 import { useOethApyQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
+  const { connected } = useSupportedChainTokens();
   const { data: apies, isLoading: isApiesLoading } = useOethApyQuery(
-    undefined,
+    {
+      token: connected.address.toLocaleLowerCase(),
+      chainId: connected.chainId,
+    },
     {
       select: (data) => data?.oTokenApies?.[0],
     },

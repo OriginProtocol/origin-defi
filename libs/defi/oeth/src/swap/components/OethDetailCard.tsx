@@ -33,6 +33,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useReadContract } from 'wagmi';
 
+import { useSupportedChainTokens } from '../hooks';
 import { useOethApyQuery } from '../queries.generated';
 
 import type { CardContentProps, TypographyProps } from '@mui/material';
@@ -74,9 +75,16 @@ function Apy() {
   const intl = useIntl();
   const once = useRef(false);
   const [trailing, setTrailing] = useState(30);
-  const { data: apy, isLoading: apyLoading } = useOethApyQuery(undefined, {
-    select: (data) => data.oTokenApies[0],
-  });
+  const { connected } = useSupportedChainTokens();
+  const { data: apy, isLoading: apyLoading } = useOethApyQuery(
+    {
+      token: connected.address.toLocaleLowerCase(),
+      chainId: connected.chainId,
+    },
+    {
+      select: (data) => data.oTokenApies[0],
+    },
+  );
   const trailingOptions: Option[] = useMemo(
     () => [
       {

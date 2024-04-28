@@ -192,6 +192,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'ETH',
     },
+    // TODO using WOETH address as placeholder
+    OETH: {
+      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
+      chainId: arbitrum.id,
+      abi: OETHABI,
+      name: 'Origin Ether',
+      decimals: 18,
+      symbol: 'OETH',
+    },
     wOETH: {
       address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
       chainId: arbitrum.id,

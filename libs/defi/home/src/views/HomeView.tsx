@@ -1,6 +1,6 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Page, products } from '@origin/defi/shared';
+import { Page, products, SectionTitle } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
 
 import { ProductCard } from '../components/ProductCard';
@@ -22,19 +22,10 @@ export const HomeView = () => {
             })}
           </Typography>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Box
-            sx={{
-              borderRadius: '50%',
-              backgroundColor: 'primary.main',
-              width: 10,
-              height: 10,
-            }}
-          />
-          <Typography variant="mono">
-            {intl.formatMessage({ defaultMessage: 'Products' })}
-          </Typography>
-        </Stack>
+        <SectionTitle
+          dotColor="primary.main"
+          label={intl.formatMessage({ defaultMessage: 'Products' })}
+        />
         <Box py={3}>
           <Grid2 container spacing={3}>
             {[products.oeth, products.primeETH, products.ousd].map(
@@ -46,19 +37,10 @@ export const HomeView = () => {
             )}
           </Grid2>
         </Box>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Box
-            sx={{
-              borderRadius: '50%',
-              backgroundColor: 'primary.main',
-              width: 10,
-              height: 10,
-            }}
-          />
-          <Typography variant="mono">
-            {intl.formatMessage({ defaultMessage: 'Governance' })}
-          </Typography>
-        </Stack>
+        <SectionTitle
+          dotColor="primary.main"
+          label={intl.formatMessage({ defaultMessage: 'Governance' })}
+        />
         <StakeOGNCard sx={{ my: 3 }} />
       </Container>
     </Page>

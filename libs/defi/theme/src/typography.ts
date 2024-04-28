@@ -71,10 +71,10 @@ export const typography = (base: Theme): ThemeOptions => ({
     },
     button: {
       fontFamily: 'inter',
-      fontSize: 16,
-      lineHeight: 1.5,
+      fontSize: 14,
+      lineHeight: 1.428,
+      fontWeight: 400,
       textTransform: 'none',
-      fontWeight: 500,
     },
     featured1: {
       fontFamily: 'inter',

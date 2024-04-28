@@ -4,6 +4,7 @@ export * from './AddressLabel';
 export * from './ApprovalButton';
 export * from './BalanceList';
 export * from './BlockExplorerLink';
+export * from './ChainMenuButton';
 export * from './ChainSwitcherButton';
 export * from './ConnectedButton';
 export * from './EnsureNetworkProvider';

@@ -1,6 +1,13 @@
 import { forwardRef } from 'react';
 
-import { Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  emphasize,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {
   BigIntInput,
   LoadingLabel,
@@ -220,16 +227,28 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
 
   return (
     <Button
-      variant="outlined"
-      color="secondary"
       disabled={isDisabled}
-      size="small"
       {...rest}
       sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        height: 40,
         gap: 1,
-        minHeight: 40,
-        minWidth: 125,
         borderRadius: 120,
+        color: 'text.primary',
+        backgroundColor: 'background.default',
+        border: '1px solid',
+        borderColor: 'divider',
+        pl: 1,
+        pr: isDisabled ? 1 : 1.5,
+        py: 0.75,
+        flexShrink: 0,
+        '&:hover': {
+          borderColor: (theme) => emphasize(theme.palette.divider, 0.2),
+          background: (theme) =>
+            emphasize(theme.palette.background.default, 0.2),
+        },
         '&.Mui-disabled': {
           color: 'text.primary',
           pr: 2,
@@ -249,7 +268,7 @@ function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
       >
         <TokenIcon token={token} sx={{ fontSize: 28 }} />
       </Box>
-      <Typography variant="body2" fontWeight="bold">
+      <Typography variant="body2" fontWeight="bold" flexGrow={1}>
         {token.symbol}
       </Typography>
       {!isDisabled && <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />}

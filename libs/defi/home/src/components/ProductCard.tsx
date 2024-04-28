@@ -113,6 +113,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         flexGrow={1}
       >
         <Button
+          size="large"
           onClick={() => {
             navigate(product.href);
           }}

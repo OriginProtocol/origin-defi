@@ -30,7 +30,6 @@ import {
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
-  SettingsButton,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -58,6 +57,7 @@ import {
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { SettingsButton } from './SettingsButton';
 import { SwapRoute } from './SwapRoute';
 import { TokenInput2 } from './TokenInput2';
 import { TokenSelectModal } from './TokenSelectModal';
@@ -285,74 +285,72 @@ function SwapperWrapped({
         <CardHeader
           title={intl.formatMessage({ defaultMessage: 'Swap' })}
           action={
-            <SettingsButton
-              sx={{
-                border: '1px solid',
-                borderColor: 'divider',
-                borderRadius: 2,
-                color: 'text.secondary',
-              }}
-            />
+            <SettingsButton variant="outlined" size="small" color="secondary" />
           }
         />
         <Divider />
         <Box
           sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 0.5,
             px: 3,
             pt: 3,
             pb: 1.5,
-            position: 'relative',
           }}
         >
-          <TokenInput2
-            amount={amountIn}
-            decimals={tokenIn.decimals}
-            onAmountChange={handleAmountInChange}
-            balance={balances?.[getTokenId(tokenIn)] ?? 0n}
-            isBalanceLoading={isBalancesLoading}
-            isNativeCurrency={isNativeCurrency(tokenIn)}
-            token={tokenIn}
-            onTokenClick={() => {
-              setTokenSource('tokenIn');
-            }}
-            tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
-            isPriceLoading={isPriceLoading}
-            isAmountDisabled={amountInInputDisabled}
+          <Box
             sx={{
-              p: 3,
-              borderRadius: 3,
-              backgroundColor: 'background.highlight',
-              border: '1px solid',
-              borderColor: 'divider',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 0.5,
+              position: 'relative',
             }}
-          />
-          <TokenInput2
-            readOnly
-            disableMaxButton
-            amount={amountOut}
-            decimals={tokenOut.decimals}
-            balance={balances?.[getTokenId(tokenOut)] ?? 0n}
-            isAmountLoading={isSwapRoutesLoading}
-            isBalanceLoading={isBalancesLoading}
-            isNativeCurrency={isNativeCurrency(tokenOut)}
-            token={tokenOut}
-            onTokenClick={() => {
-              setTokenSource('tokenOut');
-            }}
-            tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
-            isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-            sx={{
-              p: 3,
-              borderRadius: 3,
-              backgroundColor: 'background.highlight',
-              border: '1px solid',
-              borderColor: 'divider',
-            }}
-          />
-          <ArrowButton onClick={handleTokenFlip} />
+          >
+            <TokenInput2
+              amount={amountIn}
+              decimals={tokenIn.decimals}
+              onAmountChange={handleAmountInChange}
+              balance={balances?.[getTokenId(tokenIn)] ?? 0n}
+              isBalanceLoading={isBalancesLoading}
+              isNativeCurrency={isNativeCurrency(tokenIn)}
+              token={tokenIn}
+              onTokenClick={() => {
+                setTokenSource('tokenIn');
+              }}
+              tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+              isPriceLoading={isPriceLoading}
+              isAmountDisabled={amountInInputDisabled}
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
+              }}
+            />
+            <TokenInput2
+              readOnly
+              disableMaxButton
+              amount={amountOut}
+              decimals={tokenOut.decimals}
+              balance={balances?.[getTokenId(tokenOut)] ?? 0n}
+              isAmountLoading={isSwapRoutesLoading}
+              isBalanceLoading={isBalancesLoading}
+              isNativeCurrency={isNativeCurrency(tokenOut)}
+              token={tokenOut}
+              onTokenClick={() => {
+                setTokenSource('tokenOut');
+              }}
+              tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
+              isPriceLoading={isSwapRoutesLoading || isPriceLoading}
+              sx={{
+                p: 3,
+                borderRadius: 3,
+                backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
+              }}
+            />
+            <ArrowButton onClick={handleTokenFlip} />
+          </Box>
         </Box>
         <SwapRoute sx={{ mx: 3 }} />
         <Collapse in={amountOut > 0n}>
@@ -360,7 +358,7 @@ function SwapperWrapped({
             direction="row"
             justifyContent="space-between"
             alignItems="center"
-            py={1.5}
+            py={3}
             px={3}
           >
             <Typography color="text.secondary">
@@ -468,7 +466,7 @@ function ArrowButton({ onClick, ...rest }: BoxProps) {
           content: '""',
           backgroundColor: 'background.default',
           height: 4,
-          bottom: { md: 21, xs: 14 },
+          bottom: { md: 25, xs: 21 },
           width: '110%',
         },
         ...rest?.sx,

@@ -94,15 +94,18 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
         sizeMedium: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
-          padding: theme.spacing(1.5, 2),
+          padding: theme.spacing(1, 1.5),
+          minHeight: 36,
         }),
         sizeLarge: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
-          padding: theme.spacing(2),
+          padding: theme.spacing(0.5, 2),
+          minHeight: 40,
         }),
         outlinedSecondary: ({ theme }) => ({
-          color: theme.palette.text.primary,
-          background: theme.palette.background.default,
+          background: theme.palette.secondary.main,
+          color: theme.palette.secondary.contrastText,
+          border: '1px solid',
           borderColor: theme.palette.divider,
           '&:hover': {
             borderColor: emphasize(theme.palette.divider, 0.2),
@@ -150,6 +153,9 @@ export const components = (base: Theme): ThemeOptions => ({
           style: ({ theme }) => ({
             height: 40,
             padding: theme.spacing(0.75, 2),
+            [base.breakpoints.down('lg')]: {
+              width: 58,
+            },
             [base.breakpoints.down('md')]: {
               width: 40,
               borderRadius: '50%',
@@ -166,7 +172,12 @@ export const components = (base: Theme): ThemeOptions => ({
           style: ({ theme }) => ({
             background: theme.palette.secondary.main,
             color: theme.palette.secondary.contrastText,
-            border: `1px solid ${theme.palette.divider}}`,
+            border: '1px solid',
+            borderColor: theme.palette.divider,
+            '&:hover': {
+              borderColor: emphasize(theme.palette.divider, 0.2),
+              background: emphasize(theme.palette.background.default, 0.2),
+            },
           }),
         },
         {
@@ -174,8 +185,9 @@ export const components = (base: Theme): ThemeOptions => ({
           style: ({ theme }) => ({
             backgroundColor: theme.palette.primary.main,
             color: theme.palette.primary.contrastText,
-            border: `1px solid ${theme.palette.divider}}`,
-            '.MuiButton-navPrimary:hover': {
+            border: '1px solid',
+            borderColor: theme.palette.divider,
+            '&:hover': {
               backgroundColor: theme.palette.primary.dark,
             },
           }),

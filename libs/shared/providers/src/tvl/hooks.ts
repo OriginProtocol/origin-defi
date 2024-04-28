@@ -30,6 +30,7 @@ const fetcher: QueryFunction<number, Key> = async ({
       address: token.address ?? ZERO_ADDRESS,
       abi: token.abi,
       functionName: 'totalSupply',
+      chainId: token.chainId,
     }),
     queryClient.fetchQuery({
       queryKey: useTokenPrice.getKey(

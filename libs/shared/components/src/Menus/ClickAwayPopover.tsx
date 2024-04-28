@@ -1,42 +1,34 @@
 import { useEffect, useRef } from 'react';
 
+import { Box } from '@mui/material';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import Grow from '@mui/material/Grow';
-import MenuList from '@mui/material/MenuList';
 import Paper from '@mui/material/Paper';
 import Popper from '@mui/material/Popper';
 
-import type { MenuListProps } from '@mui/material/MenuList';
 import type { PaperProps } from '@mui/material/Paper';
 import type { PopperProps } from '@mui/material/Popper';
-import type {
-  Dispatch,
-  KeyboardEvent,
-  MutableRefObject,
-  ReactNode,
-} from 'react';
+import type { Dispatch, MutableRefObject, ReactNode } from 'react';
 
-export type ClickAwayMenuProps = {
+export type ClickAwayPopoverProps = {
   open: boolean;
   anchorEl: MutableRefObject<HTMLElement | null>;
   onClose: Dispatch<void>;
   popperProps?: Partial<Omit<PopperProps, 'open' | 'anchorEl'>>;
-  menuListProps?: Partial<MenuListProps>;
   paperProps?: Partial<PaperProps>;
   children:
     | ReactNode
     | ((onClose: (event: Event | React.SyntheticEvent) => void) => ReactNode);
 };
 
-export const ClickAwayMenu = ({
+export const ClickAwayPopover = ({
   open,
   anchorEl,
   onClose,
   children,
   popperProps,
-  menuListProps,
   paperProps,
-}: ClickAwayMenuProps) => {
+}: ClickAwayPopoverProps) => {
   const prevOpen = useRef(open);
 
   useEffect(() => {
@@ -56,15 +48,6 @@ export const ClickAwayMenu = ({
     }
 
     onClose();
-  };
-
-  const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
-    if (event.key === 'Escape') {
-      onClose();
-    }
-    if (menuListProps?.onKeyDown) {
-      menuListProps.onKeyDown(event);
-    }
   };
 
   return (
@@ -99,25 +82,13 @@ export const ClickAwayMenu = ({
     >
       {({ TransitionProps }) => (
         <Grow {...TransitionProps}>
-          <Paper
-            elevation={1}
-            {...paperProps}
-            sx={{
-              padding: 2,
-              ...paperProps?.sx,
-            }}
-          >
+          <Paper elevation={1} {...paperProps}>
             <ClickAwayListener onClickAway={handleClose}>
-              <MenuList
-                autoFocusItem={open}
-                {...menuListProps}
-                onKeyDown={handleListKeyDown}
-                sx={{ py: 0, ...menuListProps?.sx }}
-              >
+              <Box>
                 {typeof children === 'function'
                   ? children(handleClose)
                   : children}
-              </MenuList>
+              </Box>
             </ClickAwayListener>
           </Paper>
         </Grow>

@@ -1,20 +1,15 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
-import {
-  alpha,
-  Box,
-  Divider,
-  Popover,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { alpha, Box, Divider, useMediaQuery, useTheme } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
+import { ClickAwayPopover } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { OriginLabel } from '@origin/shared/icons';
 import {
   AccountPanel,
   BalanceList,
+  ChainMenuButton,
   OpenAccountModalButton,
   ThemeModeIconButton,
 } from '@origin/shared/providers';
@@ -27,9 +22,10 @@ import { ModalMenuButton } from './ModalMenu';
 export const Topnav = () => {
   const { isConnected } = useAccount();
   const theme = useTheme();
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [accountModalAnchor, setAccountModalAnchor] =
-    useState<HTMLButtonElement | null>(null);
+  const accountMenuAnchorEl = useRef(null);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
   return (
     <>
@@ -100,9 +96,10 @@ export const Topnav = () => {
           >
             <OpenAccountModalButton
               variant="nav"
+              ref={accountMenuAnchorEl}
               onClick={(e) => {
                 if (isConnected) {
-                  setAccountModalAnchor(e.currentTarget);
+                  setAccountMenuOpen(true);
                   trackEvent({
                     name: 'open_account',
                   });
@@ -122,33 +119,28 @@ export const Topnav = () => {
               }}
               connectedProps={{ color: 'secondary' }}
               disconnectedProps={{ color: 'primary' }}
-              hideAddress={isSm}
+              hideAddress={isMd}
             />
-            <Popover
-              open={!!accountModalAnchor}
-              anchorEl={accountModalAnchor}
+            <ClickAwayPopover
+              open={accountMenuOpen}
+              anchorEl={accountMenuAnchorEl}
               onClose={() => {
-                setAccountModalAnchor(null);
+                setAccountMenuOpen(false);
               }}
-              anchorOrigin={{
-                vertical: 50,
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              sx={{
-                '& .MuiPopover-paper': {
-                  borderRadius: 1,
-                  width: 250,
+              paperProps={{
+                sx: {
+                  minWidth: 250,
+                  mt: 1.5,
+                  borderRadius: 4,
+                  border: '1px solid',
+                  borderColor: 'divider',
                 },
               }}
             >
               <AccountPanel
                 disconnectButtonProps={{ size: 'small' }}
                 onDisconnect={() => {
-                  setAccountModalAnchor(null);
+                  setAccountMenuOpen(false);
                 }}
               />
               <Divider />
@@ -164,7 +156,26 @@ export const Topnav = () => {
                   tokens.mainnet.stETH,
                 ]}
               />
-            </Popover>
+            </ClickAwayPopover>
+            <ChainMenuButton
+              variant="nav"
+              color="secondary"
+              hideChainName
+              menuProps={{
+                paperProps: {
+                  sx: {
+                    mt: 1.5,
+                    borderRadius: 4,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    p: 1,
+                  },
+                },
+              }}
+              menuItemProps={{
+                sx: (theme) => theme.typography.body3,
+              }}
+            />
             <ThemeModeIconButton
               variant="nav"
               color="secondary"
