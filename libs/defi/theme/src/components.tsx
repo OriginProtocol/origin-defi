@@ -369,6 +369,13 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
       },
     },
+    MuiPopper: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          zIndex: theme.zIndex.tooltip,
+        }),
+      },
+    },
     MuiPopover: {
       defaultProps: {
         transitionDuration: 0,
