@@ -22,10 +22,9 @@ export const SwapView = () => {
   return (
     <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Swap' })}
+        title={intl.formatMessage({ defaultMessage: 'Origin Dollar' })}
         subtitle={intl.formatMessage({
-          defaultMessage:
-            'Secure the most competitive rates when swapping in and out of OUSD using our swap form.',
+          defaultMessage: 'Yield bearing stablecoin',
         })}
         token={tokens.mainnet.OUSD}
       >
