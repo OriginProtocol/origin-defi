@@ -2,12 +2,13 @@ import {
   Page,
   PageSection,
   PageTitle,
-  Redeemer,
   trackEvent,
   trackSentryError,
 } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+
+import { Redeemer } from '../components/Redeemer';
 
 export const RedeemView = () => {
   const intl = useIntl();

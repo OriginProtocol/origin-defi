@@ -57,9 +57,9 @@ import {
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { SettingsButton } from './SettingsButton';
+import { SettingsButton } from '../SettingsButton';
+import { TokenInput } from '../TokenInput';
 import { SwapRoute } from './SwapRoute';
-import { TokenInput2 } from './TokenInput2';
 import { TokenSelectModal } from './TokenSelectModal';
 
 import type { BoxProps, ButtonProps, CardProps } from '@mui/material';
@@ -304,7 +304,7 @@ function SwapperWrapped({
               position: 'relative',
             }}
           >
-            <TokenInput2
+            <TokenInput
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
@@ -326,7 +326,7 @@ function SwapperWrapped({
                 borderColor: 'divider',
               }}
             />
-            <TokenInput2
+            <TokenInput
               readOnly
               disableMaxButton
               amount={amountOut}
@@ -361,7 +361,7 @@ function SwapperWrapped({
             py={3}
             px={3}
           >
-            <Typography color="text.secondary">
+            <Typography color="text.secondary" variant="mono">
               {intl.formatMessage(
                 {
                   defaultMessage: 'Minimum received with {slippage} slippage:',

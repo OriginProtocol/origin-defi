@@ -1,26 +1,17 @@
 import { forwardRef } from 'react';
 
-import {
-  Box,
-  Button,
-  emphasize,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import {
-  BigIntInput,
-  LoadingLabel,
-  TokenIcon,
-} from '@origin/shared/components';
-import { DefaultWallet, FaChevronDownRegular } from '@origin/shared/icons';
+import { Button, Skeleton, Stack } from '@mui/material';
+import { BigIntInput, LoadingLabel } from '@origin/shared/components';
+import { DefaultWallet } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
 
-import type { ButtonProps, StackProps } from '@mui/material';
+import { TokenButton } from '../TokenButton';
+
+import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 
@@ -28,7 +19,7 @@ import type { ReactNode } from 'react';
 // on the wallet so the user can afford the transaction gas fees
 const MIN_ETH_FOR_GAS = '0.015';
 
-export type TokenInput2Props = {
+export type TokenInputProps = {
   amount: bigint;
   decimals?: number;
   onAmountChange?: (value: bigint) => void;
@@ -49,7 +40,7 @@ export type TokenInput2Props = {
   readOnly?: boolean;
 } & StackProps;
 
-export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
+export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   (
     {
       amount,
@@ -96,7 +87,7 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
         balance <= (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n));
 
     return (
-      <Stack spacing={0.5} {...rest}>
+      <Stack spacing={1.5} {...rest}>
         <Stack
           direction="row"
           alignItems="center"
@@ -111,9 +102,7 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
               isLoading={isAmountLoading}
               sWidth={100}
               noWrap
-              sx={{
-                flexGrow: 1,
-              }}
+              flexGrow={1}
             >
               {intl.formatNumber(+formatUnits(amount, decimals), {
                 roundingMode: 'floor',
@@ -213,69 +202,4 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
     );
   },
 );
-
-TokenInput2.displayName = 'TokenInput2';
-
-type TokenButtonProps = { token?: Token; isDisabled?: boolean } & ButtonProps;
-
-function TokenButton({ token, isDisabled, ...rest }: TokenButtonProps) {
-  const intl = useIntl();
-
-  if (!token) {
-    return (
-      <Button variant="contained" color="inherit" {...rest}>
-        {intl.formatMessage({ defaultMessage: 'Select token' })}
-      </Button>
-    );
-  }
-
-  return (
-    <Button
-      disabled={isDisabled}
-      {...rest}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'flex-start',
-        height: 40,
-        gap: 1,
-        borderRadius: 120,
-        color: 'text.primary',
-        backgroundColor: 'background.default',
-        border: '1px solid',
-        borderColor: 'divider',
-        pl: 1,
-        pr: isDisabled ? 1 : 1.5,
-        py: 0.75,
-        flexShrink: 0,
-        '&:hover': {
-          borderColor: (theme) => emphasize(theme.palette.divider, 0.2),
-          background: (theme) =>
-            emphasize(theme.palette.background.default, 0.2),
-        },
-        '&.Mui-disabled': {
-          color: 'text.primary',
-          pr: 2,
-        },
-        ...rest?.sx,
-      }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: '50%',
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <TokenIcon token={token} sx={{ fontSize: 28 }} />
-      </Box>
-      <Typography variant="body2" fontWeight="bold" flexGrow={1}>
-        {token.symbol}
-      </Typography>
-      {!isDisabled && <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />}
-    </Button>
-  );
-}
+TokenInput.displayName = 'TokenInput';

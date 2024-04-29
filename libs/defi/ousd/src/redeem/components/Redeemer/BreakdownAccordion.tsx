@@ -25,7 +25,15 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
 
   return (
-    <Accordion sx={{ px: 2, borderRadius: 1, ...props?.sx }}>
+    <Accordion
+      sx={{
+        px: 2,
+
+        backgroundColor: 'background.highlight',
+        '&&&': { borderRadius: 3 },
+        ...props?.sx,
+      }}
+    >
       <AccordionSummary
         expandIcon={<FaChevronDownRegular sx={{ color: 'text.secondary' }} />}
         sx={{ py: 1, color: 'text.secondary' }}

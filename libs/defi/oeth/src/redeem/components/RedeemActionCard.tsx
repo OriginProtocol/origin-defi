@@ -86,9 +86,8 @@ export const RedeemActionCard = ({
     <Card
       {...rest}
       sx={{
-        px: 1.5,
-        py: 2,
-        borderWidth: 1,
+        p: 2,
+        border: '1px solid',
         borderColor: 'divider',
         ...(amountIn > 0n && {
           cursor: 'pointer',
@@ -99,7 +98,10 @@ export const RedeemActionCard = ({
         ...(isDisabled
           ? { opacity: 0.5, cursor: 'default' }
           : isSelected
-            ? { borderColor: 'primary.main' }
+            ? {
+                borderColor: 'primary.main',
+                backgroundColor: 'background.highlight',
+              }
             : {}),
         ...rest?.sx,
       }}
@@ -110,15 +112,15 @@ export const RedeemActionCard = ({
         }
       }}
     >
-      <Stack spacing={0.5}>
-        <Stack {...rowProps} pb={0.5}>
+      <Stack useFlexGap>
+        <Stack {...rowProps} mb={1.5}>
           <Typography fontWeight={500}>
             {intl.formatMessage(routeLabel)}
           </Typography>
           {action === 'redeem-vault' ? (
-            <Origin sx={{ fontSize: 16 }} />
+            <Origin sx={{ fontSize: 20 }} />
           ) : (
-            <Curve sx={{ fontSize: 16 }} />
+            <Curve sx={{ fontSize: 20 }} />
           )}
         </Stack>
         {isDisabled ? (
@@ -128,7 +130,7 @@ export const RedeemActionCard = ({
             })}
           </Typography>
         ) : (
-          <>
+          <Stack spacing={1.25}>
             <Stack {...rowProps}>
               <Typography {...labelProps}>
                 {intl.formatMessage({ defaultMessage: 'Wait time:' })}
@@ -165,7 +167,7 @@ export const RedeemActionCard = ({
                 </LoadingLabel>
               )}
             </Stack>
-          </>
+          </Stack>
         )}
       </Stack>
     </Card>
@@ -190,5 +192,6 @@ const rowProps: StackProps = {
 };
 
 const labelProps: TypographyProps = {
+  variant: 'mono',
   color: 'text.secondary',
 };

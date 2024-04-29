@@ -5,17 +5,17 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput2 } from '@origin/defi/shared';
+import { TokenButton, TokenInput } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
-  TokenIcon,
 } from '@origin/shared/components';
 import {
   ApprovalNotification,
@@ -32,13 +32,18 @@ import {
   useHandleSwap,
   usePushActivity,
   usePushNotification,
+  useSlippage,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
   useUpdateActivity,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatError, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  formatError,
+  isNilOrEmpty,
+  subtractSlippage,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -200,6 +205,7 @@ function SwapperWrapped({
       swapActions,
     },
   ] = useSwapState();
+  const { value: slippage } = useSlippage();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
@@ -260,13 +266,14 @@ function SwapperWrapped({
             title={intl.formatMessage({ defaultMessage: 'Redeem' })}
             action={<SettingsButton />}
           />
+          <Divider />
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'Unstake amount' })}
+              {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
             </Typography>
-            <TokenInput2
+            <TokenInput
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
@@ -280,9 +287,10 @@ function SwapperWrapped({
               isAmountDisabled={amountInInputDisabled}
               sx={{
                 p: 3,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.default',
+                borderRadius: 3,
+                backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             />
             <Typography pt={1.5}>
@@ -299,18 +307,18 @@ function SwapperWrapped({
               direction="row"
               alignItems="center"
               justifyContent="space-between"
-              sx={{ backgroundColor: 'grey.900', p: 2 }}
+              sx={{
+                backgroundColor: 'background.highlight',
+                p: 3,
+                borderRadius: 3,
+              }}
             >
-              <Stack spacing={1}>
+              <Stack spacing={1.5}>
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
-                  sx={{
-                    fontSize: 24,
-                    lineHeight: 1.5,
-                    fontWeight: 700,
-                    color: amountIn === 0n ? 'text.secondary' : 'text.primary',
-                  }}
+                  variant="h6"
+                  color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
                 >
                   {intl.formatNumber(
                     +formatUnits(amountOut, tokenOut.decimals),
@@ -330,12 +338,41 @@ function SwapperWrapped({
                 </LoadingLabel>
               </Stack>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <TokenIcon token={tokenOut} sx={{ fontSize: 28 }} />
-                <Typography fontWeight="medium" fontSize={16}>
-                  {tokenOut.symbol}
-                </Typography>
+                <TokenButton token={tokenOut} isDisabled />
               </Stack>
             </Stack>
+            <Collapse in={amountOut > 0n}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                py={3}
+                px={1}
+              >
+                <Typography color="text.secondary" variant="mono">
+                  {intl.formatMessage(
+                    {
+                      defaultMessage:
+                        'Minimum received with {slippage} slippage:',
+                    },
+                    {
+                      slippage: intl.formatNumber(slippage, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }),
+                    },
+                  )}
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
+                    {formatCurrency(
+                      subtractSlippage(amountOutUsd, undefined, slippage),
+                    )}
+                  </LoadingLabel>
+                </Stack>
+              </Stack>
+            </Collapse>
             <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
               <Button
                 fullWidth
