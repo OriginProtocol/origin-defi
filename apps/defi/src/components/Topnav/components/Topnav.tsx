@@ -1,6 +1,13 @@
 import { useRef, useState } from 'react';
 
-import { alpha, Box, Divider, useMediaQuery, useTheme } from '@mui/material';
+import {
+  alpha,
+  Box,
+  Divider,
+  emphasize,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
 import { ClickAwayPopover } from '@origin/shared/components';
@@ -173,7 +180,25 @@ export const Topnav = () => {
                 },
               }}
               menuItemProps={{
-                sx: (theme) => theme.typography.body3,
+                sx: {
+                  ...theme.typography.body3,
+                  borderRadius: 2,
+                  '&:hover': {
+                    backgroundColor: emphasize(
+                      theme.palette.background.default,
+                      0.2,
+                    ),
+                  },
+                  '&.Mui-selected': {
+                    backgroundColor: 'background.default',
+                    '&:hover': {
+                      backgroundColor: emphasize(
+                        theme.palette.background.default,
+                        0.2,
+                      ),
+                    },
+                  },
+                },
               }}
             />
             <ThemeModeIconButton

@@ -103,12 +103,14 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
           justifyContent="space-between"
           spacing={1}
           height={52}
+          overflow="hidden"
         >
           {readOnly ? (
             <LoadingLabel
               variant="h6"
               isLoading={isAmountLoading}
               sWidth={100}
+              noWrap
               sx={{
                 flexGrow: 1,
               }}

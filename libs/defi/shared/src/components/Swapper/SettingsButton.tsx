@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 
-import { Button, Stack } from '@mui/material';
+import { Button } from '@mui/material';
 import { ClickAwayPopover } from '@origin/shared/components';
 import { FaGearComplexRegular } from '@origin/shared/icons';
 import { SlippageFormControl } from '@origin/shared/providers';
@@ -46,10 +46,19 @@ export const SettingsButton = ({
         onClose={() => {
           setOpen(false);
         }}
+        paperProps={{
+          sx: {
+            border: '1px solid',
+            borderColor: 'divider',
+            p: 2,
+            mt: 1,
+          },
+        }}
       >
-        <Stack>
-          <SlippageFormControl onChange={handleSlippageChange} />
-        </Stack>
+        <SlippageFormControl
+          onChange={handleSlippageChange}
+          sx={{ maxWidth: 250 }}
+        />
       </ClickAwayPopover>
     </>
   );
