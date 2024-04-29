@@ -1,3 +1,4 @@
+import { Stack } from '@mui/material';
 import {
   Page,
   PageSection,
@@ -22,14 +23,17 @@ export const RedeemView = () => {
         })}
         token={tokens.mainnet.OUSD}
       />
-      <PageSection containerProps={{ maxWidth: 'sm' }}>
-        <Redeemer
-          tokenIn={tokens.mainnet.OUSD}
-          vaultContract={contracts.mainnet.OUSDVault}
-          trackEvent={trackEvent}
-          onError={trackSentryError}
-          buttonsProps={{ variant: 'action' }}
-        />
+      <PageSection>
+        <Stack alignItems="center">
+          <Redeemer
+            tokenIn={tokens.mainnet.OUSD}
+            vaultContract={contracts.mainnet.OUSDVault}
+            trackEvent={trackEvent}
+            onError={trackSentryError}
+            buttonsProps={{ variant: 'action' }}
+            sx={{ width: 1, maxWidth: 605 }}
+          />
+        </Stack>
       </PageSection>
     </Page>
   );
