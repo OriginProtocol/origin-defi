@@ -3,3 +3,4 @@ export * from './components';
 export * from './constants';
 export * from './generated/graphql';
 export * from './hooks';
+export * from './queries';

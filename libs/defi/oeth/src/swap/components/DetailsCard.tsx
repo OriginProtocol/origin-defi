@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
+import { ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
 import { ChainIcon, LoadingLabel, ValueLabel } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
@@ -18,8 +18,6 @@ import {
 } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-
-import { useOethApyQuery } from '../queries.generated';
 
 import type { AccordionProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -36,9 +34,9 @@ export const DetailsCard = ({
 }: DetailsCardProps) => {
   const intl = useIntl();
   const { formatCurrency } = useFormat();
-  const { data: apy, isLoading: isApyLoading } = useOethApyQuery(
+  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
     {
-      token: (token?.address ?? ZERO_ADDRESS).toLowerCase(),
+      token: token?.address ?? ZERO_ADDRESS,
       chainId: token.chainId,
     },
     {

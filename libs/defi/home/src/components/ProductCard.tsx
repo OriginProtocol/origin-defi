@@ -1,14 +1,13 @@
 import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
-import { ChainsChip } from '@origin/defi/shared';
+import { ChainsChip, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
+import { mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
-
-import { useProductCardQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { Product } from '@origin/defi/shared';
@@ -26,8 +25,8 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     token: product.token,
   });
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
-  const { data: apy, isLoading: isApyLoading } = useProductCardQuery(
-    { token: product.token.address },
+  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
+    { token: product.token.address, chainId: mainnet.id },
     {
       enabled: isConnected,
       select: (data) => {

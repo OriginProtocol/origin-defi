@@ -11,9 +11,9 @@ import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { ousdSwapActions } from '../actions';
-import { CexCard } from '../components/CexCard';
-import { FAQCard } from '../components/FAQCard';
-import { OusdDetailCard } from '../components/OusdDetailCard';
+import { AnalyticsCard } from '../components/AnalyticsCard';
+import { DetailsCard } from '../components/DetailsCard';
+import { PageTitleSection } from '../components/PageTitleSection';
 import { ousdSwapRoutes } from '../constants';
 
 export const SwapView = () => {
@@ -25,26 +25,27 @@ export const SwapView = () => {
         title={intl.formatMessage({ defaultMessage: 'Swap' })}
         subtitle={intl.formatMessage({
           defaultMessage:
-            'Secure the most competitive rates when swapping in and out of OETH using our swap form.',
+            'Secure the most competitive rates when swapping in and out of OUSD using our swap form.',
         })}
         token={tokens.mainnet.OUSD}
-      />
-      <PageSection>
-        <Grid2 container spacing={4}>
-          <Grid2 xs={12} md={8}>
-            <Stack spacing={4}>
-              <Swapper
-                swapActions={ousdSwapActions}
-                swapRoutes={ousdSwapRoutes}
-                buttonsProps={{ variant: 'action' }}
-                trackEvent={trackEvent}
-              />
-              <CexCard />
-              <FAQCard />
-            </Stack>
+      >
+        <PageTitleSection />
+      </PageTitle>
+      <PageSection containerProps={{ maxWidth: 'lg' }}>
+        <Grid2 container spacing={5}>
+          <Grid2 xs={12} md={6} mdOffset={2}>
+            <Swapper
+              swapActions={ousdSwapActions}
+              swapRoutes={ousdSwapRoutes}
+              buttonsProps={{ variant: 'action' }}
+              trackEvent={trackEvent}
+            />
           </Grid2>
-          <Grid2 xs={12} md={4}>
-            <OusdDetailCard />
+          <Grid2 xs={12} md={3}>
+            <Stack spacing={4}>
+              <DetailsCard />
+              <AnalyticsCard />
+            </Stack>
           </Grid2>
         </Grid2>
       </PageSection>

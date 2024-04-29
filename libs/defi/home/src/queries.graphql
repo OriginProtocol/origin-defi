@@ -1,9 +1,0 @@
-query ProductCard($token: String) {
-  oTokenApies(
-    limit: 1
-    orderBy: timestamp_DESC
-    where: { chainId_eq: 1, otoken_containsInsensitive: $token }
-  ) {
-    apy30DayAvg
-  }
-}

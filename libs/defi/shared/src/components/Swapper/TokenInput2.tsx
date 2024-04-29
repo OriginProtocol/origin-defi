@@ -199,7 +199,9 @@ export const TokenInput2 = forwardRef<HTMLInputElement, TokenInput2Props>(
                     ) : (
                       <>
                         <DefaultWallet sx={{ fontSize: 20, mr: 1 }} />
-                        {formatBalance(balance, decimals)}
+                        {formatBalance(balance, decimals, undefined, {
+                          roundingMode: 'floor',
+                        })}
                       </>
                     )}
                   </Button>
