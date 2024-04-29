@@ -123,15 +123,6 @@ export const routes: RouteObject[] = [
         handle: { title: defineMessage({ defaultMessage: 'OGV' }), icon: OGV },
         children: [
           {
-            index: true,
-            Component: ogv.SwapView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({ defaultMessage: 'Get OGV' }),
-              icon: FaArrowRightArrowLeftRegular,
-            },
-          },
-          {
             path: 'migration',
             Component: ogv.MigrationView,
             handle: {
