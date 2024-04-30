@@ -23,6 +23,7 @@ import {
   getTokenPriceKey,
   isNativeCurrency,
   SettingsButton,
+  subtractSlippage,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -39,11 +40,7 @@ import {
   useUpdateActivity,
   useWatchBalance,
 } from '@origin/shared/providers';
-import {
-  formatError,
-  isNilOrEmpty,
-  subtractSlippage,
-} from '@origin/shared/utils';
+import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -366,9 +363,7 @@ function SwapperWrapped({
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-                    {formatCurrency(
-                      subtractSlippage(amountOutUsd, undefined, slippage),
-                    )}
+                    {formatCurrency(subtractSlippage(amountOutUsd, slippage))}
                   </LoadingLabel>
                 </Stack>
               </Stack>

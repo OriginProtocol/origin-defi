@@ -269,11 +269,11 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
         <Box
           sx={{
             position: 'absolute',
-            top: '-150%',
+            top: '-200%',
             left: '50%',
             bottom: '50%',
             width: 2,
-            backgroundColor: 'grey.800',
+            backgroundColor: 'divider',
             zIndex: 0,
           }}
         />
@@ -284,7 +284,7 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
             left: '50%',
             width: '50%',
             height: 2,
-            backgroundColor: 'grey.800',
+            backgroundColor: 'divider',
             zIndex: 0,
           }}
         />
