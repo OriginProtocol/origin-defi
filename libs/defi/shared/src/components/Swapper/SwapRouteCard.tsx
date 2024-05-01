@@ -1,5 +1,5 @@
-import { Box, Card, Skeleton, Stack, Typography } from '@mui/material';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { Box, Card, Skeleton, Stack } from '@mui/material';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
   useFormat,
@@ -11,7 +11,8 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import type { CardProps, StackProps, TypographyProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { EstimatedSwapRoute } from '@origin/shared/providers';
 
 export type SwapRouteCardProps = {
@@ -109,8 +110,13 @@ export function SwapRouteCard({
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>
       )}
-      <Stack height={1} spacing={0.5}>
-        <Stack {...rowProps} pb={0.5}>
+      <Stack height={1} spacing={1.25}>
+        <Stack
+          direction="row"
+          justifyContent="space-between"
+          alignItems="center"
+          pb={0.5}
+        >
           <Stack direction="row" spacing={0.5} alignItems="center">
             {isSwapRoutesLoading ? (
               <Skeleton variant="circular" width={24} height={24} />
@@ -118,7 +124,7 @@ export function SwapRouteCard({
               <TokenIcon token={tokenOut} sx={{ fontSize: 24 }} />
             )}
             <LoadingLabel
-              fontWeight={500}
+              fontWeight="medium"
               isLoading={isSwapRoutesLoading}
               sWidth={100}
             >
@@ -131,47 +137,41 @@ export function SwapRouteCard({
             isLoading={isSwapRoutesLoading}
             sWidth={60}
           >
-            ({formatCurrency(convertedAmount)})
+            {formatCurrency(convertedAmount)}
           </LoadingLabel>
         </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Route:' })}
-          </Typography>
-          <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={80}>
-            {intl.formatMessage(routeLabel)}
-          </LoadingLabel>
-        </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Rate:' })}
-          </Typography>
-          <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-            1:{formatQuantity(route.rate)}
-          </LoadingLabel>
-        </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Gas:' })}
-          </Typography>
-          <LoadingLabel isLoading={isGasLoading}>
-            ~{formatCurrency(gasPrice)}
-          </LoadingLabel>
-        </Stack>
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Route:' })}
+          value={intl.formatMessage(routeLabel)}
+          isLoading={isSwapRoutesLoading}
+        />
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '1:{value}' },
+            { value: formatQuantity(route.rate) },
+          )}
+          isLoading={isSwapRoutesLoading}
+        />
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '~{value}' },
+            { value: formatCurrency(gasPrice) },
+          )}
+          isLoading={isGasLoading}
+        />
       </Stack>
     </Card>
   );
 }
 
-const rowProps: StackProps = {
+const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  sx: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 1,
-  },
-};
-
-const labelProps: TypographyProps = {
-  color: 'text.secondary',
+  justifyContent: 'space-between',
+  labelProps: { variant: 'mono' },
+  valueProps: { fontWeight: 'medium' },
 };

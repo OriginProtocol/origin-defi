@@ -1,5 +1,5 @@
-import { Skeleton, Stack, Typography } from '@mui/material';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { Skeleton, Stack } from '@mui/material';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
   useFormat,
@@ -11,6 +11,7 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { EstimatedSwapRoute } from '@origin/shared/providers';
 
 export type SwapRouteAccordionItemProps = {
@@ -65,14 +66,14 @@ export function SwapRouteAccordionItem({
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
       justifyContent="space-between"
-      gap={1}
+      spacing={1}
       sx={{
         borderRadius: 1,
         backgroundColor: 'background.paper',
         border: `1px solid`,
         borderColor: 'divider',
         px: 2,
-        py: 1,
+        py: 1.5,
         ':hover': {
           borderColor: 'primary.main',
         },
@@ -83,59 +84,56 @@ export function SwapRouteAccordionItem({
       onClick={() => onSelect(route)}
       role="button"
     >
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack direction="row" alignItems="center" spacing={1.5}>
         {isSwapRoutesLoading ? (
-          <Skeleton variant="circular" width={24} height={24} />
+          <Skeleton variant="circular" width={28} height={28} />
         ) : (
-          <TokenIcon token={route.tokenOut} sx={{ fontSize: 24 }} />
+          <TokenIcon token={route.tokenOut} sx={{ fontSize: 28 }} />
         )}
-        <Stack
-          direction={{ xs: 'row', sm: 'column' }}
-          spacing={{ xs: 1, sm: 0 }}
-        >
+        <Stack direction={{ xs: 'row', sm: 'column' }} spacing={1}>
           <Stack direction="row" spacing={0.5} alignItems="baseline">
-            <LoadingLabel variant="body2" isLoading={isSwapRoutesLoading}>
+            <LoadingLabel fontWeight="medium" isLoading={isSwapRoutesLoading}>
               {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
             </LoadingLabel>
             <LoadingLabel
-              variant="body2"
               color="text.secondary"
               isLoading={isSwapRoutesLoading}
             >
               ({formatCurrency(convertedAmount)})
             </LoadingLabel>
           </Stack>
-          <LoadingLabel
-            variant="body2"
-            isLoading={isSwapRoutesLoading}
-            sWidth={80}
-          >
+          <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={80}>
             {intl.formatMessage(routeLabel)}
           </LoadingLabel>
         </Stack>
       </Stack>
-      <Stack>
-        <Stack direction="row" spacing={0.75} justifyContent="space-between">
-          <Typography variant="body2" color="text.secondary">
-            {intl.formatMessage({ defaultMessage: 'Rate:' })}
-          </Typography>
-          <LoadingLabel
-            variant="body2"
-            isLoading={isSwapRoutesLoading}
-            sWidth={50}
-          >
-            1:{formatQuantity(route.rate)}
-          </LoadingLabel>
-        </Stack>
-        <Stack direction="row" spacing={0.75} justifyContent="space-between">
-          <Typography variant="body2" color="text.secondary">
-            {intl.formatMessage({ defaultMessage: 'Gas:' })}
-          </Typography>
-          <LoadingLabel variant="body2" isLoading={isGasLoading} sWidth={40}>
-            ~{formatCurrency(gasPrice)}
-          </LoadingLabel>
-        </Stack>
+      <Stack spacing={1}>
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '1:{value}' },
+            { value: formatQuantity(route.rate) },
+          )}
+          isLoading={isSwapRoutesLoading}
+        />
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '~{value}' },
+            { value: formatCurrency(gasPrice) },
+          )}
+          isLoading={isGasLoading}
+        />
       </Stack>
     </Stack>
   );
 }
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  direction: 'row',
+  justifyContent: 'space-between',
+  labelProps: { variant: 'mono' },
+  valueProps: { fontWeight: 'medium' },
+};
