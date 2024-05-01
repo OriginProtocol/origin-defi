@@ -29,6 +29,10 @@ import type { RouteObject } from 'react-router-dom';
 import type { NavItem } from '../types';
 
 export const HoverMenu = () => {
+  const visibleRoutes = routes?.[0]?.children?.filter(
+    (r) => !isNilOrEmpty(r?.handle?.title),
+  );
+
   return (
     <Stack
       sx={{
@@ -41,7 +45,7 @@ export const HoverMenu = () => {
         gap: 2,
       }}
     >
-      {routes?.[0]?.children?.map((route, i) => (
+      {visibleRoutes?.map((route, i) => (
         <NavMenuItem key={`${route?.path ?? 'topButton'}-${i}`} route={route} />
       ))}
     </Stack>

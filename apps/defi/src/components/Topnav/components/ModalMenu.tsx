@@ -74,6 +74,10 @@ const MenuDialog = (props: DialogProps) => {
     }
   };
 
+  const visibleRoutes = routes?.[0]?.children?.filter(
+    (r) => !isNilOrEmpty(r?.handle?.title),
+  );
+
   return (
     <Dialog {...props} fullWidth fullScreen>
       <Stack direction="row" justifyContent="flex-end" p={3}>
@@ -101,7 +105,7 @@ const MenuDialog = (props: DialogProps) => {
             px: 2,
           }}
         >
-          {routes?.[0]?.children?.map((route, i) => {
+          {visibleRoutes?.map((route, i) => {
             const key = route?.path ?? `index-${i}}`;
 
             const handleMenuClick = (path: string) => (evt: MouseEvent) => {

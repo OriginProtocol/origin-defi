@@ -30,7 +30,6 @@ export const routes: RouteObject[] = [
       {
         index: true,
         Component: HomeView,
-        handle: { title: defineMessage({ defaultMessage: 'Overview' }) },
       },
       {
         index: false,
