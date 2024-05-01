@@ -253,7 +253,9 @@ export const components = (base: Theme): ThemeOptions => ({
       },
       styleOverrides: {
         root: {
-          padding: 0,
+          ':hover': {
+            backgroundColor: 'transparent',
+          },
         },
         sizeSmall: { fontSize: 16 },
         sizeMedium: { fontSize: 20 },
@@ -311,7 +313,10 @@ export const components = (base: Theme): ThemeOptions => ({
     },
     MuiDialogContentText: {
       styleOverrides: {
-        root: ({ theme }) => ({ color: theme.palette.text.primary }),
+        root: ({ theme }) => ({
+          color: theme.palette.text.primary,
+          ...theme.typography.body3,
+        }),
       },
     },
     MuiFormControl: {
