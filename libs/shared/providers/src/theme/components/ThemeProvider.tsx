@@ -1,7 +1,7 @@
 import { createTheme, CssBaseline } from '@mui/material';
 import { ThemeProvider as MuiThemeProvider } from '@mui/material';
 
-import { ThemeModeProvider, useThemeMode } from '../state';
+import { useThemeMode } from '../hooks';
 
 import type { Theme } from '@mui/material';
 import type { Children } from '@origin/shared/utils';
@@ -13,12 +13,12 @@ export type ThemeProviderProps = (
 ) &
   Children;
 
-const ThemeProviderWrapped = ({
+export const ThemeProvider = ({
   children,
   light,
   dark,
 }: ThemeProviderProps) => {
-  const [mode] = useThemeMode();
+  const { value: mode } = useThemeMode();
 
   const theme =
     (mode === 'light' && !!light
@@ -34,9 +34,3 @@ const ThemeProviderWrapped = ({
     </MuiThemeProvider>
   );
 };
-
-export const ThemeProvider = (props: ThemeProviderProps) => (
-  <ThemeModeProvider>
-    <ThemeProviderWrapped {...props} />
-  </ThemeModeProvider>
-);

@@ -2,13 +2,13 @@ import { Stack, Switch, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
 
 import { useToggleThemeMode } from '../hooks';
-import { useThemeMode } from '../state';
+import { useThemeMode } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 
 export const ThemeModeSwitch = (props: StackProps) => {
   const intl = useIntl();
-  const [mode] = useThemeMode();
+  const { value: mode } = useThemeMode();
   const toggleTheme = useToggleThemeMode();
 
   return (

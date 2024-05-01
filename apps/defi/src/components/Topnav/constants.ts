@@ -35,17 +35,17 @@ export const additionalLinks: Record<string, NavItem[]> = {
       href: OUSD_ANALYTICS_URL,
     },
   ],
-  ogv: [
+  ogn: [
     {
       title: defineMessage({ defaultMessage: 'Analytics' }),
       subtitle: defineMessage({
-        defaultMessage: 'In-depth OGV analytics',
+        defaultMessage: 'In-depth OGN analytics',
       }),
       icon: FaChartPieRegular,
       href: OUSD_ANALYTICS_URL,
     },
   ],
-  governance: [
+  more: [
     {
       title: defineMessage({ defaultMessage: 'Info page' }),
       subtitle: defineMessage({

@@ -1,6 +1,7 @@
 import * as governance from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import * as oeth from '@origin/defi/oeth';
+import * as ogn from '@origin/defi/ogn';
 import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
@@ -11,9 +12,8 @@ import {
   FaCoinsRegular,
   FaFileLinesRegular,
   FaGavelRegular,
-  FaSquareListRegular,
   OETH,
-  OGV,
+  OGN,
   OUSD,
 } from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
@@ -52,17 +52,6 @@ export const routes: RouteObject[] = [
             },
           },
           {
-            path: 'portfolio',
-            Component: oeth.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Balance, earnings and history',
-              }),
-              icon: FaSquareListRegular,
-            },
-          },
-          {
             ...oeth.oethRedeemRoute,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
@@ -94,17 +83,6 @@ export const routes: RouteObject[] = [
             },
           },
           {
-            path: 'portfolio',
-            Component: ousd.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Balance, earnings and history',
-              }),
-              icon: FaSquareListRegular,
-            },
-          },
-          {
             path: 'redeem',
             Component: ousd.RedeemView,
             handle: {
@@ -119,23 +97,12 @@ export const routes: RouteObject[] = [
       },
       {
         index: false,
-        path: 'ogv',
-        handle: { title: defineMessage({ defaultMessage: 'OGV' }), icon: OGV },
+        path: 'ogn',
+        handle: { title: defineMessage({ defaultMessage: 'OGN' }), icon: OGN },
         children: [
           {
-            path: 'migration',
-            Component: ogv.MigrationView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Migration' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Convert OGV to OGN',
-              }),
-              icon: FaArrowRightRegular,
-            },
-          },
-          {
             path: 'staking',
-            Component: ogv.StakingView,
+            Component: ogn.StakingView,
             handle: {
               title: defineMessage({ defaultMessage: 'Staking' }),
               subtitle: defineMessage({
@@ -148,9 +115,9 @@ export const routes: RouteObject[] = [
       },
       {
         index: false,
-        path: 'governance',
+        path: 'more',
         handle: {
-          title: defineMessage({ defaultMessage: 'Governance' }),
+          title: defineMessage({ defaultMessage: 'More' }),
           icon: FaGavelRegular,
         },
         children: [
@@ -161,6 +128,17 @@ export const routes: RouteObject[] = [
               title: defineMessage({ defaultMessage: 'Governance Overview' }),
               subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
               icon: FaGavelRegular,
+            },
+          },
+          {
+            path: 'migration',
+            Component: ogv.MigrationView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Migration' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Convert OGV to OGN',
+              }),
+              icon: FaArrowRightRegular,
             },
           },
           {

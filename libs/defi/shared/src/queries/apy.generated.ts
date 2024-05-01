@@ -8,7 +8,7 @@ export type OTokenApyQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy14DayAvg: number, apy30DayAvg: number }> };
+export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy14DayAvg: number, apy30DayAvg: number, apr: number, apy: number }> };
 
 
 
@@ -22,6 +22,8 @@ export const OTokenApyDocument = `
     apy7DayAvg
     apy14DayAvg
     apy30DayAvg
+    apr
+    apy
   }
 }
     `;

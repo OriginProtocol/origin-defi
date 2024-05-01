@@ -137,6 +137,8 @@ export const components = (base: Theme): ThemeOptions => ({
           props: { variant: 'link' },
           style: ({ theme }) => ({
             padding: 0,
+            minWidth: 0,
+            minHeight: 0,
             color: theme.palette.primary.main,
             '&:hover': {
               color: theme.palette.primary.light,
@@ -217,12 +219,13 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 72,
           padding: theme.spacing(3),
+          fontWeight: theme.typography.fontWeightMedium,
           [theme.breakpoints.down('md')]: {
             minHeight: 56,
             padding: theme.spacing(2, 3),
           },
         }),
-        title: ({ theme }) => theme.typography.body2,
+        title: ({ theme }) => ({ ...theme.typography.body3 }),
       },
     },
     MuiCardContent: {

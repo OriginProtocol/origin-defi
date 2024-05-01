@@ -7,5 +7,7 @@ query OTokenApy($chainId: Int!, $token: String!) {
     apy7DayAvg
     apy14DayAvg
     apy30DayAvg
+    apr
+    apy
   }
 }

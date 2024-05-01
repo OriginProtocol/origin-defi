@@ -1,15 +1,14 @@
 import { Button } from '@mui/material';
 import { FaMoonRegular, FaSunBrightRegular } from '@origin/shared/icons';
 
-import { useToggleThemeMode } from '../hooks';
-import { useThemeMode } from '../state';
+import { useThemeMode, useToggleThemeMode } from '../hooks';
 
 import type { ButtonProps } from '@mui/material';
 
 export const ThemeModeIconButton = (
   props: Omit<ButtonProps, 'onClick' | 'children'>,
 ) => {
-  const [mode] = useThemeMode();
+  const { value: mode } = useThemeMode();
   const toggleTheme = useToggleThemeMode();
 
   return (

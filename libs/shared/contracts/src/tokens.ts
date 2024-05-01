@@ -1,4 +1,3 @@
-import { DEAD_ADDRESS } from '@origin/shared/utils';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
@@ -174,8 +173,9 @@ export const tokens = {
       decimals: 18,
       symbol: 'wOUSD',
     },
+    // TODO using veOGV address as placeholder
     xOGN: {
-      address: DEAD_ADDRESS,
+      address: '0x0C4576Ca1c365868E162554AF8e385dc3e7C66D9',
       chainId: mainnet.id,
       abi: veOGVABI,
       name: 'Staked OGN',
