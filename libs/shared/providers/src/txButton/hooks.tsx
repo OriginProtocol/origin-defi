@@ -61,7 +61,7 @@ export const useTxButton = <
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 >(
-  args: UseTxButton<abi, functionName, args>,
+  args: UseTxButton<abi, functionName, args> | undefined,
 ) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
@@ -73,13 +73,23 @@ export const useTxButton = <
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const config = useConfig();
-  const publicClient = usePublicClient({
-    chainId: args.params.contract.chainId,
-  });
+  const publicClient = usePublicClient(
+    args && {
+      chainId: args.params.contract.chainId,
+    },
+  );
   const queryClient = useQueryClient();
   const { data: gasPrice, refetch: refetchGas } = useQuery({
-    queryKey: ['txButton', args.params],
+    queryKey: [
+      'txButton',
+      JSON.stringify(
+        args?.params,
+        (key, value) => (typeof value === 'bigint' ? value.toString() : value),
+        undefined,
+      ),
+    ],
     queryFn: async () => {
+      if (!args) return undefined;
       if (publicClient) {
         const res = await publicClient.estimateContractGas({
           address: args.params.contract.address ?? ZERO_ADDRESS,
@@ -331,7 +341,7 @@ export const useTxButton = <
   return useMemo(
     () => ({
       gasPrice,
-      params: args.params,
+      params: args?.params,
       callbacks: {
         onWrite,
         onTxSigned,
@@ -343,7 +353,7 @@ export const useTxButton = <
       },
     }),
     [
-      args.params,
+      args?.params,
       gasPrice,
       onSimulateError,
       onSimulateSuccess,
@@ -355,3 +365,19 @@ export const useTxButton = <
     ],
   );
 };
+
+export const validateTxButtonParams = <
+  abi extends Abi = Abi,
+  functionName extends ContractFunctionName<
+    abi,
+    'nonpayable' | 'payable'
+  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
+  args extends ContractFunctionArgs<
+    abi,
+    'nonpayable' | 'payable',
+    functionName
+  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
+>(
+  params: UseTxButton<abi, functionName, args>['params'],
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+) => params as any;

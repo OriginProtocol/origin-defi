@@ -16,30 +16,29 @@ import {
   tokenInputStyleProps,
 } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { getTokenId, tokens } from '@origin/shared/contracts';
+import { getNativeToken, getTokenId, tokens } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
-  TransactionButton,
+  TxButton,
+  useTxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
 import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
-import { encodeAbiParameters } from 'viem';
+import { formatUnits } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { ccipRouter } from '../constants';
 import { useBridgePrices } from '../hooks/useBridgePrices';
+import { useCcipTxParams } from '../hooks/useCcipTxParams';
 import { useChangeAmount } from '../hooks/useChangeAmount';
 import { useResetBridgeState } from '../hooks/useResetBridgeState';
 import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
-import type { HexAddress } from '@origin/shared/utils';
 import type { erc20Abi } from 'viem';
-
-const feePaddingBps = 100n;
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -54,23 +53,13 @@ export const BridgeCard = () => {
   const handleChangeAmount = useChangeAmount();
   const reset = useResetBridgeState();
   const prices = useBridgePrices();
+  const nativeToken = getNativeToken(srcChain);
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
-    tokens: [srcToken, dstToken],
+    tokens: [nativeToken, srcToken, dstToken],
   });
   const srcBalance = balances?.[getTokenId(srcToken)];
   const srcRouter = ccipRouter[srcChain.id];
-  const dstRouter = ccipRouter[dstChain.id];
-  const message = userAddress
-    ? ({
-        receiver: encodeAbiParameters([{ type: 'address' }], [userAddress]),
-        data: '0x',
-        tokenAmounts: [
-          { token: srcToken.address as HexAddress, amount: amount },
-        ],
-        feeToken: ZERO_ADDRESS,
-        extraArgs: '0x',
-      } as const)
-    : undefined;
+
   const {
     data: allowance,
     isLoading: isAllowanceLoading,
@@ -83,16 +72,32 @@ export const BridgeCard = () => {
     args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
     query: { enabled: !!userAddress },
   });
-  const { data: suggestedFee, isLoading: isFeesLoading } = useReadContract(
-    message && {
-      address: srcRouter.address,
-      abi: srcRouter.abi,
-      functionName: 'getFee',
-      args: [dstRouter.chainSelectorId, message],
-      chainId: srcRouter.chainId,
-      query: {
-        enabled: !!userAddress && !!message,
+
+  const ccipTxParams = useCcipTxParams({
+    srcChain,
+    dstChain,
+    srcToken,
+    dstToken,
+    amount,
+  });
+
+  const txButton = useTxButton(
+    ccipTxParams.data && {
+      params: ccipTxParams.data.params,
+      activity: {
+        type: 'bridge',
+        status: 'pending',
+        amountIn: amount,
+        tokenIn: srcToken,
+        tokenOut: dstToken,
       },
+      callbacks: {
+        onWriteSuccess: () => {
+          reset();
+          refetchAllowance?.();
+        },
+      },
+      enableGas: true,
     },
   );
 
@@ -106,7 +111,6 @@ export const BridgeCard = () => {
     }
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
-  const fee = ((suggestedFee ?? 0n) * (10000n + feePaddingBps)) / 10000n;
   const requiresApproval =
     !isAllowanceLoading &&
     !isBalancesLoading &&
@@ -117,7 +121,6 @@ export const BridgeCard = () => {
   const bridgeButtonDisabled =
     !isConnected ||
     (allowance ?? 0n) < amount ||
-    isFeesLoading ||
     amount === 0n ||
     amount > (balances?.[getTokenId(srcToken)] ?? 0n);
   const bridgeButtonLabel =
@@ -133,6 +136,11 @@ export const BridgeCard = () => {
               symbol: srcToken.symbol,
             },
           );
+
+  const totalFees =
+    txButton.gasPrice &&
+    ccipTxParams.data &&
+    txButton.gasPrice.gasPrice + Number(formatUnits(ccipTxParams.data.fee, 18));
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -210,7 +218,8 @@ export const BridgeCard = () => {
               {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
             </Box>
             <Box>
-              {formatAmount(fee)} {srcChain.nativeCurrency.symbol}
+              {totalFees !== undefined &&
+                `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`}
             </Box>
           </Stack>
           <Collapse in={requiresApproval}>
@@ -226,24 +235,10 @@ export const BridgeCard = () => {
               }}
             />
           </Collapse>
-          <TransactionButton
-            contract={srcRouter}
-            functionName="ccipSend"
-            args={[dstRouter.chainSelectorId, message]}
-            value={fee}
+          <TxButton
+            params={txButton.params}
+            callbacks={txButton.callbacks}
             disabled={bridgeButtonDisabled}
-            targetChainId={srcChain.id}
-            activityInput={{
-              type: 'bridge',
-              status: 'pending',
-              amountIn: amount,
-              tokenIn: srcToken,
-              tokenOut: dstToken,
-            }}
-            onSuccess={() => {
-              reset();
-              refetchAllowance?.();
-            }}
             fullWidth
             sx={{ mt: 1.5 }}
             variant={'action'}

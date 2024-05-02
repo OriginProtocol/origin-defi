@@ -41,7 +41,7 @@ export type TxButtonProps<
   label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
-  params: WriteTransactionParameters<abi, functionName, args>;
+  params?: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
 } & Omit<
   ConnectedButtonProps,
@@ -70,21 +70,23 @@ export const TxButton = <
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
-  const { data: simulateData, error: simulateError } = useSimulateContract({
-    address: params.contract.address,
-    abi: params.contract.abi as Abi,
-    functionName: params.functionName as functionName,
-    args: params?.args as readonly unknown[],
-    value: params?.value,
-    chainId: params.contract.chainId,
-    query: {
-      enabled:
-        isConnected &&
-        !disabled &&
-        !!params.contract?.address &&
-        params.contract.chainId === chain?.id,
+  const { data: simulateData, error: simulateError } = useSimulateContract(
+    params && {
+      address: params.contract.address,
+      abi: params.contract.abi as Abi,
+      functionName: params.functionName as functionName,
+      args: params?.args as readonly unknown[],
+      value: params?.value,
+      chainId: params.contract.chainId,
+      query: {
+        enabled:
+          isConnected &&
+          !disabled &&
+          !!params.contract?.address &&
+          params.contract.chainId === chain?.id,
+      },
     },
-  });
+  );
   const {
     writeContract,
     data: hash,
@@ -101,10 +103,10 @@ export const TxButton = <
   const prevWaitTxStatus = usePrevious(waitTxStatus);
 
   useEffect(() => {
-    if (chain?.id !== params.contract.chainId) {
+    if (chain?.id !== params?.contract.chainId) {
       resetWriteContract();
     }
-  }, [chain?.id, params.contract.chainId, resetWriteContract]);
+  }, [chain?.id, params?.contract.chainId, resetWriteContract]);
 
   useEffect(() => {
     if (simulateData) {
@@ -173,7 +175,7 @@ export const TxButton = <
           waitTxStatus === 'pending'
         ? waitingTxLabel ??
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-        : label ?? capitalize(params.functionName);
+        : label ?? capitalize(params?.functionName ?? '');
   const isDisabled =
     disabled ||
     writeStatus === 'pending' ||
@@ -186,7 +188,7 @@ export const TxButton = <
       {...rest}
       disabled={isDisabled}
       onClick={handleClick}
-      targetChainId={params.contract.chainId}
+      targetChainId={params?.contract.chainId}
     >
       {buttonLabel}
     </ConnectedButton>
