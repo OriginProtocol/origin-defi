@@ -42,9 +42,8 @@ import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../../hooks';
 import { getNextEmissionDate, getVAPY } from '../../utils';
-import { cardInputStackProps } from '../styles';
 
-import type { ButtonProps, DialogProps } from '@mui/material';
+import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 
 import type { Lockup } from '../../types';
 
@@ -537,4 +536,15 @@ export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
       />
     </>
   );
+};
+
+const cardInputStackProps: StackProps = {
+  sx: {
+    px: 3,
+    py: 2,
+    borderRadius: 1,
+    backgroundColor: 'background.default',
+    border: '1px solid',
+    borderColor: 'divider',
+  },
 };

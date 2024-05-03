@@ -15,6 +15,11 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.041,
       letterSpacing: '-0.025em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 80,
+        lineHeight: 1.05,
+        letterSpacing: '-0.02em',
+      },
     },
     h2: {
       fontFamily: 'dm',
@@ -22,6 +27,10 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.05,
       letterSpacing: '-0.02em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 64,
+        lineHeight: 1.0625,
+      },
     },
     h3: {
       fontFamily: 'dm',
@@ -29,6 +38,11 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.0625,
       letterSpacing: '-0.02em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 56,
+        lineHeight: 1.071,
+        letterSpacing: '-0.01em',
+      },
     },
     h4: {
       fontFamily: 'dm',
@@ -36,6 +50,11 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.071,
       letterSpacing: '-0.015em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 48,
+        lineHeight: 1.083,
+        letterSpacing: '-0.01em',
+      },
     },
     h5: {
       fontFamily: 'dm',
@@ -43,6 +62,11 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.083,
       letterSpacing: '-0.01em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 36,
+        lineHeight: 1,
+        letterSpacing: '-0.01em',
+      },
     },
     h6: {
       fontFamily: 'dm',
@@ -50,6 +74,10 @@ export const typography = (base: Theme): ThemeOptions => ({
       lineHeight: 1.111,
       letterSpacing: '-0.005em',
       fontWeight: 800,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 32,
+        lineHeight: 1,
+      },
     },
     body1: {
       fontFamily: 'inter',
@@ -81,12 +109,20 @@ export const typography = (base: Theme): ThemeOptions => ({
       fontSize: 32,
       lineHeight: 1.25,
       fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 24,
+        lineHeight: 1.333,
+      },
     },
     featured2: {
       fontFamily: 'inter',
       fontSize: 24,
       lineHeight: 1.333,
       fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 20,
+        lineHeight: 1.4,
+      },
     },
     featured3: {
       fontFamily: 'inter',

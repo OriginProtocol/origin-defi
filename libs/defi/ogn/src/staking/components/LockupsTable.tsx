@@ -14,16 +14,10 @@ import {
   useTheme,
 } from '@mui/material';
 import { useOgvInfo } from '@origin/defi/shared';
-import {
-  LoadingLabel,
-  TablePagination,
-  TokenIcon,
-} from '@origin/shared/components';
+import { LoadingLabel, TablePagination } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
-import { TransactionButton } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   createColumnHelper,
   flexRender,
@@ -31,13 +25,14 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict, isFuture } from 'date-fns';
+import { formatDistanceToNowStrict } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useOgvLockupsQuery } from '../../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
+import { UnstakeLockupButton } from './UnstakeLockupModal';
 
 import type { Lockup } from '../../types';
 
@@ -47,7 +42,6 @@ export const LockupsTable = () => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
-  const queryClient = useQueryClient();
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useOgvInfo();
   const { data, isLoading } = useOgvLockupsQuery(
@@ -156,36 +150,13 @@ export const LockupsTable = () => {
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
               </ExtendButton>
-              <TransactionButton
-                contract={tokens.mainnet.veOGV}
-                functionName="unstake"
-                args={[info.row.original.lockupId]}
+              <UnstakeLockupButton
+                lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={isFuture(new Date(info.row.original.end))}
-                label={intl.formatMessage({ defaultMessage: 'Unstake' })}
-                waitingSignatureLabel={intl.formatMessage({
-                  defaultMessage: 'Signing',
-                })}
-                waitingTxLabel={intl.formatMessage({
-                  defaultMessage: 'Unstaking',
-                })}
-                notificationTitle={intl.formatMessage({
-                  defaultMessage: 'Unstake',
-                })}
-                notificationSubtitle={intl.formatMessage({
-                  defaultMessage: 'Unstake lock-up',
-                })}
-                notificationEndIcon={
-                  <TokenIcon
-                    token={tokens.mainnet.veOGV}
-                    sx={{ transform: 'translateY(4px)' }}
-                  />
-                }
-                onSuccess={() => {
-                  queryClient.invalidateQueries();
-                }}
-              />
+              >
+                {intl.formatMessage({ defaultMessage: 'Unlock' })}
+              </UnstakeLockupButton>
               <Button
                 variant="outlined"
                 color="secondary"
@@ -203,14 +174,7 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [
-      govInfo?.veOgvTotalSupply,
-      intl,
-      isGovInfoLoading,
-      isLoading,
-      isSm,
-      queryClient,
-    ],
+    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
   );
 
   const table = useReactTable({

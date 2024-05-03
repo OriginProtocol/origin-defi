@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -14,6 +13,8 @@ import { TxButton, useFormat, useTxButton } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
+
+import { StakeRewardButton } from './StakeRewardModal';
 
 import type { CardProps } from '@mui/material';
 
@@ -89,9 +90,9 @@ export const RewardCard = (props: CardProps) => {
               </Typography>
             </Stack>
           </Stack>
-          <Button sx={{ mb: 1 }}>
+          <StakeRewardButton sx={{ mb: 1 }}>
             {intl.formatMessage({ defaultMessage: 'Add to stake' })}
-          </Button>
+          </StakeRewardButton>
           <TxButton
             params={params}
             callbacks={callbacks}

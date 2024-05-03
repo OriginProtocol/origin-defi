@@ -161,7 +161,6 @@ export const UnstakeFormModal = ({
                   {lockup.lockupId}
                 </MiddleTruncated>
               ),
-              duration,
             },
           )}
           notificationEndIcon={
