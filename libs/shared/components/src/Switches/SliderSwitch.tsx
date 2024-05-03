@@ -1,6 +1,6 @@
 import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, emphasize, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { BoxProps, ButtonProps, StackProps } from '@mui/material';
@@ -15,7 +15,7 @@ export type SliderSwitchProps = {
   value: string | number;
   options: Option[];
   onChange: (value: string | number) => void;
-  selectedSx?: Pick<BoxProps, 'sx'>;
+  selectedSx?: BoxProps['sx'];
 } & Omit<StackProps, 'children' | 'onClick' | 'onChange'>;
 
 export const SliderSwitch = ({
@@ -49,7 +49,8 @@ export const SliderSwitch = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 6,
-        border: (theme) => `1px solid ${theme.palette.grey[800]}`,
+        border: '1px solid',
+        borderColor: 'divider',
         backgroundColor: 'background.paper',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
@@ -82,6 +83,8 @@ export const SliderSwitch = ({
           height: 1,
           transform: `translateX(${translateX}px)`,
           transition: '0.2s ease',
+          backgroundColor: (theme) =>
+            emphasize(theme.palette.background.paper, 0.2),
           ...selectedSx,
         }}
       />

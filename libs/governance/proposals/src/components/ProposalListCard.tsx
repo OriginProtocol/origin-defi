@@ -99,7 +99,8 @@ export const ProposalListCard = (props: CardProps) => {
             options={filterOptions}
             value={filter}
             onChange={handleFilterChange}
-            selectedProps={{ backgroundColor: 'grey.800' }}
+            selectedSx={{ backgroundColor: 'grey.800' }}
+            sx={{ borderColor: 'grey.800' }}
           />
         }
       />
