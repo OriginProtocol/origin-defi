@@ -22,7 +22,10 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { DefaultWallet } from '@origin/shared/icons';
+import {
+  DefaultWallet,
+  FaCircleExclamationRegular,
+} from '@origin/shared/icons';
 import {
   ApprovalButton,
   TxButton,
@@ -402,39 +405,43 @@ export const StakingForm = () => {
         </Stack>
         {showRewardLabel && (
           <Stack
-            spacing={1}
+            direction="row"
+            spacing={2}
             sx={{
               border: '1px solid',
               borderColor: 'primary.main',
+              backgroundColor: 'primary.faded',
               borderRadius: 3,
               p: 3,
               mb: 3,
             }}
           >
-            <Typography>
-              {intl.formatMessage({
-                defaultMessage: 'OGN Rewards Will be Collected',
-              })}
-            </Typography>
-            <Typography
-              color="text.secondary"
-              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
-            >
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    'You have accrued <b>{reward} OGN</b> in staking rewards. This OGN will be transferred to your wallet immediately when you extend your stake.',
-                },
-                {
-                  reward: formatAmount(
-                    info?.xOgnRewards,
-                    tokens.mainnet.OGN.decimals,
-                    undefined,
-                    { notation: 'compact', maximumSignificantDigits: 4 },
-                  ),
-                },
-              )}
-            </Typography>
+            <FaCircleExclamationRegular
+              sx={{ fontSize: 20, color: 'primary.main' }}
+            />
+            <Stack>
+              <Typography fontWeight="medium">
+                {intl.formatMessage({
+                  defaultMessage: 'OGN Rewards Will be Collected',
+                })}
+              </Typography>
+              <Typography color="text.secondary">
+                {intl.formatMessage(
+                  {
+                    defaultMessage:
+                      'You have accrued <b>{reward} OGN</b> in staking rewards. This OGN will be transferred to your wallet immediately when you extend your stake.',
+                  },
+                  {
+                    reward: formatAmount(
+                      info?.xOgnRewards,
+                      tokens.mainnet.OGN.decimals,
+                      undefined,
+                      { notation: 'compact', maximumSignificantDigits: 4 },
+                    ),
+                  },
+                )}
+              </Typography>
+            </Stack>
           </Stack>
         )}
         <Collapse in={showApprove}>

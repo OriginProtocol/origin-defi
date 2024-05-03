@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import {
   Box,
+  Button,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -13,35 +14,35 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useOgvInfo } from '@origin/defi/shared';
+import { useOgnInfo } from '@origin/defi/shared';
 import {
-  InfoTooltip,
+  InfoTooltipLabel,
   LoadingLabel,
   TokenIcon,
+  ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { FaXmarkRegular } from '@origin/shared/icons';
 import {
-  ConnectedButton,
-  TransactionButton,
-  useFormat,
-} from '@origin/shared/providers';
+  FaCircleExclamationRegular,
+  FaXmarkRegular,
+} from '@origin/shared/icons';
+import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   addMonths,
   differenceInMonths,
+  formatDistanceToNowStrict,
   formatDuration,
   isPast,
 } from 'date-fns';
-import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../../hooks';
-import { getNextEmissionDate, getVAPY } from '../../utils';
+import { getVAPY } from '../../utils';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 
@@ -63,7 +64,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const queryClient = useQueryClient();
   const { isConnected } = useAccount();
-  const { data: info, isLoading: isInfoLoading } = useOgvInfo();
+  const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
   const { data: staking, refetch } = useStakingAPY(amount, duration, {
@@ -107,7 +108,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals),
           +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGV.decimals),
           +formatUnits(
-            BigInt(info?.veOgvTotalSupply ?? '0'),
+            BigInt(info?.xOgnTotalSupply ?? '0'),
             tokens.mainnet.veOGV.decimals,
           ),
         ) / 100
@@ -119,11 +120,10 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const votingPowerPercent =
     (veOGVReceived ?? 0) /
     +formatUnits(
-      (info?.veOgvTotalSupply as unknown as bigint) ?? 1n,
+      (info?.xOgnTotalSupply as unknown as bigint) ?? 1n,
       tokens.mainnet.OGV.decimals,
     );
-  const showRewardLabel =
-    ((info?.veOgvRewards as unknown as bigint) ?? 0n) > 0n;
+  const showRewardLabel = ((info?.xOgnRewards as unknown as bigint) ?? 0n) > 0n;
   const stakeDisabled =
     !isConnected ||
     isInfoLoading ||
@@ -153,86 +153,93 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Stack mt={3} {...cardInputStackProps}>
-          <Stack
-            direction="row"
-            px={3}
-            pt={2}
-            pb={1}
-            sx={{ '> *': { width: 1, color: 'text.secondary' } }}
-          >
-            <Typography>{tokens.mainnet.OGV.symbol}</Typography>
-            <Typography textAlign="end">
-              {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
+      <Divider />
+      <DialogContent>
+        <Stack
+          sx={{
+            borderRadius: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'background.highlight',
+            mb: 3,
+          }}
+        >
+          <Typography p={3}>
+            {intl.formatMessage({ defaultMessage: 'Selected lockup' })}
+          </Typography>
+          <Divider />
+          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
+            <Typography variant="caption1" fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'OGN' })}
             </Typography>
-            <Typography textAlign="end">
-              {tokens.mainnet.veOGV.symbol}
+            <Typography variant="caption1" fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Time remaining' })}
+            </Typography>
+            <Typography variant="caption1" fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Voting power' })}
             </Typography>
           </Stack>
           <Divider />
-          <Stack
-            direction="row"
-            px={3}
-            pt={1}
-            pb={2}
-            alignItems="baseline"
-            sx={{ '> *': { width: 1 } }}
-          >
-            <Stack direction="row" spacing={1} alignItems="baseline">
-              <TokenIcon
-                token={tokens.mainnet.OGV}
-                sx={{ transform: 'translateY(4px)', fontSize: 28 }}
-              />
-              <Typography variant="h3">
-                {formatAmount(
+          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
+            <Typography>
+              {intl.formatNumber(
+                +formatUnits(
                   BigInt(lockup.amount),
-                  tokens.mainnet.OGV.decimals,
-                  undefined,
-                  { notation: 'compact', maximumSignificantDigits: 4 },
-                )}
-              </Typography>
-            </Stack>
-            <Typography textAlign="end" fontWeight={700}>
-              {intl.formatMessage(
+                  tokens.mainnet.OGN.decimals,
+                ),
                 {
-                  defaultMessage: '{count,plural, =1{# month} other{# months}}',
+                  minimumFractionDigits: 0,
+                  maximumFractionDigits: 0,
                 },
-                { count: initialMonthDuration },
               )}
             </Typography>
-            <Stack
-              direction="row"
-              spacing={1}
-              alignItems="baseline"
-              justifyContent="flex-end"
-            >
-              <TokenIcon
-                token={tokens.mainnet.veOGV}
-                sx={{ transform: 'translateY(4px)' }}
-              />
-              <Typography fontWeight={700}>
-                {formatAmount(
-                  BigInt(lockup.veogv),
+            <Typography>
+              {formatDistanceToNowStrict(new Date(lockup.end), {
+                unit: 'month',
+                roundingMethod: 'floor',
+              })}
+            </Typography>
+            <Typography>
+              {intl.formatNumber(
+                +formatUnits(
+                  BigInt(lockup.veogv) ?? 0n,
                   tokens.mainnet.veOGV.decimals,
-                  undefined,
-                  { notation: 'compact', maximumSignificantDigits: 4 },
-                )}
-              </Typography>
-            </Stack>
+                ) /
+                  +formatUnits(
+                    info?.xOgnTotalSupply ?? 1n,
+                    tokens.mainnet.veOGV.decimals,
+                  ),
+                {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 6,
+                },
+              )}
+            </Typography>
           </Stack>
         </Stack>
-        <Stack>
-          <Typography fontWeight={700} mb={1.5}>
-            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}&nbsp;
-            <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
-              })}
-            />
-          </Typography>
-          <Stack spacing={2} {...cardInputStackProps}>
+        <Stack mb={3}>
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
+            })}
+            mb={1.5}
+            color="text.secondary"
+            fontWeight="medium"
+          >
+            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+          </InfoTooltipLabel>
+          <Stack
+            spacing={2}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 3,
+              p: 3,
+              backgroundColor: 'background.highlight',
+            }}
+          >
             <Stack
               direction="row"
               alignItems="center"
@@ -240,7 +247,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               flexWrap="wrap"
               rowGap={1}
             >
-              <Typography variant="h3" mr={1}>
+              <Typography variant="featured3" minWidth={170} mr={1}>
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -255,12 +262,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               </Typography>
               <Stack spacing={0.5} flexGrow={1}>
                 <Stack direction="row" justifyContent="flex-end">
-                  <Typography color="text.secondary">
+                  <Typography variant="mono" color="text.secondary">
                     {intl.formatMessage({
                       defaultMessage: 'Current Lock-up Ends:',
                     })}
                   </Typography>
-                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                  <Typography textAlign="end" minWidth={92}>
                     {intl.formatDate(new Date(lockup.end), {
                       day: '2-digit',
                       month: 'short',
@@ -269,12 +276,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   </Typography>
                 </Stack>
                 <Stack direction="row" justifyContent="flex-end">
-                  <Typography color="text.secondary">
+                  <Typography variant="mono" color="text.secondary">
                     {intl.formatMessage({
                       defaultMessage: 'Extended Lock up Ends:',
                     })}
                   </Typography>
-                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                  <Typography textAlign="end" minWidth={92}>
                     {intl.formatDate(extendLockupEnd, {
                       day: '2-digit',
                       month: 'short',
@@ -289,7 +296,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 value={duration}
                 onChange={handleDurationChange}
                 min={0}
-                max={48}
+                max={12}
                 step={1}
                 marks={[
                   {
@@ -297,214 +304,187 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     label: 0,
                   },
                   {
+                    value: 3,
+                    label: intl.formatMessage({ defaultMessage: '3m' }),
+                  },
+                  {
+                    value: 6,
+                    label: intl.formatMessage({ defaultMessage: '6m' }),
+                  },
+                  {
+                    value: 9,
+                    label: intl.formatMessage({ defaultMessage: '9m' }),
+                  },
+                  {
                     value: 12,
                     label: intl.formatMessage({ defaultMessage: '1y' }),
-                  },
-                  {
-                    value: 24,
-                    label: intl.formatMessage({ defaultMessage: '2y' }),
-                  },
-                  {
-                    value: 36,
-                    label: intl.formatMessage({ defaultMessage: '3y' }),
-                  },
-                  {
-                    value: 48,
-                    label: intl.formatMessage({ defaultMessage: '4y' }),
                   },
                 ]}
               />
             </Box>
           </Stack>
         </Stack>
-        <Stack>
-          <Typography fontWeight={700} mb={1.5}>
+        <Stack mb={3}>
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The variable APY currently being earned on staked xOGN.',
+            })}
+            mb={1.5}
+            color="text.secondary"
+            fontWeight="medium"
+          >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
-            &nbsp;
-            <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The variable APY currently being earned on staked OGV.',
-              })}
-            />
-          </Typography>
-          <Stack spacing={2} {...cardInputStackProps}>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
-              flexWrap="wrap"
-              rowGap={1}
+          </InfoTooltipLabel>
+          <Stack
+            spacing={2}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 3,
+              p: 3,
+            }}
+          >
+            <LoadingLabel
+              variant="featured3"
+              fontWeight="bold"
+              color="primary"
+              sWidth={60}
+              isLoading={isLoading}
             >
-              <LoadingLabel
-                variant="h3"
-                sx={{
-                  mr: 1,
-                  background:
-                    'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-                sWidth={60}
-                isLoading={isLoading}
-              >
-                {intl.formatNumber(vAPY, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </LoadingLabel>
-              <Stack direction="row" flexWrap="wrap">
-                <Typography color="text.secondary" mr={1}>
-                  {intl.formatMessage({
-                    defaultMessage: 'Next Emissions Reduction Event:',
-                  })}
-                </Typography>
-                <Typography fontWeight={700} noWrap>
-                  {intl.formatDate(getNextEmissionDate(), {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                  })}
-                  &nbsp;
-                  <InfoTooltip
-                    tooltipLabel={intl.formatMessage({
-                      defaultMessage:
-                        'Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time.',
-                    })}
-                  />
-                </Typography>
-              </Stack>
-            </Stack>
+              ~
+              {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </LoadingLabel>
           </Stack>
         </Stack>
-        <Stack>
-          <Typography fontWeight={700} mb={1.5}>
+        <Stack mb={3}>
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
+            })}
+            mb={1.5}
+            color="text.secondary"
+            fontWeight="medium"
+          >
             {intl.formatMessage({
               defaultMessage: 'Locked Tokens Received Now',
             })}
-            &nbsp;
-            <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn.',
-              })}
-            />
-          </Typography>
-          <Stack spacing={2} {...cardInputStackProps}>
+          </InfoTooltipLabel>
+          <Stack
+            spacing={2}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 3,
+              p: 3,
+            }}
+          >
             <Stack
               direction="row"
               justifyContent="space-between"
-              alignItems="baseline"
+              alignItems="center"
               flexWrap="wrap"
               rowGap={1}
             >
-              <Stack direction="row" alignItems="baseline" mr={1}>
-                <TokenIcon
-                  token={tokens.mainnet.veOGV}
-                  sx={{ mr: 1, fontSize: 28, transform: 'translateY(4px)' }}
-                />
+              <Stack direction="row" alignItems="center" spacing={1}>
                 <LoadingLabel
-                  variant="h3"
-                  mr={0.5}
-                  isLoading={isLoading}
+                  variant="featured3"
+                  fontWeight="bold"
+                  color="primary"
+                  isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {formatQuantity(veOGVReceived)}
+                  {amount > 0n
+                    ? formatQuantity(staking?.veOGVReceived)
+                    : '0.00'}
                 </LoadingLabel>
-                &nbsp;
-                <Typography color="text.secondary">
-                  {tokens.mainnet.veOGV.symbol}
+                <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
+                <Typography variant="body2" fontWeight="bold">
+                  {tokens.mainnet.xOGN.symbol}
                 </Typography>
               </Stack>
-              <Stack direction="row" alignItems="baseline">
-                <Typography
-                  sx={{
-                    mr: 1,
-                    color: 'text.secondary',
-                  }}
-                >
-                  {intl.formatMessage({
-                    defaultMessage: 'Voting Power:',
-                  })}
-                </Typography>
-                <LoadingLabel fontWeight={700} isLoading={isLoading}>
-                  {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
-                  {intl.formatNumber(votingPowerPercent, {
-                    style: 'percent',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 5,
-                  })}
-                </LoadingLabel>
-                <InfoTooltip
-                  sx={{ ml: 0.75 }}
-                  tooltipLabel={intl.formatMessage({
-                    defaultMessage:
-                      'The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up.',
-                  })}
-                />
-              </Stack>
+              <ValueLabel
+                label={intl.formatMessage({
+                  defaultMessage: 'Voting Power',
+                })}
+                labelInfoTooltip={intl.formatMessage({
+                  defaultMessage:
+                    'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                })}
+                labelProps={{ variant: 'mono' }}
+                isLoading={isLoading && amount > 0n}
+                value={intl.formatMessage(
+                  { defaultMessage: '{tilt}{value}' },
+                  {
+                    tilt:
+                      votingPowerPercent <= 1e-6 && votingPowerPercent > 0
+                        ? `~ `
+                        : '',
+                    value:
+                      amount > 0n
+                        ? intl.formatNumber(votingPowerPercent, {
+                            style: 'percent',
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 5,
+                          })
+                        : '0.00%',
+                  },
+                )}
+                valueProps={{ variant: 'body3', fontWeight: 'medium' }}
+                sx={{ alignItems: 'flex-end' }}
+              />
             </Stack>
           </Stack>
         </Stack>
         {showRewardLabel && (
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
-            <Typography>
-              {intl.formatMessage({
-                defaultMessage: 'OGV Rewards Will be Collected',
-              })}
-            </Typography>
-            <Typography
-              color="text.secondary"
-              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
-            >
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    'You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake.',
-                },
-                {
-                  reward: formatAmount(
-                    (info?.veOgvRewards as unknown as bigint) ?? 0n,
-                    tokens.mainnet.OGV.decimals,
-                    undefined,
-                    { notation: 'compact', maximumSignificantDigits: 4 },
-                  ),
-                },
-              )}
-            </Typography>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              border: '1px solid',
+              borderColor: 'primary.main',
+              backgroundColor: 'primary.faded',
+              borderRadius: 3,
+              p: 3,
+              mb: 3,
+            }}
+          >
+            <FaCircleExclamationRegular
+              sx={{ fontSize: 20, color: 'primary.main' }}
+            />
+            <Stack>
+              <Typography fontWeight="medium">
+                {intl.formatMessage({
+                  defaultMessage: 'OGN Rewards Will be Collected',
+                })}
+              </Typography>
+              <Typography color="text.secondary">
+                {intl.formatMessage(
+                  {
+                    defaultMessage:
+                      'You have accrued <b>{reward} OGN</b> in staking rewards. This OGN will be transferred to your wallet immediately when you extend your stake.',
+                  },
+                  {
+                    reward: formatAmount(
+                      info?.xOgnRewards,
+                      tokens.mainnet.OGN.decimals,
+                      undefined,
+                      { notation: 'compact', maximumSignificantDigits: 4 },
+                    ),
+                  },
+                )}
+              </Typography>
+            </Stack>
           </Stack>
         )}
-        <TransactionButton
-          contract={tokens.mainnet.veOGV}
-          functionName="extend"
-          args={[lockup.lockupId, BigInt(duration * secondsInMonth)]}
-          disabled={stakeDisabled}
-          variant="action"
-          label={intl.formatMessage({ defaultMessage: 'Extend Stake' })}
-          notificationTitle={intl.formatMessage({
-            defaultMessage: 'Extend Stake',
-          })}
-          notificationSubtitle={intl.formatMessage(
-            {
-              defaultMessage:
-                'Extend lock-up to {duration,plural,=1{# month} other{# months}}',
-            },
-            {
-              duration,
-            },
-          )}
-          notificationEndIcon={
-            <TokenIcon
-              token={tokens.mainnet.veOGV}
-              sx={{ transform: 'translateY(4px)' }}
-            />
-          }
-          onSuccess={() => {
-            rest?.onClose?.({}, 'backdropClick');
-            queryClient.invalidateQueries();
-          }}
-        />
+        <Button variant="action" fullWidth>
+          {intl.formatMessage({ defaultMessage: 'Extend stake' })}
+        </Button>
       </DialogContent>
     </Dialog>
   );
