@@ -8,4 +8,5 @@ export * from './errors';
 export * from './formatters';
 export * from './promises';
 export * from './isNilOrEmpty';
+export * from './maths';
 export * from './types';

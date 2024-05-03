@@ -21,7 +21,6 @@ import {
   getTokenPriceKey,
   isNativeCurrency,
   RedeemProvider,
-  subtractSlippage,
   useFormat,
   useHandleRedeem,
   useHandleRedeemAmountInChange,
@@ -30,7 +29,11 @@ import {
   useSlippage,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { composeContexts, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  composeContexts,
+  isNilOrEmpty,
+  subtractPercentage,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
@@ -229,7 +232,9 @@ function RedeemerWrapped({
               </Typography>
               <Stack direction="row" alignItems="center" spacing={0.5}>
                 <LoadingLabel isLoading={isRedeemLoading} sWidth={60}>
-                  {formatCurrency(subtractSlippage(convertedAmount, slippage))}
+                  {formatCurrency(
+                    subtractPercentage(convertedAmount, slippage),
+                  )}
                 </LoadingLabel>
               </Stack>
             </Stack>

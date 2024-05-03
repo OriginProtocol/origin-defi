@@ -16,10 +16,6 @@ export const scale = (
 };
 
 export const subtractSlippage = (value = 0n, decimals = 18, slippage = 0) => {
-  if (value === undefined) {
-    return 0n;
-  }
-
   if (+formatUnits(value, decimals) <= +formatUnits(1n, decimals)) {
     return value;
   }
