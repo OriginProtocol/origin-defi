@@ -17,23 +17,20 @@ import {
 } from '@mui/material';
 import {
   InfoTooltipLabel,
+  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
+import { useFormat } from '@origin/shared/providers';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import { ogvToOgnRate } from '../constants';
 
-import type {
-  ButtonProps,
-  DialogProps,
-  StackProps,
-  TypographyProps,
-} from '@mui/material';
+import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 
 import type { Lockup } from '../../types';
 
@@ -52,6 +49,7 @@ export const ConvertModal = ({
   ...rest
 }: ConvertModalProps) => {
   const intl = useIntl();
+  const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [ratio, setRatio] = useState(100);
@@ -91,240 +89,238 @@ export const ConvertModal = ({
           <FaXmarkRegular sx={{ fontSize: 14 }} />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
-        <Stack pt={3} spacing={3}>
-          <Typography variant="h4">
-            {intl.formatMessage({
-              defaultMessage: 'Your OGV/veOGV is equivalent to',
+      <Divider />
+      <DialogContent sx={{ pb: 0 }}>
+        <Typography variant="body1" fontWeight="medium" mb={3}>
+          {intl.formatMessage({
+            defaultMessage: 'Your OGV/veOGV is equivalent to',
+          })}
+        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            p: 3,
+            mb: 3,
+            borderRadius: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Typography variant="h6">{intl.formatNumber(converted)}</Typography>
+          <TokenChip
+            token={tokens.mainnet.OGN}
+            iconProps={{ outlined: true, sx: { fontSize: 28 } }}
+            labelProps={{ variant: 'body2', fontWeight: 'bold' }}
+          />
+        </Stack>
+        <Stack>
+          <InfoTooltipLabel
+            fontWeight="medium"
+            mb={1.5}
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'Choose the proportion of converted OGN you want to stake into a xOGN lockup.',
             })}
-          </Typography>
-          <Stack
-            {...cardStackProps}
-            direction="row"
-            alignItems="center"
-            spacing={1}
           >
-            <TokenIcon
-              token={tokens.mainnet.OGN}
-              outlined
-              sx={{ fontSize: 32 }}
-            />
-            <Typography variant="h3" fontWeight={500}>
-              {intl.formatNumber(converted)}
-            </Typography>
-            <Typography color="text.secondary">
-              {tokens.mainnet.OGN.symbol}
-            </Typography>
-          </Stack>
-          <Stack>
-            <InfoTooltipLabel
-              fontWeight={700}
-              mb={1.5}
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'Choose the proportion of converted OGN you want to stake into a xOGN lockup.',
-              })}
-            >
-              {intl.formatMessage({ defaultMessage: 'Staking Ratio' })}
-            </InfoTooltipLabel>
-            <Stack {...cardStackProps} useFlexGap p={0} spacing={0}>
-              <Stack p={2}>
-                <Typography fontSize={20} fontWeight={700} mr={1}>
-                  {intl.formatNumber(ratio / 100, { style: 'percent' })}
-                </Typography>
-                <Box mx={1}>
-                  <Slider
-                    value={ratio}
-                    onChange={handleRatioChange}
-                    min={0}
-                    max={100}
-                    step={1}
-                    marks={[
-                      {
-                        value: 0,
-                        label: 0,
-                      },
-                      {
-                        value: 25,
-                        label: intl.formatMessage({ defaultMessage: '25%' }),
-                      },
-                      {
-                        value: 50,
-                        label: intl.formatMessage({ defaultMessage: '50%' }),
-                      },
-                      {
-                        value: 75,
-                        label: intl.formatMessage({ defaultMessage: '75%' }),
-                      },
-                      {
-                        value: 100,
-                        label: intl.formatMessage({ defaultMessage: '100%' }),
-                      },
-                    ]}
-                  />
-                </Box>
-              </Stack>
-              <Divider />
-              <Stack direction="row">
-                <ValueLabel
-                  spacing={0}
-                  label={tokens.mainnet.OGN.symbol}
-                  labelProps={{ px: 2, py: 1 }}
-                  value={
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1}
-                      p={2}
-                      bgcolor="common.black"
-                      width={1}
-                      sx={{ borderBottomLeftRadius: '8px' }}
-                    >
-                      <TokenIcon
-                        token={tokens.mainnet.OGN}
-                        sx={{ fontSize: 24 }}
-                      />
-                      <Typography {...valueProps}>
-                        {intl.formatNumber(ogn)}
-                      </Typography>
-                    </Stack>
-                  }
-                  sx={{ width: 1, alignItems: 'flex-start' }}
-                />
-                <Divider orientation="vertical" flexItem />
-                <ValueLabel
-                  spacing={0}
-                  label={tokens.mainnet.xOGN.symbol}
-                  labelProps={{ px: 2, py: 1 }}
-                  value={
-                    <Stack
-                      direction="row"
-                      alignItems="center"
-                      spacing={1}
-                      p={2}
-                      bgcolor="common.black"
-                      width={1}
-                      sx={{ borderBottomRightRadius: '8px' }}
-                    >
-                      <TokenIcon
-                        token={tokens.mainnet.xOGN}
-                        sx={{ fontSize: 24 }}
-                      />
-                      <Typography {...valueProps}>
-                        {intl.formatNumber(xOgn)}
-                      </Typography>
-                    </Stack>
-                  }
-                  sx={{ width: 1, alignItems: 'flex-start' }}
-                />
-              </Stack>
+            {intl.formatMessage({ defaultMessage: 'Staking Ratio' })}
+          </InfoTooltipLabel>
+          <Stack {...cardStackProps} useFlexGap p={0} spacing={0}>
+            <Stack p={3} spacing={1}>
+              <Typography
+                variant="featured3"
+                fontWeight="bold"
+                color="primary.main"
+              >
+                {intl.formatNumber(ratio / 100, { style: 'percent' })}
+              </Typography>
+              <Slider
+                value={ratio}
+                onChange={handleRatioChange}
+                min={0}
+                max={100}
+                step={1}
+              />
             </Stack>
-          </Stack>
-          <Collapse in={xOgn > 0}>
-            <InfoTooltipLabel
-              fontWeight={700}
-              mb={1.5}
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
-              })}
-            >
-              {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
-            </InfoTooltipLabel>
-            <Stack {...cardStackProps} useFlexGap>
-              <Stack direction="row" alignItems="center">
-                <Typography fontSize={20} fontWeight={700} mr={1}>
-                  {duration === 0
-                    ? intl.formatMessage({ defaultMessage: '0 months' })
-                    : formatDuration(
-                        {
-                          years: Math.floor(duration / 12),
-                          months: duration % 12,
-                        },
-                        {
-                          format: ['years', 'months'],
-                        },
-                      )}
-                </Typography>
-                <Stack spacing={0.5} flexGrow={1}>
-                  <Stack direction="row" justifyContent="flex-end">
-                    <Typography color="text.secondary">
-                      {intl.formatMessage({
-                        defaultMessage: 'Lock-up Ends:',
-                      })}
-                    </Typography>
-                    <Typography textAlign="end" minWidth={92}>
-                      {intl.formatDate(extendLockupEnd, {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
+            <Divider />
+            <Stack direction="row">
+              <ValueLabel
+                spacing={0}
+                label={tokens.mainnet.OGN.symbol}
+                labelProps={{
+                  variant: 'caption1',
+                  fontWeight: 'medium',
+                  px: 3,
+                  py: 1,
+                }}
+                divider={<Divider orientation="horizontal" flexItem />}
+                value={
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                    px={3}
+                    py={1.5}
+                    width={1}
+                  >
+                    <TokenIcon
+                      token={tokens.mainnet.OGN}
+                      sx={{ fontSize: 24 }}
+                    />
+                    <Typography variant="body1" fontWeight="medium">
+                      {intl.formatNumber(ogn)}
                     </Typography>
                   </Stack>
+                }
+                sx={{ width: 1, alignItems: 'flex-start' }}
+              />
+              <Divider orientation="vertical" flexItem />
+              <ValueLabel
+                spacing={0}
+                label={tokens.mainnet.xOGN.symbol}
+                labelProps={{
+                  px: 3,
+                  py: 1,
+                  variant: 'caption1',
+                  fontWeight: 'medium',
+                }}
+                divider={<Divider orientation="horizontal" flexItem />}
+                value={
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    spacing={1}
+                    px={3}
+                    py={1.5}
+                    width={1}
+                  >
+                    <TokenIcon
+                      token={tokens.mainnet.xOGN}
+                      sx={{ fontSize: 24 }}
+                      outlined
+                    />
+                    <Typography variant="body1" fontWeight="medium">
+                      {intl.formatNumber(xOgn)}
+                    </Typography>
+                  </Stack>
+                }
+                sx={{ width: 1, alignItems: 'flex-start' }}
+              />
+            </Stack>
+          </Stack>
+        </Stack>
+        <Collapse in={xOgn > 0}>
+          <InfoTooltipLabel
+            fontWeight="medium"
+            mt={3}
+            mb={1.5}
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
+            })}
+          >
+            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+          </InfoTooltipLabel>
+          <Stack {...cardStackProps} useFlexGap mb={3}>
+            <Stack direction="row" alignItems="center">
+              <Typography
+                variant="featured3"
+                fontWeight="bold"
+                color="primary.main"
+                mr={1}
+              >
+                {duration === 0
+                  ? intl.formatMessage({ defaultMessage: '0 months' })
+                  : formatDuration(
+                      {
+                        years: Math.floor(duration / 12),
+                        months: duration % 12,
+                      },
+                      {
+                        format: ['years', 'months'],
+                      },
+                    )}
+              </Typography>
+              <Stack spacing={0.5} flexGrow={1}>
+                <Stack direction="row" justifyContent="flex-end">
+                  <Typography variant="mono" color="text.secondary">
+                    {intl.formatMessage({
+                      defaultMessage: 'Lock-up Ends:',
+                    })}
+                  </Typography>
+                  <Typography textAlign="end" minWidth={92}>
+                    {intl.formatDate(extendLockupEnd, {
+                      day: '2-digit',
+                      month: 'short',
+                      year: 'numeric',
+                    })}
+                  </Typography>
                 </Stack>
               </Stack>
-              <Box mx={1}>
-                <Slider
-                  value={duration}
-                  onChange={handleDurationChange}
-                  min={1}
-                  max={48}
-                  step={1}
-                  marks={[
-                    {
-                      value: 1,
-                      label: intl.formatMessage({ defaultMessage: '1m' }),
-                    },
-                    {
-                      value: 12,
-                      label: intl.formatMessage({ defaultMessage: '1y' }),
-                    },
-                    {
-                      value: 24,
-                      label: intl.formatMessage({ defaultMessage: '2y' }),
-                    },
-                    {
-                      value: 36,
-                      label: intl.formatMessage({ defaultMessage: '3y' }),
-                    },
-                    {
-                      value: 48,
-                      label: intl.formatMessage({ defaultMessage: '4y' }),
-                    },
-                  ]}
-                />
-              </Box>
             </Stack>
-            <InfoTooltipLabel
-              fontWeight={700}
-              mt={3}
-              mb={1.5}
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The variable APY currently being earned on staked OGN.',
-              })}
+            <Box mx={1}>
+              <Slider
+                value={duration}
+                onChange={handleDurationChange}
+                min={0}
+                max={12}
+                step={1}
+                marks={[
+                  {
+                    value: 0,
+                    label: intl.formatMessage({ defaultMessage: '0' }),
+                  },
+                  {
+                    value: 3,
+                    label: intl.formatMessage({ defaultMessage: '3m' }),
+                  },
+                  {
+                    value: 6,
+                    label: intl.formatMessage({ defaultMessage: '6m' }),
+                  },
+                  {
+                    value: 9,
+                    label: intl.formatMessage({ defaultMessage: '9m' }),
+                  },
+                  {
+                    value: 12,
+                    label: intl.formatMessage({ defaultMessage: '1y' }),
+                  },
+                ]}
+              />
+            </Box>
+          </Stack>
+          <InfoTooltipLabel
+            fontWeight="medium"
+            mb={1.5}
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The variable APY currently being earned on staked OGN.',
+            })}
+          >
+            {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
+          </InfoTooltipLabel>
+          <Stack {...cardStackProps} bgcolor="transparent" mb={3}>
+            <Typography
+              variant="featured3"
+              fontWeight="bold"
+              color="primary.main"
             >
-              {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
-            </InfoTooltipLabel>
-            <Stack {...cardStackProps}>
-              <Typography
-                {...valueProps}
-                sx={{
-                  alignSelf: 'flex-start',
-                  fontWeight: 700,
-                  background: (theme) =>
-                    theme.palette.background.gradientOrange,
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                ~5.98%
-              </Typography>
-            </Stack>
-          </Collapse>
-        </Stack>
+              ~5.98%
+            </Typography>
+          </Stack>
+          <ValueLabel
+            {...cardStackProps}
+            direction="row"
+            justifyContent="space-between"
+            bgcolor="transparent"
+            label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+            value={formatCurrency(12.76)}
+          />
+        </Collapse>
       </DialogContent>
-      <DialogContent>
+      <DialogContent sx={{ overflow: 'hidden' }}>
         <Button variant="action" fullWidth>
           {intl.formatMessage({ defaultMessage: 'Convert' })}
         </Button>
@@ -366,15 +362,11 @@ export const ConvertButton = ({
   );
 };
 
-const valueProps: TypographyProps = {
-  fontSize: 20,
-};
-
 const cardStackProps: StackProps = {
-  p: 2,
+  p: 3,
   spacing: 1,
   border: '1px solid',
   borderColor: 'divider',
-  borderRadius: 1,
+  borderRadius: 3,
   bgcolor: 'background.default',
 };

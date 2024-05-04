@@ -16,16 +16,18 @@ export const MergerBanner = (props: StackProps) => {
       {...props}
       sx={{
         width: 1,
-        borderRadius: 1,
-        background: (theme) => theme.palette.background.gradientOrange,
-        p: 3,
+        borderRadius: 4,
+        backgroundColor: 'primary.faded',
+        border: '1px solid',
+        borderColor: 'primary.main',
+        p: 5,
         rowGap: 3,
         ...props?.sx,
       }}
     >
       <MultiTokenIcon
         tokens={[tokens.mainnet.OGV, tokens.mainnet.OGN]}
-        size={4}
+        size={3.5}
         zOrder="last"
       />
       <Stack
@@ -33,12 +35,12 @@ export const MergerBanner = (props: StackProps) => {
         alignItems={{ xs: 'center', md: 'flex-start' }}
         pr={{ xs: 0, md: 2 }}
       >
-        <Typography variant="h4" fontWeight={500} color="background.default">
+        <Typography variant="h6" fontWeight={800}>
           {intl.formatMessage({ defaultMessage: 'OGV & OGN are merging' })}
         </Typography>
         <Typography
-          color="background.default"
           textAlign={{ xs: 'center', md: 'start' }}
+          color="text.secondary"
         >
           {intl.formatMessage({
             defaultMessage:
@@ -50,14 +52,13 @@ export const MergerBanner = (props: StackProps) => {
         targetDate={new Date('2025-04-01T00:00:00.0000Z')}
         spacing={3}
         valueLabelProps={{
-          labelProps: { textAlign: 'center', color: 'background.default' },
+          labelProps: { textAlign: 'center', variant: 'mono' },
           valueProps: {
             sx: {
               fontSize: 32,
               fontWeight: 700,
               textAlign: 'center',
               lineHeight: 1,
-              color: 'background.default',
             },
           },
         }}

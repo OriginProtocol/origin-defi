@@ -23,23 +23,27 @@ export const ConnectPage = ({
     <Stack
       {...rest}
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: 'background.highlight',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 1,
+        borderRadius: 4,
         p: 8,
         ...rest?.sx,
       }}
     >
       <Stack spacing={0.75} alignItems="center" useFlexGap>
-        <DefaultWallet sx={{ fontSize: 64, color: 'text.primary' }} />
-        <Typography sx={{ fontSize: 24, textAlign: 'center' }}>
+        <DefaultWallet sx={{ fontSize: 64, color: 'primary.main' }} />
+        <Typography
+          variant="featured2"
+          fontWeight="bold"
+          sx={{ textAlign: 'center' }}
+        >
           {title ??
             intl.formatMessage({
               defaultMessage: 'Connect your wallet to get started',
             })}
         </Typography>
-        <Typography sx={{ textAlign: 'center' }}>
+        <Typography sx={{ textAlign: 'center', color: 'text.secondary' }}>
           {subtitle ??
             intl.formatMessage({
               defaultMessage: 'Start using this app by connecting your wallet.',

@@ -1,6 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import {
+  Card,
+  CardContent,
+  CardHeader,
   Checkbox,
   CircularProgress,
   Divider,
@@ -12,6 +15,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { useOgvInfo } from '@origin/defi/shared';
 import {
   InfoTooltipLabel,
+  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
@@ -28,9 +32,10 @@ import { useOgvLockupsQuery } from '../../queries.generated';
 import { ogvToOgnRate } from '../constants';
 import { ConvertButton } from './ConvertModal';
 
-import type { StackProps, TypographyProps } from '@mui/material';
+import type { CardProps, StackProps } from '@mui/material';
 
 import type { Lockup } from '../../types';
+import type { ConvertButtonProps } from './ConvertModal';
 
 export const MigrationForm = (props: StackProps) => {
   const intl = useIntl();
@@ -116,7 +121,7 @@ export const MigrationForm = (props: StackProps) => {
           md={7}
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
         >
-          <Typography variant="h4">
+          <Typography variant="featured3" fontWeight="medium">
             {intl.formatMessage({
               defaultMessage: 'Select which balances you wish to convert',
             })}
@@ -125,6 +130,7 @@ export const MigrationForm = (props: StackProps) => {
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'The amount of OGV in your wallet',
             })}
+            fontWeight="medium"
           >
             {intl.formatMessage({ defaultMessage: 'Your OGV balance' })}
           </InfoTooltipLabel>
@@ -147,31 +153,28 @@ export const MigrationForm = (props: StackProps) => {
                   }}
                 />
               }
-              disableTypography
-              label={
-                <Stack direction="row" alignItems="center" spacing={1} pl={1}>
-                  <TokenIcon
-                    token={tokens.mainnet.OGV}
-                    outlined
-                    sx={{ fontSize: 24 }}
-                  />
-                  <Typography {...valueProps}>
-                    {intl.formatNumber(
-                      +formatUnits(
-                        info?.ogvBalance ?? 0n,
-                        tokens.mainnet.OGV.decimals,
-                      ),
-                      { notation: 'compact', maximumSignificantDigits: 4 },
-                    )}
-                  </Typography>
-                </Stack>
-              }
+              componentsProps={{
+                typography: { variant: 'featured2', fontWeight: 'bold' },
+              }}
+              label={intl.formatNumber(
+                +formatUnits(
+                  info?.ogvBalance ?? 0n,
+                  tokens.mainnet.OGV.decimals,
+                ),
+                { notation: 'compact', maximumSignificantDigits: 4 },
+              )}
+            />
+            <TokenChip
+              token={tokens.mainnet.OGV}
+              iconProps={{ outlined: true, sx: { fontSize: 28 } }}
+              labelProps={{ variant: 'body2', fontWeight: 'bold' }}
             />
           </SuccessCard>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'The amount of pending rewards allocated to you',
             })}
+            fontWeight="medium"
           >
             {intl.formatMessage({
               defaultMessage: 'Your Unclaimed OGV Rewards',
@@ -196,28 +199,25 @@ export const MigrationForm = (props: StackProps) => {
                   }}
                 />
               }
-              disableTypography
-              label={
-                <Stack direction="row" alignItems="center" spacing={1} pl={1}>
-                  <TokenIcon
-                    token={tokens.mainnet.OGV}
-                    outlined
-                    sx={{ fontSize: 24 }}
-                  />
-                  <Typography {...valueProps}>
-                    {formatAmount(
-                      info?.veOgvRewards ?? 0n,
-                      tokens.mainnet.OGV.decimals,
-                    )}
-                  </Typography>
-                </Stack>
-              }
+              componentsProps={{
+                typography: { variant: 'featured2', fontWeight: 'bold' },
+              }}
+              label={formatAmount(
+                info?.veOgvRewards ?? 0n,
+                tokens.mainnet.OGV.decimals,
+              )}
+            />
+            <TokenChip
+              token={tokens.mainnet.OGV}
+              iconProps={{ outlined: true, sx: { fontSize: 28 } }}
+              labelProps={{ variant: 'body2', fontWeight: 'bold' }}
             />
           </SuccessCard>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'Your veOGV staked positions',
             })}
+            fontWeight="medium"
           >
             {intl.formatMessage({ defaultMessage: 'Your veOGV Lockups' })}
           </InfoTooltipLabel>
@@ -242,23 +242,15 @@ export const MigrationForm = (props: StackProps) => {
           md={5}
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
         >
-          <InfoTooltipLabel
-            tooltipLabel={intl.formatMessage({
-              defaultMessage: 'All selected balance',
-            })}
-          >
-            {intl.formatMessage({ defaultMessage: 'Balance to Convert' })}
-          </InfoTooltipLabel>
-          <SummaryCard ogv={ogvTotal} />
-          <ConvertButton
-            variant="action"
-            ogvBalance={selected.balance ? info?.ogvBalance ?? 0n : 0n}
-            ogvRewards={selected.rewards ? info?.veOgvRewards ?? 0n : 0n}
-            veOgvlockups={selected.lockups}
-            disabled={isConvertDisabled}
-          >
-            {intl.formatMessage({ defaultMessage: 'Convert to OGN' })}
-          </ConvertButton>
+          <SummaryCard
+            ogv={ogvTotal}
+            convertProps={{
+              ogvBalance: selected.balance ? info?.ogvBalance ?? 0n : 0n,
+              ogvRewards: selected.rewards ? info?.veOgvRewards ?? 0n : 0n,
+              veOgvlockups: selected.lockups,
+              disabled: isConvertDisabled,
+            }}
+          />
         </Grid2>
       </Grid2>
     </Stack>
@@ -286,7 +278,7 @@ function LockupsList({
       <Stack
         direction="row"
         alignItems="center"
-        sx={{ p: 2, '> *': { color: 'text.secondary' } }}
+        sx={{ px: 2, py: 1, '> *': { color: 'text.secondary' } }}
       >
         <FormControlLabel
           control={
@@ -300,12 +292,9 @@ function LockupsList({
             />
           }
           label={intl.formatMessage({ defaultMessage: 'OGV' })}
-          sx={{ m: 0, gap: 1.5, width: 0.5 }}
+          sx={{ m: 0, gap: 3, width: 0.5 }}
         />
-        <Typography sx={{ width: 0.25 }}>
-          {intl.formatMessage({ defaultMessage: 'veOGV' })}
-        </Typography>
-        <Typography sx={{ width: 0.25 }}>
+        <Typography sx={{ textAlign: 'end', width: 0.5 }}>
           {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
         </Typography>
       </Stack>
@@ -347,29 +336,12 @@ function LockupRow({
           />
         }
         disableTypography
-        label={
-          <Stack direction="row" spacing={1} alignItems="center" pl={1.5}>
-            <TokenIcon
-              token={tokens.mainnet.OGV}
-              outlined
-              sx={{ fontSize: 24 }}
-            />
-            <Typography {...valueProps}>
-              {formatAmount(BigInt(lockup.amount), tokens.mainnet.OGV.decimals)}
-            </Typography>
-          </Stack>
-        }
-        sx={{ width: 0.5, m: 0 }}
+        label={formatAmount(BigInt(lockup.amount), tokens.mainnet.OGV.decimals)}
+        sx={{ width: 0.5, m: 0, gap: 3 }}
       />
-      <Typography sx={{ width: 0.25, transform: 'translateY(2px) ' }}>
-        {formatAmount(
-          BigInt(lockup.veogv),
-          tokens.mainnet.veOGV.decimals,
-          undefined,
-          { notation: 'compact' },
-        )}
-      </Typography>
-      <Typography sx={{ width: 0.25, transform: 'translateY(2px) ' }}>
+      <Typography
+        sx={{ textAlign: 'end', width: 0.5, transform: 'translateY(2px) ' }}
+      >
         {formatDistanceToNowStrict(new Date(lockup.end), {
           unit: 'month',
           roundingMethod: 'floor',
@@ -379,58 +351,76 @@ function LockupRow({
   );
 }
 
-type SummaryCardProps = { ogv: bigint } & StackProps;
+type SummaryCardProps = {
+  ogv: bigint;
+  convertProps: ConvertButtonProps;
+} & CardProps;
 
-function SummaryCard({ ogv, ...rest }: SummaryCardProps) {
+function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
   const intl = useIntl();
 
   const converted =
     +formatUnits(ogv, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
 
   return (
-    <Stack
-      {...rest}
-      divider={<Divider />}
-      sx={{ border: '1px solid', borderColor: 'divider', borderRadius: 1 }}
-    >
-      <Stack px={3} py={2} spacing={0.5}>
-        <Typography>
-          {intl.formatMessage({ defaultMessage: 'OGV balance' })}
-        </Typography>
-        <Stack direction="row" alignItems="center" spacing={0.75}>
-          <TokenIcon
-            token={tokens.mainnet.OGV}
-            outlined
-            sx={{ fontSize: 32 }}
-          />
-          <Typography variant="h3" fontWeight={500}>
+    <Card {...rest}>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Balance to Convert' })}
+      />
+      <Divider />
+      <CardContent>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={1}
+        >
+          <Typography variant="featured2" fontWeight="bold">
             {intl.formatNumber(+formatUnits(ogv, tokens.mainnet.OGV.decimals))}
           </Typography>
+          <TokenChip
+            token={tokens.mainnet.OGV}
+            iconProps={{ outlined: true, sx: { fontSize: 28 } }}
+            labelProps={{ variant: 'body2', fontWeight: 'bold' }}
+          />
         </Stack>
-      </Stack>
-      <Stack px={3} py={2} spacing={0.5}>
-        <ValueLabel
-          direction="row"
-          justifyContent="space-between"
-          label={intl.formatMessage({ defaultMessage: 'You will get:' })}
-          value={
-            <Stack direction="row" alignItems="center" spacing={0.75}>
-              <TokenIcon token={tokens.mainnet.OGN} />
-              <Typography>{intl.formatNumber(converted)}</Typography>
-            </Stack>
-          }
-        />
-        <ValueLabel
-          direction="row"
-          justifyContent="space-between"
-          label={intl.formatMessage({ defaultMessage: 'Conversion Rate:' })}
-          value={intl.formatMessage(
-            { defaultMessage: '1 OGV = {rate} OGN' },
-            { rate: ogvToOgnRate },
-          )}
-        />
-      </Stack>
-    </Stack>
+      </CardContent>
+      <Divider />
+      <CardContent>
+        <Stack spacing={3}>
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'You will get:' })}
+            labelProps={{ variant: 'body3' }}
+            value={
+              <Stack direction="row" alignItems="center" spacing={0.75}>
+                <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
+                <Typography fontWeight="medium">
+                  {intl.formatNumber(converted)}
+                </Typography>
+              </Stack>
+            }
+          />
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'Conversion Rate:' })}
+            labelProps={{ variant: 'body3' }}
+            value={intl.formatMessage(
+              { defaultMessage: '1 OGV = {rate} OGN' },
+              { rate: ogvToOgnRate },
+            )}
+            valueProps={{ fontWeight: 'medium' }}
+          />
+        </Stack>
+      </CardContent>
+      <CardContent sx={{ pt: 0 }}>
+        <ConvertButton variant="action" fullWidth {...convertProps}>
+          {intl.formatMessage({ defaultMessage: 'Convert to OGN' })}
+        </ConvertButton>
+      </CardContent>
+    </Card>
   );
 }
 
@@ -465,8 +455,9 @@ function SuccessCard({
         spacing={2}
         minHeight={68}
       >
-        <TokenIcon token={tokens.mainnet.OGV} outlined sx={{ fontSize: 24 }} />
-        <Typography {...valueProps}>{successLabel}</Typography>
+        <Typography variant="featured3" fontWeight="medium">
+          {successLabel}
+        </Typography>
       </Stack>
     );
   }
@@ -478,17 +469,14 @@ function SuccessCard({
   );
 }
 
-const valueProps: TypographyProps = {
-  fontSize: 20,
-};
-
 const cardStackProps: StackProps = {
   direction: 'row',
   alignItems: 'center',
-  p: 2,
+  justifyContent: 'space-between',
+  p: 3,
   spacing: 1,
   border: '1px solid',
   borderColor: 'divider',
-  borderRadius: 1,
+  borderRadius: 3,
   bgcolor: 'background.highlight',
 };
