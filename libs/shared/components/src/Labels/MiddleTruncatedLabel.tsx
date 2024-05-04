@@ -4,7 +4,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import type { SxProps, Theme, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
-export type MiddleTruncatedProps = {
+export type MiddleTruncatedLabelProps = {
   children: ReactNode;
   textProps?: Omit<TypographyProps, 'children'>;
   end?: number;
@@ -16,12 +16,12 @@ const truncate: SxProps<Theme> = {
   textOverflow: 'ellipsis',
 };
 
-export const MiddleTruncated = ({
+export const MiddleTruncatedLabel = ({
   children,
   textProps,
   end = 4,
   ...rest
-}: MiddleTruncatedProps) => {
+}: MiddleTruncatedLabelProps) => {
   if (isNilOrEmpty(children) || typeof children !== 'string') return null;
 
   if (children.length <= end) {

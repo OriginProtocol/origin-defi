@@ -8,7 +8,6 @@ export * from './Icons';
 export * from './Labels';
 export * from './Links';
 export * from './Menus';
-export * from './MiddleTruncated';
 export * from './Notifications';
 export * from './Pagination';
 export * from './Switches';

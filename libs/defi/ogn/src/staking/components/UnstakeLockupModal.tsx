@@ -13,7 +13,7 @@ import {
 } from '@mui/material';
 import { ColorChip } from '@origin/defi/shared';
 import {
-  MiddleTruncated,
+  MiddleTruncatedLabel,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
@@ -63,7 +63,9 @@ export const UnstakeLockupModal = ({
         },
         {
           stake: (
-            <MiddleTruncated maxWidth={60}>{lockup.lockupId}</MiddleTruncated>
+            <MiddleTruncatedLabel maxWidth={60}>
+              {lockup.lockupId}
+            </MiddleTruncatedLabel>
           ),
         },
       ),
