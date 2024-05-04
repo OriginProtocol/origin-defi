@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  GlobalStatsCard,
   Page,
   PageSection,
   PageTitle,
@@ -12,7 +13,6 @@ import { useIntl } from 'react-intl';
 
 import { ousdSwapActions } from '../actions';
 import { AnalyticsCard } from '../components/AnalyticsCard';
-import { DetailsCard } from '../components/DetailsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { ousdSwapRoutes } from '../constants';
 
@@ -42,7 +42,7 @@ export const SwapView = () => {
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <DetailsCard />
+              <GlobalStatsCard token={tokens.mainnet.OUSD} />
               <AnalyticsCard />
             </Stack>
           </Grid2>

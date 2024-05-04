@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import {
   getTokenPriceKey,
   useFormat,
@@ -10,17 +9,20 @@ import {
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
-export const DetailsCard = (props: CardProps) => {
+export type GlobalStatsCardProps = { token: Token } & CardProps;
+
+export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
   const intl = useIntl();
   const { formatCurrency } = useFormat();
   const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    getTokenPriceKey(tokens.mainnet.OUSD),
+    getTokenPriceKey(token),
   );
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(tokens.mainnet.OUSD);
+  const { data: tvl, isLoading: isTvlLoading } = useTvl(token);
 
   return (
-    <Card {...props}>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Global stats' })}
       />
@@ -31,7 +33,13 @@ export const DetailsCard = (props: CardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ variant: 'body3' }}
+            labelInfoTooltip={intl.formatMessage(
+              {
+                defaultMessage: 'Total value locked {symbol}',
+              },
+              { symbol: token.symbol },
+            )}
             value={formatCurrency(tvl, undefined, undefined, {
               minimumFractionDigits: 2,
             })}
@@ -41,7 +49,7 @@ export const DetailsCard = (props: CardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ variant: 'body3' }}
             value={formatCurrency(price)}
             isLoading={isPriceLoading}
           />

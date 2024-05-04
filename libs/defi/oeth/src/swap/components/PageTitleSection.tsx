@@ -6,19 +6,17 @@ import {
   useOTokenApyQuery,
 } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-
-import { useSupportedChainTokens } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { connected } = useSupportedChainTokens();
   const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
     {
-      token: connected.address,
-      chainId: connected.chainId,
+      token: tokens.mainnet.OETH.address,
+      chainId: tokens.mainnet.OETH.chainId,
     },
     {
       select: (data) => data?.oTokenApies?.[0],
