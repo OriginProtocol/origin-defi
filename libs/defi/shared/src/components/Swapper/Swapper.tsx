@@ -293,7 +293,7 @@ function SwapperWrapped({
           sx={{
             px: 3,
             pt: 3,
-            pb: 1.5,
+            pb: 0,
           }}
         >
           <Box
@@ -361,7 +361,7 @@ function SwapperWrapped({
             py={3}
             px={3}
           >
-            <Typography color="text.secondary" variant="mono">
+            <Typography color="text.secondary" fontWeight="medium">
               {intl.formatMessage(
                 {
                   defaultMessage: 'Minimum received with {slippage} slippage:',
@@ -376,12 +376,16 @@ function SwapperWrapped({
               )}
             </Typography>
             <Stack direction="row" alignItems="center" spacing={0.5}>
-              <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
+              <LoadingLabel
+                isLoading={isSwapRoutesLoading}
+                sWidth={60}
+                fontWeight="medium"
+              >
                 {formatAmount(
                   subtractSlippage(amountOut, tokenOut.decimals, slippage),
                 )}
               </LoadingLabel>
-              <Typography>{tokenOut.symbol}</Typography>
+              <Typography fontWeight="medium">{tokenOut.symbol}</Typography>
             </Stack>
           </Stack>
         </Collapse>

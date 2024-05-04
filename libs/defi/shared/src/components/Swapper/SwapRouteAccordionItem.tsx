@@ -68,17 +68,19 @@ export function SwapRouteAccordionItem({
       justifyContent="space-between"
       spacing={1}
       sx={{
-        borderRadius: 1,
-        backgroundColor: 'background.paper',
+        borderRadius: 3,
+        backgroundColor: 'background.default',
         border: `1px solid`,
         borderColor: 'divider',
         px: 2,
         py: 1.5,
+        cursor: 'pointer',
         ':hover': {
           borderColor: 'primary.main',
         },
         ...(isSelected && {
           borderColor: 'primary.main',
+          backgroundColor: 'background.highlight',
         }),
       }}
       onClick={() => onSelect(route)}
@@ -90,7 +92,7 @@ export function SwapRouteAccordionItem({
         ) : (
           <TokenIcon token={route.tokenOut} sx={{ fontSize: 28 }} />
         )}
-        <Stack direction={{ xs: 'row', sm: 'column' }} spacing={1}>
+        <Stack direction="column" spacing={0.5}>
           <Stack direction="row" spacing={0.5} alignItems="baseline">
             <LoadingLabel fontWeight="medium" isLoading={isSwapRoutesLoading}>
               {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
@@ -107,7 +109,7 @@ export function SwapRouteAccordionItem({
           </LoadingLabel>
         </Stack>
       </Stack>
-      <Stack spacing={1}>
+      <Stack spacing={0.5}>
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
@@ -134,6 +136,11 @@ export function SwapRouteAccordionItem({
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
   justifyContent: 'space-between',
-  labelProps: { variant: 'mono' },
+  labelProps: {
+    variant: 'body3',
+    fontWeight: 'medium',
+    color: 'text.secondary',
+  },
   valueProps: { fontWeight: 'medium' },
+  minWidth: 120,
 };

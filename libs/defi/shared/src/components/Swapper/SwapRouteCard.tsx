@@ -71,9 +71,9 @@ export function SwapRouteCard({
     <Card
       {...rest}
       sx={{
-        px: 1.5,
+        px: 2,
         pb: 2,
-        pt: 3.5,
+        pt: 3,
         cursor: 'pointer',
         position: 'relative',
         boxShadow: 'none',
@@ -81,11 +81,14 @@ export function SwapRouteCard({
         borderWidth: 1,
         borderColor: 'divider',
         borderRadius: 2,
-        backgroundColor: 'background.paper',
+        backgroundColor: 'background.default',
         '&:hover': {
           borderColor: 'primary.main',
         },
-        ...(isSelected && { borderColor: 'primary.main' }),
+        ...(isSelected && {
+          borderColor: 'primary.main',
+          backgroundColor: 'background.highlight',
+        }),
         ...rest?.sx,
       }}
       role="button"
@@ -110,42 +113,38 @@ export function SwapRouteCard({
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>
       )}
-      <Stack height={1} spacing={1.25}>
-        <Stack
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-          pb={0.5}
-        >
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            {isSwapRoutesLoading ? (
-              <Skeleton variant="circular" width={24} height={24} />
-            ) : (
-              <TokenIcon token={tokenOut} sx={{ fontSize: 24 }} />
-            )}
-            <LoadingLabel
-              fontWeight="medium"
-              isLoading={isSwapRoutesLoading}
-              sWidth={100}
-            >
-              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
-            </LoadingLabel>
-          </Stack>
+      <Stack height={1} useFlexGap>
+        <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+          {isSwapRoutesLoading ? (
+            <Skeleton variant="circular" width={20} height={20} />
+          ) : (
+            <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
+          )}
           <LoadingLabel
-            color="text.secondary"
-            noWrap
+            fontWeight="bold"
             isLoading={isSwapRoutesLoading}
-            sWidth={60}
+            sWidth={100}
           >
-            {formatCurrency(convertedAmount)}
+            {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
           </LoadingLabel>
         </Stack>
-        <ValueLabel
-          {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'Route:' })}
-          value={intl.formatMessage(routeLabel)}
+        <LoadingLabel
+          color="text.secondary"
+          noWrap
           isLoading={isSwapRoutesLoading}
-        />
+          sWidth={60}
+        >
+          ({formatCurrency(convertedAmount)})
+        </LoadingLabel>
+        <LoadingLabel
+          fontWeight="medium"
+          noWrap
+          isLoading={isSwapRoutesLoading}
+          sWidth={60}
+          my={1.25}
+        >
+          {intl.formatMessage(routeLabel)}
+        </LoadingLabel>
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
@@ -154,6 +153,7 @@ export function SwapRouteCard({
             { value: formatQuantity(route.rate) },
           )}
           isLoading={isSwapRoutesLoading}
+          mb={0.5}
         />
         <ValueLabel
           {...valueLabelProps}
@@ -172,6 +172,10 @@ export function SwapRouteCard({
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
   justifyContent: 'space-between',
-  labelProps: { variant: 'mono' },
+  labelProps: {
+    variant: 'body3',
+    fontWeight: 'medium',
+    color: 'text.secondary',
+  },
   valueProps: { fontWeight: 'medium' },
 };
