@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
+  CardContent,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -14,13 +15,8 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useOgnInfo } from '@origin/defi/shared';
-import {
-  InfoTooltipLabel,
-  LoadingLabel,
-  TokenIcon,
-  ValueLabel,
-} from '@origin/shared/components';
+import { SectionCard, useOgnInfo } from '@origin/defi/shared';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   FaCircleExclamationRegular,
@@ -29,7 +25,6 @@ import {
 import { ConnectedButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   addMonths,
   differenceInMonths,
@@ -41,12 +36,12 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../../hooks';
-import { getVAPY } from '../../utils';
+import { useStakingAPY } from '../hooks';
+import { getVAPY } from '../utils';
 
-import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
+import type { ButtonProps, DialogProps } from '@mui/material';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 
 export type ExtendFormModalProps = {
   lockup: Lockup;
@@ -62,7 +57,6 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const queryClient = useQueryClient();
   const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
@@ -218,34 +212,26 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             </Typography>
           </Stack>
         </Stack>
-        <Stack mb={3}>
-          <InfoTooltipLabel
-            tooltipLabel={intl.formatMessage({
-              defaultMessage:
-                'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
-            })}
-            mb={1.5}
-            color="text.secondary"
-            fontWeight="medium"
-          >
-            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
-          </InfoTooltipLabel>
-          <Stack
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 3,
-              p: 3,
-              backgroundColor: 'background.highlight',
-            }}
-          >
+        <SectionCard
+          title={intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+          titleProps={{ color: 'text.secondary', fontWeight: 'medium' }}
+          titleInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
+          })}
+          cardProps={{
+            sx: { backgroundColor: 'background.highlight' },
+          }}
+          mb={3}
+        >
+          <CardContent>
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="space-between"
               flexWrap="wrap"
               rowGap={1}
+              mb={2}
             >
               <Typography variant="featured3" minWidth={170} mr={1}>
                 {duration === 0
@@ -322,29 +308,21 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 ]}
               />
             </Box>
-          </Stack>
-        </Stack>
-        <Stack mb={3}>
-          <InfoTooltipLabel
-            tooltipLabel={intl.formatMessage({
-              defaultMessage:
-                'The variable APY currently being earned on staked xOGN.',
-            })}
-            mb={1.5}
-            color="text.secondary"
-            fontWeight="medium"
-          >
-            {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
-          </InfoTooltipLabel>
-          <Stack
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 3,
-              p: 3,
-            }}
-          >
+          </CardContent>
+        </SectionCard>
+        <SectionCard
+          title={intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
+          titleProps={{ color: 'text.secondary', fontWeight: 'medium' }}
+          titleInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'The variable APY currently being earned on staked xOGN.',
+          })}
+          cardProps={{
+            sx: { backgroundColor: 'transparent' },
+          }}
+          mb={3}
+        >
+          <CardContent>
             <LoadingLabel
               variant="featured3"
               fontWeight="bold"
@@ -359,31 +337,23 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 maximumFractionDigits: 2,
               })}
             </LoadingLabel>
-          </Stack>
-        </Stack>
-        <Stack mb={3}>
-          <InfoTooltipLabel
-            tooltipLabel={intl.formatMessage({
-              defaultMessage:
-                'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
-            })}
-            mb={1.5}
-            color="text.secondary"
-            fontWeight="medium"
-          >
-            {intl.formatMessage({
-              defaultMessage: 'Locked Tokens Received Now',
-            })}
-          </InfoTooltipLabel>
-          <Stack
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 3,
-              p: 3,
-            }}
-          >
+          </CardContent>
+        </SectionCard>
+        <SectionCard
+          title={intl.formatMessage({
+            defaultMessage: 'Locked Tokens Received Now',
+          })}
+          titleProps={{ color: 'text.secondary', fontWeight: 'medium' }}
+          titleInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
+          })}
+          cardProps={{
+            sx: { backgroundColor: 'transparent' },
+          }}
+          mb={3}
+        >
+          <CardContent>
             <Stack
               direction="row"
               justifyContent="space-between"
@@ -403,7 +373,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     ? formatQuantity(staking?.veOGVReceived)
                     : '0.00'}
                 </LoadingLabel>
-                <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
+                <TokenIcon
+                  token={tokens.mainnet.xOGN}
+                  outlined
+                  sx={{ fontSize: 28 }}
+                />
                 <Typography variant="body2" fontWeight="bold">
                   {tokens.mainnet.xOGN.symbol}
                 </Typography>
@@ -439,8 +413,8 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 sx={{ alignItems: 'flex-end' }}
               />
             </Stack>
-          </Stack>
-        </Stack>
+          </CardContent>
+        </SectionCard>
         {showRewardLabel && (
           <Stack
             direction="row"
@@ -516,15 +490,4 @@ export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
       />
     </>
   );
-};
-
-const cardInputStackProps: StackProps = {
-  sx: {
-    px: 3,
-    py: 2,
-    borderRadius: 1,
-    backgroundColor: 'background.default',
-    border: '1px solid',
-    borderColor: 'divider',
-  },
 };

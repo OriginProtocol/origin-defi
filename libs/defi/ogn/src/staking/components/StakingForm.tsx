@@ -41,7 +41,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useStakingAPY } from '../../hooks';
+import { useStakingAPY } from '../hooks';
 
 export const StakingForm = () => {
   const intl = useIntl();

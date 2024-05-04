@@ -30,11 +30,11 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useOgvLockupsQuery } from '../../queries.generated';
+import { useOgvLockupsQuery } from '../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
 import { UnstakeLockupButton } from './UnstakeLockupModal';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 
 const columnHelper = createColumnHelper<Lockup>();
 

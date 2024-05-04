@@ -36,7 +36,7 @@ import { formatUnits } from 'viem';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 
 export type UnstakeLockupModalProps = { lockup: Lockup } & DialogProps;
 

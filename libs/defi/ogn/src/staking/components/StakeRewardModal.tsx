@@ -55,13 +55,13 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../../hooks';
-import { useOgvLockupsQuery } from '../../queries.generated';
+import { useStakingAPY } from '../hooks';
+import { useOgvLockupsQuery } from '../queries.generated';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 import type { ChangeEvent, MouseEvent } from 'react';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 
 export const StakeRewardModal = (props: DialogProps) => {
   const intl = useIntl();

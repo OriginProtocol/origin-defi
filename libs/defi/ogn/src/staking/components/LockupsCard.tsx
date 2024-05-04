@@ -13,8 +13,8 @@ import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useMyVApy } from '../../hooks';
-import { useOgvLockupsQuery } from '../../queries.generated';
+import { useMyVApy } from '../hooks';
+import { useOgvLockupsQuery } from '../queries.generated';
 import { LockupsTable } from './LockupsTable';
 
 import type { CardProps } from '@mui/material';
