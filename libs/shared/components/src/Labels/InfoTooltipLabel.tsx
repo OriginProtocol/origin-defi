@@ -9,7 +9,7 @@ import type { InfoTooltipProps } from '../InfoTooltip';
 
 export type InfoTooltipLabelProps = {
   children: ReactNode;
-  tooltipLabel: string;
+  tooltipLabel?: string;
   labelProps?: TypographyProps;
   infoTooltipProps?: Omit<InfoTooltipProps, 'tooltipLabel'>;
 } & StackProps;
@@ -30,7 +30,9 @@ export const InfoTooltipLabel = ({
       ) : (
         children
       )}
-      <InfoTooltip tooltipLabel={tooltipLabel} {...infoTooltipProps} />
+      {tooltipLabel && (
+        <InfoTooltip tooltipLabel={tooltipLabel} {...infoTooltipProps} />
+      )}
     </Stack>
   );
 };
