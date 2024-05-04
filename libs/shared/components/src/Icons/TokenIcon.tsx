@@ -23,6 +23,7 @@ import {
   wOETH,
   wOUSD,
   xOGN,
+  xOGNOutlined,
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
@@ -91,6 +92,7 @@ const outlinedMap: Record<
 > = {
   OGV: OGVOutlined,
   veOGV: VeOGVOutlined,
+  xOGN: xOGNOutlined,
 };
 
 export const TokenIcon = ({ token, outlined, ...rest }: TokenIconProps) => {

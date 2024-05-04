@@ -23,6 +23,7 @@ import WETHSvg from './WETH.svg?react';
 import wOETHSvg from './wOETH.svg?react';
 import wOUSDSvg from './wOUSD.svg?react';
 import xOGNSvg from './xOGN.svg?react';
+import xOGNOutlinedSvg from './xOGN_outlined.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -94,4 +95,7 @@ export const wOUSD = (props: SvgIconProps) => (
 );
 export const xOGN = (props: SvgIconProps) => (
   <SvgIcon {...props} component={xOGNSvg} inheritViewBox />
+);
+export const xOGNOutlined = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={xOGNOutlinedSvg} inheritViewBox />
 );
