@@ -56,7 +56,7 @@ export const VotingPowerCard = (props: CardProps) => {
             label={intl.formatMessage({
               defaultMessage: 'Percentage of total votes',
             })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={'0.32262%'}
             alignItems="flex-start"
             mb={3}

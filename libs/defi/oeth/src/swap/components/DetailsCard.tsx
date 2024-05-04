@@ -96,7 +96,7 @@ export const DetailsCard = ({
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ fontWeight: 'medium' }}
             value={formatCurrency(tvl, undefined, undefined, {
               minimumFractionDigits: 2,
             })}
@@ -106,7 +106,7 @@ export const DetailsCard = ({
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ fontWeight: 'medium' }}
             value={formatCurrency(price)}
             isLoading={isPriceLoading}
           />

@@ -19,14 +19,14 @@ export const StatsCard = (props: CardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Total OGN Staked' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={'80.6%'}
           />
           <ValueLabel
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'xOGN holders' })}
-            labelProps={{ variant: 'mono' }}
+            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={'4.36K'}
           />
         </Stack>
