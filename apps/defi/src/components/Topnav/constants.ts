@@ -1,6 +1,6 @@
 import {
-  GOVERNANCE_DISCUSSION_FORUM,
-  GOVERNANCE_SNAPSHOT_VOTES,
+  GOVERNANCE_DISCUSSION_FORUM_URL,
+  GOVERNANCE_SNAPSHOT_VOTES_URL,
   OETH_ANALYTICS_URL,
   OUSD_ANALYTICS_URL,
 } from '@origin/shared/constants';
@@ -60,7 +60,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'Horem ipsum dolor ',
       }),
       icon: FaCommentsRegular,
-      href: GOVERNANCE_DISCUSSION_FORUM,
+      href: GOVERNANCE_DISCUSSION_FORUM_URL,
     },
     {
       title: defineMessage({ defaultMessage: 'Snapshot vote' }),
@@ -68,7 +68,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
         defaultMessage: 'Horem ipsum dolor ',
       }),
       icon: Snapshot,
-      href: GOVERNANCE_SNAPSHOT_VOTES,
+      href: GOVERNANCE_SNAPSHOT_VOTES_URL,
     },
   ],
 };
