@@ -268,9 +268,9 @@ function SwapperWrapped({
           />
           <Divider />
           <CardContent
-            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
           >
-            <Typography>
+            <Typography fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
             </Typography>
             <TokenInput
@@ -293,14 +293,14 @@ function SwapperWrapped({
                 borderColor: 'divider',
               }}
             />
-            <Typography pt={1.5}>
+            <Typography fontWeight="medium" pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Route' })}
             </Typography>
             <Stack direction="row" spacing={2}>
               <RedeemActionCard action="redeem-vault" sx={{ width: 1 }} />
               <RedeemActionCard action="swap-curve" sx={{ width: 1 }} />
             </Stack>
-            <Typography pt={1.5}>
+            <Typography fontWeight="medium" pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Receive amount' })}
             </Typography>
             <Stack
@@ -311,6 +311,8 @@ function SwapperWrapped({
                 backgroundColor: 'background.highlight',
                 p: 3,
                 borderRadius: 3,
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             >
               <Stack spacing={1.5}>
@@ -349,7 +351,7 @@ function SwapperWrapped({
                 py={3}
                 px={1}
               >
-                <Typography color="text.secondary" variant="mono">
+                <Typography color="text.secondary" fontWeight="medium">
                   {intl.formatMessage(
                     {
                       defaultMessage:
@@ -365,18 +367,25 @@ function SwapperWrapped({
                   )}
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
+                  <LoadingLabel
+                    isLoading={isSwapRoutesLoading}
+                    sWidth={60}
+                    fontWeight="medium"
+                  >
                     {formatCurrency(subtractPercentage(amountOutUsd, slippage))}
                   </LoadingLabel>
                 </Stack>
               </Stack>
             </Collapse>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+          </CardContent>
+          <CardContent sx={{ pt: 0 }}>
+            <Collapse in={needsApproval}>
               <Button
                 fullWidth
                 variant="action"
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
+                sx={{ mb: 1.5 }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />

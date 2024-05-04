@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { SettingsButton, TokenInput } from '@origin/defi/shared';
+import { TokenInput } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -21,6 +21,7 @@ import {
   getTokenPriceKey,
   isNativeCurrency,
   RedeemProvider,
+  SettingsButton,
   useFormat,
   useHandleRedeem,
   useHandleRedeemAmountInChange,
@@ -128,15 +129,13 @@ function RedeemerWrapped({
       <Card {...rest}>
         <CardHeader
           title={intl.formatMessage({ defaultMessage: 'Redeem' })}
-          action={
-            <SettingsButton variant="outlined" size="small" color="secondary" />
-          }
+          action={<SettingsButton />}
         />
         <Divider />
         <CardContent
           sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
         >
-          <Typography>
+          <Typography fontWeight="medium">
             {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
           </Typography>
           <TokenInput
@@ -158,11 +157,11 @@ function RedeemerWrapped({
               borderColor: 'divider',
             }}
           />
-          <Typography pt={1.5}>
+          <Typography pt={1.5} fontWeight="medium">
             {intl.formatMessage({ defaultMessage: 'Route' })}
           </Typography>
           <RedeemSplitCard />
-          <Typography pt={1.5}>
+          <Typography pt={1.5} fontWeight="medium">
             {intl.formatMessage({ defaultMessage: 'Receive amount' })}
           </Typography>
           <Stack
@@ -172,6 +171,8 @@ function RedeemerWrapped({
             sx={{
               backgroundColor: 'background.highlight',
               p: 3,
+              border: '1px solid',
+              borderColor: 'divider',
               borderRadius: 3,
             }}
           >
@@ -215,7 +216,7 @@ function RedeemerWrapped({
               py={3}
               px={1}
             >
-              <Typography color="text.secondary" variant="mono">
+              <Typography color="text.secondary" fontWeight="medium">
                 {intl.formatMessage(
                   {
                     defaultMessage:
@@ -231,7 +232,11 @@ function RedeemerWrapped({
                 )}
               </Typography>
               <Stack direction="row" alignItems="center" spacing={0.5}>
-                <LoadingLabel isLoading={isRedeemLoading} sWidth={60}>
+                <LoadingLabel
+                  isLoading={isRedeemLoading}
+                  sWidth={60}
+                  fontWeight="medium"
+                >
                   {formatCurrency(
                     subtractPercentage(convertedAmount, slippage),
                   )}
@@ -246,7 +251,6 @@ function RedeemerWrapped({
             {...buttonsProps}
             disabled={redeemButtonDisabled}
             onClick={handleRedeem}
-            sx={{ mt: 1.5, ...buttonsProps?.sx }}
           >
             {isEstimateLoading ? (
               <CircularProgress size={32} color="inherit" />

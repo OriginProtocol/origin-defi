@@ -27,8 +27,8 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
   return (
     <Accordion
       sx={{
+        py: 1,
         px: 2,
-
         backgroundColor: 'background.highlight',
         '&&&': { borderRadius: 3 },
         ...props?.sx,

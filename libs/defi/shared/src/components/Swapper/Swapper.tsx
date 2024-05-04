@@ -30,6 +30,7 @@ import {
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
+  SettingsButton,
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
@@ -57,7 +58,6 @@ import {
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { SettingsButton } from '../SettingsButton';
 import { TokenInput } from '../TokenInput';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
@@ -284,9 +284,7 @@ function SwapperWrapped({
       <Card {...rest}>
         <CardHeader
           title={intl.formatMessage({ defaultMessage: 'Swap' })}
-          action={
-            <SettingsButton variant="outlined" size="small" color="secondary" />
-          }
+          action={<SettingsButton />}
         />
         <Divider />
         <Box
