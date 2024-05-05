@@ -104,7 +104,7 @@ function LogItem({ log, ...rest }: LogItemProps) {
   const eventIcon = {
     Canceled: <FaCircleXmarkRegular sx={{ color: theme.palette.divider }} />,
     Created: (
-      <FaCircleCheckRegular sx={{ color: theme.palette.success.faded }} />
+      <FaCircleCheckRegular sx={{ color: theme.palette.text.secondary }} />
     ),
     Executed: (
       <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />
