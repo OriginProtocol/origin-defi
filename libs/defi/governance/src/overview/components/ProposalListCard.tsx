@@ -176,7 +176,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               {proposal.type === 'snapshot' ? (
                 <ColorChip px={1} py={0.5} bgcolor="warning.faded">
                   <Snapshot sx={{ color: 'warning.main', fontSize: 14 }} />
-                  <Typography variant="caption1" color="warning.dark">
+                  <Typography variant="caption1" color="text.primary">
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
                     })}
