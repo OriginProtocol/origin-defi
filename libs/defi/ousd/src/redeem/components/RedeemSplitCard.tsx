@@ -65,7 +65,7 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
               defaultMessage: 'Redeem for mix via Origin Vault',
             })}
           </Typography>
-          <MultiTokenIcon tokens={split.map((s) => s.token)} size={1} />
+          <MultiTokenIcon tokens={split.map((s) => s.token)} size={1.25} />
         </Stack>
         <Stack spacing={1.25}>
           <ValueLabel

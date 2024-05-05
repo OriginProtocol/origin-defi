@@ -2,6 +2,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material';
@@ -27,8 +28,6 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
   return (
     <Accordion
       sx={{
-        py: 1,
-        px: 2,
         backgroundColor: 'background.highlight',
         '&&&': { borderRadius: 3 },
         ...props?.sx,
@@ -36,12 +35,13 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
     >
       <AccordionSummary
         expandIcon={<FaChevronDownRegular sx={{ color: 'text.secondary' }} />}
-        sx={{ py: 1, color: 'text.secondary' }}
+        sx={{ px: 2, py: 2, color: 'text.secondary' }}
       >
         {intl.formatMessage({ defaultMessage: 'Show breakdown' })}
       </AccordionSummary>
-      <AccordionDetails sx={{ pt: 1, pb: 2, px: 0 }}>
-        <Stack spacing={0.5}>
+      <AccordionDetails sx={{ p: 0 }}>
+        <Divider />
+        <Stack spacing={2} p={2}>
           {split?.map((s) => (
             <SplitRow
               key={s.token.symbol}
@@ -85,7 +85,7 @@ function SplitRow({
       {...rest}
     >
       <Stack direction="row" alignItems="center" spacing={1}>
-        <TokenIcon token={estimate.token} />
+        <TokenIcon token={estimate.token} sx={{ fontSize: 20 }} />
         <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
       </Stack>
       <Stack
