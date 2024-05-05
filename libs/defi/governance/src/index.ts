@@ -1,2 +1,1 @@
-export * from './views/OverviewView';
-export * from './views/ProposalsView';
+export * from './overview';

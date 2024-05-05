@@ -340,6 +340,7 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           color: theme.palette.text.primary,
           textDecoration: 'none',
+          ...theme.typography.body3,
         }),
       },
     },

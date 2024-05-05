@@ -10,7 +10,6 @@ import {
   FaArrowRightArrowLeftRegular,
   FaArrowRightRegular,
   FaCoinsRegular,
-  FaFileLinesRegular,
   FaGavelRegular,
   OETH,
   OGN,
@@ -138,17 +137,6 @@ export const routes: RouteObject[] = [
                 defaultMessage: 'Convert OGV to OGN',
               }),
               icon: FaArrowRightRegular,
-            },
-          },
-          {
-            path: 'proposals',
-            Component: governance.ProposalsView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Proposals' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Voting history',
-              }),
-              icon: FaFileLinesRegular,
             },
           },
         ],
