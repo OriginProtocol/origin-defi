@@ -137,16 +137,18 @@ const MenuDialog = (props: DialogProps) => {
             }
 
             const items = [
-              ...(route?.children?.map(
-                (r) =>
-                  ({
-                    title: r.handle.title,
-                    subtitle: r.handle.subtitle,
-                    icon: r.handle.icon,
-                    path: r.path,
-                    href: null,
-                  }) as unknown as NavItem,
-              ) ?? []),
+              ...(route?.children
+                ?.filter((r) => !isNilOrEmpty(r?.handle?.title))
+                ?.map(
+                  (r) =>
+                    ({
+                      title: r.handle.title,
+                      subtitle: r.handle.subtitle,
+                      icon: r.handle.icon,
+                      path: r.path,
+                      href: null,
+                    }) as unknown as NavItem,
+                ) ?? []),
               ...(additionalLinks?.[route?.path ?? ''] ?? []),
             ];
 

@@ -92,12 +92,12 @@ export const LockupsTable = () => {
         : [
             columnHelper.accessor('veogv', {
               id: 'veogv',
-              header: tokens.mainnet.veOGV.symbol,
+              header: tokens.mainnet.xOGN.symbol,
               cell: (info) =>
                 intl.formatNumber(
                   +formatUnits(
                     BigInt(info.getValue()),
-                    tokens.mainnet.veOGV.decimals,
+                    tokens.mainnet.xOGN.decimals,
                   ),
                   {
                     minimumFractionDigits: 0,
@@ -118,11 +118,11 @@ export const LockupsTable = () => {
             {intl.formatNumber(
               +formatUnits(
                 BigInt(info.getValue()) ?? 0n,
-                tokens.mainnet.veOGV.decimals,
+                tokens.mainnet.xOGN.decimals,
               ) /
                 +formatUnits(
                   govInfo?.veOgvTotalSupply ?? 1n,
-                  tokens.mainnet.veOGV.decimals,
+                  tokens.mainnet.xOGN.decimals,
                 ),
               {
                 style: 'percent',

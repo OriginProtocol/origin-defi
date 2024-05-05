@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   CardContent,
   CardHeader,
@@ -9,25 +8,23 @@ import {
 } from '@mui/material';
 import { useOgnInfo } from '@origin/defi/shared';
 import { TokenChip, ValueLabel } from '@origin/shared/components';
-import { GOVERNANCE_SNAPSHOT_VOTES_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useOgvUserInfoQuery } from '../queries.generated';
+import { useUserInfoQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 
-export const VotingPowerCard = (props: CardProps) => {
+export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
-  const { data: user, isLoading: isUserLoading } = useOgvUserInfoQuery(
+  const { data: user, isLoading: isUserLoading } = useUserInfoQuery(
     { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
@@ -41,9 +38,7 @@ export const VotingPowerCard = (props: CardProps) => {
   return (
     <Card {...props}>
       <CardHeader
-        title={intl.formatMessage({
-          defaultMessage: 'My voting power',
-        })}
+        title={intl.formatMessage({ defaultMessage: 'Your voting power' })}
       />
       <Divider />
       {isConnected ? (
@@ -103,21 +98,6 @@ export const VotingPowerCard = (props: CardProps) => {
           </Typography>
         </CardContent>
       )}
-      <CardContent sx={{ pt: 0 }}>
-        <Stack useFlexGap>
-          <Button component={RouterLink} to="/more" sx={{ mb: 1 }}>
-            {intl.formatMessage({ defaultMessage: 'View proposals' })}
-          </Button>
-          <Button
-            variant="outlined"
-            href={GOVERNANCE_SNAPSHOT_VOTES_URL}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
-          >
-            {intl.formatMessage({ defaultMessage: 'Create snapshot proposal' })}
-          </Button>
-        </Stack>
-      </CardContent>
     </Card>
   );
 };

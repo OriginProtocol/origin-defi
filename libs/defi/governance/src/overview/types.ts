@@ -1,4 +1,4 @@
-import type { OgvProposalEvent } from '@origin/governance/shared';
+import type { OgvProposalEvent } from '@origin/defi/shared';
 
 import type { governanceChoices } from './constants';
 

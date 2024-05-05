@@ -129,6 +129,10 @@ export const routes: RouteObject[] = [
             },
           },
           {
+            path: ':proposalId',
+            Component: governance.ProposalDetailView,
+          },
+          {
             path: 'migration',
             Component: ogv.MigrationView,
             handle: {

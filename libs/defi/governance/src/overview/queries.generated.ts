@@ -21,6 +21,20 @@ export type UserVotesQueryVariables = Types.Exact<{
 
 export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, type: Types.OgvVoteType, timestamp: string, proposal: { __typename?: 'OGVProposal', id: string, description?: string | null, status: Types.OgvProposalState } }> };
 
+export type UserInfoQueryVariables = Types.Exact<{
+  address: Types.Scalars['String']['input'];
+}>;
+
+
+export type UserInfoQuery = { __typename?: 'Query', ogvAddresses: Array<{ __typename?: 'OGVAddress', id: string, balance: string, staked: string, veogvBalance: string, votingPower: string, delegatee?: { __typename?: 'OGVAddress', id: string } | null }> };
+
+export type UserDelegatorsQueryVariables = Types.Exact<{
+  address: Types.Scalars['String']['input'];
+}>;
+
+
+export type UserDelegatorsQuery = { __typename?: 'Query', ogvAddresses: Array<{ __typename?: 'OGVAddress', id: string, votingPower: string }> };
+
 
 
 export const ProposalsDocument = `
@@ -159,3 +173,69 @@ useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes',
 
 
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
+
+export const UserInfoDocument = `
+    query UserInfo($address: String!) {
+  ogvAddresses(where: {id_containsInsensitive: $address}) {
+    id
+    balance
+    staked
+    veogvBalance
+    votingPower
+    delegatee {
+      id
+    }
+  }
+}
+    `;
+
+export const useUserInfoQuery = <
+      TData = UserInfoQuery,
+      TError = unknown
+    >(
+      variables: UserInfoQueryVariables,
+      options?: Omit<UseQueryOptions<UserInfoQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserInfoQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<UserInfoQuery, TError, TData>(
+      {
+    queryKey: ['UserInfo', variables],
+    queryFn: graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables),
+    ...options
+  }
+    )};
+
+useUserInfoQuery.getKey = (variables: UserInfoQueryVariables) => ['UserInfo', variables];
+
+
+useUserInfoQuery.fetcher = (variables: UserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables, options);
+
+export const UserDelegatorsDocument = `
+    query UserDelegators($address: String!) {
+  ogvAddresses(where: {delegatee: {id_containsInsensitive: $address}}) {
+    id
+    votingPower
+  }
+}
+    `;
+
+export const useUserDelegatorsQuery = <
+      TData = UserDelegatorsQuery,
+      TError = unknown
+    >(
+      variables: UserDelegatorsQueryVariables,
+      options?: Omit<UseQueryOptions<UserDelegatorsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserDelegatorsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<UserDelegatorsQuery, TError, TData>(
+      {
+    queryKey: ['UserDelegators', variables],
+    queryFn: graphqlClient<UserDelegatorsQuery, UserDelegatorsQueryVariables>(UserDelegatorsDocument, variables),
+    ...options
+  }
+    )};
+
+useUserDelegatorsQuery.getKey = (variables: UserDelegatorsQueryVariables) => ['UserDelegators', variables];
+
+
+useUserDelegatorsQuery.fetcher = (variables: UserDelegatorsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserDelegatorsQuery, UserDelegatorsQueryVariables>(UserDelegatorsDocument, variables, options);

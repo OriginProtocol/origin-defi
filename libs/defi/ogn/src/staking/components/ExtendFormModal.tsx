@@ -99,23 +99,23 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const vAPY =
     duration === initialMonthDuration
       ? getVAPY(
-          +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals),
-          +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGV.decimals),
+          +formatUnits(BigInt(lockup.veogv), tokens.mainnet.xOGN.decimals),
+          +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGN.decimals),
           +formatUnits(
             BigInt(info?.xOgnTotalSupply ?? '0'),
-            tokens.mainnet.veOGV.decimals,
+            tokens.mainnet.xOGN.decimals,
           ),
         ) / 100
       : (staking?.stakingAPY ?? 0) / 100;
   const veOGVReceived =
     duration === initialMonthDuration
-      ? +formatUnits(BigInt(lockup.veogv), tokens.mainnet.veOGV.decimals)
+      ? +formatUnits(BigInt(lockup.veogv), tokens.mainnet.xOGN.decimals)
       : staking?.veOGVReceived;
   const votingPowerPercent =
     (veOGVReceived ?? 0) /
     +formatUnits(
       (info?.xOgnTotalSupply as unknown as bigint) ?? 1n,
-      tokens.mainnet.OGV.decimals,
+      tokens.mainnet.OGN.decimals,
     );
   const showRewardLabel = ((info?.xOgnRewards as unknown as bigint) ?? 0n) > 0n;
   const stakeDisabled =
@@ -197,11 +197,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               {intl.formatNumber(
                 +formatUnits(
                   BigInt(lockup.veogv) ?? 0n,
-                  tokens.mainnet.veOGV.decimals,
+                  tokens.mainnet.xOGN.decimals,
                 ) /
                   +formatUnits(
                     info?.xOgnTotalSupply ?? 1n,
-                    tokens.mainnet.veOGV.decimals,
+                    tokens.mainnet.xOGN.decimals,
                   ),
                 {
                   style: 'percent',

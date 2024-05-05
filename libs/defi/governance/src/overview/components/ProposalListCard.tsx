@@ -291,11 +291,11 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>
-              {formatAmount(c[1], tokens.mainnet.veOGV.decimals, undefined, {
+              {formatAmount(c[1], tokens.mainnet.xOGN.decimals, undefined, {
                 notation: 'compact',
                 maximumSignificantDigits: 4,
               })}
-              &nbsp;{tokens.mainnet.veOGV.symbol}
+              &nbsp;{tokens.mainnet.xOGN.symbol}
             </Typography>
           </Stack>
           <LinearProgress

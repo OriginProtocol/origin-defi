@@ -67,3 +67,23 @@ query UserVotes($address: String!) {
     }
   }
 }
+
+query UserInfo($address: String!) {
+  ogvAddresses(where: { id_containsInsensitive: $address }) {
+    id
+    balance
+    staked
+    veogvBalance
+    votingPower
+    delegatee {
+      id
+    }
+  }
+}
+
+query UserDelegators($address: String!) {
+  ogvAddresses(where: { delegatee: { id_containsInsensitive: $address } }) {
+    id
+    votingPower
+  }
+}

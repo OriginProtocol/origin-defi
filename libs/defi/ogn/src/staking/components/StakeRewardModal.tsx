@@ -569,11 +569,11 @@ function LockupSelect({
           intl.formatNumber(
             +formatUnits(
               BigInt(info.getValue()) ?? 0n,
-              tokens.mainnet.veOGV.decimals,
+              tokens.mainnet.xOGN.decimals,
             ) /
               +formatUnits(
                 govInfo?.veOgvTotalSupply ?? 1n,
-                tokens.mainnet.veOGV.decimals,
+                tokens.mainnet.xOGN.decimals,
               ),
             {
               style: 'percent',

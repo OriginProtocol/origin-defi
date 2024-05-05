@@ -8,6 +8,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
 
 import type { StackProps } from '@mui/material';
 
@@ -54,7 +55,7 @@ export const PageTitleSection = (props: StackProps) => {
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
       </ColorChip>
-      <Button sx={{ gap: 0.5 }}>
+      <Button component={RouterLink} to="/more/migration" sx={{ gap: 0.5 }}>
         <TokenIcon token={tokens.mainnet.OGV} sx={{ fontSize: 24 }} outlined />
         <FaArrowRightRegular />
         <MultiTokenIcon

@@ -10,57 +10,51 @@ import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
-import { MyVotingHistoryCard } from '../components/MyVotingHistoryCard';
-import { MyVotingPowerCard } from '../components/MyVotingPowerCard';
-import { PageTitleSection } from '../components/PageTitleSection';
-import { ProposalListCard } from '../components/ProposalListCard';
-import { ProposalsCountCard } from '../components/ProposalsCountCard';
+import { CurrentResultsCard } from '../components/CurrentResultsCard';
+import { DetailsCard } from '../components/DetailsCard';
+import { StatusCard } from '../components/StatusCard';
+import { VoteCard } from '../components/VotesCard';
 
-export const OverviewView = () => {
+export const ProposalDetailView = () => {
   const intl = useIntl();
 
   return (
     <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Origin Governance' })}
-        subtitle={intl.formatMessage({
-          defaultMessage: 'Govern an expansive ecosystem',
-        })}
         token={tokens.mainnet.OGN}
-      >
-        <PageTitleSection />
-      </PageTitle>
+      />
       <PageSection containerProps={{ maxWidth: 'lg' }}>
-        <Grid2 container spacing={5}>
+        <Grid2 container spacing={3}>
           <Grid2 xs={12} md={8}>
-            <Stack spacing={5}>
+            <Stack spacing={3}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <ProposalsCountCard sx={{ minHeight: 116 }} />
+                <CurrentResultsCard />
               </ErrorBoundary>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <ProposalListCard />
+                <DetailsCard />
               </ErrorBoundary>
             </Stack>
           </Grid2>
           <Grid2 xs={12} md={4}>
-            <Stack spacing={5}>
+            <Stack spacing={3}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <MyVotingPowerCard />
+                <VoteCard />
               </ErrorBoundary>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <MyVotingHistoryCard />
+                <StatusCard />
               </ErrorBoundary>
             </Stack>
           </Grid2>

@@ -1,9 +1,7 @@
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
-import {
-  OgvProposalState,
-  useHoldersCountQuery,
-} from '@origin/governance/shared';
+import { OgvProposalState, useHoldersCountQuery } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { useProposals } from '../hooks';
@@ -15,7 +13,10 @@ export const ProposalsCountCard = (props: CardProps) => {
   const intl = useIntl();
   const { data: proposals, isLoading: isProposalsLoading } = useProposals();
   const { data: holdersCount, isLoading: isHoldersCountLoading } =
-    useHoldersCountQuery();
+    useHoldersCountQuery({
+      token: tokens.mainnet.xOGN.address,
+      chainId: tokens.mainnet.xOGN.chainId,
+    });
 
   const active =
     proposals?.filter((p) =>
@@ -49,7 +50,7 @@ export const ProposalsCountCard = (props: CardProps) => {
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Registered Voters' })}
             value={intl.formatNumber(
-              holdersCount?.ogvAddressesConnection?.totalCount ?? 0,
+              holdersCount?.oTokenAddressesConnection?.totalCount ?? 0,
             )}
             isLoading={isHoldersCountLoading}
             {...valueLabelProps}

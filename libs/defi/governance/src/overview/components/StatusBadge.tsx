@@ -1,6 +1,5 @@
 import { alpha, Skeleton, Typography, useTheme } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
-import { OgvProposalState } from '@origin/governance/shared';
+import { ColorChip, OgvProposalState } from '@origin/defi/shared';
 import { defineMessage, useIntl } from 'react-intl';
 
 import { statusLabels } from '../constants';

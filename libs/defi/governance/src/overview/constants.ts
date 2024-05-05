@@ -1,4 +1,4 @@
-import { OgvProposalState } from '@origin/governance/shared';
+import { OgvProposalState } from '@origin/defi/shared';
 import { defineMessage } from 'react-intl';
 
 import type { MessageDescriptor } from 'react-intl';

@@ -1,12 +1,11 @@
 import { Button, Card, Stack, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import type { CardProps } from '@mui/material';
 
 export const StakeOGNCard = (props: CardProps) => {
   const intl = useIntl();
-  const navigate = useNavigate();
 
   return (
     <Card
@@ -41,19 +40,8 @@ export const StakeOGNCard = (props: CardProps) => {
         })}
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Button
-          onClick={() => {
-            navigate('governance');
-          }}
-        >
-          {intl.formatMessage({ defaultMessage: 'Get OGN' })}
-        </Button>
-        <Button
-          variant="outlined"
-          onClick={() => {
-            navigate('governance/proposals');
-          }}
-        >
+        <Button>{intl.formatMessage({ defaultMessage: 'Get OGN' })}</Button>
+        <Button variant="outlined" component={RouterLink} to="/more">
           {intl.formatMessage({
             defaultMessage: 'View latest governance proposals',
           })}
