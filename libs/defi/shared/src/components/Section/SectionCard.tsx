@@ -6,10 +6,10 @@ import type { ReactNode } from 'react';
 
 export type SectionCardProps = {
   title: ReactNode;
-  titleProps: TypographyProps;
+  titleProps?: TypographyProps;
   titleInfoTooltip?: string;
-  cardProps: CardProps;
-  children: ReactNode;
+  cardProps?: CardProps;
+  children?: ReactNode;
 } & StackProps;
 
 export const SectionCard = ({
@@ -30,7 +30,7 @@ export const SectionCard = ({
         )}
         {titleInfoTooltip && <InfoTooltip tooltipLabel={titleInfoTooltip} />}
       </Stack>
-      <Card {...cardProps}>{children}</Card>
+      {!!children && <Card {...cardProps}>{children}</Card>}
     </Stack>
   );
 };
