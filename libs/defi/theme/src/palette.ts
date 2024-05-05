@@ -7,7 +7,7 @@ export const lightPalette: ThemeOptions = {
     mode: 'light',
     primary: {
       main: '#4356D2',
-      faded: alpha('#4356D2', 0.2),
+      faded: '#DEEEFE',
       contrastText: '#FFFFFF',
     },
     secondary: {
@@ -70,7 +70,7 @@ export const darkPalette: ThemeOptions = {
     mode: 'dark',
     primary: {
       main: '#5168FF',
-      faded: alpha('#5168FF', 0.2),
+      faded: '#1E2A36',
       contrastText: '#FFFFFF',
     },
     secondary: {
