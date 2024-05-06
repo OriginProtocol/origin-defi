@@ -1,11 +1,11 @@
 import { BridgeView } from '@origin/oeth/ccip';
 import { historyRoute } from '@origin/oeth/history';
+import { redeemRoute } from '@origin/oeth/redeem';
 import { SwapView } from '@origin/oeth/swap';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
 
 import { App } from './App';
-import { RedeemView } from './views/RedeemView';
 
 import type { RouteObject } from 'react-router-dom';
 
@@ -19,11 +19,7 @@ export const routes: RouteObject[] = [
         Component: SwapView,
         handle: { label: defineMessage({ defaultMessage: 'Swap' }) },
       },
-      {
-        path: '/redeem',
-        Component: RedeemView,
-        handle: { label: defineMessage({ defaultMessage: 'Redeem' }) },
-      },
+      redeemRoute,
       {
         path: '/bridge',
         Component: BridgeView,
