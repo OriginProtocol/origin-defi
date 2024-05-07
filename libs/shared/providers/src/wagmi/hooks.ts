@@ -14,6 +14,7 @@ import {
   waitForTransactionReceipt,
   writeContract,
 } from '@wagmi/core';
+import useIdle from 'react-use/lib/useIdle';
 import { mainnet } from 'viem/chains';
 import {
   useAccount,
@@ -61,7 +62,11 @@ export const useWatchContract = <
     selectData
   >,
 ) => {
-  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const isIdle = useIdle();
+  const { data: blockNumber } = useBlockNumber({
+    watch: true,
+    query: { enabled: !isIdle },
+  });
   const prev = usePrevious(Number(blockNumber));
   const res = useReadContract(config);
 
@@ -77,7 +82,11 @@ export const useWatchContract = <
 export const useWatchContracts = <T extends Abi | readonly unknown[]>(
   config: UseReadContractsParameters<T>,
 ) => {
-  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const isIdle = useIdle();
+  const { data: blockNumber } = useBlockNumber({
+    watch: true,
+    query: { enabled: !isIdle },
+  });
   const prev = usePrevious(Number(blockNumber));
   const res = useReadContracts(config);
 
@@ -113,10 +122,11 @@ export const useWatchBalance = (args?: {
   const config = useConfig();
   const { address } = useAccount();
   const addr = args?.address ?? address;
+  const isIdle = useIdle();
   const { data: blockNumber } = useBlockNumber({
     chainId: mainnet.id,
     watch: true,
-    query: { enabled: !!addr },
+    query: { enabled: !isIdle && !!addr },
   });
   const prev = usePrevious(Number(blockNumber));
 
@@ -139,13 +149,14 @@ export const useWatchBalances = (args: {
   address?: HexAddress;
 }) => {
   const config = useConfig();
+  const isIdle = useIdle();
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const addr = args?.address ?? address;
   const { data: blockNumber } = useBlockNumber({
     chainId: mainnet.id,
     watch: true,
-    query: { enabled: !isNilOrEmpty(args.tokens) },
+    query: { enabled: !isIdle && !isNilOrEmpty(args.tokens) },
   });
   const prev = usePrevious(Number(blockNumber));
   const res = useQuery({

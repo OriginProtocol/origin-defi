@@ -116,8 +116,8 @@ export const BridgeCard = () => {
         tokenOut: dstToken,
       },
       callbacks: {
-        onWriteSuccess: () => {
-          reset();
+        onWriteSuccess: (tx) => {
+          reset({ waitForTx: tx.transactionHash });
           refetchAllowance?.();
         },
       },
@@ -233,7 +233,7 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={dstTokens.length === 1}
-            amount={amount}
+            amount={ccipTxParams.data?.amountOut ?? 0n}
             balance={balances?.[getTokenId(dstToken)]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}

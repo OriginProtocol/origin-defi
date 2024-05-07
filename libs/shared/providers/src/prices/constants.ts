@@ -176,6 +176,11 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: 'stETH_USD',
     dependsOn: ['stETH_ETH', 'ETH_USD'],
   },
+  wOETH_ETH: {
+    type: 'derived',
+    id: 'wOETH_ETH',
+    dependsOn: ['wOETH_OETH'], // In one direction this is correct, in the other direction it is off by ~.1% (?)
+  },
   wOETH_OETH: {
     type: 'wagmi',
     id: 'wOETH_OETH',

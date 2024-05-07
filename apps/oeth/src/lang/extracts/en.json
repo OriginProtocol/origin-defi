@@ -143,11 +143,17 @@
   "BY343C": {
     "defaultMessage": "Change"
   },
+  "Bp2rXG": {
+    "defaultMessage": "Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}."
+  },
   "C73Nbd": {
     "defaultMessage": "Swap with Curve"
   },
   "CcqmCh": {
     "defaultMessage": "OETH Balance"
+  },
+  "Cyy/6q": {
+    "defaultMessage": "You will receive approximately"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -202,6 +208,9 @@
   },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
+  },
+  "LvLjgQ": {
+    "defaultMessage": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send, plus the estimated bridge fee, minus the actual bridge fee."
   },
   "LxxUDn": {
     "defaultMessage": "Tx"
@@ -295,6 +304,9 @@
   },
   "YnftYz": {
     "defaultMessage": "Wait time:"
+  },
+  "ZU6Mu8": {
+    "defaultMessage": "Bridge Transaction"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"

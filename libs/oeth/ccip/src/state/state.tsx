@@ -5,6 +5,7 @@ import { createContainer } from 'react-tracked';
 import { arbitrum, mainnet } from 'viem/chains';
 
 import type { Token } from '@origin/shared/contracts';
+import type { Hex } from 'viem';
 import type { Chain } from 'viem/chains';
 
 export interface BridgeState {
@@ -15,6 +16,7 @@ export interface BridgeState {
   dstChain: Chain;
   dstToken: Token;
   dstTokens: Token[];
+  waitForTx?: Hex;
 }
 
 export const tokenPaths: Record<
@@ -43,6 +45,7 @@ export const defaultState: BridgeState = {
   dstChain: arbitrum,
   dstToken: tokens.arbitrum.wOETH,
   dstTokens: tokenPaths[mainnet.id][arbitrum.id].dstTokens,
+  waitForTx: undefined,
 };
 
 export const { Provider: BridgeProvider, useTracked: useBridgeState } =

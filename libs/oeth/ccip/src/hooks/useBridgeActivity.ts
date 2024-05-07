@@ -4,6 +4,7 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useAccount } from 'wagmi';
 
 import { useBridgeTransfersQuery } from '../queries.generated';
+import { useBridgeState } from '../state';
 
 type BridgeTransferState = 'untouched' | 'processing' | 'complete' | 'failed';
 const states: Record<number, BridgeTransferState> = {
@@ -16,7 +17,7 @@ const states: Record<number, BridgeTransferState> = {
 export const useBridgeActivity = () => {
   const { address } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
-  const [waitForTx, setWaitForTx] = useState<string>();
+  const [{ waitForTx }, setBridgeState] = useBridgeState();
   // TODO: Add a max retry limit?
 
   // Query via GraphQL!
@@ -36,9 +37,9 @@ export const useBridgeActivity = () => {
         (bt) => bt.txHashIn === waitForTx,
       )
     ) {
-      setWaitForTx(undefined);
+      setBridgeState((state) => ({ ...state, waitForTx: undefined }));
     }
-  }, [bridgeTransfers.data, waitForTx]);
+  }, [bridgeTransfers.data, setBridgeState, waitForTx]);
 
   // Create data response
   const data = useMemo(
@@ -61,7 +62,6 @@ export const useBridgeActivity = () => {
   }, [data]);
 
   return {
-    waitForTx: (hash: string) => setWaitForTx(hash),
     isLoading: bridgeTransfers.isLoading,
     data,
   };

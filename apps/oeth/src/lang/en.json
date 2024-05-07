@@ -315,6 +315,52 @@
       "value": "Change"
     }
   ],
+  "Bp2rXG": [
+    {
+      "type": 0,
+      "value": "Sending ~"
+    },
+    {
+      "type": 1,
+      "value": "srcAmount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "srcToken"
+    },
+    {
+      "type": 0,
+      "value": " from "
+    },
+    {
+      "type": 1,
+      "value": "srcChain"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "dstToken"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "dstChain"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
   "C73Nbd": [
     {
       "type": 0,
@@ -325,6 +371,12 @@
     {
       "type": 0,
       "value": "OETH Balance"
+    }
+  ],
+  "Cyy/6q": [
+    {
+      "type": 0,
+      "value": "You will receive approximately"
     }
   ],
   "DKaqyQ": [
@@ -465,6 +517,12 @@
     {
       "type": 0,
       "value": "No transaction"
+    }
+  ],
+  "LvLjgQ": [
+    {
+      "type": 0,
+      "value": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send, plus the estimated bridge fee, minus the actual bridge fee."
     }
   ],
   "LxxUDn": [
@@ -675,6 +733,12 @@
     {
       "type": 0,
       "value": "Wait time:"
+    }
+  ],
+  "ZU6Mu8": [
+    {
+      "type": 0,
+      "value": "Bridge Transaction"
     }
   ],
   "ZmLuI/": [
