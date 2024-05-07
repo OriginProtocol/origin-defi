@@ -33,10 +33,10 @@ export function Topnav(props: BoxProps) {
     <>
       <Box
         sx={{
-          height: (theme) => ({
-            xs: '162px',
-            md: `105px`,
-          }),
+          height: {
+            xs: 162,
+            md: 105,
+          },
         }}
       />
       <Box
@@ -47,8 +47,8 @@ export function Topnav(props: BoxProps) {
           width: 1,
           zIndex: theme.zIndex.appBar,
           height: {
-            xs: '162px',
-            md: `105px`,
+            xs: 162,
+            md: 105,
           },
         })}
       >
