@@ -20,6 +20,7 @@ import { getNativeToken, getTokenId } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
+  isNativeCurrency,
   TxButton,
   useTxButton,
   useWatchBalances,
@@ -65,7 +66,7 @@ export const BridgeCard = () => {
   const srcBalance = balances?.[getTokenId(srcToken)];
   const srcRouter = ccipRouter[srcChain.id];
 
-  const isErc20 = srcToken.address !== ZERO_ADDRESS;
+  const isErc20 = !isNativeCurrency(srcToken);
 
   const {
     data: allowance,
