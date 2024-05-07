@@ -181,6 +181,7 @@ export const BridgeCard = () => {
           </Stack>
           <TokenInput
             isConnected={true}
+            hideMaxButton={srcChain.nativeCurrency.symbol === srcToken.symbol}
             isTokenClickDisabled={srcTokens.length === 1}
             amount={amount}
             onAmountChange={handleChangeAmount}

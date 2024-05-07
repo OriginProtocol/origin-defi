@@ -39,6 +39,7 @@ export type TxButtonProps<
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
   label?: string;
+  insufficientGasLabel?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
   params?: WriteTransactionParameters<abi, functionName, args>;
@@ -61,6 +62,7 @@ export const TxButton = <
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 >({
   label,
+  insufficientGasLabel,
   waitingSignatureLabel,
   waitingTxLabel,
   params,
@@ -166,8 +168,15 @@ export const TxButton = <
     }
   };
 
-  const buttonLabel =
-    writeStatus === 'pending'
+  const insufficientFunds =
+    simulateError?.name === 'ContractFunctionExecutionError' &&
+    simulateError?.cause?.name === 'CallExecutionError' &&
+    simulateError.cause.cause?.name === 'InsufficientFundsError';
+
+  const buttonLabel = insufficientFunds
+    ? insufficientGasLabel ??
+      intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+    : writeStatus === 'pending'
       ? waitingSignatureLabel ??
         intl.formatMessage({ defaultMessage: 'Waiting for signature' })
       : writeStatus === 'success' &&
@@ -178,6 +187,7 @@ export const TxButton = <
         : label ?? capitalize(params?.functionName ?? '');
   const isDisabled =
     disabled ||
+    insufficientFunds ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&
