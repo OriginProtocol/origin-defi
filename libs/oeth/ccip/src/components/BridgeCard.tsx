@@ -220,7 +220,7 @@ export const BridgeCard = () => {
                       'Exact amount received depends on a fluctuating bridge fee' +
                       ' which cannot be guaranteed through the zapper.' +
                       ' The amount you receive on the destination chain will be' +
-                      ' the amount you send,' +
+                      ' the amount you send converted to wOETH,' +
                       ' plus the estimated bridge fee,' +
                       ' minus the actual bridge fee.',
                   })}

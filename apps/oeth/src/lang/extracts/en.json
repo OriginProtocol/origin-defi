@@ -173,6 +173,9 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
+  "EZcIYg": {
+    "defaultMessage": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send converted to wOETH, plus the estimated bridge fee, minus the actual bridge fee."
+  },
   "FcLgSc": {
     "defaultMessage": "Learn More."
   },
@@ -208,9 +211,6 @@
   },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
-  },
-  "LvLjgQ": {
-    "defaultMessage": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send, plus the estimated bridge fee, minus the actual bridge fee."
   },
   "LxxUDn": {
     "defaultMessage": "Tx"

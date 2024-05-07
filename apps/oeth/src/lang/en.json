@@ -447,6 +447,12 @@
       "value": "Apply"
     }
   ],
+  "EZcIYg": [
+    {
+      "type": 0,
+      "value": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send converted to wOETH, plus the estimated bridge fee, minus the actual bridge fee."
+    }
+  ],
   "FcLgSc": [
     {
       "type": 0,
@@ -517,12 +523,6 @@
     {
       "type": 0,
       "value": "No transaction"
-    }
-  ],
-  "LvLjgQ": [
-    {
-      "type": 0,
-      "value": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send, plus the estimated bridge fee, minus the actual bridge fee."
     }
   ],
   "LxxUDn": [
