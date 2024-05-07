@@ -19,6 +19,7 @@ import {
   LoadingLabel,
   NotificationSnack,
   SeverityIcon,
+  TokenInput,
 } from '@origin/shared/components';
 import { getTokenId } from '@origin/shared/contracts';
 import {
@@ -41,7 +42,6 @@ import { usePushNotification } from '../../notifications';
 import { getTokenPriceKey } from '../../prices';
 import { SettingsButton } from '../../settings';
 import { useSlippage } from '../../slippage';
-import { TokenInput } from '../../token';
 import {
   ConnectedButton,
   isNativeCurrency,

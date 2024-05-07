@@ -94,14 +94,17 @@ const getWatchBalanceKey = (
   config: Config,
   token?: Token,
   address?: HexAddress,
-) => ['useWatchBalance', token, address, config];
-const fetchWatchBalance =
-  (config: Config, token?: Token, address?: HexAddress) => () =>
-    getBalance(config, {
-      address: address ?? ZERO_ADDRESS,
-      token: token?.address,
-      chainId: token?.chainId ?? mainnet.id,
-    }).then((bal) => bal.value);
+) => ['useWatchBalance', token, address, config] as const;
+const fetchWatchBalance = ({
+  queryKey: [, token, address, config],
+}: {
+  queryKey: ReturnType<typeof getWatchBalanceKey>;
+}) =>
+  getBalance(config, {
+    address: address ?? ZERO_ADDRESS,
+    token: token?.address,
+    chainId: token?.chainId ?? mainnet.id,
+  }).then((bal) => bal.value);
 
 export const useWatchBalance = (args?: {
   token: Token;
@@ -119,8 +122,7 @@ export const useWatchBalance = (args?: {
 
   const res = useQuery({
     queryKey: getWatchBalanceKey(config, args?.token, addr),
-    queryFn: fetchWatchBalance(config, args?.token, addr),
-    refetchInterval: 12000,
+    queryFn: fetchWatchBalance,
   });
 
   useEffect(() => {
@@ -164,8 +166,7 @@ export const useWatchBalances = (args: {
         args.tokens.map((t) =>
           queryClient.fetchQuery({
             queryKey: getWatchBalanceKey(config, t, addr),
-            queryFn: fetchWatchBalance(config, t, addr),
-            staleTime: 12000,
+            queryFn: fetchWatchBalance,
           }),
         ),
       );
@@ -178,7 +179,6 @@ export const useWatchBalances = (args: {
 
       return res;
     },
-    refetchInterval: 12000,
   });
 
   useEffect(() => {

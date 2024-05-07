@@ -9,10 +9,13 @@ import {
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
+import {
+  useFormat,
+  useTokenPrice,
+  useWatchBalance,
+} from '@origin/shared/providers';
+import { getTokenPriceKey } from '@origin/shared/providers';
 import { formatUnits } from 'viem';
-
-import { useFormat, useTokenPrice, useWatchBalance } from '../..';
-import { getTokenPriceKey } from '../../prices/utils';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

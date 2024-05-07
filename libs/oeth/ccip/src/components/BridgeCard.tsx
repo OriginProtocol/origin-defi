@@ -9,15 +9,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ArrowButton, InfoTooltip } from '@origin/shared/components';
-import { ChainButton } from '@origin/shared/components';
-import { getNativeToken, getTokenId } from '@origin/shared/contracts';
-import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   disabledTokenInputStyleProps,
   TokenInput,
   tokenInputStyleProps,
-} from '@origin/shared/providers';
+} from '@origin/oeth/shared';
+import { ArrowButton, InfoTooltip } from '@origin/shared/components';
+import { ChainButton } from '@origin/shared/components';
+import { getNativeToken, getTokenId } from '@origin/shared/contracts';
+import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
   TxButton,
@@ -182,13 +182,6 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={srcTokens.length === 1}
-            tokenPickerProps={{
-              modal: {
-                tokens: srcTokens,
-                onSelectToken: (token: Token) =>
-                  setBridgeState((state) => ({ ...state, srcToken: token })),
-              },
-            }}
             amount={amount}
             onAmountChange={handleChangeAmount}
             balance={balances?.[getTokenId(srcToken)]}
@@ -196,6 +189,10 @@ export const BridgeCard = () => {
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
             token={srcToken}
+            tokens={srcTokens}
+            onSelectToken={(token: Token) =>
+              setBridgeState((state) => ({ ...state, srcToken: token }))
+            }
             {...tokenInputStyleProps}
           />
         </Stack>
@@ -236,19 +233,16 @@ export const BridgeCard = () => {
           <TokenInput
             isConnected={true}
             isTokenClickDisabled={dstTokens.length === 1}
-            tokenPickerProps={{
-              modal: {
-                tokens: dstTokens,
-                onSelectToken: (token: Token) =>
-                  setBridgeState((state) => ({ ...state, dstToken: token })),
-              },
-            }}
             amount={amount}
             balance={balances?.[getTokenId(dstToken)]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
             token={dstToken}
+            tokens={dstTokens}
+            onSelectToken={(token: Token) =>
+              setBridgeState((state) => ({ ...state, dstToken: token }))
+            }
             hideMaxButton
             {...disabledTokenInputStyleProps}
           />
