@@ -8,7 +8,7 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   getBalance,
   waitForTransactionReceipt,
@@ -90,6 +90,19 @@ export const useWatchContracts = <T extends Abi | readonly unknown[]>(
   return res;
 };
 
+const getWatchBalanceKey = (
+  config: Config,
+  token?: Token,
+  address?: HexAddress,
+) => ['useWatchBalance', token, address, config];
+const fetchWatchBalance =
+  (config: Config, token?: Token, address?: HexAddress) => () =>
+    getBalance(config, {
+      address: address ?? ZERO_ADDRESS,
+      token: token?.address,
+      chainId: token?.chainId ?? mainnet.id,
+    }).then((bal) => bal.value);
+
 export const useWatchBalance = (args?: {
   token: Token;
   address?: HexAddress;
@@ -98,22 +111,16 @@ export const useWatchBalance = (args?: {
   const { address } = useAccount();
   const addr = args?.address ?? address;
   const { data: blockNumber } = useBlockNumber({
+    chainId: mainnet.id,
     watch: true,
     query: { enabled: !!addr },
   });
   const prev = usePrevious(Number(blockNumber));
 
   const res = useQuery({
-    queryKey: ['useWatchBalance', args?.token, addr, config],
-    queryFn: async () => {
-      const bal = await getBalance(config, {
-        address: addr ?? ZERO_ADDRESS,
-        token: args?.token.address,
-        chainId: args?.token.chainId ?? mainnet.id,
-      });
-
-      return bal.value;
-    },
+    queryKey: getWatchBalanceKey(config, args?.token, addr),
+    queryFn: fetchWatchBalance(config, args?.token, addr),
+    refetchInterval: 12000,
   });
 
   useEffect(() => {
@@ -131,8 +138,10 @@ export const useWatchBalances = (args: {
 }) => {
   const config = useConfig();
   const { address } = useAccount();
+  const queryClient = useQueryClient();
   const addr = args?.address ?? address;
   const { data: blockNumber } = useBlockNumber({
+    chainId: mainnet.id,
     watch: true,
     query: { enabled: !isNilOrEmpty(args.tokens) },
   });
@@ -153,22 +162,23 @@ export const useWatchBalances = (args: {
 
       const bals = await Promise.allSettled(
         args.tokens.map((t) =>
-          getBalance(config, {
-            address: addr,
-            token: t.address,
-            chainId: t.chainId,
+          queryClient.fetchQuery({
+            queryKey: getWatchBalanceKey(config, t, addr),
+            queryFn: fetchWatchBalance(config, t, addr),
+            staleTime: 12000,
           }),
         ),
       );
 
       bals.forEach((bal, i) => {
         if (isFulfilled(bal)) {
-          res = { ...res, [getTokenId(args.tokens[i])]: bal.value.value };
+          res = { ...res, [getTokenId(args.tokens[i])]: bal.value };
         }
       });
 
       return res;
     },
+    refetchInterval: 12000,
   });
 
   useEffect(() => {
