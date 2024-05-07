@@ -9,15 +9,15 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { ArrowButton, InfoTooltip } from '@origin/shared/components';
+import { ChainButton } from '@origin/shared/components';
+import { getNativeToken, getTokenId } from '@origin/shared/contracts';
+import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
-  ArrowButton,
   disabledTokenInputStyleProps,
   TokenInput,
   tokenInputStyleProps,
-} from '@origin/shared/components';
-import { ChainButton } from '@origin/shared/components';
-import { getNativeToken, getTokenId, tokens } from '@origin/shared/contracts';
-import { ChainlinkCCIP } from '@origin/shared/icons';
+} from '@origin/shared/providers';
 import {
   ApprovalButton,
   TxButton,
@@ -38,6 +38,7 @@ import { useResetBridgeState } from '../hooks/useResetBridgeState';
 import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
+import type { Token } from '@origin/shared/contracts';
 import type { erc20Abi } from 'viem';
 
 export const BridgeCard = () => {
@@ -48,7 +49,10 @@ export const BridgeCard = () => {
     isConnected,
   } = useAccount();
   const previousChain = usePrevious(currentChain);
-  const [{ amount, srcChain, srcToken, dstChain, dstToken }] = useBridgeState();
+  const [
+    { amount, srcChain, srcToken, srcTokens, dstChain, dstToken, dstTokens },
+    setBridgeState,
+  ] = useBridgeState();
   const toggleChain = useToggleBridgeChain();
   const handleChangeAmount = useChangeAmount();
   const reset = useResetBridgeState();
@@ -57,21 +61,28 @@ export const BridgeCard = () => {
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [nativeToken, srcToken, dstToken],
   });
+
   const srcBalance = balances?.[getTokenId(srcToken)];
   const srcRouter = ccipRouter[srcChain.id];
+
+  const isErc20 = srcToken.address !== ZERO_ADDRESS;
 
   const {
     data: allowance,
     isLoading: isAllowanceLoading,
     refetch: refetchAllowance,
-  } = useReadContract({
-    chainId: srcToken.chainId,
-    address: srcToken.address,
-    abi: srcToken.abi as typeof erc20Abi,
-    functionName: 'allowance',
-    args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
-    query: { enabled: !!userAddress },
-  });
+  } = useReadContract(
+    isErc20
+      ? {
+          chainId: srcToken.chainId,
+          address: srcToken.address,
+          abi: srcToken.abi as typeof erc20Abi,
+          functionName: 'allowance',
+          args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
+          query: { enabled: !!userAddress },
+        }
+      : undefined,
+  );
 
   const ccipTxParams = useCcipTxParams({
     srcChain,
@@ -85,8 +96,21 @@ export const BridgeCard = () => {
     ccipTxParams.data && {
       params: ccipTxParams.data.params,
       activity: {
+        title: intl.formatMessage({ defaultMessage: 'Bridge Transaction' }),
+        subtitle: intl.formatMessage(
+          {
+            defaultMessage:
+              'Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}.',
+          },
+          {
+            srcAmount: formatAmount(amount),
+            srcToken: srcToken.symbol,
+            srcChain: srcChain.name,
+            dstToken: dstToken.symbol,
+            dstChain: dstChain.name,
+          },
+        ),
         type: 'bridge',
-        status: 'pending',
         amountIn: amount,
         tokenIn: srcToken,
         tokenOut: dstToken,
@@ -112,6 +136,7 @@ export const BridgeCard = () => {
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
   const requiresApproval =
+    isErc20 &&
     !isAllowanceLoading &&
     !isBalancesLoading &&
     currentChain?.id === srcChain.id &&
@@ -120,7 +145,7 @@ export const BridgeCard = () => {
     amount <= (balances?.[getTokenId(srcToken)] ?? 0n);
   const bridgeButtonDisabled =
     !isConnected ||
-    (allowance ?? 0n) < amount ||
+    requiresApproval ||
     amount === 0n ||
     amount > (balances?.[getTokenId(srcToken)] ?? 0n);
   const bridgeButtonLabel =
@@ -140,7 +165,8 @@ export const BridgeCard = () => {
   const totalFees =
     txButton.gasPrice &&
     ccipTxParams.data &&
-    txButton.gasPrice.gasPrice + Number(formatUnits(ccipTxParams.data.fee, 18));
+    txButton.gasPrice.gasCostWei +
+      Number(formatUnits(ccipTxParams.data.fee, 18));
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -155,14 +181,21 @@ export const BridgeCard = () => {
           </Stack>
           <TokenInput
             isConnected={true}
-            isTokenClickDisabled={true}
+            isTokenClickDisabled={srcTokens.length === 1}
+            tokenPickerProps={{
+              modal: {
+                tokens: srcTokens,
+                onSelectToken: (token: Token) =>
+                  setBridgeState((state) => ({ ...state, srcToken: token })),
+              },
+            }}
             amount={amount}
             onAmountChange={handleChangeAmount}
             balance={balances?.[getTokenId(srcToken)]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
-            token={tokens.mainnet.wOETH}
+            token={srcToken}
             {...tokenInputStyleProps}
           />
         </Stack>
@@ -176,18 +209,46 @@ export const BridgeCard = () => {
             </Typography>
             <ChainButton chain={dstChain} disabled />
           </Stack>
-          <Box>
-            {intl.formatMessage({ defaultMessage: 'You will receive' })}
-          </Box>
+          <Stack direction={'row'} alignItems={'center'}>
+            {ccipTxParams.data?.isEstimate ? (
+              <>
+                {intl.formatMessage({
+                  defaultMessage: 'You will receive approximately',
+                })}
+                <InfoTooltip
+                  sx={{ ml: 2 }}
+                  iconSize={18}
+                  tooltipLabel={intl.formatMessage({
+                    defaultMessage:
+                      'Exact amount received depends on a fluctuating bridge fee' +
+                      ' which cannot be guaranteed through the zapper.' +
+                      ' The amount you receive on the destination chain will be' +
+                      ' the amount you send,' +
+                      ' plus the estimated bridge fee,' +
+                      ' minus the actual bridge fee.',
+                  })}
+                />
+              </>
+            ) : (
+              intl.formatMessage({ defaultMessage: 'You will receive' })
+            )}
+          </Stack>
           <TokenInput
             isConnected={true}
-            isTokenClickDisabled={true}
+            isTokenClickDisabled={dstTokens.length === 1}
+            tokenPickerProps={{
+              modal: {
+                tokens: dstTokens,
+                onSelectToken: (token: Token) =>
+                  setBridgeState((state) => ({ ...state, dstToken: token })),
+              },
+            }}
             amount={amount}
             balance={balances?.[getTokenId(dstToken)]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
-            token={tokens.mainnet.wOETH}
+            token={dstToken}
             hideMaxButton
             {...disabledTokenInputStyleProps}
           />

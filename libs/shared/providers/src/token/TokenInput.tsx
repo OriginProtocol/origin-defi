@@ -1,19 +1,19 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
+import { BigIntInput } from '@origin/shared/components';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
-import { TokenPicker } from '../Buttons';
-import { BigIntInput } from './BigIntInput';
+import { TokenPicker } from './TokenPicker';
 
 import type { StackProps } from '@mui/material';
+import type { BigintInputProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { ComponentProps } from 'react';
 
-import type { TokenPickerProps } from '../Buttons';
-import type { BigintInputProps } from './BigIntInput';
+import type { TokenPickerProps } from './TokenPicker';
 
 // When clicking max on native currency, we leave this amount of token
 // on the wallet so the user can afford the transaction gas fees
@@ -41,7 +41,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
-  tokenButtonProps?: Omit<TokenPickerProps, 'token'>;
+  tokenPickerProps?: Omit<TokenPickerProps, 'token'>;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -65,7 +65,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       tokenPriceUsd = 0,
       isPriceLoading,
       inputProps,
-      tokenButtonProps,
+      tokenPickerProps,
       ...rest
     },
     ref,
@@ -113,10 +113,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             token={token}
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}
-            {...tokenButtonProps}
+            {...tokenPickerProps}
             sx={{
               ...(!isConnected && { transform: 'translateY(50%)' }),
-              ...tokenButtonProps?.sx,
+              ...tokenPickerProps?.sx,
             }}
           />
         </Box>

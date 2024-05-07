@@ -11,16 +11,38 @@ export interface BridgeState {
   amount: bigint;
   srcChain: Chain;
   srcToken: Token;
+  srcTokens: Token[];
   dstChain: Chain;
   dstToken: Token;
+  dstTokens: Token[];
 }
+
+export const tokenPaths: Record<
+  number,
+  Record<number, { srcTokens: Token[]; dstTokens: Token[] }>
+> = {
+  [mainnet.id]: {
+    [arbitrum.id]: {
+      srcTokens: [tokens.mainnet.wOETH, tokens.mainnet.ETH],
+      dstTokens: [tokens.arbitrum.wOETH],
+    },
+  },
+  [arbitrum.id]: {
+    [mainnet.id]: {
+      srcTokens: [tokens.arbitrum.wOETH],
+      dstTokens: [tokens.mainnet.wOETH],
+    },
+  },
+};
 
 export const defaultState: BridgeState = {
   amount: 0n,
   srcChain: mainnet,
   srcToken: tokens.mainnet.wOETH,
+  srcTokens: tokenPaths[mainnet.id][arbitrum.id].srcTokens,
   dstChain: arbitrum,
   dstToken: tokens.arbitrum.wOETH,
+  dstTokens: tokenPaths[mainnet.id][arbitrum.id].dstTokens,
 };
 
 export const { Provider: BridgeProvider, useTracked: useBridgeState } =

@@ -187,11 +187,6 @@
         "internalType": "bytes32",
         "name": "messageId",
         "type": "bytes32"
-      },
-      {
-        "internalType": "uint256",
-        "name": "woethAmount",
-        "type": "uint256"
       }
     ],
     "stateMutability": "payable",

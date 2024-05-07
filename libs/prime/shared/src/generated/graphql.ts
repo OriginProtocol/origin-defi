@@ -744,142 +744,22 @@ export type LrtDepositsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
-export type LrtNodeDelegator = {
-  __typename?: 'LRTNodeDelegator';
+export type LrtEigenPointCalculation = {
+  __typename?: 'LRTEigenPointCalculation';
   amount: Scalars['BigInt']['output'];
   blockNumber: Scalars['Int']['output'];
-  holdings: Array<LrtNodeDelegatorHoldings>;
   id: Scalars['String']['output'];
-  node: Scalars['String']['output'];
   points: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
 };
 
-
-export type LrtNodeDelegatorHoldingsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LrtNodeDelegatorHoldingsOrderByInput>>;
-  where?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
-};
-
-export type LrtNodeDelegatorEdge = {
-  __typename?: 'LRTNodeDelegatorEdge';
+export type LrtEigenPointCalculationEdge = {
+  __typename?: 'LRTEigenPointCalculationEdge';
   cursor: Scalars['String']['output'];
-  node: LrtNodeDelegator;
+  node: LrtEigenPointCalculation;
 };
 
-export type LrtNodeDelegatorHoldings = {
-  __typename?: 'LRTNodeDelegatorHoldings';
-  amount: Scalars['BigInt']['output'];
-  asset: Scalars['String']['output'];
-  delegator: LrtNodeDelegator;
-  id: Scalars['String']['output'];
-};
-
-export type LrtNodeDelegatorHoldingsConnection = {
-  __typename?: 'LRTNodeDelegatorHoldingsConnection';
-  edges: Array<LrtNodeDelegatorHoldingsEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type LrtNodeDelegatorHoldingsEdge = {
-  __typename?: 'LRTNodeDelegatorHoldingsEdge';
-  cursor: Scalars['String']['output'];
-  node: LrtNodeDelegatorHoldings;
-};
-
-export enum LrtNodeDelegatorHoldingsOrderByInput {
-  AmountAsc = 'amount_ASC',
-  AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
-  AmountDesc = 'amount_DESC',
-  AmountDescNullsLast = 'amount_DESC_NULLS_LAST',
-  AssetAsc = 'asset_ASC',
-  AssetAscNullsFirst = 'asset_ASC_NULLS_FIRST',
-  AssetDesc = 'asset_DESC',
-  AssetDescNullsLast = 'asset_DESC_NULLS_LAST',
-  DelegatorAmountAsc = 'delegator_amount_ASC',
-  DelegatorAmountAscNullsFirst = 'delegator_amount_ASC_NULLS_FIRST',
-  DelegatorAmountDesc = 'delegator_amount_DESC',
-  DelegatorAmountDescNullsLast = 'delegator_amount_DESC_NULLS_LAST',
-  DelegatorBlockNumberAsc = 'delegator_blockNumber_ASC',
-  DelegatorBlockNumberAscNullsFirst = 'delegator_blockNumber_ASC_NULLS_FIRST',
-  DelegatorBlockNumberDesc = 'delegator_blockNumber_DESC',
-  DelegatorBlockNumberDescNullsLast = 'delegator_blockNumber_DESC_NULLS_LAST',
-  DelegatorIdAsc = 'delegator_id_ASC',
-  DelegatorIdAscNullsFirst = 'delegator_id_ASC_NULLS_FIRST',
-  DelegatorIdDesc = 'delegator_id_DESC',
-  DelegatorIdDescNullsLast = 'delegator_id_DESC_NULLS_LAST',
-  DelegatorNodeAsc = 'delegator_node_ASC',
-  DelegatorNodeAscNullsFirst = 'delegator_node_ASC_NULLS_FIRST',
-  DelegatorNodeDesc = 'delegator_node_DESC',
-  DelegatorNodeDescNullsLast = 'delegator_node_DESC_NULLS_LAST',
-  DelegatorPointsAsc = 'delegator_points_ASC',
-  DelegatorPointsAscNullsFirst = 'delegator_points_ASC_NULLS_FIRST',
-  DelegatorPointsDesc = 'delegator_points_DESC',
-  DelegatorPointsDescNullsLast = 'delegator_points_DESC_NULLS_LAST',
-  DelegatorTimestampAsc = 'delegator_timestamp_ASC',
-  DelegatorTimestampAscNullsFirst = 'delegator_timestamp_ASC_NULLS_FIRST',
-  DelegatorTimestampDesc = 'delegator_timestamp_DESC',
-  DelegatorTimestampDescNullsLast = 'delegator_timestamp_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdDesc = 'id_DESC',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST'
-}
-
-export type LrtNodeDelegatorHoldingsWhereInput = {
-  AND?: InputMaybe<Array<LrtNodeDelegatorHoldingsWhereInput>>;
-  OR?: InputMaybe<Array<LrtNodeDelegatorHoldingsWhereInput>>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  asset_contains?: InputMaybe<Scalars['String']['input']>;
-  asset_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  asset_endsWith?: InputMaybe<Scalars['String']['input']>;
-  asset_eq?: InputMaybe<Scalars['String']['input']>;
-  asset_gt?: InputMaybe<Scalars['String']['input']>;
-  asset_gte?: InputMaybe<Scalars['String']['input']>;
-  asset_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  asset_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  asset_lt?: InputMaybe<Scalars['String']['input']>;
-  asset_lte?: InputMaybe<Scalars['String']['input']>;
-  asset_not_contains?: InputMaybe<Scalars['String']['input']>;
-  asset_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  asset_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  asset_not_eq?: InputMaybe<Scalars['String']['input']>;
-  asset_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  asset_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  asset_startsWith?: InputMaybe<Scalars['String']['input']>;
-  delegator?: InputMaybe<LrtNodeDelegatorWhereInput>;
-  delegator_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-};
-
-export enum LrtNodeDelegatorOrderByInput {
+export enum LrtEigenPointCalculationOrderByInput {
   AmountAsc = 'amount_ASC',
   AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
   AmountDesc = 'amount_DESC',
@@ -892,10 +772,6 @@ export enum LrtNodeDelegatorOrderByInput {
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdDesc = 'id_DESC',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  NodeAsc = 'node_ASC',
-  NodeAscNullsFirst = 'node_ASC_NULLS_FIRST',
-  NodeDesc = 'node_DESC',
-  NodeDescNullsLast = 'node_DESC_NULLS_LAST',
   PointsAsc = 'points_ASC',
   PointsAscNullsFirst = 'points_ASC_NULLS_FIRST',
   PointsDesc = 'points_DESC',
@@ -906,9 +782,9 @@ export enum LrtNodeDelegatorOrderByInput {
   TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
 }
 
-export type LrtNodeDelegatorWhereInput = {
-  AND?: InputMaybe<Array<LrtNodeDelegatorWhereInput>>;
-  OR?: InputMaybe<Array<LrtNodeDelegatorWhereInput>>;
+export type LrtEigenPointCalculationWhereInput = {
+  AND?: InputMaybe<Array<LrtEigenPointCalculationWhereInput>>;
+  OR?: InputMaybe<Array<LrtEigenPointCalculationWhereInput>>;
   amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
   amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
   amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -927,9 +803,6 @@ export type LrtNodeDelegatorWhereInput = {
   blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  holdings_every?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
-  holdings_none?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
-  holdings_some?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -947,23 +820,6 @@ export type LrtNodeDelegatorWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  node_contains?: InputMaybe<Scalars['String']['input']>;
-  node_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  node_endsWith?: InputMaybe<Scalars['String']['input']>;
-  node_eq?: InputMaybe<Scalars['String']['input']>;
-  node_gt?: InputMaybe<Scalars['String']['input']>;
-  node_gte?: InputMaybe<Scalars['String']['input']>;
-  node_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  node_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  node_lt?: InputMaybe<Scalars['String']['input']>;
-  node_lte?: InputMaybe<Scalars['String']['input']>;
-  node_not_contains?: InputMaybe<Scalars['String']['input']>;
-  node_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  node_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  node_not_eq?: InputMaybe<Scalars['String']['input']>;
-  node_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  node_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  node_startsWith?: InputMaybe<Scalars['String']['input']>;
   points_eq?: InputMaybe<Scalars['BigInt']['input']>;
   points_gt?: InputMaybe<Scalars['BigInt']['input']>;
   points_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -984,9 +840,9 @@ export type LrtNodeDelegatorWhereInput = {
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
 };
 
-export type LrtNodeDelegatorsConnection = {
-  __typename?: 'LRTNodeDelegatorsConnection';
-  edges: Array<LrtNodeDelegatorEdge>;
+export type LrtEigenPointCalculationsConnection = {
+  __typename?: 'LRTEigenPointCalculationsConnection';
+  edges: Array<LrtEigenPointCalculationEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -1502,16 +1358,11 @@ export type Query = {
   lrtDepositByUniqueInput?: Maybe<LrtDeposit>;
   lrtDeposits: Array<LrtDeposit>;
   lrtDepositsConnection: LrtDepositsConnection;
-  lrtNodeDelegatorById?: Maybe<LrtNodeDelegator>;
-  /** @deprecated Use lrtNodeDelegatorById */
-  lrtNodeDelegatorByUniqueInput?: Maybe<LrtNodeDelegator>;
-  lrtNodeDelegatorHoldings: Array<LrtNodeDelegatorHoldings>;
-  lrtNodeDelegatorHoldingsById?: Maybe<LrtNodeDelegatorHoldings>;
-  /** @deprecated Use lrtNodeDelegatorHoldingsById */
-  lrtNodeDelegatorHoldingsByUniqueInput?: Maybe<LrtNodeDelegatorHoldings>;
-  lrtNodeDelegatorHoldingsConnection: LrtNodeDelegatorHoldingsConnection;
-  lrtNodeDelegators: Array<LrtNodeDelegator>;
-  lrtNodeDelegatorsConnection: LrtNodeDelegatorsConnection;
+  lrtEigenPointCalculationById?: Maybe<LrtEigenPointCalculation>;
+  /** @deprecated Use lrtEigenPointCalculationById */
+  lrtEigenPointCalculationByUniqueInput?: Maybe<LrtEigenPointCalculation>;
+  lrtEigenPointCalculations: Array<LrtEigenPointCalculation>;
+  lrtEigenPointCalculationsConnection: LrtEigenPointCalculationsConnection;
   lrtPointRecipientById?: Maybe<LrtPointRecipient>;
   /** @deprecated Use lrtPointRecipientById */
   lrtPointRecipientByUniqueInput?: Maybe<LrtPointRecipient>;
@@ -1663,55 +1514,29 @@ export type QueryLrtDepositsConnectionArgs = {
 };
 
 
-export type QueryLrtNodeDelegatorByIdArgs = {
+export type QueryLrtEigenPointCalculationByIdArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryLrtNodeDelegatorByUniqueInputArgs = {
+export type QueryLrtEigenPointCalculationByUniqueInputArgs = {
   where: WhereIdInput;
 };
 
 
-export type QueryLrtNodeDelegatorHoldingsArgs = {
+export type QueryLrtEigenPointCalculationsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LrtNodeDelegatorHoldingsOrderByInput>>;
-  where?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
+  orderBy?: InputMaybe<Array<LrtEigenPointCalculationOrderByInput>>;
+  where?: InputMaybe<LrtEigenPointCalculationWhereInput>;
 };
 
 
-export type QueryLrtNodeDelegatorHoldingsByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryLrtNodeDelegatorHoldingsByUniqueInputArgs = {
-  where: WhereIdInput;
-};
-
-
-export type QueryLrtNodeDelegatorHoldingsConnectionArgs = {
+export type QueryLrtEigenPointCalculationsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<LrtNodeDelegatorHoldingsOrderByInput>;
-  where?: InputMaybe<LrtNodeDelegatorHoldingsWhereInput>;
-};
-
-
-export type QueryLrtNodeDelegatorsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<LrtNodeDelegatorOrderByInput>>;
-  where?: InputMaybe<LrtNodeDelegatorWhereInput>;
-};
-
-
-export type QueryLrtNodeDelegatorsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<LrtNodeDelegatorOrderByInput>;
-  where?: InputMaybe<LrtNodeDelegatorWhereInput>;
+  orderBy: Array<LrtEigenPointCalculationOrderByInput>;
+  where?: InputMaybe<LrtEigenPointCalculationWhereInput>;
 };
 
 

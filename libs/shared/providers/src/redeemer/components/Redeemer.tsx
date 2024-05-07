@@ -7,11 +7,7 @@ import {
   CircularProgress,
   Stack,
 } from '@mui/material';
-import {
-  ErrorBoundary,
-  ErrorCard,
-  TokenInput,
-} from '@origin/shared/components';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { ArrowDown } from '@origin/shared/icons';
 import { composeContexts } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -19,6 +15,7 @@ import { useAccount } from 'wagmi';
 
 import { getTokenPriceKey } from '../../prices';
 import { SettingsButton } from '../../settings';
+import { TokenInput } from '../../token';
 import { ConnectedButton, useWatchBalance } from '../../wagmi';
 import {
   useHandleRedeem,
@@ -128,7 +125,7 @@ function RedeemerWrapped({
               isConnected={isConnected}
               isAmountDisabled={isRedeemLoading}
               inputProps={{ sx: tokenInputStyles }}
-              tokenButtonProps={{
+              tokenPickerProps={{
                 sx: {
                   minWidth: 100,
                   maxWidth: 100,

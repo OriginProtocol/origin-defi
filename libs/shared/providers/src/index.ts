@@ -13,6 +13,7 @@ export * from './redeemer';
 export * from './settings';
 export * from './slippage';
 export * from './swapper';
+export * from './token';
 export * from './theme';
 export * from './txButton';
 export * from './txTracker';

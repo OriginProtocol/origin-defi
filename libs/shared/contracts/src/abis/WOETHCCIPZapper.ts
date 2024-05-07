@@ -119,10 +119,7 @@ export const WOETHCCIPZapperABI = [
   {
     inputs: [{ internalType: 'address', name: 'receiver', type: 'address' }],
     name: 'zap',
-    outputs: [
-      { internalType: 'bytes32', name: 'messageId', type: 'bytes32' },
-      { internalType: 'uint256', name: 'woethAmount', type: 'uint256' },
-    ],
+    outputs: [{ internalType: 'bytes32', name: 'messageId', type: 'bytes32' }],
     stateMutability: 'payable',
     type: 'function',
   },

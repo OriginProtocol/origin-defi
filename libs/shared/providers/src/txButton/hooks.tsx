@@ -91,7 +91,7 @@ export const useTxButton = <
     queryFn: async () => {
       if (!args) return undefined;
       if (publicClient) {
-        const res = await publicClient.estimateContractGas({
+        const gasAmount = await publicClient.estimateContractGas({
           address: args.params.contract.address ?? ZERO_ADDRESS,
           abi: args.params.contract.abi,
           functionName: args.params.functionName,
@@ -102,14 +102,13 @@ export const useTxButton = <
 
         const gasPrice = await queryClient.fetchQuery({
           queryKey: useGasPrice.getKey(
-            BigInt(res),
+            gasAmount,
             args.params.contract.chainId,
             queryClient,
             config,
           ),
           queryFn: useGasPrice.fetcher,
         });
-
         return gasPrice;
       }
     },
@@ -118,6 +117,7 @@ export const useTxButton = <
 
   const onWrite = useCallback(() => {
     const act = {
+      ...args?.activity,
       type: args?.activity?.type ?? 'transaction',
       title:
         args?.activity?.title ??

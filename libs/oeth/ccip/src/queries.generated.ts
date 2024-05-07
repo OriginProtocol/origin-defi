@@ -7,7 +7,7 @@ export type BridgeTransfersQueryVariables = Types.Exact<{
 }>;
 
 
-export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string, txHashOut?: string | null, state: number }> };
+export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, transactor: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string, txHashOut?: string | null, state: number }> };
 
 export type BridgeTransferStatesQueryVariables = Types.Exact<{
   messageIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -22,7 +22,7 @@ export const BridgeTransfersDocument = `
     query BridgeTransfers($address: String!) {
   bridgeTransfers(
     orderBy: timestamp_DESC
-    where: {sender_containsInsensitive: $address, receiver_containsInsensitive: $address}
+    where: {sender_containsInsensitive: $address, OR: {transactor_containsInsensitive: $address, OR: {receiver_containsInsensitive: $address}}}
   ) {
     id
     blockNumber
@@ -33,6 +33,7 @@ export const BridgeTransfersDocument = `
     chainOut
     amountIn
     amountOut
+    transactor
     receiver
     sender
     tokenIn
