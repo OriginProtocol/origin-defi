@@ -64,7 +64,7 @@ export const useTxButton = <
   args: UseTxButton<abi, functionName, args> | undefined,
 ) => {
   const intl = useIntl();
-  const { isConnected } = useAccount();
+  const { isConnected, address: userAddress } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
@@ -89,9 +89,10 @@ export const useTxButton = <
       ),
     ],
     queryFn: async () => {
-      if (!args) return undefined;
+      if (!args) return null;
       if (publicClient) {
         const gasAmount = await publicClient.estimateContractGas({
+          account: userAddress,
           address: args.params.contract.address ?? ZERO_ADDRESS,
           abi: args.params.contract.abi,
           functionName: args.params.functionName,
@@ -112,7 +113,7 @@ export const useTxButton = <
         return gasPrice;
       }
     },
-    enabled: false,
+    enabled: args?.enableGas,
   });
 
   const onWrite = useCallback(() => {
