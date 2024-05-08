@@ -1,6 +1,7 @@
 import { SvgIcon } from '@mui/material';
 
 import ArbitrumSvg from './Arbitrum.svg?react';
+import ArbitrumBWSvg from './ArbitrumBW.svg?react';
 import EthIconSvg from './Ethereum.svg?react';
 import GoerliSvg from './Goerli.svg?react';
 import NightfallSvg from './Nightfall.svg?react';
@@ -12,6 +13,9 @@ import type { SvgIconProps } from '@mui/material';
 
 export const Arbitrum = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ArbitrumSvg} viewBox="0 0 1080 1218.5" />
+);
+export const ArbitrumBW = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ArbitrumBWSvg} viewBox="0 0 32 32" />
 );
 export const Ethereum = (props: SvgIconProps) => (
   <SvgIcon {...props} component={EthIconSvg} viewBox="0 0 32 32" />
