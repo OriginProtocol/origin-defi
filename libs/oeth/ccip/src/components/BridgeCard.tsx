@@ -275,7 +275,7 @@ export const BridgeCard = () => {
               {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
             </Box>
             <Box>
-              {totalFees !== undefined &&
+              {typeof totalFees === 'number' &&
                 `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`}
             </Box>
           </Stack>
