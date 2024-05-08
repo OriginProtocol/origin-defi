@@ -106,7 +106,7 @@ export const BridgeActivityCard = () => {
         {(!activity.data || activity.data?.length === 0) && (
           <Stack alignItems={'center'} marginBottom={1}>
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'No activity yet.' })}
+              {intl.formatMessage({ defaultMessage: 'No activity' })}
             </Typography>
           </Stack>
         )}

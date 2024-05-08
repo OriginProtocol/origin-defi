@@ -29,6 +29,9 @@
   "1+ROfp": {
     "defaultMessage": "Transaction"
   },
+  "17g+HZ": {
+    "defaultMessage": "No activity"
+  },
   "1Ia8qN": {
     "defaultMessage": "Processing"
   },
@@ -190,9 +193,6 @@
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
-  },
-  "JkjhX0": {
-    "defaultMessage": "No activity yet."
   },
   "JrepQU": {
     "defaultMessage": "Gas:"

@@ -59,6 +59,12 @@
       "value": "Transaction"
     }
   ],
+  "17g+HZ": [
+    {
+      "type": 0,
+      "value": "No activity"
+    }
+  ],
   "1Ia8qN": [
     {
       "type": 0,
@@ -481,12 +487,6 @@
     {
       "type": 0,
       "value": "Operation Cancelled"
-    }
-  ],
-  "JkjhX0": [
-    {
-      "type": 0,
-      "value": "No activity yet."
     }
   ],
   "JrepQU": [
