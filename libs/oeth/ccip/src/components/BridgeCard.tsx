@@ -275,8 +275,9 @@ export const BridgeCard = () => {
               {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
             </Box>
             <Box>
-              {typeof totalFees === 'number' &&
-                `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`}
+              {typeof totalFees === 'number'
+                ? `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`
+                : '-'}
             </Box>
           </Stack>
           <Collapse in={requiresApproval}>
