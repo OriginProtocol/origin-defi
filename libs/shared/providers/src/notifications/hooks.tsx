@@ -3,10 +3,13 @@ import { useCallback, useMemo } from 'react';
 import { produce } from 'immer';
 import { descend, prop, propEq, take } from 'ramda';
 
+import { ActivityNotification } from '../activities/components/ActivityNotification';
 import { useTracked } from './state';
 
 import type { AlertColor } from '@mui/material';
 import type { ReactNode } from 'react';
+
+import type { Activity } from '../activities';
 
 type NotificationOptions = {
   severity?: AlertColor;
@@ -40,6 +43,20 @@ export const usePushNotification = () => {
       return id;
     },
     [setState],
+  );
+};
+
+export const usePushNotificationForActivity = () => {
+  const pushNotification = usePushNotification();
+  return useCallback(
+    (activity?: Activity) => {
+      if (activity) {
+        return pushNotification({
+          content: <ActivityNotification {...activity} />,
+        });
+      }
+    },
+    [pushNotification],
   );
 };
 

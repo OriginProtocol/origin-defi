@@ -153,7 +153,7 @@ export const UnstakeFormModal = ({
           notificationTitle={intl.formatMessage({ defaultMessage: 'Unstake' })}
           notificationSubtitle={intl.formatMessage(
             {
-              defaultMessage: 'Unstake lock-up {stake}',
+              defaultMessage: 'Unstake lock-up',
             },
             {
               stake: (

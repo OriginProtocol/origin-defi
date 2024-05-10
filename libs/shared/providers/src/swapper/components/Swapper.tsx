@@ -30,14 +30,15 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import {
-  ApprovalNotification,
-  SwapNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
 } from '../../activities';
 import { useFormat } from '../../intl';
-import { usePushNotification } from '../../notifications';
+import {
+  usePushNotification,
+  usePushNotificationForActivity,
+} from '../../notifications';
 import { getTokenPriceKey } from '../../prices';
 import { SettingsButton } from '../../settings';
 import { useSlippage } from '../../slippage';
@@ -83,6 +84,7 @@ export const Swapper = ({
 }: SwapperProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
+  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -94,19 +96,21 @@ export const Swapper = ({
       trackEvent={trackEvent}
       onApproveStart={(state) => {
         const activity = pushActivity({
-          ...state,
           type: 'approval',
           status: 'pending',
+          tokenIdIn: state.tokenIn.id,
+          amountIn: state.amountIn,
         });
 
         return activity.id;
       }}
       onApproveSuccess={(state) => {
         const { trackId } = state;
-        updateActivity({ ...state, id: trackId, status: 'success' });
-        pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
+        const activity = updateActivity({
+          id: trackId,
+          status: 'success',
         });
+        pushNotificationForActivity(activity);
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -126,37 +130,32 @@ export const Swapper = ({
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;
-        updateActivity({
-          ...state,
+        const activity = updateActivity({
           id: trackId,
-          status: 'success',
+          status: 'error',
           error: formatError(error),
         });
-        pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
+        pushNotificationForActivity(activity);
       }}
       onSwapStart={(state) => {
         const activity = pushActivity({
-          ...state,
           type: 'swap',
           status: 'pending',
+          tokenIdIn: state.tokenIn.id,
+          tokenIdOut: state.tokenOut.id,
+          amountIn: state.amountIn,
+          amountOut: state.amountOut,
         });
 
         return activity.id;
       }}
       onSwapSuccess={(state) => {
         const { trackId } = state;
-        updateActivity({ ...state, id: trackId, status: 'success' });
-        pushNotification({
-          content: <SwapNotification {...state} status="success" />,
+        const activity = updateActivity({
+          id: trackId,
+          status: 'success',
         });
+        pushNotificationForActivity(activity);
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -176,21 +175,12 @@ export const Swapper = ({
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;
-        updateActivity({
-          ...state,
+        const activity = updateActivity({
           id: trackId,
           status: 'error',
           error: formatError(error),
         });
-        pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
+        pushNotificationForActivity(activity);
       }}
     >
       <SwapperWrapped {...rest} />

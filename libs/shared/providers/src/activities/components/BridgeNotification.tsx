@@ -4,28 +4,29 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
+import { getTokenById } from '@origin/shared/contracts';
 import { formatAmount, isNilOrEmpty, txLink } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { TransactionReceipt } from 'viem';
+import type { Hex } from 'viem';
 
-import type { GlobalActivityStatus } from '../types';
+import type { ActivityStatus } from '../types';
 
 type BridgeNotificationProps = {
-  status: GlobalActivityStatus;
-  tokenIn?: Token;
+  status: ActivityStatus;
+  tokenIdIn: TokenId;
   amountIn?: bigint;
-  txReceipt?: TransactionReceipt;
+  txHash?: Hex;
   error?: string;
   sx?: StackProps['sx'];
 };
 
-const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Bridging' }),
   success: defineMessage({ defaultMessage: 'Bridge Started' }),
   error: defineMessage({ defaultMessage: 'Error while bridging' }),
@@ -34,26 +35,27 @@ const title: Record<GlobalActivityStatus, MessageDescriptor> = {
 
 export const BridgeNotification = ({
   status,
-  tokenIn,
+  tokenIdIn,
   amountIn,
-  txReceipt,
+  txHash,
   error,
   sx,
 }: BridgeNotificationProps) => {
+  const tokenIn = getTokenById(tokenIdIn);
   const intl = useIntl();
   const config = useConfig();
-  const amount = +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18);
+  const amount = +formatUnits(amountIn ?? 0n, tokenIn.decimals ?? 18);
   return (
     <NotificationSnack
       sx={sx}
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={
-        isNilOrEmpty(txReceipt?.transactionHash)
+        isNilOrEmpty(txHash)
           ? undefined
           : txLink(
-              config.chains.find((c) => c.id === tokenIn?.chainId),
-              txReceipt?.transactionHash,
+              config.chains.find((c) => c.id === tokenIn.chainId),
+              txHash,
             )
       }
       subtitle={
@@ -65,7 +67,7 @@ export const BridgeNotification = ({
               },
               {
                 amountIn: formatAmount(amount),
-                symbolIn: tokenIn?.symbol,
+                symbolIn: tokenIn.symbol,
               },
             )}
           </Typography>

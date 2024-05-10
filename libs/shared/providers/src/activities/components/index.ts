@@ -4,3 +4,4 @@ export * from './BridgeNotification';
 export * from './RedeemNotification';
 export * from './SwapNotification';
 export * from './TransactionNotification';
+export * from './ActivityNotification';

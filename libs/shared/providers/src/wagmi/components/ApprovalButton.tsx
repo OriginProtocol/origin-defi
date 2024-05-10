@@ -131,7 +131,7 @@ export const ApprovalButton = ({
         updateActivity({
           ...activity,
           status: 'success',
-          txReceipt: approvalData as TransactionReceipt,
+          txHash: (approvalData as TransactionReceipt).transactionHash,
         });
       }
       if (!disableNotification) {
@@ -143,8 +143,9 @@ export const ApprovalButton = ({
           content: (
             <ApprovalNotification
               {...activity}
+              tokenIdIn={token.id}
               status="success"
-              txReceipt={approvalData as TransactionReceipt}
+              txHash={(approvalData as TransactionReceipt).transactionHash}
             />
           ),
         });
@@ -164,6 +165,7 @@ export const ApprovalButton = ({
     onSuccess,
     pushNotification,
     resetWriteContract,
+    token.id,
     updateActivity,
   ]);
 
@@ -209,6 +211,7 @@ export const ApprovalButton = ({
             content: (
               <ApprovalNotification
                 {...activity}
+                tokenIdIn={token.id}
                 status="error"
                 error={formatError(writeError)}
               />
@@ -231,6 +234,7 @@ export const ApprovalButton = ({
     onUserReject,
     pushNotification,
     resetWriteContract,
+    token.id,
     updateActivity,
     writeError,
   ]);
@@ -242,7 +246,7 @@ export const ApprovalButton = ({
     onClick?.();
     if (!disableActivity) {
       const activity = pushActivity({
-        tokenIn: token,
+        tokenIdIn: token.id,
         type: 'approval',
         status: 'pending',
         amountIn: amount,
@@ -252,7 +256,7 @@ export const ApprovalButton = ({
       setActivity({
         id: Date.now().toString(),
         createdOn: Date.now(),
-        tokenIn: token,
+        tokenIdIn: token.id,
         type: 'approval',
         status: 'pending',
         amountIn: amount,

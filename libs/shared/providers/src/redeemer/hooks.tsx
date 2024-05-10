@@ -28,7 +28,7 @@ import { simulateContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
-import type { TransactionReceipt } from 'viem';
+import type { RedeemActivity } from '../activities';
 
 export const useHandleRedeemAmountInChange = () => {
   const [, setRedeemState] = useRedeemState();
@@ -74,11 +74,11 @@ export const useHandleRedeem = () => {
       slippage,
     );
 
-    const activity = pushActivity({
+    const activity = pushActivity<RedeemActivity>({
       type: 'redeem',
       status: 'pending',
-      tokenIn,
-      tokenOut: MIX_TOKEN,
+      tokenIdIn: tokenIn.id,
+      tokenIdOut: MIX_TOKEN.id,
       amountIn,
       amountOut,
     });
@@ -121,16 +121,10 @@ export const useHandleRedeem = () => {
       updateActivity({
         ...activity,
         status: 'success',
-        txReceipt: txReceipt as unknown as TransactionReceipt,
+        txHash: txReceipt.transactionHash,
       });
       pushNotification({
-        content: (
-          <RedeemNotification
-            {...activity}
-            status="success"
-            txReceipt={txReceipt as unknown as TransactionReceipt}
-          />
-        ),
+        content: <RedeemNotification {...activity} />,
       });
       trackEvent({
         name: 'redeem_complete',
@@ -198,11 +192,12 @@ export const useHandleRedeem = () => {
     queryClient,
     setRedeemState,
     slippage,
-    tokenIn,
+    tokenIn.id,
     trackEvent,
     updateActivity,
     vaultContract.abi,
     vaultContract.address,
+    vaultContract.chainId,
   ]);
 };
 

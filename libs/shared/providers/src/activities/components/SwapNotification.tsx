@@ -4,30 +4,30 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
+import { getTokenById } from '@origin/shared/contracts';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { TransactionReceipt } from 'viem';
 
-import type { GlobalActivityStatus } from '../types';
+import type { ActivityStatus, SwapActivity } from '../types';
 
-type SwapNotificationProps = {
-  status: GlobalActivityStatus;
-  tokenIn?: Token;
-  tokenOut?: Token;
-  amountIn?: bigint;
-  amountOut?: bigint;
-  txReceipt?: TransactionReceipt;
+type SwapNotificationProps = SwapActivity & {
+  status: ActivityStatus;
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
+  amountIn: bigint;
+  amountOut: bigint;
+  txHash?: string;
   error?: string;
   sx?: StackProps['sx'];
 };
 
-const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Swapping' }),
   success: defineMessage({ defaultMessage: 'Swapped' }),
   error: defineMessage({ defaultMessage: 'Error while swapping' }),
@@ -36,15 +36,18 @@ const title: Record<GlobalActivityStatus, MessageDescriptor> = {
 
 export const SwapNotification = ({
   status,
-  tokenIn,
-  tokenOut,
+  tokenIdIn,
+  tokenIdOut,
   amountIn,
   amountOut,
-  txReceipt,
+  txHash,
   error,
   sx,
 }: SwapNotificationProps) => {
   const intl = useIntl();
+
+  const tokenIn = getTokenById(tokenIdIn);
+  const tokenOut = getTokenById(tokenIdOut);
 
   return (
     <NotificationSnack
@@ -52,9 +55,7 @@ export const SwapNotification = ({
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={
-        isNilOrEmpty(txReceipt?.transactionHash)
-          ? undefined
-          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+        isNilOrEmpty(txHash) ? undefined : `https://etherscan.io/tx/${txHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (
@@ -66,15 +67,15 @@ export const SwapNotification = ({
               },
               {
                 amountIn: intl.formatNumber(
-                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+                  +formatUnits(amountIn ?? 0n, tokenIn.decimals ?? 18),
                   { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
-                symbolIn: tokenIn?.symbol,
+                symbolIn: tokenIn.symbol,
                 amountOut: intl.formatNumber(
-                  +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                  +formatUnits(amountOut ?? 0n, tokenOut.decimals ?? 18),
                   { minimumFractionDigits: 0, maximumFractionDigits: 2 },
                 ),
-                symbolOut: tokenOut?.symbol,
+                symbolOut: tokenOut.symbol,
               },
             )}
           </Typography>

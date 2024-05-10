@@ -12,11 +12,7 @@ import { descend, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useActivityState } from '../state';
-import { ApprovalNotification } from './ApprovalNotification';
-import { BridgeNotification } from './BridgeNotification';
-import { RedeemNotification } from './RedeemNotification';
-import { SwapNotification } from './SwapNotification';
-import { TransactionNotification } from './TransactionNotification';
+import { ActivityNotification } from './ActivityNotification';
 
 import type { StackProps } from '@mui/material';
 
@@ -48,7 +44,7 @@ export const ActivityPopover = ({
   };
 
   const sortedActivities = pipe(
-    sort(descend((a: Activity) => a.createdOn)),
+    sort(descend((a: Activity) => a.createdOn as number)),
     take(maxVisible),
   )(activities) as Activity[];
 
@@ -105,49 +101,9 @@ export const ActivityPopover = ({
           {isNilOrEmpty(sortedActivities) ? (
             <EmptyActivity sx={{ px: 3, py: 3 }} />
           ) : (
-            sortedActivities.map(
-              (a) =>
-                ({
-                  approval: (
-                    <ApprovalNotification
-                      key={a.id}
-                      {...a}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                  bridge: (
-                    <BridgeNotification
-                      key={a.id}
-                      {...a}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                  redeem: (
-                    <RedeemNotification
-                      key={a.id}
-                      {...a}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                  swap: (
-                    <SwapNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
-                  ),
-                  transaction: (
-                    <TransactionNotification
-                      key={a.id}
-                      {...a}
-                      title={
-                        a?.title ??
-                        intl.formatMessage({
-                          defaultMessage: 'New transaction',
-                        })
-                      }
-                      subtitle={a?.subtitle ?? ''}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                })[a.type],
-            )
+            sortedActivities.map((a) => {
+              return <ActivityNotification key={a.id} {...a} />;
+            })
           )}
         </Stack>
       </Stack>

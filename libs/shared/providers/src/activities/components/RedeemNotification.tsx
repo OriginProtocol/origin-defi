@@ -4,30 +4,31 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
+import { getTokenById } from '@origin/shared/contracts';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { TransactionReceipt } from 'viem';
+import type { Hex } from 'viem';
 
-import type { GlobalActivityStatus } from '../types';
+import type { ActivityStatus } from '../types';
 
 type RedeemNotificationProps = {
-  status: GlobalActivityStatus;
-  tokenIn?: Token;
-  tokenOut?: Token;
-  amountIn?: bigint;
-  amountOut?: bigint;
-  txReceipt?: TransactionReceipt;
+  status: ActivityStatus;
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
+  amountIn: bigint;
+  amountOut: bigint;
+  txHash?: Hex;
   error?: string;
   sx?: StackProps['sx'];
 };
 
-const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Redeeming' }),
   success: defineMessage({ defaultMessage: 'Redeemed' }),
   error: defineMessage({ defaultMessage: 'Error while redeeming' }),
@@ -36,14 +37,16 @@ const title: Record<GlobalActivityStatus, MessageDescriptor> = {
 
 export const RedeemNotification = ({
   status,
-  tokenIn,
-  tokenOut,
+  tokenIdIn,
+  tokenIdOut,
   amountIn,
   amountOut,
-  txReceipt,
+  txHash,
   error,
   sx,
 }: RedeemNotificationProps) => {
+  const tokenIn = getTokenById(tokenIdIn);
+  const tokenOut = getTokenById(tokenIdOut);
   const intl = useIntl();
 
   return (
@@ -52,9 +55,7 @@ export const RedeemNotification = ({
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       title={intl.formatMessage(title[status])}
       href={
-        isNilOrEmpty(txReceipt?.transactionHash)
-          ? undefined
-          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+        isNilOrEmpty(txHash) ? undefined : `https://etherscan.io/tx/${txHash}`
       }
       subtitle={
         isNilOrEmpty(error) ? (

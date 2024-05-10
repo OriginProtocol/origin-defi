@@ -1,51 +1,57 @@
-import type { Token, TokenId } from '@origin/shared/contracts';
-import type { ReactNode } from 'react';
-import type { TransactionReceipt } from 'viem';
+import type { TokenId } from '@origin/shared/contracts';
+import type { Hex } from 'viem';
 
-export type ActivityStatus = 'pending' | 'success' | 'error';
-
-export type GlobalActivityStatus = 'idle' | ActivityStatus;
-
-export type ActivityInput = {
-  type: ActivityType;
-  tokenIn?: Token;
-  tokenOut?: Token;
-  amountIn?: bigint;
-  amountOut?: bigint;
-  title?: ReactNode;
-  subtitle?: ReactNode;
-  endIcon?: ReactNode;
-  txReceipt?: TransactionReceipt;
-  status: ActivityStatus;
-  error?: string;
-};
+export type ActivityStatus = 'idle' | 'pending' | 'success' | 'error';
 
 export interface ActivityBase {
-  id: string;
-  createdOn: number;
+  id?: string;
+  createdOn?: number;
+  status: ActivityStatus;
+  error?: string;
+  txHash?: Hex;
 }
 
 export interface BridgeActivity extends ActivityBase {
   type: 'bridge';
+  status: ActivityStatus;
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
   amountIn: bigint;
-  tokenIn: TokenId;
-  tokenOut: TokenId;
 }
 
 export interface TransactionActivity extends ActivityBase {
-  title: string;
-  subtitle: string;
   type: 'transaction';
-  status: ActivityStatus;
-  endIcon: ReactNode;
+  title?: string;
+  subtitle?: string;
 }
 
-export type Activity = BridgeActivity | TransactionActivity | any;
+export interface RedeemActivity extends ActivityBase {
+  type: 'redeem';
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
+  amountIn: bigint;
+  amountOut: bigint;
+}
+
+export interface SwapActivity extends ActivityBase {
+  type: 'swap';
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
+  amountIn: bigint;
+  amountOut: bigint;
+}
+
+export interface ApprovalActivity extends ActivityBase {
+  type: 'approval';
+  tokenIdIn: TokenId;
+  amountIn?: bigint;
+}
+
+export type Activity =
+  | BridgeActivity
+  | TransactionActivity
+  | RedeemActivity
+  | SwapActivity
+  | ApprovalActivity;
 
 export type ActivityType = Activity['type'];
-// export type ActivityType =
-//   | 'swap'
-//   | 'redeem'
-//   | 'transaction'
-//   | 'bridge'
-//   | 'approval';

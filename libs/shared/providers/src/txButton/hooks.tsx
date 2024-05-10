@@ -23,7 +23,7 @@ import type {
   TransactionReceipt,
 } from 'viem';
 
-import type { Activity, ActivityInput } from '../activities';
+import type { Activity } from '../activities';
 import type {
   WriteTransactionCallbacks,
   WriteTransactionParameters,
@@ -43,7 +43,7 @@ export type UseTxButton<
 > = {
   params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
-  activity?: Partial<ActivityInput>;
+  activity?: Activity & { status: 'pending' };
   disableActivity?: boolean;
   disableNotification?: boolean;
   enableGas?: boolean;
@@ -66,7 +66,7 @@ export const useTxButton = <
   const intl = useIntl();
   const { isConnected, address: userAddress } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
-  const [act, setAct] = useState<Activity | null>(null);
+  const [activity, setActivity] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
@@ -117,23 +117,17 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    const act = {
-      ...args?.activity,
-      type: args?.activity?.type ?? 'transaction',
-      title:
-        args?.activity?.title ??
-        intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
-      subtitle:
-        args?.activity?.subtitle ??
-        intl.formatMessage({ defaultMessage: 'Transaction' }),
-      endIcon: args?.activity?.endIcon,
+    const act = args?.activity ?? {
+      type: 'transaction',
+      title: intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
+      subtitle: intl.formatMessage({ defaultMessage: 'Transaction' }),
       status: 'pending',
-    } as const;
+    };
     if (!args?.disableActivity) {
       const activity = pushActivity(act);
-      setAct(activity);
+      setActivity(activity);
     } else {
-      setAct({
+      setActivity({
         id: Date.now().toString(),
         createdOn: Date.now(),
         ...act,
@@ -141,15 +135,16 @@ export const useTxButton = <
     }
     args?.callbacks?.onWrite?.();
   }, [
-    args?.activity?.endIcon,
-    args?.activity?.subtitle,
-    args?.activity?.title,
-    args?.activity?.type,
+    args?.activity,
     args?.callbacks,
     args?.disableActivity,
     intl,
     pushActivity,
   ]);
+
+  const activityTitle = activity?.type === 'transaction' && activity.title;
+  const activitySubtitle =
+    activity?.type === 'transaction' && activity.subtitle;
 
   const onTxSigned = useCallback(() => {
     if (!args?.disableNotification) {
@@ -159,13 +154,13 @@ export const useTxButton = <
           <NotificationSnack
             icon={<SeverityIcon severity="info" />}
             title={
-              act?.title ??
+              activityTitle ??
               intl.formatMessage({
                 defaultMessage: 'Processing transaction',
               })
             }
             subtitle={
-              act?.subtitle ??
+              activitySubtitle ??
               intl.formatMessage({
                 defaultMessage: 'Your transaction is being processed on-chain.',
               })
@@ -177,8 +172,8 @@ export const useTxButton = <
     }
     args?.callbacks?.onTxSigned?.();
   }, [
-    act?.subtitle,
-    act?.title,
+    activityTitle,
+    activitySubtitle,
     args?.callbacks,
     args?.disableNotification,
     intl,
@@ -186,8 +181,8 @@ export const useTxButton = <
   ]);
 
   const onUserReject = useCallback(() => {
-    if (!args?.disableActivity && act?.id) {
-      deleteActivity(act.id);
+    if (!args?.disableActivity && activity?.id) {
+      deleteActivity(activity.id);
     }
     if (notifId) {
       deleteNotification(notifId);
@@ -204,15 +199,13 @@ export const useTxButton = <
             subtitle={intl.formatMessage({
               defaultMessage: 'User rejected operation',
             })}
-            endIcon={act?.endIcon}
           />
         ),
       });
     }
     args?.callbacks?.onUserReject?.();
   }, [
-    act?.endIcon,
-    act?.id,
+    activity?.id,
     args?.callbacks,
     args?.disableActivity,
     args?.disableNotification,
@@ -257,9 +250,9 @@ export const useTxButton = <
     (txReceipt: TransactionReceipt) => {
       if (!args?.disableActivity) {
         updateActivity({
-          ...act,
+          ...activity,
           status: 'success',
-          txReceipt,
+          txHash: txReceipt.transactionHash,
         });
       }
       if (notifId) {
@@ -277,7 +270,7 @@ export const useTxButton = <
                 defaultMessage: 'Your operation has been executed',
               })}
               status="success"
-              txReceipt={txReceipt}
+              txHash={txReceipt.transactionHash}
             />
           ),
         });
@@ -285,7 +278,7 @@ export const useTxButton = <
       args?.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
-      act,
+      activity,
       args?.callbacks,
       args?.disableActivity,
       args?.disableNotification,
@@ -299,9 +292,9 @@ export const useTxButton = <
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (!args?.disableActivity && act?.id) {
+      if (!args?.disableActivity && activity?.id) {
         updateActivity({
-          ...act,
+          ...activity,
           status: 'error',
           error: error?.message,
         });
@@ -327,7 +320,7 @@ export const useTxButton = <
       args?.callbacks?.onWriteError?.(error);
     },
     [
-      act,
+      activity,
       args?.callbacks,
       args?.disableActivity,
       args?.disableNotification,

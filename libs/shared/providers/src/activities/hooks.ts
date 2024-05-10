@@ -3,17 +3,17 @@ import { useCallback, useEffect, useState } from 'react';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { produce } from 'immer';
-import { groupBy, prop, propEq } from 'ramda';
+import { groupBy, prop } from 'ramda';
 
 import { useActivityState } from './state';
 
-import type { Activity, GlobalActivityStatus } from './types';
+import type { Activity, ActivityStatus } from './types';
 
 export const usePushActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (value: Activity) => {
+    <T extends Activity = Activity>(value: T) => {
       const activity = {
         ...value,
         id: Date.now().toString(),
@@ -21,7 +21,7 @@ export const usePushActivity = () => {
       };
       setState(
         produce((state) => {
-          state.activities.unshift(activity);
+          state.activities.unshift(activity as Activity);
         }),
       );
 
@@ -36,16 +36,19 @@ export const useUpdateActivity = () => {
 
   return useCallback(
     (activity: Partial<Activity> | undefined | null) => {
+      let existing: Activity | undefined;
       if (activity) {
         setState(
           produce((state) => {
-            const idx = state.activities.findIndex(propEq(activity.id, 'id'));
-            if (idx > -1) {
-              const existing = state.activities[idx];
+            existing = state.activities.find(
+              (a) => a.id && a.id === activity?.id,
+            );
+            if (existing) {
               Object.assign(existing, activity);
             }
           }),
         );
+        return existing;
       }
     },
     [setState],
@@ -60,7 +63,7 @@ export const useDeleteActivity = () => {
       if (id) {
         setState(
           produce((state) => {
-            const idx = state.activities.findIndex(propEq(id, 'id'));
+            const idx = state.activities.findIndex((a) => id && a.id === id);
             if (idx > -1) {
               state.activities.splice(idx, 1);
             }
@@ -74,7 +77,7 @@ export const useDeleteActivity = () => {
 
 export const useActivitiesStatus = () => {
   const [{ activities }] = useActivityState();
-  const [status, setStatus] = useState<GlobalActivityStatus>('idle');
+  const [status, setStatus] = useState<ActivityStatus>('idle');
   const prev = usePrevious(activities);
 
   useEffect(() => {

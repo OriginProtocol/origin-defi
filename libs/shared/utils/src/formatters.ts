@@ -44,6 +44,6 @@ export function formatAmount(
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const formatError = (error: Error | any) => {
-  return error?.shortMessage ?? error?.message;
+export const formatError = (error: Error | any): string => {
+  return error?.shortMessage ?? error?.message ?? 'Unknown error';
 };

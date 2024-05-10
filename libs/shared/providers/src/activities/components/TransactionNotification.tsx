@@ -3,19 +3,21 @@ import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { NotificationSnackProps } from '@origin/shared/components';
-import type { TransactionReceipt } from 'viem';
+import type { Hex } from 'viem';
 
-import type { GlobalActivityStatus } from '../types';
+import type { ActivityStatus } from '../types';
 
 type TransactionNotificationProps = {
-  status: GlobalActivityStatus;
-  txReceipt?: TransactionReceipt;
+  status: ActivityStatus;
+  txHash?: Hex;
   error?: string;
 } & NotificationSnackProps;
 
 export const TransactionNotification = ({
   status,
-  txReceipt,
+  title,
+  subtitle,
+  txHash,
   error,
   ...rest
 }: TransactionNotificationProps) => {
@@ -24,13 +26,12 @@ export const TransactionNotification = ({
       {...rest}
       icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
       href={
-        isNilOrEmpty(txReceipt?.transactionHash)
-          ? undefined
-          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+        isNilOrEmpty(txHash) ? undefined : `https://etherscan.io/tx/${txHash}`
       }
+      title={title}
       subtitle={
         isNilOrEmpty(error) ? (
-          rest?.subtitle
+          subtitle
         ) : (
           <Typography
             color="error"

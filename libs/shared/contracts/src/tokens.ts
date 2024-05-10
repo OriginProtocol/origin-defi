@@ -1,3 +1,4 @@
+import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
 import { arbitrum, mainnet } from 'wagmi/chains';
 
@@ -220,6 +221,8 @@ export const tokenList = [
   ...Object.values(tokens.mainnet),
   ...Object.values(tokens.arbitrum),
 ];
+
+export const tokenIdMap = indexBy(prop('id'), tokenList);
 
 type TokenList = typeof tokenList;
 export type TokenListItem = TokenList[number];

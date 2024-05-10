@@ -31,7 +31,7 @@ import type { Contract, Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity, ActivityInput } from '../../activities';
+import type { Activity } from '../../activities';
 import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type TransactionButtonProps = {
@@ -49,7 +49,7 @@ export type TransactionButtonProps = {
   onSuccess?: (txReceipt: TransactionReceipt) => void;
   onError?: (error: Error) => void;
   onUserReject?: () => void;
-  activityInput?: ActivityInput;
+  activityInput?: Activity;
   disableActivity?: boolean;
   disableNotification?: boolean;
 } & Omit<ConnectedButtonProps, 'onClick' | 'value'>;
@@ -137,7 +137,7 @@ export const TransactionButton = ({
         updateActivity({
           ...activity,
           status: 'success',
-          txReceipt: txData as TransactionReceipt,
+          txHash: (txData as TransactionReceipt).transactionHash,
         });
       }
       if (!disableNotification) {
@@ -159,9 +159,8 @@ export const TransactionButton = ({
                   defaultMessage: 'Your operation has been executed',
                 })
               }
-              endIcon={notificationEndIcon}
               status="success"
-              txReceipt={txData as TransactionReceipt}
+              txHash={(txData as TransactionReceipt).transactionHash}
             />
           ),
         });
@@ -171,7 +170,6 @@ export const TransactionButton = ({
     }
   }, [
     activity,
-    notificationEndIcon,
     notificationSubtitle,
     notificationTitle,
     deleteNotification,
@@ -250,7 +248,6 @@ export const TransactionButton = ({
     }
   }, [
     activity,
-    notificationEndIcon,
     deleteActivity,
     deleteNotification,
     disableActivity,
@@ -273,11 +270,16 @@ export const TransactionButton = ({
       if (!disableActivity) {
         const activity = pushActivity(
           activityInput ?? {
-            title: notificationTitle,
-            subtitle: notificationSubtitle,
+            title:
+              typeof notificationTitle === 'string'
+                ? notificationTitle
+                : undefined,
+            subtitle:
+              typeof notificationSubtitle === 'string'
+                ? notificationSubtitle
+                : undefined,
             type: 'transaction',
             status: 'pending',
-            endIcon: notificationEndIcon,
           },
         );
         setActivity(activity);
@@ -285,11 +287,16 @@ export const TransactionButton = ({
         setActivity({
           id: Date.now().toString(),
           createdOn: Date.now(),
-          title: notificationTitle,
-          subtitle: notificationSubtitle,
+          title:
+            typeof notificationTitle === 'string'
+              ? notificationTitle
+              : undefined,
+          subtitle:
+            typeof notificationSubtitle === 'string'
+              ? notificationSubtitle
+              : undefined,
           type: 'transaction',
           status: 'pending',
-          endIcon: notificationEndIcon,
         });
       }
       done.current = false;

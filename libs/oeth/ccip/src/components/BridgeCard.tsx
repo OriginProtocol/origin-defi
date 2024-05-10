@@ -97,24 +97,11 @@ export const BridgeCard = () => {
     ccipTxParams.data && {
       params: ccipTxParams.data.params,
       activity: {
-        title: intl.formatMessage({ defaultMessage: 'Bridge Transaction' }),
-        subtitle: intl.formatMessage(
-          {
-            defaultMessage:
-              'Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}.',
-          },
-          {
-            srcAmount: formatAmount(amount),
-            srcToken: srcToken.symbol,
-            srcChain: srcChain.name,
-            dstToken: dstToken.symbol,
-            dstChain: dstChain.name,
-          },
-        ),
         type: 'bridge',
+        status: 'pending',
         amountIn: amount,
-        tokenIn: srcToken,
-        tokenOut: dstToken,
+        tokenIdIn: srcToken.id,
+        tokenIdOut: dstToken.id,
       },
       callbacks: {
         onWriteSuccess: (tx) => {

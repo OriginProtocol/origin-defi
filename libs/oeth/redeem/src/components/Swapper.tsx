@@ -36,6 +36,7 @@ import {
   useHandleSwap,
   usePushActivity,
   usePushNotification,
+  usePushNotificationForActivity,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
@@ -50,6 +51,8 @@ import { useAccount } from 'wagmi';
 import { RedeemActionCard } from './RedeemActionCard';
 
 import type { StackProps } from '@mui/material';
+import type { SwapActivity } from '@origin/shared/providers';
+import type { ApprovalActivity } from '@origin/shared/providers';
 import type { SwapState } from '@origin/shared/providers';
 import type { MouseEvent } from 'react';
 
@@ -68,6 +71,7 @@ export const Swapper = ({
 }: SwapperProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
+  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -79,19 +83,21 @@ export const Swapper = ({
       trackEvent={trackEvent}
       onApproveStart={(state) => {
         const activity = pushActivity({
-          ...state,
-          type: 'redeem',
+          type: 'approval',
           status: 'pending',
+          tokenIdIn: state.tokenIn.id,
+          amountIn: state.amountIn,
         });
 
         return activity.id;
       }}
       onApproveSuccess={(state) => {
         const { trackId } = state;
-        updateActivity({ ...state, id: trackId, status: 'success' });
-        pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
+        const activity = updateActivity({
+          id: trackId,
+          status: 'success',
         });
+        pushNotificationForActivity(activity);
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -111,37 +117,42 @@ export const Swapper = ({
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;
-        updateActivity({
-          ...state,
+        const activity = updateActivity({
           id: trackId,
-          status: 'success',
+          status: 'error',
           error: formatError(error),
         });
-        pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
+        if (activity) {
+          pushNotification({
+            content: (
+              <ApprovalNotification
+                {...(activity as ApprovalActivity)}
+                status="error"
+                error={formatError(error)}
+              />
+            ),
+          });
+        }
       }}
       onSwapStart={(state) => {
         const activity = pushActivity({
-          ...state,
           type: 'redeem',
           status: 'pending',
+          tokenIdIn: state.tokenIn.id,
+          tokenIdOut: state.tokenOut.id,
+          amountIn: state.amountIn,
+          amountOut: state.amountOut,
         });
 
         return activity.id;
       }}
       onSwapSuccess={(state) => {
         const { trackId } = state;
-        updateActivity({ ...state, id: trackId, status: 'success' });
-        pushNotification({
-          content: <SwapNotification {...state} status="success" />,
+        const activity = updateActivity({
+          id: trackId,
+          status: 'success',
         });
+        pushNotificationForActivity(activity);
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -161,21 +172,16 @@ export const Swapper = ({
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;
-        updateActivity({
-          ...state,
+        const activity = updateActivity({
           id: trackId,
           status: 'error',
           error: formatError(error),
         });
-        pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
+        if (activity) {
+          pushNotification({
+            content: <SwapNotification {...(activity as SwapActivity)} />,
+          });
+        }
       }}
     >
       <SwapperWrapped {...rest} />
