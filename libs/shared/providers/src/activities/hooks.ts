@@ -7,13 +7,13 @@ import { groupBy, prop, propEq } from 'ramda';
 
 import { useActivityState } from './state';
 
-import type { Activity, ActivityInput, GlobalActivityStatus } from './types';
+import type { Activity, GlobalActivityStatus } from './types';
 
 export const usePushActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (value: ActivityInput) => {
+    (value: Activity) => {
       const activity = {
         ...value,
         id: Date.now().toString(),
@@ -21,8 +21,7 @@ export const usePushActivity = () => {
       };
       setState(
         produce((state) => {
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          state.activities.unshift(activity as any);
+          state.activities.unshift(activity);
         }),
       );
 

@@ -5,6 +5,7 @@ import { mainnet } from 'wagmi/chains';
 import type { Token } from '@origin/shared/contracts';
 
 export const MIX_TOKEN: Token = {
+  id: `${mainnet.id}:MIX_TOKEN`,
   address: ZERO_ADDRESS,
   chainId: mainnet.id,
   abi: erc20Abi,

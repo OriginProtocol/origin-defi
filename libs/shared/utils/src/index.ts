@@ -9,3 +9,4 @@ export * from './formatters';
 export * from './promises';
 export * from './isNilOrEmpty';
 export * from './types';
+export * from './json-bigint';

@@ -16,7 +16,7 @@ import {
 } from '@origin/oeth/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { getNativeToken, getTokenId } from '@origin/shared/contracts';
+import { getNativeToken } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
@@ -63,7 +63,7 @@ export const BridgeCard = () => {
     tokens: [nativeToken, srcToken, dstToken],
   });
 
-  const srcBalance = balances?.[getTokenId(srcToken)];
+  const srcBalance = balances?.[srcToken.id];
   const srcRouter = ccipRouter[srcChain.id];
 
   const isErc20 = !isNativeCurrency(srcToken);
@@ -143,12 +143,12 @@ export const BridgeCard = () => {
     currentChain?.id === srcChain.id &&
     allowance !== undefined &&
     allowance < amount &&
-    amount <= (balances?.[getTokenId(srcToken)] ?? 0n);
+    amount <= (balances?.[srcToken.id] ?? 0n);
   const bridgeButtonDisabled =
     !isConnected ||
     requiresApproval ||
     amount === 0n ||
-    amount > (balances?.[getTokenId(srcToken)] ?? 0n);
+    amount > (balances?.[srcToken.id] ?? 0n);
   const bridgeButtonLabel =
     amount === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
@@ -186,7 +186,7 @@ export const BridgeCard = () => {
             isTokenClickDisabled={srcTokens.length === 1}
             amount={amount}
             onAmountChange={handleChangeAmount}
-            balance={balances?.[getTokenId(srcToken)]}
+            balance={balances?.[srcToken.id]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
@@ -236,7 +236,7 @@ export const BridgeCard = () => {
             isConnected={true}
             isTokenClickDisabled={dstTokens.length === 1}
             amount={ccipTxParams.data?.amountOut ?? 0n}
-            balance={balances?.[getTokenId(dstToken)]}
+            balance={balances?.[dstToken.id]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
