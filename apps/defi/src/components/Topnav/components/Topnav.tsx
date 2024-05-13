@@ -3,7 +3,9 @@ import { useRef, useState } from 'react';
 import {
   alpha,
   Box,
+  Button,
   Divider,
+  Drawer,
   emphasize,
   useMediaQuery,
   useTheme,
@@ -12,7 +14,7 @@ import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
 import { ClickAwayPopover } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { OriginLabel } from '@origin/shared/icons';
+import { FaBarsRegular, OriginLabel } from '@origin/shared/icons';
 import {
   AccountPanel,
   BalanceList,
@@ -23,8 +25,8 @@ import {
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
+import { DrawerMenu } from './DrawerMenu';
 import { HoverMenu } from './HoverMenu';
-import { ModalMenuButton } from './ModalMenu';
 
 export const Topnav = () => {
   const { isConnected } = useAccount();
@@ -33,6 +35,7 @@ export const Topnav = () => {
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const accountMenuAnchorEl = useRef(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
     <>
@@ -209,10 +212,36 @@ export const Topnav = () => {
               color="secondary"
               sx={{ fontSize: 16 }}
             />
-            {isSm && <ModalMenuButton variant="nav" color="secondary" />}
+            {isSm && (
+              <Button
+                variant="nav"
+                color="secondary"
+                onClick={() => {
+                  setDrawerOpen(true);
+                }}
+              >
+                <FaBarsRegular />
+              </Button>
+            )}
           </Grid2>
         </Grid2>
       </Box>
+      {isSm && (
+        <Drawer
+          anchor="left"
+          open={drawerOpen}
+          onClose={() => {
+            setDrawerOpen(false);
+          }}
+          PaperProps={{ sx: { minWidth: 250 } }}
+        >
+          <DrawerMenu
+            onClose={() => {
+              setDrawerOpen(false);
+            }}
+          />
+        </Drawer>
+      )}
     </>
   );
 };

@@ -34,7 +34,6 @@ import {
   AddressLabel,
   BalanceList,
   OpenAccountModalButton,
-  useWatchBalance,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not } from 'ramda';
@@ -51,7 +50,6 @@ import type { RouteObject } from 'react-router-dom';
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -278,7 +276,6 @@ const AccountPopoverButton = () => {
     useState<HTMLButtonElement | null>(null);
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: eth, isLoading: ethLoading } = useWatchBalance();
   const { data: walletClient } = useWalletClient();
 
   const close = () => {
