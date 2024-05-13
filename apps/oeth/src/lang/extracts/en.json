@@ -47,6 +47,12 @@
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
   },
+  "2W3kP3": {
+    "defaultMessage": "~1min"
+  },
+  "3Lr8o5": {
+    "defaultMessage": "Larger redemptions coming soon"
+  },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
   },
@@ -70,6 +76,9 @@
   },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
+  },
+  "6Sj2lN": {
+    "defaultMessage": "Claim"
   },
   "6XFO/C": {
     "defaultMessage": "Approved"
@@ -121,6 +130,9 @@
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "AtWUBa": {
+    "defaultMessage": "Redeem via OETH Vault"
   },
   "BB94QK": {
     "defaultMessage": "Bridging activity"
@@ -281,6 +293,9 @@
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
+  "YnftYz": {
+    "defaultMessage": "Wait time:"
+  },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
   },
@@ -368,6 +383,9 @@
   "kF1zxQ": {
     "defaultMessage": "30-Day Trailing APY"
   },
+  "lQmZjB": {
+    "defaultMessage": "Swap via Curve"
+  },
   "lb8m6m": {
     "defaultMessage": "Mins"
   },
@@ -380,11 +398,17 @@
   "m/L3sK": {
     "defaultMessage": "Approving"
   },
+  "n6nILs": {
+    "defaultMessage": "Receive amount"
+  },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
   },
   "oh7sA8": {
     "defaultMessage": "No transactions matching filter"
+  },
+  "p1P+hQ": {
+    "defaultMessage": "Request"
   },
   "p556q3": {
     "defaultMessage": "Copied"
@@ -454,6 +478,9 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
+  },
+  "yKbi98": {
+    "defaultMessage": "Unstake amount"
   },
   "yWb29t": {
     "defaultMessage": "~{from} to {to} minutes"

@@ -6,7 +6,7 @@ import BalancerFullSvg from './balancer-full.svg?react';
 import ChainlinkCCIPSvg from './chainlink-ccip.svg?react';
 import CompoundFullSvg from './compound-full.svg?react';
 import ConvexFullSvg from './convex-full.svg?react';
-import CRVWebp from './curve.webp';
+import CurveWebp from './curve.webp';
 import CurveFullWebp from './curve-full.webp';
 import FluxFullSvg from './flux-full.svg?react';
 import FraxFullSvg from './frax-full.svg?react';
@@ -39,7 +39,7 @@ export const ConvexFull = (props: SvgIconProps) => (
 );
 export const Curve = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 100 100">
-    <image href={CRVWebp} height="100" width="100" />
+    <image href={CurveWebp} height="100" width="100" />
   </SvgIcon>
 );
 export const CurveFull = (props: SvgIconProps) => (
