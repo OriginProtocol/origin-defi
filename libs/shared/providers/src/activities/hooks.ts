@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, parse, stringify } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { produce } from 'immer';
 import { groupBy, prop } from 'ramda';
@@ -35,7 +35,9 @@ export const useUpdateActivity = () => {
   const [, setState] = useActivityState();
 
   return useCallback(
-    (activity: Partial<Activity> | undefined | null) => {
+    <T extends Activity = Activity>(
+      activity: Partial<T> | undefined | null,
+    ) => {
       let existing: Activity | undefined;
       if (activity) {
         setState(
@@ -46,9 +48,10 @@ export const useUpdateActivity = () => {
             if (existing) {
               Object.assign(existing, activity);
             }
+            existing = parse(stringify(existing));
           }),
         );
-        return existing;
+        return existing as T;
       }
     },
     [setState],

@@ -23,11 +23,9 @@ import {
 } from '@origin/shared/components';
 import { FaGearComplexRegular } from '@origin/shared/icons';
 import {
-  ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
   SettingsPopover,
-  SwapNotification,
   SwapProvider,
   useDeleteActivity,
   useFormat,
@@ -51,8 +49,6 @@ import { useAccount } from 'wagmi';
 import { RedeemActionCard } from './RedeemActionCard';
 
 import type { StackProps } from '@mui/material';
-import type { SwapActivity } from '@origin/shared/providers';
-import type { ApprovalActivity } from '@origin/shared/providers';
 import type { SwapState } from '@origin/shared/providers';
 import type { MouseEvent } from 'react';
 
@@ -122,17 +118,7 @@ export const Swapper = ({
           status: 'error',
           error: formatError(error),
         });
-        if (activity) {
-          pushNotification({
-            content: (
-              <ApprovalNotification
-                {...(activity as ApprovalActivity)}
-                status="error"
-                error={formatError(error)}
-              />
-            ),
-          });
-        }
+        pushNotificationForActivity(activity);
       }}
       onSwapStart={(state) => {
         const activity = pushActivity({
@@ -177,11 +163,7 @@ export const Swapper = ({
           status: 'error',
           error: formatError(error),
         });
-        if (activity) {
-          pushNotification({
-            content: <SwapNotification {...(activity as SwapActivity)} />,
-          });
-        }
+        pushNotificationForActivity(activity);
       }}
     >
       <SwapperWrapped {...rest} />

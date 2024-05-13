@@ -16,12 +16,14 @@ import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import {
-  RedeemNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
 } from '../activities';
-import { usePushNotification } from '../notifications';
+import {
+  usePushNotification,
+  usePushNotificationForActivity,
+} from '../notifications';
 import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { simulateContractWithTxTracker } from '../txTracker';
@@ -52,6 +54,7 @@ export const useHandleRedeem = () => {
   const intl = useIntl();
   const config = useConfig();
   const queryClient = useQueryClient();
+  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -118,14 +121,12 @@ export const useHandleRedeem = () => {
           draft.split.forEach((a) => (a.amount = 0n));
         }),
       );
-      updateActivity({
+      const updatedActivity = updateActivity<RedeemActivity>({
         ...activity,
         status: 'success',
         txHash: txReceipt.transactionHash,
       });
-      pushNotification({
-        content: <RedeemNotification {...activity} />,
-      });
+      pushNotificationForActivity(updatedActivity);
       trackEvent({
         name: 'redeem_complete',
         redeem_amount: amountIn,
@@ -157,20 +158,12 @@ export const useHandleRedeem = () => {
           redeem_amount: amountIn,
         });
       } else {
-        updateActivity({
+        const updatedActivity = updateActivity({
           ...activity,
           status: 'error',
           error: formatError(error),
         });
-        pushNotification({
-          content: (
-            <RedeemNotification
-              {...activity}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
-        });
+        pushNotificationForActivity(updatedActivity);
         trackEvent({
           name: 'redeem_failed',
           redeem_amount: amountIn,

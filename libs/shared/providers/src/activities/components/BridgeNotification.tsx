@@ -20,6 +20,7 @@ import type { ActivityStatus } from '../types';
 type BridgeNotificationProps = {
   status: ActivityStatus;
   tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
   amountIn?: bigint;
   txHash?: Hex;
   error?: string;
@@ -36,12 +37,14 @@ const title: Record<ActivityStatus, MessageDescriptor> = {
 export const BridgeNotification = ({
   status,
   tokenIdIn,
+  tokenIdOut,
   amountIn,
   txHash,
   error,
   sx,
 }: BridgeNotificationProps) => {
   const tokenIn = getTokenById(tokenIdIn);
+  const tokenOut = getTokenById(tokenIdOut);
   const intl = useIntl();
   const config = useConfig();
   const amount = +formatUnits(amountIn ?? 0n, tokenIn.decimals ?? 18);

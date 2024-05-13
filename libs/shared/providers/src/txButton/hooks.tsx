@@ -7,13 +7,16 @@ import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import {
-  TransactionNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
 } from '../activities';
 import { useGasPrice } from '../gas';
-import { useDeleteNotification, usePushNotification } from '../notifications';
+import {
+  useDeleteNotification,
+  usePushNotification,
+  usePushNotificationForActivity,
+} from '../notifications';
 
 import type { SimulateContractReturnType } from '@wagmi/core';
 import type {
@@ -67,6 +70,7 @@ export const useTxButton = <
   const { isConnected, address: userAddress } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [activity, setActivity] = useState<Activity | null>(null);
+  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
@@ -119,8 +123,10 @@ export const useTxButton = <
   const onWrite = useCallback(() => {
     const act = args?.activity ?? {
       type: 'transaction',
-      title: intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
-      subtitle: intl.formatMessage({ defaultMessage: 'Transaction' }),
+      title: intl.formatMessage({ defaultMessage: 'Transaction executing' }),
+      subtitle: intl.formatMessage({
+        defaultMessage: 'Your operation is in progress',
+      }),
       status: 'pending',
     };
     if (!args?.disableActivity) {
@@ -154,16 +160,19 @@ export const useTxButton = <
           <NotificationSnack
             icon={<SeverityIcon severity="info" />}
             title={
-              activityTitle ??
-              intl.formatMessage({
-                defaultMessage: 'Processing transaction',
-              })
+              activityTitle
+                ? activityTitle
+                : intl.formatMessage({
+                    defaultMessage: 'Processing transaction',
+                  })
             }
             subtitle={
-              activitySubtitle ??
-              intl.formatMessage({
-                defaultMessage: 'Your transaction is being processed on-chain.',
-              })
+              activitySubtitle
+                ? activitySubtitle
+                : intl.formatMessage({
+                    defaultMessage:
+                      'Your transaction is being processed on-chain.',
+                  })
             }
           />
         ),
@@ -248,32 +257,28 @@ export const useTxButton = <
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      if (!args?.disableActivity) {
-        updateActivity({
-          ...activity,
-          status: 'success',
-          txHash: txReceipt.transactionHash,
+      const updatedActivity: Activity = {
+        ...(activity as Activity),
+        status: 'success',
+        txHash: txReceipt.transactionHash,
+      };
+      if (updatedActivity.type === 'transaction') {
+        updatedActivity.title = intl.formatMessage({
+          defaultMessage: 'Transaction executed',
         });
+        updatedActivity.subtitle = intl.formatMessage({
+          defaultMessage: 'Your operation has been executed',
+        });
+      }
+      if (!args?.disableActivity) {
+        updateActivity<Activity>(updatedActivity);
       }
       if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
       if (!args?.disableNotification) {
-        pushNotification({
-          content: (
-            <TransactionNotification
-              title={intl.formatMessage({
-                defaultMessage: 'Transaction executed',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'Your operation has been executed',
-              })}
-              status="success"
-              txHash={txReceipt.transactionHash}
-            />
-          ),
-        });
+        pushNotificationForActivity(updatedActivity);
       }
       args?.callbacks?.onWriteSuccess?.(txReceipt);
     },
@@ -292,30 +297,20 @@ export const useTxButton = <
 
   const onWriteError = useCallback(
     (error: Error) => {
+      const updatedActivity: Activity = {
+        ...(activity as Activity),
+        status: 'error',
+        error: error?.message,
+      };
       if (!args?.disableActivity && activity?.id) {
-        updateActivity({
-          ...activity,
-          status: 'error',
-          error: error?.message,
-        });
+        updateActivity<Activity>(updatedActivity);
       }
       if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
       if (!args?.disableNotification) {
-        pushNotification({
-          content: (
-            <TransactionNotification
-              title={intl.formatMessage({
-                defaultMessage: 'Transaction error',
-              })}
-              subtitle={formatError(error)}
-              error={formatError(error)}
-              status="error"
-            />
-          ),
-        });
+        pushNotificationForActivity(updatedActivity);
       }
       args?.callbacks?.onWriteError?.(error);
     },

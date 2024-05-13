@@ -8,50 +8,36 @@ import {
   TransactionNotification,
 } from '.';
 
+import type { StackProps } from '@mui/material';
+
 import type {
   Activity,
   BridgeActivity,
   RedeemActivity,
   SwapActivity,
   TransactionActivity,
-} from '.';
+} from '..';
 
-export const ActivityNotification = (activity: Activity) => {
+export const ActivityNotification = (
+  activity: Activity & { sx: StackProps['sx'] },
+) => {
   const intl = useIntl();
   if (activity.type === 'approval') {
-    return (
-      <ApprovalNotification
-        key={activity.id}
-        {...activity}
-        sx={{ px: 3, py: 2 }}
-      />
-    );
+    return <ApprovalNotification key={activity.id} {...activity} />;
   }
   if (activity.type === 'bridge') {
     return (
-      <BridgeNotification
-        key={activity.id}
-        {...(activity as BridgeActivity)}
-        sx={{ px: 3, py: 2 }}
-      />
+      <BridgeNotification key={activity.id} {...(activity as BridgeActivity)} />
     );
   }
   if (activity.type === 'redeem') {
     return (
-      <RedeemNotification
-        key={activity.id}
-        {...(activity as RedeemActivity)}
-        sx={{ px: 3, py: 2 }}
-      />
+      <RedeemNotification key={activity.id} {...(activity as RedeemActivity)} />
     );
   }
   if (activity.type === 'swap') {
     return (
-      <SwapNotification
-        key={activity.id}
-        {...(activity as SwapActivity)}
-        sx={{ px: 3, py: 2 }}
-      />
+      <SwapNotification key={activity.id} {...(activity as SwapActivity)} />
     );
   }
   if (activity.type === 'transaction') {
@@ -66,7 +52,6 @@ export const ActivityNotification = (activity: Activity) => {
           })
         }
         subtitle={(activity as TransactionActivity)?.subtitle ?? ''}
-        sx={{ px: 3, py: 2 }}
       />
     );
   }

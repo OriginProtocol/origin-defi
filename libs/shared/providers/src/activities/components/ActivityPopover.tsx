@@ -6,6 +6,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { ErrorBoundary } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 import { descend, pipe, sort, take } from 'ramda';
@@ -49,65 +50,78 @@ export const ActivityPopover = ({
   )(activities) as Activity[];
 
   return (
-    <Popover
-      open={!!anchor}
-      anchorEl={anchor}
-      onClose={handleClose}
-      anchorOrigin={{
-        vertical: 50,
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      sx={{
-        zIndex: (theme) => theme.zIndex.modal + 2,
-        '& .MuiPopover-paper': {
-          borderRadius: 1,
-          width: (theme) => ({
-            xs: '90vw',
-            md: `min(${theme.typography.pxToRem(400)}, 90vw)`,
-          }),
-          [theme.breakpoints.down('md')]: {
-            left: '0 !important',
-            right: 0,
-            marginInline: 'auto',
-          },
-        },
+    <ErrorBoundary
+      onError={() => {
+        handleClearAll();
+        setAnchor(null);
       }}
     >
-      <Stack>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ px: 3, py: 2 }}
-        >
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Recent Activity' })}
-          </Typography>
-          <Button
-            variant="text"
-            disabled={isNilOrEmpty(sortedActivities)}
-            onClick={handleClearAll}
-            sx={{ transform: 'translateX(9px)' }}
+      <Popover
+        open={!!anchor}
+        anchorEl={anchor}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 50,
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+        sx={{
+          zIndex: (theme) => theme.zIndex.modal + 2,
+          '& .MuiPopover-paper': {
+            borderRadius: 1,
+            width: (theme) => ({
+              xs: '90vw',
+              md: `min(${theme.typography.pxToRem(400)}, 90vw)`,
+            }),
+            [theme.breakpoints.down('md')]: {
+              left: '0 !important',
+              right: 0,
+              marginInline: 'auto',
+            },
+          },
+        }}
+      >
+        <Stack>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{ px: 3, py: 2 }}
           >
-            {intl.formatMessage({ defaultMessage: 'Clear' })}
-          </Button>
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'Recent Activity' })}
+            </Typography>
+            <Button
+              variant="text"
+              disabled={isNilOrEmpty(sortedActivities)}
+              onClick={handleClearAll}
+              sx={{ transform: 'translateX(9px)' }}
+            >
+              {intl.formatMessage({ defaultMessage: 'Clear' })}
+            </Button>
+          </Stack>
+          <Divider />
+          <Stack divider={<Divider />}>
+            {isNilOrEmpty(sortedActivities) ? (
+              <EmptyActivity sx={{ px: 3, py: 3 }} />
+            ) : (
+              sortedActivities.map((a) => {
+                return (
+                  <ActivityNotification
+                    key={a.id}
+                    {...a}
+                    sx={{ px: 3, py: 2 }}
+                  />
+                );
+              })
+            )}
+          </Stack>
         </Stack>
-        <Divider />
-        <Stack divider={<Divider />}>
-          {isNilOrEmpty(sortedActivities) ? (
-            <EmptyActivity sx={{ px: 3, py: 3 }} />
-          ) : (
-            sortedActivities.map((a) => {
-              return <ActivityNotification key={a.id} {...a} />;
-            })
-          )}
-        </Stack>
-      </Stack>
-    </Popover>
+      </Popover>
+    </ErrorBoundary>
   );
 };
 
