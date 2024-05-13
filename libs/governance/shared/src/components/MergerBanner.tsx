@@ -1,5 +1,9 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { Countdown, MultiTokenIcon } from '@origin/shared/components';
+import {
+  Countdown,
+  ExternalLink,
+  MultiTokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -30,13 +34,20 @@ export const MergerBanner = (props: StackProps) => {
         />
         <Stack>
           <Typography variant="h4" fontWeight="normal">
-            {intl.formatMessage({ defaultMessage: 'OGV & OGN are merging' })}
+            {intl.formatMessage({ defaultMessage: 'OGV & OGN have merged' })}
           </Typography>
-          <Typography>
+          <Typography pb={1.5}>
             {intl.formatMessage({
               defaultMessage: 'Conversion will be open for one year',
             })}
           </Typography>
+          <ExternalLink
+            iconType="arrow"
+            href="https://www.originprotocol.com/ogn-ogv-merger-finalized"
+            sx={{ textDecoration: 'underline' }}
+          >
+            {intl.formatMessage({ defaultMessage: 'Learn more' })}
+          </ExternalLink>
         </Stack>
       </Stack>
       <Stack

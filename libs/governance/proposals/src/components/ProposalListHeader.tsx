@@ -36,7 +36,7 @@ export const ProposalListHeader = (props: StackProps) => {
           }}
         >
           {intl.formatMessage({
-            defaultMessage: 'New Snapshot Proposal',
+            defaultMessage: 'View Snapshot Proposals',
           })}
           &nbsp;
           <FaArrowUpRightRegular />
