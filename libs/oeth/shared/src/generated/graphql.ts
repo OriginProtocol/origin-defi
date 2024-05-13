@@ -531,6 +531,7 @@ export type BridgeTransfer = {
   timestamp: Scalars['DateTime']['output'];
   tokenIn: Scalars['String']['output'];
   tokenOut: Scalars['String']['output'];
+  transactor: Scalars['String']['output'];
   txHashIn: Scalars['String']['output'];
   txHashOut?: Maybe<Scalars['String']['output']>;
 };
@@ -598,6 +599,10 @@ export enum BridgeTransferOrderByInput {
   TokenOutAscNullsFirst = 'tokenOut_ASC_NULLS_FIRST',
   TokenOutDesc = 'tokenOut_DESC',
   TokenOutDescNullsLast = 'tokenOut_DESC_NULLS_LAST',
+  TransactorAsc = 'transactor_ASC',
+  TransactorAscNullsFirst = 'transactor_ASC_NULLS_FIRST',
+  TransactorDesc = 'transactor_DESC',
+  TransactorDescNullsLast = 'transactor_DESC_NULLS_LAST',
   TxHashInAsc = 'txHashIn_ASC',
   TxHashInAscNullsFirst = 'txHashIn_ASC_NULLS_FIRST',
   TxHashInDesc = 'txHashIn_DESC',
@@ -904,6 +909,23 @@ export type BridgeTransferWhereInput = {
   tokenOut_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   tokenOut_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   tokenOut_startsWith?: InputMaybe<Scalars['String']['input']>;
+  transactor_contains?: InputMaybe<Scalars['String']['input']>;
+  transactor_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  transactor_endsWith?: InputMaybe<Scalars['String']['input']>;
+  transactor_eq?: InputMaybe<Scalars['String']['input']>;
+  transactor_gt?: InputMaybe<Scalars['String']['input']>;
+  transactor_gte?: InputMaybe<Scalars['String']['input']>;
+  transactor_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  transactor_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  transactor_lt?: InputMaybe<Scalars['String']['input']>;
+  transactor_lte?: InputMaybe<Scalars['String']['input']>;
+  transactor_not_contains?: InputMaybe<Scalars['String']['input']>;
+  transactor_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  transactor_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  transactor_not_eq?: InputMaybe<Scalars['String']['input']>;
+  transactor_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  transactor_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  transactor_startsWith?: InputMaybe<Scalars['String']['input']>;
   txHashIn_contains?: InputMaybe<Scalars['String']['input']>;
   txHashIn_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   txHashIn_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -1559,6 +1581,7 @@ export type Erc20Holder = {
   __typename?: 'ERC20Holder';
   account: Scalars['String']['output'];
   address: Scalars['String']['output'];
+  balance: Scalars['BigInt']['output'];
   chainId: Scalars['Int']['output'];
   /** Format: 'address:account' */
   id: Scalars['String']['output'];
@@ -1579,6 +1602,10 @@ export enum Erc20HolderOrderByInput {
   AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
   AddressDesc = 'address_DESC',
   AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
   ChainIdAsc = 'chainId_ASC',
   ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
   ChainIdDesc = 'chainId_DESC',
@@ -1626,6 +1653,15 @@ export type Erc20HolderWhereInput = {
   address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   chainId_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_gt?: InputMaybe<Scalars['Int']['input']>;
   chainId_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -3093,15 +3129,11 @@ export type OethBalancerMetaPoolStrategyWhereInput = {
 
 export type OethCollateralDailyStat = {
   __typename?: 'OETHCollateralDailyStat';
-  /** Amount held */
   amount: Scalars['BigInt']['output'];
   dailyStatId: OethDailyStat;
   id: Scalars['String']['output'];
-  /** Price in ETH */
   price: Scalars['BigInt']['output'];
-  /** Token symbol */
   symbol: Scalars['String']['output'];
-  /** Total ETH value */
   value: Scalars['BigInt']['output'];
 };
 
