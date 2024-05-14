@@ -1,6 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
 import { defineMessage } from 'react-intl';
-import { arbitrum, mainnet } from 'viem/chains';
 
 export type SupportedProduct = keyof typeof products;
 
@@ -16,7 +15,6 @@ export const products = {
     description: defineMessage({
       defaultMessage: 'Liquid staking',
     }),
-    supportedChainIds: [mainnet.id, arbitrum.id],
   },
   primeETH: {
     id: 'primeETH',
@@ -27,7 +25,6 @@ export const products = {
     description: defineMessage({
       defaultMessage: 'Restaking',
     }),
-    supportedChainIds: [],
   },
   ousd: {
     id: 'ousd',

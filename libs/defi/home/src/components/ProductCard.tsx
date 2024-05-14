@@ -1,9 +1,8 @@
 import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
-import { ChainsChip, useOTokenApyQuery } from '@origin/defi/shared';
+import { useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { mainnet } from 'viem/chains';
@@ -123,12 +122,6 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             { symbol: product.token.symbol },
           )}
         </Button>
-        {!isNilOrEmpty(product.supportedChainIds) && (
-          <ChainsChip
-            chainIds={product.supportedChainIds}
-            sx={{ flexShrink: 0 }}
-          />
-        )}
       </Stack>
       <Collapse in={isConnected}>
         <Stack
