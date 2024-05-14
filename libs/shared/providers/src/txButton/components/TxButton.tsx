@@ -186,6 +186,8 @@ export const TxButton = <
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
         : customButtonLabel ?? capitalize(params?.functionName ?? '');
   const isDisabled =
+    disabled ||
+    !simulateData ||
     !!simulateError ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&

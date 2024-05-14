@@ -141,6 +141,7 @@ export const BridgeCard = () => {
     }
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
+  const insufficientAmount = srcBalance !== undefined && srcBalance < amount;
   const requiresApproval =
     isErc20 &&
     !isAllowanceLoading &&
@@ -148,16 +149,13 @@ export const BridgeCard = () => {
     currentChain?.id === srcChain.id &&
     allowance !== undefined &&
     allowance < amount &&
-    amount <= (balances?.[getTokenId(srcToken)] ?? 0n);
+    !insufficientAmount;
   const bridgeButtonDisabled =
-    !isConnected ||
-    requiresApproval ||
-    amount === 0n ||
-    amount > (balances?.[getTokenId(srcToken)] ?? 0n);
+    !isConnected || requiresApproval || amount === 0n || insufficientAmount;
   const bridgeButtonLabel =
     amount === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : srcBalance !== undefined && srcBalance < amount
+      : insufficientAmount
         ? intl.formatMessage({
             defaultMessage: 'Insufficient amount',
           })
