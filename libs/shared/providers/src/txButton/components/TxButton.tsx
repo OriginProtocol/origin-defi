@@ -174,9 +174,8 @@ export const TxButton = <
   const customButtonLabel =
     typeof label === 'function' ? label({ simulateError }) : label;
 
-  const buttonLabel = customButtonLabel
-    ? customButtonLabel
-    : writeStatus === 'pending'
+  const buttonLabel =
+    writeStatus === 'pending'
       ? waitingSignatureLabel ??
         intl.formatMessage({ defaultMessage: 'Waiting for signature' })
       : writeStatus === 'success' &&

@@ -148,10 +148,7 @@ export const useTxButton = <
     }
     args?.callbacks?.onWrite?.();
   }, [
-    args?.activity?.endIcon,
-    args?.activity?.subtitle,
-    args?.activity?.title,
-    args?.activity?.type,
+    args?.activity,
     args?.callbacks,
     args?.disableActivity,
     intl,
