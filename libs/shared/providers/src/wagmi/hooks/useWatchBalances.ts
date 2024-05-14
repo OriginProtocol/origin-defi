@@ -8,7 +8,7 @@ import useIdle from 'react-use/lib/useIdle';
 import { mainnet } from 'viem/chains';
 import { useAccount, useBlockNumber, useConfig } from 'wagmi';
 
-import { useWatchBalance } from './useWatchBalance';
+import { useTokenBalance } from './useTokenBalance';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
@@ -45,8 +45,8 @@ export const useWatchBalances = (args: {
       const bals = await Promise.allSettled(
         args.tokens.map((t) =>
           queryClient.fetchQuery({
-            queryKey: useWatchBalance.getKey(config, t, addr),
-            queryFn: useWatchBalance.fetcher,
+            queryKey: useTokenBalance.getKey(config, t, addr),
+            queryFn: useTokenBalance.fetcher,
           }),
         ),
       );

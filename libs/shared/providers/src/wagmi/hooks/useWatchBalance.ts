@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useQuery } from '@tanstack/react-query';
-import { getBalance } from '@wagmi/core';
 import useIdle from 'react-use/lib/useIdle';
 import { mainnet } from 'viem/chains';
 import { useAccount, useBlockNumber, useConfig } from 'wagmi';
 
+import { useTokenBalance } from './useTokenBalance';
+
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
-import type { Config } from '@wagmi/core';
 
 export const useWatchBalance = (args?: {
   token: Token;
@@ -28,8 +28,8 @@ export const useWatchBalance = (args?: {
   const prev = usePrevious(Number(blockNumber));
 
   const res = useQuery({
-    queryKey: useWatchBalance.getKey(config, args?.token, addr),
-    queryFn: useWatchBalance.fetcher,
+    queryKey: useTokenBalance.getKey(config, args?.token, addr),
+    queryFn: useTokenBalance.fetcher,
   });
 
   useEffect(() => {
@@ -40,20 +40,3 @@ export const useWatchBalance = (args?: {
 
   return res;
 };
-
-useWatchBalance.getKey = (
-  config: Config,
-  token?: Token,
-  address?: HexAddress,
-) => ['useWatchBalance', token, address, config] as const;
-
-useWatchBalance.fetcher = ({
-  queryKey: [, token, address, config],
-}: {
-  queryKey: ReturnType<typeof useWatchBalance.getKey>;
-}) =>
-  getBalance(config, {
-    address: address ?? ZERO_ADDRESS,
-    token: token?.address,
-    chainId: token?.chainId ?? mainnet.id,
-  }).then((bal) => bal.value);
