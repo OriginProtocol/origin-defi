@@ -224,11 +224,10 @@ export const BridgeCard = () => {
             },
           );
 
-  const totalFees =
-    txButton.gasPrice &&
-    ccipTxParams.data &&
-    txButton.gasPrice.gasCostWei +
-      Number(formatUnits(ccipTxParams.data.fee, 18));
+  const estimateGasFee = txButton.gasPrice?.gasCostWei;
+  const bridgeFee = ccipTxParams.data
+    ? Number(formatUnits(ccipTxParams.data.fee, 18))
+    : undefined;
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -336,8 +335,18 @@ export const BridgeCard = () => {
               {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
             </Box>
             <Box>
-              {typeof totalFees === 'number'
-                ? `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`
+              {typeof bridgeFee === 'number'
+                ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
+                : '-'}
+            </Box>
+          </Stack>
+          <Stack direction={'row'}>
+            <Box flex={1} color={'text.secondary'}>
+              {intl.formatMessage({ defaultMessage: 'Est. gas fee' })}
+            </Box>
+            <Box>
+              {typeof estimateGasFee === 'number'
+                ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
                 : '-'}
             </Box>
           </Stack>
