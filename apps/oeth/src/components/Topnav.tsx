@@ -24,7 +24,6 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';
-import { DisableLstBanner } from './DisableLstBanner';
 
 import type { BoxProps } from '@mui/material';
 
@@ -52,7 +51,6 @@ export function Topnav(props: BoxProps) {
           },
         })}
       >
-        <DisableLstBanner />
         <Stack
           sx={(theme) => ({
             backgroundColor: alpha(theme.palette.background.default, 0.6),
