@@ -1,7 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  formatError,
+  jsonStringifyReplacer,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
@@ -82,11 +86,7 @@ export const useTxButton = <
   const { data: gasPrice, refetch: refetchGas } = useQuery({
     queryKey: [
       'txButton',
-      JSON.stringify(
-        args?.params,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value),
-        undefined,
-      ),
+      JSON.stringify(args?.params, jsonStringifyReplacer, undefined),
     ],
     queryFn: async () => {
       if (!args) return null;
