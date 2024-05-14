@@ -66,10 +66,16 @@ export const StakeOGNCard = (props: CardProps) => {
           {intl.formatMessage({ defaultMessage: 'Max vAPR' })}
         </Typography>
       </Stack>
-
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Button>{intl.formatMessage({ defaultMessage: 'Get OGN' })}</Button>
-        <Button variant="outlined" component={RouterLink} to="/more">
+        <Button size="large">
+          {intl.formatMessage({ defaultMessage: 'Get OGN' })}
+        </Button>
+        <Button
+          variant="outlined"
+          size="large"
+          component={RouterLink}
+          to="/more"
+        >
           {intl.formatMessage({
             defaultMessage: 'View latest governance proposals',
           })}
