@@ -18,7 +18,7 @@ export const HomeView = () => {
 
   return (
     <Page showFooterMargin>
-      <Container maxWidth="xl">
+      <Container>
         <Stack spacing={2} sx={{ justifyContent: 'center', py: 6 }}>
           <Typography variant="h5" textAlign="center">
             {intl.formatMessage({ defaultMessage: 'Origin' })}
