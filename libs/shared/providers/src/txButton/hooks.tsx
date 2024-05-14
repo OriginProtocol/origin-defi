@@ -19,7 +19,10 @@ import {
 import { useGasPrice } from '../gas';
 import { useDeleteNotification, usePushNotification } from '../notifications';
 
-import type { SimulateContractReturnType } from '@wagmi/core';
+import type {
+  SimulateContractErrorType,
+  SimulateContractReturnType,
+} from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -68,8 +71,10 @@ export const useTxButton = <
   args: UseTxButton<abi, functionName, args> | undefined,
 ) => {
   const intl = useIntl();
-  const { isConnected, address: userAddress } = useAccount();
+  const { isConnected, address } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
+  const [simulateError, setSimulateError] =
+    useState<SimulateContractErrorType>();
   const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
@@ -77,6 +82,7 @@ export const useTxButton = <
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const config = useConfig();
+
   const publicClient = usePublicClient(
     args && {
       chainId: args.params.contract.chainId,
@@ -90,9 +96,10 @@ export const useTxButton = <
     ],
     queryFn: async () => {
       if (!args) return null;
+      if (simulateError) return null;
       if (publicClient) {
         const gasAmount = await publicClient.estimateContractGas({
-          account: userAddress,
+          account: address,
           address: args.params.contract.address ?? ZERO_ADDRESS,
           abi: args.params.contract.abi,
           functionName: args.params.functionName,
@@ -113,7 +120,7 @@ export const useTxButton = <
         return gasPrice;
       }
     },
-    enabled: args?.enableGas,
+    enabled: false,
   });
 
   const onWrite = useCallback(() => {
@@ -225,6 +232,7 @@ export const useTxButton = <
 
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {
+      setSimulateError(undefined);
       if (args?.enableGas && isConnected) {
         refetchGas();
       }
@@ -235,6 +243,10 @@ export const useTxButton = <
 
   const onSimulateError = useCallback(
     (error: Error) => {
+      setSimulateError(simulateError);
+      if (args?.enableGas && isConnected) {
+        refetchGas();
+      }
       if (!args?.disableNotification) {
         pushNotification({
           content: (
@@ -250,7 +262,16 @@ export const useTxButton = <
       }
       args?.callbacks?.onSimulateError?.(error);
     },
-    [args?.callbacks, args?.disableNotification, intl, pushNotification],
+    [
+      args?.callbacks,
+      args?.disableNotification,
+      args?.enableGas,
+      intl,
+      isConnected,
+      pushNotification,
+      refetchGas,
+      simulateError,
+    ],
   );
 
   const onWriteSuccess = useCallback(
