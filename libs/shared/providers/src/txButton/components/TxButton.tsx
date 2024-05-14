@@ -13,6 +13,7 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
+import type { SimulateContractErrorType } from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -26,6 +27,10 @@ import type {
   WriteTransactionParameters,
 } from '../../wagmi';
 
+export type TxButtonFnParameters = {
+  simulateError: SimulateContractErrorType | null;
+};
+
 export type TxButtonProps<
   abi extends Abi = Abi,
   functionName extends ContractFunctionName<
@@ -38,8 +43,7 @@ export type TxButtonProps<
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
-  label?: string;
-  insufficientGasLabel?: string;
+  label?: string | ((params: TxButtonFnParameters) => string | undefined);
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
   params?: WriteTransactionParameters<abi, functionName, args>;
@@ -62,12 +66,11 @@ export const TxButton = <
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 >({
   label,
-  insufficientGasLabel,
+  disabled,
   waitingSignatureLabel,
   waitingTxLabel,
   params,
   callbacks,
-  disabled,
   ...rest
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
@@ -168,14 +171,11 @@ export const TxButton = <
     }
   };
 
-  const insufficientFunds =
-    simulateError?.name === 'ContractFunctionExecutionError' &&
-    simulateError?.cause?.name === 'CallExecutionError' &&
-    simulateError.cause.cause?.name === 'InsufficientFundsError';
+  const customButtonLabel =
+    typeof label === 'function' ? label({ simulateError }) : label;
 
-  const buttonLabel = insufficientFunds
-    ? insufficientGasLabel ??
-      intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+  const buttonLabel = customButtonLabel
+    ? customButtonLabel
     : writeStatus === 'pending'
       ? waitingSignatureLabel ??
         intl.formatMessage({ defaultMessage: 'Waiting for signature' })
@@ -184,10 +184,9 @@ export const TxButton = <
           waitTxStatus === 'pending'
         ? waitingTxLabel ??
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-        : label ?? capitalize(params?.functionName ?? '');
+        : customButtonLabel ?? capitalize(params?.functionName ?? '');
   const isDisabled =
-    disabled ||
-    insufficientFunds ||
+    !!simulateError ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

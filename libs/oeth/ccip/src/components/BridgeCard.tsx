@@ -25,7 +25,11 @@ import {
   useTxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  formatAmount,
+  isInsufficientFundsError,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -40,6 +44,7 @@ import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
 import type { Token } from '@origin/shared/contracts';
+import type { TxButtonFnParameters } from '@origin/shared/providers';
 import type { erc20Abi } from 'viem';
 
 export const BridgeCard = () => {
@@ -296,11 +301,21 @@ export const BridgeCard = () => {
           <TxButton
             params={txButton.params}
             callbacks={txButton.callbacks}
+            label={(params: TxButtonFnParameters) => {
+              const insufficientFunds = isInsufficientFundsError(
+                params.simulateError,
+              );
+              if (insufficientFunds) {
+                return intl.formatMessage({
+                  defaultMessage: 'Insufficient funds',
+                });
+              }
+              return bridgeButtonLabel;
+            }}
             disabled={bridgeButtonDisabled}
             fullWidth
             sx={{ mt: 1.5 }}
             variant={'action'}
-            label={bridgeButtonLabel}
           />
           <Stack
             direction={'row'}
