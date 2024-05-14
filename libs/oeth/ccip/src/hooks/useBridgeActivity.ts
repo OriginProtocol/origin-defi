@@ -17,7 +17,7 @@ const states: Record<number, BridgeTransferState> = {
 export const useBridgeActivity = () => {
   const { address } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
-  const [{ waitForTx }, setBridgeState] = useBridgeState();
+  const [{ waitForTransfer }, setBridgeState] = useBridgeState();
   // TODO: Add a max retry limit?
 
   // Query via GraphQL!
@@ -25,34 +25,41 @@ export const useBridgeActivity = () => {
     { address: address ?? ZERO_ADDRESS },
     {
       enabled: !!address,
-      refetchInterval: waitForTx ? 5000 : hasPendingTransfers ? 5000 : false,
+      refetchInterval: waitForTransfer
+        ? 5000
+        : hasPendingTransfers
+          ? 5000
+          : false,
     },
   );
 
   // Wait for Tx to show up
   useEffect(() => {
     if (
-      waitForTx &&
+      waitForTransfer &&
       !!bridgeTransfers.data?.bridgeTransfers.find(
-        (bt) => bt.txHashIn === waitForTx,
+        (bt) => bt.txHashIn === waitForTransfer.txHashIn,
       )
     ) {
       setBridgeState((state) => ({ ...state, waitForTx: undefined }));
     }
-  }, [bridgeTransfers.data, setBridgeState, waitForTx]);
+  }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
 
   // Create data response
-  const data = useMemo(
-    () =>
-      bridgeTransfers.data?.bridgeTransfers.map((bt) => {
-        const state = states[bt.state];
-        return {
-          ...bt,
-          state,
-        };
-      }),
-    [bridgeTransfers.data?.bridgeTransfers],
-  );
+  const data = useMemo(() => {
+    const transfers = [];
+    if (bridgeTransfers.data?.bridgeTransfers) {
+      transfers.push(...bridgeTransfers.data.bridgeTransfers);
+    }
+    if (waitForTransfer) transfers.unshift(waitForTransfer);
+    return transfers.map((bt) => {
+      const state = states[bt.state];
+      return {
+        ...bt,
+        state,
+      };
+    });
+  }, [bridgeTransfers.data?.bridgeTransfers, waitForTransfer]);
 
   // Wait for state updates
   useEffect(() => {

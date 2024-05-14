@@ -1,5 +1,6 @@
 import { arbitrum, mainnet } from 'wagmi/chains';
 
+import { CCIPEvm2EvmOnRamp } from './abis/CCIPEvm2EvmOnRamp';
 import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
@@ -200,6 +201,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: CCIPRouterABI,
       name: 'ccipRouter',
+    },
+    ccipOnRamp: {
+      address: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
+      chainId: mainnet.id,
+      abi: CCIPEvm2EvmOnRamp,
+      name: 'ccipOnRamp',
     },
     woethCcipZapper: {
       address: '0x438731b5Ee8fEcC02a28532713E237b93260C3F8',

@@ -16,7 +16,11 @@ import {
 } from '@origin/oeth/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { getNativeToken, getTokenId } from '@origin/shared/contracts';
+import {
+  contracts,
+  getNativeToken,
+  getTokenId,
+} from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
@@ -32,7 +36,7 @@ import {
 } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
+import { decodeEventLog, formatUnits } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { ccipRouter } from '../constants';
@@ -45,7 +49,8 @@ import { useBridgeState } from '../state';
 
 import type { Token } from '@origin/shared/contracts';
 import type { TxButtonFnParameters } from '@origin/shared/providers';
-import type { erc20Abi } from 'viem';
+import type { HexAddress } from '@origin/shared/utils';
+import type { erc20Abi, Hex } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -123,7 +128,60 @@ export const BridgeCard = () => {
       },
       callbacks: {
         onWriteSuccess: (tx) => {
-          reset({ waitForTx: tx.transactionHash });
+          // Optimistic update
+          const ccipSendRequestedTopic =
+            '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
+          const ccipSendRequested = tx.logs.find(
+            (l) => l.topics[0] === ccipSendRequestedTopic,
+          );
+          let waitForTransfer = undefined;
+          if (ccipSendRequested) {
+            const ccipSendRequestedData = decodeEventLog({
+              abi: contracts.mainnet.ccipOnRamp.abi,
+              data: ccipSendRequested.data,
+              topics: [ccipSendRequestedTopic],
+            }) as unknown as {
+              args: {
+                message: {
+                  messageId: Hex;
+                  tokenAmounts: { token: HexAddress; amount: bigint }[];
+                };
+              };
+            };
+            if (ccipSendRequestedData.args) {
+              const messageId = ccipSendRequestedData.args.message.messageId;
+              const tokenIn =
+                ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
+              const amountIn =
+                ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+              const amountOut =
+                ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+
+              waitForTransfer = {
+                id: tx.transactionHash,
+                blockNumber: Number(tx.blockNumber),
+                timestamp: new Date().toISOString(),
+                messageId: messageId,
+                txHashIn: tx.transactionHash,
+                txHashOut: undefined,
+                amountIn: amountIn.toString(),
+                amountOut: amountOut.toString(),
+                chainIn: srcChain.id,
+                chainOut: dstChain.id,
+                tokenIn: tokenIn,
+                tokenOut: dstToken.address ?? ZERO_ADDRESS,
+                bridge: 'ccip',
+                state: 0,
+                transactor: userAddress as string,
+                sender: userAddress as string,
+                receiver: userAddress as string,
+              };
+            }
+          }
+          reset({
+            // Mock Transfer object for optimistic update
+            waitForTransfer,
+          });
           refetchAllowance?.();
         },
       },
