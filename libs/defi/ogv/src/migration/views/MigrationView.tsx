@@ -1,10 +1,15 @@
 import { Stack } from '@mui/material';
-import { ConnectPage, Page, PageSection, PageTitle } from '@origin/defi/shared';
+import {
+  ConnectPage,
+  MergerBanner,
+  Page,
+  PageSection,
+  PageTitle,
+} from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { MergerBanner } from '../components/MergerBanner';
 import { MigrationForm } from '../components/MigrationForm';
 
 export const MigrationView = () => {

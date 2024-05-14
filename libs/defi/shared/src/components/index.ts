@@ -1,3 +1,4 @@
+export * from './Banners';
 export * from './Cards';
 export * from './Chips';
 export * from './Page';

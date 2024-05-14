@@ -5,7 +5,7 @@ import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
@@ -20,7 +20,6 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
   const { formatBalance, formatCurrency } = useFormat();
   const { isConnected } = useAccount();
-  const navigate = useNavigate();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: product.token,
   });
@@ -110,12 +109,14 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         justifyContent="space-between"
         pb={3}
         flexGrow={1}
+        spacing={2}
       >
         <Button
           size="large"
-          onClick={() => {
-            navigate(product.href);
-          }}
+          fullWidth
+          component={RouterLink}
+          to={product.href}
+          sx={{ flexWrap: 'nowrap' }}
         >
           {intl.formatMessage(
             { defaultMessage: 'Get {symbol}' },
@@ -123,7 +124,10 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
           )}
         </Button>
         {!isNilOrEmpty(product.supportedChainIds) && (
-          <ChainsChip chainIds={product.supportedChainIds} />
+          <ChainsChip
+            chainIds={product.supportedChainIds}
+            sx={{ flexShrink: 0 }}
+          />
         )}
       </Stack>
       <Collapse in={isConnected}>
@@ -140,7 +144,11 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Your balance:' })}
-            labelProps={{ variant: 'mono', color: 'text.secondary' }}
+            labelProps={{
+              variant: 'body3',
+              fontWeight: 'medium',
+              color: 'text.secondary',
+            }}
             value={intl.formatMessage(
               { defaultMessage: '{balance} {symbol}' },
               {
@@ -154,7 +162,11 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Yield earned:' })}
-            labelProps={{ variant: 'mono', color: 'text.secondary' }}
+            labelProps={{
+              variant: 'body3',
+              fontWeight: 'medium',
+              color: 'text.secondary',
+            }}
             value={intl.formatMessage(
               { defaultMessage: '{balance} {symbol}' },
               { balance: 2.375, symbol: product.token.symbol },

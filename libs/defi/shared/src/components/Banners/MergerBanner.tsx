@@ -4,8 +4,11 @@ import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
+import type { ReactNode } from 'react';
 
-export const MergerBanner = (props: StackProps) => {
+export type MergerBannerProps = { endSlot?: ReactNode } & StackProps;
+
+export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
   const intl = useIntl();
 
   return (
@@ -13,16 +16,16 @@ export const MergerBanner = (props: StackProps) => {
       direction={{ xs: 'column', md: 'row' }}
       alignItems="center"
       spacing={{ xs: 0, md: 3 }}
-      {...props}
+      {...rest}
       sx={{
         width: 1,
         borderRadius: 4,
-        backgroundColor: 'primary.faded',
+        background: (theme) => theme.palette.background.gradientBlue,
         border: '1px solid',
         borderColor: 'primary.main',
         p: 5,
         rowGap: 3,
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
       <MultiTokenIcon
@@ -63,6 +66,7 @@ export const MergerBanner = (props: StackProps) => {
           },
         }}
       />
+      {endSlot}
     </Stack>
   );
 };

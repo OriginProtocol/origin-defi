@@ -44,7 +44,8 @@ export const lightPalette: ThemeOptions = {
       paper: '#EDEFF5',
       highlight: '#FFFFFF',
       primaryFaded: '#ECEBFE',
-      gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
+      gradientBlue:
+        'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
@@ -107,7 +108,8 @@ export const darkPalette: ThemeOptions = {
       paper: '#16181D',
       highlight: '#121316',
       primaryFaded: '#252544',
-      gradientBlue: 'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
+      gradientBlue:
+        'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',

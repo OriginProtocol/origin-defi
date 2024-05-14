@@ -1,8 +1,15 @@
-import { Box, Container, Stack, Typography } from '@mui/material';
+import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Page, products, SectionTitle } from '@origin/defi/shared';
+import {
+  MergerBanner,
+  Page,
+  products,
+  SectionTitle,
+} from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
 
+import { BridgePromoCard } from '../components/BridgePromoCard';
 import { ProductCard } from '../components/ProductCard';
 import { StakeOGNCard } from '../components/StakeOGNCard';
 
@@ -11,7 +18,7 @@ export const HomeView = () => {
 
   return (
     <Page showFooterMargin>
-      <Container>
+      <Container maxWidth="xl">
         <Stack spacing={2} sx={{ justifyContent: 'center', py: 6 }}>
           <Typography variant="h5" textAlign="center">
             {intl.formatMessage({ defaultMessage: 'Origin' })}
@@ -26,22 +33,31 @@ export const HomeView = () => {
           dotColor="primary.main"
           label={intl.formatMessage({ defaultMessage: 'Products' })}
         />
-        <Box py={3}>
+        <Box pt={3} pb={6}>
           <Grid2 container spacing={3}>
-            {[products.oeth, products.primeETH, products.ousd].map(
-              (product) => (
-                <Grid2 key={product.token.symbol} xs={12} md={4}>
-                  <ProductCard product={product} sx={{ height: 1 }} />
-                </Grid2>
-              ),
-            )}
+            {[products.oeth, products.ousd].map((product) => (
+              <Grid2 key={product.token.symbol} xs={12} md={4}>
+                <ProductCard product={product} sx={{ height: 1 }} />
+              </Grid2>
+            ))}
+            <Grid2 xs={12} md={4}>
+              <BridgePromoCard />
+            </Grid2>
           </Grid2>
         </Box>
         <SectionTitle
           dotColor="primary.main"
           label={intl.formatMessage({ defaultMessage: 'Governance' })}
         />
-        <StakeOGNCard sx={{ my: 3 }} />
+        <MergerBanner
+          sx={{ my: 3 }}
+          endSlot={
+            <Button component={RouterLink} to="/more/migration" size="large">
+              {intl.formatMessage({ defaultMessage: 'Convert' })}
+            </Button>
+          }
+        />
+        <StakeOGNCard />
       </Container>
     </Page>
   );

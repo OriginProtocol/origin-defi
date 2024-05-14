@@ -100,7 +100,7 @@ export const components = (base: Theme): ThemeOptions => ({
         sizeLarge: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
           padding: theme.spacing(0.5, 2),
-          minHeight: 40,
+          minHeight: 48,
         }),
         outlinedSecondary: ({ theme }) => ({
           background: theme.palette.secondary.main,
