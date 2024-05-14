@@ -6,7 +6,7 @@ export const lightPalette: ThemeOptions = {
   palette: {
     mode: 'light',
     primary: {
-      main: '#4356D2',
+      main: '#0074F0',
       faded: '#DEEEFE',
       contrastText: '#FFFFFF',
     },
@@ -70,7 +70,7 @@ export const darkPalette: ThemeOptions = {
   palette: {
     mode: 'dark',
     primary: {
-      main: '#5168FF',
+      main: '#1285FF',
       faded: '#1E2A36',
       contrastText: '#FFFFFF',
     },
