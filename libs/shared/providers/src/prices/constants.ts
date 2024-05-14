@@ -330,7 +330,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     config: async () => 1,
   },
   OETH_ETH: {
-    id: 'WETH_ETH',
+    id: 'OETH_ETH',
     type: 'rest',
     config: async () => 1 - OETH_REDEEM_FEE,
   },
