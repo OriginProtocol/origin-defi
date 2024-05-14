@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useOgnInfo } from '@origin/defi/shared';
+import { TokenButton, useOgnInfo } from '@origin/defi/shared';
 import {
   BigIntInput,
   InfoTooltipLabel,
@@ -161,7 +161,6 @@ export const StakingForm = () => {
               tooltipLabel={intl.formatMessage({
                 defaultMessage: 'The amount of OGN you want to lock',
               })}
-              color="text.secondary"
               fontWeight="medium"
             >
               {intl.formatMessage({ defaultMessage: 'Amount to Stake' })}
@@ -180,16 +179,10 @@ export const StakingForm = () => {
             value={amount}
             decimals={tokens.mainnet.OGN.decimals}
             onChange={handleAmountChange}
-            endAdornment={
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 28 }} />
-                <Typography variant="body2">
-                  {tokens.mainnet.OGN.symbol}
-                </Typography>
-              </Stack>
-            }
+            endAdornment={<TokenButton token={tokens.mainnet.OGN} disabled />}
             sx={{
-              p: 3,
+              px: 3,
+              py: 2,
               borderRadius: 3,
               backgroundColor: 'background.highlight',
               border: '1px solid',
@@ -205,7 +198,6 @@ export const StakingForm = () => {
                 'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
             })}
             mb={1.5}
-            color="text.secondary"
             fontWeight="medium"
           >
             {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
@@ -227,7 +219,13 @@ export const StakingForm = () => {
               flexWrap="wrap"
               rowGap={1}
             >
-              <Typography variant="featured3" minWidth={170} mr={1}>
+              <Typography
+                variant="featured3"
+                fontWeight="bold"
+                color="primary.main"
+                minWidth={170}
+                mr={1}
+              >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -282,6 +280,11 @@ export const StakingForm = () => {
                     label: intl.formatMessage({ defaultMessage: '1y' }),
                   },
                 ]}
+                sx={{
+                  '& .MuiSlider-markLabel': {
+                    fontSize: 12,
+                  },
+                }}
               />
             </Box>
           </Stack>
@@ -293,7 +296,6 @@ export const StakingForm = () => {
                 'The variable APY currently being earned on staked xOGN.',
             })}
             mb={1.5}
-            color="text.secondary"
             fontWeight="medium"
           >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
@@ -330,7 +332,6 @@ export const StakingForm = () => {
                 'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
             })}
             mb={1.5}
-            color="text.secondary"
             fontWeight="medium"
           >
             {intl.formatMessage({

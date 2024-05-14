@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import { Button, Skeleton, Stack } from '@mui/material';
 import { BigIntInput, LoadingLabel } from '@origin/shared/components';
-import { DefaultWallet } from '@origin/shared/icons';
+import { WalletFilled } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -103,6 +103,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               sWidth={100}
               noWrap
               flexGrow={1}
+              color={amount === 0n ? 'text.secondary' : 'text.primary'}
             >
               {intl.formatNumber(+formatUnits(amount, decimals), {
                 roundingMode: 'floor',
@@ -132,7 +133,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   flexGrow: 1,
                   ...theme.typography.h6,
                   '&::placeholder': {
-                    color: 'text.primary',
+                    color: 'text.secondary',
                     opacity: 1,
                   },
                 },
@@ -143,7 +144,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             <TokenButton
               token={token}
               onClick={onTokenClick}
-              isDisabled={isTokenClickDisabled}
+              disabled={isTokenClickDisabled}
             />
           )}
         </Stack>
@@ -182,12 +183,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     variant="link"
                     onClick={handleMaxClick}
                     disabled={maxDisabled}
+                    sx={{ '&.Mui-disabled': { color: 'text.primary' } }}
                   >
                     {isBalanceLoading ? (
                       <Skeleton width={60} />
                     ) : (
                       <>
-                        <DefaultWallet sx={{ fontSize: 20, mr: 1 }} />
+                        <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
                         {formatBalance(balance, decimals, undefined, {
                           roundingMode: 'floor',
                         })}

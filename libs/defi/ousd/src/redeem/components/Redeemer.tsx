@@ -150,7 +150,8 @@ function RedeemerWrapped({
             isPriceLoading={isPricesLoading}
             isAmountDisabled={isRedeemLoading}
             sx={{
-              p: 3,
+              px: 3,
+              py: 2,
               borderRadius: 3,
               backgroundColor: 'background.highlight',
               border: '1px solid',
@@ -287,8 +288,12 @@ function MixTokenButton({ tokens, label, ...rest }: MixTokenButtonProps) {
         borderRadius: 8,
         fontSize: '1rem',
         fontWeight: 500,
+        border: 'none',
+        backgroundColor: 'background.default',
         '&.Mui-disabled': {
           color: 'text.primary',
+          border: 'none',
+          backgroundColor: 'background.default',
           pr: 2,
         },
         ...rest?.sx,

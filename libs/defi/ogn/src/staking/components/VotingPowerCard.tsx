@@ -9,7 +9,6 @@ import {
 } from '@mui/material';
 import { useOgnInfo } from '@origin/defi/shared';
 import { TokenChip, ValueLabel } from '@origin/shared/components';
-import { GOVERNANCE_SNAPSHOT_VOTES_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -105,16 +104,14 @@ export const VotingPowerCard = (props: CardProps) => {
       )}
       <CardContent sx={{ pt: 0 }}>
         <Stack useFlexGap>
-          <Button component={RouterLink} to="/more" sx={{ mb: 1 }}>
-            {intl.formatMessage({ defaultMessage: 'View proposals' })}
-          </Button>
           <Button
+            component={RouterLink}
+            to="/more"
+            sx={{ mb: 1 }}
             variant="outlined"
-            href={GOVERNANCE_SNAPSHOT_VOTES_URL}
-            target="_blank"
-            rel="noopener noreferrer nofollow"
+            color="secondary"
           >
-            {intl.formatMessage({ defaultMessage: 'Create snapshot proposal' })}
+            {intl.formatMessage({ defaultMessage: 'View proposals' })}
           </Button>
         </Stack>
       </CardContent>

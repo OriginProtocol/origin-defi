@@ -90,7 +90,7 @@ export const RewardCard = (props: CardProps) => {
               </Typography>
             </Stack>
           </Stack>
-          <StakeRewardButton sx={{ mb: 1 }}>
+          <StakeRewardButton sx={{ mb: 1 }} variant="outlined">
             {intl.formatMessage({ defaultMessage: 'Add to stake' })}
           </StakeRewardButton>
           <TxButton

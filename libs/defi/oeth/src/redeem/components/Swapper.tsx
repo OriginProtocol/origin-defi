@@ -264,7 +264,11 @@ function SwapperWrapped({
         <Card>
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Redeem' })}
-            action={<SettingsButton />}
+            action={
+              <SettingsButton
+                sx={{ border: '1px solid', borderColor: 'divider' }}
+              />
+            }
           />
           <Divider />
           <CardContent
@@ -286,7 +290,8 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                p: 3,
+                px: 3,
+                py: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -340,7 +345,7 @@ function SwapperWrapped({
                 </LoadingLabel>
               </Stack>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <TokenButton token={tokenOut} isDisabled />
+                <TokenButton token={tokenOut} disabled />
               </Stack>
             </Stack>
             <Collapse in={amountOut > 0n}>

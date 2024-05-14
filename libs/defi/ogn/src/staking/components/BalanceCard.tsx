@@ -44,12 +44,12 @@ export const BalanceCard = (props: CardProps) => {
           </LoadingLabel>
           <Stack direction="row" alignItems="center" spacing={1}>
             <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 24 }} />
-            <Typography variant="featured3">
+            <Typography variant="featured3" fontWeight="medium">
               {tokens.mainnet.OGN.symbol}
             </Typography>
           </Stack>
         </Stack>
-        <Button fullWidth>
+        <Button fullWidth variant="outlined">
           {intl.formatMessage({ defaultMessage: 'Get OGN' })}
         </Button>
       </CardContent>

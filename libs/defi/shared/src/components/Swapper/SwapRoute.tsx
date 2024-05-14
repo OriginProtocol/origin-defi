@@ -36,7 +36,8 @@ export function SwapRoute(
     >
       <AccordionSummary
         sx={{
-          py: 3,
+          pt: 3,
+          pb: 1.5,
           px: 0,
           backgroundColor: 'transparent',
           '&&.MuiAccordionSummary-root': { cursor: 'default' },

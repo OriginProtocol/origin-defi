@@ -100,9 +100,17 @@ export const ProposalListCard = (props: CardProps) => {
             options={filterOptions}
             value={filter}
             onChange={handleFilterChange}
+            sx={{ borderRadius: 2, backgroundColor: 'background.default' }}
+            selectedSx={{
+              borderRadius: 2,
+              backgroundColor: 'background.highlight',
+              boxShadow: (theme) =>
+                `inset 0 0 0 2px ${theme.palette.background.default},inset 0 0 0 3px ${theme.palette.divider}`,
+            }}
           />
         }
       />
+      <Divider />
       {isProposalsLoading ? (
         <Stack
           sx={{
@@ -171,11 +179,11 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
       <Grid2 container spacing={2}>
         <Grid2 xs={12} sm={8}>
           <Stack spacing={1.5}>
-            <Stack direction="row" spacing={2}>
+            <Stack direction="row" spacing={1}>
               <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
               {proposal.type === 'snapshot' ? (
-                <ColorChip px={1} py={0.5} bgcolor="warning.faded">
-                  <Snapshot sx={{ color: 'warning.main', fontSize: 14 }} />
+                <ColorChip px={1} py={0.5} bgcolor="#F3F4F6">
+                  <Snapshot sx={{ color: 'text.secondary', fontSize: 14 }} />
                   <Typography variant="caption1" color="text.primary">
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
@@ -183,8 +191,10 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   </Typography>
                 </ColorChip>
               ) : (
-                <ColorChip px={1} py={0.5}>
-                  <FaLinkRegular sx={{ fontSize: 14 }} />
+                <ColorChip px={1} py={0.5} bgcolor="#F3F4F6">
+                  <FaLinkRegular
+                    sx={{ color: 'text.secondary', fontSize: 14 }}
+                  />
                   <Typography variant="caption1" color="text.primary">
                     {intl.formatMessage({
                       defaultMessage: 'On-chain proposal',

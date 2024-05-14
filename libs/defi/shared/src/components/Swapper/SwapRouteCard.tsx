@@ -107,7 +107,7 @@ export function SwapRouteCard({
             top: 0,
             right: 0,
             px: 1,
-            pt: 0.25,
+            py: 0.25,
           }}
         >
           {intl.formatMessage({ defaultMessage: 'Best' })}

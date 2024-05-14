@@ -284,7 +284,11 @@ function SwapperWrapped({
       <Card {...rest}>
         <CardHeader
           title={intl.formatMessage({ defaultMessage: 'Swap' })}
-          action={<SettingsButton />}
+          action={
+            <SettingsButton
+              sx={{ border: '1px solid', borderColor: 'divider' }}
+            />
+          }
         />
         <Divider />
         <Box
@@ -317,7 +321,8 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                p: 3,
+                px: 3,
+                py: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -340,7 +345,8 @@ function SwapperWrapped({
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               sx={{
-                p: 3,
+                px: 3,
+                py: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -457,8 +463,8 @@ function ArrowButton({ onClick, ...rest }: BoxProps) {
         top: '50%',
         left: '50%',
         transform: 'translate(-50%, -50%)',
-        width: { md: 56, xs: 48 },
-        height: { md: 56, xs: 48 },
+        width: { md: 58, xs: 50 },
+        height: { md: 58, xs: 50 },
         zIndex: 2,
         display: 'flex',
         justifyContent: 'center',

@@ -24,6 +24,8 @@ export const PageTitleSection = (props: StackProps) => {
       {...props}
     >
       <Button
+        variant="outlined"
+        color="secondary"
         href={GOVERNANCE_SNAPSHOT_VOTES_URL}
         target="_blank"
         rel="noopener noreferrer nofollow"
@@ -33,6 +35,7 @@ export const PageTitleSection = (props: StackProps) => {
       </Button>
       <Button
         variant="outlined"
+        color="secondary"
         href={GOVERNANCE_DOCS_URL}
         target="_blank"
         rel="noopener noreferrer nofollow"
@@ -42,6 +45,7 @@ export const PageTitleSection = (props: StackProps) => {
       </Button>
       <Button
         variant="outlined"
+        color="secondary"
         href={GOVERNANCE_DISCUSSION_FORUM_URL}
         target="_blank"
         rel="noopener noreferrer nofollow"

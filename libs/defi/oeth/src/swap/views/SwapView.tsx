@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  BridgePromoCard,
   GlobalStatsCard,
   Page,
   PageSection,
@@ -31,7 +32,10 @@ export const SwapView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 xs={12} md={6} mdOffset={2}>
+          <Grid2 xs={12} md={3}>
+            <BridgePromoCard />
+          </Grid2>
+          <Grid2 xs={12} md={6}>
             <Swapper
               swapActions={oethSwapActions}
               swapRoutes={oethSwapRoutes}

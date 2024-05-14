@@ -15,6 +15,7 @@ import PoweredBySafeSvg from './poweredBySafe.svg?react';
 import ReceivedSvg from './received.svg?react';
 import SendSvg from './send.svg?react';
 import SwapSvg from './swap.svg?react';
+import WalletFilledSvg from './wallet_filled.svg?react';
 import YieldSvg from './yield.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
@@ -67,6 +68,9 @@ export const Send = (props: SvgIconProps) => (
 );
 export const Swap = (props: SvgIconProps) => (
   <SvgIcon {...props} component={SwapSvg} viewBox="0 0 16 17" />
+);
+export const WalletFilled = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={WalletFilledSvg} inheritViewBox />
 );
 export const Yield = (props: SvgIconProps) => (
   <SvgIcon {...props} component={YieldSvg} viewBox="0 0 32 32" />

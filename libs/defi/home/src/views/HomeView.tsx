@@ -1,6 +1,7 @@
 import { Box, Button, Container, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  BridgePromoCard,
   MergerBanner,
   Page,
   products,
@@ -9,7 +10,6 @@ import {
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { BridgePromoCard } from '../components/BridgePromoCard';
 import { ProductCard } from '../components/ProductCard';
 import { StakeOGNCard } from '../components/StakeOGNCard';
 

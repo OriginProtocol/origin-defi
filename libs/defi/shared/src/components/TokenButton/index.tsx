@@ -8,14 +8,9 @@ import type { Token } from '@origin/shared/contracts';
 
 export type TokenButtonProps = {
   token?: Token;
-  isDisabled?: boolean;
 } & ButtonProps;
 
-export const TokenButton = ({
-  token,
-  isDisabled,
-  ...rest
-}: TokenButtonProps) => {
+export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
   const intl = useIntl();
 
   if (!token) {
@@ -28,7 +23,6 @@ export const TokenButton = ({
 
   return (
     <Button
-      disabled={isDisabled}
       {...rest}
       sx={{
         display: 'flex',
@@ -42,7 +36,7 @@ export const TokenButton = ({
         border: '1px solid',
         borderColor: 'divider',
         pl: 1,
-        pr: isDisabled ? 1 : 1.5,
+        pr: rest?.disabled ? 1 : 1.5,
         py: 0.75,
         flexShrink: 0,
         '&:hover': {
@@ -52,6 +46,8 @@ export const TokenButton = ({
         },
         '&.Mui-disabled': {
           color: 'text.primary',
+          border: 'none',
+          backgroundColor: 'background.default',
           pr: 2,
         },
         ...rest?.sx,
@@ -72,7 +68,9 @@ export const TokenButton = ({
       <Typography variant="body2" fontWeight="bold" flexGrow={1}>
         {token.symbol}
       </Typography>
-      {!isDisabled && <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />}
+      {!rest?.disabled && (
+        <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />
+      )}
     </Button>
   );
 };

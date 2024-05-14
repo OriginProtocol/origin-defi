@@ -219,13 +219,16 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 72,
           padding: theme.spacing(3),
-          fontWeight: theme.typography.fontWeightMedium,
+
           [theme.breakpoints.down('md')]: {
             minHeight: 56,
             padding: theme.spacing(2, 3),
           },
         }),
-        title: ({ theme }) => ({ ...theme.typography.body3 }),
+        title: ({ theme }) => ({
+          ...theme.typography.body3,
+          fontWeight: theme.typography.fontWeightMedium,
+        }),
       },
     },
     MuiCardContent: {
