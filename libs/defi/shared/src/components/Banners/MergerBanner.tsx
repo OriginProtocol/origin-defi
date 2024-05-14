@@ -38,13 +38,10 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
         alignItems={{ xs: 'center', md: 'flex-start' }}
         pr={{ xs: 0, md: 2 }}
       >
-        <Typography variant="h6" fontWeight={800}>
+        <Typography variant="h6" fontWeight={800} pb={1.5}>
           {intl.formatMessage({ defaultMessage: 'OGV & OGN are merging' })}
         </Typography>
-        <Typography
-          textAlign={{ xs: 'center', md: 'start' }}
-          color="text.secondary"
-        >
+        <Typography textAlign={{ xs: 'center', md: 'start' }}>
           {intl.formatMessage({
             defaultMessage:
               'Convert your OGV tokens into OGN. Conversion page will be open for 1 year.',

@@ -183,7 +183,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     variant="link"
                     onClick={handleMaxClick}
                     disabled={maxDisabled}
-                    sx={{ '&.Mui-disabled': { color: 'text.primary' } }}
+                    sx={{
+                      '&.Mui-disabled': { color: 'text.secondary', opacity: 1 },
+                    }}
                   >
                     {isBalanceLoading ? (
                       <Skeleton width={60} />
