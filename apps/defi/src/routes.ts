@@ -43,9 +43,6 @@ export const routes: RouteObject[] = [
             Component: oeth.SwapView,
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Swap in and out of OETH',
-              }),
               icon: FaArrowRightArrowLeftRegular,
             },
           },
@@ -53,9 +50,6 @@ export const routes: RouteObject[] = [
             ...oeth.oethRedeemRoute,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Redeem from OETH vault',
-              }),
               icon: FaArrowDownFromArcRegular,
             },
           },
@@ -74,9 +68,6 @@ export const routes: RouteObject[] = [
             Component: ousd.SwapView,
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Swap in and out of OUSD',
-              }),
               icon: FaArrowRightArrowLeftRegular,
             },
           },
@@ -85,9 +76,6 @@ export const routes: RouteObject[] = [
             Component: ousd.RedeemView,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Redeem from OUSD vault',
-              }),
               icon: FaArrowDownFromArcRegular,
             },
           },
@@ -103,9 +91,6 @@ export const routes: RouteObject[] = [
             Component: ogn.StakingView,
             handle: {
               title: defineMessage({ defaultMessage: 'Staking' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Stake to earn rewards',
-              }),
               icon: FaCoinsRegular,
             },
           },
@@ -124,7 +109,6 @@ export const routes: RouteObject[] = [
             Component: governance.OverviewView,
             handle: {
               title: defineMessage({ defaultMessage: 'Governance Overview' }),
-              subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
               icon: FaGavelRegular,
             },
           },
@@ -137,9 +121,6 @@ export const routes: RouteObject[] = [
             Component: ogv.MigrationView,
             handle: {
               title: defineMessage({ defaultMessage: 'Migration' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Convert OGV to OGN',
-              }),
               icon: FaArrowRightRegular,
             },
           },
