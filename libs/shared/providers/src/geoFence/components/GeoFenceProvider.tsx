@@ -92,7 +92,7 @@ export const GeoFenceProvider = ({
             </Typography>
             <Typography component="li" fontSize={12}>
               {intl.formatMessage({
-                defaultMessage: `You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether.`,
+                defaultMessage: `You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)`,
               })}
             </Typography>
           </Stack>

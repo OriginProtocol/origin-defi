@@ -61,7 +61,7 @@ root.render(
         GeoFenceProvider,
         {
           name: 'DeFi',
-          fullName: 'Origin DeFi',
+          fullName: 'Origin Protocol',
           href: 'https://www.originprotocol.com',
         },
       ],
