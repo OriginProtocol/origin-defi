@@ -4,6 +4,7 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  alpha,
   Box,
   Button,
   IconButton,
@@ -16,20 +17,18 @@ import { ExpandIcon } from '@origin/shared/components';
 import { OUSD_DOCS_URL } from '@origin/shared/constants';
 import {
   FaArrowUpRightRegular,
-  FaBookRegular,
   FaXmarkRegular,
   OriginLabel,
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
 
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
-import type { StackProps } from '@mui/material';
-import type { MouseEvent } from 'react';
+import type { MenuItemProps, StackProps } from '@mui/material';
 import type { RouteObject } from 'react-router-dom';
 
 import type { NavItem } from '../types';
@@ -85,22 +84,18 @@ export const DrawerMenu = ({ onClose, ...rest }: DrawerMenuProps) => {
         sx={{
           display: 'flex',
           alignItems: 'center',
+          justifyContent: 'flex-start',
+          gap: 1.5,
           py: 2,
           pl: 2,
           pr: 3,
-          height: 64,
+          height: 36,
           color: 'text.primary',
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
         }}
       >
-        <Stack direction="row" flexGrow={1} alignItems="center" spacing={1}>
-          <FaBookRegular sx={{ fontSize: 16 }} />
-          <Typography fontWeight="medium">
-            {intl.formatMessage({ defaultMessage: 'Docs' })}
-          </Typography>
-        </Stack>
+        <Typography fontWeight="medium">
+          {intl.formatMessage({ defaultMessage: 'Docs' })}
+        </Typography>
         <FaArrowUpRightRegular className="arrow" />
       </Button>
     </Stack>
@@ -129,11 +124,6 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
     }
   };
 
-  const handleMenuClick = (path: string) => (evt: MouseEvent) => {
-    onClose();
-    navigate(`${route.path}/${path ?? ''}`);
-  };
-
   if (isNilOrEmpty(route?.children)) {
     return (
       <Button
@@ -147,12 +137,9 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
           display: 'flex',
           justifyContent: 'flex-start',
           alignItems: 'center',
-          height: 64,
+          height: 36,
           px: 0,
           fontWeight: 'medium',
-          '&:hover': {
-            backgroundColor: 'transparent',
-          },
         }}
       >
         {intl.formatMessage(route.handle.title)}
@@ -167,7 +154,6 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
         (r) =>
           ({
             title: r.handle.title,
-            subtitle: r.handle.subtitle,
             icon: r.handle.icon,
             path: r.path,
             href: null,
@@ -187,7 +173,20 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
       }}
       disableGutters
     >
-      <AccordionSummary sx={{ pl: 2, pr: 3, height: 64 }}>
+      <AccordionSummary
+        sx={{
+          pl: 2,
+          pr: 3,
+          height: 36,
+          '&:hover': {
+            backgroundColor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.hoverOpacity,
+              ),
+          },
+        }}
+      >
         <Stack
           width={1}
           direction="row"
@@ -195,17 +194,9 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
           alignItems="center"
           justifyContent="space-between"
         >
-          <Stack direction="row" spacing={1} alignItems="center">
-            {!isNilOrEmpty(route?.handle?.icon) && (
-              <Box
-                component={route.handle.icon}
-                sx={{ width: 16, height: 16, color: 'text.tertiary' }}
-              />
-            )}
-            <Typography fontWeight="medium">
-              {intl.formatMessage(route.handle.title)}
-            </Typography>
-          </Stack>
+          <Typography fontWeight="medium">
+            {intl.formatMessage(route.handle.title)}
+          </Typography>
           <ExpandIcon
             isExpanded={expanded.includes(key)}
             sx={{ fontSize: 16 }}
@@ -213,55 +204,79 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
         </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
-        <MenuList sx={{ p: 0 }}>
+        <MenuList sx={{ py: 0, px: 2 }}>
           {items.map((r) => (
-            <MenuItem
+            <ListMenuItem
               key={`${r?.path ?? r?.href}-${index}`}
-              {...(isNilOrEmpty(r.href)
-                ? { onClick: handleMenuClick(r?.path ?? '') }
-                : {
-                    href: r.href,
-                    target: '_blank',
-                    rel: 'noopener noreferrer nofollow',
-                    component: 'a',
-                  })}
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 1.5,
-                height: 64,
-                pl: 3,
-                pr: 2,
-                '.subtitle': { color: 'text.secondary' },
-                '.arrow': {
-                  color: 'text.secondary',
-                  fontSize: 18,
-                },
-                '&:hover': {
-                  backgroundColor: 'transparent',
-                },
-              }}
-            >
-              <Box
-                component={r.icon}
-                sx={{ width: 16, height: 16, color: 'text.secondary' }}
-              />
-              <Stack flexGrow={1}>
-                <Typography fontWeight="medium">
-                  {intl.formatMessage(r.title)}
-                </Typography>
-                <Typography className="subtitle">
-                  {intl.formatMessage(r.subtitle)}
-                </Typography>
-              </Stack>
-              {!isNilOrEmpty(r?.href) && (
-                <FaArrowUpRightRegular className="arrow" />
-              )}
-            </MenuItem>
+              route={route}
+              item={r}
+              onClose={onClose}
+            />
           ))}
         </MenuList>
       </AccordionDetails>
     </Accordion>
+  );
+};
+
+type ListMenuItemProps = {
+  route: RouteObject;
+  item: NavItem;
+  onClose: () => void;
+} & MenuItemProps;
+
+const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
+  const intl = useIntl();
+  const navigate = useNavigate();
+  const match = useMatch({
+    path: `${route.path}/${item?.path ?? ''}`,
+  });
+
+  const handleMenuClick = (path: string) => () => {
+    onClose();
+    navigate(`${route.path}/${path ?? ''}`);
+  };
+
+  const isSelected = !isNilOrEmpty(match) && isNilOrEmpty(item?.href);
+
+  return (
+    <MenuItem
+      {...rest}
+      {...(isNilOrEmpty(item.href)
+        ? { onClick: handleMenuClick(item?.path ?? '') }
+        : {
+            href: item.href,
+            target: '_blank',
+            rel: 'noopener noreferrer nofollow',
+            component: 'a',
+          })}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 1.5,
+        height: 36,
+        pl: 3,
+        pr: 2,
+        my: 0.25,
+        borderRadius: 1,
+        backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+        color: isSelected ? 'primary.main' : 'text.primary',
+        '&:hover': {
+          backgroundColor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity,
+            ),
+        },
+      }}
+    >
+      <Typography fontWeight="medium">
+        {intl.formatMessage(item.title)}
+      </Typography>
+      {!isNilOrEmpty(item?.href) && (
+        <FaArrowUpRightRegular sx={{ fontSize: 14 }} />
+      )}
+    </MenuItem>
   );
 };

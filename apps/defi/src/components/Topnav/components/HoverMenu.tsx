@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 
 import {
+  alpha,
   Button,
   Grow,
   MenuItem,
@@ -41,7 +42,7 @@ export const HoverMenu = () => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 2,
+        gap: 1,
       }}
     >
       {visibleRoutes?.map((route, i) => (
@@ -61,6 +62,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const match = useMatch({ path: route?.path ?? '/', end: route.index });
+  const isSelected = !isNilOrEmpty(match);
 
   const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
     if (event.key === 'Escape') {
@@ -72,10 +74,12 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
     return (
       <Button
         variant="text"
+        size="large"
         {...rest}
         sx={{
-          color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
-          ':hover': { backgroundColor: 'transparent' },
+          color: 'text.primary',
+          backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+          svg: { ml: 0.75, width: 12, height: 12 },
           ...rest?.sx,
         }}
         onClick={() => {
@@ -87,7 +91,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
     );
   }
 
-  const isSelected = !isNilOrEmpty(match);
   const items = [
     ...(route?.children
       ?.filter((r) => !isNilOrEmpty(r?.handle?.title))
@@ -182,7 +185,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                     key={`${r?.path ?? r?.href}-${i}`}
                     route={route}
                     item={r}
-                    index={i}
                     setOpen={setOpen}
                   />
                 ))}
@@ -198,17 +200,10 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
 type ListMenuItemProps = {
   route: RouteObject;
   item: NavItem;
-  index: number;
   setOpen: Dispatch<SetStateAction<boolean>>;
 } & MenuItemProps;
 
-const ListMenuItem = ({
-  route,
-  item,
-  index,
-  setOpen,
-  ...rest
-}: ListMenuItemProps) => {
+const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
   const intl = useIntl();
   const navigate = useNavigate();
   const match = useMatch({
@@ -242,6 +237,13 @@ const ListMenuItem = ({
         color: isSelected ? 'primary.main' : 'text.primary',
         my: 0.25,
         '&&&': { minHeight: 36 },
+        '&:hover': {
+          backgroundColor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity,
+            ),
+        },
       }}
     >
       <Typography fontWeight="medium">

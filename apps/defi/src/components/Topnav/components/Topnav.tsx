@@ -226,22 +226,21 @@ export const Topnav = () => {
           </Grid2>
         </Grid2>
       </Box>
-      {isSm && (
-        <Drawer
-          anchor="left"
-          open={drawerOpen}
+      <Drawer
+        keepMounted
+        anchor="left"
+        open={drawerOpen}
+        onClose={() => {
+          setDrawerOpen(false);
+        }}
+        PaperProps={{ sx: { minWidth: 250 } }}
+      >
+        <DrawerMenu
           onClose={() => {
             setDrawerOpen(false);
           }}
-          PaperProps={{ sx: { minWidth: 250 } }}
-        >
-          <DrawerMenu
-            onClose={() => {
-              setDrawerOpen(false);
-            }}
-          />
-        </Drawer>
-      )}
+        />
+      </Drawer>
     </>
   );
 };
