@@ -70,6 +70,8 @@ export const SliderSwitch = ({
           onClick={() => {
             onChange(o.value);
           }}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          textColor={value === o.value ? (selectedSx as any)?.color : null}
         />
       ))}
       <Box
@@ -92,10 +94,14 @@ export const SliderSwitch = ({
   );
 };
 
-type SwitchButtonProps = { option: Option; isSelected: boolean } & ButtonProps;
+type SwitchButtonProps = {
+  option: Option;
+  isSelected: boolean;
+  textColor?: string;
+} & ButtonProps;
 
 const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
-  ({ option, isSelected, ...rest }, ref) => {
+  ({ option, isSelected, textColor, ...rest }, ref) => {
     return (
       <Button
         variant="text"
@@ -106,10 +112,11 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
           px: 2,
           py: 1,
           zIndex: 2,
-          color: isSelected ? 'text.primary' : 'text.secondary',
+          color: isSelected ? textColor ?? 'text.primary' : 'text.secondary',
+          transition: 'color 0.2s ease',
           ':hover': {
             backgroundColor: 'transparent',
-            '.label': { color: 'text.primary' },
+            '.label': { color: textColor ?? 'text.primary' },
           },
           ...rest?.sx,
         }}

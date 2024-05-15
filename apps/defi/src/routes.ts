@@ -9,6 +9,7 @@ import {
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
   FaArrowRightRegular,
+  FaClockRegular,
   FaCoinsRegular,
   FaGavelRegular,
   OETH,
@@ -53,6 +54,14 @@ export const routes: RouteObject[] = [
               icon: FaArrowDownFromArcRegular,
             },
           },
+          {
+            path: 'history',
+            Component: oeth.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
+            },
+          },
         ],
       },
       {
@@ -77,6 +86,14 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
               icon: FaArrowDownFromArcRegular,
+            },
+          },
+          {
+            path: 'history',
+            Component: ousd.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
             },
           },
         ],

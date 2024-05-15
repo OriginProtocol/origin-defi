@@ -36,6 +36,7 @@ import CoinsSvg from './coins.svg?react';
 import CommentsSvg from './comments.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
+import FilterSvg from './filter.svg?react';
 import GavelSvg from './gavel.svg?react';
 import GearComplexSvg from './gear-complex.svg?react';
 import Grid2Svg from './grid-2.svg?react';
@@ -318,6 +319,9 @@ export const FaFileLinesRegular = (props: SvgIconProps) => (
     component={FileLinesSvg}
     inheritViewBox
   />
+);
+export const FaFilterRegular = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={FilterSvg} inheritViewBox />
 );
 export const FaGavelRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={GavelSvg} inheritViewBox />

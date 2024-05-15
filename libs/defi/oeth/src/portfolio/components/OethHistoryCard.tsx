@@ -2,7 +2,11 @@ import { useMemo, useState } from 'react';
 
 import {
   Box,
-  Link,
+  Card,
+  CardHeader,
+  CircularProgress,
+  Divider,
+  IconButton,
   Stack,
   Table,
   TableBody,
@@ -11,15 +15,17 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { HistoryType } from '@origin/defi/shared';
 import {
+  DownloadCsvButton,
   ExpandIcon,
   TablePagination,
   TransactionIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { FaArrowUpRightRegular } from '@origin/shared/icons';
-import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
+import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -28,27 +34,148 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
-import { useAggregatedHistory } from '../hooks';
+import { useOethHistory } from '../hooks';
+import { useOethHistoryTransactionQuery } from '../queries.generated';
+import { FiltersButton } from './FiltersButton';
 
 import type { StackProps } from '@mui/material';
-import type { HistoryType } from '@origin/defi/shared';
 import type { ExpandedState } from '@tanstack/react-table';
 
 import type { DailyHistory } from '../types';
 
+const filterOptions = [
+  {
+    label: defineMessage({ defaultMessage: 'Yield' }),
+    value: HistoryType.Yield,
+  },
+  { label: defineMessage({ defaultMessage: 'Sent' }), value: HistoryType.Sent },
+  {
+    label: defineMessage({ defaultMessage: 'Received' }),
+    value: HistoryType.Received,
+  },
+];
+
+export const OethHistoryCard = () => {
+  const intl = useIntl();
+  const { isConnected } = useAccount();
+  const [filters, setFilters] = useState<HistoryType[]>([]);
+  const { data, isFetching } = useOethHistory(filters);
+
+  return (
+    <Card>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Transactions' })}
+        action={
+          <Stack direction="row" alignItems="center" gap={1}>
+            <FiltersButton
+              filters={filters}
+              setFilters={setFilters}
+              filterOptions={filterOptions}
+            />
+            <ExportDataButton />
+          </Stack>
+        }
+      />
+      <Divider />
+      {isConnected ? (
+        isFetching ? (
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '15rem',
+              width: 1,
+            }}
+          >
+            <CircularProgress />
+          </Stack>
+        ) : isNilOrEmpty(data) ? (
+          <Stack
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '15rem',
+              width: 1,
+            }}
+          >
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'No transaction' })}
+            </Typography>
+          </Stack>
+        ) : (
+          <HistoryTable filters={filters} />
+        )
+      ) : (
+        <Stack
+          sx={{
+            height: '15rem',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Typography>
+            {intl.formatMessage({
+              defaultMessage: 'Connect your wallet to see your history',
+            })}
+          </Typography>
+          <ConnectedButton color="inherit" size="large" />
+        </Stack>
+      )}
+    </Card>
+  );
+};
+
+function ExportDataButton() {
+  const { address, isConnected } = useAccount();
+  const { data: txData } = useOethHistoryTransactionQuery(
+    { address: address ?? ZERO_ADDRESS },
+    {
+      enabled: isConnected,
+      select: (data) => {
+        if (!data?.oTokenHistories) {
+          return;
+        }
+
+        return data.oTokenHistories.reduce(
+          (acc, curr) => [
+            ...acc,
+            [curr.timestamp, curr.type, curr.value, curr.balance, curr.txHash],
+          ],
+          [['Date', 'Type', 'Amount', 'Balance', 'Transaction Hash']],
+        );
+      },
+    },
+  );
+
+  return (
+    <DownloadCsvButton
+      data={txData}
+      filename="oeth_transaction_history.csv"
+      variant="outlined"
+      color="secondary"
+      buttonLabel="CSV"
+      disabled={!isConnected || txData?.length === 1}
+    />
+  );
+}
+
 const columnHelper = createColumnHelper<DailyHistory>();
 
-export type HistoryTableProps = {
+type HistoryTableProps = {
   filters: HistoryType[];
 };
 
-export function HistoryTable({ filters }: HistoryTableProps) {
+function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
   const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data } = useAggregatedHistory(filters);
+  const { data } = useOethHistory(filters);
 
   const columns = useMemo(
     () => [
@@ -72,6 +199,7 @@ export function HistoryTable({ filters }: HistoryTableProps) {
           );
         },
         header: intl.formatMessage({ defaultMessage: 'Type' }),
+        size: 400,
         enableColumnFilter: true,
         filterFn: (row, _, value) => {
           if (!value.value.length) return true;
@@ -80,49 +208,72 @@ export function HistoryTable({ filters }: HistoryTableProps) {
       }),
       columnHelper.accessor('value', {
         cell: (info) => (
-          <Typography textAlign="end">
+          <Typography>
             {formatAmount(BigInt(info.getValue() ?? '0'))}
           </Typography>
         ),
         header: () => (
-          <Typography textAlign="end">
+          <Typography>
             {intl.formatMessage({ defaultMessage: 'Change' })}
           </Typography>
         ),
+        size: 50,
       }),
       columnHelper.accessor('balance', {
         cell: (info) => (
-          <Typography textAlign="end">
+          <Typography>
             {formatQuantity(BigInt(info.getValue() ?? '0'))}
           </Typography>
         ),
         header: () => (
-          <Typography textAlign="end">
+          <Typography>
             {intl.formatMessage({ defaultMessage: 'Balance' })}
           </Typography>
         ),
+        size: 50,
       }),
       columnHelper.display({
         id: 'link',
+        size: 10,
         cell: (info) => {
           if (info.row.getCanExpand()) {
             return (
-              <ExpandIcon
-                sx={{ width: 12 }}
-                isExpanded={info.row.getIsExpanded()}
-              />
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: '50%',
+                  width: 28,
+                  height: 28,
+                }}
+              >
+                <ExpandIcon
+                  sx={{ width: 12 }}
+                  isExpanded={info.row.getIsExpanded()}
+                />
+              </Box>
             );
           }
 
           return (
             !isNilOrEmpty(info.row.original.txHash) && (
-              <Link
+              <IconButton
                 href={`https://etherscan.io/tx/${info.row.original.txHash}`}
                 target="_blank"
                 rel="noopener noreferrer nofollow"
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: '50%',
+                  width: 28,
+                  height: 28,
+                }}
               >
-                <FaArrowUpRightRegular sx={{ fontSize: 12 }} />
-              </Link>
+                <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
+              </IconButton>
             )
           );
         },
@@ -157,20 +308,9 @@ export function HistoryTable({ filters }: HistoryTableProps) {
       <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow
-              key={headerGroup.id}
-              sx={{
-                '& > *:first-of-type': {
-                  width: '50%',
-                },
-              }}
-            >
+            <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header, index) => (
-                <TableCell
-                  key={header.id}
-                  sx={{ py: 3 }}
-                  align={index > 0 ? 'center' : 'left'}
-                >
+                <TableCell key={header.id} sx={{ width: header.getSize() }}>
                   {flexRender(
                     header.column.columnDef.header,
                     header.getContext(),
@@ -189,23 +329,13 @@ export function HistoryTable({ filters }: HistoryTableProps) {
                 ...(row.getCanExpand() && {
                   cursor: 'pointer',
                   ':hover': {
-                    backgroundColor: 'grey.900',
+                    backgroundColor: 'primary.faded',
                   },
                 }),
-                ...(row.depth > 0 && {
-                  borderTopStyle: 'hidden',
-                }),
-                '& > *:first-of-type': {
-                  width: '50%',
-                },
-                '& > *:last-of-type': {
-                  pl: 0,
-                  textAlign: 'end',
-                },
               }}
             >
               {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>
+                <TableCell key={cell.id} sx={{ width: cell.column.getSize() }}>
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </TableCell>
               ))}

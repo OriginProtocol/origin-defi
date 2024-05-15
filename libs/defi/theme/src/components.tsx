@@ -102,6 +102,13 @@ export const components = (base: Theme): ThemeOptions => ({
           padding: theme.spacing(0.5, 2),
           minHeight: 48,
         }),
+        textSecondary: ({ theme }) => ({
+          color: theme.palette.text.primary,
+          backgroundColor: 'transparent',
+          '&:hover': {
+            backgroundColor: theme.palette.primary.faded,
+          },
+        }),
         outlinedSecondary: ({ theme }) => ({
           background: theme.palette.secondary.main,
           color: theme.palette.secondary.contrastText,

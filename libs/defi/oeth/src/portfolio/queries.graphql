@@ -1,9 +1,11 @@
 query OethHistoryUserStat($address: String!) {
-  oTokenAddresses(where: {
-    address_containsInsensitive: $address,
-    chainId_eq: 1,
-    otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
-  }) {
+  oTokenAddresses(
+    where: {
+      address_containsInsensitive: $address
+      chainId_eq: 1
+      otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
+    }
+  ) {
     balance
     earned
     isContract
@@ -18,9 +20,9 @@ query OethHistoryTransaction($address: String!, $filters: [HistoryType!]) {
     offset: 0
     limit: 2000
     where: {
-      address: { id_containsInsensitive: $address },
-      type_in: $filters,
-      chainId_eq: 1,
+      address: { id_containsInsensitive: $address }
+      type_in: $filters
+      chainId_eq: 1
       otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
     }
   ) {
