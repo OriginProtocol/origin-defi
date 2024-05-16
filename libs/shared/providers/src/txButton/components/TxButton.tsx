@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 
+import { capitalize } from '@mui/material';
 import { isUserRejected } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
@@ -12,7 +13,6 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
-import type { SimulateContractErrorType } from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -25,10 +25,6 @@ import type {
   WriteTransactionCallbacks,
   WriteTransactionParameters,
 } from '../../wagmi';
-
-export type TxButtonFnParameters = {
-  simulateError: SimulateContractErrorType | null;
-};
 
 export type TxButtonProps<
   abi extends Abi = Abi,
@@ -65,11 +61,11 @@ export const TxButton = <
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 >({
   label,
-  disabled,
   waitingSignatureLabel,
   waitingTxLabel,
   params,
   callbacks,
+  disabled,
   ...rest
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
@@ -177,7 +173,7 @@ export const TxButton = <
           waitTxStatus === 'pending'
         ? waitingTxLabel ??
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-        : label;
+        : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
     !simulateData ||
