@@ -47,12 +47,6 @@
       "value": "Connect"
     }
   ],
-  "/23BOU": [
-    {
-      "type": 0,
-      "value": "Pending yield"
-    }
-  ],
   "/6/sPX": [
     {
       "type": 0,
@@ -69,6 +63,12 @@
     {
       "type": 0,
       "value": "End block"
+    }
+  ],
+  "/jJLYy": [
+    {
+      "type": 0,
+      "value": "Transactions"
     }
   ],
   "/sIoQc": [
@@ -275,6 +275,12 @@
       "value": "Active"
     }
   ],
+  "3at7Yr": [
+    {
+      "type": 0,
+      "value": "Legacy governance"
+    }
+  ],
   "3fTTLv": [
     {
       "type": 0,
@@ -323,12 +329,6 @@
     {
       "type": 0,
       "value": "Instant"
-    }
-  ],
-  "4ycy0/": [
-    {
-      "type": 0,
-      "value": "Daily yield"
     }
   ],
   "56jhQz": [
@@ -495,16 +495,16 @@
       "value": "Amount to Stake"
     }
   ],
-  "71Nfj1": [
-    {
-      "type": 0,
-      "value": "7d earnings"
-    }
-  ],
   "7CPiAt": [
     {
       "type": 0,
       "value": "Redeemed"
+    }
+  ],
+  "7DIW6+": [
+    {
+      "type": 0,
+      "value": "Learn More"
     }
   ],
   "7NFfmz": [
@@ -541,18 +541,6 @@
     {
       "type": 0,
       "value": "Current results"
-    }
-  ],
-  "8EhWB4": [
-    {
-      "type": 0,
-      "value": "wOETH Transaction history"
-    }
-  ],
-  "8UzT6d": [
-    {
-      "type": 0,
-      "value": "CSV"
     }
   ],
   "8Vr/2f": [
@@ -625,10 +613,28 @@
       "value": "No rewards available to claim"
     }
   ],
+  "9GqOyW": [
+    {
+      "type": 0,
+      "value": "Current value (OETH)"
+    }
+  ],
+  "9W24c9": [
+    {
+      "type": 0,
+      "value": "wOETH Balance"
+    }
+  ],
   "9ghOJK": [
     {
       "type": 0,
       "value": "Unhandled Error!"
+    }
+  ],
+  "9iP/A8": [
+    {
+      "type": 0,
+      "value": "Lifetime Earnings (OETH)"
     }
   ],
   "9lt7g1": [
@@ -749,12 +755,6 @@
     {
       "type": 0,
       "value": "OETH Balance"
-    }
-  ],
-  "Cd75LB": [
-    {
-      "type": 0,
-      "value": "OUSD Transactions"
     }
   ],
   "Cdsqgz": [
@@ -917,6 +917,26 @@
       "value": "Govern An Expansive Ecosystem"
     }
   ],
+  "FV7IVu": [
+    {
+      "children": [
+        {
+          "type": 1,
+          "value": "count"
+        }
+      ],
+      "type": 8,
+      "value": "b"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
   "FVfYnP": [
     {
       "type": 0,
@@ -971,12 +991,6 @@
       "value": "Total accrued rewards"
     }
   ],
-  "HT5D8q": [
-    {
-      "type": 0,
-      "value": "Convert OGV to OGN"
-    }
-  ],
   "Hiq4cG": [
     {
       "type": 0,
@@ -1001,22 +1015,10 @@
       "value": "More"
     }
   ],
-  "IAZCOw": [
-    {
-      "type": 0,
-      "value": "Origin protocol"
-    }
-  ],
   "IAoEwp": [
     {
       "type": 0,
       "value": "Vote for"
-    }
-  ],
-  "IToIaT": [
-    {
-      "type": 0,
-      "value": "Get OETH"
     }
   ],
   "IWTkRX": [
@@ -1067,6 +1069,12 @@
       "value": "No one voted for this choice"
     }
   ],
+  "K5iX8G": [
+    {
+      "type": 0,
+      "value": "Max vAPR"
+    }
+  ],
   "KN7zKn": [
     {
       "type": 0,
@@ -1099,6 +1107,12 @@
     {
       "type": 1,
       "value": "symbol"
+    }
+  ],
+  "L9unn+": [
+    {
+      "type": 0,
+      "value": "Pending Yield"
     }
   ],
   "LOghU6": [
@@ -1231,12 +1245,6 @@
       "value": "Your balance:"
     }
   ],
-  "O1F5Cx": [
-    {
-      "type": 0,
-      "value": "Connect your wallet to see your history"
-    }
-  ],
   "O6UApS": [
     {
       "type": 0,
@@ -1285,6 +1293,12 @@
     {
       "type": 0,
       "value": "Mint with Vault"
+    }
+  ],
+  "P63Xe+": [
+    {
+      "type": 0,
+      "value": "Use wOETH on Arbitrum to earn ARB rewards!"
     }
   ],
   "PFtMy9": [
@@ -1349,18 +1363,6 @@
     {
       "type": 0,
       "value": "Total OGV buybacks"
-    }
-  ],
-  "Qf27Qg": [
-    {
-      "type": 0,
-      "value": "Connected wallet OETH balance"
-    }
-  ],
-  "Qpksmn": [
-    {
-      "type": 0,
-      "value": "24hr earnings"
     }
   ],
   "Qz1fcp": [
@@ -1437,12 +1439,6 @@
     {
       "type": 0,
       "value": "TVL"
-    }
-  ],
-  "StkfYK": [
-    {
-      "type": 0,
-      "value": "30d earnings"
     }
   ],
   "SzA4oV": [
@@ -1537,6 +1533,12 @@
       "value": "Account"
     }
   ],
+  "ULVduL": [
+    {
+      "type": 0,
+      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+    }
+  ],
   "UMJuaW": [
     {
       "type": 0,
@@ -1583,12 +1585,6 @@
       "value": "Finding the best route..."
     }
   ],
-  "V9HPZh": [
-    {
-      "type": 0,
-      "value": "Create snapshot proposal"
-    }
-  ],
   "VK+Ydv": [
     {
       "type": 0,
@@ -1599,12 +1595,6 @@
     {
       "type": 0,
       "value": "OGN"
-    }
-  ],
-  "VfXPp7": [
-    {
-      "type": 0,
-      "value": "Redeem from OETH vault"
     }
   ],
   "Vlf1Wn": [
@@ -1623,12 +1613,6 @@
     {
       "type": 0,
       "value": "Stake OGV"
-    }
-  ],
-  "Vu1Cgf": [
-    {
-      "type": 0,
-      "value": "Stake to earn rewards"
     }
   ],
   "W/z9WD": [
@@ -1689,12 +1673,6 @@
       "value": "Redeem"
     }
   ],
-  "XtKL5U": [
-    {
-      "type": 0,
-      "value": "In-depth OETH analytics"
-    }
-  ],
   "Y/oE4U": [
     {
       "type": 0,
@@ -1729,12 +1707,6 @@
     {
       "type": 0,
       "value": "Wait time:"
-    }
-  ],
-  "Yr+Yll": [
-    {
-      "type": 0,
-      "value": "Swap in and out of OUSD"
     }
   ],
   "YtTAoV": [
@@ -1805,12 +1777,6 @@
       "value": "Rate:"
     }
   ],
-  "ZvO1m7": [
-    {
-      "type": 0,
-      "value": "Connect a wallet to see your balance"
-    }
-  ],
   "a/lxLY": [
     {
       "type": 0,
@@ -1859,12 +1825,6 @@
       "value": "."
     }
   ],
-  "aaJ9Pk": [
-    {
-      "type": 0,
-      "value": "Swap in and out of OETH"
-    }
-  ],
   "aiJo8l": [
     {
       "type": 0,
@@ -1881,12 +1841,6 @@
     {
       "type": 0,
       "value": "Price"
-    }
-  ],
-  "b4tTvf": [
-    {
-      "type": 0,
-      "value": "Redeem from OUSD vault"
     }
   ],
   "bKZdsq": [
@@ -1967,6 +1921,12 @@
       "value": "Processing Transaction"
     }
   ],
+  "djJp6c": [
+    {
+      "type": 0,
+      "value": "History"
+    }
+  ],
   "dm9FiM": [
     {
       "type": 0,
@@ -2009,6 +1969,12 @@
       "value": "Swap via CurvePool"
     }
   ],
+  "f0gqO4": [
+    {
+      "type": 0,
+      "value": "Lifetime Earnings (OUSD)"
+    }
+  ],
   "f7AFus": [
     {
       "type": 0,
@@ -2037,12 +2003,6 @@
     {
       "type": 0,
       "value": "Penalty"
-    }
-  ],
-  "fnDCIF": [
-    {
-      "type": 0,
-      "value": "In-depth OUSD analytics"
     }
   ],
   "fuV7zb": [
@@ -2119,12 +2079,6 @@
     {
       "type": 0,
       "value": "Sent"
-    }
-  ],
-  "hKc0hO": [
-    {
-      "type": 0,
-      "value": "Get OUSD"
     }
   ],
   "hSpNEQ": [
@@ -2249,12 +2203,6 @@
     {
       "type": 0,
       "value": "Hours"
-    }
-  ],
-  "jFZ2w9": [
-    {
-      "type": 0,
-      "value": "OETH Transaction history"
     }
   ],
   "jab7Gg": [
@@ -2409,12 +2357,6 @@
       "value": "The easiest way to earn more yield on-chain"
     }
   ],
-  "oP23Lj": [
-    {
-      "type": 0,
-      "value": "Horem ipsum dolor"
-    }
-  ],
   "ox/9Hn": [
     {
       "type": 0,
@@ -2473,12 +2415,6 @@
     {
       "type": 0,
       "value": "Error while bridging"
-    }
-  ],
-  "qIoHXA": [
-    {
-      "type": 0,
-      "value": "Lifetime earnings"
     }
   ],
   "qNe+Iz": [
@@ -2671,12 +2607,6 @@
       "value": "Balance to Convert"
     }
   ],
-  "uNOJ2Q": [
-    {
-      "type": 0,
-      "value": "Portfolio"
-    }
-  ],
   "uQ/cQ8": [
     {
       "type": 0,
@@ -2745,12 +2675,6 @@
     {
       "type": 0,
       "value": "No Activity"
-    }
-  ],
-  "w2pp9r": [
-    {
-      "type": 0,
-      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
     }
   ],
   "w5VeGT": [
@@ -2857,6 +2781,12 @@
       "value": "Your transaction may be frontrun"
     }
   ],
+  "xc6pWX": [
+    {
+      "type": 0,
+      "value": "Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens."
+    }
+  ],
   "xiGfmr": [
     {
       "type": 0,
@@ -2873,6 +2803,12 @@
     {
       "type": 0,
       "value": "Lock-up Ends:"
+    }
+  ],
+  "xnfnI5": [
+    {
+      "type": 0,
+      "value": "Earnings and transaction history"
     }
   ],
   "xwfunk": [
@@ -2917,12 +2853,6 @@
       "value": "Error while swapping"
     }
   ],
-  "zC5UyT": [
-    {
-      "type": 0,
-      "value": "Connected wallet OUSD balance"
-    }
-  ],
   "zQvVDJ": [
     {
       "type": 0,
@@ -2935,10 +2865,10 @@
       "value": "Filters"
     }
   ],
-  "zi0aqW": [
+  "zdF6np": [
     {
       "type": 0,
-      "value": "In-depth OGN analytics"
+      "value": "wOETH Transactions"
     }
   ],
   "zmWQIG": [

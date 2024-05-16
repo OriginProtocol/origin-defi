@@ -98,9 +98,6 @@
   "4cSnUS": {
     "defaultMessage": "3y"
   },
-  "56jhQz": {
-    "defaultMessage": "New Snapshot Proposal"
-  },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
   },
@@ -142,6 +139,9 @@
   },
   "7nq5ZH": {
     "defaultMessage": "Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards."
+  },
+  "7rgFGq": {
+    "defaultMessage": "OGV & OGN have merged"
   },
   "87E0Iv": {
     "defaultMessage": "Current results"
@@ -410,6 +410,9 @@
   "TdHjj5": {
     "defaultMessage": "Origin DeFi Governance"
   },
+  "TdTXXf": {
+    "defaultMessage": "Learn more"
+  },
   "Tfx/3J": {
     "defaultMessage": "Start block"
   },
@@ -421,6 +424,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "ULVduL": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -503,9 +509,6 @@
   "c31Feo": {
     "defaultMessage": "Swapping"
   },
-  "cfhPIG": {
-    "defaultMessage": "OGV & OGN are merging"
-  },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
@@ -538,6 +541,9 @@
   },
   "fFXn5l": {
     "defaultMessage": "Collect Rewards"
+  },
+  "fGC2Me": {
+    "defaultMessage": "View Snapshot Proposals"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
@@ -685,9 +691,6 @@
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
-  },
-  "w2pp9r": {
-    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
