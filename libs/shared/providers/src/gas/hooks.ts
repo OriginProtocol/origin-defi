@@ -18,6 +18,7 @@ export type GasPrice = {
   gasPrice: number;
   gasCostUsd: number;
   gasCostGwei: number;
+  gasCostWei: number;
 };
 
 type Key = ['useGasPrice', string, number, QueryClient, Config];
@@ -52,6 +53,7 @@ const fetcher: QueryFunction<GasPrice, Key> = async ({
     gasPrice,
     gasCostUsd,
     gasCostGwei,
+    gasCostWei: gasCostGwei / 1e9,
   };
 };
 
