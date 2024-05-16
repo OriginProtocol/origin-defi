@@ -33,7 +33,7 @@ export const OethStats = (props: CardProps) => {
         select: (data) => data?.oTokenAddresses?.[0]?.earned,
       },
     );
-  const { data: pendingYield, isLoading: pendingYieldLoading } =
+  const { data: pendingYield, isLoading: isPendingYieldLoading } =
     usePendingYield();
 
   return (
@@ -59,7 +59,7 @@ export const OethStats = (props: CardProps) => {
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
           value={isConnected ? formatAmount(pendingYield) : '-'}
-          isLoading={isConnected && pendingYieldLoading}
+          isLoading={isConnected && isPendingYieldLoading}
         />
         <ValueLabel
           {...valueLabelProps}

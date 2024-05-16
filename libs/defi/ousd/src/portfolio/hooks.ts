@@ -92,7 +92,7 @@ export const usePendingYield = (
   });
 };
 
-export const useAggregatedHistory = (
+export const useOusdHistory = (
   filters?: HistoryType[],
   options?: Omit<
     UseQueryOptions<OusdHistoryTransactionQuery, Error, DailyHistory[]>,

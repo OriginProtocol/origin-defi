@@ -60,7 +60,7 @@ export const WoethHistoryCard = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<WOETHHistoryType[]>([]);
-  const { data: rows, isFetching: isFetchingRows } = useWoethHistory(filters);
+  const { data: rows, isFetching: isRowsFetching } = useWoethHistory(filters);
 
   return (
     <Card>
@@ -72,6 +72,7 @@ export const WoethHistoryCard = () => {
               filters={filters}
               setFilters={setFilters}
               filterOptions={filterOptions}
+              disabled={isRowsFetching || isNilOrEmpty(rows)}
             />
             <ExportDataButton rows={rows} />
           </Stack>
@@ -79,7 +80,7 @@ export const WoethHistoryCard = () => {
       />
       <Divider />
       {isConnected ? (
-        isFetchingRows ? (
+        isRowsFetching ? (
           <Stack
             sx={{
               display: 'flex',
@@ -109,7 +110,7 @@ export const WoethHistoryCard = () => {
           <HistoryTable rows={rows} />
         )
       ) : (
-        <ConnectPage />
+        <ConnectPage sx={{ borderRadius: 0 }} />
       )}
     </Card>
   );
@@ -218,11 +219,6 @@ function HistoryTable({ rows }: HistoryTableProps) {
         },
         header: intl.formatMessage({ defaultMessage: 'Type' }),
         size: 400,
-        enableColumnFilter: true,
-        filterFn: (row, _, value) => {
-          if (!value.value.length) return true;
-          return value.value.includes(row.original.type);
-        },
       }),
       columnHelper.accessor('change', {
         cell: (info) => formatAmount(BigInt(info.row.original.change)),
@@ -289,7 +285,7 @@ function HistoryTable({ rows }: HistoryTableProps) {
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header, index) => (
+              {headerGroup.headers.map((header) => (
                 <TableCell key={header.id} sx={{ width: header.getSize() }}>
                   {flexRender(
                     header.column.columnDef.header,

@@ -61,7 +61,7 @@ export const OethHistoryCard = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<HistoryType[]>([]);
-  const { data, isFetching } = useOethHistory(filters);
+  const { data: rows, isFetching: isRowsFetching } = useOethHistory(filters);
 
   return (
     <Card>
@@ -73,6 +73,7 @@ export const OethHistoryCard = () => {
               filters={filters}
               setFilters={setFilters}
               filterOptions={filterOptions}
+              disabled={isRowsFetching || isNilOrEmpty(rows)}
             />
             <ExportDataButton />
           </Stack>
@@ -80,7 +81,7 @@ export const OethHistoryCard = () => {
       />
       <Divider />
       {isConnected ? (
-        isFetching ? (
+        isRowsFetching ? (
           <Stack
             sx={{
               display: 'flex',
@@ -92,7 +93,7 @@ export const OethHistoryCard = () => {
           >
             <CircularProgress />
           </Stack>
-        ) : isNilOrEmpty(data) ? (
+        ) : isNilOrEmpty(rows) ? (
           <Stack
             sx={{
               display: 'flex',
@@ -110,7 +111,7 @@ export const OethHistoryCard = () => {
           <HistoryTable filters={filters} />
         )
       ) : (
-        <ConnectPage />
+        <ConnectPage sx={{ borderRadius: 0 }} />
       )}
     </Card>
   );
@@ -186,11 +187,6 @@ function HistoryTable({ filters }: HistoryTableProps) {
         },
         header: intl.formatMessage({ defaultMessage: 'Type' }),
         size: 400,
-        enableColumnFilter: true,
-        filterFn: (row, _, value) => {
-          if (!value.value.length) return true;
-          return value.value.includes(row.original.type);
-        },
       }),
       columnHelper.accessor('value', {
         cell: (info) => formatAmount(BigInt(info.getValue() ?? '0')),
@@ -228,23 +224,25 @@ function HistoryTable({ filters }: HistoryTableProps) {
             );
           }
 
+          if (isNilOrEmpty(info.row.original.txHash)) {
+            return null;
+          }
+
           return (
-            !isNilOrEmpty(info.row.original.txHash) && (
-              <IconButton
-                href={`https://etherscan.io/tx/${info.row.original.txHash}`}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                sx={{
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: '50%',
-                  width: 28,
-                  height: 28,
-                }}
-              >
-                <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
-              </IconButton>
-            )
+            <IconButton
+              href={`https://etherscan.io/tx/${info.row.original.txHash}`}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: '50%',
+                width: 28,
+                height: 28,
+              }}
+            >
+              <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
+            </IconButton>
           );
         },
       }),
@@ -279,7 +277,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header, index) => (
+              {headerGroup.headers.map((header) => (
                 <TableCell key={header.id} sx={{ width: header.getSize() }}>
                   {flexRender(
                     header.column.columnDef.header,
