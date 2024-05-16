@@ -43,7 +43,7 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
         (bt) => bt.txHashIn === waitForTransfer.txHashIn,
       )
     ) {
-      setBridgeState((state) => ({ ...state, waitForTx: undefined }));
+      setBridgeState((state) => ({ ...state, waitForTransfer: undefined }));
     }
   }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
 
