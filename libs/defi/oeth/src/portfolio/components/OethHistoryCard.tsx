@@ -15,7 +15,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { HistoryType } from '@origin/defi/shared';
+import { ConnectPage, FiltersButton, HistoryType } from '@origin/defi/shared';
 import {
   DownloadCsvButton,
   ExpandIcon,
@@ -24,7 +24,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   createColumnHelper,
@@ -39,7 +39,6 @@ import { useAccount } from 'wagmi';
 
 import { useOethHistory } from '../hooks';
 import { useOethHistoryTransactionQuery } from '../queries.generated';
-import { FiltersButton } from './FiltersButton';
 
 import type { StackProps } from '@mui/material';
 import type { ExpandedState } from '@tanstack/react-table';
@@ -111,21 +110,7 @@ export const OethHistoryCard = () => {
           <HistoryTable filters={filters} />
         )
       ) : (
-        <Stack
-          sx={{
-            height: '15rem',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Typography>
-            {intl.formatMessage({
-              defaultMessage: 'Connect your wallet to see your history',
-            })}
-          </Typography>
-          <ConnectedButton color="inherit" size="large" />
-        </Stack>
+        <ConnectPage />
       )}
     </Card>
   );

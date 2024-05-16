@@ -37,9 +37,9 @@ export const useTokenSelect = () => {
   return useMemo(
     () => ({
       token: search.get('t') ?? 'oeth',
-      update: (newVal: string) => {
+      update: (newVal: 'oeth' | 'woeth') => {
         setSearch((params) => {
-          params.set('t', newVal.toString());
+          params.set('t', newVal);
           return params;
         });
       },

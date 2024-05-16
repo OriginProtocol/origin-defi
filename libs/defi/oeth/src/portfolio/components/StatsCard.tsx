@@ -12,23 +12,13 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { usePendingYield, useTokenSelect } from '../hooks';
+import { usePendingYield } from '../hooks';
 import { useOethHistoryUserStatQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 
-export const StatsCard = (props: CardProps) => {
-  const { token } = useTokenSelect();
-
-  return token === 'oeth' ? (
-    <OethStats {...props} />
-  ) : (
-    <WoethStats {...props} />
-  );
-};
-
-function OethStats(props: CardProps) {
+export const OethStats = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
@@ -82,9 +72,9 @@ function OethStats(props: CardProps) {
       </Stack>
     </Card>
   );
-}
+};
 
-function WoethStats(props: CardProps) {
+export const WoethStats = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
@@ -126,7 +116,7 @@ function WoethStats(props: CardProps) {
       </Stack>
     </Card>
   );
-}
+};
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   valueProps: { variant: 'featured2', fontWeight: 'bold' },

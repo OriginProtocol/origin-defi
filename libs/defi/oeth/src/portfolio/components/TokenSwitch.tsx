@@ -11,7 +11,7 @@ export const TokenSwitch = (props: StackProps) => {
   const { token, update } = useTokenSelect();
 
   const handleChange = (newVal: string | number) => {
-    update(newVal.toString());
+    update(newVal as 'oeth' | 'woeth');
   };
 
   const options: Option[] = [

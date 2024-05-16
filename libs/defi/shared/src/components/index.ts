@@ -1,6 +1,7 @@
 export * from './Banners';
 export * from './Cards';
 export * from './Chips';
+export * from './FiltersButton';
 export * from './Page';
 export * from './Section';
 export * from './Swapper';

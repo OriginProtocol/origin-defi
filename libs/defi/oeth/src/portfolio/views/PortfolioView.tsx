@@ -4,7 +4,7 @@ import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { OethHistoryCard } from '../components/OethHistoryCard';
-import { StatsCard } from '../components/StatsCard';
+import { OethStats, WoethStats } from '../components/StatsCard';
 import { TokenSwitch } from '../components/TokenSwitch';
 import { WoethHistoryCard } from '../components/WoethHistoryCard';
 import { useTokenSelect } from '../hooks';
@@ -25,7 +25,7 @@ export const PortfolioView = () => {
       <PageSection>
         <Stack spacing={5}>
           <TokenSwitch />
-          <StatsCard />
+          {token === 'oeth' ? <OethStats /> : <WoethStats />}
           {token === 'oeth' ? <OethHistoryCard /> : <WoethHistoryCard />}
         </Stack>
       </PageSection>

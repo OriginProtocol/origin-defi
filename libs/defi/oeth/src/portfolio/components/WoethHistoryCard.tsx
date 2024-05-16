@@ -15,6 +15,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { ConnectPage, FiltersButton } from '@origin/defi/shared';
 import {
   DownloadCsvButton,
   TablePagination,
@@ -22,7 +23,7 @@ import {
 } from '@origin/shared/components';
 import { getTokenByAddress } from '@origin/shared/contracts';
 import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
-import { ConnectedButton, getChain, useFormat } from '@origin/shared/providers';
+import { getChain, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, txLink } from '@origin/shared/utils';
 import {
   createColumnHelper,
@@ -36,7 +37,6 @@ import { formatEther } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useWoethHistory } from '../hooks';
-import { FiltersButton } from './FiltersButton';
 
 import type { MessageDescriptor } from 'react-intl';
 
@@ -110,21 +110,7 @@ export const WoethHistoryCard = () => {
           <HistoryTable rows={rows} />
         )
       ) : (
-        <Stack
-          sx={{
-            height: '15rem',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 2,
-          }}
-        >
-          <Typography>
-            {intl.formatMessage({
-              defaultMessage: 'Connect your wallet to see your history',
-            })}
-          </Typography>
-          <ConnectedButton color="inherit" size="large" />
-        </Stack>
+        <ConnectPage />
       )}
     </Card>
   );
@@ -164,8 +150,7 @@ function ExportDataButton({ rows }: ExportDataButtonProps) {
         'change',
         'balance',
       ],
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ] as any[][],
+    ] as (string | number)[][],
   );
 
   return (
@@ -270,26 +255,30 @@ function HistoryTable({ rows }: HistoryTableProps) {
         id: 'link',
         size: 10,
         cell: (info) => {
+          if (isNilOrEmpty(info.row.original.txHash)) {
+            return null;
+          }
+
+          const href = txLink(
+            getChain(config, info.row.original.chainId),
+            info.row.original.txHash,
+          );
+
           return (
-            !isNilOrEmpty(info.row.original.txHash) && (
-              <IconButton
-                href={txLink(
-                  getChain(config, info.row.original.chainId),
-                  info.row.original.txHash,
-                )}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                sx={{
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: '50%',
-                  width: 28,
-                  height: 28,
-                }}
-              >
-                <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
-              </IconButton>
-            )
+            <IconButton
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: '50%',
+                width: 28,
+                height: 28,
+              }}
+            >
+              <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
+            </IconButton>
           );
         },
       }),
