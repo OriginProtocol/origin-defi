@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 
 import {
-  Box,
   Card,
   CardHeader,
   CircularProgress,
@@ -194,7 +193,7 @@ function HistoryTable({ rows }: HistoryTableProps) {
           if (!token) return null;
 
           return (
-            <Stack direction="row" alignItems="center" gap={2}>
+            <Stack direction="row" alignItems="center" gap={1.5}>
               <TransactionIcon
                 type={info.row.original.type}
                 token={token}
@@ -203,17 +202,17 @@ function HistoryTable({ rows }: HistoryTableProps) {
                   height: { xs: 24, sm: 32 },
                 }}
               />
-              <Box>
-                <Typography fontWeight="500">
+              <Stack spacing={0.5}>
+                <Typography fontWeight="medium">
                   {intl.formatMessage(typeLabels[info.row.original.type])}
                 </Typography>
-                <Typography color="text.secondary" variant="body2">
+                <Typography color="text.secondary" variant="caption1">
                   {intl.formatDate(new Date(info.row.original.timestamp), {
                     dateStyle: 'short',
                     timeStyle: 'short',
                   })}
                 </Typography>
-              </Box>
+              </Stack>
             </Stack>
           );
         },
@@ -226,29 +225,13 @@ function HistoryTable({ rows }: HistoryTableProps) {
         },
       }),
       columnHelper.accessor('change', {
-        cell: (info) => (
-          <Typography>
-            {formatAmount(BigInt(info.row.original.change))}
-          </Typography>
-        ),
-        header: () => (
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Change' })}
-          </Typography>
-        ),
+        cell: (info) => formatAmount(BigInt(info.row.original.change)),
+        header: () => intl.formatMessage({ defaultMessage: 'Change' }),
         size: 50,
       }),
       columnHelper.accessor('balance', {
-        cell: (info) => (
-          <Typography>
-            {formatQuantity(BigInt(info.getValue() ?? '0'))}
-          </Typography>
-        ),
-        header: () => (
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Balance' })}
-          </Typography>
-        ),
+        cell: (info) => formatQuantity(BigInt(info.getValue() ?? '0')),
+        header: () => intl.formatMessage({ defaultMessage: 'Balance' }),
         size: 50,
       }),
       columnHelper.display({

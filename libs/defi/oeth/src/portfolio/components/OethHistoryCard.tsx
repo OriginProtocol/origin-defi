@@ -179,6 +179,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
             <HistoryTypeCell
               type={info.getValue()}
               timestamp={info.row.original.timestamp}
+              showTime={!info.row.getCanExpand()}
               sx={{ pl: info.row.depth * 2 }}
             />
           );
@@ -192,29 +193,13 @@ function HistoryTable({ filters }: HistoryTableProps) {
         },
       }),
       columnHelper.accessor('value', {
-        cell: (info) => (
-          <Typography>
-            {formatAmount(BigInt(info.getValue() ?? '0'))}
-          </Typography>
-        ),
-        header: () => (
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Change' })}
-          </Typography>
-        ),
+        cell: (info) => formatAmount(BigInt(info.getValue() ?? '0')),
+        header: () => intl.formatMessage({ defaultMessage: 'Change' }),
         size: 50,
       }),
       columnHelper.accessor('balance', {
-        cell: (info) => (
-          <Typography>
-            {formatQuantity(BigInt(info.getValue() ?? '0'))}
-          </Typography>
-        ),
-        header: () => (
-          <Typography>
-            {intl.formatMessage({ defaultMessage: 'Balance' })}
-          </Typography>
-        ),
+        cell: (info) => formatQuantity(BigInt(info.getValue() ?? '0')),
+        header: () => intl.formatMessage({ defaultMessage: 'Balance' }),
         size: 50,
       }),
       columnHelper.display({
@@ -317,6 +302,9 @@ function HistoryTable({ filters }: HistoryTableProps) {
                     backgroundColor: 'primary.faded',
                   },
                 }),
+                ...(row.depth > 0 && {
+                  borderTopStyle: 'hidden',
+                }),
               }}
             >
               {row.getVisibleCells().map((cell) => (
@@ -345,18 +333,34 @@ function HistoryTable({ filters }: HistoryTableProps) {
 type HistoryTypeCellProps = {
   timestamp: string;
   type: HistoryType;
+  showTime: boolean;
 } & StackProps;
 
-function HistoryTypeCell({ timestamp, type, ...rest }: HistoryTypeCellProps) {
+function HistoryTypeCell({
+  timestamp,
+  type,
+  showTime,
+  ...rest
+}: HistoryTypeCellProps) {
   const intl = useIntl();
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
       <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
-      <Stack>
-        <Typography fontWeight="500">{type}</Typography>
-        <Typography color="text.secondary" variant="body2">
-          {intl.formatDate(new Date(timestamp))}
+      <Stack spacing={0.5}>
+        <Typography fontWeight="medium">{type}</Typography>
+        <Typography color="text.secondary" variant="caption1">
+          {intl.formatDate(
+            new Date(timestamp),
+            showTime
+              ? {
+                  dateStyle: 'short',
+                  timeStyle: 'short',
+                }
+              : {
+                  dateStyle: 'short',
+                },
+          )}
         </Typography>
       </Stack>
     </Stack>
@@ -404,7 +408,7 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
         />
       </Box>
       <Stack>
-        <Typography color="text.secondary" variant="body2">
+        <Typography color="text.secondary" variant="caption1">
           {intl.formatDate(new Date(timestamp), {
             hourCycle: 'h23',
             hour: '2-digit',
