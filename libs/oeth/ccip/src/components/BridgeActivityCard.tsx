@@ -240,13 +240,6 @@ export const Eta = (props: {
         justifyContent={'flex-end'}
       >
         <Stack direction={'row'} alignItems={'center'} spacing={1}>
-          <FaLoaderDuotone
-            sx={{
-              color: '#FFD84E',
-              fontSize: 18,
-              animation: `${spin} 1s linear infinite`,
-            }}
-          />
           {remaining > 0 && (
             <Typography color={'text.secondary'} fontSize={12}>
               {intl.formatMessage(
