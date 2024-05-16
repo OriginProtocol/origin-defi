@@ -9,6 +9,7 @@ import { arbitrum, mainnet } from 'viem/chains';
 import { tokens } from './tokens';
 
 import type { HexAddress } from '@origin/shared/utils';
+import type { Chain } from 'viem/chains';
 
 import type { Token } from './types';
 
@@ -19,6 +20,15 @@ export const getChainNameById = (chainId?: number) => {
       [arbitrum.id]: 'arbitrum',
     } as const
   )[chainId ?? mainnet.id];
+};
+
+export const getNativeToken = (chain: Chain): Token => {
+  return {
+    ...chain.nativeCurrency,
+    chainId: chain.id,
+    address: undefined,
+    abi: [],
+  };
 };
 
 export const getTokenByAddress = <T extends Token = Token>(

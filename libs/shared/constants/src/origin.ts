@@ -21,3 +21,5 @@ export const AIRDROP_URL = 'https://governance.ousd.com/claim';
 export const GOVERNANCE_DISCUSSION_FORUM =
   'https://discord.com/channels/404673842007506945/1025438212908396564/';
 export const GOVERNANCE_SNAPSHOT_VOTES = 'https://vote.ousd.com';
+
+export const OETH_REDEEM_FEE = 0.001;

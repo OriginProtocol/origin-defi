@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { OETH_REDEEM_FEE } from '@origin/shared/constants';
 import {
   ChainlinkAggregatorABI,
   contracts,
@@ -176,6 +177,11 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: 'stETH_USD',
     dependsOn: ['stETH_ETH', 'ETH_USD'],
   },
+  wOETH_ETH: {
+    type: 'derived',
+    id: 'wOETH_ETH',
+    dependsOn: ['wOETH_OETH', 'OETH_ETH'],
+  },
   wOETH_OETH: {
     type: 'wagmi',
     id: 'wOETH_OETH',
@@ -322,5 +328,10 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: 'WETH_ETH',
     type: 'rest',
     config: async () => 1,
+  },
+  OETH_ETH: {
+    id: 'OETH_ETH',
+    type: 'rest',
+    config: async () => 1 - OETH_REDEEM_FEE,
   },
 };

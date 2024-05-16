@@ -8,9 +8,6 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
-  "/0TOL5": {
-    "defaultMessage": "Amount"
-  },
   "/GCoTA": {
     "defaultMessage": "Clear"
   },
@@ -29,8 +26,8 @@
   "1+ROfp": {
     "defaultMessage": "Transaction"
   },
-  "1Ia8qN": {
-    "defaultMessage": "Processing"
+  "17g+HZ": {
+    "defaultMessage": "No activity"
   },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
@@ -47,11 +44,17 @@
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
   },
+  "2PYY5G": {
+    "defaultMessage": "Bridge failed"
+  },
   "2W3kP3": {
     "defaultMessage": "~1min"
   },
   "3Lr8o5": {
     "defaultMessage": "Larger redemptions coming soon"
+  },
+  "3xMkzV": {
+    "defaultMessage": "Check CCIP for details"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -143,11 +146,17 @@
   "BY343C": {
     "defaultMessage": "Change"
   },
+  "Bp2rXG": {
+    "defaultMessage": "Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}."
+  },
   "C73Nbd": {
     "defaultMessage": "Swap with Curve"
   },
   "CcqmCh": {
     "defaultMessage": "OETH Balance"
+  },
+  "Cyy/6q": {
+    "defaultMessage": "You will receive approximately"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -167,8 +176,17 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
+  "EZcIYg": {
+    "defaultMessage": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send converted to wOETH, plus the estimated bridge fee, minus the actual bridge fee."
+  },
   "FcLgSc": {
     "defaultMessage": "Learn More."
+  },
+  "GZOobO": {
+    "defaultMessage": "Insufficient {symbol}"
+  },
+  "GtABHs": {
+    "defaultMessage": "Waiting for CCIP"
   },
   "H5+NAX": {
     "defaultMessage": "Balance"
@@ -181,9 +199,6 @@
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
-  },
-  "JkjhX0": {
-    "defaultMessage": "No activity yet."
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
@@ -203,8 +218,8 @@
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
-  "LxxUDn": {
-    "defaultMessage": "Tx"
+  "MJQQ3L": {
+    "defaultMessage": "Bridged"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -224,9 +239,6 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
-  "NhHJRb": {
-    "defaultMessage": "Insufficient amount"
-  },
   "O1F5Cx": {
     "defaultMessage": "Connect your wallet to see your history"
   },
@@ -238,9 +250,6 @@
   },
   "Ozw3aL": {
     "defaultMessage": "Mint with Vault"
-  },
-  "P7PLVj": {
-    "defaultMessage": "Date"
   },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
@@ -295,6 +304,9 @@
   },
   "YnftYz": {
     "defaultMessage": "Wait time:"
+  },
+  "ZU6Mu8": {
+    "defaultMessage": "Bridge Transaction"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -359,6 +371,9 @@
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
+  "gSvkux": {
+    "defaultMessage": "Est. gas fee"
+  },
   "gcuDcH": {
     "defaultMessage": "Sent"
   },
@@ -388,9 +403,6 @@
   },
   "lb8m6m": {
     "defaultMessage": "Mins"
-  },
-  "lgy8my": {
-    "defaultMessage": "Transferred"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -443,9 +455,6 @@
   "tio9Gt": {
     "defaultMessage": "IPFS"
   },
-  "tzMNF3": {
-    "defaultMessage": "Status"
-  },
   "u0A7z1": {
     "defaultMessage": "Your wOETH balances"
   },
@@ -454,9 +463,6 @@
   },
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
-  },
-  "vXCeIi": {
-    "defaultMessage": "Failed"
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
