@@ -17,12 +17,6 @@
       "value": "Connect"
     }
   ],
-  "/0TOL5": [
-    {
-      "type": 0,
-      "value": "Amount"
-    }
-  ],
   "/GCoTA": [
     {
       "type": 0,
@@ -63,12 +57,6 @@
     {
       "type": 0,
       "value": "No activity"
-    }
-  ],
-  "1Ia8qN": [
-    {
-      "type": 0,
-      "value": "Processing"
     }
   ],
   "1VDppm": [
@@ -113,6 +101,12 @@
       "value": "Impossible to execute"
     }
   ],
+  "2PYY5G": [
+    {
+      "type": 0,
+      "value": "Bridge failed"
+    }
+  ],
   "2W3kP3": [
     {
       "type": 0,
@@ -123,6 +117,12 @@
     {
       "type": 0,
       "value": "Larger redemptions coming soon"
+    }
+  ],
+  "3xMkzV": [
+    {
+      "type": 0,
+      "value": "Check CCIP for details"
     }
   ],
   "45EvZ3": [
@@ -465,6 +465,22 @@
       "value": "Learn More."
     }
   ],
+  "GZOobO": [
+    {
+      "type": 0,
+      "value": "Insufficient "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "GtABHs": [
+    {
+      "type": 0,
+      "value": "Waiting for CCIP"
+    }
+  ],
   "H5+NAX": [
     {
       "type": 0,
@@ -525,10 +541,10 @@
       "value": "No transaction"
     }
   ],
-  "LxxUDn": [
+  "MJQQ3L": [
     {
       "type": 0,
-      "value": "Tx"
+      "value": "Bridged"
     }
   ],
   "MSTVqC": [
@@ -567,12 +583,6 @@
       "value": "Your operation has been executed"
     }
   ],
-  "NhHJRb": [
-    {
-      "type": 0,
-      "value": "Insufficient amount"
-    }
-  ],
   "O1F5Cx": [
     {
       "type": 0,
@@ -595,12 +605,6 @@
     {
       "type": 0,
       "value": "Mint with Vault"
-    }
-  ],
-  "P7PLVj": [
-    {
-      "type": 0,
-      "value": "Date"
     }
   ],
   "PKgDoL": [
@@ -879,6 +883,12 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
+  "gSvkux": [
+    {
+      "type": 0,
+      "value": "Est. gas fee"
+    }
+  ],
   "gcuDcH": [
     {
       "type": 0,
@@ -937,12 +947,6 @@
     {
       "type": 0,
       "value": "Mins"
-    }
-  ],
-  "lgy8my": [
-    {
-      "type": 0,
-      "value": "Transferred"
     }
   ],
   "lozEho": [
@@ -1047,12 +1051,6 @@
       "value": "IPFS"
     }
   ],
-  "tzMNF3": [
-    {
-      "type": 0,
-      "value": "Status"
-    }
-  ],
   "u0A7z1": [
     {
       "type": 0,
@@ -1073,12 +1071,6 @@
     {
       "type": 1,
       "value": "symbol"
-    }
-  ],
-  "vXCeIi": [
-    {
-      "type": 0,
-      "value": "Failed"
     }
   ],
   "vugtF7": [
