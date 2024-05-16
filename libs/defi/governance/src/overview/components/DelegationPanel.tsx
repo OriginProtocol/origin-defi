@@ -146,7 +146,7 @@ export const DelegationPanel = (props: StackProps) => {
         )}
       </Stack>
       {!isNilOrEmpty(visibleDelegators) && (
-        <Stack sx={{ pt: 0 }}>
+        <Stack sx={{ pt: 3 }}>
           <ValueLabel
             {...valueLabelProps}
             label={intl.formatMessage({
@@ -154,7 +154,7 @@ export const DelegationPanel = (props: StackProps) => {
             })}
             isLoading={isDelegatorsLoading}
             value={
-              <Stack spacing={2}>
+              <Stack spacing={2} width={1}>
                 {visibleDelegators.map((d) => (
                   <Stack
                     key={d.id}
@@ -178,7 +178,7 @@ export const DelegationPanel = (props: StackProps) => {
                     <Typography>
                       {intl.formatMessage(
                         {
-                          defaultMessage: '{count} {symbol}',
+                          defaultMessage: '<b>{count}</b> {symbol}',
                         },
                         {
                           count: formatAmount(
@@ -207,6 +207,7 @@ export const DelegationPanel = (props: StackProps) => {
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   alignItems: 'flex-start',
+  spacing: 2,
   labelProps: {
     variant: 'body3',
     fontWeight: 'medium',

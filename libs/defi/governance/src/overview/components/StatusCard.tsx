@@ -6,18 +6,9 @@ import {
   CircularProgress,
   Divider,
   Stack,
-  SvgIcon,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { ExternalLink } from '@origin/shared/components';
-import {
-  FaCircleArrowDownRegular,
-  FaCircleCheckRegular,
-  FaCircleQuestionRegular,
-  FaCircleXmarkRegular,
-  FaClockRegular,
-} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -81,10 +72,10 @@ export const StatusCard = (props: CardProps) => {
                   position: 'absolute',
                   zIndex: 1,
                   top: 0,
-                  left: 15,
+                  left: 8,
                   bottom: 20,
                   width: '1px',
-                  backgroundColor: 'divider',
+                  backgroundColor: 'text.primary',
                 }}
               />
             )}
@@ -99,34 +90,20 @@ type LogItemProps = { log: ProposalLog } & StackProps;
 
 function LogItem({ log, ...rest }: LogItemProps) {
   const intl = useIntl();
-  const theme = useTheme();
-
-  const eventIcon = {
-    Canceled: <FaCircleXmarkRegular sx={{ color: theme.palette.divider }} />,
-    Created: (
-      <FaCircleCheckRegular sx={{ color: theme.palette.text.secondary }} />
-    ),
-    Executed: (
-      <FaCircleCheckRegular sx={{ color: theme.palette.success.main }} />
-    ),
-    Extended: <FaClockRegular sx={{ color: theme.palette.warning.main }} />,
-    Queued: (
-      <FaCircleArrowDownRegular sx={{ color: theme.palette.primary.main }} />
-    ),
-  }[log?.event] ?? <FaCircleQuestionRegular />;
 
   return (
     <Stack {...rest} direction="row" spacing={2} alignItems="center">
-      <SvgIcon
+      <Box
         sx={{
-          width: 30,
-          height: 30,
-          zIndex: 2,
+          border: '2px solid',
+          borderColor: 'text.primary',
+          borderRadius: '50%',
+          width: 16,
+          height: 16,
           backgroundColor: 'background.default',
+          zIndex: 2,
         }}
-      >
-        {eventIcon}
-      </SvgIcon>
+      />
       <Stack>
         {isNilOrEmpty(log?.hash) ? (
           <Typography>{log?.event}</Typography>

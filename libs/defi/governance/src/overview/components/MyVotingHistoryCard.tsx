@@ -187,7 +187,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
         </TooltipLabel>
       </MuiLink>
       <Stack direction="row" spacing={1} alignItems="center">
-        {icon}&nbsp;
+        {icon}
         <TooltipLabel noWrap variant="caption1" maxChars={29}>
           {label}
         </TooltipLabel>
