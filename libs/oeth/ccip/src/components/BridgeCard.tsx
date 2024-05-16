@@ -45,7 +45,7 @@ import { useBridgeState } from '../state';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
-import type { erc20Abi, Hex } from 'viem';
+import type { erc20Abi, Hex, TransactionReceipt } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -127,59 +127,14 @@ export const BridgeCard = () => {
     },
     callbacks: {
       onWriteSuccess: (tx) => {
-        // Optimistic update
-        const ccipSendRequestedTopic =
-          '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
-        const ccipSendRequested = tx.logs.find(
-          (l) => l.topics[0] === ccipSendRequestedTopic,
-        );
-        let waitForTransfer = undefined;
-        if (ccipSendRequested) {
-          const ccipSendRequestedData = decodeEventLog({
-            abi: contracts.mainnet.ccipOnRamp.abi,
-            data: ccipSendRequested.data,
-            topics: [ccipSendRequestedTopic],
-          }) as unknown as {
-            args: {
-              message: {
-                messageId: Hex;
-                tokenAmounts: { token: HexAddress; amount: bigint }[];
-              };
-            };
-          };
-          if (ccipSendRequestedData.args) {
-            const messageId = ccipSendRequestedData.args.message.messageId;
-            const tokenIn =
-              ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
-            const amountIn =
-              ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
-            const amountOut =
-              ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
-
-            waitForTransfer = {
-              id: tx.transactionHash,
-              blockNumber: Number(tx.blockNumber),
-              timestamp: new Date().toISOString(),
-              messageId: messageId,
-              txHashIn: tx.transactionHash,
-              txHashOut: undefined,
-              amountIn: amountIn.toString(),
-              amountOut: amountOut.toString(),
-              chainIn: srcChain.id,
-              chainOut: dstChain.id,
-              tokenIn: tokenIn,
-              tokenOut: dstToken.address ?? ZERO_ADDRESS,
-              bridge: 'ccip',
-              state: 0,
-              transactor: userAddress as string,
-              sender: userAddress as string,
-              receiver: userAddress as string,
-            };
-          }
-        }
         reset({
-          // Mock Transfer object for optimistic update
-          waitForTransfer,
+          waitForTransfer: createOptimisticTransferObject(
+            tx,
+            srcChain.id,
+            dstChain.id,
+            dstToken.address as Hex,
+            userAddress as Hex,
+          ),
         });
         refetchAllowance?.();
       },
@@ -413,3 +368,61 @@ export const BridgeDivider = () => {
     </Stack>
   );
 };
+
+function createOptimisticTransferObject(
+  tx: TransactionReceipt,
+  chainIn: number,
+  chainOut: number,
+  tokenOut: `0x${string}`,
+  userAddress: `0x${string}`,
+) {
+  const ccipSendRequestedTopic =
+    '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
+  const ccipSendRequested = tx.logs.find(
+    (l) => l.topics[0] === ccipSendRequestedTopic,
+  );
+  let waitForTransfer = undefined;
+  if (ccipSendRequested) {
+    const ccipSendRequestedData = decodeEventLog({
+      abi: contracts.mainnet.ccipOnRamp.abi,
+      data: ccipSendRequested.data,
+      topics: [ccipSendRequestedTopic],
+    }) as unknown as {
+      args: {
+        message: {
+          messageId: Hex;
+          tokenAmounts: { token: HexAddress; amount: bigint }[];
+        };
+      };
+    };
+    if (ccipSendRequestedData.args) {
+      const messageId = ccipSendRequestedData.args.message.messageId;
+      const tokenIn = ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
+      const amountIn =
+        ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+      const amountOut =
+        ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+
+      waitForTransfer = {
+        id: tx.transactionHash,
+        blockNumber: Number(tx.blockNumber),
+        timestamp: new Date().toISOString(),
+        messageId: messageId,
+        txHashIn: tx.transactionHash,
+        txHashOut: undefined,
+        amountIn: amountIn.toString(),
+        amountOut: amountOut.toString(),
+        chainIn,
+        chainOut,
+        tokenIn: tokenIn,
+        tokenOut: tokenOut ?? ZERO_ADDRESS,
+        bridge: 'ccip',
+        state: 0,
+        transactor: userAddress as string,
+        sender: userAddress as string,
+        receiver: userAddress as string,
+      };
+    }
+  }
+  return waitForTransfer;
+}
