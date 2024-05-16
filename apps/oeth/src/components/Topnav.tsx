@@ -31,12 +31,12 @@ export function Topnav(props: BoxProps) {
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
           height: {
-            xs: 162,
-            md: 105,
+            xs: '112px',
+            md: `${theme.mixins.toolbar.height}px`,
           },
-        }}
+        })}
       />
       <Box
         sx={(theme) => ({
