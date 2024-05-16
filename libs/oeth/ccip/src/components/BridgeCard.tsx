@@ -29,11 +29,7 @@ import {
   useTxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
-import {
-  formatAmount,
-  isInsufficientFundsError,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { decodeEventLog, formatUnits } from 'viem';
@@ -48,7 +44,6 @@ import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
 import type { Token } from '@origin/shared/contracts';
-import type { TxButtonFnParameters } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 import type { erc20Abi, Hex } from 'viem';
 
@@ -200,6 +195,10 @@ export const BridgeCard = () => {
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
   const insufficientAmount = srcBalance !== undefined && srcBalance < amount;
+  const insufficientNativeBalance =
+    !txButton.params?.value ||
+    !balances ||
+    balances[getTokenId(nativeToken)] < txButton.params?.value;
   const requiresApproval =
     isErc20 &&
     !isAllowanceLoading &&
@@ -208,21 +207,32 @@ export const BridgeCard = () => {
     allowance !== undefined &&
     allowance < amount &&
     !insufficientAmount;
+
   const bridgeButtonDisabled =
     !isConnected || requiresApproval || amount === 0n || insufficientAmount;
   const bridgeButtonLabel =
     amount === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : insufficientAmount
-        ? intl.formatMessage({
-            defaultMessage: 'Insufficient amount',
-          })
-        : intl.formatMessage(
-            { defaultMessage: 'Bridge {symbol}' },
+      : insufficientNativeBalance
+        ? intl.formatMessage(
             {
-              symbol: srcToken.symbol,
+              defaultMessage: 'Insufficient {symbol}',
             },
-          );
+            { symbol: nativeToken.symbol },
+          )
+        : insufficientAmount
+          ? intl.formatMessage(
+              {
+                defaultMessage: 'Insufficient {symbol}',
+              },
+              { symbol: srcToken.symbol },
+            )
+          : intl.formatMessage(
+              { defaultMessage: 'Bridge {symbol}' },
+              {
+                symbol: srcToken.symbol,
+              },
+            );
 
   const estimateGasFee = txButton.gasPrice?.gasCostWei;
   const bridgeFee = ccipTxParams.data
@@ -366,17 +376,7 @@ export const BridgeCard = () => {
           <TxButton
             params={txButton.params}
             callbacks={txButton.callbacks}
-            label={(params: TxButtonFnParameters) => {
-              const insufficientFunds = isInsufficientFundsError(
-                params.simulateError,
-              );
-              if (insufficientFunds) {
-                return intl.formatMessage({
-                  defaultMessage: 'Insufficient funds',
-                });
-              }
-              return bridgeButtonLabel;
-            }}
+            label={bridgeButtonLabel}
             disabled={bridgeButtonDisabled}
             fullWidth
             sx={{ mt: 1.5 }}

@@ -1,5 +1,6 @@
-query BridgeTransfers($address: String!) {
+query BridgeTransfers($address: String!, $limit: Int!) {
   bridgeTransfers(
+    limit: $limit
     orderBy: timestamp_DESC
     where: {
       sender_containsInsensitive: $address

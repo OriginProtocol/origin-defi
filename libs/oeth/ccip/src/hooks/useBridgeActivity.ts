@@ -14,7 +14,7 @@ const states: Record<number, BridgeTransferState> = {
   3: 'failed',
 };
 
-export const useBridgeActivity = () => {
+export const useBridgeActivity = ({ limit }: { limit: number }) => {
   const { address } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
   const [{ waitForTransfer }, setBridgeState] = useBridgeState();
@@ -22,7 +22,7 @@ export const useBridgeActivity = () => {
 
   // Query via GraphQL!
   const bridgeTransfers = useBridgeTransfersQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address ?? ZERO_ADDRESS, limit },
     {
       enabled: !!address,
       refetchInterval: waitForTransfer
@@ -45,8 +45,8 @@ export const useBridgeActivity = () => {
     }
   }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
 
-  // Create data response
-  const data = useMemo(() => {
+  // Create memoData response
+  const memoData = useMemo(() => {
     const transfers = [];
     if (bridgeTransfers.data?.bridgeTransfers) {
       transfers.push(...bridgeTransfers.data.bridgeTransfers);
@@ -64,12 +64,21 @@ export const useBridgeActivity = () => {
   // Wait for state updates
   useEffect(() => {
     setHasPendingTransfers(
-      !!data?.find((t) => t.state === 'untouched' || t.state === 'processing'),
+      !!memoData?.find(
+        (t) => t.state === 'untouched' || t.state === 'processing',
+      ),
     );
-  }, [data]);
+  }, [memoData]);
+
+  const [data, setData] = useState(memoData);
+  useEffect(() => {
+    if (!bridgeTransfers.isLoading && !bridgeTransfers.isPending) {
+      setData(memoData);
+    }
+  }, [bridgeTransfers.isLoading, bridgeTransfers.isPending, memoData]);
 
   return {
     isLoading: bridgeTransfers.isLoading,
-    data,
+    data: data,
   };
 };

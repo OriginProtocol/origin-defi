@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { capitalize } from '@mui/material';
 import { isUserRejected } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
@@ -43,7 +42,7 @@ export type TxButtonProps<
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
-  label?: string | ((params: TxButtonFnParameters) => string | undefined);
+  label?: string;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
   params?: WriteTransactionParameters<abi, functionName, args>;
@@ -171,9 +170,6 @@ export const TxButton = <
     }
   };
 
-  const customButtonLabel =
-    typeof label === 'function' ? label({ simulateError }) : label;
-
   const buttonLabel =
     writeStatus === 'pending'
       ? waitingSignatureLabel ??
@@ -183,11 +179,10 @@ export const TxButton = <
           waitTxStatus === 'pending'
         ? waitingTxLabel ??
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-        : customButtonLabel ?? capitalize(params?.functionName ?? '');
+        : label;
   const isDisabled =
     disabled ||
     !simulateData ||
-    !!simulateError ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&
