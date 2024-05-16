@@ -16,7 +16,7 @@ export const PortfolioView = () => {
   return (
     <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Portfolio' })}
+        title={intl.formatMessage({ defaultMessage: 'History' })}
         subtitle={intl.formatMessage({
           defaultMessage: 'Earnings and transaction history',
         })}
