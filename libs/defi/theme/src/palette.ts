@@ -43,7 +43,7 @@ export const lightPalette: ThemeOptions = {
       default: '#F7F9FF',
       paper: '#EDEFF5',
       highlight: '#FFFFFF',
-      primaryFaded: '#ECEBFE',
+      primaryFaded: '#F3F4F6',
       gradientBlue:
         'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:
@@ -107,7 +107,7 @@ export const darkPalette: ThemeOptions = {
       default: '#1C1D22',
       paper: '#16181D',
       highlight: '#121316',
-      primaryFaded: '#252544',
+      primaryFaded: '#222835',
       gradientBlue:
         'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:
