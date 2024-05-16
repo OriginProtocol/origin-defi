@@ -196,7 +196,10 @@ export const BridgeTransfer = ({
               />
             </Link>
           </Stack>
-          <Eta state={activity.state} timestamp={Date.now() - 112312} />
+          <Eta
+            state={activity.state}
+            timestamp={Date.parse(activity.timestamp)}
+          />
         </Stack>
       </Stack>
     </CardContent>
