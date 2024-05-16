@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 
 import { useBridgeTransfersQuery } from '../queries.generated';
@@ -30,6 +31,7 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
         : hasPendingTransfers
           ? 5000
           : false,
+      placeholderData: keepPreviousData,
     },
   );
 
@@ -46,7 +48,7 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
   }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
 
   // Create memoData response
-  const memoData = useMemo(() => {
+  const data = useMemo(() => {
     const transfers = [];
     if (bridgeTransfers.data?.bridgeTransfers) {
       transfers.push(...bridgeTransfers.data.bridgeTransfers);
@@ -64,21 +66,12 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
   // Wait for state updates
   useEffect(() => {
     setHasPendingTransfers(
-      !!memoData?.find(
-        (t) => t.state === 'untouched' || t.state === 'processing',
-      ),
+      !!data?.find((t) => t.state === 'untouched' || t.state === 'processing'),
     );
-  }, [memoData]);
-
-  const [data, setData] = useState(memoData);
-  useEffect(() => {
-    if (!bridgeTransfers.isLoading && !bridgeTransfers.isPending) {
-      setData(memoData);
-    }
-  }, [bridgeTransfers.isLoading, bridgeTransfers.isPending, memoData]);
+  }, [data]);
 
   return {
     isLoading: bridgeTransfers.isLoading,
-    data: data,
+    data,
   };
 };
