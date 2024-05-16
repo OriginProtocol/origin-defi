@@ -35,17 +35,18 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
     },
   );
 
+  const waitForTransferFound =
+    waitForTransfer &&
+    !!bridgeTransfers.data?.bridgeTransfers.find(
+      (bt) => bt.txHashIn === waitForTransfer.txHashIn,
+    );
+
   // Wait for Tx to show up
   useEffect(() => {
-    if (
-      waitForTransfer &&
-      !!bridgeTransfers.data?.bridgeTransfers.find(
-        (bt) => bt.txHashIn === waitForTransfer.txHashIn,
-      )
-    ) {
+    if (waitForTransferFound) {
       setBridgeState((state) => ({ ...state, waitForTransfer: undefined }));
     }
-  }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
+  }, [setBridgeState, waitForTransferFound]);
 
   // Create data response
   const data = useMemo(() => {
@@ -53,7 +54,8 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
     if (bridgeTransfers.data?.bridgeTransfers) {
       transfers.push(...bridgeTransfers.data.bridgeTransfers);
     }
-    if (waitForTransfer) transfers.unshift(waitForTransfer);
+    if (waitForTransfer && !waitForTransferFound)
+      transfers.unshift(waitForTransfer);
     return transfers.map((bt) => {
       const state = states[bt.state];
       return {
@@ -61,7 +63,11 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
         state,
       };
     });
-  }, [bridgeTransfers.data?.bridgeTransfers, waitForTransfer]);
+  }, [
+    bridgeTransfers.data?.bridgeTransfers,
+    waitForTransfer,
+    waitForTransferFound,
+  ]);
 
   // Wait for state updates
   useEffect(() => {
