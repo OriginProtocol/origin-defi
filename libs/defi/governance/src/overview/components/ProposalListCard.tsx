@@ -11,18 +11,13 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { ColorChip } from '@origin/defi/shared';
 import {
   SliderSwitch,
   TokenIcon,
   TooltipLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  FaArrowUpRightFromSquareRegular,
-  FaLinkRegular,
-  Snapshot,
-} from '@origin/shared/icons';
+import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
@@ -30,6 +25,7 @@ import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { useProposals } from '../hooks';
+import { ProposalTypeBadge } from './ProposalTypeBadge';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -53,7 +49,16 @@ export const ProposalListCard = (props: CardProps) => {
         return data;
       }
 
-      return data.filter((p) => filter === p.type);
+      return data.filter((p) => {
+        if (
+          filter === 'snapshot' &&
+          ['snapshot', 'snapshot_legacy'].includes(p.type)
+        ) {
+          return true;
+        }
+
+        return p.type === filter;
+      });
     },
   });
 
@@ -152,7 +157,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (proposal.type === 'snapshot') {
+    if (['snapshot', 'snapshot_legacy'].includes(proposal.type)) {
       window.open(proposal.link, '_blank');
     } else {
       navigate(proposal.id);
@@ -181,27 +186,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
           <Stack spacing={1.5}>
             <Stack direction="row" spacing={1}>
               <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
-              {proposal.type === 'snapshot' ? (
-                <ColorChip px={1} py={0.5} bgcolor="#F3F4F6">
-                  <Snapshot sx={{ color: 'text.secondary', fontSize: 14 }} />
-                  <Typography variant="caption1" color="text.primary">
-                    {intl.formatMessage({
-                      defaultMessage: 'Snapshot proposal',
-                    })}
-                  </Typography>
-                </ColorChip>
-              ) : (
-                <ColorChip px={1} py={0.5} bgcolor="#F3F4F6">
-                  <FaLinkRegular
-                    sx={{ color: 'text.secondary', fontSize: 14 }}
-                  />
-                  <Typography variant="caption1" color="text.primary">
-                    {intl.formatMessage({
-                      defaultMessage: 'On-chain proposal',
-                    })}
-                  </Typography>
-                </ColorChip>
-              )}
+              <ProposalTypeBadge type={proposal.type} />
               <StatusBadge status={proposal?.status} />
             </Stack>
             <TooltipLabel

@@ -660,14 +660,14 @@ export type Vp = {
 export type SnapshotProposalsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type SnapshotProposalsQuery = { __typename?: 'Query', proposals?: Array<{ __typename?: 'Proposal', id: string, title: string, choices: Array<string | null>, scores?: Array<number | null> | null, state?: string | null, start: number, end: number, link?: string | null, quorum: number, created: number, updated?: number | null } | null> | null };
+export type SnapshotProposalsQuery = { __typename?: 'Query', proposals?: Array<{ __typename?: 'Proposal', id: string, title: string, choices: Array<string | null>, scores?: Array<number | null> | null, state?: string | null, start: number, end: number, link?: string | null, quorum: number, created: number, updated?: number | null, space?: { __typename?: 'Space', id: string } | null } | null> | null };
 
 export type SnapshotUserVotesQueryVariables = Exact<{
   address: Scalars['String']['input'];
 }>;
 
 
-export type SnapshotUserVotesQuery = { __typename?: 'Query', votes?: Array<{ __typename?: 'Vote', id: string, created: number, choice: any, proposal?: { __typename?: 'Proposal', id: string, title: string, state?: string | null, link?: string | null, choices: Array<string | null> } | null } | null> | null };
+export type SnapshotUserVotesQuery = { __typename?: 'Query', votes?: Array<{ __typename?: 'Vote', id: string, created: number, choice: any, proposal?: { __typename?: 'Proposal', id: string, title: string, state?: string | null, link?: string | null, choices: Array<string | null>, created: number, space?: { __typename?: 'Space', id: string } | null } | null } | null> | null };
 
 
 
@@ -676,7 +676,7 @@ export const SnapshotProposalsDocument = `
   proposals(
     orderBy: "created"
     orderDirection: desc
-    where: {space_in: "ousdgov.eth"}
+    where: {space_in: ["ousdgov.eth", "origingov.eth"]}
     skip: 0
     first: 1000
   ) {
@@ -691,6 +691,9 @@ export const SnapshotProposalsDocument = `
     quorum
     created
     updated
+    space {
+      id
+    }
   }
 }
     `;
@@ -721,7 +724,7 @@ export const SnapshotUserVotesDocument = `
   votes(
     orderBy: "created"
     orderDirection: desc
-    where: {space_in: "ousdgov.eth", voter: $address}
+    where: {space_in: ["ousdgov.eth", "origingov.eth"], voter: $address}
     skip: 0
     first: 1000
   ) {
@@ -734,6 +737,10 @@ export const SnapshotUserVotesDocument = `
       state
       link
       choices
+      created
+      space {
+        id
+      }
     }
   }
 }

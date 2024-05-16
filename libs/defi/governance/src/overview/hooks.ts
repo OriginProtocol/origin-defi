@@ -1,11 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { snapshot } from '@origin/defi/shared';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { fromUnixTime } from 'date-fns';
+import { fromUnixTime, isAfter } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
 import { useAccount } from 'wagmi';
 
+import { spaceIds } from './constants';
 import { useProposalsQuery, useUserVotesQuery } from './queries.generated';
 import { parseProposalContent } from './utils';
 
@@ -69,29 +70,37 @@ export const useProposals = (
             }) ?? []
           : [];
 
-      const offChainProposals: Proposal[] =
-        res[1].status === 'fulfilled'
-          ? (res[1].value as snapshot.SnapshotProposalsQuery)?.proposals?.map(
-              (p) => ({
-                id: p?.id ?? 'id',
-                type: 'snapshot' as ProposalType,
-                title: p?.title ?? '',
-                created: p?.created
-                  ? fromUnixTime(p.created).toISOString()
-                  : '',
-                start: p?.start ? fromUnixTime(p.start).toISOString() : '',
-                end: p?.end ? fromUnixTime(p.end).toISOString() : '',
-                updated: p?.updated
-                  ? fromUnixTime(p.updated).toISOString()
-                  : '',
-                status: p?.state ?? '',
-                choices: p?.choices as any,
-                scores: p?.scores as any,
-                quorum: p?.quorum,
-                link: p?.link as any,
-              }),
-            ) ?? []
-          : [];
+      const offChainProposals = [];
+      if (isFulfilled(res[1]) && res?.[1]?.value?.proposals) {
+        for (const p of res[1].value.proposals) {
+          const type =
+            p?.space?.id === spaceIds.snapshot
+              ? ('snapshot' as ProposalType)
+              : ('snapshot_legacy' as ProposalType);
+          if (
+            type === 'snapshot_legacy' &&
+            p?.created &&
+            isAfter(new Date('2024-05-01'), fromUnixTime(p?.created))
+          ) {
+            continue;
+          }
+
+          offChainProposals.push({
+            id: p?.id ?? 'id',
+            type,
+            title: p?.title ?? '',
+            created: p?.created ? fromUnixTime(p.created).toISOString() : '',
+            start: p?.start ? fromUnixTime(p.start).toISOString() : '',
+            end: p?.end ? fromUnixTime(p.end).toISOString() : '',
+            updated: p?.updated ? fromUnixTime(p.updated).toISOString() : '',
+            status: p?.state ?? '',
+            choices: p?.choices as any,
+            scores: p?.scores as any,
+            quorum: p?.quorum,
+            link: p?.link as any,
+          });
+        }
+      }
 
       return sort(descend(prop('created')), [
         ...onChainProposals,
@@ -148,33 +157,38 @@ export const useUserVotes = () => {
             }) ?? []
           : [];
 
-      const offChainVotes =
-        res[1].status === 'fulfilled'
-          ? (res[1].value as snapshot.SnapshotUserVotesQuery)?.votes?.map(
-              (v) => {
-                const idx =
-                  Number(
-                    Array.isArray(v?.choice) ? v.choice.at(0) : v?.choice,
-                  ) - 1;
-                const choice = v?.proposal?.choices?.at?.(idx) ?? '';
+      const offChainVotes = [];
+      if (isFulfilled(res[1]) && res?.[1]?.value?.votes) {
+        for (const v of res[1].value.votes) {
+          const type =
+            v?.proposal?.space?.id === spaceIds.snapshot
+              ? ('snapshot' as ProposalType)
+              : ('snapshot_legacy' as ProposalType);
+          if (
+            type === 'snapshot_legacy' &&
+            v?.proposal?.created &&
+            isAfter(new Date('2024-05-01'), fromUnixTime(v?.proposal?.created))
+          ) {
+            continue;
+          }
+          const idx =
+            Number(Array.isArray(v?.choice) ? v.choice.at(0) : v?.choice) - 1;
+          const choice = v?.proposal?.choices?.at?.(idx) ?? '';
 
-                return {
-                  id: v?.id,
-                  created: v?.created
-                    ? fromUnixTime(v.created).toISOString()
-                    : '',
-                  choice,
-                  proposal: {
-                    id: v?.proposal?.id,
-                    type: 'snapshot' as ProposalType,
-                    title: v?.proposal?.title,
-                    status: v?.proposal?.state,
-                    link: v?.proposal?.link,
-                  },
-                };
-              },
-            ) ?? []
-          : [];
+          offChainVotes.push({
+            id: v?.id,
+            created: v?.created ? fromUnixTime(v.created).toISOString() : '',
+            choice,
+            proposal: {
+              id: v?.proposal?.id,
+              type,
+              title: v?.proposal?.title,
+              status: v?.proposal?.state,
+              link: v?.proposal?.link,
+            },
+          });
+        }
+      }
 
       return sort(descend(prop('created')), [
         ...onChainVotes,

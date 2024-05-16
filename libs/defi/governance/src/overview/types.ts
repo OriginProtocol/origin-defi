@@ -11,7 +11,7 @@ export type ProposalLog = {
 
 export type GovernanceChoice = (typeof governanceChoices)[number];
 
-export type ProposalType = 'onchain' | 'snapshot';
+export type ProposalType = 'onchain' | 'snapshot' | 'snapshot_legacy';
 
 export type Proposal = {
   id: string;

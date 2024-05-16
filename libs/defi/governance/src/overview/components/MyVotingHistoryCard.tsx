@@ -9,7 +9,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
 import { TokenIcon, TooltipLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -25,6 +24,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { useUserVotes } from '../hooks';
+import { ProposalTypeBadge } from './ProposalTypeBadge';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -160,16 +160,7 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
     <Stack spacing={1.5} px={3} py={1.5} {...rest}>
       <Stack direction="row" spacing={1} alignItems="center">
         <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
-        {vote.proposal.type === 'snapshot' && (
-          <ColorChip px={1} py={0.5} bgcolor="secondary">
-            <Snapshot sx={{ color: 'warning.main', fontSize: 14 }} />
-            <Typography variant="caption1" color="warning.dark">
-              {intl.formatMessage({
-                defaultMessage: 'Snapshot',
-              })}
-            </Typography>
-          </ColorChip>
-        )}
+        <ProposalTypeBadge type={vote?.proposal.type} />
         <StatusBadge status={vote?.proposal?.status} />
       </Stack>
       <MuiLink

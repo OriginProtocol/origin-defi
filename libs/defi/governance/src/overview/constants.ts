@@ -3,6 +3,8 @@ import { defineMessage } from 'react-intl';
 
 import type { MessageDescriptor } from 'react-intl';
 
+import type { ProposalType } from './types';
+
 export const governanceChoices = ['For', 'Against'] as const;
 
 export const statusLabels: Record<string, MessageDescriptor> = {
@@ -41,4 +43,9 @@ export const governanceSupport: Record<string, number> = {
   Against: 0,
   For: 1,
   Abstain: 2,
+};
+
+export const spaceIds: Partial<Record<ProposalType, string>> = {
+  snapshot: 'origingov.eth',
+  snapshot_legacy: 'ousdgov.eth',
 };
