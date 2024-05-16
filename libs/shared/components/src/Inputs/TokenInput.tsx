@@ -5,15 +5,12 @@ import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 
-import { TokenPicker } from '../Buttons';
-import { BigIntInput } from './BigIntInput';
+import { BigIntInput, TokenPicker } from '..';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type { ComponentProps } from 'react';
 
-import type { TokenPickerProps } from '../Buttons';
-import type { BigintInputProps } from './BigIntInput';
+import type { BigintInputProps, TokenPickerProps } from '..';
 
 // When clicking max on native currency, we leave this amount of token
 // on the wallet so the user can afford the transaction gas fees
@@ -41,7 +38,7 @@ export type TokenInputProps = {
     BigintInputProps,
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
-  tokenButtonProps?: Omit<TokenPickerProps, 'token'>;
+  tokenPickerProps?: Omit<TokenPickerProps, 'token'>;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -65,7 +62,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       tokenPriceUsd = 0,
       isPriceLoading,
       inputProps,
-      tokenButtonProps,
+      tokenPickerProps,
       ...rest
     },
     ref,
@@ -113,10 +110,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             token={token}
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}
-            {...tokenButtonProps}
+            {...tokenPickerProps}
             sx={{
               ...(!isConnected && { transform: 'translateY(50%)' }),
-              ...tokenButtonProps?.sx,
+              ...tokenPickerProps?.sx,
             }}
           />
         </Box>
@@ -204,81 +201,3 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
 );
 
 TokenInput.displayName = 'TokenInput';
-
-const inputProps = {
-  sx: {
-    border: 'none',
-    backgroundColor: 'transparent',
-    borderRadius: 0,
-    paddingBlock: 0,
-    paddingInline: 0,
-    borderImageWidth: 0,
-    boxSizing: 'border-box',
-    '& .MuiInputBase-input': {
-      padding: 0,
-      boxSizing: 'border-box',
-      fontStyle: 'normal',
-      fontSize: 24,
-      lineHeight: 1.5,
-      fontWeight: 700,
-      '&::placeholder': {
-        color: 'text.secondary',
-        opacity: 1,
-      },
-    },
-  },
-};
-
-export const tokenInputStyleProps: Partial<ComponentProps<typeof TokenInput>> =
-  {
-    sx: {
-      paddingBlock: 2.5,
-      paddingBlockStart: 2.625,
-      paddingInline: 2,
-      border: '1px solid',
-      borderColor: 'divider',
-      borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-      borderTopRightRadius: (theme) => theme.shape.borderRadius,
-      borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-      borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-      backgroundColor: 'grey.900',
-      '&:hover, &:focus-within': {
-        borderColor: 'transparent',
-      },
-      '&:hover': {
-        background: (theme) =>
-          `linear-gradient(${theme.palette.grey[900]}, ${
-            theme.palette.grey[900]
-          }) padding-box, linear-gradient(90deg, ${alpha(
-            theme.palette.primary.main,
-            0.4,
-          )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
-      },
-      '&:focus-within': {
-        background: (theme) =>
-          `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-      },
-    },
-    inputProps,
-  };
-
-export const disabledTokenInputStyleProps: Partial<
-  ComponentProps<typeof TokenInput>
-> = {
-  sx: {
-    paddingBlock: 2.5,
-    paddingBlockStart: 2.625,
-    paddingInline: 2,
-    border: '1px solid',
-    borderColor: 'divider',
-    borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-    borderTopRightRadius: (theme) => theme.shape.borderRadius,
-    borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-    borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-    backgroundColor: (theme) => alpha(theme.palette.grey[400], 0.2),
-  },
-  inputProps: {
-    readOnly: true,
-    ...inputProps,
-  },
-};

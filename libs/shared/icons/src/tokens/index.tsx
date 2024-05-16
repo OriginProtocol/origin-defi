@@ -88,7 +88,7 @@ export const WETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={WETHSvg} viewBox="0 0 24 24" />
 );
 export const wOETH = (props: SvgIconProps) => (
-  <SvgIcon {...props} component={wOETHSvg} viewBox="0 0 32 32" />
+  <SvgIcon {...props} component={wOETHSvg} viewBox="0 0 40 40" />
 );
 export const wOUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOUSDSvg} viewBox="0 0 300 300" />

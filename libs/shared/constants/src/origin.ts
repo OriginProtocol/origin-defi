@@ -22,3 +22,5 @@ export const GOVERNANCE_DISCUSSION_FORUM_URL =
   'https://discord.com/channels/404673842007506945/1025438212908396564/';
 export const GOVERNANCE_SNAPSHOT_VOTES_URL = 'https://vote.ousd.com';
 export const GOVERNANCE_DOCS_URL = 'https://docs.oeth.com/governance/overview';
+
+export const OETH_REDEEM_FEE = 0.001;

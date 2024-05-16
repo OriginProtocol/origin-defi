@@ -74,8 +74,8 @@ export const TxButton = <
     address: params.contract.address,
     abi: params.contract.abi as Abi,
     functionName: params.functionName as functionName,
-    args: params?.args as readonly unknown[],
-    value: params?.value,
+    args: params.args as readonly unknown[],
+    value: params.value,
     chainId: params.contract.chainId,
     query: {
       enabled:
@@ -176,6 +176,7 @@ export const TxButton = <
         : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
+    !simulateData ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

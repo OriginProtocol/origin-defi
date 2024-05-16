@@ -128,7 +128,7 @@ function RedeemerWrapped({
               isConnected={isConnected}
               isAmountDisabled={isRedeemLoading}
               inputProps={{ sx: tokenInputStyles }}
-              tokenButtonProps={{
+              tokenPickerProps={{
                 sx: {
                   minWidth: 100,
                   maxWidth: 100,
