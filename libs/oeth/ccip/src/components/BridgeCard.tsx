@@ -98,91 +98,94 @@ export const BridgeCard = () => {
     amount,
   });
 
-  const txButton = useTxButton(
-    ccipTxParams.data && {
-      params: ccipTxParams.data.params,
-      activity: {
-        title: intl.formatMessage({ defaultMessage: 'Bridge Transaction' }),
-        subtitle: intl.formatMessage(
-          {
-            defaultMessage:
-              'Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}.',
-          },
-          {
-            srcAmount: formatAmount(amount),
-            srcToken: srcToken.symbol,
-            srcChain: srcChain.name,
-            dstToken: dstToken.symbol,
-            dstChain: dstChain.name,
-          },
-        ),
-        type: 'bridge',
-        amountIn: amount,
-        tokenIn: srcToken,
-        tokenOut: dstToken,
-      },
-      callbacks: {
-        onWriteSuccess: (tx) => {
-          // Optimistic update
-          const ccipSendRequestedTopic =
-            '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
-          const ccipSendRequested = tx.logs.find(
-            (l) => l.topics[0] === ccipSendRequestedTopic,
-          );
-          let waitForTransfer = undefined;
-          if (ccipSendRequested) {
-            const ccipSendRequestedData = decodeEventLog({
-              abi: contracts.mainnet.ccipOnRamp.abi,
-              data: ccipSendRequested.data,
-              topics: [ccipSendRequestedTopic],
-            }) as unknown as {
-              args: {
-                message: {
-                  messageId: Hex;
-                  tokenAmounts: { token: HexAddress; amount: bigint }[];
-                };
+  const txButton = useTxButton({
+    params: ccipTxParams.data?.params ?? {
+      contract: srcRouter,
+      functionName: 'ccipSend',
+      args: [] as any,
+      value: 0n,
+    },
+    activity: {
+      title: intl.formatMessage({ defaultMessage: 'Bridge Transaction' }),
+      subtitle: intl.formatMessage(
+        {
+          defaultMessage:
+            'Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}.',
+        },
+        {
+          srcAmount: formatAmount(amount),
+          srcToken: srcToken.symbol,
+          srcChain: srcChain.name,
+          dstToken: dstToken.symbol,
+          dstChain: dstChain.name,
+        },
+      ),
+      type: 'bridge',
+      amountIn: amount,
+      tokenIn: srcToken,
+      tokenOut: dstToken,
+    },
+    callbacks: {
+      onWriteSuccess: (tx) => {
+        // Optimistic update
+        const ccipSendRequestedTopic =
+          '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
+        const ccipSendRequested = tx.logs.find(
+          (l) => l.topics[0] === ccipSendRequestedTopic,
+        );
+        let waitForTransfer = undefined;
+        if (ccipSendRequested) {
+          const ccipSendRequestedData = decodeEventLog({
+            abi: contracts.mainnet.ccipOnRamp.abi,
+            data: ccipSendRequested.data,
+            topics: [ccipSendRequestedTopic],
+          }) as unknown as {
+            args: {
+              message: {
+                messageId: Hex;
+                tokenAmounts: { token: HexAddress; amount: bigint }[];
               };
             };
-            if (ccipSendRequestedData.args) {
-              const messageId = ccipSendRequestedData.args.message.messageId;
-              const tokenIn =
-                ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
-              const amountIn =
-                ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
-              const amountOut =
-                ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+          };
+          if (ccipSendRequestedData.args) {
+            const messageId = ccipSendRequestedData.args.message.messageId;
+            const tokenIn =
+              ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
+            const amountIn =
+              ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+            const amountOut =
+              ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
 
-              waitForTransfer = {
-                id: tx.transactionHash,
-                blockNumber: Number(tx.blockNumber),
-                timestamp: new Date().toISOString(),
-                messageId: messageId,
-                txHashIn: tx.transactionHash,
-                txHashOut: undefined,
-                amountIn: amountIn.toString(),
-                amountOut: amountOut.toString(),
-                chainIn: srcChain.id,
-                chainOut: dstChain.id,
-                tokenIn: tokenIn,
-                tokenOut: dstToken.address ?? ZERO_ADDRESS,
-                bridge: 'ccip',
-                state: 0,
-                transactor: userAddress as string,
-                sender: userAddress as string,
-                receiver: userAddress as string,
-              };
-            }
+            waitForTransfer = {
+              id: tx.transactionHash,
+              blockNumber: Number(tx.blockNumber),
+              timestamp: new Date().toISOString(),
+              messageId: messageId,
+              txHashIn: tx.transactionHash,
+              txHashOut: undefined,
+              amountIn: amountIn.toString(),
+              amountOut: amountOut.toString(),
+              chainIn: srcChain.id,
+              chainOut: dstChain.id,
+              tokenIn: tokenIn,
+              tokenOut: dstToken.address ?? ZERO_ADDRESS,
+              bridge: 'ccip',
+              state: 0,
+              transactor: userAddress as string,
+              sender: userAddress as string,
+              receiver: userAddress as string,
+            };
           }
-          reset({
-            // Mock Transfer object for optimistic update
-            waitForTransfer,
-          });
-          refetchAllowance?.();
-        },
+        }
+        reset({
+          // Mock Transfer object for optimistic update
+          waitForTransfer,
+        });
+        refetchAllowance?.();
       },
-      enableGas: true,
     },
-  );
+    enableGas: true,
+  });
 
   // Toggle chain if the network has switched and dstChain is the network we switched to.
   useEffect(() => {

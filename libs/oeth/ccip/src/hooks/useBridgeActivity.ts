@@ -47,7 +47,7 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
     }
   }, [bridgeTransfers.data, setBridgeState, waitForTransfer]);
 
-  // Create memoData response
+  // Create data response
   const data = useMemo(() => {
     const transfers = [];
     if (bridgeTransfers.data?.bridgeTransfers) {
