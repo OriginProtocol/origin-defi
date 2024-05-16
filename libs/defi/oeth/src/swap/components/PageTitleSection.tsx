@@ -1,13 +1,9 @@
 import { Stack, Typography } from '@mui/material';
-import {
-  ChainsChip,
-  ColorChip,
-  products,
-  useOTokenApyQuery,
-} from '@origin/defi/shared';
+import { ChainsChip, ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { arbitrum, mainnet } from 'viem/chains';
 
 import type { StackProps } from '@mui/material';
 
@@ -57,7 +53,7 @@ export const PageTitleSection = (props: StackProps) => {
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
       </ColorChip>
-      <ChainsChip chainIds={products.oeth.supportedChainIds} minHeight={40} />
+      <ChainsChip chainIds={[mainnet.id, arbitrum.id]} minHeight={40} />
     </Stack>
   );
 };

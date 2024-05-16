@@ -1,15 +1,16 @@
 import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
-import { useOTokenApyQuery } from '@origin/defi/shared';
+import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
-import { useFormat, useTvl, useWatchBalance } from '@origin/shared/providers';
+import { useFormat, useTvl } from '@origin/shared/providers';
+import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
-import { mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
-import type { Product } from '@origin/defi/shared';
+
+import type { Product } from '../constants';
 
 export type ProductCardProps = {
   product: Product;
@@ -18,20 +19,26 @@ export type ProductCardProps = {
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
   const { formatBalance, formatCurrency } = useFormat();
-  const { isConnected } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: product.token,
-  });
+  const { address, isConnected } = useAccount();
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
   const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
-    { token: product.token.address, chainId: mainnet.id },
+    { token: product.token.address, chainId: product.token.chainId },
     {
-      enabled: isConnected,
       select: (data) => {
         return data?.oTokenApies[0].apy30DayAvg ?? 0;
       },
     },
   );
+  const { data: user, isLoading: isUserLoading } = useOTokenAddressQuery(
+    {
+      token: product.token.address,
+      chainId: product.token.chainId,
+      address: address ?? ZERO_ADDRESS,
+    },
+    { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
+  );
+
+  console.log(user);
 
   return (
     <Card
@@ -145,11 +152,11 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             value={intl.formatMessage(
               { defaultMessage: '{balance} {symbol}' },
               {
-                balance: formatBalance(balance),
+                balance: formatBalance(BigInt(user?.balance ?? '0')),
                 symbol: product.token.symbol,
               },
             )}
-            isLoading={isBalanceLoading}
+            isLoading={isUserLoading}
           />
           <ValueLabel
             direction="row"
@@ -162,8 +169,12 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             }}
             value={intl.formatMessage(
               { defaultMessage: '{balance} {symbol}' },
-              { balance: 2.375, symbol: product.token.symbol },
+              {
+                balance: formatAmount(BigInt(user?.earned ?? '0')),
+                symbol: product.token.symbol,
+              },
             )}
+            isLoading={isUserLoading}
           />
         </Stack>
       </Collapse>

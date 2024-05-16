@@ -4,7 +4,6 @@ import {
   BridgePromoCard,
   MergerBanner,
   Page,
-  products,
   SectionTitle,
 } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
@@ -12,6 +11,7 @@ import { Link as RouterLink } from 'react-router-dom';
 
 import { ProductCard } from '../components/ProductCard';
 import { StakeOGNCard } from '../components/StakeOGNCard';
+import { products } from '../constants';
 
 export const HomeView = () => {
   const intl = useIntl();
