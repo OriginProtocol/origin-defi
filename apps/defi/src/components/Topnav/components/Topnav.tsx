@@ -42,8 +42,8 @@ export const Topnav = () => {
       <Box
         sx={{
           height: {
-            xs: '56px',
-            md: '72px',
+            xs: 56,
+            md: 72,
           },
         }}
       />
@@ -63,8 +63,8 @@ export const Topnav = () => {
             md: 5,
           },
           height: {
-            xs: '56px',
-            md: '72px',
+            xs: 56,
+            md: 72,
           },
         })}
       >
@@ -90,12 +90,12 @@ export const Topnav = () => {
               <OriginLabel />
             </Box>
           </Grid2>
-          <Grid2 xs={0} md={7}>
+          <Grid2 xs={0} md={7} mdOffset={0.5}>
             {!isSm && <HoverMenu />}
           </Grid2>
           <Grid2
             xs={10}
-            md={3}
+            md={2.5}
             sx={{
               display: 'flex',
               flexDirection: 'row',

@@ -345,9 +345,8 @@ function HistoryTable({ rows }: HistoryTableProps) {
           table={table}
           disableScrollToTop
           buttonsProps={{
-            variant: 'contained',
-            color: 'inherit',
-            sx: { minHeight: 32 },
+            variant: 'outlined',
+            color: 'secondary',
           }}
         />
       </Stack>

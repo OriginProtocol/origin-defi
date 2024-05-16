@@ -110,8 +110,8 @@ export const components = (base: Theme): ThemeOptions => ({
           },
         }),
         outlinedSecondary: ({ theme }) => ({
-          background: theme.palette.secondary.main,
-          color: theme.palette.secondary.contrastText,
+          backgroundColor: 'transparent',
+          color: theme.palette.text.primary,
           border: '1px solid',
           borderColor: theme.palette.divider,
           '&:hover': {
