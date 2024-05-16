@@ -15,7 +15,12 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ConnectPage, FiltersButton, HistoryType } from '@origin/defi/shared';
+import {
+  ConnectPage,
+  FiltersButton,
+  HistoryType,
+  useOTokenHistoriesQuery,
+} from '@origin/defi/shared';
 import {
   DownloadCsvButton,
   ExpandIcon,
@@ -38,7 +43,6 @@ import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useOethHistory } from '../hooks';
-import { useOethHistoryTransactionQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ExpandedState } from '@tanstack/react-table';
@@ -119,8 +123,12 @@ export const OethHistoryCard = () => {
 
 function ExportDataButton() {
   const { address, isConnected } = useAccount();
-  const { data: txData } = useOethHistoryTransactionQuery(
-    { address: address ?? ZERO_ADDRESS },
+  const { data: txData } = useOTokenHistoriesQuery(
+    {
+      address: address ?? ZERO_ADDRESS,
+      chainId: tokens.mainnet.OETH.chainId,
+      token: tokens.mainnet.OETH.address,
+    },
     {
       enabled: isConnected,
       select: (data) => {

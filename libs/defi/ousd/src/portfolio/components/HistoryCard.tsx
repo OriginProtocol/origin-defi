@@ -15,7 +15,12 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { ConnectPage, FiltersButton, HistoryType } from '@origin/defi/shared';
+import {
+  ConnectPage,
+  FiltersButton,
+  HistoryType,
+  useOTokenHistoriesQuery,
+} from '@origin/defi/shared';
 import {
   DownloadCsvButton,
   ExpandIcon,
@@ -38,7 +43,6 @@ import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useOusdHistory } from '../hooks';
-import { useOusdHistoryTransactionQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ExpandedState } from '@tanstack/react-table';
@@ -119,8 +123,12 @@ export const HistoryCard = () => {
 
 function ExportDataButton() {
   const { address, isConnected } = useAccount();
-  const { data: txData } = useOusdHistoryTransactionQuery(
-    { address: address ?? ZERO_ADDRESS },
+  const { data: txData } = useOTokenHistoriesQuery(
+    {
+      address: address ?? ZERO_ADDRESS,
+      token: tokens.mainnet.OUSD.address,
+      chainId: tokens.mainnet.OUSD.chainId,
+    },
     {
       enabled: isConnected,
       select: (data) => {

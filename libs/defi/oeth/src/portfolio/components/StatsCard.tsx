@@ -1,4 +1,5 @@
 import { Card, Stack } from '@mui/material';
+import { useOTokenAddressQuery } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -13,7 +14,6 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
-import { useOethHistoryUserStatQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -26,8 +26,12 @@ export const OethStats = (props: CardProps) => {
     token: tokens.mainnet.OETH,
   });
   const { data: oethEarned, isLoading: isOethEarnedLoading } =
-    useOethHistoryUserStatQuery(
-      { address: address ?? ZERO_ADDRESS },
+    useOTokenAddressQuery(
+      {
+        address: address ?? ZERO_ADDRESS,
+        chainId: tokens.mainnet.OETH.chainId,
+        token: tokens.mainnet.OETH.address,
+      },
       {
         enabled: !!address,
         select: (data) => data?.oTokenAddresses?.[0]?.earned,

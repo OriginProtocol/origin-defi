@@ -1,4 +1,5 @@
 import { Card, Stack } from '@mui/material';
+import { useOTokenAddressQuery } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchBalance } from '@origin/shared/providers';
@@ -7,7 +8,6 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
-import { useOusdHistoryUserStatQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -21,8 +21,12 @@ export const StatsCard = (props: CardProps) => {
       token: tokens.mainnet.OUSD,
     });
   const { data: ousdEarned, isLoading: isOusdEarnedLoading } =
-    useOusdHistoryUserStatQuery(
-      { address: address ?? ZERO_ADDRESS },
+    useOTokenAddressQuery(
+      {
+        address: address ?? ZERO_ADDRESS,
+        token: tokens.mainnet.OUSD.address,
+        chainId: tokens.mainnet.OUSD.chainId,
+      },
       {
         enabled: !!address,
         select: (data) => data?.oTokenAddresses?.[0]?.earned,

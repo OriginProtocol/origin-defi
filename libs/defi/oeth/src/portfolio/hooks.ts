@@ -4,6 +4,7 @@ import {
   HistoryType,
   useBalancesQuery,
   useBridgeTransfersQuery,
+  useOTokenHistoriesQuery,
   useTransfersQuery,
 } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
@@ -15,18 +16,16 @@ import { useSearchParams } from 'react-router-dom';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useOethHistoryTransactionQuery } from './queries.generated';
-
 import type {
   BalancesQuery,
   BridgeTransfersQuery,
+  OTokenHistoriesQuery,
   TransfersQuery,
 } from '@origin/defi/shared';
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-import type { OethHistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory, WOETHHistoryType } from './types';
 
 export const useTokenSelect = () => {
@@ -123,21 +122,24 @@ export const usePendingYield = (
 
 export const useOethHistory = (
   filters?: HistoryType[],
-  options?: UseQueryOptions<OethHistoryTransactionQuery, Error, DailyHistory[]>,
+  options?: UseQueryOptions<OTokenHistoriesQuery, Error, DailyHistory[]>,
 ) => {
   const { address, isConnected } = useAccount();
 
-  return useOethHistoryTransactionQuery(
+  return useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
+      chainId: tokens.mainnet.OETH.chainId,
+      token: tokens.mainnet.OETH.address,
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
+      staleTime: 120e3,
       refetchOnWindowFocus: false,
       ...options,
       enabled: isConnected && !!address,
       placeholderData: { oTokenHistories: [] },
-      select: useCallback((data: OethHistoryTransactionQuery) => {
+      select: useCallback((data: OTokenHistoriesQuery) => {
         const history = data?.oTokenHistories;
 
         const grouped = groupBy(
@@ -226,6 +228,7 @@ export const useWoethHistory = (filters: WOETHHistoryType[]) => {
   const queryClient = useQueryClient();
 
   return useQuery({
+    staleTime: 120e3,
     enabled: !!address,
     queryKey: ['useWoethHistory', address],
     queryFn: async () => {
