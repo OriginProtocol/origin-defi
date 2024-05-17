@@ -7,6 +7,7 @@ import ArrowDownToBracketSvg from './arrow-down-to-bracket.svg?react';
 import ArrowLeftSvg from './arrow-left.svg?react';
 import ArrowRightSvg from './arrow-right.svg?react';
 import ArrowRightArrowLeftSvg from './arrow-right-arrow-left.svg?react';
+import ArrowRightFromBracketSvg from './arrow-right-from-bracket.svg?react';
 import ArrowUpSvg from './arrow-up.svg?react';
 import ArrowUpArrowDownSvg from './arrow-up-arrow-down.svg?react';
 import ArrowUpRightSvg from './arrow-up-right.svg?react';
@@ -34,6 +35,7 @@ import CircleXmarkSvg from './circle-xmark.svg?react';
 import ClockSvg from './clock.svg?react';
 import CoinsSvg from './coins.svg?react';
 import CommentsSvg from './comments.svg?react';
+import CopySvg from './copy.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
 import FilterSvg from './filter.svg?react';
@@ -120,6 +122,9 @@ export const FaArrowUpArrowDownRegular = (props: SvgIconProps) => (
     component={ArrowUpArrowDownSvg}
     inheritViewBox
   />
+);
+export const FaArrowRightFromBracketRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ArrowRightFromBracketSvg} inheritViewBox />
 );
 export const FaArrowUpRightFromSquareRegular = (props: SvgIconProps) => (
   <SvgIcon
@@ -303,6 +308,9 @@ export const FaCommentsRegular = (props: SvgIconProps) => (
     component={CommentsSvg}
     inheritViewBox
   />
+);
+export const FaCopyRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CopySvg} inheritViewBox />
 );
 export const FaEllipsisVerticalRegular = (props: SvgIconProps) => (
   <SvgIcon

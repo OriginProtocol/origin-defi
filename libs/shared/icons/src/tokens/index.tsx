@@ -2,6 +2,7 @@ import { SvgIcon } from '@mui/material';
 
 import DAISvg from './DAI.svg?react';
 import ETHSvg from './ETH.svg?react';
+import ETHOutlinedSvg from './ETH_outlined.svg?react';
 import ETHxSvg from './ETHx.svg?react';
 import frxETHSvg from './frxETH.svg?react';
 import mETHSvg from './mETH.svg?react';
@@ -32,6 +33,9 @@ export const DAI = (props: SvgIconProps) => (
 );
 export const ETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ETHSvg} viewBox="0 0 24 24" />
+);
+export const ETHOutlined = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ETHOutlinedSvg} inheritViewBox />
 );
 export const ETHx = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ETHxSvg} inheritViewBox />

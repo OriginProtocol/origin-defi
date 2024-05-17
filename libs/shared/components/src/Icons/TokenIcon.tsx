@@ -1,6 +1,7 @@
 import {
   DAI,
   ETH,
+  ETHOutlined,
   ETHx,
   FaCircleDollarRegular,
   frxETH,
@@ -90,6 +91,7 @@ const outlinedMap: Record<
   (typeof supportedSymbols)[number],
   ComponentType<SvgIconProps>
 > = {
+  ETH: ETHOutlined,
   OGV: OGVOutlined,
   veOGV: VeOGVOutlined,
   xOGN: xOGNOutlined,

@@ -37,7 +37,6 @@ export const MigrationView = () => {
                   'You will be able to convert your tokens after connecting your wallet.',
               })}
               pt={3}
-              buttonProps={{ variant: 'action' }}
             />
           )}
         </Stack>

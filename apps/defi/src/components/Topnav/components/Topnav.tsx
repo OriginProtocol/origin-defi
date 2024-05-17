@@ -4,7 +4,6 @@ import {
   alpha,
   Box,
   Button,
-  Divider,
   Drawer,
   emphasize,
   useMediaQuery,
@@ -12,19 +11,15 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/defi/shared';
-import { ClickAwayPopover } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { FaBarsRegular, OriginLabel } from '@origin/shared/icons';
 import {
-  AccountPanel,
-  BalanceList,
   ChainMenuButton,
   OpenAccountModalButton,
-  ThemeModeIconButton,
 } from '@origin/shared/providers';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
+import { AccountPopover } from './AccountPopover';
 import { DrawerMenu } from './DrawerMenu';
 import { HoverMenu } from './HoverMenu';
 
@@ -104,76 +99,11 @@ export const Topnav = () => {
               gap: 1.25,
             }}
           >
-            <OpenAccountModalButton
-              variant="nav"
-              ref={accountMenuAnchorEl}
-              onClick={(e) => {
-                if (isConnected) {
-                  setAccountMenuOpen(true);
-                  trackEvent({
-                    name: 'open_account',
-                  });
-                } else {
-                  trackEvent({
-                    name: 'connect_click',
-                  });
-                }
-              }}
-              sx={{
-                minWidth: { xs: 36, md: 40 },
-                maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-                paddingX: {
-                  md: 2,
-                  xs: isConnected ? 0.75 : 2,
-                },
-              }}
-              connectedProps={{ color: 'secondary' }}
-              disconnectedProps={{
-                color: 'primary',
-                sx: { '&&&': { borderRadius: 2, minWidth: 80 } },
-              }}
-              hideAddress={isMd}
-            />
-            <ClickAwayPopover
-              open={accountMenuOpen}
-              anchorEl={accountMenuAnchorEl}
-              onClose={() => {
-                setAccountMenuOpen(false);
-              }}
-              paperProps={{
-                sx: {
-                  minWidth: 250,
-                  mt: 1.5,
-                  borderRadius: 4,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                },
-              }}
-            >
-              <AccountPanel
-                disconnectButtonProps={{ size: 'small' }}
-                onDisconnect={() => {
-                  setAccountMenuOpen(false);
-                }}
-              />
-              <Divider />
-              <BalanceList
-                balanceTokens={[
-                  tokens.mainnet.ETH,
-                  tokens.mainnet.OETH,
-                  tokens.mainnet.wOETH,
-                  tokens.mainnet.WETH,
-                  tokens.mainnet.rETH,
-                  tokens.mainnet.frxETH,
-                  tokens.mainnet.sfrxETH,
-                  tokens.mainnet.stETH,
-                ]}
-              />
-            </ClickAwayPopover>
             <ChainMenuButton
               variant="nav"
               color="secondary"
-              hideChainName
+              hideChainName={isMd}
+              sx={{ flexShrink: 0 }}
               menuProps={{
                 paperProps: {
                   sx: {
@@ -207,10 +137,42 @@ export const Topnav = () => {
                 },
               }}
             />
-            <ThemeModeIconButton
+            <OpenAccountModalButton
               variant="nav"
-              color="secondary"
-              sx={{ fontSize: 16 }}
+              ref={accountMenuAnchorEl}
+              onClick={() => {
+                if (isConnected) {
+                  setAccountMenuOpen(true);
+                  trackEvent({
+                    name: 'open_account',
+                  });
+                } else {
+                  trackEvent({
+                    name: 'connect_click',
+                  });
+                }
+              }}
+              sx={{
+                minWidth: { xs: 36, md: 40 },
+                maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
+                paddingX: {
+                  md: 2,
+                  xs: isConnected ? 0.75 : 2,
+                },
+              }}
+              connectedProps={{ color: 'secondary' }}
+              disconnectedProps={{
+                color: 'primary',
+                sx: { '&&&': { borderRadius: 2, minWidth: 80 } },
+              }}
+              hideAddress={isMd}
+            />
+            <AccountPopover
+              open={accountMenuOpen}
+              anchorEl={accountMenuAnchorEl}
+              onClose={() => {
+                setAccountMenuOpen(false);
+              }}
             />
             {isSm && (
               <Button
