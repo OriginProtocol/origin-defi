@@ -1,19 +1,25 @@
 import { useState } from 'react';
 
-import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Badge,
+  Button,
+  Divider,
+  Stack,
+  Tab,
+  Tabs,
+  Typography,
+} from '@mui/material';
 import {
   ClickAwayPopover,
   ClipboardButton,
-  SliderSwitch,
   TokenIcon,
   ValueLabel,
+  WalletIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   FaArrowRightFromBracketRegular,
   FaCopyRegular,
-  FaMoonRegular,
-  FaSunBrightRegular,
 } from '@origin/shared/icons';
 import {
   AddressLabel,
@@ -22,23 +28,26 @@ import {
   getTokenPriceKey,
   RedeemNotification,
   SwapNotification,
+  ThemeModeIconButton,
   TransactionNotification,
   useActivityState,
   useFormat,
   UserAvatar,
-  useThemeMode,
-  useToggleThemeMode,
   useTokenPrices,
   useWatchBalances,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { produce } from 'immer';
 import { descend, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
-import type { ClickAwayPopoverProps } from '@origin/shared/components';
+import type {
+  ClickAwayPopoverProps,
+  NotificationSnackProps,
+} from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Activity } from '@origin/shared/providers';
 
@@ -46,10 +55,8 @@ export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,
 ) => {
   const intl = useIntl();
-  const { address } = useAccount();
+  const { address, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const { value: mode } = useThemeMode();
-  const toggleTheme = useToggleThemeMode();
   const [tab, setTab] = useState<'balances' | 'activities'>('balances');
 
   if (!address) {
@@ -77,7 +84,27 @@ export const AccountPopover = (
         p={3}
       >
         <Stack direction="row" alignItems="center" spacing={1.5}>
-          <UserAvatar width={32} />
+          <Badge
+            badgeContent={
+              <WalletIcon walletName={connector?.name} sx={{ fontSize: 10 }} />
+            }
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+            sx={{
+              '& .MuiBadge-badge': {
+                p: 0,
+                minWidth: 0,
+                minHeight: 0,
+                width: 16,
+                height: 16,
+                mb: 0.75,
+                border: '1px solid',
+                borderColor: 'background.highlight',
+                backgroundColor: 'background.default',
+              },
+            }}
+          >
+            <UserAvatar width={32} />
+          </Badge>
           <AddressLabel
             address={address}
             variant="body1"
@@ -94,43 +121,24 @@ export const AccountPopover = (
             <FaCopyRegular />
           </ClipboardButton>
         </Stack>
-        <Button
-          variant="outlined"
-          color="secondary"
-          size="small"
-          onClick={() => {
-            disconnect();
-          }}
-        >
-          <FaArrowRightFromBracketRegular sx={{ fontSize: 14 }} />
-        </Button>
-      </Stack>
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: 'Theme' })}
-        value={
-          <SliderSwitch
-            value={mode ?? 'light'}
-            options={[
-              { label: <FaSunBrightRegular />, value: 'light' },
-              { label: <FaMoonRegular />, value: 'dark' },
-            ]}
-            onChange={() => {
-              toggleTheme();
-            }}
-            sx={{ borderRadius: 2, backgroundColor: 'background.default' }}
-            selectedSx={{
-              borderRadius: 2,
-              backgroundColor: 'background.highlight',
-              boxShadow: (theme) =>
-                `inset 0 0 0 2px ${theme.palette.background.default},inset 0 0 0 3px ${theme.palette.divider}`,
-            }}
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <ThemeModeIconButton
+            variant="outlined"
+            color="secondary"
+            size="small"
           />
-        }
-        labelProps={{ variant: 'caption1', color: 'text.primary' }}
-        alignItems="flex-start"
-        px={3}
-        spacing={1.5}
-      />
+          <Button
+            variant="outlined"
+            color="secondary"
+            size="small"
+            onClick={() => {
+              disconnect();
+            }}
+          >
+            <FaArrowRightFromBracketRegular sx={{ fontSize: 14 }} />
+          </Button>
+        </Stack>
+      </Stack>
       <Tabs
         value={tab}
         onChange={(_, value) => {
@@ -143,7 +151,7 @@ export const AccountPopover = (
           sx={(theme) => ({
             ...theme.typography.body3,
             fontWeight: 'medium',
-            pb: 1,
+            py: 1,
             mx: 1,
           })}
         />
@@ -153,7 +161,7 @@ export const AccountPopover = (
           sx={(theme) => ({
             ...theme.typography.body3,
             fontWeight: 'medium',
-            pb: 1.5,
+            py: 1,
           })}
         />
       </Tabs>
@@ -259,32 +267,46 @@ function BalanceRow({
 
 function ActivityList(props: StackProps) {
   const intl = useIntl();
-  const [{ activities, maxVisible }] = useActivityState();
+  const [{ activities, maxVisible }, setActivityState] = useActivityState();
 
   const sortedActivities = pipe(
     sort(descend((a: Activity) => a.createdOn)),
     take(maxVisible),
   )(activities) as Activity[];
 
+  if (isNilOrEmpty(sortedActivities)) {
+    return <EmptyActivity />;
+  }
+
+  const handleClearAll = () => {
+    setActivityState(
+      produce((state) => {
+        state.activities = [];
+      }),
+    );
+  };
+
   return (
-    <Stack px={2} py={3} spacing={2} {...props}>
-      {isNilOrEmpty(sortedActivities) ? (
-        <EmptyActivity sx={{ px: 3, py: 3 }} />
-      ) : (
-        sortedActivities.map(
+    <Stack>
+      <Stack pt={3} pb={1.5} {...props}>
+        {sortedActivities.map(
           (a) =>
             ({
               approval: (
-                <ApprovalNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                <ApprovalNotification
+                  key={a.id}
+                  {...a}
+                  {...notificationProps}
+                />
               ),
               bridge: (
-                <BridgeNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                <BridgeNotification key={a.id} {...a} {...notificationProps} />
               ),
               redeem: (
-                <RedeemNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                <RedeemNotification key={a.id} {...a} {...notificationProps} />
               ),
               swap: (
-                <SwapNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
+                <SwapNotification key={a.id} {...a} {...notificationProps} />
               ),
               transaction: (
                 <TransactionNotification
@@ -297,22 +319,43 @@ function ActivityList(props: StackProps) {
                     })
                   }
                   subtitle={a?.subtitle ?? ''}
-                  sx={{ px: 3, py: 2 }}
+                  {...notificationProps}
                 />
               ),
             })[a.type],
-        )
-      )}
+        )}
+      </Stack>
+      <Divider />
+      <Stack
+        px={3}
+        py={2}
+        direction="row"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
+        <Button
+          variant="outlined"
+          color="secondary"
+          disabled={isNilOrEmpty(sortedActivities)}
+          onClick={handleClearAll}
+        >
+          {intl.formatMessage({ defaultMessage: 'Clear' })}
+        </Button>
+      </Stack>
     </Stack>
   );
 }
+
+const notificationProps: Partial<NotificationSnackProps> = {
+  sx: { px: 3, py: 1.5 },
+};
 
 function EmptyActivity(props: StackProps) {
   const intl = useIntl();
 
   return (
-    <Stack {...props} justifyContent="center" alignItems="center" py={3}>
-      <Typography>
+    <Stack {...props} justifyContent="center" alignItems="center" py={5}>
+      <Typography color="text.secondary">
         {intl.formatMessage({ defaultMessage: 'No Activity' })}
       </Typography>
     </Stack>
