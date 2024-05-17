@@ -1,6 +1,6 @@
-import type { OethHistoryTransactionQuery } from './queries.generated';
+import type { OTokenHistoriesQuery } from '@origin/defi/shared';
 
-export type History = OethHistoryTransactionQuery['oTokenHistories'][number];
+export type History = OTokenHistoriesQuery['oTokenHistories'][number];
 
 export type DailyHistory = History & {
   transactions?: History[];
