@@ -38,8 +38,6 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
 
-  console.log(user);
-
   return (
     <Card
       {...rest}

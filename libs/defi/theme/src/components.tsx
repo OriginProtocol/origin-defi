@@ -1,8 +1,8 @@
 import { emphasize } from '@mui/material';
 import {
-  FaArrowsRotateRegular,
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
+  FaCircleInfoRegular,
   FaCircleXmarkRegular,
   FaSquareCheckRegular,
   FaSquareMinusRegular,
@@ -52,7 +52,7 @@ export const components = (base: Theme): ThemeOptions => ({
             />
           ),
           info: (
-            <FaArrowsRotateRegular
+            <FaCircleInfoRegular
               sx={{ color: base.palette.success.main, fontSize: 20 }}
             />
           ),
@@ -69,10 +69,22 @@ export const components = (base: Theme): ThemeOptions => ({
         },
       },
       styleOverrides: {
-        root: ({ theme }) => ({
-          backgroundColor: theme.palette.background.highlight,
+        root: ({ theme, ownerState }) => ({
+          borderRadius: theme.shape.borderRadius * 3,
           color: theme.palette.text.primary,
-          '&&&': { border: 'none' },
+          boxShadow: theme.shadows[2],
+          ...{
+            info: {
+              backgroundColor: theme.palette.background.highlight,
+            },
+            error: {
+              backgroundColor: theme.palette.error.faded,
+            },
+            success: {
+              backgroundColor: theme.palette.success.faded,
+            },
+            warning: { backgroundColor: theme.palette.background.highlight },
+          }[ownerState?.severity ?? 'info'],
         }),
       },
     },
@@ -276,13 +288,18 @@ export const components = (base: Theme): ThemeOptions => ({
         enableColorScheme: true,
       },
       styleOverrides: (theme) => `
+          html {
+            overflow-x: hidden;
+            padding-left: calc(100vw - 100%);
+          }
+          
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;            
             font-size: ${theme.typography.body3.fontSize}px;
             line-height: ${theme.typography.body3.lineHeight};
-            font-weight: ${theme.typography.body3.fontWeight};
+            font-weight: ${theme.typography.body3.fontWeight};            
           }
   
           input[type=number] {
@@ -404,6 +421,7 @@ export const components = (base: Theme): ThemeOptions => ({
       styleOverrides: {
         root: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 4,
+          boxShadow: theme.shadows[2],
         }),
         paper: ({ theme }) => ({
           border: '1px solid',
@@ -479,7 +497,7 @@ export const components = (base: Theme): ThemeOptions => ({
           borderRadius: theme.shape.borderRadius,
           border: '1px solid',
           borderColor: theme.palette.divider,
-          boxShadow: theme.shadows[1],
+          boxShadow: theme.shadows[2],
           '>.MuiTypography-root': theme.typography.body3,
         }),
       },

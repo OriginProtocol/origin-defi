@@ -1,4 +1,5 @@
 import { CircularProgress, Stack, Typography } from '@mui/material';
+import { useTxButton } from '@origin/defi/shared';
 import { ExternalLink, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -6,7 +7,6 @@ import {
   TxButton,
   useFormat,
   UserAvatar,
-  useTxButton,
 } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';

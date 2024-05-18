@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
+  NotificationsProvider,
   queryClient,
   registerGoogleTagManager,
   registerSentry,
@@ -16,7 +17,6 @@ import {
   GeoFenceProvider,
   IntlProvider,
   logWelcomeMessage,
-  NotificationsProvider,
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';

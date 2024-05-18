@@ -20,18 +20,16 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  NotificationSnack,
-  SeverityIcon,
+  MultiTokenIcon,
+  TokenIcon,
 } from '@origin/shared/components';
 import { getTokenId } from '@origin/shared/contracts';
 import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
-  ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
   SettingsButton,
-  SwapNotification,
   SwapProvider,
   useDeleteActivity,
   useFormat,
@@ -56,6 +54,7 @@ import {
   subtractSlippage,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../TokenInput';
@@ -81,6 +80,7 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -101,26 +101,34 @@ export const Swapper = ({
         return activity.id;
       }}
       onApproveSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, txReceipt, amountIn } = state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
+          icon: <TokenIcon token={state.tokenIn} sx={{ fontSize: 36 }} />,
+          title: intl.formatMessage({ defaultMessage: 'Approval successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage: '{amountIn} {symbolIn}',
+            },
+            {
+              amountIn: formatAmount(amountIn),
+              symbolIn: tokenIn?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
+          severity: 'success',
         });
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'warning',
         });
       }}
       onApproveFailure={(state) => {
@@ -132,13 +140,12 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
+          icon: <TokenIcon token={state.tokenIn} sx={{ fontSize: 36 }} />,
+          title: intl.formatMessage({
+            defaultMessage: 'Error while approving',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
       onSwapStart={(state) => {
@@ -151,30 +158,52 @@ export const Swapper = ({
         return activity.id;
       }}
       onSwapSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, tokenOut, amountIn, amountOut, txReceipt } =
+          state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <SwapNotification {...state} status="success" />,
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
+            />
+          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage:
+                '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+            },
+            {
+              amountIn: intl.formatNumber(
+                +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolIn: tokenIn?.symbol,
+              amountOut: intl.formatNumber(
+                +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolOut: tokenOut?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
         });
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'warning',
         });
       }}
       onSwapFailure={(state) => {
-        const { error, trackId } = state;
+        const { error, trackId, tokenIn, tokenOut } = state;
         updateActivity({
           ...state,
           id: trackId,
@@ -182,13 +211,17 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
             />
           ),
+          title: intl.formatMessage({
+            defaultMessage: 'Error while swapping',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
     >

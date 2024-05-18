@@ -32,7 +32,7 @@ import { ogvToOgnRate } from '../constants';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 
 type UserInput = {
   ogvBalance: bigint;

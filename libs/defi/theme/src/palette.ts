@@ -17,17 +17,22 @@ export const lightPalette: ThemeOptions = {
     },
     error: {
       main: '#C42525',
-      faded: alpha('#C42525', 0.2),
+      faded: '#FDEDED',
       contrastText: '#FFFFFF',
     },
     warning: {
       main: '#FACC15',
-      faded: alpha('#FACC15', 0.2),
+      faded: '#FAEDBB',
       contrastText: '#FFFFFF',
     },
     success: {
       main: '#0D7544',
-      faded: alpha('#0D7544', 0.2),
+      faded: '#EDFDF5',
+      contrastText: '#FFFFFF',
+    },
+    info: {
+      main: '#0074F0',
+      faded: '#DEEEFE',
       contrastText: '#FFFFFF',
     },
     text: {
@@ -43,7 +48,7 @@ export const lightPalette: ThemeOptions = {
       default: '#F7F9FF',
       paper: '#EDEFF5',
       highlight: '#FFFFFF',
-      primaryFaded: '#F3F4F6',
+      faded: '#F3F4F6',
       gradientBlue:
         'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:
@@ -81,7 +86,7 @@ export const darkPalette: ThemeOptions = {
     },
     error: {
       main: '#F36A6A',
-      faded: alpha('#F36A6A', 0.2),
+      faded: '#3E1F1F',
       contrastText: '#FFFFFF',
     },
     warning: {
@@ -91,7 +96,12 @@ export const darkPalette: ThemeOptions = {
     },
     success: {
       main: '#18AB66',
-      faded: alpha('#18AB66', 0.2),
+      faded: '#1F2A23',
+      contrastText: '#FFFFFF',
+    },
+    info: {
+      main: '#1285FF',
+      faded: '#1E2A36',
       contrastText: '#FFFFFF',
     },
     text: {
@@ -107,7 +117,7 @@ export const darkPalette: ThemeOptions = {
       default: '#1C1D22',
       paper: '#16181D',
       highlight: '#121316',
-      primaryFaded: '#222835',
+      faded: '#222835',
       gradientBlue:
         'linear-gradient(90deg, rgba(140, 102, 252, 0.20) -28.99%, rgba(2, 116, 241, 0.20) 144.97%)',
       gradientPurple:

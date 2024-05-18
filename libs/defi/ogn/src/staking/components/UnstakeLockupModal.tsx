@@ -11,7 +11,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
+import { ColorChip, useTxButton } from '@origin/defi/shared';
 import {
   MiddleTruncatedLabel,
   TokenIcon,
@@ -22,12 +22,7 @@ import {
   FaCircleExclamationRegular,
   FaXmarkRegular,
 } from '@origin/shared/icons';
-import {
-  ConnectedButton,
-  TxButton,
-  useFormat,
-  useTxButton,
-} from '@origin/shared/providers';
+import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
 import { subtractSlippage } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNowStrict } from 'date-fns';

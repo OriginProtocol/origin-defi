@@ -117,7 +117,7 @@ export const UnlockAllModal = (props: DialogProps) => {
 type FormViewProps = {
   params: WriteTransactionParameters;
   callbacks: WriteTransactionCallbacks;
-  gasPrice: GasPrice | undefined;
+  gasPrice: GasPrice | undefined | null;
   lockups: Lockup[] | undefined;
 } & DialogContentProps;
 

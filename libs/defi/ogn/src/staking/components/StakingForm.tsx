@@ -13,7 +13,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { TokenButton, useOgnInfo } from '@origin/defi/shared';
+import { TokenButton, useOgnInfo, useTxButton } from '@origin/defi/shared';
 import {
   BigIntInput,
   InfoTooltipLabel,
@@ -26,12 +26,7 @@ import {
   DefaultWallet,
   FaCircleExclamationRegular,
 } from '@origin/shared/icons';
-import {
-  ApprovalButton,
-  TxButton,
-  useFormat,
-  useTxButton,
-} from '@origin/shared/providers';
+import { TxButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
@@ -61,7 +56,39 @@ export const StakingForm = () => {
       enabled: false,
     },
   );
-  const { params, callbacks } = useTxButton({
+  const { params: approvalParams, callbacks: approvalCallbacks } = useTxButton({
+    params: {
+      contract: tokens.mainnet.OGN,
+      functionName: 'approve',
+      args: [tokens.mainnet.xOGN.address, amount],
+    },
+    activity: {
+      title: intl.formatMessage({
+        defaultMessage: 'Approve xOGN',
+      }),
+      subtitle: intl.formatMessage(
+        {
+          defaultMessage: 'Approve {amount} xOGN',
+        },
+        {
+          amount: intl.formatNumber(
+            +formatUnits(amount, tokens.mainnet.xOGN.decimals),
+            { notation: 'compact', maximumSignificantDigits: 4 },
+          ),
+          duration,
+        },
+      ),
+      endIcon: <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 36 }} />,
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [useOgnInfo.getKey(address, config)],
+        });
+      },
+    },
+  });
+  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
@@ -84,7 +111,7 @@ export const StakingForm = () => {
           duration,
         },
       ),
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
+      endIcon: <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 36 }} />,
     },
     callbacks: {
       onWriteSuccess: () => {
@@ -446,24 +473,19 @@ export const StakingForm = () => {
           </Stack>
         )}
         <Collapse in={showApprove}>
-          <ApprovalButton
-            token={tokens.mainnet.OGN}
-            spender={tokens.mainnet.xOGN.address}
-            amount={amount}
+          <TxButton
+            params={approvalParams}
+            callbacks={approvalCallbacks}
             variant="action"
             fullWidth
             disabled={isInfoLoading}
-            onSuccess={() => {
-              queryClient.invalidateQueries({
-                queryKey: [useOgnInfo.getKey(address, config)],
-              });
-            }}
+            label={intl.formatMessage({ defaultMessage: 'Approve xOGN' })}
             sx={{ mb: 3 }}
           />
         </Collapse>
         <TxButton
-          params={params}
-          callbacks={callbacks}
+          params={writeParams}
+          callbacks={writeCallbacks}
           disabled={stakeDisabled}
           variant="action"
           fullWidth

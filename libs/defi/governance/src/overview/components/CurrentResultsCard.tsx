@@ -8,10 +8,10 @@ import {
   Stack,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { OgvProposalState } from '@origin/defi/shared';
+import { OgvProposalState, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { TxButton, useFormat, useTxButton } from '@origin/shared/providers';
+import { TxButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';

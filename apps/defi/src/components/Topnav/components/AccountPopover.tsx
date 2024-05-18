@@ -1,15 +1,8 @@
 import { useState } from 'react';
 
+import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
 import {
-  Badge,
-  Button,
-  Divider,
-  Stack,
-  Tab,
-  Tabs,
-  Typography,
-} from '@mui/material';
-import {
+  BadgeIcon,
   ClickAwayPopover,
   ClipboardButton,
   TokenIcon,
@@ -84,27 +77,13 @@ export const AccountPopover = (
         p={3}
       >
         <Stack direction="row" alignItems="center" spacing={1.5}>
-          <Badge
+          <BadgeIcon
             badgeContent={
               <WalletIcon walletName={connector?.name} sx={{ fontSize: 10 }} />
             }
-            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-            sx={{
-              '& .MuiBadge-badge': {
-                p: 0,
-                minWidth: 0,
-                minHeight: 0,
-                width: 16,
-                height: 16,
-                mb: 0.75,
-                border: '1px solid',
-                borderColor: 'background.highlight',
-                backgroundColor: 'background.default',
-              },
-            }}
           >
             <UserAvatar width={32} />
-          </Badge>
+          </BadgeIcon>
           <AddressLabel
             address={address}
             variant="body1"

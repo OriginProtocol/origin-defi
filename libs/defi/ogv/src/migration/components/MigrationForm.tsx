@@ -28,13 +28,13 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useOgvLockupsQuery } from '../../queries.generated';
 import { ogvToOgnRate } from '../constants';
+import { useOgvLockupsQuery } from '../queries.generated';
 import { ConvertButton } from './ConvertModal';
 
 import type { CardProps, StackProps } from '@mui/material';
 
-import type { Lockup } from '../../types';
+import type { Lockup } from '../types';
 import type { ConvertButtonProps } from './ConvertModal';
 
 export const MigrationForm = (props: StackProps) => {

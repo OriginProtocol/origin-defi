@@ -168,7 +168,8 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
       expanded={expanded.includes(key)}
       onChange={handleToggle(key)}
       sx={{
-        p: 0,
+        px: 0,
+        py: 1,
         border: 'none',
       }}
       disableGutters

@@ -6,10 +6,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useOgnInfo } from '@origin/defi/shared';
+import { useOgnInfo, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { TxButton, useFormat, useTxButton } from '@origin/shared/providers';
+import { TxButton, useFormat } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';

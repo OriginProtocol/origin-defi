@@ -13,16 +13,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { SectionCard, useOgnInfo } from '@origin/defi/shared';
+import { SectionCard, useOgnInfo, useTxButton } from '@origin/defi/shared';
 import { TokenChip } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
-import {
-  ConnectedButton,
-  TxButton,
-  useFormat,
-  useTxButton,
-} from '@origin/shared/providers';
+import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
