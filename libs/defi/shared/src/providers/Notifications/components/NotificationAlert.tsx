@@ -1,13 +1,7 @@
 import { useState } from 'react';
 
-import {
-  Alert,
-  AlertTitle,
-  LinearProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { SeverityIcon } from '@origin/shared/components';
+import { Alert, AlertTitle, LinearProgress, Stack } from '@mui/material';
+import { SeverityIcon, TooltipLabel } from '@origin/shared/components';
 import {
   BlockExplorerLink,
   useSetNotificationInvisible,
@@ -101,7 +95,20 @@ export const NotificationAlert = ({
                 </AlertTitle>
               )}
               {!isNilOrEmpty(message) && (
-                <Typography variant="caption1">{message}</Typography>
+                <TooltipLabel
+                  maxChars={200}
+                  variant="caption1"
+                  sx={{
+                    maxWidth: 1,
+                    display: '-webkit-box',
+                    WebkitBoxOrient: 'vertical',
+                    WebkitLineClamp: 3,
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {message}
+                </TooltipLabel>
               )}
             </Stack>
           </Stack>
