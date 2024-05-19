@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { SectionCard, useOgnInfo, useTxButton } from '@origin/defi/shared';
-import { TokenChip } from '@origin/shared/components';
+import { TokenChip, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
@@ -44,6 +44,7 @@ export const DelegateModal = (props: DialogProps) => {
       args: [delegatee ?? ZERO_ADDRESS],
     },
     activity: {
+      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
       title: intl.formatMessage({
         defaultMessage: 'Delegate',
       }),

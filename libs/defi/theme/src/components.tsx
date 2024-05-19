@@ -1,4 +1,4 @@
-import { emphasize } from '@mui/material';
+import { CircularProgress, emphasize } from '@mui/material';
 import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
@@ -47,25 +47,20 @@ export const components = (base: Theme): ThemeOptions => ({
         variant: 'standard',
         iconMapping: {
           error: (
-            <FaCircleXmarkRegular
-              sx={{ color: base.palette.error.main, fontSize: 20 }}
-            />
+            <FaCircleXmarkRegular sx={{ color: base.palette.error.main }} />
           ),
           info: (
-            <FaCircleInfoRegular
-              sx={{ color: base.palette.success.main, fontSize: 20 }}
-            />
+            <FaCircleInfoRegular sx={{ color: base.palette.primary.main }} />
           ),
           success: (
-            <FaCircleCheckRegular
-              sx={{ color: base.palette.success.main, fontSize: 20 }}
-            />
+            <FaCircleCheckRegular sx={{ color: base.palette.success.main }} />
           ),
           warning: (
             <FaCircleExclamationRegular
-              sx={{ color: base.palette.warning.main, fontSize: 20 }}
+              sx={{ color: base.palette.warning.main }}
             />
           ),
+          pending: <CircularProgress color="primary" size={20} />,
         },
       },
       styleOverrides: {
@@ -84,6 +79,9 @@ export const components = (base: Theme): ThemeOptions => ({
               backgroundColor: theme.palette.success.faded,
             },
             warning: { backgroundColor: theme.palette.background.highlight },
+            pending: {
+              backgroundColor: theme.palette.background.highlight,
+            },
           }[ownerState?.severity ?? 'info'],
         }),
       },

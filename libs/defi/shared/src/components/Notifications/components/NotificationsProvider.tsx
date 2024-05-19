@@ -1,9 +1,10 @@
-import { Stack } from '@mui/material';
+import { Collapse, Stack } from '@mui/material';
 import {
   NotificationStateProvider,
   useVisibleNotifications,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { TransitionGroup } from 'react-transition-group';
 
 import { NotificationAlert } from './NotificationAlert';
 
@@ -23,7 +24,6 @@ const NotificationsWrapped = ({ children }: StackProps) => {
       {!isNilOrEmpty(visibleNotifications) && (
         <Stack
           direction="column"
-          spacing={1}
           sx={{
             position: 'fixed',
             bottom: { xs: 16, sm: 40 },
@@ -38,13 +38,16 @@ const NotificationsWrapped = ({ children }: StackProps) => {
             zIndex: (theme) => theme.zIndex.modal + 1,
           }}
         >
-          {visibleNotifications.map((notif) => (
-            <NotificationAlert
-              key={notif.id}
-              notification={notif}
-              sx={{ width: 1 }}
-            />
-          ))}
+          <TransitionGroup>
+            {visibleNotifications.map((notif) => (
+              <Collapse appear key={notif.id}>
+                <NotificationAlert
+                  notification={notif}
+                  sx={{ width: 1, mt: 1 }}
+                />
+              </Collapse>
+            ))}
+          </TransitionGroup>
         </Stack>
       )}
     </>

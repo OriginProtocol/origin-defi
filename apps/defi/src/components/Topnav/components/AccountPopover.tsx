@@ -30,7 +30,6 @@ import {
   useWatchBalances,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { produce } from 'immer';
 import { descend, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -62,6 +61,7 @@ export const AccountPopover = (
       paperProps={{
         sx: {
           minWidth: 350,
+          maxWidth: 370,
           mt: 1,
           borderRadius: 4,
           border: '1px solid',
@@ -246,7 +246,7 @@ function BalanceRow({
 
 function ActivityList(props: StackProps) {
   const intl = useIntl();
-  const [{ activities, maxVisible }, setActivityState] = useActivityState();
+  const [{ activities, maxVisible }] = useActivityState();
 
   const sortedActivities = pipe(
     sort(descend((a: Activity) => a.createdOn)),
@@ -257,76 +257,53 @@ function ActivityList(props: StackProps) {
     return <EmptyActivity />;
   }
 
-  const handleClearAll = () => {
-    setActivityState(
-      produce((state) => {
-        state.activities = [];
-      }),
-    );
-  };
-
   return (
-    <Stack>
-      <Stack pt={3} pb={1.5} {...props}>
-        {sortedActivities.map(
-          (a) =>
-            ({
-              approval: (
-                <ApprovalNotification
-                  key={a.id}
-                  {...a}
-                  {...notificationProps}
-                />
-              ),
-              bridge: (
-                <BridgeNotification key={a.id} {...a} {...notificationProps} />
-              ),
-              redeem: (
-                <RedeemNotification key={a.id} {...a} {...notificationProps} />
-              ),
-              swap: (
-                <SwapNotification key={a.id} {...a} {...notificationProps} />
-              ),
-              transaction: (
-                <TransactionNotification
-                  key={a.id}
-                  {...a}
-                  title={
-                    a?.title ??
-                    intl.formatMessage({
-                      defaultMessage: 'New transaction',
-                    })
-                  }
-                  subtitle={a?.subtitle ?? ''}
-                  {...notificationProps}
-                />
-              ),
-            })[a.type],
-        )}
-      </Stack>
-      <Divider />
-      <Stack
-        px={3}
-        py={2}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-      >
-        <Button
-          variant="outlined"
-          color="secondary"
-          disabled={isNilOrEmpty(sortedActivities)}
-          onClick={handleClearAll}
-        >
-          {intl.formatMessage({ defaultMessage: 'Clear' })}
-        </Button>
-      </Stack>
+    <Stack
+      {...props}
+      sx={{
+        pt: 3,
+        pb: 1.5,
+        maxHeight: '50dvh',
+        overflowY: 'auto',
+        overflowX: 'hidden',
+        ...props?.sx,
+      }}
+    >
+      {sortedActivities.map(
+        (a) =>
+          ({
+            approval: (
+              <ApprovalNotification key={a.id} {...a} {...notificationProps} />
+            ),
+            bridge: (
+              <BridgeNotification key={a.id} {...a} {...notificationProps} />
+            ),
+            redeem: (
+              <RedeemNotification key={a.id} {...a} {...notificationProps} />
+            ),
+            swap: <SwapNotification key={a.id} {...a} {...notificationProps} />,
+            transaction: (
+              <TransactionNotification
+                key={a.id}
+                {...a}
+                title={
+                  a?.title ??
+                  intl.formatMessage({
+                    defaultMessage: 'New transaction',
+                  })
+                }
+                subtitle={a?.subtitle ?? ''}
+                {...notificationProps}
+              />
+            ),
+          })[a.type],
+      )}
     </Stack>
   );
 }
 
 const notificationProps: Partial<NotificationSnackProps> = {
-  sx: { px: 3, py: 1.5 },
+  sx: { width: 1, px: 3, py: 1.5 },
 };
 
 function EmptyActivity(props: StackProps) {

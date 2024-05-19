@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material';
 import {
   ActivityIcon,
+  ErrorTooltipLabel,
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
@@ -70,7 +71,7 @@ export const BridgeNotification = ({
             )}
           </Typography>
         ) : (
-          <Typography color="error">{error}</Typography>
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
         )
       }
       endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}

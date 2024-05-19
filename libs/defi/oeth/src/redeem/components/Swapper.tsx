@@ -89,7 +89,7 @@ export const Swapper = ({
         const { trackId, tokenIn, txReceipt, amountIn } = state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          icon: <TokenIcon token={state.tokenIn} sx={{ fontSize: 36 }} />,
+          icon: <TokenIcon token={state.tokenIn} />,
           title: intl.formatMessage({ defaultMessage: 'Approval successful' }),
           message: intl.formatMessage(
             {
@@ -113,7 +113,7 @@ export const Swapper = ({
           message: intl.formatMessage({
             defaultMessage: 'User rejected operation',
           }),
-          severity: 'warning',
+          severity: 'info',
         });
       }}
       onApproveFailure={(state) => {
@@ -125,7 +125,7 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          icon: <TokenIcon token={state.tokenIn} sx={{ fontSize: 36 }} />,
+          icon: <TokenIcon token={state.tokenIn} />,
           title: intl.formatMessage({
             defaultMessage: 'Error while approving',
           }),
@@ -151,6 +151,7 @@ export const Swapper = ({
             <MultiTokenIcon
               tokens={[tokenIn, tokenOut]}
               sx={{ transform: 'rotate(45deg)' }}
+              zOrder="last"
             />
           ),
           title: intl.formatMessage({ defaultMessage: 'Swap successful' }),

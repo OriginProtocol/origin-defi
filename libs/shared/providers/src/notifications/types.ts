@@ -5,7 +5,7 @@ import type { BlockExplorerLinkProps } from '../wagmi';
 
 export type Notification = {
   id: string;
-  severity: AlertColor;
+  severity: AlertColor | string;
   title?: string;
   message?: string;
   icon?: ReactNode;
@@ -21,7 +21,7 @@ export type Notification = {
 };
 
 export type NotificationOptions = {
-  severity?: AlertColor;
+  severity?: AlertColor | string;
   title?: string;
   message?: string;
   icon?: ReactNode;

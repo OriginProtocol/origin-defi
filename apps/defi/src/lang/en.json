@@ -521,6 +521,12 @@
       "value": "wOETH Balance"
     }
   ],
+  "9b65gT": [
+    {
+      "type": 0,
+      "value": "Redeem OUSD"
+    }
+  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -845,6 +851,20 @@
       "value": "Swap via Uniswap V2"
     }
   ],
+  "Gox5LU": [
+    {
+      "type": 0,
+      "value": "Collect "
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " rewards"
+    }
+  ],
   "H5+NAX": [
     {
       "type": 0,
@@ -1117,20 +1137,6 @@
     {
       "type": 0,
       "value": "Your balance:"
-    }
-  ],
-  "O6UApS": [
-    {
-      "type": 0,
-      "value": "Collect "
-    },
-    {
-      "type": 1,
-      "value": "rewards"
-    },
-    {
-      "type": 0,
-      "value": " rewards OGV"
     }
   ],
   "OBfWz0": [
@@ -1879,6 +1885,12 @@
     {
       "type": 1,
       "value": "symbolIn"
+    }
+  ],
+  "g82HU6": [
+    {
+      "type": 0,
+      "value": "Operation cancelled"
     }
   ],
   "gBm7FQ": [

@@ -211,6 +211,7 @@ const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
   });
 
   const handleMenuClick = (path: string) => () => {
+    setOpen(false);
     navigate(`${route.path}/${path ?? ''}`);
   };
 

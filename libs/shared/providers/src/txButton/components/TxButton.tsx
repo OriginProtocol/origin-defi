@@ -13,6 +13,7 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
+import type { ReactNode } from 'react';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -38,11 +39,12 @@ export type TxButtonProps<
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
-  label?: string;
+  label?: ReactNode;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
   params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
+  gas?: bigint;
 } & Omit<
   ConnectedButtonProps,
   'onClick' | 'value' | 'children' | 'targetChainId'
@@ -66,6 +68,7 @@ export const TxButton = <
   params,
   callbacks,
   disabled,
+  gas,
   ...rest
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
@@ -159,7 +162,7 @@ export const TxButton = <
     if (simulateError) {
       callbacks?.onSimulateError?.(simulateError);
     } else if (simulateData?.request) {
-      writeContract(simulateData.request);
+      writeContract({ ...simulateData.request, ...(!!gas && { gas }) });
       callbacks?.onWrite?.();
     }
   };

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { forwardRef, useState } from 'react';
 
-import { Alert, AlertTitle, LinearProgress, Stack } from '@mui/material';
-import { SeverityIcon, TooltipLabel } from '@origin/shared/components';
+import { Alert, AlertTitle, Box, LinearProgress, Stack } from '@mui/material';
+import { TooltipLabel } from '@origin/shared/components';
 import {
   BlockExplorerLink,
   useSetNotificationInvisible,
@@ -10,7 +10,13 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntervalEffect } from '@react-hookz/web';
 
-import type { AlertProps, LinearProgressProps } from '@mui/material';
+import { SeverityIcon } from '../../../components';
+
+import type {
+  AlertColor,
+  AlertProps,
+  LinearProgressProps,
+} from '@mui/material';
 import type { Notification } from '@origin/shared/providers';
 import type { Dispatch } from 'react';
 
@@ -19,11 +25,10 @@ export type NotificationAlertProps = {
   onClose?: Dispatch<Notification>;
 } & AlertProps;
 
-export const NotificationAlert = ({
-  notification,
-  onClose,
-  ...rest
-}: NotificationAlertProps) => {
+export const NotificationAlert = forwardRef<
+  HTMLDivElement,
+  NotificationAlertProps
+>(({ notification, onClose, ...rest }, ref) => {
   const {
     id,
     severity,
@@ -36,24 +41,46 @@ export const NotificationAlert = ({
   } = notification;
   const setNotificationViewed = useSetNotificationRead();
   const setNotificationInvisible = useSetNotificationInvisible();
+  const [countdown, setCountdown] = useState(100);
+  const [duration, setDuration] = useState(hideDuration);
+  const [timers, setTimers] = useState({
+    duration: hideDuration,
+    countdown: hideDuration ? hideDuration / 100 : undefined,
+  });
+
+  useIntervalEffect(() => {
+    setCountdown((prev) => prev - 1);
+  }, timers.countdown);
 
   useIntervalEffect(() => {
     setNotificationInvisible(id);
-  }, hideDuration);
+  }, timers.duration);
 
   const handleCloseClick = () => {
-    if (onClose) {
-      onClose(notification);
-    }
+    onClose?.(notification);
     setNotificationViewed(id);
     setNotificationInvisible(id);
+  };
+
+  const handleMouseEnter = () => {
+    setTimers({ duration: undefined, countdown: undefined });
+    setDuration((prev) => (prev ? (countdown / 100) * prev : undefined));
+  };
+
+  const handleMouseLeave = () => {
+    setTimers({
+      duration,
+      countdown: duration ? duration / countdown : undefined,
+    });
   };
 
   return (
     <Alert
       {...rest}
-      severity={severity}
-      color={severity}
+      ref={ref}
+      severity={severity as AlertColor}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       sx={{
         position: 'relative',
         ...(hideDuration
@@ -71,14 +98,25 @@ export const NotificationAlert = ({
         },
         ...rest?.sx,
       }}
-      {...((!isNilOrEmpty(content) || !!icon) && { icon: false })}
+      {...((!!content || !!icon) && { icon: false })}
       onClose={handleCloseClick}
     >
       {isNilOrEmpty(content) ? (
         <Stack spacing={1.5}>
           <Stack direction="row" alignItems="center" spacing={2}>
-            {!!notification?.icon && icon}
-            <Stack spacing={0.75}>
+            {!!notification?.icon && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'flex-start',
+                  fontSize: 36,
+                }}
+              >
+                {icon}
+              </Box>
+            )}
+            <Stack spacing={1}>
               {!isNilOrEmpty(title) && (
                 <AlertTitle
                   sx={(theme) => ({
@@ -90,7 +128,7 @@ export const NotificationAlert = ({
                     fontWeight: 'medium',
                   })}
                 >
-                  <SeverityIcon severity={severity} sx={{ fontSize: 14 }} />
+                  {!!icon && <SeverityIcon severity={severity} />}
                   {title}
                 </AlertTitle>
               )}
@@ -125,8 +163,8 @@ export const NotificationAlert = ({
       )}
       {!!hideDuration && (
         <CountDown
-          duration={hideDuration}
-          color={severity}
+          value={countdown}
+          color={severity === 'pending' ? 'primary' : (severity as AlertColor)}
           sx={{
             position: 'absolute',
             bottom: 0,
@@ -139,19 +177,26 @@ export const NotificationAlert = ({
       )}
     </Alert>
   );
-};
+});
+NotificationAlert.displayName = 'NotificationAlert';
 
-type CountDownProps = { duration: number } & Omit<
+type CountDownProps = { color: string } & Omit<
   LinearProgressProps,
-  'value' | 'variant'
+  'variant' | 'color'
 >;
 
-function CountDown({ duration, ...rest }: CountDownProps) {
-  const [timer, setTimer] = useState(100);
+function CountDown({ color, ...rest }: CountDownProps) {
+  const col = color === 'pending' ? 'primary' : (color as AlertColor);
 
-  useIntervalEffect(() => {
-    setTimer((prev) => prev - 1);
-  }, duration / 110);
-
-  return <LinearProgress {...rest} variant="determinate" value={timer} />;
+  return (
+    <LinearProgress
+      {...rest}
+      color={col}
+      variant="determinate"
+      sx={{
+        '& .MuiLinearProgress-bar': { transitionDuration: '50ms', width: 1 },
+        ...rest?.sx,
+      }}
+    />
+  );
 }

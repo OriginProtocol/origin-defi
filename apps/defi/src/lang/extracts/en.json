@@ -236,6 +236,9 @@
   "9W24c9": {
     "defaultMessage": "wOETH Balance"
   },
+  "9b65gT": {
+    "defaultMessage": "Redeem OUSD"
+  },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
@@ -365,6 +368,9 @@
   "GdHGdR": {
     "defaultMessage": "Swap via Uniswap V2"
   },
+  "Gox5LU": {
+    "defaultMessage": "Collect {rewards} rewards"
+  },
   "H5+NAX": {
     "defaultMessage": "Balance"
   },
@@ -478,9 +484,6 @@
   },
   "Nvcaj3": {
     "defaultMessage": "Your balance:"
-  },
-  "O6UApS": {
-    "defaultMessage": "Collect {rewards} rewards OGV"
   },
   "OBfWz0": {
     "defaultMessage": "No available route"
@@ -802,6 +805,9 @@
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "g82HU6": {
+    "defaultMessage": "Operation cancelled"
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."

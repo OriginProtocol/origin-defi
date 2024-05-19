@@ -1,6 +1,6 @@
 import { CircularProgress, Stack, Typography } from '@mui/material';
 import { useTxButton } from '@origin/defi/shared';
-import { ExternalLink, ValueLabel } from '@origin/shared/components';
+import { ExternalLink, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   AddressLabel,
@@ -43,6 +43,7 @@ export const DelegationPanel = (props: StackProps) => {
       args: [address ?? ZERO_ADDRESS],
     },
     activity: {
+      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
       title: intl.formatMessage({
         defaultMessage: 'Delegate',
       }),

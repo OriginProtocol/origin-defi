@@ -39,10 +39,11 @@ export const RewardCard = (props: CardProps) => {
       },
     },
     activity: {
+      endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
       title: intl.formatMessage({ defaultMessage: 'Collect Rewards' }),
       subtitle: intl.formatMessage(
         {
-          defaultMessage: 'Collect {rewards} rewards OGV',
+          defaultMessage: 'Collect {rewards} rewards',
         },
         {
           rewards: formatAmount(

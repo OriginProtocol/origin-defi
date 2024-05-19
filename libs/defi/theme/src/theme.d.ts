@@ -1,4 +1,5 @@
 import '@mui/material/styles';
+import '@mui/material/Alert';
 import '@mui/material/Button';
 import '@mui/material/Typography';
 
@@ -79,6 +80,12 @@ declare module '@mui/material/styles' {
     mono?: React.CSSProperties;
     caption1?: React.CSSProperties;
     caption2?: React.CSSProperties;
+  }
+}
+
+declare module '@mui/material/Alert' {
+  interface AlertPropsColorOverrides {
+    pending: true;
   }
 }
 

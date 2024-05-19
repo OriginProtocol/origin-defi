@@ -9,21 +9,22 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput } from '@origin/defi/shared';
+import { TokenInput, useTxButton } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
   MultiTokenIcon,
+  TokenIcon,
 } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
-  ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
   RedeemProvider,
   SettingsButton,
+  TxButton,
   useFormat,
-  useHandleRedeem,
   useHandleRedeemAmountInChange,
   useRedeemerPrices,
   useRedeemState,
@@ -34,6 +35,7 @@ import {
   composeContexts,
   isNilOrEmpty,
   subtractPercentage,
+  subtractSlippage,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -91,6 +93,9 @@ function RedeemerWrapped({
       isRedeemLoading,
       isEstimateLoading,
       isRedeemWaitingForSignature,
+      vaultContract,
+      gas,
+      gasBuffer,
     },
   ] = useRedeemState();
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
@@ -98,7 +103,31 @@ function RedeemerWrapped({
     token: tokenIn,
   });
   const handleAmountInChange = useHandleRedeemAmountInChange();
-  const handleRedeem = useHandleRedeem();
+  const minAmountOut = subtractSlippage(amountOut, 18, slippage);
+
+  const { params, callbacks } = useTxButton({
+    params: {
+      contract: vaultContract,
+      functionName: 'redeem',
+      args: [amountIn, minAmountOut],
+    },
+    activity: {
+      title: intl.formatMessage({ defaultMessage: 'Redeem OUSD' }),
+      subtitle: intl.formatMessage(
+        {
+          defaultMessage: '{amountIn} {symbolIn}',
+        },
+        {
+          amountIn: intl.formatNumber(
+            +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+            { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+          ),
+          symbolIn: tokenIn?.symbol,
+        },
+      ),
+      endIcon: <TokenIcon token={tokens.mainnet.OUSD} />,
+    },
+  });
 
   const redeemButtonLabel =
     amountIn === 0n
@@ -247,26 +276,29 @@ function RedeemerWrapped({
           </Collapse>
         </CardContent>
         <CardContent sx={{ pt: 0 }}>
-          <ConnectedButton
+          <TxButton
+            variant="action"
+            params={params}
+            callbacks={callbacks}
+            gas={gas + (gas * gasBuffer) / 100n}
             fullWidth
-            {...buttonsProps}
             disabled={redeemButtonDisabled}
-            onClick={handleRedeem}
-          >
-            {isEstimateLoading ? (
-              <CircularProgress size={32} color="inherit" />
-            ) : isRedeemWaitingForSignature ? (
-              intl.formatMessage({
-                defaultMessage: 'Waiting for signature',
-              })
-            ) : isRedeemLoading ? (
-              intl.formatMessage({
-                defaultMessage: 'Processing Transaction',
-              })
-            ) : (
-              redeemButtonLabel
-            )}
-          </ConnectedButton>
+            label={
+              isEstimateLoading ? (
+                <CircularProgress size={32} color="inherit" />
+              ) : isRedeemWaitingForSignature ? (
+                intl.formatMessage({
+                  defaultMessage: 'Waiting for signature',
+                })
+              ) : isRedeemLoading ? (
+                intl.formatMessage({
+                  defaultMessage: 'Processing Transaction',
+                })
+              ) : (
+                redeemButtonLabel ?? ''
+              )
+            }
+          />
         </CardContent>
       </Card>
     </ErrorBoundary>

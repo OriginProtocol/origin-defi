@@ -4,7 +4,6 @@ import {
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
-import { FaArrowRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -83,7 +82,6 @@ export const RedeemNotification = ({
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
           <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
-          <FaArrowRightRegular sx={{ fontSize: 14 }} />
         </Stack>
       }
     />

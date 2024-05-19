@@ -78,7 +78,7 @@ export const StakingForm = () => {
           duration,
         },
       ),
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 36 }} />,
+      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
     },
     callbacks: {
       onWriteSuccess: () => {
@@ -95,6 +95,7 @@ export const StakingForm = () => {
       args: [amount, BigInt(duration * secondsInMonth)],
     },
     activity: {
+      endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
       title: intl.formatMessage({
         defaultMessage: 'Stake OGN',
       }),
@@ -111,7 +112,6 @@ export const StakingForm = () => {
           duration,
         },
       ),
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 36 }} />,
     },
     callbacks: {
       onWriteSuccess: () => {

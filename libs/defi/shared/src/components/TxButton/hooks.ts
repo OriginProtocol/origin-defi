@@ -157,7 +157,7 @@ export const useTxButton = <
                 defaultMessage: 'Your transaction is being processed on-chain.',
               }),
         icon: act?.endIcon,
-        severity: 'info',
+        severity: 'pending',
         hideDuration: undefined,
       });
       setNotifId(id);
@@ -183,11 +183,11 @@ export const useTxButton = <
     }
     if (!args.disableNotification) {
       pushNotification({
-        title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+        title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
         message: intl.formatMessage({
           defaultMessage: 'User rejected operation',
         }),
-        severity: 'warning',
+        severity: 'info',
       });
     }
     args.callbacks?.onUserReject?.();
