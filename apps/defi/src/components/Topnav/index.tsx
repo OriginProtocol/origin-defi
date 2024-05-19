@@ -8,6 +8,7 @@ import { FaArrowUpArrowDownLight, OriginLabel } from '@origin/shared/icons';
 import {
   AccountPopover,
   ActivityButton,
+  ChainSwitcherButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
 import { Link as RouterLink } from 'react-router-dom';
@@ -20,6 +21,7 @@ export const Topnav = () => {
   const { isConnected } = useAccount();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
 
@@ -76,12 +78,12 @@ export const Topnav = () => {
               <OriginLabel />
             </Box>
           </Grid2>
-          <Grid2 xs={0} md={7}>
+          <Grid2 xs={0} md={6}>
             {!isSm && <HoverMenu />}
           </Grid2>
           <Grid2
             xs={10}
-            md={3}
+            md={4}
             sx={{
               display: 'flex',
               flexDirection: 'row',
@@ -90,6 +92,7 @@ export const Topnav = () => {
               gap: 1.25,
             }}
           >
+            <ChainSwitcherButton variant="nav" />
             <OpenAccountModalButton
               color="secondary"
               onClick={(e) => {
@@ -109,13 +112,13 @@ export const Topnav = () => {
                 maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
                 minHeight: { xs: 36, md: 40 },
                 paddingX: {
-                  md: 2,
+                  lg: 2,
                   xs: isConnected ? 0.75 : 2,
                 },
                 paddingY: 0.75,
               }}
               disconnectedProps={{ color: 'primary' }}
-              hideAddress={isSm}
+              hideAddress={isMd}
             />
             <AccountPopover
               anchor={accountModalAnchor}

@@ -1,4 +1,4 @@
-import { alpha, createTheme } from '@mui/material';
+import { alpha, createTheme, lighten } from '@mui/material';
 import shadows from '@mui/material/styles/shadows';
 import {
   FaArrowsRotateRegular,
@@ -317,6 +317,23 @@ export const theme = createTheme({
             },
           }),
         },
+        {
+          props: { variant: 'nav' },
+          style: ({ theme }) => ({
+            background: lighten(theme.palette.background.paper, 0.05),
+            '&:hover': {
+              background: lighten(theme.palette.background.paper, 0.1),
+            },
+            minWidth: 36,
+            minHeight: 36,
+            [base.breakpoints.up('md')]: {
+              paddingX: 2,
+              paddingY: 0,
+              minWidth: 44,
+              minHeight: 44,
+            },
+          }),
+        },
       ],
     },
     MuiButtonBase: {
@@ -391,10 +408,10 @@ export const theme = createTheme({
             margin: 0;
           }
 
-          @font-face { 
-            font-family: "Inter"; 
+          @font-face {
+            font-family: "Inter";
             font-weight: 400;
-            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
 
