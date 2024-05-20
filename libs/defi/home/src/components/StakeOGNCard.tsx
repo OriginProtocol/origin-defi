@@ -32,20 +32,19 @@ export const StakeOGNCard = (props: CardProps) => {
         ...props?.sx,
       }}
     >
-      <Stack direction="row" alignItems="baseline" mb={5} spacing={2}>
-        <Typography variant="h5">
-          {intl.formatMessage({ defaultMessage: 'OGN' })}
-        </Typography>
-        <Typography variant="mono">
-          {intl.formatMessage({
-            defaultMessage: 'Govern An Expansive Ecosystem',
-          })}
-        </Typography>
-      </Stack>
-      <Typography variant="featured3" maxWidth={0.6} mb={3}>
+      <Typography variant="h5" mb={4}>
+        {intl.formatMessage({ defaultMessage: 'OGN' })}
+      </Typography>
+      <Typography variant="featured2" fontWeight="medium" mb={2}>
         {intl.formatMessage({
           defaultMessage:
-            'Earn yield from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN.',
+            'Stack Diverse Rewards. Govern An Expansive Ecosystem.',
+        })}
+      </Typography>
+      <Typography maxWidth={0.6} mb={4}>
+        {intl.formatMessage({
+          defaultMessage:
+            'Earn rewards from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN.',
         })}
       </Typography>
       <Stack
@@ -53,22 +52,22 @@ export const StakeOGNCard = (props: CardProps) => {
         alignItems="baseline"
         spacing={2}
         color="primary.main"
-        mb={5}
+        mb={4}
       >
-        <LoadingLabel isLoading={isAprLoading} variant="h5">
+        <LoadingLabel isLoading={isAprLoading} variant="h6">
           {intl.formatNumber(apr ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
         </LoadingLabel>
-        <Typography variant="featured2">
+        <Typography variant="featured3">
           {intl.formatMessage({ defaultMessage: 'Max vAPR' })}
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Button size="large">
-          {intl.formatMessage({ defaultMessage: 'Get OGN' })}
+        <Button size="large" component={RouterLink} to="/ogn/staking">
+          {intl.formatMessage({ defaultMessage: 'Stake' })}
         </Button>
         <Button
           variant="outlined"
