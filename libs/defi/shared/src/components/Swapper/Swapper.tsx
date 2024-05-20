@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
   Box,
   Button,
   Card,
@@ -8,7 +11,8 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
-  IconButton,
+  Divider,
+  emphasize,
   Stack,
   Typography,
 } from '@mui/material';
@@ -16,19 +20,16 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  NotificationSnack,
-  SeverityIcon,
-  TokenInput2,
+  MultiTokenIcon,
+  TokenIcon,
 } from '@origin/shared/components';
 import { getTokenId } from '@origin/shared/contracts';
 import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
-  ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
   SettingsButton,
-  SwapNotification,
   SwapProvider,
   useDeleteActivity,
   useFormat,
@@ -53,12 +54,14 @@ import {
   subtractSlippage,
 } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { TokenInput } from '../TokenInput';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { ButtonProps, IconButtonProps, StackProps } from '@mui/material';
+import type { BoxProps, ButtonProps, CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { SwapState, TokenSource } from '@origin/shared/providers';
 
@@ -68,7 +71,7 @@ export type SwapperProps = Pick<
 > & {
   onError?: (error: Error) => void;
   buttonsProps?: ButtonProps;
-} & Omit<StackProps, 'onError'>;
+} & Omit<CardProps, 'onError'>;
 
 export const Swapper = ({
   swapActions,
@@ -77,6 +80,7 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -97,26 +101,34 @@ export const Swapper = ({
         return activity.id;
       }}
       onApproveSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, txReceipt, amountIn } = state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
+          icon: <TokenIcon token={state.tokenIn} />,
+          title: intl.formatMessage({ defaultMessage: 'Approval successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage: '{amountIn} {symbolIn}',
+            },
+            {
+              amountIn: formatAmount(amountIn),
+              symbolIn: tokenIn?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
+          severity: 'success',
         });
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'info',
         });
       }}
       onApproveFailure={(state) => {
@@ -124,17 +136,16 @@ export const Swapper = ({
         updateActivity({
           ...state,
           id: trackId,
-          status: 'success',
+          status: 'error',
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
+          icon: <TokenIcon token={state.tokenIn} />,
+          title: intl.formatMessage({
+            defaultMessage: 'Error while approving',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
       onSwapStart={(state) => {
@@ -147,30 +158,54 @@ export const Swapper = ({
         return activity.id;
       }}
       onSwapSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, tokenOut, amountIn, amountOut, txReceipt } =
+          state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <SwapNotification {...state} status="success" />,
+          severity: 'success',
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
+              zOrder="last"
+            />
+          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage:
+                '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+            },
+            {
+              amountIn: intl.formatNumber(
+                +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolIn: tokenIn?.symbol,
+              amountOut: intl.formatNumber(
+                +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolOut: tokenOut?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
         });
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'info',
         });
       }}
       onSwapFailure={(state) => {
-        const { error, trackId } = state;
+        const { error, trackId, tokenIn, tokenOut } = state;
         updateActivity({
           ...state,
           id: trackId,
@@ -178,13 +213,18 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
+              zOrder="last"
             />
           ),
+          title: intl.formatMessage({
+            defaultMessage: 'Error while swapping',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
     >
@@ -276,19 +316,33 @@ function SwapperWrapped({
     amountIn === 0n;
 
   return (
-    <Stack spacing={3} {...rest}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
-        <Card>
-          <CardHeader
-            title={intl.formatMessage({ defaultMessage: 'Swap' })}
-            action={<SettingsButton />}
-          />
+    <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
+      <Card {...rest}>
+        <CardHeader
+          title={intl.formatMessage({ defaultMessage: 'Swap' })}
+          action={
+            <SettingsButton
+              sx={{ border: '1px solid', borderColor: 'divider' }}
+            />
+          }
+        />
+        <Divider />
+        <Box
+          sx={{
+            px: 3,
+            pt: 3,
+            pb: 0,
+          }}
+        >
           <Box
             sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 0.5,
               position: 'relative',
             }}
           >
-            <TokenInput2
+            <TokenInput
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
@@ -303,14 +357,17 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                p: 3,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.default',
+                px: 3,
+                py: 2,
+                borderRadius: 3,
+                backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             />
-            <TokenInput2
+            <TokenInput
               readOnly
+              disableMaxButton
               amount={amountOut}
               decimals={tokenOut.decimals}
               balance={balances?.[getTokenId(tokenOut)] ?? 0n}
@@ -323,61 +380,69 @@ function SwapperWrapped({
               }}
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
-              hideMaxButton
               sx={{
-                p: 3,
-                borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+                px: 3,
+                py: 2,
+                borderRadius: 3,
                 backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             />
             <ArrowButton onClick={handleTokenFlip} />
           </Box>
-          <CardContent>
-            <SwapRoute
-              sx={{
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-              }}
-            />
-            <Collapse in={amountOut > 0n}>
-              <Stack
-                direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                pt={2}
-                pb={1}
+        </Box>
+        <SwapRoute sx={{ mx: 3 }} />
+        <Collapse in={amountOut > 0n}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            py={3}
+            px={3}
+          >
+            <Typography color="text.secondary" fontWeight="medium">
+              {intl.formatMessage(
+                {
+                  defaultMessage: 'Minimum received with {slippage} slippage:',
+                },
+                {
+                  slippage: intl.formatNumber(slippage, {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  }),
+                },
+              )}
+            </Typography>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <LoadingLabel
+                isLoading={isSwapRoutesLoading}
+                sWidth={60}
+                fontWeight="medium"
               >
-                <Typography color="text.secondary">
-                  {intl.formatMessage(
-                    {
-                      defaultMessage:
-                        'Minimum received with {slippage} slippage:',
-                    },
-                    {
-                      slippage: intl.formatNumber(slippage, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
-                    },
-                  )}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-                    {formatAmount(
-                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                    )}
-                  </LoadingLabel>
-                  <Typography>{tokenOut.symbol}</Typography>
-                </Stack>
-              </Stack>
-            </Collapse>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+                {formatAmount(
+                  subtractSlippage(amountOut, tokenOut.decimals, slippage),
+                )}
+              </LoadingLabel>
+              <Typography fontWeight="medium">{tokenOut.symbol}</Typography>
+            </Stack>
+          </Stack>
+        </Collapse>
+        <CardContent sx={{ pt: 0 }}>
+          <Accordion
+            expanded={needsApproval}
+            disableGutters
+            sx={{ background: 'transparent', border: 'none' }}
+          >
+            <AccordionSummary />
+            <AccordionDetails sx={{ p: 0 }}>
               <Button
                 fullWidth
                 {...buttonsProps}
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
+                sx={{ mb: 1.5, ...buttonsProps?.sx }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />
@@ -391,71 +456,100 @@ function SwapperWrapped({
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
               </Button>
-            </Collapse>
-            <ConnectedButton
-              fullWidth
-              {...buttonsProps}
-              disabled={swapButtonDisabled}
-              onClick={handleSwap}
-              sx={{ mt: 1.5, ...buttonsProps?.sx }}
-            >
-              {isSwapRoutesLoading ? (
-                <CircularProgress size={32} color="inherit" />
-              ) : isSwapWaitingForSignature ? (
-                intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-              ) : isSwapLoading ? (
-                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-              ) : (
-                swapButtonLabel
-              )}
-            </ConnectedButton>
-          </CardContent>
-        </Card>
-        <TokenSelectModal
-          open={!isNilOrEmpty(tokenSource)}
-          onClose={handleCloseSelectionModal}
-          tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
-          onSelectToken={handleSelectToken}
-        />
-      </ErrorBoundary>
-    </Stack>
+            </AccordionDetails>
+          </Accordion>
+          <ConnectedButton
+            fullWidth
+            {...buttonsProps}
+            disabled={swapButtonDisabled}
+            onClick={handleSwap}
+          >
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isSwapWaitingForSignature ? (
+              intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+            ) : isSwapLoading ? (
+              intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+            ) : (
+              swapButtonLabel
+            )}
+          </ConnectedButton>
+        </CardContent>
+      </Card>
+      <TokenSelectModal
+        open={!isNilOrEmpty(tokenSource)}
+        onClose={handleCloseSelectionModal}
+        tokens={tokenSource === 'tokenIn' ? tokensIn : tokensOut}
+        onSelectToken={handleSelectToken}
+      />
+    </ErrorBoundary>
   );
 }
 
-function ArrowButton(props: IconButtonProps) {
+function ArrowButton({ onClick, ...rest }: BoxProps) {
   return (
-    <IconButton
-      {...props}
+    <Box
+      {...rest}
       sx={{
         position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: { md: 48, xs: 36 },
-        height: { md: 48, xs: 36 },
-        margin: 'auto',
-        zIndex: 2,
-        backgroundColor: 'background.default',
+        borderRadius: '50%',
         border: '1px solid',
         borderColor: 'divider',
-        svg: {
-          transition: (theme) => theme.transitions.create('transform'),
+        backgroundColor: 'background.default',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: { md: 58, xs: 50 },
+        height: { md: 58, xs: 50 },
+        zIndex: 2,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        '::before': {
+          position: 'absolute',
+          content: '""',
+          backgroundColor: 'background.default',
+          transform: 'translateY(50%)',
+          height: 4,
+          bottom: '50%',
+          width: '110%',
         },
-        '&:hover': {
-          svg: {
-            transform: 'rotate(-180deg)',
-          },
-        },
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
-      <FaArrowDownRegular
+      <Box
+        onClick={onClick}
+        role="button"
         sx={{
-          width: { md: 18, xs: 16 },
-          height: { md: 18, xs: 16 },
+          borderRadius: '50%',
+          backgroundColor: 'background.highlight',
+          border: '1px solid',
+          borderColor: 'divider',
+          cursor: 'pointer',
+          width: { md: 50, xs: 42 },
+          height: { md: 50, xs: 42 },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          zIndex: 3,
+          svg: {
+            transition: (theme) => theme.transitions.create('transform'),
+          },
+          '&:hover': {
+            backgroundColor: (theme) =>
+              emphasize(theme.palette.background.default, 0.2),
+            svg: {
+              transform: 'rotate(-180deg)',
+            },
+          },
         }}
-      />
-    </IconButton>
+      >
+        <FaArrowDownRegular
+          sx={{
+            fontSize: { md: 18, xs: 14 },
+          }}
+        />
+      </Box>
+    </Box>
   );
 }

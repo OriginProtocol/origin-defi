@@ -88,10 +88,7 @@ export const useTxButton = <
   });
   const queryClient = useQueryClient();
   const { data: gasPrice, refetch: refetchGas } = useQuery({
-    queryKey: [
-      'txButton',
-      JSON.stringify(args.params, jsonStringifyReplacer, undefined),
-    ],
+    queryKey: ['txButton', JSON.stringify(args.params, jsonStringifyReplacer)],
     queryFn: async () => {
       if (simulateError) return null;
       if (publicClient) {

@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { GOVERNANCE_SNAPSHOT_VOTES } from '@origin/shared/constants';
+import { GOVERNANCE_SNAPSHOT_VOTES_URL } from '@origin/shared/constants';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -27,7 +27,7 @@ export const ProposalListHeader = (props: StackProps) => {
         sx={{ rowGap: 2, columnGap: { xs: 1, sm: 2 } }}
       >
         <Button
-          href={GOVERNANCE_SNAPSHOT_VOTES}
+          href={GOVERNANCE_SNAPSHOT_VOTES_URL}
           target="_blank"
           rel="noopener noreferrer nofollow"
           sx={{
@@ -36,20 +36,7 @@ export const ProposalListHeader = (props: StackProps) => {
           }}
         >
           {intl.formatMessage({
-            defaultMessage: 'New Snapshot Proposal',
-          })}
-          &nbsp;
-          <FaArrowUpRightRegular />
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          href="https://docs.oeth.com/governance/admin-privileges"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          {intl.formatMessage({
-            defaultMessage: 'Learn about Governance',
+            defaultMessage: 'View Snapshot Proposals',
           })}
           &nbsp;
           <FaArrowUpRightRegular />

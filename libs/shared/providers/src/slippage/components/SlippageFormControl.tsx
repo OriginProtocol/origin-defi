@@ -1,16 +1,10 @@
-import {
-  Button,
-  FormControl,
-  FormHelperText,
-  InputLabel,
-  Stack,
-} from '@mui/material';
-import { InfoTooltip, PercentInput } from '@origin/shared/components';
+import { Button, Stack, Typography } from '@mui/material';
+import { InfoTooltipLabel, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { useSlippage } from '../hooks';
 
-import type { ButtonProps, FormControlProps } from '@mui/material';
+import type { ButtonProps, StackProps } from '@mui/material';
 
 const DEFAULT_SLIPPAGE = 0.001;
 const WARNING_THRESHOLD = 0.05;
@@ -18,7 +12,7 @@ const WARNING_THRESHOLD = 0.05;
 export type SlippageFormControlProps = {
   onChange?: (val: number) => void;
   buttonProps?: ButtonProps;
-} & Omit<FormControlProps, 'onChange'>;
+} & Omit<StackProps, 'onChange'>;
 
 export function SlippageFormControl({
   onChange,
@@ -34,27 +28,22 @@ export function SlippageFormControl({
   };
 
   return (
-    <FormControl variant="standard" {...rest}>
-      <InputLabel
-        htmlFor="slippage"
-        shrink
-        sx={{ display: 'flex', alignItems: 'center', gap: 0.5, pb: 1 }}
+    <Stack {...rest}>
+      <InfoTooltipLabel
+        tooltipLabel={intl.formatMessage({
+          defaultMessage:
+            'Your transaction will revert if the price changes unfavorably by more than this percentage.',
+        })}
       >
         {intl.formatMessage({ defaultMessage: 'Max slippage' })}
-        <InfoTooltip
-          tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'Your transaction will revert if the price changes unfavorably by more than this percentage.',
-          })}
-        />
-      </InputLabel>
-      <Stack direction="row" gap={2}>
+      </InfoTooltipLabel>
+      <Stack direction="row" gap={2} pt={1}>
         <PercentInput
           value={slippage}
           onChange={handleSlippageChange}
           fullWidth
           sx={{
-            paddingInlineEnd: 2,
+            pr: 2,
             '& .MuiInputBase-input': {
               textAlign: 'right',
               '&::placeholder': {
@@ -66,12 +55,6 @@ export function SlippageFormControl({
         />
         <Button
           {...buttonProps}
-          sx={{
-            borderRadius: 8,
-            fontSize: 14,
-            height: '38px',
-            ...buttonProps?.sx,
-          }}
           fullWidth
           disabled={slippage === DEFAULT_SLIPPAGE}
           onClick={() => {
@@ -81,9 +64,8 @@ export function SlippageFormControl({
           {intl.formatMessage({ defaultMessage: 'Auto' })}
         </Button>
       </Stack>
-      <FormHelperText
+      <Typography
         sx={{
-          gridColumn: 'span 2',
           mt: 1.25,
           fontSize: 12,
           color: (theme) => theme.palette.warning.main,
@@ -95,7 +77,7 @@ export function SlippageFormControl({
         {intl.formatMessage({
           defaultMessage: 'Your transaction may be frontrun',
         })}
-      </FormHelperText>
-    </FormControl>
+      </Typography>
+    </Stack>
   );
 }

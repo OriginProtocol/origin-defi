@@ -1,0 +1,12 @@
+query HoldersCount($token: String!, $chainId: Int!) {
+  oTokenAddressesConnection(
+    orderBy: id_ASC
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      balance_gt: 0
+    }
+  ) {
+    totalCount
+  }
+}

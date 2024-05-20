@@ -1,6 +1,7 @@
 import * as governance from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import * as oeth from '@origin/defi/oeth';
+import * as ogn from '@origin/defi/ogn';
 import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
@@ -8,12 +9,12 @@ import {
   Bridge,
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
+  FaArrowRightRegular,
+  FaClockRegular,
   FaCoinsRegular,
-  FaFileLinesRegular,
   FaGavelRegular,
-  FaSquareListRegular,
   OETH,
-  OGV,
+  OGN,
   OUSD,
 } from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
@@ -30,7 +31,6 @@ export const routes: RouteObject[] = [
       {
         index: true,
         Component: HomeView,
-        handle: { title: defineMessage({ defaultMessage: 'Overview' }) },
       },
       {
         index: false,
@@ -45,30 +45,13 @@ export const routes: RouteObject[] = [
             Component: oeth.SwapView,
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Swap in and out of OETH',
-              }),
               icon: FaArrowRightArrowLeftRegular,
-            },
-          },
-          {
-            path: 'portfolio',
-            Component: oeth.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Balance, earnings and history',
-              }),
-              icon: FaSquareListRegular,
             },
           },
           {
             ...oeth.oethRedeemRoute,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Redeem from OETH vault',
-              }),
               icon: FaArrowDownFromArcRegular,
             },
           },
@@ -81,6 +64,14 @@ export const routes: RouteObject[] = [
                 defaultMessage: 'Send wOETH across chains',
               }),
               icon: Bridge,
+            },
+          },
+          {
+            path: 'history',
+            Component: oeth.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
             },
           },
         ],
@@ -98,21 +89,7 @@ export const routes: RouteObject[] = [
             Component: ousd.SwapView,
             handle: {
               title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Swap in and out of OUSD',
-              }),
               icon: FaArrowRightArrowLeftRegular,
-            },
-          },
-          {
-            path: 'portfolio',
-            Component: ousd.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Balance, earnings and history',
-              }),
-              icon: FaSquareListRegular,
             },
           },
           {
@@ -120,57 +97,39 @@ export const routes: RouteObject[] = [
             Component: ousd.RedeemView,
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Redeem from OUSD vault',
-              }),
               icon: FaArrowDownFromArcRegular,
             },
           },
+          {
+            path: 'history',
+            Component: ousd.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
+            },
+          },
         ],
       },
       {
         index: false,
-        path: 'ogv',
-        handle: { title: defineMessage({ defaultMessage: 'OGV' }), icon: OGV },
+        path: 'ogn',
+        handle: { title: defineMessage({ defaultMessage: 'OGN' }), icon: OGN },
         children: [
           {
-            index: true,
-            Component: ogv.SwapView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Swap' }),
-              subtitle: defineMessage({ defaultMessage: 'Get OGV' }),
-              icon: FaArrowRightArrowLeftRegular,
-            },
-          },
-          {
             path: 'staking',
-            Component: ogv.StakingView,
+            Component: ogn.StakingView,
             handle: {
               title: defineMessage({ defaultMessage: 'Staking' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Stake to earn rewards',
-              }),
               icon: FaCoinsRegular,
             },
           },
-          {
-            path: 'portfolio',
-            Component: ogv.PortfolioView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Portfolio' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Staking and rewards history',
-              }),
-              icon: FaSquareListRegular,
-            },
-          },
         ],
       },
       {
         index: false,
-        path: 'governance',
+        path: 'more',
         handle: {
-          title: defineMessage({ defaultMessage: 'Governance' }),
+          title: defineMessage({ defaultMessage: 'More' }),
           icon: FaGavelRegular,
         },
         children: [
@@ -179,19 +138,19 @@ export const routes: RouteObject[] = [
             Component: governance.OverviewView,
             handle: {
               title: defineMessage({ defaultMessage: 'Governance Overview' }),
-              subtitle: defineMessage({ defaultMessage: 'Origin protocol' }),
               icon: FaGavelRegular,
             },
           },
           {
-            path: 'proposals',
-            Component: governance.ProposalsView,
+            path: ':proposalId',
+            Component: governance.ProposalDetailView,
+          },
+          {
+            path: 'migration',
+            Component: ogv.MigrationView,
             handle: {
-              title: defineMessage({ defaultMessage: 'Proposals' }),
-              subtitle: defineMessage({
-                defaultMessage: 'Voting history',
-              }),
-              icon: FaFileLinesRegular,
+              title: defineMessage({ defaultMessage: 'Migration' }),
+              icon: FaArrowRightRegular,
             },
           },
         ],

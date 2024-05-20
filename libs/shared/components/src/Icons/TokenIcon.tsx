@@ -1,6 +1,7 @@
 import {
   DAI,
   ETH,
+  ETHOutlined,
   ETHx,
   FaCircleDollarRegular,
   frxETH,
@@ -8,6 +9,7 @@ import {
   OETH,
   OGN,
   OGV,
+  OGVOutlined,
   OUSD,
   primeETH,
   rETH,
@@ -17,9 +19,12 @@ import {
   USDC,
   USDT,
   veOGV,
+  VeOGVOutlined,
   WETH,
   wOETH,
   wOUSD,
+  xOGN,
+  xOGNOutlined,
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
@@ -28,9 +33,37 @@ import type { ComponentType } from 'react';
 
 export type TokenIconProps = {
   token?: Token;
+  outlined?: boolean;
 } & SvgIconProps;
 
-export const supportedTokens: Record<string, ComponentType<SvgIconProps>> = {
+const supportedSymbols = [
+  'DAI',
+  'ETH',
+  'ETHx',
+  'frxETH',
+  'mETH',
+  'primeETH',
+  'OETH',
+  'OGN',
+  'OGV',
+  'OUSD',
+  'rETH',
+  'sfrxETH',
+  'stETH',
+  'swETH',
+  'USDC',
+  'USDT',
+  'veOGV',
+  'WETH',
+  'wOETH',
+  'wOUSD',
+  'xOGN',
+];
+
+const regularMap: Record<
+  (typeof supportedSymbols)[number],
+  ComponentType<SvgIconProps>
+> = {
   DAI: DAI,
   ETH: ETH,
   ETHx: ETHx,
@@ -51,14 +84,27 @@ export const supportedTokens: Record<string, ComponentType<SvgIconProps>> = {
   WETH: WETH,
   wOETH: wOETH,
   wOUSD: wOUSD,
-} as const;
+  xOGN: xOGN,
+};
 
-export const TokenIcon = ({ token, ...rest }: TokenIconProps) => {
-  if (!token?.symbol || !supportedTokens[token.symbol]) {
+const outlinedMap: Record<
+  (typeof supportedSymbols)[number],
+  ComponentType<SvgIconProps>
+> = {
+  ETH: ETHOutlined,
+  OGV: OGVOutlined,
+  veOGV: VeOGVOutlined,
+  xOGN: xOGNOutlined,
+};
+
+export const TokenIcon = ({ token, outlined, ...rest }: TokenIconProps) => {
+  if (!token?.symbol || !supportedSymbols.includes(token.symbol)) {
     return <FaCircleDollarRegular {...rest} />;
   }
 
-  const Icon = supportedTokens[token.symbol];
+  const Icon = outlined
+    ? outlinedMap[token.symbol] ?? regularMap[token.symbol]
+    : regularMap[token.symbol];
 
   return <Icon {...rest} />;
 };

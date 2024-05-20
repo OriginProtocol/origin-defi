@@ -6,6 +6,8 @@ import type { OethSwapAction } from './types';
 
 export const GAS_BUFFER = 10n; // 10%
 
+export const supportedChainTokens = [tokens.mainnet.OETH, tokens.arbitrum.OETH];
+
 export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   // Mint
   {

@@ -1,4 +1,5 @@
 export * from './ActivityIcon';
+export * from './BadgeIcon';
 export * from './ChainIcon';
 export * from './ExpandIcon';
 export * from './MultiTokenIcon';

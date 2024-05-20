@@ -2,14 +2,14 @@
   "+14VoL": {
     "defaultMessage": "Staking"
   },
-  "+3F+BA": {
-    "defaultMessage": "veOGV holders"
-  },
-  "+7UEXM": {
-    "defaultMessage": "My Lock-ups"
+  "+LCX9R": {
+    "defaultMessage": "Delegating to"
   },
   "+LmzMn": {
     "defaultMessage": "max"
+  },
+  "+RNauX": {
+    "defaultMessage": "Transaction successfully executed"
   },
   "+U6ozc": {
     "defaultMessage": "Type"
@@ -20,44 +20,53 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
-  "/23BOU": {
-    "defaultMessage": "Pending yield"
-  },
   "/6/sPX": {
     "defaultMessage": "Docs"
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
   },
-  "/NHgZw": {
-    "defaultMessage": "In-depth OGV analytics"
+  "/Kr6f5": {
+    "defaultMessage": "End block"
+  },
+  "/jJLYy": {
+    "defaultMessage": "Transactions"
+  },
+  "/sIoQc": {
+    "defaultMessage": "1 OGV = {rate} OGN"
   },
   "/xvR4F": {
     "defaultMessage": "Opt in"
   },
-  "00AJDy": {
-    "defaultMessage": "Origin Vault"
+  "00mAEp": {
+    "defaultMessage": "~{value}"
   },
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
-  "0AYOgf": {
-    "defaultMessage": "You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
+  "0Ai6WM": {
+    "defaultMessage": "Your OGV balance"
   },
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
-  "0STEwK": {
-    "defaultMessage": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
-  },
-  "0ZAmW8": {
-    "defaultMessage": "Swap with Uniswap"
+  "0ICwq5": {
+    "defaultMessage": "Last updated"
   },
   "0fR+fE": {
     "defaultMessage": "Route"
   },
+  "0kn7st": {
+    "defaultMessage": "No actions"
+  },
   "1+ROfp": {
     "defaultMessage": "Transaction"
+  },
+  "17g+HZ": {
+    "defaultMessage": "No activity"
+  },
+  "1Og5F/": {
+    "defaultMessage": "Migration"
   },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
@@ -65,14 +74,17 @@
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
   },
+  "1hrrJK": {
+    "defaultMessage": "Snapshot delegate page"
+  },
   "1lkU0S": {
     "defaultMessage": "1y"
   },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
-  "26tyS2": {
-    "defaultMessage": "7d"
+  "20KPDF": {
+    "defaultMessage": "Registered Voters"
   },
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
@@ -89,29 +101,32 @@
   "3Lr8o5": {
     "defaultMessage": "Larger redemptions coming soon"
   },
+  "3PhHPe": {
+    "defaultMessage": "The variable APY currently being earned on staked xOGN."
+  },
+  "3a5wL8": {
+    "defaultMessage": "Active"
+  },
+  "3at7Yr": {
+    "defaultMessage": "Legacy governance"
+  },
   "3fTTLv": {
     "defaultMessage": "Unstake"
-  },
-  "3townk": {
-    "defaultMessage": "Max vAPY"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
   },
-  "4D9M13": {
-    "defaultMessage": "Swap with CurvePool"
-  },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
   },
-  "4cSnUS": {
-    "defaultMessage": "3y"
+  "4R0mVR": {
+    "defaultMessage": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
   },
   "4cdhFd": {
     "defaultMessage": "Instant"
   },
-  "4ycy0/": {
-    "defaultMessage": "Daily yield"
+  "56jhQz": {
+    "defaultMessage": "New Snapshot Proposal"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -122,17 +137,29 @@
   "5adJBo": {
     "defaultMessage": "Select token"
   },
+  "5cKJ7r": {
+    "defaultMessage": "Your veOGV Lockups"
+  },
+  "5cnWDe": {
+    "defaultMessage": "View latest governance proposals"
+  },
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
-  "5m9ETS": {
-    "defaultMessage": "Fees and voting rights accrue to OGV stakers.<br></br>Control the future of Origin products and profit from its growth."
+  "5jeq8P": {
+    "defaultMessage": "Unknown"
   },
-  "5x6HGl": {
-    "defaultMessage": "OETH price"
+  "5lVaeB": {
+    "defaultMessage": "No description"
   },
-  "5y98eS": {
-    "defaultMessage": "{duration,plural,=1{Lock {amount} OGV for # month} other{Lock {amount} OGV for # months}}"
+  "5zH79K": {
+    "defaultMessage": "Your veOGV staked positions"
+  },
+  "65BhO2": {
+    "defaultMessage": "OGN Rewards Will be Collected"
+  },
+  "6GT2AH": {
+    "defaultMessage": "Govern an expansive ecosystem"
   },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
@@ -152,26 +179,26 @@
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
   },
-  "6nFK6a": {
-    "defaultMessage": "Yield sources"
-  },
-  "70QJXI": {
-    "defaultMessage": "Voting history"
-  },
-  "71Nfj1": {
-    "defaultMessage": "7d earnings"
-  },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "8EhWB4": {
-    "defaultMessage": "wOETH Transaction history"
+  "7DIW6+": {
+    "defaultMessage": "Learn More"
   },
-  "8NtrKz": {
-    "defaultMessage": "Origin provides a decentralized suite of products helping you earn yield on your digital assets"
+  "7K0tLi": {
+    "defaultMessage": "Approve xOGN"
   },
-  "8UzT6d": {
-    "defaultMessage": "CSV"
+  "7NFfmz": {
+    "defaultMessage": "Products"
+  },
+  "7Q6DcC": {
+    "defaultMessage": "Delegate {votingPower} xOGN to {delegatee}"
+  },
+  "7xbqRJ": {
+    "defaultMessage": "The amount of OGN you want to lock"
+  },
+  "87E0Iv": {
+    "defaultMessage": "Current results"
   },
   "8Vr/2f": {
     "defaultMessage": "Current Staking vAPY"
@@ -179,65 +206,83 @@
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
+  "8Y0yUM": {
+    "defaultMessage": "Snapshot"
+  },
   "8YcGAy": {
     "defaultMessage": "Bridge Started"
+  },
+  "8ZnLBw": {
+    "defaultMessage": "Total OGN Staked"
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
   },
-  "8lmFbk": {
-    "defaultMessage": "Balance, earnings and history"
-  },
   "8nvhZ9": {
     "defaultMessage": "Last"
   },
-  "9/afiv": {
-    "defaultMessage": "Signing"
+  "8w4BfJ": {
+    "defaultMessage": "The amount of OGV in your wallet"
+  },
+  "94TAJq": {
+    "defaultMessage": "TVL: {tvl}"
+  },
+  "95nrj3": {
+    "defaultMessage": "No rewards available to claim"
+  },
+  "9GqOyW": {
+    "defaultMessage": "Current value (OETH)"
+  },
+  "9W24c9": {
+    "defaultMessage": "wOETH Balance"
+  },
+  "9b65gT": {
+    "defaultMessage": "Redeem OUSD"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
+  "9iP/A8": {
+    "defaultMessage": "Lifetime Earnings (OETH)"
+  },
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
   },
-  "9oQCRd": {
-    "defaultMessage": "Stablecoin"
-  },
-  "9uOFF3": {
-    "defaultMessage": "Overview"
-  },
-  "A9AGhs": {
-    "defaultMessage": "APY (Trailing 30-day)"
+  "A7ewt8": {
+    "defaultMessage": "1:{value}"
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
   },
+  "ATvmI7": {
+    "defaultMessage": "Yield earned:"
+  },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
+  },
+  "Alwl9C": {
+    "defaultMessage": "Snapshot proposal"
+  },
+  "AozuFZ": {
+    "defaultMessage": "On-chain"
+  },
+  "AqzL44": {
+    "defaultMessage": "Select the additional OGN you would like to stake with your rewards"
   },
   "AtWUBa": {
     "defaultMessage": "Redeem via OETH Vault"
   },
-  "BBCjbl": {
-    "defaultMessage": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
-  },
   "BLAy25": {
     "defaultMessage": "Extend"
   },
-  "BONcjO": {
-    "defaultMessage": "Uniswap V3"
+  "BNFT1w": {
+    "defaultMessage": "Global stats"
   },
   "BY343C": {
     "defaultMessage": "Change"
   },
-  "Bih77e": {
-    "defaultMessage": "Total OGV staked"
-  },
-  "BorrCB": {
-    "defaultMessage": "Voting Power:"
-  },
-  "C73Nbd": {
-    "defaultMessage": "Swap with Curve"
+  "BuhEl+": {
+    "defaultMessage": "Theme:"
   },
   "CKr0mb": {
     "defaultMessage": "Locked Tokens Received Now"
@@ -245,14 +290,17 @@
   "CcqmCh": {
     "defaultMessage": "OETH Balance"
   },
-  "Cd75LB": {
-    "defaultMessage": "OUSD Transactions"
-  },
   "Cdsqgz": {
     "defaultMessage": "Extended Lock up Ends:"
   },
+  "Cnm0QA": {
+    "defaultMessage": "Queued"
+  },
   "DBP9Xf": {
     "defaultMessage": "Stablecoin mix"
+  },
+  "DFjeF0": {
+    "defaultMessage": "Delegate {balance} xOGN to self"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -260,8 +308,11 @@
   "DRdgbZ": {
     "defaultMessage": "Redeem {token} for the basket of underlying assets"
   },
-  "DUR59o": {
-    "defaultMessage": "Total Value Locked"
+  "Dmb2/1": {
+    "defaultMessage": "Unlock Stake"
+  },
+  "Do7020": {
+    "defaultMessage": "Conversion Rate:"
   },
   "DriTx1": {
     "defaultMessage": "Request redemptions to ETH or a mix of LSTs"
@@ -271,6 +322,9 @@
   },
   "DzgeN/": {
     "defaultMessage": "Discussion forum"
+  },
+  "E1arCe": {
+    "defaultMessage": "9m"
   },
   "E2sGaF": {
     "defaultMessage": "Exit"
@@ -287,29 +341,38 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
-  "EpAQ64": {
-    "defaultMessage": "Earn {apy} APY"
+  "EYIcqi": {
+    "defaultMessage": "Amount after penalty"
   },
   "F6lS59": {
     "defaultMessage": "0 months"
   },
-  "FVfYnP": {
-    "defaultMessage": "The variable APY currently being earned on staked OGV."
+  "FGaG+u": {
+    "defaultMessage": "Govern An Expansive Ecosystem"
+  },
+  "FV7IVu": {
+    "defaultMessage": "<b>{count}</b> {symbol}"
+  },
+  "FmLmFf": {
+    "defaultMessage": "Select which balances you wish to convert"
+  },
+  "Fsxv1h": {
+    "defaultMessage": "Cast vote"
+  },
+  "Fv1ZSz": {
+    "defaultMessage": "Closed"
   },
   "GZJpDf": {
     "defaultMessage": "Analytics"
   },
-  "GtMIIe": {
-    "defaultMessage": "Get OGV"
+  "GdHGdR": {
+    "defaultMessage": "Swap via Uniswap V2"
+  },
+  "Gox5LU": {
+    "defaultMessage": "Collect {rewards} rewards"
   },
   "H5+NAX": {
     "defaultMessage": "Balance"
-  },
-  "H6QzKn": {
-    "defaultMessage": "Ethereum network"
-  },
-  "HDDJSh": {
-    "defaultMessage": "Total accrued rewards"
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
@@ -320,11 +383,20 @@
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
-  "IAZCOw": {
-    "defaultMessage": "Origin protocol"
+  "I5NMJ8": {
+    "defaultMessage": "More"
   },
-  "IToIaT": {
-    "defaultMessage": "Get OETH"
+  "IAoEwp": {
+    "defaultMessage": "Vote for"
+  },
+  "IWTkRX": {
+    "defaultMessage": "The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn."
+  },
+  "IX4RCo": {
+    "defaultMessage": "Approve {amount} xOGN"
+  },
+  "IfZsEo": {
+    "defaultMessage": "Vote against"
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
@@ -332,17 +404,35 @@
   "JLmDla": {
     "defaultMessage": "Governance"
   },
+  "JNuVd0": {
+    "defaultMessage": "No votes"
+  },
+  "JX703+": {
+    "defaultMessage": "Your voting history"
+  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
-  "KE0cl6": {
-    "defaultMessage": "Curve"
+  "JyPAH1": {
+    "defaultMessage": "No one voted for this choice"
+  },
+  "K5iX8G": {
+    "defaultMessage": "Max vAPR"
+  },
+  "K9soUR": {
+    "defaultMessage": "Approval successful"
   },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
+  "KXTAK8": {
+    "defaultMessage": "Abstain"
+  },
   "KaxXiQ": {
     "defaultMessage": "Processing approval"
+  },
+  "KchUFg": {
+    "defaultMessage": "Swap cancelled"
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
@@ -350,14 +440,23 @@
   "Kw1jw2": {
     "defaultMessage": "Get {symbol}"
   },
+  "L9unn+": {
+    "defaultMessage": "Pending Yield"
+  },
+  "LOghU6": {
+    "defaultMessage": "Succeeded"
+  },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
-  "MJ2jZQ": {
-    "defaultMessage": "Total"
+  "Lv0zJu": {
+    "defaultMessage": "Details"
   },
   "MLTKb6": {
     "defaultMessage": "APY"
+  },
+  "MQq3X+": {
+    "defaultMessage": "Active Proposals"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -368,14 +467,11 @@
   "MZCNjq": {
     "defaultMessage": "Bridge"
   },
-  "N5g7Qy": {
-    "defaultMessage": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
+  "MbygIJ": {
+    "defaultMessage": "0"
   },
-  "NNBdoh": {
-    "defaultMessage": "Uniswap V2"
-  },
-  "NQOjUX": {
-    "defaultMessage": "Origin Governance Token"
+  "NND2zi": {
+    "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -386,20 +482,17 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
-  "O1F5Cx": {
-    "defaultMessage": "Connect your wallet to see your history"
-  },
-  "O6UApS": {
-    "defaultMessage": "Collect {rewards} rewards OGV"
+  "Nvcaj3": {
+    "defaultMessage": "Your balance:"
   },
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
-  "OhU4K0": {
-    "defaultMessage": "SushiSwap"
+  "ORGv1Q": {
+    "defaultMessage": "Created"
   },
-  "OmyPDW": {
-    "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
+  "Olbt4a": {
+    "defaultMessage": "Delegate"
   },
   "OwO+Nr": {
     "defaultMessage": "Mint"
@@ -407,41 +500,53 @@
   "Ozw3aL": {
     "defaultMessage": "Mint with Vault"
   },
+  "P63Xe+": {
+    "defaultMessage": "Use wOETH on Arbitrum to earn ARB rewards!"
+  },
+  "P6EE/a": {
+    "defaultMessage": "Tokens"
+  },
+  "PFtMy9": {
+    "defaultMessage": "Canceled"
+  },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
-  },
-  "POmYVs": {
-    "defaultMessage": "Current price"
-  },
-  "PVa0Ba": {
-    "defaultMessage": "Yield strategy protocols"
-  },
-  "PiI2Yo": {
-    "defaultMessage": "OETH details"
   },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
+  "PuubxK": {
+    "defaultMessage": "Voted For"
+  },
   "PzlMqG": {
     "defaultMessage": "Best"
+  },
+  "Q8Qw5B": {
+    "defaultMessage": "Description"
+  },
+  "QCWE1A": {
+    "defaultMessage": "{tilt}{value}"
+  },
+  "QQH5h9": {
+    "defaultMessage": "Connect your wallet to get started"
   },
   "QW+Q5N": {
     "defaultMessage": "Clear all"
   },
-  "QakQcS": {
-    "defaultMessage": "Total OGV buybacks"
-  },
-  "Qf27Qg": {
-    "defaultMessage": "Connected wallet OETH balance"
-  },
-  "Qpksmn": {
-    "defaultMessage": "24hr earnings"
-  },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
-  "RoqJiX": {
-    "defaultMessage": "Collateral"
+  "RIV67a": {
+    "defaultMessage": "Select lockup"
+  },
+  "RahCRH": {
+    "defaultMessage": "Expired"
+  },
+  "RxMChd": {
+    "defaultMessage": "On-chain proposal"
+  },
+  "S+gf+n": {
+    "defaultMessage": "Defeated"
   },
   "S1eClp": {
     "defaultMessage": "Governance Overview"
@@ -452,8 +557,8 @@
   "S5tBcz": {
     "defaultMessage": "Stake"
   },
-  "S7CBOR": {
-    "defaultMessage": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+  "SAw/Wf": {
+    "defaultMessage": "Penalty for early unlock"
   },
   "SGXihn": {
     "defaultMessage": "OETH"
@@ -461,14 +566,26 @@
   "SKB/G9": {
     "defaultMessage": "TVL"
   },
-  "StkfYK": {
-    "defaultMessage": "30d earnings"
+  "SzA4oV": {
+    "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
+  },
+  "TIBoMl": {
+    "defaultMessage": "Total value locked {symbol}"
+  },
+  "TJOfi8": {
+    "defaultMessage": "Yield bearing stablecoin"
+  },
+  "TTNWcQ": {
+    "defaultMessage": "Ethereum liquid staking made simple"
+  },
+  "TdHjj5": {
+    "defaultMessage": "Origin DeFi Governance"
+  },
+  "Tfx/3J": {
+    "defaultMessage": "Start block"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
-  },
-  "TrXNPz": {
-    "defaultMessage": "Flipper"
   },
   "TtRt/7": {
     "defaultMessage": "Lock-up Ends"
@@ -476,8 +593,20 @@
   "TwyMau": {
     "defaultMessage": "Account"
   },
+  "ULVduL": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+  },
+  "UMJuaW": {
+    "defaultMessage": "Your APY:"
+  },
+  "UjsrsI": {
+    "defaultMessage": "Swap successful"
+  },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
+  },
+  "UkfXu1": {
+    "defaultMessage": "Your lockups"
   },
   "UlMgTq": {
     "defaultMessage": "If the problem persists, contact us on our {support}."
@@ -488,53 +617,95 @@
   "VK+Ydv": {
     "defaultMessage": "OUSD"
   },
-  "VfXPp7": {
-    "defaultMessage": "Redeem from OETH vault"
+  "VWG9kH": {
+    "defaultMessage": "OGN"
+  },
+  "Vlf1Wn": {
+    "defaultMessage": "Get OGN"
   },
   "Vn/9nH": {
     "defaultMessage": "Est gas:"
   },
-  "VqXRJ4": {
-    "defaultMessage": "Stake OGV"
-  },
-  "Vu1Cgf": {
-    "defaultMessage": "Stake to earn rewards"
-  },
   "W/z9WD": {
     "defaultMessage": "My voting power"
+  },
+  "W33FNz": {
+    "defaultMessage": "Origin Ether"
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
-  "W8nHSd": {
-    "defaultMessage": "FAQ"
+  "W94W+W": {
+    "defaultMessage": "No voting power"
   },
   "WCaf5C": {
     "defaultMessage": "Approve"
   },
-  "WQ+oM6": {
-    "defaultMessage": "Backing collateral"
+  "WrGSr6": {
+    "defaultMessage": "Convert"
+  },
+  "XObaE9": {
+    "defaultMessage": "Votes"
+  },
+  "XRitiS": {
+    "defaultMessage": "Stake rewards"
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
   },
-  "XtKL5U": {
-    "defaultMessage": "In-depth OETH analytics"
+  "Y/oE4U": {
+    "defaultMessage": "Calldata"
+  },
+  "Y4FfAH": {
+    "defaultMessage": "Swap via Uniswap V3"
+  },
+  "YGiRwq": {
+    "defaultMessage": "Voting Power"
+  },
+  "YGu9gd": {
+    "defaultMessage": "The amount of pending rewards allocated to you"
+  },
+  "Yl2sc/": {
+    "defaultMessage": "Learn about governance"
   },
   "YnftYz": {
     "defaultMessage": "Wait time:"
   },
-  "Yr+Yll": {
-    "defaultMessage": "Swap in and out of OUSD"
+  "YtTAoV": {
+    "defaultMessage": "Vote {choice} on proposal {proposalId}"
   },
   "YvbZVM": {
     "defaultMessage": "Time Remaining"
   },
+  "Z5LAqY": {
+    "defaultMessage": "Stake additional OGN from your wallet"
+  },
+  "Z6ohOJ": {
+    "defaultMessage": "Discord Forum"
+  },
+  "ZK8Bth": {
+    "defaultMessage": "Impossible to execute transaction"
+  },
+  "ZOVEEk": {
+    "defaultMessage": "The variable APY currently being earned on staked OGN."
+  },
+  "ZSn0uO": {
+    "defaultMessage": "migrate OGV to OGN/xOGN"
+  },
+  "Zl7l7P": {
+    "defaultMessage": "{count} {symbol}"
+  },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
   },
-  "ZvO1m7": {
-    "defaultMessage": "Connect a wallet to see your balance"
+  "ZmlNQ3": {
+    "defaultMessage": "Activity"
+  },
+  "a/lxLY": {
+    "defaultMessage": "~{gas}"
+  },
+  "a6zIc2": {
+    "defaultMessage": "Convert your OGV to OGN"
   },
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
@@ -545,8 +716,11 @@
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
-  "aaJ9Pk": {
-    "defaultMessage": "Swap in and out of OETH"
+  "aYAoF4": {
+    "defaultMessage": "Delegate off-chain votes? Go to the {link}."
+  },
+  "aiJo8l": {
+    "defaultMessage": "Selected lockup"
   },
   "b0+k6i": {
     "defaultMessage": "The percentage of total Origin DeFi DAO voting power represented by this lock-up."
@@ -554,11 +728,11 @@
   "b1zuN9": {
     "defaultMessage": "Price"
   },
-  "b4tTvf": {
-    "defaultMessage": "Redeem from OUSD vault"
+  "bKZdsq": {
+    "defaultMessage": "3m"
   },
-  "c0+sy5": {
-    "defaultMessage": "OUSD details"
+  "bqSoEq": {
+    "defaultMessage": "OGN Balance"
   },
   "c31Feo": {
     "defaultMessage": "Swapping"
@@ -566,29 +740,56 @@
   "cOB9Jx": {
     "defaultMessage": "Yield"
   },
+  "cVJyQB": {
+    "defaultMessage": "You will be able to convert your tokens after connecting your wallet."
+  },
+  "cWvi0w": {
+    "defaultMessage": "Add to stake"
+  },
+  "cfhPIG": {
+    "defaultMessage": "OGV & OGN are merging"
+  },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
-  "d0O17Z": {
-    "defaultMessage": "2y"
+  "d0kJUi": {
+    "defaultMessage": "Connect your wallet to see your voting power"
   },
   "d8EqQY": {
     "defaultMessage": "Days"
   },
+  "dIb4Xv": {
+    "defaultMessage": "Snapshot proposals"
+  },
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
-  "dciLty": {
-    "defaultMessage": "Route:"
+  "djJp6c": {
+    "defaultMessage": "History"
+  },
+  "dm9FiM": {
+    "defaultMessage": "Delegate to self"
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
-  "e02ROc": {
-    "defaultMessage": "Staking and rewards history"
+  "e6Ph5+": {
+    "defaultMessage": "Address"
   },
-  "e8UIVj": {
-    "defaultMessage": "4y"
+  "eKEL/g": {
+    "defaultMessage": "Pending"
+  },
+  "edT/+I": {
+    "defaultMessage": "OGN rewards available to claim"
+  },
+  "eerX6M": {
+    "defaultMessage": "Swap via CurvePool"
+  },
+  "f0gqO4": {
+    "defaultMessage": "Lifetime Earnings (OUSD)"
+  },
+  "f7AFus": {
+    "defaultMessage": "Swap via SushiSwap"
   },
   "fBhctx": {
     "defaultMessage": "Download CSV"
@@ -596,41 +797,50 @@
   "fFXn5l": {
     "defaultMessage": "Collect Rewards"
   },
-  "fOUChR": {
-    "defaultMessage": "Trading pairs on centralized exchanges"
+  "ffdKEn": {
+    "defaultMessage": "Select the lockup you want to add your OGN to"
   },
-  "fnDCIF": {
-    "defaultMessage": "In-depth OUSD analytics"
+  "ffxzE3": {
+    "defaultMessage": "Penalty"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
   },
-  "fvroLn": {
-    "defaultMessage": "{count,plural,=1{# month} other{# months}}"
-  },
-  "g+YZVZ": {
-    "defaultMessage": "The amount of veOGV you will receive today in return for extending your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
+  "g82HU6": {
+    "defaultMessage": "Operation cancelled"
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
+  "gF5qej": {
+    "defaultMessage": "No OGV to convert"
+  },
+  "gQC+XM": {
+    "defaultMessage": "Start using this app by connecting your wallet."
+  },
   "gcuDcH": {
     "defaultMessage": "Sent"
   },
-  "hKc0hO": {
-    "defaultMessage": "Get OUSD"
+  "hSpNEQ": {
+    "defaultMessage": "Available to claim and add to your stake"
+  },
+  "hVUzey": {
+    "defaultMessage": "No existing lockups to convert"
   },
   "hZA4Ul": {
     "defaultMessage": "Current Lock-up Ends:"
   },
-  "hccOVh": {
-    "defaultMessage": "OUSD price"
+  "hjWYtP": {
+    "defaultMessage": "Gas"
+  },
+  "hsqHqR": {
+    "defaultMessage": "Time remaining"
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
   },
-  "i9rSSQ": {
-    "defaultMessage": "OGV Rewards Will be Collected"
+  "hzplNt": {
+    "defaultMessage": "Convert your OGV tokens into OGN. Conversion page will be open for 1 year."
   },
   "iGcPXd": {
     "defaultMessage": "OUSD analytics"
@@ -641,14 +851,17 @@
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
-  "j07TC/": {
-    "defaultMessage": "{duration,plural,=1{Extend lock-up to # month} other{Extend lock-up to # months}}"
+  "ibDi9l": {
+    "defaultMessage": "Quorum"
+  },
+  "j8y+qc": {
+    "defaultMessage": "{label}"
   },
   "j9Y9nu": {
     "defaultMessage": "Hours"
   },
-  "jFZ2w9": {
-    "defaultMessage": "OETH Transaction history"
+  "jab7Gg": {
+    "defaultMessage": "Delegated to me"
   },
   "jfexoW": {
     "defaultMessage": "Lock-up Duration"
@@ -662,6 +875,27 @@
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
+  "k4P8dm": {
+    "defaultMessage": "Your OGV/veOGV is equivalent to"
+  },
+  "kBjaSb": {
+    "defaultMessage": "Your voting power"
+  },
+  "kH1R79": {
+    "defaultMessage": "Stake OGN"
+  },
+  "kJN4hL": {
+    "defaultMessage": "Earn yield from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN."
+  },
+  "kWMpjI": {
+    "defaultMessage": "Available on"
+  },
+  "kkWO9m": {
+    "defaultMessage": "Origin Governance"
+  },
+  "ksTDub": {
+    "defaultMessage": "Connect wallet to view"
+  },
   "lQmZjB": {
     "defaultMessage": "Swap via Curve"
   },
@@ -671,35 +905,38 @@
   "lozEho": {
     "defaultMessage": "Error while approving"
   },
-  "lwXdsC": {
-    "defaultMessage": "Secure the most competitive rates when swapping in and out of OETH using our swap form."
-  },
   "m/L3sK": {
     "defaultMessage": "Approving"
   },
   "mVILQT": {
     "defaultMessage": "OUSD Balance"
   },
+  "mcotxc": {
+    "defaultMessage": "{balance} {symbol}"
+  },
   "n6nILs": {
     "defaultMessage": "Receive amount"
-  },
-  "nV7ezK": {
-    "defaultMessage": "Your APY"
-  },
-  "nZ1VHG": {
-    "defaultMessage": "30d"
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
   },
-  "ntQz2o": {
-    "defaultMessage": "Yield bearing"
+  "nisJoJ": {
+    "defaultMessage": "6m"
   },
-  "nzbOyn": {
-    "defaultMessage": "Underlyings assets"
+  "nn6ywf": {
+    "defaultMessage": "You will get:"
   },
-  "oP23Lj": {
-    "defaultMessage": "Horem ipsum dolor"
+  "oBlHij": {
+    "defaultMessage": "The easiest way to earn more yield on-chain"
+  },
+  "ox/9Hn": {
+    "defaultMessage": "Unstake lock-up {stake}"
+  },
+  "oxLyAg": {
+    "defaultMessage": "{apy30} - {apy7}"
+  },
+  "oy7udF": {
+    "defaultMessage": "Approval cancelled"
   },
   "p1P+hQ": {
     "defaultMessage": "Request"
@@ -710,14 +947,11 @@
   "p8X0WD": {
     "defaultMessage": "Percentage of total votes"
   },
-  "pGciHf": {
-    "defaultMessage": "Buyback history"
+  "p9CMVC": {
+    "defaultMessage": "The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
   },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
-  },
-  "qIoHXA": {
-    "defaultMessage": "Lifetime earnings"
   },
   "qNe+Iz": {
     "defaultMessage": "Wrap with Origin"
@@ -725,8 +959,14 @@
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
   },
-  "qivQ44": {
-    "defaultMessage": "Unstake lock-up"
+  "qWhPZy": {
+    "defaultMessage": "xOGN holders"
+  },
+  "qXCbgZ": {
+    "defaultMessage": "Unlock"
+  },
+  "qaYPXz": {
+    "defaultMessage": "No calldata"
   },
   "qj1uhz": {
     "defaultMessage": "Disconnect"
@@ -740,23 +980,32 @@
   "rbd1S8": {
     "defaultMessage": "Stake to earn rewards and help govern OETH and OUSD"
   },
-  "riAanx": {
-    "defaultMessage": "Annual Percentage Yield"
+  "rhQtuf": {
+    "defaultMessage": "Voted Against"
   },
-  "s49boM": {
-    "defaultMessage": "Ethereum liquid staking token"
+  "rscf9U": {
+    "defaultMessage": "Your Unclaimed OGV Rewards"
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
-  "sRkHek": {
-    "defaultMessage": "OGV rewards available to claim"
-  },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
   },
+  "t+6Krq": {
+    "defaultMessage": "1:{rate}"
+  },
+  "tDcoCl": {
+    "defaultMessage": "Swap via Flipper"
+  },
   "tFriEi": {
     "defaultMessage": "Transaction error"
+  },
+  "tOS305": {
+    "defaultMessage": "Detailed analytics on Origin products"
+  },
+  "tQw4xK": {
+    "defaultMessage": "Staking Ratio"
   },
   "tZtBsJ": {
     "defaultMessage": "Redeem to a mix of stablecoins"
@@ -764,11 +1013,35 @@
   "tp4nGh": {
     "defaultMessage": "Info page"
   },
+  "tx8kgu": {
+    "defaultMessage": "Enter address"
+  },
+  "tzMNF3": {
+    "defaultMessage": "Status"
+  },
+  "u/iEEE": {
+    "defaultMessage": "Function name"
+  },
+  "u0rPqO": {
+    "defaultMessage": "Convert to OGN"
+  },
+  "u2yAKu": {
+    "defaultMessage": "Add to existing lockup"
+  },
   "u4BAsU": {
     "defaultMessage": "View proposals"
   },
-  "uNOJ2Q": {
-    "defaultMessage": "Portfolio"
+  "u53ROb": {
+    "defaultMessage": "Redeem amount"
+  },
+  "uEFsHG": {
+    "defaultMessage": "Discord forum"
+  },
+  "uNO1pX": {
+    "defaultMessage": "Balance to Convert"
+  },
+  "uQ/cQ8": {
+    "defaultMessage": "No arguments"
   },
   "uaols3": {
     "defaultMessage": "Unwrap"
@@ -776,26 +1049,26 @@
   "ugjHU2": {
     "defaultMessage": "Select a token"
   },
-  "upk2hm": {
-    "defaultMessage": "Origin products"
+  "vMrueH": {
+    "defaultMessage": "Restaking"
   },
-  "v06At3": {
-    "defaultMessage": "Unstaking"
-  },
-  "vclhrb": {
-    "defaultMessage": "Balance: {balance}"
-  },
-  "viL6nH": {
-    "defaultMessage": "Yield-generating stablecoin"
+  "vkpt+L": {
+    "defaultMessage": "You have accrued <b>{reward} OGN</b> in staking rewards. This OGN will be transferred to your wallet immediately when you extend your stake."
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
   },
-  "w2pp9r": {
-    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
-  },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
+  },
+  "w6euGF": {
+    "defaultMessage": "{duration,plural,=1{Lock {amount} OGN for # month} other{Lock {amount} OGN for # months}}"
+  },
+  "wDVWQ+": {
+    "defaultMessage": "Origin Dollar"
+  },
+  "wL7VAE": {
+    "defaultMessage": "Actions"
   },
   "weP/oT": {
     "defaultMessage": "Voting power"
@@ -806,20 +1079,38 @@
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
+  "wwoByg": {
+    "defaultMessage": "Origin"
+  },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"
+  },
+  "xc6pWX": {
+    "defaultMessage": "Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens."
+  },
+  "xiGfmr": {
+    "defaultMessage": "Extend stake"
+  },
+  "xkKA0U": {
+    "defaultMessage": "Delegate on-chain voting power to:"
+  },
+  "xnQa6i": {
+    "defaultMessage": "Lock-up Ends:"
+  },
+  "xnfnI5": {
+    "defaultMessage": "Earnings and transaction history"
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
-  "yKbi98": {
-    "defaultMessage": "Unstake amount"
+  "yTFVXV": {
+    "defaultMessage": "Argument type"
+  },
+  "yWtbSZ": {
+    "defaultMessage": "Executed"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
-  },
-  "yvxbM+": {
-    "defaultMessage": "Next Emissions Reduction Event:"
   },
   "z/wUXE": {
     "defaultMessage": "Received"
@@ -827,11 +1118,14 @@
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
   },
-  "zC5UyT": {
-    "defaultMessage": "Connected wallet OUSD balance"
+  "zQvVDJ": {
+    "defaultMessage": "All"
   },
   "zSOvI0": {
     "defaultMessage": "Filters"
+  },
+  "zdF6np": {
+    "defaultMessage": "wOETH Transactions"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

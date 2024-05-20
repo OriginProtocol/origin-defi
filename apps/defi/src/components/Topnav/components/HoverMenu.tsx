@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react';
 
 import {
-  Box,
+  alpha,
   Button,
   Grow,
   MenuItem,
@@ -22,13 +22,17 @@ import { useMatch, useNavigate } from 'react-router-dom';
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
-import type { ButtonProps } from '@mui/material';
-import type { KeyboardEvent } from 'react';
+import type { ButtonProps, MenuItemProps } from '@mui/material';
+import type { Dispatch, KeyboardEvent, SetStateAction } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import type { NavItem } from '../types';
 
 export const HoverMenu = () => {
+  const visibleRoutes = routes?.[0]?.children?.filter(
+    (r) => !isNilOrEmpty(r?.handle?.title),
+  );
+
   return (
     <Stack
       sx={{
@@ -38,10 +42,10 @@ export const HoverMenu = () => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: 2,
+        gap: 1,
       }}
     >
-      {routes?.[0]?.children?.map((route, i) => (
+      {visibleRoutes?.map((route, i) => (
         <NavMenuItem key={`${route?.path ?? 'topButton'}-${i}`} route={route} />
       ))}
     </Stack>
@@ -58,11 +62,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
   const match = useMatch({ path: route?.path ?? '/', end: route.index });
-
-  const handleMenuClick = (path: string) => () => {
-    setOpen(false);
-    navigate(`${route.path}/${path ?? ''}`);
-  };
+  const isSelected = !isNilOrEmpty(match);
 
   const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
     if (event.key === 'Escape') {
@@ -74,9 +74,12 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
     return (
       <Button
         variant="text"
+        size="large"
         {...rest}
         sx={{
-          color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
+          color: 'text.primary',
+          backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+          svg: { ml: 0.75, width: 12, height: 12 },
           ...rest?.sx,
         }}
         onClick={() => {
@@ -89,16 +92,18 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   }
 
   const items = [
-    ...(route?.children?.map(
-      (r) =>
-        ({
-          title: r.handle.title,
-          subtitle: r.handle.subtitle,
-          icon: r.handle.icon,
-          path: r.path,
-          href: null,
-        }) as unknown as NavItem,
-    ) ?? []),
+    ...(route?.children
+      ?.filter((r) => !isNilOrEmpty(r?.handle?.title))
+      ?.map(
+        (r) =>
+          ({
+            title: r.handle.title,
+            subtitle: r.handle.subtitle,
+            icon: r.handle.icon,
+            path: r.path,
+            href: null,
+          }) as unknown as NavItem,
+      ) ?? []),
     ...(additionalLinks?.[route?.path ?? ''] ?? []),
   ];
 
@@ -106,9 +111,11 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
     <>
       <Button
         variant="text"
+        size="large"
         {...rest}
         sx={{
-          color: isNilOrEmpty(match) ? 'text.secondary' : 'text.primary',
+          color: 'text.primary',
+          backgroundColor: isSelected ? 'primary.faded' : 'transparent',
           svg: { ml: 0.75, width: 12, height: 12 },
           ...rest?.sx,
         }}
@@ -164,58 +171,22 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
               elevation={1}
               sx={{
                 mt: 1,
-                borderRadius: 3,
-                padding: 0.5,
-                border: (theme) => `1px solid ${theme.palette.divider}`,
+                borderRadius: 4,
+                padding: 2,
+                border: '1px solid',
+                borderColor: 'divider',
+                backgroundColor: 'background.highlight',
+                minWidth: 200,
               }}
             >
               <MenuList onKeyDown={handleListKeyDown} sx={{ p: 0 }}>
                 {items.map((r, i) => (
-                  <MenuItem
+                  <ListMenuItem
                     key={`${r?.path ?? r?.href}-${i}`}
-                    {...(isNilOrEmpty(r.href)
-                      ? { onClick: handleMenuClick(r?.path ?? '') }
-                      : {
-                          href: r.href,
-                          target: '_blank',
-                          rel: 'noopener noreferrer nofollow',
-                          component: 'a',
-                        })}
-                    sx={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      gap: 1.5,
-                      py: 1,
-                      borderRadius: 2,
-                      '.subtitle': { color: 'text.tertiary' },
-                      '.arrow': {
-                        color: 'text.tertiary',
-                        fontSize: 18,
-                        transform: 'translateY(4px)',
-                      },
-                      ':hover': {
-                        backgroundColor: 'background.header',
-                        '.subtitle': { color: 'text.primary' },
-                      },
-                    }}
-                  >
-                    <Box
-                      component={r.icon}
-                      sx={{ width: 16, height: 16, color: 'text.tertiary' }}
-                    />
-                    <Stack flexGrow={1}>
-                      <Typography fontWeight="medium">
-                        {intl.formatMessage(r.title)}
-                      </Typography>
-                      <Typography className="subtitle">
-                        {intl.formatMessage(r.subtitle)}
-                      </Typography>
-                    </Stack>
-                    {!isNilOrEmpty(r?.href) && (
-                      <FaArrowUpRightRegular className="arrow" />
-                    )}
-                  </MenuItem>
+                    route={route}
+                    item={r}
+                    setOpen={setOpen}
+                  />
                 ))}
               </MenuList>
             </Paper>
@@ -223,5 +194,65 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         )}
       </Popper>
     </>
+  );
+};
+
+type ListMenuItemProps = {
+  route: RouteObject;
+  item: NavItem;
+  setOpen: Dispatch<SetStateAction<boolean>>;
+} & MenuItemProps;
+
+const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
+  const intl = useIntl();
+  const navigate = useNavigate();
+  const match = useMatch({
+    path: `${route.path}/${item?.path ?? ''}`,
+  });
+
+  const handleMenuClick = (path: string) => () => {
+    setOpen(false);
+    navigate(`${route.path}/${path ?? ''}`);
+  };
+
+  const isSelected = !isNilOrEmpty(match) && isNilOrEmpty(item?.href);
+
+  return (
+    <MenuItem
+      {...rest}
+      {...(isNilOrEmpty(item.href)
+        ? { onClick: handleMenuClick(item?.path ?? '') }
+        : {
+            href: item.href,
+            target: '_blank',
+            rel: 'noopener noreferrer nofollow',
+            component: 'a',
+          })}
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 1,
+        borderRadius: 1,
+        backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+        color: isSelected ? 'primary.main' : 'text.primary',
+        my: 0.25,
+        '&&&': { minHeight: 36 },
+        '&:hover': {
+          backgroundColor: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity,
+            ),
+        },
+      }}
+    >
+      <Typography fontWeight="medium">
+        {intl.formatMessage(item.title)}
+      </Typography>
+      {!isNilOrEmpty(item?.href) && (
+        <FaArrowUpRightRegular sx={{ fontSize: 14 }} />
+      )}
+    </MenuItem>
   );
 };

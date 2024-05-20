@@ -173,6 +173,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'wOUSD',
     },
+    // TODO using veOGV address as placeholder
+    xOGN: {
+      address: '0x0C4576Ca1c365868E162554AF8e385dc3e7C66D9',
+      chainId: mainnet.id,
+      abi: veOGVABI,
+      name: 'Staked OGN',
+      decimals: 18,
+      symbol: 'xOGN',
+    },
   },
   arbitrum: {
     ETH: {
@@ -182,6 +191,15 @@ export const tokens = {
       name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',
+    },
+    // TODO using WOETH address as placeholder
+    OETH: {
+      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
+      chainId: arbitrum.id,
+      abi: OETHABI,
+      name: 'Origin Ether',
+      decimals: 18,
+      symbol: 'OETH',
     },
     wOETH: {
       address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',

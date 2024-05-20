@@ -1,0 +1,65 @@
+import { Collapse, Stack } from '@mui/material';
+import {
+  NotificationStateProvider,
+  useVisibleNotifications,
+} from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { TransitionGroup } from 'react-transition-group';
+
+import { NotificationAlert } from './NotificationAlert';
+
+import type { StackProps } from '@mui/material';
+import type { ReactNode } from 'react';
+
+export type NotificationsProviderProps = {
+  children: ReactNode;
+};
+
+const NotificationsWrapped = ({ children }: StackProps) => {
+  const visibleNotifications = useVisibleNotifications();
+
+  return (
+    <>
+      {children}
+      {!isNilOrEmpty(visibleNotifications) && (
+        <Stack
+          direction="column"
+          sx={{
+            position: 'fixed',
+            bottom: { xs: 16, sm: 40 },
+            right: { xs: 16, sm: 40 },
+            left: {
+              xs: 16,
+              sm: '30dvw',
+              md: '50dvw',
+              lg: '60dvw',
+              xl: '70dvw',
+            },
+            zIndex: (theme) => theme.zIndex.modal + 1,
+          }}
+        >
+          <TransitionGroup>
+            {visibleNotifications.map((notif) => (
+              <Collapse appear key={notif.id}>
+                <NotificationAlert
+                  notification={notif}
+                  sx={{ width: 1, mt: 1 }}
+                />
+              </Collapse>
+            ))}
+          </TransitionGroup>
+        </Stack>
+      )}
+    </>
+  );
+};
+
+export const NotificationsProvider = ({
+  children,
+}: NotificationsProviderProps) => (
+  <NotificationStateProvider
+    initialState={{ notifications: [], maxVisible: 4, autoHideDuration: 5000 }}
+  >
+    <NotificationsWrapped>{children}</NotificationsWrapped>
+  </NotificationStateProvider>
+);

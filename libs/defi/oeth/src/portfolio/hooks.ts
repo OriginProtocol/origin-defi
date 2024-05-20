@@ -1,22 +1,51 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
-import { HistoryType } from '@origin/defi/shared';
+import {
+  HistoryType,
+  useBalancesQuery,
+  useBridgeTransfersQuery,
+  useOTokenHistoriesQuery,
+  useTransfersQuery,
+} from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { descend, groupBy, sort } from 'ramda';
+import { descend, groupBy, sort, sortBy, uniq } from 'ramda';
+import { useSearchParams } from 'react-router-dom';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useOethHistoryTransactionQuery } from './queries.generated';
-
+import type {
+  BalancesQuery,
+  BridgeTransfersQuery,
+  OTokenHistoriesQuery,
+  TransfersQuery,
+} from '@origin/defi/shared';
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-import type { OethHistoryTransactionQuery } from './queries.generated';
-import type { DailyHistory } from './types';
+import type { DailyHistory, WOETHHistoryType } from './types';
+
+export const useTokenSelect = () => {
+  const [search, setSearch] = useSearchParams({
+    t: 'oeth',
+  });
+
+  return useMemo(
+    () => ({
+      token: search.get('t') ?? 'oeth',
+      update: (newVal: 'oeth' | 'woeth') => {
+        setSearch((params) => {
+          params.set('t', newVal);
+          return params;
+        });
+      },
+    }),
+    [search, setSearch],
+  );
+};
 
 export const usePendingYield = (
   options?: QueryOptions<
@@ -91,23 +120,26 @@ export const usePendingYield = (
   });
 };
 
-export const useAggregatedHistory = (
+export const useOethHistory = (
   filters?: HistoryType[],
-  options?: UseQueryOptions<OethHistoryTransactionQuery, Error, DailyHistory[]>,
+  options?: UseQueryOptions<OTokenHistoriesQuery, Error, DailyHistory[]>,
 ) => {
   const { address, isConnected } = useAccount();
 
-  return useOethHistoryTransactionQuery(
+  return useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
+      chainId: tokens.mainnet.OETH.chainId,
+      token: tokens.mainnet.OETH.address,
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {
+      staleTime: 120e3,
       refetchOnWindowFocus: false,
       ...options,
       enabled: isConnected && !!address,
       placeholderData: { oTokenHistories: [] },
-      select: useCallback((data: OethHistoryTransactionQuery) => {
+      select: useCallback((data: OTokenHistoriesQuery) => {
         const history = data?.oTokenHistories;
 
         const grouped = groupBy(
@@ -189,4 +221,131 @@ export const useAggregatedHistory = (
       }, []),
     },
   );
+};
+
+export const useWoethHistory = (filters: WOETHHistoryType[]) => {
+  const { address } = useAccount();
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    staleTime: 120e3,
+    enabled: !!address,
+    queryKey: ['useWoethHistory', address],
+    queryFn: async () => {
+      const transfersQueryArgs = {
+        tokens: [
+          tokens.mainnet.wOETH.address.toLowerCase(),
+          tokens.arbitrum.wOETH.address.toLowerCase(),
+        ],
+        account: address?.toLowerCase() ?? ZERO_ADDRESS,
+      };
+      const bridgeTransferQueryArgs = {
+        address: address?.toLowerCase() ?? ZERO_ADDRESS,
+      };
+      const [transfers, bridgeTransfers] = await Promise.all([
+        queryClient.fetchQuery({
+          queryKey: useTransfersQuery.getKey(transfersQueryArgs),
+          queryFn: useTransfersQuery.fetcher(transfersQueryArgs),
+        }),
+        queryClient.fetchQuery({
+          queryKey: useBridgeTransfersQuery.getKey(bridgeTransferQueryArgs),
+          queryFn: useBridgeTransfersQuery.fetcher(bridgeTransferQueryArgs),
+        }),
+      ]);
+
+      const balanceQueryArgs = {
+        ...transfersQueryArgs,
+        blocks: uniq([
+          ...transfers.erc20Transfers.map((b) => b.blockNumber),
+          ...bridgeTransfers.bridgeTransfers.map((b) => b.blockNumber),
+        ]),
+      };
+      const balances = await queryClient.fetchQuery({
+        queryKey: useBalancesQuery.getKey(balanceQueryArgs),
+        queryFn: useBalancesQuery.fetcher(balanceQueryArgs),
+      });
+
+      return {
+        bridgeTransfers,
+        transfers,
+        balances,
+      };
+    },
+    select: useCallback(
+      (data: {
+        bridgeTransfers: BridgeTransfersQuery;
+        transfers: TransfersQuery;
+        balances: BalancesQuery;
+      }) => {
+        if (
+          !address ||
+          !data.bridgeTransfers?.bridgeTransfers ||
+          !data.transfers?.erc20Transfers ||
+          !data.balances?.erc20Balances
+        ) {
+          return [];
+        }
+
+        const latestBalanceByChainId = new Map<number, string>();
+        const aggregatedBalances = sortBy(
+          (b) => b.timestamp,
+          data.balances.erc20Balances,
+        )
+          .map((b) => {
+            latestBalanceByChainId.set(b.chainId, b.balance);
+            return {
+              ...b,
+              balance: [...latestBalanceByChainId.values()]
+                .reduce((sum, b) => sum + BigInt(b), 0n)
+                .toString(),
+            };
+          })
+          .reverse();
+
+        const transferRows = data.transfers.erc20Transfers
+          .map((t) => {
+            const balance =
+              aggregatedBalances.find((ab) => ab.timestamp <= t.timestamp)
+                ?.balance ?? '0';
+            return {
+              id: t.id,
+              chainId: t.chainId,
+              blockNumber: t.blockNumber,
+              timestamp: t.timestamp,
+              address: t.address,
+              txHash: t.txHash,
+              type: (t.from.toLowerCase() === address.toLowerCase()
+                ? 'Sent'
+                : 'Received') as WOETHHistoryType,
+              change: t.value,
+              balance,
+            };
+          })
+          .filter((t) => !filters.length || filters.includes(t.type));
+
+        const bridgeRows = data.bridgeTransfers.bridgeTransfers.map((b) => {
+          const balance =
+            aggregatedBalances.find((ab) => ab.timestamp < b.timestamp)
+              ?.balance ?? '0';
+          return {
+            id: `${b.id}-bridge`,
+            chainId: b.chainIn,
+            blockNumber: b.blockNumber,
+            timestamp: b.timestamp,
+            address: b.tokenIn,
+            txHash: b.txHashIn,
+            type: 'Bridge' as WOETHHistoryType,
+            change: b.amountIn,
+            balance,
+          };
+        });
+
+        return sortBy(
+          (r) => r.timestamp,
+          [...transferRows, ...bridgeRows],
+        ).reverse();
+      },
+      [address, filters],
+    ),
+  });
 };

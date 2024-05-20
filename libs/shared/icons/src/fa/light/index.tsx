@@ -36,6 +36,7 @@ import CoinsSvg from './coins.svg?react';
 import CommentsSvg from './comments.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
+import FilterSvg from './filter.svg?react';
 import GavelSvg from './gavel.svg?react';
 import GearComplexSvg from './gear-complex.svg?react';
 import Grid2Svg from './grid-2.svg?react';
@@ -43,11 +44,14 @@ import LinkSvg from './link.svg?react';
 import MagnifyingGlassSvg from './magnifying-glass.svg?react';
 import MagnifyingGlassDollarSvg from './magnifying-glass-dollar.svg?react';
 import MinusSvg from './minus.svg?react';
+import MoonSvg from './moon.svg?react';
 import PercentSvg from './percent.svg?react';
 import RotateLeftSvg from './rotate-left.svg?react';
 import SquareSvg from './square.svg?react';
 import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
+import SquareMinusSvg from './square-minus.svg?react';
+import SunBrightSvg from './sun-bright.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
@@ -316,6 +320,9 @@ export const FaFileLinesLight = (props: SvgIconProps) => (
     inheritViewBox
   />
 );
+export const FaFilterLight = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={FilterSvg} inheritViewBox />
+);
 export const FaGavelLight = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={GavelSvg} inheritViewBox />
 );
@@ -352,6 +359,9 @@ export const FaMagnifyingGlassLight = (props: SvgIconProps) => (
 export const FaMinusLight = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={MinusSvg} inheritViewBox />
 );
+export const FaMoonLight = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={MoonSvg} inheritViewBox />
+);
 export const FaPercentLight = (props: SvgIconProps) => (
   <SvgIcon
     fontSize="inherit"
@@ -384,6 +394,22 @@ export const FaSquareListLight = (props: SvgIconProps) => (
     fontSize="inherit"
     {...props}
     component={SquareListSvg}
+    inheritViewBox
+  />
+);
+export const FaSquareMinusLight = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SquareMinusSvg}
+    inheritViewBox
+  />
+);
+export const FaSunBrightLight = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SunBrightSvg}
     inheritViewBox
   />
 );

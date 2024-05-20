@@ -1,5 +1,4 @@
-import { Container } from '@mui/material';
-import { PageTitle } from '@origin/defi/shared';
+import { Page, PageSection, PageTitle } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Outlet } from 'react-router-dom';
@@ -10,7 +9,7 @@ export const RedeemView = () => {
   // const location = useLocation();
 
   return (
-    <Container maxWidth="sm">
+    <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
@@ -40,7 +39,9 @@ export const RedeemView = () => {
           );
         })}
       </Tabs> */}
-      <Outlet />
-    </Container>
+      <PageSection>
+        <Outlet />
+      </PageSection>
+    </Page>
   );
 };

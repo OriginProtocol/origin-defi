@@ -1,5 +1,5 @@
 import { Card, Stack, Typography } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import { ValueLabel } from '@origin/shared/components';
 import { Curve, Origin } from '@origin/shared/icons';
 import {
   routeEq,
@@ -13,7 +13,8 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
-import type { CardProps, StackProps, TypographyProps } from '@mui/material';
+import type { CardProps, TypographyProps } from '@mui/material';
+import type { ValueLabelProps } from '@origin/shared/components';
 
 import type { OethRedeemAction } from '../types';
 
@@ -86,9 +87,8 @@ export const RedeemActionCard = ({
     <Card
       {...rest}
       sx={{
-        px: 1.5,
-        py: 2,
-        borderWidth: 1,
+        p: 2,
+        border: '1px solid',
         borderColor: 'divider',
         ...(amountIn > 0n && {
           cursor: 'pointer',
@@ -99,7 +99,10 @@ export const RedeemActionCard = ({
         ...(isDisabled
           ? { opacity: 0.5, cursor: 'default' }
           : isSelected
-            ? { borderColor: 'primary.main' }
+            ? {
+                borderColor: 'primary.main',
+                backgroundColor: 'background.highlight',
+              }
             : {}),
         ...rest?.sx,
       }}
@@ -110,15 +113,23 @@ export const RedeemActionCard = ({
         }
       }}
     >
-      <Stack spacing={0.5}>
-        <Stack {...rowProps} pb={0.5}>
+      <Stack useFlexGap>
+        <Stack
+          direction="row"
+          sx={{
+            gap: 1,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 1.5,
+          }}
+        >
           <Typography fontWeight={500}>
             {intl.formatMessage(routeLabel)}
           </Typography>
           {action === 'redeem-vault' ? (
-            <Origin sx={{ fontSize: 16 }} />
+            <Origin sx={{ fontSize: 20 }} />
           ) : (
-            <Curve sx={{ fontSize: 16 }} />
+            <Curve sx={{ fontSize: 20 }} />
           )}
         </Stack>
         {isDisabled ? (
@@ -128,44 +139,50 @@ export const RedeemActionCard = ({
             })}
           </Typography>
         ) : (
-          <>
-            <Stack {...rowProps}>
-              <Typography {...labelProps}>
-                {intl.formatMessage({ defaultMessage: 'Wait time:' })}
-              </Typography>
-              {isEmptyValue ? (
-                <EmptyValue />
-              ) : (
-                <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-                  {intl.formatMessage({ defaultMessage: '~1min' })}
-                </LoadingLabel>
-              )}
-            </Stack>
-            <Stack {...rowProps}>
-              <Typography {...labelProps}>
-                {intl.formatMessage({ defaultMessage: 'Rate:' })}
-              </Typography>
-              {isEmptyValue ? (
-                <EmptyValue />
-              ) : (
-                <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-                  1:{formatQuantity(estimatedRoute?.rate)}
-                </LoadingLabel>
-              )}
-            </Stack>
-            <Stack {...rowProps}>
-              <Typography {...labelProps}>
-                {intl.formatMessage({ defaultMessage: 'Gas:' })}
-              </Typography>
-              {isEmptyValue ? (
-                <EmptyValue />
-              ) : (
-                <LoadingLabel isLoading={isGasLoading}>
-                  ~{formatCurrency(gasPrice)}
-                </LoadingLabel>
-              )}
-            </Stack>
-          </>
+          <Stack spacing={1.25}>
+            <ValueLabel
+              {...valueLabelProps}
+              label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
+              value={
+                isEmptyValue ? (
+                  <EmptyValue />
+                ) : (
+                  intl.formatMessage({ defaultMessage: '~1min' })
+                )
+              }
+              isLoading={isSwapRoutesLoading}
+            />
+            <ValueLabel
+              {...valueLabelProps}
+              label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+              value={
+                isEmptyValue ? (
+                  <EmptyValue />
+                ) : (
+                  intl.formatMessage(
+                    { defaultMessage: '1:{rate}' },
+                    { rate: formatQuantity(estimatedRoute?.rate) },
+                  )
+                )
+              }
+              isLoading={isSwapRoutesLoading}
+            />
+            <ValueLabel
+              {...valueLabelProps}
+              label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+              value={
+                isEmptyValue ? (
+                  <EmptyValue />
+                ) : (
+                  intl.formatMessage(
+                    { defaultMessage: '~{value}' },
+                    { value: formatCurrency(gasPrice) },
+                  )
+                )
+              }
+              isLoading={isGasLoading}
+            />
+          </Stack>
         )}
       </Stack>
     </Card>
@@ -180,15 +197,14 @@ function EmptyValue(props: TypographyProps) {
   );
 }
 
-const rowProps: StackProps = {
+const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  sx: {
-    gap: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+  justifyContent: 'space-between',
+  labelProps: {
+    variant: 'body3',
+    fontWeight: 'medium',
+    color: 'text.secondary',
   },
-};
-
-const labelProps: TypographyProps = {
-  color: 'text.secondary',
+  valueProps: { fontWeight: 'medium' },
+  minWidth: 120,
 };

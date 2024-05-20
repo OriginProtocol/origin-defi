@@ -5,25 +5,23 @@ import {
   CardHeader,
   CircularProgress,
   Collapse,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material';
+import { TokenButton, TokenInput } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  NotificationSnack,
-  SeverityIcon,
+  MultiTokenIcon,
   TokenIcon,
-  TokenInput2,
 } from '@origin/shared/components';
 import {
-  ApprovalNotification,
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
   SettingsButton,
-  SwapNotification,
   SwapProvider,
   useDeleteActivity,
   useFormat,
@@ -32,13 +30,18 @@ import {
   useHandleSwap,
   usePushActivity,
   usePushNotification,
+  useSlippage,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
   useUpdateActivity,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatError, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  formatError,
+  isNilOrEmpty,
+  subtractPercentage,
+} from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -62,6 +65,7 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) => {
   const intl = useIntl();
+  const { formatAmount } = useFormat();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -82,26 +86,34 @@ export const Swapper = ({
         return activity.id;
       }}
       onApproveSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, txReceipt, amountIn } = state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <ApprovalNotification {...state} status="success" />,
+          icon: <TokenIcon token={state.tokenIn} />,
+          title: intl.formatMessage({ defaultMessage: 'Approval successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage: '{amountIn} {symbolIn}',
+            },
+            {
+              amountIn: formatAmount(amountIn),
+              symbolIn: tokenIn?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
+          severity: 'success',
         });
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'info',
         });
       }}
       onApproveFailure={(state) => {
@@ -113,13 +125,12 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <ApprovalNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
-            />
-          ),
+          icon: <TokenIcon token={state.tokenIn} />,
+          title: intl.formatMessage({
+            defaultMessage: 'Error while approving',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
       onSwapStart={(state) => {
@@ -132,30 +143,54 @@ export const Swapper = ({
         return activity.id;
       }}
       onSwapSuccess={(state) => {
-        const { trackId } = state;
+        const { trackId, tokenIn, tokenOut, amountIn, amountOut, txReceipt } =
+          state;
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
-          content: <SwapNotification {...state} status="success" />,
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
+              zOrder="last"
+            />
+          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap successful' }),
+          message: intl.formatMessage(
+            {
+              defaultMessage:
+                '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+            },
+            {
+              amountIn: intl.formatNumber(
+                +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolIn: tokenIn?.symbol,
+              amountOut: intl.formatNumber(
+                +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+              ),
+              symbolOut: tokenOut?.symbol,
+            },
+          ),
+          blockExplorerLinkProps: {
+            hash: txReceipt.transactionHash,
+          },
+          severity: 'success',
         });
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
         pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
+          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
+          message: intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          }),
+          severity: 'warning',
         });
       }}
       onSwapFailure={(state) => {
-        const { error, trackId } = state;
+        const { error, trackId, tokenIn, tokenOut } = state;
         updateActivity({
           ...state,
           id: trackId,
@@ -163,13 +198,17 @@ export const Swapper = ({
           error: formatError(error),
         });
         pushNotification({
-          content: (
-            <SwapNotification
-              {...state}
-              status="error"
-              error={formatError(error)}
+          icon: (
+            <MultiTokenIcon
+              tokens={[tokenIn, tokenOut]}
+              sx={{ transform: 'rotate(45deg)' }}
             />
           ),
+          title: intl.formatMessage({
+            defaultMessage: 'Error while swapping',
+          }),
+          message: formatError(error),
+          severity: 'error',
         });
       }}
     >
@@ -200,6 +239,7 @@ function SwapperWrapped({
       swapActions,
     },
   ] = useSwapState();
+  const { value: slippage } = useSlippage();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
@@ -258,15 +298,20 @@ function SwapperWrapped({
         <Card>
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Redeem' })}
-            action={<SettingsButton />}
+            action={
+              <SettingsButton
+                sx={{ border: '1px solid', borderColor: 'divider' }}
+              />
+            }
           />
+          <Divider />
           <CardContent
-            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}
+            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
           >
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'Unstake amount' })}
+            <Typography fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
             </Typography>
-            <TokenInput2
+            <TokenInput
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
@@ -279,39 +324,42 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                p: 3,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                backgroundColor: 'background.default',
+                px: 3,
+                py: 2,
+                borderRadius: 3,
+                backgroundColor: 'background.highlight',
+                border: '1px solid',
+                borderColor: 'divider',
               }}
             />
-            <Typography pt={1.5}>
+            <Typography fontWeight="medium" pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Route' })}
             </Typography>
             <Stack direction="row" spacing={2}>
               <RedeemActionCard action="redeem-vault" sx={{ width: 1 }} />
               <RedeemActionCard action="swap-curve" sx={{ width: 1 }} />
             </Stack>
-            <Typography pt={1.5}>
+            <Typography fontWeight="medium" pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Receive amount' })}
             </Typography>
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="space-between"
-              sx={{ backgroundColor: 'grey.900', p: 2 }}
+              sx={{
+                backgroundColor: 'background.highlight',
+                p: 3,
+                borderRadius: 3,
+                border: '1px solid',
+                borderColor: 'divider',
+              }}
             >
-              <Stack spacing={1}>
+              <Stack spacing={1.5}>
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
-                  sx={{
-                    fontFamily: 'Sailec, sans-serif',
-                    fontSize: 24,
-                    lineHeight: 1.5,
-                    fontWeight: 700,
-                    color: amountIn === 0n ? 'text.secondary' : 'text.primary',
-                  }}
+                  variant="h6"
+                  color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
                 >
                   {intl.formatNumber(
                     +formatUnits(amountOut, tokenOut.decimals),
@@ -331,18 +379,52 @@ function SwapperWrapped({
                 </LoadingLabel>
               </Stack>
               <Stack direction="row" alignItems="center" spacing={1}>
-                <TokenIcon token={tokenOut} sx={{ fontSize: 28 }} />
-                <Typography fontWeight="medium" fontSize={16}>
-                  {tokenOut.symbol}
-                </Typography>
+                <TokenButton token={tokenOut} disabled />
               </Stack>
             </Stack>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+            <Collapse in={amountOut > 0n}>
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                py={3}
+                px={1}
+              >
+                <Typography color="text.secondary" fontWeight="medium">
+                  {intl.formatMessage(
+                    {
+                      defaultMessage:
+                        'Minimum received with {slippage} slippage:',
+                    },
+                    {
+                      slippage: intl.formatNumber(slippage, {
+                        style: 'percent',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                      }),
+                    },
+                  )}
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={0.5}>
+                  <LoadingLabel
+                    isLoading={isSwapRoutesLoading}
+                    sWidth={60}
+                    fontWeight="medium"
+                  >
+                    {formatCurrency(subtractPercentage(amountOutUsd, slippage))}
+                  </LoadingLabel>
+                </Stack>
+              </Stack>
+            </Collapse>
+          </CardContent>
+          <CardContent sx={{ pt: 0 }}>
+            <Collapse in={needsApproval}>
               <Button
                 fullWidth
                 variant="action"
                 disabled={approveButtonDisabled}
                 onClick={handleApprove}
+                sx={{ mb: 1.5 }}
               >
                 {isSwapRoutesLoading ? (
                   <CircularProgress size={32} color="inherit" />

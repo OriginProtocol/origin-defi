@@ -1,5 +1,8 @@
-import { Typography } from '@mui/material';
-import { ActivityIcon, NotificationSnack } from '@origin/shared/components';
+import {
+  ActivityIcon,
+  ErrorTooltipLabel,
+  NotificationSnack,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { NotificationSnackProps } from '@origin/shared/components';
@@ -32,16 +35,7 @@ export const TransactionNotification = ({
         isNilOrEmpty(error) ? (
           rest?.subtitle
         ) : (
-          <Typography
-            color="error"
-            sx={{
-              overflow: 'hidden',
-              textOverflow: 'ellipsis',
-              WebkitLineClamp: 2,
-            }}
-          >
-            {error}
-          </Typography>
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
         )
       }
     />
