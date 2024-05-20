@@ -14,8 +14,10 @@ import { IVaultABI } from './abis/IVault';
 import { LrtConfigABI } from './abis/LrtConfig';
 import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
+import { MigratorABI } from './abis/Migrator';
 import { OETHDripperABI } from './abis/OETHDripper';
 import { OETHZapperABI } from './abis/OETHZapper';
+import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
 import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
@@ -26,9 +28,23 @@ import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
 import { UniswapV3WETHPrimeETHPoolABI } from './abis/UniswapV3WETHPrimeETHPool';
 import { WOETHCCIPZapperABI } from './abis/WOETHCCIPZapper';
+import { xOGNGovernanceABI } from './abis/xOGNGovernance';
 
 export const contracts = {
   mainnet: {
+    // Chainlink CCIP
+    ccipRouter: {
+      address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
+      chainId: mainnet.id,
+      abi: CCIPRouterABI,
+      name: 'ccipRouter',
+    },
+    ccipOnRamp: {
+      address: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
+      chainId: mainnet.id,
+      abi: CCIPEvm2EvmOnRamp,
+      name: 'ccipOnRamp',
+    },
     // Chainlink
     ChainlinkOracle: {
       address: '0x017aD99900b9581Cd40C815990890EE9F0858246',
@@ -106,12 +122,25 @@ export const contracts = {
       abi: OETHZapperABI,
       name: 'OETHZapper',
     },
-    // Governance
+    // OGN
+    OGNFixedRewardSource: {
+      address: '0xAef413c23070DDBb147bE5207AD1F18D7959FC01', // TODO tenderly address
+      chainId: mainnet.id,
+      abi: OGNFixedRateRewardSourceABI,
+      name: 'OGNFixedRewardSource',
+    },
+    // OGV
     OGVMandatoryDistributor: {
       address: '0xD667091c2d1DCc8620f4eaEA254CdFB0a176718D',
       chainId: mainnet.id,
       abi: OGVMandatoryDistibutorABI,
       name: 'OGVMandatoryDistributor',
+    },
+    OGVMigrator: {
+      address: '0x7609c88E5880e934dd3A75bCFef44E31b1Badb8b', // TODO tenderly address
+      chainId: mainnet.id,
+      abi: MigratorABI,
+      name: 'OGVMigrator',
     },
     OGVOptionalDistributor: {
       address: '0x7aE2334f12a449895AD21d4c255D9DE194fe986f',
@@ -195,24 +224,18 @@ export const contracts = {
       abi: UniswapV3RouterABI,
       name: 'uniswapV3Router',
     },
-    // Chainlink CCIP
-    ccipRouter: {
-      address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
-      chainId: mainnet.id,
-      abi: CCIPRouterABI,
-      name: 'ccipRouter',
-    },
-    ccipOnRamp: {
-      address: '0x925228d7b82d883dde340a55fe8e6da56244a22c',
-      chainId: mainnet.id,
-      abi: CCIPEvm2EvmOnRamp,
-      name: 'ccipOnRamp',
-    },
     woethCcipZapper: {
       address: '0x438731b5Ee8fEcC02a28532713E237b93260C3F8',
       chainId: mainnet.id,
       abi: WOETHCCIPZapperABI,
       name: 'woethCcipZapper',
+    },
+    // xOGN
+    xOGNGovernance: {
+      address: '0x16890bdd817Ed1c4654430d67329CB20b0B71bB0', // TODO tenderly address
+      chainId: mainnet.id,
+      abi: xOGNGovernanceABI,
+      name: 'xOGNGovernance',
     },
   },
   arbitrum: {

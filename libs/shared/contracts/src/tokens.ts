@@ -10,6 +10,7 @@ import { USDTABI } from './abis/USDT';
 import { veOGVABI } from './abis/veOGV';
 import { WOETHABI } from './abis/WOETH';
 import { WrappedOusdABI } from './abis/WrappedOusd';
+import { xOGNABI } from './abis/xOGN';
 
 export const tokens = {
   mainnet: {
@@ -173,11 +174,10 @@ export const tokens = {
       decimals: 18,
       symbol: 'wOUSD',
     },
-    // TODO using veOGV address as placeholder
     xOGN: {
-      address: '0x0C4576Ca1c365868E162554AF8e385dc3e7C66D9',
+      address: '0x06C19dE6Ff523E8db65152A1a6f966719208Da20', // TODO tenderly address
       chainId: mainnet.id,
-      abi: veOGVABI,
+      abi: xOGNABI,
       name: 'Staked OGN',
       decimals: 18,
       symbol: 'xOGN',
@@ -191,15 +191,6 @@ export const tokens = {
       name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',
-    },
-    // TODO using WOETH address as placeholder
-    OETH: {
-      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
-      chainId: arbitrum.id,
-      abi: OETHABI,
-      name: 'Origin Ether',
-      decimals: 18,
-      symbol: 'OETH',
     },
     wOETH: {
       address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
