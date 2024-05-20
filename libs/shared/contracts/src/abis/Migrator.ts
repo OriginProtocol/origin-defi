@@ -1,362 +1,367 @@
 export const MigratorABI = [
   {
+    type: 'constructor',
     inputs: [
       {
-        internalType: 'address',
         name: '_ogv',
         type: 'address',
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: '_ogn',
         type: 'address',
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: '_ogvStaking',
         type: 'address',
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: '_ognStaking',
         type: 'address',
+        internalType: 'address',
       },
     ],
     stateMutability: 'nonpayable',
-    type: 'constructor',
   },
   {
-    inputs: [
+    type: 'function',
+    name: 'CONVERSION_RATE',
+    inputs: [],
+    outputs: [
       {
-        internalType: 'uint256',
-        name: 'expectedOGN',
+        name: '',
         type: 'uint256',
-      },
-      {
         internalType: 'uint256',
-        name: 'availableOGN',
-        type: 'uint256',
       },
     ],
-    type: 'error',
-    name: 'ContractInsolvent',
+    stateMutability: 'view',
   },
   {
+    type: 'function',
+    name: 'claimGovernance',
     inputs: [],
-    type: 'error',
-    name: 'InvalidStakeAmount',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
+    type: 'function',
+    name: 'endTime',
     inputs: [],
-    type: 'error',
-    name: 'LockupIdsRequired',
+    outputs: [
+      {
+        name: '',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
   },
   {
+    type: 'function',
+    name: 'governor',
     inputs: [],
-    type: 'error',
-    name: 'MigrationAlreadyStarted',
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
   },
   {
+    type: 'function',
+    name: 'isGovernor',
     inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'isMigrationActive',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'migrate',
+    inputs: [
+      {
+        name: 'ogvAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [
+      {
+        name: 'ognReceived',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'migrate',
+    inputs: [
+      {
+        name: 'lockupIds',
+        type: 'uint256[]',
+        internalType: 'uint256[]',
+      },
+      {
+        name: 'ogvAmountFromWallet',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'ognAmountFromWallet',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'migrateRewards',
+        type: 'bool',
+        internalType: 'bool',
+      },
+      {
+        name: 'newStakeAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+      {
+        name: 'newStakeDuration',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'ogn',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract ERC20Burnable',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'ognStaking',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract IStaking',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'ogv',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract ERC20Burnable',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'ogvStaking',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'contract IStaking',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'start',
+    inputs: [],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'transferExcessTokens',
+    inputs: [
+      {
+        name: 'treasury',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'transferGovernance',
+    inputs: [
+      {
+        name: '_newGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
     type: 'event',
     name: 'Decommissioned',
+    inputs: [],
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'GovernorshipTransferred',
     inputs: [
       {
-        internalType: 'address',
         name: 'previousGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: 'newGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
     ],
-    type: 'event',
-    name: 'GovernorshipTransferred',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'LockupsMigrated',
     inputs: [
       {
-        internalType: 'address',
         name: 'user',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
       {
-        internalType: 'uint256[]',
         name: 'ogvLockupIds',
         type: 'uint256[]',
         indexed: false,
+        internalType: 'uint256[]',
       },
       {
-        internalType: 'uint256',
         name: 'newStakeAmount',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
       {
-        internalType: 'uint256',
         name: 'newDuration',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
     ],
-    type: 'event',
-    name: 'LockupsMigrated',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'PendingGovernorshipTransfer',
     inputs: [
       {
-        internalType: 'address',
         name: 'previousGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: 'newGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
     ],
-    type: 'event',
-    name: 'PendingGovernorshipTransfer',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'TokenExchanged',
     inputs: [
       {
-        internalType: 'uint256',
         name: 'ogvAmountIn',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
       {
-        internalType: 'uint256',
         name: 'ognAmountOut',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
     ],
-    type: 'event',
-    name: 'TokenExchanged',
     anonymous: false,
   },
   {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'CONVERSION_RATE',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'claimGovernance',
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'endTime',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: '',
-        type: 'uint256',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'governor',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'isGovernor',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'isMigrationActive',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-  },
-  {
+    type: 'error',
+    name: 'ContractInsolvent',
     inputs: [
       {
-        internalType: 'uint256',
-        name: 'ogvAmount',
+        name: 'expectedOGN',
         type: 'uint256',
+        internalType: 'uint256',
       },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'migrate',
-    outputs: [
       {
-        internalType: 'uint256',
-        name: 'ognReceived',
+        name: 'availableOGN',
         type: 'uint256',
+        internalType: 'uint256',
       },
     ],
   },
   {
-    inputs: [
-      {
-        internalType: 'uint256[]',
-        name: 'lockupIds',
-        type: 'uint256[]',
-      },
-      {
-        internalType: 'uint256',
-        name: 'ogvAmountFromWallet',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'ognAmountFromWallet',
-        type: 'uint256',
-      },
-      {
-        internalType: 'bool',
-        name: 'migrateRewards',
-        type: 'bool',
-      },
-      {
-        internalType: 'uint256',
-        name: 'newStakeAmount',
-        type: 'uint256',
-      },
-      {
-        internalType: 'uint256',
-        name: 'newStakeDuration',
-        type: 'uint256',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'migrate',
-  },
-  {
+    type: 'error',
+    name: 'InvalidStakeAmount',
     inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'ogn',
-    outputs: [
-      {
-        internalType: 'contract ERC20Burnable',
-        name: '',
-        type: 'address',
-      },
-    ],
   },
   {
+    type: 'error',
+    name: 'LockupIdsRequired',
     inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'ognStaking',
-    outputs: [
-      {
-        internalType: 'contract IStaking',
-        name: '',
-        type: 'address',
-      },
-    ],
   },
   {
+    type: 'error',
+    name: 'MigrationAlreadyStarted',
     inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'ogv',
-    outputs: [
-      {
-        internalType: 'contract ERC20Burnable',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'ogvStaking',
-    outputs: [
-      {
-        internalType: 'contract IStaking',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'start',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: 'treasury',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'transferExcessTokens',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_newGovernor',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'transferGovernance',
   },
 ] as const;

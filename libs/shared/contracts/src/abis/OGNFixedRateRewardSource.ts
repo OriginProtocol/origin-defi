@@ -1,310 +1,316 @@
 export const OGNFixedRateRewardSourceABI = [
   {
+    type: 'constructor',
     inputs: [
       {
-        internalType: 'address',
         name: '_rewardToken',
         type: 'address',
+        internalType: 'address',
       },
     ],
     stateMutability: 'nonpayable',
-    type: 'constructor',
   },
   {
+    type: 'function',
+    name: 'claimGovernance',
     inputs: [],
-    type: 'error',
-    name: 'InvalidRewardRate',
+    outputs: [],
+    stateMutability: 'nonpayable',
   },
   {
+    type: 'function',
+    name: 'collectRewards',
     inputs: [],
-    type: 'error',
-    name: 'UnauthorizedCaller',
-  },
-  {
-    inputs: [
+    outputs: [
       {
-        internalType: 'address',
-        name: 'previousGovernor',
-        type: 'address',
-        indexed: true,
-      },
-      {
-        internalType: 'address',
-        name: 'newGovernor',
-        type: 'address',
-        indexed: true,
+        name: 'rewardAmount',
+        type: 'uint256',
+        internalType: 'uint256',
       },
     ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'governor',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'initialize',
+    inputs: [
+      {
+        name: '_strategistAddr',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_rewardsTarget',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: '_rewardsPerSecond',
+        type: 'uint192',
+        internalType: 'uint192',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'isGovernor',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'bool',
+        internalType: 'bool',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'previewRewards',
+    inputs: [],
+    outputs: [
+      {
+        name: 'rewardAmount',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'rewardConfig',
+    inputs: [],
+    outputs: [
+      {
+        name: 'lastCollect',
+        type: 'uint64',
+        internalType: 'uint64',
+      },
+      {
+        name: 'rewardsPerSecond',
+        type: 'uint192',
+        internalType: 'uint192',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'rewardToken',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'rewardsTarget',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'setRewardsPerSecond',
+    inputs: [
+      {
+        name: '_rewardsPerSecond',
+        type: 'uint192',
+        internalType: 'uint192',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setRewardsTarget',
+    inputs: [
+      {
+        name: '_rewardsTarget',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'setStrategistAddr',
+    inputs: [
+      {
+        name: '_address',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
+    name: 'strategistAddr',
+    inputs: [],
+    outputs: [
+      {
+        name: '',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    stateMutability: 'view',
+  },
+  {
+    type: 'function',
+    name: 'transferGovernance',
+    inputs: [
+      {
+        name: '_newGovernor',
+        type: 'address',
+        internalType: 'address',
+      },
+    ],
+    outputs: [],
+    stateMutability: 'nonpayable',
+  },
+  {
     type: 'event',
     name: 'GovernorshipTransferred',
-    anonymous: false,
-  },
-  {
     inputs: [
       {
-        internalType: 'address',
         name: 'previousGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: 'newGovernor',
         type: 'address',
         indexed: true,
+        internalType: 'address',
       },
     ],
-    type: 'event',
-    name: 'PendingGovernorshipTransfer',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'PendingGovernorshipTransfer',
     inputs: [
       {
-        internalType: 'uint256',
+        name: 'previousGovernor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+      {
+        name: 'newGovernor',
+        type: 'address',
+        indexed: true,
+        internalType: 'address',
+      },
+    ],
+    anonymous: false,
+  },
+  {
+    type: 'event',
+    name: 'RewardCollected',
+    inputs: [
+      {
         name: 'amountCollected',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
     ],
-    type: 'event',
-    name: 'RewardCollected',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'RewardsPerSecondChanged',
     inputs: [
       {
-        internalType: 'uint256',
         name: 'newRPS',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
       {
-        internalType: 'uint256',
         name: 'oldRPS',
         type: 'uint256',
         indexed: false,
+        internalType: 'uint256',
       },
     ],
-    type: 'event',
-    name: 'RewardsPerSecondChanged',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'RewardsTargetChange',
     inputs: [
       {
-        internalType: 'address',
         name: 'target',
         type: 'address',
         indexed: false,
+        internalType: 'address',
       },
       {
-        internalType: 'address',
         name: 'previousTarget',
         type: 'address',
         indexed: false,
+        internalType: 'address',
       },
     ],
-    type: 'event',
-    name: 'RewardsTargetChange',
     anonymous: false,
   },
   {
+    type: 'event',
+    name: 'StrategistUpdated',
     inputs: [
       {
-        internalType: 'address',
         name: '_address',
         type: 'address',
         indexed: false,
+        internalType: 'address',
       },
     ],
-    type: 'event',
-    name: 'StrategistUpdated',
     anonymous: false,
   },
   {
+    type: 'error',
+    name: 'InvalidRewardRate',
     inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'claimGovernance',
   },
   {
+    type: 'error',
+    name: 'UnauthorizedCaller',
     inputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'collectRewards',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'rewardAmount',
-        type: 'uint256',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'governor',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_strategistAddr',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_rewardsTarget',
-        type: 'address',
-      },
-      {
-        internalType: 'uint192',
-        name: '_rewardsPerSecond',
-        type: 'uint192',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'initialize',
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'isGovernor',
-    outputs: [
-      {
-        internalType: 'bool',
-        name: '',
-        type: 'bool',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'previewRewards',
-    outputs: [
-      {
-        internalType: 'uint256',
-        name: 'rewardAmount',
-        type: 'uint256',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'rewardConfig',
-    outputs: [
-      {
-        internalType: 'uint64',
-        name: 'lastCollect',
-        type: 'uint64',
-      },
-      {
-        internalType: 'uint192',
-        name: 'rewardsPerSecond',
-        type: 'uint192',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'rewardToken',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'rewardsTarget',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [
-      {
-        internalType: 'uint192',
-        name: '_rewardsPerSecond',
-        type: 'uint192',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'setRewardsPerSecond',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_rewardsTarget',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'setRewardsTarget',
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_address',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'setStrategistAddr',
-  },
-  {
-    inputs: [],
-    stateMutability: 'view',
-    type: 'function',
-    name: 'strategistAddr',
-    outputs: [
-      {
-        internalType: 'address',
-        name: '',
-        type: 'address',
-      },
-    ],
-  },
-  {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_newGovernor',
-        type: 'address',
-      },
-    ],
-    stateMutability: 'nonpayable',
-    type: 'function',
-    name: 'transferGovernance',
   },
 ] as const;
