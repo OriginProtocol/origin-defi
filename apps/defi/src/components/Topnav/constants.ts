@@ -38,7 +38,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
   ],
   more: [
     {
-      title: defineMessage({ defaultMessage: 'Info page' }),
+      title: defineMessage({ defaultMessage: 'Analytics' }),
       icon: FaCircleExclamationRegular,
       href: OUSD_ANALYTICS_URL,
     },

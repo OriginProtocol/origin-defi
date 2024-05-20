@@ -125,7 +125,7 @@ export const routes: RouteObject[] = [
             index: true,
             Component: governance.OverviewView,
             handle: {
-              title: defineMessage({ defaultMessage: 'Governance Overview' }),
+              title: defineMessage({ defaultMessage: 'Governance' }),
               icon: FaGavelRegular,
             },
           },
