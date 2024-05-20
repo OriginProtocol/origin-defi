@@ -1,4 +1,4 @@
-import { Button, Card, Collapse, Stack, Typography } from '@mui/material';
+import { Box, Button, Card, Collapse, Stack, Typography } from '@mui/material';
 import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
@@ -42,17 +42,26 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     <Card
       {...rest}
       sx={{
+        position: 'relative',
         backgroundColor: 'background.highlight',
-        backgroundImage: `url(${product.icon})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: product.iconSize,
-        backgroundPosition: 'top right',
         p: 5,
         display: 'flex',
         flexDirection: 'column',
         ...rest?.sx,
       }}
     >
+      <Box
+        component="img"
+        src={product.icon}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: product.iconSize,
+          mask: `url(${product.icon})`,
+          backgroundColor: product.bgcolor,
+        }}
+      />
       <Stack
         direction="row"
         alignItems="center"
