@@ -4,6 +4,7 @@ export * from './ChainIcon';
 export * from './ExpandIcon';
 export * from './MultiTokenIcon';
 export * from './SeverityIcon';
+export * from './SwapTokensIcon';
 export * from './TokenIcon';
 export * from './TransactionIcon';
 export * from './WalletIcon';
