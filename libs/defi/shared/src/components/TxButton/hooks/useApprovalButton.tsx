@@ -9,6 +9,7 @@ import {
   usePushActivity,
   usePushNotification,
   useUpdateActivity,
+  useWatchContract,
 } from '@origin/shared/providers';
 import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -36,11 +37,12 @@ export type UseApprovalButtonProps = {
   disableActivity?: boolean;
   disableNotification?: boolean;
   enableGas?: boolean;
+  enableAllowance?: boolean;
 };
 
 export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const intl = useIntl();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
@@ -86,6 +88,15 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       }
     },
     enabled: false,
+  });
+  const { data: allowance } = useWatchContract({
+    address: args.token.address,
+    abi: erc20Abi,
+    functionName: 'allowance',
+    args: [address ?? ZERO_ADDRESS, args?.spender],
+    query: {
+      enabled: isConnected && args.enableAllowance,
+    },
   });
 
   const onWrite = useCallback(() => {
@@ -332,6 +343,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   return useMemo(
     () => ({
       gasPrice,
+      allowance,
       label: intl.formatMessage(
         { defaultMessage: 'Approve {token}' },
         { token: args.token.symbol },
@@ -352,6 +364,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       },
     }),
     [
+      allowance,
       args.amount,
       args.spender,
       args.token,
