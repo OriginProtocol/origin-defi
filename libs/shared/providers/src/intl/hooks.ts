@@ -73,7 +73,7 @@ export const useFormat = () => {
     (
       amount: bigint | number | undefined | null,
       decimals = 18,
-      zeroPlaceholder = '0.00',
+      zeroPlaceholder = '$0.00',
       options?: FormatNumberOptions,
     ) => {
       if (!amount || amount === 0n) return zeroPlaceholder;
