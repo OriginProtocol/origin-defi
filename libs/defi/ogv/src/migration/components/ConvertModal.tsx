@@ -15,7 +15,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useTxButton } from '@origin/defi/shared';
+import { useApprovalButton, useTxButton } from '@origin/defi/shared';
 import {
   InfoTooltipLabel,
   TokenChip,
@@ -25,6 +25,8 @@ import {
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
@@ -50,23 +52,35 @@ export const ConvertModal = ({
   veOgvlockups,
   ...rest
 }: ConvertModalProps) => {
-  const intl = useIntl();
-  const { formatCurrency } = useFormat();
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [stakingRatio, setSatkingRatio] = useState(100);
-  const [duration, setDuration] = useState(48);
-
   const total =
     ogvBalance +
     ogvRewards +
     veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
   const converted =
     +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
+
+  const intl = useIntl();
+  const { formatCurrency } = useFormat();
+  const theme = useTheme();
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const [stakingRatio, setSatkingRatio] = useState(100);
+  const [duration, setDuration] = useState(48);
+  const queryClient = useQueryClient();
+
   const ogn = (converted * (100 - stakingRatio)) / 100;
   const xOgn = (converted * stakingRatio) / 100;
-  const lockupEnd = addMonths(new Date(), duration);
 
+  const {
+    allowance,
+    params: approvalParams,
+    callbacks: approvalCallbacks,
+    label: approvalLabel,
+  } = useApprovalButton({
+    token: tokens.mainnet.OGV,
+    amount: total,
+    spender: contracts.mainnet.OGVMigrator.address,
+    enableAllowance: true,
+  });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: contracts.mainnet.OGVMigrator,
@@ -82,6 +96,11 @@ export const ConvertModal = ({
         stakingRatio > 0 ? BigInt(duration * secondsInMonth) : 0n,
       ],
     },
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    },
   });
 
   const handleRatioChange = (_: Event, newValue: number | number[]) => {
@@ -91,6 +110,8 @@ export const ConvertModal = ({
   const handleDurationChange = (_: Event, newValue: number | number[]) => {
     setDuration(Number(newValue));
   };
+
+  const lockupEnd = addMonths(new Date(), duration);
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -340,6 +361,13 @@ export const ConvertModal = ({
         </Collapse>
       </DialogContent>
       <DialogContent sx={{ overflow: 'hidden' }}>
+        <Collapse in={!isNilOrEmpty(allowance) && (allowance ?? 0n) < total}>
+          <TxButton
+            params={approvalParams}
+            callbacks={approvalCallbacks}
+            label={approvalLabel}
+          />
+        </Collapse>
         <TxButton
           params={writeParams}
           callbacks={writeCallbacks}
