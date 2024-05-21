@@ -50,6 +50,7 @@ export const ConvertModal = ({
   ogvBalance,
   ogvRewards,
   veOgvlockups,
+  onClose,
   ...rest
 }: ConvertModalProps) => {
   const total =
@@ -64,7 +65,7 @@ export const ConvertModal = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [stakingRatio, setSatkingRatio] = useState(100);
-  const [duration, setDuration] = useState(48);
+  const [duration, setDuration] = useState(12);
   const queryClient = useQueryClient();
 
   const ogn = (converted * (100 - stakingRatio)) / 100;
@@ -99,6 +100,7 @@ export const ConvertModal = ({
     callbacks: {
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
+        onClose?.({}, 'backdropClick');
       },
     },
   });
@@ -112,6 +114,9 @@ export const ConvertModal = ({
   };
 
   const lockupEnd = addMonths(new Date(), duration);
+  const isApprovalNeeded =
+    !isNilOrEmpty(allowance) && (allowance ?? 0n) < total;
+  const isConvertDisabled = isNilOrEmpty(allowance) || isApprovalNeeded;
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -123,7 +128,7 @@ export const ConvertModal = ({
         {intl.formatMessage({ defaultMessage: 'Convert' })}
         <IconButton
           onClick={(evt) => {
-            rest?.onClose?.(evt, 'backdropClick');
+            onClose?.(evt, 'backdropClick');
           }}
         >
           <FaXmarkRegular sx={{ fontSize: 14 }} />
@@ -361,13 +366,14 @@ export const ConvertModal = ({
         </Collapse>
       </DialogContent>
       <DialogContent sx={{ overflow: 'hidden' }}>
-        <Collapse in={!isNilOrEmpty(allowance) && (allowance ?? 0n) < total}>
+        <Collapse in={isApprovalNeeded}>
           <TxButton
             params={approvalParams}
             callbacks={approvalCallbacks}
             label={approvalLabel}
             variant="action"
             fullWidth
+            sx={{ mb: 1.5 }}
           />
         </Collapse>
         <TxButton
@@ -376,6 +382,7 @@ export const ConvertModal = ({
           variant="action"
           fullWidth
           label={intl.formatMessage({ defaultMessage: 'Convert' })}
+          disabled={isConvertDisabled}
         />
       </DialogContent>
     </Dialog>
