@@ -54,17 +54,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const deleteActivity = useDeleteActivity();
   const config = useConfig();
 
-  const params = useMemo(
-    () =>
-      ({
-        address: args.token.address ?? ZERO_ADDRESS,
-        abi: erc20Abi,
-        functionName: 'approve',
-        args: [args.spender, args.amount],
-      }) as const,
-    [args.amount, args.spender, args.token.address],
-  );
-
   const publicClient = usePublicClient({
     chainId: args.token.chainId,
   });
@@ -79,7 +68,12 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     queryFn: async () => {
       if (simulateError) return null;
       if (publicClient) {
-        const gasAmount = await publicClient.estimateContractGas(params);
+        const gasAmount = await publicClient.estimateContractGas({
+          address: args.token.address ?? ZERO_ADDRESS,
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [args.spender, args.amount],
+        });
         const gasPrice = await queryClient.fetchQuery({
           queryKey: useGasPrice.getKey(
             gasAmount,
@@ -353,7 +347,15 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         { defaultMessage: 'Approve {token}' },
         { token: args.token.symbol },
       ),
-      params,
+      params: {
+        contract: {
+          address: args.token.address ?? ZERO_ADDRESS,
+          abi: args.token.abi,
+          chainId: args.token.chainId,
+        },
+        functionName: 'approve',
+        args: [args.spender, args.amount],
+      },
       callbacks: {
         onWrite,
         onTxSigned,
@@ -366,6 +368,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     }),
     [
       allowance,
+      args.amount,
+      args.spender,
+      args.token.abi,
+      args.token.address,
+      args.token.chainId,
       args.token.symbol,
       gasPrice,
       intl,
@@ -376,7 +383,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       onWrite,
       onWriteError,
       onWriteSuccess,
-      params,
     ],
   );
 };
