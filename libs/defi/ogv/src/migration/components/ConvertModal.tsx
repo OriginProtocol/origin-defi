@@ -366,6 +366,8 @@ export const ConvertModal = ({
             params={approvalParams}
             callbacks={approvalCallbacks}
             label={approvalLabel}
+            variant="action"
+            fullWidth
           />
         </Collapse>
         <TxButton
