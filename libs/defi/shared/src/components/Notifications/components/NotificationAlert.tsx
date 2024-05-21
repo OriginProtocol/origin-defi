@@ -85,13 +85,13 @@ export const NotificationAlert = forwardRef<
         position: 'relative',
         ...(hideDuration
           ? {
-              borderTopRightRadius: (theme) => theme.shape.borderRadius * 4,
-              borderTopLeftRadius: (theme) => theme.shape.borderRadius * 4,
-              borderBottomRightRadius: 0,
-              borderBottomLeftRadius: 0,
+              borderTopRightRadius: (theme) => theme.shape.borderRadius,
+              borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+              borderBottomRightRadius: 1,
+              borderBottomLeftRadius: 1,
             }
           : {
-              borderRadius: 4,
+              borderRadius: 1,
             }),
         '.MuiAlert-message': {
           width: 1,
@@ -170,8 +170,8 @@ export const NotificationAlert = forwardRef<
             bottom: 0,
             left: 0,
             width: 1,
-            borderBottomRightRadius: (theme) => theme.shape.borderRadius * 4,
-            borderBottomLeftRadius: (theme) => theme.shape.borderRadius * 4,
+            borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+            borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
           }}
         />
       )}
