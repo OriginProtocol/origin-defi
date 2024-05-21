@@ -17,7 +17,7 @@ import {
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useMatch, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router-dom';
 
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
@@ -205,14 +205,12 @@ type ListMenuItemProps = {
 
 const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
   const intl = useIntl();
-  const navigate = useNavigate();
   const match = useMatch({
     path: `${route.path}/${item?.path ?? ''}`,
   });
 
-  const handleMenuClick = (path: string) => () => {
+  const handleMenuClick = () => {
     setOpen(false);
-    navigate(`${route.path}/${path ?? ''}`);
   };
 
   const isSelected = !isNilOrEmpty(match) && isNilOrEmpty(item?.href);
@@ -221,7 +219,11 @@ const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
     <MenuItem
       {...rest}
       {...(isNilOrEmpty(item.href)
-        ? { onClick: handleMenuClick(item?.path ?? '') }
+        ? {
+            onClick: handleMenuClick,
+            component: Link,
+            to: `${route.path}/${item?.path ?? ''}`,
+          }
         : {
             href: item.href,
             target: '_blank',

@@ -13,7 +13,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { TokenButton, useOgnInfo, useTxButton } from '@origin/defi/shared';
+import {
+  TokenButton,
+  useApprovalButton,
+  useOgnInfo,
+  useTxButton,
+} from '@origin/defi/shared';
 import {
   BigIntInput,
   InfoTooltipLabel,
@@ -56,30 +61,14 @@ export const StakingForm = () => {
       enabled: false,
     },
   );
-  const { params: approvalParams, callbacks: approvalCallbacks } = useTxButton({
-    params: {
-      contract: tokens.mainnet.OGN,
-      functionName: 'approve',
-      args: [tokens.mainnet.xOGN.address, amount],
-    },
-    activity: {
-      title: intl.formatMessage({
-        defaultMessage: 'Approve xOGN',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Approve {amount} xOGN',
-        },
-        {
-          amount: intl.formatNumber(
-            +formatUnits(amount, tokens.mainnet.xOGN.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-          duration,
-        },
-      ),
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
-    },
+  const {
+    params: approvalParams,
+    callbacks: approvalCallbacks,
+    label: approvalLabel,
+  } = useApprovalButton({
+    token: tokens.mainnet.OGN,
+    spender: tokens.mainnet.xOGN.address,
+    amount,
     callbacks: {
       onWriteSuccess: () => {
         queryClient.invalidateQueries({
@@ -479,7 +468,7 @@ export const StakingForm = () => {
             variant="action"
             fullWidth
             disabled={isInfoLoading}
-            label={intl.formatMessage({ defaultMessage: 'Approve xOGN' })}
+            label={approvalLabel}
             sx={{ mb: 3 }}
           />
         </Collapse>
