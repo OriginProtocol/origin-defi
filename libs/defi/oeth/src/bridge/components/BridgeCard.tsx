@@ -11,7 +11,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput, useTxButton } from '@origin/defi/shared';
+import {
+  TokenInput,
+  useApprovalButton,
+  useTxButton,
+} from '@origin/defi/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
 import {
@@ -21,16 +25,15 @@ import {
 } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
-  ApprovalButton,
   isNativeCurrency,
   TxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
+import { formatAmount, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { decodeEventLog, formatUnits } from 'viem';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { ccipRouter } from '../constants';
 import { useBridgePrices } from '../hooks/useBridgePrices';
@@ -42,7 +45,7 @@ import { useBridgeState } from '../state';
 import { TokenSelectModal } from './TokenSelectModal';
 
 import type { HexAddress } from '@origin/shared/utils';
-import type { erc20Abi, Hex, TransactionReceipt } from 'viem';
+import type { Hex, TransactionReceipt } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -73,23 +76,6 @@ export const BridgeCard = () => {
 
   const isErc20 = !isNativeCurrency(srcToken);
 
-  const {
-    data: allowance,
-    isLoading: isAllowanceLoading,
-    refetch: refetchAllowance,
-  } = useReadContract(
-    isErc20
-      ? {
-          chainId: srcToken.chainId,
-          address: srcToken.address,
-          abi: srcToken.abi as typeof erc20Abi,
-          functionName: 'allowance',
-          args: [userAddress ?? ZERO_ADDRESS, srcRouter.address],
-          query: { enabled: !!userAddress },
-        }
-      : undefined,
-  );
-
   const ccipTxParams = useCcipTxParams({
     srcChain,
     dstChain,
@@ -98,6 +84,17 @@ export const BridgeCard = () => {
     amount,
   });
 
+  const {
+    allowance,
+    params: approvalParams,
+    callbacks: approvalCallbacks,
+    label: approvalLabel,
+  } = useApprovalButton({
+    token: srcToken,
+    spender: srcRouter.address,
+    amount,
+    enableAllowance: true,
+  });
   const txButton = useTxButton({
     params: ccipTxParams.data?.params ?? {
       contract: srcRouter,
@@ -136,7 +133,6 @@ export const BridgeCard = () => {
             userAddress as Hex,
           ),
         });
-        refetchAllowance?.();
       },
     },
     enableGas: true,
@@ -159,7 +155,7 @@ export const BridgeCard = () => {
     balances[getTokenId(nativeToken)] < txButton.params?.value;
   const requiresApproval =
     isErc20 &&
-    !isAllowanceLoading &&
+    !isNilOrEmpty(allowance) &&
     !isBalancesLoading &&
     currentChain?.id === srcChain.id &&
     allowance !== undefined &&
@@ -346,16 +342,13 @@ export const BridgeCard = () => {
             </AccordionDetails>
           </Accordion>
           <Collapse in={requiresApproval}>
-            <ApprovalButton
-              amount={amount}
-              token={srcToken}
-              spender={srcRouter.address}
+            <TxButton
+              params={approvalParams}
+              callbacks={approvalCallbacks}
+              label={approvalLabel}
               fullWidth
               sx={{ mt: 1.5 }}
               variant={'action'}
-              onSuccess={() => {
-                refetchAllowance?.();
-              }}
             />
           </Collapse>
           <TxButton
