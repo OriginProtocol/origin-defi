@@ -8,7 +8,6 @@ import { FaCheckRegular } from '@origin/shared/icons';
 import { useAccount, useSwitchChain } from 'wagmi';
 
 import type { ButtonProps, MenuItemProps } from '@mui/material';
-import type { MenuListProps } from '@mui/material/MenuList';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
 
 export type ChainMenuButtonProps = {
@@ -69,12 +68,10 @@ export const ChainMenuButton = ({
       </Button>
       <ClickAwayMenu
         {...menuProps}
-        menuListProps={
-          {
-            component: Stack,
-            gap: 0.5,
-          } as Partial<MenuListProps<typeof Stack>>
-        }
+        menuListProps={{
+          component: Stack,
+          sx: { gap: 0.5 },
+        }}
         anchorEl={anchorEl}
         open={open}
         onClose={() => {
