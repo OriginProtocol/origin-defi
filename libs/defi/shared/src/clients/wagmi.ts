@@ -53,7 +53,7 @@ export const wagmiConfig = createConfig({
       ? fallback([
           http(
             `${import.meta.env.VITE_ALCHEMY_ARBITRUM_RPC}${
-              import.meta.env.VITE_ALCHEMY_ARBITRUM_ID
+              import.meta.env.VITE_ALCHEMY_ID_ARBITRUM
             }`,
           ),
           http(),

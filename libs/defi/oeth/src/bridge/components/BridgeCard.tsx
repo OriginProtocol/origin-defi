@@ -11,7 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput } from '@origin/defi/shared';
+import { TokenInput, useTxButton } from '@origin/defi/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
 import {
@@ -24,7 +24,6 @@ import {
   ApprovalButton,
   isNativeCurrency,
   TxButton,
-  useTxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
 import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
