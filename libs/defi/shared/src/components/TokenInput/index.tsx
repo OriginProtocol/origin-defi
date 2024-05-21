@@ -194,6 +194,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                         <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
                         {formatBalance(balance, decimals, undefined, {
                           roundingMode: 'floor',
+                          minimumFractionDigits:
+                            balance < 10 ** (decimals - 1) ? 4 : 2,
+                          maximumFractionDigits:
+                            balance < 10 ** (decimals - 1) ? 4 : 2,
                         })}
                       </>
                     )}

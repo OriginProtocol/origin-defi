@@ -6,7 +6,8 @@ import ArrowDownSvg from './arrowDown.svg?react';
 import ArrowDownFromArcSvg from './arrowDownFromArc.svg?react';
 import ArrowUpRightSvg from './arrowUpRight.svg?react';
 import BanSvg from './ban.svg?react';
-import BridgeSvg from './bridge.svg?react';
+import BridgeCircleSvg from './bridge-circle.svg?react';
+import BridgeSvg from './bridge-icon.svg?react';
 import CheckboxSvg from './checkbox.svg?react';
 import CheckboxEmptySvg from './checkboxEmpty.svg?react';
 import CheckCircleSvg from './checkCircle.svg?react';
@@ -51,6 +52,9 @@ export const Ban = (props: SvgIconProps) => (
 );
 export const Bridge = (props: SvgIconProps) => (
   <SvgIcon {...props} component={BridgeSvg} inheritViewBox />
+);
+export const BridgeCircle = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={BridgeCircleSvg} inheritViewBox />
 );
 export const CheckboxEmpty = (props: SvgIconProps) => (
   <SvgIcon {...props} component={CheckboxEmptySvg} inheritViewBox />

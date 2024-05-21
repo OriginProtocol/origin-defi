@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Drawer,
-  emphasize,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
@@ -111,6 +110,7 @@ export const Topnav = () => {
                     borderRadius: 4,
                     border: '1px solid',
                     borderColor: 'divider',
+                    backgroundColor: 'background.highlight',
                     p: 1,
                   },
                 },
@@ -119,21 +119,6 @@ export const Topnav = () => {
                 sx: {
                   ...theme.typography.body3,
                   borderRadius: 2,
-                  '&:hover': {
-                    backgroundColor: emphasize(
-                      theme.palette.background.default,
-                      0.2,
-                    ),
-                  },
-                  '&.Mui-selected': {
-                    backgroundColor: 'background.default',
-                    '&:hover': {
-                      backgroundColor: emphasize(
-                        theme.palette.background.default,
-                        0.2,
-                      ),
-                    },
-                  },
                 },
               }}
             />

@@ -1,4 +1,4 @@
-import { CircularProgress, emphasize } from '@mui/material';
+import { alpha, CircularProgress, emphasize } from '@mui/material';
 import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
@@ -290,20 +290,20 @@ export const components = (base: Theme): ThemeOptions => ({
             overflow-x: hidden;
             padding-left: calc(100vw - 100%);
           }
-          
+
           body {
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;            
+            text-rendering: optimizeLegibility;
             font-size: ${theme.typography.body3.fontSize}px;
             line-height: ${theme.typography.body3.lineHeight};
-            font-weight: ${theme.typography.body3.fontWeight};            
+            font-weight: ${theme.typography.body3.fontWeight};
           }
-  
+
           input[type=number] {
             -moz-appearance: textfield;
           }
-  
+
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
@@ -381,6 +381,18 @@ export const components = (base: Theme): ThemeOptions => ({
         list: {
           padding: 0,
         },
+      },
+    },
+    MuiMenuItem: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          '&.Mui-selected': {
+            background: alpha(theme.palette.primary.main, 0.15),
+          },
+          '&:hover': {
+            background: alpha(theme.palette.primary.main, 0.1),
+          },
+        }),
       },
     },
     MuiPaper: {

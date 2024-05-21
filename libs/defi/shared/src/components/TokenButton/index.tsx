@@ -46,7 +46,6 @@ export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
         },
         '&.Mui-disabled': {
           color: 'text.primary',
-          border: 'none',
           backgroundColor: 'background.default',
           pr: 2,
         },
