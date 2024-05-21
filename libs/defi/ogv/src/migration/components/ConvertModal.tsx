@@ -15,18 +15,20 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useTxButton } from '@origin/defi/shared';
 import {
   InfoTooltipLabel,
   TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
-import { useFormat } from '@origin/shared/providers';
+import { TxButton, useFormat } from '@origin/shared/providers';
 import { addMonths, formatDuration } from 'date-fns';
+import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 
 import { ogvToOgnRate } from '../constants';
 
@@ -52,16 +54,8 @@ export const ConvertModal = ({
   const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const [ratio, setRatio] = useState(100);
+  const [stakingRatio, setSatkingRatio] = useState(100);
   const [duration, setDuration] = useState(48);
-
-  const handleRatioChange = (_: Event, newValue: number | number[]) => {
-    setRatio(Number(newValue));
-  };
-
-  const handleDurationChange = (_: Event, newValue: number | number[]) => {
-    setDuration(Number(newValue));
-  };
 
   const total =
     ogvBalance +
@@ -69,9 +63,34 @@ export const ConvertModal = ({
     veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
   const converted =
     +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
-  const ogn = (converted * (100 - ratio)) / 100;
-  const xOgn = (converted * ratio) / 100;
-  const extendLockupEnd = addMonths(new Date(), duration);
+  const ogn = (converted * (100 - stakingRatio)) / 100;
+  const xOgn = (converted * stakingRatio) / 100;
+  const lockupEnd = addMonths(new Date(), duration);
+
+  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+    params: {
+      contract: contracts.mainnet.OGVMigrator,
+      functionName: 'migrate',
+      args: [
+        veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
+        ogvBalance,
+        0n,
+        ogvRewards > 0n,
+        stakingRatio > 0
+          ? parseUnits(xOgn.toString(), tokens.mainnet.xOGN.decimals)
+          : 0n,
+        stakingRatio > 0 ? BigInt(duration * secondsInMonth) : 0n,
+      ],
+    },
+  });
+
+  const handleRatioChange = (_: Event, newValue: number | number[]) => {
+    setSatkingRatio(Number(newValue));
+  };
+
+  const handleDurationChange = (_: Event, newValue: number | number[]) => {
+    setDuration(Number(newValue));
+  };
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -133,10 +152,10 @@ export const ConvertModal = ({
                 fontWeight="bold"
                 color="primary.main"
               >
-                {intl.formatNumber(ratio / 100, { style: 'percent' })}
+                {intl.formatNumber(stakingRatio / 100, { style: 'percent' })}
               </Typography>
               <Slider
-                value={ratio}
+                value={stakingRatio}
                 onChange={handleRatioChange}
                 min={0}
                 max={100}
@@ -250,7 +269,7 @@ export const ConvertModal = ({
                     })}
                   </Typography>
                   <Typography textAlign="end" minWidth={92}>
-                    {intl.formatDate(extendLockupEnd, {
+                    {intl.formatDate(lockupEnd, {
                       day: '2-digit',
                       month: 'short',
                       year: 'numeric',
@@ -321,9 +340,13 @@ export const ConvertModal = ({
         </Collapse>
       </DialogContent>
       <DialogContent sx={{ overflow: 'hidden' }}>
-        <Button variant="action" fullWidth>
-          {intl.formatMessage({ defaultMessage: 'Convert' })}
-        </Button>
+        <TxButton
+          params={writeParams}
+          callbacks={writeCallbacks}
+          variant="action"
+          fullWidth
+          label={intl.formatMessage({ defaultMessage: 'Convert' })}
+        />
       </DialogContent>
     </Dialog>
   );
