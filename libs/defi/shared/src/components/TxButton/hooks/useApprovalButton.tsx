@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 
+import { BadgeIcon, TokenIcon } from '@origin/shared/components';
+import { FaCircleCheckRegular } from '@origin/shared/icons';
 import {
   useDeleteActivity,
   useDeleteNotification,
@@ -8,68 +10,37 @@ import {
   usePushNotification,
   useUpdateActivity,
 } from '@origin/shared/providers';
-import {
-  formatError,
-  jsonStringifyReplacer,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
+import { erc20Abi, formatUnits } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
+import type { Token } from '@origin/shared/contracts';
 import type {
   Activity,
-  ActivityInput,
   WriteTransactionCallbacks,
-  WriteTransactionParameters,
 } from '@origin/shared/providers';
+import type { HexAddress } from '@origin/shared/utils';
 import type {
   SimulateContractErrorType,
   SimulateContractReturnType,
 } from '@wagmi/core';
-import type {
-  Abi,
-  ContractFunctionArgs,
-  ContractFunctionName,
-  TransactionReceipt,
-} from 'viem';
+import type { TransactionReceipt } from 'viem';
 
-export type UseTxButton<
-  abi extends Abi = Abi,
-  functionName extends ContractFunctionName<
-    abi,
-    'nonpayable' | 'payable'
-  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
-  args extends ContractFunctionArgs<
-    abi,
-    'nonpayable' | 'payable',
-    functionName
-  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
-> = {
-  params: WriteTransactionParameters<abi, functionName, args>;
+export type UseApprovalButtonProps = {
+  token: Token;
+  spender: HexAddress;
+  amount: bigint;
   callbacks?: WriteTransactionCallbacks;
-  activity?: Partial<ActivityInput>;
   disableActivity?: boolean;
   disableNotification?: boolean;
   enableGas?: boolean;
 };
 
-export const useTxButton = <
-  abi extends Abi = Abi,
-  functionName extends ContractFunctionName<
-    abi,
-    'nonpayable' | 'payable'
-  > = ContractFunctionName<abi, 'nonpayable' | 'payable'>,
-  args extends ContractFunctionArgs<
-    abi,
-    'nonpayable' | 'payable',
-    functionName
-  > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
->(
-  args: UseTxButton<abi, functionName, args>,
-) => {
+export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const intl = useIntl();
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
@@ -82,28 +53,30 @@ export const useTxButton = <
   const config = useConfig();
 
   const publicClient = usePublicClient({
-    chainId: args.params.contract.chainId,
+    chainId: args.token.chainId,
   });
   const queryClient = useQueryClient();
   const { data: gasPrice, refetch: refetchGas } = useQuery({
-    queryKey: ['txButton', JSON.stringify(args.params, jsonStringifyReplacer)],
+    queryKey: [
+      'approvalButton',
+      args.token.symbol,
+      args.spender,
+      args.amount.toString(),
+    ],
     queryFn: async () => {
       if (simulateError) return null;
       if (publicClient) {
         const gasAmount = await publicClient.estimateContractGas({
-          account: address,
-          address: args.params.contract.address ?? ZERO_ADDRESS,
-          abi: args.params.contract.abi,
-          functionName: args.params.functionName,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          args: args.params?.args as any,
-          value: args.params?.value,
+          address: args.token.address ?? ZERO_ADDRESS,
+          abi: erc20Abi,
+          functionName: 'approve',
+          args: [args.spender, args.amount],
         });
 
         const gasPrice = await queryClient.fetchQuery({
           queryKey: useGasPrice.getKey(
             gasAmount,
-            args.params.contract.chainId,
+            args.token.chainId,
             queryClient,
             config,
           ),
@@ -117,15 +90,32 @@ export const useTxButton = <
 
   const onWrite = useCallback(() => {
     const act = {
-      ...args.activity,
-      type: args.activity?.type ?? 'transaction',
-      title:
-        args.activity?.title ??
-        intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
-      subtitle:
-        args.activity?.subtitle ??
-        intl.formatMessage({ defaultMessage: 'Transaction' }),
-      endIcon: args.activity?.endIcon,
+      type: 'approval',
+      title: intl.formatMessage(
+        { defaultMessage: 'Approve {token}' },
+        { token: args.token.symbol },
+      ),
+      subtitle: intl.formatMessage(
+        {
+          defaultMessage: 'Approve {amount} {token}',
+        },
+        {
+          amount: intl.formatNumber(
+            +formatUnits(args.amount, args.token.decimals),
+            { notation: 'compact', maximumSignificantDigits: 4 },
+          ),
+          token: args.token.symbol,
+        },
+      ),
+      endIcon: (
+        <BadgeIcon
+          badgeContent={
+            <FaCircleCheckRegular color="primary" sx={{ fontSize: 10 }} />
+          }
+        >
+          <TokenIcon token={args.token} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      ),
       status: 'pending',
     } as const;
     if (!args.disableActivity) {
@@ -139,23 +129,27 @@ export const useTxButton = <
       });
     }
     args.callbacks?.onWrite?.();
-  }, [args.activity, args.callbacks, args.disableActivity, intl, pushActivity]);
+  }, [
+    args.amount,
+    args.callbacks,
+    args.disableActivity,
+    args.token,
+    intl,
+    pushActivity,
+  ]);
 
   const onTxSigned = useCallback(() => {
     if (!args.disableNotification) {
       const id = pushNotification({
-        title:
-          act?.title && typeof act.title === 'string'
-            ? act.title
-            : intl.formatMessage({
-                defaultMessage: 'Processing transaction',
-              }),
-        message:
-          act?.subtitle && typeof act.subtitle === 'string'
-            ? act.subtitle
-            : intl.formatMessage({
-                defaultMessage: 'Your transaction is being processed on-chain.',
-              }),
+        title: intl.formatMessage(
+          {
+            defaultMessage: 'Approving {token}',
+          },
+          { token: args.token.symbol },
+        ),
+        message: intl.formatMessage({
+          defaultMessage: 'Your transaction is being processed on-chain.',
+        }),
         icon: act?.endIcon,
         severity: 'pending',
         hideDuration: undefined,
@@ -165,10 +159,9 @@ export const useTxButton = <
     args.callbacks?.onTxSigned?.();
   }, [
     act?.endIcon,
-    act?.subtitle,
-    act?.title,
     args.callbacks,
     args.disableNotification,
+    args.token.symbol,
     intl,
     pushNotification,
   ]);
@@ -224,7 +217,7 @@ export const useTxButton = <
         pushNotification({
           icon: act?.endIcon,
           title: intl.formatMessage({
-            defaultMessage: 'Impossible to execute transaction',
+            defaultMessage: 'Impossible to execute approval',
           }),
           message: formatError(error),
           severity: 'error',
@@ -261,11 +254,20 @@ export const useTxButton = <
       if (!args.disableNotification) {
         pushNotification({
           title: intl.formatMessage({
-            defaultMessage: 'Transaction successfully executed',
+            defaultMessage: 'Approval successfully executed',
           }),
-          message: intl.formatMessage({
-            defaultMessage: 'Your operation has been executed',
-          }),
+          message: intl.formatMessage(
+            {
+              defaultMessage: 'Approved {amount} {token}',
+            },
+            {
+              amount: intl.formatNumber(
+                +formatUnits(args.amount, args.token.decimals),
+                { notation: 'compact', maximumSignificantDigits: 4 },
+              ),
+              token: args.token.symbol,
+            },
+          ),
           icon: act?.endIcon,
           severity: 'success',
           blockExplorerLinkProps: { hash: txReceipt.transactionHash },
@@ -275,9 +277,12 @@ export const useTxButton = <
     },
     [
       act,
+      args.amount,
       args.callbacks,
       args.disableActivity,
       args.disableNotification,
+      args.token.decimals,
+      args.token.symbol,
       deleteNotification,
       intl,
       notifId,
@@ -302,7 +307,7 @@ export const useTxButton = <
       if (!args.disableNotification) {
         pushNotification({
           title: intl.formatMessage({
-            defaultMessage: 'Transaction error',
+            defaultMessage: 'Approval error',
           }),
           message: formatError(error),
           icon: act?.endIcon,
@@ -327,7 +332,15 @@ export const useTxButton = <
   return useMemo(
     () => ({
       gasPrice,
-      params: args.params,
+      label: intl.formatMessage(
+        { defaultMessage: 'Approve {token}' },
+        { token: args.token.symbol },
+      ),
+      params: {
+        contract: args.token,
+        functionName: 'approve',
+        args: [args.spender, args.amount],
+      },
       callbacks: {
         onWrite,
         onTxSigned,
@@ -339,8 +352,11 @@ export const useTxButton = <
       },
     }),
     [
-      args.params,
+      args.amount,
+      args.spender,
+      args.token,
       gasPrice,
+      intl,
       onSimulateError,
       onSimulateSuccess,
       onTxSigned,
