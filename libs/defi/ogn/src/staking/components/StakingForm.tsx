@@ -32,14 +32,14 @@ import {
   FaCircleExclamationRegular,
 } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
-import { useAccount, useConfig } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { useStakingAPY } from '../hooks';
 
@@ -49,7 +49,6 @@ export const StakingForm = () => {
   const theme = useTheme();
   const queryClient = useQueryClient();
   const { address, isConnected } = useAccount();
-  const config = useConfig();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
@@ -62,6 +61,7 @@ export const StakingForm = () => {
     },
   );
   const {
+    allowance,
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
@@ -69,19 +69,19 @@ export const StakingForm = () => {
     token: tokens.mainnet.OGN,
     spender: tokens.mainnet.xOGN.address,
     amount,
-    callbacks: {
-      onWriteSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [useOgnInfo.getKey(address, config)],
-        });
-      },
-    },
+    enableAllowance: true,
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
-      args: [amount, BigInt(duration * secondsInMonth)],
+      args: [
+        amount,
+        BigInt(duration * secondsInMonth),
+        address ?? ZERO_ADDRESS,
+        true,
+        BigInt(-1),
+      ],
     },
     activity: {
       endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
@@ -150,7 +150,7 @@ export const StakingForm = () => {
     amount > 0n &&
     duration > 0 &&
     amount <= (info?.ognBalance ?? 0n) &&
-    amount > (info?.ognxOgnAllowance ?? 0n);
+    amount > (allowance ?? 0n);
   const stakeDisabled =
     !isConnected ||
     isInfoLoading ||
@@ -158,7 +158,7 @@ export const StakingForm = () => {
     amount === 0n ||
     duration === 0 ||
     amount > (info?.ognBalance ?? 0n) ||
-    amount > (info?.ognxOgnAllowance ?? 0n);
+    amount > (allowance ?? 0n);
 
   return (
     <Card>
@@ -469,7 +469,7 @@ export const StakingForm = () => {
             fullWidth
             disabled={isInfoLoading}
             label={approvalLabel}
-            sx={{ mb: 3 }}
+            sx={{ mb: 1.5 }}
           />
         </Collapse>
         <TxButton
