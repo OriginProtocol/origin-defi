@@ -89,7 +89,7 @@ export const BalanceRow = ({
       justifyContent={'space-between'}
     >
       <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
-        <ChainIcon chainId={chain.id} />
+        <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} />
         <Box>{chain.id === arbitrum.id ? 'Arbitrum' : chain.name}</Box>
         {token.address && userAddress && (
           <ExternalLink

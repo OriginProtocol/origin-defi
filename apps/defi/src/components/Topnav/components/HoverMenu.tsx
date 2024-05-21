@@ -64,7 +64,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   const match = useMatch({ path: route?.path ?? '/', end: route.index });
   const isSelected = !isNilOrEmpty(match);
 
-  const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
+  const handleListKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {
       setOpen(false);
     }
@@ -179,7 +179,11 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
                 minWidth: 200,
               }}
             >
-              <MenuList onKeyDown={handleListKeyDown} sx={{ p: 0 }}>
+              <MenuList
+                onKeyDown={handleListKeyDown}
+                component={Stack}
+                gap={0.5}
+              >
                 {items.map((r, i) => (
                   <ListMenuItem
                     key={`${r?.path ?? r?.href}-${i}`}
@@ -236,7 +240,6 @@ const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
         borderRadius: 1,
         backgroundColor: isSelected ? 'primary.faded' : 'transparent',
         color: isSelected ? 'primary.main' : 'text.primary',
-        my: 0.25,
         '&&&': { minHeight: 36 },
         '&:hover': {
           backgroundColor: (theme) =>

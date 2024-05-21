@@ -11,57 +11,64 @@ import {
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
 import {
-  getTokenPriceKey,
   useFormat,
-  useSwapperPrices,
+  useTokenPrice,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { ascend, descend, prop, sortWith } from 'ramda';
+import { getTokenPriceKey } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-export type TokenOption = {
-  isSwappable: boolean;
-  isSelected: boolean;
-} & Token;
-
 export type TokenSelectModalProps = {
-  tokens: TokenOption[];
+  selectedToken: Token;
+  tokens: Token[];
   onSelectToken: (value: Token) => void;
 } & DialogProps;
 
 export const TokenSelectModal = ({
+  selectedToken,
   tokens,
   onSelectToken,
   onClose,
   ...rest
 }: TokenSelectModalProps) => {
   const intl = useIntl();
-
-  const sortedTokens = sortWith<TokenOption>([
-    ascend(prop('isSelected')),
-    descend(prop('isSwappable')),
-  ])(tokens);
-
   return (
-    <Dialog fullWidth maxWidth="sm" {...rest} onClose={onClose}>
+    <Dialog
+      maxWidth="sm"
+      PaperProps={{
+        elevation: 23,
+        sx: {
+          background: (theme) => theme.palette.background.paper,
+          borderRadius: 2,
+          border: '1px solid',
+          borderColor: (theme) => theme.palette.grey[800],
+          backgroundImage: 'none',
+          margin: 0,
+          minWidth: 'min(90vw, 33rem)',
+        },
+      }}
+      {...rest}
+      onClose={onClose}
+    >
       <DialogTitle>
         {intl.formatMessage({ defaultMessage: 'Select a token' })}
       </DialogTitle>
-      <MenuList disablePadding>
-        {sortedTokens.map((token, i) => (
+      <MenuList
+        disablePadding
+        sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+      >
+        {tokens.map((token, i) => (
           <TokenListItem
             key={`token-${token.address || 'eth'}-${i}`}
             token={token}
+            isSelected={token.address === selectedToken.address}
             onClick={() => {
               onClose?.({}, 'backdropClick');
               onSelectToken(token);
-            }}
-            sx={{
-              opacity: token.isSwappable || token.isSelected ? 1 : 0.5,
             }}
           />
         ))}
@@ -71,30 +78,39 @@ export const TokenSelectModal = ({
 };
 
 type TokenListItemProps = {
-  token: TokenOption;
+  token: Token;
+  isSelected: boolean;
 } & MenuItemProps;
 
-function TokenListItem({ token, ...rest }: TokenListItemProps) {
+function TokenListItem({
+  token,
+  isSelected,
+  onClick,
+  ...rest
+}: TokenListItemProps) {
   const { formatAmount, formatCurrency } = useFormat();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
   });
-  const { data: prices } = useSwapperPrices();
+
+  const { data: price } = useTokenPrice(getTokenPriceKey(token));
 
   const bal = +formatUnits(balance ?? 0n, token.decimals);
-  const balUsd = bal * (prices?.[getTokenPriceKey(token)] ?? 0);
+  const balUsd = bal * (price ?? 0);
 
   return (
     <MenuItem
       {...rest}
-      selected={token.isSelected}
+      onClick={isSelected ? undefined : onClick}
+      selected={isSelected}
       sx={{
         display: 'flex',
-        px: 2,
-        py: 1,
+        paddingInline: 2,
+        paddingBlock: 1,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
+        cursor: isSelected ? 'default' : 'pointer',
         ...rest?.sx,
       }}
     >
@@ -108,7 +124,7 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         </Box>
       </Stack>
       <Stack direction="row" spacing={2}>
-        {token?.isSelected && (
+        {isSelected && (
           <Stack display="flex" justifyContent="center" alignItems="center">
             <FaCheckRegular sx={{ color: 'text.primary', fontSize: 16 }} />
           </Stack>

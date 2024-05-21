@@ -1,6 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
   Box,
   Card,
   CardContent,
@@ -9,11 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  disabledTokenInputStyleProps,
-  TokenInput,
-  tokenInputStyleProps,
-} from '@origin/oeth/shared';
+import { TokenInput } from '@origin/defi/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
 import {
@@ -42,8 +40,8 @@ import { useChangeAmount } from '../hooks/useChangeAmount';
 import { useResetBridgeState } from '../hooks/useResetBridgeState';
 import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
+import { TokenSelectModal } from './TokenSelectModal';
 
-import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { erc20Abi, Hex, TransactionReceipt } from 'viem';
 
@@ -59,6 +57,9 @@ export const BridgeCard = () => {
     { amount, srcChain, srcToken, srcTokens, dstChain, dstToken, dstTokens },
     setBridgeState,
   ] = useBridgeState();
+  const [tokenSource, setTokenSource] = useState<
+    'srcToken' | 'dstToken' | null
+  >(null);
   const toggleChain = useToggleBridgeChain();
   const handleChangeAmount = useChangeAmount();
   const reset = useResetBridgeState();
@@ -209,7 +210,6 @@ export const BridgeCard = () => {
             <ChainButton chain={srcChain} disabled />
           </Stack>
           <TokenInput
-            isConnected={true}
             hideMaxButton={srcChain.nativeCurrency.symbol === srcToken.symbol}
             isTokenClickDisabled={srcTokens.length === 1}
             amount={amount}
@@ -219,11 +219,15 @@ export const BridgeCard = () => {
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
             token={srcToken}
-            tokens={srcTokens}
-            onSelectToken={(token: Token) =>
-              setBridgeState((state) => ({ ...state, srcToken: token }))
-            }
-            {...tokenInputStyleProps}
+            onTokenClick={() => setTokenSource('srcToken')}
+            sx={{
+              px: 3,
+              py: 2,
+              borderRadius: 3,
+              backgroundColor: 'background.highlight',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
           />
         </Stack>
       </CardContent>
@@ -261,7 +265,7 @@ export const BridgeCard = () => {
             )}
           </Stack>
           <TokenInput
-            isConnected={true}
+            readOnly
             isTokenClickDisabled={dstTokens.length === 1}
             amount={ccipTxParams.data?.amountOut ?? 0n}
             balance={balances?.[getTokenId(dstToken)]}
@@ -269,55 +273,79 @@ export const BridgeCard = () => {
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}
             token={dstToken}
-            tokens={dstTokens}
-            onSelectToken={(token: Token) =>
-              setBridgeState((state) => ({ ...state, dstToken: token }))
-            }
+            onTokenClick={() => setTokenSource('dstToken')}
             hideMaxButton
-            {...disabledTokenInputStyleProps}
+            sx={{
+              px: 3,
+              py: 2,
+              borderRadius: 3,
+              backgroundColor: 'background.highlight',
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
           />
-          <Stack direction={'row'}>
-            <Box flex={1} color={'text.secondary'}>
-              {intl.formatMessage({ defaultMessage: 'Router' })}
-            </Box>
-            <Typography>
-              {intl.formatMessage({ defaultMessage: 'Chainlink CCIP' })}
-            </Typography>
-          </Stack>
-          <Stack direction={'row'}>
-            <Box flex={1} color={'text.secondary'}>
-              {intl.formatMessage({ defaultMessage: 'Est. time' })}
-            </Box>
-            <Box>
-              {intl.formatMessage(
-                { defaultMessage: '~{from} to {to} minutes' },
-                {
-                  from: 15,
-                  to: 30,
-                },
-              )}
-            </Box>
-          </Stack>
-          <Stack direction={'row'}>
-            <Box flex={1} color={'text.secondary'}>
-              {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
-            </Box>
-            <Box>
-              {typeof bridgeFee === 'number'
-                ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
-                : '-'}
-            </Box>
-          </Stack>
-          <Stack direction={'row'}>
-            <Box flex={1} color={'text.secondary'}>
-              {intl.formatMessage({ defaultMessage: 'Est. gas fee' })}
-            </Box>
-            <Box>
-              {typeof estimateGasFee === 'number'
-                ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
-                : '-'}
-            </Box>
-          </Stack>
+          <Accordion
+            sx={{
+              p: 2,
+              backgroundColor: 'background.default',
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 3,
+            }}
+          >
+            <AccordionDetails
+              sx={{
+                p: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 2,
+                fontSize: 14,
+              }}
+            >
+              <Stack direction={'row'}>
+                <Box flex={1} color={'text.secondary'}>
+                  {intl.formatMessage({ defaultMessage: 'Router' })}
+                </Box>
+                <Typography>
+                  {intl.formatMessage({ defaultMessage: 'Chainlink CCIP' })}
+                </Typography>
+              </Stack>
+              <Stack direction={'row'}>
+                <Box flex={1} color={'text.secondary'}>
+                  {intl.formatMessage({ defaultMessage: 'Est. time' })}
+                </Box>
+                <Box>
+                  {intl.formatMessage(
+                    { defaultMessage: '~{from} to {to} minutes' },
+                    {
+                      from: 15,
+                      to: 30,
+                    },
+                  )}
+                </Box>
+              </Stack>
+              <Stack direction={'row'}>
+                <Box flex={1} color={'text.secondary'}>
+                  {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
+                </Box>
+                <Box>
+                  {typeof bridgeFee === 'number'
+                    ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
+                    : '-'}
+                </Box>
+              </Stack>
+              <Stack direction={'row'}>
+                <Box flex={1} color={'text.secondary'}>
+                  {intl.formatMessage({ defaultMessage: 'Est. gas fee' })}
+                </Box>
+                <Box>
+                  {typeof estimateGasFee === 'number'
+                    ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
+                    : '-'}
+                </Box>
+              </Stack>
+            </AccordionDetails>
+          </Accordion>
           <Collapse in={requiresApproval}>
             <ApprovalButton
               amount={amount}
@@ -355,6 +383,21 @@ export const BridgeCard = () => {
           </Stack>
         </Stack>
       </CardContent>
+      <TokenSelectModal
+        open={tokenSource !== null}
+        onClose={() => setTokenSource(null)}
+        selectedToken={tokenSource === 'srcToken' ? srcToken : dstToken}
+        tokens={tokenSource === 'srcToken' ? srcTokens : dstTokens}
+        onSelectToken={(token) =>
+          setBridgeState((state) => {
+            if (!tokenSource) return state;
+            return {
+              ...state,
+              [tokenSource]: token,
+            };
+          })
+        }
+      />
     </Card>
   );
 };
