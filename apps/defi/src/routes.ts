@@ -6,6 +6,7 @@ import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
 import { NotFoundPage } from '@origin/shared/components';
 import {
+  Bridge,
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
   FaArrowRightRegular,
@@ -52,6 +53,17 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Redeem' }),
               icon: FaArrowDownFromArcRegular,
+            },
+          },
+          {
+            path: 'bridge',
+            Component: oeth.BridgeView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Bridge' }),
+              subtitle: defineMessage({
+                defaultMessage: 'Send wOETH across chains',
+              }),
+              icon: Bridge,
             },
           },
           {

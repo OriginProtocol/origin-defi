@@ -68,6 +68,10 @@ export const ChainMenuButton = ({
       </Button>
       <ClickAwayMenu
         {...menuProps}
+        menuListProps={{
+          component: Stack,
+          sx: { gap: 0.5 },
+        }}
         anchorEl={anchorEl}
         open={open}
         onClose={() => {
