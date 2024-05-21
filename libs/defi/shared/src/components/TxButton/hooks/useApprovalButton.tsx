@@ -349,7 +349,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         { token: args.token.symbol },
       ),
       params: {
-        contract: args.token,
+        contract: {
+          address: args.token.address ?? ZERO_ADDRESS,
+          abi: erc20Abi,
+          chainId: args.token.chainId,
+        },
         functionName: 'approve',
         args: [args.spender, args.amount],
       },
