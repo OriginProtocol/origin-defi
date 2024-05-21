@@ -14,7 +14,7 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  MultiTokenIcon,
+  SwapTokensIcon,
   TokenIcon,
 } from '@origin/shared/components';
 import {
@@ -148,11 +148,7 @@ export const Swapper = ({
         updateActivity({ ...state, id: trackId, status: 'success' });
         pushNotification({
           icon: (
-            <MultiTokenIcon
-              tokens={[tokenIn, tokenOut]}
-              sx={{ transform: 'rotate(45deg)' }}
-              zOrder="last"
-            />
+            <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={36} />
           ),
           title: intl.formatMessage({ defaultMessage: 'Swap successful' }),
           message: intl.formatMessage(
@@ -199,10 +195,7 @@ export const Swapper = ({
         });
         pushNotification({
           icon: (
-            <MultiTokenIcon
-              tokens={[tokenIn, tokenOut]}
-              sx={{ transform: 'rotate(45deg)' }}
-            />
+            <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={36} />
           ),
           title: intl.formatMessage({
             defaultMessage: 'Error while swapping',

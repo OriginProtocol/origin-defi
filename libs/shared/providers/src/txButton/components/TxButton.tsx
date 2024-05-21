@@ -73,12 +73,16 @@ export const TxButton = <
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
-  const { data: simulateData, error: simulateError } = useSimulateContract({
+  const {
+    data: simulateData,
+    error: simulateError,
+    isLoading: isSimulationLoading,
+  } = useSimulateContract({
     address: params.contract.address,
     abi: params.contract.abi as Abi,
     functionName: params.functionName as functionName,
     args: params.args as readonly unknown[],
-    value: params.value,
+    value: params?.value,
     chainId: params.contract.chainId,
     query: {
       enabled:
@@ -179,7 +183,7 @@ export const TxButton = <
         : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
-    !simulateData ||
+    isSimulationLoading ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

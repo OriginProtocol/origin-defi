@@ -12,7 +12,8 @@ export const products = {
     token: tokens.mainnet.OETH,
     href: 'oeth',
     icon: '/images/circlesPattern.svg',
-    iconSize: 120,
+    iconSize: 160,
+    bgcolor: 'primary.main',
     description: defineMessage({
       defaultMessage: 'Liquid staking',
     }),
@@ -24,6 +25,7 @@ export const products = {
     href: 'prime',
     icon: '/images/circles2Pattern.svg',
     iconSize: 100,
+    bgcolor: '#FF4E4E',
     description: defineMessage({
       defaultMessage: 'Restaking',
     }),
@@ -34,7 +36,8 @@ export const products = {
     token: tokens.mainnet.OUSD,
     href: 'ousd',
     icon: '/images/wavePattern.svg',
-    iconSize: 350,
+    iconSize: 450,
+    bgcolor: 'text.primary',
     description: defineMessage({
       defaultMessage: 'Yield bearing stablecoin',
     }),

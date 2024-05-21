@@ -72,7 +72,13 @@ export const MergerBanner = (props: StackProps) => {
             },
           }}
         />
-        <Button color="secondary" sx={{ height: 44 }}>
+        <Button
+          href="https://originprotocol.eth.limo/#/more/migration"
+          color="secondary"
+          sx={{ height: 44 }}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           {intl.formatMessage({ defaultMessage: 'Convert OGV to OGN' })}
         </Button>
       </Stack>
