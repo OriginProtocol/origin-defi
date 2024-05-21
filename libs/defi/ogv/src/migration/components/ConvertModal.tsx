@@ -76,13 +76,19 @@ export const ConvertModal = ({
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
+    gasPrice: approvalGas,
   } = useApprovalButton({
     token: tokens.mainnet.OGV,
     amount: total,
     spender: contracts.mainnet.OGVMigrator.address,
     enableAllowance: true,
+    enableGas: true,
   });
-  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+  const {
+    params: writeParams,
+    callbacks: writeCallbacks,
+    gasPrice: writeGas,
+  } = useTxButton({
     params: {
       contract: contracts.mainnet.OGVMigrator,
       functionName: 'migrate',
@@ -103,6 +109,7 @@ export const ConvertModal = ({
         onClose?.({}, 'backdropClick');
       },
     },
+    enableGas: true,
   });
 
   const handleRatioChange = (_: Event, newValue: number | number[]) => {
@@ -114,6 +121,7 @@ export const ConvertModal = ({
   };
 
   const lockupEnd = addMonths(new Date(), duration);
+  const gas = (approvalGas?.gasCostUsd ?? 0) + (writeGas?.gasCostUsd ?? 0);
   const isApprovalNeeded =
     !isNilOrEmpty(allowance) && (allowance ?? 0n) < total;
   const isConvertDisabled = isNilOrEmpty(allowance) || isApprovalNeeded;
@@ -361,7 +369,7 @@ export const ConvertModal = ({
             justifyContent="space-between"
             bgcolor="transparent"
             label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-            value={formatCurrency(12.76)}
+            value={formatCurrency(gas)}
           />
         </Collapse>
       </DialogContent>
