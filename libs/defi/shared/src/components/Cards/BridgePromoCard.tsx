@@ -1,7 +1,9 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { ChainIcon } from '@origin/shared/components';
+import { BRIDGE_DOCS_URL } from '@origin/shared/constants';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
+import { Link } from 'react-router-dom';
 import { arbitrum, mainnet } from 'viem/chains';
 
 export const BridgePromoCard = () => {
@@ -37,10 +39,16 @@ export const BridgePromoCard = () => {
             })}
           </Typography>
           <Stack direction="row" alignItems="center" spacing={1} width={1}>
-            <Button fullWidth>
+            <Button fullWidth component={Link} to="/oeth/bridge">
               {intl.formatMessage({ defaultMessage: 'Bridge' })}
             </Button>
-            <Button color="secondary" fullWidth>
+            <Button
+              color="secondary"
+              fullWidth
+              href={BRIDGE_DOCS_URL}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+            >
               {intl.formatMessage({ defaultMessage: 'Learn More' })}
             </Button>
           </Stack>
