@@ -47,13 +47,18 @@ export const PageTitle = ({
         spacing={2}
         {...rest}
       >
-        <Typography variant="h5" textAlign="center">
+        <Typography variant="h5" textAlign="center" px={3}>
           {isSm && token && `${token.symbol} `}
           {title}
         </Typography>
       </Stack>
       {subtitle && (
-        <Typography variant="mono" color="text.secondary" textAlign="center">
+        <Typography
+          variant="mono"
+          color="text.secondary"
+          textAlign="center"
+          px={3}
+        >
           {subtitle}
         </Typography>
       )}

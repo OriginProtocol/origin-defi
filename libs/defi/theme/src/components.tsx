@@ -236,10 +236,9 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 72,
           padding: theme.spacing(3),
-
           [theme.breakpoints.down('md')]: {
             minHeight: 56,
-            padding: theme.spacing(2, 3),
+            padding: theme.spacing(1.5),
           },
         }),
         title: ({ theme }) => ({
@@ -253,7 +252,7 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           padding: theme.spacing(3),
           [theme.breakpoints.down('md')]: {
-            padding: theme.spacing(2, 3),
+            padding: theme.spacing(1.5),
           },
         }),
       },
@@ -311,10 +310,12 @@ export const components = (base: Theme): ThemeOptions => ({
         `,
     },
     MuiDialog: {
-      defaultProps: {
+      defaultProps: ({ theme }) => ({
         transitionDuration: 0,
-        disableScrollLock: true,
-      },
+        fullWidth: 1,
+        maxWidth: 'sm',
+        fullscreen: theme.breakpoints.down('sm'),
+      }),
       styleOverrides: {
         root: ({ theme }) => ({
           border: '1px solid',
@@ -325,14 +326,22 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
       },
     },
-    MuiDialogTitle: {
+    MuiDialogActions: {
+      defaultProps: {
+        disableSpacing: true,
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           padding: theme.spacing(3),
-          ...theme.typography.body2,
-          fontWeight: theme.typography.fontWeightMedium,
-          color: theme.palette.text.primary,
-          borderBottom: `1px solid ${theme.palette.divider}`,
+          flexDirection: 'column',
+          alignItems: 'stretch',
+        }),
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: theme.spacing(3),
         }),
       },
     },
@@ -341,6 +350,16 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           color: theme.palette.text.primary,
           ...theme.typography.body3,
+        }),
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          padding: theme.spacing(3),
+          ...theme.typography.body2,
+          fontWeight: theme.typography.fontWeightMedium,
+          color: theme.palette.text.primary,
         }),
       },
     },

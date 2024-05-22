@@ -53,5 +53,5 @@
       "@origin/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["**/node_modules/*", "**/dist/*", "node_modules", "tmp"]
 }
