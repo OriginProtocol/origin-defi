@@ -107,7 +107,15 @@ export const GeoFenceProvider = ({
             sx={{ pl: 0.2 }}
           />
         </DialogContent>
-        <DialogActions sx={{ gap: 3, px: 3, pt: { xs: 2, sm: 0 }, pb: 3 }}>
+        <DialogActions
+          sx={{
+            flexDirection: 'row',
+            gap: 3,
+            px: 3,
+            pt: { xs: 2, sm: 0 },
+            pb: 3,
+          }}
+        >
           <Button
             href={href}
             fullWidth
