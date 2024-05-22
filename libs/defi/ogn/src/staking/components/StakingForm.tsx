@@ -84,7 +84,7 @@ export const StakingForm = () => {
       ],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
+      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 36 }} />,
       title: intl.formatMessage({
         defaultMessage: 'Stake OGN',
       }),
@@ -105,6 +105,8 @@ export const StakingForm = () => {
     callbacks: {
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
+        setAmount(0n);
+        setDuration(0);
       },
     },
   });

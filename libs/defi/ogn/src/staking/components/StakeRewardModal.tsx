@@ -8,6 +8,7 @@ import {
   Button,
   Collapse,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -26,7 +27,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useOgnInfo, useOgvInfo } from '@origin/defi/shared';
+import {
+  useApprovalButton,
+  useOgnInfo,
+  useOgvInfo,
+  useTxButton,
+} from '@origin/defi/shared';
 import {
   BigIntInput,
   InfoTooltipLabel,
@@ -35,12 +41,8 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  DefaultWallet,
-  FaChevronDownRegular,
-  FaXmarkRegular,
-} from '@origin/shared/icons';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import { DefaultWallet, FaXmarkRegular } from '@origin/shared/icons';
+import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import {
@@ -50,7 +52,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { addMonths, formatDuration } from 'date-fns';
-import { not } from 'ramda';
+import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -68,10 +70,10 @@ export const StakeRewardModal = (props: DialogProps) => {
   const { formatAmount, formatQuantity } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const { address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
-  const [isBalanceInputVisible, setIsBalanceInputVisible] = useState(false);
   const [addToExisting, setAddToExisting] = useState(false);
   const [lockupId, setLockupId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -82,6 +84,48 @@ export const StakeRewardModal = (props: DialogProps) => {
       enabled: false,
     },
   );
+  const {
+    allowance,
+    params: approvalParams,
+    callbacks: approvalCallbacks,
+    label: approvalLabel,
+  } = useApprovalButton({
+    token: tokens.mainnet.OGN,
+    amount: amount + (info?.xOgnRewards ?? 0n),
+    spender: tokens.mainnet.xOGN.address,
+    enableAllowance: true,
+  });
+  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+    params: {
+      contract: tokens.mainnet.xOGN,
+      functionName: 'stake',
+      args: [
+        amount,
+        BigInt(duration * secondsInMonth),
+        address ?? ZERO_ADDRESS,
+        true,
+        addToExisting && lockupId ? BigInt(lockupId) : BigInt(-1),
+      ],
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        props?.onClose?.({}, 'backdropClick');
+      },
+    },
+    activity: {
+      title: intl.formatMessage({ defaultMessage: 'Stake rewards' }),
+      subtitle: intl.formatMessage(
+        { defaultMessage: '{amount} OGN staked' },
+        {
+          amount: formatAmount(
+            amount + (info?.xOgnRewards ?? 0n),
+            tokens.mainnet.OGN.decimals,
+          ),
+        },
+      ),
+      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />,
+    },
+  });
 
   useDebouncedEffect(
     () => {
@@ -108,7 +152,6 @@ export const StakeRewardModal = (props: DialogProps) => {
     evt.stopPropagation();
     if (amount !== info?.ognBalance) {
       setAmount(info?.ognBalance ?? 0n);
-      setIsBalanceInputVisible(true);
     }
   };
 
@@ -127,9 +170,18 @@ export const StakeRewardModal = (props: DialogProps) => {
     setDuration(newValue as number);
   };
 
+  const showOgnInput =
+    !isInfoLoading && !!info?.ognBalance && info?.ognBalance > 0n;
   const votingPowerPercent =
     (staking?.veOGVReceived ?? 0) /
     +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
+  const isApprovalNeeded =
+    !isNilOrEmpty(allowance) &&
+    (allowance ?? 0n) < amount + (info?.xOgnRewards ?? 0n);
+  const isStakeDisabled =
+    (!addToExisting && duration === 0) ||
+    (addToExisting && isNilOrEmpty(lockupId)) ||
+    isApprovalNeeded;
 
   return (
     <Dialog {...props} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -148,8 +200,8 @@ export const StakeRewardModal = (props: DialogProps) => {
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent>
-        <Stack mb={3}>
+      <DialogContent sx={{ pb: 0, px: 0 }}>
+        <Stack mb={3} px={3}>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'The amount of OGN you want to lock',
@@ -192,28 +244,14 @@ export const StakeRewardModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Accordion
-          expanded={isBalanceInputVisible}
-          disabled={isInfoLoading || info?.ognBalance === 0n}
-          onChange={() => {
-            setIsBalanceInputVisible(not);
-          }}
-          sx={{
-            border: 'none',
-            mb: 3,
-            '&.Mui-disabled': { backgroundColor: 'transparent' },
-          }}
-        >
-          <AccordionSummary
-            expandIcon={<FaChevronDownRegular />}
-            sx={{ pr: 1 }}
-          >
+        <Collapse in={showOgnInput}>
+          <Stack mb={3} px={3}>
             <Stack
               direction="row"
               alignItems="center"
               justifyContent="space-between"
               width={1}
-              mr={2}
+              mb={1.5}
             >
               <InfoTooltipLabel
                 tooltipLabel={intl.formatMessage({
@@ -237,8 +275,6 @@ export const StakeRewardModal = (props: DialogProps) => {
                 </Typography>
               </Button>
             </Stack>
-          </AccordionSummary>
-          <AccordionDetails sx={{ px: 0, pt: 1.5, pb: 0 }}>
             <BigIntInput
               value={amount}
               decimals={tokens.mainnet.OGN.decimals}
@@ -261,22 +297,22 @@ export const StakeRewardModal = (props: DialogProps) => {
                 ...theme.typography.h6,
               }}
             />
-          </AccordionDetails>
-        </Accordion>
+          </Stack>
+        </Collapse>
+        <Divider />
         <Accordion
           expanded={addToExisting}
           sx={{
             border: 'none',
-            mb: 3,
+            my: 3,
           }}
         >
-          <AccordionSummary sx={{ pl: 1 }}>
+          <AccordionSummary sx={{ pl: 4, pr: 3 }}>
             <FormControlLabel
               control={
                 <Switch
                   checked={addToExisting}
                   onChange={handleToggleAddToExisiting}
-                  size="small"
                 />
               }
               label={
@@ -295,7 +331,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               }
             />
           </AccordionSummary>
-          <AccordionDetails sx={{ px: 0, pt: 1.5, pb: 0 }}>
+          <AccordionDetails sx={{ px: 3, pt: 1.5, pb: 0 }}>
             <LockupSelect
               lockupId={lockupId}
               onLockupSelect={handleSelectLockup}
@@ -303,7 +339,7 @@ export const StakeRewardModal = (props: DialogProps) => {
           </AccordionDetails>
         </Accordion>
         <Collapse in={!addToExisting}>
-          <Stack mb={3}>
+          <Stack mb={3} px={3}>
             <InfoTooltipLabel
               tooltipLabel={intl.formatMessage({
                 defaultMessage:
@@ -392,7 +428,7 @@ export const StakeRewardModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Collapse>
-        <Stack mb={3}>
+        <Stack mb={3} px={3}>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -429,7 +465,7 @@ export const StakeRewardModal = (props: DialogProps) => {
             </LoadingLabel>
           </Stack>
         </Stack>
-        <Stack mb={3}>
+        <Stack px={3}>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -509,10 +545,27 @@ export const StakeRewardModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Button variant="action" fullWidth>
-          {intl.formatMessage({ defaultMessage: 'Stake rewards' })}
-        </Button>
       </DialogContent>
+      <DialogActions>
+        <Collapse in={isApprovalNeeded}>
+          <TxButton
+            params={approvalParams}
+            callbacks={approvalCallbacks}
+            label={approvalLabel}
+            variant="action"
+            fullWidth
+            sx={{ mb: 1.5 }}
+          />
+        </Collapse>
+        <TxButton
+          params={writeParams}
+          callbacks={writeCallbacks}
+          variant="action"
+          fullWidth
+          label={intl.formatMessage({ defaultMessage: 'Stake rewards' })}
+          disabled={isStakeDisabled}
+        />
+      </DialogActions>
     </Dialog>
   );
 };

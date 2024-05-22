@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import {
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -99,7 +100,9 @@ export const UnstakeLockupModal = ({
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+      <DialogContent
+        sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 0 }}
+      >
         <ColorChip color="text.primary" bgcolor="error.faded" p={2} spacing={1}>
           <FaCircleExclamationRegular
             sx={{ fontSize: 24, color: 'error.main' }}
@@ -190,13 +193,15 @@ export const UnstakeLockupModal = ({
             )}
           />
         </Stack>
+      </DialogContent>
+      <DialogActions>
         <TxButton
           params={params}
           callbacks={callbacks}
           variant="action"
           label={intl.formatMessage({ defaultMessage: 'Unlock' })}
         />
-      </DialogContent>
+      </DialogActions>
     </Dialog>
   );
 };

@@ -2,9 +2,9 @@ import { useEffect, useState } from 'react';
 
 import {
   Box,
-  Button,
   CardContent,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -15,15 +15,15 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SectionCard, useOgnInfo } from '@origin/defi/shared';
+import { SectionCard, useOgnInfo, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   FaCircleExclamationRegular,
   FaXmarkRegular,
 } from '@origin/shared/icons';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import {
   addMonths,
@@ -32,6 +32,7 @@ import {
   formatDuration,
   isPast,
 } from 'date-fns';
+import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -57,12 +58,49 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
   const { data: staking, refetch } = useStakingAPY(amount, duration, {
     enabled: false,
+  });
+  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+    params: {
+      contract: tokens.mainnet.xOGN,
+      functionName: 'stake',
+      args: [
+        BigInt(lockup.amount),
+        BigInt(duration * secondsInMonth),
+        address ?? ZERO_ADDRESS,
+        true,
+        BigInt(lockup.lockupId),
+      ],
+    },
+    activity: {
+      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 36 }} />,
+      title: intl.formatMessage({
+        defaultMessage: 'Extend xOGN lockup',
+      }),
+      subtitle: intl.formatMessage(
+        {
+          defaultMessage:
+            'Lock {amount} OGN for {duration,plural,=1{# month} other{# months}}',
+        },
+        {
+          amount: intl.formatNumber(
+            +formatUnits(amount, tokens.mainnet.OGN.decimals),
+            { notation: 'compact', maximumSignificantDigits: 4 },
+          ),
+          duration,
+        },
+      ),
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        rest?.onClose?.({}, 'backdropClick');
+      },
+    },
   });
 
   useMountEffect(() => {
@@ -118,12 +156,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       tokens.mainnet.OGN.decimals,
     );
   const showRewardLabel = ((info?.xOgnRewards as unknown as bigint) ?? 0n) > 0n;
-  const stakeDisabled =
+  const isStakeDisabled =
     !isConnected ||
     isInfoLoading ||
     isLoading ||
-    initialMonthDuration === 48 ||
-    duration === initialMonthDuration;
+    duration <= initialMonthDuration;
   const extendLockupEnd =
     duration === initialMonthDuration
       ? isPast(new Date(lockup.end))
@@ -148,7 +185,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent>
+      <DialogContent sx={{ pb: 0 }}>
         <Stack
           sx={{
             borderRadius: 3,
@@ -351,7 +388,6 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           cardProps={{
             sx: { backgroundColor: 'transparent' },
           }}
-          mb={3}
         >
           <CardContent>
             <Stack
@@ -425,7 +461,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               backgroundColor: 'primary.faded',
               borderRadius: 3,
               p: 3,
-              mb: 3,
+              mt: 3,
             }}
           >
             <FaCircleExclamationRegular
@@ -456,10 +492,17 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             </Stack>
           </Stack>
         )}
-        <Button variant="action" fullWidth>
-          {intl.formatMessage({ defaultMessage: 'Extend stake' })}
-        </Button>
       </DialogContent>
+      <DialogActions>
+        <TxButton
+          params={writeParams}
+          callbacks={writeCallbacks}
+          label={intl.formatMessage({ defaultMessage: 'Extend stake' })}
+          disabled={isStakeDisabled}
+          variant="action"
+          fullWidth
+        />
+      </DialogActions>
     </Dialog>
   );
 };
