@@ -1,7 +1,6 @@
 import { Box, Button, emphasize, Typography } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
-import { useIntl } from 'react-intl';
 
 import type { ButtonProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -11,14 +10,8 @@ export type TokenButtonProps = {
 } & ButtonProps;
 
 export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
-  const intl = useIntl();
-
   if (!token) {
-    return (
-      <Button variant="contained" color="inherit" {...rest}>
-        {intl.formatMessage({ defaultMessage: 'Select token' })}
-      </Button>
-    );
+    return null;
   }
 
   return (
