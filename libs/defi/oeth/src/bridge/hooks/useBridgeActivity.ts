@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useState } from 'react';
 
+import { useBridgeTransfersQuery } from '@origin/defi/shared';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 
-import { useBridgeTransfersQuery } from '../queries.generated';
 import { useBridgeState } from '../state';
 
 type BridgeTransferState = 'untouched' | 'processing' | 'complete' | 'failed';

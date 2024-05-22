@@ -4,10 +4,11 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type BridgeTransfersQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit: Types.Scalars['Int']['input'];
 }>;
 
 
-export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string, txHashOut?: string | null, state: number }> };
+export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Array<{ __typename?: 'BridgeTransfer', id: string, blockNumber: number, timestamp: string, messageId: string, bridge: string, chainIn: number, chainOut: number, amountIn: string, amountOut: string, transactor: string, receiver: string, sender: string, tokenIn: string, tokenOut: string, txHashIn: string, txHashOut?: string | null, state: number }> };
 
 export type BridgeTransferStatesQueryVariables = Types.Exact<{
   messageIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -19,10 +20,11 @@ export type BridgeTransferStatesQuery = { __typename?: 'Query', bridgeTransferSt
 
 
 export const BridgeTransfersDocument = `
-    query BridgeTransfers($address: String!) {
+    query BridgeTransfers($address: String!, $limit: Int!) {
   bridgeTransfers(
+    limit: $limit
     orderBy: timestamp_DESC
-    where: {sender_containsInsensitive: $address, receiver_containsInsensitive: $address}
+    where: {sender_containsInsensitive: $address, OR: {transactor_containsInsensitive: $address, OR: {receiver_containsInsensitive: $address}}}
   ) {
     id
     blockNumber
@@ -33,6 +35,7 @@ export const BridgeTransfersDocument = `
     chainOut
     amountIn
     amountOut
+    transactor
     receiver
     sender
     tokenIn

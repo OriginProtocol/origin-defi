@@ -62,6 +62,7 @@ export type Follow = {
   follower: Scalars['String']['output'];
   id: Scalars['String']['output'];
   ipfs?: Maybe<Scalars['String']['output']>;
+  network: Scalars['String']['output'];
   space: Space;
 };
 
@@ -78,6 +79,8 @@ export type FollowWhere = {
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   ipfs?: InputMaybe<Scalars['String']['input']>;
   ipfs_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  network?: InputMaybe<Scalars['String']['input']>;
+  network_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   space?: InputMaybe<Scalars['String']['input']>;
   space_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };

@@ -241,6 +241,7 @@ export const useWoethHistory = (filters: WOETHHistoryType[]) => {
       };
       const bridgeTransferQueryArgs = {
         address: address?.toLowerCase() ?? ZERO_ADDRESS,
+        limit: 1000,
       };
       const [transfers, bridgeTransfers] = await Promise.all([
         queryClient.fetchQuery({
