@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -101,7 +102,7 @@ export const DelegateModal = (props: DialogProps) => {
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent>
+      <DialogContent sx={{ pb: 0 }}>
         <Stack spacing={3}>
           <SectionCard
             title={intl.formatMessage({ defaultMessage: 'Voting power' })}
@@ -178,16 +179,18 @@ export const DelegateModal = (props: DialogProps) => {
               />
             </CardContent>
           </SectionCard>
-          <TxButton
-            fullWidth
-            variant="action"
-            params={params}
-            callbacks={callbacks}
-            disabled={delegateDisabled}
-            label={intl.formatMessage({ defaultMessage: 'Delegate' })}
-          />
         </Stack>
       </DialogContent>
+      <DialogActions>
+        <TxButton
+          fullWidth
+          variant="action"
+          params={params}
+          callbacks={callbacks}
+          disabled={delegateDisabled}
+          label={intl.formatMessage({ defaultMessage: 'Delegate' })}
+        />
+      </DialogActions>
     </Dialog>
   );
 };

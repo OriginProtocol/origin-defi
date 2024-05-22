@@ -35,6 +35,8 @@ export const PageTitleSection = (props: StackProps) => {
       direction="row"
       alignItems="center"
       justifyContent="center"
+      flexWrap="wrap"
+      rowGap={2}
       spacing={1}
       pt={3}
       {...props}

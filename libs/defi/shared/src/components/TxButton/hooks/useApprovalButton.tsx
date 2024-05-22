@@ -127,6 +127,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         </BadgeIcon>
       ),
       status: 'pending',
+      tokenIn: args.token,
+      amountIn: args.amount,
     } as const;
     if (!args.disableActivity) {
       const activity = pushActivity(act);
