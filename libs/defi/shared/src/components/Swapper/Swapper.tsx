@@ -42,6 +42,7 @@ import {
   usePushNotification,
   useSlippage,
   useSwapperPrices,
+  useSwapperTargetChainId,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
@@ -253,6 +254,7 @@ function SwapperWrapped({
   const { tokensIn, tokensOut } = useTokenOptions();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
+  const targetChainId = useSwapperTargetChainId();
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [tokenIn, tokenOut],
   });
@@ -455,6 +457,7 @@ function SwapperWrapped({
             {...buttonsProps}
             disabled={swapButtonDisabled}
             onClick={handleSwap}
+            targetChainId={targetChainId}
           >
             {isSwapRoutesLoading ? (
               <CircularProgress size={32} color="inherit" />

@@ -20,6 +20,17 @@ export const getFilteredSwapRoutes = (
   return swapRoutes.filter((r) => r.tokenIn.chainId === chainId);
 };
 
+export const getAllAvailableChainIds = (swapRoutes: SwapRoute[]) => {
+  if (isNilOrEmpty(swapRoutes)) {
+    return [];
+  }
+
+  return swapRoutes.reduce(
+    (acc, curr) => uniq([...acc, curr.tokenIn.chainId, curr.tokenOut.chainId]),
+    [] as number[],
+  );
+};
+
 export const getAllAvailableTokens = (
   swapRoutes: SwapRoute[],
   source: TokenSource,
