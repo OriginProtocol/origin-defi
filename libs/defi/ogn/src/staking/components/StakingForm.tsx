@@ -211,7 +211,7 @@ export const StakingForm = () => {
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
+                'The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lock-up',
             })}
             mb={1.5}
             fontWeight="medium"

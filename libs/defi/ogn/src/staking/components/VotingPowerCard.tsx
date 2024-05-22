@@ -8,7 +8,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useOgnInfo } from '@origin/defi/shared';
-import { TokenChip, ValueLabel } from '@origin/shared/components';
+import {
+  InfoTooltipLabel,
+  TokenChip,
+  ValueLabel,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -40,9 +44,19 @@ export const VotingPowerCard = (props: CardProps) => {
   return (
     <Card {...props}>
       <CardHeader
-        title={intl.formatMessage({
-          defaultMessage: 'My voting power',
-        })}
+        title={
+          <InfoTooltipLabel
+            labelProps={{ variant: 'inherit' }}
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The share of total Origin DAO voting power earned by your OGN lock-ups',
+            })}
+          >
+            {intl.formatMessage({
+              defaultMessage: 'Voting power',
+            })}
+          </InfoTooltipLabel>
+        }
       />
       <Divider />
       {isConnected ? (
