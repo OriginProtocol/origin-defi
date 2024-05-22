@@ -1,3 +1,16 @@
+query HolderCount($chainId: Int!, $token: String!) {
+  erc20HoldersConnection(
+    orderBy: id_ASC
+    where: {
+      address_containsInsensitive: $token
+      chainId_eq: $chainId
+      balance_gt: 0
+    }
+  ) {
+    totalCount
+  }
+}
+
 query Transfers($tokens: [String!], $account: String!) {
   erc20Transfers(
     orderBy: timestamp_DESC

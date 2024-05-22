@@ -5,10 +5,9 @@ import { createContainer } from 'react-tracked';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
+import type { BridgeTransfersQuery } from '@origin/defi/shared';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
-
-import type { BridgeTransfersQuery } from '../queries.generated';
 
 export interface BridgeState {
   amount: bigint;

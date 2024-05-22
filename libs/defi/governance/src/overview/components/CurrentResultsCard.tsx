@@ -51,7 +51,7 @@ export const CurrentResultsCard = (props: CardProps) => {
     proposal?.ogvProposalById?.status === OgvProposalState.Active;
   const totalVotes =
     proposal?.ogvProposalById?.scores.reduce?.(
-      (acc, curr) => (acc ?? 0) + (curr ?? 0),
+      (acc, curr) => (acc ?? 0) + (Number(curr) ?? 0),
       1,
     ) ?? 1;
   const isVotingEnabled =
@@ -80,7 +80,7 @@ export const CurrentResultsCard = (props: CardProps) => {
               <Grid2 key={choice} xs={12} sm={12 / governanceChoices.length}>
                 <VoteCard
                   choice={choice}
-                  score={score}
+                  score={Number(score)}
                   totalVotes={totalVotes}
                   isLoading={isProposalLoading}
                   isVotingEnabled={isVotingEnabled}

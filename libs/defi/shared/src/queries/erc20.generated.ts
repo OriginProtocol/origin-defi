@@ -2,6 +2,14 @@ import * as Types from '@origin/defi/shared';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
+export type HolderCountQueryVariables = Types.Exact<{
+  chainId: Types.Scalars['Int']['input'];
+  token: Types.Scalars['String']['input'];
+}>;
+
+
+export type HolderCountQuery = { __typename?: 'Query', erc20HoldersConnection: { __typename?: 'ERC20HoldersConnection', totalCount: number } };
+
 export type TransfersQueryVariables = Types.Exact<{
   tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
   account: Types.Scalars['String']['input'];
@@ -20,6 +28,38 @@ export type BalancesQueryVariables = Types.Exact<{
 export type BalancesQuery = { __typename?: 'Query', erc20Balances: Array<{ __typename?: 'ERC20Balance', id: string, chainId: number, blockNumber: number, timestamp: string, address: string, account: string, balance: string }> };
 
 
+
+export const HolderCountDocument = `
+    query HolderCount($chainId: Int!, $token: String!) {
+  erc20HoldersConnection(
+    orderBy: id_ASC
+    where: {address_containsInsensitive: $token, chainId_eq: $chainId, balance_gt: 0}
+  ) {
+    totalCount
+  }
+}
+    `;
+
+export const useHolderCountQuery = <
+      TData = HolderCountQuery,
+      TError = unknown
+    >(
+      variables: HolderCountQueryVariables,
+      options?: Omit<UseQueryOptions<HolderCountQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<HolderCountQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<HolderCountQuery, TError, TData>(
+      {
+    queryKey: ['HolderCount', variables],
+    queryFn: graphqlClient<HolderCountQuery, HolderCountQueryVariables>(HolderCountDocument, variables),
+    ...options
+  }
+    )};
+
+useHolderCountQuery.getKey = (variables: HolderCountQueryVariables) => ['HolderCount', variables];
+
+
+useHolderCountQuery.fetcher = (variables: HolderCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HolderCountQuery, HolderCountQueryVariables>(HolderCountDocument, variables, options);
 
 export const TransfersDocument = `
     query Transfers($tokens: [String!], $account: String!) {
