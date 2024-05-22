@@ -1,6 +1,11 @@
 import { useState } from 'react';
 
 import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Alert,
+  AlertTitle,
   Box,
   Button,
   Collapse,
@@ -18,6 +23,7 @@ import {
 } from '@mui/material';
 import { useApprovalButton, useTxButton } from '@origin/defi/shared';
 import {
+  ExpandIcon,
   InfoTooltipLabel,
   TokenChip,
   TokenIcon,
@@ -30,6 +36,7 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { secondsInMonth } from 'date-fns/constants';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
 
@@ -47,6 +54,9 @@ type UserInput = {
 
 export type ConvertModalProps = UserInput & DialogProps;
 
+const RATIO_WARNING_THRESHOLD = 50; // 50%
+const DURATION_WARNING_THRESHOLD = 6; // 6 months
+
 export const ConvertModal = ({
   ogvBalance,
   ogvRewards,
@@ -54,21 +64,21 @@ export const ConvertModal = ({
   onClose,
   ...rest
 }: ConvertModalProps) => {
-  const total =
-    ogvBalance +
-    ogvRewards +
-    veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
-  const converted =
-    +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
-
   const intl = useIntl();
   const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [stakingRatio, setSatkingRatio] = useState(100);
   const [duration, setDuration] = useState(12);
+  const [ratioOpen, setRatioOpen] = useState(false);
   const queryClient = useQueryClient();
 
+  const total =
+    ogvBalance +
+    ogvRewards +
+    veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
+  const converted =
+    +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
   const ogn = (converted * (100 - stakingRatio)) / 100;
   const xOgn = (converted * stakingRatio) / 100;
 
@@ -145,7 +155,7 @@ export const ConvertModal = ({
       </DialogTitle>
       <Divider />
       <DialogContent sx={{ pb: 0 }}>
-        <Typography variant="body1" fontWeight="medium" mb={3}>
+        <Typography fontWeight="medium" mb={1.5}>
           {intl.formatMessage({
             defaultMessage: 'Your OGV/veOGV is equivalent to',
           })}
@@ -169,101 +179,162 @@ export const ConvertModal = ({
             labelProps={{ variant: 'body2', fontWeight: 'bold' }}
           />
         </Stack>
-        <Stack>
-          <InfoTooltipLabel
-            fontWeight="medium"
-            mb={1.5}
-            tooltipLabel={intl.formatMessage({
-              defaultMessage:
-                'Choose the proportion of converted OGN you want to stake into a xOGN lockup.',
-            })}
-          >
-            {intl.formatMessage({ defaultMessage: 'Staking Ratio' })}
-          </InfoTooltipLabel>
-          <Stack {...cardStackProps} useFlexGap p={0} spacing={0}>
-            <Stack p={3} spacing={1}>
-              <Typography
-                variant="featured3"
-                fontWeight="bold"
-                color="primary.main"
+        <Accordion
+          expanded={ratioOpen}
+          onChange={() => {
+            setRatioOpen(not);
+          }}
+          sx={{ border: 'none' }}
+          slotProps={{
+            transition: { unmountOnExit: true, mountOnEnter: true },
+          }}
+        >
+          <AccordionSummary>
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              width={1}
+            >
+              <InfoTooltipLabel
+                fontWeight="medium"
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'Choose the proportion of converted OGN you want to stake into a xOGN lockup.',
+                })}
               >
-                {intl.formatNumber(stakingRatio / 100, { style: 'percent' })}
-              </Typography>
-              <Slider
-                value={stakingRatio}
-                onChange={handleRatioChange}
-                min={0}
-                max={100}
-                step={1}
-              />
-            </Stack>
-            <Divider />
-            <Stack direction="row">
-              <ValueLabel
-                spacing={0}
-                label={tokens.mainnet.OGN.symbol}
-                labelProps={{
-                  variant: 'caption1',
-                  fontWeight: 'medium',
-                  px: 3,
-                  py: 1,
+                {intl.formatMessage({ defaultMessage: 'Staking Ratio' })}
+              </InfoTooltipLabel>
+              <Stack
+                direction="row"
+                alignItems="center"
+                sx={{
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  borderRadius: 25,
+                  px: 1,
+                  py: 0.5,
+                  '&:hover': {
+                    backgroundColor: 'background.faded',
+                  },
                 }}
-                divider={<Divider orientation="horizontal" flexItem />}
-                value={
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                    px={3}
-                    py={1.5}
-                    width={1}
-                  >
-                    <TokenIcon
-                      token={tokens.mainnet.OGN}
-                      sx={{ fontSize: 24 }}
-                    />
-                    <Typography variant="body1" fontWeight="medium">
-                      {intl.formatNumber(ogn)}
-                    </Typography>
-                  </Stack>
-                }
-                sx={{ width: 1, alignItems: 'flex-start' }}
-              />
-              <Divider orientation="vertical" flexItem />
-              <ValueLabel
-                spacing={0}
-                label={tokens.mainnet.xOGN.symbol}
-                labelProps={{
-                  px: 3,
-                  py: 1,
-                  variant: 'caption1',
-                  fontWeight: 'medium',
-                }}
-                divider={<Divider orientation="horizontal" flexItem />}
-                value={
-                  <Stack
-                    direction="row"
-                    alignItems="center"
-                    spacing={1}
-                    px={3}
-                    py={1.5}
-                    width={1}
-                  >
-                    <TokenIcon
-                      token={tokens.mainnet.xOGN}
-                      sx={{ fontSize: 24 }}
-                      outlined
-                    />
-                    <Typography variant="body1" fontWeight="medium">
-                      {intl.formatNumber(xOgn)}
-                    </Typography>
-                  </Stack>
-                }
-                sx={{ width: 1, alignItems: 'flex-start' }}
-              />
+              >
+                <Collapse orientation="horizontal" in={!ratioOpen}>
+                  <Typography mr={0.75}>
+                    {intl.formatNumber(stakingRatio / 100, {
+                      style: 'percent',
+                    })}
+                  </Typography>
+                </Collapse>
+                <ExpandIcon isExpanded={ratioOpen} />
+              </Stack>
             </Stack>
-          </Stack>
-        </Stack>
+          </AccordionSummary>
+          <AccordionDetails sx={{ px: 0 }}>
+            <Stack {...cardStackProps} useFlexGap p={0} spacing={0}>
+              <Stack p={3} spacing={1}>
+                <Typography
+                  variant="featured3"
+                  fontWeight="bold"
+                  color="primary.main"
+                >
+                  {intl.formatNumber(stakingRatio / 100, { style: 'percent' })}
+                </Typography>
+                <Slider
+                  value={stakingRatio}
+                  onChange={handleRatioChange}
+                  min={0}
+                  max={100}
+                  step={1}
+                />
+              </Stack>
+              <Collapse in={stakingRatio < RATIO_WARNING_THRESHOLD}>
+                <Alert
+                  variant="filled"
+                  severity="warning"
+                  sx={{
+                    mx: 3,
+                    mb: 3,
+                    backgroundColor: 'warning.faded',
+                    boxShadow: 0,
+                  }}
+                >
+                  <AlertTitle>
+                    {intl.formatMessage({
+                      defaultMessage:
+                        'Decreasing stake ratio decreases APY and xOGN you will receive.',
+                    })}
+                  </AlertTitle>
+                </Alert>
+              </Collapse>
+              <Divider />
+              <Stack direction="row">
+                <ValueLabel
+                  spacing={0}
+                  label={tokens.mainnet.OGN.symbol}
+                  labelProps={{
+                    variant: 'caption1',
+                    fontWeight: 'medium',
+                    px: 3,
+                    py: 1,
+                  }}
+                  divider={<Divider orientation="horizontal" flexItem />}
+                  value={
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                      px={3}
+                      py={1.5}
+                      width={1}
+                    >
+                      <TokenIcon
+                        token={tokens.mainnet.OGN}
+                        sx={{ fontSize: 24 }}
+                      />
+                      <Typography variant="body1" fontWeight="medium">
+                        {intl.formatNumber(ogn)}
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{ width: 1, alignItems: 'flex-start' }}
+                />
+                <Divider orientation="vertical" flexItem />
+                <ValueLabel
+                  spacing={0}
+                  label={tokens.mainnet.xOGN.symbol}
+                  labelProps={{
+                    px: 3,
+                    py: 1,
+                    variant: 'caption1',
+                    fontWeight: 'medium',
+                  }}
+                  divider={<Divider orientation="horizontal" flexItem />}
+                  value={
+                    <Stack
+                      direction="row"
+                      alignItems="center"
+                      spacing={1}
+                      px={3}
+                      py={1.5}
+                      width={1}
+                    >
+                      <TokenIcon
+                        token={tokens.mainnet.xOGN}
+                        sx={{ fontSize: 24 }}
+                        outlined
+                      />
+                      <Typography variant="body1" fontWeight="medium">
+                        {intl.formatNumber(xOgn)}
+                      </Typography>
+                    </Stack>
+                  }
+                  sx={{ width: 1, alignItems: 'flex-start' }}
+                />
+              </Stack>
+            </Stack>
+          </AccordionDetails>
+        </Accordion>
         <Collapse in={xOgn > 0}>
           <InfoTooltipLabel
             fontWeight="medium"
@@ -344,6 +415,47 @@ export const ConvertModal = ({
                 ]}
               />
             </Box>
+            <Collapse in={duration < DURATION_WARNING_THRESHOLD}>
+              <Alert
+                variant="filled"
+                severity="warning"
+                sx={{
+                  backgroundColor: 'warning.faded',
+                  boxShadow: 0,
+                  mt: 1,
+                }}
+              >
+                <AlertTitle>
+                  {intl.formatMessage({
+                    defaultMessage:
+                      'Decreasing stake duration decreases APY and xOGN you will receive.',
+                  })}
+                </AlertTitle>
+              </Alert>
+            </Collapse>
+          </Stack>
+          <Typography fontWeight="medium">
+            {intl.formatMessage({ defaultMessage: 'xOGN received' })}
+          </Typography>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            sx={{
+              p: 3,
+              my: 1.5,
+              mb: 3,
+              borderRadius: 3,
+              border: '1px solid',
+              borderColor: 'divider',
+            }}
+          >
+            <Typography variant="h6">{intl.formatNumber(xOgn)}</Typography>
+            <TokenChip
+              token={tokens.mainnet.xOGN}
+              iconProps={{ outlined: true, sx: { fontSize: 28 } }}
+              labelProps={{ variant: 'body2', fontWeight: 'bold' }}
+            />
           </Stack>
           <InfoTooltipLabel
             fontWeight="medium"
@@ -355,7 +467,7 @@ export const ConvertModal = ({
           >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
           </InfoTooltipLabel>
-          <Stack {...cardStackProps} bgcolor="transparent" mb={3}>
+          <Stack {...cardStackProps} bgcolor="transparent">
             <Typography
               variant="featured3"
               fontWeight="bold"
@@ -364,15 +476,16 @@ export const ConvertModal = ({
               ~5.98%
             </Typography>
           </Stack>
-          <ValueLabel
-            {...cardStackProps}
-            direction="row"
-            justifyContent="space-between"
-            bgcolor="transparent"
-            label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-            value={formatCurrency(gas)}
-          />
         </Collapse>
+        <ValueLabel
+          {...cardStackProps}
+          direction="row"
+          justifyContent="space-between"
+          bgcolor="transparent"
+          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+          value={formatCurrency(gas)}
+          mt={3}
+        />
       </DialogContent>
       <DialogActions>
         <Collapse in={isApprovalNeeded}>
