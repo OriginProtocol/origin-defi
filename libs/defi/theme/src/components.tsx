@@ -310,12 +310,9 @@ export const components = (base: Theme): ThemeOptions => ({
         `,
     },
     MuiDialog: {
-      defaultProps: ({ theme }) => ({
+      defaultProps: {
         transitionDuration: 0,
-        fullWidth: 1,
-        maxWidth: 'sm',
-        fullscreen: theme.breakpoints.down('sm'),
-      }),
+      },
       styleOverrides: {
         root: ({ theme }) => ({
           border: '1px solid',
