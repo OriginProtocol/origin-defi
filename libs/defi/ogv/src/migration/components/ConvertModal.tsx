@@ -5,6 +5,7 @@ import {
   Button,
   Collapse,
   Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Divider,
@@ -373,7 +374,7 @@ export const ConvertModal = ({
           />
         </Collapse>
       </DialogContent>
-      <DialogContent sx={{ overflow: 'hidden' }}>
+      <DialogActions>
         <Collapse in={isApprovalNeeded}>
           <TxButton
             params={approvalParams}
@@ -392,7 +393,7 @@ export const ConvertModal = ({
           label={intl.formatMessage({ defaultMessage: 'Convert' })}
           disabled={isConvertDisabled}
         />
-      </DialogContent>
+      </DialogActions>
     </Dialog>
   );
 };
