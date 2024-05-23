@@ -7,12 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import { useOgnInfo } from '@origin/defi/shared';
-import { TokenChip, ValueLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenChip, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserInfoQuery } from '../queries.generated';
@@ -30,12 +29,6 @@ export const MyVotingPowerCard = (props: CardProps) => {
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
 
-  const percent =
-    +formatUnits(
-      BigInt(user?.votingPower ?? 0n),
-      tokens.mainnet.xOGN.decimals,
-    ) / +formatUnits(info?.xOgnTotalSupply ?? 1n, tokens.mainnet.xOGN.decimals);
-
   return (
     <Card {...props}>
       <CardHeader
@@ -43,58 +36,57 @@ export const MyVotingPowerCard = (props: CardProps) => {
       />
       <Divider />
       {isConnected ? (
-        <>
-          <CardContent>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              mb={3}
+        <CardContent>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={3}
+          >
+            <LoadingLabel
+              isLoading={isUserLoading}
+              variant="featured3"
+              fontWeight="bold"
             >
-              <Typography variant="featured3" fontWeight="bold">
-                {formatAmount(
-                  BigInt(user?.votingPower ?? '0'),
-                  tokens.mainnet.xOGN.decimals,
-                  undefined,
-                  { notation: 'compact', maximumSignificantDigits: 4 },
-                )}
-              </Typography>
-              <TokenChip
-                token={tokens.mainnet.xOGN}
-                iconProps={{ sx: { fontSize: 24 } }}
-                labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
-              />
-            </Stack>
-            <ValueLabel
-              label={intl.formatMessage({
-                defaultMessage: 'Percentage of total votes',
-              })}
-              labelProps={{
-                variant: 'body3',
-                color: 'text.secondary',
-                fontWeight: 'medium',
-              }}
-              isLoading={isInfoLoading || isUserLoading}
-              value={intl.formatMessage(
-                {
-                  defaultMessage: '{tilt}{value}',
-                },
-                {
-                  value: intl.formatNumber(percent, {
-                    style: 'percent',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 5,
-                  }),
-                  tilt: percent <= 1e-6 && percent > 0 ? `~ ` : '',
-                },
+              {formatAmount(
+                BigInt(user?.votingPower ?? '0'),
+                tokens.mainnet.xOGN.decimals,
+                undefined,
+                { notation: 'compact', maximumSignificantDigits: 4 },
               )}
-              sx={{ width: 1, alignItems: 'flex-start' }}
+            </LoadingLabel>
+            <TokenChip
+              token={tokens.mainnet.xOGN}
+              iconProps={{ sx: { fontSize: 24 } }}
+              labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
             />
-          </CardContent>
-          <CardContent sx={{ pt: 0 }}>
-            <DelegationPanel />
-          </CardContent>
-        </>
+          </Stack>
+          <ValueLabel
+            label={intl.formatMessage({
+              defaultMessage: 'Percentage of total votes',
+            })}
+            labelProps={{
+              variant: 'body3',
+              color: 'text.secondary',
+              fontWeight: 'medium',
+            }}
+            isLoading={isInfoLoading}
+            value={intl.formatMessage(
+              {
+                defaultMessage: '{value}',
+              },
+              {
+                value: intl.formatNumber(info?.votingPowerPercent ?? 0, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 5,
+                }),
+              },
+            )}
+            sx={{ width: 1, alignItems: 'flex-start' }}
+          />
+          <DelegationPanel mt={3} />
+        </CardContent>
       ) : (
         <CardContent>
           <Typography color="text.secondary">

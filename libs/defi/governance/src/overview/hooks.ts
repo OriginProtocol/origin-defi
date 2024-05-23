@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { snapshot } from '@origin/defi/shared';
+import { tokens } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fromUnixTime, isAfter } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { spaceIds } from './constants';
@@ -54,7 +56,7 @@ export const useProposals = (
 
               return {
                 id: p.id,
-                type: 'onchain' as ProposalType,
+                type: 'onchain_ogv' as ProposalType,
                 title,
                 description,
                 created: p.timestamp,
@@ -63,7 +65,9 @@ export const useProposals = (
                 updated: p.lastUpdated,
                 status: p.status,
                 choices: Object.keys(votes) as GovernanceChoice[],
-                scores: Object.values(votes),
+                scores: Object.values(votes).map(
+                  (v) => +formatUnits(BigInt(v), tokens.mainnet.OGV.decimals),
+                ),
                 quorum: 348e9,
                 link: '',
               };
@@ -76,9 +80,9 @@ export const useProposals = (
           const type =
             p?.space?.id === spaceIds.snapshot
               ? ('snapshot' as ProposalType)
-              : ('snapshot_legacy' as ProposalType);
+              : ('snapshot_ogv' as ProposalType);
           if (
-            type === 'snapshot_legacy' &&
+            type === 'snapshot_ogv' &&
             p?.created &&
             isAfter(new Date('2024-05-01'), fromUnixTime(p?.created))
           ) {
@@ -163,9 +167,9 @@ export const useUserVotes = () => {
           const type =
             v?.proposal?.space?.id === spaceIds.snapshot
               ? ('snapshot' as ProposalType)
-              : ('snapshot_legacy' as ProposalType);
+              : ('snapshot_ogv' as ProposalType);
           if (
-            type === 'snapshot_legacy' &&
+            type === 'snapshot_ogv' &&
             v?.proposal?.created &&
             isAfter(new Date('2024-05-01'), fromUnixTime(v?.proposal?.created))
           ) {

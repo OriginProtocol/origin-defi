@@ -24,6 +24,7 @@ import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
+import { governanceTokens } from '../constants';
 import { useProposals } from '../hooks';
 import { ProposalTypeBadge } from './ProposalTypeBadge';
 import { StatusBadge } from './StatusBadge';
@@ -31,7 +32,7 @@ import { StatusBadge } from './StatusBadge';
 import type { CardProps, StackProps } from '@mui/material';
 import type { Option } from '@origin/shared/components';
 
-import type { Proposal } from '../types';
+import type { Proposal, ProposalType } from '../types';
 
 const PAGE_SIZE = 10;
 
@@ -50,14 +51,11 @@ export const ProposalListCard = (props: CardProps) => {
       }
 
       return data.filter((p) => {
-        if (
-          filter === 'snapshot' &&
-          ['snapshot', 'snapshot_legacy'].includes(p.type)
-        ) {
-          return true;
-        }
-
-        return p.type === filter;
+        return (
+          (filter === 'snapshot' &&
+            ['snapshot', 'snapshot_ogv'].includes(p.type)) ||
+          (filter === 'onchain' && ['onchain', 'onchain_ogv'].includes(p.type))
+        );
       });
     },
   });
@@ -157,7 +155,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (['snapshot', 'snapshot_legacy'].includes(proposal.type)) {
+    if (['snapshot', 'snapshot_ogv'].includes(proposal.type)) {
       window.open(proposal.link, '_blank');
     } else {
       navigate(proposal.id);
@@ -250,6 +248,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
           <VotesGauge
             choices={proposal?.choices ?? []}
             scores={proposal?.scores ?? []}
+            type={proposal?.type}
           />
         </Grid2>
       </Grid2>
@@ -260,9 +259,10 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
 type VotesGaugeProps = {
   choices: string[];
   scores: number[];
+  type: ProposalType;
 } & StackProps;
 
-function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
+function VotesGauge({ choices, scores, type, ...rest }: VotesGaugeProps) {
   const intl = useIntl();
   const { formatAmount } = useFormat();
 
@@ -286,11 +286,11 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>
-              {formatAmount(c[1], tokens.mainnet.xOGN.decimals, undefined, {
+              {formatAmount(c[1], governanceTokens[type].decimals, undefined, {
                 notation: 'compact',
                 maximumSignificantDigits: 4,
               })}
-              &nbsp;{tokens.mainnet.xOGN.symbol}
+              &nbsp;{governanceTokens[type].symbol}
             </Typography>
           </Stack>
           <LinearProgress
