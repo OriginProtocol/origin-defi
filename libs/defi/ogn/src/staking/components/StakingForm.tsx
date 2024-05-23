@@ -23,6 +23,7 @@ import {
   BigIntInput,
   InfoTooltipLabel,
   LoadingLabel,
+  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
@@ -382,10 +383,11 @@ export const StakingForm = () => {
                 >
                   {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
                 </LoadingLabel>
-                <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
-                <Typography variant="body2" fontWeight="bold">
-                  {tokens.mainnet.xOGN.symbol}
-                </Typography>
+                <TokenChip
+                  token={tokens.mainnet.xOGN}
+                  iconProps={{ sx: { fontSize: 28 } }}
+                  labelProps={{ variant: 'body2', fontWeight: 'bold' }}
+                />
               </Stack>
               <ValueLabel
                 label={intl.formatMessage({

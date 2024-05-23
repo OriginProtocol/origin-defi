@@ -5,10 +5,9 @@ import {
   Collapse,
   Divider,
   Stack,
-  Typography,
 } from '@mui/material';
 import { useOgnInfo, useTxButton } from '@origin/defi/shared';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { LoadingLabel, TokenChip, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
@@ -87,12 +86,11 @@ export const RewardCard = (props: CardProps) => {
                 tokens.mainnet.OGN.decimals,
               )}
             </LoadingLabel>
-            <Stack direction="row" alignItems="center" spacing={1}>
-              <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 24 }} />
-              <Typography variant="featured3">
-                {tokens.mainnet.OGN.symbol}
-              </Typography>
-            </Stack>
+            <TokenChip
+              token={tokens.mainnet.OGN}
+              iconProps={{ sx: { fontSize: 24 } }}
+              labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
+            />
           </Stack>
           <Collapse in={hasRewards}>
             <Stack useFlexGap>

@@ -5,9 +5,8 @@ import {
   CardHeader,
   Divider,
   Stack,
-  Typography,
 } from '@mui/material';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { LoadingLabel, TokenChip } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchBalance } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -42,12 +41,11 @@ export const BalanceCard = (props: CardProps) => {
           >
             {formatBalance(balance, tokens.mainnet.OGN.decimals)}
           </LoadingLabel>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 24 }} />
-            <Typography variant="featured3" fontWeight="medium">
-              {tokens.mainnet.OGN.symbol}
-            </Typography>
-          </Stack>
+          <TokenChip
+            token={tokens.mainnet.OGN}
+            iconProps={{ sx: { fontSize: 24 } }}
+            labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
+          />
         </Stack>
         <Button fullWidth variant="outlined">
           {intl.formatMessage({ defaultMessage: 'Get OGN' })}
