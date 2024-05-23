@@ -53,8 +53,8 @@ export const spaceIds: Partial<Record<ProposalType, string>> = {
 };
 
 export const governanceTokens: Record<ProposalType, Token> = {
-  onchain: tokens.mainnet.OGN,
-  onchain_ogv: tokens.mainnet.OGV,
+  onchain: tokens.mainnet.xOGN,
+  onchain_ogv: tokens.mainnet.veOGV,
   snapshot: tokens.mainnet.OGN,
-  snapshot_ogv: tokens.mainnet.OGV,
+  snapshot_ogv: tokens.mainnet.veOGV,
 };

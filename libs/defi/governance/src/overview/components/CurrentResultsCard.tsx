@@ -53,7 +53,7 @@ export const CurrentResultsCard = (props: CardProps) => {
   const totalVotes =
     proposal?.ogvProposalById?.scores.reduce?.(
       (acc, curr) =>
-        acc + +formatUnits(BigInt(curr ?? 0), tokens.mainnet.OGV.decimals),
+        acc + +formatUnits(BigInt(curr ?? 0), tokens.mainnet.veOGV.decimals),
       1,
     ) ?? 1;
   const isVotingEnabled =
@@ -178,7 +178,7 @@ function VoteCard({
           {choice}
         </TooltipLabel>
         <LoadingLabel isLoading={isLoading}>
-          {formatAmount(score)}&nbsp;{tokens.mainnet.OGV.symbol}
+          {formatAmount(score)}&nbsp;{tokens.mainnet.veOGV.symbol}
         </LoadingLabel>
       </Stack>
       <LinearProgress

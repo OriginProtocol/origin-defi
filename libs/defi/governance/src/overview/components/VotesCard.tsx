@@ -53,7 +53,7 @@ export const VoteCard = (props: CardProps) => {
   const visibileVotes = !limit ? votes : take(limit, votes);
   const totalVotes = votes.reduce(
     (acc, curr) =>
-      acc + +formatUnits(BigInt(curr.weight), tokens.mainnet.xOGN.decimals),
+      acc + +formatUnits(BigInt(curr.weight), tokens.mainnet.veOGV.decimals),
     0,
   );
   const indicatorColor = {
@@ -123,7 +123,7 @@ export const VoteCard = (props: CardProps) => {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       }),
-                symbol: tokens.mainnet.xOGN.symbol,
+                symbol: tokens.mainnet.veOGV.symbol,
               },
             )}
           </LoadingLabel>
@@ -170,14 +170,14 @@ export const VoteCard = (props: CardProps) => {
                   {
                     count: formatAmount(
                       BigInt(v.weight),
-                      tokens.mainnet.xOGN.decimals,
+                      tokens.mainnet.veOGV.decimals,
                       undefined,
                       {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       },
                     ),
-                    symbol: tokens.mainnet.xOGN.symbol,
+                    symbol: tokens.mainnet.veOGV.symbol,
                   },
                 )}
               </LoadingLabel>

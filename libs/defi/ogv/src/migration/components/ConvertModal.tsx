@@ -155,7 +155,7 @@ export const ConvertModal = ({
       </DialogTitle>
       <Divider />
       <DialogContent sx={{ pb: 0 }}>
-        <Typography fontWeight="medium" mb={1.5}>
+        <Typography fontWeight="medium">
           {intl.formatMessage({
             defaultMessage: 'Your OGV/veOGV is equivalent to',
           })}
@@ -166,6 +166,7 @@ export const ConvertModal = ({
           justifyContent="space-between"
           sx={{
             p: 3,
+            mt: 1.5,
             mb: 3,
             borderRadius: 3,
             border: '1px solid',
