@@ -51,7 +51,7 @@ export const CurrentResultsCard = (props: CardProps) => {
     proposal?.ogvProposalById?.status === OgvProposalState.Active;
   const totalVotes =
     proposal?.ogvProposalById?.scores.reduce?.(
-      (acc, curr) => (acc ?? 0) + (Number(curr) ?? 0),
+      (acc, curr) => acc + Number(curr ?? 0),
       1,
     ) ?? 1;
   const isVotingEnabled =

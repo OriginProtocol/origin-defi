@@ -17,6 +17,64 @@ query OgvUserInfo($address: String!) {
   }
 }
 
+query OgnUserInfo($address: String!) {
+  balance: erc20Balances(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {
+      account_containsInsensitive: $address
+      address_containsInsensitive: "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26"
+      chainId_eq: 1
+    }
+  ) {
+    balance
+  }
+  xognBalance: erc20Balances(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: {
+      account_containsInsensitive: $address
+      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
+      chainId_eq: 1
+    }
+  ) {
+    balance
+  }
+  lockups: esLockups(
+    where: {
+      account_containsInsensitive: $address
+      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
+      chainId_eq: 1
+      state_eq: Open
+    }
+  ) {
+    id
+    lockupId
+    amount
+    end
+    penalty
+    withdrawAmount
+    points
+    timestamp
+    state
+  }
+  delegation: esAccounts(
+    where: {
+      account_containsInsensitive: $address
+      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
+      chainId_eq: 1
+    }
+  ) {
+    voteBalance
+    delegateTo {
+      address
+    }
+    delegatesFrom {
+      address
+    }
+  }
+}
+
 query OgvLockups($address: String!) {
   ogvLockups(
     where: {

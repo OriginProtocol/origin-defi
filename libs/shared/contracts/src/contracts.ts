@@ -124,7 +124,7 @@ export const contracts = {
     },
     // OGN
     OGNFixedRewardSource: {
-      address: '0xAef413c23070DDBb147bE5207AD1F18D7959FC01', // TODO tenderly address
+      address: '0x7609c88e5880e934dd3a75bcfef44e31b1badb8b',
       chainId: mainnet.id,
       abi: OGNFixedRateRewardSourceABI,
       name: 'OGNFixedRewardSource',

@@ -1,3 +1,4 @@
+import { useEsTokenUserLockupsQuery } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -14,15 +15,18 @@ import type { Config } from '@wagmi/core';
 
 import type { OgvLockupsQuery } from './queries.generated';
 
-// TODO move to xOGN
 export const useTotalLockedUp = () => {
   const { address } = useAccount();
 
-  return useOgvLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+  return useEsTokenUserLockupsQuery(
+    {
+      address: address ?? ZERO_ADDRESS,
+      token: tokens.mainnet.OGN.address,
+      chainId: tokens.mainnet.OGN.chainId,
+    },
     {
       select: (data) =>
-        data?.ogvLockups?.reduce(
+        data?.exponentialStakingLockups?.reduce(
           (acc, curr) => acc + BigInt(curr?.amount ?? 0n),
           0n,
         ) ?? 0n,

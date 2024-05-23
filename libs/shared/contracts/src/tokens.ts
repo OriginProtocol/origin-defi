@@ -175,7 +175,7 @@ export const tokens = {
       symbol: 'wOUSD',
     },
     xOGN: {
-      address: '0x06C19dE6Ff523E8db65152A1a6f966719208Da20', // TODO tenderly address
+      address: '0x63898b3b6ef3d39332082178656e9862bee45c57',
       chainId: mainnet.id,
       abi: xOGNABI,
       name: 'Staked OGN',
