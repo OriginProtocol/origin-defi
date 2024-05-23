@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
 import { capitalize } from '@mui/material';
 import { isUserRejected } from '@origin/shared/utils';
-import { usePrevious } from '@react-hookz/web';
+import { usePreviousDistinct } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import {
   useAccount,
@@ -104,30 +105,32 @@ export const TxButton = <
     error: waitTxError,
     status: waitTxStatus,
   } = useWaitForTransactionReceipt({ hash });
-  const prevWriteStatus = usePrevious(writeStatus);
-  const prevWaitTxStatus = usePrevious(waitTxStatus);
+  const prevWriteStatus = usePreviousDistinct(writeStatus);
+  const prevWaitTxStatus = usePreviousDistinct(waitTxStatus);
 
   useEffect(() => {
     if (chain?.id !== params.contract.chainId) {
       resetWriteContract();
     }
-  }, [chain?.id, params.contract.chainId, resetWriteContract]);
+  }, [
+    chain?.id,
+    params.contract.chainId,
+    resetWriteContract,
+    waitTxStatus,
+    writeStatus,
+  ]);
 
   useEffect(() => {
     if (simulateData) {
       callbacks?.onSimulateSuccess?.(simulateData);
     }
-  }, [callbacks, simulateData]);
+  }, [simulateData, waitTxStatus, writeStatus]);
 
   useEffect(() => {
-    if (
-      writeStatus === 'success' &&
-      prevWriteStatus === 'pending' &&
-      waitTxStatus === 'pending'
-    ) {
+    if (writeStatus === 'success' && waitTxStatus === 'pending') {
       callbacks?.onTxSigned?.();
     }
-  }, [callbacks, prevWriteStatus, waitTxStatus, writeStatus]);
+  }, [waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -137,7 +140,7 @@ export const TxButton = <
     ) {
       callbacks?.onWriteSuccess?.(waitTxData as TransactionReceipt);
     }
-  }, [callbacks, prevWaitTxStatus, waitTxData, waitTxStatus, writeStatus]);
+  }, [prevWaitTxStatus, waitTxData, waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -153,7 +156,6 @@ export const TxButton = <
       }
     }
   }, [
-    callbacks,
     prevWaitTxStatus,
     prevWriteStatus,
     waitTxError,
@@ -181,6 +183,7 @@ export const TxButton = <
         ? waitingTxLabel ??
           intl.formatMessage({ defaultMessage: 'Processing Transaction' })
         : label ?? capitalize(params.functionName);
+
   const isDisabled =
     disabled ||
     isSimulationLoading ||
