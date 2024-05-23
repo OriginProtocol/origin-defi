@@ -14,6 +14,7 @@ import {
 } from '@mui/material';
 import { ColorChip, useTxButton } from '@origin/defi/shared';
 import {
+  LoadingLabel,
   MiddleTruncatedLabel,
   TokenIcon,
   ValueLabel,
@@ -24,11 +25,11 @@ import {
   FaXmarkRegular,
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
-import { subtractSlippage } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { formatDistanceToNowStrict } from 'date-fns';
+import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
+import { useReadContract } from 'wagmi';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -41,10 +42,16 @@ export const UnstakeLockupModal = ({
   ...rest
 }: UnstakeLockupModalProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
+  const { formatAmount, formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const queryClient = useQueryClient();
+  const { data: previewOgn, isLoading: isPreviewOgnLoading } = useReadContract({
+    address: tokens.mainnet.xOGN.address,
+    abi: tokens.mainnet.xOGN.abi,
+    functionName: 'previewWithdraw',
+    args: [BigInt(lockup.xogn), BigInt(getUnixTime(lockup.end))],
+  });
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
@@ -76,12 +83,13 @@ export const UnstakeLockupModal = ({
     enableGas: true,
   });
 
-  const penalty = 0.2;
-  const amountWithPenalty = subtractSlippage(
-    BigInt(lockup.amount),
-    tokens.mainnet.OGN.decimals,
-    penalty,
-  );
+  const ognLockup = BigInt(lockup.amount);
+  const penalty = ognLockup - (previewOgn ?? ognLockup);
+  const penaltyPercent =
+    +formatUnits(penalty, tokens.mainnet.OGN.decimals) /
+    +formatUnits(ognLockup, tokens.mainnet.OGN.decimals);
+
+  console.log(ognLockup, lockup, previewOgn, penaltyPercent);
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -103,14 +111,26 @@ export const UnstakeLockupModal = ({
       <DialogContent
         sx={{ display: 'flex', flexDirection: 'column', gap: 3, pb: 0 }}
       >
-        <ColorChip color="text.primary" bgcolor="error.faded" p={2} spacing={1}>
-          <FaCircleExclamationRegular
-            sx={{ fontSize: 24, color: 'error.main' }}
-          />
-          <Typography fontWeight="medium">
-            {intl.formatMessage({ defaultMessage: 'Penalty for early unlock' })}
-          </Typography>
-        </ColorChip>
+        {penalty > 0 && (
+          <ColorChip
+            color="text.primary"
+            bgcolor="error.faded"
+            p={2}
+            spacing={1}
+          >
+            <FaCircleExclamationRegular
+              sx={{ fontSize: 24, color: 'error.main' }}
+            />
+            <Typography fontWeight="medium">
+              {intl.formatMessage(
+                {
+                  defaultMessage: 'Penalty for early unlock: {penalty} OGN',
+                },
+                { penalty: formatAmount(penalty, tokens.mainnet.OGN.decimals) },
+              )}
+            </Typography>
+          </ColorChip>
+        )}
         <Stack
           sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}
         >
@@ -145,7 +165,13 @@ export const UnstakeLockupModal = ({
                 roundingMethod: 'floor',
               })}
             </Typography>
-            <Typography>20%</Typography>
+            <LoadingLabel isLoading={isPreviewOgnLoading}>
+              {intl.formatNumber(penaltyPercent, {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </LoadingLabel>
           </Stack>
         </Stack>
         <Stack
@@ -167,20 +193,10 @@ export const UnstakeLockupModal = ({
             value={
               <Stack direction="row" alignItems="center" spacing={1}>
                 <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
-                <Typography>
-                  {intl.formatNumber(
-                    +formatUnits(
-                      amountWithPenalty,
-                      tokens.mainnet.OGN.decimals,
-                    ),
-                    {
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0,
-                    },
-                  )}
-                </Typography>
+                <Typography>{formatAmount(previewOgn)}</Typography>
               </Stack>
             }
+            isLoading={isPreviewOgnLoading}
           />
           <ValueLabel
             direction="row"

@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useOgvInfo } from '@origin/defi/shared';
+import { useOgnInfo } from '@origin/defi/shared';
 import { LoadingLabel, TablePagination } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
@@ -30,7 +30,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useOgvLockupsQuery } from '../queries.generated';
+import { useOgnLockupsQuery } from '../queries.generated';
 import { ExtendButton } from './ExtendFormModal';
 import { UnstakeLockupButton } from './UnstakeLockupModal';
 
@@ -43,11 +43,11 @@ export const LockupsTable = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
-  const { data: govInfo, isLoading: isGovInfoLoading } = useOgvInfo();
-  const { data, isLoading } = useOgvLockupsQuery(
+  const { data: govInfo, isLoading: isGovInfoLoading } = useOgnInfo();
+  const { data, isLoading } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
-      select: (data) => data?.ogvLockups,
+      select: (data) => data?.ognLockups,
       enabled: !!address,
     },
   );
@@ -90,8 +90,8 @@ export const LockupsTable = () => {
       ...(isSm
         ? []
         : [
-            columnHelper.accessor('veogv', {
-              id: 'veogv',
+            columnHelper.accessor('xogn', {
+              id: 'xogn',
               header: tokens.mainnet.xOGN.symbol,
               cell: (info) =>
                 intl.formatNumber(
@@ -106,7 +106,7 @@ export const LockupsTable = () => {
                 ),
             }),
           ]),
-      columnHelper.accessor('veogv', {
+      columnHelper.accessor('xogn', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) => (
@@ -121,7 +121,7 @@ export const LockupsTable = () => {
                 tokens.mainnet.xOGN.decimals,
               ) /
                 +formatUnits(
-                  govInfo?.veOgvTotalSupply ?? 1n,
+                  govInfo?.xOgnTotalSupply ?? 1n,
                   tokens.mainnet.xOGN.decimals,
                 ),
               {
@@ -174,7 +174,7 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [govInfo?.veOgvTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
+    [govInfo?.xOgnTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
   );
 
   const table = useReactTable({

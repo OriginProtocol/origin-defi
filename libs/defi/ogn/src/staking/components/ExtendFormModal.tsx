@@ -37,8 +37,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../hooks';
-import { getVAPY } from '../utils';
+import { useXOgnStaking } from '../hooks';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -62,7 +61,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useStakingAPY(amount, duration, {
+  const { data: staking, refetch } = useXOgnStaking(amount, duration, {
     enabled: false,
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
@@ -134,23 +133,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     }
   };
 
-  const vAPY =
+  const xOgnReceived =
     duration === initialMonthDuration
-      ? getVAPY(
-          +formatUnits(BigInt(lockup.veogv), tokens.mainnet.xOGN.decimals),
-          +formatUnits(BigInt(lockup.amount), tokens.mainnet.OGN.decimals),
-          +formatUnits(
-            BigInt(info?.xOgnTotalSupply ?? '0'),
-            tokens.mainnet.xOGN.decimals,
-          ),
-        ) / 100
-      : (staking?.stakingAPY ?? 0) / 100;
-  const veOGVReceived =
-    duration === initialMonthDuration
-      ? +formatUnits(BigInt(lockup.veogv), tokens.mainnet.xOGN.decimals)
-      : staking?.veOGVReceived;
+      ? +formatUnits(BigInt(lockup.xogn), tokens.mainnet.xOGN.decimals)
+      : staking?.xOGNReceived;
   const votingPowerPercent =
-    (veOGVReceived ?? 0) /
+    (xOgnReceived ?? 0) /
     +formatUnits(
       (info?.xOgnTotalSupply as unknown as bigint) ?? 1n,
       tokens.mainnet.OGN.decimals,
@@ -233,7 +221,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
-                  BigInt(lockup.veogv) ?? 0n,
+                  BigInt(lockup.xogn) ?? 0n,
                   tokens.mainnet.xOGN.decimals,
                 ) /
                   +formatUnits(
@@ -405,9 +393,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {amount > 0n
-                    ? formatQuantity(staking?.veOGVReceived)
-                    : '0.00'}
+                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
                 </LoadingLabel>
                 <TokenIcon
                   token={tokens.mainnet.xOGN}

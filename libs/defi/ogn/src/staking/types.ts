@@ -1,3 +1,3 @@
-import type { OgvLockupsQuery } from './queries.generated';
+import type { OgnLockupsQuery } from './queries.generated';
 
-export type Lockup = OgvLockupsQuery['ogvLockups'][number];
+export type Lockup = OgnLockupsQuery['ognLockups'][number];

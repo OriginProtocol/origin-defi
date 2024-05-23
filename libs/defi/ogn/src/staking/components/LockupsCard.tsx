@@ -14,7 +14,7 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useMyVApy } from '../hooks';
-import { useOgvLockupsQuery } from '../queries.generated';
+import { useOgnLockupsQuery } from '../queries.generated';
 import { LockupsTable } from './LockupsTable';
 
 import type { CardProps } from '@mui/material';
@@ -22,9 +22,9 @@ import type { CardProps } from '@mui/material';
 export const LockupsCard = (props: CardProps) => {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const { data: lockups, isFetching: isLockupsFetching } = useOgvLockupsQuery(
+  const { data: lockups, isFetching: isLockupsFetching } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data.ogvLockups },
+    { enabled: !!address, select: (data) => data.ognLockups },
   );
 
   return (

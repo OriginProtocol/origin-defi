@@ -41,7 +41,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../hooks';
+import { useXOgnStaking } from '../hooks';
 
 export const StakingForm = () => {
   const intl = useIntl();
@@ -53,7 +53,7 @@ export const StakingForm = () => {
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useStakingAPY(
+  const { data: staking, refetch } = useXOgnStaking(
     amount === 0n ? 100n : amount,
     duration,
     {
@@ -143,7 +143,7 @@ export const StakingForm = () => {
   };
 
   const votingPowerPercent =
-    (staking?.veOGVReceived ?? 0) /
+    (staking?.xOGNReceived ?? 0) /
     +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
   const showRewardLabel = (info?.xOgnRewards ?? 0n) > 0n;
   const showApprove =
@@ -380,9 +380,7 @@ export const StakingForm = () => {
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {amount > 0n
-                    ? formatQuantity(staking?.veOGVReceived)
-                    : '0.00'}
+                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
                 </LoadingLabel>
                 <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
                 <Typography variant="body2" fontWeight="bold">

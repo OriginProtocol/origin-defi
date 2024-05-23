@@ -9,7 +9,7 @@ export type EsTokenUserLockupsQueryVariables = Types.Exact<{
 }>;
 
 
-export type EsTokenUserLockupsQuery = { __typename?: 'Query', exponentialStakingLockups: Array<{ __typename?: 'ExponentialStakingLockup', id: string, lockupId: string, amount: string, end: string, penalty: string, withdrawAmount: string, points: string, timestamp: string, state?: Types.ExponentialStakingLockupState | null }> };
+export type EsTokenUserLockupsQuery = { __typename?: 'Query', esLockups: Array<{ __typename?: 'ESLockup', id: string, lockupId: string, amount: string, end: string, penalty: string, withdrawAmount: string, points: string, timestamp: string, state?: Types.EsLockupState | null }> };
 
 export type EsTokenAccountQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
@@ -18,13 +18,13 @@ export type EsTokenAccountQueryVariables = Types.Exact<{
 }>;
 
 
-export type EsTokenAccountQuery = { __typename?: 'Query', exponentialStakingAccounts: Array<{ __typename?: 'ExponentialStakingAccount', id: string, votes: string, balance: string, previewPoints: string, previewRewards: string, previewWithdraw: string }> };
+export type EsTokenAccountQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, voteBalance: string, delegateTo?: { __typename?: 'ESAccount', address: string } | null, delegatesFrom: Array<{ __typename?: 'ESAccount', address: string }> }> };
 
 
 
 export const EsTokenUserLockupsDocument = `
     query ESTokenUserLockups($address: String!, $token: String!, $chainId: Int!) {
-  exponentialStakingLockups(
+  esLockups(
     orderBy: end_ASC
     where: {account_containsInsensitive: $address, address_containsInsensitive: $token, chainId_eq: $chainId, state_eq: Open}
   ) {
@@ -64,15 +64,17 @@ useEsTokenUserLockupsQuery.fetcher = (variables: EsTokenUserLockupsQueryVariable
 
 export const EsTokenAccountDocument = `
     query ESTokenAccount($address: String!, $token: String!, $chainId: Int!) {
-  exponentialStakingAccounts(
+  esAccounts(
     where: {account_containsInsensitive: $address, address_containsInsensitive: $token, chainId_eq: $chainId}
   ) {
     id
-    votes
-    balance
-    previewPoints
-    previewRewards
-    previewWithdraw
+    voteBalance
+    delegateTo {
+      address
+    }
+    delegatesFrom {
+      address
+    }
   }
 }
     `;

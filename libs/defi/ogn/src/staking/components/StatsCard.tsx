@@ -46,6 +46,7 @@ export const StatsCard = (props: CardProps) => {
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={xognHolder}
             isLoading={isXognHolderLoading}
+            sWidth={30}
           />
         </Stack>
       </CardContent>

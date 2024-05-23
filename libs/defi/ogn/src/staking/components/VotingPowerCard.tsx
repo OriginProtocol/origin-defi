@@ -21,7 +21,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useOgvUserInfoQuery } from '../queries.generated';
+import { useOgnUserInfoQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 
@@ -30,9 +30,9 @@ export const VotingPowerCard = (props: CardProps) => {
   const { formatAmount } = useFormat();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
-  const { data: user, isLoading: isUserLoading } = useOgvUserInfoQuery(
+  const { data: user, isLoading: isUserLoading } = useOgnUserInfoQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
+    { enabled: !!address, select: (data) => data?.ognAddresses?.at?.(0) },
   );
 
   const percent =

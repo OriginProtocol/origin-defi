@@ -1,5 +1,5 @@
 query ESTokenUserLockups($address: String!, $token: String!, $chainId: Int!) {
-  exponentialStakingLockups(
+  esLockups(
     orderBy: end_ASC
     where: {
       account_containsInsensitive: $address
@@ -21,7 +21,7 @@ query ESTokenUserLockups($address: String!, $token: String!, $chainId: Int!) {
 }
 
 query ESTokenAccount($address: String!, $token: String!, $chainId: Int!) {
-  exponentialStakingAccounts(
+  esAccounts(
     where: {
       account_containsInsensitive: $address
       address_containsInsensitive: $token
@@ -29,10 +29,12 @@ query ESTokenAccount($address: String!, $token: String!, $chainId: Int!) {
     }
   ) {
     id
-    votes
-    balance
-    previewPoints
-    previewRewards
-    previewWithdraw
+    voteBalance
+    delegateTo {
+      address
+    }
+    delegatesFrom{
+      address
+    }
   }
 }

@@ -1,15 +1,9 @@
-query OgvHoldersCount {
-  ogvAddressesConnection(orderBy: id_ASC, where: { staked_gt: 0 }) {
-    totalCount
-  }
-}
-
-query OgvUserInfo($address: String!) {
-  ogvAddresses(where: { id_containsInsensitive: $address }) {
+query OgnUserInfo($address: String!) {
+  ognAddresses(where: { id_containsInsensitive: $address }) {
     id
     balance
     staked
-    veogvBalance
+    xognBalance
     votingPower
     delegatee {
       id
@@ -17,66 +11,8 @@ query OgvUserInfo($address: String!) {
   }
 }
 
-query OgnUserInfo($address: String!) {
-  balance: erc20Balances(
-    limit: 1
-    orderBy: timestamp_DESC
-    where: {
-      account_containsInsensitive: $address
-      address_containsInsensitive: "0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26"
-      chainId_eq: 1
-    }
-  ) {
-    balance
-  }
-  xognBalance: erc20Balances(
-    limit: 1
-    orderBy: timestamp_DESC
-    where: {
-      account_containsInsensitive: $address
-      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
-      chainId_eq: 1
-    }
-  ) {
-    balance
-  }
-  lockups: esLockups(
-    where: {
-      account_containsInsensitive: $address
-      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
-      chainId_eq: 1
-      state_eq: Open
-    }
-  ) {
-    id
-    lockupId
-    amount
-    end
-    penalty
-    withdrawAmount
-    points
-    timestamp
-    state
-  }
-  delegation: esAccounts(
-    where: {
-      account_containsInsensitive: $address
-      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57"
-      chainId_eq: 1
-    }
-  ) {
-    voteBalance
-    delegateTo {
-      address
-    }
-    delegatesFrom {
-      address
-    }
-  }
-}
-
-query OgvLockups($address: String!) {
-  ogvLockups(
+query OgnLockups($address: String!) {
+  ognLockups(
     where: {
       address: { id_containsInsensitive: $address }
       logs_none: { event_eq: Unstaked }
@@ -87,7 +23,7 @@ query OgvLockups($address: String!) {
     lockupId
     amount
     end
-    veogv
+    xogn
     timestamp
     logs(orderBy: timestamp_DESC, limit: 1) {
       event

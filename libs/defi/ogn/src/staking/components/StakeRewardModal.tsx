@@ -30,7 +30,6 @@ import {
 import {
   useApprovalButton,
   useOgnInfo,
-  useOgvInfo,
   useTxButton,
 } from '@origin/defi/shared';
 import {
@@ -57,8 +56,8 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useStakingAPY } from '../hooks';
-import { useOgvLockupsQuery } from '../queries.generated';
+import { useXOgnStaking } from '../hooks';
+import { useOgnLockupsQuery } from '../queries.generated';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
 import type { ChangeEvent, MouseEvent } from 'react';
@@ -77,7 +76,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const [addToExisting, setAddToExisting] = useState(false);
   const [lockupId, setLockupId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useStakingAPY(
+  const { data: staking, refetch } = useXOgnStaking(
     amount === 0n ? 100n : amount,
     duration,
     {
@@ -173,7 +172,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const showOgnInput =
     !isInfoLoading && !!info?.ognBalance && info?.ognBalance > 0n;
   const votingPowerPercent =
-    (staking?.veOGVReceived ?? 0) /
+    (staking?.xOGNReceived ?? 0) /
     +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
   const isApprovalNeeded =
     !isNilOrEmpty(allowance) &&
@@ -503,9 +502,7 @@ export const StakeRewardModal = (props: DialogProps) => {
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {amount > 0n
-                    ? formatQuantity(staking?.veOGVReceived)
-                    : '0.00'}
+                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
                 </LoadingLabel>
                 <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
                 <Typography variant="body2" fontWeight="bold">
@@ -584,11 +581,11 @@ function LockupSelect({
 }: LockupSelectProps) {
   const intl = useIntl();
   const { address } = useAccount();
-  const { data: govInfo } = useOgvInfo();
-  const { data } = useOgvLockupsQuery(
+  const { data: govInfo } = useOgnInfo();
+  const { data } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
-      select: (data) => data?.ogvLockups,
+      select: (data) => data?.ognLockups,
       enabled: !!address,
     },
   );
@@ -615,7 +612,7 @@ function LockupSelect({
             year: 'numeric',
           }),
       }),
-      columnHelper.accessor('veogv', {
+      columnHelper.accessor('xogn', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) =>
@@ -625,7 +622,7 @@ function LockupSelect({
               tokens.mainnet.xOGN.decimals,
             ) /
               +formatUnits(
-                govInfo?.veOgvTotalSupply ?? 1n,
+                govInfo?.xOgnTotalSupply ?? 1n,
                 tokens.mainnet.xOGN.decimals,
               ),
             {
@@ -650,7 +647,7 @@ function LockupSelect({
         },
       }),
     ],
-    [govInfo?.veOgvTotalSupply, intl, lockupId, onLockupSelect],
+    [govInfo?.xOgnTotalSupply, intl, lockupId, onLockupSelect],
   );
 
   const table = useReactTable({

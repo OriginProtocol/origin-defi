@@ -2,6 +2,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Collapse,
   Divider,
   Stack,
   Typography,
@@ -57,6 +58,9 @@ export const RewardCard = (props: CardProps) => {
     },
   });
 
+  const hasRewards =
+    !isInfoLoading && !!info?.xOgnRewards && info.xOgnRewards > 0n;
+
   return (
     <Card {...props}>
       <CardHeader
@@ -72,7 +76,6 @@ export const RewardCard = (props: CardProps) => {
             alignItems="center"
             justifyContent="space-between"
             spacing={1}
-            mb={3}
           >
             <LoadingLabel
               variant="featured3"
@@ -91,15 +94,19 @@ export const RewardCard = (props: CardProps) => {
               </Typography>
             </Stack>
           </Stack>
-          <StakeRewardButton sx={{ mb: 1 }} variant="outlined">
-            {intl.formatMessage({ defaultMessage: 'Add to stake' })}
-          </StakeRewardButton>
-          <TxButton
-            params={params}
-            callbacks={callbacks}
-            label={intl.formatMessage({ defaultMessage: 'Claim' })}
-            variant="outlined"
-          />
+          <Collapse in={hasRewards}>
+            <Stack useFlexGap>
+              <StakeRewardButton sx={{ mt: 3, mb: 1 }} variant="outlined">
+                {intl.formatMessage({ defaultMessage: 'Add to stake' })}
+              </StakeRewardButton>
+              <TxButton
+                params={params}
+                callbacks={callbacks}
+                label={intl.formatMessage({ defaultMessage: 'Claim' })}
+                variant="outlined"
+              />
+            </Stack>
+          </Collapse>
         </Stack>
       </CardContent>
     </Card>
