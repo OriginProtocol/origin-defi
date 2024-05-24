@@ -54,8 +54,8 @@ type UserInput = {
 
 export type ConvertModalProps = UserInput & DialogProps;
 
-const RATIO_WARNING_THRESHOLD = 50; // 50%
-const DURATION_WARNING_THRESHOLD = 6; // 6 months
+const RATIO_WARNING_THRESHOLD = 100; // 50%
+const DURATION_WARNING_THRESHOLD = 12; // 6 months
 
 export const ConvertModal = ({
   ogvBalance,

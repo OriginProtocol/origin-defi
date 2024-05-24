@@ -24,7 +24,7 @@ export const SwapView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Origin Ether' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'Ethereum liquid staking made simple',
+          defaultMessage: 'A superior LST for earning yield across DeFi',
         })}
         token={tokens.mainnet.OETH}
       >
