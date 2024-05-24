@@ -33,7 +33,7 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
-            labelProps={{ variant: 'body3' }}
+            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             labelInfoTooltip={intl.formatMessage(
               {
                 defaultMessage: 'Total value locked {symbol}',
@@ -43,14 +43,16 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
             value={formatCurrency(tvl, undefined, undefined, {
               minimumFractionDigits: 2,
             })}
+            valueProps={{ fontWeight: 'medium' }}
             isLoading={isTvlLoading}
           />
           <ValueLabel
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
-            labelProps={{ variant: 'body3' }}
+            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={formatCurrency(price)}
+            valueProps={{ fontWeight: 'medium' }}
             isLoading={isPriceLoading}
           />
         </Stack>

@@ -5,6 +5,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Divider,
   keyframes,
   Link,
   Skeleton,
@@ -54,22 +55,23 @@ export const BridgeActivityCard = () => {
           defaultMessage: 'Bridging activity',
         })}
       />
+      <Divider />
       {!activity.data || activity.data?.length === 0 ? (
         <CardContent>
-          <Stack alignItems={'center'} marginBottom={1}>
-            <Typography>
+          <Stack alignItems={'center'}>
+            <Typography color="text.secondary">
               {intl.formatMessage({ defaultMessage: 'No activity' })}
             </Typography>
           </Stack>
         </CardContent>
       ) : activity.isLoading && !activity.data ? (
         <CardContent>
-          <Stack alignItems={'center'} marginBottom={1}>
+          <Stack alignItems={'center'}>
             <Skeleton width={120} />
           </Stack>
         </CardContent>
       ) : (
-        <Stack>
+        <Stack divider={<Divider />}>
           {activity.data?.slice(0, limit - 2).map((a, i: number) => {
             return <BridgeTransfer key={`${a.messageId}-${i}`} activity={a} />;
           })}
@@ -81,7 +83,7 @@ export const BridgeActivityCard = () => {
                     setLimit(limit + 2);
                   }}
                 >
-                  Show more
+                  {intl.formatMessage({ defaultMessage: 'Show more' })}
                 </Button>
               </Stack>
             </CardContent>
@@ -150,16 +152,16 @@ export const BridgeTransfer = ({
   const token = getTokenByAddress(activity.tokenIn, activity.chainIn);
   const { title, subTitle } = messaging[activity.state];
   return (
-    <CardContent
-      sx={{ borderBottom: 'solid 1px', borderBottomColor: 'divider' }}
-    >
+    <CardContent>
       <Stack spacing={2} width={1}>
         <Stack direction={'row'} spacing={2} width={1}>
           <TokenIcon token={token} sx={{ fontSize: 40 }} />
           <Stack width={1} spacing={0.25}>
             <Stack direction={'row'} justifyContent={'space-between'}>
-              <Typography>{intl.formatMessage(title)}</Typography>
-              <Typography>
+              <Typography fontWeight="medium">
+                {intl.formatMessage(title)}
+              </Typography>
+              <Typography fontWeight="medium">
                 {formatAmount(activity.amountOut)} {token?.symbol}
               </Typography>
             </Stack>

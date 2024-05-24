@@ -1,5 +1,7 @@
-export const OETH_ANALYTICS_URL = 'https://analytics.oeth.com';
-export const OUSD_ANALYTICS_URL = 'https://analytics.ousd.com';
+export const OETH_ANALYTICS_URL =
+  'https://www.originprotocol.com/analytics/oeth ';
+export const OUSD_ANALYTICS_URL =
+  'https://www.originprotocol.com/analytics/ousd';
 export const OUSD_DOCS_URL = 'https://docs.ousd.com';
 export const JOBS_URL = 'https://angel.co/company/originprotocol/jobs';
 export const TERMS_URL = 'https://originprotocol.com/tos';
@@ -20,9 +22,10 @@ export const EMAIL_LIST_URL =
 export const AIRDROP_URL = 'https://governance.ousd.com/claim';
 export const GOVERNANCE_DISCUSSION_FORUM_URL =
   'https://discord.com/channels/404673842007506945/1025438212908396564/';
-export const GOVERNANCE_SNAPSHOT_VOTES_URL = 'https://vote.ousd.com';
-export const GOVERNANCE_DOCS_URL = 'https://docs.oeth.com/governance/overview';
+export const GOVERNANCE_OGV_SNAPSHOT_VOTES_URL = 'https://vote.ousd.com';
+export const GOVERNANCE_OGN_SNAPSHOT_VOTES_URL =
+  'https://snapshot.org/#/origingov.eth';
+export const GOVERNANCE_OGV_DOCS_URL =
+  'https://docs.oeth.com/governance/overview';
 export const BRIDGE_DOCS_URL =
   'https://docs.oeth.com/core-concepts/ccip-bridge';
-
-export const OETH_REDEEM_FEE = 0.001;

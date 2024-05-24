@@ -101,7 +101,7 @@ export const typography = (base: Theme): ThemeOptions => ({
       fontFamily: 'inter',
       fontSize: 14,
       lineHeight: 1.428,
-      fontWeight: 400,
+      fontWeight: 500,
       textTransform: 'none',
     },
     featured1: {

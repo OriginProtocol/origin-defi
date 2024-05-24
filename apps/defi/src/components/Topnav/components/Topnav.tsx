@@ -148,7 +148,7 @@ export const Topnav = () => {
               connectedProps={{ color: 'secondary' }}
               disconnectedProps={{
                 color: 'primary',
-                sx: { '&&&': { borderRadius: 2, minWidth: 80 } },
+                sx: { '&&&': { minWidth: 80 } },
               }}
               hideAddress={isMd}
             />

@@ -1,8 +1,8 @@
 import { Button, Stack } from '@mui/material';
 import {
   GOVERNANCE_DISCUSSION_FORUM_URL,
-  GOVERNANCE_DOCS_URL,
-  GOVERNANCE_SNAPSHOT_VOTES_URL,
+  GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
+  GOVERNANCE_OGV_DOCS_URL,
 } from '@origin/shared/constants';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -26,7 +26,7 @@ export const PageTitleSection = (props: StackProps) => {
       <Button
         variant="outlined"
         color="secondary"
-        href={GOVERNANCE_SNAPSHOT_VOTES_URL}
+        href={GOVERNANCE_OGN_SNAPSHOT_VOTES_URL}
         target="_blank"
         rel="noopener noreferrer nofollow"
       >
@@ -36,7 +36,7 @@ export const PageTitleSection = (props: StackProps) => {
       <Button
         variant="outlined"
         color="secondary"
-        href={GOVERNANCE_DOCS_URL}
+        href={GOVERNANCE_OGV_DOCS_URL}
         target="_blank"
         rel="noopener noreferrer nofollow"
       >

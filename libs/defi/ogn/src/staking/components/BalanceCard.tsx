@@ -47,7 +47,13 @@ export const BalanceCard = (props: CardProps) => {
             labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
           />
         </Stack>
-        <Button fullWidth variant="outlined">
+        <Button
+          fullWidth
+          variant="outlined"
+          href="https://app.uniswap.org/swap?outputCurrency=0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26&chain=mainnet"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           {intl.formatMessage({ defaultMessage: 'Get OGN' })}
         </Button>
       </CardContent>

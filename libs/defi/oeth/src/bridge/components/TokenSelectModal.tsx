@@ -2,6 +2,7 @@ import {
   Box,
   Dialog,
   DialogTitle,
+  Divider,
   MenuItem,
   MenuList,
   Skeleton,
@@ -37,30 +38,12 @@ export const TokenSelectModal = ({
 }: TokenSelectModalProps) => {
   const intl = useIntl();
   return (
-    <Dialog
-      maxWidth="sm"
-      PaperProps={{
-        elevation: 23,
-        sx: {
-          background: (theme) => theme.palette.background.paper,
-          borderRadius: 2,
-          border: '1px solid',
-          borderColor: (theme) => theme.palette.grey[800],
-          backgroundImage: 'none',
-          margin: 0,
-          minWidth: 'min(90vw, 33rem)',
-        },
-      }}
-      {...rest}
-      onClose={onClose}
-    >
+    <Dialog maxWidth="sm" fullWidth {...rest} onClose={onClose}>
       <DialogTitle>
         {intl.formatMessage({ defaultMessage: 'Select a token' })}
       </DialogTitle>
-      <MenuList
-        disablePadding
-        sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
-      >
+      <Divider />
+      <MenuList disablePadding>
         {tokens.map((token, i) => (
           <TokenListItem
             key={`token-${token.address || 'eth'}-${i}`}
@@ -105,8 +88,8 @@ function TokenListItem({
       selected={isSelected}
       sx={{
         display: 'flex',
-        paddingInline: 2,
-        paddingBlock: 1,
+        px: 3,
+        py: 1.5,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
@@ -115,13 +98,15 @@ function TokenListItem({
       }}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
-        <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
-        <Box>
-          <Typography fontWeight={500}>{token?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {token.symbol}
+        <TokenIcon token={token} sx={{ fontSize: 36 }} />
+        <Stack spacing={0.5}>
+          <Typography variant="body2" fontWeight="bold">
+            {token?.symbol}
           </Typography>
-        </Box>
+          <Typography variant="caption1" color="text.secondary">
+            {token.name}
+          </Typography>
+        </Stack>
       </Stack>
       <Stack direction="row" spacing={2}>
         {isSelected && (
@@ -130,14 +115,14 @@ function TokenListItem({
           </Stack>
         )}
         <Box sx={{ textAlign: 'right' }}>
-          <Typography fontWeight={500}>
+          <Typography variant="body2" fontWeight="bold">
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
               formatAmount(balance as unknown as bigint, token.decimals)
             )}
           </Typography>
-          <Typography color="text.secondary" variant="body2">
+          <Typography color="text.secondary" variant="caption1">
             {formatCurrency(balUsd)}
           </Typography>
         </Box>

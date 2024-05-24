@@ -24,9 +24,9 @@ export const TokenChip = ({
   ...rest
 }: TokenChipProps) => {
   return (
-    <Stack direction="row" alignItems="center" spacing={1} {...rest}>
+    <Stack direction="row" alignItems="center" spacing={0.5} {...rest}>
       {iconPlacement === 'before' && <TokenIcon {...iconProps} token={token} />}
-      <Typography variant="inherit" {...labelProps}>
+      <Typography variant="inherit" fontWeight="medium" {...labelProps}>
         {label ?? token.symbol}
       </Typography>
       {iconPlacement === 'after' && <TokenIcon {...iconProps} token={token} />}

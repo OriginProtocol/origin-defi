@@ -25,6 +25,7 @@ import {
   FaXmarkRegular,
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
 import { useIntl } from 'react-intl';
@@ -207,6 +208,7 @@ export const UnstakeLockupModal = ({
               { defaultMessage: '~{gas}' },
               { gas: formatCurrency(gasPrice?.gasCostUsd) },
             )}
+            isLoading={isNilOrEmpty(gasPrice)}
           />
         </Stack>
       </DialogContent>

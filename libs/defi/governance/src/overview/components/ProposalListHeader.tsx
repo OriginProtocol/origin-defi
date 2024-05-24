@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { GOVERNANCE_SNAPSHOT_VOTES_URL } from '@origin/shared/constants';
+import { GOVERNANCE_OGV_SNAPSHOT_VOTES_URL } from '@origin/shared/constants';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -27,7 +27,7 @@ export const ProposalListHeader = (props: StackProps) => {
         sx={{ rowGap: 2, columnGap: { xs: 1, sm: 2 } }}
       >
         <Button
-          href={GOVERNANCE_SNAPSHOT_VOTES_URL}
+          href={GOVERNANCE_OGV_SNAPSHOT_VOTES_URL}
           target="_blank"
           rel="noopener noreferrer nofollow"
           sx={{

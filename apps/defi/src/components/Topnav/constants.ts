@@ -1,12 +1,11 @@
 import {
   GOVERNANCE_DISCUSSION_FORUM_URL,
-  GOVERNANCE_SNAPSHOT_VOTES_URL,
+  GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
   OETH_ANALYTICS_URL,
   OUSD_ANALYTICS_URL,
 } from '@origin/shared/constants';
 import {
   FaChartPieRegular,
-  FaCircleExclamationRegular,
   FaCommentsRegular,
   Snapshot,
 } from '@origin/shared/icons';
@@ -29,19 +28,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
       href: OUSD_ANALYTICS_URL,
     },
   ],
-  ogn: [
-    {
-      title: defineMessage({ defaultMessage: 'Analytics' }),
-      icon: FaChartPieRegular,
-      href: OUSD_ANALYTICS_URL,
-    },
-  ],
   more: [
-    {
-      title: defineMessage({ defaultMessage: 'Analytics' }),
-      icon: FaCircleExclamationRegular,
-      href: OUSD_ANALYTICS_URL,
-    },
     {
       title: defineMessage({ defaultMessage: 'Discussion forum' }),
       icon: FaCommentsRegular,
@@ -50,7 +37,7 @@ export const additionalLinks: Record<string, NavItem[]> = {
     {
       title: defineMessage({ defaultMessage: 'Snapshot vote' }),
       icon: Snapshot,
-      href: GOVERNANCE_SNAPSHOT_VOTES_URL,
+      href: GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
     },
   ],
 };

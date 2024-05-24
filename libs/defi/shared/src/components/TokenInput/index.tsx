@@ -184,6 +184,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     onClick={handleMaxClick}
                     disabled={maxDisabled}
                     sx={{
+                      fontWeight: 'medium',
                       '&.Mui-disabled': { color: 'text.secondary', opacity: 1 },
                     }}
                   >

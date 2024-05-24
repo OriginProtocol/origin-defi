@@ -3,6 +3,7 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Divider,
   Stack,
   Typography,
 } from '@mui/material';
@@ -37,6 +38,7 @@ export const BalancesCard = ({ title }: { title: string }) => {
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader title={title} />
+      <Divider />
       <CardContent>
         {isConnected ? (
           <Stack spacing={3}>
@@ -90,7 +92,9 @@ export const BalanceRow = ({
     >
       <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
         <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} />
-        <Box>{chain.id === arbitrum.id ? 'Arbitrum' : chain.name}</Box>
+        <Typography fontWeight="medium">
+          {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
+        </Typography>
         {token.address && userAddress && (
           <ExternalLink
             href={tokenHolderLink(chain, token.address, userAddress)}
@@ -99,10 +103,12 @@ export const BalanceRow = ({
       </Stack>
       <Stack direction={'column'} alignItems={'end'}>
         <Stack direction={'row'} spacing={1}>
-          <LoadingLabel isLoading={isLoading} sWidth={60}>
+          <LoadingLabel isLoading={isLoading} sWidth={60} fontWeight="medium">
             {formatAmount(balance ?? 0n)}
           </LoadingLabel>
-          <Typography>{tokens.mainnet.wOETH.symbol}</Typography>
+          <Typography fontWeight="medium">
+            {tokens.mainnet.wOETH.symbol}
+          </Typography>
         </Stack>
         {balance !== undefined && usdRate && (
           <Box color={'text.secondary'}>

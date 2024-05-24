@@ -8,6 +8,9 @@ import {
   CardContent,
   CardHeader,
   Collapse,
+  Divider,
+  emphasize,
+  IconButton,
   Stack,
   Typography,
 } from '@mui/material';
@@ -16,14 +19,17 @@ import {
   useApprovalButton,
   useTxButton,
 } from '@origin/defi/shared';
-import { ArrowButton, InfoTooltip } from '@origin/shared/components';
-import { ChainButton } from '@origin/shared/components';
+import {
+  ChainButton,
+  InfoTooltip,
+  ValueLabel,
+} from '@origin/shared/components';
 import {
   contracts,
   getNativeToken,
   getTokenId,
 } from '@origin/shared/contracts';
-import { ChainlinkCCIP } from '@origin/shared/icons';
+import { ChainlinkCCIP, FaArrowDownRegular } from '@origin/shared/icons';
 import {
   isNativeCurrency,
   TxButton,
@@ -44,6 +50,7 @@ import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 import { TokenSelectModal } from './TokenSelectModal';
 
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Hex, TransactionReceipt } from 'viem';
 
@@ -196,10 +203,11 @@ export const BridgeCard = () => {
   return (
     <Card sx={{ width: '100%' }}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Bridge' })} />
+      <Divider />
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography>
+            <Typography fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'From' })}
             </Typography>
             <ChainButton chain={srcChain} disabled />
@@ -230,7 +238,7 @@ export const BridgeCard = () => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography>
+            <Typography fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'To' })}
             </Typography>
             <ChainButton chain={dstChain} disabled />
@@ -297,48 +305,44 @@ export const BridgeCard = () => {
                 fontSize: 14,
               }}
             >
-              <Stack direction={'row'}>
-                <Box flex={1} color={'text.secondary'}>
-                  {intl.formatMessage({ defaultMessage: 'Router' })}
-                </Box>
-                <Typography>
-                  {intl.formatMessage({ defaultMessage: 'Chainlink CCIP' })}
-                </Typography>
-              </Stack>
-              <Stack direction={'row'}>
-                <Box flex={1} color={'text.secondary'}>
-                  {intl.formatMessage({ defaultMessage: 'Est. time' })}
-                </Box>
-                <Box>
-                  {intl.formatMessage(
-                    { defaultMessage: '~{from} to {to} minutes' },
-                    {
-                      from: 15,
-                      to: 30,
-                    },
-                  )}
-                </Box>
-              </Stack>
-              <Stack direction={'row'}>
-                <Box flex={1} color={'text.secondary'}>
-                  {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
-                </Box>
-                <Box>
-                  {typeof bridgeFee === 'number'
+              <ValueLabel
+                {...valueLabelProps}
+                label={intl.formatMessage({ defaultMessage: 'Router' })}
+                value={intl.formatMessage({ defaultMessage: 'Chainlink CCIP' })}
+              />
+              <ValueLabel
+                {...valueLabelProps}
+                label={intl.formatMessage({ defaultMessage: 'Est. time' })}
+                value={intl.formatMessage(
+                  { defaultMessage: '~{from} to {to} minutes' },
+                  {
+                    from: 15,
+                    to: 30,
+                  },
+                )}
+              />
+              <ValueLabel
+                {...valueLabelProps}
+                label={intl.formatMessage({
+                  defaultMessage: 'Est. bridge fee',
+                })}
+                value={
+                  typeof bridgeFee === 'number'
                     ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
-                    : '-'}
-                </Box>
-              </Stack>
-              <Stack direction={'row'}>
-                <Box flex={1} color={'text.secondary'}>
-                  {intl.formatMessage({ defaultMessage: 'Est. gas fee' })}
-                </Box>
-                <Box>
-                  {typeof estimateGasFee === 'number'
+                    : '-'
+                }
+              />
+              <ValueLabel
+                {...valueLabelProps}
+                label={intl.formatMessage({
+                  defaultMessage: 'Est. gas fee',
+                })}
+                value={
+                  typeof estimateGasFee === 'number'
                     ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
-                    : '-'}
-                </Box>
-              </Stack>
+                    : '-'
+                }
+              />
             </AccordionDetails>
           </Accordion>
           <Collapse in={requiresApproval}>
@@ -397,10 +401,35 @@ export const BridgeCard = () => {
 export const BridgeDivider = () => {
   const toggleChain = useToggleBridgeChain();
   return (
-    <Stack direction={'row'} position={'relative'} marginY={{ xs: 2, md: 1 }}>
-      <Box sx={{ flex: 1, backgroundColor: 'divider', height: '1px' }} />
-      <ArrowButton onClick={toggleChain} />
-    </Stack>
+    <Divider sx={{ '>*': { px: 0 } }}>
+      <IconButton
+        onClick={toggleChain}
+        sx={{
+          width: { md: 50, xs: 42 },
+          height: { md: 50, xs: 42 },
+          zIndex: 2,
+          backgroundColor: 'background.paper',
+          border: '1px solid',
+          borderColor: 'divider',
+          svg: {
+            transition: (theme) => theme.transitions.create('transform'),
+          },
+          '&:hover': {
+            backgroundColor: (theme) =>
+              emphasize(theme.palette.background.paper, 0.1),
+            svg: {
+              transform: 'rotate(-180deg)',
+            },
+          },
+        }}
+      >
+        <FaArrowDownRegular
+          sx={{
+            fontSize: { md: 18, xs: 14 },
+          }}
+        />
+      </IconButton>
+    </Divider>
   );
 };
 
@@ -461,3 +490,14 @@ function createOptimisticTransferObject(
   }
   return waitForTransfer;
 }
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  direction: 'row',
+  justifyContent: 'space-between',
+  labelProps: {
+    variant: 'body3',
+    fontWeight: 'medium',
+    color: 'text.secondary',
+  },
+  valueProps: { fontWeight: 'medium' },
+};

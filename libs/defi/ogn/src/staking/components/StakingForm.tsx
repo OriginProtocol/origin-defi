@@ -28,10 +28,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  DefaultWallet,
-  FaCircleExclamationRegular,
-} from '@origin/shared/icons';
+import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
@@ -52,7 +49,7 @@ export const StakingForm = () => {
   const { address, isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const { data: staking, refetch } = useXOgnStaking(
     amount === 0n ? 100n : amount,
@@ -136,7 +133,10 @@ export const StakingForm = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDurationChange = (_: any, newValue: number | number[]) => {
     setIsLoading(true);
-    setDuration(newValue as number);
+    const dur = Number(newValue);
+    if (dur >= 1) {
+      setDuration(dur);
+    }
   };
 
   const handleMaxClick = () => {
@@ -185,8 +185,8 @@ export const StakingForm = () => {
               {intl.formatMessage({ defaultMessage: 'Amount to Stake' })}
             </InfoTooltipLabel>
             <Button variant="link" onClick={handleMaxClick}>
-              <DefaultWallet sx={{ fontSize: 20, mr: 1 }} />
-              <Typography noWrap>
+              <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
+              <Typography noWrap fontWeight="medium">
                 {formatAmount(
                   info?.ognBalance ?? 0n,
                   tokens.mainnet.OGN.decimals,
@@ -258,7 +258,7 @@ export const StakingForm = () => {
                     )}
               </Typography>
               <Stack direction="row" spacing={1}>
-                <Typography variant="mono" color="text.secondary">
+                <Typography color="text.secondary">
                   {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
                 </Typography>
                 <Typography minWidth={92}>

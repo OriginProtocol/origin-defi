@@ -72,7 +72,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const { address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(0);
+  const [duration, setDuration] = useState(1);
   const [addToExisting, setAddToExisting] = useState(false);
   const [lockupId, setLockupId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -165,8 +165,11 @@ export const StakeRewardModal = (props: DialogProps) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDurationChange = (_: any, newValue: number | number[]) => {
-    setIsLoading(true);
-    setDuration(newValue as number);
+    const dur = Number(newValue);
+    if (dur >= 1) {
+      setIsLoading(true);
+      setDuration(dur);
+    }
   };
 
   const showOgnInput =

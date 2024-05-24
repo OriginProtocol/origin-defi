@@ -156,14 +156,16 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
               fontWeight: 'medium',
               color: 'text.secondary',
             }}
-            value={intl.formatMessage(
-              { defaultMessage: '{balance} {symbol}' },
-              {
-                balance: formatBalance(BigInt(user?.balance ?? '0')),
-                symbol: product.token.symbol,
-              },
-            )}
-            isLoading={isUserLoading}
+            value={
+              <Stack direction="row" alignItems="baseline" spacing={0.75}>
+                <LoadingLabel isLoading={isUserLoading} fontWeight="medium">
+                  {formatBalance(BigInt(user?.balance ?? '0'))}
+                </LoadingLabel>
+                <Typography variant="caption1">
+                  {product.token.symbol}
+                </Typography>
+              </Stack>
+            }
           />
           <ValueLabel
             direction="row"
@@ -174,14 +176,16 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
               fontWeight: 'medium',
               color: 'text.secondary',
             }}
-            value={intl.formatMessage(
-              { defaultMessage: '{balance} {symbol}' },
-              {
-                balance: formatAmount(BigInt(user?.earned ?? '0')),
-                symbol: product.token.symbol,
-              },
-            )}
-            isLoading={isUserLoading}
+            value={
+              <Stack direction="row" alignItems="baseline" spacing={0.75}>
+                <LoadingLabel isLoading={isUserLoading} fontWeight="medium">
+                  {formatAmount(BigInt(user?.earned ?? '0'))}
+                </LoadingLabel>
+                <Typography variant="caption1">
+                  {product.token.symbol}
+                </Typography>
+              </Stack>
+            }
           />
         </Stack>
       </Collapse>

@@ -128,7 +128,10 @@ export const ConvertModal = ({
   };
 
   const handleDurationChange = (_: Event, newValue: number | number[]) => {
-    setDuration(Number(newValue));
+    const dur = Number(newValue);
+    if (dur >= 1) {
+      setDuration(dur);
+    }
   };
 
   const lockupEnd = addMonths(new Date(), duration);

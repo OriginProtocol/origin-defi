@@ -103,7 +103,7 @@ export const components = (base: Theme): ThemeOptions => ({
           padding: theme.spacing(0.75, 1),
         }),
         sizeMedium: ({ theme }) => ({
-          borderRadius: theme.shape.borderRadius * 3,
+          borderRadius: theme.shape.borderRadius * 2,
           padding: theme.spacing(1, 1.5),
           minHeight: 36,
         }),
@@ -139,7 +139,6 @@ export const components = (base: Theme): ThemeOptions => ({
             padding: theme.spacing(2),
             fontSize: 20,
             lineHeight: 1.6,
-            fontWeight: 500,
             fontStyle: 'normal',
             '&:hover': {
               background: theme.palette.primary.dark,

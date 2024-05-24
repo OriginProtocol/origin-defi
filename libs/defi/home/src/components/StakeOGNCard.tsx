@@ -32,16 +32,16 @@ export const StakeOGNCard = (props: CardProps) => {
         ...props?.sx,
       }}
     >
-      <Typography variant="h5" mb={4}>
+      <Typography variant="h5" mb={2}>
         {intl.formatMessage({ defaultMessage: 'OGN' })}
       </Typography>
-      <Typography variant="featured2" fontWeight="medium" mb={2}>
+      <Typography variant="featured3" fontWeight="medium" mb={1}>
         {intl.formatMessage({
           defaultMessage:
             'Stack Diverse Rewards. Govern An Expansive Ecosystem.',
         })}
       </Typography>
-      <Typography maxWidth={0.6} mb={4}>
+      <Typography maxWidth={0.6} mb={2}>
         {intl.formatMessage({
           defaultMessage:
             'Earn rewards from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN.',
@@ -54,23 +54,33 @@ export const StakeOGNCard = (props: CardProps) => {
         color="primary.main"
         mb={4}
       >
-        <LoadingLabel isLoading={isAprLoading} variant="h6">
+        <LoadingLabel
+          isLoading={isAprLoading}
+          variant="featured1"
+          fontWeight="bold"
+        >
           {intl.formatNumber(apr ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
         </LoadingLabel>
-        <Typography variant="featured3">
+        <Typography variant="body2">
           {intl.formatMessage({ defaultMessage: 'Max vAPR' })}
         </Typography>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
-        <Button size="large" component={RouterLink} to="/ogn/staking">
+        <Button
+          size="large"
+          component={RouterLink}
+          to="/ogn/staking"
+          sx={{ minWidth: 100 }}
+        >
           {intl.formatMessage({ defaultMessage: 'Stake' })}
         </Button>
         <Button
           variant="outlined"
+          color="secondary"
           size="large"
           component={RouterLink}
           to="/more"

@@ -1,7 +1,7 @@
 import {
-  Box,
   Dialog,
   DialogTitle,
+  Divider,
   MenuItem,
   MenuList,
   Skeleton,
@@ -51,6 +51,7 @@ export const TokenSelectModal = ({
       <DialogTitle>
         {intl.formatMessage({ defaultMessage: 'Select a token' })}
       </DialogTitle>
+      <Divider />
       <MenuList disablePadding>
         {sortedTokens.map((token, i) => (
           <TokenListItem
@@ -90,8 +91,8 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       selected={token.isSelected}
       sx={{
         display: 'flex',
-        px: 2,
-        py: 1,
+        px: 3,
+        py: 1.5,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
@@ -99,32 +100,34 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       }}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
-        <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
-        <Box>
-          <Typography fontWeight={500}>{token?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {token.symbol}
+        <TokenIcon token={token} sx={{ fontSize: 36 }} />
+        <Stack spacing={0.5}>
+          <Typography variant="body2" fontWeight="bold">
+            {token?.symbol}
           </Typography>
-        </Box>
+          <Typography variant="caption1" color="text.secondary">
+            {token.name}
+          </Typography>
+        </Stack>
       </Stack>
       <Stack direction="row" spacing={2}>
         {token?.isSelected && (
           <Stack display="flex" justifyContent="center" alignItems="center">
-            <FaCheckRegular sx={{ color: 'text.primary', fontSize: 16 }} />
+            <FaCheckRegular sx={{ fontSize: 16 }} />
           </Stack>
         )}
-        <Box sx={{ textAlign: 'right' }}>
-          <Typography fontWeight={500}>
+        <Stack spacing={0.5} sx={{ textAlign: 'right' }}>
+          <Typography variant="body2" fontWeight="bold">
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
               formatAmount(balance as unknown as bigint, token.decimals)
             )}
           </Typography>
-          <Typography color="text.secondary" variant="body2">
+          <Typography color="text.secondary" variant="caption1">
             {formatCurrency(balUsd)}
           </Typography>
-        </Box>
+        </Stack>
       </Stack>
     </MenuItem>
   );

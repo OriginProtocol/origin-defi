@@ -1,4 +1,5 @@
 import { Button, Card, CardContent, Typography } from '@mui/material';
+import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -24,7 +25,13 @@ export const AnalyticsCard = (props: CardProps) => {
             defaultMessage: 'Detailed analytics on Origin products',
           })}
         </Typography>
-        <Button variant="outlined" color="secondary">
+        <Button
+          variant="outlined"
+          color="secondary"
+          href={OETH_ANALYTICS_URL}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
           {intl.formatMessage({
             defaultMessage: 'Analytics',
           })}

@@ -15,7 +15,14 @@ export const PageTitleSection = (props: StackProps) => {
       chainId: tokens.mainnet.OETH.chainId,
     },
     {
-      select: (data) => data?.oTokenApies?.[0],
+      select: (data) => {
+        const apies = [
+          data?.oTokenApies?.[0].apy7DayAvg,
+          data?.oTokenApies?.[0].apy30DayAvg,
+        ];
+
+        return apies.sort();
+      },
     },
   );
 
@@ -36,13 +43,13 @@ export const PageTitleSection = (props: StackProps) => {
           sWidth={90}
         >
           {intl.formatMessage(
-            { defaultMessage: '{apy30} - {apy7}' },
+            { defaultMessage: '{apy_low} - {apy_high}' },
             {
-              apy30: intl.formatNumber(apies?.apy30DayAvg ?? 0, {
+              apy_low: intl.formatNumber(apies?.[0] ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
               }),
-              apy7: intl.formatNumber(apies?.apy7DayAvg ?? 0, {
+              apy_high: intl.formatNumber(apies?.[1] ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
               }),
