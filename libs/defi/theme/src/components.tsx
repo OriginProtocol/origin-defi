@@ -311,6 +311,7 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiDialog: {
       defaultProps: {
         transitionDuration: 0,
+        disableScrollLock: true,
       },
       styleOverrides: {
         root: ({ theme }) => ({

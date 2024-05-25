@@ -19,6 +19,7 @@ import {
 import { ascend, descend, prop, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -76,6 +77,7 @@ type TokenListItemProps = {
 } & MenuItemProps;
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
+  const { isConnected } = useAccount();
   const { formatAmount, formatCurrency } = useFormat();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
@@ -110,25 +112,27 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
           </Typography>
         </Stack>
       </Stack>
-      <Stack direction="row" spacing={2}>
-        {token?.isSelected && (
-          <Stack display="flex" justifyContent="center" alignItems="center">
-            <FaCheckRegular sx={{ fontSize: 16 }} />
+      {isConnected && (
+        <Stack direction="row" spacing={2}>
+          {token?.isSelected && (
+            <Stack display="flex" justifyContent="center" alignItems="center">
+              <FaCheckRegular sx={{ fontSize: 16 }} />
+            </Stack>
+          )}
+          <Stack spacing={0.5} sx={{ textAlign: 'right' }}>
+            <Typography variant="body2" fontWeight="bold">
+              {isBalanceLoading ? (
+                <Skeleton width={30} />
+              ) : (
+                formatAmount(balance as unknown as bigint, token.decimals)
+              )}
+            </Typography>
+            <Typography color="text.secondary" variant="caption1">
+              {formatCurrency(balUsd)}
+            </Typography>
           </Stack>
-        )}
-        <Stack spacing={0.5} sx={{ textAlign: 'right' }}>
-          <Typography variant="body2" fontWeight="bold">
-            {isBalanceLoading ? (
-              <Skeleton width={30} />
-            ) : (
-              formatAmount(balance as unknown as bigint, token.decimals)
-            )}
-          </Typography>
-          <Typography color="text.secondary" variant="caption1">
-            {formatCurrency(balUsd)}
-          </Typography>
         </Stack>
-      </Stack>
+      )}
     </MenuItem>
   );
 }

@@ -19,6 +19,7 @@ import {
 import { getTokenPriceKey } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -72,10 +73,10 @@ function TokenListItem({
   ...rest
 }: TokenListItemProps) {
   const { formatAmount, formatCurrency } = useFormat();
+  const { isConnected } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
   });
-
   const { data: price } = useTokenPrice(getTokenPriceKey(token));
 
   const bal = +formatUnits(balance ?? 0n, token.decimals);
@@ -108,25 +109,27 @@ function TokenListItem({
           </Typography>
         </Stack>
       </Stack>
-      <Stack direction="row" spacing={2}>
-        {isSelected && (
-          <Stack display="flex" justifyContent="center" alignItems="center">
-            <FaCheckRegular sx={{ color: 'text.primary', fontSize: 16 }} />
-          </Stack>
-        )}
-        <Box sx={{ textAlign: 'right' }}>
-          <Typography variant="body2" fontWeight="bold">
-            {isBalanceLoading ? (
-              <Skeleton width={30} />
-            ) : (
-              formatAmount(balance as unknown as bigint, token.decimals)
-            )}
-          </Typography>
-          <Typography color="text.secondary" variant="caption1">
-            {formatCurrency(balUsd)}
-          </Typography>
-        </Box>
-      </Stack>
+      {isConnected && (
+        <Stack direction="row" spacing={2}>
+          {isSelected && (
+            <Stack display="flex" justifyContent="center" alignItems="center">
+              <FaCheckRegular sx={{ color: 'text.primary', fontSize: 16 }} />
+            </Stack>
+          )}
+          <Box sx={{ textAlign: 'right' }}>
+            <Typography variant="body2" fontWeight="bold">
+              {isBalanceLoading ? (
+                <Skeleton width={30} />
+              ) : (
+                formatAmount(balance as unknown as bigint, token.decimals)
+              )}
+            </Typography>
+            <Typography color="text.secondary" variant="caption1">
+              {formatCurrency(balUsd)}
+            </Typography>
+          </Box>
+        </Stack>
+      )}
     </MenuItem>
   );
 }
