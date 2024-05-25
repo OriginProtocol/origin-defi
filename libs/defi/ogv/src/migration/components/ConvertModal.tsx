@@ -21,11 +21,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useApprovalButton, useTxButton } from '@origin/defi/shared';
+import { TokenChip, useApprovalButton, useTxButton } from '@origin/defi/shared';
 import {
   ExpandIcon,
   InfoTooltipLabel,
-  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';

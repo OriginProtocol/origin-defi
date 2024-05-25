@@ -14,8 +14,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { SectionCard, useOgnInfo, useTxButton } from '@origin/defi/shared';
-import { TokenChip, TokenIcon } from '@origin/shared/components';
+import {
+  SectionCard,
+  TokenChip,
+  useOgnInfo,
+  useTxButton,
+} from '@origin/defi/shared';
+import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';

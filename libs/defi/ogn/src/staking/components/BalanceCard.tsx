@@ -6,7 +6,8 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { LoadingLabel, TokenChip } from '@origin/shared/components';
+import { TokenChip } from '@origin/defi/shared';
+import { LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchBalance } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';

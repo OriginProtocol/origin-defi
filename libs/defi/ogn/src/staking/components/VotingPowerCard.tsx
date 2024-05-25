@@ -7,12 +7,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useOgnInfo } from '@origin/defi/shared';
-import {
-  InfoTooltipLabel,
-  TokenChip,
-  ValueLabel,
-} from '@origin/shared/components';
+import { TokenChip, useOgnInfo } from '@origin/defi/shared';
+import { InfoTooltipLabel, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';

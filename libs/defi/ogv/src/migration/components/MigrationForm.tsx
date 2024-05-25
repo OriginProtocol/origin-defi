@@ -12,10 +12,9 @@ import {
   Typography,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { useOgvInfo } from '@origin/defi/shared';
+import { TokenChip, useOgvInfo } from '@origin/defi/shared';
 import {
   InfoTooltipLabel,
-  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';

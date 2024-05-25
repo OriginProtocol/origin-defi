@@ -15,6 +15,7 @@ import {
 } from '@mui/material';
 import {
   TokenButton,
+  TokenChip,
   useApprovalButton,
   useOgnInfo,
   useTxButton,
@@ -23,7 +24,6 @@ import {
   BigIntInput,
   InfoTooltipLabel,
   LoadingLabel,
-  TokenChip,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';

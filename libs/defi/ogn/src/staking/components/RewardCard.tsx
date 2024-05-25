@@ -6,8 +6,8 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { useOgnInfo, useTxButton } from '@origin/defi/shared';
-import { LoadingLabel, TokenChip, TokenIcon } from '@origin/shared/components';
+import { TokenChip, useOgnInfo, useTxButton } from '@origin/defi/shared';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
