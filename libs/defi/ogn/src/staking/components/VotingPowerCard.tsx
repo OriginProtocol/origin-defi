@@ -49,7 +49,7 @@ export const VotingPowerCard = (props: CardProps) => {
             labelProps={{ variant: 'inherit' }}
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The share of total Origin DAO voting power earned by your OGN lock-ups',
+                'The share of total Origin DAO voting power earned by your OGN lockups',
             })}
           >
             {intl.formatMessage({

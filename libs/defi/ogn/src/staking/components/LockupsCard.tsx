@@ -58,7 +58,7 @@ export const LockupsCard = (props: CardProps) => {
             }}
           >
             <Typography>
-              {intl.formatMessage({ defaultMessage: 'No Lock-ups' })}
+              {intl.formatMessage({ defaultMessage: 'No Lockups' })}
             </Typography>
           </Stack>
         ) : (

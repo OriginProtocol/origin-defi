@@ -214,12 +214,12 @@ export const StakingForm = () => {
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lock-up',
+                'The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup',
             })}
             mb={1.5}
             fontWeight="medium"
           >
-            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+            {intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
           </InfoTooltipLabel>
           <Stack
             spacing={2}
@@ -348,7 +348,7 @@ export const StakingForm = () => {
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
+                'The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
             })}
             mb={1.5}
             fontWeight="medium"
@@ -395,7 +395,7 @@ export const StakingForm = () => {
                 })}
                 labelInfoTooltip={intl.formatMessage({
                   defaultMessage:
-                    'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                    'The percentage of total Origin DeFi DAO voting power represented by this lockup.',
                 })}
                 labelProps={{ variant: 'mono' }}
                 isLoading={isLoading && amount > 0n}

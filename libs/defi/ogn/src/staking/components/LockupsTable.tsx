@@ -69,7 +69,7 @@ export const LockupsTable = () => {
         ? []
         : [
             columnHelper.accessor('end', {
-              header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
+              header: intl.formatMessage({ defaultMessage: 'Lockup Ends' }),
               cell: (info) =>
                 intl.formatDate(info.getValue(), {
                   day: '2-digit',

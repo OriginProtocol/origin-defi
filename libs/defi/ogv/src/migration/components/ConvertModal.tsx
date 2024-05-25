@@ -349,7 +349,7 @@ export const ConvertModal = ({
                 'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
             })}
           >
-            {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+            {intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
           </InfoTooltipLabel>
           <Stack {...cardStackProps} useFlexGap mb={3}>
             <Stack direction="row" alignItems="center">
@@ -375,7 +375,7 @@ export const ConvertModal = ({
                 <Stack direction="row" justifyContent="flex-end">
                   <Typography variant="mono" color="text.secondary">
                     {intl.formatMessage({
-                      defaultMessage: 'Lock-up Ends:',
+                      defaultMessage: 'Lockup Ends:',
                     })}
                   </Typography>
                   <Typography textAlign="end" minWidth={92}>

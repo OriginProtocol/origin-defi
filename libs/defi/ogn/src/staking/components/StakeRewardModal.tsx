@@ -351,7 +351,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               color="text.secondary"
               fontWeight="medium"
             >
-              {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+              {intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
             </InfoTooltipLabel>
             <Stack
               spacing={2}
@@ -471,7 +471,7 @@ export const StakeRewardModal = (props: DialogProps) => {
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
+                'The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
             })}
             mb={1.5}
             color="text.secondary"
@@ -518,7 +518,7 @@ export const StakeRewardModal = (props: DialogProps) => {
                 })}
                 labelInfoTooltip={intl.formatMessage({
                   defaultMessage:
-                    'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                    'The percentage of total Origin DeFi DAO voting power represented by this lockup.',
                 })}
                 labelProps={{ variant: 'mono' }}
                 isLoading={isLoading && amount > 0n}
@@ -607,7 +607,7 @@ function LockupSelect({
           ),
       }),
       columnHelper.accessor('end', {
-        header: intl.formatMessage({ defaultMessage: 'Lock-up Ends' }),
+        header: intl.formatMessage({ defaultMessage: 'Lockup Ends' }),
         cell: (info) =>
           intl.formatDate(info.getValue(), {
             day: '2-digit',

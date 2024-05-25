@@ -63,7 +63,7 @@ export const UnstakeLockupModal = ({
       title: intl.formatMessage({ defaultMessage: 'Unstake' }),
       subtitle: intl.formatMessage(
         {
-          defaultMessage: 'Unstake lock-up {stake}',
+          defaultMessage: 'Unstake lockup {stake}',
         },
         {
           stake: (
@@ -89,8 +89,6 @@ export const UnstakeLockupModal = ({
   const penaltyPercent =
     +formatUnits(penalty, tokens.mainnet.OGN.decimals) /
     +formatUnits(ognLockup, tokens.mainnet.OGN.decimals);
-
-  console.log(ognLockup, lockup, previewOgn, penaltyPercent);
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>

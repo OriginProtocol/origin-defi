@@ -238,7 +238,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           </Stack>
         </Stack>
         <SectionCard
-          title={intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}
+          title={intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
           titleProps={{ color: 'text.secondary', fontWeight: 'medium' }}
           titleInfoTooltip={intl.formatMessage({
             defaultMessage:
@@ -275,7 +275,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 <Stack direction="row" justifyContent="flex-end">
                   <Typography variant="mono" color="text.secondary">
                     {intl.formatMessage({
-                      defaultMessage: 'Current Lock-up Ends:',
+                      defaultMessage: 'Current Lockup Ends:',
                     })}
                   </Typography>
                   <Typography textAlign="end" minWidth={92}>
@@ -371,7 +371,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           titleProps={{ color: 'text.secondary', fontWeight: 'medium' }}
           titleInfoTooltip={intl.formatMessage({
             defaultMessage:
-              'The amount of xOGN you will receive today in return for your lock-up. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
+              'The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn.',
           })}
           cardProps={{
             sx: { backgroundColor: 'transparent' },
@@ -410,7 +410,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 })}
                 labelInfoTooltip={intl.formatMessage({
                   defaultMessage:
-                    'The percentage of total Origin DeFi DAO voting power represented by this lock-up.',
+                    'The percentage of total Origin DeFi DAO voting power represented by this lockup.',
                 })}
                 labelProps={{ variant: 'mono' }}
                 isLoading={isLoading && amount > 0n}
