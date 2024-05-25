@@ -516,14 +516,12 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiTooltip: {
       styleOverrides: {
         tooltip: ({ theme }) => ({
-          padding: theme.spacing(1.5),
-          background: theme.palette.background.paper,
-          color: theme.palette.text.secondary,
+          padding: theme.spacing(0.5, 1),
+          background: theme.palette.background.highlight,
+          color: theme.palette.text.primary,
           borderRadius: theme.shape.borderRadius,
-          border: '1px solid',
-          borderColor: theme.palette.divider,
           boxShadow: theme.shadows[2],
-          '>.MuiTypography-root': theme.typography.body3,
+          '>.MuiTypography-root': theme.typography.caption1,
         }),
       },
     },

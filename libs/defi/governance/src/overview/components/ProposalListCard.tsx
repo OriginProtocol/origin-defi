@@ -171,7 +171,11 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
       sx={{
         cursor: 'pointer',
         ':hover': {
-          background: (theme) => alpha(theme.palette.primary.main, 0.1),
+          background: (theme) =>
+            alpha(
+              theme.palette.primary.main,
+              theme.palette.action.hoverOpacity,
+            ),
           '.title': {
             textDecoration: 'underline',
           },
