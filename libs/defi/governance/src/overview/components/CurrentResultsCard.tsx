@@ -206,8 +206,8 @@ function VoteCard({
           <TxButton
             params={params}
             callbacks={callbacks}
-            variant="outlined"
-            color={color}
+            fullWidth
+            color="primary"
             label={label}
           />
         </Stack>

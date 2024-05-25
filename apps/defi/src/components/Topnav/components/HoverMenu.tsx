@@ -78,7 +78,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         {...rest}
         sx={{
           color: 'text.primary',
-          backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+          backgroundColor: open ? 'primary.faded' : 'transparent',
           svg: { ml: 0.75, width: 12, height: 12 },
           ...rest?.sx,
         }}
@@ -115,7 +115,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         {...rest}
         sx={{
           color: 'text.primary',
-          backgroundColor: isSelected ? 'primary.faded' : 'transparent',
+          backgroundColor: open ? 'primary.faded' : 'transparent',
           svg: { ml: 0.75, width: 12, height: 12 },
           ...rest?.sx,
         }}

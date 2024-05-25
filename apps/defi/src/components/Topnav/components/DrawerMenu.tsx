@@ -261,15 +261,7 @@ const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
         pr: 2,
         my: 0.25,
         borderRadius: 1,
-        backgroundColor: isSelected ? 'primary.faded' : 'transparent',
         color: isSelected ? 'primary.main' : 'text.primary',
-        '&:hover': {
-          backgroundColor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity,
-            ),
-        },
       }}
     >
       <Typography fontWeight="medium">

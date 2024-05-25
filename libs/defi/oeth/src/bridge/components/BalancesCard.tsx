@@ -7,11 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  ChainIcon,
-  ExternalLink,
-  LoadingLabel,
-} from '@origin/shared/components';
+import { ChainIcon, LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -19,7 +15,7 @@ import {
   useTokenPrices,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, tokenHolderLink } from '@origin/shared/utils';
+import { formatAmount } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
@@ -78,7 +74,6 @@ export const BalanceRow = ({
   usdRate: number | undefined;
 }) => {
   const intl = useIntl();
-  const { address: userAddress } = useAccount();
   const { data: balance, isLoading } = useWatchBalance({ token });
 
   const converted =
@@ -95,11 +90,6 @@ export const BalanceRow = ({
         <Typography fontWeight="medium">
           {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
         </Typography>
-        {token.address && userAddress && (
-          <ExternalLink
-            href={tokenHolderLink(chain, token.address, userAddress)}
-          />
-        )}
       </Stack>
       <Stack direction={'column'} alignItems={'end'}>
         <Stack direction={'row'} spacing={1}>

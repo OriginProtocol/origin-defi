@@ -11,6 +11,7 @@ import BridgeSvg from './bridge-icon.svg?react';
 import CheckboxSvg from './checkbox.svg?react';
 import CheckboxEmptySvg from './checkboxEmpty.svg?react';
 import CheckCircleSvg from './checkCircle.svg?react';
+import CircleInfoSvg from './circle-info.svg?react';
 import CoinsLightSvg from './coinsLight.svg?react';
 import DropdownSvg from './dropdown.svg?react';
 import LoaderSvg from './loader.svg?react';
@@ -61,6 +62,9 @@ export const CheckboxEmpty = (props: SvgIconProps) => (
 );
 export const CheckCircle = (props: SvgIconProps) => (
   <SvgIcon {...props} component={CheckCircleSvg} inheritViewBox />
+);
+export const CircleInfo = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CircleInfoSvg} inheritViewBox />
 );
 export const CoinsLight = (props: SvgIconProps) => (
   <SvgIcon {...props} component={CoinsLightSvg} viewBox="0 0 16 16" />

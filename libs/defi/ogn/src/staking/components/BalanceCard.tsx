@@ -22,9 +22,7 @@ export const BalanceCard = (props: CardProps) => {
 
   return (
     <Card {...props}>
-      <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'OGN Balance' })}
-      />
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'Balance' })} />
       <Divider />
       <CardContent>
         <Stack

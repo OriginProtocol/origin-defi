@@ -28,12 +28,9 @@ const NotificationsWrapped = ({ children }: StackProps) => {
             position: 'fixed',
             bottom: { xs: 16, sm: 40 },
             right: { xs: 16, sm: 40 },
-            left: {
-              xs: 16,
-              sm: '30dvw',
-              md: '50dvw',
-              lg: '60dvw',
-              xl: '70dvw',
+            width: {
+              xs: 'calc(100% - 32px)',
+              sm: 416,
             },
             zIndex: (theme) => theme.zIndex.modal + 1,
           }}

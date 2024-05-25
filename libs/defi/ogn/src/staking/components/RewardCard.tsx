@@ -64,7 +64,7 @@ export const RewardCard = (props: CardProps) => {
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({
-          defaultMessage: 'OGN rewards available to claim',
+          defaultMessage: 'Rewards available',
         })}
       />
       <Divider />

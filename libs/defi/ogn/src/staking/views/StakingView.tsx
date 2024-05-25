@@ -20,7 +20,7 @@ export const StakingView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Staking' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'Stake to earn rewards and help govern OETH and OUSD',
+          defaultMessage: 'Earn rewards and help govern Origin products',
         })}
         token={tokens.mainnet.OGN}
       >

@@ -56,7 +56,7 @@ export const lightPalette: ThemeOptions = {
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
     },
     action: {
-      hoverOpacity: 0.2,
+      hoverOpacity: 0.05,
       hover: alpha('#ECEBFE', 0.5),
       disabledOpacity: 0.5,
     },
@@ -125,7 +125,7 @@ export const darkPalette: ThemeOptions = {
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
     },
     action: {
-      hoverOpacity: 0.2,
+      hoverOpacity: 0.05,
       hover: alpha('#121316', 0.5),
       disabledOpacity: 0.5,
     },
