@@ -401,7 +401,7 @@ export const BridgeCard = () => {
 export const BridgeDivider = () => {
   const toggleChain = useToggleBridgeChain();
   return (
-    <Divider sx={{ '>*': { px: 0 } }}>
+    <Divider sx={{ '& .MuiDivider-wrapper': { px: 0 } }}>
       <IconButton
         onClick={toggleChain}
         sx={{

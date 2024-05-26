@@ -12,7 +12,6 @@ import {
   useTheme,
 } from '@mui/material';
 import { ExternalLink, LoadingLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { AddressLabel, useFormat, UserAvatar } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { groupBy, prop, take } from 'ramda';
@@ -20,7 +19,8 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { formatUnits } from 'viem';
 
-import { governanceChoices } from '../constants';
+import { governanceChoices, governanceTokens } from '../constants';
+import { useProposal } from '../hooks';
 import { useProposalQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
@@ -35,6 +35,7 @@ export const VoteCard = (props: CardProps) => {
   const [limit, setLimit] = useState<number | null>(DEFAULT_VISIBLE);
   const [filter, setFilter] = useState(governanceChoices[0]);
   const { proposalId } = useParams();
+  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
       proposalId: proposalId ?? '',
@@ -49,11 +50,12 @@ export const VoteCard = (props: CardProps) => {
     setLimit((prev) => (isNilOrEmpty(prev) ? DEFAULT_VISIBLE : null));
   };
 
+  const token = governanceTokens[propal?.type ?? 'onchain_ogv'];
   const votes = proposal?.[filter] ?? [];
   const visibileVotes = !limit ? votes : take(limit, votes);
   const totalVotes = votes.reduce(
     (acc, curr) =>
-      acc + +formatUnits(BigInt(curr.weight), tokens.mainnet.veOGV.decimals),
+      acc + +formatUnits(BigInt(curr.weight), token?.decimals ?? 18),
     0,
   );
   const indicatorColor = {
@@ -110,7 +112,10 @@ export const VoteCard = (props: CardProps) => {
               { count: votes.length },
             )}
           </LoadingLabel>
-          <LoadingLabel isLoading={isProposalLoading} color="text.secondary">
+          <LoadingLabel
+            isLoading={isProposalLoading || isPropalLoading}
+            color="text.secondary"
+          >
             {intl.formatMessage(
               {
                 defaultMessage: '{count} {symbol}',
@@ -123,7 +128,7 @@ export const VoteCard = (props: CardProps) => {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       }),
-                symbol: tokens.mainnet.veOGV.symbol,
+                symbol: token?.symbol,
               },
             )}
           </LoadingLabel>
@@ -162,7 +167,10 @@ export const VoteCard = (props: CardProps) => {
                   />
                 </ExternalLink>
               </Stack>
-              <LoadingLabel isLoading={isProposalLoading} noWrap>
+              <LoadingLabel
+                isLoading={isProposalLoading || isPropalLoading}
+                noWrap
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage: '{count} {symbol}',
@@ -170,14 +178,14 @@ export const VoteCard = (props: CardProps) => {
                   {
                     count: formatAmount(
                       BigInt(v.weight),
-                      tokens.mainnet.veOGV.decimals,
+                      token?.decimals ?? 18,
                       undefined,
                       {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       },
                     ),
-                    symbol: tokens.mainnet.veOGV.symbol,
+                    symbol: token?.symbol,
                   },
                 )}
               </LoadingLabel>

@@ -1,8 +1,11 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getMonthDurationToSeconds,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
-import { secondsInMonth } from 'date-fns/constants';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -58,7 +61,7 @@ export const useXOgnStaking = (
       const amt =
         typeof amount === 'bigint'
           ? amount
-          : parseUnits(amount.toString(), tokens.mainnet.xOGN.decimals);
+          : parseUnits(amount.toString(), tokens.mainnet.OGN.decimals);
 
       const res = await readContracts(config, {
         contracts: [
@@ -66,7 +69,7 @@ export const useXOgnStaking = (
             address: tokens.mainnet.xOGN.address,
             abi: tokens.mainnet.xOGN.abi,
             functionName: 'previewPoints',
-            args: [amt, BigInt(monthDuration * secondsInMonth)],
+            args: [amt, getMonthDurationToSeconds(monthDuration)],
           },
           {
             address: tokens.mainnet.xOGN.address,

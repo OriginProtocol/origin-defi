@@ -30,11 +30,14 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getMonthDurationToSeconds,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
-import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -75,7 +78,7 @@ export const StakingForm = () => {
       functionName: 'stake',
       args: [
         amount,
-        BigInt(duration * secondsInMonth),
+        getMonthDurationToSeconds(duration),
         address ?? ZERO_ADDRESS,
         true,
         BigInt(-1),
@@ -104,7 +107,7 @@ export const StakingForm = () => {
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
         setAmount(0n);
-        setDuration(0);
+        setDuration(1);
       },
     },
   });
@@ -151,7 +154,6 @@ export const StakingForm = () => {
     isConnected &&
     !isInfoLoading &&
     amount > 0n &&
-    duration > 0 &&
     amount <= (info?.ognBalance ?? 0n) &&
     amount > (allowance ?? 0n);
   const stakeDisabled =
@@ -159,7 +161,6 @@ export const StakingForm = () => {
     isInfoLoading ||
     isLoading ||
     amount === 0n ||
-    duration === 0 ||
     amount > (info?.ognBalance ?? 0n) ||
     amount > (allowance ?? 0n);
 

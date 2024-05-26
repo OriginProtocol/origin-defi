@@ -23,7 +23,11 @@ import {
   FaXmarkRegular,
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getMonthDurationToSeconds,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import {
   addMonths,
@@ -32,7 +36,6 @@ import {
   formatDuration,
   isPast,
 } from 'date-fns';
-import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -70,7 +73,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       functionName: 'stake',
       args: [
         BigInt(lockup.amount),
-        BigInt(duration * secondsInMonth),
+        getMonthDurationToSeconds(duration),
         address ?? ZERO_ADDRESS,
         true,
         BigInt(lockup.lockupId),

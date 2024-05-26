@@ -90,7 +90,7 @@ export const useProposals = (
           }
 
           offChainProposals.push({
-            id: p?.id ?? 'id',
+            id: p?.id ?? `id-${type}-${p?.title}`,
             type,
             title: p?.title ?? '',
             created: p?.created ? fromUnixTime(p.created).toISOString() : '',
@@ -200,4 +200,10 @@ export const useUserVotes = () => {
       ]);
     },
   });
+};
+
+export const useProposal = (proposalId?: string) => {
+  const res = useProposals();
+
+  return { ...res, data: res?.data?.find((p) => p.id === proposalId) };
 };

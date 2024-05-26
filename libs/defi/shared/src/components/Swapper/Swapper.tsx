@@ -234,7 +234,7 @@ function SwapperWrapped({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
-  const { isConnected } = useAccount();
+  const { isConnected, chainId } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
   const [
     {
@@ -274,6 +274,7 @@ function SwapperWrapped({
 
   const needsApproval =
     isConnected &&
+    tokenIn.chainId === chainId &&
     amountIn > 0n &&
     !isBalancesLoading &&
     (balances?.[getTokenId(tokenIn)] ?? 0n) >= amountIn &&

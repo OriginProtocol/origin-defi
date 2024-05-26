@@ -74,11 +74,7 @@ export const TxButton = <
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
-  const {
-    data: simulateData,
-    error: simulateError,
-    isLoading: isSimulationLoading,
-  } = useSimulateContract({
+  const { data: simulateData, error: simulateError } = useSimulateContract({
     address: params.contract.address,
     abi: params.contract.abi as Abi,
     functionName: params.functionName as functionName,
@@ -186,7 +182,6 @@ export const TxButton = <
 
   const isDisabled =
     disabled ||
-    isSimulationLoading ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

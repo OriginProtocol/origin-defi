@@ -23,7 +23,12 @@ import { useParams } from 'react-router-dom';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { governanceChoices, governanceSupport } from '../constants';
+import {
+  governanceChoices,
+  governanceSupport,
+  governanceTokens,
+} from '../constants';
+import { useProposal } from '../hooks';
 import { useProposalQuery, useUserInfoQuery } from '../queries.generated';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -127,6 +132,7 @@ function VoteCard({
   const { formatAmount } = useFormat();
   const { proposalId } = useParams();
   const queryClient = useQueryClient();
+  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
   const { params, callbacks } = useTxButton({
     params: {
       contract: contracts.mainnet.OUSDGovernance,
@@ -155,15 +161,11 @@ function VoteCard({
     },
   });
 
+  const token = governanceTokens[propal?.type ?? 'onchain_ogv'];
   const label = {
     For: intl.formatMessage({ defaultMessage: 'Vote for' }),
     Against: intl.formatMessage({ defaultMessage: 'Vote against' }),
     Abstain: intl.formatMessage({ defaultMessage: 'Abstain' }),
-  }[choice];
-  const color = {
-    For: 'success' as const,
-    Against: 'error' as const,
-    Abstain: 'warning' as const,
   }[choice];
 
   return (
@@ -177,8 +179,11 @@ function VoteCard({
         <TooltipLabel color="text.secondary" noWrap>
           {choice}
         </TooltipLabel>
-        <LoadingLabel isLoading={isLoading}>
-          {formatAmount(score)}&nbsp;{tokens.mainnet.veOGV.symbol}
+        <LoadingLabel isLoading={isLoading || isPropalLoading}>
+          {intl.formatMessage(
+            { defaultMessage: '{score} {symbol}' },
+            { score: formatAmount(score), symbol: token?.symbol },
+          )}
         </LoadingLabel>
       </Stack>
       <LinearProgress

@@ -46,7 +46,6 @@ export const PageTitleSection = (props: StackProps) => {
           isLoading={isApyLoading}
           color="inherit"
           fontWeight="bold"
-          sWidth={90}
         >
           {intl.formatNumber(apy ?? 0, {
             style: 'percent',

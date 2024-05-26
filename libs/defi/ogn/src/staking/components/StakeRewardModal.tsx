@@ -42,7 +42,11 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { DefaultWallet, FaXmarkRegular } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getMonthDurationToSeconds,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import {
   createColumnHelper,
@@ -51,7 +55,6 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { addMonths, formatDuration } from 'date-fns';
-import { secondsInMonth } from 'date-fns/constants';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -100,7 +103,7 @@ export const StakeRewardModal = (props: DialogProps) => {
       functionName: 'stake',
       args: [
         amount,
-        BigInt(duration * secondsInMonth),
+        getMonthDurationToSeconds(duration),
         address ?? ZERO_ADDRESS,
         true,
         addToExisting && lockupId ? BigInt(lockupId) : BigInt(-1),

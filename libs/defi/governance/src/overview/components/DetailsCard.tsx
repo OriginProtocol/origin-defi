@@ -22,7 +22,7 @@ import {
   TooltipLabel,
   ValueLabel,
 } from '@origin/shared/components';
-import { contracts, tokens } from '@origin/shared/contracts';
+import { contracts } from '@origin/shared/contracts';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -31,6 +31,8 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useReadContract } from 'wagmi';
 
+import { governanceTokens } from '../constants';
+import { useProposal } from '../hooks';
 import { useProposalQuery } from '../queries.generated';
 import { parseProposalContent } from '../utils';
 
@@ -41,11 +43,13 @@ export const DetailsCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { proposalId } = useParams();
+  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     { proposalId: proposalId ?? '' },
     { enabled: !!proposalId, select: (data) => data?.ogvProposalById },
   );
 
+  const token = governanceTokens[propal?.type ?? 'onchain_ogv'];
   const { description } = parseProposalContent(proposal?.description);
   const createdOn = proposal?.timestamp
     ? new Date(proposal.timestamp)
@@ -122,13 +126,14 @@ export const DetailsCard = (props: CardProps) => {
                     {
                       balance: formatAmount(
                         BigInt(proposal?.quorum ?? 0),
-                        tokens.mainnet.xOGN.decimals,
+                        token?.decimals ?? 18,
                         undefined,
                         { notation: 'compact', maximumSignificantDigits: 5 },
                       ),
-                      symbol: tokens.mainnet.xOGN.symbol,
+                      symbol: token.symbol,
                     },
                   )}
+                  isLoading={isPropalLoading}
                 />
               </Stack>
             </CardContent>

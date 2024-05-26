@@ -31,10 +31,9 @@ import {
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { getMonthDurationToSeconds, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
-import { secondsInMonth } from 'date-fns/constants';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
@@ -110,7 +109,7 @@ export const ConvertModal = ({
         stakingRatio > 0
           ? parseUnits(xOgn.toString(), tokens.mainnet.xOGN.decimals)
           : 0n,
-        stakingRatio > 0 ? BigInt(duration * secondsInMonth) : 0n,
+        stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
       ],
     },
     callbacks: {
