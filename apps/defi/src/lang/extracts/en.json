@@ -77,6 +77,9 @@
   "1XVJUl": {
     "defaultMessage": "Switch to {defaultChain}"
   },
+  "1bVNb4": {
+    "defaultMessage": "{score} {symbol}"
+  },
   "1hrrJK": {
     "defaultMessage": "Snapshot delegate page"
   },
@@ -797,9 +800,6 @@
   "bjLKH/": {
     "defaultMessage": "Chainlink CCIP"
   },
-  "bqSoEq": {
-    "defaultMessage": "OGN Balance"
-  },
   "c31Feo": {
     "defaultMessage": "Swapping"
   },
@@ -859,9 +859,6 @@
   },
   "eKEL/g": {
     "defaultMessage": "Pending"
-  },
-  "edT/+I": {
-    "defaultMessage": "OGN rewards available to claim"
   },
   "eerX6M": {
     "defaultMessage": "Swap via CurvePool"
@@ -949,6 +946,9 @@
   },
   "j9Y9nu": {
     "defaultMessage": "Hours"
+  },
+  "j9lsz3": {
+    "defaultMessage": "Earn rewards and help govern Origin products"
   },
   "jab7Gg": {
     "defaultMessage": "Delegated to me"
@@ -1061,9 +1061,6 @@
   "rFWd1Y": {
     "defaultMessage": "Lock up Ends:"
   },
-  "rbd1S8": {
-    "defaultMessage": "Stake to earn rewards and help govern OETH and OUSD"
-  },
   "rhQtuf": {
     "defaultMessage": "Voted Against"
   },
@@ -1147,6 +1144,9 @@
   },
   "vMrueH": {
     "defaultMessage": "Restaking"
+  },
+  "vdpci9": {
+    "defaultMessage": "Rewards available"
   },
   "vkpt+L": {
     "defaultMessage": "You have accrued <b>{reward} OGN</b> in staking rewards. This OGN will be transferred to your wallet immediately when you extend your stake."

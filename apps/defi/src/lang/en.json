@@ -179,6 +179,20 @@
       "value": "defaultChain"
     }
   ],
+  "1bVNb4": [
+    {
+      "type": 1,
+      "value": "score"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
   "1hrrJK": [
     {
       "type": 0,
@@ -1937,12 +1951,6 @@
       "value": "Chainlink CCIP"
     }
   ],
-  "bqSoEq": [
-    {
-      "type": 0,
-      "value": "OGN Balance"
-    }
-  ],
   "c31Feo": [
     {
       "type": 0,
@@ -2065,12 +2073,6 @@
     {
       "type": 0,
       "value": "Pending"
-    }
-  ],
-  "edT/+I": [
-    {
-      "type": 0,
-      "value": "OGN rewards available to claim"
     }
   ],
   "eerX6M": [
@@ -2253,6 +2255,12 @@
     {
       "type": 0,
       "value": "Hours"
+    }
+  ],
+  "j9lsz3": [
+    {
+      "type": 0,
+      "value": "Earn rewards and help govern Origin products"
     }
   ],
   "jab7Gg": [
@@ -2485,12 +2493,6 @@
       "value": "Lock up Ends:"
     }
   ],
-  "rbd1S8": [
-    {
-      "type": 0,
-      "value": "Stake to earn rewards and help govern OETH and OUSD"
-    }
-  ],
   "rhQtuf": [
     {
       "type": 0,
@@ -2673,6 +2675,12 @@
     {
       "type": 0,
       "value": "Restaking"
+    }
+  ],
+  "vdpci9": [
+    {
+      "type": 0,
+      "value": "Rewards available"
     }
   ],
   "vkpt+L": [
