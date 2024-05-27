@@ -113,12 +113,12 @@ export const UnstakeLockupModal = ({
         {penalty > 0 && (
           <ColorChip
             color="text.primary"
-            bgcolor="error.faded"
+            bgcolor="warning.faded"
             p={2}
             spacing={1}
           >
             <FaCircleExclamationRegular
-              sx={{ fontSize: 24, color: 'error.main' }}
+              sx={{ fontSize: 24, color: 'warning.dark' }}
             />
             <Typography fontWeight="medium">
               {intl.formatMessage(

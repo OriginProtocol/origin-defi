@@ -49,7 +49,7 @@ export const VotingPowerCard = (props: CardProps) => {
             })}
           >
             {intl.formatMessage({
-              defaultMessage: 'Voting power',
+              defaultMessage: 'Voting Power',
             })}
           </InfoTooltipLabel>
         }

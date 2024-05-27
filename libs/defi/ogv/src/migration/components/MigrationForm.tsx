@@ -130,7 +130,7 @@ export const MigrationForm = (props: StackProps) => {
             })}
             fontWeight="medium"
           >
-            {intl.formatMessage({ defaultMessage: 'Your OGV balance' })}
+            {intl.formatMessage({ defaultMessage: 'Your OGV Balance' })}
           </InfoTooltipLabel>
           <Stack {...cardStackProps}>
             <FormControlLabel
@@ -408,7 +408,7 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
           <ValueLabel
             direction="row"
             justifyContent="space-between"
-            label={intl.formatMessage({ defaultMessage: 'Conversion Rate:' })}
+            label={intl.formatMessage({ defaultMessage: 'Conversion rate:' })}
             labelProps={{ variant: 'body3' }}
             value={intl.formatMessage(
               { defaultMessage: '1 OGV = {rate} OGN' },

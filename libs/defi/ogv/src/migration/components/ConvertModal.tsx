@@ -437,7 +437,7 @@ export const ConvertModal = ({
             </Collapse>
           </Stack>
           <Typography fontWeight="medium">
-            {intl.formatMessage({ defaultMessage: 'xOGN received' })}
+            {intl.formatMessage({ defaultMessage: 'xOGN Received' })}
           </Typography>
           <Stack
             direction="row"
