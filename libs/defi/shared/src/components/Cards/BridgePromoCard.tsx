@@ -1,6 +1,5 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { ChainIcon } from '@origin/shared/components';
-import { BRIDGE_DOCS_URL } from '@origin/shared/constants';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -45,7 +44,7 @@ export const BridgePromoCard = () => {
             <Button
               color="secondary"
               fullWidth
-              href={BRIDGE_DOCS_URL}
+              href="https://www.originprotocol.com/arbitrum-incentives"
               target="_blank"
               rel="noopener noreferrer nofollow"
             >
