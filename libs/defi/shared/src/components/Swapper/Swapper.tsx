@@ -176,12 +176,12 @@ export const Swapper = ({
             {
               amountIn: intl.formatNumber(
                 +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
-                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+                { minimumFractionDigits: 0, maximumFractionDigits: 4 },
               ),
               symbolIn: tokenIn?.symbol,
               amountOut: intl.formatNumber(
                 +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
-                { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+                { minimumFractionDigits: 0, maximumFractionDigits: 4 },
               ),
               symbolOut: tokenOut?.symbol,
             },
