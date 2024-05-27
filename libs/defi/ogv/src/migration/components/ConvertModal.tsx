@@ -264,7 +264,7 @@ export const ConvertModal = ({
                   <AlertTitle>
                     {intl.formatMessage({
                       defaultMessage:
-                        'Decreasing stake ratio decreases APY and xOGN you will receive.',
+                        'Decreasing staking ratio decreases APY and the amount of xOGN you will receive.',
                     })}
                   </AlertTitle>
                 </Alert>
@@ -430,7 +430,7 @@ export const ConvertModal = ({
                 <AlertTitle>
                   {intl.formatMessage({
                     defaultMessage:
-                      'Decreasing stake duration decreases APY and xOGN you will receive.',
+                      'Decreasing lock-up duration decreases APY and the amount of xOGN you will receive.',
                   })}
                 </AlertTitle>
               </Alert>
@@ -484,7 +484,7 @@ export const ConvertModal = ({
           direction="row"
           justifyContent="space-between"
           bgcolor="transparent"
-          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+          label={intl.formatMessage({ defaultMessage: 'Est. gas:' })}
           value={formatCurrency(gas)}
           mt={3}
         />

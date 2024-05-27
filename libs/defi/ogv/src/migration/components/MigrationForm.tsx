@@ -5,7 +5,6 @@ import {
   CardContent,
   CardHeader,
   Checkbox,
-  CircularProgress,
   Divider,
   FormControlLabel,
   Stack,
@@ -133,17 +132,11 @@ export const MigrationForm = (props: StackProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Your OGV balance' })}
           </InfoTooltipLabel>
-          <SuccessCard
-            isLoading={isInfoLoading}
-            isSuccess={info?.ogvBalance === 0n}
-            successLabel={intl.formatMessage({
-              defaultMessage: 'No OGV to convert',
-            })}
-          >
+          <Stack {...cardStackProps}>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selected.balance}
+                  checked={selected.balance && !!info?.ogvBalance}
                   onChange={() => {
                     setSelected((prev) => ({
                       ...prev,
@@ -162,13 +155,14 @@ export const MigrationForm = (props: StackProps) => {
                 ),
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
+              disabled={isInfoLoading || info?.ogvBalance === 0n}
             />
             <TokenChip
               token={tokens.mainnet.OGV}
               iconProps={{ outlined: true, sx: { fontSize: 28 } }}
               labelProps={{ variant: 'body2', fontWeight: 'bold' }}
             />
-          </SuccessCard>
+          </Stack>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'The amount of pending rewards allocated to you',
@@ -179,17 +173,11 @@ export const MigrationForm = (props: StackProps) => {
               defaultMessage: 'Your Unclaimed OGV Rewards',
             })}
           </InfoTooltipLabel>
-          <SuccessCard
-            isLoading={isInfoLoading}
-            isSuccess={info?.veOgvRewards === 0n}
-            successLabel={intl.formatMessage({
-              defaultMessage: 'No rewards available to claim',
-            })}
-          >
+          <Stack {...cardStackProps}>
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selected.rewards}
+                  checked={selected.rewards && !!info?.veOgvRewards}
                   onChange={() => {
                     setSelected((prev) => ({
                       ...prev,
@@ -205,13 +193,14 @@ export const MigrationForm = (props: StackProps) => {
                 info?.veOgvRewards ?? 0n,
                 tokens.mainnet.OGV.decimals,
               )}
+              disabled={isInfoLoading || info?.veOgvRewards === 0n}
             />
             <TokenChip
               token={tokens.mainnet.OGV}
               iconProps={{ outlined: true, sx: { fontSize: 28 } }}
               labelProps={{ variant: 'body2', fontWeight: 'bold' }}
             />
-          </SuccessCard>
+          </Stack>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'Your veOGV staked positions',
@@ -220,13 +209,13 @@ export const MigrationForm = (props: StackProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Your veOGV Lockups' })}
           </InfoTooltipLabel>
-          <SuccessCard
-            isLoading={isLockupsLoading}
-            isSuccess={lockups?.length === 0}
-            successLabel={intl.formatMessage({
-              defaultMessage: 'No existing lockups to convert',
-            })}
-            p={0}
+          <Stack
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 3,
+              bgcolor: 'background.highlight',
+            }}
           >
             <LockupsList
               lockups={lockups}
@@ -234,7 +223,7 @@ export const MigrationForm = (props: StackProps) => {
               onSelectAllLockups={handleAllSelect}
               onSelectLockup={handleLockupSelect}
             />
-          </SuccessCard>
+          </Stack>
         </Grid2>
         <Grid2
           xs={12}
@@ -272,12 +261,22 @@ function LockupsList({
 }: LockupsListProps) {
   const intl = useIntl();
 
+  if (isNilOrEmpty(lockups)) {
+    return (
+      <Stack justifyContent="center" alignItems="center" p={3}>
+        <Typography color="text.secondary">
+          {intl.formatMessage({ defaultMessage: 'No lockups to convert' })}
+        </Typography>
+      </Stack>
+    );
+  }
+
   return (
     <Stack {...rest} flexGrow={1} divider={<Divider flexItem />}>
       <Stack
         direction="row"
         alignItems="center"
-        sx={{ px: 2, py: 1, '> *': { color: 'text.secondary' } }}
+        sx={{ p: 2, '> *': { color: 'text.secondary' } }}
       >
         <FormControlLabel
           control={
@@ -334,13 +333,18 @@ function LockupRow({
             }}
           />
         }
-        disableTypography
-        label={formatAmount(BigInt(lockup.amount), tokens.mainnet.OGV.decimals)}
+        componentsProps={{
+          typography: { fontWeight: 'bold' },
+        }}
+        label={formatAmount(
+          BigInt(lockup.amount),
+          tokens.mainnet.OGV.decimals,
+          undefined,
+          { minimumFractionDigits: 3, maximumFractionDigits: 3 },
+        )}
         sx={{ width: 0.5, m: 0, gap: 3 }}
       />
-      <Typography
-        sx={{ textAlign: 'end', width: 0.5, transform: 'translateY(2px) ' }}
-      >
+      <Typography sx={{ textAlign: 'end', width: 0.5 }}>
         {formatDistanceToNowStrict(new Date(lockup.end), {
           unit: 'month',
           roundingMethod: 'floor',
@@ -420,51 +424,6 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
         </ConvertButton>
       </CardContent>
     </Card>
-  );
-}
-
-type SuccessCardProps = {
-  successLabel: string;
-  isSuccess: boolean;
-  isLoading: boolean;
-} & StackProps;
-
-function SuccessCard({
-  successLabel,
-  isSuccess,
-  isLoading,
-  children,
-  ...rest
-}: SuccessCardProps) {
-  if (isLoading) {
-    return (
-      <Stack {...cardStackProps} justifyContent="center" p={2} minHeight={68}>
-        <CircularProgress size={24} />
-      </Stack>
-    );
-  }
-
-  if (isSuccess) {
-    return (
-      <Stack
-        {...cardStackProps}
-        p={2}
-        direction="row"
-        alignItems="center"
-        spacing={2}
-        minHeight={68}
-      >
-        <Typography variant="featured3" fontWeight="medium">
-          {successLabel}
-        </Typography>
-      </Stack>
-    );
-  }
-
-  return (
-    <Stack {...cardStackProps} {...rest}>
-      {children}
-    </Stack>
   );
 }
 
