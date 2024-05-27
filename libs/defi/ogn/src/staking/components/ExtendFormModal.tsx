@@ -176,7 +176,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ pb: 0 }}>
+      <DialogContent>
         <Stack
           sx={{
             borderRadius: 3,

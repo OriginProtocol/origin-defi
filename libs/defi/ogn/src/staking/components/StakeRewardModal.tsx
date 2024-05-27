@@ -205,7 +205,7 @@ export const StakeRewardModal = (props: DialogProps) => {
         </IconButton>
       </DialogTitle>
       <Divider />
-      <DialogContent sx={{ pb: 0, px: 0 }}>
+      <DialogContent sx={{ px: 0 }}>
         <Stack mb={3} px={3}>
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({

@@ -339,6 +339,13 @@ export const components = (base: Theme): ThemeOptions => ({
       styleOverrides: {
         root: ({ theme }) => ({
           padding: theme.spacing(3),
+          background: `
+            linear-gradient(rgba(255, 255, 255, 0), ${theme.palette.background.paper} 70%) center bottom,
+            radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0)) center bottom
+          `,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: '100% 40px, 100% 10px',
+          backgroundAttachment: 'local, scroll',
         }),
       },
     },
