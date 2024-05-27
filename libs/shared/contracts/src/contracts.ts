@@ -137,7 +137,7 @@ export const contracts = {
       name: 'OGVMandatoryDistributor',
     },
     OGVMigrator: {
-      address: '0x7609c88E5880e934dd3A75bCFef44E31b1Badb8b', // TODO tenderly address
+      address: '0x95c347D6214614A780847b8aAF4f96Eb84f4da6d',
       chainId: mainnet.id,
       abi: MigratorABI,
       name: 'OGVMigrator',
