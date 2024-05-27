@@ -25,7 +25,12 @@ export const StakeOGNCard = (props: CardProps) => {
         backgroundImage: `url(/images/stakingPattern.svg)`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'auto 100%',
-        backgroundPosition: 'center right',
+        backgroundPosition: {
+          xs: 'center right -550px',
+          sm: 'center right -300px',
+          md: 'center right -100px',
+          lg: 'center right',
+        },
         p: 5,
         display: 'flex',
         flexDirection: 'column',
@@ -69,7 +74,14 @@ export const StakeOGNCard = (props: CardProps) => {
           {intl.formatMessage({ defaultMessage: 'Max vAPR' })}
         </Typography>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        flexWrap="wrap"
+        useFlexGap
+        rowGap={1}
+        gap={1}
+      >
         <Button
           size="large"
           component={RouterLink}
@@ -84,6 +96,7 @@ export const StakeOGNCard = (props: CardProps) => {
           size="large"
           component={RouterLink}
           to="/more"
+          sx={{ textWrap: 'nowrap' }}
         >
           {intl.formatMessage({
             defaultMessage: 'View latest governance proposals',
