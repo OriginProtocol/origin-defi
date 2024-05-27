@@ -4,7 +4,7 @@
 interface ImportMetaEnv {
   readonly VITE_WALLET_CONNECT_PROJECT_ID: string;
   readonly VITE_ALCHEMY_ID: string;
-  readonly VITE_ALCHEMY_ID_ARBITRUM: string;
+  readonly VITE_ALCHEMY_ARBITRUM_ID: string;
   readonly VITE_SUBSQUID_URL: string;
   readonly VITE_ALCHEMY_RPC: string;
   readonly VITE_CUSTOM_RPC?: string;
