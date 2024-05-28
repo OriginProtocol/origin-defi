@@ -25,6 +25,7 @@ import { TokenChip, useApprovalButton, useTxButton } from '@origin/defi/shared';
 import {
   ExpandIcon,
   InfoTooltipLabel,
+  LoadingLabel,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
@@ -37,6 +38,7 @@ import { addMonths, formatDuration } from 'date-fns';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
+import { useReadContract } from 'wagmi';
 
 import { ogvToOgnRate } from '../constants';
 
@@ -80,6 +82,19 @@ export const ConvertModal = ({
   const ogn = (converted * (100 - stakingRatio)) / 100;
   const xOgn = (converted * stakingRatio) / 100;
 
+  const { data: preview, isLoading: isPreviewLoading } = useReadContract({
+    address: tokens.mainnet.xOGN.address,
+    abi: tokens.mainnet.xOGN.abi,
+    functionName: 'previewPoints',
+    args: [
+      parseUnits(xOgn.toString(), tokens.mainnet.OGN.decimals),
+      getMonthDurationToSeconds(duration),
+    ],
+    query: {
+      enabled: xOgn > 0,
+      select: (data) => +formatUnits(data?.[0], tokens.mainnet.xOGN.decimals),
+    },
+  });
   const {
     allowance,
     params: approvalParams,
@@ -326,9 +341,14 @@ export const ConvertModal = ({
                         sx={{ fontSize: 24 }}
                         outlined
                       />
-                      <Typography variant="body1" fontWeight="medium">
-                        {intl.formatNumber(xOgn)}
-                      </Typography>
+                      <LoadingLabel
+                        variant="body1"
+                        fontWeight="medium"
+                        isLoading={isPreviewLoading}
+                        sWidth={80}
+                      >
+                        {intl.formatNumber(preview ?? 0)}
+                      </LoadingLabel>
                     </Stack>
                   }
                   sx={{ width: 1, alignItems: 'flex-start' }}
@@ -452,7 +472,13 @@ export const ConvertModal = ({
               borderColor: 'divider',
             }}
           >
-            <Typography variant="h6">{intl.formatNumber(xOgn)}</Typography>
+            <LoadingLabel
+              variant="h6"
+              isLoading={isPreviewLoading}
+              sWidth={100}
+            >
+              {intl.formatNumber(preview ?? 0)}
+            </LoadingLabel>
             <TokenChip
               token={tokens.mainnet.xOGN}
               iconProps={{ outlined: true, sx: { fontSize: 28 } }}
