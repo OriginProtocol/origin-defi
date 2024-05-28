@@ -42,7 +42,7 @@ export const NotificationSnack = ({
         </Stack>
         <Stack direction="row" alignItems="center">
           {typeof subtitle === 'string' ? (
-            <Typography color="text.tertiary" {...subtitleProps}>
+            <Typography color="text.secondary" {...subtitleProps}>
               {subtitle}
             </Typography>
           ) : (

@@ -4,7 +4,7 @@
     "rootDir": ".",
     "sourceMap": true,
     "declaration": false,
-    "moduleResolution": "node",
+    "moduleResolution": "Bundler",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "importHelpers": true,
@@ -20,6 +20,7 @@
       "@origin/defi/governance": ["libs/defi/governance/src/index.ts"],
       "@origin/defi/home": ["libs/defi/home/src/index.ts"],
       "@origin/defi/oeth": ["libs/defi/oeth/src/index.ts"],
+      "@origin/defi/ogn": ["libs/defi/ogn/src/index.ts"],
       "@origin/defi/ogv": ["libs/defi/ogv/src/index.ts"],
       "@origin/defi/ousd": ["libs/defi/ousd/src/index.ts"],
       "@origin/defi/shared": ["libs/defi/shared/src/index.ts"],
@@ -52,5 +53,5 @@
       "@origin/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
-  "exclude": ["node_modules", "tmp"]
+  "exclude": ["**/node_modules/*", "**/dist/*", "node_modules", "tmp"]
 }

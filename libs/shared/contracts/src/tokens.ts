@@ -10,6 +10,7 @@ import { USDTABI } from './abis/USDT';
 import { veOGVABI } from './abis/veOGV';
 import { WOETHABI } from './abis/WOETH';
 import { WrappedOusdABI } from './abis/WrappedOusd';
+import { xOGNABI } from './abis/xOGN';
 
 export const tokens = {
   mainnet: {
@@ -172,6 +173,14 @@ export const tokens = {
       name: 'Wrapped Origin Dollar',
       decimals: 18,
       symbol: 'wOUSD',
+    },
+    xOGN: {
+      address: '0x63898b3b6ef3d39332082178656e9862bee45c57',
+      chainId: mainnet.id,
+      abi: xOGNABI,
+      name: 'Staked OGN',
+      decimals: 18,
+      symbol: 'xOGN',
     },
   },
   arbitrum: {

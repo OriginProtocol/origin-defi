@@ -1,4 +1,4 @@
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract, readContracts } from '@wagmi/core';
@@ -9,7 +9,7 @@ import { useAccount, useConfig } from 'wagmi';
 import { useUserLockupsQuery } from './queries.generated';
 import { getRewardsApy, getVAPY } from './utils';
 
-import type { UseQueryOptions } from '@tanstack/react-query';
+import type { QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
 import type { UserLockupsQuery } from './queries.generated';
@@ -149,3 +149,65 @@ export const useMyVApy = () => {
     },
   });
 };
+
+type Key = ['useOgnStakingApy', Config];
+
+type Result = { ognRewardsPerYear: number; ognStaked: number; ognApy: number };
+
+const getKey = (config: Config): Key => ['useOgnStakingApy', config];
+
+const fetcher: QueryFunction<Result, Key> = async ({
+  queryKey: [, config],
+}) => {
+  const res = await readContracts(config, {
+    contracts: [
+      {
+        address: contracts.mainnet.OGNFixedRewardSource.address,
+        abi: contracts.mainnet.OGNFixedRewardSource.abi,
+        functionName: 'rewardConfig',
+      },
+      {
+        address: tokens.mainnet.OGN.address,
+        abi: tokens.mainnet.OGN.abi,
+        functionName: 'balanceOf',
+        args: [tokens.mainnet.xOGN.address],
+      },
+    ],
+  });
+
+  const ognRewardsPerYear =
+    res?.[0]?.status === 'success'
+      ? +formatUnits(res?.[0]?.result?.[1] ?? 0n, tokens.mainnet.OGN.decimals) *
+        60 *
+        60 *
+        24 *
+        365
+      : 0;
+  const ognStaked =
+    res?.[1]?.status === 'success'
+      ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.OGN.decimals)
+      : 0;
+
+  return {
+    ognRewardsPerYear,
+    ognStaked,
+    ognApy: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
+  };
+};
+
+export const useOgnStakingApy = (
+  options?: Omit<
+    UseQueryOptions<Result, Error, Result, Key>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  const config = useConfig();
+
+  return useQuery({
+    queryKey: getKey(config),
+    queryFn: fetcher,
+    ...options,
+  });
+};
+useOgnStakingApy.getKey = getKey;
+useOgnStakingApy.fetcher = fetcher;

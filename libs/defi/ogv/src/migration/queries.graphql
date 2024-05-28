@@ -1,0 +1,39 @@
+query OgvHoldersCount {
+  ogvAddressesConnection(orderBy: id_ASC, where: { staked_gt: 0 }) {
+    totalCount
+  }
+}
+
+query OgvUserInfo($address: String!) {
+  ogvAddresses(where: { id_containsInsensitive: $address }) {
+    id
+    balance
+    staked
+    veogvBalance
+    votingPower
+    delegatee {
+      id
+    }
+  }
+}
+
+query OgvLockups($address: String!) {
+  ogvLockups(
+    where: {
+      address: { id_containsInsensitive: $address }
+      logs_none: { event_eq: Unstaked }
+    }
+    orderBy: end_ASC
+  ) {
+    id
+    lockupId
+    amount
+    end
+    veogv
+    timestamp
+    logs(orderBy: timestamp_DESC, limit: 1) {
+      event
+      hash
+    }
+  }
+}

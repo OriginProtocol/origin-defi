@@ -1,8 +1,9 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 
 import { capitalize } from '@mui/material';
-import { isUserRejected } from '@origin/shared/utils';
-import { usePrevious } from '@react-hookz/web';
+import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
+import { usePreviousDistinct } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import {
   useAccount,
@@ -13,6 +14,7 @@ import {
 
 import { ConnectedButton } from '../../wagmi';
 
+import type { ReactNode } from 'react';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -38,11 +40,13 @@ export type TxButtonProps<
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
-  label?: string;
+  label?: ReactNode;
   waitingSignatureLabel?: string;
   waitingTxLabel?: string;
+  validatingTxLabel?: string;
   params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
+  gas?: bigint;
 } & Omit<
   ConnectedButtonProps,
   'onClick' | 'value' | 'children' | 'targetChainId'
@@ -63,19 +67,25 @@ export const TxButton = <
   label,
   waitingSignatureLabel,
   waitingTxLabel,
+  validatingTxLabel,
   params,
   callbacks,
   disabled,
+  gas,
   ...rest
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
   const { isConnected, chain } = useAccount();
-  const { data: simulateData, error: simulateError } = useSimulateContract({
+  const {
+    data: simulateData,
+    error: simulateError,
+    isLoading: isSimulateLoading,
+  } = useSimulateContract({
     address: params.contract.address,
     abi: params.contract.abi as Abi,
     functionName: params.functionName as functionName,
     args: params.args as readonly unknown[],
-    value: params.value,
+    value: params?.value,
     chainId: params.contract.chainId,
     query: {
       enabled:
@@ -97,30 +107,32 @@ export const TxButton = <
     error: waitTxError,
     status: waitTxStatus,
   } = useWaitForTransactionReceipt({ hash });
-  const prevWriteStatus = usePrevious(writeStatus);
-  const prevWaitTxStatus = usePrevious(waitTxStatus);
+  const prevWriteStatus = usePreviousDistinct(writeStatus);
+  const prevWaitTxStatus = usePreviousDistinct(waitTxStatus);
 
   useEffect(() => {
     if (chain?.id !== params.contract.chainId) {
       resetWriteContract();
     }
-  }, [chain?.id, params.contract.chainId, resetWriteContract]);
+  }, [
+    chain?.id,
+    params.contract.chainId,
+    resetWriteContract,
+    waitTxStatus,
+    writeStatus,
+  ]);
 
   useEffect(() => {
     if (simulateData) {
       callbacks?.onSimulateSuccess?.(simulateData);
     }
-  }, [callbacks, simulateData]);
+  }, [simulateData, waitTxStatus, writeStatus]);
 
   useEffect(() => {
-    if (
-      writeStatus === 'success' &&
-      prevWriteStatus === 'pending' &&
-      waitTxStatus === 'pending'
-    ) {
+    if (writeStatus === 'success' && waitTxStatus === 'pending') {
       callbacks?.onTxSigned?.();
     }
-  }, [callbacks, prevWriteStatus, waitTxStatus, writeStatus]);
+  }, [waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -130,7 +142,7 @@ export const TxButton = <
     ) {
       callbacks?.onWriteSuccess?.(waitTxData as TransactionReceipt);
     }
-  }, [callbacks, prevWaitTxStatus, waitTxData, waitTxStatus, writeStatus]);
+  }, [prevWaitTxStatus, waitTxData, waitTxStatus, writeStatus]);
 
   useEffect(() => {
     if (
@@ -146,7 +158,6 @@ export const TxButton = <
       }
     }
   }, [
-    callbacks,
     prevWaitTxStatus,
     prevWriteStatus,
     waitTxError,
@@ -159,24 +170,26 @@ export const TxButton = <
     if (simulateError) {
       callbacks?.onSimulateError?.(simulateError);
     } else if (simulateData?.request) {
-      writeContract(simulateData.request);
+      writeContract({ ...simulateData.request, ...(!!gas && { gas }) });
       callbacks?.onWrite?.();
     }
   };
 
   const buttonLabel =
-    writeStatus === 'pending'
-      ? waitingSignatureLabel ??
-        intl.formatMessage({ defaultMessage: 'Waiting for signature' })
-      : writeStatus === 'success' &&
-          prevWriteStatus === 'pending' &&
-          waitTxStatus === 'pending'
-        ? waitingTxLabel ??
-          intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-        : label ?? capitalize(params.functionName);
+    isSimulateLoading && !isNilOrEmpty(validatingTxLabel)
+      ? validatingTxLabel
+      : writeStatus === 'pending'
+        ? waitingSignatureLabel ??
+          intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+        : writeStatus === 'success' &&
+            prevWriteStatus === 'pending' &&
+            waitTxStatus === 'pending'
+          ? waitingTxLabel ??
+            intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+          : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
-    !simulateData ||
+    (isSimulateLoading && !isNilOrEmpty(validatingTxLabel)) ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

@@ -4,7 +4,7 @@ import { useIntervalEffect } from '@react-hookz/web';
 
 import { useSetNotificationInvisible, useSetNotificationRead } from '../hooks';
 
-import type { AlertProps, AlertTitleProps } from '@mui/material';
+import type { AlertColor, AlertProps, AlertTitleProps } from '@mui/material';
 import type { Dispatch } from 'react';
 
 import type { Notification } from '../types';
@@ -41,7 +41,7 @@ export const NotificationAlert = ({
   return (
     <Alert
       {...AlertProps}
-      severity={severity}
+      severity={severity as AlertColor}
       sx={{
         border: 1,
         borderRadius: 1,

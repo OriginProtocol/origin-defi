@@ -74,9 +74,6 @@
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
-  "5adJBo": {
-    "defaultMessage": "Select token"
-  },
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
@@ -148,6 +145,9 @@
   },
   "Bp2rXG": {
     "defaultMessage": "Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}."
+  },
+  "BuhEl+": {
+    "defaultMessage": "Theme:"
   },
   "C73Nbd": {
     "defaultMessage": "Swap with Curve"
@@ -280,6 +280,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "ULVduL": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -466,9 +469,6 @@
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
-  },
-  "w2pp9r": {
-    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"

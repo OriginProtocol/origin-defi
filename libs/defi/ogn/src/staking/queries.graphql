@@ -1,0 +1,33 @@
+query OgnUserInfo($address: String!) {
+  ognAddresses(where: { id_containsInsensitive: $address }) {
+    id
+    balance
+    staked
+    xognBalance
+    votingPower
+    delegatee {
+      id
+    }
+  }
+}
+
+query OgnLockups($address: String!) {
+  ognLockups(
+    where: {
+      address: { id_containsInsensitive: $address }
+      logs_none: { event_eq: Unstaked }
+    }
+    orderBy: end_ASC
+  ) {
+    id
+    lockupId
+    amount
+    end
+    xogn
+    timestamp
+    logs(orderBy: timestamp_DESC, limit: 1) {
+      event
+      hash
+    }
+  }
+}

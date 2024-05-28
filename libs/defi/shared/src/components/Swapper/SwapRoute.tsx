@@ -2,11 +2,11 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Skeleton,
+  CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
-import { InfoTooltip } from '@origin/shared/components';
+import { InfoTooltipLabel } from '@origin/shared/components';
 import { useSwapState } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
@@ -28,48 +28,58 @@ export function SwapRoute(
     <Accordion
       {...props}
       expanded={isExpanded}
-      sx={{ px: 2, borderRadius: 1, ...props?.sx }}
+      sx={{
+        backgroundColor: 'background.default',
+        border: 'none',
+        ...props?.sx,
+      }}
     >
       <AccordionSummary
-        sx={{ py: 2, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
+        sx={{
+          pt: 3,
+          pb: 1.5,
+          px: 0,
+          backgroundColor: 'transparent',
+          '&&.MuiAccordionSummary-root': { cursor: 'default' },
+        }}
       >
         {isSwapRoutesLoading ? (
           <Stack direction="row" alignItems="center" gap={1}>
-            <Skeleton
-              variant="circular"
-              width="0.5rem"
-              height="0.5rem"
-              sx={{
-                backgroundColor: (theme) => theme.palette.primary.contrastText,
-              }}
-            />
-            <Typography>
+            <CircularProgress size={14} />
+            <Typography variant="caption1" fontWeight="medium">
               {intl.formatMessage({
                 defaultMessage: 'Finding the best route...',
               })}
             </Typography>
           </Stack>
         ) : (
-          <Stack
-            direction="row"
-            gap={0.5}
-            component={Typography}
-            alignItems="center"
+          <InfoTooltipLabel
+            labelProps={{
+              variant: 'caption1',
+              color: 'text.secondary',
+              fontWeight: 'medium',
+            }}
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The best swap route factors in the best price after transaction costs',
+            })}
           >
             {intl.formatMessage({ defaultMessage: 'Route' })}
-            <InfoTooltip
-              tooltipLabel={intl.formatMessage({
-                defaultMessage:
-                  'The best swap route factors in the best price after transaction costs',
-              })}
-            />
-          </Stack>
+          </InfoTooltipLabel>
         )}
       </AccordionSummary>
-      <AccordionDetails sx={{ pt: 1, pb: 2, px: 0 }}>
+      <AccordionDetails
+        sx={{
+          p: 2,
+          backgroundColor: 'background.default',
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 3,
+        }}
+      >
         <BestRoutes />
         {estimatedSwapRoutes.length > 2 && (
-          <SwapRouteAccordion sx={{ mt: 2 }} />
+          <SwapRouteAccordion sx={{ mt: 1.5 }} />
         )}
       </AccordionDetails>
     </Accordion>

@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import {
   ActivityIcon,
+  ErrorTooltipLabel,
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
@@ -58,7 +59,7 @@ export const SwapNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.tertiary">
+          <Typography color="text.secondary">
             {intl.formatMessage(
               {
                 defaultMessage:
@@ -79,7 +80,7 @@ export const SwapNotification = ({
             )}
           </Typography>
         ) : (
-          <Typography color="error">{error}</Typography>
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
         )
       }
       endIcon={

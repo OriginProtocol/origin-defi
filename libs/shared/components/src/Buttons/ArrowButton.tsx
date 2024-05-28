@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { emphasize, IconButton } from '@mui/material';
 import { ArrowDown } from '@origin/shared/icons';
 
 import type { IconButtonProps } from '@mui/material';
@@ -24,7 +24,8 @@ export function ArrowButton(props: IconButtonProps) {
           transition: (theme) => theme.transitions.create('transform'),
         },
         '&:hover': {
-          backgroundColor: (theme) => theme.palette.grey[900],
+          backgroundColor: (theme) =>
+            emphasize(theme.palette.background.paper, 0.1),
           svg: {
             transform: 'rotate(-180deg)',
           },

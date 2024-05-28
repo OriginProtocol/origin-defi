@@ -1,17 +1,18 @@
-import { Link } from '@mui/material';
+import { ExternalLink } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import type { LinkProps } from '@mui/material';
+import type { ExternalLinkProps } from '@origin/shared/components';
+import type { HexAddress } from '@origin/shared/utils';
 
 export type BlockExplorerLinkProps = {
-  hash?: string;
+  hash?: HexAddress;
   blockExplorer?: {
     name: string;
     url: string;
   };
-} & Omit<LinkProps, 'href'>;
+} & Omit<ExternalLinkProps, 'href'>;
 
 export const BlockExplorerLink = ({
   hash,
@@ -34,7 +35,7 @@ export const BlockExplorerLink = ({
     mainnet.blockExplorers.default.name;
 
   return (
-    <Link
+    <ExternalLink
       {...rest}
       href={`${baseUrl}/tx/${hash ?? ''}`}
       target="_blank"
@@ -46,6 +47,6 @@ export const BlockExplorerLink = ({
         },
         { name },
       )}
-    </Link>
+    </ExternalLink>
   );
 };

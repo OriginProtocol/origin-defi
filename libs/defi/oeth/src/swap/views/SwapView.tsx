@@ -1,47 +1,56 @@
-import { Box, Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { PageTitle, Swapper, trackEvent } from '@origin/defi/shared';
+import {
+  BridgePromoCard,
+  GlobalStatsCard,
+  Page,
+  PageSection,
+  PageTitle,
+  Swapper,
+  trackEvent,
+} from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
-import { CexCard } from '../components/CexCard';
-import { FAQCard } from '../components/FAQCard';
-import { OethDetailCard } from '../components/OethDetailCard';
+import { AnalyticsCard } from '../components/AnalyticsCard';
+import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
-
   return (
-    <Container>
+    <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Swap' })}
+        title={intl.formatMessage({ defaultMessage: 'Origin Ether' })}
         subtitle={intl.formatMessage({
-          defaultMessage:
-            'Secure the most competitive rates when swapping in and out of OETH using our swap form.',
+          defaultMessage: 'A superior LST for earning yield across DeFi',
         })}
         token={tokens.mainnet.OETH}
-      />
-      <Box>
-        <Grid2 container spacing={4}>
-          <Grid2 xs={12} md={8}>
+      >
+        <PageTitleSection />
+      </PageTitle>
+      <PageSection containerProps={{ maxWidth: 'lg' }}>
+        <Grid2 container spacing={5}>
+          <Grid2 xs={12} md={3}>
+            <BridgePromoCard />
+          </Grid2>
+          <Grid2 xs={12} md={6}>
+            <Swapper
+              swapActions={oethSwapActions}
+              swapRoutes={oethSwapRoutes}
+              buttonsProps={{ variant: 'action' }}
+              trackEvent={trackEvent}
+            />
+          </Grid2>
+          <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <Swapper
-                swapActions={oethSwapActions}
-                swapRoutes={oethSwapRoutes}
-                buttonsProps={{ variant: 'action' }}
-                trackEvent={trackEvent}
-              />
-              <CexCard />
-              <FAQCard />
+              <GlobalStatsCard token={tokens.mainnet.OETH} />
+              <AnalyticsCard />
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={4}>
-            <OethDetailCard />
-          </Grid2>
         </Grid2>
-      </Box>
-    </Container>
+      </PageSection>
+    </Page>
   );
 };

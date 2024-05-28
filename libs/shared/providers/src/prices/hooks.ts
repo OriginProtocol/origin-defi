@@ -1,5 +1,5 @@
 import { isFulfilled, isNilOrEmpty } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import axios from 'axios';
 import { groupBy, pickBy } from 'ramda';
@@ -8,7 +8,11 @@ import { useConfig } from 'wagmi';
 import { coingeckoApiEndpoint, priceOptions } from './constants';
 import { isDerivedOption, reduceOptions } from './utils';
 
-import type { QueryFunction, UseQueryOptions } from '@tanstack/react-query';
+import type {
+  QueryClient,
+  QueryFunction,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
 import type {
@@ -20,17 +24,16 @@ import type {
   WagmiOption,
 } from './types';
 
-type Key = ['useTokenPrices', SupportedTokenPrice[], Config];
+type PricesKey = ['useTokenPrices', SupportedTokenPrice[], Config];
 
-const getKey = (tokenPrices: SupportedTokenPrice[], config: Config): Key => [
-  'useTokenPrices',
-  tokenPrices,
-  config,
-];
+const getPricesKey = (
+  tokenPrices: SupportedTokenPrice[],
+  config: Config,
+): PricesKey => ['useTokenPrices', tokenPrices, config];
 
-const fetcher: QueryFunction<
+const pricesFetcher: QueryFunction<
   Record<SupportedTokenPrice, number>,
-  Key
+  PricesKey
 > = async ({ queryKey: [, tokenPrices, config] }) => {
   const allPrices = {} as Record<SupportedTokenPrice, number>;
 
@@ -108,38 +111,57 @@ const fetcher: QueryFunction<
   >;
 };
 
-export const useTokenPrices = (
+export const useTokenPrices = <TData = Record<SupportedTokenPrice, number>>(
   tokenPrices: SupportedTokenPrice[],
   options?: UseQueryOptions<
     Record<SupportedTokenPrice, number>,
     Error,
-    Record<SupportedTokenPrice, number>,
-    Key
+    TData,
+    PricesKey
   >,
 ) => {
   const config = useConfig();
 
   return useQuery({
     ...options,
-    queryKey: getKey(tokenPrices, config),
-    queryFn: fetcher,
+    queryKey: getPricesKey(tokenPrices, config),
+    queryFn: pricesFetcher,
   });
 };
-useTokenPrices.getKey = getKey;
-useTokenPrices.fetcher = fetcher;
+useTokenPrices.getKey = getPricesKey;
+useTokenPrices.fetcher = pricesFetcher;
+
+type PriceKey = ['useTokenPrice', SupportedTokenPrice, Config, QueryClient];
+
+const getPriceKey = (
+  tokenPrice: SupportedTokenPrice,
+  config: Config,
+  queryClient: QueryClient,
+): PriceKey => ['useTokenPrice', tokenPrice, config, queryClient];
+
+const priceFetcher: QueryFunction<number, PriceKey> = async ({
+  queryKey: [, tokenPrice, config, queryClient],
+}) => {
+  const res = await queryClient.fetchQuery({
+    queryKey: useTokenPrices.getKey([tokenPrice], config),
+    queryFn: useTokenPrices.fetcher,
+  });
+
+  return res?.[tokenPrice];
+};
 
 export const useTokenPrice = (
   tokenPrice: SupportedTokenPrice,
-  options?: UseQueryOptions<
-    Record<SupportedTokenPrice, number>,
-    Error,
-    Record<SupportedTokenPrice, number>,
-    Key
-  >,
+  options?: UseQueryOptions<number, Error, number, PriceKey>,
 ) => {
-  const result = useTokenPrices([tokenPrice], options);
-  return {
-    ...result,
-    data: result.data?.[tokenPrice],
-  };
+  const config = useConfig();
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    ...options,
+    queryKey: getPriceKey(tokenPrice, config, queryClient),
+    queryFn: priceFetcher,
+  });
 };
+useTokenPrice.getKey = getPriceKey;
+useTokenPrice.fetcher = priceFetcher;

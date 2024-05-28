@@ -1,170 +1,194 @@
-import {
-  Box,
-  Button,
-  Divider,
-  Skeleton,
-  Stack,
-  Typography,
-} from '@mui/material';
-import {
-  Chip,
-  MultiTokenIcon,
-  TokenIcon,
-  ValueLabel,
-} from '@origin/shared/components';
-import {
-  getTokenPriceKey,
-  useFormat,
-  useTokenPrices,
-} from '@origin/shared/providers';
+import { Box, Button, Card, Collapse, Stack, Typography } from '@mui/material';
+import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
+import { FaArrowRightRegular } from '@origin/shared/icons';
+import { useFormat, useTvl } from '@origin/shared/providers';
+import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
-import { products } from '../constants';
-import { useTokenInfo } from '../hooks';
+import type { CardProps } from '@mui/material';
 
-import type { StackProps } from '@mui/material';
+import type { Product } from '../constants';
 
 export type ProductCardProps = {
-  product: (typeof products)[number];
-  href?: string;
-} & StackProps;
+  product: Product;
+} & CardProps;
 
-export const ProductCard = ({ product, href, ...rest }: ProductCardProps) => {
+export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
-  const navigate = useNavigate();
-  const { data: prices, isLoading: isPricesLoading } = useTokenPrices(
-    products.map((p) => getTokenPriceKey(p.token)),
+  const { formatBalance, formatCurrency } = useFormat();
+  const { address, isConnected } = useAccount();
+  const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
+  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
+    { token: product.token.address, chainId: product.token.chainId },
+    {
+      select: (data) => {
+        return data?.oTokenApies[0].apy30DayAvg ?? 0;
+      },
+    },
   );
-  const { data: queryData, isLoading: isQueryDataLoading } = useTokenInfo(
-    product.token,
+  const { data: user, isLoading: isUserLoading } = useOTokenAddressQuery(
+    {
+      token: product.token.address,
+      chainId: product.token.chainId,
+      address: address ?? ZERO_ADDRESS,
+    },
+    { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
 
   return (
-    <Stack
+    <Card
       {...rest}
       sx={{
-        borderRadius: 1,
-        border: (theme) => `1px solid ${theme.palette.divider}`,
+        position: 'relative',
+        backgroundColor: 'background.highlight',
+        p: 5,
+        display: 'flex',
+        flexDirection: 'column',
         ...rest?.sx,
       }}
     >
+      <Box
+        component="img"
+        src={product.icon}
+        sx={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          width: product.iconSize,
+          mask: `url(${product.icon})`,
+          backgroundColor: product.bgcolor,
+        }}
+      />
       <Stack
         direction="row"
-        sx={{
-          flexWrap: 'wrap',
-          backgroundColor: 'background.header',
-          rowGap: 1,
-          columnGap: 1,
-          px: 3,
-          pt: 3,
-        }}
+        alignItems="center"
+        justifyContent="space-between"
+        spacing={1}
       >
-        {product.tags.map((tag) => (
-          <Chip
-            key={intl.formatMessage(tag.label)}
-            label={intl.formatMessage(tag.label)}
-            token={tag.token}
-            labelProps={{ noWrap: true }}
-          />
-        ))}
-      </Stack>
-      <Stack sx={{ position: 'relative', p: 3 }}>
-        <Box
-          sx={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            width: 1,
-            height: 0.5,
-            backgroundColor: 'background.header',
-            zIndex: 0,
-          }}
-        />
+        <Typography variant="h6" pb={1}>
+          {product.token.name}
+        </Typography>
         <TokenIcon
           token={product.token}
-          sx={{ width: 68, height: 68, zIndex: 1 }}
+          sx={{ fontSize: 56, zIndex: 1 }}
+          outlined
         />
       </Stack>
-      <Stack px={3}>
-        <Typography
-          variant="h1"
-          sx={{ '.symbol': { color: 'text.secondary', fontWeight: '500' } }}
-        >
-          {product.token.name}&nbsp;
-          <span className="symbol">({product.token.symbol})</span>
-        </Typography>
-        <Typography variant="subtitle1">
+      <Typography variant="featured3" mb={2}>
+        ({product.token.symbol})
+      </Typography>
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <FaArrowRightRegular sx={{ fontSize: 16 }} />
+        <Typography variant="mono">
           {intl.formatMessage(product.description)}
         </Typography>
       </Stack>
-      <Stack p={3}>
-        <Typography color="text.secondary" fontSize={14}>
-          {intl.formatMessage({ defaultMessage: 'APY (Trailing 30-day)' })}
-        </Typography>
-        <Typography
-          sx={{ fontSize: 32, fontFamily: 'Sailec', fontWeight: 700 }}
-        >
-          {isQueryDataLoading ? (
-            <Skeleton width={80} />
-          ) : (
-            intl.formatNumber(queryData?.apy30DayAvg ?? 0, {
+      <Stack py={3} spacing={1}>
+        <Stack direction="row" spacing={1} alignItems="baseline">
+          <LoadingLabel
+            isLoading={isApyLoading}
+            variant="featured1"
+            color="primary"
+            fontWeight="bold"
+          >
+            {intl.formatNumber(apy ?? 0, {
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
               style: 'percent',
-            })
+            })}
+          </LoadingLabel>
+          <Typography variant="body2" color="primary">
+            {intl.formatMessage({ defaultMessage: 'APY' })}
+          </Typography>
+        </Stack>
+        <LoadingLabel isLoading={isTvlLoading} sWidth={60}>
+          {intl.formatMessage(
+            { defaultMessage: 'TVL: {tvl}' },
+            {
+              tvl: formatCurrency(tvl, undefined, undefined, {
+                notation: 'compact',
+                minimumFractionDigits: 2,
+              }),
+            },
           )}
-        </Typography>
-      </Stack>
-      <Stack pt={3} pb={6} px={3} flexGrow={1} justifyContent="flex-end">
-        {!!href && (
-          <Button
-            onClick={() => {
-              navigate(href);
-            }}
-            variant="outlined"
-            sx={{ height: 56, fontSize: 16 }}
-          >
-            {intl.formatMessage(
-              { defaultMessage: 'Get {symbol}' },
-              { symbol: product.token.symbol },
-            )}
-          </Button>
-        )}
+        </LoadingLabel>
       </Stack>
       <Stack
         direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        sx={{ borderTop: (theme) => `1px solid ${theme.palette.divider}` }}
+        alignItems="center"
+        justifyContent="space-between"
+        pb={3}
+        flexGrow={1}
+        spacing={2}
       >
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'TVL' })}
-          value={formatCurrency(queryData?.tvl)}
-          isLoading={isQueryDataLoading}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
-        />
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Current price' })}
-          value={formatCurrency(prices?.[getTokenPriceKey(product.token)])}
-          isLoading={isPricesLoading}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
-        />
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Collateral' })}
-          value={<MultiTokenIcon tokens={product.collaterals} />}
-          sx={{
-            width: 0.33,
-            py: 2,
-          }}
-        />
+        <Button
+          size="large"
+          fullWidth
+          component={RouterLink}
+          to={product.href}
+          sx={{ flexWrap: 'nowrap' }}
+        >
+          {intl.formatMessage(
+            { defaultMessage: 'Get {symbol}' },
+            { symbol: product.token.symbol },
+          )}
+        </Button>
       </Stack>
-    </Stack>
+      <Collapse in={isConnected}>
+        <Stack
+          spacing={2}
+          sx={{
+            p: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 4,
+          }}
+        >
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'Your balance:' })}
+            labelProps={{
+              variant: 'body3',
+              fontWeight: 'medium',
+              color: 'text.secondary',
+            }}
+            value={
+              <Stack direction="row" alignItems="baseline" spacing={0.75}>
+                <LoadingLabel isLoading={isUserLoading} fontWeight="medium">
+                  {formatBalance(BigInt(user?.balance ?? '0'))}
+                </LoadingLabel>
+                <Typography variant="caption1">
+                  {product.token.symbol}
+                </Typography>
+              </Stack>
+            }
+          />
+          <ValueLabel
+            direction="row"
+            justifyContent="space-between"
+            label={intl.formatMessage({ defaultMessage: 'Yield earned:' })}
+            labelProps={{
+              variant: 'body3',
+              fontWeight: 'medium',
+              color: 'text.secondary',
+            }}
+            value={
+              <Stack direction="row" alignItems="baseline" spacing={0.75}>
+                <LoadingLabel isLoading={isUserLoading} fontWeight="medium">
+                  {formatAmount(BigInt(user?.earned ?? '0'))}
+                </LoadingLabel>
+                <Typography variant="caption1">
+                  {product.token.symbol}
+                </Typography>
+              </Stack>
+            }
+          />
+        </Stack>
+      </Collapse>
+    </Card>
   );
 };
