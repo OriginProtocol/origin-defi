@@ -57,7 +57,7 @@ export const StakeOGNCard = (props: CardProps) => {
           variant="featured1"
           fontWeight="bold"
         >
-          {intl.formatNumber((staking?.ognApy ?? 0) / 100, {
+          {intl.formatNumber(staking?.ognApy ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

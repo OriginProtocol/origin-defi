@@ -339,7 +339,7 @@ export const StakeFormModal = (props: DialogProps) => {
                 sWidth={60}
                 isLoading={isLoading}
               >
-                {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+                {intl.formatNumber(staking?.stakingAPY ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
