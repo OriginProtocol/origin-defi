@@ -49,6 +49,7 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import {
   createColumnHelper,
   flexRender,
@@ -73,6 +74,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { address } = useAccount();
+  const queryClient = useQueryClient();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(1);
@@ -96,6 +98,11 @@ export const StakeRewardModal = (props: DialogProps) => {
     amount: amount + (info?.xOgnRewards ?? 0n),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    },
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
@@ -112,6 +119,7 @@ export const StakeRewardModal = (props: DialogProps) => {
     callbacks: {
       onWriteSuccess: () => {
         props?.onClose?.({}, 'backdropClick');
+        queryClient.invalidateQueries();
       },
     },
     activity: {

@@ -68,6 +68,11 @@ export const StakingForm = () => {
     spender: tokens.mainnet.xOGN.address,
     amount,
     enableAllowance: true,
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    },
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
