@@ -96,7 +96,7 @@ function CardActionHeader() {
           {intl.formatMessage({ defaultMessage: 'Your APY:' })}
         </Typography>
         <LoadingLabel isLoading={isMyvAPYLoading} fontWeight="bold">
-          {intl.formatNumber((myvAPY ?? 0) / 100, {
+          {intl.formatNumber(myvAPY ?? 0, {
             style: 'percent',
             maximumFractionDigits: 2,
             minimumFractionDigits: 2,

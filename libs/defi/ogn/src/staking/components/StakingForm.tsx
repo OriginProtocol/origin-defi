@@ -51,7 +51,7 @@ export const StakingForm = () => {
   const { address, isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(1);
+  const [duration, setDuration] = useState(12);
   const [isLoading, setIsLoading] = useState(false);
   const {
     data: staking,
@@ -339,7 +339,7 @@ export const StakingForm = () => {
               isLoading={isLoading || isStakingLoading}
             >
               ~
-              {intl.formatNumber((staking?.xOgnApy ?? 0) / 100, {
+              {intl.formatNumber(staking?.xOgnApy ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

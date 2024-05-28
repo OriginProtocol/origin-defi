@@ -58,7 +58,7 @@ export const MergerBanner = (props: StackProps) => {
         flexGrow={1}
       >
         <Countdown
-          targetDate={new Date('2025-04-01T00:00:00.0000Z')}
+          targetDate={new Date('2025-05-28T00:00:00.0000Z')}
           spacing={3}
           valueLabelProps={{
             labelProps: { textAlign: 'center' },

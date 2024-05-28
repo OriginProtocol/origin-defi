@@ -117,7 +117,7 @@ export const ConvertModal = ({
   // TODO update division precision and migration when available
   const newStakeAmount =
     parseUnits(stakedConverted.toString(), tokens.mainnet.OGN.decimals) -
-    parseUnits('0.000000000000000001', tokens.mainnet.OGN.decimals);
+    parseUnits('1', tokens.mainnet.OGN.decimals);
   const params = isNilOrEmpty(veOgvlockups)
     ? stakingRatio === 0
       ? {
@@ -533,7 +533,7 @@ export const ConvertModal = ({
               color="primary.main"
               isLoading={isXOgnStakingLoading}
             >
-              {intl.formatNumber((xOgnStaking?.xOgnApy ?? 0) / 100, {
+              {intl.formatNumber(xOgnStaking?.xOgnApy ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
