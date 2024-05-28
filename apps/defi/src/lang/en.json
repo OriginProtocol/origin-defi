@@ -107,12 +107,6 @@
       "value": "Processing Approval"
     }
   ],
-  "0Ai6WM": [
-    {
-      "type": 0,
-      "value": "Your OGV balance"
-    }
-  ],
   "0Go4jI": [
     {
       "type": 0,
@@ -135,6 +129,12 @@
     {
       "type": 0,
       "value": "No actions"
+    }
+  ],
+  "0saXeJ": [
+    {
+      "type": 0,
+      "value": "Extended Lockup Ends:"
     }
   ],
   "1+ROfp": [
@@ -501,10 +501,22 @@
       "value": "Current results"
     }
   ],
+  "8UdYwb": [
+    {
+      "type": 0,
+      "value": "No lockups to convert"
+    }
+  ],
   "8Vr/2f": [
     {
       "type": 0,
       "value": "Current Staking vAPY"
+    }
+  ],
+  "8WEscF": [
+    {
+      "type": 0,
+      "value": "Decreasing staking ratio decreases APY and the amount of xOGN you will receive."
     }
   ],
   "8XZjyW": [
@@ -557,12 +569,6 @@
     {
       "type": 1,
       "value": "tvl"
-    }
-  ],
-  "95nrj3": [
-    {
-      "type": 0,
-      "value": "No rewards available to claim"
     }
   ],
   "9GqOyW": [
@@ -649,6 +655,12 @@
       "value": "lastPage"
     }
   ],
+  "AhH2rZ": [
+    {
+      "type": 0,
+      "value": "Conversion rate:"
+    }
+  ],
   "Alwl9C": [
     {
       "type": 0,
@@ -707,6 +719,12 @@
     {
       "type": 0,
       "value": "No Lockups"
+    }
+  ],
+  "BnSeXp": [
+    {
+      "type": 0,
+      "value": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
     }
   ],
   "Bp2rXG": [
@@ -773,12 +791,6 @@
       "value": "OETH Balance"
     }
   ],
-  "Cdsqgz": [
-    {
-      "type": 0,
-      "value": "Extended Lock up Ends:"
-    }
-  ],
   "Cnm0QA": [
     {
       "type": 0,
@@ -835,12 +847,6 @@
     {
       "type": 0,
       "value": "Unlock Stake"
-    }
-  ],
-  "Do7020": [
-    {
-      "type": 0,
-      "value": "Conversion Rate:"
     }
   ],
   "DriTx1": [
@@ -995,6 +1001,20 @@
       "value": "Cast vote"
     }
   ],
+  "Fuk0aF": [
+    {
+      "type": 1,
+      "value": "event"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
   "Fv1ZSz": [
     {
       "type": 0,
@@ -1073,6 +1093,12 @@
       "value": "Balance"
     }
   ],
+  "HaksWf": [
+    {
+      "type": 0,
+      "value": "xOGN Received"
+    }
+  ],
   "Hiq4cG": [
     {
       "type": 0,
@@ -1107,6 +1133,18 @@
     {
       "type": 0,
       "value": "Vote against"
+    }
+  ],
+  "IzHsvX": [
+    {
+      "type": 0,
+      "value": "Est. gas:"
+    }
+  ],
+  "J0o6HO": [
+    {
+      "type": 0,
+      "value": "Proposed by"
     }
   ],
   "JA3MsG": [
@@ -1219,6 +1257,12 @@
     {
       "type": 0,
       "value": "Succeeded"
+    }
+  ],
+  "Li58tH": [
+    {
+      "type": 0,
+      "value": "Validating"
     }
   ],
   "LpWMOQ": [
@@ -1763,12 +1807,6 @@
       "value": "The amount of pending rewards allocated to you"
     }
   ],
-  "YL4dIW": [
-    {
-      "type": 0,
-      "value": "xOGN received"
-    }
-  ],
   "Yl2sc/": [
     {
       "type": 0,
@@ -2149,12 +2187,6 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
-  "gF5qej": [
-    {
-      "type": 0,
-      "value": "No OGV to convert"
-    }
-  ],
   "gQC+XM": [
     {
       "type": 0,
@@ -2185,12 +2217,6 @@
       "value": "Available to claim and add to your stake"
     }
   ],
-  "hVUzey": [
-    {
-      "type": 0,
-      "value": "No existing lockups to convert"
-    }
-  ],
   "hjWYtP": [
     {
       "type": 0,
@@ -2201,12 +2227,6 @@
     {
       "type": 0,
       "value": "Time remaining"
-    }
-  ],
-  "hx4FmM": [
-    {
-      "type": 0,
-      "value": "Decreasing stake ratio decreases APY and xOGN you will receive."
     }
   ],
   "hzfM3P": [
@@ -2485,12 +2505,6 @@
     {
       "type": 0,
       "value": "Wrap"
-    }
-  ],
-  "rFWd1Y": [
-    {
-      "type": 0,
-      "value": "Lock up Ends:"
     }
   ],
   "rhQtuf": [
@@ -2787,6 +2801,12 @@
       "value": "Actions"
     }
   ],
+  "wX/nyy": [
+    {
+      "type": 0,
+      "value": "Your OGV Balance"
+    }
+  ],
   "weP/oT": [
     {
       "type": 0,
@@ -2897,12 +2917,6 @@
     {
       "type": 0,
       "value": "Error while swapping"
-    }
-  ],
-  "zAEFpH": [
-    {
-      "type": 0,
-      "value": "Decreasing stake duration decreases APY and xOGN you will receive."
     }
   ],
   "zQvVDJ": [

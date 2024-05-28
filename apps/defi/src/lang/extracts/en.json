@@ -47,9 +47,6 @@
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
-  "0Ai6WM": {
-    "defaultMessage": "Your OGV balance"
-  },
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
@@ -61,6 +58,9 @@
   },
   "0kn7st": {
     "defaultMessage": "No actions"
+  },
+  "0saXeJ": {
+    "defaultMessage": "Extended Lockup Ends:"
   },
   "1+ROfp": {
     "defaultMessage": "Transaction"
@@ -218,8 +218,14 @@
   "87E0Iv": {
     "defaultMessage": "Current results"
   },
+  "8UdYwb": {
+    "defaultMessage": "No lockups to convert"
+  },
   "8Vr/2f": {
     "defaultMessage": "Current Staking vAPY"
+  },
+  "8WEscF": {
+    "defaultMessage": "Decreasing staking ratio decreases APY and the amount of xOGN you will receive."
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
@@ -244,9 +250,6 @@
   },
   "94TAJq": {
     "defaultMessage": "TVL: {tvl}"
-  },
-  "95nrj3": {
-    "defaultMessage": "No rewards available to claim"
   },
   "9GqOyW": {
     "defaultMessage": "Current value (OETH)"
@@ -284,6 +287,9 @@
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
+  "AhH2rZ": {
+    "defaultMessage": "Conversion rate:"
+  },
   "Alwl9C": {
     "defaultMessage": "Snapshot proposal"
   },
@@ -314,6 +320,9 @@
   "BhDX51": {
     "defaultMessage": "No Lockups"
   },
+  "BnSeXp": {
+    "defaultMessage": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
+  },
   "Bp2rXG": {
     "defaultMessage": "Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}."
   },
@@ -325,9 +334,6 @@
   },
   "CcqmCh": {
     "defaultMessage": "OETH Balance"
-  },
-  "Cdsqgz": {
-    "defaultMessage": "Extended Lock up Ends:"
   },
   "Cnm0QA": {
     "defaultMessage": "Queued"
@@ -349,9 +355,6 @@
   },
   "Dmb2/1": {
     "defaultMessage": "Unlock Stake"
-  },
-  "Do7020": {
-    "defaultMessage": "Conversion Rate:"
   },
   "DriTx1": {
     "defaultMessage": "Request redemptions to ETH or a mix of LSTs"
@@ -404,6 +407,9 @@
   "Fsxv1h": {
     "defaultMessage": "Cast vote"
   },
+  "Fuk0aF": {
+    "defaultMessage": "{event} {date}"
+  },
   "Fv1ZSz": {
     "defaultMessage": "Closed"
   },
@@ -431,6 +437,9 @@
   "H5+NAX": {
     "defaultMessage": "Balance"
   },
+  "HaksWf": {
+    "defaultMessage": "xOGN Received"
+  },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
   },
@@ -448,6 +457,12 @@
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
+  },
+  "IzHsvX": {
+    "defaultMessage": "Est. gas:"
+  },
+  "J0o6HO": {
+    "defaultMessage": "Proposed by"
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
@@ -502,6 +517,9 @@
   },
   "LOghU6": {
     "defaultMessage": "Succeeded"
+  },
+  "Li58tH": {
+    "defaultMessage": "Validating"
   },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
@@ -722,9 +740,6 @@
   "YGu9gd": {
     "defaultMessage": "The amount of pending rewards allocated to you"
   },
-  "YL4dIW": {
-    "defaultMessage": "xOGN received"
-  },
   "Yl2sc/": {
     "defaultMessage": "Learn about governance"
   },
@@ -893,9 +908,6 @@
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
-  "gF5qej": {
-    "defaultMessage": "No OGV to convert"
-  },
   "gQC+XM": {
     "defaultMessage": "Start using this app by connecting your wallet."
   },
@@ -911,17 +923,11 @@
   "hSpNEQ": {
     "defaultMessage": "Available to claim and add to your stake"
   },
-  "hVUzey": {
-    "defaultMessage": "No existing lockups to convert"
-  },
   "hjWYtP": {
     "defaultMessage": "Gas"
   },
   "hsqHqR": {
     "defaultMessage": "Time remaining"
-  },
-  "hx4FmM": {
-    "defaultMessage": "Decreasing stake ratio decreases APY and xOGN you will receive."
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
@@ -1058,9 +1064,6 @@
   "r7kiOG": {
     "defaultMessage": "Wrap"
   },
-  "rFWd1Y": {
-    "defaultMessage": "Lock up Ends:"
-  },
   "rhQtuf": {
     "defaultMessage": "Voted Against"
   },
@@ -1166,6 +1169,9 @@
   "wL7VAE": {
     "defaultMessage": "Actions"
   },
+  "wX/nyy": {
+    "defaultMessage": "Your OGV Balance"
+  },
   "weP/oT": {
     "defaultMessage": "Voting power"
   },
@@ -1213,9 +1219,6 @@
   },
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
-  },
-  "zAEFpH": {
-    "defaultMessage": "Decreasing stake duration decreases APY and xOGN you will receive."
   },
   "zQvVDJ": {
     "defaultMessage": "All"
