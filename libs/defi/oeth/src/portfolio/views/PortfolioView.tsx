@@ -1,5 +1,11 @@
 import { Stack } from '@mui/material';
-import { Page, PageSection, PageTitle } from '@origin/defi/shared';
+import {
+  Page,
+  PageSection,
+  PageTitle,
+  trackSentryError,
+} from '@origin/defi/shared';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -25,8 +31,13 @@ export const PortfolioView = () => {
       <PageSection>
         <Stack spacing={5}>
           <TokenSwitch />
-          {token === 'oeth' ? <OethStats /> : <WoethStats />}
-          {token === 'oeth' ? <OethHistoryCard /> : <WoethHistoryCard />}
+          <ErrorBoundary
+            ErrorComponent={<ErrorCard />}
+            onError={trackSentryError}
+          >
+            {token === 'oeth' ? <OethStats /> : <WoethStats />}
+            {token === 'oeth' ? <OethHistoryCard /> : <WoethHistoryCard />}
+          </ErrorBoundary>
         </Stack>
       </PageSection>
     </Page>

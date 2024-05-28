@@ -5,7 +5,9 @@ import {
   MergerBanner,
   Page,
   SectionTitle,
+  trackSentryError,
 } from '@origin/defi/shared';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -49,15 +51,25 @@ export const HomeView = () => {
           dotColor="primary.main"
           label={intl.formatMessage({ defaultMessage: 'Governance' })}
         />
-        <MergerBanner
-          sx={{ my: 3 }}
-          endSlot={
-            <Button component={RouterLink} to="/more/migration" size="large">
-              {intl.formatMessage({ defaultMessage: 'Convert' })}
-            </Button>
-          }
-        />
-        <StakeOGNCard />
+        <ErrorBoundary
+          ErrorComponent={<ErrorCard />}
+          onError={trackSentryError}
+        >
+          <MergerBanner
+            sx={{ my: 3 }}
+            endSlot={
+              <Button component={RouterLink} to="/more/migration" size="large">
+                {intl.formatMessage({ defaultMessage: 'Convert' })}
+              </Button>
+            }
+          />
+        </ErrorBoundary>
+        <ErrorBoundary
+          ErrorComponent={<ErrorCard />}
+          onError={trackSentryError}
+        >
+          <StakeOGNCard />
+        </ErrorBoundary>
       </Container>
     </Page>
   );
