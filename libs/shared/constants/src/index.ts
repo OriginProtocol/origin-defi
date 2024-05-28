@@ -1,3 +1,3 @@
 export * from './chains';
-export * from './feesRates';
+export * from './feeRates';
 export * from './urls';
