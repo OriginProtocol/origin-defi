@@ -55,8 +55,8 @@ export const UnlockAllModal = (props: DialogProps) => {
     enableGas: true,
     params: {
       contract: tokens.mainnet.veOGV,
-      functionName: 'delegate',
-      args: ['0x3bB354a1E0621F454c5D5CE98f6ea21a53bf2d7d'],
+      functionName: 'unstake',
+      args: [lockups?.map((l) => BigInt(l.lockupId)) ?? []],
     },
     activity: {
       type: 'transaction',
