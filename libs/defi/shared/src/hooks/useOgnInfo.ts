@@ -93,7 +93,7 @@ const fetcher: QueryFunction<OgnInfo, Key> = async ({
     +formatUnits(xOgnTotalSupply, tokens.mainnet.xOGN.decimals);
   const ognTotalLockedPercent =
     +formatUnits(ognTotalLocked, tokens.mainnet.OGN.decimals) /
-    +formatUnits(ognTotalLocked, tokens.mainnet.OGN.decimals);
+    +formatUnits(ognTotalSupply, tokens.mainnet.OGN.decimals);
 
   return {
     ognTotalSupply,

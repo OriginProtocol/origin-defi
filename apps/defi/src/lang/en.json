@@ -1189,12 +1189,6 @@
       "value": "Lockup Duration"
     }
   ],
-  "K5iX8G": [
-    {
-      "type": 0,
-      "value": "Max vAPR"
-    }
-  ],
   "K9soUR": [
     {
       "type": 0,
@@ -2287,6 +2281,12 @@
     {
       "type": 0,
       "value": "Delegated to me"
+    }
+  ],
+  "jn/6dQ": [
+    {
+      "type": 0,
+      "value": "Current vAPY"
     }
   ],
   "jngAIm": [
