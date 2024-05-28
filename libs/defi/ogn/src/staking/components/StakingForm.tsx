@@ -257,7 +257,7 @@ export const StakingForm = () => {
               </Typography>
               <Stack direction="row" spacing={1}>
                 <Typography color="text.secondary">
-                  {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
+                  {intl.formatMessage({ defaultMessage: 'Lockup Ends:' })}
                 </Typography>
                 <Typography minWidth={92}>
                   {intl.formatDate(addMonths(new Date(), duration), {

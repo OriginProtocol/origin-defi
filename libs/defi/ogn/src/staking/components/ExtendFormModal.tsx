@@ -295,7 +295,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 <Stack direction="row" justifyContent="flex-end">
                   <Typography variant="mono" color="text.secondary">
                     {intl.formatMessage({
-                      defaultMessage: 'Extended Lock up Ends:',
+                      defaultMessage: 'Extended Lockup Ends:',
                     })}
                   </Typography>
                   <Typography textAlign="end" minWidth={92}>
