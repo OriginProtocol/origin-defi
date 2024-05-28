@@ -5,10 +5,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import {
-  FaArrowUpRightRegular,
-  FaChevronLeftRegular,
-} from '@origin/shared/icons';
+import { FaChevronLeftRegular } from '@origin/shared/icons';
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
 import { ascend, last, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -27,7 +24,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { proposalId } = useParams();
-  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
+  const { data: propal } = useProposal(proposalId);
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
       proposalId: proposalId ?? '',
@@ -91,34 +88,6 @@ export const ProposalDetailHeader = (props: StackProps) => {
       >
         {title}
       </LoadingLabel>
-      <Stack direction="row" spacing={2} mb={3.5}>
-        <Button
-          variant="outlined"
-          color="secondary"
-          href=""
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          {intl.formatMessage({
-            defaultMessage: 'Snapshot post',
-          })}
-          &nbsp;
-          <FaArrowUpRightRegular />
-        </Button>
-        <Button
-          variant="outlined"
-          color="secondary"
-          href=""
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          {intl.formatMessage({
-            defaultMessage: 'Discord discussion',
-          })}
-          &nbsp;
-          <FaArrowUpRightRegular />
-        </Button>
-      </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
         <Typography color="text.secondary">
           {intl.formatMessage(
