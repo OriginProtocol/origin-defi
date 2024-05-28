@@ -2357,11 +2357,14 @@ export type EsAccount = {
   __typename?: 'ESAccount';
   account: Scalars['String']['output'];
   address: Scalars['String']['output'];
+  assetBalance: Scalars['BigInt']['output'];
+  balance: Scalars['BigInt']['output'];
   chainId: Scalars['Int']['output'];
   delegateTo?: Maybe<EsAccount>;
   delegatesFrom: Array<EsAccount>;
   id: Scalars['String']['output'];
-  voteBalance: Scalars['BigInt']['output'];
+  stakedBalance: Scalars['BigInt']['output'];
+  votingPower: Scalars['BigInt']['output'];
 };
 
 
@@ -2391,6 +2394,18 @@ export enum EsAccountOrderByInput {
   AddressDesc = 'address_DESC',
   AddressDescNullsFirst = 'address_DESC_NULLS_FIRST',
   AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  AssetBalanceAsc = 'assetBalance_ASC',
+  AssetBalanceAscNullsFirst = 'assetBalance_ASC_NULLS_FIRST',
+  AssetBalanceAscNullsLast = 'assetBalance_ASC_NULLS_LAST',
+  AssetBalanceDesc = 'assetBalance_DESC',
+  AssetBalanceDescNullsFirst = 'assetBalance_DESC_NULLS_FIRST',
+  AssetBalanceDescNullsLast = 'assetBalance_DESC_NULLS_LAST',
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceAscNullsLast = 'balance_ASC_NULLS_LAST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsFirst = 'balance_DESC_NULLS_FIRST',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
   ChainIdAsc = 'chainId_ASC',
   ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
   ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
@@ -2409,6 +2424,18 @@ export enum EsAccountOrderByInput {
   DelegateToAddressDesc = 'delegateTo_address_DESC',
   DelegateToAddressDescNullsFirst = 'delegateTo_address_DESC_NULLS_FIRST',
   DelegateToAddressDescNullsLast = 'delegateTo_address_DESC_NULLS_LAST',
+  DelegateToAssetBalanceAsc = 'delegateTo_assetBalance_ASC',
+  DelegateToAssetBalanceAscNullsFirst = 'delegateTo_assetBalance_ASC_NULLS_FIRST',
+  DelegateToAssetBalanceAscNullsLast = 'delegateTo_assetBalance_ASC_NULLS_LAST',
+  DelegateToAssetBalanceDesc = 'delegateTo_assetBalance_DESC',
+  DelegateToAssetBalanceDescNullsFirst = 'delegateTo_assetBalance_DESC_NULLS_FIRST',
+  DelegateToAssetBalanceDescNullsLast = 'delegateTo_assetBalance_DESC_NULLS_LAST',
+  DelegateToBalanceAsc = 'delegateTo_balance_ASC',
+  DelegateToBalanceAscNullsFirst = 'delegateTo_balance_ASC_NULLS_FIRST',
+  DelegateToBalanceAscNullsLast = 'delegateTo_balance_ASC_NULLS_LAST',
+  DelegateToBalanceDesc = 'delegateTo_balance_DESC',
+  DelegateToBalanceDescNullsFirst = 'delegateTo_balance_DESC_NULLS_FIRST',
+  DelegateToBalanceDescNullsLast = 'delegateTo_balance_DESC_NULLS_LAST',
   DelegateToChainIdAsc = 'delegateTo_chainId_ASC',
   DelegateToChainIdAscNullsFirst = 'delegateTo_chainId_ASC_NULLS_FIRST',
   DelegateToChainIdAscNullsLast = 'delegateTo_chainId_ASC_NULLS_LAST',
@@ -2421,24 +2448,36 @@ export enum EsAccountOrderByInput {
   DelegateToIdDesc = 'delegateTo_id_DESC',
   DelegateToIdDescNullsFirst = 'delegateTo_id_DESC_NULLS_FIRST',
   DelegateToIdDescNullsLast = 'delegateTo_id_DESC_NULLS_LAST',
-  DelegateToVoteBalanceAsc = 'delegateTo_voteBalance_ASC',
-  DelegateToVoteBalanceAscNullsFirst = 'delegateTo_voteBalance_ASC_NULLS_FIRST',
-  DelegateToVoteBalanceAscNullsLast = 'delegateTo_voteBalance_ASC_NULLS_LAST',
-  DelegateToVoteBalanceDesc = 'delegateTo_voteBalance_DESC',
-  DelegateToVoteBalanceDescNullsFirst = 'delegateTo_voteBalance_DESC_NULLS_FIRST',
-  DelegateToVoteBalanceDescNullsLast = 'delegateTo_voteBalance_DESC_NULLS_LAST',
+  DelegateToStakedBalanceAsc = 'delegateTo_stakedBalance_ASC',
+  DelegateToStakedBalanceAscNullsFirst = 'delegateTo_stakedBalance_ASC_NULLS_FIRST',
+  DelegateToStakedBalanceAscNullsLast = 'delegateTo_stakedBalance_ASC_NULLS_LAST',
+  DelegateToStakedBalanceDesc = 'delegateTo_stakedBalance_DESC',
+  DelegateToStakedBalanceDescNullsFirst = 'delegateTo_stakedBalance_DESC_NULLS_FIRST',
+  DelegateToStakedBalanceDescNullsLast = 'delegateTo_stakedBalance_DESC_NULLS_LAST',
+  DelegateToVotingPowerAsc = 'delegateTo_votingPower_ASC',
+  DelegateToVotingPowerAscNullsFirst = 'delegateTo_votingPower_ASC_NULLS_FIRST',
+  DelegateToVotingPowerAscNullsLast = 'delegateTo_votingPower_ASC_NULLS_LAST',
+  DelegateToVotingPowerDesc = 'delegateTo_votingPower_DESC',
+  DelegateToVotingPowerDescNullsFirst = 'delegateTo_votingPower_DESC_NULLS_FIRST',
+  DelegateToVotingPowerDescNullsLast = 'delegateTo_votingPower_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdAscNullsLast = 'id_ASC_NULLS_LAST',
   IdDesc = 'id_DESC',
   IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  VoteBalanceAsc = 'voteBalance_ASC',
-  VoteBalanceAscNullsFirst = 'voteBalance_ASC_NULLS_FIRST',
-  VoteBalanceAscNullsLast = 'voteBalance_ASC_NULLS_LAST',
-  VoteBalanceDesc = 'voteBalance_DESC',
-  VoteBalanceDescNullsFirst = 'voteBalance_DESC_NULLS_FIRST',
-  VoteBalanceDescNullsLast = 'voteBalance_DESC_NULLS_LAST'
+  StakedBalanceAsc = 'stakedBalance_ASC',
+  StakedBalanceAscNullsFirst = 'stakedBalance_ASC_NULLS_FIRST',
+  StakedBalanceAscNullsLast = 'stakedBalance_ASC_NULLS_LAST',
+  StakedBalanceDesc = 'stakedBalance_DESC',
+  StakedBalanceDescNullsFirst = 'stakedBalance_DESC_NULLS_FIRST',
+  StakedBalanceDescNullsLast = 'stakedBalance_DESC_NULLS_LAST',
+  VotingPowerAsc = 'votingPower_ASC',
+  VotingPowerAscNullsFirst = 'votingPower_ASC_NULLS_FIRST',
+  VotingPowerAscNullsLast = 'votingPower_ASC_NULLS_LAST',
+  VotingPowerDesc = 'votingPower_DESC',
+  VotingPowerDescNullsFirst = 'votingPower_DESC_NULLS_FIRST',
+  VotingPowerDescNullsLast = 'votingPower_DESC_NULLS_LAST'
 }
 
 export type EsAccountWhereInput = {
@@ -2478,6 +2517,24 @@ export type EsAccountWhereInput = {
   address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  assetBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  assetBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  assetBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  assetBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   chainId_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_gt?: InputMaybe<Scalars['Int']['input']>;
   chainId_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -2509,15 +2566,24 @@ export type EsAccountWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  voteBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  voteBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  voteBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  voteBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  stakedBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  stakedBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  stakedBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  stakedBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  votingPower_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  votingPower_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  votingPower_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  votingPower_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
 export type EsAccountsConnection = {
@@ -2904,6 +2970,7 @@ export type EsLockup = {
   amount: Scalars['BigInt']['output'];
   chainId: Scalars['Int']['output'];
   end: Scalars['BigInt']['output'];
+  events: Array<EsLockupEvent>;
   id: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
   lockupId: Scalars['BigInt']['output'];
@@ -2914,10 +2981,238 @@ export type EsLockup = {
   withdrawAmount: Scalars['BigInt']['output'];
 };
 
+
+export type EsLockupEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EsLockupEventOrderByInput>>;
+  where?: InputMaybe<EsLockupEventWhereInput>;
+};
+
 export type EsLockupEdge = {
   __typename?: 'ESLockupEdge';
   cursor: Scalars['String']['output'];
   node: EsLockup;
+};
+
+export type EsLockupEvent = {
+  __typename?: 'ESLockupEvent';
+  address: Scalars['String']['output'];
+  blockNumber: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  event: EsLockupEventType;
+  id: Scalars['String']['output'];
+  lockup: EsLockup;
+  timestamp: Scalars['DateTime']['output'];
+};
+
+export type EsLockupEventEdge = {
+  __typename?: 'ESLockupEventEdge';
+  cursor: Scalars['String']['output'];
+  node: EsLockupEvent;
+};
+
+export enum EsLockupEventOrderByInput {
+  AddressAsc = 'address_ASC',
+  AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
+  AddressAscNullsLast = 'address_ASC_NULLS_LAST',
+  AddressDesc = 'address_DESC',
+  AddressDescNullsFirst = 'address_DESC_NULLS_FIRST',
+  AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  EventAsc = 'event_ASC',
+  EventAscNullsFirst = 'event_ASC_NULLS_FIRST',
+  EventAscNullsLast = 'event_ASC_NULLS_LAST',
+  EventDesc = 'event_DESC',
+  EventDescNullsFirst = 'event_DESC_NULLS_FIRST',
+  EventDescNullsLast = 'event_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  LockupAccountAsc = 'lockup_account_ASC',
+  LockupAccountAscNullsFirst = 'lockup_account_ASC_NULLS_FIRST',
+  LockupAccountAscNullsLast = 'lockup_account_ASC_NULLS_LAST',
+  LockupAccountDesc = 'lockup_account_DESC',
+  LockupAccountDescNullsFirst = 'lockup_account_DESC_NULLS_FIRST',
+  LockupAccountDescNullsLast = 'lockup_account_DESC_NULLS_LAST',
+  LockupAddressAsc = 'lockup_address_ASC',
+  LockupAddressAscNullsFirst = 'lockup_address_ASC_NULLS_FIRST',
+  LockupAddressAscNullsLast = 'lockup_address_ASC_NULLS_LAST',
+  LockupAddressDesc = 'lockup_address_DESC',
+  LockupAddressDescNullsFirst = 'lockup_address_DESC_NULLS_FIRST',
+  LockupAddressDescNullsLast = 'lockup_address_DESC_NULLS_LAST',
+  LockupAmountAsc = 'lockup_amount_ASC',
+  LockupAmountAscNullsFirst = 'lockup_amount_ASC_NULLS_FIRST',
+  LockupAmountAscNullsLast = 'lockup_amount_ASC_NULLS_LAST',
+  LockupAmountDesc = 'lockup_amount_DESC',
+  LockupAmountDescNullsFirst = 'lockup_amount_DESC_NULLS_FIRST',
+  LockupAmountDescNullsLast = 'lockup_amount_DESC_NULLS_LAST',
+  LockupChainIdAsc = 'lockup_chainId_ASC',
+  LockupChainIdAscNullsFirst = 'lockup_chainId_ASC_NULLS_FIRST',
+  LockupChainIdAscNullsLast = 'lockup_chainId_ASC_NULLS_LAST',
+  LockupChainIdDesc = 'lockup_chainId_DESC',
+  LockupChainIdDescNullsFirst = 'lockup_chainId_DESC_NULLS_FIRST',
+  LockupChainIdDescNullsLast = 'lockup_chainId_DESC_NULLS_LAST',
+  LockupEndAsc = 'lockup_end_ASC',
+  LockupEndAscNullsFirst = 'lockup_end_ASC_NULLS_FIRST',
+  LockupEndAscNullsLast = 'lockup_end_ASC_NULLS_LAST',
+  LockupEndDesc = 'lockup_end_DESC',
+  LockupEndDescNullsFirst = 'lockup_end_DESC_NULLS_FIRST',
+  LockupEndDescNullsLast = 'lockup_end_DESC_NULLS_LAST',
+  LockupIdAsc = 'lockup_id_ASC',
+  LockupIdAscNullsFirst = 'lockup_id_ASC_NULLS_FIRST',
+  LockupIdAscNullsLast = 'lockup_id_ASC_NULLS_LAST',
+  LockupIdDesc = 'lockup_id_DESC',
+  LockupIdDescNullsFirst = 'lockup_id_DESC_NULLS_FIRST',
+  LockupIdDescNullsLast = 'lockup_id_DESC_NULLS_LAST',
+  LockupLastUpdatedAsc = 'lockup_lastUpdated_ASC',
+  LockupLastUpdatedAscNullsFirst = 'lockup_lastUpdated_ASC_NULLS_FIRST',
+  LockupLastUpdatedAscNullsLast = 'lockup_lastUpdated_ASC_NULLS_LAST',
+  LockupLastUpdatedDesc = 'lockup_lastUpdated_DESC',
+  LockupLastUpdatedDescNullsFirst = 'lockup_lastUpdated_DESC_NULLS_FIRST',
+  LockupLastUpdatedDescNullsLast = 'lockup_lastUpdated_DESC_NULLS_LAST',
+  LockupLockupIdAsc = 'lockup_lockupId_ASC',
+  LockupLockupIdAscNullsFirst = 'lockup_lockupId_ASC_NULLS_FIRST',
+  LockupLockupIdAscNullsLast = 'lockup_lockupId_ASC_NULLS_LAST',
+  LockupLockupIdDesc = 'lockup_lockupId_DESC',
+  LockupLockupIdDescNullsFirst = 'lockup_lockupId_DESC_NULLS_FIRST',
+  LockupLockupIdDescNullsLast = 'lockup_lockupId_DESC_NULLS_LAST',
+  LockupPenaltyAsc = 'lockup_penalty_ASC',
+  LockupPenaltyAscNullsFirst = 'lockup_penalty_ASC_NULLS_FIRST',
+  LockupPenaltyAscNullsLast = 'lockup_penalty_ASC_NULLS_LAST',
+  LockupPenaltyDesc = 'lockup_penalty_DESC',
+  LockupPenaltyDescNullsFirst = 'lockup_penalty_DESC_NULLS_FIRST',
+  LockupPenaltyDescNullsLast = 'lockup_penalty_DESC_NULLS_LAST',
+  LockupPointsAsc = 'lockup_points_ASC',
+  LockupPointsAscNullsFirst = 'lockup_points_ASC_NULLS_FIRST',
+  LockupPointsAscNullsLast = 'lockup_points_ASC_NULLS_LAST',
+  LockupPointsDesc = 'lockup_points_DESC',
+  LockupPointsDescNullsFirst = 'lockup_points_DESC_NULLS_FIRST',
+  LockupPointsDescNullsLast = 'lockup_points_DESC_NULLS_LAST',
+  LockupStateAsc = 'lockup_state_ASC',
+  LockupStateAscNullsFirst = 'lockup_state_ASC_NULLS_FIRST',
+  LockupStateAscNullsLast = 'lockup_state_ASC_NULLS_LAST',
+  LockupStateDesc = 'lockup_state_DESC',
+  LockupStateDescNullsFirst = 'lockup_state_DESC_NULLS_FIRST',
+  LockupStateDescNullsLast = 'lockup_state_DESC_NULLS_LAST',
+  LockupTimestampAsc = 'lockup_timestamp_ASC',
+  LockupTimestampAscNullsFirst = 'lockup_timestamp_ASC_NULLS_FIRST',
+  LockupTimestampAscNullsLast = 'lockup_timestamp_ASC_NULLS_LAST',
+  LockupTimestampDesc = 'lockup_timestamp_DESC',
+  LockupTimestampDescNullsFirst = 'lockup_timestamp_DESC_NULLS_FIRST',
+  LockupTimestampDescNullsLast = 'lockup_timestamp_DESC_NULLS_LAST',
+  LockupWithdrawAmountAsc = 'lockup_withdrawAmount_ASC',
+  LockupWithdrawAmountAscNullsFirst = 'lockup_withdrawAmount_ASC_NULLS_FIRST',
+  LockupWithdrawAmountAscNullsLast = 'lockup_withdrawAmount_ASC_NULLS_LAST',
+  LockupWithdrawAmountDesc = 'lockup_withdrawAmount_DESC',
+  LockupWithdrawAmountDescNullsFirst = 'lockup_withdrawAmount_DESC_NULLS_FIRST',
+  LockupWithdrawAmountDescNullsLast = 'lockup_withdrawAmount_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+}
+
+export enum EsLockupEventType {
+  Extended = 'Extended',
+  Staked = 'Staked',
+  Unstaked = 'Unstaked'
+}
+
+export type EsLockupEventWhereInput = {
+  AND?: InputMaybe<Array<EsLockupEventWhereInput>>;
+  OR?: InputMaybe<Array<EsLockupEventWhereInput>>;
+  address_contains?: InputMaybe<Scalars['String']['input']>;
+  address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_eq?: InputMaybe<Scalars['String']['input']>;
+  address_gt?: InputMaybe<Scalars['String']['input']>;
+  address_gte?: InputMaybe<Scalars['String']['input']>;
+  address_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  address_lt?: InputMaybe<Scalars['String']['input']>;
+  address_lte?: InputMaybe<Scalars['String']['input']>;
+  address_not_contains?: InputMaybe<Scalars['String']['input']>;
+  address_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_not_eq?: InputMaybe<Scalars['String']['input']>;
+  address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  event_eq?: InputMaybe<EsLockupEventType>;
+  event_in?: InputMaybe<Array<EsLockupEventType>>;
+  event_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  event_not_eq?: InputMaybe<EsLockupEventType>;
+  event_not_in?: InputMaybe<Array<EsLockupEventType>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  lockup?: InputMaybe<EsLockupWhereInput>;
+  lockup_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type EsLockupEventsConnection = {
+  __typename?: 'ESLockupEventsConnection';
+  edges: Array<EsLockupEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
 };
 
 export enum EsLockupOrderByInput {
@@ -3070,6 +3365,9 @@ export type EsLockupWhereInput = {
   end_lte?: InputMaybe<Scalars['BigInt']['input']>;
   end_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
   end_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  events_every?: InputMaybe<EsLockupEventWhereInput>;
+  events_none?: InputMaybe<EsLockupEventWhereInput>;
+  events_some?: InputMaybe<EsLockupEventWhereInput>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -3682,6 +3980,135 @@ export type EsStakeWhereInput = {
 export type EsStakesConnection = {
   __typename?: 'ESStakesConnection';
   edges: Array<EsStakeEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type EsToken = {
+  __typename?: 'ESToken';
+  blockNumber: Scalars['Int']['output'];
+  circulating: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  staked: Scalars['BigInt']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  total: Scalars['BigInt']['output'];
+};
+
+export type EsTokenEdge = {
+  __typename?: 'ESTokenEdge';
+  cursor: Scalars['String']['output'];
+  node: EsToken;
+};
+
+export enum EsTokenOrderByInput {
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  CirculatingAsc = 'circulating_ASC',
+  CirculatingAscNullsFirst = 'circulating_ASC_NULLS_FIRST',
+  CirculatingAscNullsLast = 'circulating_ASC_NULLS_LAST',
+  CirculatingDesc = 'circulating_DESC',
+  CirculatingDescNullsFirst = 'circulating_DESC_NULLS_FIRST',
+  CirculatingDescNullsLast = 'circulating_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  StakedAsc = 'staked_ASC',
+  StakedAscNullsFirst = 'staked_ASC_NULLS_FIRST',
+  StakedAscNullsLast = 'staked_ASC_NULLS_LAST',
+  StakedDesc = 'staked_DESC',
+  StakedDescNullsFirst = 'staked_DESC_NULLS_FIRST',
+  StakedDescNullsLast = 'staked_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TotalAsc = 'total_ASC',
+  TotalAscNullsFirst = 'total_ASC_NULLS_FIRST',
+  TotalAscNullsLast = 'total_ASC_NULLS_LAST',
+  TotalDesc = 'total_DESC',
+  TotalDescNullsFirst = 'total_DESC_NULLS_FIRST',
+  TotalDescNullsLast = 'total_DESC_NULLS_LAST'
+}
+
+export type EsTokenWhereInput = {
+  AND?: InputMaybe<Array<EsTokenWhereInput>>;
+  OR?: InputMaybe<Array<EsTokenWhereInput>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  circulating_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  circulating_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  circulating_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  circulating_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  staked_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  staked_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  staked_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  staked_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  total_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  total_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  total_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  total_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  total_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  total_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  total_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  total_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  total_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export type EsTokensConnection = {
+  __typename?: 'ESTokensConnection';
+  edges: Array<EsTokenEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -16311,6 +16738,11 @@ export type Query = {
   esLockupById?: Maybe<EsLockup>;
   /** @deprecated Use esLockupById */
   esLockupByUniqueInput?: Maybe<EsLockup>;
+  esLockupEventById?: Maybe<EsLockupEvent>;
+  /** @deprecated Use esLockupEventById */
+  esLockupEventByUniqueInput?: Maybe<EsLockupEvent>;
+  esLockupEvents: Array<EsLockupEvent>;
+  esLockupEventsConnection: EsLockupEventsConnection;
   esLockups: Array<EsLockup>;
   esLockupsConnection: EsLockupsConnection;
   esPenalties: Array<EsPenalty>;
@@ -16328,6 +16760,11 @@ export type Query = {
   esStakeByUniqueInput?: Maybe<EsStake>;
   esStakes: Array<EsStake>;
   esStakesConnection: EsStakesConnection;
+  esTokenById?: Maybe<EsToken>;
+  /** @deprecated Use esTokenById */
+  esTokenByUniqueInput?: Maybe<EsToken>;
+  esTokens: Array<EsToken>;
+  esTokensConnection: EsTokensConnection;
   esUnstakeById?: Maybe<EsUnstake>;
   /** @deprecated Use esUnstakeById */
   esUnstakeByUniqueInput?: Maybe<EsUnstake>;
@@ -17104,6 +17541,32 @@ export type QueryEsLockupByUniqueInputArgs = {
 };
 
 
+export type QueryEsLockupEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEsLockupEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEsLockupEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EsLockupEventOrderByInput>>;
+  where?: InputMaybe<EsLockupEventWhereInput>;
+};
+
+
+export type QueryEsLockupEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EsLockupEventOrderByInput>;
+  where?: InputMaybe<EsLockupEventWhereInput>;
+};
+
+
 export type QueryEsLockupsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
@@ -17195,6 +17658,32 @@ export type QueryEsStakesConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<EsStakeOrderByInput>;
   where?: InputMaybe<EsStakeWhereInput>;
+};
+
+
+export type QueryEsTokenByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryEsTokenByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryEsTokensArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<EsTokenOrderByInput>>;
+  where?: InputMaybe<EsTokenWhereInput>;
+};
+
+
+export type QueryEsTokensConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<EsTokenOrderByInput>;
+  where?: InputMaybe<EsTokenWhereInput>;
 };
 
 

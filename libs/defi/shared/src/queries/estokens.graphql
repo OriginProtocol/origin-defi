@@ -29,11 +29,10 @@ query ESTokenAccount($address: String!, $token: String!, $chainId: Int!) {
     }
   ) {
     id
-    voteBalance
     delegateTo {
       address
     }
-    delegatesFrom{
+    delegatesFrom {
       address
     }
   }

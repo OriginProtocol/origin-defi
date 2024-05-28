@@ -18,7 +18,7 @@ export type EsTokenAccountQueryVariables = Types.Exact<{
 }>;
 
 
-export type EsTokenAccountQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, voteBalance: string, delegateTo?: { __typename?: 'ESAccount', address: string } | null, delegatesFrom: Array<{ __typename?: 'ESAccount', address: string }> }> };
+export type EsTokenAccountQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, delegateTo?: { __typename?: 'ESAccount', address: string } | null, delegatesFrom: Array<{ __typename?: 'ESAccount', address: string }> }> };
 
 
 
@@ -68,7 +68,6 @@ export const EsTokenAccountDocument = `
     where: {account_containsInsensitive: $address, address_containsInsensitive: $token, chainId_eq: $chainId}
   ) {
     id
-    voteBalance
     delegateTo {
       address
     }
