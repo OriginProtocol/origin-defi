@@ -75,7 +75,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
       args: [
-        BigInt(lockup.amount),
+        0n,
         getMonthDurationToSeconds(duration),
         address ?? ZERO_ADDRESS,
         true,

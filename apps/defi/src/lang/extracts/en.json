@@ -485,9 +485,6 @@
   "K/psnI": {
     "defaultMessage": "Lockup Duration"
   },
-  "K5iX8G": {
-    "defaultMessage": "Max vAPR"
-  },
   "K9soUR": {
     "defaultMessage": "Approval successful"
   },
@@ -958,6 +955,9 @@
   },
   "jab7Gg": {
     "defaultMessage": "Delegated to me"
+  },
+  "jn/6dQ": {
+    "defaultMessage": "Current vAPY"
   },
   "jngAIm": {
     "defaultMessage": "Extend Stake"

@@ -80,7 +80,7 @@ const fetcher: QueryFunction<Result, Key> = async ({
   const userDepositOgn = +formatUnits(amt, tokens.mainnet.OGN.decimals);
   const userOgnAfterOneYear = ognAfterOneYear * xognPercentage;
 
-  const xOgnApy = userOgnAfterOneYear / userDepositOgn;
+  const xOgnApy = (userOgnAfterOneYear - userDepositOgn) / userDepositOgn;
 
   return {
     xOgnApy,

@@ -64,7 +64,7 @@ export const StakeOGNCard = (props: CardProps) => {
           })}
         </LoadingLabel>
         <Typography variant="body2">
-          {intl.formatMessage({ defaultMessage: 'Max vAPR' })}
+          {intl.formatMessage({ defaultMessage: 'Current vAPY' })}
         </Typography>
       </Stack>
       <Stack
