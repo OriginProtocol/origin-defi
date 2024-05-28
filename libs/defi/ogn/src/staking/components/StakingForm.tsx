@@ -339,7 +339,7 @@ export const StakingForm = () => {
               isLoading={isLoading || isStakingLoading}
             >
               ~
-              {intl.formatNumber((staking?.xOgnApy ?? 0) / 100, {
+              {intl.formatNumber(staking?.xOgnApy ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

@@ -63,6 +63,7 @@ const fetcher: QueryFunction<Result, Key> = async ({
   const ognRewardsPerYear = isFulfilled(res?.[0])
     ? res?.[0].value.ognRewardsPerYear
     : 0;
+  const ognStaked = isFulfilled(res?.[0]) ? res?.[0].value.ognStaked : 0;
   const xOgnPreview = isFulfilled(res?.[1])
     ? +formatUnits(
         res[1].value?.[0].result?.[0] ?? 0n,
@@ -73,9 +74,16 @@ const fetcher: QueryFunction<Result, Key> = async ({
     ? +formatUnits(res[1].value?.[1].result ?? 0n, tokens.mainnet.xOGN.decimals)
     : 0;
 
+  const ognAfterOneYear = ognStaked + ognRewardsPerYear;
+  const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
+
+  const userDepositOgn = +formatUnits(amt, tokens.mainnet.OGN.decimals);
+  const userOgnAfterOneYear = ognAfterOneYear * xognPercentage;
+
+  const xOgnApy = userOgnAfterOneYear / userDepositOgn;
+
   return {
-    xOgnApy:
-      ognRewardsPerYear * (xOgnPreview / (xOgnTotalSupply + xOgnPreview)),
+    xOgnApy,
     xOgnPreview,
   };
 };
