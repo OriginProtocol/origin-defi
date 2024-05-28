@@ -1,6 +1,12 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { Page, PageSection, PageTitle } from '@origin/defi/shared';
+import {
+  Page,
+  PageSection,
+  PageTitle,
+  trackSentryError,
+} from '@origin/defi/shared';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -29,20 +35,50 @@ export const StakingView = () => {
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={3}>
           <Grid2 xs={12} md={3}>
-            <StatsCard />
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <StatsCard />
+            </ErrorBoundary>
           </Grid2>
           <Grid2 xs={12} md={6}>
-            <StakingForm />
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <StakingForm />
+            </ErrorBoundary>
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={3}>
-              <BalanceCard />
-              <RewardCard />
-              <VotingPowerCard />
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <BalanceCard />
+              </ErrorBoundary>{' '}
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <RewardCard />
+              </ErrorBoundary>{' '}
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <VotingPowerCard />
+              </ErrorBoundary>
             </Stack>
           </Grid2>
           <Grid2 xs={12}>
-            <LockupsCard />
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <LockupsCard />
+            </ErrorBoundary>
           </Grid2>
         </Grid2>
       </PageSection>

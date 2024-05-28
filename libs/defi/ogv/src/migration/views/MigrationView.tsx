@@ -5,7 +5,9 @@ import {
   Page,
   PageSection,
   PageTitle,
+  trackSentryError,
 } from '@origin/defi/shared';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -29,7 +31,12 @@ export const MigrationView = () => {
         <MergerBanner />
         <Stack pt={5}>
           {isConnected ? (
-            <MigrationForm />
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <MigrationForm />
+            </ErrorBoundary>
           ) : (
             <ConnectPage
               subtitle={intl.formatMessage({
