@@ -24,6 +24,7 @@ import { formatDistanceToNowStrict } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { useOgnStakingApy } from '../hooks';
 import { useUserLockupsQuery } from '../queries.generated';
 
 import type {
@@ -239,6 +240,7 @@ type SuccessViewProps = {
 
 function SuccessView({ onClose, ...rest }: SuccessViewProps) {
   const intl = useIntl();
+  const { data: ognApy, isLoading: isOgnApyLoading } = useOgnStakingApy();
 
   return (
     <DialogContent
@@ -266,7 +268,11 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
             defaultMessage: 'Current OGN Staking vAPY',
           })}
           labelProps={{ textAlign: 'center' }}
-          value={`~5.89%`}
+          value={intl.formatNumber((ognApy?.ognApy ?? 0) / 100, {
+            style: 'percent',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          })}
           valueProps={{
             sx: {
               fontSize: 32,
@@ -294,7 +300,14 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
         >
           {intl.formatMessage({ defaultMessage: 'Done' })}
         </Button>
-        <Button fullWidth variant="connect" sx={{ height: 44 }}>
+        <Button
+          href="https://originprotocol.eth.limo/#/more/migration"
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          fullWidth
+          variant="connect"
+          sx={{ height: 44 }}
+        >
           {intl.formatMessage({ defaultMessage: 'Convert OGV' })}&nbsp;
           <FaArrowUpRightRegular />
         </Button>
