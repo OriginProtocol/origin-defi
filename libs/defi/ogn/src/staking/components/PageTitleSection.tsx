@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
+import { ColorChip, useOgnStakingApy } from '@origin/defi/shared';
 import {
   LoadingLabel,
   MultiTokenIcon,
@@ -14,21 +14,7 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
-    {
-      token: tokens.mainnet.OGN.address,
-      chainId: tokens.mainnet.OGN.chainId,
-    },
-    {
-      select: (data) => {
-        return Math.max(
-          data?.oTokenApies?.[0].apy7DayAvg,
-          data?.oTokenApies?.[0].apy14DayAvg,
-          data?.oTokenApies?.[0].apy30DayAvg,
-        );
-      },
-    },
-  );
+  const { data: apy, isLoading: isApyLoading } = useOgnStakingApy();
 
   return (
     <Stack
@@ -47,7 +33,7 @@ export const PageTitleSection = (props: StackProps) => {
           color="inherit"
           fontWeight="bold"
         >
-          {intl.formatNumber(apy ?? 0, {
+          {intl.formatNumber((apy?.ognApy ?? 0) / 100, {
             style: 'percent',
             minimumFractionDigits: 2,
           })}

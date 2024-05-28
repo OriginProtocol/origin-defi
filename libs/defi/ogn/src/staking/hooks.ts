@@ -1,19 +1,12 @@
-import { contracts, tokens } from '@origin/shared/contracts';
-import {
-  getMonthDurationToSeconds,
-  isNilOrEmpty,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { useOgnStakingApy } from '@origin/defi/shared';
+import { tokens } from '@origin/shared/contracts';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { readContract, readContracts } from '@wagmi/core';
-import { formatUnits, parseUnits } from 'viem';
+import { readContract } from '@wagmi/core';
+import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useOgnLockupsQuery } from './queries.generated';
-import { getLockupApy, getRewardsApy } from './utils';
-
-import type { UseQueryOptions } from '@tanstack/react-query';
-import type { Config } from '@wagmi/core';
 
 import type { OgnLockupsQuery } from './queries.generated';
 
@@ -31,81 +24,6 @@ export const useTotalLockedUp = () => {
       enabled: !!address,
     },
   );
-};
-
-export const useXOgnStaking = (
-  amount: bigint | number,
-  monthDuration: number,
-  options?: Partial<
-    UseQueryOptions<
-      {
-        stakingAPY: number;
-        xOGNReceived: number;
-        rewardRate: number;
-      },
-      Error,
-      {
-        stakingAPY: number;
-        xOGNReceived: number;
-        rewardRate: number;
-      },
-      ['useXOgnStaking', string, number, Config]
-    >
-  >,
-) => {
-  const config = useConfig();
-
-  return useQuery({
-    queryKey: ['useXOgnStaking', amount?.toString(), monthDuration, config],
-    queryFn: async () => {
-      const amt =
-        typeof amount === 'bigint'
-          ? amount
-          : parseUnits(amount.toString(), tokens.mainnet.OGN.decimals);
-
-      const res = await readContracts(config, {
-        contracts: [
-          {
-            address: tokens.mainnet.xOGN.address,
-            abi: tokens.mainnet.xOGN.abi,
-            functionName: 'previewPoints',
-            args: [amt, getMonthDurationToSeconds(monthDuration)],
-          },
-          {
-            address: tokens.mainnet.xOGN.address,
-            abi: tokens.mainnet.xOGN.abi,
-            functionName: 'totalSupply',
-          },
-          {
-            address: contracts.mainnet.OGNFixedRewardSource.address,
-            abi: contracts.mainnet.OGNFixedRewardSource.abi,
-            functionName: 'rewardConfig',
-          },
-        ],
-        allowFailure: true,
-      });
-
-      const preview =
-        res?.[0]?.status === 'success'
-          ? +formatUnits(res[0].result[0], tokens.mainnet.xOGN.decimals)
-          : 0;
-      const xOgnTotalSupply =
-        res?.[1]?.status === 'success'
-          ? +formatUnits(res[1].result, tokens.mainnet.xOGN.decimals)
-          : 100e6;
-      const rewardRate =
-        res?.[2]?.status === 'success'
-          ? +formatUnits(res[2].result[1], tokens.mainnet.OGN.decimals)
-          : 0;
-
-      return {
-        stakingAPY: getRewardsApy(preview, xOgnTotalSupply, rewardRate),
-        xOGNReceived: preview,
-        rewardRate,
-      };
-    },
-    ...options,
-  });
 };
 
 export const useMyVApy = () => {
@@ -130,15 +48,14 @@ export const useMyVApy = () => {
             address: address ?? ZERO_ADDRESS,
           }),
         }),
+        queryClient.fetchQuery({
+          queryKey: useOgnStakingApy.getKey(config),
+          queryFn: useOgnStakingApy.fetcher,
+        }),
         readContract(config, {
           address: tokens.mainnet.xOGN.address,
           abi: tokens.mainnet.xOGN.abi,
           functionName: 'totalSupply',
-        }),
-        readContract(config, {
-          address: contracts.mainnet.OGNFixedRewardSource.address,
-          abi: contracts.mainnet.OGNFixedRewardSource.abi,
-          functionName: 'rewardConfig',
         }),
       ]);
 
@@ -154,12 +71,18 @@ export const useMyVApy = () => {
       );
 
       return data[0].ognLockups.reduce((acc, curr) => {
-        const vAPY = getLockupApy(
-          +formatUnits(BigInt(curr.amount), tokens.mainnet.OGN.decimals),
-          +formatUnits(BigInt(curr.xogn), tokens.mainnet.xOGN.decimals),
-          +formatUnits(BigInt(data[1]), tokens.mainnet.xOGN.decimals),
-          +formatUnits(BigInt(data[2][1] ?? 0), tokens.mainnet.OGN.decimals),
+        const ognRewardsPerYear = data?.[1]?.ognRewardsPerYear ?? 0;
+        const totalSupply = +formatUnits(
+          data?.[2] ?? 0n,
+          tokens.mainnet.xOGN.decimals,
         );
+        const vAPY =
+          ognRewardsPerYear *
+          (+formatUnits(
+            BigInt(curr?.xogn ?? '0'),
+            tokens.mainnet.xOGN.decimals,
+          ) /
+            (totalSupply === 0 ? 1 : totalSupply));
 
         const weight =
           +formatUnits(BigInt(curr.amount), tokens.mainnet.OGN.decimals) /

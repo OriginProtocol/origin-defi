@@ -21,7 +21,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { TokenChip, useApprovalButton, useTxButton } from '@origin/defi/shared';
+import {
+  TokenChip,
+  useApprovalButton,
+  useTxButton,
+  useXOgnStakingApy,
+} from '@origin/defi/shared';
 import {
   ExpandIcon,
   InfoTooltipLabel,
@@ -38,7 +43,6 @@ import { addMonths, formatDuration } from 'date-fns';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
-import { useReadContract } from 'wagmi';
 
 import { ogvToOgnRate } from '../constants';
 
@@ -82,19 +86,8 @@ export const ConvertModal = ({
   const ogn = (converted * (100 - stakingRatio)) / 100;
   const xOgn = (converted * stakingRatio) / 100;
 
-  const { data: preview, isLoading: isPreviewLoading } = useReadContract({
-    address: tokens.mainnet.xOGN.address,
-    abi: tokens.mainnet.xOGN.abi,
-    functionName: 'previewPoints',
-    args: [
-      parseUnits(xOgn.toString(), tokens.mainnet.OGN.decimals),
-      getMonthDurationToSeconds(duration),
-    ],
-    query: {
-      enabled: xOgn > 0,
-      select: (data) => +formatUnits(data?.[0], tokens.mainnet.xOGN.decimals),
-    },
-  });
+  const { data: xOgnStaking, isLoading: isXOgnStakingLoading } =
+    useXOgnStakingApy(xOgn, duration);
   const {
     allowance,
     params: approvalParams,
@@ -131,6 +124,19 @@ export const ConvertModal = ({
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
         onClose?.({}, 'backdropClick');
+      },
+      onSimulateError: (err) => {
+        console.log(
+          veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
+          ogvBalance,
+          0n,
+          ogvRewards > 0n,
+          stakingRatio > 0
+            ? parseUnits(xOgn.toString(), tokens.mainnet.xOGN.decimals)
+            : 0n,
+          stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
+          err,
+        );
       },
     },
     enableGas: true,
@@ -344,10 +350,10 @@ export const ConvertModal = ({
                       <LoadingLabel
                         variant="body1"
                         fontWeight="medium"
-                        isLoading={isPreviewLoading}
+                        isLoading={isXOgnStakingLoading}
                         sWidth={80}
                       >
-                        {intl.formatNumber(preview ?? 0)}
+                        {intl.formatNumber(xOgnStaking?.xOgnPreview ?? 0)}
                       </LoadingLabel>
                     </Stack>
                   }
@@ -474,10 +480,10 @@ export const ConvertModal = ({
           >
             <LoadingLabel
               variant="h6"
-              isLoading={isPreviewLoading}
+              isLoading={isXOgnStakingLoading}
               sWidth={100}
             >
-              {intl.formatNumber(preview ?? 0)}
+              {intl.formatNumber(xOgnStaking?.xOgnPreview ?? 0)}
             </LoadingLabel>
             <TokenChip
               token={tokens.mainnet.xOGN}
@@ -496,13 +502,18 @@ export const ConvertModal = ({
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
           </InfoTooltipLabel>
           <Stack {...cardStackProps} bgcolor="transparent">
-            <Typography
+            <LoadingLabel
               variant="featured3"
               fontWeight="bold"
               color="primary.main"
+              isLoading={isXOgnStakingLoading}
             >
-              ~5.98%
-            </Typography>
+              {intl.formatNumber((xOgnStaking?.xOgnApy ?? 0) / 100, {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
+            </LoadingLabel>
           </Stack>
         </Collapse>
         <ValueLabel

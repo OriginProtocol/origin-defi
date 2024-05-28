@@ -1,7 +1,6 @@
 import { Button, Card, Stack, Typography } from '@mui/material';
-import { useOTokenApyQuery } from '@origin/defi/shared';
+import { useOgnStakingApy } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -9,13 +8,7 @@ import type { CardProps } from '@mui/material';
 
 export const StakeOGNCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: apr, isLoading: isAprLoading } = useOTokenApyQuery(
-    {
-      token: tokens.mainnet.OGN.address,
-      chainId: tokens.mainnet.OGN.chainId,
-    },
-    { select: (data) => data?.oTokenApies?.[0]?.apr },
-  );
+  const { data: staking, isLoading: isStakingLoading } = useOgnStakingApy();
 
   return (
     <Card
@@ -60,11 +53,11 @@ export const StakeOGNCard = (props: CardProps) => {
         mb={4}
       >
         <LoadingLabel
-          isLoading={isAprLoading}
+          isLoading={isStakingLoading}
           variant="featured1"
           fontWeight="bold"
         >
-          {intl.formatNumber(apr ?? 0, {
+          {intl.formatNumber((staking?.ognApy ?? 0) / 100, {
             style: 'percent',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

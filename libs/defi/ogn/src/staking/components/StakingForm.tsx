@@ -19,6 +19,7 @@ import {
   useApprovalButton,
   useOgnInfo,
   useTxButton,
+  useXOgnStakingApy,
 } from '@origin/defi/shared';
 import {
   BigIntInput,
@@ -42,8 +43,6 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useXOgnStaking } from '../hooks';
-
 export const StakingForm = () => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
@@ -54,13 +53,11 @@ export const StakingForm = () => {
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useXOgnStaking(
-    amount === 0n ? 100n : amount,
-    duration,
-    {
-      enabled: false,
-    },
-  );
+  const {
+    data: staking,
+    isLoading: isStakingLoading,
+    refetch,
+  } = useXOgnStakingApy(amount === 0n ? undefined : amount, duration);
   const {
     allowance,
     params: approvalParams,
@@ -123,10 +120,10 @@ export const StakingForm = () => {
   );
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(staking?.stakingAPY) || duration === 0)) {
+    if (isLoading && !isStakingLoading && !isNilOrEmpty(staking?.xOgnApy)) {
       setIsLoading(false);
     }
-  }, [amount, staking, duration, isLoading]);
+  }, [isLoading, isStakingLoading, staking?.xOgnApy]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(duration > 0);
@@ -135,9 +132,9 @@ export const StakingForm = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleDurationChange = (_: any, newValue: number | number[]) => {
-    setIsLoading(true);
     const dur = Number(newValue);
-    if (dur >= 1) {
+    if (dur >= 1 && dur !== duration) {
+      setIsLoading(true);
       setDuration(dur);
     }
   };
@@ -147,7 +144,7 @@ export const StakingForm = () => {
   };
 
   const votingPowerPercent =
-    (staking?.xOGNReceived ?? 0) /
+    (staking?.xOgnPreview ?? 0) /
     +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
   const showRewardLabel = (info?.xOgnRewards ?? 0n) > 0n;
   const showApprove =
@@ -334,10 +331,10 @@ export const StakingForm = () => {
               fontWeight="bold"
               color="primary"
               sWidth={60}
-              isLoading={isLoading}
+              isLoading={isLoading || isStakingLoading}
             >
               ~
-              {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+              {intl.formatNumber((staking?.xOgnApy ?? 0) / 100, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -380,9 +377,9 @@ export const StakingForm = () => {
                   fontWeight="bold"
                   color="primary"
                   isLoading={isLoading && amount > 0n}
-                  sWidth={60}
+                  sWidth={100}
                 >
-                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
+                  {amount > 0n ? formatQuantity(staking?.xOgnPreview) : '0.00'}
                 </LoadingLabel>
                 <TokenChip
                   token={tokens.mainnet.xOGN}

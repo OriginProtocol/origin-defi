@@ -31,6 +31,7 @@ import {
   useApprovalButton,
   useOgnInfo,
   useTxButton,
+  useXOgnStakingApy,
 } from '@origin/defi/shared';
 import {
   BigIntInput,
@@ -59,7 +60,6 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useXOgnStaking } from '../hooks';
 import { useOgnLockupsQuery } from '../queries.generated';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
@@ -79,8 +79,8 @@ export const StakeRewardModal = (props: DialogProps) => {
   const [addToExisting, setAddToExisting] = useState(false);
   const [lockupId, setLockupId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useXOgnStaking(
-    amount === 0n ? 100n : amount,
+  const { data: staking, refetch } = useXOgnStakingApy(
+    amount === 0n ? undefined : amount,
     duration,
     {
       enabled: false,
@@ -140,7 +140,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   );
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(staking?.stakingAPY) || duration === 0)) {
+    if (isLoading && (!isNilOrEmpty(staking?.xOgnApy) || duration === 0)) {
       setIsLoading(false);
     }
   }, [amount, staking, duration, isLoading]);
@@ -178,7 +178,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const showOgnInput =
     !isInfoLoading && !!info?.ognBalance && info?.ognBalance > 0n;
   const votingPowerPercent =
-    (staking?.xOGNReceived ?? 0) /
+    (staking?.xOgnPreview ?? 0) /
     +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
   const isApprovalNeeded =
     !isNilOrEmpty(allowance) &&
@@ -462,7 +462,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+              {intl.formatNumber((staking?.xOgnApy ?? 0) / 100, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -508,7 +508,9 @@ export const StakeRewardModal = (props: DialogProps) => {
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
+                  {amount > 0n
+                    ? formatQuantity(staking?.xOgnPreview ?? 0n)
+                    : '0.00'}
                 </LoadingLabel>
                 <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
                 <Typography variant="body2" fontWeight="bold">

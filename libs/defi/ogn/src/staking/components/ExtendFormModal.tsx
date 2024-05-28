@@ -15,7 +15,12 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SectionCard, useOgnInfo, useTxButton } from '@origin/defi/shared';
+import {
+  SectionCard,
+  useOgnInfo,
+  useTxButton,
+  useXOgnStakingApy,
+} from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -40,8 +45,6 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useXOgnStaking } from '../hooks';
-
 import type { ButtonProps, DialogProps } from '@mui/material';
 
 import type { Lockup } from '../types';
@@ -64,7 +67,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
   const [isLoading, setIsLoading] = useState(false);
-  const { data: staking, refetch } = useXOgnStaking(amount, duration, {
+  const { data: staking, refetch } = useXOgnStakingApy(amount, duration, {
     enabled: false,
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
@@ -122,11 +125,11 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   useEffect(() => {
     if (
       isLoading &&
-      (!isNilOrEmpty(staking?.stakingAPY) || duration === initialMonthDuration)
+      (!isNilOrEmpty(staking?.xOgnApy) || duration === initialMonthDuration)
     ) {
       setIsLoading(false);
     }
-  }, [duration, initialMonthDuration, isLoading, staking?.stakingAPY]);
+  }, [duration, initialMonthDuration, isLoading, staking?.xOgnApy]);
 
   const handleDurationChange = (_: Event, newValue: number | number[]) => {
     const val = newValue as number;
@@ -139,7 +142,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const xOgnReceived =
     duration === initialMonthDuration
       ? +formatUnits(BigInt(lockup.xogn), tokens.mainnet.xOGN.decimals)
-      : staking?.xOGNReceived;
+      : staking?.xOgnPreview;
   const votingPowerPercent =
     (xOgnReceived ?? 0) /
     +formatUnits(
@@ -359,7 +362,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {
+              {intl.formatNumber((staking?.xOgnApy ?? 0) / 100, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -396,7 +399,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
-                  {amount > 0n ? formatQuantity(staking?.xOGNReceived) : '0.00'}
+                  {amount > 0n ? formatQuantity(staking?.xOgnPreview) : '0.00'}
                 </LoadingLabel>
                 <TokenIcon
                   token={tokens.mainnet.xOGN}
