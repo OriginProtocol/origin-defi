@@ -37,7 +37,11 @@ import {
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
-import { getMonthDurationToSeconds, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  getMonthDurationToSeconds,
+  isNilOrEmpty,
+  jsonStringifyReplacer,
+} from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { not } from 'ramda';
@@ -83,11 +87,11 @@ export const ConvertModal = ({
     veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
   const converted =
     +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
-  const ogn = (converted * (100 - stakingRatio)) / 100;
-  const xOgn = (converted * stakingRatio) / 100;
+  const liquidConverted = (converted * (100 - stakingRatio)) / 100;
+  const stakedConverted = (converted * stakingRatio) / 100;
 
   const { data: xOgnStaking, isLoading: isXOgnStakingLoading } =
-    useXOgnStakingApy(xOgn, duration);
+    useXOgnStakingApy(stakedConverted, duration);
   const {
     allowance,
     params: approvalParams,
@@ -97,46 +101,67 @@ export const ConvertModal = ({
   } = useApprovalButton({
     token: tokens.mainnet.OGV,
     amount: total,
-    spender: contracts.mainnet.OGVMigrator.address,
+    spender:
+      isNilOrEmpty(veOgvlockups) && stakingRatio > 0
+        ? contracts.mainnet.zapperMigrator.address
+        : contracts.mainnet.OGVMigrator.address,
     enableAllowance: true,
     enableGas: true,
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    },
   });
+
+  // TODO update division precision and migration when available
+  const newStakeAmount =
+    parseUnits(stakedConverted.toString(), tokens.mainnet.OGN.decimals) -
+    parseUnits('0.000000000000000001', tokens.mainnet.OGN.decimals);
+  const params = isNilOrEmpty(veOgvlockups)
+    ? stakingRatio === 0
+      ? {
+          contract: contracts.mainnet.OGVMigrator,
+          functionName: 'migrate',
+          args: [ogvBalance],
+        }
+      : {
+          contract: contracts.mainnet.zapperMigrator,
+          functionName: 'migrate',
+          args: [
+            ogvBalance,
+            newStakeAmount,
+            getMonthDurationToSeconds(duration),
+          ],
+        }
+    : {
+        contract: contracts.mainnet.OGVMigrator,
+        functionName: 'migrate',
+        args: [
+          veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
+          ogvBalance,
+          0n,
+          ogvRewards > 0n,
+          stakingRatio > 0 ? newStakeAmount : 0n,
+          stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
+        ],
+      };
+
   const {
     params: writeParams,
     callbacks: writeCallbacks,
     gasPrice: writeGas,
   } = useTxButton({
-    params: {
-      contract: contracts.mainnet.OGVMigrator,
-      functionName: 'migrate',
-      args: [
-        veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
-        ogvBalance,
-        0n,
-        ogvRewards > 0n,
-        stakingRatio > 0
-          ? parseUnits(xOgn.toString(), tokens.mainnet.xOGN.decimals)
-          : 0n,
-        stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
-      ],
-    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    params: params as any,
     callbacks: {
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
         onClose?.({}, 'backdropClick');
       },
       onSimulateError: (err) => {
-        console.log(
-          veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
-          ogvBalance,
-          0n,
-          ogvRewards > 0n,
-          stakingRatio > 0
-            ? parseUnits(xOgn.toString(), tokens.mainnet.xOGN.decimals)
-            : 0n,
-          stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
-          err,
-        );
+        console.log(JSON.stringify(params, jsonStringifyReplacer, 2));
+        console.log(err);
       },
     },
     enableGas: true,
@@ -316,7 +341,7 @@ export const ConvertModal = ({
                         sx={{ fontSize: 24 }}
                       />
                       <Typography variant="body1" fontWeight="medium">
-                        {intl.formatNumber(ogn)}
+                        {intl.formatNumber(liquidConverted)}
                       </Typography>
                     </Stack>
                   }
@@ -363,7 +388,7 @@ export const ConvertModal = ({
             </Stack>
           </AccordionDetails>
         </Accordion>
-        <Collapse in={xOgn > 0}>
+        <Collapse in={stakedConverted > 0}>
           <InfoTooltipLabel
             fontWeight="medium"
             mt={3}
@@ -544,6 +569,9 @@ export const ConvertModal = ({
           fullWidth
           label={intl.formatMessage({ defaultMessage: 'Convert' })}
           disabled={isConvertDisabled}
+          validatingTxLabel={intl.formatMessage({
+            defaultMessage: 'Validating',
+          })}
         />
       </DialogActions>
     </Dialog>

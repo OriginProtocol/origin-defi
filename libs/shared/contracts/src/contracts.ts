@@ -29,6 +29,7 @@ import { UniswapV3RouterABI } from './abis/UniswapV3Router';
 import { UniswapV3WETHPrimeETHPoolABI } from './abis/UniswapV3WETHPrimeETHPool';
 import { WOETHCCIPZapperABI } from './abis/WOETHCCIPZapper';
 import { xOGNGovernanceABI } from './abis/xOGNGovernance';
+import { ZapperMigratorABI } from './abis/ZapperMigrator';
 
 export const contracts = {
   mainnet: {
@@ -236,6 +237,12 @@ export const contracts = {
       chainId: mainnet.id,
       abi: xOGNGovernanceABI,
       name: 'xOGNGovernance',
+    },
+    zapperMigrator: {
+      address: '0xC202CDa20A8C34C7a282890eAE2Bb9CC0B115877',
+      chainId: mainnet.id,
+      abi: ZapperMigratorABI,
+      name: 'zapperMigrator',
     },
   },
   arbitrum: {
