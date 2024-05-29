@@ -36,7 +36,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
             mb={3}
           >
             <LoadingLabel
-              isLoading={isUserLoading}
+              isLoading={isInfoLoading}
               variant="featured3"
               fontWeight="bold"
             >
