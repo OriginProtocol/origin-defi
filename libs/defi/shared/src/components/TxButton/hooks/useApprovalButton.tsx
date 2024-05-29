@@ -229,7 +229,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   );
 
   const onSimulateError = useCallback(
-    (error: Error) => {
+    (error: SimulateContractErrorType) => {
       setSimulateError(simulateError);
       if (args.enableGas && isConnected) {
         refetchGas();
