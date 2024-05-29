@@ -20,6 +20,9 @@
   "+XdNoc": {
     "defaultMessage": "Show breakdown"
   },
+  "+b8PXT": {
+    "defaultMessage": "Convert OGV to OGN now!"
+  },
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
@@ -824,9 +827,6 @@
   "cWvi0w": {
     "defaultMessage": "Add to stake"
   },
-  "cfhPIG": {
-    "defaultMessage": "OGV & OGN are merging"
-  },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
@@ -914,6 +914,9 @@
   "gcuDcH": {
     "defaultMessage": "Sent"
   },
+  "grhR82": {
+    "defaultMessage": "OGV & OGN are merging. Conversion will be open for 1 year."
+  },
   "h9gJgF": {
     "defaultMessage": "Impossible to execute approval"
   },
@@ -928,9 +931,6 @@
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
-  },
-  "hzplNt": {
-    "defaultMessage": "Convert your OGV tokens into OGN. Conversion page will be open for 1 year."
   },
   "iGcPXd": {
     "defaultMessage": "OUSD analytics"

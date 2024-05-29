@@ -39,12 +39,12 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
         pr={{ xs: 0, md: 2 }}
       >
         <Typography variant="h6" fontWeight={800} pb={1.5}>
-          {intl.formatMessage({ defaultMessage: 'OGV & OGN are merging' })}
+          {intl.formatMessage({ defaultMessage: 'Convert OGV to OGN now!' })}
         </Typography>
         <Typography textAlign={{ xs: 'center', md: 'start' }}>
           {intl.formatMessage({
             defaultMessage:
-              'Convert your OGV tokens into OGN. Conversion page will be open for 1 year.',
+              'OGV & OGN are merging. Conversion will be open for 1 year.',
           })}
         </Typography>
       </Stack>
