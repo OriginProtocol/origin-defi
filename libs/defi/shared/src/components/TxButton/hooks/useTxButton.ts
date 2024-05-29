@@ -86,7 +86,11 @@ export const useTxButton = <
     chainId: args.params.contract.chainId,
   });
   const queryClient = useQueryClient();
-  const { data: gasPrice, refetch: refetchGas } = useQuery({
+  const {
+    data: gasPrice,
+    refetch: refetchGas,
+    isLoading: isWriteGasLoading,
+  } = useQuery({
     queryKey: ['txButton', JSON.stringify(args.params, jsonStringifyReplacer)],
     queryFn: async () => {
       if (simulateError) return null;
@@ -327,6 +331,7 @@ export const useTxButton = <
   return useMemo(
     () => ({
       gasPrice,
+      isWriteGasLoading,
       params: args.params,
       callbacks: {
         onWrite,
@@ -341,6 +346,7 @@ export const useTxButton = <
     [
       args.params,
       gasPrice,
+      isWriteGasLoading,
       onSimulateError,
       onSimulateSuccess,
       onTxSigned,
