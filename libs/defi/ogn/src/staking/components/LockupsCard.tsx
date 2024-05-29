@@ -31,7 +31,6 @@ export const LockupsCard = (props: CardProps) => {
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Your lockups' })}
-        action={<CardActionHeader />}
       />
       <Divider />
       {isConnected ? (

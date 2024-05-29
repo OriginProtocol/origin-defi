@@ -148,9 +148,12 @@ export const StakingForm = () => {
     setAmount(info?.ognBalance ?? 0n);
   };
 
-  const votingPowerPercent =
+  const votingPowerPercent = Math.min(
+    1,
     (staking?.xOgnPreview ?? 0) /
-    +formatUnits(info?.xOgnTotalSupply ?? 0n, tokens.mainnet.xOGN.decimals);
+      (+formatUnits(info?.xOgnTotalSupply ?? 1n, tokens.mainnet.xOGN.decimals) +
+        (staking?.xOgnPreview ?? 0)),
+  );
   const showRewardLabel = (info?.xOgnRewards ?? 0n) > 0n;
   const showApprove =
     isConnected &&
