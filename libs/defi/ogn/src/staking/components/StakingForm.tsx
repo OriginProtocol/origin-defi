@@ -405,23 +405,24 @@ export const StakingForm = () => {
                 })}
                 labelProps={{ variant: 'mono' }}
                 isLoading={isLoading && amount > 0n}
-                value={intl.formatMessage(
-                  { defaultMessage: '{tilt}{value}' },
-                  {
-                    tilt:
-                      votingPowerPercent <= 1e-6 && votingPowerPercent > 0
-                        ? `~ `
-                        : '',
-                    value:
-                      amount > 0n
-                        ? intl.formatNumber(votingPowerPercent, {
+                value={
+                  amount > 0n
+                    ? intl.formatMessage(
+                        { defaultMessage: '{tilt}{value}' },
+                        {
+                          tilt:
+                            votingPowerPercent <= 1e-6 && votingPowerPercent > 0
+                              ? `~ `
+                              : '',
+                          value: intl.formatNumber(votingPowerPercent, {
                             style: 'percent',
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 5,
-                          })
-                        : '0.00%',
-                  },
-                )}
+                          }),
+                        },
+                      )
+                    : '-'
+                }
                 valueProps={{ variant: 'body3', fontWeight: 'medium' }}
                 sx={{ alignItems: 'flex-end' }}
               />
