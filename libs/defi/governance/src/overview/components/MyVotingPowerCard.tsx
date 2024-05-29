@@ -10,24 +10,16 @@ import { TokenChip, useOgnInfo } from '@origin/defi/shared';
 import { LoadingLabel, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
-
-import { useUserInfoQuery } from '../queries.generated';
-import { DelegationPanel } from './DelegationPanel';
 
 import type { CardProps } from '@mui/material';
 
 export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { isConnected, address } = useAccount();
+  const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
-  const { data: user, isLoading: isUserLoading } = useUserInfoQuery(
-    { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
-  );
 
   return (
     <Card {...props}>
@@ -49,7 +41,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
               fontWeight="bold"
             >
               {formatAmount(
-                BigInt(user?.votingPower ?? '0'),
+                BigInt(info?.xOgnBalance ?? '0'),
                 tokens.mainnet.xOGN.decimals,
                 undefined,
                 { notation: 'compact', maximumSignificantDigits: 4 },
@@ -85,7 +77,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
             )}
             sx={{ width: 1, alignItems: 'flex-start' }}
           />
-          <DelegationPanel mt={3} />
+          {/* <DelegationPanel mt={3} /> */}
         </CardContent>
       ) : (
         <CardContent>
