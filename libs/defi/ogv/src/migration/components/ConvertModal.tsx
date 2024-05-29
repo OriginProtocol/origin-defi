@@ -43,7 +43,6 @@ import { addMonths, formatDuration } from 'date-fns';
 import { format, mul, sub } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
 
 import { ogvToOgnRate } from '../constants';
 
@@ -73,7 +72,6 @@ export const ConvertModal = ({
   const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const { address } = useAccount();
   const [stakingRatio, setSatkingRatio] = useState(100);
   const [duration, setDuration] = useState(12);
   const [ratioOpen, setRatioOpen] = useState(false);
