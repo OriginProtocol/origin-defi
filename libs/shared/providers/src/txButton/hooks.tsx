@@ -227,8 +227,8 @@ export const useTxButton = <
   );
 
   const onSimulateError = useCallback(
-    (error: Error) => {
-      setSimulateError(simulateError);
+    (error: SimulateContractErrorType) => {
+      setSimulateError(error);
       if (args.enableGas && isConnected) {
         refetchGas();
       }
@@ -255,7 +255,6 @@ export const useTxButton = <
       isConnected,
       pushNotification,
       refetchGas,
-      simulateError,
     ],
   );
 

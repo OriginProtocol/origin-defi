@@ -37,16 +37,12 @@ import {
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
-import {
-  getMonthDurationToSeconds,
-  isNilOrEmpty,
-  jsonStringifyReplacer,
-} from '@origin/shared/utils';
+import { getMonthDurationToSeconds, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
+import { format, mul, sub } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { formatUnits, parseUnits } from 'viem';
 
 import { ogvToOgnRate } from '../constants';
 
@@ -81,19 +77,24 @@ export const ConvertModal = ({
   const [ratioOpen, setRatioOpen] = useState(false);
   const queryClient = useQueryClient();
 
-  const total =
-    ogvBalance +
-    ogvRewards +
-    veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
-  const converted =
-    +formatUnits(total, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
-  const liquidConverted = (converted * (100 - stakingRatio)) / 100;
-  const stakedConverted = (converted * stakingRatio) / 100;
+  let total = ogvBalance;
+  if (!isNilOrEmpty(veOgvlockups)) {
+    total +=
+      ogvRewards +
+      veOgvlockups.reduce((acc, curr) => acc + BigInt(curr.amount), 0n);
+  }
+  const converted = mul([total, tokens.mainnet.OGV.decimals], ogvToOgnRate);
+  const liquidConverted = mul(converted, (100 - stakingRatio) / 100);
+  const stakedConverted =
+    stakingRatio === 0
+      ? [0n, tokens.mainnet.OGV.decimals]
+      : sub(mul(converted, stakingRatio / 100), 1e-9);
 
   const { data: xOgnStaking, isLoading: isXOgnStakingLoading } =
-    useXOgnStakingApy(stakedConverted, duration);
+    useXOgnStakingApy(stakedConverted[0], duration);
   const {
     allowance,
+    isAllowanceLoading,
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
@@ -101,39 +102,24 @@ export const ConvertModal = ({
   } = useApprovalButton({
     token: tokens.mainnet.OGV,
     amount: total,
-    spender:
-      isNilOrEmpty(veOgvlockups) && stakingRatio > 0
-        ? contracts.mainnet.zapperMigrator.address
-        : contracts.mainnet.OGVMigrator.address,
+    spender: isNilOrEmpty(veOgvlockups)
+      ? contracts.mainnet.zapperMigrator.address
+      : contracts.mainnet.OGVMigrator.address,
     enableAllowance: true,
     enableGas: true,
-    callbacks: {
-      onWriteSuccess: () => {
-        queryClient.invalidateQueries();
-      },
-    },
   });
 
-  // TODO update division precision and migration when available
-  const newStakeAmount =
-    parseUnits(stakedConverted.toString(), tokens.mainnet.OGN.decimals) -
-    parseUnits('1', tokens.mainnet.OGN.decimals);
   const params = isNilOrEmpty(veOgvlockups)
-    ? stakingRatio === 0
-      ? {
-          contract: contracts.mainnet.OGVMigrator,
-          functionName: 'migrate',
-          args: [ogvBalance],
-        }
-      : {
-          contract: contracts.mainnet.zapperMigrator,
-          functionName: 'migrate',
-          args: [
-            ogvBalance,
-            newStakeAmount,
-            getMonthDurationToSeconds(duration),
-          ],
-        }
+    ? {
+        contract: contracts.mainnet.zapperMigrator,
+        functionName: 'migrate',
+        args: [
+          ogvBalance,
+          ...(stakingRatio > 0
+            ? [stakedConverted[0], getMonthDurationToSeconds(duration)]
+            : []),
+        ],
+      }
     : {
         contract: contracts.mainnet.OGVMigrator,
         functionName: 'migrate',
@@ -142,7 +128,7 @@ export const ConvertModal = ({
           ogvBalance,
           0n,
           ogvRewards > 0n,
-          stakingRatio > 0 ? newStakeAmount : 0n,
+          stakedConverted[0],
           stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
         ],
       };
@@ -151,6 +137,7 @@ export const ConvertModal = ({
     params: writeParams,
     callbacks: writeCallbacks,
     gasPrice: writeGas,
+    isWriteGasLoading,
   } = useTxButton({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: params as any,
@@ -158,10 +145,6 @@ export const ConvertModal = ({
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
         onClose?.({}, 'backdropClick');
-      },
-      onSimulateError: (err) => {
-        console.log(JSON.stringify(params, jsonStringifyReplacer, 2));
-        console.log(err);
       },
     },
     enableGas: true,
@@ -181,7 +164,9 @@ export const ConvertModal = ({
   const lockupEnd = addMonths(new Date(), duration);
   const gas = (approvalGas?.gasCostUsd ?? 0) + (writeGas?.gasCostUsd ?? 0);
   const isApprovalNeeded =
-    !isNilOrEmpty(allowance) && (allowance ?? 0n) < total;
+    !isAllowanceLoading &&
+    !isNilOrEmpty(allowance) &&
+    (allowance ?? 0n) < total;
   const isConvertDisabled = isNilOrEmpty(allowance) || isApprovalNeeded;
 
   return (
@@ -220,7 +205,7 @@ export const ConvertModal = ({
             borderColor: 'divider',
           }}
         >
-          <Typography variant="h6">{intl.formatNumber(converted)}</Typography>
+          <Typography variant="h6">{format(converted, 4)}</Typography>
           <TokenChip
             token={tokens.mainnet.OGN}
             iconProps={{ outlined: true, sx: { fontSize: 28 } }}
@@ -341,7 +326,7 @@ export const ConvertModal = ({
                         sx={{ fontSize: 24 }}
                       />
                       <Typography variant="body1" fontWeight="medium">
-                        {intl.formatNumber(liquidConverted)}
+                        {format(liquidConverted, 4)}
                       </Typography>
                     </Stack>
                   }
@@ -388,7 +373,7 @@ export const ConvertModal = ({
             </Stack>
           </AccordionDetails>
         </Accordion>
-        <Collapse in={stakedConverted > 0}>
+        <Collapse in={stakedConverted[0] > 0n}>
           <InfoTooltipLabel
             fontWeight="medium"
             mt={3}
@@ -547,7 +532,11 @@ export const ConvertModal = ({
           justifyContent="space-between"
           bgcolor="transparent"
           label={intl.formatMessage({ defaultMessage: 'Est. gas:' })}
-          value={formatCurrency(gas)}
+          value={formatCurrency(gas, undefined, undefined, {
+            maximumFractionDigits: 2,
+            roundingMode: 'ceil',
+          })}
+          isLoading={isWriteGasLoading}
           mt={3}
         />
       </DialogContent>

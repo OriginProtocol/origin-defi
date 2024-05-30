@@ -71,8 +71,9 @@ export const useTxButton = <
   const intl = useIntl();
   const { isConnected, address } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
-  const [simulateError, setSimulateError] =
-    useState<SimulateContractErrorType>();
+  const [simulateError, setSimulateError] = useState<
+    SimulateContractErrorType | undefined
+  >();
   const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
@@ -85,7 +86,11 @@ export const useTxButton = <
     chainId: args.params.contract.chainId,
   });
   const queryClient = useQueryClient();
-  const { data: gasPrice, refetch: refetchGas } = useQuery({
+  const {
+    data: gasPrice,
+    refetch: refetchGas,
+    isLoading: isWriteGasLoading,
+  } = useQuery({
     queryKey: ['txButton', JSON.stringify(args.params, jsonStringifyReplacer)],
     queryFn: async () => {
       if (simulateError) return null;
@@ -215,8 +220,8 @@ export const useTxButton = <
   );
 
   const onSimulateError = useCallback(
-    (error: Error) => {
-      setSimulateError(simulateError);
+    (error: SimulateContractErrorType) => {
+      setSimulateError(error);
       if (args.enableGas && isConnected) {
         refetchGas();
       }
@@ -241,7 +246,6 @@ export const useTxButton = <
       isConnected,
       pushNotification,
       refetchGas,
-      simulateError,
     ],
   );
 
@@ -327,6 +331,7 @@ export const useTxButton = <
   return useMemo(
     () => ({
       gasPrice,
+      isWriteGasLoading,
       params: args.params,
       callbacks: {
         onWrite,
@@ -341,6 +346,7 @@ export const useTxButton = <
     [
       args.params,
       gasPrice,
+      isWriteGasLoading,
       onSimulateError,
       onSimulateSuccess,
       onTxSigned,

@@ -58,7 +58,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     chainId: args.token.chainId,
   });
   const queryClient = useQueryClient();
-  const { data: gasPrice, refetch: refetchGas } = useQuery({
+  const {
+    data: gasPrice,
+    refetch: refetchGas,
+    isLoading: isAllowanceGasLoading,
+  } = useQuery({
     queryKey: [
       'approvalButton',
       args.token.symbol,
@@ -88,7 +92,12 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     },
     enabled: false,
   });
-  const { data: allowance } = useWatchContract({
+
+  const {
+    data: allowance,
+    refetch: refetchAllowance,
+    isLoading: isAllowanceLoading,
+  } = useWatchContract({
     address: args.token.address,
     abi: erc20Abi,
     functionName: 'allowance',
@@ -220,7 +229,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   );
 
   const onSimulateError = useCallback(
-    (error: Error) => {
+    (error: SimulateContractErrorType) => {
       setSimulateError(simulateError);
       if (args.enableGas && isConnected) {
         refetchGas();
@@ -252,6 +261,9 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
+      if (args.enableAllowance) {
+        refetchAllowance();
+      }
       if (!args.disableActivity) {
         updateActivity({
           ...act,
@@ -293,12 +305,14 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       args.callbacks,
       args.disableActivity,
       args.disableNotification,
+      args.enableAllowance,
       args.token.decimals,
       args.token.symbol,
       deleteNotification,
       intl,
       notifId,
       pushNotification,
+      refetchAllowance,
       updateActivity,
     ],
   );
@@ -345,6 +359,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     () => ({
       gasPrice,
       allowance,
+      isAllowanceGasLoading,
+      isAllowanceLoading,
       label: intl.formatMessage(
         { defaultMessage: 'Approve {token}' },
         { token: args.token.symbol },
@@ -378,6 +394,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       args.token.symbol,
       gasPrice,
       intl,
+      isAllowanceGasLoading,
+      isAllowanceLoading,
       onSimulateError,
       onSimulateSuccess,
       onTxSigned,

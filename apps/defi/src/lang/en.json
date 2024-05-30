@@ -41,6 +41,12 @@
       "value": "Show breakdown"
     }
   ],
+  "+b8PXT": [
+    {
+      "type": 0,
+      "value": "Convert OGV to OGN now!"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
@@ -2007,12 +2013,6 @@
       "value": "Add to stake"
     }
   ],
-  "cfhPIG": [
-    {
-      "type": 0,
-      "value": "OGV & OGN are merging"
-    }
-  ],
   "cg1VJ2": [
     {
       "type": 0,
@@ -2199,6 +2199,12 @@
       "value": "Sent"
     }
   ],
+  "grhR82": [
+    {
+      "type": 0,
+      "value": "OGV & OGN are merging. Conversion will be open for 1 year."
+    }
+  ],
   "h9gJgF": [
     {
       "type": 0,
@@ -2227,12 +2233,6 @@
     {
       "type": 0,
       "value": "Transaction executed"
-    }
-  ],
-  "hzplNt": [
-    {
-      "type": 0,
-      "value": "Convert your OGV tokens into OGN. Conversion page will be open for 1 year."
     }
   ],
   "iGcPXd": [

@@ -26,5 +26,7 @@ export const GOVERNANCE_OGN_SNAPSHOT_VOTES_URL =
   'https://snapshot.org/#/origingov.eth';
 export const GOVERNANCE_OGV_DOCS_URL =
   'https://docs.oeth.com/governance/overview';
+export const GOVERNANCE_OGN_DOCS_URL =
+  'https://docs.originprotocol.com/ogn/governance';
 export const BRIDGE_DOCS_URL =
   'https://docs.oeth.com/core-concepts/ccip-bridge';
