@@ -36,7 +36,7 @@ import {
   isNilOrEmpty,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
-import { useDebouncedEffect } from '@react-hookz/web';
+import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
@@ -57,7 +57,9 @@ export const StakingForm = () => {
     data: staking,
     isLoading: isStakingLoading,
     refetch,
-  } = useXOgnStakingApy(amount === 0n ? undefined : amount, duration);
+  } = useXOgnStakingApy(amount === 0n ? undefined : amount, duration, {
+    enabled: false,
+  });
   const {
     allowance,
     params: approvalParams,
@@ -114,6 +116,10 @@ export const StakingForm = () => {
     },
   });
 
+  useMountEffect(() => {
+    refetch();
+  });
+
   useDebouncedEffect(
     () => {
       if (duration > 0) {
@@ -121,7 +127,7 @@ export const StakingForm = () => {
       }
     },
     [amount, duration],
-    800,
+    400,
   );
 
   useEffect(() => {
@@ -339,7 +345,7 @@ export const StakingForm = () => {
               fontWeight="bold"
               color="primary"
               sWidth={60}
-              isLoading={isLoading || isStakingLoading}
+              isLoading={isLoading}
             >
               ~
               {intl.formatNumber(staking?.xOgnApy ?? 0, {
