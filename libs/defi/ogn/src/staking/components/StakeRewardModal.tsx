@@ -98,11 +98,6 @@ export const StakeRewardModal = (props: DialogProps) => {
     amount: amount + (info?.xOgnRewards ?? 0n),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
-    callbacks: {
-      onWriteSuccess: () => {
-        queryClient.invalidateQueries();
-      },
-    },
   });
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {

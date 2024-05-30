@@ -14,7 +14,7 @@ import {
 import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { erc20Abi, formatUnits } from 'viem';
+import { decodeEventLog, erc20Abi, formatUnits } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
@@ -261,6 +261,20 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
+      let amount = +formatUnits(args?.amount ?? 0n, args.token.decimals);
+      try {
+        const log = txReceipt?.logs?.[0];
+        const decoded = decodeEventLog({
+          abi: erc20Abi,
+          data: log?.data,
+          topics: log?.topics,
+        });
+
+        if (decoded?.args?.value) {
+          amount = +formatUnits(decoded.args.value, args.token.decimals);
+        }
+      } catch {}
+
       if (args.enableAllowance) {
         refetchAllowance();
       }
@@ -285,10 +299,10 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
               defaultMessage: 'Approved {amount} {token}',
             },
             {
-              amount: intl.formatNumber(
-                +formatUnits(args.amount, args.token.decimals),
-                { notation: 'compact', maximumSignificantDigits: 4 },
-              ),
+              amount: intl.formatNumber(amount, {
+                notation: 'compact',
+                maximumSignificantDigits: 4,
+              }),
               token: args.token.symbol,
             },
           ),
