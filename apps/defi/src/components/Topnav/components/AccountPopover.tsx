@@ -154,6 +154,7 @@ const balanceTokens = [
   tokens.mainnet.ETH,
   tokens.mainnet.OETH,
   tokens.mainnet.OUSD,
+  tokens.mainnet.OGN,
 ];
 
 function BalanceList(props: StackProps) {
