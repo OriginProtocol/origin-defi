@@ -609,7 +609,7 @@ function LockupSelect({
   const { data } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
-      select: (data) => data?.ognLockups,
+      select: (data) => data?.esLockups,
       enabled: !!address,
     },
   );

@@ -1,21 +1,27 @@
 query OgnUserInfo($address: String!) {
-  ognAddresses(where: { id_containsInsensitive: $address }) {
+  esAccounts(where: {
+    chainId_eq: 1
+    address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
+    account_containsInsensitive: $address
+  }) {
     id
     balance
-    staked
-    xognBalance
+    assetBalance
+    stakedBalance
     votingPower
-    delegatee {
-      id
+    delegatesFrom {
+      account
     }
   }
 }
 
 query OgnLockups($address: String!) {
-  ognLockups(
+  esLockups(
     where: {
-      address: { id_containsInsensitive: $address }
-      logs_none: { event_eq: Unstaked }
+      chainId_eq: 1
+      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
+      account_containsInsensitive: $address
+      events_none: {event_eq: Unstaked}
     }
     orderBy: end_ASC
   ) {
@@ -23,11 +29,11 @@ query OgnLockups($address: String!) {
     lockupId
     amount
     end
-    xogn
+    points
     timestamp
-    logs(orderBy: timestamp_DESC, limit: 1) {
+    events(orderBy: timestamp_DESC, limit: 1) {
       event
-      hash
+      txHash
     }
   }
 }
