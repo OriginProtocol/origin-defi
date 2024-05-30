@@ -106,6 +106,7 @@ export const BridgeCard = () => {
     params: ccipTxParams.data?.params ?? {
       contract: srcRouter,
       functionName: 'ccipSend',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       args: [] as any,
       value: 0n,
     },

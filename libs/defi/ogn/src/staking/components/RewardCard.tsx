@@ -6,13 +6,17 @@ import {
   Divider,
   Stack,
 } from '@mui/material';
-import { TokenChip, useOgnInfo, useTxButton } from '@origin/defi/shared';
+import { TokenChip, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { TxButton, useFormat } from '@origin/shared/providers';
-import { useQueryClient } from '@tanstack/react-query';
+import {
+  TxButton,
+  useFormat,
+  useWatchContract,
+} from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { useAccount, useConfig } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { StakeRewardButton } from './StakeRewardModal';
 
@@ -22,21 +26,17 @@ export const RewardCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address } = useAccount();
-  const config = useConfig();
-  const queryClient = useQueryClient();
-  const { data: info, isLoading: isInfoLoading } = useOgnInfo();
+  const { data: rewards, isLoading: isRewardsLoading } = useWatchContract({
+    address: tokens.mainnet.xOGN.address,
+    abi: tokens.mainnet.xOGN.abi,
+    functionName: 'previewRewards',
+    args: [address ?? ZERO_ADDRESS],
+  });
   const { params, callbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'collectRewards',
       args: [],
-    },
-    callbacks: {
-      onWriteSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [useOgnInfo.getKey(address, config)],
-        });
-      },
     },
     activity: {
       endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
@@ -47,7 +47,7 @@ export const RewardCard = (props: CardProps) => {
         },
         {
           rewards: formatAmount(
-            info?.xOgnRewards,
+            rewards,
             tokens.mainnet.xOGN.decimals,
             undefined,
             { notation: 'compact', maximumSignificantDigits: 4 },
@@ -57,8 +57,7 @@ export const RewardCard = (props: CardProps) => {
     },
   });
 
-  const hasRewards =
-    !isInfoLoading && !!info?.xOgnRewards && info.xOgnRewards > 0n;
+  const hasRewards = !isRewardsLoading && !!rewards && rewards > 0n;
 
   return (
     <Card {...props}>
@@ -79,12 +78,9 @@ export const RewardCard = (props: CardProps) => {
             <LoadingLabel
               variant="featured3"
               fontWeight="bold"
-              isLoading={isInfoLoading}
+              isLoading={isRewardsLoading}
             >
-              {formatAmount(
-                info?.xOgnRewards ?? 0n,
-                tokens.mainnet.OGN.decimals,
-              )}
+              {formatAmount(rewards ?? 0n, tokens.mainnet.OGN.decimals)}
             </LoadingLabel>
             <TokenChip
               token={tokens.mainnet.OGN}

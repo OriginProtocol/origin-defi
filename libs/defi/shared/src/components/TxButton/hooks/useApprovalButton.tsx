@@ -14,7 +14,7 @@ import {
 import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { erc20Abi, formatUnits } from 'viem';
+import { decodeEventLog, erc20Abi, formatUnits } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
@@ -116,13 +116,9 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       ),
       subtitle: intl.formatMessage(
         {
-          defaultMessage: 'Approve {amount} {token}',
+          defaultMessage: 'Approving {token}',
         },
         {
-          amount: intl.formatNumber(
-            +formatUnits(args.amount, args.token.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
           token: args.token.symbol,
         },
       ),
@@ -261,6 +257,20 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
+      let amount = args?.amount ?? 0n;
+      try {
+        const log = txReceipt?.logs?.[0];
+        const decoded = decodeEventLog({
+          abi: erc20Abi,
+          data: log?.data,
+          topics: log?.topics,
+        });
+
+        if (decoded?.args?.value) {
+          amount = decoded.args.value;
+        }
+      } catch {}
+
       if (args.enableAllowance) {
         refetchAllowance();
       }
@@ -268,6 +278,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         updateActivity({
           ...act,
           status: 'success',
+          amountIn: amount,
           txReceipt,
         });
       }
@@ -286,8 +297,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
             },
             {
               amount: intl.formatNumber(
-                +formatUnits(args.amount, args.token.decimals),
-                { notation: 'compact', maximumSignificantDigits: 4 },
+                +formatUnits(amount, args.token.decimals),
+                {
+                  notation: 'compact',
+                  maximumSignificantDigits: 4,
+                },
               ),
               token: args.token.symbol,
             },
