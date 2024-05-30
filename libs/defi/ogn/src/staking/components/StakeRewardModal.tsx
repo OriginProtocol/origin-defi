@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   Accordion,
@@ -75,6 +75,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { address } = useAccount();
   const queryClient = useQueryClient();
+  const once = useRef(false);
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
   const [duration, setDuration] = useState(12);
@@ -141,6 +142,18 @@ export const StakeRewardModal = (props: DialogProps) => {
     [amount, duration],
     800,
   );
+
+  useEffect(() => {
+    if (
+      !once.current &&
+      !isInfoLoading &&
+      info?.ognBalance &&
+      info.ognBalance > 0n
+    ) {
+      setAmount(info.ognBalance);
+      once.current = true;
+    }
+  }, [info?.ognBalance, isInfoLoading]);
 
   useEffect(() => {
     if (isLoading && (!isNilOrEmpty(staking?.xOgnApy) || duration === 0)) {
