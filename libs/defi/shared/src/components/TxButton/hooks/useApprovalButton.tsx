@@ -116,13 +116,9 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       ),
       subtitle: intl.formatMessage(
         {
-          defaultMessage: 'Approve {amount} {token}',
+          defaultMessage: 'Approving {token}',
         },
         {
-          amount: intl.formatNumber(
-            +formatUnits(args.amount, args.token.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
           token: args.token.symbol,
         },
       ),
@@ -261,7 +257,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      let amount = +formatUnits(args?.amount ?? 0n, args.token.decimals);
+      let amount = args?.amount ?? 0n;
       try {
         const log = txReceipt?.logs?.[0];
         const decoded = decodeEventLog({
@@ -271,7 +267,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         });
 
         if (decoded?.args?.value) {
-          amount = +formatUnits(decoded.args.value, args.token.decimals);
+          amount = decoded.args.value;
         }
       } catch {}
 
@@ -282,6 +278,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         updateActivity({
           ...act,
           status: 'success',
+          amountIn: amount,
           txReceipt,
         });
       }
@@ -299,10 +296,13 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
               defaultMessage: 'Approved {amount} {token}',
             },
             {
-              amount: intl.formatNumber(amount, {
-                notation: 'compact',
-                maximumSignificantDigits: 4,
-              }),
+              amount: intl.formatNumber(
+                +formatUnits(amount, args.token.decimals),
+                {
+                  notation: 'compact',
+                  maximumSignificantDigits: 4,
+                },
+              ),
               token: args.token.symbol,
             },
           ),
