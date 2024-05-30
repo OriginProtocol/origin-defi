@@ -77,7 +77,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const queryClient = useQueryClient();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
-  const [duration, setDuration] = useState(1);
+  const [duration, setDuration] = useState(12);
   const [addToExisting, setAddToExisting] = useState(false);
   const [lockupId, setLockupId] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
