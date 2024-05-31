@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import {
   LoadingLabel,
-  MiddleTruncated,
+  MiddleTruncatedLabel,
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -157,11 +157,10 @@ export const UnstakeFormModal = ({
             },
             {
               stake: (
-                <MiddleTruncated maxWidth={60}>
+                <MiddleTruncatedLabel maxWidth={60}>
                   {lockup.lockupId}
-                </MiddleTruncated>
+                </MiddleTruncatedLabel>
               ),
-              duration,
             },
           )}
           notificationEndIcon={

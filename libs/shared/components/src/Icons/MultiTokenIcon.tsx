@@ -39,6 +39,7 @@ export const MultiTokenIcon = ({
         <TokenIcon
           key={token.symbol}
           token={token}
+          outlined
           sx={{
             height: `${size}rem`,
             width: `${size}rem`,

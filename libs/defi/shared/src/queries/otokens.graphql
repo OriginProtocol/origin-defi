@@ -1,0 +1,54 @@
+query OTokenApy($chainId: Int!, $token: String!) {
+  oTokenApies(
+    limit: 1
+    orderBy: timestamp_DESC
+    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+  ) {
+    apy7DayAvg
+    apy14DayAvg
+    apy30DayAvg
+    apr
+    apy
+  }
+}
+
+query OTokenAddress($address: String!, $chainId: Int!, $token: String!) {
+  oTokenAddresses(
+    where: {
+      address_containsInsensitive: $address
+      chainId_eq: $chainId
+      otoken_containsInsensitive: $token
+    }
+  ) {
+    balance
+    earned
+    isContract
+    rebasingOption
+    lastUpdated
+  }
+}
+
+query OTokenHistories(
+  $address: String!
+  $filters: [HistoryType!]
+  $chainId: Int!
+  $token: String!
+  $limit: Int = 1000
+) {
+  oTokenHistories(
+    orderBy: timestamp_DESC
+    limit: $limit
+    where: {
+      address: { id_containsInsensitive: $address }
+      type_in: $filters
+      chainId_eq: $chainId
+      otoken_containsInsensitive: $token
+    }
+  ) {
+    type
+    value
+    txHash
+    timestamp
+    balance
+  }
+}

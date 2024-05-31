@@ -63,19 +63,19 @@ export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
   'swap-curve': {
     ...defaultApi,
     ...swapCurve,
-    routeLabel: defineMessage({ defaultMessage: 'Swap with Curve' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-curve-eth': {
     ...defaultApi,
     ...swapCurveEth,
-    routeLabel: defineMessage({ defaultMessage: 'Swap with CurvePool' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via CurvePool' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-curve-sfrxeth': {
     ...defaultApi,
     ...swapCurveSfrxeth,
-    routeLabel: defineMessage({ defaultMessage: 'Swap with Curve' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
     buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-zapper-eth': {

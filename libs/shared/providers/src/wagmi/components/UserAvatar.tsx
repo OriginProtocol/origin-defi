@@ -32,7 +32,7 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   if (isNilOrEmpty(adr)) {
     return (
       <Box display="flex" justifyContent="center" alignItems="center" {...rest}>
-        <FaUserRegular sx={{ fontSize: 24 }} />
+        <FaUserRegular sx={{ fontSize: rest?.width ?? 24 }} />
       </Box>
     );
   }
@@ -41,9 +41,9 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
     return (
       <Box
         borderRadius="50%"
-        width={24}
-        height={24}
         {...rest}
+        width={rest?.width ?? 24}
+        height={rest?.width ?? 24}
         component="img"
         src={ensAvatar}
       />

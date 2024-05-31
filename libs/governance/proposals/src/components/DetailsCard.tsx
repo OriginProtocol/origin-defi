@@ -17,7 +17,7 @@ import {
   ExpandIcon,
   ExternalLink,
   LoadingLabel,
-  MiddleTruncated,
+  MiddleTruncatedLabel,
   TooltipLabel,
   ValueLabel,
 } from '@origin/shared/components';
@@ -241,7 +241,7 @@ function Actions(props: StackProps) {
                       href={`https://etherscan.io/address/${a.address}`}
                       sx={{ maxWidth: 120, color: 'secondary.main' }}
                     >
-                      <MiddleTruncated>{a.address}</MiddleTruncated>
+                      <MiddleTruncatedLabel>{a.address}</MiddleTruncatedLabel>
                     </ExternalLink>
                   </Grid2>
                   <Grid2 xs={4}>

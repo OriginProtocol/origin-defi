@@ -63,33 +63,33 @@ export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
   flipper: {
     ...defaultApi,
     ...flipper,
-    routeLabel: defineMessage({ defaultMessage: 'Flipper' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Flipper' }),
   },
   'mint-vault': {
     ...defaultApi,
     ...mintVault,
-    routeLabel: defineMessage({ defaultMessage: 'Origin Vault' }),
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
   sushiswap: {
     ...defaultApi,
     ...sushiswap,
-    routeLabel: defineMessage({ defaultMessage: 'SushiSwap' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via SushiSwap' }),
   },
   'swap-curve': {
     ...defaultApi,
     ...swapCurve,
-    routeLabel: defineMessage({ defaultMessage: 'Curve' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
   },
   'uniswap-v2': {
     ...defaultApi,
     ...uniswapV2,
-    routeLabel: defineMessage({ defaultMessage: 'Uniswap V2' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V2' }),
   },
   'uniswap-v3': {
     ...defaultApi,
     ...uniswapV3,
-    routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V3' }),
   },
   'wrap-ousd': {
     ...defaultApi,

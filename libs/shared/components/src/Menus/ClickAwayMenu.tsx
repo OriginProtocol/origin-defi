@@ -18,11 +18,11 @@ import type {
 
 export type ClickAwayMenuProps = {
   open: boolean;
-  anchorEl: MutableRefObject<HTMLElement>;
+  anchorEl: MutableRefObject<HTMLElement | null>;
   onClose: Dispatch<void>;
-  PopperProps?: Partial<Omit<PopperProps, 'open' | 'anchorEl'>>;
-  MenuListProps?: Partial<MenuListProps>;
-  PaperProps?: Partial<PaperProps>;
+  popperProps?: Partial<Omit<PopperProps, 'open' | 'anchorEl'>>;
+  menuListProps?: Partial<MenuListProps>;
+  paperProps?: Partial<PaperProps>;
   children:
     | ReactNode
     | ((onClose: (event: Event | React.SyntheticEvent) => void) => ReactNode);
@@ -33,15 +33,15 @@ export const ClickAwayMenu = ({
   anchorEl,
   onClose,
   children,
-  PopperProps,
-  MenuListProps,
-  PaperProps,
+  popperProps,
+  menuListProps,
+  paperProps,
 }: ClickAwayMenuProps) => {
   const prevOpen = useRef(open);
 
   useEffect(() => {
     if (prevOpen.current === true && open === false) {
-      anchorEl.current.focus();
+      anchorEl?.current?.focus();
     }
 
     prevOpen.current = open;
@@ -62,8 +62,8 @@ export const ClickAwayMenu = ({
     if (event.key === 'Escape') {
       onClose();
     }
-    if (MenuListProps?.onKeyDown) {
-      MenuListProps.onKeyDown(event);
+    if (menuListProps?.onKeyDown) {
+      menuListProps.onKeyDown(event);
     }
   };
 
@@ -71,7 +71,6 @@ export const ClickAwayMenu = ({
     <Popper
       transition
       placement="bottom-end"
-      disablePortal
       modifiers={[
         {
           name: 'flip',
@@ -94,7 +93,7 @@ export const ClickAwayMenu = ({
           },
         },
       ]}
-      {...PopperProps}
+      {...popperProps}
       open={open}
       anchorEl={anchorEl.current}
     >
@@ -102,18 +101,18 @@ export const ClickAwayMenu = ({
         <Grow {...TransitionProps}>
           <Paper
             elevation={1}
-            {...PaperProps}
+            {...paperProps}
             sx={{
               padding: 2,
-              ...PaperProps?.sx,
+              ...paperProps?.sx,
             }}
           >
             <ClickAwayListener onClickAway={handleClose}>
               <MenuList
                 autoFocusItem={open}
-                {...MenuListProps}
+                {...menuListProps}
                 onKeyDown={handleListKeyDown}
-                sx={{ py: 0, ...MenuListProps?.sx }}
+                sx={{ py: 0, ...menuListProps?.sx }}
               >
                 {typeof children === 'function'
                   ? children(handleClose)

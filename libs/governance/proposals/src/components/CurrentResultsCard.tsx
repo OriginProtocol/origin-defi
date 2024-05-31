@@ -9,6 +9,7 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { governanceChoices, governanceSupport } from '../constants';
@@ -40,7 +41,8 @@ export const CurrentResultsCard = (props: CardProps) => {
     proposal?.ogvProposalById?.status === OgvProposalState.Active;
   const totalVotes =
     proposal?.ogvProposalById?.scores.reduce?.(
-      (acc, curr) => (acc ?? 0) + (curr ?? 0),
+      (acc, curr) =>
+        acc + +formatUnits(BigInt(curr ?? 0), tokens.mainnet.veOGV.decimals),
       1,
     ) ?? 1;
   const isVotingEnabled =
@@ -62,7 +64,12 @@ export const CurrentResultsCard = (props: CardProps) => {
                 (c) => c!.toLowerCase() === choice.toLowerCase(),
               ) ?? -1;
             const score =
-              idx > -1 ? proposal?.ogvProposalById?.scores?.at(idx) ?? 0 : 0;
+              idx > -1
+                ? +formatUnits(
+                    BigInt(proposal?.ogvProposalById?.scores?.at(idx) ?? 0),
+                    tokens.mainnet.OGV.decimals,
+                  )
+                : 0;
 
             return (
               <Grid2 key={choice} xs={12} sm={12 / governanceChoices.length}>

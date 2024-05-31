@@ -1,18 +1,21 @@
-import { Container } from '@mui/material';
+import { Stack } from '@mui/material';
 import {
+  Page,
+  PageSection,
   PageTitle,
-  Redeemer,
   trackEvent,
   trackSentryError,
 } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
+import { Redeemer } from '../components/Redeemer';
+
 export const RedeemView = () => {
   const intl = useIntl();
 
   return (
-    <Container maxWidth="sm">
+    <Page>
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
@@ -20,13 +23,18 @@ export const RedeemView = () => {
         })}
         token={tokens.mainnet.OUSD}
       />
-      <Redeemer
-        tokenIn={tokens.mainnet.OUSD}
-        vaultContract={contracts.mainnet.OUSDVault}
-        trackEvent={trackEvent}
-        onError={trackSentryError}
-        buttonsProps={{ variant: 'action' }}
-      />
-    </Container>
+      <PageSection>
+        <Stack alignItems="center">
+          <Redeemer
+            tokenIn={tokens.mainnet.OUSD}
+            vaultContract={contracts.mainnet.OUSDVault}
+            trackEvent={trackEvent}
+            onError={trackSentryError}
+            buttonsProps={{ variant: 'action' }}
+            sx={{ width: 1, maxWidth: 605 }}
+          />
+        </Stack>
+      </PageSection>
+    </Page>
   );
 };

@@ -70,7 +70,7 @@ export const ErrorPage = ({
                       href={DISCORD_URL}
                       target="_blank"
                       rel="noopener noreferrer"
-                      color="secondary.main"
+                      color="primary.main"
                     >
                       {intl.formatMessage({
                         defaultMessage: 'Discord support channel',

@@ -1,0 +1,49 @@
+query SnapshotProposals {
+  proposals(
+    orderBy: "created"
+    orderDirection: desc
+    where: { space_in: ["ousdgov.eth", "origingov.eth"] }
+    skip: 0
+    first: 1000
+  ) {
+    id
+    title
+    choices
+    scores
+    state
+    start
+    end
+    link
+    quorum
+    created
+    updated
+    space {
+      id
+    }
+  }
+}
+
+query SnapshotUserVotes($address: String!) {
+  votes(
+    orderBy: "created"
+    orderDirection: desc
+    where: { space_in: ["ousdgov.eth", "origingov.eth"], voter: $address }
+    skip: 0
+    first: 1000
+  ) {
+    id
+    created
+    choice
+    proposal {
+      id
+      title
+      state
+      link
+      choices
+      created
+      space {
+        id
+      }
+    }
+  }
+}

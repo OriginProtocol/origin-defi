@@ -245,7 +245,6 @@ const tokenInputStyles = {
     padding: 0,
     boxSizing: 'border-box',
     fontStyle: 'normal',
-    fontFamily: 'Sailec, sans-serif',
     fontSize: 24,
     lineHeight: 1.5,
     fontWeight: 700,

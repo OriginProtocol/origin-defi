@@ -41,9 +41,6 @@
   "0ICwq5": {
     "defaultMessage": "Last updated"
   },
-  "0STEwK": {
-    "defaultMessage": "The maximum variable APY currently being earned on staked OGV. Staking rewards are distributed in OGV."
-  },
   "0eghlt": {
     "defaultMessage": "My Wallet Balance"
   },
@@ -83,17 +80,14 @@
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
   },
-  "3WcLXG": {
-    "defaultMessage": "Learn about Governance"
+  "30piAb": {
+    "defaultMessage": "Convert OGV"
   },
   "3a5wL8": {
     "defaultMessage": "Active"
   },
   "3fTTLv": {
     "defaultMessage": "Unstake"
-  },
-  "3townk": {
-    "defaultMessage": "Max vAPY"
   },
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
@@ -104,17 +98,11 @@
   "4cSnUS": {
     "defaultMessage": "3y"
   },
-  "56jhQz": {
-    "defaultMessage": "New Snapshot Proposal"
-  },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
   },
   "5X3I7d": {
     "defaultMessage": "Switch network"
-  },
-  "5adJBo": {
-    "defaultMessage": "Select token"
   },
   "5h3TFE": {
     "defaultMessage": "I agree"
@@ -149,8 +137,11 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7yGjVx": {
-    "defaultMessage": "The current APY you are earning across all of your lock-ups. Extend your stakes to four years to earn the maximum APY."
+  "7nq5ZH": {
+    "defaultMessage": "Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards."
+  },
+  "7rgFGq": {
+    "defaultMessage": "OGV & OGN have merged"
   },
   "87E0Iv": {
     "defaultMessage": "Current results"
@@ -194,14 +185,14 @@
   "BBCjbl": {
     "defaultMessage": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
   },
-  "BLAy25": {
-    "defaultMessage": "Extend"
-  },
   "Bih77e": {
     "defaultMessage": "Total OGV staked"
   },
   "BorrCB": {
     "defaultMessage": "Voting Power:"
+  },
+  "BuhEl+": {
+    "defaultMessage": "Theme:"
   },
   "CKr0mb": {
     "defaultMessage": "Locked Tokens Received Now"
@@ -251,11 +242,8 @@
   "Fv1ZSz": {
     "defaultMessage": "Closed"
   },
-  "GZZUyE": {
-    "defaultMessage": "My vAPY"
-  },
-  "GtMIIe": {
-    "defaultMessage": "Get OGV"
+  "HT5D8q": {
+    "defaultMessage": "Convert OGV to OGN"
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
@@ -284,6 +272,12 @@
   "JNuVd0": {
     "defaultMessage": "No votes"
   },
+  "JXdbo8": {
+    "defaultMessage": "Done"
+  },
+  "JmriYi": {
+    "defaultMessage": "{count,plural,=1{# position unlocked} other{# positions unlocked}}"
+  },
   "JrepQU": {
     "defaultMessage": "Gas:"
   },
@@ -310,6 +304,9 @@
   },
   "Lv0zJu": {
     "defaultMessage": "Details"
+  },
+  "Lz6fu7": {
+    "defaultMessage": "Unlock All Stakes"
   },
   "MQq3X+": {
     "defaultMessage": "Active Proposals"
@@ -359,6 +356,9 @@
   "PKgDoL": {
     "defaultMessage": "Estimating..."
   },
+  "PZc1jP": {
+    "defaultMessage": "Max APY on OGN"
+  },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
@@ -398,6 +398,9 @@
   "S7CBOR": {
     "defaultMessage": "The amount of veOGV you will receive today in return for your lock-up. The more veOGV you have, the more voting power you have and the more staking rewards you will earn."
   },
+  "SVoPjp": {
+    "defaultMessage": "Unlock all"
+  },
   "SqjwlJ": {
     "defaultMessage": "Delegate {balance} veOGV to self"
   },
@@ -406,6 +409,9 @@
   },
   "TdHjj5": {
     "defaultMessage": "Origin DeFi Governance"
+  },
+  "TdTXXf": {
+    "defaultMessage": "Learn more"
   },
   "Tfx/3J": {
     "defaultMessage": "Start block"
@@ -418,6 +424,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "ULVduL": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -458,6 +467,12 @@
   "YGiRwq": {
     "defaultMessage": "Voting Power"
   },
+  "YH8KwT": {
+    "defaultMessage": "Unlock Successful"
+  },
+  "Yl+tTX": {
+    "defaultMessage": "Conversion will be open for one year"
+  },
   "YtTAoV": {
     "defaultMessage": "Vote {choice} on proposal {proposalId}"
   },
@@ -478,9 +493,6 @@
   },
   "aDYxXF": {
     "defaultMessage": "New transaction"
-  },
-  "aHPD2Z": {
-    "defaultMessage": "View Proposals"
   },
   "aWpBzj": {
     "defaultMessage": "Show more"
@@ -530,6 +542,9 @@
   "fFXn5l": {
     "defaultMessage": "Collect Rewards"
   },
+  "fGC2Me": {
+    "defaultMessage": "View Snapshot Proposals"
+  },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
   },
@@ -541,6 +556,9 @@
   },
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+  },
+  "gxLDKD": {
+    "defaultMessage": "Current OGN Staking vAPY"
   },
   "hZA4Ul": {
     "defaultMessage": "Current Lock-up Ends:"
@@ -587,6 +605,9 @@
   "k3YWIR": {
     "defaultMessage": "Max slippage"
   },
+  "kY4SP1": {
+    "defaultMessage": "Unlock All"
+  },
   "kmAKoi": {
     "defaultMessage": "My Staked Balance"
   },
@@ -629,6 +650,9 @@
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
   },
+  "qXCbgZ": {
+    "defaultMessage": "Unlock"
+  },
   "qivQ44": {
     "defaultMessage": "Unstake lock-up"
   },
@@ -667,9 +691,6 @@
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
-  },
-  "w2pp9r": {
-    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"

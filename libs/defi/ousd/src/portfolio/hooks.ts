@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 
+import { useOTokenHistoriesQuery } from '@origin/defi/shared';
 import { HistoryType } from '@origin/ousd/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
@@ -9,12 +10,10 @@ import { descend, groupBy, sort } from 'ramda';
 import { formatEther, formatUnits, parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
-import { useOusdHistoryTransactionQuery } from './queries.generated';
-
+import type { OTokenHistoriesQuery } from '@origin/defi/shared';
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
 
-import type { OusdHistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
 
 export const usePendingYield = (
@@ -92,26 +91,29 @@ export const usePendingYield = (
   });
 };
 
-export const useAggregatedHistory = (
+export const useOusdHistory = (
   filters?: HistoryType[],
   options?: Omit<
-    UseQueryOptions<OusdHistoryTransactionQuery, Error, DailyHistory[]>,
+    UseQueryOptions<OTokenHistoriesQuery, Error, DailyHistory[]>,
     'select'
   >,
 ) => {
   const { address, isConnected } = useAccount();
 
-  return useOusdHistoryTransactionQuery(
+  return useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
       filters: isNilOrEmpty(filters) ? undefined : filters,
+      token: tokens.mainnet.OUSD.address,
+      chainId: tokens.mainnet.OUSD.chainId,
     },
     {
       refetchOnWindowFocus: false,
+      staleTime: 120e3,
       ...options,
       enabled: isConnected && !isNilOrEmpty(address),
       placeholderData: { oTokenHistories: [] },
-      select: useCallback((data: OusdHistoryTransactionQuery) => {
+      select: useCallback((data: OTokenHistoriesQuery) => {
         const history = data?.oTokenHistories;
 
         const grouped = groupBy(

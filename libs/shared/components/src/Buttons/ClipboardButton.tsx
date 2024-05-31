@@ -12,11 +12,13 @@ export type AddressType = 'address' | 'transaction';
 export type ClipboardButtonProps = {
   value: string;
   hideIcon?: boolean;
+  hideLabel?: boolean;
 } & ButtonProps;
 
 export const ClipboardButton = ({
   value,
   hideIcon,
+  hideLabel,
   ...rest
 }: ClipboardButtonProps) => {
   const intl = useIntl();
@@ -57,10 +59,13 @@ export const ClipboardButton = ({
             flexDirection: 'row',
             alignItems: 'center',
             color: 'text.secondary',
+            gap: 0.5,
           }}
         >
-          <FaCheckRegular color="success" sx={{ mr: 0.5 }} />
-          {intl.formatMessage({ defaultMessage: 'Copied' })}
+          {!hideIcon && (
+            <FaCheckRegular color="success" sx={{ fontSize: 'inherit' }} />
+          )}
+          {!hideLabel && intl.formatMessage({ defaultMessage: 'Copied' })}
         </Typography>
       ) : (
         <Typography
@@ -69,10 +74,13 @@ export const ClipboardButton = ({
             flexDirection: 'row',
             alignItems: 'center',
             color: 'text.secondary',
+            gap: 0.5,
           }}
         >
-          <FaCircleXmarkRegular color="error" sx={{ mr: 0.5 }} />
-          {intl.formatMessage({ defaultMessage: 'Error' })}
+          {!hideIcon && (
+            <FaCircleXmarkRegular color="error" sx={{ fontSize: 'inherit' }} />
+          )}
+          {!hideLabel && intl.formatMessage({ defaultMessage: 'Error' })}
         </Typography>
       )}
     </Button>

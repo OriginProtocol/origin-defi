@@ -1,4 +1,6 @@
-import { Button } from '@mui/material';
+import { forwardRef } from 'react';
+
+import { Box, Button } from '@mui/material';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { mergeDeepRight } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -15,64 +17,69 @@ interface OpenAccountModalButtonProps extends ButtonProps {
   hideAddress?: boolean;
 }
 
-export const OpenAccountModalButton = ({
-  connectLabel,
-  connectedProps,
-  disconnectedProps,
-  hideAddress,
-  ...rest
-}: OpenAccountModalButtonProps) => {
-  const intl = useIntl();
+export const OpenAccountModalButton = forwardRef<
+  HTMLDivElement,
+  OpenAccountModalButtonProps
+>(
+  (
+    { connectLabel, connectedProps, disconnectedProps, hideAddress, ...rest },
+    ref,
+  ) => {
+    const intl = useIntl();
 
-  const handleClick =
-    (handler: () => void) => (evt: MouseEvent<HTMLButtonElement>) => {
-      rest?.onClick?.(evt);
-      handler();
-    };
+    const handleClick =
+      (handler: () => void) => (evt: MouseEvent<HTMLButtonElement>) => {
+        rest?.onClick?.(evt);
+        handler();
+      };
 
-  return (
-    <ConnectButton.Custom>
-      {({ account, chain, openChainModal, openConnectModal, mounted }) => {
-        if (!mounted || !account || !chain) {
-          return (
-            <Button
-              {...(disconnectedProps
-                ? (mergeDeepRight(rest, disconnectedProps) as ButtonProps)
-                : rest)}
-              onClick={handleClick(openConnectModal)}
-            >
-              {connectLabel ||
-                intl.formatMessage({ defaultMessage: 'Connect' })}
-            </Button>
-          );
-        }
+    return (
+      <Box ref={ref}>
+        <ConnectButton.Custom>
+          {({ account, chain, openChainModal, openConnectModal, mounted }) => {
+            if (!mounted || !account || !chain) {
+              return (
+                <Button
+                  {...(disconnectedProps
+                    ? (mergeDeepRight(rest, disconnectedProps) as ButtonProps)
+                    : rest)}
+                  onClick={handleClick(openConnectModal)}
+                >
+                  {connectLabel ||
+                    intl.formatMessage({ defaultMessage: 'Connect' })}
+                </Button>
+              );
+            }
 
-        if (chain.unsupported) {
-          return (
-            <Button
-              color="warning"
-              {...rest}
-              onClick={handleClick(openChainModal)}
-            >
-              {intl.formatMessage({
-                defaultMessage: 'Wrong Network',
-              })}
-            </Button>
-          );
-        }
+            if (chain.unsupported) {
+              return (
+                <Button
+                  color="warning"
+                  {...rest}
+                  onClick={handleClick(openChainModal)}
+                >
+                  {intl.formatMessage({
+                    defaultMessage: 'Wrong Network',
+                  })}
+                </Button>
+              );
+            }
 
-        return (
-          <AccountButton
-            hideAddress={hideAddress}
-            {...(connectedProps
-              ? (mergeDeepRight(rest, connectedProps) as ButtonProps)
-              : rest)}
-            onClick={(evt: MouseEvent<HTMLButtonElement>) => {
-              rest?.onClick?.(evt);
-            }}
-          />
-        );
-      }}
-    </ConnectButton.Custom>
-  );
-};
+            return (
+              <AccountButton
+                hideAddress={hideAddress}
+                {...(connectedProps
+                  ? (mergeDeepRight(rest, connectedProps) as ButtonProps)
+                  : rest)}
+                onClick={(evt: MouseEvent<HTMLButtonElement>) => {
+                  rest?.onClick?.(evt);
+                }}
+              />
+            );
+          }}
+        </ConnectButton.Custom>
+      </Box>
+    );
+  },
+);
+OpenAccountModalButton.displayName = 'OpenAccountModalButton';

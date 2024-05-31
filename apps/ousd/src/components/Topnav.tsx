@@ -5,6 +5,7 @@ import {
   Box,
   Divider,
   Link as MuiLink,
+  Popover,
   Tab,
   Tabs,
   useMediaQuery,
@@ -13,8 +14,9 @@ import {
 import { trackEvent } from '@origin/ousd/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
-  AccountPopover,
+  AccountPanel,
   ActivityButton,
+  BalanceList,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
@@ -215,18 +217,44 @@ export function Topnav(props: BoxProps) {
               },
             }}
           />
-          <AccountPopover
-            anchor={accountModalAnchor}
-            setAnchor={setAccountModalAnchor}
-            balanceTokens={[
-              tokens.mainnet.ETH,
-              tokens.mainnet.OUSD,
-              tokens.mainnet.wOUSD,
-              tokens.mainnet.USDT,
-              tokens.mainnet.DAI,
-              tokens.mainnet.USDC,
-            ]}
-          />
+          <Popover
+            open={!!accountModalAnchor}
+            anchorEl={accountModalAnchor}
+            onClose={() => {
+              setAccountModalAnchor(null);
+            }}
+            anchorOrigin={{
+              vertical: 50,
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            sx={{
+              '& .MuiPopover-paper': {
+                borderRadius: 1,
+                width: 250,
+              },
+            }}
+          >
+            <AccountPanel
+              onDisconnect={() => {
+                setAccountModalAnchor(null);
+              }}
+            />
+            <Divider />
+            <BalanceList
+              balanceTokens={[
+                tokens.mainnet.ETH,
+                tokens.mainnet.OUSD,
+                tokens.mainnet.wOUSD,
+                tokens.mainnet.USDT,
+                tokens.mainnet.DAI,
+                tokens.mainnet.USDC,
+              ]}
+            />
+          </Popover>
           <ActivityButton
             onClick={() => {
               trackEvent({ name: 'open_activity' });

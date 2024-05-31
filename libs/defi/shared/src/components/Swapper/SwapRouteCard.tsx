@@ -1,5 +1,5 @@
-import { Box, Card, Skeleton, Stack, Typography } from '@mui/material';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { Box, Card, Skeleton, Stack } from '@mui/material';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
   useFormat,
@@ -11,7 +11,8 @@ import {
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
-import type { CardProps, StackProps, TypographyProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { EstimatedSwapRoute } from '@origin/shared/providers';
 
 export type SwapRouteCardProps = {
@@ -70,20 +71,24 @@ export function SwapRouteCard({
     <Card
       {...rest}
       sx={{
-        px: 1.5,
+        px: 2,
         pb: 2,
-        pt: 3.5,
+        pt: 3,
         cursor: 'pointer',
         position: 'relative',
         boxShadow: 'none',
         height: 1,
         borderWidth: 1,
         borderColor: 'divider',
+        borderRadius: 2,
+        backgroundColor: 'background.default',
         '&:hover': {
           borderColor: 'primary.main',
         },
-        ...(isSelected && { borderColor: 'primary.main' }),
-
+        ...(isSelected && {
+          borderColor: 'primary.main',
+          backgroundColor: 'background.highlight',
+        }),
         ...rest?.sx,
       }}
       role="button"
@@ -102,75 +107,75 @@ export function SwapRouteCard({
             top: 0,
             right: 0,
             px: 1,
-            pt: 0.25,
+            py: 0.25,
           }}
         >
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>
       )}
-      <Stack height={1} spacing={0.5}>
-        <Stack {...rowProps} pb={0.5}>
-          <Stack direction="row" spacing={0.5} alignItems="center">
-            {isSwapRoutesLoading ? (
-              <Skeleton variant="circular" width={24} height={24} />
-            ) : (
-              <TokenIcon token={tokenOut} sx={{ fontSize: 24 }} />
-            )}
-            <LoadingLabel
-              fontWeight={500}
-              isLoading={isSwapRoutesLoading}
-              sWidth={100}
-            >
-              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
-            </LoadingLabel>
-          </Stack>
+      <Stack height={1} useFlexGap>
+        <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+          {isSwapRoutesLoading ? (
+            <Skeleton variant="circular" width={20} height={20} />
+          ) : (
+            <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
+          )}
           <LoadingLabel
-            color="text.secondary"
-            noWrap
+            fontWeight="bold"
             isLoading={isSwapRoutesLoading}
-            sWidth={60}
+            sWidth={100}
           >
-            ({formatCurrency(convertedAmount)})
+            {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
           </LoadingLabel>
         </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Route:' })}
-          </Typography>
-          <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={80}>
-            {intl.formatMessage(routeLabel)}
-          </LoadingLabel>
-        </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Rate:' })}
-          </Typography>
-          <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={60}>
-            1:{formatQuantity(route.rate)}
-          </LoadingLabel>
-        </Stack>
-        <Stack {...rowProps}>
-          <Typography {...labelProps}>
-            {intl.formatMessage({ defaultMessage: 'Gas:' })}
-          </Typography>
-          <LoadingLabel isLoading={isGasLoading}>
-            ~{formatCurrency(gasPrice)}
-          </LoadingLabel>
-        </Stack>
+        <LoadingLabel
+          color="text.secondary"
+          noWrap
+          isLoading={isSwapRoutesLoading}
+          sWidth={60}
+        >
+          ({formatCurrency(convertedAmount)})
+        </LoadingLabel>
+        <LoadingLabel
+          fontWeight="medium"
+          noWrap
+          isLoading={isSwapRoutesLoading}
+          sWidth={60}
+          my={1.25}
+        >
+          {intl.formatMessage(routeLabel)}
+        </LoadingLabel>
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '1:{value}' },
+            { value: formatQuantity(route.rate) },
+          )}
+          isLoading={isSwapRoutesLoading}
+          mb={0.5}
+        />
+        <ValueLabel
+          {...valueLabelProps}
+          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+          value={intl.formatMessage(
+            { defaultMessage: '~{value}' },
+            { value: formatCurrency(gasPrice) },
+          )}
+          isLoading={isGasLoading}
+        />
       </Stack>
     </Card>
   );
 }
 
-const rowProps: StackProps = {
+const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  sx: {
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 1,
+  justifyContent: 'space-between',
+  labelProps: {
+    variant: 'body3',
+    fontWeight: 'medium',
+    color: 'text.secondary',
   },
-};
-
-const labelProps: TypographyProps = {
-  color: 'text.secondary',
+  valueProps: { fontWeight: 'medium' },
 };

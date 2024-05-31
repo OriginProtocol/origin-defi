@@ -1,5 +1,4 @@
-import { Container } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2';
+import { Box, Container, Stack } from '@mui/material';
 import { trackSentryError } from '@origin/oeth/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
@@ -11,27 +10,32 @@ import { BridgeProvider } from '../state';
 
 export function BridgeView() {
   const intl = useIntl();
-  const cardWidth = 552;
+  const cardWidth = { xs: 1, sm: 552 };
+  const cardWidthSide = { xs: 1, sm: 552, lg: 375 };
   return (
     <BridgeProvider>
       <Container
         sx={{
-          display: 'flex',
-          justifyContent: 'center',
           mt: 3,
           mb: 10,
         }}
       >
-        <Grid2 container gap={3} justifyContent={'center'}>
-          <Grid2 xs={12} lg={8} maxWidth={cardWidth}>
+        <Stack
+          width={1}
+          justifyContent={{ lg: 'center' }}
+          alignItems={{ xs: 'center', lg: 'inherit' }}
+          direction={{ xs: 'column', lg: 'row' }}
+          gap={3}
+        >
+          <Box minWidth={cardWidth} maxWidth={cardWidth}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
             >
               <BridgeCard />
             </ErrorBoundary>
-          </Grid2>
-          <Grid2 xs={12} lg={4} maxWidth={cardWidth}>
+          </Box>
+          <Stack minWidth={cardWidthSide} maxWidth={cardWidthSide} gap={3}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
@@ -42,17 +46,14 @@ export function BridgeView() {
                 })}
               />
             </ErrorBoundary>
-          </Grid2>
-          <Grid2 xs={12} lg={8} maxWidth={cardWidth}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
             >
               <BridgeActivityCard />
             </ErrorBoundary>
-          </Grid2>
-          <Grid2 xs={12} lg={4} maxWidth={cardWidth} />
-        </Grid2>
+          </Stack>
+        </Stack>
       </Container>
     </BridgeProvider>
   );

@@ -1,5 +1,11 @@
 import { Box } from '@mui/material';
-import { Bridge, Received, Send, Swap, Yield } from '@origin/shared/icons';
+import {
+  BridgeCircle,
+  Received,
+  Send,
+  Swap,
+  Yield,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { mainnet } from 'viem/chains';
 
@@ -47,7 +53,7 @@ export function TransactionIcon({
 
   const subIcon =
     type === 'Bridge' ? (
-      <Bridge {...subIconProps} />
+      <BridgeCircle {...subIconProps} />
     ) : type === 'Sent' ? (
       <Send {...subIconProps} />
     ) : type === 'Received' || type === 'Yield' ? (

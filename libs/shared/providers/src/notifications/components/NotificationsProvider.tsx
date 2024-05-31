@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
 import { useVisibleNotifications } from '../hooks';
-import { Provider } from '../state';
+import { NotificationStateProvider } from '../state';
 import { NotificationAlert } from './NotificationAlert';
 
 import type { StackProps } from '@mui/material';
@@ -49,7 +49,9 @@ export const NotificationsProvider = ({
   containerProps,
   children,
 }: NotificationsProviderProps) => (
-  <Provider initialState={{ notifications: [], maxVisible, autoHideDuration }}>
+  <NotificationStateProvider
+    initialState={{ notifications: [], maxVisible, autoHideDuration }}
+  >
     <NotificationsWrapped {...containerProps}>{children}</NotificationsWrapped>
-  </Provider>
+  </NotificationStateProvider>
 );

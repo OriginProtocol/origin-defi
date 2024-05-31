@@ -1,10 +1,10 @@
 import { Skeleton } from '@mui/material';
-import { MiddleTruncated } from '@origin/shared/components';
+import { MiddleTruncatedLabel } from '@origin/shared/components';
 import { isNilOrEmpty, middleTruncate } from '@origin/shared/utils';
 import { useEnsName } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import type { MiddleTruncatedProps } from '@origin/shared/components';
+import type { MiddleTruncatedLabelProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
 
 type AddressLabelProps = {
@@ -12,7 +12,7 @@ type AddressLabelProps = {
   enableEnsName?: boolean;
   monospace?: boolean;
   short?: boolean;
-} & Omit<MiddleTruncatedProps, 'children'>;
+} & Omit<MiddleTruncatedLabelProps, 'children'>;
 
 export const AddressLabel = ({
   address,
@@ -42,5 +42,7 @@ export const AddressLabel = ({
     return <Skeleton sx={{ minWidth: 100, ...rest?.sx }} />;
   }
 
-  return <MiddleTruncated textProps={{ ...rest }}>{label}</MiddleTruncated>;
+  return (
+    <MiddleTruncatedLabel textProps={{ ...rest }}>{label}</MiddleTruncatedLabel>
+  );
 };

@@ -7,6 +7,7 @@ import ArrowDownToBracketSvg from './arrow-down-to-bracket.svg?react';
 import ArrowLeftSvg from './arrow-left.svg?react';
 import ArrowRightSvg from './arrow-right.svg?react';
 import ArrowRightArrowLeftSvg from './arrow-right-arrow-left.svg?react';
+import ArrowRightFromBracketSvg from './arrow-right-from-bracket.svg?react';
 import ArrowUpSvg from './arrow-up.svg?react';
 import ArrowUpArrowDownSvg from './arrow-up-arrow-down.svg?react';
 import ArrowUpRightSvg from './arrow-up-right.svg?react';
@@ -34,8 +35,10 @@ import CircleXmarkSvg from './circle-xmark.svg?react';
 import ClockSvg from './clock.svg?react';
 import CoinsSvg from './coins.svg?react';
 import CommentsSvg from './comments.svg?react';
+import CopySvg from './copy.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
+import FilterSvg from './filter.svg?react';
 import GavelSvg from './gavel.svg?react';
 import GearComplexSvg from './gear-complex.svg?react';
 import Grid2Svg from './grid-2.svg?react';
@@ -43,11 +46,14 @@ import LinkSvg from './link.svg?react';
 import MagnifyingGlassSvg from './magnifying-glass.svg?react';
 import MagnifyingGlassDollarSvg from './magnifying-glass-dollar.svg?react';
 import MinusSvg from './minus.svg?react';
+import MoonSvg from './moon.svg?react';
 import PercentSvg from './percent.svg?react';
 import RotateLeftSvg from './rotate-left.svg?react';
 import SquareSvg from './square.svg?react';
 import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
+import SquareMinusSvg from './square-minus.svg?react';
+import SunBrightSvg from './sun-bright.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
@@ -116,6 +122,9 @@ export const FaArrowUpArrowDownRegular = (props: SvgIconProps) => (
     component={ArrowUpArrowDownSvg}
     inheritViewBox
   />
+);
+export const FaArrowRightFromBracketRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ArrowRightFromBracketSvg} inheritViewBox />
 );
 export const FaArrowUpRightFromSquareRegular = (props: SvgIconProps) => (
   <SvgIcon
@@ -300,6 +309,9 @@ export const FaCommentsRegular = (props: SvgIconProps) => (
     inheritViewBox
   />
 );
+export const FaCopyRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CopySvg} inheritViewBox />
+);
 export const FaEllipsisVerticalRegular = (props: SvgIconProps) => (
   <SvgIcon
     fontSize="inherit"
@@ -315,6 +327,9 @@ export const FaFileLinesRegular = (props: SvgIconProps) => (
     component={FileLinesSvg}
     inheritViewBox
   />
+);
+export const FaFilterRegular = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={FilterSvg} inheritViewBox />
 );
 export const FaGavelRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={GavelSvg} inheritViewBox />
@@ -352,6 +367,9 @@ export const FaMagnifyingGlassRegular = (props: SvgIconProps) => (
 export const FaMinusRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={MinusSvg} inheritViewBox />
 );
+export const FaMoonRegular = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={MoonSvg} inheritViewBox />
+);
 export const FaPercentRegular = (props: SvgIconProps) => (
   <SvgIcon
     fontSize="inherit"
@@ -384,6 +402,22 @@ export const FaSquareListRegular = (props: SvgIconProps) => (
     fontSize="inherit"
     {...props}
     component={SquareListSvg}
+    inheritViewBox
+  />
+);
+export const FaSquareMinusRegular = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SquareMinusSvg}
+    inheritViewBox
+  />
+);
+export const FaSunBrightRegular = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={SunBrightSvg}
     inheritViewBox
   />
 );

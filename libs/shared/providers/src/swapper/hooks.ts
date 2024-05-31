@@ -16,6 +16,7 @@ import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { useSwapState } from './state';
 import {
+  getAllAvailableChainIds,
   getAllAvailableTokens,
   getAvailableRoutes,
   getAvailableTokensForSource,
@@ -109,8 +110,8 @@ export const useTokenOptions = <M = object>(): {
       availableTokensIn,
       availableTokensOut,
       swapRoutes,
-      tokenIn.symbol,
-      tokenOut.symbol,
+      tokenIn?.symbol,
+      tokenOut?.symbol,
       tokensIn,
       tokensOut,
     ],
@@ -737,4 +738,13 @@ export const useSwapperPrices = (currency?: Currency) => {
   ]);
 
   return useTokenPrices(keys);
+};
+
+export const useSwapperTargetChainId = () => {
+  const { chainId } = useAccount();
+  const [{ swapRoutes }] = useSwapState();
+
+  const available = getAllAvailableChainIds(swapRoutes);
+
+  return available.includes(chainId ?? 0) ? chainId : available[0];
 };

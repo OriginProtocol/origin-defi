@@ -8,7 +8,6 @@ import {
   Drawer,
   Link,
   Popover,
-  Skeleton,
   Stack,
   Typography,
   useMediaQuery,
@@ -33,8 +32,8 @@ import {
 } from '@origin/shared/icons';
 import {
   AddressLabel,
+  BalanceList,
   OpenAccountModalButton,
-  useWatchBalance,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not } from 'ramda';
@@ -46,13 +45,11 @@ import { useAccount, useDisconnect, useWalletClient } from 'wagmi';
 import { routes } from '../routes';
 
 import type { BoxProps, StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
 import type { RouteObject } from 'react-router-dom';
 
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -279,7 +276,6 @@ const AccountPopoverButton = () => {
     useState<HTMLButtonElement | null>(null);
   const { address, isConnected, connector } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: eth, isLoading: ethLoading } = useWatchBalance();
   const { data: walletClient } = useWalletClient();
 
   const close = () => {
@@ -340,15 +336,7 @@ const AccountPopoverButton = () => {
         sx={{
           '& .MuiPopover-paper': {
             borderRadius: 1,
-            width: (theme) => ({
-              xs: '90vw',
-              md: `min(${theme.typography.pxToRem(250)}, 90vw)`,
-            }),
-            [theme.breakpoints.down('md')]: {
-              left: '0 !important',
-              right: 0,
-              marginInline: 'auto',
-            },
+            width: 250,
           },
         }}
       >
@@ -371,7 +359,6 @@ const AccountPopoverButton = () => {
               {intl.formatMessage({ defaultMessage: 'Disconnect' })}
             </Button>
           </Stack>
-
           <Divider />
           <Stack spacing={2} sx={{ px: 2, py: 3 }}>
             <Stack direction="row" alignItems="center">
@@ -397,49 +384,10 @@ const AccountPopoverButton = () => {
               })}
             </Button>
           </Stack>
-
           <Divider />
-          <Stack sx={{ px: 2, py: 3 }} gap={2}>
-            <BalanceRow
-              token={tokens.mainnet.ETH}
-              balance={+formatUnits(eth ?? 0n, 18)}
-              isBalanceLoading={ethLoading}
-            />
-          </Stack>
+          <BalanceList balanceTokens={[tokens.mainnet.ETH]} />
         </Stack>
       </Popover>
     </>
   );
 };
-
-type BalanceRowProps = {
-  token: Token;
-  balance: number;
-  isBalanceLoading: boolean;
-} & StackProps;
-
-function BalanceRow({
-  token,
-  balance,
-  isBalanceLoading,
-  ...rest
-}: BalanceRowProps) {
-  const intl = useIntl();
-
-  return (
-    <Stack direction="row" alignItems="center" gap={1} {...rest}>
-      <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
-      <Typography>
-        {isBalanceLoading ? (
-          <Skeleton width={38} />
-        ) : (
-          intl.formatNumber(balance, {
-            minimumFractionDigits: 4,
-            maximumFractionDigits: 4,
-          })
-        )}
-      </Typography>
-      <Typography>{token.symbol}</Typography>
-    </Stack>
-  );
-}

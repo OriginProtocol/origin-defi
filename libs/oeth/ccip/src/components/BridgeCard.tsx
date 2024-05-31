@@ -16,7 +16,7 @@ import {
 } from '@origin/oeth/shared';
 import { ArrowButton, InfoTooltip } from '@origin/shared/components';
 import { ChainButton } from '@origin/shared/components';
-import { getNativeToken } from '@origin/shared/contracts';
+import { contracts, getNativeToken } from '@origin/shared/contracts';
 import { ChainlinkCCIP } from '@origin/shared/icons';
 import {
   ApprovalButton,
@@ -28,7 +28,7 @@ import {
 import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
+import { decodeEventLog, formatUnits } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
 
 import { ccipRouter } from '../constants';
@@ -40,7 +40,8 @@ import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 
 import type { Token } from '@origin/shared/contracts';
-import type { erc20Abi } from 'viem';
+import type { HexAddress } from '@origin/shared/utils';
+import type { erc20Abi, Hex, TransactionReceipt } from 'viem';
 
 export const BridgeCard = () => {
   const intl = useIntl();
@@ -93,25 +94,36 @@ export const BridgeCard = () => {
     amount,
   });
 
-  const txButton = useTxButton(
-    ccipTxParams.data && {
-      params: ccipTxParams.data.params,
-      activity: {
-        type: 'bridge',
-        status: 'pending',
-        amountIn: amount,
-        tokenIdIn: srcToken.id,
-        tokenIdOut: dstToken.id,
-      },
-      callbacks: {
-        onWriteSuccess: (tx) => {
-          reset({ waitForTx: tx.transactionHash });
-          refetchAllowance?.();
-        },
-      },
-      enableGas: true,
+  const txButton = useTxButton({
+    params: ccipTxParams.data?.params ?? {
+      contract: srcRouter,
+      functionName: 'ccipSend',
+      args: [] as any,
+      value: 0n,
     },
-  );
+    activity: {
+      type: 'bridge',
+      status: 'pending',
+      amountIn: amount,
+      tokenIdIn: srcToken.id,
+      tokenIdOut: dstToken.id,
+    },
+    callbacks: {
+      onWriteSuccess: (tx) => {
+        reset({
+          waitForTransfer: createOptimisticTransferObject(
+            tx,
+            srcChain.id,
+            dstChain.id,
+            dstToken.address as Hex,
+            userAddress as Hex,
+          ),
+        });
+        refetchAllowance?.();
+      },
+    },
+    enableGas: true,
+  });
 
   // Toggle chain if the network has switched and dstChain is the network we switched to.
   useEffect(() => {
@@ -123,6 +135,11 @@ export const BridgeCard = () => {
     }
   }, [previousChain?.id, currentChain?.id, dstChain.id, toggleChain]);
 
+  const insufficientAmount = srcBalance !== undefined && srcBalance < amount;
+  const insufficientNativeBalance =
+    !txButton.params?.value ||
+    !balances ||
+    balances[nativeToken.id] < txButton.params?.value;
   const requiresApproval =
     isErc20 &&
     !isAllowanceLoading &&
@@ -130,31 +147,38 @@ export const BridgeCard = () => {
     currentChain?.id === srcChain.id &&
     allowance !== undefined &&
     allowance < amount &&
-    amount <= (balances?.[srcToken.id] ?? 0n);
+    !insufficientAmount;
+
   const bridgeButtonDisabled =
-    !isConnected ||
-    requiresApproval ||
-    amount === 0n ||
-    amount > (balances?.[srcToken.id] ?? 0n);
+    !isConnected || requiresApproval || amount === 0n || insufficientAmount;
   const bridgeButtonLabel =
     amount === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : srcBalance !== undefined && srcBalance < amount
-        ? intl.formatMessage({
-            defaultMessage: 'Insufficient amount',
-          })
-        : intl.formatMessage(
-            { defaultMessage: 'Bridge {symbol}' },
+      : insufficientNativeBalance
+        ? intl.formatMessage(
             {
-              symbol: srcToken.symbol,
+              defaultMessage: 'Insufficient {symbol}',
             },
-          );
+            { symbol: nativeToken.symbol },
+          )
+        : insufficientAmount
+          ? intl.formatMessage(
+              {
+                defaultMessage: 'Insufficient {symbol}',
+              },
+              { symbol: srcToken.symbol },
+            )
+          : intl.formatMessage(
+              { defaultMessage: 'Bridge {symbol}' },
+              {
+                symbol: srcToken.symbol,
+              },
+            );
 
-  const totalFees =
-    txButton.gasPrice &&
-    ccipTxParams.data &&
-    txButton.gasPrice.gasCostWei +
-      Number(formatUnits(ccipTxParams.data.fee, 18));
+  const estimateGasFee = txButton.gasPrice?.gasCostWei;
+  const bridgeFee = ccipTxParams.data
+    ? Number(formatUnits(ccipTxParams.data.fee, 18))
+    : undefined;
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -262,8 +286,18 @@ export const BridgeCard = () => {
               {intl.formatMessage({ defaultMessage: 'Est. bridge fee' })}
             </Box>
             <Box>
-              {typeof totalFees === 'number'
-                ? `${formatAmount(totalFees)} ${srcChain.nativeCurrency.symbol}`
+              {typeof bridgeFee === 'number'
+                ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
+                : '-'}
+            </Box>
+          </Stack>
+          <Stack direction={'row'}>
+            <Box flex={1} color={'text.secondary'}>
+              {intl.formatMessage({ defaultMessage: 'Est. gas fee' })}
+            </Box>
+            <Box>
+              {typeof estimateGasFee === 'number'
+                ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
                 : '-'}
             </Box>
           </Stack>
@@ -283,11 +317,11 @@ export const BridgeCard = () => {
           <TxButton
             params={txButton.params}
             callbacks={txButton.callbacks}
+            label={bridgeButtonLabel}
             disabled={bridgeButtonDisabled}
             fullWidth
             sx={{ mt: 1.5 }}
             variant={'action'}
-            label={bridgeButtonLabel}
           />
           <Stack
             direction={'row'}
@@ -317,3 +351,61 @@ export const BridgeDivider = () => {
     </Stack>
   );
 };
+
+function createOptimisticTransferObject(
+  tx: TransactionReceipt,
+  chainIn: number,
+  chainOut: number,
+  tokenOut: `0x${string}`,
+  userAddress: `0x${string}`,
+) {
+  const ccipSendRequestedTopic =
+    '0xd0c3c799bf9e2639de44391e7f524d229b2b55f5b1ea94b2bf7da42f7243dddd';
+  const ccipSendRequested = tx.logs.find(
+    (l) => l.topics[0] === ccipSendRequestedTopic,
+  );
+  let waitForTransfer = undefined;
+  if (ccipSendRequested) {
+    const ccipSendRequestedData = decodeEventLog({
+      abi: contracts.mainnet.ccipOnRamp.abi,
+      data: ccipSendRequested.data,
+      topics: [ccipSendRequestedTopic],
+    }) as unknown as {
+      args: {
+        message: {
+          messageId: Hex;
+          tokenAmounts: { token: HexAddress; amount: bigint }[];
+        };
+      };
+    };
+    if (ccipSendRequestedData.args) {
+      const messageId = ccipSendRequestedData.args.message.messageId;
+      const tokenIn = ccipSendRequestedData.args.message.tokenAmounts[0]?.token;
+      const amountIn =
+        ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+      const amountOut =
+        ccipSendRequestedData.args.message.tokenAmounts[0]?.amount;
+
+      waitForTransfer = {
+        id: tx.transactionHash,
+        blockNumber: Number(tx.blockNumber),
+        timestamp: new Date().toISOString(),
+        messageId: messageId,
+        txHashIn: tx.transactionHash,
+        txHashOut: undefined,
+        amountIn: amountIn.toString(),
+        amountOut: amountOut.toString(),
+        chainIn,
+        chainOut,
+        tokenIn: tokenIn,
+        tokenOut: tokenOut ?? ZERO_ADDRESS,
+        bridge: 'ccip',
+        state: 0,
+        transactor: userAddress as string,
+        sender: userAddress as string,
+        receiver: userAddress as string,
+      };
+    }
+  }
+  return waitForTransfer;
+}

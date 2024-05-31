@@ -127,12 +127,6 @@
       "value": "Switch network"
     }
   ],
-  "5adJBo": [
-    {
-      "type": 0,
-      "value": "Select token"
-    }
-  ],
   "5h3TFE": [
     {
       "type": 0,
@@ -235,6 +229,12 @@
     {
       "type": 0,
       "value": "Change"
+    }
+  ],
+  "BuhEl+": [
+    {
+      "type": 0,
+      "value": "Theme:"
     }
   ],
   "Cd75LB": [
@@ -499,6 +499,12 @@
     {
       "type": 0,
       "value": "Account"
+    }
+  ],
+  "ULVduL": [
+    {
+      "type": 0,
+      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
     }
   ],
   "UkXeBW": [
@@ -815,12 +821,6 @@
     {
       "type": 0,
       "value": "No Activity"
-    }
-  ],
-  "w2pp9r": [
-    {
-      "type": 0,
-      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
     }
   ],
   "w5VeGT": [

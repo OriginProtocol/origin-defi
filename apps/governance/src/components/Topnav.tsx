@@ -4,6 +4,7 @@ import {
   alpha,
   Box,
   Divider,
+  Popover,
   Tab,
   Tabs,
   useMediaQuery,
@@ -12,8 +13,9 @@ import {
 import { trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
-  AccountPopover,
+  AccountPanel,
   ActivityButton,
+  BalanceList,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -189,15 +191,41 @@ export function Topnav(props: BoxProps) {
               },
             }}
           />
-          <AccountPopover
-            anchor={accountModalAnchor}
-            setAnchor={setAccountModalAnchor}
-            balanceTokens={[
-              tokens.mainnet.ETH,
-              tokens.mainnet.OGV,
-              tokens.mainnet.veOGV,
-            ]}
-          />
+          <Popover
+            open={!!accountModalAnchor}
+            anchorEl={accountModalAnchor}
+            onClose={() => {
+              setAccountModalAnchor(null);
+            }}
+            anchorOrigin={{
+              vertical: 50,
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            sx={{
+              '& .MuiPopover-paper': {
+                borderRadius: 1,
+                width: 250,
+              },
+            }}
+          >
+            <AccountPanel
+              onDisconnect={() => {
+                setAccountModalAnchor(null);
+              }}
+            />
+            <Divider />
+            <BalanceList
+              balanceTokens={[
+                tokens.mainnet.ETH,
+                tokens.mainnet.OGV,
+                tokens.mainnet.veOGV,
+              ]}
+            />
+          </Popover>
           <ActivityButton
             onClick={() => {
               trackEvent({ name: 'open_activity' });

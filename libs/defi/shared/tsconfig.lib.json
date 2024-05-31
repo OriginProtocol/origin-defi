@@ -8,7 +8,7 @@
       "@nx/react/typings/image.d.ts"
     ]
   },
-  "files": ["../../../apps/defi/src/env.d.ts"],
+  "files": ["../../../apps/defi/src/env.d.ts", "../theme/src/theme.d.ts"],
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",

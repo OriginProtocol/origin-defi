@@ -32,6 +32,7 @@ export const ActivityButton = ({
       <Button
         {...rest}
         sx={{
+          minWidth: 0,
           svg: {
             height: iconSize,
             width: iconSize,

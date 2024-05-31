@@ -1,9 +1,9 @@
 import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
 
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, emphasize, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 
-import type { ButtonProps, StackProps } from '@mui/material';
+import type { BoxProps, ButtonProps, StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
 export type Option = {
@@ -15,12 +15,14 @@ export type SliderSwitchProps = {
   value: string | number;
   options: Option[];
   onChange: (value: string | number) => void;
+  selectedSx?: BoxProps['sx'];
 } & Omit<StackProps, 'children' | 'onClick' | 'onChange'>;
 
 export const SliderSwitch = ({
   value,
   options,
   onChange,
+  selectedSx,
   ...rest
 }: SliderSwitchProps) => {
   const refs = useRef<HTMLButtonElement[]>([]);
@@ -47,7 +49,8 @@ export const SliderSwitch = ({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderRadius: 6,
-        border: (theme) => `1px solid ${theme.palette.grey[800]}`,
+        border: '1px solid',
+        borderColor: 'divider',
         backgroundColor: 'background.paper',
         cursor: 'pointer',
         transition: 'all 0.2s ease',
@@ -67,6 +70,8 @@ export const SliderSwitch = ({
           onClick={() => {
             onChange(o.value);
           }}
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          textColor={value === o.value ? (selectedSx as any)?.color : null}
         />
       ))}
       <Box
@@ -78,20 +83,25 @@ export const SliderSwitch = ({
           left: 0,
           width: itemsWidth[idx],
           height: 1,
-          background: 'grey.800',
           transform: `translateX(${translateX}px)`,
           transition: '0.2s ease',
-          backgroundColor: 'grey.800',
+          backgroundColor: (theme) =>
+            emphasize(theme.palette.background.paper, 0.2),
+          ...selectedSx,
         }}
       />
     </Stack>
   );
 };
 
-type SwitchButtonProps = { option: Option; isSelected: boolean } & ButtonProps;
+type SwitchButtonProps = {
+  option: Option;
+  isSelected: boolean;
+  textColor?: string;
+} & ButtonProps;
 
 const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
-  ({ option, isSelected, ...rest }, ref) => {
+  ({ option, isSelected, textColor, ...rest }, ref) => {
     return (
       <Button
         variant="text"
@@ -102,12 +112,17 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
           px: 2,
           py: 1,
           zIndex: 2,
-          color: isSelected ? 'text.primary' : 'text.secondary',
+          color: isSelected ? textColor ?? 'text.primary' : 'text.secondary',
+          transition: 'color 0.2s ease',
+          ':hover': {
+            backgroundColor: 'transparent',
+            '.label': { color: textColor ?? 'text.primary' },
+          },
           ...rest?.sx,
         }}
       >
         {typeof option.label === 'string' ? (
-          <Typography>{option.label}</Typography>
+          <Typography className="label">{option.label}</Typography>
         ) : (
           option.label
         )}

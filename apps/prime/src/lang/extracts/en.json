@@ -89,9 +89,6 @@
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
-  "5adJBo": {
-    "defaultMessage": "Select token"
-  },
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
@@ -145,6 +142,9 @@
   },
   "BONcjO": {
     "defaultMessage": "Uniswap V3"
+  },
+  "BuhEl+": {
+    "defaultMessage": "Theme:"
   },
   "CFpVX2": {
     "defaultMessage": "1.1 primeETH XP Boost"
@@ -295,6 +295,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "ULVduL": {
+    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -463,9 +466,6 @@
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
-  },
-  "w2pp9r": {
-    "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether."
   },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"

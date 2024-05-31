@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/oeth/shared';
 export type BridgeTransfersQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit: Types.Scalars['Int']['input'];
 }>;
 
 
@@ -19,8 +20,9 @@ export type BridgeTransferStatesQuery = { __typename?: 'Query', bridgeTransferSt
 
 
 export const BridgeTransfersDocument = `
-    query BridgeTransfers($address: String!) {
+    query BridgeTransfers($address: String!, $limit: Int!) {
   bridgeTransfers(
+    limit: $limit
     orderBy: timestamp_DESC
     where: {sender_containsInsensitive: $address, OR: {transactor_containsInsensitive: $address, OR: {receiver_containsInsensitive: $address}}}
   ) {

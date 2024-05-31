@@ -5,7 +5,6 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { getTokenById } from '@origin/shared/contracts';
-import { FaArrowRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -59,7 +58,7 @@ export const RedeemNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.tertiary">
+          <Typography color="text.secondary">
             {intl.formatMessage(
               {
                 defaultMessage: '{amountIn} {symbolIn}',
@@ -84,7 +83,6 @@ export const RedeemNotification = ({
       endIcon={
         <Stack direction="row" alignItems="center" spacing={1}>
           <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
-          <FaArrowRightRegular sx={{ fontSize: 14 }} />
         </Stack>
       }
     />

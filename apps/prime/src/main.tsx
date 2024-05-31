@@ -44,7 +44,7 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [ThemeProvider, { theme }],
+      [ThemeProvider, { light: theme }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { modalSize: 'compact' }],

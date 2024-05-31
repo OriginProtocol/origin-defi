@@ -1,7 +1,7 @@
 import {
-  Box,
   Dialog,
   DialogTitle,
+  Divider,
   MenuItem,
   MenuList,
   Skeleton,
@@ -19,6 +19,7 @@ import {
 import { ascend, descend, prop, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -51,18 +52,18 @@ export const TokenSelectModal = ({
       <DialogTitle>
         {intl.formatMessage({ defaultMessage: 'Select a token' })}
       </DialogTitle>
+      <Divider />
       <MenuList disablePadding>
         {sortedTokens.map((token, i) => (
           <TokenListItem
             key={`token-${token.address || 'eth'}-${i}`}
             token={token}
-            disabled={token.isSelected}
             onClick={() => {
               onClose?.({}, 'backdropClick');
               onSelectToken(token);
             }}
             sx={{
-              opacity: token.isSwappable ? 1 : 0.5,
+              opacity: token.isSwappable || token.isSelected ? 1 : 0.5,
             }}
           />
         ))}
@@ -76,6 +77,7 @@ type TokenListItemProps = {
 } & MenuItemProps;
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
+  const { isConnected } = useAccount();
   const { formatAmount, formatCurrency } = useFormat();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
@@ -88,50 +90,49 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
   return (
     <MenuItem
       {...rest}
-      disabled={token.isSelected}
+      selected={token.isSelected}
       sx={{
         display: 'flex',
-        px: 2,
-        py: 1,
+        px: 3,
+        py: 1.5,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
-        background: (theme) => theme.palette.background.paper,
-        borderRadius: 1,
-        '&:hover': {
-          background: (theme) => theme.palette.action.hover,
-        },
         ...rest?.sx,
       }}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
-        <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
-        <Box>
-          <Typography fontWeight={500}>{token?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
-            {token.symbol}
+        <TokenIcon token={token} sx={{ fontSize: 36 }} />
+        <Stack spacing={0.5}>
+          <Typography variant="body2" fontWeight="bold">
+            {token?.symbol}
           </Typography>
-        </Box>
+          <Typography variant="caption1" color="text.secondary">
+            {token.name}
+          </Typography>
+        </Stack>
       </Stack>
-      <Stack direction="row" spacing={2}>
-        {token?.isSelected && (
-          <Stack display="flex" justifyContent="center" alignItems="center">
-            <FaCheckRegular sx={{ color: '#fff', fontSize: 16 }} />
+      {isConnected && (
+        <Stack direction="row" spacing={2}>
+          {token?.isSelected && (
+            <Stack display="flex" justifyContent="center" alignItems="center">
+              <FaCheckRegular sx={{ fontSize: 16 }} />
+            </Stack>
+          )}
+          <Stack spacing={0.5} sx={{ textAlign: 'right' }}>
+            <Typography variant="body2" fontWeight="bold">
+              {isBalanceLoading ? (
+                <Skeleton width={30} />
+              ) : (
+                formatAmount(balance as unknown as bigint, token.decimals)
+              )}
+            </Typography>
+            <Typography color="text.secondary" variant="caption1">
+              {formatCurrency(balUsd)}
+            </Typography>
           </Stack>
-        )}
-        <Box sx={{ textAlign: 'right' }}>
-          <Typography fontWeight={500}>
-            {isBalanceLoading ? (
-              <Skeleton width={30} />
-            ) : (
-              formatAmount(balance as unknown as bigint, token.decimals)
-            )}
-          </Typography>
-          <Typography color="text.secondary" variant="body2">
-            {formatCurrency(balUsd)}
-          </Typography>
-        </Box>
-      </Stack>
+        </Stack>
+      )}
     </MenuItem>
   );
 }

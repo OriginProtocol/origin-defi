@@ -5,18 +5,18 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
+  NotificationsProvider,
   queryClient,
   registerGoogleTagManager,
   registerSentry,
   wagmiConfig,
 } from '@origin/defi/shared';
-import { theme } from '@origin/defi/theme';
+import { dark, light } from '@origin/defi/theme';
 import {
   ActivityProvider,
   GeoFenceProvider,
   IntlProvider,
   logWelcomeMessage,
-  NotificationsProvider,
   registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
@@ -51,7 +51,7 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [ThemeProvider, { theme }],
+      [ThemeProvider, { dark, light }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],
@@ -61,7 +61,7 @@ root.render(
         GeoFenceProvider,
         {
           name: 'DeFi',
-          fullName: 'Origin DeFi',
+          fullName: 'Origin Protocol',
           href: 'https://www.originprotocol.com',
         },
       ],

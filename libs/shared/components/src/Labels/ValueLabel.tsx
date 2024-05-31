@@ -12,6 +12,7 @@ export type ValueLabelProps = {
   valueProps?: TypographyProps;
   labelInfoTooltip?: string;
   isLoading?: boolean;
+  sWidth?: number;
 } & StackProps;
 
 export const ValueLabel = ({
@@ -21,6 +22,7 @@ export const ValueLabel = ({
   valueProps,
   labelInfoTooltip,
   isLoading,
+  sWidth = 60,
   ...rest
 }: ValueLabelProps) => {
   return (
@@ -40,7 +42,7 @@ export const ValueLabel = ({
       )}
       {['string', 'number'].includes(typeof value) ? (
         <Typography {...valueProps}>
-          {isLoading ? <Skeleton width={60} /> : value}
+          {isLoading ? <Skeleton width={sWidth} /> : value}
         </Typography>
       ) : (
         value

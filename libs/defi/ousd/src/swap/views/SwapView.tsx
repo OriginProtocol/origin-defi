@@ -1,47 +1,53 @@
-import { Box, Container, Stack } from '@mui/material';
+import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { PageTitle, Swapper, trackEvent } from '@origin/defi/shared';
+import {
+  GlobalStatsCard,
+  Page,
+  PageSection,
+  PageTitle,
+  Swapper,
+  trackEvent,
+} from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { ousdSwapActions } from '../actions';
-import { CexCard } from '../components/CexCard';
-import { FAQCard } from '../components/FAQCard';
-import { OusdDetailCard } from '../components/OusdDetailCard';
+import { AnalyticsCard } from '../components/AnalyticsCard';
+import { PageTitleSection } from '../components/PageTitleSection';
 import { ousdSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
 
   return (
-    <Container>
+    <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Swap' })}
+        title={intl.formatMessage({ defaultMessage: 'Origin Dollar' })}
         subtitle={intl.formatMessage({
-          defaultMessage:
-            'Secure the most competitive rates when swapping in and out of OETH using our swap form.',
+          defaultMessage: 'Yield bearing stablecoin',
         })}
         token={tokens.mainnet.OUSD}
-      />
-      <Box>
-        <Grid2 container spacing={4}>
-          <Grid2 xs={12} md={8}>
+      >
+        <PageTitleSection />
+      </PageTitle>
+      <PageSection containerProps={{ maxWidth: 'lg' }}>
+        <Grid2 container spacing={5}>
+          <Grid2 xs={12} md={6} mdOffset={2}>
+            <Swapper
+              swapActions={ousdSwapActions}
+              swapRoutes={ousdSwapRoutes}
+              buttonsProps={{ variant: 'action' }}
+              trackEvent={trackEvent}
+            />
+          </Grid2>
+          <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <Swapper
-                swapActions={ousdSwapActions}
-                swapRoutes={ousdSwapRoutes}
-                buttonsProps={{ variant: 'action' }}
-                trackEvent={trackEvent}
-              />
-              <CexCard />
-              <FAQCard />
+              <GlobalStatsCard token={tokens.mainnet.OUSD} />
+              <AnalyticsCard />
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={4}>
-            <OusdDetailCard />
-          </Grid2>
         </Grid2>
-      </Box>
-    </Container>
+      </PageSection>
+    </Page>
   );
 };

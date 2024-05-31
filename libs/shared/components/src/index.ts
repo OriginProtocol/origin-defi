@@ -1,5 +1,4 @@
 export * from './Buttons';
-export * from './Chip';
 export * from './Countdown';
 export * from './Errors';
 export * from './InfoTooltip';
@@ -8,7 +7,6 @@ export * from './Icons';
 export * from './Labels';
 export * from './Links';
 export * from './Menus';
-export * from './MiddleTruncated';
 export * from './Notifications';
 export * from './Pagination';
 export * from './Switches';

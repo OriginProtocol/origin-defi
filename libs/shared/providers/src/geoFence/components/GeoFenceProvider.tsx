@@ -9,6 +9,7 @@ import {
   DialogContentText,
   DialogTitle,
   Divider,
+  emphasize,
   FormControlLabel,
   Stack,
   Typography,
@@ -64,7 +65,8 @@ export const GeoFenceProvider = ({
           <Stack
             component="ul"
             sx={{
-              backgroundColor: 'grey.800',
+              backgroundColor: (theme) =>
+                emphasize(theme.palette.background.default, 0.1),
               my: 3,
               pl: 5,
               pr: 3,
@@ -73,24 +75,24 @@ export const GeoFenceProvider = ({
             }}
             spacing={3}
           >
-            <Typography component="li" variant="body2">
+            <Typography component="li" fontSize={12}>
               {intl.formatMessage({
                 defaultMessage: `You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States.`,
               })}
             </Typography>
-            <Typography component="li" variant="body2">
+            <Typography component="li" fontSize={12}>
               {intl.formatMessage({
                 defaultMessage: `You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury.`,
               })}
             </Typography>
-            <Typography component="li" variant="body2">
+            <Typography component="li" fontSize={12}>
               {intl.formatMessage({
                 defaultMessage: `You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions.`,
               })}
             </Typography>
-            <Typography component="li" variant="body2">
+            <Typography component="li" fontSize={12}>
               {intl.formatMessage({
-                defaultMessage: `You are lawfully permitted to access this site. You understand and accept the risks associated with using Origin Ether.`,
+                defaultMessage: `You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)`,
               })}
             </Typography>
           </Stack>
@@ -105,14 +107,29 @@ export const GeoFenceProvider = ({
             sx={{ pl: 0.2 }}
           />
         </DialogContent>
-        <DialogActions sx={{ gap: 3, px: 3, pt: { xs: 2, sm: 0 }, pb: 3 }}>
+        <DialogActions
+          sx={{
+            flexDirection: 'row',
+            gap: 3,
+            px: 3,
+            pt: { xs: 2, sm: 0 },
+            pb: 3,
+          }}
+        >
           <Button
             href={href}
             fullWidth
+            color="inherit"
             sx={{
               fontSize: 16,
               borderRadius: 8,
               padding: 1,
+              backgroundColor: (theme) =>
+                emphasize(theme.palette.background.default, 0.1),
+              '&:hover': {
+                backgroundColor: (theme) =>
+                  emphasize(theme.palette.background.default, 0.2),
+              },
               '&:disabled': {
                 opacity: 0.5,
                 color: 'text.primary',
@@ -122,6 +139,7 @@ export const GeoFenceProvider = ({
             {intl.formatMessage({ defaultMessage: 'Exit' })}
           </Button>
           <Button
+            color="primary"
             disabled={!checked}
             fullWidth
             onClick={() => {
@@ -131,17 +149,6 @@ export const GeoFenceProvider = ({
               fontSize: 16,
               borderRadius: 8,
               padding: 1,
-              color: 'text.primary',
-              background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-              '&:hover': {
-                background:
-                  'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-                opacity: 1,
-              },
-              '&:disabled': {
-                opacity: 0.5,
-                color: 'text.primary',
-              },
             }}
           >
             {intl.formatMessage({ defaultMessage: 'I agree' })}

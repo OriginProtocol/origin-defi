@@ -1,4 +1,4 @@
-import { Button, Typography } from '@mui/material';
+import { Button, emphasize, Typography } from '@mui/material';
 import { arbitrum } from 'viem/chains';
 
 import { ChainIcon } from '../Icons';
@@ -23,11 +23,28 @@ export const ChainButton = ({
       {...rest}
       sx={{
         display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        height: 40,
         gap: 1,
-        alignItems: 'center',
-        paddingLeft: 1,
+        borderRadius: 120,
+        color: 'text.primary',
+        backgroundColor: 'background.default',
+        border: '1px solid',
+        borderColor: 'divider',
+        pl: 1,
+        pr: rest?.disabled ? 1 : 1.5,
+        py: 0.75,
+        flexShrink: 0,
+        '&:hover': {
+          borderColor: (theme) => emphasize(theme.palette.divider, 0.2),
+          background: (theme) =>
+            emphasize(theme.palette.background.default, 0.2),
+        },
         '&.Mui-disabled': {
           color: 'text.primary',
+          backgroundColor: 'background.default',
+          pr: 2,
         },
         ...rest?.sx,
       }}

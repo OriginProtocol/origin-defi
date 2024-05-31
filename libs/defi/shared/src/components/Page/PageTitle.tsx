@@ -17,29 +17,52 @@ export const PageTitle = ({
   token,
   icon,
   subtitle,
+  children,
   ...rest
 }: PageTitleProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
-    <Stack alignItems="center" spacing={2} py={5} {...rest}>
-      <Stack direction="row" alignItems="center" spacing={2} {...rest}>
-        {icon ? (
-          <Box component={icon} sx={{ fontSize: 32 }} />
-        ) : token ? (
-          <TokenIcon token={token} sx={{ fontSize: 32 }} />
-        ) : null}
-        <Typography variant="h2">
+    <Stack
+      alignItems="center"
+      py={6}
+      {...rest}
+      sx={{
+        borderBottom: '1px solid',
+        borderBottomColor: 'divider',
+        ...rest?.sx,
+      }}
+    >
+      {icon ? (
+        <Box component={icon} sx={{ fontSize: 52 }} />
+      ) : token ? (
+        <TokenIcon token={token} sx={{ fontSize: 52 }} />
+      ) : null}
+      <Stack
+        direction="row"
+        alignItems="center"
+        pt={1.5}
+        pb={2}
+        spacing={2}
+        {...rest}
+      >
+        <Typography variant="h5" textAlign="center" px={3}>
           {isSm && token && `${token.symbol} `}
           {title}
         </Typography>
       </Stack>
       {subtitle && (
-        <Typography color="text.secondary" textAlign="center">
+        <Typography
+          variant="mono"
+          color="text.secondary"
+          textAlign="center"
+          px={3}
+        >
           {subtitle}
         </Typography>
       )}
+      {children}
     </Stack>
   );
 };

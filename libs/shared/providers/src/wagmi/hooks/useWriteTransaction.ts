@@ -4,8 +4,11 @@ import { isUserRejected } from '@origin/shared/utils';
 import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { useAccount, useConfig, useSimulateContract } from 'wagmi';
 
-import type { Contract, Token } from '@origin/shared/contracts';
-import type { SimulateContractReturnType } from '@wagmi/core';
+import type { HexAddress } from '@origin/shared/utils';
+import type {
+  SimulateContractErrorType,
+  SimulateContractReturnType,
+} from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -25,7 +28,11 @@ export type WriteTransactionParameters<
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 > = {
-  contract: Contract<abi> | Token<abi>;
+  contract: {
+    address: HexAddress;
+    chainId: number;
+    abi: abi;
+  };
   functionName: functionName;
   args: args;
   value?: bigint;
@@ -36,7 +43,7 @@ export type WriteTransactionCallbacks = {
   onTxSigned?: () => void;
   onUserReject?: () => void;
   onSimulateSuccess?: (data: SimulateContractReturnType) => void;
-  onSimulateError?: (error: Error) => void;
+  onSimulateError?: (error: SimulateContractErrorType) => void;
   onWriteSuccess?: (txReceipt: TransactionReceipt) => void;
   onWriteError?: (error: Error) => void;
 };

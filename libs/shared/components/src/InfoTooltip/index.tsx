@@ -1,5 +1,5 @@
 import { SvgIcon, Tooltip, Typography } from '@mui/material';
-import { FaCircleInfoLight } from '@origin/shared/icons';
+import { CircleInfo } from '@origin/shared/icons';
 
 import type { SvgIconProps, TooltipProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -36,7 +36,7 @@ export function InfoTooltip({
           ...rest?.sx,
         }}
       >
-        <FaCircleInfoLight />
+        <CircleInfo />
       </SvgIcon>
     </Tooltip>
   );

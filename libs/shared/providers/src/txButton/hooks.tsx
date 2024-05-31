@@ -1,7 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  formatError,
+  jsonStringifyReplacer,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
@@ -18,7 +22,10 @@ import {
   usePushNotificationForActivity,
 } from '../notifications';
 
-import type { SimulateContractReturnType } from '@wagmi/core';
+import type {
+  SimulateContractErrorType,
+  SimulateContractReturnType,
+} from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -64,11 +71,13 @@ export const useTxButton = <
     functionName
   > = ContractFunctionArgs<abi, 'nonpayable' | 'payable', functionName>,
 >(
-  args: UseTxButton<abi, functionName, args> | undefined,
+  args: UseTxButton<abi, functionName, args>,
 ) => {
   const intl = useIntl();
-  const { isConnected, address: userAddress } = useAccount();
+  const { isConnected, address } = useAccount();
   const [notifId, setNotifId] = useState<string | null>(null);
+  const [simulateError, setSimulateError] =
+    useState<SimulateContractErrorType>();
   const [activity, setActivity] = useState<Activity | null>(null);
   const pushNotificationForActivity = usePushNotificationForActivity();
   const pushNotification = usePushNotification();
@@ -77,26 +86,18 @@ export const useTxButton = <
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
   const config = useConfig();
-  const publicClient = usePublicClient(
-    args && {
-      chainId: args.params.contract.chainId,
-    },
-  );
+
+  const publicClient = usePublicClient({
+    chainId: args.params.contract.chainId,
+  });
   const queryClient = useQueryClient();
   const { data: gasPrice, refetch: refetchGas } = useQuery({
-    queryKey: [
-      'txButton',
-      JSON.stringify(
-        args?.params,
-        (key, value) => (typeof value === 'bigint' ? value.toString() : value),
-        undefined,
-      ),
-    ],
+    queryKey: ['txButton', JSON.stringify(args.params, jsonStringifyReplacer)],
     queryFn: async () => {
-      if (!args) return null;
+      if (simulateError) return null;
       if (publicClient) {
         const gasAmount = await publicClient.estimateContractGas({
-          account: userAddress,
+          account: address,
           address: args.params.contract.address ?? ZERO_ADDRESS,
           abi: args.params.contract.abi,
           functionName: args.params.functionName,
@@ -117,7 +118,7 @@ export const useTxButton = <
         return gasPrice;
       }
     },
-    enabled: args?.enableGas,
+    enabled: false,
   });
 
   const onWrite = useCallback(() => {
@@ -129,7 +130,7 @@ export const useTxButton = <
       }),
       status: 'pending',
     };
-    if (!args?.disableActivity) {
+    if (!args.disableActivity) {
       const activity = pushActivity(act);
       setActivity(activity);
     } else {
@@ -153,7 +154,7 @@ export const useTxButton = <
     activity?.type === 'transaction' && activity.subtitle;
 
   const onTxSigned = useCallback(() => {
-    if (!args?.disableNotification) {
+    if (!args.disableNotification) {
       const id = pushNotification({
         hideDuration: undefined,
         content: (
@@ -179,25 +180,25 @@ export const useTxButton = <
       });
       setNotifId(id);
     }
-    args?.callbacks?.onTxSigned?.();
+    args.callbacks?.onTxSigned?.();
   }, [
     activityTitle,
     activitySubtitle,
-    args?.callbacks,
-    args?.disableNotification,
+    args.callbacks,
+    args.disableNotification,
     intl,
     pushNotification,
   ]);
 
   const onUserReject = useCallback(() => {
-    if (!args?.disableActivity && activity?.id) {
+    if (!args.disableActivity && activity?.id) {
       deleteActivity(activity.id);
     }
     if (notifId) {
       deleteNotification(notifId);
       setNotifId(null);
     }
-    if (!args?.disableNotification) {
+    if (!args.disableNotification) {
       pushNotification({
         content: (
           <NotificationSnack
@@ -212,12 +213,12 @@ export const useTxButton = <
         ),
       });
     }
-    args?.callbacks?.onUserReject?.();
+    args.callbacks?.onUserReject?.();
   }, [
     activity?.id,
-    args?.callbacks,
-    args?.disableActivity,
-    args?.disableNotification,
+    args.callbacks,
+    args.disableActivity,
+    args.disableNotification,
     deleteActivity,
     deleteNotification,
     intl,
@@ -227,17 +228,22 @@ export const useTxButton = <
 
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {
-      if (args?.enableGas && isConnected) {
+      setSimulateError(undefined);
+      if (args.enableGas && isConnected) {
         refetchGas();
       }
-      args?.callbacks?.onSimulateSuccess?.(data);
+      args.callbacks?.onSimulateSuccess?.(data);
     },
-    [args?.callbacks, args?.enableGas, isConnected, refetchGas],
+    [args.callbacks, args.enableGas, isConnected, refetchGas],
   );
 
   const onSimulateError = useCallback(
-    (error: Error) => {
-      if (!args?.disableNotification) {
+    (error: SimulateContractErrorType) => {
+      setSimulateError(error);
+      if (args.enableGas && isConnected) {
+        refetchGas();
+      }
+      if (!args.disableNotification) {
         pushNotification({
           content: (
             <NotificationSnack
@@ -250,9 +256,17 @@ export const useTxButton = <
           ),
         });
       }
-      args?.callbacks?.onSimulateError?.(error);
+      args.callbacks?.onSimulateError?.(error);
     },
-    [args?.callbacks, args?.disableNotification, intl, pushNotification],
+    [
+      args.callbacks,
+      args.disableNotification,
+      args.enableGas,
+      intl,
+      isConnected,
+      pushNotification,
+      refetchGas,
+    ],
   );
 
   const onWriteSuccess = useCallback(
@@ -277,16 +291,16 @@ export const useTxButton = <
         deleteNotification(notifId);
         setNotifId(null);
       }
-      if (!args?.disableNotification) {
+      if (!args.disableNotification) {
         pushNotificationForActivity(updatedActivity);
       }
-      args?.callbacks?.onWriteSuccess?.(txReceipt);
+      args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
       activity,
-      args?.callbacks,
-      args?.disableActivity,
-      args?.disableNotification,
+      args.callbacks,
+      args.disableActivity,
+      args.disableNotification,
       deleteNotification,
       intl,
       notifId,
@@ -309,16 +323,16 @@ export const useTxButton = <
         deleteNotification(notifId);
         setNotifId(null);
       }
-      if (!args?.disableNotification) {
+      if (!args.disableNotification) {
         pushNotificationForActivity(updatedActivity);
       }
-      args?.callbacks?.onWriteError?.(error);
+      args.callbacks?.onWriteError?.(error);
     },
     [
       activity,
-      args?.callbacks,
-      args?.disableActivity,
-      args?.disableNotification,
+      args.callbacks,
+      args.disableActivity,
+      args.disableNotification,
       deleteNotification,
       intl,
       notifId,
@@ -330,7 +344,7 @@ export const useTxButton = <
   return useMemo(
     () => ({
       gasPrice,
-      params: args?.params,
+      params: args.params,
       callbacks: {
         onWrite,
         onTxSigned,
@@ -342,7 +356,7 @@ export const useTxButton = <
       },
     }),
     [
-      args?.params,
+      args.params,
       gasPrice,
       onSimulateError,
       onSimulateSuccess,

@@ -1,72 +1,46 @@
 import { tokens } from '@origin/shared/contracts';
 import { defineMessage } from 'react-intl';
+import { arbitrum, mainnet } from 'viem/chains';
 
-export const products = [
-  {
+export type SupportedProduct = keyof typeof products;
+
+export type Product = (typeof products)[SupportedProduct];
+
+export const products = {
+  oeth: {
     id: 'oeth',
     token: tokens.mainnet.OETH,
     href: 'oeth',
+    icon: '/images/circlesPattern.svg',
+    iconSize: 160,
+    bgcolor: 'primary.main',
     description: defineMessage({
-      defaultMessage: 'Ethereum liquid staking token',
+      defaultMessage: 'Liquid staking',
     }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Liquid staking' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Yield bearing' }),
-      },
-    ],
-    collaterals: [
-      tokens.mainnet.frxETH,
-      tokens.mainnet.WETH,
-      tokens.mainnet.rETH,
-      tokens.mainnet.stETH,
-    ],
+    supportedChainIds: [mainnet.id, arbitrum.id],
   },
-  {
+  primeETH: {
+    id: 'primeETH',
+    token: tokens.mainnet.primeETH,
+    href: 'prime',
+    icon: '/images/circles2Pattern.svg',
+    iconSize: 100,
+    bgcolor: '#FF4E4E',
+    description: defineMessage({
+      defaultMessage: 'Restaking',
+    }),
+    supportedChainIds: [],
+  },
+  ousd: {
     id: 'ousd',
     token: tokens.mainnet.OUSD,
-    href: 'oeth',
+    href: 'ousd',
+    icon: '/images/wavePattern.svg',
+    iconSize: 450,
+    bgcolor: 'text.primary',
     description: defineMessage({
-      defaultMessage: 'Yield-generating stablecoin',
+      defaultMessage: 'Yield bearing stablecoin',
     }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Stablecoin' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Yield bearing' }),
-      },
-    ],
-    collaterals: [tokens.mainnet.DAI, tokens.mainnet.USDT, tokens.mainnet.USDC],
+    supportedChainIds: [],
   },
-  {
-    id: 'ogn',
-    token: tokens.mainnet.OGN,
-    description: defineMessage({
-      defaultMessage: 'Origin Governance Token',
-    }),
-    tags: [
-      {
-        label: defineMessage({ defaultMessage: 'Ethereum network' }),
-        token: tokens.mainnet.ETH,
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Governance' }),
-      },
-      {
-        label: defineMessage({ defaultMessage: 'Staking' }),
-      },
-    ],
-    collaterals: [],
-  },
-];
+} as const;

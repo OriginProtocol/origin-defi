@@ -15,8 +15,9 @@ import { referrerRegex } from './utils';
  * @param defaultTrackId The unhashed track ID to use if one is not found in localStorage. Eg 'oeth.com'
  */
 export function useTxTracker(defaultTrackId: string) {
-  const { value: storedTxTrackId, set: setTxTrackId } =
-    useLocalStorageValue(`@origin/tx-track`);
+  const { value: storedTxTrackId, set: setTxTrackId } = useLocalStorageValue(
+    `@originprotocol/tx-track`,
+  );
   const [searchParams, setSearchParams] = useSearchParams();
   const trackId = searchParams.get('r');
 
@@ -53,7 +54,7 @@ export function useTxTracker(defaultTrackId: string) {
 
 export const useReferrerTracker = (defaultReferrerId: string) => {
   const { value: storedTxReferrerId, set: setTxReferrerId } =
-    useLocalStorageValue(`@origin/referrer-track`);
+    useLocalStorageValue(`@originprotocol/referrer-track`);
   const [searchParams, setSearchParams] = useSearchParams();
   const referrerId = searchParams.get('r');
 

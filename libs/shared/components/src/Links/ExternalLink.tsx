@@ -1,15 +1,24 @@
 import { Link } from '@mui/material';
-import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
+import {
+  FaArrowUpRightFromSquareRegular,
+  FaArrowUpRightRegular,
+} from '@origin/shared/icons';
 
-import type { LinkProps } from '@mui/material';
+import type { LinkProps, SvgIconProps } from '@mui/material';
 
-export type ExternalLinkProps = { iconSize?: number } & LinkProps;
+export type ExternalLinkProps = {
+  iconSize?: number;
+  iconType?: 'square' | 'arrow';
+} & LinkProps;
 
 export const ExternalLink = ({
   children,
   iconSize = 10,
+  iconType = 'square',
   ...rest
 }: ExternalLinkProps) => {
+  const iconProps: SvgIconProps = { sx: { height: iconSize, width: iconSize } };
+
   return (
     <Link
       target="_blank"
@@ -24,9 +33,11 @@ export const ExternalLink = ({
       }}
     >
       {children}
-      <FaArrowUpRightFromSquareRegular
-        sx={{ height: iconSize, width: iconSize }}
-      />
+      {iconType === 'square' ? (
+        <FaArrowUpRightFromSquareRegular {...iconProps} />
+      ) : (
+        <FaArrowUpRightRegular {...iconProps} />
+      )}
     </Link>
   );
 };

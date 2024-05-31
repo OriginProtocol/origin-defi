@@ -1,28 +1,29 @@
-import { Container, Stack } from '@mui/material';
-import { PageTitle } from '@origin/defi/shared';
+import { Stack } from '@mui/material';
+import { Page, PageSection, PageTitle } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
-import { BalanceCard } from '../components/BalanceHeader';
-import { ChartCard } from '../components/ChartCard';
 import { HistoryCard } from '../components/HistoryCard';
-import { StatCards } from '../components/StatCards';
+import { StatsCard } from '../components/StatsCard';
 
 export const PortfolioView = () => {
   const intl = useIntl();
 
   return (
-    <Container>
+    <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'Portfolio' })}
+        title={intl.formatMessage({ defaultMessage: 'History' })}
+        subtitle={intl.formatMessage({
+          defaultMessage: 'Earnings and transaction history',
+        })}
         token={tokens.mainnet.OUSD}
       />
-      <Stack spacing={5}>
-        <BalanceCard />
-        <StatCards />
-        <ChartCard />
-        <HistoryCard />
-      </Stack>
-    </Container>
+      <PageSection>
+        <Stack spacing={5}>
+          <StatsCard />
+          <HistoryCard />
+        </Stack>
+      </PageSection>
+    </Page>
   );
 };

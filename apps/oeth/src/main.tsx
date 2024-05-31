@@ -53,7 +53,7 @@ root.render(
     [
       [StrictMode],
       [IntlProvider, { messages }],
-      [ThemeProvider, { theme }],
+      [ThemeProvider, { dark: theme }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
       [RainbowKitProvider, { theme: darkTheme(), modalSize: 'compact' }],

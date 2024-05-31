@@ -3,25 +3,14 @@ import { useCallback, useMemo } from 'react';
 import { produce } from 'immer';
 import { descend, prop, propEq, take } from 'ramda';
 
-import { ActivityNotification } from '../activities/components/ActivityNotification';
-import { useTracked } from './state';
-
-import type { AlertColor } from '@mui/material';
-import type { ReactNode } from 'react';
+import { ActivityNotification } from '../activities';
+import { useNotificationState } from './state';
 
 import type { Activity } from '../activities';
-
-type NotificationOptions = {
-  severity?: AlertColor;
-  title?: string;
-  message?: string;
-  content?: ReactNode;
-  visible?: boolean;
-  hideDuration?: number | undefined;
-};
+import type { NotificationOptions } from './types';
 
 export const usePushNotification = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(
     (options: NotificationOptions) => {
@@ -61,7 +50,7 @@ export const usePushNotificationForActivity = () => {
 };
 
 export const useSetNotificationInvisible = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(
     (id: string) => {
@@ -79,7 +68,7 @@ export const useSetNotificationInvisible = () => {
 };
 
 export const useSetNotificationRead = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(
     (id: string) => {
@@ -97,7 +86,7 @@ export const useSetNotificationRead = () => {
 };
 
 export const useMarkAllNotificationsAsRead = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(() => {
     setState(
@@ -111,7 +100,7 @@ export const useMarkAllNotificationsAsRead = () => {
 };
 
 export const useDeleteNotification = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(
     (id: string) => {
@@ -129,7 +118,7 @@ export const useDeleteNotification = () => {
 };
 
 export const useClearAllNotifications = () => {
-  const [, setState] = useTracked();
+  const [, setState] = useNotificationState();
 
   return useCallback(() => {
     setState(
@@ -141,7 +130,7 @@ export const useClearAllNotifications = () => {
 };
 
 export const useVisibleNotifications = () => {
-  const [{ notifications, maxVisible }] = useTracked();
+  const [{ notifications, maxVisible }] = useNotificationState();
 
   return useMemo(
     () =>
@@ -154,7 +143,7 @@ export const useVisibleNotifications = () => {
 };
 
 export const useUnreadNotificationsCount = () => {
-  const [{ notifications }] = useTracked();
+  const [{ notifications }] = useNotificationState();
 
   return useMemo(
     () => notifications.reduce((acc, curr) => acc + (curr.read ? 0 : 1), 0),
