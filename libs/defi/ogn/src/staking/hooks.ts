@@ -18,7 +18,7 @@ export const useTotalLockedUp = () => {
     {
       select: (data) =>
         data?.esLockups?.reduce(
-          (acc, curr) => acc + BigInt(curr?.points ?? 0n),
+          (acc, curr) => acc + BigInt(curr?.amount ?? 0n),
           0n,
         ) ?? 0n,
       enabled: !!address,

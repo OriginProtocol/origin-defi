@@ -51,7 +51,7 @@ export const UnstakeLockupModal = ({
     address: tokens.mainnet.xOGN.address,
     abi: tokens.mainnet.xOGN.abi,
     functionName: 'previewWithdraw',
-    args: [BigInt(lockup.points), BigInt(getUnixTime(lockup.end))],
+    args: [BigInt(lockup.amount), BigInt(getUnixTime(lockup.end))],
   });
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
