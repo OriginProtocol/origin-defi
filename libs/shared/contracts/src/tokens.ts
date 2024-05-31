@@ -196,6 +196,7 @@ export const tokens = {
       symbol: 'wOUSD',
     },
     xOGN: {
+      id: '1:xOGN',
       address: '0x63898b3b6ef3d39332082178656e9862bee45c57',
       chainId: mainnet.id,
       abi: xOGNABI,
