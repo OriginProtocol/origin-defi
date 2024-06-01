@@ -636,7 +636,7 @@ function LockupSelect({
             year: 'numeric',
           }),
       }),
-      columnHelper.accessor('xogn', {
+      columnHelper.accessor('points', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) =>
