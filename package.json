@@ -23,7 +23,7 @@
     "@sentry/react": "8.7.0",
     "@tanstack/react-query": "5.40.0",
     "@tanstack/react-table": "8.17.3",
-    "@wagmi/core": "2.9.7",
+    "@wagmi/core": "2.10.5",
     "analytics": "0.8.13",
     "axios": "^1.7.2",
     "buffer": "^6.0.3",
@@ -45,7 +45,7 @@
     "react-use": "^17.5.0",
     "tslib": "^2.6.2",
     "viem": "2.13.3",
-    "wagmi": "2.8.7"
+    "wagmi": "2.9.8"
   },
   "devDependencies": {
     "@babel/core": "^7.24.6",
