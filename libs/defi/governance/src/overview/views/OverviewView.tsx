@@ -24,7 +24,7 @@ export const OverviewView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Origin Governance' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'Govern an expansive ecosystem',
+          defaultMessage: `Shape the future of Origin's products`,
         })}
         token={tokens.mainnet.OGN}
       >

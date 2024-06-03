@@ -66,8 +66,8 @@ export const useCcipTxParams = ({
         // Such as: `fetchTokenPrice(config, queryClient, 'wOETH_ETH')
         const exchangeRate = await queryClient
           .fetchQuery({
-            queryKey: useTokenPrices.getKey(['wOETH_ETH'], config),
-            queryFn: useTokenPrices.fetcher,
+            queryKey: useTokenPrices.getKey(['wOETH_ETH']),
+            queryFn: useTokenPrices.fetcher(config),
           })
           .then((r) => r['wOETH_ETH']);
 

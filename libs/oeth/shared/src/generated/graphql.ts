@@ -2603,6 +2603,7 @@ export type EsDelegateChanged = {
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
   toDelegate: Scalars['String']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsDelegateChangedEdge = {
@@ -2659,7 +2660,13 @@ export enum EsDelegateChangedOrderByInput {
   ToDelegateAscNullsLast = 'toDelegate_ASC_NULLS_LAST',
   ToDelegateDesc = 'toDelegate_DESC',
   ToDelegateDescNullsFirst = 'toDelegate_DESC_NULLS_FIRST',
-  ToDelegateDescNullsLast = 'toDelegate_DESC_NULLS_LAST'
+  ToDelegateDescNullsLast = 'toDelegate_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsDelegateChangedWhereInput = {
@@ -2777,6 +2784,23 @@ export type EsDelegateChangedWhereInput = {
   toDelegate_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   toDelegate_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   toDelegate_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsDelegateChangedsConnection = {
@@ -2796,6 +2820,7 @@ export type EsDelegateVotesChanged = {
   newBalance: Scalars['BigInt']['output'];
   previousBalance: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsDelegateVotesChangedEdge = {
@@ -2852,7 +2877,13 @@ export enum EsDelegateVotesChangedOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsDelegateVotesChangedWhereInput = {
@@ -2954,6 +2985,23 @@ export type EsDelegateVotesChangedWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsDelegateVotesChangedsConnection = {
@@ -2969,7 +3017,7 @@ export type EsLockup = {
   address: Scalars['String']['output'];
   amount: Scalars['BigInt']['output'];
   chainId: Scalars['Int']['output'];
-  end: Scalars['BigInt']['output'];
+  end: Scalars['DateTime']['output'];
   events: Array<EsLockupEvent>;
   id: Scalars['String']['output'];
   lastUpdated: Scalars['DateTime']['output'];
@@ -2978,6 +3026,7 @@ export type EsLockup = {
   points: Scalars['BigInt']['output'];
   state?: Maybe<EsLockupState>;
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
   withdrawAmount: Scalars['BigInt']['output'];
 };
 
@@ -3004,6 +3053,7 @@ export type EsLockupEvent = {
   id: Scalars['String']['output'];
   lockup: EsLockup;
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsLockupEventEdge = {
@@ -3115,6 +3165,12 @@ export enum EsLockupEventOrderByInput {
   LockupTimestampDesc = 'lockup_timestamp_DESC',
   LockupTimestampDescNullsFirst = 'lockup_timestamp_DESC_NULLS_FIRST',
   LockupTimestampDescNullsLast = 'lockup_timestamp_DESC_NULLS_LAST',
+  LockupTxHashAsc = 'lockup_txHash_ASC',
+  LockupTxHashAscNullsFirst = 'lockup_txHash_ASC_NULLS_FIRST',
+  LockupTxHashAscNullsLast = 'lockup_txHash_ASC_NULLS_LAST',
+  LockupTxHashDesc = 'lockup_txHash_DESC',
+  LockupTxHashDescNullsFirst = 'lockup_txHash_DESC_NULLS_FIRST',
+  LockupTxHashDescNullsLast = 'lockup_txHash_DESC_NULLS_LAST',
   LockupWithdrawAmountAsc = 'lockup_withdrawAmount_ASC',
   LockupWithdrawAmountAscNullsFirst = 'lockup_withdrawAmount_ASC_NULLS_FIRST',
   LockupWithdrawAmountAscNullsLast = 'lockup_withdrawAmount_ASC_NULLS_LAST',
@@ -3126,7 +3182,13 @@ export enum EsLockupEventOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export enum EsLockupEventType {
@@ -3206,6 +3268,23 @@ export type EsLockupEventWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsLockupEventsConnection = {
@@ -3288,6 +3367,12 @@ export enum EsLockupOrderByInput {
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
   TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
   WithdrawAmountAsc = 'withdrawAmount_ASC',
   WithdrawAmountAscNullsFirst = 'withdrawAmount_ASC_NULLS_FIRST',
   WithdrawAmountAscNullsLast = 'withdrawAmount_ASC_NULLS_LAST',
@@ -3356,15 +3441,15 @@ export type EsLockupWhereInput = {
   chainId_lte?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  end_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  end_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  end_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  end_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  end_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  end_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  end_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  end_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
   end_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  end_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  end_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  end_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  end_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  end_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  end_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  end_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  end_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
   events_every?: InputMaybe<EsLockupEventWhereInput>;
   events_none?: InputMaybe<EsLockupEventWhereInput>;
   events_some?: InputMaybe<EsLockupEventWhereInput>;
@@ -3435,6 +3520,23 @@ export type EsLockupWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
   withdrawAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
   withdrawAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
   withdrawAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -3469,6 +3571,7 @@ export type EsPenalty = {
   chainId: Scalars['Int']['output'];
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsPenaltyEdge = {
@@ -3519,7 +3622,13 @@ export enum EsPenaltyOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsPenaltyWhereInput = {
@@ -3612,6 +3721,23 @@ export type EsPenaltyWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsReward = {
@@ -3623,6 +3749,7 @@ export type EsReward = {
   chainId: Scalars['Int']['output'];
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsRewardEdge = {
@@ -3673,7 +3800,13 @@ export enum EsRewardOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsRewardWhereInput = {
@@ -3766,6 +3899,23 @@ export type EsRewardWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsRewardsConnection = {
@@ -3787,6 +3937,7 @@ export type EsStake = {
   lockupId: Scalars['BigInt']['output'];
   points: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsStakeEdge = {
@@ -3855,7 +4006,13 @@ export enum EsStakeOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsStakeWhereInput = {
@@ -3975,6 +4132,23 @@ export type EsStakeWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsStakesConnection = {
@@ -4125,6 +4299,7 @@ export type EsUnstake = {
   lockupId: Scalars['BigInt']['output'];
   points: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type EsUnstakeEdge = {
@@ -4193,7 +4368,13 @@ export enum EsUnstakeOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type EsUnstakeWhereInput = {
@@ -4313,6 +4494,23 @@ export type EsUnstakeWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type EsUnstakesConnection = {
@@ -4690,6 +4888,7 @@ export type FrrsRewardCollected = {
   chainId: Scalars['Int']['output'];
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type FrrsRewardCollectedEdge = {
@@ -4734,7 +4933,13 @@ export enum FrrsRewardCollectedOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type FrrsRewardCollectedWhereInput = {
@@ -4810,6 +5015,23 @@ export type FrrsRewardCollectedWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FrrsRewardCollectedsConnection = {
@@ -4828,6 +5050,7 @@ export type FrrsRewardsPerSecondChanged = {
   newRPS: Scalars['BigInt']['output'];
   oldRPS: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type FrrsRewardsPerSecondChangedEdge = {
@@ -4878,7 +5101,13 @@ export enum FrrsRewardsPerSecondChangedOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type FrrsRewardsPerSecondChangedWhereInput = {
@@ -4963,6 +5192,23 @@ export type FrrsRewardsPerSecondChangedWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FrrsRewardsPerSecondChangedsConnection = {
@@ -4981,6 +5227,7 @@ export type FrrsRewardsTargetChange = {
   previousTarget: Scalars['String']['output'];
   target: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type FrrsRewardsTargetChangeEdge = {
@@ -5031,7 +5278,13 @@ export enum FrrsRewardsTargetChangeOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type FrrsRewardsTargetChangeWhereInput = {
@@ -5132,6 +5385,23 @@ export type FrrsRewardsTargetChangeWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FrrsRewardsTargetChangesConnection = {
@@ -5149,6 +5419,7 @@ export type FrrsStrategistUpdated = {
   id: Scalars['String']['output'];
   strategistAddress: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type FrrsStrategistUpdatedEdge = {
@@ -5193,7 +5464,13 @@ export enum FrrsStrategistUpdatedOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export type FrrsStrategistUpdatedWhereInput = {
@@ -5277,6 +5554,23 @@ export type FrrsStrategistUpdatedWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type FrrsStrategistUpdatedsConnection = {
@@ -5306,6 +5600,7 @@ export type GovernanceProposal = {
   status: GovernanceProposalState;
   targets: Array<Maybe<Scalars['String']['output']>>;
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
   values: Array<Maybe<Scalars['String']['output']>>;
 };
 
@@ -5326,10 +5621,10 @@ export type GovernanceProposalEdge = {
 export type GovernanceProposalEvent = {
   __typename?: 'GovernanceProposalEvent';
   event: GovernanceProposalEventType;
-  hash: Scalars['String']['output'];
   id: Scalars['String']['output'];
   proposal: GovernanceProposal;
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
 };
 
 export type GovernanceProposalEventEdge = {
@@ -5345,12 +5640,6 @@ export enum GovernanceProposalEventOrderByInput {
   EventDesc = 'event_DESC',
   EventDescNullsFirst = 'event_DESC_NULLS_FIRST',
   EventDescNullsLast = 'event_DESC_NULLS_LAST',
-  HashAsc = 'hash_ASC',
-  HashAscNullsFirst = 'hash_ASC_NULLS_FIRST',
-  HashAscNullsLast = 'hash_ASC_NULLS_LAST',
-  HashDesc = 'hash_DESC',
-  HashDescNullsFirst = 'hash_DESC_NULLS_FIRST',
-  HashDescNullsLast = 'hash_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdAscNullsLast = 'id_ASC_NULLS_LAST',
@@ -5429,12 +5718,24 @@ export enum GovernanceProposalEventOrderByInput {
   ProposalTimestampDesc = 'proposal_timestamp_DESC',
   ProposalTimestampDescNullsFirst = 'proposal_timestamp_DESC_NULLS_FIRST',
   ProposalTimestampDescNullsLast = 'proposal_timestamp_DESC_NULLS_LAST',
+  ProposalTxHashAsc = 'proposal_txHash_ASC',
+  ProposalTxHashAscNullsFirst = 'proposal_txHash_ASC_NULLS_FIRST',
+  ProposalTxHashAscNullsLast = 'proposal_txHash_ASC_NULLS_LAST',
+  ProposalTxHashDesc = 'proposal_txHash_DESC',
+  ProposalTxHashDescNullsFirst = 'proposal_txHash_DESC_NULLS_FIRST',
+  ProposalTxHashDescNullsLast = 'proposal_txHash_DESC_NULLS_LAST',
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export enum GovernanceProposalEventType {
@@ -5453,23 +5754,6 @@ export type GovernanceProposalEventWhereInput = {
   event_isNull?: InputMaybe<Scalars['Boolean']['input']>;
   event_not_eq?: InputMaybe<GovernanceProposalEventType>;
   event_not_in?: InputMaybe<Array<GovernanceProposalEventType>>;
-  hash_contains?: InputMaybe<Scalars['String']['input']>;
-  hash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  hash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  hash_eq?: InputMaybe<Scalars['String']['input']>;
-  hash_gt?: InputMaybe<Scalars['String']['input']>;
-  hash_gte?: InputMaybe<Scalars['String']['input']>;
-  hash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  hash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  hash_lt?: InputMaybe<Scalars['String']['input']>;
-  hash_lte?: InputMaybe<Scalars['String']['input']>;
-  hash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  hash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  hash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  hash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  hash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  hash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  hash_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -5498,6 +5782,23 @@ export type GovernanceProposalEventWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
 };
 
 export type GovernanceProposalEventsConnection = {
@@ -5579,7 +5880,13 @@ export enum GovernanceProposalOrderByInput {
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
 }
 
 export enum GovernanceProposalState {
@@ -5703,6 +6010,12 @@ export enum GovernanceProposalVoteOrderByInput {
   ProposalTimestampDesc = 'proposal_timestamp_DESC',
   ProposalTimestampDescNullsFirst = 'proposal_timestamp_DESC_NULLS_FIRST',
   ProposalTimestampDescNullsLast = 'proposal_timestamp_DESC_NULLS_LAST',
+  ProposalTxHashAsc = 'proposal_txHash_ASC',
+  ProposalTxHashAscNullsFirst = 'proposal_txHash_ASC_NULLS_FIRST',
+  ProposalTxHashAscNullsLast = 'proposal_txHash_ASC_NULLS_LAST',
+  ProposalTxHashDesc = 'proposal_txHash_DESC',
+  ProposalTxHashDescNullsFirst = 'proposal_txHash_DESC_NULLS_FIRST',
+  ProposalTxHashDescNullsLast = 'proposal_txHash_DESC_NULLS_LAST',
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
@@ -6011,6 +6324,23 @@ export type GovernanceProposalWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
   values_containsAll?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   values_containsAny?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   values_containsNone?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;

@@ -24,7 +24,6 @@ import type {
 } from '@origin/defi/shared';
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
-import type { Config } from '@wagmi/core';
 
 import type { DailyHistory, WOETHHistoryType } from './types';
 
@@ -52,14 +51,14 @@ export const usePendingYield = (
     number,
     Error,
     number,
-    ['usePendingYield', HexAddress | undefined, boolean, Config]
+    ['usePendingYield', HexAddress | undefined, boolean]
   >,
 ) => {
   const config = useConfig();
   const { address, isConnected } = useAccount();
 
   return useQuery({
-    queryKey: ['usePendingYield', address, isConnected, config],
+    queryKey: ['usePendingYield', address, isConnected],
     queryFn: async () => {
       if (!isConnected || !address) {
         return 0;

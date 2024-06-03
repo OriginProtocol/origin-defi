@@ -28,7 +28,7 @@ export const VotingPowerCard = (props: CardProps) => {
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const { data: user, isLoading: isUserLoading } = useOgnUserInfoQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data?.ognAddresses?.at?.(0) },
+    { enabled: !!address, select: (data) => data?.esAccounts?.at?.(0) },
   );
 
   const percent =

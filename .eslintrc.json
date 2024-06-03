@@ -14,7 +14,6 @@
       "files": ["*.ts", "*.tsx", "*.js", "*.jsx"],
       "extends": ["plugin:react/recommended", "plugin:prettier/recommended"],
       "rules": {
-        // Nx rules
         "@nx/enforce-module-boundaries": [
           "error",
           {
@@ -27,14 +26,13 @@
             ]
           }
         ],
-
-        // React rules
         "react/react-in-jsx-scope": "off",
-
-        // General rules
-        "no-empty": ["error", { "allowEmptyCatch": true }],
-
-        // Unused imports rules
+        "no-empty": [
+          "error",
+          {
+            "allowEmptyCatch": true
+          }
+        ],
         "unused-imports/no-unused-imports": "error",
         "unused-imports/no-unused-vars": [
           "warn",
@@ -45,8 +43,6 @@
             "ignoreRestSiblings": true
           }
         ],
-
-        // Import ordering rules
         "simple-import-sort/imports": [
           "warn",
           {
@@ -62,8 +58,6 @@
             ]
           }
         ],
-
-        // react import
         "no-restricted-imports": [
           "error",
           {
@@ -71,17 +65,12 @@
               {
                 "name": "react",
                 "importNames": ["default"]
-                // "message": "some messages for who import 'React' accidentally"
               }
             ]
           }
         ],
-
-        // import types rules
         "@typescript-eslint/consistent-type-imports": "error",
         "import/consistent-type-specifier-style": ["error", "prefer-top-level"],
-
-        // FormatJS rules
         "formatjs/enforce-default-message": ["error", "literal"],
         "formatjs/no-id": "error",
         "formatjs/no-multiple-whitespaces": "error",
@@ -91,19 +80,27 @@
     {
       "files": ["*.ts", "*.tsx"],
       "extends": ["plugin:@nx/typescript"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     },
     {
       "files": ["*.generated.ts", "*.generated.tsx", "graphql.ts"],
       "extends": ["plugin:@nx/typescript"],
       "rules": {
-        "@typescript-eslint/no-explicit-any": "off"
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
       }
     },
     {
       "files": ["*.js", "*.jsx"],
       "extends": ["plugin:@nx/javascript"],
-      "rules": {}
+      "rules": {
+        "@typescript-eslint/no-extra-semi": "error",
+        "no-extra-semi": "off"
+      }
     }
   ]
 }

@@ -12,7 +12,7 @@ export const usePoints = () => {
   const queryClient = useQueryClient();
 
   return useQuery({
-    queryKey: ['usePoints', address, config],
+    queryKey: ['usePoints', address],
     queryFn: async () => {
       if (!address) {
         return {

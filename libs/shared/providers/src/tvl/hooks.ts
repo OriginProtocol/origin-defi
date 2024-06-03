@@ -14,41 +14,36 @@ import type {
 } from '@tanstack/react-query';
 import type { Config } from 'wagmi';
 
-type Key = ['useTvl', Token, Config, QueryClient];
+type Key = ['useTvl', Token];
 
-const getKey = (
-  token: Token,
+const getKey = (token: Token): Key => ['useTvl', token];
+
+const fetcher: (
   config: Config,
   queryClient: QueryClient,
-): Key => ['useTvl', token, config, queryClient];
+) => QueryFunction<number, Key> =
+  (config, queryClient) =>
+  async ({ queryKey: [, token] }) => {
+    const res = await Promise.allSettled([
+      readContract(config, {
+        address: token.address ?? ZERO_ADDRESS,
+        abi: token.abi,
+        functionName: 'totalSupply',
+        chainId: token.chainId,
+      }),
+      queryClient.fetchQuery({
+        queryKey: useTokenPrice.getKey(getTokenPriceKey(token)),
+        queryFn: useTokenPrice.fetcher(config, queryClient),
+      }),
+    ]);
 
-const fetcher: QueryFunction<number, Key> = async ({
-  queryKey: [, token, config, queryClient],
-}) => {
-  const res = await Promise.allSettled([
-    readContract(config, {
-      address: token.address ?? ZERO_ADDRESS,
-      abi: token.abi,
-      functionName: 'totalSupply',
-      chainId: token.chainId,
-    }),
-    queryClient.fetchQuery({
-      queryKey: useTokenPrice.getKey(
-        getTokenPriceKey(token),
-        config,
-        queryClient,
-      ),
-      queryFn: useTokenPrice.fetcher,
-    }),
-  ]);
+    const totalSupply = isFulfilled(res[0])
+      ? BigInt(res[0].value as unknown as bigint)
+      : 0n;
+    const price = isFulfilled(res[1]) ? res[1].value : 0;
 
-  const totalSupply = isFulfilled(res[0])
-    ? BigInt(res[0].value as unknown as bigint)
-    : 0n;
-  const price = isFulfilled(res[1]) ? res[1].value : 0;
-
-  return +formatUnits(totalSupply, token.decimals) * price;
-};
+    return +formatUnits(totalSupply, token.decimals) * price;
+  };
 
 export const useTvl = (
   token: Token,
@@ -59,8 +54,8 @@ export const useTvl = (
 
   return useQuery({
     ...options,
-    queryKey: getKey(token, config, queryClient),
-    queryFn: fetcher,
+    queryKey: getKey(token),
+    queryFn: fetcher(config, queryClient),
   });
 };
 useTvl.getKey = getKey;

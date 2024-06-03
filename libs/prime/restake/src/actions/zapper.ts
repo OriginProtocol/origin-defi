@@ -22,8 +22,8 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const price = await queryClient.fetchQuery({
-    queryKey: useTokenPrices.getKey(['primeETH_ETH'], config),
-    queryFn: useTokenPrices.fetcher,
+    queryKey: useTokenPrices.getKey(['primeETH_ETH']),
+    queryFn: useTokenPrices.fetcher(config),
   });
 
   if (!price?.primeETH_ETH || price.primeETH_ETH === 0) {

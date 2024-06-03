@@ -7,27 +7,29 @@ export type OgnUserInfoQueryVariables = Types.Exact<{
 }>;
 
 
-export type OgnUserInfoQuery = { __typename?: 'Query', ognAddresses: Array<{ __typename?: 'OGNAddress', id: string, balance: string, staked: string, xognBalance: string, votingPower: string, delegatee?: { __typename?: 'OGNAddress', id: string } | null }> };
+export type OgnUserInfoQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, balance: string, assetBalance: string, stakedBalance: string, votingPower: string, delegatesFrom: Array<{ __typename?: 'ESAccount', account: string }> }> };
 
 export type OgnLockupsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type OgnLockupsQuery = { __typename?: 'Query', ognLockups: Array<{ __typename?: 'OGNLockup', id: string, lockupId: string, amount: string, end: string, xogn: string, timestamp: string, logs: Array<{ __typename?: 'OGNLockupTxLog', event: Types.OgnLockupEventType, hash: string }> }> };
+export type OgnLockupsQuery = { __typename?: 'Query', esLockups: Array<{ __typename?: 'ESLockup', id: string, lockupId: string, amount: string, end: string, points: string, timestamp: string, events: Array<{ __typename?: 'ESLockupEvent', event: Types.EsLockupEventType, txHash: string }> }> };
 
 
 
 export const OgnUserInfoDocument = `
     query OgnUserInfo($address: String!) {
-  ognAddresses(where: {id_containsInsensitive: $address}) {
+  esAccounts(
+    where: {chainId_eq: 1, address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_containsInsensitive: $address}
+  ) {
     id
     balance
-    staked
-    xognBalance
+    assetBalance
+    stakedBalance
     votingPower
-    delegatee {
-      id
+    delegatesFrom {
+      account
     }
   }
 }
@@ -56,19 +58,19 @@ useOgnUserInfoQuery.fetcher = (variables: OgnUserInfoQueryVariables, options?: R
 
 export const OgnLockupsDocument = `
     query OgnLockups($address: String!) {
-  ognLockups(
-    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
+  esLockups(
+    where: {chainId_eq: 1, address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_containsInsensitive: $address, events_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id
     lockupId
     amount
     end
-    xogn
+    points
     timestamp
-    logs(orderBy: timestamp_DESC, limit: 1) {
+    events(orderBy: timestamp_DESC, limit: 1) {
       event
-      hash
+      txHash
     }
   }
 }

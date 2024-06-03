@@ -28,8 +28,8 @@ export const useWatchBalance = (args?: {
   const prev = usePrevious(Number(blockNumber));
 
   const res = useQuery({
-    queryKey: useTokenBalance.getKey(config, args?.token, addr),
-    queryFn: useTokenBalance.fetcher,
+    queryKey: useTokenBalance.getKey(args?.token, addr),
+    queryFn: useTokenBalance.fetcher(config),
   });
 
   useEffect(() => {

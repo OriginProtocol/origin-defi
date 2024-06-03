@@ -6,28 +6,36 @@ import { useAccount, useConfig } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
+import type { QueryFunction } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-const getKey = (config: Config, token?: Token, address?: HexAddress) =>
-  ['useTokenBalance', token, address, config] as const;
+type Key = ['useTokenBalance', Token | undefined, HexAddress | undefined];
 
-const fetcher = async ({
-  queryKey: [, token, address, config],
-}: {
-  queryKey: ReturnType<typeof useTokenBalance.getKey>;
-}) => {
-  if (!address) {
-    return 0n;
-  }
+const getKey = (token?: Token, address?: HexAddress): Key => [
+  'useTokenBalance',
+  token,
+  address,
+];
 
-  const bal = await getBalance(config, {
-    address: address ?? ZERO_ADDRESS,
-    token: token?.address,
-    chainId: token?.chainId ?? mainnet.id,
-  });
+const fetcher: (config: Config) => QueryFunction<bigint, Key> =
+  (config) =>
+  async ({
+    queryKey: [, token, address],
+  }: {
+    queryKey: ReturnType<typeof useTokenBalance.getKey>;
+  }) => {
+    if (!address) {
+      return 0n;
+    }
 
-  return bal.value;
-};
+    const bal = await getBalance(config, {
+      address: address ?? ZERO_ADDRESS,
+      token: token?.address,
+      chainId: token?.chainId ?? mainnet.id,
+    });
+
+    return bal.value;
+  };
 
 export const useTokenBalance = (args?: {
   token: Token;
@@ -38,8 +46,8 @@ export const useTokenBalance = (args?: {
   const addr = args?.address ?? address;
 
   return useQuery({
-    queryKey: getKey(config, args?.token, addr),
-    queryFn: useTokenBalance.fetcher,
+    queryKey: getKey(args?.token, addr),
+    queryFn: useTokenBalance.fetcher(config),
   });
 };
 useTokenBalance.getKey = getKey;

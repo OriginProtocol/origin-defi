@@ -13,11 +13,11 @@ import type { QueryFunction } from '@tanstack/react-query';
 import type { Abi } from 'viem';
 import type { Config } from 'wagmi';
 
-type Key = ['useCurve', Config];
+type Key = ['useCurve'];
 
-const getKey = (config: Config): Key => ['useCurve', config];
+const getKey = (): Key => ['useCurve'];
 
-const fetcher: QueryFunction<
+const fetcher: (config: Config) => QueryFunction<
   {
     CurveRegistryExchange: {
       address: HexAddress;
@@ -29,8 +29,8 @@ const fetcher: QueryFunction<
     OusdMetaPoolUnderlyings: HexAddress[];
   },
   Key
-> = async ({ queryKey }) => {
-  const addresses = await readContracts(queryKey[1], {
+> = (config) => async () => {
+  const addresses = await readContracts(config, {
     contracts: [
       {
         address: contracts.mainnet.CurveAddressProvider.address,
@@ -47,7 +47,7 @@ const fetcher: QueryFunction<
     ],
   });
 
-  const underlyings = await readContracts(queryKey[1], {
+  const underlyings = await readContracts(config, {
     contracts: [
       {
         address: addresses[1].result ?? ZERO_ADDRESS,
@@ -80,9 +80,9 @@ export const useCurve = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: getKey(config),
+    queryKey: getKey(),
     staleTime: Infinity,
-    queryFn: fetcher,
+    queryFn: fetcher(config),
   });
 };
 useCurve.getKey = getKey;

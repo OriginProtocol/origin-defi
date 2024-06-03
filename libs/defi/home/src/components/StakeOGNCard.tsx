@@ -36,13 +36,12 @@ export const StakeOGNCard = (props: CardProps) => {
       <Typography variant="featured3" fontWeight="medium" mb={1}>
         {intl.formatMessage({
           defaultMessage:
-            'Stack Diverse Rewards. Govern An Expansive Ecosystem.',
+            'Stake OGN to participate in governance and earn rewards.',
         })}
       </Typography>
       <Typography maxWidth={{ xs: 1, sm: 0.6 }} mb={2}>
         {intl.formatMessage({
-          defaultMessage:
-            'Earn rewards from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN.',
+          defaultMessage: `Own a stake in the network and benefit from the growth of Origin's products.`,
         })}
       </Typography>
       <Stack

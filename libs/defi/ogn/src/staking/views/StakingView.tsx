@@ -15,7 +15,6 @@ import { LockupsCard } from '../components/LockupsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { RewardCard } from '../components/RewardCard';
 import { StakingForm } from '../components/StakingForm';
-import { StatsCard } from '../components/StatsCard';
 import { VotingPowerCard } from '../components/VotingPowerCard';
 
 export const StakingView = () => {
@@ -34,15 +33,15 @@ export const StakingView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={3}>
-          <Grid2 xs={12} md={3}>
+          {/* <Grid2 xs={12} md={3}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}
             >
               <StatsCard />
             </ErrorBoundary>
-          </Grid2>
-          <Grid2 xs={12} md={6}>
+          </Grid2> */}
+          <Grid2 xs={12} md={6} mdOffset={3}>
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}
               onError={trackSentryError}

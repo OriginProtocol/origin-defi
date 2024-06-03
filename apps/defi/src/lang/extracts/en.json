@@ -176,9 +176,6 @@
   "65BhO2": {
     "defaultMessage": "OGN Rewards Will be Collected"
   },
-  "6GT2AH": {
-    "defaultMessage": "Govern an expansive ecosystem"
-  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
@@ -190,6 +187,9 @@
   },
   "6XFO/C": {
     "defaultMessage": "Approved"
+  },
+  "6ZG3zQ": {
+    "defaultMessage": "Own a stake in the network and benefit from the growth of Origin's products."
   },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
@@ -416,9 +416,6 @@
   "Fv1ZSz": {
     "defaultMessage": "Closed"
   },
-  "G0Ilyf": {
-    "defaultMessage": "Approve {amount} {token}"
-  },
   "GZJpDf": {
     "defaultMessage": "Analytics"
   },
@@ -638,6 +635,9 @@
   "S5tBcz": {
     "defaultMessage": "Stake"
   },
+  "S9kbtc": {
+    "defaultMessage": "Stake OGN to participate in governance and earn rewards."
+  },
   "SGXihn": {
     "defaultMessage": "OETH"
   },
@@ -715,9 +715,6 @@
   },
   "WrGSr6": {
     "defaultMessage": "Convert"
-  },
-  "X9zbb0": {
-    "defaultMessage": "Earn rewards from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN."
   },
   "XObaE9": {
     "defaultMessage": "Votes"
@@ -887,9 +884,6 @@
   "fFXn5l": {
     "defaultMessage": "Collect Rewards"
   },
-  "fMikX8": {
-    "defaultMessage": "Stack Diverse Rewards. Govern An Expansive Ecosystem."
-  },
   "ffdKEn": {
     "defaultMessage": "Select the lockup you want to add your OGN to"
   },
@@ -1024,6 +1018,9 @@
   },
   "oBlHij": {
     "defaultMessage": "The easiest way to earn more yield on-chain"
+  },
+  "ok8VIA": {
+    "defaultMessage": "Shape the future of Origin's products"
   },
   "oy7udF": {
     "defaultMessage": "Approval cancelled"

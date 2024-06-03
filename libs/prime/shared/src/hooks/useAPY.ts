@@ -8,7 +8,7 @@ export function useAPY() {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useAPY', config],
+    queryKey: ['useAPY'],
     queryFn: async () => {
       const from = new Date(Date.UTC(2024, 1, 5, 18, 0));
       const to = getPrevious735AMUTC();

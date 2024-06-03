@@ -24,7 +24,7 @@ export const LockupsCard = (props: CardProps) => {
   const { address, isConnected } = useAccount();
   const { data: lockups, isFetching: isLockupsFetching } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data.ognLockups },
+    { enabled: !!address, select: (data) => data.esLockups },
   );
 
   return (

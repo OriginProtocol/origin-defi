@@ -47,7 +47,7 @@ export const LockupsTable = () => {
   const { data, isLoading } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
-      select: (data) => data?.ognLockups,
+      select: (data) => data?.esLockups,
       enabled: !!address,
     },
   );
@@ -90,7 +90,7 @@ export const LockupsTable = () => {
       ...(isSm
         ? []
         : [
-            columnHelper.accessor('xogn', {
+            columnHelper.accessor('points', {
               id: 'xogn',
               header: tokens.mainnet.xOGN.symbol,
               cell: (info) =>
@@ -106,7 +106,7 @@ export const LockupsTable = () => {
                 ),
             }),
           ]),
-      columnHelper.accessor('xogn', {
+      columnHelper.accessor('points', {
         id: 'vp',
         header: intl.formatMessage({ defaultMessage: 'Voting power' }),
         cell: (info) => (
@@ -163,7 +163,7 @@ export const LockupsTable = () => {
                 target="_blank"
                 rel="noopener noreferrer nofollow"
                 href={`https://etherscan.io/tx/${
-                  info.row.original?.logs?.[0]?.hash ?? ''
+                  info.row.original?.events?.[0]?.txHash ?? ''
                 }`}
                 sx={{ minWidth: 0 }}
               >
