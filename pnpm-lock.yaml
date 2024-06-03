@@ -22,7 +22,7 @@ importers:
         version: 5.15.19(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@rainbow-me/rainbowkit':
         specifier: 2.1.2
-        version: 2.1.2(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))(wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5)))
+        version: 2.1.2(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))(wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5)))
       '@react-hookz/web':
         specifier: ^24.0.2
         version: 24.0.4(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -37,7 +37,7 @@ importers:
         version: 8.17.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@wagmi/core':
         specifier: 2.9.7
-        version: 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
+        version: 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
       analytics:
         specifier: 0.8.13
         version: 0.8.13(@types/dlv@1.1.4)
@@ -99,11 +99,11 @@ importers:
         specifier: ^2.6.2
         version: 2.6.2
       viem:
-        specifier: 2.10.5
-        version: 2.10.5(bufferutil@4.0.8)(typescript@5.4.5)
+        specifier: 2.13.3
+        version: 2.13.3(bufferutil@4.0.8)(typescript@5.4.5)
       wagmi:
         specifier: 2.8.7
-        version: 2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
+        version: 2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
     devDependencies:
       '@babel/core':
         specifier: ^7.24.6
@@ -3537,9 +3537,6 @@ packages:
   '@types/node@18.19.33':
     resolution: {integrity: sha512-NR9+KrpSajr2qBVp/Yt5TU/rp+b5Mayi3+OlMlcg2cVCfRmcG5PWZ7S4+MG9PZ5gWBoc9Pd0BKSRViuBCRPu0A==}
 
-  '@types/node@20.12.11':
-    resolution: {integrity: sha512-vDg9PZ/zi+Nqp6boSOT7plNuthRugEKixDv5sFTIpkE89MmNtEArAShI4mxuX2+UrLEe9pxC1vm2cjm9YlWbJw==}
-
   '@types/node@20.14.0':
     resolution: {integrity: sha512-5cHBxFGJx6L4s56Bubp4fglrEpmyJypsqI6RgzMfBHWUJQGWAAi8cWcgetEbZXHYXo9C2Fa4EEds/uSyS4cxmA==}
 
@@ -6177,6 +6174,11 @@ packages:
     peerDependencies:
       ws: '*'
 
+  isows@1.0.4:
+    resolution: {integrity: sha512-hEzjY+x9u9hPmBom9IIAqdJCwNLax+xrPb51vEPpERoFlIxgmZcHzsT5jKG06nvInKOBGvReAVz80Umed5CczQ==}
+    peerDependencies:
+      ws: '*'
+
   iterator.prototype@1.1.2:
     resolution: {integrity: sha512-DR33HMMr8EzwuRL8Y9D3u2BMj8+RqSE850jfGu59kS7tbmPLzGkZmVSfyCFSDxuZiEY6Rzt3T2NA/qU+NwVj1w==}
 
@@ -8629,8 +8631,8 @@ packages:
       typescript:
         optional: true
 
-  viem@2.10.5:
-    resolution: {integrity: sha512-rzU2y6poYgXu7axcQmwddaJ/nGP3tjtslXdUCu+PvryeXACuuqoyP3chjTEHciG84a663gYbrVGbxNUFA3aURQ==}
+  viem@2.13.3:
+    resolution: {integrity: sha512-3tlwDRKHSelupFjbFMdUxF41f79ktyH2F9PAQ9Dltbs1DpdDlR1x+Ksa0th6qkyjjAbpDZP3F5nMTJv/1GVPdQ==}
     peerDependencies:
       typescript: '>=5.0.4'
     peerDependenciesMeta:
@@ -8669,34 +8671,6 @@ packages:
       vite: '*'
     peerDependenciesMeta:
       vite:
-        optional: true
-
-  vite@5.2.11:
-    resolution: {integrity: sha512-HndV31LWW05i1BLPMUCE1B9E9GFbOu1MbenhS58FuK6owSO5qHm7GiCotrNY1YE5rMeQSFBGmT5ZaLEjFizgiQ==}
-    engines: {node: ^18.0.0 || >=20.0.0}
-    hasBin: true
-    peerDependencies:
-      '@types/node': ^18.0.0 || >=20.0.0
-      less: '*'
-      lightningcss: ^1.21.0
-      sass: '*'
-      stylus: '*'
-      sugarss: '*'
-      terser: ^5.4.0
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-      less:
-        optional: true
-      lightningcss:
-        optional: true
-      sass:
-        optional: true
-      stylus:
-        optional: true
-      sugarss:
-        optional: true
-      terser:
         optional: true
 
   vite@5.2.12:
@@ -11606,14 +11580,14 @@ snapshots:
     dependencies:
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       jest-mock: 29.7.0
 
   '@jest/fake-timers@29.7.0':
     dependencies:
       '@jest/types': 29.6.3
       '@sinonjs/fake-timers': 10.3.0
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       jest-message-util: 29.7.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
@@ -11626,7 +11600,7 @@ snapshots:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       '@types/yargs': 15.0.19
       chalk: 4.1.2
 
@@ -11635,7 +11609,7 @@ snapshots:
       '@jest/schemas': 29.6.3
       '@types/istanbul-lib-coverage': 2.0.6
       '@types/istanbul-reports': 3.0.4
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       '@types/yargs': 17.0.32
       chalk: 4.1.2
 
@@ -12514,7 +12488,7 @@ snapshots:
 
   '@popperjs/core@2.11.8': {}
 
-  '@rainbow-me/rainbowkit@2.1.2(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))(wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5)))':
+  '@rainbow-me/rainbowkit@2.1.2(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))(wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5)))':
     dependencies:
       '@tanstack/react-query': 5.40.0(react@18.3.1)
       '@vanilla-extract/css': 1.14.0
@@ -12526,8 +12500,8 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-remove-scroll: 2.5.7(@types/react@18.3.3)(react@18.3.1)
       ua-parser-js: 1.0.38
-      viem: 2.10.5(bufferutil@4.0.8)(typescript@5.4.5)
-      wagmi: 2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
+      viem: 2.13.3(bufferutil@4.0.8)(typescript@5.4.5)
+      wagmi: 2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
     transitivePeerDependencies:
       - '@types/react'
 
@@ -13486,15 +13460,11 @@ snapshots:
 
   '@types/node-forge@1.3.11':
     dependencies:
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
 
   '@types/node@17.0.45': {}
 
   '@types/node@18.19.33':
-    dependencies:
-      undici-types: 5.26.5
-
-  '@types/node@20.12.11':
     dependencies:
       undici-types: 5.26.5
 
@@ -13788,16 +13758,16 @@ snapshots:
 
   '@vue/shared@3.4.27': {}
 
-  '@wagmi/connectors@4.3.9(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@types/react@18.3.3)(@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5)))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))':
+  '@wagmi/connectors@4.3.9(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@types/react@18.3.3)(@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5)))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))':
     dependencies:
       '@coinbase/wallet-sdk': 3.9.1
       '@metamask/sdk': 0.20.3(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)
       '@safe-global/safe-apps-provider': 0.18.1(bufferutil@4.0.8)(typescript@5.4.5)
       '@safe-global/safe-apps-sdk': 8.1.0(bufferutil@4.0.8)(typescript@5.4.5)
-      '@wagmi/core': 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
+      '@wagmi/core': 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
       '@walletconnect/ethereum-provider': 2.13.0(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)
       '@walletconnect/modal': 2.6.2(@types/react@18.3.3)(react@18.3.1)
-      viem: 2.10.5(bufferutil@4.0.8)(typescript@5.4.5)
+      viem: 2.13.3(bufferutil@4.0.8)(typescript@5.4.5)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
@@ -13827,11 +13797,11 @@ snapshots:
       - utf-8-validate
       - zod
 
-  '@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))':
+  '@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))':
     dependencies:
       eventemitter3: 5.0.1
       mipd: 0.0.5(bufferutil@4.0.8)(typescript@5.4.5)
-      viem: 2.10.5(bufferutil@4.0.8)(typescript@5.4.5)
+      viem: 2.13.3(bufferutil@4.0.8)(typescript@5.4.5)
       zustand: 4.4.1(@types/react@18.3.3)(immer@10.1.1)(react@18.3.1)
     optionalDependencies:
       '@tanstack/query-core': 5.40.0
@@ -14919,7 +14889,7 @@ snapshots:
 
   chrome-launcher@0.15.2:
     dependencies:
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       escape-string-regexp: 4.0.0
       is-wsl: 2.2.0
       lighthouse-logger: 1.4.2
@@ -16935,6 +16905,10 @@ snapshots:
     dependencies:
       ws: 8.13.0(bufferutil@4.0.8)
 
+  isows@1.0.4(ws@8.13.0(bufferutil@4.0.8)):
+    dependencies:
+      ws: 8.13.0(bufferutil@4.0.8)
+
   iterator.prototype@1.1.2:
     dependencies:
       define-properties: 1.2.1
@@ -16962,7 +16936,7 @@ snapshots:
       '@jest/environment': 29.7.0
       '@jest/fake-timers': 29.7.0
       '@jest/types': 29.6.3
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       jest-mock: 29.7.0
       jest-util: 29.7.0
 
@@ -16983,13 +16957,13 @@ snapshots:
   jest-mock@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       jest-util: 29.7.0
 
   jest-util@29.7.0:
     dependencies:
       '@jest/types': 29.6.3
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       chalk: 4.1.2
       ci-info: 3.9.0
       graceful-fs: 4.2.11
@@ -17006,13 +16980,13 @@ snapshots:
 
   jest-worker@27.5.1:
     dependencies:
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
   jest-worker@29.7.0:
     dependencies:
-      '@types/node': 20.12.11
+      '@types/node': 20.14.0
       jest-util: 29.7.0
       merge-stream: 2.0.0
       supports-color: 8.1.1
@@ -19686,7 +19660,7 @@ snapshots:
       - utf-8-validate
       - zod
 
-  viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5):
+  viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5):
     dependencies:
       '@adraffy/ens-normalize': 1.10.0
       '@noble/curves': 1.2.0
@@ -19694,7 +19668,7 @@ snapshots:
       '@scure/bip32': 1.3.2
       '@scure/bip39': 1.2.1
       abitype: 1.0.0(typescript@5.4.5)
-      isows: 1.0.3(ws@8.13.0(bufferutil@4.0.8))
+      isows: 1.0.4(ws@8.13.0(bufferutil@4.0.8))
       ws: 8.13.0(bufferutil@4.0.8)
     optionalDependencies:
       typescript: 5.4.5
@@ -19709,7 +19683,7 @@ snapshots:
       debug: 4.3.5
       pathe: 1.1.2
       picocolors: 1.0.1
-      vite: 5.2.11(@types/node@20.14.0)(terser@5.31.0)
+      vite: 5.2.12(@types/node@20.14.0)(terser@5.31.0)
     transitivePeerDependencies:
       - '@types/node'
       - less
@@ -19767,16 +19741,6 @@ snapshots:
       - supports-color
       - typescript
 
-  vite@5.2.11(@types/node@20.14.0)(terser@5.31.0):
-    dependencies:
-      esbuild: 0.20.2
-      postcss: 8.4.38
-      rollup: 4.18.0
-    optionalDependencies:
-      '@types/node': 20.14.0
-      fsevents: 2.3.3
-      terser: 5.31.0
-
   vite@5.2.12(@types/node@20.14.0)(terser@5.31.0):
     dependencies:
       esbuild: 0.20.2
@@ -19806,7 +19770,7 @@ snapshots:
       strip-literal: 2.1.0
       tinybench: 2.8.0
       tinypool: 0.8.4
-      vite: 5.2.11(@types/node@20.14.0)(terser@5.31.0)
+      vite: 5.2.12(@types/node@20.14.0)(terser@5.31.0)
       vite-node: 1.6.0(@types/node@20.14.0)(terser@5.31.0)
       why-is-node-running: 2.2.2
     optionalDependencies:
@@ -19841,14 +19805,14 @@ snapshots:
     dependencies:
       xml-name-validator: 5.0.0
 
-  wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5)):
+  wagmi@2.8.7(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@tanstack/query-core@5.40.0)(@tanstack/react-query@5.40.0(react@18.3.1))(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5)):
     dependencies:
       '@tanstack/react-query': 5.40.0(react@18.3.1)
-      '@wagmi/connectors': 4.3.9(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@types/react@18.3.3)(@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5)))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
-      '@wagmi/core': 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.10.5(bufferutil@4.0.8)(typescript@5.4.5))
+      '@wagmi/connectors': 4.3.9(@react-native-async-storage/async-storage@1.23.1(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1)))(@types/react@18.3.3)(@wagmi/core@2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5)))(bufferutil@4.0.8)(react-dom@18.3.1(react@18.3.1))(react-i18next@14.1.2(i18next@22.5.1)(react-dom@18.3.1(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1))(react-native@0.74.1(@babel/core@7.24.6)(@babel/preset-env@7.24.6(@babel/core@7.24.6))(@types/react@18.3.3)(bufferutil@4.0.8)(react@18.3.1))(react@18.3.1)(rollup@4.18.0)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
+      '@wagmi/core': 2.9.7(@tanstack/query-core@5.40.0)(@types/react@18.3.3)(bufferutil@4.0.8)(immer@10.1.1)(react@18.3.1)(typescript@5.4.5)(viem@2.13.3(bufferutil@4.0.8)(typescript@5.4.5))
       react: 18.3.1
       use-sync-external-store: 1.2.0(react@18.3.1)
-      viem: 2.10.5(bufferutil@4.0.8)(typescript@5.4.5)
+      viem: 2.13.3(bufferutil@4.0.8)(typescript@5.4.5)
     optionalDependencies:
       typescript: 5.4.5
     transitivePeerDependencies:
