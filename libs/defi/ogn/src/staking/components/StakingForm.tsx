@@ -37,17 +37,18 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
-import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useLockupPolling } from '../state';
+
 export const StakingForm = () => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
-  const queryClient = useQueryClient();
+  const [, setLockupPolling] = useLockupPolling();
   const { address, isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
@@ -104,7 +105,7 @@ export const StakingForm = () => {
     },
     callbacks: {
       onWriteSuccess: () => {
-        queryClient.invalidateQueries();
+        setLockupPolling(2000);
         setAmount(0n);
         setDuration(1);
       },
