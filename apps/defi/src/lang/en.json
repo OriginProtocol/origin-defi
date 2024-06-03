@@ -397,12 +397,6 @@
       "value": "OGN Rewards Will be Collected"
     }
   ],
-  "6GT2AH": [
-    {
-      "type": 0,
-      "value": "Govern an expansive ecosystem"
-    }
-  ],
   "6GZbSi": [
     {
       "type": 0,
@@ -425,6 +419,12 @@
     {
       "type": 0,
       "value": "Approved"
+    }
+  ],
+  "6ZG3zQ": [
+    {
+      "type": 0,
+      "value": "Own a stake in the network and benefit from the growth of Origin's products."
     }
   ],
   "6cYAtm": [
@@ -1027,24 +1027,6 @@
       "value": "Closed"
     }
   ],
-  "G0Ilyf": [
-    {
-      "type": 0,
-      "value": "Approve "
-    },
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    }
-  ],
   "GZJpDf": [
     {
       "type": 0,
@@ -1545,6 +1527,12 @@
       "value": "Stake"
     }
   ],
+  "S9kbtc": [
+    {
+      "type": 0,
+      "value": "Stake OGN to participate in governance and earn rewards."
+    }
+  ],
   "SGXihn": [
     {
       "type": 0,
@@ -1757,12 +1745,6 @@
     {
       "type": 0,
       "value": "Convert"
-    }
-  ],
-  "X9zbb0": [
-    {
-      "type": 0,
-      "value": "Earn rewards from all of Origin’s flagship products, and participate in paradigm-shifting proposals with OGN."
     }
   ],
   "XObaE9": [
@@ -2137,12 +2119,6 @@
       "value": "Collect Rewards"
     }
   ],
-  "fMikX8": [
-    {
-      "type": 0,
-      "value": "Stack Diverse Rewards. Govern An Expansive Ecosystem."
-    }
-  ],
   "ffdKEn": [
     {
       "type": 0,
@@ -2427,6 +2403,12 @@
     {
       "type": 0,
       "value": "The easiest way to earn more yield on-chain"
+    }
+  ],
+  "ok8VIA": [
+    {
+      "type": 0,
+      "value": "Shape the future of Origin's products"
     }
   ],
   "oy7udF": [
