@@ -36,8 +36,8 @@ const isRouteAvailable: IsRouteAvailable = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   try {
@@ -71,8 +71,8 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   const estimate = await readContract(config, {
@@ -109,8 +109,8 @@ const estimateGas: EstimateGas = async (
   const { address } = getAccount(config);
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 
@@ -258,8 +258,8 @@ const swap: Swap = async (
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 

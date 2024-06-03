@@ -29,12 +29,7 @@ export const useWatchBalances = (args: {
   });
   const prev = usePrevious(Number(blockNumber));
   const res = useQuery({
-    queryKey: [
-      'useWatchBalances',
-      addr,
-      args.tokens?.map((t) => t.symbol),
-      config,
-    ],
+    queryKey: ['useWatchBalances', addr, args.tokens?.map((t) => t.symbol)],
     queryFn: async () => {
       if (!args.tokens || isNilOrEmpty(args.tokens) || !addr) {
         return null;
@@ -45,8 +40,8 @@ export const useWatchBalances = (args: {
       const bals = await Promise.allSettled(
         args.tokens.map((t) =>
           queryClient.fetchQuery({
-            queryKey: useTokenBalance.getKey(config, t, addr),
-            queryFn: useTokenBalance.fetcher,
+            queryKey: useTokenBalance.getKey(t, addr),
+            queryFn: useTokenBalance.fetcher(config),
           }),
         ),
       );

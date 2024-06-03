@@ -141,7 +141,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
 
   const xOgnReceived =
     duration === initialMonthDuration
-      ? +formatUnits(BigInt(lockup.xogn), tokens.mainnet.xOGN.decimals)
+      ? +formatUnits(BigInt(lockup.points), tokens.mainnet.xOGN.decimals)
       : staking?.xOgnPreview;
   const votingPowerPercent =
     (xOgnReceived ?? 0) /
@@ -227,7 +227,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
-                  BigInt(lockup.xogn) ?? 0n,
+                  BigInt(lockup.points) ?? 0n,
                   tokens.mainnet.xOGN.decimals,
                 ) /
                   +formatUnits(

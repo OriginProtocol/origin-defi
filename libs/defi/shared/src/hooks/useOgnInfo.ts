@@ -9,12 +9,11 @@ import type { HexAddress } from '@origin/shared/utils';
 import type { QueryFunction, UseQueryOptions } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 
-type Key = ['useOgnInfo', HexAddress | undefined, Config];
+type Key = ['useOgnInfo', HexAddress | undefined];
 
-const getKey = (address: HexAddress | undefined, config: Config): Key => [
+const getKey = (address: HexAddress | undefined): Key => [
   'useOgnInfo',
   address,
-  config,
 ];
 
 type OgnInfo = {
@@ -29,84 +28,84 @@ type OgnInfo = {
   ognxOgnAllowance: bigint;
 };
 
-const fetcher: QueryFunction<OgnInfo, Key> = async ({
-  queryKey: [, address, config],
-}) => {
-  const data = await readContracts(config, {
-    contracts: [
-      {
-        address: tokens.mainnet.OGN.address,
-        abi: tokens.mainnet.OGN.abi,
-        functionName: 'totalSupply',
-      },
-      {
-        address: tokens.mainnet.xOGN.address,
-        abi: tokens.mainnet.xOGN.abi,
-        functionName: 'totalSupply',
-      },
-      {
-        address: tokens.mainnet.OGN.address,
-        abi: tokens.mainnet.OGN.abi,
-        functionName: 'balanceOf',
-        args: [address ?? ZERO_ADDRESS],
-      },
-      {
-        address: tokens.mainnet.xOGN.address,
-        abi: tokens.mainnet.xOGN.abi,
-        functionName: 'balanceOf',
-        args: [address ?? ZERO_ADDRESS],
-      },
-      {
-        address: tokens.mainnet.xOGN.address,
-        abi: tokens.mainnet.xOGN.abi,
-        functionName: 'previewRewards',
-        args: [address ?? ZERO_ADDRESS],
-      },
-      {
-        address: tokens.mainnet.OGN.address,
-        abi: tokens.mainnet.OGN.abi,
-        functionName: 'balanceOf',
-        args: [tokens.mainnet.xOGN.address],
-      },
-      {
-        address: tokens.mainnet.OGN.address,
-        abi: tokens.mainnet.OGN.abi,
-        functionName: 'allowance',
-        args: [address ?? ZERO_ADDRESS, tokens.mainnet.xOGN.address],
-      },
-    ],
-    allowFailure: true,
-  });
+const fetcher: (config: Config) => QueryFunction<OgnInfo, Key> =
+  (config) =>
+  async ({ queryKey: [, address] }) => {
+    const data = await readContracts(config, {
+      contracts: [
+        {
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'totalSupply',
+        },
+        {
+          address: tokens.mainnet.xOGN.address,
+          abi: tokens.mainnet.xOGN.abi,
+          functionName: 'totalSupply',
+        },
+        {
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'balanceOf',
+          args: [address ?? ZERO_ADDRESS],
+        },
+        {
+          address: tokens.mainnet.xOGN.address,
+          abi: tokens.mainnet.xOGN.abi,
+          functionName: 'balanceOf',
+          args: [address ?? ZERO_ADDRESS],
+        },
+        {
+          address: tokens.mainnet.xOGN.address,
+          abi: tokens.mainnet.xOGN.abi,
+          functionName: 'previewRewards',
+          args: [address ?? ZERO_ADDRESS],
+        },
+        {
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'balanceOf',
+          args: [tokens.mainnet.xOGN.address],
+        },
+        {
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'allowance',
+          args: [address ?? ZERO_ADDRESS, tokens.mainnet.xOGN.address],
+        },
+      ],
+      allowFailure: true,
+    });
 
-  const [
-    ognTotalSupply,
-    xOgnTotalSupply,
-    ognBalance,
-    xOgnBalance,
-    xOgnRewards,
-    ognTotalLocked,
-    ognxOgnAllowance,
-  ] = data.map((d) => (d.status === 'success' ? d.result : 0n));
+    const [
+      ognTotalSupply,
+      xOgnTotalSupply,
+      ognBalance,
+      xOgnBalance,
+      xOgnRewards,
+      ognTotalLocked,
+      ognxOgnAllowance,
+    ] = data.map((d) => (d.status === 'success' ? d.result : 0n));
 
-  const votingPowerPercent =
-    +formatUnits(xOgnBalance, tokens.mainnet.xOGN.decimals) /
-    +formatUnits(xOgnTotalSupply, tokens.mainnet.xOGN.decimals);
-  const ognTotalLockedPercent =
-    +formatUnits(ognTotalLocked, tokens.mainnet.OGN.decimals) /
-    +formatUnits(ognTotalSupply, tokens.mainnet.OGN.decimals);
+    const votingPowerPercent =
+      +formatUnits(xOgnBalance, tokens.mainnet.xOGN.decimals) /
+      +formatUnits(xOgnTotalSupply, tokens.mainnet.xOGN.decimals);
+    const ognTotalLockedPercent =
+      +formatUnits(ognTotalLocked, tokens.mainnet.OGN.decimals) /
+      +formatUnits(ognTotalSupply, tokens.mainnet.OGN.decimals);
 
-  return {
-    ognTotalSupply,
-    xOgnTotalSupply,
-    ognBalance,
-    xOgnBalance,
-    xOgnRewards,
-    votingPowerPercent,
-    ognTotalLocked,
-    ognTotalLockedPercent,
-    ognxOgnAllowance,
+    return {
+      ognTotalSupply,
+      xOgnTotalSupply,
+      ognBalance,
+      xOgnBalance,
+      xOgnRewards,
+      votingPowerPercent,
+      ognTotalLocked,
+      ognTotalLockedPercent,
+      ognxOgnAllowance,
+    };
   };
-};
 
 export const useOgnInfo = (
   options?: UseQueryOptions<OgnInfo, Error, OgnInfo, Key>,
@@ -116,8 +115,8 @@ export const useOgnInfo = (
 
   return useQuery({
     ...options,
-    queryKey: getKey(address, config),
-    queryFn: fetcher,
+    queryKey: getKey(address),
+    queryFn: fetcher(config),
   });
 };
 useOgnInfo.getKey = getKey;

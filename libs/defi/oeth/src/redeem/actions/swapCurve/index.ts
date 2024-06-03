@@ -38,8 +38,8 @@ const estimateAmount: EstimateAmount = async (
   { tokenIn, tokenOut, amountIn },
 ) => {
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   if (amountIn === 0n || isNilOrEmpty(curve?.CurveRegistryExchange)) {
@@ -94,8 +94,8 @@ const estimateGas: EstimateGas = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 
@@ -125,8 +125,8 @@ const estimateGas: EstimateGas = async (
 const allowance: Allowance = async (config, { tokenIn }) => {
   const { address } = getAccount(config);
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 
@@ -161,8 +161,8 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 
@@ -226,8 +226,8 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     return null;
   }
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   const { request } = await simulateContract(config, {
@@ -252,8 +252,8 @@ const swap: Swap = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   const approved = await allowance(config, { tokenIn, tokenOut });

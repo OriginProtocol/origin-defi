@@ -17,7 +17,7 @@ export const useTotalLockedUp = () => {
     { address: address ?? ZERO_ADDRESS },
     {
       select: (data) =>
-        data?.ognLockups?.reduce(
+        data?.esLockups?.reduce(
           (acc, curr) => acc + BigInt(curr?.amount ?? 0n),
           0n,
         ) ?? 0n,
@@ -32,7 +32,7 @@ export const useMyVApy = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useMyVApy', address, config],
+    queryKey: ['useMyVApy', address],
     enabled: !!address,
     queryFn: async () => {
       if (!address) {
@@ -49,8 +49,8 @@ export const useMyVApy = () => {
           }),
         }),
         queryClient.fetchQuery({
-          queryKey: useOgnStakingApy.getKey(config),
-          queryFn: useOgnStakingApy.fetcher,
+          queryKey: useOgnStakingApy.getKey(),
+          queryFn: useOgnStakingApy.fetcher(config),
         }),
         readContract(config, {
           address: tokens.mainnet.xOGN.address,
@@ -59,18 +59,18 @@ export const useMyVApy = () => {
         }),
       ]);
 
-      if (isNilOrEmpty(data?.[0]?.ognLockups)) {
+      if (isNilOrEmpty(data?.[0]?.esLockups)) {
         return 0;
       }
 
-      const total = data[0].ognLockups.reduce(
+      const total = data[0].esLockups.reduce(
         (acc, curr) =>
           acc +
           +formatUnits(BigInt(curr?.amount ?? 0n), tokens.mainnet.OGN.decimals),
         0,
       );
 
-      return data[0].ognLockups.reduce((acc, curr) => {
+      return data[0].esLockups.reduce((acc, curr) => {
         const ognRewardsPerYear = data?.[1]?.ognRewardsPerYear ?? 0;
         const totalSupply = +formatUnits(
           data?.[2] ?? 0n,
@@ -79,7 +79,7 @@ export const useMyVApy = () => {
         const vAPY =
           ognRewardsPerYear *
           (+formatUnits(
-            BigInt(curr?.xogn ?? '0'),
+            BigInt(curr?.points ?? '0'),
             tokens.mainnet.xOGN.decimals,
           ) /
             (totalSupply === 0 ? 1 : totalSupply));

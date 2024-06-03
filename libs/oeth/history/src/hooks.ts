@@ -18,7 +18,6 @@ import {
 
 import type { HexAddress } from '@origin/shared/utils';
 import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
-import type { Config } from '@wagmi/core';
 
 import type { HistoryTransactionQuery } from './queries.generated';
 import type { DailyHistory } from './types';
@@ -29,7 +28,7 @@ export const usePendingYield = (
     number,
     Error,
     number,
-    ['usePendingYield', boolean, HexAddress, boolean, Config]
+    ['usePendingYield', boolean, HexAddress, boolean]
   >,
 ) => {
   const config = useConfig();
@@ -41,7 +40,6 @@ export const usePendingYield = (
       isWrapped,
       address ?? ZERO_ADDRESS,
       isConnected,
-      config,
     ],
     queryFn: async () => {
       if (!isConnected || !address) {

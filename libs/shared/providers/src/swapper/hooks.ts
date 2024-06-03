@@ -426,7 +426,6 @@ export const useIsSwapRouteAvailable = (
       route?.tokenIn.symbol,
       route?.tokenOut.symbol,
       route?.action,
-      config,
     ],
     queryFn: async () => {
       if (!route) {
@@ -457,7 +456,6 @@ export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
       route?.tokenIn.symbol,
       route?.tokenOut.symbol,
       route?.action,
-      config,
     ],
     queryFn: async () => {
       if (!route) {

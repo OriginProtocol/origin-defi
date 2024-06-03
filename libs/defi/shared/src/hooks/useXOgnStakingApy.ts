@@ -9,20 +9,16 @@ import { queryClient } from '../clients';
 import { useOgnStakingApy } from './useOgnStakingApy';
 
 import type { QueryFunction, UseQueryOptions } from '@tanstack/react-query';
-import type { Config } from 'wagmi';
+import type { Config } from '@wagmi/core';
 
-type Key = ['useXOgnStakingApy', string, number, Config];
+type Key = ['useXOgnStakingApy', string, number];
 
 type Result = {
   xOgnApy: number;
   xOgnPreview: number;
 };
 
-const getKey = (
-  config: Config,
-  amount?: number | bigint,
-  monthDuration?: number,
-): Key => [
+const getKey = (amount?: number | bigint, monthDuration?: number): Key => [
   'useXOgnStakingApy',
   amount === undefined
     ? '100'
@@ -30,58 +26,60 @@ const getKey = (
       ? formatUnits(amount, tokens.mainnet.OGN.decimals)
       : amount.toString(),
   monthDuration ?? 12,
-  config,
 ];
 
-const fetcher: QueryFunction<Result, Key> = async ({
-  queryKey: [, amount, monthDuration, config],
-}) => {
-  const amt = parseUnits(amount, tokens.mainnet.OGN.decimals);
-  const res = await Promise.allSettled([
-    queryClient.fetchQuery({
-      queryKey: useOgnStakingApy.getKey(config),
-      queryFn: useOgnStakingApy.fetcher,
-    }),
-    readContracts(config, {
-      contracts: [
-        {
-          address: tokens.mainnet.xOGN.address,
-          abi: tokens.mainnet.xOGN.abi,
-          functionName: 'previewPoints',
-          args: [amt, getMonthDurationToSeconds(monthDuration)],
-        },
-        {
-          address: tokens.mainnet.xOGN.address,
-          abi: tokens.mainnet.xOGN.abi,
-          functionName: 'totalSupply',
-        },
-      ],
-      allowFailure: true,
-    }),
-  ]);
+const fetcher: (config: Config) => QueryFunction<Result, Key> =
+  (config: Config) =>
+  async ({ queryKey: [, amount, monthDuration] }) => {
+    const amt = parseUnits(amount, tokens.mainnet.OGN.decimals);
+    const res = await Promise.allSettled([
+      queryClient.fetchQuery({
+        queryKey: useOgnStakingApy.getKey(),
+        queryFn: useOgnStakingApy.fetcher(config),
+      }),
+      readContracts(config, {
+        contracts: [
+          {
+            address: tokens.mainnet.xOGN.address,
+            abi: tokens.mainnet.xOGN.abi,
+            functionName: 'previewPoints',
+            args: [amt, getMonthDurationToSeconds(monthDuration)],
+          },
+          {
+            address: tokens.mainnet.xOGN.address,
+            abi: tokens.mainnet.xOGN.abi,
+            functionName: 'totalSupply',
+          },
+        ],
+        allowFailure: true,
+      }),
+    ]);
 
-  const ognRewardsPerYear = isFulfilled(res?.[0])
-    ? res?.[0].value.ognRewardsPerYear
-    : 0;
-  const xOgnPreview = isFulfilled(res?.[1])
-    ? +formatUnits(
-        res[1].value?.[0].result?.[0] ?? 0n,
-        tokens.mainnet.xOGN.decimals,
-      )
-    : 0;
-  const xOgnTotalSupply = isFulfilled(res?.[1])
-    ? +formatUnits(res[1].value?.[1].result ?? 0n, tokens.mainnet.xOGN.decimals)
-    : 0;
+    const ognRewardsPerYear = isFulfilled(res?.[0])
+      ? res?.[0].value.ognRewardsPerYear
+      : 0;
+    const xOgnPreview = isFulfilled(res?.[1])
+      ? +formatUnits(
+          res[1].value?.[0].result?.[0] ?? 0n,
+          tokens.mainnet.xOGN.decimals,
+        )
+      : 0;
+    const xOgnTotalSupply = isFulfilled(res?.[1])
+      ? +formatUnits(
+          res[1].value?.[1].result ?? 0n,
+          tokens.mainnet.xOGN.decimals,
+        )
+      : 0;
 
-  const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
-  const userDepositOgn = +formatUnits(amt, tokens.mainnet.OGN.decimals);
-  const xOgnApy = (ognRewardsPerYear * xognPercentage) / userDepositOgn;
+    const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
+    const userDepositOgn = +formatUnits(amt, tokens.mainnet.OGN.decimals);
+    const xOgnApy = (ognRewardsPerYear * xognPercentage) / userDepositOgn;
 
-  return {
-    xOgnApy,
-    xOgnPreview,
+    return {
+      xOgnApy,
+      xOgnPreview,
+    };
   };
-};
 
 export const useXOgnStakingApy = (
   amount?: number | bigint,
@@ -94,8 +92,8 @@ export const useXOgnStakingApy = (
   const config = useConfig();
 
   return useQuery({
-    queryKey: getKey(config, amount, monthDuration),
-    queryFn: fetcher,
+    queryKey: getKey(amount, monthDuration),
+    queryFn: fetcher(config),
     ...options,
   });
 };

@@ -103,13 +103,8 @@ export const useTxButton = <
         });
 
         const gasPrice = await queryClient.fetchQuery({
-          queryKey: useGasPrice.getKey(
-            gasAmount,
-            args.params.contract.chainId,
-            queryClient,
-            config,
-          ),
-          queryFn: useGasPrice.fetcher,
+          queryKey: useGasPrice.getKey(gasAmount, args.params.contract.chainId),
+          queryFn: useGasPrice.fetcher(config, queryClient),
         });
         return gasPrice;
       }

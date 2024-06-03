@@ -10,7 +10,7 @@ export const useGovernanceInfo = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useGovernanceInfo', address, config],
+    queryKey: ['useGovernanceInfo', address],
     queryFn: async () => {
       const data = await readContracts(config, {
         contracts: [

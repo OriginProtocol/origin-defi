@@ -35,8 +35,8 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   const amountOut = await readContract(config, {
@@ -70,8 +70,8 @@ const estimateGas: EstimateGas = async (
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
 
@@ -172,8 +172,8 @@ const swap: Swap = async (
   const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
 
   const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(config),
-    queryFn: useCurve.fetcher,
+    queryKey: useCurve.getKey(),
+    queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
   const estimatedGas = await estimateGas(config, {

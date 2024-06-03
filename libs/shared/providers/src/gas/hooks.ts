@@ -21,41 +21,43 @@ export type GasPrice = {
   gasCostWei: number;
 };
 
-type Key = ['useGasPrice', string, number, QueryClient, Config];
+type Key = ['useGasPrice', string, number];
 
-const getKey = (
-  gasAmount: bigint,
-  chainId: number,
-  queryClient: QueryClient,
+const getKey = (gasAmount: bigint, chainId: number): Key => [
+  'useGasPrice',
+  gasAmount.toString(),
+  chainId,
+];
+
+const fetcher: (
   config: Config,
-): Key => ['useGasPrice', gasAmount.toString(), chainId, queryClient, config];
+  queryClient: QueryClient,
+) => QueryFunction<GasPrice, Key> =
+  (config, queryClient) =>
+  async ({ queryKey: [, gasAmount, chainId] }) => {
+    const [price, data] = await Promise.all([
+      queryClient.fetchQuery({
+        queryKey: useTokenPrices.getKey(['ETH_USD']),
+        queryFn: useTokenPrices.fetcher(config),
+      }),
+      estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
+    ]);
 
-const fetcher: QueryFunction<GasPrice, Key> = async ({
-  queryKey: [, gasAmount, chainId, queryClient, config],
-}) => {
-  const [price, data] = await Promise.all([
-    queryClient.fetchQuery({
-      queryKey: useTokenPrices.getKey(['ETH_USD'], config),
-      queryFn: useTokenPrices.fetcher,
-    }),
-    estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
-  ]);
+    const gweiUsd = price.ETH_USD * 1e-9;
+    const gasPrice =
+      +formatUnits(data.maxFeePerGas, 9) +
+      +formatUnits(data.maxPriorityFeePerGas, 9);
+    const gasCostGwei = Number(gasAmount) * gasPrice;
+    const gasCostUsd = gasCostGwei * gweiUsd;
 
-  const gweiUsd = price.ETH_USD * 1e-9;
-  const gasPrice =
-    +formatUnits(data.maxFeePerGas, 9) +
-    +formatUnits(data.maxPriorityFeePerGas, 9);
-  const gasCostGwei = Number(gasAmount) * gasPrice;
-  const gasCostUsd = gasCostGwei * gweiUsd;
-
-  return {
-    gweiUsd,
-    gasPrice,
-    gasCostUsd,
-    gasCostGwei,
-    gasCostWei: gasCostGwei / 1e9,
+    return {
+      gweiUsd,
+      gasPrice,
+      gasCostUsd,
+      gasCostGwei,
+      gasCostWei: gasCostGwei / 1e9,
+    };
   };
-};
 
 export const useGasPrice = (
   gasAmount = 0n,
@@ -66,8 +68,8 @@ export const useGasPrice = (
   const config = useConfig();
 
   return useQuery({
-    queryKey: getKey(gasAmount, chainId, queryClient, config),
-    queryFn: fetcher,
+    queryKey: getKey(gasAmount, chainId),
+    queryFn: fetcher(config, queryClient),
     ...options,
   });
 };
