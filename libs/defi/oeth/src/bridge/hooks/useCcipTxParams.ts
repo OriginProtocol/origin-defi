@@ -47,7 +47,7 @@ export const useCcipTxParams = ({
       amount.toString(),
     ],
     queryFn: async () => {
-      if (!userAddress) return undefined;
+      if (!userAddress) return null;
       if (
         srcChain.id === mainnet.id &&
         dstChain.id === arbitrum.id &&
