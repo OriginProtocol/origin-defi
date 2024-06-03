@@ -15,7 +15,7 @@ export const useTVL = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useTVL', config],
+    queryKey: ['useTVL'],
     queryFn: async () => {
       const data = await readContracts(config, {
         contracts: [

@@ -44,14 +44,14 @@ export const useStakingAPY = (
         stakingAPY: number;
         veOGVReceived: number;
       },
-      ['useStakingAPY', string, number, Config]
+      ['useStakingAPY', string, number]
     >
   >,
 ) => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useStakingAPY', amount?.toString(), monthDuration, config],
+    queryKey: ['useStakingAPY', amount?.toString(), monthDuration],
     queryFn: async () => {
       const amt =
         typeof amount === 'bigint'
@@ -103,7 +103,7 @@ export const useMyVApy = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useMyVApy', address, config],
+    queryKey: ['useMyVApy', address],
     enabled: !!address,
     queryFn: async () => {
       const data = await Promise.all([
@@ -150,50 +150,52 @@ export const useMyVApy = () => {
   });
 };
 
-type Key = ['useOgnStakingApy', Config];
+type Key = ['useOgnStakingApy'];
 
 type Result = { ognRewardsPerYear: number; ognStaked: number; ognApy: number };
 
-const getKey = (config: Config): Key => ['useOgnStakingApy', config];
+const getKey = (): Key => ['useOgnStakingApy'];
 
-const fetcher: QueryFunction<Result, Key> = async ({
-  queryKey: [, config],
-}) => {
-  const res = await readContracts(config, {
-    contracts: [
-      {
-        address: contracts.mainnet.OGNFixedRewardSource.address,
-        abi: contracts.mainnet.OGNFixedRewardSource.abi,
-        functionName: 'rewardConfig',
-      },
-      {
-        address: tokens.mainnet.OGN.address,
-        abi: tokens.mainnet.OGN.abi,
-        functionName: 'balanceOf',
-        args: [tokens.mainnet.xOGN.address],
-      },
-    ],
-  });
+const fetcher: (config: Config) => QueryFunction<Result, Key> =
+  (config) => async () => {
+    const res = await readContracts(config, {
+      contracts: [
+        {
+          address: contracts.mainnet.OGNFixedRewardSource.address,
+          abi: contracts.mainnet.OGNFixedRewardSource.abi,
+          functionName: 'rewardConfig',
+        },
+        {
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'balanceOf',
+          args: [tokens.mainnet.xOGN.address],
+        },
+      ],
+    });
 
-  const ognRewardsPerYear =
-    res?.[0]?.status === 'success'
-      ? +formatUnits(res?.[0]?.result?.[1] ?? 0n, tokens.mainnet.OGN.decimals) *
-        60 *
-        60 *
-        24 *
-        365
-      : 0;
-  const ognStaked =
-    res?.[1]?.status === 'success'
-      ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.OGN.decimals)
-      : 0;
+    const ognRewardsPerYear =
+      res?.[0]?.status === 'success'
+        ? +formatUnits(
+            res?.[0]?.result?.[1] ?? 0n,
+            tokens.mainnet.OGN.decimals,
+          ) *
+          60 *
+          60 *
+          24 *
+          365
+        : 0;
+    const ognStaked =
+      res?.[1]?.status === 'success'
+        ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.OGN.decimals)
+        : 0;
 
-  return {
-    ognRewardsPerYear,
-    ognStaked,
-    ognApy: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
+    return {
+      ognRewardsPerYear,
+      ognStaked,
+      ognApy: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
+    };
   };
-};
 
 export const useOgnStakingApy = (
   options?: Omit<
@@ -204,8 +206,8 @@ export const useOgnStakingApy = (
   const config = useConfig();
 
   return useQuery({
-    queryKey: getKey(config),
-    queryFn: fetcher,
+    queryKey: getKey(),
+    queryFn: fetcher(config),
     ...options,
   });
 };

@@ -79,13 +79,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
           args: [args.spender, args.amount],
         });
         const gasPrice = await queryClient.fetchQuery({
-          queryKey: useGasPrice.getKey(
-            gasAmount,
-            args.token.chainId,
-            queryClient,
-            config,
-          ),
-          queryFn: useGasPrice.fetcher,
+          queryKey: useGasPrice.getKey(gasAmount, args.token.chainId),
+          queryFn: useGasPrice.fetcher(config, queryClient),
         });
         return gasPrice;
       }

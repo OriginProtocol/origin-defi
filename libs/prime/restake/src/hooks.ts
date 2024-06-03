@@ -13,7 +13,6 @@ export const useExchangeRate = () => {
       route?.action,
       route?.tokenIn.symbol,
       route?.tokenOut.symbol,
-      config,
     ],
     queryFn: async () => {
       if (!action) {

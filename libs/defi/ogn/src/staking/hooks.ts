@@ -32,7 +32,7 @@ export const useMyVApy = () => {
   const config = useConfig();
 
   return useQuery({
-    queryKey: ['useMyVApy', address, config],
+    queryKey: ['useMyVApy', address],
     enabled: !!address,
     queryFn: async () => {
       if (!address) {
@@ -49,8 +49,8 @@ export const useMyVApy = () => {
           }),
         }),
         queryClient.fetchQuery({
-          queryKey: useOgnStakingApy.getKey(config),
-          queryFn: useOgnStakingApy.fetcher,
+          queryKey: useOgnStakingApy.getKey(),
+          queryFn: useOgnStakingApy.fetcher(config),
         }),
         readContract(config, {
           address: tokens.mainnet.xOGN.address,

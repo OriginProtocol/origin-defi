@@ -24,92 +24,95 @@ import type {
   WagmiOption,
 } from './types';
 
-type PricesKey = ['useTokenPrices', SupportedTokenPrice[], Config];
+type PricesKey = ['useTokenPrices', SupportedTokenPrice[]];
 
-const getPricesKey = (
-  tokenPrices: SupportedTokenPrice[],
+const getPricesKey = (tokenPrices: SupportedTokenPrice[]): PricesKey => [
+  'useTokenPrices',
+  tokenPrices,
+];
+
+const pricesFetcher: (
   config: Config,
-): PricesKey => ['useTokenPrices', tokenPrices, config];
+) => QueryFunction<Record<SupportedTokenPrice, number>, PricesKey> =
+  (config) =>
+  async ({ queryKey: [, tokenPrices] }) => {
+    const allPrices = {} as Record<SupportedTokenPrice, number>;
 
-const pricesFetcher: QueryFunction<
-  Record<SupportedTokenPrice, number>,
-  PricesKey
-> = async ({ queryKey: [, tokenPrices, config] }) => {
-  const allPrices = {} as Record<SupportedTokenPrice, number>;
+    if (isNilOrEmpty(tokenPrices)) {
+      return allPrices;
+    }
 
-  if (isNilOrEmpty(tokenPrices)) {
-    return allPrices;
-  }
+    const options = tokenPrices.reduce(
+      reduceOptions,
+      {} as Record<SupportedTokenPrice, PriceOption>,
+    );
 
-  const options = tokenPrices.reduce(
-    reduceOptions,
-    {} as Record<SupportedTokenPrice, PriceOption>,
-  );
+    const { wagmi, coingecko, rest } = groupBy(
+      (o) => o.type,
+      Object.values(options),
+    );
 
-  const { wagmi, coingecko, rest } = groupBy(
-    (o) => o.type,
-    Object.values(options),
-  );
+    if (wagmi) {
+      try {
+        const wagmiRes = await readContracts(config, {
+          contracts: Object.values(wagmi.map((o) => (o as WagmiOption).config)),
+          allowFailure: true,
+        });
+        wagmiRes.forEach((res, i) => {
+          const key = wagmi[i].id;
+          allPrices[key] =
+            (wagmi[i] as WagmiOption)?.mapResult?.(res.result) ??
+            Number(res?.result) ??
+            0;
+        });
+      } catch {}
+    }
 
-  if (wagmi) {
-    try {
-      const wagmiRes = await readContracts(config, {
-        contracts: Object.values(wagmi.map((o) => (o as WagmiOption).config)),
-        allowFailure: true,
-      });
-      wagmiRes.forEach((res, i) => {
-        const key = wagmi[i].id;
-        allPrices[key] =
-          (wagmi[i] as WagmiOption)?.mapResult?.(res.result) ??
-          Number(res?.result) ??
-          0;
-      });
-    } catch {}
-  }
+    if (rest) {
+      try {
+        const restRes = await Promise.allSettled(
+          rest.map((o) => (o as RestOption).config()),
+        );
+        restRes.forEach((res, i) => {
+          const key = rest[i].id;
 
-  if (rest) {
-    try {
-      const restRes = await Promise.allSettled(
-        rest.map((o) => (o as RestOption).config()),
-      );
-      restRes.forEach((res, i) => {
-        const key = rest[i].id;
+          allPrices[key] = isFulfilled(res)
+            ? (rest[i] as RestOption)?.mapResult?.(res.value) ??
+              Number(res.value)
+            : 0;
+        });
+      } catch {}
+    }
 
-        allPrices[key] = isFulfilled(res)
-          ? (rest[i] as RestOption)?.mapResult?.(res.value) ?? Number(res.value)
-          : 0;
-      });
-    } catch {}
-  }
+    if (coingecko) {
+      try {
+        const cgRes = await axios.get(
+          `${coingeckoApiEndpoint}/simple/price?ids=${coingecko.map((o) => (o as CoingeckoOption).config).join('%2C')}&vs_currencies=usd`,
+        );
+        coingecko.forEach((o) => {
+          allPrices[o.id] =
+            cgRes?.data[(o as CoingeckoOption).config]?.usd ?? 0;
+        });
+      } catch {}
+    }
 
-  if (coingecko) {
-    try {
-      const cgRes = await axios.get(
-        `${coingeckoApiEndpoint}/simple/price?ids=${coingecko.map((o) => (o as CoingeckoOption).config).join('%2C')}&vs_currencies=usd`,
-      );
-      coingecko.forEach((o) => {
-        allPrices[o.id] = cgRes?.data[(o as CoingeckoOption).config]?.usd ?? 0;
-      });
-    } catch {}
-  }
+    const deps = tokenPrices
+      .map((t) => priceOptions[t])
+      .filter((o) => isDerivedOption(o)) as DerivedOption[];
+    if (!isNilOrEmpty(deps)) {
+      try {
+        deps.forEach((dep) => {
+          allPrices[dep.id] =
+            dep.dependsOn?.reduce((acc, curr) => acc * allPrices[curr], 1) ?? 0;
+        });
+      } catch {}
+    }
 
-  const deps = tokenPrices
-    .map((t) => priceOptions[t])
-    .filter((o) => isDerivedOption(o)) as DerivedOption[];
-  if (!isNilOrEmpty(deps)) {
-    try {
-      deps.forEach((dep) => {
-        allPrices[dep.id] =
-          dep.dependsOn?.reduce((acc, curr) => acc * allPrices[curr], 1) ?? 0;
-      });
-    } catch {}
-  }
-
-  return pickBy((_, k) => tokenPrices.includes(k), allPrices) as Record<
-    SupportedTokenPrice,
-    number
-  >;
-};
+    return pickBy((_, k) => tokenPrices.includes(k), allPrices) as Record<
+      SupportedTokenPrice,
+      number
+    >;
+  };
 
 export const useTokenPrices = <TData = Record<SupportedTokenPrice, number>>(
   tokenPrices: SupportedTokenPrice[],
@@ -124,31 +127,33 @@ export const useTokenPrices = <TData = Record<SupportedTokenPrice, number>>(
 
   return useQuery({
     ...options,
-    queryKey: getPricesKey(tokenPrices, config),
-    queryFn: pricesFetcher,
+    queryKey: getPricesKey(tokenPrices),
+    queryFn: pricesFetcher(config),
   });
 };
 useTokenPrices.getKey = getPricesKey;
 useTokenPrices.fetcher = pricesFetcher;
 
-type PriceKey = ['useTokenPrice', SupportedTokenPrice, Config, QueryClient];
+type PriceKey = ['useTokenPrice', SupportedTokenPrice];
 
-const getPriceKey = (
-  tokenPrice: SupportedTokenPrice,
+const getPriceKey = (tokenPrice: SupportedTokenPrice): PriceKey => [
+  'useTokenPrice',
+  tokenPrice,
+];
+
+const priceFetcher: (
   config: Config,
   queryClient: QueryClient,
-): PriceKey => ['useTokenPrice', tokenPrice, config, queryClient];
+) => QueryFunction<number, PriceKey> =
+  (config, queryClient) =>
+  async ({ queryKey: [, tokenPrice] }) => {
+    const res = await queryClient.fetchQuery({
+      queryKey: useTokenPrices.getKey([tokenPrice]),
+      queryFn: useTokenPrices.fetcher(config),
+    });
 
-const priceFetcher: QueryFunction<number, PriceKey> = async ({
-  queryKey: [, tokenPrice, config, queryClient],
-}) => {
-  const res = await queryClient.fetchQuery({
-    queryKey: useTokenPrices.getKey([tokenPrice], config),
-    queryFn: useTokenPrices.fetcher,
-  });
-
-  return res?.[tokenPrice];
-};
+    return res?.[tokenPrice];
+  };
 
 export const useTokenPrice = (
   tokenPrice: SupportedTokenPrice,
@@ -159,8 +164,8 @@ export const useTokenPrice = (
 
   return useQuery({
     ...options,
-    queryKey: getPriceKey(tokenPrice, config, queryClient),
-    queryFn: priceFetcher,
+    queryKey: getPriceKey(tokenPrice),
+    queryFn: priceFetcher(config, queryClient),
   });
 };
 useTokenPrice.getKey = getPriceKey;
