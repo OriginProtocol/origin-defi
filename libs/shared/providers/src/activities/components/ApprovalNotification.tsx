@@ -1,44 +1,37 @@
 import { Typography } from '@mui/material';
 import {
   ActivityIcon,
+  BadgeIcon,
   ErrorTooltipLabel,
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
 import { getTokenById } from '@origin/shared/contracts';
+import { FaCircleCheckRegular } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { Hex } from 'viem';
 
-import type { ActivityStatus } from '../types';
+import type { ActivityStatus, ApprovalActivity } from '../types';
 
 type ApprovalNotificationProps = {
-  status: ActivityStatus;
-  tokenIdIn: TokenId;
-  amountIn?: bigint;
-  txHash?: Hex;
-  error?: string;
+  activity: ApprovalActivity;
   sx?: StackProps['sx'];
 };
 
 const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Approving' }),
+  signed: defineMessage({ defaultMessage: 'Approving' }),
   success: defineMessage({ defaultMessage: 'Approved' }),
   error: defineMessage({ defaultMessage: 'Error while approving' }),
   idle: defineMessage({ defaultMessage: 'Approve' }),
 };
 
 export const ApprovalNotification = ({
-  status,
-  tokenIdIn,
-  amountIn,
-  txHash,
-  error,
+  activity: { status, tokenIdIn, amountIn, txHash, error },
   sx,
 }: ApprovalNotificationProps) => {
   const tokenIn = getTokenById(tokenIdIn);
@@ -70,7 +63,15 @@ export const ApprovalNotification = ({
           <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
         )
       }
-      endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}
+      endIcon={
+        <BadgeIcon
+          badgeContent={
+            <FaCircleCheckRegular color="primary" sx={{ fontSize: 10 }} />
+          }
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      }
     />
   );
 };

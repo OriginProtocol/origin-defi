@@ -134,7 +134,7 @@ export const TransactionButton = ({
     if (!isNilOrEmpty(txData) && !isTxLoading && isTxSuccess && !done.current) {
       onSuccess?.(txData as TransactionReceipt);
       if (!disableActivity && activity) {
-        updateActivity({
+        updateActivity<Activity>({
           ...activity,
           status: 'success',
           txHash: (txData as TransactionReceipt).transactionHash,
@@ -221,7 +221,7 @@ export const TransactionButton = ({
           onError?.(err);
         }
         if (!disableActivity && activity) {
-          updateActivity({
+          updateActivity<Activity>({
             ...activity,
             status: 'error',
             error: err?.message,

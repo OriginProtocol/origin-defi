@@ -1,12 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 import { Button } from '@mui/material';
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
-import {
-  formatError,
-  isNilOrEmpty,
-  isUserRejected,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, isUserRejected } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { erc20Abi } from 'viem';
 import {
@@ -16,12 +11,7 @@ import {
   useWriteContract,
 } from 'wagmi';
 
-import {
-  ApprovalNotification,
-  useDeleteActivity,
-  usePushActivity,
-  useUpdateActivity,
-} from '../../activities';
+import { useActivity } from '../../activities';
 import {
   useDeleteNotification,
   usePushNotification,
@@ -31,7 +21,6 @@ import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity } from '../../activities';
 import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type ApprovalButtonProps = {
@@ -46,7 +35,6 @@ export type ApprovalButtonProps = {
   onError?: (error: Error) => void;
   onUserReject?: () => void;
   disableActivity?: boolean;
-  disableNotification?: boolean;
 } & Omit<ConnectedButtonProps, 'onClick'>;
 
 export const ApprovalButton = ({
@@ -62,19 +50,15 @@ export const ApprovalButton = ({
   onUserReject,
   disabled,
   disableActivity,
-  disableNotification,
   ...rest
 }: ApprovalButtonProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const [notifId, setNotifId] = useState<string | null>(null);
-  const [activity, setActivity] = useState<Activity | null>(null);
   const done = useRef(false);
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
+  const { activity, pushActivity, updateActivity, deleteActivity } =
+    useActivity();
   const { data: prepareData, error: prepareError } = useSimulateContract({
     address: token.address,
     abi: erc20Abi,
@@ -99,25 +83,10 @@ export const ApprovalButton = ({
   } = useWaitForTransactionReceipt({ hash });
 
   useEffect(() => {
-    if (isApprovalLoading && !disableNotification) {
-      setNotifId(
-        pushNotification({
-          hideDuration: undefined,
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="info" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Processing approval',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'Your transaction is being processed on-chain.',
-              })}
-            />
-          ),
-        }),
-      );
+    if (isApprovalLoading) {
+      deleteActivity('rejected');
     }
-  }, [disableNotification, intl, isApprovalLoading, pushNotification]);
+  }, [deleteActivity, intl, isApprovalLoading]);
 
   useEffect(() => {
     if (
@@ -127,43 +96,22 @@ export const ApprovalButton = ({
       !done.current
     ) {
       onSuccess?.(approvalData as TransactionReceipt);
-      if (!disableActivity && activity) {
+      if (!disableActivity) {
         updateActivity({
-          ...activity,
           status: 'success',
           txHash: (approvalData as TransactionReceipt).transactionHash,
-        });
-      }
-      if (!disableNotification) {
-        if (notifId) {
-          deleteNotification(notifId);
-          setNotifId(null);
-        }
-        pushNotification({
-          content: (
-            <ApprovalNotification
-              {...activity}
-              tokenIdIn={token.id}
-              status="success"
-              txHash={(approvalData as TransactionReceipt).transactionHash}
-            />
-          ),
         });
       }
       resetWriteContract();
       done.current = true;
     }
   }, [
-    activity,
     approvalData,
     deleteNotification,
     disableActivity,
-    disableNotification,
     isApprovalLoading,
     isApprovalSuccess,
-    notifId,
     onSuccess,
-    pushNotification,
     resetWriteContract,
     token.id,
     updateActivity,
@@ -171,51 +119,19 @@ export const ApprovalButton = ({
 
   useEffect(() => {
     if (!isNilOrEmpty(writeError) && !isNilOrEmpty(activity) && !done.current) {
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
       if (isUserRejected(writeError)) {
         onUserReject?.();
-        if (!disableActivity && activity?.id) {
-          deleteActivity(activity.id);
-        }
-        if (!disableNotification) {
-          pushNotification({
-            content: (
-              <NotificationSnack
-                icon={<SeverityIcon severity="warning" />}
-                title={intl.formatMessage({
-                  defaultMessage: 'Operation Cancelled',
-                })}
-                subtitle={intl.formatMessage({
-                  defaultMessage: 'User rejected operation',
-                })}
-              />
-            ),
-          });
+        if (!disableActivity) {
+          deleteActivity('rejected');
         }
       } else {
         if (writeError) {
           onError?.(writeError);
         }
-        if (!disableActivity && activity) {
+        if (!disableActivity) {
           updateActivity({
-            ...activity,
             status: 'error',
             error: writeError?.message,
-          });
-        }
-        if (!disableNotification) {
-          pushNotification({
-            content: (
-              <ApprovalNotification
-                {...activity}
-                tokenIdIn={token.id}
-                status="error"
-                error={formatError(writeError)}
-              />
-            ),
           });
         }
       }
@@ -227,9 +143,7 @@ export const ApprovalButton = ({
     deleteActivity,
     deleteNotification,
     disableActivity,
-    disableNotification,
     intl,
-    notifId,
     onError,
     onUserReject,
     pushNotification,
@@ -245,17 +159,7 @@ export const ApprovalButton = ({
     }
     onClick?.();
     if (!disableActivity) {
-      const activity = pushActivity({
-        tokenIdIn: token.id,
-        type: 'approval',
-        status: 'pending',
-        amountIn: amount,
-      });
-      setActivity(activity);
-    } else {
-      setActivity({
-        id: Date.now().toString(),
-        createdOn: Date.now(),
+      pushActivity({
         tokenIdIn: token.id,
         type: 'approval',
         status: 'pending',

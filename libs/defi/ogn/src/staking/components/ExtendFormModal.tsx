@@ -83,23 +83,13 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
       ],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 36 }} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Extend xOGN lockup',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage:
-            'Lock {amount} OGN for {duration,plural,=1{# month} other{# months}}',
-        },
-        {
-          amount: intl.formatNumber(
-            +formatUnits(amount, tokens.mainnet.OGN.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-          duration,
-        },
-      ),
+      type: 'extend-stake',
+      status: 'pending',
+      tokenIdIn: tokens.mainnet.OGN.id,
+      tokenIdOut: tokens.mainnet.xOGN.id,
+      amountIn: amount,
+      duration,
+      lockupId: BigInt(lockup.lockupId),
     },
     callbacks: {
       onWriteSuccess: () => {

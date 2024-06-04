@@ -1,12 +1,9 @@
 import { useCallback, useMemo, useState } from 'react';
 
 import {
-  useDeleteActivity,
-  useDeleteNotification,
+  useActivity,
   useGasPrice,
-  usePushActivity,
   usePushNotification,
-  useUpdateActivity,
 } from '@origin/shared/providers';
 import {
   formatError,
@@ -19,7 +16,6 @@ import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import type {
   Activity,
-  ActivityInput,
   WriteTransactionCallbacks,
   WriteTransactionParameters,
 } from '@origin/shared/providers';
@@ -48,9 +44,8 @@ export type UseTxButtonProps<
 > = {
   params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
-  activity?: Partial<ActivityInput>;
+  activity?: Activity;
   disableActivity?: boolean;
-  disableNotification?: boolean;
   enableGas?: boolean;
 };
 
@@ -70,16 +65,11 @@ export const useTxButton = <
 ) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] = useState<
     SimulateContractErrorType | undefined
   >();
-  const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
-  const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
+  const { pushActivity, updateActivity, deleteActivity } = useActivity();
   const config = useConfig();
 
   const publicClient = usePublicClient({
@@ -116,92 +106,32 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    const act = {
-      ...args.activity,
-      type: args.activity?.type ?? 'transaction',
-      title:
-        args.activity?.title ??
-        intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
-      subtitle:
-        args.activity?.subtitle ??
-        intl.formatMessage({ defaultMessage: 'Transaction' }),
-      endIcon: args.activity?.endIcon,
-      status: 'pending',
-    } as const;
     if (!args.disableActivity) {
-      const activity = pushActivity(act);
-      setAct(activity);
-    } else {
-      setAct({
-        id: Date.now().toString(),
-        createdOn: Date.now(),
-        ...act,
-      });
+      pushActivity(
+        args.activity ?? {
+          type: 'transaction',
+          title: intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
+          subtitle: intl.formatMessage({ defaultMessage: 'Transaction' }),
+          status: 'pending',
+        },
+      );
     }
     args.callbacks?.onWrite?.();
   }, [args.activity, args.callbacks, args.disableActivity, intl, pushActivity]);
 
   const onTxSigned = useCallback(() => {
-    if (!args.disableNotification) {
-      const id = pushNotification({
-        title:
-          act?.title && typeof act.title === 'string'
-            ? act.title
-            : intl.formatMessage({
-                defaultMessage: 'Processing transaction',
-              }),
-        message:
-          act?.subtitle && typeof act.subtitle === 'string'
-            ? act.subtitle
-            : intl.formatMessage({
-                defaultMessage: 'Your transaction is being processed on-chain.',
-              }),
-        icon: act?.endIcon,
-        severity: 'pending',
-        hideDuration: undefined,
-      });
-      setNotifId(id);
-    }
+    updateActivity({
+      status: 'signed',
+    });
     args.callbacks?.onTxSigned?.();
-  }, [
-    act?.endIcon,
-    act?.subtitle,
-    act?.title,
-    args.callbacks,
-    args.disableNotification,
-    intl,
-    pushNotification,
-  ]);
+  }, [args.callbacks, updateActivity]);
 
   const onUserReject = useCallback(() => {
-    if (!args.disableActivity && act?.id) {
-      deleteActivity(act.id);
-    }
-    if (notifId) {
-      deleteNotification(notifId);
-      setNotifId(null);
-    }
-    if (!args.disableNotification) {
-      pushNotification({
-        title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
-        message: intl.formatMessage({
-          defaultMessage: 'User rejected operation',
-        }),
-        severity: 'info',
-      });
+    if (!args.disableActivity) {
+      deleteActivity('rejected');
     }
     args.callbacks?.onUserReject?.();
-  }, [
-    act?.id,
-    args.callbacks,
-    args.disableActivity,
-    args.disableNotification,
-    deleteActivity,
-    deleteNotification,
-    intl,
-    notifId,
-    pushNotification,
-  ]);
+  }, [args.callbacks, args.disableActivity, deleteActivity]);
 
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {
@@ -220,22 +150,17 @@ export const useTxButton = <
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-      if (!args.disableNotification) {
-        pushNotification({
-          icon: act?.endIcon,
-          title: intl.formatMessage({
-            defaultMessage: 'Impossible to execute transaction',
-          }),
-          message: formatError(error),
-          severity: 'error',
-        });
-      }
+      pushNotification({
+        title: intl.formatMessage({
+          defaultMessage: 'Impossible to execute transaction',
+        }),
+        message: formatError(error),
+        severity: 'error',
+      });
       args.callbacks?.onSimulateError?.(error);
     },
     [
-      act?.endIcon,
       args.callbacks,
-      args.disableNotification,
       args.enableGas,
       intl,
       isConnected,
@@ -248,79 +173,26 @@ export const useTxButton = <
     (txReceipt: TransactionReceipt) => {
       if (!args.disableActivity) {
         updateActivity({
-          ...act,
           status: 'success',
-          txReceipt,
-        });
-      }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotification({
-          title: intl.formatMessage({
-            defaultMessage: 'Transaction successfully executed',
-          }),
-          message: intl.formatMessage({
-            defaultMessage: 'Your operation has been executed',
-          }),
-          icon: act?.endIcon,
-          severity: 'success',
-          blockExplorerLinkProps: { hash: txReceipt.transactionHash },
+          txHash: txReceipt.transactionHash,
         });
       }
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
-    [
-      act,
-      args.callbacks,
-      args.disableActivity,
-      args.disableNotification,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
-      updateActivity,
-    ],
+    [args.callbacks, args.disableActivity, updateActivity],
   );
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (!args.disableActivity && act?.id) {
+      if (!args.disableActivity) {
         updateActivity({
-          ...act,
           status: 'error',
           error: error?.message,
         });
       }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotification({
-          title: intl.formatMessage({
-            defaultMessage: 'Transaction error',
-          }),
-          message: formatError(error),
-          icon: act?.endIcon,
-          severity: 'error',
-        });
-      }
       args.callbacks?.onWriteError?.(error);
     },
-    [
-      act,
-      args.callbacks,
-      args.disableActivity,
-      args.disableNotification,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
-      updateActivity,
-    ],
+    [args.callbacks, args.disableActivity, updateActivity],
   );
 
   return useMemo(

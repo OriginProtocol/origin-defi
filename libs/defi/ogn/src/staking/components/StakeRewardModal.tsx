@@ -119,17 +119,12 @@ export const StakeRewardModal = (props: DialogProps) => {
       },
     },
     activity: {
-      title: intl.formatMessage({ defaultMessage: 'Stake rewards' }),
-      subtitle: intl.formatMessage(
-        { defaultMessage: '{amount} OGN staked' },
-        {
-          amount: formatAmount(
-            amount + (info?.xOgnRewards ?? 0n),
-            tokens.mainnet.OGN.decimals,
-          ),
-        },
-      ),
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />,
+      type: 'stake',
+      status: 'pending',
+      tokenIdIn: tokens.mainnet.OGN.id,
+      tokenIdOut: tokens.mainnet.xOGN.id,
+      amountIn: amount + (info?.xOgnRewards ?? 0n),
+      duration,
     },
   });
 

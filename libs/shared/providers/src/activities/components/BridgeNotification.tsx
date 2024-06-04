@@ -12,58 +12,49 @@ import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
-import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { Hex } from 'viem';
 
-import type { ActivityStatus } from '../types';
+import type { ActivityStatus, BridgeActivity } from '../types';
 
 type BridgeNotificationProps = {
-  status: ActivityStatus;
-  tokenIdIn: TokenId;
-  tokenIdOut: TokenId;
-  amountIn?: bigint;
-  txHash?: Hex;
-  error?: string;
+  activity: BridgeActivity;
   sx?: StackProps['sx'];
 };
 
 const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Bridging' }),
+  signed: defineMessage({ defaultMessage: 'Bridging' }),
   success: defineMessage({ defaultMessage: 'Bridge Started' }),
   error: defineMessage({ defaultMessage: 'Error while bridging' }),
   idle: defineMessage({ defaultMessage: 'Bridge' }),
 };
 
 export const BridgeNotification = ({
-  status,
-  tokenIdIn,
-  tokenIdOut,
-  amountIn,
-  txHash,
-  error,
+  activity,
   sx,
 }: BridgeNotificationProps) => {
-  const tokenIn = getTokenById(tokenIdIn);
-  const tokenOut = getTokenById(tokenIdOut);
   const intl = useIntl();
   const config = useConfig();
-  const amount = +formatUnits(amountIn ?? 0n, tokenIn.decimals ?? 18);
+  const tokenIn = getTokenById(activity.tokenIdIn);
+  const tokenOut = getTokenById(activity.tokenIdOut);
+  const amount = +formatUnits(activity.amountIn ?? 0n, tokenIn.decimals ?? 18);
   return (
     <NotificationSnack
       sx={sx}
-      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
-      title={intl.formatMessage(title[status])}
+      icon={
+        <ActivityIcon status={activity.status} sx={{ width: 20, height: 20 }} />
+      }
+      title={intl.formatMessage(title[activity.status])}
       href={
-        isNilOrEmpty(txHash)
+        isNilOrEmpty(activity.txHash)
           ? undefined
           : txLink(
               config.chains.find((c) => c.id === tokenIn.chainId),
-              txHash,
+              activity.txHash,
             )
       }
       subtitle={
-        isNilOrEmpty(error) ? (
+        isNilOrEmpty(activity.error) ? (
           <Typography color="text.secondary">
             {intl.formatMessage(
               {
@@ -76,7 +67,7 @@ export const BridgeNotification = ({
             )}
           </Typography>
         ) : (
-          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
+          <ErrorTooltipLabel>{activity.error}</ErrorTooltipLabel>
         )
       }
       endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}

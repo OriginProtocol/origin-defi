@@ -34,7 +34,6 @@ import {
   useHandleSwap,
   usePushActivity,
   usePushNotification,
-  usePushNotificationForActivity,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
@@ -67,7 +66,6 @@ export const Swapper = ({
 }: SwapperProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
-  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -93,7 +91,6 @@ export const Swapper = ({
           id: trackId,
           status: 'success',
         });
-        pushNotificationForActivity(activity);
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -118,7 +115,6 @@ export const Swapper = ({
           status: 'error',
           error: formatError(error),
         });
-        pushNotificationForActivity(activity);
       }}
       onSwapStart={(state) => {
         const activity = pushActivity({
@@ -134,11 +130,10 @@ export const Swapper = ({
       }}
       onSwapSuccess={(state) => {
         const { trackId } = state;
-        const activity = updateActivity({
+        updateActivity({
           id: trackId,
           status: 'success',
         });
-        pushNotificationForActivity(activity);
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -158,12 +153,11 @@ export const Swapper = ({
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;
-        const activity = updateActivity({
+        updateActivity({
           id: trackId,
           status: 'error',
           error: formatError(error),
         });
-        pushNotificationForActivity(activity);
       }}
     >
       <SwapperWrapped {...rest} />

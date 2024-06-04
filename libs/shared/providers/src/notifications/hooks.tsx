@@ -1,7 +1,9 @@
 import { useCallback, useMemo } from 'react';
 
+import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { produce } from 'immer';
 import { descend, prop, propEq, take } from 'ramda';
+import { useIntl } from 'react-intl';
 
 import { ActivityNotification } from '../activities';
 import { useNotificationState } from './state';
@@ -36,16 +38,36 @@ export const usePushNotification = () => {
 };
 
 export const usePushNotificationForActivity = () => {
+  const intl = useIntl();
   const pushNotification = usePushNotification();
   return useCallback(
-    (activity?: Activity) => {
+    (activity?: Activity, context?: { reason?: 'rejected' }) => {
       if (activity) {
-        return pushNotification({
-          content: <ActivityNotification {...activity} />,
-        });
+        if (context?.reason === 'rejected') {
+          pushNotification({
+            content: (
+              <NotificationSnack
+                icon={<SeverityIcon severity="warning" />}
+                title={intl.formatMessage({
+                  defaultMessage: 'Operation Cancelled',
+                })}
+                subtitle={intl.formatMessage({
+                  defaultMessage: 'User rejected operation',
+                })}
+              />
+            ),
+          });
+        } else {
+          return pushNotification({
+            content: <ActivityNotification {...activity} />,
+            blockExplorerLinkProps: {
+              hash: activity.txHash,
+            },
+          });
+        }
       }
     },
-    [pushNotification],
+    [intl, pushNotification],
   );
 };
 

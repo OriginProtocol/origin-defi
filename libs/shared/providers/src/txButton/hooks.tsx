@@ -10,17 +10,9 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
-import {
-  useDeleteActivity,
-  usePushActivity,
-  useUpdateActivity,
-} from '../activities';
+import { useActivity } from '../activities';
 import { useGasPrice } from '../gas';
-import {
-  useDeleteNotification,
-  usePushNotification,
-  usePushNotificationForActivity,
-} from '../notifications';
+import { usePushNotification } from '../notifications';
 
 import type {
   SimulateContractErrorType,
@@ -55,7 +47,6 @@ export type UseTxButton<
   callbacks?: WriteTransactionCallbacks;
   activity?: Activity & { status: 'pending' };
   disableActivity?: boolean;
-  disableNotification?: boolean;
   enableGas?: boolean;
 };
 
@@ -75,16 +66,11 @@ export const useTxButton = <
 ) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
-  const [activity, setActivity] = useState<Activity | null>(null);
-  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushNotification = usePushNotification();
-  const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
+  const { activity, pushActivity, updateActivity, deleteActivity } =
+    useActivity();
   const config = useConfig();
 
   const publicClient = usePublicClient({
@@ -126,14 +112,7 @@ export const useTxButton = <
       status: 'pending',
     };
     if (!args.disableActivity) {
-      const activity = pushActivity(act);
-      setActivity(activity);
-    } else {
-      setActivity({
-        id: Date.now().toString(),
-        createdOn: Date.now(),
-        ...act,
-      });
+      pushActivity(act);
     }
     args?.callbacks?.onWrite?.();
   }, [
@@ -144,81 +123,24 @@ export const useTxButton = <
     pushActivity,
   ]);
 
-  const activityTitle = activity?.type === 'transaction' && activity.title;
-  const activitySubtitle =
-    activity?.type === 'transaction' && activity.subtitle;
-
   const onTxSigned = useCallback(() => {
-    if (!args.disableNotification) {
-      const id = pushNotification({
-        hideDuration: undefined,
-        content: (
-          <NotificationSnack
-            icon={<SeverityIcon severity="info" />}
-            title={
-              activityTitle
-                ? activityTitle
-                : intl.formatMessage({
-                    defaultMessage: 'Processing transaction',
-                  })
-            }
-            subtitle={
-              activitySubtitle
-                ? activitySubtitle
-                : intl.formatMessage({
-                    defaultMessage:
-                      'Your transaction is being processed on-chain.',
-                  })
-            }
-          />
-        ),
-      });
-      setNotifId(id);
-    }
+    updateActivity({
+      status: 'signed',
+    });
     args.callbacks?.onTxSigned?.();
-  }, [
-    activityTitle,
-    activitySubtitle,
-    args.callbacks,
-    args.disableNotification,
-    intl,
-    pushNotification,
-  ]);
+  }, [args.callbacks, updateActivity]);
 
   const onUserReject = useCallback(() => {
     if (!args.disableActivity && activity?.id) {
-      deleteActivity(activity.id);
-    }
-    if (notifId) {
-      deleteNotification(notifId);
-      setNotifId(null);
-    }
-    if (!args.disableNotification) {
-      pushNotification({
-        content: (
-          <NotificationSnack
-            icon={<SeverityIcon severity="warning" />}
-            title={intl.formatMessage({
-              defaultMessage: 'Operation Cancelled',
-            })}
-            subtitle={intl.formatMessage({
-              defaultMessage: 'User rejected operation',
-            })}
-          />
-        ),
-      });
+      deleteActivity('rejected');
     }
     args.callbacks?.onUserReject?.();
   }, [
     activity?.id,
     args.callbacks,
     args.disableActivity,
-    args.disableNotification,
     deleteActivity,
-    deleteNotification,
     intl,
-    notifId,
-    pushNotification,
   ]);
 
   const onSimulateSuccess = useCallback(
@@ -238,30 +160,21 @@ export const useTxButton = <
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-      if (!args.disableNotification) {
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="error" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Impossible to execute',
-              })}
-              subtitle={formatError(error)}
-            />
-          ),
-        });
-      }
+
+      pushNotification({
+        content: (
+          <NotificationSnack
+            icon={<SeverityIcon severity="error" />}
+            title={intl.formatMessage({
+              defaultMessage: 'Impossible to execute',
+            })}
+            subtitle={formatError(error)}
+          />
+        ),
+      });
       args.callbacks?.onSimulateError?.(error);
     },
-    [
-      args.callbacks,
-      args.disableNotification,
-      args.enableGas,
-      intl,
-      isConnected,
-      pushNotification,
-      refetchGas,
-    ],
+    [args.callbacks, args.enableGas, intl, isConnected, refetchGas],
   );
 
   const onWriteSuccess = useCallback(
@@ -280,28 +193,11 @@ export const useTxButton = <
         });
       }
       if (!args?.disableActivity) {
-        updateActivity<Activity>(updatedActivity);
-      }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotificationForActivity(updatedActivity);
+        updateActivity(updatedActivity);
       }
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
-    [
-      activity,
-      args.callbacks,
-      args.disableActivity,
-      args.disableNotification,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
-      updateActivity,
-    ],
+    [activity, args.callbacks, args.disableActivity, intl, updateActivity],
   );
 
   const onWriteError = useCallback(
@@ -312,28 +208,11 @@ export const useTxButton = <
         error: error?.message,
       };
       if (!args?.disableActivity && activity?.id) {
-        updateActivity<Activity>(updatedActivity);
-      }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotificationForActivity(updatedActivity);
+        updateActivity(updatedActivity);
       }
       args.callbacks?.onWriteError?.(error);
     },
-    [
-      activity,
-      args.callbacks,
-      args.disableActivity,
-      args.disableNotification,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
-      updateActivity,
-    ],
+    [activity, args.callbacks, args?.disableActivity, updateActivity],
   );
 
   return useMemo(

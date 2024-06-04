@@ -3,23 +3,20 @@ import { useCallback, useMemo, useState } from 'react';
 import { BadgeIcon, TokenIcon } from '@origin/shared/components';
 import { FaCircleCheckRegular } from '@origin/shared/icons';
 import {
-  useDeleteActivity,
-  useDeleteNotification,
+  useActivity,
   useGasPrice,
-  usePushActivity,
   usePushNotification,
-  useUpdateActivity,
   useWatchContract,
 } from '@origin/shared/providers';
 import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { decodeEventLog, erc20Abi, formatUnits } from 'viem';
+import { decodeEventLog, erc20Abi } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
-  Activity,
+  ApprovalActivity,
   WriteTransactionCallbacks,
 } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
@@ -35,7 +32,6 @@ export type UseApprovalButtonProps = {
   amount: bigint;
   callbacks?: WriteTransactionCallbacks;
   disableActivity?: boolean;
-  disableNotification?: boolean;
   enableGas?: boolean;
   enableAllowance?: boolean;
 };
@@ -43,15 +39,10 @@ export type UseApprovalButtonProps = {
 export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
-  const [act, setAct] = useState<Activity | null>(null);
   const pushNotification = usePushNotification();
-  const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
+  const { pushActivity, updateActivity, deleteActivity } = useActivity();
   const config = useConfig();
 
   const publicClient = usePublicClient({
@@ -103,42 +94,14 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   });
 
   const onWrite = useCallback(() => {
-    const act = {
+    const act: ApprovalActivity = {
       type: 'approval',
-      title: intl.formatMessage(
-        { defaultMessage: 'Approve {token}' },
-        { token: args.token.symbol },
-      ),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Approving {token}',
-        },
-        {
-          token: args.token.symbol,
-        },
-      ),
-      endIcon: (
-        <BadgeIcon
-          badgeContent={
-            <FaCircleCheckRegular color="primary" sx={{ fontSize: 10 }} />
-          }
-        >
-          <TokenIcon token={args.token} sx={{ fontSize: 36 }} />
-        </BadgeIcon>
-      ),
       status: 'pending',
-      tokenIn: args.token,
+      tokenIdIn: args.token.id,
       amountIn: args.amount,
     } as const;
     if (!args.disableActivity) {
-      const activity = pushActivity(act);
-      setAct(activity);
-    } else {
-      setAct({
-        id: Date.now().toString(),
-        createdOn: Date.now(),
-        ...act,
-      });
+      pushActivity(act);
     }
     args.callbacks?.onWrite?.();
   }, [
@@ -146,67 +109,20 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     args.callbacks,
     args.disableActivity,
     args.token,
-    intl,
     pushActivity,
   ]);
 
   const onTxSigned = useCallback(() => {
-    if (!args.disableNotification) {
-      const id = pushNotification({
-        title: intl.formatMessage(
-          {
-            defaultMessage: 'Approving {token}',
-          },
-          { token: args.token.symbol },
-        ),
-        message: intl.formatMessage({
-          defaultMessage: 'Your transaction is being processed on-chain.',
-        }),
-        icon: act?.endIcon,
-        severity: 'pending',
-        hideDuration: undefined,
-      });
-      setNotifId(id);
-    }
+    updateActivity({ status: 'signed' });
     args.callbacks?.onTxSigned?.();
-  }, [
-    act?.endIcon,
-    args.callbacks,
-    args.disableNotification,
-    args.token.symbol,
-    intl,
-    pushNotification,
-  ]);
+  }, [args.callbacks, updateActivity]);
 
   const onUserReject = useCallback(() => {
-    if (!args.disableActivity && act?.id) {
-      deleteActivity(act.id);
-    }
-    if (notifId) {
-      deleteNotification(notifId);
-      setNotifId(null);
-    }
-    if (!args.disableNotification) {
-      pushNotification({
-        title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
-        message: intl.formatMessage({
-          defaultMessage: 'User rejected operation',
-        }),
-        severity: 'info',
-      });
+    if (!args.disableActivity) {
+      deleteActivity('rejected');
     }
     args.callbacks?.onUserReject?.();
-  }, [
-    act?.id,
-    args.callbacks,
-    args.disableActivity,
-    args.disableNotification,
-    deleteActivity,
-    deleteNotification,
-    intl,
-    notifId,
-    pushNotification,
-  ]);
+  }, [args.callbacks, args.disableActivity, deleteActivity]);
 
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {
@@ -225,22 +141,26 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-      if (!args.disableNotification) {
-        pushNotification({
-          icon: act?.endIcon,
-          title: intl.formatMessage({
-            defaultMessage: 'Impossible to execute approval',
-          }),
-          message: formatError(error),
-          severity: 'error',
-        });
-      }
+      pushNotification({
+        icon: (
+          <BadgeIcon
+            badgeContent={
+              <FaCircleCheckRegular color="primary" sx={{ fontSize: 10 }} />
+            }
+          >
+            <TokenIcon token={args.token} sx={{ fontSize: 36 }} />
+          </BadgeIcon>
+        ),
+        title: intl.formatMessage({
+          defaultMessage: 'Impossible to execute approval',
+        }),
+        message: formatError(error),
+        severity: 'error',
+      });
       args.callbacks?.onSimulateError?.(error);
     },
     [
-      act?.endIcon,
       args.callbacks,
-      args.disableNotification,
       args.enableGas,
       intl,
       isConnected,
@@ -271,56 +191,18 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       }
       if (!args.disableActivity) {
         updateActivity({
-          ...act,
           status: 'success',
           amountIn: amount,
-          txReceipt,
-        });
-      }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotification({
-          title: intl.formatMessage({
-            defaultMessage: 'Approval successfully executed',
-          }),
-          message: intl.formatMessage(
-            {
-              defaultMessage: 'Approved {amount} {token}',
-            },
-            {
-              amount: intl.formatNumber(
-                +formatUnits(amount, args.token.decimals),
-                {
-                  notation: 'compact',
-                  maximumSignificantDigits: 4,
-                },
-              ),
-              token: args.token.symbol,
-            },
-          ),
-          icon: act?.endIcon,
-          severity: 'success',
-          blockExplorerLinkProps: { hash: txReceipt.transactionHash },
+          txHash: txReceipt.transactionHash,
         });
       }
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
-      act,
-      args.amount,
+      args?.amount,
       args.callbacks,
       args.disableActivity,
-      args.disableNotification,
       args.enableAllowance,
-      args.token.decimals,
-      args.token.symbol,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
       refetchAllowance,
       updateActivity,
     ],
@@ -328,40 +210,15 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (!args.disableActivity && act?.id) {
+      if (!args.disableActivity) {
         updateActivity({
-          ...act,
           status: 'error',
           error: error?.message,
         });
       }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
-      if (!args.disableNotification) {
-        pushNotification({
-          title: intl.formatMessage({
-            defaultMessage: 'Approval error',
-          }),
-          message: formatError(error),
-          icon: act?.endIcon,
-          severity: 'error',
-        });
-      }
       args.callbacks?.onWriteError?.(error);
     },
-    [
-      act,
-      args.callbacks,
-      args.disableActivity,
-      args.disableNotification,
-      deleteNotification,
-      intl,
-      notifId,
-      pushNotification,
-      updateActivity,
-    ],
+    [args.callbacks, args.disableActivity, updateActivity],
   );
 
   return useMemo(

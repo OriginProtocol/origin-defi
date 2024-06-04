@@ -3,14 +3,52 @@ import { useCallback, useEffect, useState } from 'react';
 import { isNilOrEmpty, parse, stringify } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { produce } from 'immer';
-import { groupBy, prop } from 'ramda';
+import { clone, groupBy, prop } from 'ramda';
 
+import { usePushNotificationForActivity } from '../notifications';
 import { useActivityState } from './state';
 
 import type { Activity, ActivityStatus } from './types';
 
+export const useActivity = <T extends Activity = Activity>() => {
+  const [activity, setActivity] = useState<T>();
+  const _pushActivity = usePushActivity();
+  const _updateActivity = useUpdateActivity();
+  const _deleteActivity = useDeleteActivity();
+
+  return {
+    activity,
+    pushActivity: useCallback(
+      (input: T) => {
+        const activity = _pushActivity(input);
+        setActivity(activity);
+        return activity;
+      },
+      [_pushActivity],
+    ),
+    updateActivity: useCallback(
+      (input: Partial<T>) => {
+        const activity = _updateActivity(input);
+        setActivity(activity);
+        return activity;
+      },
+      [_updateActivity],
+    ),
+    deleteActivity: useCallback(
+      (reason?: Parameters<typeof _deleteActivity>[1]) => {
+        if (activity) {
+          _deleteActivity(activity.id, reason);
+        }
+        return activity;
+      },
+      [_deleteActivity, activity],
+    ),
+  };
+};
+
 export const usePushActivity = () => {
   const [, setState] = useActivityState();
+  const pushNotificationForActivity = usePushNotificationForActivity();
 
   return useCallback(
     <T extends Activity = Activity>(value: T) => {
@@ -25,14 +63,16 @@ export const usePushActivity = () => {
         }),
       );
 
+      pushNotificationForActivity(activity);
       return activity;
     },
-    [setState],
+    [pushNotificationForActivity, setState],
   );
 };
 
 export const useUpdateActivity = () => {
   const [, setState] = useActivityState();
+  const pushNotificationForActivity = usePushNotificationForActivity();
 
   return useCallback(
     <T extends Activity = Activity>(
@@ -51,30 +91,38 @@ export const useUpdateActivity = () => {
             existing = parse(stringify(existing));
           }),
         );
+        pushNotificationForActivity(existing);
         return existing as T;
       }
     },
-    [setState],
+    [pushNotificationForActivity, setState],
   );
 };
 
 export const useDeleteActivity = () => {
   const [, setState] = useActivityState();
+  const pushNotificationForActivity = usePushNotificationForActivity();
 
   return useCallback(
-    (id: string | undefined | null) => {
+    (id: string | undefined | null, reason?: 'rejected') => {
       if (id) {
         setState(
           produce((state) => {
             const idx = state.activities.findIndex((a) => id && a.id === id);
             if (idx > -1) {
-              state.activities.splice(idx, 1);
+              const removed = state.activities.splice(idx, 1);
+              if (removed) {
+                pushNotificationForActivity(
+                  clone(removed) as unknown as Activity,
+                  { reason },
+                );
+              }
             }
           }),
         );
       }
     },
-    [setState],
+    [pushNotificationForActivity, setState],
   );
 };
 

@@ -10,42 +10,28 @@ import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
-import type { TokenId } from '@origin/shared/contracts';
 import type { MessageDescriptor } from 'react-intl';
-import type { Hex } from 'viem';
 
-import type { ActivityStatus } from '../types';
+import type { ActivityStatus, RedeemActivity } from '../types';
 
 type RedeemNotificationProps = {
-  status: ActivityStatus;
-  tokenIdIn: TokenId;
-  tokenIdOut: TokenId;
-  amountIn: bigint;
-  amountOut: bigint;
-  txHash?: Hex;
-  error?: string;
+  activity: RedeemActivity;
   sx?: StackProps['sx'];
 };
 
 const title: Record<ActivityStatus, MessageDescriptor> = {
   pending: defineMessage({ defaultMessage: 'Redeeming' }),
+  signed: defineMessage({ defaultMessage: 'Redeeming' }),
   success: defineMessage({ defaultMessage: 'Redeemed' }),
   error: defineMessage({ defaultMessage: 'Error while redeeming' }),
   idle: defineMessage({ defaultMessage: 'Redeem' }),
 };
 
 export const RedeemNotification = ({
-  status,
-  tokenIdIn,
-  tokenIdOut,
-  amountIn,
-  amountOut,
-  txHash,
-  error,
+  activity: { status, tokenIdIn, amountIn, amountOut, txHash, error },
   sx,
 }: RedeemNotificationProps) => {
   const tokenIn = getTokenById(tokenIdIn);
-  const tokenOut = getTokenById(tokenIdOut);
   const intl = useIntl();
 
   return (
@@ -70,7 +56,7 @@ export const RedeemNotification = ({
                 ),
                 symbolIn: tokenIn?.symbol,
                 amountOut: intl.formatNumber(
-                  +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                  +formatUnits(amountOut ?? 0n, tokenIn?.decimals ?? 18),
                   { minimumFractionDigits: 4, maximumFractionDigits: 4 },
                 ),
               },

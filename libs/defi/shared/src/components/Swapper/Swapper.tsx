@@ -37,7 +37,6 @@ import {
   useHandleTokenFlip,
   usePushActivity,
   usePushNotification,
-  usePushNotificationForActivity,
   useSlippage,
   useSwapperPrices,
   useSwapperTargetChainId,
@@ -80,7 +79,6 @@ export const Swapper = ({
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const pushNotification = usePushNotification();
-  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -102,11 +100,10 @@ export const Swapper = ({
       }}
       onApproveSuccess={(state) => {
         const { trackId } = state;
-        const activity = updateActivity({
+        updateActivity({
           id: trackId,
           status: 'success',
         });
-        pushNotificationForActivity(activity);
       }}
       onApproveReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -120,12 +117,11 @@ export const Swapper = ({
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;
-        const activity = updateActivity({
+        updateActivity({
           id: trackId,
           status: 'error',
           error: formatError(error),
         });
-        pushNotificationForActivity(activity);
       }}
       onSwapStart={(state) => {
         const activity = pushActivity({
@@ -141,8 +137,7 @@ export const Swapper = ({
       }}
       onSwapSuccess={(state) => {
         const { trackId } = state;
-        const activity = updateActivity({ id: trackId, status: 'success' });
-        pushNotificationForActivity(activity);
+        updateActivity({ id: trackId, status: 'success' });
       }}
       onSwapReject={({ trackId }) => {
         deleteActivity(trackId);
@@ -156,12 +151,11 @@ export const Swapper = ({
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;
-        const activity = updateActivity({
+        updateActivity({
           id: trackId,
           status: 'error',
           error: formatError(error),
         });
-        pushNotificationForActivity(activity);
       }}
     >
       <SwapperWrapped {...rest} />

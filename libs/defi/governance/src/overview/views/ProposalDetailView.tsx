@@ -7,7 +7,7 @@ import { CurrentResultsCard } from '../components/CurrentResultsCard';
 import { DetailsCard } from '../components/DetailsCard';
 import { ProposalDetailHeader } from '../components/ProposalDetailHeader';
 import { StatusCard } from '../components/StatusCard';
-import { VoteCard } from '../components/VotesCard';
+import { VotesCard } from '../components/VotesCard';
 
 export const ProposalDetailView = () => {
   return (
@@ -37,7 +37,7 @@ export const ProposalDetailView = () => {
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <VoteCard />
+                <VotesCard />
               </ErrorBoundary>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}

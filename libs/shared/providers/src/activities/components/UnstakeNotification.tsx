@@ -2,6 +2,7 @@ import { Stack, Typography } from '@mui/material';
 import {
   ActivityIcon,
   ErrorTooltipLabel,
+  MiddleTruncatedLabel,
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
@@ -9,38 +10,38 @@ import { getTokenById } from '@origin/shared/contracts';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
 import type { MessageDescriptor } from 'react-intl';
 
-import type { ActivityStatus, SwapActivity } from '../types';
+import type { ActivityStatus, UnstakeActivity } from '../types';
 
-type SwapNotificationProps = {
-  activity: SwapActivity;
+type UnstakeNotificationProps = {
+  activity: UnstakeActivity;
   sx?: StackProps['sx'];
 };
 
 const title: Record<ActivityStatus, MessageDescriptor> = {
-  pending: defineMessage({ defaultMessage: 'Swapping' }),
-  signed: defineMessage({ defaultMessage: 'Swapping' }),
-  success: defineMessage({ defaultMessage: 'Swapped' }),
-  error: defineMessage({ defaultMessage: 'Error while swapping' }),
-  idle: defineMessage({ defaultMessage: 'Swap' }),
+  pending: defineMessage({ defaultMessage: 'Unstaking' }),
+  signed: defineMessage({ defaultMessage: 'Unstaking' }),
+  success: defineMessage({ defaultMessage: 'Unstaked' }),
+  error: defineMessage({ defaultMessage: 'Error while unstaking' }),
+  idle: defineMessage({ defaultMessage: 'Unstake' }),
 };
 
-export const SwapNotification = ({
+export const UnstakeNotification = ({
   activity: {
     status,
     tokenIdIn,
     tokenIdOut,
     amountIn,
     amountOut,
+    lockupId,
     txHash,
     error,
   },
   sx,
-}: SwapNotificationProps) => {
+}: UnstakeNotificationProps) => {
   const intl = useIntl();
 
   const tokenIn = getTokenById(tokenIdIn);
@@ -59,20 +60,14 @@ export const SwapNotification = ({
           <Typography color="text.secondary">
             {intl.formatMessage(
               {
-                defaultMessage:
-                  '{amountIn} {symbolIn} for {amountOut} {symbolOut}',
+                defaultMessage: 'Unstake lockup {lockup}',
               },
               {
-                amountIn: intl.formatNumber(
-                  +formatUnits(amountIn ?? 0n, tokenIn.decimals ?? 18),
-                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
+                lockup: (
+                  <MiddleTruncatedLabel maxWidth={60}>
+                    {lockupId.toString()}
+                  </MiddleTruncatedLabel>
                 ),
-                symbolIn: tokenIn.symbol,
-                amountOut: intl.formatNumber(
-                  +formatUnits(amountOut ?? 0n, tokenOut.decimals ?? 18),
-                  { minimumFractionDigits: 0, maximumFractionDigits: 2 },
-                ),
-                symbolOut: tokenOut.symbol,
               },
             )}
           </Typography>

@@ -28,7 +28,7 @@ import type { HexAddress } from '@origin/shared/utils';
 
 const DEFAULT_VISIBLE = 3;
 
-export const VoteCard = (props: CardProps) => {
+export const VotesCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const theme = useTheme();

@@ -10,7 +10,12 @@ import {
 import type { SvgIconProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
-export type ActivityIconStatus = 'idle' | 'pending' | 'success' | 'error';
+export type ActivityIconStatus =
+  | 'idle'
+  | 'pending'
+  | 'signed'
+  | 'success'
+  | 'error';
 
 const spin = keyframes`
   to {
@@ -41,6 +46,17 @@ export const ActivityIcon = ({
   return {
     idle: <Activity {...rest} />,
     pending: (
+      <Pending
+        {...rest}
+        {...(!disablePendingSpin && {
+          sx: {
+            animation: `${spin} 3s linear infinite`,
+            ...rest?.sx,
+          },
+        })}
+      />
+    ),
+    signed: (
       <Pending
         {...rest}
         {...(!disablePendingSpin && {

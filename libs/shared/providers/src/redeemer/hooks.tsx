@@ -20,10 +20,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../activities';
-import {
-  usePushNotification,
-  usePushNotificationForActivity,
-} from '../notifications';
+import { usePushNotification } from '../notifications';
 import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
 import { simulateContractWithTxTracker } from '../txTracker';
@@ -54,7 +51,6 @@ export const useHandleRedeem = () => {
   const intl = useIntl();
   const config = useConfig();
   const queryClient = useQueryClient();
-  const pushNotificationForActivity = usePushNotificationForActivity();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -81,7 +77,6 @@ export const useHandleRedeem = () => {
       type: 'redeem',
       status: 'pending',
       tokenIdIn: tokenIn.id,
-      tokenIdOut: MIX_TOKEN.id,
       amountIn,
       amountOut,
     });
@@ -121,12 +116,11 @@ export const useHandleRedeem = () => {
           draft.split.forEach((a) => (a.amount = 0n));
         }),
       );
-      const updatedActivity = updateActivity<RedeemActivity>({
+      updateActivity<RedeemActivity>({
         ...activity,
         status: 'success',
         txHash: txReceipt.transactionHash,
       });
-      pushNotificationForActivity(updatedActivity);
       trackEvent({
         name: 'redeem_complete',
         redeem_amount: amountIn,
@@ -158,12 +152,11 @@ export const useHandleRedeem = () => {
           redeem_amount: amountIn,
         });
       } else {
-        const updatedActivity = updateActivity({
+        updateActivity({
           ...activity,
           status: 'error',
           error: formatError(error),
         });
-        pushNotificationForActivity(updatedActivity);
         trackEvent({
           name: 'redeem_failed',
           redeem_amount: amountIn,
