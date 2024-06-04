@@ -9,7 +9,11 @@ import type { Config } from '@wagmi/core';
 
 type Key = ['useOgnStakingApy'];
 
-type Result = { ognRewardsPerYear: number; ognStaked: number; ognApy: number };
+type Result = {
+  ognRewardsPerYear: number;
+  ognStaked: number;
+  ognApyPercentage: number;
+};
 
 const getKey = (): Key => ['useOgnStakingApy'];
 
@@ -49,7 +53,7 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
     return {
       ognRewardsPerYear,
       ognStaked,
-      ognApy: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
+      ognApyPercentage: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
     };
   };
 

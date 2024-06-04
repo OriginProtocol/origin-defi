@@ -127,10 +127,14 @@ export const StakingForm = () => {
   );
 
   useEffect(() => {
-    if (isLoading && !isStakingLoading && !isNilOrEmpty(staking?.xOgnApy)) {
+    if (
+      isLoading &&
+      !isStakingLoading &&
+      !isNilOrEmpty(staking?.xOgnApyPercentage)
+    ) {
       setIsLoading(false);
     }
-  }, [isLoading, isStakingLoading, staking?.xOgnApy]);
+  }, [isLoading, isStakingLoading, staking?.xOgnApyPercentage]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(duration > 0);
@@ -344,7 +348,7 @@ export const StakingForm = () => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

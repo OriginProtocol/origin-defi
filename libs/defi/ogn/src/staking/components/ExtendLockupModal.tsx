@@ -128,11 +128,12 @@ export const ExtendLockupModal = ({
   useEffect(() => {
     if (
       isLoading &&
-      (!isNilOrEmpty(staking?.xOgnApy) || duration === initialMonthDuration)
+      (!isNilOrEmpty(staking?.xOgnApyPercentage) ||
+        duration === initialMonthDuration)
     ) {
       setIsLoading(false);
     }
-  }, [duration, initialMonthDuration, isLoading, staking?.xOgnApy]);
+  }, [duration, initialMonthDuration, isLoading, staking?.xOgnApyPercentage]);
 
   const handleDurationChange = (_: Event, newValue: number | number[]) => {
     const val = newValue as number;
@@ -365,7 +366,7 @@ export const ExtendLockupModal = ({
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

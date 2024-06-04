@@ -156,7 +156,10 @@ export const StakeRewardModal = (props: DialogProps) => {
   }, [info?.ognBalance, isInfoLoading]);
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(staking?.xOgnApy) || duration === 0)) {
+    if (
+      isLoading &&
+      (!isNilOrEmpty(staking?.xOgnApyPercentage) || duration === 0)
+    ) {
       setIsLoading(false);
     }
   }, [amount, staking, duration, isLoading]);
@@ -478,7 +481,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

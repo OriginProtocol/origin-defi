@@ -33,7 +33,7 @@ export const PageTitleSection = (props: StackProps) => {
           color="inherit"
           fontWeight="bold"
         >
-          {intl.formatNumber(apy?.ognApy ?? 0, {
+          {intl.formatNumber(apy?.ognApyPercentage ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
           })}

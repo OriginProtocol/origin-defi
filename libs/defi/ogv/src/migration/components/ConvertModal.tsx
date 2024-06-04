@@ -518,7 +518,7 @@ export const ConvertModal = ({
               color="primary.main"
               isLoading={isXOgnStakingLoading}
             >
-              {intl.formatNumber(xOgnStaking?.xOgnApy ?? 0, {
+              {intl.formatNumber(xOgnStaking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

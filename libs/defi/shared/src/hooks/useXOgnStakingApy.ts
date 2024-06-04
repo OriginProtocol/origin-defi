@@ -14,7 +14,7 @@ import type { Config } from '@wagmi/core';
 type Key = ['useXOgnStakingApy', string, number];
 
 type Result = {
-  xOgnApy: number;
+  xOgnApyPercentage: number;
   xOgnPreview: number;
 };
 
@@ -56,10 +56,10 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
     const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
     const projectedRewards = ognRewardsPerYear * xognPercentage;
     const stakedAmount = +formatUnits(amt, tokens.mainnet.OGN.decimals);
-    const xOgnApy = projectedRewards / stakedAmount;
+    const xOgnApyPercentage = projectedRewards / stakedAmount;
 
     return {
-      xOgnApy,
+      xOgnApyPercentage,
       xOgnPreview,
     };
   };

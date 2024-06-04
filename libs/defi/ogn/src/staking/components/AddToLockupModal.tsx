@@ -136,16 +136,20 @@ export const AddToLockupModal = ({
   );
 
   useEffect(() => {
-    if (isLoading && !isNilOrEmpty(staking?.xOgnApy)) {
+    if (isLoading && !isNilOrEmpty(staking?.xOgnApyPercentage)) {
       setIsLoading(false);
-      console.log('set loading false', staking?.xOgnApy, amount, addRewards);
     }
-  }, [addRewards, amount, isLoading, isStakingApyLoading, staking?.xOgnApy]);
+  }, [
+    addRewards,
+    amount,
+    isLoading,
+    isStakingApyLoading,
+    staking?.xOgnApyPercentage,
+  ]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(true);
     setAmount(val);
-    console.log('set loading handleAmountChange');
   };
 
   const handleMaxClick = (evt: MouseEvent<HTMLButtonElement>) => {
@@ -153,7 +157,6 @@ export const AddToLockupModal = ({
     if (amount !== info?.ognBalance) {
       setIsLoading(true);
       setAmount(info?.ognBalance ?? 0n);
-      console.log('set loading handleMaxClick');
     }
   };
 
@@ -162,7 +165,6 @@ export const AddToLockupModal = ({
     if (info?.xOgnRewards) {
       setIsLoading(true);
       setAddRewards(evt.target.checked);
-      console.log('set loading handleToggleAddRewards');
     }
   };
 
@@ -175,8 +177,6 @@ export const AddToLockupModal = ({
     );
   const isStakeDisabled =
     !isConnected || isInfoLoading || isLoading || amount === 0n;
-
-  console.log(staking?.xOgnPreview);
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
