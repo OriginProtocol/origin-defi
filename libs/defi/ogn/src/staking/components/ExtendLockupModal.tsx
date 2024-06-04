@@ -49,11 +49,14 @@ import type { ButtonProps, DialogProps } from '@mui/material';
 
 import type { Lockup } from '../types';
 
-export type ExtendFormModalProps = {
+export type ExtendLockupModalProps = {
   lockup: Lockup;
 } & DialogProps;
 
-export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
+export const ExtendLockupModal = ({
+  lockup,
+  ...rest
+}: ExtendLockupModalProps) => {
   const amount = BigInt(lockup.amount);
   const initialMonthDuration = Math.max(
     0,
@@ -515,7 +518,7 @@ export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
           rest?.onClick?.(e);
         }}
       />
-      <ExtendFormModal
+      <ExtendLockupModal
         key={open ? 'open' : 'closed'}
         lockup={lockup}
         open={open}

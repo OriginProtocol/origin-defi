@@ -31,7 +31,8 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useOgnLockupsQuery } from '../queries.generated';
-import { ExtendButton } from './ExtendFormModal';
+import { AddButton } from './AddToLockupModal';
+import { ExtendButton } from './ExtendLockupModal';
 import { UnstakeLockupButton } from './UnstakeLockupModal';
 
 import type { Lockup } from '../types';
@@ -157,6 +158,13 @@ export const LockupsTable = () => {
               >
                 {intl.formatMessage({ defaultMessage: 'Unlock' })}
               </UnstakeLockupButton>
+              <AddButton
+                lockup={info.row.original}
+                variant="outlined"
+                color="secondary"
+              >
+                {intl.formatMessage({ defaultMessage: 'Add' })}
+              </AddButton>
               <Button
                 variant="outlined"
                 color="secondary"
