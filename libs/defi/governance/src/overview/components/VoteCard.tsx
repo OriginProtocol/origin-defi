@@ -1,10 +1,6 @@
 import { LinearProgress, Stack } from '@mui/material';
 import { useTxButton } from '@origin/defi/shared';
-import {
-  LoadingLabel,
-  TokenIcon,
-  TooltipLabel,
-} from '@origin/shared/components';
+import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -45,19 +41,11 @@ export function VoteCard({
       args: [BigInt(proposalId ?? ZERO_ADDRESS), governanceSupport[choice]],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Cast vote',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Vote {choice} on proposal {proposalId}',
-        },
-        {
-          choice,
-          proposalId,
-        },
-      ),
+      type: 'vote',
+      status: 'pending',
+      tokenIdIn: tokens.mainnet.xOGN.id,
+      choice,
+      proposalId: proposalId as string,
     },
     callbacks: {
       onWriteSuccess: () => {

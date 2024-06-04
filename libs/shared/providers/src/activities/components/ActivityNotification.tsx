@@ -7,75 +7,50 @@ import {
   SwapNotification,
   TransactionNotification,
 } from '.';
+import { ClaimRewardsNotification } from './ClaimRewardsNotification';
+import { ExtendStakeNotification } from './ExtendStakeNotification';
 import { StakeNotification } from './StakeNotification';
 import { UnstakeNotification } from './UnstakeNotification';
+import { VoteNotification } from './VoteNotification';
 
 import type { StackProps } from '@mui/material';
+import type { ReactNode } from 'react';
 
 import type {
   Activity,
+  ActivityType,
   ApprovalActivity,
   BridgeActivity,
+  ClaimRewardsActivity,
+  ExtendStakeActivity,
   RedeemActivity,
   StakeActivity,
   SwapActivity,
   TransactionActivity,
   UnstakeActivity,
+  VoteActivity,
 } from '..';
 
 export const ActivityNotification = (
   activity: Activity & { sx?: StackProps['sx'] },
 ) => {
   const intl = useIntl();
-  if (activity.type === 'approval') {
-    return (
-      <ApprovalNotification
-        key={activity.id}
-        activity={activity as ApprovalActivity}
-      />
-    );
-  }
-  if (activity.type === 'bridge') {
-    return (
-      <BridgeNotification
-        key={activity.id}
-        activity={activity as BridgeActivity}
-      />
-    );
-  }
-  if (activity.type === 'redeem') {
-    return (
-      <RedeemNotification
-        key={activity.id}
-        activity={activity as RedeemActivity}
-      />
-    );
-  }
-  if (activity.type === 'swap') {
-    return (
-      <SwapNotification key={activity.id} activity={activity as SwapActivity} />
-    );
-  }
-  if (activity.type === 'stake') {
-    return (
-      <StakeNotification
-        key={activity.id}
-        activity={activity as StakeActivity}
-      />
-    );
-  }
-  if (activity.type === 'unstake') {
-    return (
-      <UnstakeNotification
-        key={activity.id}
-        activity={activity as UnstakeActivity}
-      />
-    );
-  }
-  if (activity.type === 'transaction') {
-    return (
+  const types: Record<ActivityType, ReactNode> = {
+    approval: <ApprovalNotification activity={activity as ApprovalActivity} />,
+    bridge: <BridgeNotification activity={activity as BridgeActivity} />,
+    redeem: <RedeemNotification activity={activity as RedeemActivity} />,
+    swap: <SwapNotification activity={activity as SwapActivity} />,
+    stake: <StakeNotification activity={activity as StakeActivity} />,
+    'extend-stake': (
+      <ExtendStakeNotification activity={activity as ExtendStakeActivity} />
+    ),
+    unstake: <UnstakeNotification activity={activity as UnstakeActivity} />,
+    'claim-rewards': (
+      <ClaimRewardsNotification activity={activity as ClaimRewardsActivity} />
+    ),
+    vote: <VoteNotification activity={activity as VoteActivity} />,
+    transaction: (
       <TransactionNotification
-        key={activity.id}
         {...(activity as TransactionActivity)}
         title={
           (activity as TransactionActivity)?.title ??
@@ -85,7 +60,8 @@ export const ActivityNotification = (
         }
         subtitle={(activity as TransactionActivity)?.subtitle ?? ''}
       />
-    );
-  }
-  return null;
+    ),
+  };
+
+  return types[activity.type] ?? null;
 };

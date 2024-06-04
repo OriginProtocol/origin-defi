@@ -90,6 +90,13 @@ export interface ClaimRewardsActivity extends ActivityBase {
   amountIn?: bigint;
 }
 
+export interface VoteActivity extends ActivityBase {
+  type: 'vote';
+  tokenIdIn: TokenId;
+  choice: string;
+  proposalId: string;
+}
+
 export type Activity =
   | BridgeActivity
   | TransactionActivity
@@ -99,6 +106,7 @@ export type Activity =
   | StakeActivity
   | ExtendStakeActivity
   | UnstakeActivity
-  | ClaimRewardsActivity;
+  | ClaimRewardsActivity
+  | VoteActivity;
 
 export type ActivityType = Activity['type'];
