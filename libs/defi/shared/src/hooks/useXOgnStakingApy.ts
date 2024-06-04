@@ -56,7 +56,7 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
     const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
     const projectedRewards = ognRewardsPerYear * xognPercentage;
     const stakedAmount = +formatUnits(amt, tokens.mainnet.OGN.decimals);
-    const xOgnApy = 100 * (projectedRewards / stakedAmount);
+    const xOgnApy = projectedRewards / stakedAmount;
 
     return {
       xOgnApy,
