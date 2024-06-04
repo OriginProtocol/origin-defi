@@ -23,10 +23,9 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
           functionName: 'rewardConfig',
         },
         {
-          address: tokens.mainnet.OGN.address,
-          abi: tokens.mainnet.OGN.abi,
-          functionName: 'balanceOf',
-          args: [tokens.mainnet.xOGN.address],
+          address: tokens.mainnet.xOGN.address,
+          abi: tokens.mainnet.xOGN.abi,
+          functionName: 'totalSupply',
         },
       ],
     });
@@ -44,7 +43,7 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
         : 0;
     const ognStaked =
       res?.[1]?.status === 'success'
-        ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.OGN.decimals)
+        ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.xOGN.decimals)
         : 0;
 
     return {

@@ -1,7 +1,7 @@
 import { tokens } from '@origin/shared/contracts';
 import { getMonthDurationToSeconds, isFulfilled } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
-import { readContracts } from '@wagmi/core';
+import { readContract } from '@wagmi/core';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
@@ -37,43 +37,26 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
         queryKey: useOgnStakingApy.getKey(),
         queryFn: useOgnStakingApy.fetcher(config),
       }),
-      readContracts(config, {
-        contracts: [
-          {
-            address: tokens.mainnet.xOGN.address,
-            abi: tokens.mainnet.xOGN.abi,
-            functionName: 'previewPoints',
-            args: [amt, getMonthDurationToSeconds(monthDuration)],
-          },
-          {
-            address: tokens.mainnet.xOGN.address,
-            abi: tokens.mainnet.xOGN.abi,
-            functionName: 'totalSupply',
-          },
-        ],
-        allowFailure: true,
+      readContract(config, {
+        address: tokens.mainnet.xOGN.address,
+        abi: tokens.mainnet.xOGN.abi,
+        functionName: 'previewPoints',
+        args: [amt, getMonthDurationToSeconds(monthDuration)],
       }),
     ]);
 
     const ognRewardsPerYear = isFulfilled(res?.[0])
       ? res?.[0].value.ognRewardsPerYear
       : 0;
+    const xOgnTotalSupply = isFulfilled(res?.[0]) ? res[0].value.ognStaked : 0;
     const xOgnPreview = isFulfilled(res?.[1])
-      ? +formatUnits(
-          res[1].value?.[0].result?.[0] ?? 0n,
-          tokens.mainnet.xOGN.decimals,
-        )
-      : 0;
-    const xOgnTotalSupply = isFulfilled(res?.[1])
-      ? +formatUnits(
-          res[1].value?.[1].result ?? 0n,
-          tokens.mainnet.xOGN.decimals,
-        )
+      ? +formatUnits(res[1].value?.[0] ?? 0n, tokens.mainnet.xOGN.decimals)
       : 0;
 
     const xognPercentage = xOgnPreview / (xOgnTotalSupply + xOgnPreview);
-    const userDepositOgn = +formatUnits(amt, tokens.mainnet.OGN.decimals);
-    const xOgnApy = (ognRewardsPerYear * xognPercentage) / userDepositOgn;
+    const projectedRewards = ognRewardsPerYear * xognPercentage;
+    const stakedAmount = +formatUnits(amt, tokens.mainnet.OGN.decimals);
+    const xOgnApy = 100 * (projectedRewards / stakedAmount);
 
     return {
       xOgnApy,
