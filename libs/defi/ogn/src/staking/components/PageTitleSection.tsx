@@ -42,7 +42,7 @@ export const PageTitleSection = (props: StackProps) => {
           })}
         </LoadingLabel>
         <Typography variant="caption1" color="inherit">
-          {intl.formatMessage({ defaultMessage: 'Max APY' })}
+          {intl.formatMessage({ defaultMessage: 'Max vAPY' })}
         </Typography>
       </ColorChip>
       <Button component={RouterLink} to="/more/migration" sx={{ gap: 0.5 }}>
