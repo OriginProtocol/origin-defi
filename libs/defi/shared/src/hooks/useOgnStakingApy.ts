@@ -27,9 +27,10 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
           functionName: 'rewardConfig',
         },
         {
-          address: tokens.mainnet.xOGN.address,
-          abi: tokens.mainnet.xOGN.abi,
-          functionName: 'totalSupply',
+          address: tokens.mainnet.OGN.address,
+          abi: tokens.mainnet.OGN.abi,
+          functionName: 'balanceOf',
+          args: [tokens.mainnet.xOGN.address],
         },
       ],
     });
