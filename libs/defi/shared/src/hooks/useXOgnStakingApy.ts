@@ -21,7 +21,7 @@ type Result = {
 const getKey = (amount?: number | bigint, monthDuration?: number): Key => [
   'useXOgnStakingApy',
   amount === undefined
-    ? '100'
+    ? '1000'
     : typeof amount === 'bigint'
       ? formatUnits(amount, tokens.mainnet.OGN.decimals)
       : amount.toString(),
