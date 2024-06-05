@@ -102,7 +102,10 @@ export const usePushNotificationForActivity = () => {
         } else {
           return pushNotification({
             id: activity.id,
-            hideDuration: activity.status === 'pending' ? undefined : 3000,
+            hideDuration:
+              activity.status === 'pending'
+                ? undefined
+                : state.autoHideDuration,
             content: <ActivityNotification activity={activity} />,
             blockExplorerLinkProps: {
               hash: activity.txHash,
