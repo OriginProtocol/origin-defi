@@ -42,8 +42,7 @@ export const { Provider: LockupPollingProvider, useTracked: useLockupPolling } =
         isDifferent =
           !!latestLockup &&
           !!prevLockup &&
-          (latestLockup.lockupId !== prevLockup.lockupId ||
-            latestLockup.amount !== prevLockup.amount ||
+          (latestLockup.amount !== prevLockup.amount ||
             latestLockup.end !== prevLockup.end);
       }
       if (isDifferent || state.retries > MAX_RETRY) {
