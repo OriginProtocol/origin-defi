@@ -45,6 +45,8 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useStartLockupPolling } from '../hooks';
+
 import type { ButtonProps, DialogProps } from '@mui/material';
 
 import type { Lockup } from '../types';
@@ -66,6 +68,7 @@ export const ExtendLockupModal = ({
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const startPolling = useStartLockupPolling();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
@@ -106,6 +109,7 @@ export const ExtendLockupModal = ({
     },
     callbacks: {
       onWriteSuccess: () => {
+        startPolling(lockup.lockupId);
         rest?.onClose?.({}, 'backdropClick');
       },
     },

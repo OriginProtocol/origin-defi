@@ -15,7 +15,6 @@ import { useAccount } from 'wagmi';
 
 import { useMyVApy } from '../hooks';
 import { useOgnLockupsQuery } from '../queries.generated';
-import { useLockupPolling } from '../state';
 import { LockupsTable } from './LockupsTable';
 
 import type { CardProps } from '@mui/material';
@@ -23,7 +22,6 @@ import type { CardProps } from '@mui/material';
 export const LockupsCard = (props: CardProps) => {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const [interval] = useLockupPolling();
   const { data: lockups, isLoading: isLockupsFetching } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
@@ -36,7 +34,6 @@ export const LockupsCard = (props: CardProps) => {
     <Card {...props}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Your lockups' })}
-        action={interval ? <CircularProgress size={20} /> : null}
       />
       <Divider />
       {isConnected ? (

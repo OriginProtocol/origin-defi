@@ -10,31 +10,52 @@ import { useOgnLockupsQuery } from './queries.generated';
 
 const MAX_RETRY = 10;
 
+type LockupPollingState = {
+  refetchInterval: number | false;
+  lockupId?: string;
+  retries: number;
+};
+
 export const { Provider: LockupPollingProvider, useTracked: useLockupPolling } =
   createContainer(() => {
-    const [state, setState] = useState<number | false>(false);
-    const [retries, setRetries] = useState(0);
+    const [state, setState] = useState<LockupPollingState>({
+      refetchInterval: false,
+      retries: 0,
+    });
     const { address } = useAccount();
     const { data } = useQuery({
       queryKey: useOgnLockupsQuery.getKey({ address: address ?? ZERO_ADDRESS }),
       queryFn: useOgnLockupsQuery.fetcher({ address: address ?? ZERO_ADDRESS }),
-      refetchInterval: state,
-      enabled: !!state,
-      select: (data) => data?.esLockups?.length ?? 0,
+      refetchInterval: state.refetchInterval,
+      enabled: !!state.refetchInterval,
+      select: (data) => data?.esLockups ?? [],
     });
     const prev = usePrevious(data);
 
     useEffect(() => {
-      if (data !== prev || retries > MAX_RETRY) {
-        setState(false);
+      let isDifferent = false;
+      if (state.lockupId === undefined) {
+        isDifferent = data?.length !== prev?.length;
+      } else {
+        const latestLockup = data?.find((l) => l.lockupId === state.lockupId);
+        const prevLockup = prev?.find((l) => l.lockupId === state.lockupId);
+        isDifferent =
+          !!latestLockup &&
+          !!prevLockup &&
+          (latestLockup.lockupId !== prevLockup.lockupId ||
+            latestLockup.amount !== prevLockup.amount ||
+            latestLockup.end !== prevLockup.end);
       }
-    }, [data, prev, retries]);
+      if (isDifferent || state.retries > MAX_RETRY) {
+        setState({ refetchInterval: false, lockupId: undefined, retries: 0 });
+      }
+    }, [data, prev, state.lockupId, state.retries]);
 
     useIntervalEffect(
       () => {
-        setRetries((prev) => prev++);
+        setState((prev) => ({ ...prev, retries: prev.retries++ }));
       },
-      state ? state : undefined,
+      state.refetchInterval ? state.refetchInterval : undefined,
     );
 
     return [state, setState];

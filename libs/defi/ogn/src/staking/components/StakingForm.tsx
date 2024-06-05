@@ -42,13 +42,13 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useLockupPolling } from '../state';
+import { useStartLockupPolling } from '../hooks';
 
 export const StakingForm = () => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
-  const [, setLockupPolling] = useLockupPolling();
+  const startPolling = useStartLockupPolling();
   const { address, isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
@@ -105,7 +105,7 @@ export const StakingForm = () => {
     },
     callbacks: {
       onWriteSuccess: () => {
-        setLockupPolling(2000);
+        startPolling();
         setAmount(0n);
         setDuration(1);
       },

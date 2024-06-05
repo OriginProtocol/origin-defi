@@ -47,6 +47,8 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useStartLockupPolling } from '../hooks';
+
 import type { ButtonProps, DialogProps } from '@mui/material';
 import type { ChangeEvent, MouseEvent } from 'react';
 
@@ -70,6 +72,7 @@ export const AddToLockupModal = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { isConnected, address } = useAccount();
+  const startPolling = useStartLockupPolling();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
   const [addRewards, setAddRewards] = useState(false);
@@ -116,6 +119,7 @@ export const AddToLockupModal = ({
     },
     callbacks: {
       onWriteSuccess: () => {
+        startPolling(lockup.lockupId);
         rest?.onClose?.({}, 'backdropClick');
       },
     },
@@ -447,7 +451,7 @@ export const AddToLockupModal = ({
                 valueProps={{ variant: 'body3', fontWeight: 'medium' }}
                 sx={{ alignItems: 'flex-end' }}
               />
-            </Stack>{' '}
+            </Stack>
           </CardContent>
         </SectionCard>
       </DialogContent>
