@@ -121,13 +121,7 @@ export const useTxButton = <
       deleteActivity('rejected');
     }
     args.callbacks?.onUserReject?.();
-  }, [
-    activity?.id,
-    args.callbacks,
-    args.disableActivity,
-    deleteActivity,
-    intl,
-  ]);
+  }, [activity?.id, args.callbacks, args.disableActivity, deleteActivity]);
 
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {

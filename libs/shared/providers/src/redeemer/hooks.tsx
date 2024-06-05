@@ -1,6 +1,5 @@
 import { useCallback } from 'react';
 
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import {
   formatError,
   isNilOrEmpty,
@@ -133,20 +132,7 @@ export const useHandleRedeem = () => {
         }),
       );
       if (isUserRejected(error)) {
-        deleteActivity(activity.id);
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
-        });
+        deleteActivity(activity.id, 'rejected');
         trackEvent({
           name: 'redeem_rejected',
           redeem_amount: amountIn,

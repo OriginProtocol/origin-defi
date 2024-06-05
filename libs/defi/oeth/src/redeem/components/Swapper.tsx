@@ -63,7 +63,6 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) => {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
   const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
@@ -93,14 +92,7 @@ export const Swapper = ({
         });
       }}
       onApproveReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
-        });
+        deleteActivity(trackId, 'rejected');
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;

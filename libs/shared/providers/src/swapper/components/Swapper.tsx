@@ -17,8 +17,6 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
-  NotificationSnack,
-  SeverityIcon,
   TokenInput,
 } from '@origin/shared/components';
 import {
@@ -108,20 +106,7 @@ export const Swapper = ({
         });
       }}
       onApproveReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
-        });
+        deleteActivity(trackId, 'rejected');
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;
@@ -151,20 +136,7 @@ export const Swapper = ({
         });
       }}
       onSwapReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          content: (
-            <NotificationSnack
-              icon={<SeverityIcon severity="warning" />}
-              title={intl.formatMessage({
-                defaultMessage: 'Operation Cancelled',
-              })}
-              subtitle={intl.formatMessage({
-                defaultMessage: 'User rejected operation',
-              })}
-            />
-          ),
-        });
+        deleteActivity(trackId, 'rejected');
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;

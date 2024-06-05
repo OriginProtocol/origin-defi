@@ -86,7 +86,7 @@ export const ApprovalButton = ({
     if (isApprovalLoading) {
       deleteActivity('rejected');
     }
-  }, [deleteActivity, intl, isApprovalLoading]);
+  }, [deleteActivity, isApprovalLoading]);
 
   useEffect(() => {
     if (

@@ -199,22 +199,7 @@ export const TransactionButton = ({
       if (isUserRejected(err)) {
         onUserReject?.();
         if (!disableActivity && activity) {
-          deleteActivity(activity.id);
-        }
-        if (!disableNotification) {
-          pushNotification({
-            content: (
-              <NotificationSnack
-                icon={<SeverityIcon severity="warning" />}
-                title={intl.formatMessage({
-                  defaultMessage: 'Operation Cancelled',
-                })}
-                subtitle={intl.formatMessage({
-                  defaultMessage: 'User rejected operation',
-                })}
-              />
-            ),
-          });
+          deleteActivity(activity.id, 'rejected');
         }
       } else {
         if (err) {
