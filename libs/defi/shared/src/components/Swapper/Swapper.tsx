@@ -36,7 +36,6 @@ import {
   useHandleTokenChange,
   useHandleTokenFlip,
   usePushActivity,
-  usePushNotification,
   useSlippage,
   useSwapperPrices,
   useSwapperTargetChainId,
@@ -76,9 +75,6 @@ export const Swapper = ({
   trackEvent,
   ...rest
 }: SwapperProps) => {
-  const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const pushNotification = usePushNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -106,14 +102,7 @@ export const Swapper = ({
         });
       }}
       onApproveReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
-        });
+        deleteActivity(trackId, 'rejected');
       }}
       onApproveFailure={(state) => {
         const { error, trackId } = state;
@@ -132,25 +121,15 @@ export const Swapper = ({
           amountIn: state.amountIn,
           amountOut: state.amountOut,
         });
-
         return activity.id;
       }}
-      onSwapSuccess={(state) => {
-        const { trackId } = state;
+      onSwapSuccess={({ trackId }) => {
         updateActivity({ id: trackId, status: 'success' });
       }}
       onSwapReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'info',
-        });
+        deleteActivity(trackId, 'rejected');
       }}
-      onSwapFailure={(state) => {
-        const { error, trackId } = state;
+      onSwapFailure={({ error, trackId }) => {
         updateActivity({
           id: trackId,
           status: 'error',

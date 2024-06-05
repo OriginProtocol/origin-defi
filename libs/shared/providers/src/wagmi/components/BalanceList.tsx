@@ -20,9 +20,9 @@ export const BalanceList = ({ balanceTokens, ...rest }: BalanceListProps) => {
       {!!balanceTokens &&
         balanceTokens.map((tok) => (
           <BalanceRow
-            key={tok.symbol}
+            key={tok.id}
             token={tok}
-            balance={+formatUnits(balances?.[tok.symbol] ?? 0n, tok.decimals)}
+            balance={+formatUnits(balances?.[tok.id] ?? 0n, tok.decimals)}
             isBalanceLoading={balancesLoading}
           />
         ))}

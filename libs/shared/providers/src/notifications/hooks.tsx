@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
 import { produce } from 'immer';
@@ -11,23 +11,62 @@ import { useNotificationState } from './state';
 import type { Activity } from '../activities';
 import type { NotificationOptions } from './types';
 
+export const useNotification = () => {
+  const [id, setId] = useState<string>();
+  const _pushNotification = usePushNotification();
+  const _pushNotificationForActivity = usePushNotificationForActivity();
+  const _deleteNotification = useDeleteNotification();
+
+  return {
+    id,
+    pushNotification: useCallback(
+      (input: NotificationOptions) => {
+        const id = _pushNotification(input);
+        setId(id);
+        return id;
+      },
+      [_pushNotification],
+    ),
+    pushNotificationForActivity: useCallback(
+      (input: Activity) => {
+        const id = _pushNotificationForActivity(input);
+        setId(id);
+        return id;
+      },
+      [_pushNotificationForActivity],
+    ),
+    deleteNotification: useCallback(() => {
+      if (id) {
+        setId(undefined);
+        _deleteNotification(id);
+      }
+      return id;
+    }, [_deleteNotification, setId, id]),
+  };
+};
+
 export const usePushNotification = () => {
   const [, setState] = useNotificationState();
 
   return useCallback(
     (options: NotificationOptions) => {
-      const id = Date.now().toString();
+      const id = options.id ?? Date.now().toString();
       setState(
         produce((state) => {
-          state.notifications.unshift({
-            severity: 'info',
-            visible: true,
-            hideDuration: state.autoHideDuration,
-            ...options,
-            id,
-            createdOn: Date.now(),
-            read: false,
-          });
+          const existing = state.notifications.find((n) => n.id === id);
+          if (existing) {
+            Object.assign(existing, { ...options, read: false, visible: true });
+          } else {
+            state.notifications.unshift({
+              severity: 'info',
+              visible: true,
+              hideDuration: state.autoHideDuration,
+              ...options,
+              id,
+              createdOn: Date.now(),
+              read: false,
+            });
+          }
         }),
       );
 
@@ -39,15 +78,18 @@ export const usePushNotification = () => {
 
 export const usePushNotificationForActivity = () => {
   const intl = useIntl();
+  const [state] = useNotificationState();
   const pushNotification = usePushNotification();
   return useCallback(
     (activity?: Activity, context?: { reason?: 'rejected' }) => {
       if (activity) {
         if (context?.reason === 'rejected') {
-          pushNotification({
+          return pushNotification({
+            id: activity.id,
+            hideDuration: state.autoHideDuration,
             content: (
               <NotificationSnack
-                icon={<SeverityIcon severity="warning" />}
+                icon={<SeverityIcon severity="info" />}
                 title={intl.formatMessage({
                   defaultMessage: 'Operation Cancelled',
                 })}
@@ -59,7 +101,9 @@ export const usePushNotificationForActivity = () => {
           });
         } else {
           return pushNotification({
-            content: <ActivityNotification {...activity} />,
+            id: activity.id,
+            hideDuration: activity.status === 'pending' ? undefined : 3000,
+            content: <ActivityNotification activity={activity} />,
             blockExplorerLinkProps: {
               hash: activity.txHash,
             },
@@ -67,7 +111,7 @@ export const usePushNotificationForActivity = () => {
         }
       }
     },
-    [intl, pushNotification],
+    [intl, state, pushNotification],
   );
 };
 

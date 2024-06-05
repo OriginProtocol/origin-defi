@@ -20,6 +20,7 @@ import {
   getTokenPriceKey,
   ThemeModeIconButton,
   useActivityState,
+  useClearActivity,
   useFormat,
   UserAvatar,
   useTokenPrices,
@@ -162,9 +163,9 @@ function BalanceList(props: StackProps) {
     <Stack px={2} py={3} spacing={2} {...props}>
       {balanceTokens.map((tok) => (
         <BalanceRow
-          key={tok.symbol}
+          key={tok.id}
           token={tok}
-          balance={+formatUnits(balances?.[tok.symbol] ?? 0n, tok.decimals)}
+          balance={+formatUnits(balances?.[tok.id] ?? 0n, tok.decimals)}
           price={prices?.[getTokenPriceKey(tok)] ?? 0}
           isBalanceLoading={balancesLoading}
           isPriceLoading={isPricesLoading}
@@ -239,7 +240,9 @@ function BalanceRow({
 }
 
 function ActivityList(props: StackProps) {
+  const intl = useIntl();
   const [{ activities, maxVisible }] = useActivityState();
+  const clearActivity = useClearActivity();
 
   const sortedActivities = pipe(
     sort(descend((a: Activity) => a.createdOn ?? 0)),
@@ -265,10 +268,17 @@ function ActivityList(props: StackProps) {
       {sortedActivities.map((a) => (
         <ActivityNotification
           key={a.id}
-          {...a}
+          activity={a}
           sx={{ width: 1, px: 3, py: 1.5 }}
         />
       ))}
+      <Button
+        variant="text"
+        onClick={() => clearActivity()}
+        sx={{ borderRadius: 0 }}
+      >
+        {intl.formatMessage({ defaultMessage: 'Clear activity' })}
+      </Button>
     </Stack>
   );
 }

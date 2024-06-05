@@ -19,7 +19,7 @@ import type { StackProps } from '@mui/material';
 
 import type { Activity } from '../types';
 
-export type AcitivityPopoverProps = {
+export type ActivityPopoverProps = {
   anchor: HTMLElement | null;
   setAnchor: (value: HTMLButtonElement | null) => void;
 };
@@ -27,7 +27,7 @@ export type AcitivityPopoverProps = {
 export const ActivityPopover = ({
   anchor,
   setAnchor,
-}: AcitivityPopoverProps) => {
+}: ActivityPopoverProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [{ activities, maxVisible }, setActivityState] = useActivityState();
@@ -112,7 +112,7 @@ export const ActivityPopover = ({
                 return (
                   <ActivityNotification
                     key={a.id}
-                    {...a}
+                    activity={a}
                     sx={{ px: 3, py: 2 }}
                   />
                 );

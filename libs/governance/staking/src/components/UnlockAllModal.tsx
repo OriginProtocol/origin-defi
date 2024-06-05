@@ -59,15 +59,8 @@ export const UnlockAllModal = (props: DialogProps) => {
       args: [lockups?.map((l) => BigInt(l.lockupId)) ?? []],
     },
     activity: {
-      type: 'transaction',
-      title: intl.formatMessage({ defaultMessage: 'Unlock all' }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage:
-            '{count,plural, =1{# position} other{# positions}} unlocked',
-        },
-        { count: lockups?.length ?? 0 },
-      ),
+      type: 'unstake-all',
+      count: lockups?.length ?? 0,
     },
     callbacks: {
       onWriteSuccess: () => {

@@ -20,11 +20,12 @@ export const useActivity = <T extends Activity = Activity>() => {
     activity,
     pushActivity: useCallback(
       (input: T) => {
-        const activity = _pushActivity(input);
-        setActivity(activity);
-        return activity;
+        if (activity) _deleteActivity(activity.id);
+        const newActivity = _pushActivity(input);
+        setActivity(newActivity);
+        return newActivity;
       },
-      [_pushActivity],
+      [activity, _deleteActivity, _pushActivity, setActivity],
     ),
     updateActivity: useCallback(
       (input: Partial<T>) => {
@@ -32,16 +33,17 @@ export const useActivity = <T extends Activity = Activity>() => {
         setActivity(activity);
         return activity;
       },
-      [_updateActivity],
+      [_updateActivity, setActivity],
     ),
     deleteActivity: useCallback(
       (reason?: Parameters<typeof _deleteActivity>[1]) => {
         if (activity) {
           _deleteActivity(activity.id, reason);
+          setActivity(undefined);
         }
         return activity;
       },
-      [_deleteActivity, activity],
+      [_deleteActivity, setActivity, activity],
     ),
   };
 };
@@ -87,8 +89,8 @@ export const useUpdateActivity = () => {
             );
             if (existing) {
               Object.assign(existing, activity);
+              existing = parse(stringify(existing));
             }
-            existing = parse(stringify(existing));
           }),
         );
         pushNotificationForActivity(existing);
@@ -106,20 +108,20 @@ export const useDeleteActivity = () => {
   return useCallback(
     (id: string | undefined | null, reason?: 'rejected') => {
       if (id) {
+        let activity: Activity | undefined = undefined;
         setState(
           produce((state) => {
             const idx = state.activities.findIndex((a) => id && a.id === id);
             if (idx > -1) {
-              const removed = state.activities.splice(idx, 1);
-              if (removed) {
-                pushNotificationForActivity(
-                  clone(removed) as unknown as Activity,
-                  { reason },
-                );
-              }
+              activity = clone(state.activities.splice(idx, 1)[0]) as Activity;
             }
           }),
         );
+        if (activity) {
+          pushNotificationForActivity(activity, {
+            reason,
+          });
+        }
       }
     },
     [pushNotificationForActivity, setState],
@@ -162,4 +164,15 @@ export const useActivitiesStatus = () => {
   }, [activities]);
 
   return status;
+};
+
+export const useClearActivity = () => {
+  const [, setState] = useActivityState();
+  return useCallback(() => {
+    setState(
+      produce((state) => {
+        state.activities = [];
+      }),
+    );
+  }, [setState]);
 };

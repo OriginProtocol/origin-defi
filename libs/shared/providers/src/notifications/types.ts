@@ -21,6 +21,7 @@ export type Notification = {
 };
 
 export type NotificationOptions = {
+  id?: string;
   severity?: AlertColor | string;
   title?: string;
   message?: string;

@@ -1,4 +1,4 @@
-import { Typography } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import {
   ActivityIcon,
   ErrorTooltipLabel,
@@ -6,6 +6,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { getTokenById } from '@origin/shared/contracts';
+import { FaArrowRightRegular } from '@origin/shared/icons';
 import { formatAmount, isNilOrEmpty, txLink } from '@origin/shared/utils';
 import { defineMessage, useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -37,6 +38,8 @@ export const BridgeNotification = ({
   const config = useConfig();
   const tokenIn = getTokenById(activity.tokenIdIn);
   const tokenOut = getTokenById(activity.tokenIdOut);
+  const chainIn = config.chains.find((c) => c.id === tokenIn.chainId);
+  const chainOut = config.chains.find((c) => c.id === tokenOut.chainId);
   const amount = +formatUnits(activity.amountIn ?? 0n, tokenIn.decimals ?? 18);
   return (
     <NotificationSnack
@@ -56,21 +59,45 @@ export const BridgeNotification = ({
       subtitle={
         isNilOrEmpty(activity.error) ? (
           <Typography color="text.secondary">
-            {intl.formatMessage(
-              {
-                defaultMessage: '{amountIn} {symbolIn}',
-              },
-              {
-                amountIn: formatAmount(amount),
-                symbolIn: tokenIn.symbol,
-              },
-            )}
+            {tokenIn.symbol === tokenOut.symbol
+              ? intl.formatMessage(
+                  {
+                    defaultMessage:
+                      'Sending {amountIn} {symbolIn} to {chainOutName}.',
+                  },
+                  {
+                    amountIn: formatAmount(amount),
+                    symbolIn: tokenIn.symbol,
+                    symbolOut: tokenOut.symbol,
+                    chainInName: chainIn?.name,
+                    chainOutName: chainOut?.name,
+                  },
+                )
+              : intl.formatMessage(
+                  {
+                    defaultMessage:
+                      'Sending {amountIn} {symbolIn} as {symbolOut} to {chainOutName}.',
+                  },
+                  {
+                    amountIn: formatAmount(amount),
+                    symbolIn: tokenIn.symbol,
+                    symbolOut: tokenOut.symbol,
+                    chainInName: chainIn?.name,
+                    chainOutName: chainOut?.name,
+                  },
+                )}
           </Typography>
         ) : (
           <ErrorTooltipLabel>{activity.error}</ErrorTooltipLabel>
         )
       }
-      endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}
+      endIcon={
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
+          <FaArrowRightRegular sx={{ fontSize: 14 }} />
+          <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
+        </Stack>
+      }
     />
   );
 };

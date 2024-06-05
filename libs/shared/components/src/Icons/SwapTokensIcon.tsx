@@ -30,7 +30,7 @@ export const SwapTokensIcon = ({
       }}
     >
       <TokenIcon
-        key={tokenIn.symbol}
+        key={tokenIn.id}
         token={tokenIn}
         outlined
         sx={{
@@ -42,7 +42,7 @@ export const SwapTokensIcon = ({
         }}
       />
       <TokenIcon
-        key={tokenOut.symbol}
+        key={tokenOut.id}
         token={tokenOut}
         outlined
         sx={{

@@ -131,14 +131,7 @@ export const Swapper = ({
         });
       }}
       onSwapReject={({ trackId }) => {
-        deleteActivity(trackId);
-        pushNotification({
-          title: intl.formatMessage({ defaultMessage: 'Swap cancelled' }),
-          message: intl.formatMessage({
-            defaultMessage: 'User rejected operation',
-          }),
-          severity: 'warning',
-        });
+        deleteActivity(trackId, 'rejected');
       }}
       onSwapFailure={(state) => {
         const { error, trackId } = state;

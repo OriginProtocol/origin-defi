@@ -144,7 +144,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       <Stack spacing={2} py={1.5} px={2}>
         {split?.map((s) => (
           <SplitRow
-            key={s.token.symbol}
+            key={s.token.id}
             estimate={s}
             price={prices?.[getTokenPriceKey(s.token)]}
             isEstimateLoading={isEstimateLoading}

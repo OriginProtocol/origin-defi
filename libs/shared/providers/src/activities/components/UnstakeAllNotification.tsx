@@ -1,8 +1,18 @@
+/**
+ * title: intl.formatMessage({ defaultMessage: 'Unlock all' }),
+ *       subtitle: intl.formatMessage(
+ *         {
+ *           defaultMessage:
+ *             '{count,plural, =1{# position} other{# positions}} unlocked',
+ *         },
+ *         { count: lockups?.length ?? 0 },
+ *       ),
+ */
+
 import { Stack, Typography } from '@mui/material';
 import {
   ActivityIcon,
   ErrorTooltipLabel,
-  MiddleTruncatedLabel,
   NotificationSnack,
   TokenIcon,
 } from '@origin/shared/components';
@@ -14,10 +24,10 @@ import { defineMessage, useIntl } from 'react-intl';
 import type { StackProps } from '@mui/material';
 import type { MessageDescriptor } from 'react-intl';
 
-import type { ActivityStatus, UnstakeActivity } from '../types';
+import type { ActivityStatus, UnstakeAllActivity } from '../types';
 
-type UnstakeNotificationProps = {
-  activity: UnstakeActivity;
+type UnstakeAllNotificationProps = {
+  activity: UnstakeAllActivity;
   sx?: StackProps['sx'];
 };
 
@@ -29,19 +39,19 @@ const title: Record<ActivityStatus, MessageDescriptor> = {
   idle: defineMessage({ defaultMessage: 'Unlock' }),
 };
 
-export const UnstakeNotification = ({
+export const UnstakeAllNotification = ({
   activity: {
     status,
     tokenIdIn,
     tokenIdOut,
     amountIn,
     amountOut,
-    lockupId,
+    lockupIds,
     txHash,
     error,
   },
   sx,
-}: UnstakeNotificationProps) => {
+}: UnstakeAllNotificationProps) => {
   const intl = useIntl();
 
   const tokenIn = getTokenById(tokenIdIn);
@@ -60,15 +70,10 @@ export const UnstakeNotification = ({
           <Typography color="text.secondary">
             {intl.formatMessage(
               {
-                defaultMessage: 'Unstake lockup {lockup}',
+                defaultMessage:
+                  '{count,plural, =1{# position} other{# positions}} unlocked',
               },
-              {
-                lockup: (
-                  <MiddleTruncatedLabel maxWidth={60}>
-                    {lockupId.toString()}
-                  </MiddleTruncatedLabel>
-                ),
-              },
+              { count: lockupIds?.length ?? 0 },
             )}
           </Typography>
         ) : (

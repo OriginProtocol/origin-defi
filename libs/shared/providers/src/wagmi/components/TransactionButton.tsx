@@ -267,37 +267,9 @@ export const TransactionButton = ({
     if (prepareData?.request) {
       writeContract(prepareData.request);
       onClick?.();
-      if (!disableActivity) {
-        const activity = pushActivity(
-          activityInput ?? {
-            title:
-              typeof notificationTitle === 'string'
-                ? notificationTitle
-                : undefined,
-            subtitle:
-              typeof notificationSubtitle === 'string'
-                ? notificationSubtitle
-                : undefined,
-            type: 'transaction',
-            status: 'pending',
-          },
-        );
+      if (!disableActivity && activityInput) {
+        const activity = pushActivity(activityInput);
         setActivity(activity);
-      } else {
-        setActivity({
-          id: Date.now().toString(),
-          createdOn: Date.now(),
-          title:
-            typeof notificationTitle === 'string'
-              ? notificationTitle
-              : undefined,
-          subtitle:
-            typeof notificationSubtitle === 'string'
-              ? notificationSubtitle
-              : undefined,
-          type: 'transaction',
-          status: 'pending',
-        });
       }
       done.current = false;
     }

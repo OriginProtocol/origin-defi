@@ -103,25 +103,11 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    const act = args?.activity ?? {
-      type: 'transaction',
-      title: intl.formatMessage({ defaultMessage: 'Transaction executing' }),
-      subtitle: intl.formatMessage({
-        defaultMessage: 'Your operation is in progress',
-      }),
-      status: 'pending',
-    };
-    if (!args.disableActivity) {
-      pushActivity(act);
+    if (!args.disableActivity && args?.activity) {
+      pushActivity(args?.activity);
     }
     args?.callbacks?.onWrite?.();
-  }, [
-    args?.activity,
-    args?.callbacks,
-    args?.disableActivity,
-    intl,
-    pushActivity,
-  ]);
+  }, [args?.activity, args?.callbacks, args.disableActivity, pushActivity]);
 
   const onTxSigned = useCallback(() => {
     updateActivity({
@@ -179,25 +165,15 @@ export const useTxButton = <
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      const updatedActivity: Activity = {
-        ...(activity as Activity),
-        status: 'success',
-        txHash: txReceipt.transactionHash,
-      };
-      if (updatedActivity.type === 'transaction') {
-        updatedActivity.title = intl.formatMessage({
-          defaultMessage: 'Transaction executed',
-        });
-        updatedActivity.subtitle = intl.formatMessage({
-          defaultMessage: 'Your operation has been executed',
-        });
-      }
       if (!args?.disableActivity) {
-        updateActivity(updatedActivity);
+        updateActivity({
+          status: 'success',
+          txHash: txReceipt.transactionHash,
+        });
       }
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
-    [activity, args.callbacks, args.disableActivity, intl, updateActivity],
+    [args.callbacks, args.disableActivity, updateActivity],
   );
 
   const onWriteError = useCallback(

@@ -37,7 +37,7 @@ export const MultiTokenIcon = ({
     >
       {tokens.map((token, index, arr) => (
         <TokenIcon
-          key={token.symbol}
+          key={token.id}
           token={token}
           outlined
           sx={{

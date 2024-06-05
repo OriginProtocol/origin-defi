@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 
 import { Alert, AlertTitle, Box, LinearProgress, Stack } from '@mui/material';
 import { TooltipLabel } from '@origin/shared/components';
@@ -47,6 +47,13 @@ export const NotificationAlert = forwardRef<
     duration: hideDuration,
     countdown: hideDuration ? hideDuration / 100 : undefined,
   });
+
+  useEffect(() => {
+    setTimers({
+      duration: hideDuration,
+      countdown: hideDuration ? hideDuration / 100 : undefined,
+    });
+  }, [hideDuration]);
 
   useIntervalEffect(() => {
     setCountdown((prev) => prev - 1);

@@ -44,7 +44,7 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
         <Stack spacing={2} p={2}>
           {split?.map((s) => (
             <SplitRow
-              key={s.token.symbol}
+              key={s.token.id}
               estimate={s}
               price={prices?.[getTokenPriceKey(s.token)]}
               isEstimateLoading={isEstimateLoading}

@@ -1,15 +1,15 @@
-import { useIntl } from 'react-intl';
+import { Box } from '@mui/material';
 
 import {
   ApprovalNotification,
   BridgeNotification,
   RedeemNotification,
   SwapNotification,
-  TransactionNotification,
 } from '.';
 import { ClaimRewardsNotification } from './ClaimRewardsNotification';
 import { ExtendStakeNotification } from './ExtendStakeNotification';
 import { StakeNotification } from './StakeNotification';
+import { UnstakeAllNotification } from './UnstakeAllNotification';
 import { UnstakeNotification } from './UnstakeNotification';
 import { VoteNotification } from './VoteNotification';
 
@@ -26,15 +26,18 @@ import type {
   RedeemActivity,
   StakeActivity,
   SwapActivity,
-  TransactionActivity,
   UnstakeActivity,
+  UnstakeAllActivity,
   VoteActivity,
 } from '..';
 
-export const ActivityNotification = (
-  activity: Activity & { sx?: StackProps['sx'] },
-) => {
-  const intl = useIntl();
+export const ActivityNotification = ({
+  activity,
+  sx,
+}: {
+  activity: Activity;
+  sx?: StackProps['sx'];
+}) => {
   const types: Record<ActivityType, ReactNode> = {
     approval: <ApprovalNotification activity={activity as ApprovalActivity} />,
     bridge: <BridgeNotification activity={activity as BridgeActivity} />,
@@ -45,23 +48,15 @@ export const ActivityNotification = (
       <ExtendStakeNotification activity={activity as ExtendStakeActivity} />
     ),
     unstake: <UnstakeNotification activity={activity as UnstakeActivity} />,
+    'unstake-all': (
+      <UnstakeAllNotification activity={activity as UnstakeAllActivity} />
+    ),
     'claim-rewards': (
       <ClaimRewardsNotification activity={activity as ClaimRewardsActivity} />
     ),
     vote: <VoteNotification activity={activity as VoteActivity} />,
-    transaction: (
-      <TransactionNotification
-        {...(activity as TransactionActivity)}
-        title={
-          (activity as TransactionActivity)?.title ??
-          intl.formatMessage({
-            defaultMessage: 'New transaction',
-          })
-        }
-        subtitle={(activity as TransactionActivity)?.subtitle ?? ''}
-      />
-    ),
   };
 
-  return types[activity.type] ?? null;
+  const notification = types[activity.type];
+  return notification && <Box sx={sx}>{notification}</Box>;
 };

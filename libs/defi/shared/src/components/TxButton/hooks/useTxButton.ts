@@ -106,15 +106,8 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    if (!args.disableActivity) {
-      pushActivity(
-        args.activity ?? {
-          type: 'transaction',
-          title: intl.formatMessage({ defaultMessage: 'On-chain Transaction' }),
-          subtitle: intl.formatMessage({ defaultMessage: 'Transaction' }),
-          status: 'pending',
-        },
-      );
+    if (!args.disableActivity && args.activity) {
+      pushActivity(args.activity);
     }
     args.callbacks?.onWrite?.();
   }, [args.activity, args.callbacks, args.disableActivity, intl, pushActivity]);

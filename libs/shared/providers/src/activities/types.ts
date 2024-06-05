@@ -27,13 +27,6 @@ export interface BridgeActivity extends ActivityBase {
   amountIn: bigint;
 }
 
-export interface TransactionActivity extends ActivityBase {
-  type: 'transaction';
-  title?: string;
-  subtitle?: string;
-  endIcon?: IconType;
-}
-
 export interface RedeemActivity extends ActivityBase {
   type: 'redeem';
   tokenIdIn: TokenId;
@@ -84,6 +77,15 @@ export interface UnstakeActivity extends ActivityBase {
   lockupId: bigint;
 }
 
+export interface UnstakeAllActivity extends ActivityBase {
+  type: 'unstake-all';
+  tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
+  amountIn: bigint;
+  amountOut?: bigint;
+  lockupIds: bigint[];
+}
+
 export interface ClaimRewardsActivity extends ActivityBase {
   type: 'claim-rewards';
   tokenIdIn: TokenId;
@@ -99,13 +101,13 @@ export interface VoteActivity extends ActivityBase {
 
 export type Activity =
   | BridgeActivity
-  | TransactionActivity
   | RedeemActivity
   | SwapActivity
   | ApprovalActivity
   | StakeActivity
   | ExtendStakeActivity
   | UnstakeActivity
+  | UnstakeAllActivity
   | ClaimRewardsActivity
   | VoteActivity;
 
