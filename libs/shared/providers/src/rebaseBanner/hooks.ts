@@ -8,6 +8,7 @@ export const useIsRebaseBannerVisible = () => {
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
     functionName: 'rebaseState',
+    chainId: tokens.mainnet.OETH.chainId,
     args: [address ?? ZERO_ADDRESS],
     query: { enabled: !!address },
   });

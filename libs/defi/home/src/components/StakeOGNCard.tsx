@@ -1,5 +1,5 @@
 import { Button, Card, Stack, Typography } from '@mui/material';
-import { useOgnStakingApy } from '@origin/defi/shared';
+import { useXOgnStakingApy } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -8,7 +8,7 @@ import type { CardProps } from '@mui/material';
 
 export const StakeOGNCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: staking, isLoading: isStakingLoading } = useOgnStakingApy();
+  const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy();
 
   return (
     <Card
@@ -56,14 +56,14 @@ export const StakeOGNCard = (props: CardProps) => {
           variant="featured1"
           fontWeight="bold"
         >
-          {intl.formatNumber(staking?.ognApy ?? 0, {
+          {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}
         </LoadingLabel>
         <Typography variant="body2">
-          {intl.formatMessage({ defaultMessage: 'Current vAPY' })}
+          {intl.formatMessage({ defaultMessage: 'Max vAPY' })}
         </Typography>
       </Stack>
       <Stack

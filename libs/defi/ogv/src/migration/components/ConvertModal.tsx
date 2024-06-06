@@ -380,7 +380,7 @@ export const ConvertModal = ({
             mb={1.5}
             tooltipLabel={intl.formatMessage({
               defaultMessage:
-                'The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date.',
+                'The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup',
             })}
           >
             {intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
@@ -518,7 +518,7 @@ export const ConvertModal = ({
               color="primary.main"
               isLoading={isXOgnStakingLoading}
             >
-              {intl.formatNumber(xOgnStaking?.xOgnApy ?? 0, {
+              {intl.formatNumber(xOgnStaking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

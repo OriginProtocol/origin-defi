@@ -26,11 +26,12 @@ import {
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useReadContract } from 'wagmi';
+
+import { useStartLockupPolling } from '../hooks';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 
@@ -46,11 +47,12 @@ export const UnstakeLockupModal = ({
   const { formatAmount, formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-  const queryClient = useQueryClient();
+  const startPolling = useStartLockupPolling();
   const { data: previewOgn, isLoading: isPreviewOgnLoading } = useReadContract({
     address: tokens.mainnet.xOGN.address,
     abi: tokens.mainnet.xOGN.abi,
     functionName: 'previewWithdraw',
+    chainId: tokens.mainnet.xOGN.chainId,
     args: [BigInt(lockup.amount), BigInt(getUnixTime(lockup.end))],
   });
   const { params, callbacks, gasPrice } = useTxButton({
@@ -77,8 +79,8 @@ export const UnstakeLockupModal = ({
     },
     callbacks: {
       onWriteSuccess: () => {
+        startPolling(lockup.lockupId);
         rest?.onClose?.({}, 'backdropClick');
-        queryClient.invalidateQueries();
       },
     },
     enableGas: true,

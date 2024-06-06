@@ -45,15 +45,20 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useStartLockupPolling } from '../hooks';
+
 import type { ButtonProps, DialogProps } from '@mui/material';
 
 import type { Lockup } from '../types';
 
-export type ExtendFormModalProps = {
+export type ExtendLockupModalProps = {
   lockup: Lockup;
 } & DialogProps;
 
-export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
+export const ExtendLockupModal = ({
+  lockup,
+  ...rest
+}: ExtendLockupModalProps) => {
   const amount = BigInt(lockup.amount);
   const initialMonthDuration = Math.max(
     0,
@@ -63,6 +68,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const startPolling = useStartLockupPolling();
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [duration, setDuration] = useState(initialMonthDuration);
@@ -103,6 +109,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
     },
     callbacks: {
       onWriteSuccess: () => {
+        startPolling(lockup.lockupId);
         rest?.onClose?.({}, 'backdropClick');
       },
     },
@@ -125,11 +132,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
   useEffect(() => {
     if (
       isLoading &&
-      (!isNilOrEmpty(staking?.xOgnApy) || duration === initialMonthDuration)
+      (!isNilOrEmpty(staking?.xOgnApyPercentage) ||
+        duration === initialMonthDuration)
     ) {
       setIsLoading(false);
     }
-  }, [duration, initialMonthDuration, isLoading, staking?.xOgnApy]);
+  }, [duration, initialMonthDuration, isLoading, staking?.xOgnApyPercentage]);
 
   const handleDurationChange = (_: Event, newValue: number | number[]) => {
     const val = newValue as number;
@@ -362,7 +370,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -515,7 +523,7 @@ export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
           rest?.onClick?.(e);
         }}
       />
-      <ExtendFormModal
+      <ExtendLockupModal
         key={open ? 'open' : 'closed'}
         lockup={lockup}
         open={open}

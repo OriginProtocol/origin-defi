@@ -49,7 +49,6 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   createColumnHelper,
   flexRender,
@@ -61,6 +60,7 @@ import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useStartLockupPolling } from '../hooks';
 import { useOgnLockupsQuery } from '../queries.generated';
 
 import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
@@ -74,7 +74,7 @@ export const StakeRewardModal = (props: DialogProps) => {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { address } = useAccount();
-  const queryClient = useQueryClient();
+  const startPolling = useStartLockupPolling();
   const once = useRef(false);
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
@@ -114,8 +114,8 @@ export const StakeRewardModal = (props: DialogProps) => {
     },
     callbacks: {
       onWriteSuccess: () => {
+        startPolling(addToExisting && lockupId ? lockupId : undefined);
         props?.onClose?.({}, 'backdropClick');
-        queryClient.invalidateQueries();
       },
     },
     activity: {
@@ -156,7 +156,10 @@ export const StakeRewardModal = (props: DialogProps) => {
   }, [info?.ognBalance, isInfoLoading]);
 
   useEffect(() => {
-    if (isLoading && (!isNilOrEmpty(staking?.xOgnApy) || duration === 0)) {
+    if (
+      isLoading &&
+      (!isNilOrEmpty(staking?.xOgnApyPercentage) || duration === 0)
+    ) {
       setIsLoading(false);
     }
   }, [amount, staking, duration, isLoading]);
@@ -478,7 +481,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

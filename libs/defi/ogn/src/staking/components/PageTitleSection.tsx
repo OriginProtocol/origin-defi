@@ -1,5 +1,5 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { ColorChip, useOgnStakingApy } from '@origin/defi/shared';
+import { ColorChip, useXOgnStakingApy } from '@origin/defi/shared';
 import {
   LoadingLabel,
   MultiTokenIcon,
@@ -14,7 +14,7 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useOgnStakingApy();
+  const { data: apy, isLoading: isApyLoading } = useXOgnStakingApy();
 
   return (
     <Stack
@@ -33,13 +33,13 @@ export const PageTitleSection = (props: StackProps) => {
           color="inherit"
           fontWeight="bold"
         >
-          {intl.formatNumber(apy?.ognApy ?? 0, {
+          {intl.formatNumber(apy?.xOgnApyPercentage ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
           })}
         </LoadingLabel>
         <Typography variant="caption1" color="inherit">
-          {intl.formatMessage({ defaultMessage: 'APY' })}
+          {intl.formatMessage({ defaultMessage: 'Max vAPY' })}
         </Typography>
       </ColorChip>
       <Button component={RouterLink} to="/more/migration" sx={{ gap: 0.5 }}>
