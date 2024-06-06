@@ -171,7 +171,7 @@ function BalanceList(props: StackProps) {
         <BalanceRow
           key={tok.symbol}
           token={tok}
-          balance={+formatUnits(balances?.[tok.symbol] ?? 0n, tok.decimals)}
+          balance={+formatUnits(balances?.[tok.id] ?? 0n, tok.decimals)}
           price={prices?.[getTokenPriceKey(tok)] ?? 0}
           isBalanceLoading={balancesLoading}
           isPriceLoading={isPricesLoading}

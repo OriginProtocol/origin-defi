@@ -24,11 +24,7 @@ import {
   InfoTooltip,
   ValueLabel,
 } from '@origin/shared/components';
-import {
-  contracts,
-  getNativeToken,
-  getTokenId,
-} from '@origin/shared/contracts';
+import { contracts, getNativeToken } from '@origin/shared/contracts';
 import { ChainlinkCCIP, FaArrowDownRegular } from '@origin/shared/icons';
 import {
   isNativeCurrency,
@@ -78,7 +74,7 @@ export const BridgeCard = () => {
     tokens: [nativeToken, srcToken, dstToken],
   });
 
-  const srcBalance = balances?.[getTokenId(srcToken)];
+  const srcBalance = balances?.[srcToken.id];
   const srcRouter = ccipRouter[srcChain.id];
 
   const isErc20 = !isNativeCurrency(srcToken);
@@ -160,7 +156,7 @@ export const BridgeCard = () => {
   const insufficientNativeBalance =
     !txButton.params?.value ||
     !balances ||
-    balances[getTokenId(nativeToken)] < txButton.params?.value;
+    balances[nativeToken.id] < txButton.params?.value;
   const requiresApproval =
     isErc20 &&
     !isNilOrEmpty(allowance) &&
@@ -218,7 +214,7 @@ export const BridgeCard = () => {
             isTokenClickDisabled={srcTokens.length === 1}
             amount={amount}
             onAmountChange={handleChangeAmount}
-            balance={balances?.[getTokenId(srcToken)]}
+            balance={balances?.[srcToken.id]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.srcPrice}
             isPriceLoading={prices.isLoading}
@@ -272,7 +268,7 @@ export const BridgeCard = () => {
             readOnly
             isTokenClickDisabled={dstTokens.length === 1}
             amount={ccipTxParams.data?.amountOut ?? 0n}
-            balance={balances?.[getTokenId(dstToken)]}
+            balance={balances?.[dstToken.id]}
             isBalanceLoading={isBalancesLoading}
             tokenPriceUsd={prices.dstPrice}
             isPriceLoading={prices.isLoading}

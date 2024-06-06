@@ -23,7 +23,6 @@ import {
   SwapTokensIcon,
   TokenIcon,
 } from '@origin/shared/components';
-import { getTokenId } from '@origin/shared/contracts';
 import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
@@ -277,14 +276,14 @@ function SwapperWrapped({
     tokenIn.chainId === chainId &&
     amountIn > 0n &&
     !isBalancesLoading &&
-    (balances?.[getTokenId(tokenIn)] ?? 0n) >= amountIn &&
+    (balances?.[tokenIn.id] ?? 0n) >= amountIn &&
     !isNilOrEmpty(selectedSwapRoute) &&
     (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
     (allowance ?? 0n) < amountIn;
   const swapButtonLabel =
     amountIn === 0n
       ? intl.formatMessage({ defaultMessage: 'Enter an amount' })
-      : amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n)
+      : amountIn > (balances?.[tokenIn.id] ?? 0n)
         ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
         : !isNilOrEmpty(selectedSwapRoute)
           ? intl.formatMessage(
@@ -299,7 +298,7 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isApprovalLoading ||
     isApprovalWaitingForSignature ||
-    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n);
+    amountIn > (balances?.[tokenIn.id] ?? 0n);
   const swapButtonDisabled =
     needsApproval ||
     isNilOrEmpty(selectedSwapRoute) ||
@@ -307,7 +306,7 @@ function SwapperWrapped({
     isSwapRoutesLoading ||
     isSwapLoading ||
     isSwapWaitingForSignature ||
-    amountIn > (balances?.[getTokenId(tokenIn)] ?? 0n) ||
+    amountIn > (balances?.[tokenIn.id] ?? 0n) ||
     amountIn === 0n;
 
   return (
@@ -341,7 +340,7 @@ function SwapperWrapped({
               amount={amountIn}
               decimals={tokenIn.decimals}
               onAmountChange={handleAmountInChange}
-              balance={balances?.[getTokenId(tokenIn)] ?? 0n}
+              balance={balances?.[tokenIn.id] ?? 0n}
               isBalanceLoading={isBalancesLoading}
               isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
@@ -365,7 +364,7 @@ function SwapperWrapped({
               disableMaxButton
               amount={amountOut}
               decimals={tokenOut.decimals}
-              balance={balances?.[getTokenId(tokenOut)] ?? 0n}
+              balance={balances?.[tokenOut.id] ?? 0n}
               isAmountLoading={isSwapRoutesLoading}
               isBalanceLoading={isBalancesLoading}
               isNativeCurrency={isNativeCurrency(tokenOut)}
