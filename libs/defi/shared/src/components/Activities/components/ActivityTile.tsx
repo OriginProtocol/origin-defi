@@ -1,15 +1,16 @@
 import { Stack, Typography } from '@mui/material';
-import { ExternalLink } from '@origin/shared/components';
+import { ErrorTooltipLabel, ExternalLink } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import { activityOptions } from '../constants';
 import { ActivityIcon } from './ActivityIcon';
 
-import type { Activity } from '..';
-import type { TileProps } from './Tile';
+import type { StackProps } from '@mui/material';
 
-export type ActivityTileProps = { activity: Activity } & Pick<TileProps, 'sx'>;
+import type { Activity } from '..';
+
+export type ActivityTileProps = { activity: Activity } & StackProps;
 
 export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
   const intl = useIntl();
@@ -34,7 +35,11 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
           )}
         </Stack>
         <Stack direction="row" alignItems="center">
-          <Typography color="text.secondary">{subtitle}</Typography>
+          {isNilOrEmpty(activity?.error) ? (
+            <Typography color="text.secondary">{subtitle}</Typography>
+          ) : (
+            <ErrorTooltipLabel>{activity.error}</ErrorTooltipLabel>
+          )}
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
