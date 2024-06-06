@@ -42,6 +42,7 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
         abi: tokens.mainnet.xOGN.abi,
         functionName: 'previewPoints',
         args: [amt, getMonthDurationToSeconds(monthDuration)],
+        chainId: tokens.mainnet.xOGN.chainId,
       }),
     ]);
 

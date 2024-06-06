@@ -14,10 +14,7 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useXOgnStakingApy(
-    undefined,
-    12,
-  );
+  const { data: apy, isLoading: isApyLoading } = useXOgnStakingApy();
 
   return (
     <Stack

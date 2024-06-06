@@ -25,12 +25,14 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
           address: contracts.mainnet.OGNFixedRewardSource.address,
           abi: contracts.mainnet.OGNFixedRewardSource.abi,
           functionName: 'rewardConfig',
+          chainId: contracts.mainnet.OGNFixedRewardSource.chainId,
         },
         {
           address: tokens.mainnet.OGN.address,
           abi: tokens.mainnet.OGN.abi,
           functionName: 'balanceOf',
           args: [tokens.mainnet.xOGN.address],
+          chainId: tokens.mainnet.OGN.chainId,
         },
       ],
     });

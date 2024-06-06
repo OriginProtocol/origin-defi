@@ -8,10 +8,7 @@ import type { CardProps } from '@mui/material';
 
 export const StakeOGNCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy(
-    undefined,
-    12,
-  );
+  const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy();
 
   return (
     <Card
