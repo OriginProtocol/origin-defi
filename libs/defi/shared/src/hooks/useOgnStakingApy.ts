@@ -9,7 +9,11 @@ import type { Config } from '@wagmi/core';
 
 type Key = ['useOgnStakingApy'];
 
-type Result = { ognRewardsPerYear: number; ognStaked: number; ognApy: number };
+type Result = {
+  ognRewardsPerYear: number;
+  ognStaked: number;
+  ognApyPercentage: number;
+};
 
 const getKey = (): Key => ['useOgnStakingApy'];
 
@@ -21,12 +25,14 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
           address: contracts.mainnet.OGNFixedRewardSource.address,
           abi: contracts.mainnet.OGNFixedRewardSource.abi,
           functionName: 'rewardConfig',
+          chainId: contracts.mainnet.OGNFixedRewardSource.chainId,
         },
         {
           address: tokens.mainnet.OGN.address,
           abi: tokens.mainnet.OGN.abi,
           functionName: 'balanceOf',
           args: [tokens.mainnet.xOGN.address],
+          chainId: tokens.mainnet.OGN.chainId,
         },
       ],
     });
@@ -44,13 +50,13 @@ const fetcher: (config: Config) => QueryFunction<Result, Key> =
         : 0;
     const ognStaked =
       res?.[1]?.status === 'success'
-        ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.OGN.decimals)
+        ? +formatUnits(res?.[1]?.result ?? 0n, tokens.mainnet.xOGN.decimals)
         : 0;
 
     return {
       ognRewardsPerYear,
       ognStaked,
-      ognApy: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
+      ognApyPercentage: ognStaked === 0 ? 0 : ognRewardsPerYear / ognStaked,
     };
   };
 

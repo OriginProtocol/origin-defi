@@ -22,9 +22,12 @@ import type { CardProps } from '@mui/material';
 export const LockupsCard = (props: CardProps) => {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
-  const { data: lockups, isFetching: isLockupsFetching } = useOgnLockupsQuery(
+  const { data: lockups, isLoading: isLockupsFetching } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data.esLockups },
+    {
+      enabled: !!address,
+      select: (data) => data.esLockups,
+    },
   );
 
   return (

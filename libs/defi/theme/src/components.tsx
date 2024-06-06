@@ -244,6 +244,9 @@ export const components = (base: Theme): ThemeOptions => ({
           ...theme.typography.body3,
           fontWeight: theme.typography.fontWeightMedium,
         }),
+        action: ({ theme }) => ({
+          margin: 0,
+        }),
       },
     },
     MuiCardContent: {

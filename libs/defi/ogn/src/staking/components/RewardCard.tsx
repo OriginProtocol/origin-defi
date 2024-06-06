@@ -31,6 +31,7 @@ export const RewardCard = (props: CardProps) => {
     abi: tokens.mainnet.xOGN.abi,
     functionName: 'previewRewards',
     args: [address ?? ZERO_ADDRESS],
+    chainId: tokens.mainnet.xOGN.chainId,
   });
   const { params, callbacks } = useTxButton({
     params: {

@@ -172,6 +172,7 @@ function Actions(props: StackProps) {
     abi: contracts.mainnet.OUSDGovernance.abi,
     functionName: 'getActions',
     args: [BigInt(proposalId ?? '')],
+    chainId: contracts.mainnet.OUSDGovernance.chainId,
     query: {
       enabled: !!proposalId,
       select: (data) =>

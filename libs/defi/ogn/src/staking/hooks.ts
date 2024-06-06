@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { useOgnStakingApy } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
@@ -7,6 +9,7 @@ import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useOgnLockupsQuery } from './queries.generated';
+import { useLockupPolling } from './state';
 
 import type { OgnLockupsQuery } from './queries.generated';
 
@@ -77,12 +80,12 @@ export const useMyVApy = () => {
           tokens.mainnet.xOGN.decimals,
         );
         const vAPY =
-          ognRewardsPerYear *
-          (+formatUnits(
-            BigInt(curr?.points ?? '0'),
-            tokens.mainnet.xOGN.decimals,
-          ) /
-            (totalSupply === 0 ? 1 : totalSupply));
+          (ognRewardsPerYear *
+            +formatUnits(
+              BigInt(curr?.points ?? '0'),
+              tokens.mainnet.xOGN.decimals,
+            )) /
+          (totalSupply === 0 ? 1 : totalSupply);
 
         const weight =
           +formatUnits(BigInt(curr.amount), tokens.mainnet.OGN.decimals) /
@@ -92,4 +95,15 @@ export const useMyVApy = () => {
       }, 0);
     },
   });
+};
+
+export const useStartLockupPolling = () => {
+  const [, setPolling] = useLockupPolling();
+
+  return useCallback(
+    (lockupId?: string) => {
+      setPolling((prev) => ({ ...prev, refetchInterval: 2000, lockupId }));
+    },
+    [setPolling],
+  );
 };

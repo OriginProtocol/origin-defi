@@ -36,17 +36,18 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
-import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
+import { useStartLockupPolling } from '../hooks';
+
 export const StakingForm = () => {
   const intl = useIntl();
   const { formatQuantity, formatAmount } = useFormat();
   const theme = useTheme();
-  const queryClient = useQueryClient();
+  const startPolling = useStartLockupPolling();
   const { address, isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const [amount, setAmount] = useState(0n);
@@ -92,7 +93,7 @@ export const StakingForm = () => {
     },
     callbacks: {
       onWriteSuccess: () => {
-        queryClient.invalidateQueries();
+        startPolling();
         setAmount(0n);
         setDuration(1);
       },
@@ -114,10 +115,14 @@ export const StakingForm = () => {
   );
 
   useEffect(() => {
-    if (isLoading && !isStakingLoading && !isNilOrEmpty(staking?.xOgnApy)) {
+    if (
+      isLoading &&
+      !isStakingLoading &&
+      !isNilOrEmpty(staking?.xOgnApyPercentage)
+    ) {
       setIsLoading(false);
     }
-  }, [isLoading, isStakingLoading, staking?.xOgnApy]);
+  }, [isLoading, isStakingLoading, staking?.xOgnApyPercentage]);
 
   const handleAmountChange = (val: bigint) => {
     setIsLoading(duration > 0);
@@ -331,7 +336,7 @@ export const StakingForm = () => {
               isLoading={isLoading}
             >
               ~
-              {intl.formatNumber(staking?.xOgnApy ?? 0, {
+              {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

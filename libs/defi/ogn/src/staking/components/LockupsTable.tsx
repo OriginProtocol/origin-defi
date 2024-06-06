@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import {
   Box,
   Button,
+  Skeleton,
   Stack,
   Table,
   TableBody,
@@ -31,7 +32,9 @@ import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useOgnLockupsQuery } from '../queries.generated';
-import { ExtendButton } from './ExtendFormModal';
+import { useLockupPolling } from '../state';
+import { AddButton } from './AddToLockupModal';
+import { ExtendButton } from './ExtendLockupModal';
 import { UnstakeLockupButton } from './UnstakeLockupModal';
 
 import type { Lockup } from '../types';
@@ -43,6 +46,7 @@ export const LockupsTable = () => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const { address } = useAccount();
+  const [{ lockupId, refetchInterval }] = useLockupPolling();
   const { data: govInfo, isLoading: isGovInfoLoading } = useOgnInfo();
   const { data, isLoading } = useOgnLockupsQuery(
     { address: address ?? ZERO_ADDRESS },
@@ -136,6 +140,19 @@ export const LockupsTable = () => {
       columnHelper.display({
         id: 'action',
         cell: (info) => {
+          if (info.row.original.lockupId === lockupId) {
+            return (
+              <Stack
+                direction="row"
+                spacing={1}
+                alignItems="center"
+                justifyContent="center"
+              >
+                <Skeleton width={275} height={37} />
+              </Stack>
+            );
+          }
+
           return (
             <Stack
               direction="row"
@@ -157,6 +174,13 @@ export const LockupsTable = () => {
               >
                 {intl.formatMessage({ defaultMessage: 'Unlock' })}
               </UnstakeLockupButton>
+              <AddButton
+                lockup={info.row.original}
+                variant="outlined"
+                color="secondary"
+              >
+                {intl.formatMessage({ defaultMessage: 'Add' })}
+              </AddButton>
               <Button
                 variant="outlined"
                 color="secondary"
@@ -174,7 +198,14 @@ export const LockupsTable = () => {
         },
       }),
     ],
-    [govInfo?.xOgnTotalSupply, intl, isGovInfoLoading, isLoading, isSm],
+    [
+      govInfo?.xOgnTotalSupply,
+      intl,
+      isGovInfoLoading,
+      isLoading,
+      isSm,
+      lockupId,
+    ],
   );
 
   const table = useReactTable({
@@ -218,6 +249,13 @@ export const LockupsTable = () => {
             ))}
           </TableHead>
           <TableBody>
+            {refetchInterval !== false && !lockupId && (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Skeleton width="100%" height={37} />
+                </TableCell>
+              </TableRow>
+            )}
             {table.getRowModel().rows.map((row) => (
               <TableRow key={row.id}>
                 {row.getVisibleCells().map((cell, index) => (
