@@ -82,6 +82,7 @@ export const useDeleteActivity = () => {
 export const useActivitiesStatus = () => {
   const [{ activities }] = useActivityState();
   const [status, setStatus] = useState<ActivityStatus>('idle');
+  const [pendingCount, setPendingCount] = useState(0);
   const prev = usePrevious(activities);
 
   useEffect(() => {
@@ -94,6 +95,7 @@ export const useActivitiesStatus = () => {
         prevGrouped?.success?.length !== grouped?.success?.length
       ) {
         setStatus('success');
+        setPendingCount(0);
         setTimeout(() => {
           setStatus('idle');
         }, 5000);
@@ -102,19 +104,22 @@ export const useActivitiesStatus = () => {
         prevGrouped?.error?.length !== grouped?.error?.length
       ) {
         setStatus('error');
+        setPendingCount(0);
         setTimeout(() => {
           setStatus('idle');
         }, 5000);
       } else {
         setStatus('idle');
+        setPendingCount(0);
       }
     } else {
       setStatus('pending');
+      setPendingCount(grouped.pending?.length ?? 0);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activities]);
 
-  return status;
+  return { status, pendingCount };
 };
 
 export const useClearActivities = () => {

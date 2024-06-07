@@ -22,7 +22,14 @@ export const OpenAccountModalButton = forwardRef<
   OpenAccountModalButtonProps
 >(
   (
-    { connectLabel, connectedProps, disconnectedProps, hideAddress, ...rest },
+    {
+      connectLabel,
+      connectedProps,
+      disconnectedProps,
+      hideAddress,
+      children,
+      ...rest
+    },
     ref,
   ) => {
     const intl = useIntl();
@@ -74,7 +81,9 @@ export const OpenAccountModalButton = forwardRef<
                 onClick={(evt: MouseEvent<HTMLButtonElement>) => {
                   rest?.onClick?.(evt);
                 }}
-              />
+              >
+                {children}
+              </AccountButton>
             );
           }}
         </ConnectButton.Custom>

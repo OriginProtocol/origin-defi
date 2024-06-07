@@ -1,10 +1,8 @@
-import { keyframes } from '@emotion/react';
-import { SvgIcon, useTheme } from '@mui/material';
+import { CircularProgress, SvgIcon, useTheme } from '@mui/material';
 import {
   Activity,
   FaCircleCheckRegular,
   FaCircleXmarkRegular,
-  Pending,
 } from '@origin/shared/icons';
 
 import type { SvgIconProps } from '@mui/material';
@@ -16,12 +14,6 @@ export type ActivityIconStatus =
   | 'signed'
   | 'success'
   | 'error';
-
-const spin = keyframes`
-  to {
-    transform: rotate(360deg);
-  }
-`;
 
 export type ActivityIconProps = {
   status: ActivityIconStatus;
@@ -45,28 +37,8 @@ export const ActivityIcon = ({
 
   return {
     idle: <Activity {...rest} />,
-    pending: (
-      <Pending
-        {...rest}
-        {...(!disablePendingSpin && {
-          sx: {
-            animation: `${spin} 3s linear infinite`,
-            ...rest?.sx,
-          },
-        })}
-      />
-    ),
-    signed: (
-      <Pending
-        {...rest}
-        {...(!disablePendingSpin && {
-          sx: {
-            animation: `${spin} 3s linear infinite`,
-            ...rest?.sx,
-          },
-        })}
-      />
-    ),
+    pending: <CircularProgress size={16} />,
+    signed: <CircularProgress size={16} />,
     error: (
       <SvgIcon {...rest}>
         <FaCircleXmarkRegular sx={{ color: theme.palette.error.main }} />

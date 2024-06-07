@@ -4,17 +4,21 @@ import {
   alpha,
   Box,
   Button,
+  CircularProgress,
   Drawer,
+  Stack,
+  Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { trackEvent } from '@origin/defi/shared';
+import { trackEvent, useActivitiesStatus } from '@origin/defi/shared';
 import { FaBarsRegular, OriginLabel } from '@origin/shared/icons';
 import {
   ChainMenuButton,
   OpenAccountModalButton,
 } from '@origin/shared/providers';
+import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
@@ -23,6 +27,7 @@ import { DrawerMenu } from './DrawerMenu';
 import { HoverMenu } from './HoverMenu';
 
 export const Topnav = () => {
+  const intl = useIntl();
   const { isConnected } = useAccount();
   const theme = useTheme();
   const isMd = useMediaQuery(theme.breakpoints.down('lg'));
@@ -30,6 +35,9 @@ export const Topnav = () => {
   const accountMenuAnchorEl = useRef(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { status, pendingCount } = useActivitiesStatus();
+
+  const isLoading = status === 'pending' && pendingCount > 0;
 
   return (
     <>
@@ -151,7 +159,21 @@ export const Topnav = () => {
                 sx: { '&&&': { minWidth: 80, borderRadius: 2 } },
               }}
               hideAddress={isMd}
-            />
+            >
+              {isLoading ? (
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <CircularProgress size={16} />
+                  {!isMd && (
+                    <Typography noWrap color="primary.main">
+                      {intl.formatMessage(
+                        { defaultMessage: '{pendingCount} pending' },
+                        { pendingCount },
+                      )}
+                    </Typography>
+                  )}
+                </Stack>
+              ) : null}
+            </OpenAccountModalButton>
             <AccountPopover
               open={accountMenuOpen}
               anchorEl={accountMenuAnchorEl}
