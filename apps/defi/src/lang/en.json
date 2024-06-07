@@ -2693,6 +2693,16 @@
       "value": "Receive amount"
     }
   ],
+  "nE87EV": [
+    {
+      "type": 1,
+      "value": "pendingCount"
+    },
+    {
+      "type": 0,
+      "value": " pending"
+    }
+  ],
   "nc8QpJ": [
     {
       "type": 0,

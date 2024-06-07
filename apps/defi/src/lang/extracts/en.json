@@ -1061,6 +1061,9 @@
   "n6nILs": {
     "defaultMessage": "Receive amount"
   },
+  "nE87EV": {
+    "defaultMessage": "{pendingCount} pending"
+  },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
   },
