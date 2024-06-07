@@ -1,8 +1,13 @@
-import { Stack } from '@mui/material';
-import { BadgeIcon, TokenIcon } from '@origin/shared/components';
+import {
+  BadgeIcon,
+  SwapTokensIcon,
+  TokenIcon,
+} from '@origin/shared/components';
 import { getTokenById } from '@origin/shared/contracts';
 import {
+  FaArrowDownRegular,
   FaArrowRightRegular,
+  FaArrowUpRegular,
   FaCircleCheckRegular,
 } from '@origin/shared/icons';
 import { format } from 'dnum';
@@ -68,8 +73,11 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       return (
         <BadgeIcon
           badgeContent={
-            <FaCircleCheckRegular color="primary" sx={{ fontSize: 10 }} />
+            <FaCircleCheckRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
           }
+          badgeBkgColor="primary.main"
         >
           <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
         </BadgeIcon>
@@ -115,16 +123,20 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
           );
     },
     icon: (activity) => {
-      const { tokenIdIn, tokenIdOut } = activity as BridgeActivity;
+      const { tokenIdIn } = activity as BridgeActivity;
       const tokenIn = getTokenById(tokenIdIn);
-      const tokenOut = getTokenById(tokenIdOut);
 
       return (
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
-          <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
-        </Stack>
+        <BadgeIcon
+          badgeContent={
+            <FaArrowUpRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
       );
     },
   },
@@ -155,7 +167,18 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as ClaimRewardsActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return (
+        <BadgeIcon
+          badgeContent={
+            <FaArrowDownRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      );
     },
   },
   delegate: {
@@ -192,7 +215,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as ClaimRewardsActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />;
     },
   },
   'extend-stake': {
@@ -224,7 +247,18 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as ExtendStakeActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return (
+        <BadgeIcon
+          badgeContent={
+            <FaArrowRightRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      );
     },
   },
   migrate: {
@@ -304,10 +338,11 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       );
     },
     icon: (activity) => {
-      const { tokenIdIn } = activity as MigrateActivity;
+      const { tokenIdIn, tokenIdLiquid } = activity as MigrateActivity;
       const tokenIn = getTokenById(tokenIdIn);
+      const tokenOut = getTokenById(tokenIdLiquid);
 
-      return <TokenIcon token={tokenIn} />;
+      return <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={40} />;
     },
   },
   redeem: {
@@ -333,7 +368,18 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as RedeemActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return (
+        <BadgeIcon
+          badgeContent={
+            <FaArrowDownRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      );
     },
   },
   stake: {
@@ -362,7 +408,18 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as StakeActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return (
+        <BadgeIcon
+          badgeContent={
+            <FaArrowUpRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      );
     },
   },
   swap: {
@@ -394,13 +451,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const tokenIn = getTokenById(tokenIdIn);
       const tokenOut = getTokenById(tokenIdOut);
 
-      return (
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
-          <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
-        </Stack>
-      );
+      return <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={40} />;
     },
   },
   unstake: {
@@ -423,16 +474,20 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       );
     },
     icon: (activity) => {
-      const { tokenIdIn, tokenIdOut } = activity as UnstakeActivity;
+      const { tokenIdIn } = activity as UnstakeActivity;
       const tokenIn = getTokenById(tokenIdIn);
-      const tokenOut = getTokenById(tokenIdOut);
 
       return (
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
-          <FaArrowRightRegular sx={{ fontSize: 14 }} />
-          <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
-        </Stack>
+        <BadgeIcon
+          badgeContent={
+            <FaArrowDownRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
       );
     },
   },
@@ -461,7 +516,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as VoteActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />;
     },
   },
 };
