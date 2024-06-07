@@ -87,7 +87,7 @@ export const ConvertModal = ({
   const liquidConverted = mul(converted, (100 - stakingRatio) / 100);
   const stakedConverted =
     stakingRatio === 0
-      ? [0n, tokens.mainnet.OGV.decimals]
+      ? ([0n, tokens.mainnet.OGV.decimals] as const)
       : sub(mul(converted, stakingRatio / 100), 1e-9);
 
   const { data: xOgnStaking, isLoading: isXOgnStakingLoading } =
@@ -146,6 +146,16 @@ export const ConvertModal = ({
         queryClient.invalidateQueries();
         onClose?.({}, 'backdropClick');
       },
+    },
+    activity: {
+      type: 'migrate',
+      status: 'idle',
+      amountIn: total,
+      tokenIdIn: tokens.mainnet.OGV.id,
+      liquid: liquidConverted[0],
+      tokenIdLiquid: tokens.mainnet.OGN.id,
+      staked: stakedConverted[0],
+      tokenIdStaked: tokens.mainnet.xOGN.id,
     },
     enableGas: true,
   });

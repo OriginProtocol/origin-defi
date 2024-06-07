@@ -7,7 +7,7 @@ import {
   Stack,
 } from '@mui/material';
 import { TokenChip, useTxButton } from '@origin/defi/shared';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   TxButton,
@@ -40,21 +40,10 @@ export const RewardCard = (props: CardProps) => {
       args: [],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} />,
-      title: intl.formatMessage({ defaultMessage: 'Collect Rewards' }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Collect {rewards} rewards',
-        },
-        {
-          rewards: formatAmount(
-            rewards,
-            tokens.mainnet.xOGN.decimals,
-            undefined,
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-        },
-      ),
+      type: 'claim-rewards',
+      status: 'idle',
+      amountIn: rewards ?? 0n,
+      tokenIdIn: tokens.mainnet.xOGN.id,
     },
   });
 

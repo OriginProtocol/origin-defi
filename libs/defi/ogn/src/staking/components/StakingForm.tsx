@@ -25,7 +25,6 @@ import {
   BigIntInput,
   InfoTooltipLabel,
   LoadingLabel,
-  TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -85,23 +84,11 @@ export const StakingForm = () => {
       ],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 36 }} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Stake OGN',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage:
-            'Lock {amount} OGN for {duration,plural,=1{# month} other{# months}}',
-        },
-        {
-          amount: intl.formatNumber(
-            +formatUnits(amount, tokens.mainnet.OGN.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-          duration,
-        },
-      ),
+      type: 'stake',
+      status: 'idle',
+      tokenIdIn: tokens.mainnet.OGN.id,
+      amountIn: amount,
+      monthDuration: duration,
     },
     callbacks: {
       onWriteSuccess: () => {

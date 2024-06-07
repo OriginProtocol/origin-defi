@@ -35,12 +35,29 @@ export interface ClaimRewardsActivity extends ActivityBase {
   amountIn: bigint;
 }
 
+export interface DelegateVoteActivity extends ActivityBase {
+  type: 'delegate';
+  tokenIdIn: TokenId;
+  votingPower: bigint;
+  delegateTo: string;
+}
+
 export interface ExtendStakeActivity extends ActivityBase {
   type: 'extend-stake';
   amountIn: bigint;
   tokenIdIn: TokenId;
   monthDuration: number;
-  lockupId: bigint;
+  lockupId: string;
+}
+
+export interface MigrateActivity extends ActivityBase {
+  type: 'migrate';
+  amountIn: bigint;
+  tokenIdIn: TokenId;
+  tokenIdStaked: TokenId;
+  tokenIdLiquid: TokenId;
+  liquid?: bigint;
+  staked?: bigint;
 }
 
 export interface RedeemActivity extends ActivityBase {
@@ -68,7 +85,7 @@ export interface UnstakeActivity extends ActivityBase {
   type: 'unstake';
   tokenIdIn: TokenId;
   tokenIdOut: TokenId;
-  lockupId: bigint;
+  lockupId: string;
 }
 
 export interface VoteActivity extends ActivityBase {
@@ -82,7 +99,9 @@ export type Activity =
   | ApprovalActivity
   | BridgeActivity
   | ClaimRewardsActivity
+  | DelegateVoteActivity
   | ExtendStakeActivity
+  | MigrateActivity
   | RedeemActivity
   | StakeActivity
   | SwapActivity

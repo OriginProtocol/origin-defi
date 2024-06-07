@@ -18,7 +18,9 @@ import type {
   ApprovalActivity,
   BridgeActivity,
   ClaimRewardsActivity,
+  DelegateVoteActivity,
   ExtendStakeActivity,
+  MigrateActivity,
   RedeemActivity,
   StakeActivity,
   SwapActivity,
@@ -156,6 +158,43 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       return <TokenIcon token={tokenIn} />;
     },
   },
+  delegate: {
+    title: (activity, intl) =>
+      ({
+        pending: intl.formatMessage({
+          defaultMessage: 'Delegating Voting Power',
+        }),
+        signed: intl.formatMessage({
+          defaultMessage: 'Delegating Voting Power',
+        }),
+        success: intl.formatMessage({
+          defaultMessage: 'Voting Power Delegated',
+        }),
+        error: intl.formatMessage({
+          defaultMessage: 'Error while delegating',
+        }),
+        idle: intl.formatMessage({ defaultMessage: 'Delegate Voting Power' }),
+      })[activity.status],
+    subtitle: (activity, intl) => {
+      const { votingPower, delegateTo, tokenIdIn } =
+        activity as DelegateVoteActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const amount = format([votingPower ?? 0n, tokenIn.decimals ?? 18], 4);
+
+      return intl.formatMessage(
+        {
+          defaultMessage: 'Delegate {votingPower} {symbolIn} to {delegateTo}',
+        },
+        { amount, symbolIn: tokenIn.symbol, delegateTo },
+      );
+    },
+    icon: (activity) => {
+      const { tokenIdIn } = activity as ClaimRewardsActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return <TokenIcon token={tokenIn} />;
+    },
+  },
   'extend-stake': {
     title: (activity, intl) =>
       ({
@@ -172,18 +211,100 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
         activity as ExtendStakeActivity;
       const tokenIn = getTokenById(tokenIdIn);
       const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
-      const lockup = format([lockupId, 0]);
 
       return intl.formatMessage(
         {
           defaultMessage:
-            'Extend lockup {lockup} by {amount} {symbolIn} for {monthDuration,plural,=1{# month} other{# months}}',
+            'Extend lockup {lockupId} by {amount} {symbolIn} for {monthDuration,plural,=1{# month} other{# months}}',
         },
-        { lockup, amount, symbolIn: tokenIn.symbol, monthDuration },
+        { lockupId, amount, symbolIn: tokenIn.symbol, monthDuration },
       );
     },
     icon: (activity) => {
       const { tokenIdIn } = activity as ExtendStakeActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return <TokenIcon token={tokenIn} />;
+    },
+  },
+  migrate: {
+    title: (activity, intl) =>
+      ({
+        pending: intl.formatMessage({ defaultMessage: 'Migrating' }),
+        signed: intl.formatMessage({ defaultMessage: 'Migrating' }),
+        success: intl.formatMessage({ defaultMessage: 'Migrated' }),
+        error: intl.formatMessage({ defaultMessage: 'Error while migrating' }),
+        idle: intl.formatMessage({ defaultMessage: 'Migrate' }),
+      })[activity.status],
+    subtitle: (activity, intl) => {
+      const {
+        amountIn,
+        tokenIdIn,
+        liquid,
+        tokenIdLiquid,
+        staked,
+        tokenIdStaked,
+      } = activity as MigrateActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const tokenLiquid = getTokenById(tokenIdLiquid);
+      const tokenStaked = getTokenById(tokenIdStaked);
+      const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
+      const amountStaked = format(
+        [staked ?? 0n, tokenStaked.decimals ?? 18],
+        4,
+      );
+      const amountLiquid = format(
+        [liquid ?? 0n, tokenLiquid.decimals ?? 18],
+        4,
+      );
+
+      if (staked === 0n) {
+        return intl.formatMessage(
+          {
+            defaultMessage:
+              '{amount} {symbolIn} for {amountLiquid} {symbolLiquid}',
+          },
+          {
+            amount,
+            symbolIn: tokenIn.symbol,
+            amountLiquid,
+            symbolLiquid: tokenLiquid.symbol,
+          },
+        );
+      }
+
+      if (liquid === 0n) {
+        return intl.formatMessage(
+          {
+            defaultMessage:
+              '{amount} {symbolIn}, staked for {amountStaked} {symbolStaked}',
+          },
+          {
+            amount,
+            symbolIn: tokenIn.symbol,
+            amountStaked,
+            symbolStaked: tokenStaked.symbol,
+          },
+        );
+      }
+
+      return intl.formatMessage(
+        {
+          defaultMessage:
+            '{amount} {symbolIn} for {amountLiquid} {symbolLiquid}, staked for {amountStaked} {symbolStaked}',
+        },
+        {
+          amount,
+          symbolIn: tokenIn.symbol,
+          amountLiquid,
+          symbolLiquid: tokenLiquid.symbol,
+          amountStaked,
+          symbolStaked: tokenStaked.symbol,
+        },
+      );
+    },
+    icon: (activity) => {
+      const { tokenIdIn } = activity as MigrateActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
       return <TokenIcon token={tokenIn} />;
@@ -293,13 +414,12 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       })[activity.status],
     subtitle: (activity, intl) => {
       const { lockupId } = activity as UnstakeActivity;
-      const lockup = format([lockupId, 0]);
 
       return intl.formatMessage(
         {
-          defaultMessage: 'Unstake lockup {lockup}',
+          defaultMessage: 'Unstake lockup {lockupId}',
         },
-        { lockup },
+        { lockupId },
       );
     },
     icon: (activity) => {
