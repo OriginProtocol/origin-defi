@@ -5,6 +5,7 @@ import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
 import {
+  ActivityProvider,
   NotificationsProvider,
   queryClient,
   registerGoogleTagManager,
@@ -13,7 +14,6 @@ import {
 } from '@origin/defi/shared';
 import { dark, light } from '@origin/defi/theme';
 import {
-  ActivityProvider,
   GeoFenceProvider,
   IntlProvider,
   logWelcomeMessage,
