@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
+import { ActivityTile, useActivityState } from '@origin/defi/shared';
 import {
   BadgeIcon,
   ClickAwayPopover,
@@ -16,14 +17,8 @@ import {
 } from '@origin/shared/icons';
 import {
   AddressLabel,
-  ApprovalNotification,
-  BridgeNotification,
   getTokenPriceKey,
-  RedeemNotification,
-  SwapNotification,
   ThemeModeIconButton,
-  TransactionNotification,
-  useActivityState,
   useFormat,
   UserAvatar,
   useTokenPrices,
@@ -36,12 +31,9 @@ import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
-import type {
-  ClickAwayPopoverProps,
-  NotificationSnackProps,
-} from '@origin/shared/components';
+import type { Activity } from '@origin/defi/shared';
+import type { ClickAwayPopoverProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
-import type { Activity } from '@origin/shared/providers';
 
 export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,
@@ -246,11 +238,10 @@ function BalanceRow({
 }
 
 function ActivityList(props: StackProps) {
-  const intl = useIntl();
   const [{ activities, maxVisible }] = useActivityState();
 
   const sortedActivities = pipe(
-    sort(descend((a: Activity) => a.createdOn)),
+    sort(descend((a: Activity) => a?.createdOn ?? a.status)),
     take(maxVisible),
   )(activities) as Activity[];
 
@@ -270,42 +261,16 @@ function ActivityList(props: StackProps) {
         ...props?.sx,
       }}
     >
-      {sortedActivities.map(
-        (a) =>
-          ({
-            approval: (
-              <ApprovalNotification key={a.id} {...a} {...notificationProps} />
-            ),
-            bridge: (
-              <BridgeNotification key={a.id} {...a} {...notificationProps} />
-            ),
-            redeem: (
-              <RedeemNotification key={a.id} {...a} {...notificationProps} />
-            ),
-            swap: <SwapNotification key={a.id} {...a} {...notificationProps} />,
-            transaction: (
-              <TransactionNotification
-                key={a.id}
-                {...a}
-                title={
-                  a?.title ??
-                  intl.formatMessage({
-                    defaultMessage: 'New transaction',
-                  })
-                }
-                subtitle={a?.subtitle ?? ''}
-                {...notificationProps}
-              />
-            ),
-          })[a.type],
-      )}
+      {sortedActivities.map((a) => (
+        <ActivityTile
+          key={a.id}
+          activity={a}
+          sx={{ width: 1, px: 3, py: 1.5 }}
+        />
+      ))}
     </Stack>
   );
 }
-
-const notificationProps: Partial<NotificationSnackProps> = {
-  sx: { width: 1, px: 3, py: 1.5 },
-};
 
 function EmptyActivity(props: StackProps) {
   const intl = useIntl();
