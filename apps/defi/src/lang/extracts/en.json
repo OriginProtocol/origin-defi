@@ -1,9 +1,9 @@
 {
+  "+0zAiT": {
+    "defaultMessage": "The updated amount of xOGN you will receive by adding OGN to this lockup."
+  },
   "+14VoL": {
     "defaultMessage": "Staking"
-  },
-  "+LCX9R": {
-    "defaultMessage": "Delegating to"
   },
   "+LhIwA": {
     "defaultMessage": "The share of total Origin DAO voting power earned by your OGN lockups"
@@ -50,6 +50,9 @@
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
+  "0GSZcr": {
+    "defaultMessage": "Staked"
+  },
   "0Go4jI": {
     "defaultMessage": "Swapped"
   },
@@ -92,6 +95,9 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "2/2yg+": {
+    "defaultMessage": "Add"
+  },
   "20KPDF": {
     "defaultMessage": "Registered Voters"
   },
@@ -125,8 +131,11 @@
   "3at7Yr": {
     "defaultMessage": "Legacy governance"
   },
-  "3fTTLv": {
-    "defaultMessage": "Unstake"
+  "3lOoIq": {
+    "defaultMessage": "{monthDuration,plural,=1{Extend lockup {lockupId} by {amount} {symbolIn} for # month} other{Extend lockup {lockupId} by {amount} {symbolIn} for # months}}"
+  },
+  "3townk": {
+    "defaultMessage": "Max vAPY"
   },
   "3xMkzV": {
     "defaultMessage": "Check CCIP for details"
@@ -140,14 +149,14 @@
   "4R0mVR": {
     "defaultMessage": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
   },
+  "4WNsNT": {
+    "defaultMessage": "Migrated"
+  },
   "4cdhFd": {
     "defaultMessage": "Instant"
   },
   "56jhQz": {
     "defaultMessage": "New Snapshot Proposal"
-  },
-  "5C3FV3": {
-    "defaultMessage": "Unstake lockup {stake}"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -209,9 +218,6 @@
   "7NFfmz": {
     "defaultMessage": "Products"
   },
-  "7Q6DcC": {
-    "defaultMessage": "Delegate {votingPower} xOGN to {delegatee}"
-  },
   "7SxOry": {
     "defaultMessage": "Current Lockup Ends:"
   },
@@ -257,11 +263,11 @@
   "9GqOyW": {
     "defaultMessage": "Current value (OETH)"
   },
+  "9Pxh6J": {
+    "defaultMessage": "Error while delegating"
+  },
   "9W24c9": {
     "defaultMessage": "wOETH Balance"
-  },
-  "9b65gT": {
-    "defaultMessage": "Redeem OUSD"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -287,6 +293,9 @@
   "ATvmI7": {
     "defaultMessage": "Yield earned:"
   },
+  "AXUFyu": {
+    "defaultMessage": "{amount} {symbolIn}, staked for {amountStaked} {symbolStaked}"
+  },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
@@ -308,6 +317,12 @@
   "AtWUBa": {
     "defaultMessage": "Redeem via OETH Vault"
   },
+  "Awi257": {
+    "defaultMessage": "{amount} {symbol}"
+  },
+  "B0mIqy": {
+    "defaultMessage": "Extending Stake"
+  },
   "BB94QK": {
     "defaultMessage": "Bridging activity"
   },
@@ -326,9 +341,6 @@
   "BnSeXp": {
     "defaultMessage": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
   },
-  "Bp2rXG": {
-    "defaultMessage": "Sending ~{srcAmount} {srcToken} from {srcChain} to {dstToken} on {dstChain}."
-  },
   "BuhEl+": {
     "defaultMessage": "Theme:"
   },
@@ -341,14 +353,14 @@
   "Cnm0QA": {
     "defaultMessage": "Queued"
   },
+  "CspxAR": {
+    "defaultMessage": "Delegate Voting Power"
+  },
   "Cyy/6q": {
     "defaultMessage": "You will receive approximately"
   },
   "DBP9Xf": {
     "defaultMessage": "Stablecoin mix"
-  },
-  "DFjeF0": {
-    "defaultMessage": "Delegate {balance} xOGN to self"
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
@@ -374,6 +386,9 @@
   "E2sGaF": {
     "defaultMessage": "Exit"
   },
+  "E57VkO": {
+    "defaultMessage": "Error while unlocking"
+  },
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
@@ -386,9 +401,6 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
-  "EXYTEU": {
-    "defaultMessage": "Approved {amount} {token}"
-  },
   "EYIcqi": {
     "defaultMessage": "Amount after penalty"
   },
@@ -397,9 +409,6 @@
   },
   "F6lS59": {
     "defaultMessage": "0 months"
-  },
-  "FV7IVu": {
-    "defaultMessage": "<b>{count}</b> {symbol}"
   },
   "FfOtze": {
     "defaultMessage": "{value}"
@@ -425,9 +434,6 @@
   "GdHGdR": {
     "defaultMessage": "Swap via Uniswap V2"
   },
-  "Gox5LU": {
-    "defaultMessage": "Collect {rewards} rewards"
-  },
   "GtABHs": {
     "defaultMessage": "Waiting for CCIP"
   },
@@ -436,6 +442,9 @@
   },
   "H5+NAX": {
     "defaultMessage": "Balance"
+  },
+  "HPegJm": {
+    "defaultMessage": "Delegate {votingPower} {symbolIn} to {delegateTo}"
   },
   "HaksWf": {
     "defaultMessage": "xOGN Received"
@@ -454,6 +463,9 @@
   },
   "IAoEwp": {
     "defaultMessage": "Vote for"
+  },
+  "IEM00S": {
+    "defaultMessage": "Claim Rewards"
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -485,9 +497,6 @@
   "K/psnI": {
     "defaultMessage": "Lockup Duration"
   },
-  "K9soUR": {
-    "defaultMessage": "Approval successful"
-  },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
@@ -497,14 +506,14 @@
   "KaxXiQ": {
     "defaultMessage": "Processing approval"
   },
-  "KchUFg": {
-    "defaultMessage": "Swap cancelled"
-  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
   "Kw1jw2": {
     "defaultMessage": "Get {symbol}"
+  },
+  "Kzhxqf": {
+    "defaultMessage": "Select the additional OGN you would like to add to your lockup"
   },
   "L2dDDV": {
     "defaultMessage": "The percentage of total Origin DeFi DAO voting power represented by this lockup."
@@ -524,6 +533,12 @@
   "Lv0zJu": {
     "defaultMessage": "Details"
   },
+  "MHRipL": {
+    "defaultMessage": "Voting Power Delegated"
+  },
+  "MId63P": {
+    "defaultMessage": "Collect {amount} rewards"
+  },
   "MJQQ3L": {
     "defaultMessage": "Bridged"
   },
@@ -532,6 +547,9 @@
   },
   "MQq3X+": {
     "defaultMessage": "Active Proposals"
+  },
+  "MRJzRB": {
+    "defaultMessage": "Error while migrating"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
@@ -548,6 +566,9 @@
   "NND2zi": {
     "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
   },
+  "NTfaBt": {
+    "defaultMessage": "Amount to add"
+  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -557,6 +578,12 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
+  "Nh5I0l": {
+    "defaultMessage": "Claimed Rewards"
+  },
+  "NlA37n": {
+    "defaultMessage": "{amount} {symbolIn}"
+  },
   "Nvcaj3": {
     "defaultMessage": "Your balance:"
   },
@@ -565,6 +592,9 @@
   },
   "ORGv1Q": {
     "defaultMessage": "Created"
+  },
+  "OVR8Te": {
+    "defaultMessage": "Sending {amount} {symbolIn} as {symbolOut} to {chainOut}."
   },
   "OkXVGX": {
     "defaultMessage": "Approve {token}"
@@ -593,6 +623,9 @@
   "PKgDoL": {
     "defaultMessage": "Estimating..."
   },
+  "PdEKuc": {
+    "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
+  },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
@@ -619,6 +652,9 @@
   },
   "RIV67a": {
     "defaultMessage": "Select lockup"
+  },
+  "RVH0u3": {
+    "defaultMessage": "Delegating Voting Power"
   },
   "RahCRH": {
     "defaultMessage": "Expired"
@@ -662,6 +698,9 @@
   "Tfx/3J": {
     "defaultMessage": "Start block"
   },
+  "Th/AXT": {
+    "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}, staked for {amountStaked} {symbolStaked}"
+  },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
   },
@@ -673,9 +712,6 @@
   },
   "UMJuaW": {
     "defaultMessage": "Your APY:"
-  },
-  "UjsrsI": {
-    "defaultMessage": "Swap successful"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -707,9 +743,6 @@
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
-  "W94W+W": {
-    "defaultMessage": "No voting power"
-  },
   "WCaf5C": {
     "defaultMessage": "Approve"
   },
@@ -740,6 +773,9 @@
   "Yl2sc/": {
     "defaultMessage": "Learn about governance"
   },
+  "YnTVWE": {
+    "defaultMessage": "Adding to lockup"
+  },
   "YnftYz": {
     "defaultMessage": "Wait time:"
   },
@@ -748,6 +784,9 @@
   },
   "YvbZVM": {
     "defaultMessage": "Time Remaining"
+  },
+  "Z2iggs": {
+    "defaultMessage": "Total voting power"
   },
   "Z5LAqY": {
     "defaultMessage": "Stake additional OGN from your wallet"
@@ -763,9 +802,6 @@
   },
   "ZSn0uO": {
     "defaultMessage": "migrate OGV to OGN/xOGN"
-  },
-  "ZU6Mu8": {
-    "defaultMessage": "Bridge Transaction"
   },
   "Zl7l7P": {
     "defaultMessage": "{count} {symbol}"
@@ -785,9 +821,6 @@
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
   },
-  "aAp31l": {
-    "defaultMessage": "Approval error"
-  },
   "aDYxXF": {
     "defaultMessage": "New transaction"
   },
@@ -805,6 +838,9 @@
   },
   "bKZdsq": {
     "defaultMessage": "3m"
+  },
+  "bPT672": {
+    "defaultMessage": "Unstake lockup {lockupId}"
   },
   "bh6lBg": {
     "defaultMessage": "You will receive"
@@ -827,9 +863,6 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
-  "cqxi+K": {
-    "defaultMessage": "Approving {token}"
-  },
   "d0kJUi": {
     "defaultMessage": "Connect your wallet to see your voting power"
   },
@@ -848,11 +881,11 @@
   "djJp6c": {
     "defaultMessage": "History"
   },
-  "dm9FiM": {
-    "defaultMessage": "Delegate to self"
-  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
+  },
+  "dx9Xxj": {
+    "defaultMessage": "Claiming Rewards"
   },
   "e+yfm6": {
     "defaultMessage": "Connect your wallet to see your balances"
@@ -872,6 +905,9 @@
   "eerX6M": {
     "defaultMessage": "Swap via CurvePool"
   },
+  "ewhSbE": {
+    "defaultMessage": "Error while staking"
+  },
   "f0gqO4": {
     "defaultMessage": "Lifetime Earnings (OUSD)"
   },
@@ -881,9 +917,6 @@
   "fBhctx": {
     "defaultMessage": "Download CSV"
   },
-  "fFXn5l": {
-    "defaultMessage": "Collect Rewards"
-  },
   "ffdKEn": {
     "defaultMessage": "Select the lockup you want to add your OGN to"
   },
@@ -892,6 +925,9 @@
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "g28dhk": {
+    "defaultMessage": "Extended Stake"
   },
   "g82HU6": {
     "defaultMessage": "Operation cancelled"
@@ -917,11 +953,17 @@
   "hSpNEQ": {
     "defaultMessage": "Available to claim and add to your stake"
   },
+  "hVu1NB": {
+    "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}"
+  },
   "hjWYtP": {
     "defaultMessage": "Gas"
   },
   "hsqHqR": {
     "defaultMessage": "Time remaining"
+  },
+  "hwU8tI": {
+    "defaultMessage": "Error while extending staking"
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
@@ -931,6 +973,9 @@
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
+  },
+  "iRGhsn": {
+    "defaultMessage": "Add unclaimed rewards ({rewards} OGN)"
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
@@ -947,17 +992,17 @@
   "j9lsz3": {
     "defaultMessage": "Earn rewards and help govern Origin products"
   },
-  "jab7Gg": {
-    "defaultMessage": "Delegated to me"
-  },
-  "jn/6dQ": {
-    "defaultMessage": "Current vAPY"
+  "jgzSp1": {
+    "defaultMessage": "Error while casting vote"
   },
   "jngAIm": {
     "defaultMessage": "Extend Stake"
   },
   "jvnqxK": {
     "defaultMessage": "Bridging"
+  },
+  "k0U99R": {
+    "defaultMessage": "Better yield. Everywhere."
   },
   "k3YWIR": {
     "defaultMessage": "Max slippage"
@@ -967,6 +1012,9 @@
   },
   "kBjaSb": {
     "defaultMessage": "Your voting power"
+  },
+  "kDaImL": {
+    "defaultMessage": "Add to lockup"
   },
   "kH1R79": {
     "defaultMessage": "Stake OGN"
@@ -980,9 +1028,6 @@
   "ksTDub": {
     "defaultMessage": "Connect wallet to view"
   },
-  "ksbxr5": {
-    "defaultMessage": "Approval successfully executed"
-  },
   "lQmZjB": {
     "defaultMessage": "Swap via Curve"
   },
@@ -992,8 +1037,17 @@
   "lozEho": {
     "defaultMessage": "Error while approving"
   },
+  "lruqfd": {
+    "defaultMessage": "Migrate"
+  },
   "m/L3sK": {
     "defaultMessage": "Approving"
+  },
+  "m9XypM": {
+    "defaultMessage": "Sending {amount} {symbolIn} to {chainOut}."
+  },
+  "mTz9QI": {
+    "defaultMessage": "Casted vote"
   },
   "mVILQT": {
     "defaultMessage": "OUSD Balance"
@@ -1018,6 +1072,9 @@
   },
   "oBlHij": {
     "defaultMessage": "The easiest way to earn more yield on-chain"
+  },
+  "oESaGy": {
+    "defaultMessage": "Unlocking"
   },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
@@ -1060,6 +1117,9 @@
   },
   "r7kiOG": {
     "defaultMessage": "Wrap"
+  },
+  "rWtYKs": {
+    "defaultMessage": "Migrating"
   },
   "rhQtuf": {
     "defaultMessage": "Voted Against"
@@ -1133,11 +1193,14 @@
   "uaols3": {
     "defaultMessage": "Unwrap"
   },
+  "ufm/ag": {
+    "defaultMessage": "Unlocked"
+  },
   "ugjHU2": {
     "defaultMessage": "Select a token"
   },
-  "vIHQKa": {
-    "defaultMessage": "Extend xOGN lockup"
+  "utrdPr": {
+    "defaultMessage": "Casting vote"
   },
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
@@ -1157,9 +1220,6 @@
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
   },
-  "w6euGF": {
-    "defaultMessage": "{duration,plural,=1{Lock {amount} OGN for # month} other{Lock {amount} OGN for # months}}"
-  },
   "wDVWQ+": {
     "defaultMessage": "Origin Dollar"
   },
@@ -1177,9 +1237,6 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
-  },
-  "wwoByg": {
-    "defaultMessage": "Origin"
   },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"
@@ -1199,6 +1256,9 @@
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
+  "yP4xbO": {
+    "defaultMessage": "Error while claiming rewards"
+  },
   "yTFVXV": {
     "defaultMessage": "Argument type"
   },
@@ -1217,6 +1277,9 @@
   "z1bu+z": {
     "defaultMessage": "Error while swapping"
   },
+  "z7DIYb": {
+    "defaultMessage": "{monthDuration,plural,=1{Lock {amount} {symbolIn} for # month} other{Lock {amount} {symbolIn} for # months}}"
+  },
   "zQvVDJ": {
     "defaultMessage": "All"
   },
@@ -1228,9 +1291,6 @@
   },
   "zdF6np": {
     "defaultMessage": "wOETH Transactions"
-  },
-  "zdQc4c": {
-    "defaultMessage": "{amount} OGN staked"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
