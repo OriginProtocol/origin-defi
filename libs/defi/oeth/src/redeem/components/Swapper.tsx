@@ -90,7 +90,6 @@ export const Swapper = ({
       onApproveSuccess={(state) => {
         const { trackId, txReceipt, amountIn } = state;
         const updated = updateActivity({
-          ...state,
           id: trackId,
           status: 'success',
           amountIn,
@@ -120,7 +119,6 @@ export const Swapper = ({
       onApproveFailure={(state) => {
         const { error, trackId } = state;
         const updated = updateActivity({
-          ...state,
           id: trackId,
           status: 'error',
           error: formatError(error),
