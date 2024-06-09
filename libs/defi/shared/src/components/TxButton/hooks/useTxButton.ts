@@ -130,7 +130,7 @@ export const useTxButton = <
       status: 'pending',
     } as Activity);
     setActivityId(id);
-    args?.callbacks?.onWrite?.();
+    args.callbacks?.onWrite?.();
   }, [args, pushActivity]);
 
   const onTxSigned = useCallback(() => {
@@ -143,12 +143,12 @@ export const useTxButton = <
     });
     setNotifId(id);
     updateActivity({ id: activityId, status: 'signed' });
-    args?.callbacks?.onTxSigned?.();
+    args.callbacks?.onTxSigned?.();
   }, [
     activityId,
     activityOption,
     args.activity,
-    args?.callbacks,
+    args.callbacks,
     intl,
     pushNotification,
     updateActivity,
@@ -165,10 +165,10 @@ export const useTxButton = <
       }),
       severity: 'info',
     });
-    args?.callbacks?.onUserReject?.();
+    args.callbacks?.onUserReject?.();
   }, [
     activityId,
-    args?.callbacks,
+    args.callbacks,
     deleteActivity,
     deleteNotification,
     intl,
@@ -179,12 +179,12 @@ export const useTxButton = <
   const onSimulateSuccess = useCallback(
     (data: SimulateContractReturnType) => {
       setSimulateError(undefined);
-      if (args?.enableGas && isConnected) {
+      if (args.enableGas && isConnected) {
         refetchGas();
       }
       args?.callbacks?.onSimulateSuccess?.(data);
     },
-    [args?.callbacks, args?.enableGas, isConnected, refetchGas],
+    [args.callbacks, args.enableGas, isConnected, refetchGas],
   );
 
   const onSimulateError = useCallback(
@@ -201,13 +201,13 @@ export const useTxButton = <
         message: formatError(error),
         severity: 'error',
       });
-      args?.callbacks?.onSimulateError?.(error);
+      args.callbacks?.onSimulateError?.(error);
     },
     [
       activityOption,
       args.activity,
-      args?.callbacks,
-      args?.enableGas,
+      args.callbacks,
+      args.enableGas,
       intl,
       isConnected,
       pushNotification,
@@ -235,13 +235,13 @@ export const useTxButton = <
         severity: 'success',
         blockExplorerLinkProps: { hash: txReceipt.transactionHash },
       });
-      args?.callbacks?.onWriteSuccess?.(txReceipt);
+      args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
       activityId,
       activityOption,
       args.activity,
-      args?.callbacks,
+      args.callbacks,
       deleteNotification,
       intl,
       notifId,
@@ -267,13 +267,13 @@ export const useTxButton = <
         icon: activityOption.icon(args.activity),
         severity: 'error',
       });
-      args?.callbacks?.onWriteError?.(error);
+      args.callbacks?.onWriteError?.(error);
     },
     [
       activityId,
       activityOption,
       args.activity,
-      args?.callbacks,
+      args.callbacks,
       deleteNotification,
       intl,
       notifId,

@@ -103,7 +103,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     address: args.token.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address ?? ZERO_ADDRESS, args?.spender],
+    args: [address ?? ZERO_ADDRESS, args.spender],
     query: {
       enabled: isConnected && args.enableAllowance,
     },
@@ -118,8 +118,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       icon: activityOptions.approval.icon(activity),
     });
     setActivity(updated);
-    args?.callbacks?.onWrite?.();
-  }, [activity, args?.callbacks, intl, pushActivity]);
+    args.callbacks?.onWrite?.();
+  }, [activity, args.callbacks, intl, pushActivity]);
 
   const onTxSigned = useCallback(() => {
     const updated = updateActivity({ ...activity, status: 'signed' });
@@ -137,8 +137,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       setNotifId(id);
     }
 
-    args?.callbacks?.onTxSigned?.();
-  }, [activity, args?.callbacks, intl, pushNotification, updateActivity]);
+    args.callbacks?.onTxSigned?.();
+  }, [activity, args.callbacks, intl, pushNotification, updateActivity]);
 
   const onUserReject = useCallback(() => {
     if (activity?.id) {
@@ -158,10 +158,10 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       severity: 'info',
     });
 
-    args?.callbacks?.onUserReject?.();
+    args.callbacks?.onUserReject?.();
   }, [
     activity,
-    args?.callbacks,
+    args.callbacks,
     deleteActivity,
     deleteNotification,
     intl,
@@ -175,9 +175,9 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-      args?.callbacks?.onSimulateSuccess?.(data);
+      args.callbacks?.onSimulateSuccess?.(data);
     },
-    [args?.callbacks, args.enableGas, isConnected, refetchGas],
+    [args.callbacks, args.enableGas, isConnected, refetchGas],
   );
 
   const onSimulateError = useCallback(
@@ -196,11 +196,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         severity: 'error',
       });
 
-      args?.callbacks?.onSimulateError?.(error);
+      args.callbacks?.onSimulateError?.(error);
     },
     [
       activity,
-      args?.callbacks,
+      args.callbacks,
       args.enableGas,
       intl,
       isConnected,
