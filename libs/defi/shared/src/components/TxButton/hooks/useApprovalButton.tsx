@@ -113,16 +113,13 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     const updated = pushActivity({
       ...activity,
       status: 'pending',
-      title: activityOptions.approval.title(activity, intl),
-      subtitle: activityOptions.approval.subtitle(activity, intl),
-      icon: activityOptions.approval.icon(activity),
     });
     setActivity(updated);
     args.callbacks?.onWrite?.();
-  }, [activity, args.callbacks, intl, pushActivity]);
+  }, [activity, args.callbacks, pushActivity]);
 
   const onTxSigned = useCallback(() => {
-    const updated = updateActivity({ ...activity, status: 'signed' });
+    const updated = updateActivity({ id: activity.id, status: 'signed' });
     if (updated) {
       setActivity(updated);
       const id = pushNotification({
@@ -182,11 +179,10 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onSimulateError = useCallback(
     (error: SimulateContractErrorType) => {
-      setSimulateError(simulateError);
+      setSimulateError(error);
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-
       pushNotification({
         icon: activityOptions.approval.icon(activity),
         title: intl.formatMessage({
@@ -206,7 +202,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       isConnected,
       pushNotification,
       refetchGas,
-      simulateError,
     ],
   );
 
@@ -236,7 +231,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       }
 
       const updated = updateActivity({
-        ...activity,
+        id: activity.id,
         status: 'success',
         amountIn: amount,
         txHash: txReceipt.transactionHash,
@@ -277,7 +272,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       }
 
       const updated = updateActivity({
-        ...activity,
+        id: activity.id,
         status: 'error',
         error: error?.message,
       });

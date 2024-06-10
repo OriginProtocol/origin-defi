@@ -72,8 +72,8 @@ export const useTxButton = <
 ) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [activityId, setActivityId] = useState<string | undefined>();
-  const [notifId, setNotifId] = useState<string | undefined>();
+  const [activity, setActivity] = useState<Activity>(args.activity);
+  const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] = useState<
     SimulateContractErrorType | undefined
   >();
@@ -125,27 +125,31 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    const { id } = pushActivity({
+    const updated = pushActivity({
       ...args.activity,
       status: 'pending',
     } as Activity);
-    setActivityId(id);
+    setActivity(updated);
     args.callbacks?.onWrite?.();
   }, [args, pushActivity]);
 
   const onTxSigned = useCallback(() => {
-    const id = pushNotification({
-      title: activityOption.title(args.activity, intl),
-      message: activityOption.subtitle(args.activity, intl),
-      icon: activityOption.icon(args.activity),
-      severity: 'pending',
-      hideDuration: undefined,
-    });
-    setNotifId(id);
-    updateActivity({ id: activityId, status: 'signed' });
+    const updated = updateActivity({ id: activity.id, status: 'signed' });
+    if (updated) {
+      setActivity(updated);
+      const id = pushNotification({
+        title: activityOption.title(args.activity, intl),
+        message: activityOption.subtitle(args.activity, intl),
+        icon: activityOption.icon(args.activity),
+        severity: 'pending',
+        hideDuration: undefined,
+      });
+      setNotifId(id);
+    }
+
     args.callbacks?.onTxSigned?.();
   }, [
-    activityId,
+    activity.id,
     activityOption,
     args.activity,
     args.callbacks,
@@ -155,9 +159,15 @@ export const useTxButton = <
   ]);
 
   const onUserReject = useCallback(() => {
-    deleteActivity(activityId);
-    deleteNotification(notifId);
-    setNotifId(undefined);
+    if (activity?.id) {
+      deleteActivity(activity.id);
+      setActivity({ ...activity, status: 'idle' });
+    }
+    if (notifId) {
+      deleteNotification(notifId);
+      setNotifId(null);
+    }
+
     pushNotification({
       title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
       message: intl.formatMessage({
@@ -165,9 +175,10 @@ export const useTxButton = <
       }),
       severity: 'info',
     });
+
     args.callbacks?.onUserReject?.();
   }, [
-    activityId,
+    activity,
     args.callbacks,
     deleteActivity,
     deleteNotification,
@@ -217,28 +228,36 @@ export const useTxButton = <
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      updateActivity({
-        id: activityId,
+      if (notifId) {
+        deleteNotification(notifId);
+        setNotifId(null);
+      }
+
+      const updated = updateActivity({
+        id: activity.id,
         status: 'success',
         txHash: txReceipt?.transactionHash,
       });
-      deleteNotification(notifId);
-      setNotifId(undefined);
-      pushNotification({
-        title: intl.formatMessage({
-          defaultMessage: 'Transaction successfully executed',
-        }),
-        message: intl.formatMessage({
-          defaultMessage: 'Your operation has been executed',
-        }),
-        icon: activityOption.icon(args.activity),
-        severity: 'success',
-        blockExplorerLinkProps: { hash: txReceipt.transactionHash },
-      });
+
+      if (updated) {
+        setActivity(updated);
+        pushNotification({
+          title: intl.formatMessage({
+            defaultMessage: 'Transaction successfully executed',
+          }),
+          message: intl.formatMessage({
+            defaultMessage: 'Your operation has been executed',
+          }),
+          icon: activityOption.icon(args.activity),
+          severity: 'success',
+          blockExplorerLinkProps: { hash: txReceipt.transactionHash },
+        });
+      }
+
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
-      activityId,
+      activity.id,
       activityOption,
       args.activity,
       args.callbacks,
@@ -252,25 +271,33 @@ export const useTxButton = <
 
   const onWriteError = useCallback(
     (error: Error) => {
-      updateActivity({
-        id: activityId,
+      if (notifId) {
+        deleteNotification(notifId);
+        setNotifId(null);
+      }
+
+      const updated = updateActivity({
+        id: activity.id,
         status: 'error',
         error: error?.message,
       });
-      deleteNotification(notifId);
-      setNotifId(undefined);
-      pushNotification({
-        title: intl.formatMessage({
-          defaultMessage: 'Transaction error',
-        }),
-        message: formatError(error),
-        icon: activityOption.icon(args.activity),
-        severity: 'error',
-      });
+
+      if (updated) {
+        setActivity(updated);
+        pushNotification({
+          title: intl.formatMessage({
+            defaultMessage: 'Transaction error',
+          }),
+          message: formatError(error),
+          icon: activityOption.icon(args.activity),
+          severity: 'error',
+        });
+      }
+
       args.callbacks?.onWriteError?.(error);
     },
     [
-      activityId,
+      activity.id,
       activityOption,
       args.activity,
       args.callbacks,
