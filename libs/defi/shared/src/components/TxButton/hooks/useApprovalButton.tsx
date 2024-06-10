@@ -1,11 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import {
-  useDeleteNotification,
-  useGasPrice,
-  usePushNotification,
-  useWatchContract,
-} from '@origin/shared/providers';
+import { useGasPrice, useWatchContract } from '@origin/shared/providers';
 import { formatError, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
@@ -13,6 +8,7 @@ import { decodeEventLog, erc20Abi } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import { activityOptions, useActivity } from '../../Activities';
+import { useNotification } from '../../Notifications/hooks';
 
 import type { Token } from '@origin/shared/contracts';
 import type { WriteTransactionCallbacks } from '@origin/shared/providers';
@@ -37,11 +33,9 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const { isConnected, address } = useAccount();
   const { activity, deleteActivity, pushActivity, updateActivity } =
     useActivity();
-  const [notifId, setNotifId] = useState<string | null>(null);
+  const { deleteNotification, pushNotification } = useNotification();
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
-  const pushNotification = usePushNotification();
-  const deleteNotification = useDeleteNotification();
   const config = useConfig();
   const publicClient = usePublicClient({
     chainId: args.token.chainId,
@@ -108,7 +102,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const onTxSigned = useCallback(() => {
     updateActivity({ status: 'signed' });
     if (activity?.id) {
-      const id = pushNotification({
+      pushNotification({
         title: activityOptions.approval.title(activity, intl),
         message: intl.formatMessage({
           defaultMessage: 'Your transaction is being processed on-chain.',
@@ -117,18 +111,13 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         severity: 'pending',
         hideDuration: undefined,
       });
-      setNotifId(id);
     }
-
     args.callbacks?.onTxSigned?.();
   }, [activity, args.callbacks, intl, pushNotification, updateActivity]);
 
   const onUserReject = useCallback(() => {
     deleteActivity();
-    if (notifId) {
-      deleteNotification(notifId);
-      setNotifId(null);
-    }
+    deleteNotification();
     pushNotification({
       title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
       message: intl.formatMessage({
@@ -142,7 +131,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     deleteActivity,
     deleteNotification,
     intl,
-    notifId,
     pushNotification,
   ]);
 
@@ -204,10 +192,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       if (args.enableAllowance) {
         refetchAllowance();
       }
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
+      deleteNotification();
       updateActivity({
         status: 'success',
         amountIn: amount,
@@ -231,7 +216,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       args.enableAllowance,
       deleteNotification,
       intl,
-      notifId,
       pushNotification,
       refetchAllowance,
       updateActivity,
@@ -240,10 +224,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
+      deleteNotification();
       updateActivity({
         status: 'error',
         error: error?.message,
@@ -263,7 +244,6 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       args.callbacks,
       deleteNotification,
       intl,
-      notifId,
       pushNotification,
       updateActivity,
     ],

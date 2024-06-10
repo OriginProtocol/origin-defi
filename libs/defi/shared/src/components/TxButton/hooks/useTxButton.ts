@@ -1,10 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import {
-  useDeleteNotification,
-  useGasPrice,
-  usePushNotification,
-} from '@origin/shared/providers';
+import { useGasPrice } from '@origin/shared/providers';
 import {
   formatError,
   jsonStringifyReplacer,
@@ -15,6 +11,7 @@ import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import { activityOptions, useActivity } from '../../Activities';
+import { useNotification } from '../../Notifications/hooks';
 
 import type {
   WriteTransactionCallbacks,
@@ -69,12 +66,10 @@ export const useTxButton = <
   const { isConnected, address } = useAccount();
   const { activity, pushActivity, updateActivity, deleteActivity } =
     useActivity();
-  const [notifId, setNotifId] = useState<string | null>(null);
+  const { deleteNotification, pushNotification } = useNotification();
   const [simulateError, setSimulateError] = useState<
     SimulateContractErrorType | undefined
   >();
-  const pushNotification = usePushNotification();
-  const deleteNotification = useDeleteNotification();
   const config = useConfig();
   const publicClient = usePublicClient({
     chainId: args.params.contract.chainId,
@@ -127,18 +122,20 @@ export const useTxButton = <
 
   const onTxSigned = useCallback(() => {
     updateActivity({ status: 'signed' });
-    const id = pushNotification({
-      title: activityOption.title(args.activity, intl),
-      message: activityOption.subtitle(args.activity, intl),
-      icon: activityOption.icon(args.activity),
-      severity: 'pending',
-      hideDuration: undefined,
-    });
-    setNotifId(id);
+    console.log('SIGNED', activity);
+    if (activity?.id) {
+      pushNotification({
+        title: activityOption.title(activity, intl),
+        message: activityOption.subtitle(activity, intl),
+        icon: activityOption.icon(activity),
+        severity: 'pending',
+        hideDuration: undefined,
+      });
+    }
     args.callbacks?.onTxSigned?.();
   }, [
+    activity,
     activityOption,
-    args.activity,
     args.callbacks,
     intl,
     pushNotification,
@@ -147,10 +144,7 @@ export const useTxButton = <
 
   const onUserReject = useCallback(() => {
     deleteActivity();
-    if (notifId) {
-      deleteNotification(notifId);
-      setNotifId(null);
-    }
+    deleteNotification();
     pushNotification({
       title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
       message: intl.formatMessage({
@@ -164,7 +158,6 @@ export const useTxButton = <
     deleteActivity,
     deleteNotification,
     intl,
-    notifId,
     pushNotification,
   ]);
 
@@ -211,10 +204,7 @@ export const useTxButton = <
 
   const onWriteSuccess = useCallback(
     (txReceipt: TransactionReceipt) => {
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
+      deleteNotification();
       updateActivity({
         status: 'success',
         txHash: txReceipt?.transactionHash,
@@ -240,7 +230,6 @@ export const useTxButton = <
       args.callbacks,
       deleteNotification,
       intl,
-      notifId,
       pushNotification,
       updateActivity,
     ],
@@ -248,10 +237,7 @@ export const useTxButton = <
 
   const onWriteError = useCallback(
     (error: Error) => {
-      if (notifId) {
-        deleteNotification(notifId);
-        setNotifId(null);
-      }
+      deleteNotification();
       updateActivity({
         status: 'error',
         error: error?.message,
@@ -274,7 +260,6 @@ export const useTxButton = <
       args.callbacks,
       deleteNotification,
       intl,
-      notifId,
       pushNotification,
       updateActivity,
     ],
