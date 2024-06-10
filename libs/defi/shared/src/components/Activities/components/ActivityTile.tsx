@@ -19,13 +19,15 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
   const title = option.title(activity, intl);
   const subtitle = option.subtitle(activity, intl);
   const icon = option.icon(activity);
+  const endIcon = option?.endIcon?.(activity) ?? option.icon(activity);
   const href = isNilOrEmpty(activity?.txHash)
     ? undefined
     : `https://etherscan.io/tx/${activity?.txHash}`;
 
   return (
-    <Stack width={1} direction="row" justifyContent="space-between" {...rest}>
-      <Stack spacing={1}>
+    <Stack width={1} direction="row" spacing={1} {...rest}>
+      {icon}
+      <Stack spacing={1} flexGrow={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <ActivityIcon status={activity.status} sx={{ fontSize: 20 }} />
           {!isNilOrEmpty(href) ? (
@@ -43,7 +45,7 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
         </Stack>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={1}>
-        {icon}
+        {endIcon}
       </Stack>
     </Stack>
   );

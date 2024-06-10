@@ -2,6 +2,7 @@ import {
   BadgeIcon,
   SwapTokensIcon,
   TokenIcon,
+  TransferIcon,
 } from '@origin/shared/components';
 import { getTokenById } from '@origin/shared/contracts';
 import {
@@ -37,6 +38,7 @@ export type ActivityOption = {
   title: (activity: Activity, intl: IntlShape) => string;
   subtitle: (activity: Activity, intl: IntlShape) => string;
   icon: (activity: Activity) => ReactNode;
+  endIcon?: (activity: Activity) => ReactNode;
 };
 
 export const activityOptions: Record<ActivityType, ActivityOption> = {
@@ -138,6 +140,13 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
           <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
         </BadgeIcon>
       );
+    },
+    endIcon: (activity) => {
+      const { tokenIdIn, tokenIdOut } = activity as BridgeActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const tokenOut = getTokenById(tokenIdOut);
+
+      return <TransferIcon tokenIn={tokenIn} tokenOut={tokenOut} />;
     },
   },
   'claim-rewards': {
@@ -344,6 +353,13 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
 
       return <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={40} />;
     },
+    endIcon: (activity) => {
+      const { tokenIdIn, tokenIdLiquid } = activity as MigrateActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const tokenOut = getTokenById(tokenIdLiquid);
+
+      return <TransferIcon tokenIn={tokenIn} tokenOut={tokenOut} />;
+    },
   },
   redeem: {
     title: (activity, intl) =>
@@ -453,6 +469,13 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
 
       return <SwapTokensIcon tokenIn={tokenIn} tokenOut={tokenOut} size={40} />;
     },
+    endIcon: (activity) => {
+      const { tokenIdIn, tokenIdOut } = activity as SwapActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const tokenOut = getTokenById(tokenIdOut);
+
+      return <TransferIcon tokenIn={tokenIn} tokenOut={tokenOut} />;
+    },
   },
   unstake: {
     title: (activity, intl) =>
@@ -489,6 +512,13 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
           <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
         </BadgeIcon>
       );
+    },
+    endIcon: (activity) => {
+      const { tokenIdIn, tokenIdOut } = activity as UnstakeActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const tokenOut = getTokenById(tokenIdOut);
+
+      return <TransferIcon tokenIn={tokenIn} tokenOut={tokenOut} />;
     },
   },
   vote: {
