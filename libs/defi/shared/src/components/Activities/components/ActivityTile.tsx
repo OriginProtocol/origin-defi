@@ -1,4 +1,4 @@
-import { Stack, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
 import { ErrorTooltipLabel, ExternalLink } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -26,7 +26,9 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
 
   return (
     <Stack width={1} direction="row" spacing={1} {...rest}>
-      {icon}
+      <Box display="flex" justifyContent="center" alignItems="center">
+        {icon}
+      </Box>
       <Stack spacing={1} flexGrow={1}>
         <Stack direction="row" alignItems="center" spacing={1}>
           <ActivityIcon status={activity.status} sx={{ fontSize: 20 }} />
