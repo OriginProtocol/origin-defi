@@ -14,12 +14,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
-import {
-  activityOptions,
-  useDeleteActivity,
-  usePushActivity,
-  useUpdateActivity,
-} from '../../Activities';
+import { activityOptions, useActivity } from '../../Activities';
 
 import type {
   WriteTransactionCallbacks,
@@ -72,16 +67,14 @@ export const useTxButton = <
 ) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [activity, setActivity] = useState<Activity>(args.activity);
+  const { activity, pushActivity, updateActivity, deleteActivity } =
+    useActivity();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] = useState<
     SimulateContractErrorType | undefined
   >();
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
   const config = useConfig();
   const publicClient = usePublicClient({
     chainId: args.params.contract.chainId,
@@ -125,31 +118,25 @@ export const useTxButton = <
   });
 
   const onWrite = useCallback(() => {
-    const updated = pushActivity({
+    pushActivity({
       ...args.activity,
       status: 'pending',
-    } as Activity);
-    setActivity(updated);
+    });
     args.callbacks?.onWrite?.();
   }, [args, pushActivity]);
 
   const onTxSigned = useCallback(() => {
-    const updated = updateActivity({ id: activity.id, status: 'signed' });
-    if (updated) {
-      setActivity(updated);
-      const id = pushNotification({
-        title: activityOption.title(args.activity, intl),
-        message: activityOption.subtitle(args.activity, intl),
-        icon: activityOption.icon(args.activity),
-        severity: 'pending',
-        hideDuration: undefined,
-      });
-      setNotifId(id);
-    }
-
+    updateActivity({ status: 'signed' });
+    const id = pushNotification({
+      title: activityOption.title(args.activity, intl),
+      message: activityOption.subtitle(args.activity, intl),
+      icon: activityOption.icon(args.activity),
+      severity: 'pending',
+      hideDuration: undefined,
+    });
+    setNotifId(id);
     args.callbacks?.onTxSigned?.();
   }, [
-    activity.id,
     activityOption,
     args.activity,
     args.callbacks,
@@ -159,15 +146,11 @@ export const useTxButton = <
   ]);
 
   const onUserReject = useCallback(() => {
-    if (activity?.id) {
-      deleteActivity(activity.id);
-      setActivity({ ...activity, status: 'idle' });
-    }
+    deleteActivity();
     if (notifId) {
       deleteNotification(notifId);
       setNotifId(null);
     }
-
     pushNotification({
       title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
       message: intl.formatMessage({
@@ -175,10 +158,8 @@ export const useTxButton = <
       }),
       severity: 'info',
     });
-
     args.callbacks?.onUserReject?.();
   }, [
-    activity,
     args.callbacks,
     deleteActivity,
     deleteNotification,
@@ -204,21 +185,23 @@ export const useTxButton = <
       if (args?.enableGas && isConnected) {
         refetchGas();
       }
-      pushNotification({
-        icon: activityOption.icon(args.activity),
-        title: intl.formatMessage({
-          defaultMessage: 'Impossible to execute transaction',
-        }),
-        message: formatError(error),
-        severity: 'error',
-      });
+      if (activity?.id) {
+        pushNotification({
+          icon: activityOption.icon(activity),
+          title: intl.formatMessage({
+            defaultMessage: 'Impossible to execute transaction',
+          }),
+          message: formatError(error),
+          severity: 'error',
+        });
+      }
       args.callbacks?.onSimulateError?.(error);
     },
     [
+      activity,
       activityOption,
-      args.activity,
       args.callbacks,
-      args.enableGas,
+      args?.enableGas,
       intl,
       isConnected,
       pushNotification,
@@ -232,15 +215,11 @@ export const useTxButton = <
         deleteNotification(notifId);
         setNotifId(null);
       }
-
-      const updated = updateActivity({
-        id: activity.id,
+      updateActivity({
         status: 'success',
         txHash: txReceipt?.transactionHash,
       });
-
-      if (updated) {
-        setActivity(updated);
+      if (activity?.id) {
         pushNotification({
           title: intl.formatMessage({
             defaultMessage: 'Transaction successfully executed',
@@ -248,18 +227,16 @@ export const useTxButton = <
           message: intl.formatMessage({
             defaultMessage: 'Your operation has been executed',
           }),
-          icon: activityOption.icon(args.activity),
+          icon: activityOption.icon(activity),
           severity: 'success',
           blockExplorerLinkProps: { hash: txReceipt.transactionHash },
         });
       }
-
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
-      activity.id,
+      activity,
       activityOption,
-      args.activity,
       args.callbacks,
       deleteNotification,
       intl,
@@ -275,31 +252,25 @@ export const useTxButton = <
         deleteNotification(notifId);
         setNotifId(null);
       }
-
-      const updated = updateActivity({
-        id: activity.id,
+      updateActivity({
         status: 'error',
         error: error?.message,
       });
-
-      if (updated) {
-        setActivity(updated);
+      if (activity?.id) {
         pushNotification({
           title: intl.formatMessage({
             defaultMessage: 'Transaction error',
           }),
           message: formatError(error),
-          icon: activityOption.icon(args.activity),
+          icon: activityOption.icon(activity),
           severity: 'error',
         });
       }
-
       args.callbacks?.onWriteError?.(error);
     },
     [
-      activity.id,
+      activity,
       activityOption,
-      args.activity,
       args.callbacks,
       deleteNotification,
       intl,

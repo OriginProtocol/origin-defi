@@ -40,8 +40,8 @@ export const useUpdateActivity = () => {
     <T extends Activity = Activity>(
       activity: Partial<T> | undefined | null,
     ) => {
+      let updated;
       if (activity) {
-        let updated;
         setState(
           produce((state) => {
             const idx = state.activities.findIndex((a) => a.id === activity.id);
@@ -51,9 +51,9 @@ export const useUpdateActivity = () => {
             }
           }),
         );
-
-        return updated;
       }
+
+      return updated;
     },
     [setState],
   );
@@ -132,4 +132,41 @@ export const useClearActivities = () => {
       }),
     );
   }, [setState]);
+};
+
+export const useActivity = () => {
+  const [local, setLocal] = useState<Activity | undefined>();
+  const pushActivity = usePushActivity();
+  const updateActivity = useUpdateActivity();
+  const deleteActivity = useDeleteActivity();
+
+  return {
+    activity: local,
+    pushActivity: useCallback(
+      (act: Activity) => {
+        const activity = pushActivity(act);
+        setLocal(activity);
+      },
+      [pushActivity],
+    ),
+    updateActivity: useCallback(
+      (act: Partial<Activity>) => {
+        if (local?.id && local.type === act.type) {
+          const updated = updateActivity({
+            ...act,
+            type: local.type,
+            id: local.id,
+          });
+          setLocal(updated);
+        }
+      },
+      [local, updateActivity],
+    ),
+    deleteActivity: useCallback(() => {
+      if (local?.id) {
+        deleteActivity(local.id);
+        setLocal(undefined);
+      }
+    }, [deleteActivity, local?.id]),
+  };
 };

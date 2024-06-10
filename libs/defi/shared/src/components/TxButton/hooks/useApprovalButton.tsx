@@ -12,12 +12,7 @@ import { useIntl } from 'react-intl';
 import { decodeEventLog, erc20Abi } from 'viem';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
-import {
-  activityOptions,
-  useDeleteActivity,
-  usePushActivity,
-  useUpdateActivity,
-} from '../../Activities';
+import { activityOptions, useActivity } from '../../Activities';
 
 import type { Token } from '@origin/shared/contracts';
 import type { WriteTransactionCallbacks } from '@origin/shared/providers';
@@ -27,8 +22,6 @@ import type {
   SimulateContractReturnType,
 } from '@wagmi/core';
 import type { TransactionReceipt } from 'viem';
-
-import type { ApprovalActivity } from '../../Activities';
 
 export type UseApprovalButtonProps = {
   token: Token;
@@ -42,20 +35,13 @@ export type UseApprovalButtonProps = {
 export const useApprovalButton = (args: UseApprovalButtonProps) => {
   const intl = useIntl();
   const { isConnected, address } = useAccount();
-  const [activity, setActivity] = useState<ApprovalActivity>({
-    type: 'approval',
-    status: 'idle',
-    amountIn: args.amount,
-    tokenIdIn: args.token.id,
-  });
+  const { activity, deleteActivity, pushActivity, updateActivity } =
+    useActivity();
   const [notifId, setNotifId] = useState<string | null>(null);
   const [simulateError, setSimulateError] =
     useState<SimulateContractErrorType>();
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
-  const pushActivity = usePushActivity();
-  const updateActivity = useUpdateActivity();
-  const deleteActivity = useDeleteActivity();
   const config = useConfig();
   const publicClient = usePublicClient({
     chainId: args.token.chainId,
@@ -110,24 +96,24 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   });
 
   const onWrite = useCallback(() => {
-    const updated = pushActivity({
-      ...activity,
+    pushActivity({
+      type: 'approval',
       status: 'pending',
+      amountIn: args.amount,
+      tokenIdIn: args.token.id,
     });
-    setActivity(updated);
     args.callbacks?.onWrite?.();
-  }, [activity, args.callbacks, pushActivity]);
+  }, [args.amount, args.callbacks, args.token.id, pushActivity]);
 
   const onTxSigned = useCallback(() => {
-    const updated = updateActivity({ id: activity.id, status: 'signed' });
-    if (updated) {
-      setActivity(updated);
+    updateActivity({ status: 'signed' });
+    if (activity?.id) {
       const id = pushNotification({
-        title: activityOptions.approval.title(updated, intl),
+        title: activityOptions.approval.title(activity, intl),
         message: intl.formatMessage({
           defaultMessage: 'Your transaction is being processed on-chain.',
         }),
-        icon: activityOptions.approval.icon(updated),
+        icon: activityOptions.approval.icon(activity),
         severity: 'pending',
         hideDuration: undefined,
       });
@@ -138,15 +124,11 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
   }, [activity, args.callbacks, intl, pushNotification, updateActivity]);
 
   const onUserReject = useCallback(() => {
-    if (activity?.id) {
-      deleteActivity(activity.id);
-      setActivity({ ...activity, status: 'idle' });
-    }
+    deleteActivity();
     if (notifId) {
       deleteNotification(notifId);
       setNotifId(null);
     }
-
     pushNotification({
       title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
       message: intl.formatMessage({
@@ -154,10 +136,8 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       }),
       severity: 'info',
     });
-
     args.callbacks?.onUserReject?.();
   }, [
-    activity,
     args.callbacks,
     deleteActivity,
     deleteNotification,
@@ -183,15 +163,16 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       if (args.enableGas && isConnected) {
         refetchGas();
       }
-      pushNotification({
-        icon: activityOptions.approval.icon(activity),
-        title: intl.formatMessage({
-          defaultMessage: 'Impossible to execute approval',
-        }),
-        message: formatError(error),
-        severity: 'error',
-      });
-
+      if (activity?.id) {
+        pushNotification({
+          icon: activityOptions.approval.icon(activity),
+          title: intl.formatMessage({
+            defaultMessage: 'Impossible to execute approval',
+          }),
+          message: formatError(error),
+          severity: 'error',
+        });
+      }
       args.callbacks?.onSimulateError?.(error);
     },
     [
@@ -220,34 +201,27 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
           amount = decoded.args.value;
         }
       } catch {}
-
       if (args.enableAllowance) {
         refetchAllowance();
       }
-
       if (notifId) {
         deleteNotification(notifId);
         setNotifId(null);
       }
-
-      const updated = updateActivity({
-        id: activity.id,
+      updateActivity({
         status: 'success',
         amountIn: amount,
         txHash: txReceipt.transactionHash,
       });
-
-      if (updated) {
-        setActivity(updated);
+      if (activity?.id) {
         pushNotification({
-          title: activityOptions.approval.title(updated, intl),
-          message: activityOptions.approval.subtitle(updated, intl),
-          icon: activityOptions.approval.icon(updated),
+          title: activityOptions.approval.title(activity, intl),
+          message: activityOptions.approval.subtitle(activity, intl),
+          icon: activityOptions.approval.icon(activity),
           severity: 'success',
           blockExplorerLinkProps: { hash: txReceipt.transactionHash },
         });
       }
-
       args.callbacks?.onWriteSuccess?.(txReceipt);
     },
     [
@@ -270,23 +244,18 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         deleteNotification(notifId);
         setNotifId(null);
       }
-
-      const updated = updateActivity({
-        id: activity.id,
+      updateActivity({
         status: 'error',
         error: error?.message,
       });
-
-      if (updated) {
-        setActivity(updated);
+      if (activity?.id) {
         pushNotification({
-          title: activityOptions.approval.title(updated, intl),
+          title: activityOptions.approval.title(activity, intl),
           message: formatError(error),
-          icon: activityOptions.approval.icon(updated),
+          icon: activityOptions.approval.icon(activity),
           severity: 'error',
         });
       }
-
       args.callbacks?.onWriteError?.(error);
     },
     [
