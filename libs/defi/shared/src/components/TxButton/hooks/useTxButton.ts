@@ -122,7 +122,6 @@ export const useTxButton = <
 
   const onTxSigned = useCallback(() => {
     updateActivity({ status: 'signed' });
-    console.log('SIGNED', activity);
     if (activity?.id) {
       pushNotification({
         title: activityOption.title(activity, intl),
