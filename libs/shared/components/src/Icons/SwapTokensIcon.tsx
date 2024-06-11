@@ -1,4 +1,5 @@
 import { Box } from '@mui/material';
+import { FaArrowRightArrowLeftRegular } from '@origin/shared/icons';
 
 import { TokenIcon } from './TokenIcon';
 
@@ -49,10 +50,30 @@ export const SwapTokensIcon = ({
           position: 'absolute',
           fontSize: iconSize,
           zIndex: 2,
-          bottom: 0,
-          right: 0,
+          top: '25%',
+          left: '25%',
         }}
       />
+      <Box
+        sx={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          zIndex: 2,
+          backgroundColor: 'primary.main',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '50%',
+          border: '1px solid',
+          borderColor: 'common.white',
+          p: 0.4,
+        }}
+      >
+        <FaArrowRightArrowLeftRegular
+          sx={{ fontSize: iconSize * 0.25, color: 'common.white' }}
+        />
+      </Box>
     </Box>
   );
 };

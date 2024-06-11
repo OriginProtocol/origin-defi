@@ -1,14 +1,20 @@
 import { Badge } from '@mui/material';
 
-import type { BadgeProps, BadgeTypeMap } from '@mui/material';
+import type { BadgeProps } from '@mui/material';
 import type { ReactNode } from 'react';
 
 export type BadgeIconProps = {
   children: ReactNode;
-  badgeSx?: BadgeTypeMap<'span', object>;
+  badgeBkgColor?: string;
+  badgeSize?: number;
 } & BadgeProps;
 
-export const BadgeIcon = ({ children, badgeSx, ...rest }: BadgeIconProps) => {
+export const BadgeIcon = ({
+  children,
+  badgeBkgColor = 'background.default',
+  badgeSize = 16,
+  ...rest
+}: BadgeIconProps) => {
   return (
     <Badge
       anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
@@ -19,13 +25,15 @@ export const BadgeIcon = ({ children, badgeSx, ...rest }: BadgeIconProps) => {
           p: 0,
           minWidth: 0,
           minHeight: 0,
-          width: 16,
-          height: 16,
+          width: badgeSize,
+          height: badgeSize,
           mb: 0.75,
           border: '1px solid',
           borderColor: 'background.highlight',
-          backgroundColor: 'background.default',
-          ...badgeSx,
+          backgroundColor: badgeBkgColor,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
         },
       }}
     >

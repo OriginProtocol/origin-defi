@@ -9,11 +9,7 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { OgvProposalState, useTxButton } from '@origin/defi/shared';
-import {
-  LoadingLabel,
-  TokenIcon,
-  TooltipLabel,
-} from '@origin/shared/components';
+import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -140,19 +136,11 @@ function VoteCard({
       args: [BigInt(proposalId ?? ZERO_ADDRESS), governanceSupport[choice]],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Cast vote',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Vote {choice} on proposal {proposalId}',
-        },
-        {
-          choice,
-          proposalId,
-        },
-      ),
+      type: 'vote',
+      status: 'idle',
+      tokenIdIn: tokens.mainnet.xOGN.id,
+      choice,
+      proposalId: proposalId as string,
     },
     callbacks: {
       onWriteSuccess: () => {

@@ -101,21 +101,12 @@ export const AddToLockupModal = ({
       ],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 36 }} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Add OGN to lockup',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Add {amount} OGN to existing lockup',
-        },
-        {
-          amount: intl.formatNumber(
-            +formatUnits(amount, tokens.mainnet.OGN.decimals),
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-        },
-      ),
+      type: 'extend-stake',
+      status: 'idle',
+      amountIn: amount,
+      tokenIdIn: tokens.mainnet.OGN.id,
+      monthDuration,
+      lockupId: lockup.lockupId,
     },
     callbacks: {
       onWriteSuccess: () => {

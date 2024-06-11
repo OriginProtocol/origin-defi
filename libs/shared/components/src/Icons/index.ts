@@ -7,4 +7,5 @@ export * from './SeverityIcon';
 export * from './SwapTokensIcon';
 export * from './TokenIcon';
 export * from './TransactionIcon';
+export * from './TransferIcon';
 export * from './WalletIcon';

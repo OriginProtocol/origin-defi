@@ -1,7 +1,7 @@
 import type { HexAddress } from '@origin/shared/utils';
 import type { Abi } from 'viem';
 
-import type { IVaultABI as VaultABI } from './abis/IVault';
+import type { tokenList } from './tokens';
 
 export type Contract<A = Abi> = {
   address: HexAddress;
@@ -11,6 +11,7 @@ export type Contract<A = Abi> = {
 };
 
 export type Token<A = Abi> = {
+  id: TokenId;
   address: HexAddress | undefined;
   chainId: number;
   abi: A;
@@ -19,4 +20,7 @@ export type Token<A = Abi> = {
   decimals: number;
 };
 
-export type IVaultABI = typeof VaultABI;
+type TokenList = typeof tokenList;
+export type TokenListItem = TokenList[number];
+export type TokenSymbol = TokenListItem['symbol'];
+export type TokenId = TokenListItem['id'];

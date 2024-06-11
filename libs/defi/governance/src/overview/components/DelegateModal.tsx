@@ -20,7 +20,6 @@ import {
   useOgnInfo,
   useTxButton,
 } from '@origin/defi/shared';
-import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
@@ -50,24 +49,11 @@ export const DelegateModal = (props: DialogProps) => {
       args: [delegatee ?? ZERO_ADDRESS],
     },
     activity: {
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Delegate',
-      }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Delegate {votingPower} xOGN to {delegatee}',
-        },
-        {
-          votingPower: formatAmount(
-            info?.xOgnRewards,
-            tokens.mainnet.OGN.decimals,
-            undefined,
-            { notation: 'compact', maximumSignificantDigits: 4 },
-          ),
-          delegatee,
-        },
-      ),
+      type: 'delegate',
+      status: 'idle',
+      tokenIdIn: tokens.mainnet.xOGN.id,
+      delegateTo: delegatee ?? ZERO_ADDRESS,
+      votingPower: (info?.xOgnBalance ?? 0n) + (info?.xOgnRewards ?? 0n),
     },
     callbacks: {
       onWriteSuccess: () => {

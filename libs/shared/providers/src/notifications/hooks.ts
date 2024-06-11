@@ -37,15 +37,17 @@ export const useSetNotificationInvisible = () => {
   const [, setState] = useNotificationState();
 
   return useCallback(
-    (id: string) => {
-      setState(
-        produce((state) => {
-          const idx = state.notifications.findIndex(propEq(id, 'id'));
-          if (idx > -1) {
-            state.notifications[idx].visible = false;
-          }
-        }),
-      );
+    (id?: string) => {
+      if (id) {
+        setState(
+          produce((state) => {
+            const idx = state.notifications.findIndex(propEq(id, 'id'));
+            if (idx > -1) {
+              state.notifications[idx].visible = false;
+            }
+          }),
+        );
+      }
     },
     [setState],
   );
@@ -55,15 +57,17 @@ export const useSetNotificationRead = () => {
   const [, setState] = useNotificationState();
 
   return useCallback(
-    (id: string) => {
-      setState(
-        produce((state) => {
-          const idx = state.notifications.findIndex(propEq(id, 'id'));
-          if (idx > -1) {
-            state.notifications[idx].read = true;
-          }
-        }),
-      );
+    (id?: string) => {
+      if (id) {
+        setState(
+          produce((state) => {
+            const idx = state.notifications.findIndex(propEq(id, 'id'));
+            if (idx > -1) {
+              state.notifications[idx].read = true;
+            }
+          }),
+        );
+      }
     },
     [setState],
   );
@@ -87,15 +91,17 @@ export const useDeleteNotification = () => {
   const [, setState] = useNotificationState();
 
   return useCallback(
-    (id: string) => {
-      setState(
-        produce((state) => {
-          const idx = state.notifications.findIndex(propEq(id, 'id'));
-          if (idx > -1) {
-            state.notifications.splice(idx, 1);
-          }
-        }),
-      );
+    (id?: string) => {
+      if (id) {
+        setState(
+          produce((state) => {
+            const idx = state.notifications.findIndex(propEq(id, 'id'));
+            if (idx > -1) {
+              state.notifications.splice(idx, 1);
+            }
+          }),
+        );
+      }
     },
     [setState],
   );

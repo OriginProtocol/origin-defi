@@ -1,3 +1,4 @@
+export * from './Activities';
 export * from './Banners';
 export * from './Cards';
 export * from './Chips';

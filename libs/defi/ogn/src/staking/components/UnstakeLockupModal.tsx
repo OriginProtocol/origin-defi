@@ -13,12 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { ColorChip, useTxButton } from '@origin/defi/shared';
-import {
-  LoadingLabel,
-  MiddleTruncatedLabel,
-  TokenIcon,
-  ValueLabel,
-} from '@origin/shared/components';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   FaCircleExclamationRegular,
@@ -62,20 +57,11 @@ export const UnstakeLockupModal = ({
       args: [BigInt(lockup.lockupId)],
     },
     activity: {
-      title: intl.formatMessage({ defaultMessage: 'Unstake' }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: 'Unstake lockup {stake}',
-        },
-        {
-          stake: (
-            <MiddleTruncatedLabel maxWidth={60}>
-              {lockup.lockupId}
-            </MiddleTruncatedLabel>
-          ),
-        },
-      ),
-      endIcon: <TokenIcon token={tokens.mainnet.xOGN} />,
+      type: 'unstake',
+      status: 'idle',
+      tokenIdIn: tokens.mainnet.xOGN.id,
+      tokenIdOut: tokens.mainnet.OGN.id,
+      lockupId: lockup.lockupId,
     },
     callbacks: {
       onWriteSuccess: () => {

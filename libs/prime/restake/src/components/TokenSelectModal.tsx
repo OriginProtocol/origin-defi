@@ -39,7 +39,7 @@ export const TokenSelectModal = ({
 
   const sortedTokens = sortWith<TokenOption>([
     ascend((t) => !['ETH', 'WETH'].includes(t.symbol)),
-    descend((t) => +formatUnits(balances?.[t.symbol] ?? 0n, t.decimals)),
+    descend((t) => +formatUnits(balances?.[t.id] ?? 0n, t.decimals)),
     descend((t) => t.symbol === 'OETH'),
     ascend((t) => t.name ?? ''),
   ])(tokens);
@@ -59,7 +59,7 @@ export const TokenSelectModal = ({
             <TokenListItem
               key={`token-${token.address || 'eth'}-${i}`}
               token={token}
-              balance={balances?.[token.symbol] ?? 0n}
+              balance={balances?.[token.id] ?? 0n}
               onClick={() => {
                 onClose?.({}, 'backdropClick');
                 onSelectToken(token);
