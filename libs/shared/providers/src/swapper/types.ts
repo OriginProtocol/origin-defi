@@ -136,20 +136,38 @@ export type SwapState = {
   onTokenFlip?: (state: SwapState) => void;
   onSwapRouteChange?: (state: SwapState) => void;
   onApproveStart?: (state: SwapState) => string;
+  onApproveSigned?: (
+    state: SwapState & { trackId?: string },
+  ) => string | undefined;
   onApproveSuccess?: (
-    state: SwapState & { txReceipt: TransactionReceipt; trackId?: string },
+    state: SwapState & {
+      txReceipt: TransactionReceipt;
+      trackId?: string;
+      notifId?: string;
+    },
   ) => void;
-  onApproveReject?: (state: SwapState & { trackId?: string }) => void;
+  onApproveReject?: (
+    state: SwapState & { trackId?: string; notifId?: string },
+  ) => void;
   onApproveFailure?: (
-    state: SwapState & { error: Error; trackId?: string },
+    state: SwapState & { error: Error; trackId?: string; notifId?: string },
   ) => void;
   onSwapStart?: (state: SwapState) => string;
+  onSwapSigned?: (
+    state: SwapState & { trackId?: string },
+  ) => string | undefined;
   onSwapSuccess?: (
-    state: SwapState & { txReceipt: TransactionReceipt; trackId?: string },
+    state: SwapState & {
+      txReceipt: TransactionReceipt;
+      trackId?: string;
+      notifId?: string;
+    },
   ) => void;
-  onSwapReject?: (state: SwapState & { trackId?: string }) => void;
+  onSwapReject?: (
+    state: SwapState & { trackId?: string; notifId?: string },
+  ) => void;
   onSwapFailure?: (
-    state: SwapState & { error: Error; trackId?: string },
+    state: SwapState & { error: Error; trackId?: string; notifId?: string },
   ) => void;
 };
 

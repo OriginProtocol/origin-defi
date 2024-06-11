@@ -63,6 +63,7 @@ export interface MigrateActivity extends ActivityBase {
 export interface RedeemActivity extends ActivityBase {
   type: 'redeem';
   tokenIdIn: TokenId;
+  tokenIdOut: TokenId;
   amountIn: bigint;
 }
 

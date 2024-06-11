@@ -28,6 +28,7 @@ import {
   isNativeCurrency,
   SettingsButton,
   SwapProvider,
+  useDeleteNotification,
   useFormat,
   useHandleAmountInChange,
   useHandleApprove,
@@ -65,6 +66,8 @@ import type { BoxProps, ButtonProps, CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { SwapState, TokenSource } from '@origin/shared/providers';
 
+import type { Activity } from '../Activities';
+
 export type SwapperProps = Pick<
   SwapState,
   'swapActions' | 'swapRoutes' | 'trackEvent'
@@ -81,6 +84,7 @@ export const Swapper = ({
 }: SwapperProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
+  const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -90,18 +94,35 @@ export const Swapper = ({
       swapActions={swapActions}
       swapRoutes={swapRoutes}
       trackEvent={trackEvent}
-      onApproveStart={(state) => {
+      onApproveStart={({ tokenIn, amountIn }) => {
         const activity = pushActivity({
           type: 'approval',
           status: 'pending',
-          tokenIdIn: state.tokenIn.id,
-          amountIn: state.amountIn,
+          tokenIdIn: tokenIn.id,
+          amountIn,
         });
 
         return activity.id;
       }}
-      onApproveSuccess={(state) => {
-        const { trackId, txReceipt } = state;
+      onApproveSigned={({ amountIn, tokenIn }) => {
+        const activity: Activity = {
+          type: 'approval',
+          status: 'pending',
+          amountIn,
+          tokenIdIn: tokenIn.id,
+        };
+        const notifId = pushNotification({
+          icon: activityOptions.approval.icon(activity),
+          title: activityOptions.approval.title(activity, intl),
+          message: activityOptions.approval.subtitle(activity, intl),
+          severity: 'pending',
+          hideDuration: undefined,
+        });
+
+        return notifId;
+      }}
+      onApproveSuccess={({ trackId, txReceipt, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({ id: trackId, status: 'success' });
         if (updated) {
           pushNotification({
@@ -115,7 +136,8 @@ export const Swapper = ({
           });
         }
       }}
-      onApproveReject={({ trackId }) => {
+      onApproveReject={({ trackId, notifId }) => {
+        deleteNotification(notifId);
         deleteActivity(trackId);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
@@ -125,8 +147,8 @@ export const Swapper = ({
           severity: 'info',
         });
       }}
-      onApproveFailure={(state) => {
-        const { error, trackId } = state;
+      onApproveFailure={({ error, trackId, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'error',
@@ -141,20 +163,39 @@ export const Swapper = ({
           });
         }
       }}
-      onSwapStart={(state) => {
+      onSwapStart={({ amountIn, amountOut, tokenIn, tokenOut }) => {
         const activity = pushActivity({
           type: 'swap',
           status: 'pending',
-          tokenIdIn: state.tokenIn.id,
-          tokenIdOut: state.tokenOut.id,
-          amountIn: state.amountIn,
-          amountOut: state.amountOut,
+          tokenIdIn: tokenIn.id,
+          tokenIdOut: tokenOut.id,
+          amountIn,
+          amountOut,
         });
 
         return activity.id;
       }}
-      onSwapSuccess={(state) => {
-        const { trackId, amountOut, txReceipt } = state;
+      onSwapSigned={({ amountIn, amountOut, tokenIn, tokenOut }) => {
+        const activity: Activity = {
+          type: 'swap',
+          status: 'pending',
+          tokenIdIn: tokenIn.id,
+          tokenIdOut: tokenOut.id,
+          amountIn,
+          amountOut,
+        };
+        const notifId = pushNotification({
+          title: activityOptions.swap.title(activity, intl),
+          message: activityOptions.swap.subtitle(activity, intl),
+          icon: activityOptions.swap.icon(activity),
+          severity: 'pending',
+          hideDuration: undefined,
+        });
+
+        return notifId;
+      }}
+      onSwapSuccess={({ trackId, amountOut, txReceipt, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'success',
@@ -172,7 +213,8 @@ export const Swapper = ({
           });
         }
       }}
-      onSwapReject={({ trackId }) => {
+      onSwapReject={({ trackId, notifId }) => {
+        deleteNotification(notifId);
         deleteActivity(trackId);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
@@ -182,8 +224,8 @@ export const Swapper = ({
           severity: 'info',
         });
       }}
-      onSwapFailure={(state) => {
-        const { error, trackId } = state;
+      onSwapFailure={({ error, trackId, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'error',

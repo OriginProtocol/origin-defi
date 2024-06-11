@@ -33,10 +33,12 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       | 'onTokenFlip'
       | 'onSwapRouteChange'
       | 'onApproveStart'
+      | 'onApproveSigned'
       | 'onApproveSuccess'
       | 'onApproveReject'
       | 'onApproveFailure'
       | 'onSwapStart'
+      | 'onSwapSigned'
       | 'onSwapSuccess'
       | 'onSwapReject'
       | 'onSwapFailure'
@@ -53,10 +55,12 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       onTokenFlip,
       onSwapRouteChange,
       onApproveStart,
+      onApproveSigned,
       onApproveSuccess,
       onApproveReject,
       onApproveFailure,
       onSwapStart,
+      onSwapSigned,
       onSwapSuccess,
       onSwapReject,
       onSwapFailure,
@@ -84,10 +88,12 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         onTokenFlip,
         onSwapRouteChange,
         onApproveStart,
+        onApproveSigned,
         onApproveSuccess,
         onApproveReject,
         onApproveFailure,
         onSwapStart,
+        onSwapSigned,
         onSwapSuccess,
         onSwapReject,
         onSwapFailure,

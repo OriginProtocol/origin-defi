@@ -28,6 +28,7 @@ import {
   isNativeCurrency,
   SettingsButton,
   SwapProvider,
+  useDeleteNotification,
   useFormat,
   useHandleAmountInChange,
   useHandleApprove,
@@ -51,6 +52,7 @@ import { useAccount } from 'wagmi';
 import { RedeemActionCard } from './RedeemActionCard';
 
 import type { StackProps } from '@mui/material';
+import type { Activity } from '@origin/defi/shared';
 import type { SwapState } from '@origin/shared/providers';
 
 export type SwapperProps = Pick<
@@ -68,6 +70,7 @@ export const Swapper = ({
 }: SwapperProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
+  const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
@@ -87,8 +90,25 @@ export const Swapper = ({
 
         return activity.id;
       }}
-      onApproveSuccess={(state) => {
-        const { trackId, txReceipt, amountIn } = state;
+      onApproveSigned={({ amountIn, tokenIn }) => {
+        const activity: Activity = {
+          type: 'approval',
+          status: 'pending',
+          amountIn,
+          tokenIdIn: tokenIn.id,
+        };
+        const notifId = pushNotification({
+          icon: activityOptions.approval.icon(activity),
+          title: activityOptions.approval.title(activity, intl),
+          message: activityOptions.approval.subtitle(activity, intl),
+          severity: 'pending',
+          hideDuration: undefined,
+        });
+
+        return notifId;
+      }}
+      onApproveSuccess={({ trackId, txReceipt, amountIn, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'success',
@@ -106,7 +126,8 @@ export const Swapper = ({
           });
         }
       }}
-      onApproveReject={({ trackId }) => {
+      onApproveReject={({ trackId, notifId }) => {
+        deleteNotification(notifId);
         deleteActivity(trackId);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Approval cancelled' }),
@@ -116,8 +137,8 @@ export const Swapper = ({
           severity: 'info',
         });
       }}
-      onApproveFailure={(state) => {
-        const { error, trackId } = state;
+      onApproveFailure={({ error, trackId, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'error',
@@ -132,20 +153,37 @@ export const Swapper = ({
           });
         }
       }}
-      onSwapStart={(state) => {
+      onSwapStart={({ tokenIn, tokenOut, amountIn }) => {
         const activity = pushActivity({
           type: 'redeem',
           status: 'pending',
-          tokenIdIn: state.tokenIn.id,
-          tokenIdOut: state.tokenOut.id,
-          amountIn: state.amountIn,
-          amountOut: state.amountOut,
+          tokenIdIn: tokenIn.id,
+          tokenIdOut: tokenOut.id,
+          amountIn,
         });
 
         return activity.id;
       }}
-      onSwapSuccess={(state) => {
-        const { trackId, txReceipt } = state;
+      onSwapSigned={({ amountIn, tokenIn, tokenOut }) => {
+        const activity: Activity = {
+          type: 'redeem',
+          status: 'pending',
+          tokenIdIn: tokenIn.id,
+          tokenIdOut: tokenOut.id,
+          amountIn,
+        };
+        const notifId = pushNotification({
+          title: activityOptions.redeem.title(activity, intl),
+          message: activityOptions.redeem.subtitle(activity, intl),
+          icon: activityOptions.redeem.icon(activity),
+          severity: 'pending',
+          hideDuration: undefined,
+        });
+
+        return notifId;
+      }}
+      onSwapSuccess={({ trackId, txReceipt, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'success',
@@ -162,7 +200,8 @@ export const Swapper = ({
           });
         }
       }}
-      onSwapReject={({ trackId }) => {
+      onSwapReject={({ trackId, notifId }) => {
+        deleteNotification(notifId);
         deleteActivity(trackId);
         pushNotification({
           title: intl.formatMessage({ defaultMessage: 'Operation cancelled' }),
@@ -172,8 +211,8 @@ export const Swapper = ({
           severity: 'warning',
         });
       }}
-      onSwapFailure={(state) => {
-        const { error, trackId } = state;
+      onSwapFailure={({ error, trackId, notifId }) => {
+        deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
           status: 'error',

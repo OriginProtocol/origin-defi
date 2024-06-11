@@ -20,6 +20,7 @@ import { tokens } from '@origin/shared/contracts';
 import {
   getTokenPriceKey,
   isNativeCurrency,
+  MIX_TOKEN,
   RedeemProvider,
   SettingsButton,
   TxButton,
@@ -115,6 +116,7 @@ function RedeemerWrapped({
       status: 'idle',
       amountIn,
       tokenIdIn: tokens.mainnet.OUSD.id,
+      tokenIdOut: MIX_TOKEN.id,
     },
   });
 
@@ -272,6 +274,9 @@ function RedeemerWrapped({
             gas={gas + (gas * gasBuffer) / 100n}
             fullWidth
             disabled={redeemButtonDisabled}
+            validatingTxLabel={intl.formatMessage({
+              defaultMessage: 'Validating Transaction',
+            })}
             label={
               isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />
