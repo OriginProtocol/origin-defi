@@ -13,7 +13,7 @@ export const RedeemView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'Redeem' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'Request redemptions to ETH or a mix of LSTs',
+          defaultMessage: 'Request redemptions to WETH',
         })}
         token={tokens.mainnet.OETH}
       />

@@ -182,6 +182,9 @@
   "5zH79K": {
     "defaultMessage": "Your veOGV staked positions"
   },
+  "62AU7R": {
+    "defaultMessage": "Request redemptions to WETH"
+  },
   "65BhO2": {
     "defaultMessage": "OGN Rewards Will be Collected"
   },
@@ -370,9 +373,6 @@
   },
   "Dmb2/1": {
     "defaultMessage": "Unlock Stake"
-  },
-  "DriTx1": {
-    "defaultMessage": "Request redemptions to ETH or a mix of LSTs"
   },
   "DupNoS": {
     "defaultMessage": "Go back home"

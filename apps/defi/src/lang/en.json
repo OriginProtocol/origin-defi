@@ -487,6 +487,12 @@
       "value": "Your veOGV staked positions"
     }
   ],
+  "62AU7R": [
+    {
+      "type": 0,
+      "value": "Request redemptions to WETH"
+    }
+  ],
   "65BhO2": [
     {
       "type": 0,
@@ -927,12 +933,6 @@
     {
       "type": 0,
       "value": "Unlock Stake"
-    }
-  ],
-  "DriTx1": [
-    {
-      "type": 0,
-      "value": "Request redemptions to ETH or a mix of LSTs"
     }
   ],
   "DupNoS": [
