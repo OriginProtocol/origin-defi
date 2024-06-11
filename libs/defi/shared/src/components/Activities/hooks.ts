@@ -146,18 +146,22 @@ export const useActivity = () => {
       (act: Activity) => {
         const activity = pushActivity(act);
         setLocal(activity);
+
+        return activity;
       },
       [pushActivity],
     ),
     updateActivity: useCallback(
       (act: Partial<Activity>) => {
-        if (local?.id && local.type === act.type) {
+        if (local?.id) {
           const updated = updateActivity({
             ...act,
             type: local.type,
             id: local.id,
           });
           setLocal(updated);
+
+          return updated;
         }
       },
       [local, updateActivity],
