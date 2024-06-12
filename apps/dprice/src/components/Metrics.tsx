@@ -8,6 +8,7 @@ import {
   getBaseAmount,
   getBoughtAmount,
   getQueueAmount,
+  getTimestamp,
   getTradePrice,
 } from '../utils';
 
@@ -23,27 +24,32 @@ export const Metrics = () => {
       <ValueLabel
         {...valueLabelProps}
         label="Trade Price"
-        value={getTradePrice(point)}
+        value={index > 0 ? getTradePrice(point) : '-'}
       />
       <ValueLabel
         {...valueLabelProps}
         label="Qty Bought"
-        value={getBoughtAmount(point)}
+        value={index > 0 ? getBoughtAmount(point) : '-'}
       />
       <ValueLabel
         {...valueLabelProps}
         label="ARM Price"
-        value={getARMPrice(point)}
+        value={index > 0 ? getARMPrice(point) : '-'}
       />
       <ValueLabel
         {...valueLabelProps}
         label="ETH"
-        value={getBaseAmount(point)}
+        value={index > 0 ? getBaseAmount(point) : '-'}
       />
       <ValueLabel
         {...valueLabelProps}
         label="Queued ETH"
-        value={getQueueAmount(point)}
+        value={index > 0 ? getQueueAmount(point) : '-'}
+      />
+      <ValueLabel
+        {...valueLabelProps}
+        label="Date"
+        value={index > 0 ? getTimestamp(point).toLocaleString() : '-'}
       />
     </Stack>
   );

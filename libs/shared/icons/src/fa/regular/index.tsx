@@ -55,6 +55,8 @@ import SquareListSvg from './square-list.svg?react';
 import SquareMinusSvg from './square-minus.svg?react';
 import SunBrightSvg from './sun-bright.svg?react';
 import UserSvg from './user.svg?react';
+import VolumeSvg from './volume.svg?react';
+import VolumeSlashSvg from './volume-slash.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
@@ -423,6 +425,17 @@ export const FaSunBrightRegular = (props: SvgIconProps) => (
 );
 export const FaUserRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={UserSvg} inheritViewBox />
+);
+export const FaVolumeRegular = (props: SvgIconProps) => (
+  <SvgIcon fontSize="inherit" {...props} component={VolumeSvg} inheritViewBox />
+);
+export const FaVolumeSlashRegular = (props: SvgIconProps) => (
+  <SvgIcon
+    fontSize="inherit"
+    {...props}
+    component={VolumeSlashSvg}
+    inheritViewBox
+  />
 );
 export const FaXmarkRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={XmarkSvg} inheritViewBox />

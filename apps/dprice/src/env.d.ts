@@ -31,4 +31,6 @@ declare interface State {
   interval: number | undefined;
   index: number;
   total: number;
+  muted: boolean;
+  span: number;
 }

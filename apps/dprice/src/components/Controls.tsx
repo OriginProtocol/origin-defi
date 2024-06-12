@@ -1,20 +1,39 @@
-import { Button, Stack } from '@mui/material';
+import { Button, Slider, Stack, Typography } from '@mui/material';
 import {
   FaChevronLeftRegular,
   FaChevronRightRegular,
+  FaVolumeRegular,
+  FaVolumeSlashRegular,
 } from '@origin/shared/icons';
 
-import { useNavigatePoints, useResetPoints, useStartStop } from '../hooks';
+import {
+  useMute,
+  useNavigatePoints,
+  useResetPoints,
+  useSpan,
+  useStartStop,
+} from '../hooks';
 import { useDPrice } from '../state';
 
 export const Controls = () => {
-  const [{ interval }] = useDPrice();
+  const [{ interval, muted, span }] = useDPrice();
   const handleStartStop = useStartStop();
   const handleReset = useResetPoints();
   const move = useNavigatePoints();
+  const mute = useMute();
+  const updateSpan = useSpan();
+
+  const handleSliderChange = (event: Event, newValue: number | number[]) => {
+    updateSpan(newValue as number);
+  };
 
   return (
-    <Stack direction="row" justifyContent="center" spacing={2}>
+    <Stack
+      direction="row"
+      justifyContent="center"
+      alignItems="center"
+      spacing={2}
+    >
       <Button
         onClick={() => {
           move('backward', 10);
@@ -49,6 +68,22 @@ export const Controls = () => {
         <FaChevronRightRegular />
         <FaChevronRightRegular />
       </Button>
+      <Button
+        onClick={() => {
+          mute();
+        }}
+        sx={{ backgroundColor: muted ? 'primary.faded' : 'primary.main' }}
+      >
+        {muted ? <FaVolumeSlashRegular /> : <FaVolumeRegular />}
+      </Button>
+      <Slider
+        onChange={handleSliderChange}
+        min={30}
+        max={1000}
+        value={span}
+        sx={{ maxWidth: 300 }}
+      />
+      <Typography>{span}</Typography>
     </Stack>
   );
 };

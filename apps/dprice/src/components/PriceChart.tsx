@@ -2,17 +2,23 @@ import { useMemo } from 'react';
 
 import { useTheme } from '@mui/material';
 import { scaleLinear } from '@visx/scale';
-import { take } from 'ramda';
+import { take, takeLast } from 'ramda';
 import { Bubble } from 'react-chartjs-2';
 
 import csv from '../data.csv';
 import { useDPrice } from '../state';
-import { getARMPrice, getBoughtAmount, getTradePrice } from '../utils';
+import {
+  getARMPrice,
+  getBoughtAmount,
+  getIsWonTrade,
+  getTimestamp,
+  getTradePrice,
+} from '../utils';
 
 import type { ChartData, ChartOptions } from 'chart.js';
 
 export const PriceChart = () => {
-  const [{ index }] = useDPrice();
+  const [{ index, span }] = useDPrice();
   const theme = useTheme();
 
   const options: ChartOptions<'bubble'> = useMemo(
@@ -21,6 +27,7 @@ export const PriceChart = () => {
       scales: {
         x: {
           beginAtZero: true,
+          type: 'time',
         },
         y: {
           min: 0.998,
@@ -38,8 +45,8 @@ export const PriceChart = () => {
           annotations: {
             line1: {
               type: 'line',
-              yMin: index === 0 ? 0 : getARMPrice(csv[index]),
-              yMax: index === 0 ? 0 : getARMPrice(csv[index]),
+              yMin: index === 0 ? 0 : Math.max(0.998, getARMPrice(csv[index])),
+              yMax: index === 0 ? 0 : Math.max(0.998, getARMPrice(csv[index])),
               borderColor: theme.palette.primary.main,
               borderWidth: 2,
             },
@@ -50,8 +57,10 @@ export const PriceChart = () => {
     [index, theme.palette.primary.main],
   );
 
-  const data = useMemo<ChartData<'bubble'>>(() => {
-    const points = take(index, csv);
+  const data = useMemo<
+    ChartData<'bubble', { x: Date; y: number; r: number }[]>
+  >(() => {
+    const points = takeLast(span, take(index, csv));
 
     return {
       datasets: [
@@ -69,6 +78,7 @@ export const PriceChart = () => {
     };
   }, [
     index,
+    span,
     theme.palette.chart1,
     theme.palette.chart2,
     theme.palette.chart3,
@@ -83,21 +93,20 @@ const scaleR = scaleLinear({
   range: [5, 90],
 });
 
-const mapDataWon = (data: any, index: number) => {
+const mapDataWon = (data: Point) => {
   return {
-    x: index,
+    x: getTimestamp(data),
     y: getTradePrice(data),
-    r: data.won_trade === 'True' ? scaleR(Math.sqrt(getBoughtAmount(data))) : 0,
+    r: getIsWonTrade(data) ? scaleR(Math.sqrt(getBoughtAmount(data))) : 0,
   };
 };
 
-const mapDataMiss = (data: any, index: number) => {
+const mapDataMiss = (data: Point) => {
   return {
-    x: index,
+    x: getTimestamp(data),
     y: getTradePrice(data),
-    r:
-      data.won_trade === 'False'
-        ? scaleR(Math.sqrt(Math.sqrt(getBoughtAmount(data))))
-        : 0,
+    r: !getIsWonTrade(data)
+      ? scaleR(Math.sqrt(Math.sqrt(getBoughtAmount(data))))
+      : 0,
   };
 };

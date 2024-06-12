@@ -1,6 +1,7 @@
 import { Box, Container, Stack, Typography } from '@mui/material';
 
 import { DPriceProvider } from '../state';
+import { Audio } from './Audio';
 import { Controls } from './Controls';
 import { GaugeChart } from './GaugeChart';
 import { Metrics } from './Metrics';
@@ -10,8 +11,8 @@ export const App = () => {
   return (
     <DPriceProvider>
       <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Typography variant="h3" textAlign="center" mb={4}>
-          Dynamic Pricing Visualization
+        <Typography variant="h6" textAlign="center" mb={4}>
+          Lido Redemption Visualization
         </Typography>
         <Box sx={{ width: 1, mb: 4 }}>
           <PriceChart />
@@ -21,6 +22,7 @@ export const App = () => {
           <Metrics />
         </Stack>
         <Controls />
+        <Audio />
       </Container>
     </DPriceProvider>
   );

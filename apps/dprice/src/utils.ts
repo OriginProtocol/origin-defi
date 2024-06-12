@@ -47,3 +47,19 @@ export const getQueueAmount = (point: Point) => {
 
   return Number(point.queue_amount);
 };
+
+export const getTimestamp = (point: Point) => {
+  if (!point || point?.time === undefined) {
+    return new Date();
+  }
+
+  return new Date(point.time);
+};
+
+export const getIsWonTrade = (point: Point) => {
+  if (!point || point?.won_trade === undefined) {
+    return false;
+  }
+
+  return point.won_trade === 'True';
+};

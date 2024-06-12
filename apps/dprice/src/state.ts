@@ -12,6 +12,8 @@ export const { Provider: DPriceProvider, useTracked: useDPrice } =
       interval: undefined,
       index: 0,
       total: csv.length,
+      muted: true,
+      span: 200,
     });
 
     useIntervalEffect(

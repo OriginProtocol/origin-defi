@@ -46,3 +46,30 @@ export const useNavigatePoints = () => {
     [setDPrice, total],
   );
 };
+
+export const useMute = () => {
+  const [, setDPrice] = useDPrice();
+
+  return useCallback(() => {
+    setDPrice(
+      produce((draft) => {
+        draft.muted = !draft.muted;
+      }),
+    );
+  }, [setDPrice]);
+};
+
+export const useSpan = () => {
+  const [, setDPrice] = useDPrice();
+
+  return useCallback(
+    (value: number) => {
+      setDPrice(
+        produce((draft) => {
+          draft.span = value;
+        }),
+      );
+    },
+    [setDPrice],
+  );
+};
