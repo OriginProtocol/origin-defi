@@ -2,6 +2,7 @@ import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import dsv from '@rollup/plugin-dsv';
 import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
 
 export default defineConfig({
   root: __dirname,
@@ -26,7 +27,7 @@ export default defineConfig({
     },
   },
 
-  plugins: [react(), dsv(), nxViteTsPaths()],
+  plugins: [react(), dsv(), svgr(), nxViteTsPaths()],
 
   build: {
     outDir: '../../dist/apps/dprice',

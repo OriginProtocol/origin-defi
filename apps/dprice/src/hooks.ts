@@ -22,8 +22,27 @@ export const useResetPoints = () => {
   return useCallback(() => {
     setDPrice(
       produce((draft) => {
-        draft.points = [];
+        draft.index = 0;
       }),
     );
   }, [setDPrice]);
+};
+
+export const useNavigatePoints = () => {
+  const [{ total }, setDPrice] = useDPrice();
+
+  return useCallback(
+    (direction: 'forward' | 'backward', step = 1) => {
+      setDPrice(
+        produce((draft) => {
+          draft.interval = undefined;
+          draft.index =
+            direction === 'forward'
+              ? Math.min(total, draft.index + step)
+              : Math.max(0, draft.index - step);
+        }),
+      );
+    },
+    [setDPrice, total],
+  );
 };

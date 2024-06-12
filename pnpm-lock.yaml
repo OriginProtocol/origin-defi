@@ -56,6 +56,9 @@ importers:
       chartjs-adapter-date-fns:
         specifier: ^3.0.0
         version: 3.0.0(chart.js@4.4.3)(date-fns@3.6.0)
+      chartjs-plugin-annotation:
+        specifier: ^3.0.1
+        version: 3.0.1(chart.js@4.4.3)
       date-fns:
         specifier: ^3.2.0
         version: 3.6.0
@@ -4487,6 +4490,11 @@ packages:
     peerDependencies:
       chart.js: '>=2.8.0'
       date-fns: '>=2.0.0'
+
+  chartjs-plugin-annotation@3.0.1:
+    resolution: {integrity: sha512-hlIrXXKqSDgb+ZjVYHefmlZUXK8KbkCPiynSVrTb/HjTMkT62cOInaT1NTQCKtxKKOm9oHp958DY3RTAFKtkHg==}
+    peerDependencies:
+      chart.js: '>=4.0.0'
 
   check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
@@ -15091,6 +15099,10 @@ snapshots:
     dependencies:
       chart.js: 4.4.3
       date-fns: 3.6.0
+
+  chartjs-plugin-annotation@3.0.1(chart.js@4.4.3):
+    dependencies:
+      chart.js: 4.4.3
 
   check-error@1.0.3:
     dependencies:
