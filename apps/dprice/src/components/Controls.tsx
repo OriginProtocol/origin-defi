@@ -5,6 +5,7 @@ import {
   FaVolumeRegular,
   FaVolumeSlashRegular,
 } from '@origin/shared/icons';
+import { ThemeModeIconButton } from '@origin/shared/providers';
 
 import {
   useMute,
@@ -68,6 +69,7 @@ export const Controls = () => {
         <FaChevronRightRegular />
         <FaChevronRightRegular />
       </Button>
+      <ThemeModeIconButton />
       <Button
         onClick={() => {
           mute();

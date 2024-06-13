@@ -17,6 +17,13 @@ import {
 
 import type { ChartData, ChartOptions } from 'chart.js';
 
+type PriceChartData = {
+  x: Date;
+  y: number;
+  r: number;
+  color: string;
+};
+
 export const PriceChart = () => {
   const [{ index, span }] = useDPrice();
   const theme = useTheme();
@@ -36,6 +43,9 @@ export const PriceChart = () => {
       },
       layout: {
         padding: 0,
+      },
+      animation: {
+        duration: 0,
       },
       plugins: {
         legend: {
@@ -57,33 +67,25 @@ export const PriceChart = () => {
     [index, theme.palette.primary.main],
   );
 
-  const data = useMemo<
-    ChartData<'bubble', { x: Date; y: number; r: number }[]>
-  >(() => {
+  const data = useMemo<ChartData<'bubble', PriceChartData[]>>(() => {
     const points = takeLast(span, take(index, csv));
-
     return {
       datasets: [
         {
           label: 'Won',
           data: points.map(mapDataWon),
-          backgroundColor: [theme.palette.chart1, theme.palette.chart2],
+          backgroundColor: (ctx) =>
+            (ctx?.raw as PriceChartData)?.color ?? '#000',
         },
         {
           label: 'Miss',
           data: points.map(mapDataMiss),
-          backgroundColor: [theme.palette.chart3, theme.palette.chart4],
+          backgroundColor: (ctx) =>
+            (ctx?.raw as PriceChartData)?.color ?? '#000',
         },
       ],
     };
-  }, [
-    index,
-    span,
-    theme.palette.chart1,
-    theme.palette.chart2,
-    theme.palette.chart3,
-    theme.palette.chart4,
-  ]);
+  }, [index, span]);
 
   return <Bubble options={options} data={data} width={1000} height={600} />;
 };
@@ -98,6 +100,7 @@ const mapDataWon = (data: Point) => {
     x: getTimestamp(data),
     y: getTradePrice(data),
     r: getIsWonTrade(data) ? scaleR(Math.sqrt(getBoughtAmount(data))) : 0,
+    color: data.index % 2 === 0 ? '#586CF8' : '#48E4DB',
   };
 };
 
@@ -108,5 +111,6 @@ const mapDataMiss = (data: Point) => {
     r: !getIsWonTrade(data)
       ? scaleR(Math.sqrt(Math.sqrt(getBoughtAmount(data))))
       : 0,
+    color: data.index % 2 === 0 ? '#D0246A' : '#E85BFF',
   };
 };
