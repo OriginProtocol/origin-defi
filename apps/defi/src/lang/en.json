@@ -1,14 +1,14 @@
 {
+  "+0zAiT": [
+    {
+      "type": 0,
+      "value": "The updated amount of xOGN you will receive by adding OGN to this lockup."
+    }
+  ],
   "+14VoL": [
     {
       "type": 0,
       "value": "Staking"
-    }
-  ],
-  "+LCX9R": [
-    {
-      "type": 0,
-      "value": "Delegating to"
     }
   ],
   "+LhIwA": [
@@ -111,6 +111,12 @@
     {
       "type": 0,
       "value": "Processing Approval"
+    }
+  ],
+  "0GSZcr": [
+    {
+      "type": 0,
+      "value": "Staked"
     }
   ],
   "0Go4jI": [
@@ -217,6 +223,12 @@
       "value": "Return to Home Page"
     }
   ],
+  "2/2yg+": [
+    {
+      "type": 0,
+      "value": "Add"
+    }
+  ],
   "20KPDF": [
     {
       "type": 0,
@@ -283,10 +295,98 @@
       "value": "Legacy governance"
     }
   ],
-  "3fTTLv": [
+  "3lOoIq": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lockup "
+            },
+            {
+              "type": 1,
+              "value": "lockupId"
+            },
+            {
+              "type": 0,
+              "value": " by "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "symbolIn"
+            },
+            {
+              "type": 0,
+              "value": " for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Extend lockup "
+            },
+            {
+              "type": 1,
+              "value": "lockupId"
+            },
+            {
+              "type": 0,
+              "value": " by "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "symbolIn"
+            },
+            {
+              "type": 0,
+              "value": " for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "monthDuration"
+    }
+  ],
+  "3townk": [
     {
       "type": 0,
-      "value": "Unstake"
+      "value": "Max vAPY"
     }
   ],
   "3xMkzV": [
@@ -321,6 +421,12 @@
       "value": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
     }
   ],
+  "4WNsNT": [
+    {
+      "type": 0,
+      "value": "Migrated"
+    }
+  ],
   "4cdhFd": [
     {
       "type": 0,
@@ -331,16 +437,6 @@
     {
       "type": 0,
       "value": "New Snapshot Proposal"
-    }
-  ],
-  "5C3FV3": [
-    {
-      "type": 0,
-      "value": "Unstake lockup "
-    },
-    {
-      "type": 1,
-      "value": "stake"
     }
   ],
   "5RMD2G": [
@@ -389,6 +485,12 @@
     {
       "type": 0,
       "value": "Your veOGV staked positions"
+    }
+  ],
+  "62AU7R": [
+    {
+      "type": 0,
+      "value": "Request redemptions to WETH"
     }
   ],
   "65BhO2": [
@@ -469,24 +571,6 @@
     {
       "type": 0,
       "value": "Products"
-    }
-  ],
-  "7Q6DcC": [
-    {
-      "type": 0,
-      "value": "Delegate "
-    },
-    {
-      "type": 1,
-      "value": "votingPower"
-    },
-    {
-      "type": 0,
-      "value": " xOGN to "
-    },
-    {
-      "type": 1,
-      "value": "delegatee"
     }
   ],
   "7SxOry": [
@@ -583,16 +667,16 @@
       "value": "Current value (OETH)"
     }
   ],
+  "9Pxh6J": [
+    {
+      "type": 0,
+      "value": "Error while delegating"
+    }
+  ],
   "9W24c9": [
     {
       "type": 0,
       "value": "wOETH Balance"
-    }
-  ],
-  "9b65gT": [
-    {
-      "type": 0,
-      "value": "Redeem OUSD"
     }
   ],
   "9ghOJK": [
@@ -647,6 +731,36 @@
       "value": "Yield earned:"
     }
   ],
+  "AXUFyu": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": ", staked for "
+    },
+    {
+      "type": 1,
+      "value": "amountStaked"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolStaked"
+    }
+  ],
   "AdvVFR": [
     {
       "type": 1,
@@ -697,6 +811,26 @@
       "value": "Redeem via OETH Vault"
     }
   ],
+  "Awi257": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
+  "B0mIqy": [
+    {
+      "type": 0,
+      "value": "Extending Stake"
+    }
+  ],
   "BB94QK": [
     {
       "type": 0,
@@ -733,52 +867,6 @@
       "value": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
     }
   ],
-  "Bp2rXG": [
-    {
-      "type": 0,
-      "value": "Sending ~"
-    },
-    {
-      "type": 1,
-      "value": "srcAmount"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "srcToken"
-    },
-    {
-      "type": 0,
-      "value": " from "
-    },
-    {
-      "type": 1,
-      "value": "srcChain"
-    },
-    {
-      "type": 0,
-      "value": " to "
-    },
-    {
-      "type": 1,
-      "value": "dstToken"
-    },
-    {
-      "type": 0,
-      "value": " on "
-    },
-    {
-      "type": 1,
-      "value": "dstChain"
-    },
-    {
-      "type": 0,
-      "value": "."
-    }
-  ],
   "BuhEl+": [
     {
       "type": 0,
@@ -803,6 +891,12 @@
       "value": "Queued"
     }
   ],
+  "CspxAR": [
+    {
+      "type": 0,
+      "value": "Delegate Voting Power"
+    }
+  ],
   "Cyy/6q": [
     {
       "type": 0,
@@ -813,20 +907,6 @@
     {
       "type": 0,
       "value": "Stablecoin mix"
-    }
-  ],
-  "DFjeF0": [
-    {
-      "type": 0,
-      "value": "Delegate "
-    },
-    {
-      "type": 1,
-      "value": "balance"
-    },
-    {
-      "type": 0,
-      "value": " xOGN to self"
     }
   ],
   "DKaqyQ": [
@@ -855,12 +935,6 @@
       "value": "Unlock Stake"
     }
   ],
-  "DriTx1": [
-    {
-      "type": 0,
-      "value": "Request redemptions to ETH or a mix of LSTs"
-    }
-  ],
   "DupNoS": [
     {
       "type": 0,
@@ -883,6 +957,12 @@
     {
       "type": 0,
       "value": "Exit"
+    }
+  ],
+  "E57VkO": [
+    {
+      "type": 0,
+      "value": "Error while unlocking"
     }
   ],
   "EEwopl": [
@@ -933,24 +1013,6 @@
       "value": "Apply"
     }
   ],
-  "EXYTEU": [
-    {
-      "type": 0,
-      "value": "Approved "
-    },
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    }
-  ],
   "EYIcqi": [
     {
       "type": 0,
@@ -967,26 +1029,6 @@
     {
       "type": 0,
       "value": "0 months"
-    }
-  ],
-  "FV7IVu": [
-    {
-      "children": [
-        {
-          "type": 1,
-          "value": "count"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
     }
   ],
   "FfOtze": [
@@ -1049,20 +1091,6 @@
       "value": "Swap via Uniswap V2"
     }
   ],
-  "Gox5LU": [
-    {
-      "type": 0,
-      "value": "Collect "
-    },
-    {
-      "type": 1,
-      "value": "rewards"
-    },
-    {
-      "type": 0,
-      "value": " rewards"
-    }
-  ],
   "GtABHs": [
     {
       "type": 0,
@@ -1079,6 +1107,32 @@
     {
       "type": 0,
       "value": "Balance"
+    }
+  ],
+  "HPegJm": [
+    {
+      "type": 0,
+      "value": "Delegate "
+    },
+    {
+      "type": 1,
+      "value": "votingPower"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "delegateTo"
     }
   ],
   "HaksWf": [
@@ -1115,6 +1169,12 @@
     {
       "type": 0,
       "value": "Vote for"
+    }
+  ],
+  "IEM00S": [
+    {
+      "type": 0,
+      "value": "Claim Rewards"
     }
   ],
   "IfZsEo": [
@@ -1177,12 +1237,6 @@
       "value": "Lockup Duration"
     }
   ],
-  "K9soUR": [
-    {
-      "type": 0,
-      "value": "Approval successful"
-    }
-  ],
   "KN7zKn": [
     {
       "type": 0,
@@ -1201,12 +1255,6 @@
       "value": "Processing approval"
     }
   ],
-  "KchUFg": [
-    {
-      "type": 0,
-      "value": "Swap cancelled"
-    }
-  ],
   "KjK2z3": [
     {
       "type": 0,
@@ -1221,6 +1269,12 @@
     {
       "type": 1,
       "value": "symbol"
+    }
+  ],
+  "Kzhxqf": [
+    {
+      "type": 0,
+      "value": "Select the additional OGN you would like to add to your lockup"
     }
   ],
   "L2dDDV": [
@@ -1259,6 +1313,26 @@
       "value": "Details"
     }
   ],
+  "MHRipL": [
+    {
+      "type": 0,
+      "value": "Voting Power Delegated"
+    }
+  ],
+  "MId63P": [
+    {
+      "type": 0,
+      "value": "Collect "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " rewards"
+    }
+  ],
   "MJQQ3L": [
     {
       "type": 0,
@@ -1275,6 +1349,12 @@
     {
       "type": 0,
       "value": "Active Proposals"
+    }
+  ],
+  "MRJzRB": [
+    {
+      "type": 0,
+      "value": "Error while migrating"
     }
   ],
   "MSTVqC": [
@@ -1341,6 +1421,12 @@
       "value": "count"
     }
   ],
+  "NTfaBt": [
+    {
+      "type": 0,
+      "value": "Amount to add"
+    }
+  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -1359,6 +1445,26 @@
       "value": "Your operation has been executed"
     }
   ],
+  "Nh5I0l": [
+    {
+      "type": 0,
+      "value": "Claimed Rewards"
+    }
+  ],
+  "NlA37n": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    }
+  ],
   "Nvcaj3": [
     {
       "type": 0,
@@ -1375,6 +1481,44 @@
     {
       "type": 0,
       "value": "Created"
+    }
+  ],
+  "OVR8Te": [
+    {
+      "type": 0,
+      "value": "Sending "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " as "
+    },
+    {
+      "type": 1,
+      "value": "symbolOut"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "chainOut"
+    },
+    {
+      "type": 0,
+      "value": "."
     }
   ],
   "OkXVGX": [
@@ -1433,6 +1577,36 @@
     {
       "type": 0,
       "value": "Estimating..."
+    }
+  ],
+  "PdEKuc": [
+    {
+      "type": 1,
+      "value": "amtIn"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "amtOut"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolOut"
     }
   ],
   "PmkP1H": [
@@ -1495,6 +1669,12 @@
     {
       "type": 0,
       "value": "Select lockup"
+    }
+  ],
+  "RVH0u3": [
+    {
+      "type": 0,
+      "value": "Delegating Voting Power"
     }
   ],
   "RahCRH": [
@@ -1619,6 +1799,52 @@
       "value": "Start block"
     }
   ],
+  "Th/AXT": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "amountLiquid"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolLiquid"
+    },
+    {
+      "type": 0,
+      "value": ", staked for "
+    },
+    {
+      "type": 1,
+      "value": "amountStaked"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolStaked"
+    }
+  ],
   "TrKxvg": [
     {
       "type": 0,
@@ -1641,12 +1867,6 @@
     {
       "type": 0,
       "value": "Your APY:"
-    }
-  ],
-  "UjsrsI": [
-    {
-      "type": 0,
-      "value": "Swap successful"
     }
   ],
   "UkXeBW": [
@@ -1729,12 +1949,6 @@
       "value": "name"
     }
   ],
-  "W94W+W": [
-    {
-      "type": 0,
-      "value": "No voting power"
-    }
-  ],
   "WCaf5C": [
     {
       "type": 0,
@@ -1795,6 +2009,12 @@
       "value": "Learn about governance"
     }
   ],
+  "YnTVWE": [
+    {
+      "type": 0,
+      "value": "Adding to lockup"
+    }
+  ],
   "YnftYz": [
     {
       "type": 0,
@@ -1825,6 +2045,12 @@
       "value": "Time Remaining"
     }
   ],
+  "Z2iggs": [
+    {
+      "type": 0,
+      "value": "Total voting power"
+    }
+  ],
   "Z5LAqY": [
     {
       "type": 0,
@@ -1853,12 +2079,6 @@
     {
       "type": 0,
       "value": "migrate OGV to OGN/xOGN"
-    }
-  ],
-  "ZU6Mu8": [
-    {
-      "type": 0,
-      "value": "Bridge Transaction"
     }
   ],
   "Zl7l7P": [
@@ -1909,12 +2129,6 @@
       "value": "The best swap route factors in the best price after transaction costs"
     }
   ],
-  "aAp31l": [
-    {
-      "type": 0,
-      "value": "Approval error"
-    }
-  ],
   "aDYxXF": [
     {
       "type": 0,
@@ -1959,6 +2173,16 @@
       "value": "3m"
     }
   ],
+  "bPT672": [
+    {
+      "type": 0,
+      "value": "Unstake lockup "
+    },
+    {
+      "type": 1,
+      "value": "lockupId"
+    }
+  ],
   "bh6lBg": [
     {
       "type": 0,
@@ -2001,16 +2225,6 @@
       "value": "Connect Wallet"
     }
   ],
-  "cqxi+K": [
-    {
-      "type": 0,
-      "value": "Approving "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    }
-  ],
   "d0kJUi": [
     {
       "type": 0,
@@ -2047,16 +2261,16 @@
       "value": "History"
     }
   ],
-  "dm9FiM": [
-    {
-      "type": 0,
-      "value": "Delegate to self"
-    }
-  ],
   "dtJo4Y": [
     {
       "type": 0,
       "value": "Exchange rate"
+    }
+  ],
+  "dx9Xxj": [
+    {
+      "type": 0,
+      "value": "Claiming Rewards"
     }
   ],
   "e+yfm6": [
@@ -2095,6 +2309,12 @@
       "value": "Swap via CurvePool"
     }
   ],
+  "ewhSbE": [
+    {
+      "type": 0,
+      "value": "Error while staking"
+    }
+  ],
   "f0gqO4": [
     {
       "type": 0,
@@ -2111,12 +2331,6 @@
     {
       "type": 0,
       "value": "Download CSV"
-    }
-  ],
-  "fFXn5l": [
-    {
-      "type": 0,
-      "value": "Collect Rewards"
     }
   ],
   "ffdKEn": [
@@ -2143,6 +2357,12 @@
     {
       "type": 1,
       "value": "symbolIn"
+    }
+  ],
+  "g28dhk": [
+    {
+      "type": 0,
+      "value": "Extended Stake"
     }
   ],
   "g82HU6": [
@@ -2193,6 +2413,36 @@
       "value": "Available to claim and add to your stake"
     }
   ],
+  "hVu1NB": [
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " for "
+    },
+    {
+      "type": 1,
+      "value": "amountLiquid"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolLiquid"
+    }
+  ],
   "hjWYtP": [
     {
       "type": 0,
@@ -2203,6 +2453,12 @@
     {
       "type": 0,
       "value": "Time remaining"
+    }
+  ],
+  "hwU8tI": [
+    {
+      "type": 0,
+      "value": "Error while extending staking"
     }
   ],
   "hzfM3P": [
@@ -2221,6 +2477,20 @@
     {
       "type": 0,
       "value": "Error while estimating"
+    }
+  ],
+  "iRGhsn": [
+    {
+      "type": 0,
+      "value": "Add unclaimed rewards ("
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " OGN)"
     }
   ],
   "iaS0YY": [
@@ -2253,16 +2523,10 @@
       "value": "Earn rewards and help govern Origin products"
     }
   ],
-  "jab7Gg": [
+  "jgzSp1": [
     {
       "type": 0,
-      "value": "Delegated to me"
-    }
-  ],
-  "jn/6dQ": [
-    {
-      "type": 0,
-      "value": "Current vAPY"
+      "value": "Error while casting vote"
     }
   ],
   "jngAIm": [
@@ -2275,6 +2539,12 @@
     {
       "type": 0,
       "value": "Bridging"
+    }
+  ],
+  "k0U99R": [
+    {
+      "type": 0,
+      "value": "Better yield. Everywhere."
     }
   ],
   "k3YWIR": [
@@ -2293,6 +2563,12 @@
     {
       "type": 0,
       "value": "Your voting power"
+    }
+  ],
+  "kDaImL": [
+    {
+      "type": 0,
+      "value": "Add to lockup"
     }
   ],
   "kH1R79": [
@@ -2319,12 +2595,6 @@
       "value": "Connect wallet to view"
     }
   ],
-  "ksbxr5": [
-    {
-      "type": 0,
-      "value": "Approval successfully executed"
-    }
-  ],
   "lQmZjB": [
     {
       "type": 0,
@@ -2343,10 +2613,52 @@
       "value": "Error while approving"
     }
   ],
+  "lruqfd": [
+    {
+      "type": 0,
+      "value": "Migrate"
+    }
+  ],
   "m/L3sK": [
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "m9XypM": [
+    {
+      "type": 0,
+      "value": "Sending "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " to "
+    },
+    {
+      "type": 1,
+      "value": "chainOut"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "mTz9QI": [
+    {
+      "type": 0,
+      "value": "Casted vote"
     }
   ],
   "mVILQT": [
@@ -2381,6 +2693,16 @@
       "value": "Receive amount"
     }
   ],
+  "nE87EV": [
+    {
+      "type": 1,
+      "value": "pendingCount"
+    },
+    {
+      "type": 0,
+      "value": " pending"
+    }
+  ],
   "nc8QpJ": [
     {
       "type": 0,
@@ -2403,6 +2725,12 @@
     {
       "type": 0,
       "value": "The easiest way to earn more yield on-chain"
+    }
+  ],
+  "oESaGy": [
+    {
+      "type": 0,
+      "value": "Unlocking"
     }
   ],
   "ok8VIA": [
@@ -2447,6 +2775,12 @@
       "value": "Error while bridging"
     }
   ],
+  "ppjHLD": [
+    {
+      "type": 0,
+      "value": "Validating Transaction"
+    }
+  ],
   "qNe+Iz": [
     {
       "type": 0,
@@ -2487,6 +2821,12 @@
     {
       "type": 0,
       "value": "Wrap"
+    }
+  ],
+  "rWtYKs": [
+    {
+      "type": 0,
+      "value": "Migrating"
     }
   ],
   "rhQtuf": [
@@ -2645,16 +2985,22 @@
       "value": "Unwrap"
     }
   ],
+  "ufm/ag": [
+    {
+      "type": 0,
+      "value": "Unlocked"
+    }
+  ],
   "ugjHU2": [
     {
       "type": 0,
       "value": "Select a token"
     }
   ],
-  "vIHQKa": [
+  "utrdPr": [
     {
       "type": 0,
-      "value": "Extend xOGN lockup"
+      "value": "Casting vote"
     }
   ],
   "vLIiaK": [
@@ -2715,62 +3061,6 @@
       "value": "Error while redeeming"
     }
   ],
-  "w6euGF": [
-    {
-      "offset": 0,
-      "options": {
-        "=1": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Lock "
-            },
-            {
-              "type": 1,
-              "value": "amount"
-            },
-            {
-              "type": 0,
-              "value": " OGN for "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " month"
-            }
-          ]
-        },
-        "other": {
-          "value": [
-            {
-              "type": 0,
-              "value": "Lock "
-            },
-            {
-              "type": 1,
-              "value": "amount"
-            },
-            {
-              "type": 0,
-              "value": " OGN for "
-            },
-            {
-              "type": 7
-            },
-            {
-              "type": 0,
-              "value": " months"
-            }
-          ]
-        }
-      },
-      "pluralType": "cardinal",
-      "type": 6,
-      "value": "duration"
-    }
-  ],
   "wDVWQ+": [
     {
       "type": 0,
@@ -2807,12 +3097,6 @@
       "value": "Wrong Network"
     }
   ],
-  "wwoByg": [
-    {
-      "type": 0,
-      "value": "Origin"
-    }
-  ],
   "xZIm6b": [
     {
       "type": 0,
@@ -2847,6 +3131,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "yP4xbO": [
+    {
+      "type": 0,
+      "value": "Error while claiming rewards"
     }
   ],
   "yTFVXV": [
@@ -2901,6 +3191,78 @@
       "value": "Error while swapping"
     }
   ],
+  "z7DIYb": [
+    {
+      "offset": 0,
+      "options": {
+        "=1": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "symbolIn"
+            },
+            {
+              "type": 0,
+              "value": " for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " month"
+            }
+          ]
+        },
+        "other": {
+          "value": [
+            {
+              "type": 0,
+              "value": "Lock "
+            },
+            {
+              "type": 1,
+              "value": "amount"
+            },
+            {
+              "type": 0,
+              "value": " "
+            },
+            {
+              "type": 1,
+              "value": "symbolIn"
+            },
+            {
+              "type": 0,
+              "value": " for "
+            },
+            {
+              "type": 7
+            },
+            {
+              "type": 0,
+              "value": " months"
+            }
+          ]
+        }
+      },
+      "pluralType": "cardinal",
+      "type": 6,
+      "value": "monthDuration"
+    }
+  ],
   "zQvVDJ": [
     {
       "type": 0,
@@ -2931,16 +3293,6 @@
     {
       "type": 0,
       "value": "wOETH Transactions"
-    }
-  ],
-  "zdQc4c": [
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " OGN staked"
     }
   ],
   "zmWQIG": [

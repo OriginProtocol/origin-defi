@@ -489,6 +489,7 @@ export const useHandleApprove = () => {
     swapActions,
     trackEvent,
     onApproveStart,
+    onApproveSigned,
     onApproveFailure,
     onApproveReject,
     onApproveSuccess,
@@ -510,6 +511,7 @@ export const useHandleApprove = () => {
       name: 'approve_started',
       approval_token: tokenIn.symbol,
     });
+    let notifId;
 
     try {
       const hash = await swapActions[selectedSwapRoute.action].approve(config, {
@@ -517,6 +519,7 @@ export const useHandleApprove = () => {
         tokenOut,
         amountIn,
       });
+      notifId = onApproveSigned?.({ ...state, trackId });
       setSwapState((state) => ({
         ...state,
         isApprovalWaitingForSignature: false,
@@ -535,6 +538,7 @@ export const useHandleApprove = () => {
           ...state,
           txReceipt: txReceipt as unknown as TransactionReceipt,
           trackId,
+          notifId,
         });
         trackEvent?.({
           name: 'approve_complete',
@@ -553,7 +557,7 @@ export const useHandleApprove = () => {
           ...state,
           status: 'transactionRejected',
         }));
-        onApproveReject?.({ ...state, trackId });
+        onApproveReject?.({ ...state, trackId, notifId });
         trackEvent?.({
           name: 'approve_rejected',
           approval_token: tokenIn.symbol,
@@ -563,7 +567,12 @@ export const useHandleApprove = () => {
           ...state,
           status: 'transactionFailure',
         }));
-        onApproveFailure?.({ ...state, error: error as Error, trackId });
+        onApproveFailure?.({
+          ...state,
+          error: error as Error,
+          trackId,
+          notifId,
+        });
         trackEvent?.({
           name: 'approve_failed',
           approval_token: tokenIn.symbol,
@@ -605,6 +614,7 @@ export const useHandleSwap = () => {
     swapActions,
     trackEvent,
     onSwapStart,
+    onSwapSigned,
     onSwapFailure,
     onSwapReject,
     onSwapSuccess,
@@ -629,6 +639,7 @@ export const useHandleSwap = () => {
       swap_to: tokenOut.symbol,
       swap_amount: amountIn,
     });
+    let notifId;
 
     try {
       const hash = await swapActions[selectedSwapRoute.action].swap(config, {
@@ -639,6 +650,7 @@ export const useHandleSwap = () => {
         slippage,
         amountOut,
       });
+      notifId = onSwapSigned?.({ ...state, trackId });
       setSwapState((state) => ({
         ...state,
         isSwapWaitingForSignature: false,
@@ -661,6 +673,7 @@ export const useHandleSwap = () => {
           ...state,
           txReceipt: txReceipt as unknown as TransactionReceipt,
           trackId,
+          notifId,
         });
         trackEvent?.({
           name: 'swap_complete',
@@ -681,7 +694,7 @@ export const useHandleSwap = () => {
           ...state,
           status: 'transactionRejected',
         }));
-        onSwapReject?.({ ...state, trackId });
+        onSwapReject?.({ ...state, trackId, notifId });
         trackEvent?.({
           name: 'swap_rejected',
           swap_token: tokenIn.symbol,
@@ -694,7 +707,7 @@ export const useHandleSwap = () => {
           ...state,
           status: 'transactionFailure',
         }));
-        onSwapFailure?.({ ...state, error: error as Error, trackId });
+        onSwapFailure?.({ ...state, error: error as Error, trackId, notifId });
         trackEvent?.({
           name: 'swap_failed',
           swap_token: tokenIn.symbol,

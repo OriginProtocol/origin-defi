@@ -4,6 +4,7 @@ export * from './BigInt';
 export * from './blockExplorerLinks';
 export * from './composeContext';
 export * from './csv';
+export * from './device';
 export * from './duration';
 export * from './errors';
 export * from './formatters';

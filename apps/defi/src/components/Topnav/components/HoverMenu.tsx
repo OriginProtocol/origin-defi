@@ -61,8 +61,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
   const anchorEl = useRef(null);
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
-  const match = useMatch({ path: route?.path ?? '/', end: route.index });
-  const isSelected = !isNilOrEmpty(match);
 
   const handleListKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Escape') {

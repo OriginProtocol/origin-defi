@@ -15,12 +15,12 @@ import {
   ErrorCard,
   LoadingLabel,
   MultiTokenIcon,
-  TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   getTokenPriceKey,
   isNativeCurrency,
+  MIX_TOKEN,
   RedeemProvider,
   SettingsButton,
   TxButton,
@@ -112,20 +112,11 @@ function RedeemerWrapped({
       args: [amountIn, minAmountOut],
     },
     activity: {
-      title: intl.formatMessage({ defaultMessage: 'Redeem OUSD' }),
-      subtitle: intl.formatMessage(
-        {
-          defaultMessage: '{amountIn} {symbolIn}',
-        },
-        {
-          amountIn: intl.formatNumber(
-            +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
-            { minimumFractionDigits: 4, maximumFractionDigits: 4 },
-          ),
-          symbolIn: tokenIn?.symbol,
-        },
-      ),
-      endIcon: <TokenIcon token={tokens.mainnet.OUSD} />,
+      type: 'redeem',
+      status: 'idle',
+      amountIn,
+      tokenIdIn: tokens.mainnet.OUSD.id,
+      tokenIdOut: MIX_TOKEN.id,
     },
   });
 
@@ -283,6 +274,9 @@ function RedeemerWrapped({
             gas={gas + (gas * gasBuffer) / 100n}
             fullWidth
             disabled={redeemButtonDisabled}
+            validatingTxLabel={intl.formatMessage({
+              defaultMessage: 'Validating Transaction',
+            })}
             label={
               isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />

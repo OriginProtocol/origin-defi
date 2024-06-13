@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 
-import { getTokenId } from '@origin/shared/contracts';
 import { isFulfilled, isNilOrEmpty } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -29,7 +28,7 @@ export const useWatchBalances = (args: {
   });
   const prev = usePrevious(Number(blockNumber));
   const res = useQuery({
-    queryKey: ['useWatchBalances', addr, args.tokens?.map((t) => t.symbol)],
+    queryKey: ['useWatchBalances', addr, args.tokens?.map((t) => t.id)],
     queryFn: async () => {
       if (!args.tokens || isNilOrEmpty(args.tokens) || !addr) {
         return null;
@@ -48,7 +47,7 @@ export const useWatchBalances = (args: {
 
       bals.forEach((bal, i) => {
         if (isFulfilled(bal)) {
-          res = { ...res, [getTokenId(args.tokens[i])]: bal.value };
+          res = { ...res, [args.tokens[i].id]: bal.value };
         }
       });
 
