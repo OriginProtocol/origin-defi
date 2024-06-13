@@ -30,6 +30,7 @@ export const PriceChart = () => {
 
   const options: ChartOptions<'bubble'> = useMemo(
     () => ({
+      responsive: true,
       maintainAspectRatio: false,
       scales: {
         x: {
@@ -87,7 +88,7 @@ export const PriceChart = () => {
     };
   }, [index, span]);
 
-  return <Bubble options={options} data={data} width={1000} height={600} />;
+  return <Bubble options={options} data={data} />;
 };
 
 const scaleR = scaleLinear({

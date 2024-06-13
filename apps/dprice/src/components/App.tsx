@@ -10,11 +10,11 @@ import { PriceChart } from './PriceChart';
 export const App = () => {
   return (
     <DPriceProvider>
-      <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Container maxWidth="xl" sx={{ py: 4 }}>
         <Typography variant="h6" textAlign="center" mb={4}>
           Lido Redemption Visualization
         </Typography>
-        <Box sx={{ width: 1, mb: 4 }}>
+        <Box sx={{ width: 1, height: 700, mb: 4 }}>
           <PriceChart />
         </Box>
         <Stack direction="row" mb={4} spacing={2}>
