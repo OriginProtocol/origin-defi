@@ -45,8 +45,13 @@ export const PriceChart = () => {
       layout: {
         padding: 0,
       },
-      animation: {
-        duration: 0,
+      animations: {
+        radius: {
+          duration: 0,
+        },
+        colors: {
+          duration: 0,
+        },
       },
       plugins: {
         legend: {
@@ -56,6 +61,7 @@ export const PriceChart = () => {
           annotations: {
             line1: {
               type: 'line',
+              display: getARMPrice(csv[index]) > 0,
               yMin: index === 0 ? 0 : Math.max(0.998, getARMPrice(csv[index])),
               yMax: index === 0 ? 0 : Math.max(0.998, getARMPrice(csv[index])),
               borderColor: theme.palette.primary.main,

@@ -36,16 +36,18 @@ export const getBaseAmount = (point: Point) => {
   if (!point || point?.base_amount === undefined) {
     return 0;
   }
+  const res = Number(point.base_amount);
 
-  return Number(point.base_amount);
+  return res > 1e-12 ? res : 0;
 };
 
 export const getQueueAmount = (point: Point) => {
   if (!point || point?.queue_amount === undefined) {
     return 0;
   }
+  const res = Number(point.queue_amount);
 
-  return Number(point.queue_amount);
+  return res > 1e-12 ? res : 0;
 };
 
 export const getTimestamp = (point: Point) => {

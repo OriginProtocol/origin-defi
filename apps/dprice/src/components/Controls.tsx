@@ -7,7 +7,6 @@ import {
 } from '@origin/shared/icons';
 import { ThemeModeIconButton } from '@origin/shared/providers';
 
-import csv from '../data.csv';
 import {
   useMute,
   useNavigatePoints,
@@ -29,9 +28,6 @@ export const Controls = () => {
     updateSpan(newValue as number);
   };
 
-  const total = csv.length;
-  const largeStep = Math.round(total / 10);
-
   return (
     <Stack
       direction="row"
@@ -41,7 +37,7 @@ export const Controls = () => {
     >
       <Button
         onClick={() => {
-          move('backward', largeStep);
+          move('backward', 100);
         }}
       >
         <FaChevronLeftRegular />
@@ -67,7 +63,7 @@ export const Controls = () => {
       </Button>
       <Button
         onClick={() => {
-          move('forward', largeStep);
+          move('forward', 100);
         }}
       >
         <FaChevronRightRegular />
@@ -85,7 +81,7 @@ export const Controls = () => {
       <Slider
         onChange={handleSliderChange}
         min={30}
-        max={total}
+        max={1000}
         value={span}
         sx={{ maxWidth: 300 }}
       />
