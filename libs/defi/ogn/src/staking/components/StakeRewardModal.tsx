@@ -99,7 +99,7 @@ export const StakeRewardModal = (props: DialogProps) => {
     amount:
       amount +
       (info?.xOgnRewards ?? 0n) +
-      parseUnits('2', tokens.mainnet.OGN.decimals),
+      parseUnits('10', tokens.mainnet.OGN.decimals),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
   });
