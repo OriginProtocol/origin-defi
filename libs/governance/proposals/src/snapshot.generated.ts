@@ -480,6 +480,7 @@ export type SpaceVoting = {
 };
 
 export type SpaceWhere = {
+  controller?: InputMaybe<Scalars['String']['input']>;
   created?: InputMaybe<Scalars['Int']['input']>;
   created_gt?: InputMaybe<Scalars['Int']['input']>;
   created_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -576,10 +577,13 @@ export type User = {
   __typename?: 'User';
   about?: Maybe<Scalars['String']['output']>;
   avatar?: Maybe<Scalars['String']['output']>;
+  cover?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
+  github?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   ipfs?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  twitter?: Maybe<Scalars['String']['output']>;
 };
 
 export type UsersWhere = {
