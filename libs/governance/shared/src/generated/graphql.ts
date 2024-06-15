@@ -563,6 +563,407 @@ export type BalancerPoolsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type BeaconDepositEvent = {
+  __typename?: 'BeaconDepositEvent';
+  address: Scalars['String']['output'];
+  amount: Scalars['String']['output'];
+  blockNumber: Scalars['Int']['output'];
+  caller: Scalars['String']['output'];
+  chainId: Scalars['Int']['output'];
+  id: Scalars['String']['output'];
+  index: Scalars['String']['output'];
+  pubkey: BeaconDepositPubkey;
+  signature: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
+  withdrawalCredentials: Scalars['String']['output'];
+};
+
+export type BeaconDepositEventEdge = {
+  __typename?: 'BeaconDepositEventEdge';
+  cursor: Scalars['String']['output'];
+  node: BeaconDepositEvent;
+};
+
+export enum BeaconDepositEventOrderByInput {
+  AddressAsc = 'address_ASC',
+  AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
+  AddressAscNullsLast = 'address_ASC_NULLS_LAST',
+  AddressDesc = 'address_DESC',
+  AddressDescNullsFirst = 'address_DESC_NULLS_FIRST',
+  AddressDescNullsLast = 'address_DESC_NULLS_LAST',
+  AmountAsc = 'amount_ASC',
+  AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
+  AmountAscNullsLast = 'amount_ASC_NULLS_LAST',
+  AmountDesc = 'amount_DESC',
+  AmountDescNullsFirst = 'amount_DESC_NULLS_FIRST',
+  AmountDescNullsLast = 'amount_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  CallerAsc = 'caller_ASC',
+  CallerAscNullsFirst = 'caller_ASC_NULLS_FIRST',
+  CallerAscNullsLast = 'caller_ASC_NULLS_LAST',
+  CallerDesc = 'caller_DESC',
+  CallerDescNullsFirst = 'caller_DESC_NULLS_FIRST',
+  CallerDescNullsLast = 'caller_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  IndexAsc = 'index_ASC',
+  IndexAscNullsFirst = 'index_ASC_NULLS_FIRST',
+  IndexAscNullsLast = 'index_ASC_NULLS_LAST',
+  IndexDesc = 'index_DESC',
+  IndexDescNullsFirst = 'index_DESC_NULLS_FIRST',
+  IndexDescNullsLast = 'index_DESC_NULLS_LAST',
+  PubkeyCountAsc = 'pubkey_count_ASC',
+  PubkeyCountAscNullsFirst = 'pubkey_count_ASC_NULLS_FIRST',
+  PubkeyCountAscNullsLast = 'pubkey_count_ASC_NULLS_LAST',
+  PubkeyCountDesc = 'pubkey_count_DESC',
+  PubkeyCountDescNullsFirst = 'pubkey_count_DESC_NULLS_FIRST',
+  PubkeyCountDescNullsLast = 'pubkey_count_DESC_NULLS_LAST',
+  PubkeyCreateDateAsc = 'pubkey_createDate_ASC',
+  PubkeyCreateDateAscNullsFirst = 'pubkey_createDate_ASC_NULLS_FIRST',
+  PubkeyCreateDateAscNullsLast = 'pubkey_createDate_ASC_NULLS_LAST',
+  PubkeyCreateDateDesc = 'pubkey_createDate_DESC',
+  PubkeyCreateDateDescNullsFirst = 'pubkey_createDate_DESC_NULLS_FIRST',
+  PubkeyCreateDateDescNullsLast = 'pubkey_createDate_DESC_NULLS_LAST',
+  PubkeyIdAsc = 'pubkey_id_ASC',
+  PubkeyIdAscNullsFirst = 'pubkey_id_ASC_NULLS_FIRST',
+  PubkeyIdAscNullsLast = 'pubkey_id_ASC_NULLS_LAST',
+  PubkeyIdDesc = 'pubkey_id_DESC',
+  PubkeyIdDescNullsFirst = 'pubkey_id_DESC_NULLS_FIRST',
+  PubkeyIdDescNullsLast = 'pubkey_id_DESC_NULLS_LAST',
+  PubkeyLastUpdatedAsc = 'pubkey_lastUpdated_ASC',
+  PubkeyLastUpdatedAscNullsFirst = 'pubkey_lastUpdated_ASC_NULLS_FIRST',
+  PubkeyLastUpdatedAscNullsLast = 'pubkey_lastUpdated_ASC_NULLS_LAST',
+  PubkeyLastUpdatedDesc = 'pubkey_lastUpdated_DESC',
+  PubkeyLastUpdatedDescNullsFirst = 'pubkey_lastUpdated_DESC_NULLS_FIRST',
+  PubkeyLastUpdatedDescNullsLast = 'pubkey_lastUpdated_DESC_NULLS_LAST',
+  SignatureAsc = 'signature_ASC',
+  SignatureAscNullsFirst = 'signature_ASC_NULLS_FIRST',
+  SignatureAscNullsLast = 'signature_ASC_NULLS_LAST',
+  SignatureDesc = 'signature_DESC',
+  SignatureDescNullsFirst = 'signature_DESC_NULLS_FIRST',
+  SignatureDescNullsLast = 'signature_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
+  WithdrawalCredentialsAsc = 'withdrawalCredentials_ASC',
+  WithdrawalCredentialsAscNullsFirst = 'withdrawalCredentials_ASC_NULLS_FIRST',
+  WithdrawalCredentialsAscNullsLast = 'withdrawalCredentials_ASC_NULLS_LAST',
+  WithdrawalCredentialsDesc = 'withdrawalCredentials_DESC',
+  WithdrawalCredentialsDescNullsFirst = 'withdrawalCredentials_DESC_NULLS_FIRST',
+  WithdrawalCredentialsDescNullsLast = 'withdrawalCredentials_DESC_NULLS_LAST'
+}
+
+export type BeaconDepositEventWhereInput = {
+  AND?: InputMaybe<Array<BeaconDepositEventWhereInput>>;
+  OR?: InputMaybe<Array<BeaconDepositEventWhereInput>>;
+  address_contains?: InputMaybe<Scalars['String']['input']>;
+  address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_eq?: InputMaybe<Scalars['String']['input']>;
+  address_gt?: InputMaybe<Scalars['String']['input']>;
+  address_gte?: InputMaybe<Scalars['String']['input']>;
+  address_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  address_lt?: InputMaybe<Scalars['String']['input']>;
+  address_lte?: InputMaybe<Scalars['String']['input']>;
+  address_not_contains?: InputMaybe<Scalars['String']['input']>;
+  address_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  address_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  address_not_eq?: InputMaybe<Scalars['String']['input']>;
+  address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  address_startsWith?: InputMaybe<Scalars['String']['input']>;
+  amount_contains?: InputMaybe<Scalars['String']['input']>;
+  amount_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  amount_endsWith?: InputMaybe<Scalars['String']['input']>;
+  amount_eq?: InputMaybe<Scalars['String']['input']>;
+  amount_gt?: InputMaybe<Scalars['String']['input']>;
+  amount_gte?: InputMaybe<Scalars['String']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  amount_lt?: InputMaybe<Scalars['String']['input']>;
+  amount_lte?: InputMaybe<Scalars['String']['input']>;
+  amount_not_contains?: InputMaybe<Scalars['String']['input']>;
+  amount_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  amount_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  amount_not_eq?: InputMaybe<Scalars['String']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  amount_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  amount_startsWith?: InputMaybe<Scalars['String']['input']>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  caller_contains?: InputMaybe<Scalars['String']['input']>;
+  caller_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  caller_endsWith?: InputMaybe<Scalars['String']['input']>;
+  caller_eq?: InputMaybe<Scalars['String']['input']>;
+  caller_gt?: InputMaybe<Scalars['String']['input']>;
+  caller_gte?: InputMaybe<Scalars['String']['input']>;
+  caller_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  caller_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  caller_lt?: InputMaybe<Scalars['String']['input']>;
+  caller_lte?: InputMaybe<Scalars['String']['input']>;
+  caller_not_contains?: InputMaybe<Scalars['String']['input']>;
+  caller_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  caller_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  caller_not_eq?: InputMaybe<Scalars['String']['input']>;
+  caller_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  caller_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  caller_startsWith?: InputMaybe<Scalars['String']['input']>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  index_contains?: InputMaybe<Scalars['String']['input']>;
+  index_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  index_endsWith?: InputMaybe<Scalars['String']['input']>;
+  index_eq?: InputMaybe<Scalars['String']['input']>;
+  index_gt?: InputMaybe<Scalars['String']['input']>;
+  index_gte?: InputMaybe<Scalars['String']['input']>;
+  index_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  index_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  index_lt?: InputMaybe<Scalars['String']['input']>;
+  index_lte?: InputMaybe<Scalars['String']['input']>;
+  index_not_contains?: InputMaybe<Scalars['String']['input']>;
+  index_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  index_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  index_not_eq?: InputMaybe<Scalars['String']['input']>;
+  index_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  index_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  index_startsWith?: InputMaybe<Scalars['String']['input']>;
+  pubkey?: InputMaybe<BeaconDepositPubkeyWhereInput>;
+  pubkey_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  signature_contains?: InputMaybe<Scalars['String']['input']>;
+  signature_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  signature_endsWith?: InputMaybe<Scalars['String']['input']>;
+  signature_eq?: InputMaybe<Scalars['String']['input']>;
+  signature_gt?: InputMaybe<Scalars['String']['input']>;
+  signature_gte?: InputMaybe<Scalars['String']['input']>;
+  signature_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signature_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  signature_lt?: InputMaybe<Scalars['String']['input']>;
+  signature_lte?: InputMaybe<Scalars['String']['input']>;
+  signature_not_contains?: InputMaybe<Scalars['String']['input']>;
+  signature_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  signature_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  signature_not_eq?: InputMaybe<Scalars['String']['input']>;
+  signature_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  signature_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  signature_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_gt?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_gte?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawalCredentials_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  withdrawalCredentials_lt?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_lte?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_not_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_not_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawalCredentials_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawalCredentials_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type BeaconDepositEventsConnection = {
+  __typename?: 'BeaconDepositEventsConnection';
+  edges: Array<BeaconDepositEventEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
+export type BeaconDepositPubkey = {
+  __typename?: 'BeaconDepositPubkey';
+  count: Scalars['Int']['output'];
+  createDate: Scalars['DateTime']['output'];
+  deposits: Array<BeaconDepositEvent>;
+  id: Scalars['String']['output'];
+  lastUpdated: Scalars['DateTime']['output'];
+};
+
+
+export type BeaconDepositPubkeyDepositsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BeaconDepositEventOrderByInput>>;
+  where?: InputMaybe<BeaconDepositEventWhereInput>;
+};
+
+export type BeaconDepositPubkeyEdge = {
+  __typename?: 'BeaconDepositPubkeyEdge';
+  cursor: Scalars['String']['output'];
+  node: BeaconDepositPubkey;
+};
+
+export enum BeaconDepositPubkeyOrderByInput {
+  CountAsc = 'count_ASC',
+  CountAscNullsFirst = 'count_ASC_NULLS_FIRST',
+  CountAscNullsLast = 'count_ASC_NULLS_LAST',
+  CountDesc = 'count_DESC',
+  CountDescNullsFirst = 'count_DESC_NULLS_FIRST',
+  CountDescNullsLast = 'count_DESC_NULLS_LAST',
+  CreateDateAsc = 'createDate_ASC',
+  CreateDateAscNullsFirst = 'createDate_ASC_NULLS_FIRST',
+  CreateDateAscNullsLast = 'createDate_ASC_NULLS_LAST',
+  CreateDateDesc = 'createDate_DESC',
+  CreateDateDescNullsFirst = 'createDate_DESC_NULLS_FIRST',
+  CreateDateDescNullsLast = 'createDate_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  LastUpdatedAsc = 'lastUpdated_ASC',
+  LastUpdatedAscNullsFirst = 'lastUpdated_ASC_NULLS_FIRST',
+  LastUpdatedAscNullsLast = 'lastUpdated_ASC_NULLS_LAST',
+  LastUpdatedDesc = 'lastUpdated_DESC',
+  LastUpdatedDescNullsFirst = 'lastUpdated_DESC_NULLS_FIRST',
+  LastUpdatedDescNullsLast = 'lastUpdated_DESC_NULLS_LAST'
+}
+
+export type BeaconDepositPubkeyWhereInput = {
+  AND?: InputMaybe<Array<BeaconDepositPubkeyWhereInput>>;
+  OR?: InputMaybe<Array<BeaconDepositPubkeyWhereInput>>;
+  count_eq?: InputMaybe<Scalars['Int']['input']>;
+  count_gt?: InputMaybe<Scalars['Int']['input']>;
+  count_gte?: InputMaybe<Scalars['Int']['input']>;
+  count_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  count_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  count_lt?: InputMaybe<Scalars['Int']['input']>;
+  count_lte?: InputMaybe<Scalars['Int']['input']>;
+  count_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  count_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  createDate_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  createDate_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  createDate_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  createDate_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  deposits_every?: InputMaybe<BeaconDepositEventWhereInput>;
+  deposits_none?: InputMaybe<BeaconDepositEventWhereInput>;
+  deposits_some?: InputMaybe<BeaconDepositEventWhereInput>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  lastUpdated_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  lastUpdated_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  lastUpdated_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type BeaconDepositPubkeysConnection = {
+  __typename?: 'BeaconDepositPubkeysConnection';
+  edges: Array<BeaconDepositPubkeyEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type BridgeTransfer = {
   __typename?: 'BridgeTransfer';
   amountIn: Scalars['BigInt']['output'];
@@ -17000,6 +17401,16 @@ export type Query = {
   balancerPoolRatesConnection: BalancerPoolRatesConnection;
   balancerPools: Array<BalancerPool>;
   balancerPoolsConnection: BalancerPoolsConnection;
+  beaconDepositEventById?: Maybe<BeaconDepositEvent>;
+  /** @deprecated Use beaconDepositEventById */
+  beaconDepositEventByUniqueInput?: Maybe<BeaconDepositEvent>;
+  beaconDepositEvents: Array<BeaconDepositEvent>;
+  beaconDepositEventsConnection: BeaconDepositEventsConnection;
+  beaconDepositPubkeyById?: Maybe<BeaconDepositPubkey>;
+  /** @deprecated Use beaconDepositPubkeyById */
+  beaconDepositPubkeyByUniqueInput?: Maybe<BeaconDepositPubkey>;
+  beaconDepositPubkeys: Array<BeaconDepositPubkey>;
+  beaconDepositPubkeysConnection: BeaconDepositPubkeysConnection;
   bridgeTransferById?: Maybe<BridgeTransfer>;
   /** @deprecated Use bridgeTransferById */
   bridgeTransferByUniqueInput?: Maybe<BridgeTransfer>;
@@ -17520,6 +17931,58 @@ export type QueryBalancerPoolsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<BalancerPoolOrderByInput>;
   where?: InputMaybe<BalancerPoolWhereInput>;
+};
+
+
+export type QueryBeaconDepositEventByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryBeaconDepositEventByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryBeaconDepositEventsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BeaconDepositEventOrderByInput>>;
+  where?: InputMaybe<BeaconDepositEventWhereInput>;
+};
+
+
+export type QueryBeaconDepositEventsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<BeaconDepositEventOrderByInput>;
+  where?: InputMaybe<BeaconDepositEventWhereInput>;
+};
+
+
+export type QueryBeaconDepositPubkeyByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryBeaconDepositPubkeyByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryBeaconDepositPubkeysArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<BeaconDepositPubkeyOrderByInput>>;
+  where?: InputMaybe<BeaconDepositPubkeyWhereInput>;
+};
+
+
+export type QueryBeaconDepositPubkeysConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<BeaconDepositPubkeyOrderByInput>;
+  where?: InputMaybe<BeaconDepositPubkeyWhereInput>;
 };
 
 

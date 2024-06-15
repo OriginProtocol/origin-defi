@@ -57,7 +57,7 @@ import {
 } from '@tanstack/react-table';
 import { addMonths, formatDuration } from 'date-fns';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
+import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
@@ -96,7 +96,10 @@ export const StakeRewardModal = (props: DialogProps) => {
     label: approvalLabel,
   } = useApprovalButton({
     token: tokens.mainnet.OGN,
-    amount: amount + (info?.xOgnRewards ?? 0n),
+    amount:
+      amount +
+      (info?.xOgnRewards ?? 0n) +
+      parseUnits('1', tokens.mainnet.OGN.decimals),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
   });
