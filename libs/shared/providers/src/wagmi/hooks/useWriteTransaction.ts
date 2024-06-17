@@ -34,7 +34,7 @@ export type WriteTransactionParameters<
     abi: abi;
   };
   functionName: functionName;
-  args: args;
+  args?: args;
   value?: bigint;
 };
 
