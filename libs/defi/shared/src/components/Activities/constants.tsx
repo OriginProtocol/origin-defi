@@ -388,7 +388,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const { tokenIdIn } = activity as RebasingActivity;
       const tokenIn = getTokenById(tokenIdIn);
 
-      return <TokenIcon token={tokenIn} />;
+      return <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />;
     },
   },
   redeem: {

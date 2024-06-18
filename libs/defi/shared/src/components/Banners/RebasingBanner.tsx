@@ -1,6 +1,5 @@
 import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { PoweredBySafe } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -12,7 +11,7 @@ export const RebasingBanner = () => {
   const intl = useIntl();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
-  const { address, isConnected, connector } = useAccount();
+  const { address, isConnected } = useAccount();
   const { data, isLoading } = useReadContract({
     address: tokens.mainnet.OETH.address,
     abi: tokens.mainnet.OETH.abi,
@@ -34,7 +33,7 @@ export const RebasingBanner = () => {
     },
   });
 
-  if (!isConnected || isLoading || data !== 0 || connector?.id !== 'safe') {
+  if (!isConnected || isLoading || data !== 0) {
     return null;
   }
 
@@ -47,9 +46,9 @@ export const RebasingBanner = () => {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
+        backgroundColor: 'primary.faded',
       }}
     >
-      <PoweredBySafe sx={{ minWidth: 140 }} />
       <Typography textAlign="center" noWrap={!isSmall}>
         {intl.formatMessage({
           defaultMessage:

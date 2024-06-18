@@ -1,5 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material';
-import { ErrorTooltipLabel, ExternalLink } from '@origin/shared/components';
+import {
+  ErrorTooltipLabel,
+  ExternalLink,
+  TooltipLabel,
+} from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
@@ -19,7 +23,6 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
   const title = option.title(activity, intl);
   const subtitle = option.subtitle(activity, intl);
   const icon = option.icon(activity);
-  const endIcon = option?.endIcon?.(activity) ?? option.icon(activity);
   const href = isNilOrEmpty(activity?.txHash)
     ? undefined
     : `https://etherscan.io/tx/${activity?.txHash}`;
@@ -29,7 +32,7 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
       <Box display="flex" justifyContent="center" alignItems="center">
         {icon}
       </Box>
-      <Stack spacing={1} flexGrow={1}>
+      <Stack spacing={1} flexGrow={1} overflow="hidden">
         <Stack direction="row" alignItems="center" spacing={1}>
           <ActivityIcon status={activity.status} sx={{ fontSize: 20 }} />
           {!isNilOrEmpty(href) ? (
@@ -38,17 +41,19 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
             <Typography>{title}</Typography>
           )}
         </Stack>
-        <Stack direction="row" alignItems="center">
-          {isNilOrEmpty(activity?.error) ? (
-            <Typography color="text.secondary">{subtitle}</Typography>
-          ) : (
-            <ErrorTooltipLabel>{activity.error}</ErrorTooltipLabel>
-          )}
+        {isNilOrEmpty(activity?.error) ? (
+          <TooltipLabel color="text.secondary" maxChars={40}>
+            {subtitle}
+          </TooltipLabel>
+        ) : (
+          <ErrorTooltipLabel>{activity.error}</ErrorTooltipLabel>
+        )}
+      </Stack>
+      {!isNilOrEmpty(option?.endIcon?.(activity)) && (
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {option?.endIcon?.(activity)}
         </Stack>
-      </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        {endIcon}
-      </Stack>
+      )}
     </Stack>
   );
 };
