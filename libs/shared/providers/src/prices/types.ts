@@ -1,9 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { HexAddress } from '@origin/shared/utils';
 import type { ReadContractParameters } from 'viem';
 
 export type WagmiOption = {
   id: SupportedTokenPrice;
   config: ReadContractParameters & {
+    address: HexAddress;
     chainId: number;
   };
   mapResult?: (args: any) => number;
