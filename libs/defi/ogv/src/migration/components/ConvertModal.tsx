@@ -102,36 +102,10 @@ export const ConvertModal = ({
   } = useApprovalButton({
     token: tokens.mainnet.OGV,
     amount: total,
-    spender: isNilOrEmpty(veOgvlockups)
-      ? contracts.mainnet.zapperMigrator.address
-      : contracts.mainnet.OGVMigrator.address,
+    spender: contracts.mainnet.OGVMigrator.address,
     enableAllowance: true,
     enableGas: true,
   });
-
-  const params = isNilOrEmpty(veOgvlockups)
-    ? {
-        contract: contracts.mainnet.zapperMigrator,
-        functionName: 'migrate',
-        args: [
-          ogvBalance,
-          ...(stakingRatio > 0
-            ? [stakedConverted[0], getMonthDurationToSeconds(duration)]
-            : []),
-        ],
-      }
-    : {
-        contract: contracts.mainnet.OGVMigrator,
-        functionName: 'migrate',
-        args: [
-          veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
-          ogvBalance,
-          0n,
-          ogvRewards > 0n,
-          stakedConverted[0],
-          stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
-        ],
-      };
 
   const {
     params: writeParams,
@@ -139,8 +113,18 @@ export const ConvertModal = ({
     gasPrice: writeGas,
     isWriteGasLoading,
   } = useTxButton({
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    params: params as any,
+    params: {
+      contract: contracts.mainnet.OGVMigrator,
+      functionName: 'migrate',
+      args: [
+        veOgvlockups?.map((l) => BigInt(l.lockupId)) ?? [],
+        ogvBalance,
+        0n,
+        ogvRewards > 0n,
+        stakedConverted[0],
+        stakingRatio > 0 ? getMonthDurationToSeconds(duration) : 0n,
+      ],
+    },
     callbacks: {
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
