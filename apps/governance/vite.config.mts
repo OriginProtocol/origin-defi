@@ -10,6 +10,7 @@ export default defineConfig({
   root: __dirname,
   build: {
     outDir: '../../dist/apps/governance',
+    emptyOutDir: true,
     reportCompressedSize: true,
     commonjsOptions: {
       transformMixedEsModules: true,
