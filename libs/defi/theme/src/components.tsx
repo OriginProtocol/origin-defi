@@ -286,30 +286,25 @@ export const components = (base: Theme): ThemeOptions => ({
       defaultProps: {
         enableColorScheme: true,
       },
-      styleOverrides: (theme) => `
-          html {
-            overflow-x: hidden;
-            padding-left: calc(100vw - 100%);
-          }
-
-          body {
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            text-rendering: optimizeLegibility;
-            font-size: ${theme.typography.body3.fontSize}px;
-            line-height: ${theme.typography.body3.lineHeight};
-            font-weight: ${theme.typography.body3.fontWeight};
-          }
-
-          input[type=number] {
-            -moz-appearance: textfield;
-          }
-
-          input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-          }
-        `,
+      styleOverrides: (theme) => ({
+        body: {
+          height: '100%',
+          '-webkit-font-smoothing': 'antialiased',
+          '-moz-osx-font-smoothing': 'grayscale',
+          textRendering: 'optimizeLegibility',
+          fontSize: theme.typography.body3.fontSize,
+          lineHeight: theme.typography.body3.lineHeight,
+          fontWeight: theme.typography.body3.fontWeight,
+        },
+        'input[type=number]': {
+          '-moz-appearance': 'textfield',
+        },
+        'input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button':
+          {
+            '-webkit-appearance': 'none',
+            margin: 0,
+          },
+      }),
     },
     MuiDialog: {
       defaultProps: {
