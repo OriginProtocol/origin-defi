@@ -1,9 +1,7 @@
 import { Stack, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
-import { TxButton } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { TxButton, useIsRebaseBannerVisible } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
-import { useAccount, useReadContract } from 'wagmi';
 
 import { useTxButton } from '../TxButton';
 
@@ -11,15 +9,7 @@ export const RebasingBanner = () => {
   const intl = useIntl();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
-  const { address, isConnected } = useAccount();
-  const { data, isLoading } = useReadContract({
-    address: tokens.mainnet.OETH.address,
-    abi: tokens.mainnet.OETH.abi,
-    functionName: 'rebaseState',
-    chainId: tokens.mainnet.OETH.chainId,
-    args: [address ?? ZERO_ADDRESS],
-    query: { enabled: isConnected },
-  });
+  const isBannerVisible = useIsRebaseBannerVisible();
   const { params, callbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.OETH,
@@ -33,7 +23,7 @@ export const RebasingBanner = () => {
     },
   });
 
-  if (!isConnected || isLoading || data !== 0) {
+  if (!isBannerVisible) {
     return null;
   }
 
