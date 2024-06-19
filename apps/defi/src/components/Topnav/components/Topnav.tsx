@@ -123,7 +123,7 @@ export const Topnav = () => {
               <>
                 <Button
                   variant="nav"
-                  color="warning"
+                  color="secondary"
                   ref={alertMenuAnchorEl}
                   onClick={() => {
                     setAlertMenuOpen(not);
