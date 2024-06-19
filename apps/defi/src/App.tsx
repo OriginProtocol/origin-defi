@@ -1,12 +1,6 @@
 import { Stack } from '@mui/material';
-import {
-  RebasingBanner,
-  trackEvent,
-  trackPage,
-  trackSentryError,
-} from '@origin/defi/shared';
+import { trackEvent, trackPage, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { TrackingProvider } from '@origin/shared/providers';
 import { Outlet } from 'react-router-dom';
 
@@ -26,7 +20,6 @@ export const App = () => {
       >
         <Stack minWidth={370}>
           <Topnav />
-          <RebasingBanner token={tokens.mainnet.OETH} />
           <Outlet />
         </Stack>
       </TrackingProvider>

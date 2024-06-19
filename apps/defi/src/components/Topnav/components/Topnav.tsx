@@ -13,16 +13,24 @@ import {
 } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent, useActivitiesStatus } from '@origin/defi/shared';
-import { FaBarsRegular, OriginLabel } from '@origin/shared/icons';
+import { tokens } from '@origin/shared/contracts';
+import {
+  FaBarsRegular,
+  FaCircleExclamationRegular,
+  OriginLabel,
+} from '@origin/shared/icons';
 import {
   ChainMenuButton,
   OpenAccountModalButton,
+  useIsRebaseBannerVisible,
 } from '@origin/shared/providers';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { AccountPopover } from './AccountPopover';
+import { AlertPopover } from './AlertPopover';
 import { DrawerMenu } from './DrawerMenu';
 import { HoverMenu } from './HoverMenu';
 
@@ -34,10 +42,15 @@ export const Topnav = () => {
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const accountMenuAnchorEl = useRef(null);
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
+  const alertMenuAnchorEl = useRef(null);
+  const [alertMenuOpen, setAlertMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { status, pendingCount } = useActivitiesStatus();
+  const isOethRebaseRequired = useIsRebaseBannerVisible(tokens.mainnet.OETH);
+  const isOusdRebaseRequired = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
 
   const isLoading = status === 'pending' && pendingCount > 0;
+  const showRebaseMenu = isOethRebaseRequired || isOusdRebaseRequired;
 
   return (
     <>
@@ -106,6 +119,29 @@ export const Topnav = () => {
               gap: 1.25,
             }}
           >
+            {showRebaseMenu && (
+              <>
+                <Button
+                  variant="nav"
+                  color="warning"
+                  ref={alertMenuAnchorEl}
+                  onClick={() => {
+                    setAlertMenuOpen(not);
+                  }}
+                >
+                  <FaCircleExclamationRegular
+                    sx={{ fontSize: 24, color: 'warning.main' }}
+                  />
+                </Button>
+                <AlertPopover
+                  open={alertMenuOpen}
+                  anchorEl={alertMenuAnchorEl}
+                  onClose={() => {
+                    setAlertMenuOpen(false);
+                  }}
+                />
+              </>
+            )}
             <ChainMenuButton
               variant="nav"
               color="secondary"
