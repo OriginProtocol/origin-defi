@@ -195,6 +195,7 @@ export const Topnav = () => {
                 sx: { '&&&': { minWidth: 80, borderRadius: 2 } },
               }}
               hideAddress={isMd}
+              hideWrongNetwork
             >
               {isLoading ? (
                 <Stack direction="row" alignItems="center" spacing={1}>
