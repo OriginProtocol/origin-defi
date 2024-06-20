@@ -17,6 +17,7 @@ import OriginSvg from './origin.svg?react';
 import RocketpoolFullWebp from './rocketpool-full.webp';
 import SnapshotSvg from './snapshot.svg?react';
 import UniswapSvg from './uniswap.svg?react';
+import YieldNestSvg from './yield-nest.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -30,6 +31,13 @@ export const AuraFull = (props: SvgIconProps) => (
 );
 export const BalancerFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={BalancerFullSvg} inheritViewBox />
+);
+export const ChainlinkCCIP = (props: SvgIconProps) => (
+  <SvgIcon
+    {...props}
+    component={ChainlinkCCIPSvg}
+    viewBox="0 0 113.44 130.99"
+  />
 );
 export const CompoundFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={CompoundFullSvg} inheritViewBox />
@@ -78,10 +86,6 @@ export const Snapshot = (props: SvgIconProps) => (
 export const Uniswap = (props: SvgIconProps) => (
   <SvgIcon {...props} component={UniswapSvg} inheritViewBox />
 );
-export const ChainlinkCCIP = (props: SvgIconProps) => (
-  <SvgIcon
-    {...props}
-    component={ChainlinkCCIPSvg}
-    viewBox="0 0 113.44 130.99"
-  />
+export const YieldNest = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={YieldNestSvg} inheritViewBox />
 );

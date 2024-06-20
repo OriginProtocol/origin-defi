@@ -1,6 +1,9 @@
 import { defineMessage } from 'react-intl';
 
-import { RestakeView, StakeView, UnstakeView, WithdrawView } from './views';
+import { RestakeView } from './views/RestakeView';
+import { StakeView } from './views/StakeView';
+import { UnstakeView } from './views/UnstakeView';
+import { WithdrawView } from './views/WithdrawView';
 
 import type { NonIndexRouteObject } from 'react-router-dom';
 
