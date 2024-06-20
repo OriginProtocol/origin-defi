@@ -271,6 +271,12 @@
       "value": "OETH analytics"
     }
   ],
+  "2zUGfB": [
+    {
+      "type": 0,
+      "value": "Enable rebasing"
+    }
+  ],
   "3Lr8o5": [
     {
       "type": 0,
@@ -649,6 +655,12 @@
     {
       "type": 0,
       "value": "The amount of OGV in your wallet"
+    }
+  ],
+  "9/afiv": [
+    {
+      "type": 0,
+      "value": "Signing"
     }
   ],
   "94TAJq": [
@@ -1175,6 +1187,12 @@
     {
       "type": 0,
       "value": "Claim Rewards"
+    }
+  ],
+  "IP0AHa": [
+    {
+      "type": 0,
+      "value": "Error while enabling rebasing"
     }
   ],
   "IfZsEo": [
@@ -1843,6 +1861,12 @@
     {
       "type": 1,
       "value": "symbolStaked"
+    }
+  ],
+  "TpHJwv": [
+    {
+      "type": 0,
+      "value": "Rebase enabled"
     }
   ],
   "TrKxvg": [
@@ -2625,6 +2649,16 @@
       "value": "Approving"
     }
   ],
+  "m2eUvr": [
+    {
+      "type": 0,
+      "value": "Enable rebasing for "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    }
+  ],
   "m9XypM": [
     {
       "type": 0,
@@ -3003,6 +3037,12 @@
       "value": "Casting vote"
     }
   ],
+  "v0B1E9": [
+    {
+      "type": 0,
+      "value": "Enabling rebasing"
+    }
+  ],
   "vLIiaK": [
     {
       "type": 0,
@@ -3125,6 +3165,16 @@
     {
       "type": 0,
       "value": "Earnings and transaction history"
+    }
+  ],
+  "xpU+qf": [
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " on contract"
     }
   ],
   "xwfunk": [

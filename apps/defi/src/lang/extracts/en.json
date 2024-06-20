@@ -119,6 +119,9 @@
   "2ahSeJ": {
     "defaultMessage": "OETH analytics"
   },
+  "2zUGfB": {
+    "defaultMessage": "Enable rebasing"
+  },
   "3Lr8o5": {
     "defaultMessage": "Larger redemptions coming soon"
   },
@@ -259,6 +262,9 @@
   },
   "8w4BfJ": {
     "defaultMessage": "The amount of OGV in your wallet"
+  },
+  "9/afiv": {
+    "defaultMessage": "Signing"
   },
   "94TAJq": {
     "defaultMessage": "TVL: {tvl}"
@@ -466,6 +472,9 @@
   },
   "IEM00S": {
     "defaultMessage": "Claim Rewards"
+  },
+  "IP0AHa": {
+    "defaultMessage": "Error while enabling rebasing"
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -700,6 +709,9 @@
   },
   "Th/AXT": {
     "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}, staked for {amountStaked} {symbolStaked}"
+  },
+  "TpHJwv": {
+    "defaultMessage": "Rebase enabled"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -1043,6 +1055,9 @@
   "m/L3sK": {
     "defaultMessage": "Approving"
   },
+  "m2eUvr": {
+    "defaultMessage": "Enable rebasing for {symbol}"
+  },
   "m9XypM": {
     "defaultMessage": "Sending {amount} {symbolIn} to {chainOut}."
   },
@@ -1208,6 +1223,9 @@
   "utrdPr": {
     "defaultMessage": "Casting vote"
   },
+  "v0B1E9": {
+    "defaultMessage": "Enabling rebasing"
+  },
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
   },
@@ -1258,6 +1276,9 @@
   },
   "xnfnI5": {
     "defaultMessage": "Earnings and transaction history"
+  },
+  "xpU+qf": {
+    "defaultMessage": "{symbolIn} on contract"
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
