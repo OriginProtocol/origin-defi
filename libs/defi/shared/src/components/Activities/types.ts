@@ -96,6 +96,11 @@ export interface VoteActivity extends ActivityBase {
   proposalId: string;
 }
 
+export interface RebasingActivity extends ActivityBase {
+  type: 'rebasing';
+  tokenIdIn: TokenId;
+}
+
 export type Activity =
   | ApprovalActivity
   | BridgeActivity
@@ -103,6 +108,7 @@ export type Activity =
   | DelegateVoteActivity
   | ExtendStakeActivity
   | MigrateActivity
+  | RebasingActivity
   | RedeemActivity
   | StakeActivity
   | SwapActivity

@@ -27,6 +27,7 @@ import type {
   DelegateVoteActivity,
   ExtendStakeActivity,
   MigrateActivity,
+  RebasingActivity,
   RedeemActivity,
   StakeActivity,
   SwapActivity,
@@ -359,6 +360,35 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       const tokenOut = getTokenById(tokenIdLiquid);
 
       return <TransferIcon tokenIn={tokenIn} tokenOut={tokenOut} />;
+    },
+  },
+  rebasing: {
+    title: (activity, intl) =>
+      ({
+        pending: intl.formatMessage({ defaultMessage: 'Enabling rebasing' }),
+        signed: intl.formatMessage({ defaultMessage: 'Enabling rebasing' }),
+        success: intl.formatMessage({ defaultMessage: 'Rebasing enabled' }),
+        error: intl.formatMessage({
+          defaultMessage: 'Error while enabling rebasing',
+        }),
+        idle: intl.formatMessage({ defaultMessage: 'Enable rebasing' }),
+      })[activity.status],
+    subtitle: (activity, intl) => {
+      const { tokenIdIn } = activity as RebasingActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return intl.formatMessage(
+        {
+          defaultMessage: '{symbolIn} on contract',
+        },
+        { symbolIn: tokenIn.symbol },
+      );
+    },
+    icon: (activity) => {
+      const { tokenIdIn } = activity as RebasingActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />;
     },
   },
   redeem: {

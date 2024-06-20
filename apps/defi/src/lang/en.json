@@ -271,6 +271,12 @@
       "value": "OETH analytics"
     }
   ],
+  "2zUGfB": [
+    {
+      "type": 0,
+      "value": "Enable rebasing"
+    }
+  ],
   "3Lr8o5": [
     {
       "type": 0,
@@ -649,6 +655,12 @@
     {
       "type": 0,
       "value": "The amount of OGV in your wallet"
+    }
+  ],
+  "9/afiv": [
+    {
+      "type": 0,
+      "value": "Signing"
     }
   ],
   "94TAJq": [
@@ -1031,6 +1043,12 @@
       "value": "0 months"
     }
   ],
+  "Fbsq1t": [
+    {
+      "type": 0,
+      "value": "Rebasing enabled"
+    }
+  ],
   "FfOtze": [
     {
       "type": 1,
@@ -1175,6 +1193,12 @@
     {
       "type": 0,
       "value": "Claim Rewards"
+    }
+  ],
+  "IP0AHa": [
+    {
+      "type": 0,
+      "value": "Error while enabling rebasing"
     }
   ],
   "IfZsEo": [
@@ -2505,6 +2529,12 @@
       "value": "Quorum"
     }
   ],
+  "icM8PS": [
+    {
+      "type": 0,
+      "value": "It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield."
+    }
+  ],
   "j8y+qc": [
     {
       "type": 1,
@@ -2623,6 +2653,16 @@
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "m2eUvr": [
+    {
+      "type": 0,
+      "value": "Enable rebasing for "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
     }
   ],
   "m9XypM": [
@@ -3003,6 +3043,12 @@
       "value": "Casting vote"
     }
   ],
+  "v0B1E9": [
+    {
+      "type": 0,
+      "value": "Enabling rebasing"
+    }
+  ],
   "vLIiaK": [
     {
       "type": 0,
@@ -3125,6 +3171,16 @@
     {
       "type": 0,
       "value": "Earnings and transaction history"
+    }
+  ],
+  "xpU+qf": [
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " on contract"
     }
   ],
   "xwfunk": [

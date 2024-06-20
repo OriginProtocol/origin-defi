@@ -12,7 +12,7 @@ export const RebaseBanner = (props: StackProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSmall = useMediaQuery(theme.breakpoints.down('md'));
-  const visible = useIsRebaseBannerVisible();
+  const visible = useIsRebaseBannerVisible(tokens.mainnet.OETH);
 
   if (!visible) {
     return null;

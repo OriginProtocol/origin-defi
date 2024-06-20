@@ -15,6 +15,7 @@ interface OpenAccountModalButtonProps extends ButtonProps {
   connectedProps?: ButtonProps;
   disconnectedProps?: ButtonProps;
   hideAddress?: boolean;
+  hideWrongNetwork?: boolean;
 }
 
 export const OpenAccountModalButton = forwardRef<
@@ -27,6 +28,7 @@ export const OpenAccountModalButton = forwardRef<
       connectedProps,
       disconnectedProps,
       hideAddress,
+      hideWrongNetwork,
       children,
       ...rest
     },
@@ -58,7 +60,7 @@ export const OpenAccountModalButton = forwardRef<
               );
             }
 
-            if (chain.unsupported) {
+            if (!hideWrongNetwork && chain.unsupported) {
               return (
                 <Button
                   color="warning"

@@ -119,6 +119,9 @@
   "2ahSeJ": {
     "defaultMessage": "OETH analytics"
   },
+  "2zUGfB": {
+    "defaultMessage": "Enable rebasing"
+  },
   "3Lr8o5": {
     "defaultMessage": "Larger redemptions coming soon"
   },
@@ -259,6 +262,9 @@
   },
   "8w4BfJ": {
     "defaultMessage": "The amount of OGV in your wallet"
+  },
+  "9/afiv": {
+    "defaultMessage": "Signing"
   },
   "94TAJq": {
     "defaultMessage": "TVL: {tvl}"
@@ -410,6 +416,9 @@
   "F6lS59": {
     "defaultMessage": "0 months"
   },
+  "Fbsq1t": {
+    "defaultMessage": "Rebasing enabled"
+  },
   "FfOtze": {
     "defaultMessage": "{value}"
   },
@@ -466,6 +475,9 @@
   },
   "IEM00S": {
     "defaultMessage": "Claim Rewards"
+  },
+  "IP0AHa": {
+    "defaultMessage": "Error while enabling rebasing"
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -983,6 +995,9 @@
   "ibDi9l": {
     "defaultMessage": "Quorum"
   },
+  "icM8PS": {
+    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield."
+  },
   "j8y+qc": {
     "defaultMessage": "{label}"
   },
@@ -1042,6 +1057,9 @@
   },
   "m/L3sK": {
     "defaultMessage": "Approving"
+  },
+  "m2eUvr": {
+    "defaultMessage": "Enable rebasing for {symbol}"
   },
   "m9XypM": {
     "defaultMessage": "Sending {amount} {symbolIn} to {chainOut}."
@@ -1208,6 +1226,9 @@
   "utrdPr": {
     "defaultMessage": "Casting vote"
   },
+  "v0B1E9": {
+    "defaultMessage": "Enabling rebasing"
+  },
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
   },
@@ -1258,6 +1279,9 @@
   },
   "xnfnI5": {
     "defaultMessage": "Earnings and transaction history"
+  },
+  "xpU+qf": {
+    "defaultMessage": "{symbolIn} on contract"
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
