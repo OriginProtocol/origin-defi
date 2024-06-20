@@ -35,7 +35,7 @@ export const AlertPopover = (
         <Typography>
           {intl.formatMessage({
             defaultMessage:
-              'It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield.',
+              'It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield.',
           })}
         </Typography>
       </Stack>

@@ -1043,6 +1043,12 @@
       "value": "0 months"
     }
   ],
+  "Fbsq1t": [
+    {
+      "type": 0,
+      "value": "Rebasing enabled"
+    }
+  ],
   "FfOtze": [
     {
       "type": 1,
@@ -1863,12 +1869,6 @@
       "value": "symbolStaked"
     }
   ],
-  "TpHJwv": [
-    {
-      "type": 0,
-      "value": "Rebase enabled"
-    }
-  ],
   "TrKxvg": [
     {
       "type": 0,
@@ -2527,6 +2527,12 @@
     {
       "type": 0,
       "value": "Quorum"
+    }
+  ],
+  "icM8PS": [
+    {
+      "type": 0,
+      "value": "It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield."
     }
   ],
   "j8y+qc": [
