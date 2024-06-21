@@ -46,11 +46,11 @@ export const Topnav = () => {
   const [alertMenuOpen, setAlertMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { status, pendingCount } = useActivitiesStatus();
-  const isOethRebaseRequired = useIsRebaseBannerVisible(tokens.mainnet.OETH);
-  const isOusdRebaseRequired = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
+  const isNonRebasingOETH = useIsRebaseBannerVisible(tokens.mainnet.OETH);
+  const isNonRebasingOUSD = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
 
   const isLoading = status === 'pending' && pendingCount > 0;
-  const showRebaseMenu = isOethRebaseRequired || isOusdRebaseRequired;
+  const showRebaseMenu = isNonRebasingOETH || isNonRebasingOUSD;
 
   return (
     <>

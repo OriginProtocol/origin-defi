@@ -367,7 +367,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
       ({
         pending: intl.formatMessage({ defaultMessage: 'Enabling rebasing' }),
         signed: intl.formatMessage({ defaultMessage: 'Enabling rebasing' }),
-        success: intl.formatMessage({ defaultMessage: 'Rebase enabled' }),
+        success: intl.formatMessage({ defaultMessage: 'Rebasing enabled' }),
         error: intl.formatMessage({
           defaultMessage: 'Error while enabling rebasing',
         }),

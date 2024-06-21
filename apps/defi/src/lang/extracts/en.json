@@ -416,6 +416,9 @@
   "F6lS59": {
     "defaultMessage": "0 months"
   },
+  "Fbsq1t": {
+    "defaultMessage": "Rebasing enabled"
+  },
   "FfOtze": {
     "defaultMessage": "{value}"
   },
@@ -710,9 +713,6 @@
   "Th/AXT": {
     "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}, staked for {amountStaked} {symbolStaked}"
   },
-  "TpHJwv": {
-    "defaultMessage": "Rebase enabled"
-  },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
   },
@@ -994,6 +994,9 @@
   },
   "ibDi9l": {
     "defaultMessage": "Quorum"
+  },
+  "icM8PS": {
+    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield."
   },
   "j8y+qc": {
     "defaultMessage": "{label}"
