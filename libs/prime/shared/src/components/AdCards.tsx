@@ -1,6 +1,6 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { Airdrop, YieldNest } from '@origin/shared/icons';
+import { Airdrop, Seeds } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -18,7 +18,7 @@ export const AdCards = (props: StackProps) => {
 
   const ads: Ad[] = [
     {
-      icon: <YieldNest sx={{ width: 40, height: 40 }} />,
+      icon: <Seeds sx={{ width: 40, height: 40 }} />,
       title: intl.formatMessage({
         defaultMessage: 'Earn YieldNest Seeds!',
       }),
