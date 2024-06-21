@@ -1,10 +1,27 @@
 import { Button, Stack, Typography } from '@mui/material';
+import { trackEvent } from '@origin/prime/shared';
 import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { YieldNest } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
+import { restakeActions } from '../actions';
+import { Swapper } from '../components/Swapper';
+import { restakeRoutes } from '../constants';
+
+import type { StackProps } from '@mui/material';
+
 export const StakeView = () => {
+  return (
+    <Swapper
+      swapRoutes={restakeRoutes}
+      swapActions={restakeActions}
+      trackEvent={trackEvent}
+    />
+  );
+};
+
+const YNDisclaimer = (props: StackProps) => {
   const intl = useIntl();
 
   return (
@@ -44,7 +61,7 @@ export const StakeView = () => {
           target="_blank"
           rel="noopener noreferrer nofollow"
           fullWidth
-          sx={{ p: 2, fontSize: 20, borderRadius: 24 }}
+          sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
         >
           {intl.formatMessage({ defaultMessage: 'Visit YieldNest App' })}
         </Button>

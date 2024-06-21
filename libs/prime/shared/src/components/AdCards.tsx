@@ -1,6 +1,6 @@
-import { Card, Link, Stack, Typography } from '@mui/material';
+import { Card, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { EigenPoints, PrimePoints } from '@origin/shared/icons';
+import { Airdrop, YieldNest } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -17,6 +17,40 @@ export const AdCards = (props: StackProps) => {
   const intl = useIntl();
 
   const ads: Ad[] = [
+    {
+      icon: <YieldNest sx={{ width: 40, height: 40 }} />,
+      title: intl.formatMessage({
+        defaultMessage: 'Earn YieldNest Seeds!',
+      }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'Migrate your primeStaked ETH and start earning Yield Seeds plus get your XP converted to seeds.',
+      }),
+      tooltip: (
+        <Typography variant="body2">
+          {intl.formatMessage({
+            defaultMessage: `You'll be able to collect YND rewards and so much more!`,
+          })}
+        </Typography>
+      ),
+    },
+    {
+      icon: <Airdrop sx={{ width: 40, height: 40 }} />,
+      title: intl.formatMessage({
+        defaultMessage: 'Participate in the YieldNest Airdrop',
+      }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'Migrate your primeStaked ETH and start earning Yield Seeds plus get your XP converted to seeds.',
+      }),
+      tooltip: (
+        <Typography variant="body2">
+          {intl.formatMessage({
+            defaultMessage: `Migrate primeETH is good for your skin!`,
+          })}
+        </Typography>
+      ),
+    },
     // {
     //   icon: <FaClockRegular color="primary" sx={{ width: 40, height: 40 }} />,
     //   title: intl.formatMessage({ defaultMessage: 'Be early!' }),
@@ -71,53 +105,53 @@ export const AdCards = (props: StackProps) => {
     //     </Typography>
     //   ),
     // },
-    {
-      icon: <PrimePoints sx={{ width: 40, height: 40 }} />,
-      title: intl.formatMessage({
-        defaultMessage: '1.5X XP Bonus',
-      }),
-      subtitle: intl.formatMessage({ defaultMessage: 'for a limited time' }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage({
-            defaultMessage:
-              'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 25th at 12pm PDT.',
-          })}
-        </Typography>
-      ),
-    },
-    {
-      icon: <EigenPoints sx={{ width: 40, height: 40 }} />,
-      title: intl.formatMessage({
-        defaultMessage: 'EigenLayer Points Bonus',
-      }),
-      subtitle: intl.formatMessage({
-        defaultMessage:
-          'Up to 1,000,000 EL points distributed to early ETH depositors',
-      }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage(
-            {
-              defaultMessage:
-                'Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}',
-            },
-            {
-              link: (
-                <Link
-                  color="primary.main"
-                  href="https://twitter.com/PrimeStaked/status/1767265161876824362"
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                >
-                  {intl.formatMessage({ defaultMessage: 'Learn More.' })}
-                </Link>
-              ),
-            },
-          )}
-        </Typography>
-      ),
-    },
+    // {
+    //   icon: <PrimePoints sx={{ width: 40, height: 40 }} />,
+    //   title: intl.formatMessage({
+    //     defaultMessage: '1.5X XP Bonus',
+    //   }),
+    //   subtitle: intl.formatMessage({ defaultMessage: 'for a limited time' }),
+    //   tooltip: (
+    //     <Typography variant="body2">
+    //       {intl.formatMessage({
+    //         defaultMessage:
+    //           'The 1.5x XP boost applies to all primeETH minted or bought on Uniswap since Feb 9 at 12pm PST. The 1.5x bonus runs until March 25th at 12pm PDT.',
+    //       })}
+    //     </Typography>
+    //   ),
+    // },
+    // {
+    //   icon: <EigenPoints sx={{ width: 40, height: 40 }} />,
+    //   title: intl.formatMessage({
+    //     defaultMessage: 'EigenLayer Points Bonus',
+    //   }),
+    //   subtitle: intl.formatMessage({
+    //     defaultMessage:
+    //       'Up to 1,000,000 EL points distributed to early ETH depositors',
+    //   }),
+    //   tooltip: (
+    //     <Typography variant="body2">
+    //       {intl.formatMessage(
+    //         {
+    //           defaultMessage:
+    //             'Early ETH restakers will earn extra Eigenlayer points during Eigen Bonus Week. The sooner you buy or mint primeETH, the more Eigenlayer points you will earn. {link}',
+    //         },
+    //         {
+    //           link: (
+    //             <Link
+    //               color="primary.main"
+    //               href="https://twitter.com/PrimeStaked/status/1767265161876824362"
+    //               target="_blank"
+    //               rel="noopener noreferrer nofollow"
+    //             >
+    //               {intl.formatMessage({ defaultMessage: 'Learn More.' })}
+    //             </Link>
+    //           ),
+    //         },
+    //       )}
+    //     </Typography>
+    //   ),
+    // },
   ];
 
   return (

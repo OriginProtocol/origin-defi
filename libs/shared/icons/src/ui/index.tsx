@@ -2,6 +2,7 @@ import { SvgIcon } from '@mui/material';
 
 import ActiveSvg from './active.svg?react';
 import ActivitySvg from './activity.svg?react';
+import AirdropSvg from './airdrop.svg?react';
 import ArrowDownSvg from './arrowDown.svg?react';
 import ArrowDownFromArcSvg from './arrowDownFromArc.svg?react';
 import ArrowUpRightSvg from './arrowUpRight.svg?react';
@@ -22,6 +23,7 @@ import SendSvg from './send.svg?react';
 import SucceededSvg from './succeeded.svg?react';
 import SwapSvg from './swap.svg?react';
 import WalletFilledSvg from './wallet_filled.svg?react';
+import WarningExclamationSvg from './warning-exclamation.svg?react';
 import YieldSvg from './yield.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
@@ -31,6 +33,9 @@ export const Active = (props: SvgIconProps) => (
 );
 export const Activity = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ActivitySvg} viewBox="0 0 28 28" />
+);
+export const Airdrop = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={AirdropSvg} inheritViewBox />
 );
 export const ArrowDown = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ArrowDownSvg} viewBox="0 0 14 25" />
@@ -95,6 +100,9 @@ export const Swap = (props: SvgIconProps) => (
 );
 export const WalletFilled = (props: SvgIconProps) => (
   <SvgIcon {...props} component={WalletFilledSvg} inheritViewBox />
+);
+export const WarningExclamation = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={WarningExclamationSvg} inheritViewBox />
 );
 export const Yield = (props: SvgIconProps) => (
   <SvgIcon {...props} component={YieldSvg} viewBox="0 0 32 32" />

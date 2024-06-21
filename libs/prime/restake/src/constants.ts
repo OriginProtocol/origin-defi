@@ -8,26 +8,26 @@ export const GAS_BUFFER = 10n; // 10%
 export const MAX_PRICE = 1.2;
 
 export const restakeRoutes: SwapRoute<RestakeAction, Meta>[] = [
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'zapper',
-  },
-  {
-    tokenIn: tokens.mainnet.ETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'uniswap',
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'uniswap',
-  },
-  {
-    tokenIn: tokens.mainnet.WETH,
-    tokenOut: tokens.mainnet.primeETH,
-    action: 'restake',
-  },
+  // {
+  //   tokenIn: tokens.mainnet.ETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'zapper',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.ETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'uniswap',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.WETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'uniswap',
+  // },
+  // {
+  //   tokenIn: tokens.mainnet.WETH,
+  //   tokenOut: tokens.mainnet.primeETH,
+  //   action: 'restake',
+  // },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.primeETH,
