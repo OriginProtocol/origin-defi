@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenInput, useTxButton } from '@origin/defi/shared';
+import { SettingsButton, TokenInput, useTxButton } from '@origin/defi/shared';
 import {
   ErrorBoundary,
   ErrorCard,
@@ -22,7 +22,6 @@ import {
   isNativeCurrency,
   MIX_TOKEN,
   RedeemProvider,
-  SettingsButton,
   TxButton,
   useFormat,
   useHandleRedeemAmountInChange,

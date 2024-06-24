@@ -11,6 +11,7 @@ import {
 } from '@mui/material';
 import {
   activityOptions,
+  SettingsButton,
   TokenButton,
   TokenInput,
   useDeleteActivity,
@@ -26,7 +27,6 @@ import {
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
-  SettingsButton,
   SwapProvider,
   useDeleteNotification,
   useFormat,
@@ -314,11 +314,7 @@ function SwapperWrapped({
         <Card>
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Redeem' })}
-            action={
-              <SettingsButton
-                sx={{ border: '1px solid', borderColor: 'divider' }}
-              />
-            }
+            action={<SettingsButton />}
           />
           <Divider />
           <CardContent

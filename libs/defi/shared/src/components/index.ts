@@ -7,6 +7,7 @@ export * from './Icons';
 export * from './Notifications';
 export * from './Page';
 export * from './Section';
+export * from './Settings';
 export * from './Swapper';
 export * from './TokenButton';
 export * from './TokenInput';

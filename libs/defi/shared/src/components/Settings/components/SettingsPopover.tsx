@@ -114,7 +114,7 @@ export const SettingsPopover = (
             <FaCircleExclamationRegular
               sx={{ color: 'warning.main', fontSize: 18 }}
             />
-            <Typography>
+            <Typography color="warning.dark">
               {intl.formatMessage({
                 defaultMessage: 'Your transaction may be frontrun',
               })}
