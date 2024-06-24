@@ -289,19 +289,19 @@ export const components = (base: Theme): ThemeOptions => ({
       styleOverrides: (theme) => ({
         body: {
           height: '100%',
-          '-webkit-font-smoothing': 'antialiased',
-          '-moz-osx-font-smoothing': 'grayscale',
+          WebkitFontSmoothing: 'antialiased',
+          MozOsxFontSmoothing: 'grayscale',
           textRendering: 'optimizeLegibility',
           fontSize: theme.typography.body3.fontSize,
           lineHeight: theme.typography.body3.lineHeight,
           fontWeight: theme.typography.body3.fontWeight,
         },
         'input[type=number]': {
-          '-moz-appearance': 'textfield',
+          MozAppearance: 'textfield',
         },
         'input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button':
           {
-            '-webkit-appearance': 'none',
+            WebkitAppearance: 'none',
             margin: 0,
           },
       }),
