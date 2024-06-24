@@ -420,7 +420,7 @@ function SwapperWrapped({
                 {
                   slippage: intl.formatNumber(slippage, {
                     style: 'percent',
-                    minimumFractionDigits: 2,
+                    minimumFractionDigits: 0,
                     maximumFractionDigits: 2,
                   }),
                 },
