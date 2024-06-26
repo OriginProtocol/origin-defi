@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenIcon, ValueLabel } from '@origin/shared/components';
+import { ExternalLink, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { WarningExclamation } from '@origin/shared/icons';
 import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
@@ -69,6 +69,22 @@ type DisclaimerProps = { onContinueClick: () => void } & StackProps;
 const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
   const intl = useIntl();
 
+  const points = [
+    intl.formatMessage({ defaultMessage: `YieldNest YND season 1 airdrop` }),
+    intl.formatMessage({
+      defaultMessage: `YieldNest Seeds bonus (+5% boost for primeETH users)`,
+    }),
+    intl.formatMessage({
+      defaultMessage: `Pioneer NFT + 15% permanent boost for migrating ≥ 5 OETH`,
+    }),
+    intl.formatMessage({
+      defaultMessage: `Access to all upcoming YND airdrop seasons`,
+    }),
+    intl.formatMessage({ defaultMessage: `Community incentives of +60%` }),
+    intl.formatMessage({ defaultMessage: `Collect EigenLayer points` }),
+    intl.formatMessage({ defaultMessage: `AVS/Network yields & airdrops` }),
+  ];
+
   return (
     <Stack
       {...rest}
@@ -86,57 +102,43 @@ const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
       <Typography variant="h5" textAlign="center" mb={1}>
         {intl.formatMessage({
           defaultMessage:
-            'You will no longer be eligible for the following rewards if you withdraw',
+            'You will no longer be eligible for the following rewards if you withdraw:',
         })}
       </Typography>
-      <Typography>
-        {intl.formatMessage({
-          defaultMessage: `You won't have primETH anymore`,
-        })}
-      </Typography>
-      <Typography>
-        {intl.formatMessage({
-          defaultMessage: `No primeETH, no rewards`,
-        })}
-      </Typography>
-      <Typography>
-        {intl.formatMessage({
-          defaultMessage: `Really, you should re-consider`,
-        })}
-      </Typography>
-      <Typography mb={3}>
-        {intl.formatMessage({
-          defaultMessage: `primeETH is so cool, you should keep it`,
-        })}
-      </Typography>
+      <Stack component="ul" spacing={0.5}>
+        {points.map((p) => (
+          <Typography key={p} component="li">
+            {p}
+          </Typography>
+        ))}
+      </Stack>
+      <ExternalLink
+        sx={{ alignSelf: 'flex-start', color: 'primary.main', mb: 3 }}
+      >
+        {intl.formatMessage({ defaultMessage: 'Learn More' })}
+      </ExternalLink>
       <Button
         component={RouterLink}
-        to="/restake/migrate"
+        to="/restake/"
         fullWidth
         sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
       >
-        {intl.formatMessage({ defaultMessage: 'Pre-mint YN LSD Instead' })}
+        {intl.formatMessage({ defaultMessage: 'Back to staking' })}
       </Button>
-      <Stack
-        width={1}
-        direction="row"
-        alignItems="center"
-        spacing={2}
-        pt={3}
-        justifyContent="space-evenly"
+      <Button
+        variant="text"
+        onClick={onContinueClick}
+        sx={{
+          fontSize: 20,
+          py: 2,
+          borderRadius: 8,
+          height: 60,
+          color: 'primary.main',
+          '&:hover': { color: 'primary.dark' },
+        }}
       >
-        <Button
-          variant="text"
-          href="#"
-          target="_blank"
-          rel="noopener noreferrer nofollow"
-        >
-          {intl.formatMessage({ defaultMessage: 'Learn More' })}
-        </Button>
-        <Button variant="text" onClick={onContinueClick}>
-          {intl.formatMessage({ defaultMessage: 'Continue' })}
-        </Button>
-      </Stack>
+        {intl.formatMessage({ defaultMessage: 'Continue anyway' })}
+      </Button>
     </Stack>
   );
 };
@@ -242,7 +244,7 @@ const Form = ({
           >
             {intl.formatMessage({
               defaultMessage:
-                'Remember, you will no longer be eligible for rewards if you withdraw',
+                'You will no longer be eligible for the Season 1 Airdrop or YieldNest Seeds if you withdraw.',
             })}
           </Typography>
         </Stack>
@@ -270,8 +272,7 @@ const Stepper = ({ converted, ...rest }: StepperProps) => {
 
   const steps = [
     intl.formatMessage({ defaultMessage: 'Initiate Withdrawal' }),
-    intl.formatMessage({ defaultMessage: 'Wait (up to 1 hour)' }),
-    intl.formatMessage({ defaultMessage: 'Prove Withdrawal' }),
+    intl.formatMessage({ defaultMessage: 'Approve Withdrawal' }),
     intl.formatMessage({ defaultMessage: 'Wait 7 days' }),
     intl.formatMessage({ defaultMessage: 'Return to Claim' }),
   ];

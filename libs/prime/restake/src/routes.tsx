@@ -1,7 +1,6 @@
 import { defineMessage } from 'react-intl';
 
 import { ClaimView } from './views/ClaimView';
-import { MigrateView } from './views/MigrateView';
 import { RestakeView } from './views/RestakeView';
 import { StakeView } from './views/StakeView';
 import { WithdrawView } from './views/WithdrawView';
@@ -18,11 +17,11 @@ export const restakeRoute: NonIndexRouteObject = {
       Component: StakeView,
       handle: { label: defineMessage({ defaultMessage: 'Stake' }) },
     },
-    {
-      path: 'migrate',
-      Component: MigrateView,
-      handle: { label: defineMessage({ defaultMessage: 'Migrate' }) },
-    },
+    // {
+    //   path: 'migrate',
+    //   Component: MigrateView,
+    //   handle: { label: defineMessage({ defaultMessage: 'Migrate' }) },
+    // },
     {
       path: 'withdraw',
       Component: WithdrawView,

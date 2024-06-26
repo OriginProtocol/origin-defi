@@ -1,13 +1,41 @@
-import { Card, Divider, Link, Stack } from '@mui/material';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { Card, CircularProgress, Divider, Link, Stack } from '@mui/material';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, Outlet, useMatch } from 'react-router-dom';
+import { useAccount } from 'wagmi';
 
+import { useCurrentRequestsQuery } from '../queries.generated';
 import { restakeRoute } from '../routes';
 
 import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
+  const { address } = useAccount();
+  const {
+    data: hasClaimableRequest,
+    isLoading: isHsCurrentClaimableRequestLoading,
+  } = useCurrentRequestsQuery(
+    { address: address ?? ZERO_ADDRESS },
+    { enabled: !!address, select: (data) => data?.lrtWithdrawals?.length > 0 },
+  );
+
+  if (isHsCurrentClaimableRequestLoading) {
+    return (
+      <Stack
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={350}
+      >
+        <CircularProgress size={36} />
+      </Stack>
+    );
+  }
+
+  const routes = restakeRoute?.children?.filter(
+    (f) => f?.path !== 'claim' || (hasClaimableRequest && f?.path === 'claim'),
+  );
+
   return (
     <Stack alignItems="center">
       <Card sx={{ maxWidth: 540, width: 1 }}>
@@ -21,9 +49,7 @@ export const RestakeView = () => {
               borderRadius: 25,
             }}
           >
-            {restakeRoute?.children?.map((r) => (
-              <NavLink key={r?.path ?? 'index'} route={r} />
-            ))}
+            {routes?.map((r) => <NavLink key={r?.path ?? 'index'} route={r} />)}
           </Stack>
         </Stack>
         <Divider />

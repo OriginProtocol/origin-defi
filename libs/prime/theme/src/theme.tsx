@@ -117,8 +117,8 @@ export const theme = createTheme({
       },
     },
     subtitle1: {
-      fontSize: 20,
-      fontWeight: 500,
+      fontSize: 18,
+      fontWeight: 400,
       lineHeight: 1.4,
       [base.breakpoints.down('sm')]: {
         fontSize: 16,
@@ -341,10 +341,10 @@ export const theme = createTheme({
             margin: 0;
           }
 
-          @font-face { 
-            font-family: "Inter"; 
+          @font-face {
+            font-family: "Inter";
             font-weight: 400;
-            src: url(/fonts/Inter-Regular.woff2) format('woff2'); 
+            src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
 

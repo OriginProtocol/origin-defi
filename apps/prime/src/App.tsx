@@ -2,12 +2,12 @@ import { Stack, useMediaQuery, useTheme } from '@mui/material';
 import Box from '@mui/material/Box';
 import {
   AdCards,
-  AssetDepositedCard,
   GlobalStatsCard,
   InviteCard,
   trackEvent,
   trackPage,
   trackSentryError,
+  YNBanner,
 } from '@origin/prime/shared';
 import { ErrorBoundary, ErrorCard, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
@@ -33,6 +33,7 @@ export const App = () => {
         }}
       >
         <Stack minWidth={370} mb={5}>
+          <YNBanner />
           <Topnav />
           <Box
             sx={{
@@ -80,12 +81,6 @@ export const App = () => {
                   onError={trackSentryError}
                 >
                   <GlobalStatsCard />
-                </ErrorBoundary>
-                <ErrorBoundary
-                  ErrorComponent={<ErrorCard />}
-                  onError={trackSentryError}
-                >
-                  <AssetDepositedCard />
                 </ErrorBoundary>
               </Stack>
             </Box>

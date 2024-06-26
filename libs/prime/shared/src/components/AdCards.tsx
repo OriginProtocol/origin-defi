@@ -1,6 +1,6 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { Airdrop, Seeds } from '@origin/shared/icons';
+import { Airdrop, Seeds, YieldNestHexagon } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -18,30 +18,13 @@ export const AdCards = (props: StackProps) => {
 
   const ads: Ad[] = [
     {
-      icon: <Seeds sx={{ width: 40, height: 40 }} />,
-      title: intl.formatMessage({
-        defaultMessage: 'Earn YieldNest Seeds!',
-      }),
-      subtitle: intl.formatMessage({
-        defaultMessage:
-          'Migrate your primeStaked ETH and start earning Yield Seeds plus get your XP converted to seeds.',
-      }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage({
-            defaultMessage: `You'll be able to collect YND rewards and so much more!`,
-          })}
-        </Typography>
-      ),
-    },
-    {
       icon: <Airdrop sx={{ width: 40, height: 40 }} />,
       title: intl.formatMessage({
         defaultMessage: 'Participate in the YieldNest Airdrop',
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Migrate your primeStaked ETH and start earning Yield Seeds plus get your XP converted to seeds.',
+          'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest Airdrop.',
       }),
       tooltip: (
         <Typography variant="body2">
@@ -51,6 +34,41 @@ export const AdCards = (props: StackProps) => {
         </Typography>
       ),
     },
+    {
+      icon: <Seeds sx={{ width: 40, height: 40 }} />,
+      title: intl.formatMessage({
+        defaultMessage: '5% bonus on YieldNest Seeds',
+      }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'primeETH holders who migrate to ynLSD will receive a 5% Seeds Boost at the start of Season 1',
+      }),
+      tooltip: (
+        <Typography variant="body2">
+          {intl.formatMessage({
+            defaultMessage: `There will be no 'Previously in...'`,
+          })}
+        </Typography>
+      ),
+    },
+    {
+      icon: <YieldNestHexagon sx={{ width: 40, height: 40 }} />,
+      title: intl.formatMessage({
+        defaultMessage: 'YieldNest Pioneer NFT',
+      }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'Migrate at least 5 OETH to receive the Pioneer NFT which gives you a permanent 15% seeds boost',
+      }),
+      tooltip: (
+        <Typography variant="body2">
+          {intl.formatMessage({
+            defaultMessage: `So much yield, you'll love it`,
+          })}
+        </Typography>
+      ),
+    },
+
     // {
     //   icon: <FaClockRegular color="primary" sx={{ width: 40, height: 40 }} />,
     //   title: intl.formatMessage({ defaultMessage: 'Be early!' }),

@@ -1,0 +1,10 @@
+query CurrentRequests($address: String!) {
+  lrtWithdrawals(
+    where: { withdrawer_containsInsensitive: $address, status_in: [Requested] }
+  ) {
+    id
+    startBlock
+    timestamp
+    shares
+  }
+}
