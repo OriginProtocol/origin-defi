@@ -19,9 +19,9 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { formatUnits } from 'viem';
 
-import { governanceChoices, governanceTokens } from '../constants';
+import { governanceChoices } from '../constants';
 import { useProposal } from '../hooks';
-import { useProposalQuery } from '../queries.generated';
+import { useProposalVotesQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { HexAddress } from '@origin/shared/utils';
@@ -35,27 +35,31 @@ export const VoteCard = (props: CardProps) => {
   const [limit, setLimit] = useState<number | null>(DEFAULT_VISIBLE);
   const [filter, setFilter] = useState(governanceChoices[0]);
   const { proposalId } = useParams();
-  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
-  const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
-    {
-      proposalId: proposalId ?? '',
-    },
+  const { data: proposal, isLoading: isProposalLoading } = useProposal(
+    proposalId,
     {
       enabled: !!proposalId,
-      select: (data) => groupBy(prop('type'), data?.ogvProposalVotes ?? []),
     },
   );
+  const { data: proposalVotes, isLoading: isProposalVotesLoading } =
+    useProposalVotesQuery(
+      { proposalId: proposalId ?? '' },
+      {
+        enabled: !!proposalId,
+        select: (data) =>
+          groupBy(prop('type'), data.governanceProposalVotes ?? []),
+      },
+    );
 
   const handleToggleShow = () => {
     setLimit((prev) => (isNilOrEmpty(prev) ? DEFAULT_VISIBLE : null));
   };
 
-  const token = governanceTokens[propal?.type ?? 'onchain_ogv'];
-  const votes = proposal?.[filter] ?? [];
+  const votes = proposalVotes?.[filter] ?? [];
   const visibileVotes = !limit ? votes : take(limit, votes);
   const totalVotes = votes.reduce(
     (acc, curr) =>
-      acc + +formatUnits(BigInt(curr.weight), token?.decimals ?? 18),
+      acc + +formatUnits(BigInt(curr.weight), proposal?.token?.decimals ?? 18),
     0,
   );
   const indicatorColor = {
@@ -113,7 +117,7 @@ export const VoteCard = (props: CardProps) => {
             )}
           </LoadingLabel>
           <LoadingLabel
-            isLoading={isProposalLoading || isPropalLoading}
+            isLoading={isProposalLoading || isProposalVotesLoading}
             color="text.secondary"
           >
             {intl.formatMessage(
@@ -128,7 +132,7 @@ export const VoteCard = (props: CardProps) => {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       }),
-                symbol: token?.symbol,
+                symbol: proposal?.token?.symbol ?? '',
               },
             )}
           </LoadingLabel>
@@ -157,18 +161,13 @@ export const VoteCard = (props: CardProps) => {
               p={3}
             >
               <Stack direction="row" alignItems="center" spacing={1}>
-                <UserAvatar address={v.voter.id as HexAddress} width={20} />
-                <ExternalLink
-                  href={`https://etherscan.io/address/${v.voter.id}`}
-                >
-                  <AddressLabel
-                    address={v.voter.id as HexAddress}
-                    maxWidth={60}
-                  />
+                <UserAvatar address={v.voter as HexAddress} width={20} />
+                <ExternalLink href={`https://etherscan.io/address/${v.voter}`}>
+                  <AddressLabel address={v.voter as HexAddress} maxWidth={60} />
                 </ExternalLink>
               </Stack>
               <LoadingLabel
-                isLoading={isProposalLoading || isPropalLoading}
+                isLoading={isProposalLoading || isProposalVotesLoading}
                 noWrap
               >
                 {intl.formatMessage(
@@ -178,14 +177,14 @@ export const VoteCard = (props: CardProps) => {
                   {
                     count: formatAmount(
                       BigInt(v.weight),
-                      token?.decimals ?? 18,
+                      proposal?.token?.decimals ?? 18,
                       undefined,
                       {
                         notation: 'compact',
                         maximumSignificantDigits: 4,
                       },
                     ),
-                    symbol: token?.symbol,
+                    symbol: proposal?.token?.symbol ?? '',
                   },
                 )}
               </LoadingLabel>

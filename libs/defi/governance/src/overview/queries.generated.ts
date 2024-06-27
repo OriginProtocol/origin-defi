@@ -5,46 +5,55 @@ import { graphqlClient } from '@origin/defi/shared';
 export type ProposalsQueryVariables = Types.Exact<{ [key: string]: never; }>;
 
 
-export type ProposalsQuery = { __typename?: 'Query', ogvProposals: Array<{ __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<string | null> }> };
+export type ProposalsQuery = { __typename?: 'Query', governanceProposals: Array<{ __typename?: 'GovernanceProposal', id: string, proposalId: string, address: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.GovernanceProposalState, choices: Array<string | null>, scores: Array<string | null>, quorum: string }> };
 
 export type ProposalQueryVariables = Types.Exact<{
   proposalId: Types.Scalars['String']['input'];
 }>;
 
 
-export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typename?: 'OGVProposal', id: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.OgvProposalState, choices: Array<string | null>, scores: Array<string | null>, quorum: string, logs: Array<{ __typename?: 'OGVProposalTxLog', id: string, hash: string, event: Types.OgvProposalEvent, timestamp: string }>, proposer: { __typename?: 'OGVAddress', id: string } } | null, ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, weight: string, type: Types.OgvVoteType, txHash: string, timestamp: string, voter: { __typename?: 'OGVAddress', id: string } }> };
+export type ProposalQuery = { __typename?: 'Query', governanceProposalById?: { __typename?: 'GovernanceProposal', id: string, proposalId: string, address: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.GovernanceProposalState, choices: Array<string | null>, scores: Array<string | null>, quorum: string, proposer: string, events: Array<{ __typename?: 'GovernanceProposalEvent', id: string, txHash: string, event: Types.GovernanceProposalEventType, timestamp: string }> } | null };
+
+export type ProposalVotesQueryVariables = Types.Exact<{
+  proposalId: Types.Scalars['String']['input'];
+}>;
+
+
+export type ProposalVotesQuery = { __typename?: 'Query', governanceProposalVotes: Array<{ __typename?: 'GovernanceProposalVote', id: string, address: string, voter: string, weight: string, type: Types.GovernanceVoteType, txHash: string, timestamp: string, proposal: { __typename?: 'GovernanceProposal', id: string, address: string, proposalId: string, description?: string | null, status: Types.GovernanceProposalState } }> };
 
 export type UserVotesQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type UserVotesQuery = { __typename?: 'Query', ogvProposalVotes: Array<{ __typename?: 'OGVProposalVote', id: string, type: Types.OgvVoteType, timestamp: string, proposal: { __typename?: 'OGVProposal', id: string, description?: string | null, status: Types.OgvProposalState } }> };
+export type UserVotesQuery = { __typename?: 'Query', governanceProposalVotes: Array<{ __typename?: 'GovernanceProposalVote', id: string, type: Types.GovernanceVoteType, timestamp: string, proposal: { __typename?: 'GovernanceProposal', id: string, address: string, proposalId: string, description?: string | null, status: Types.GovernanceProposalState } }> };
 
-export type UserInfoQueryVariables = Types.Exact<{
+export type UserVotingPowerQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type UserInfoQuery = { __typename?: 'Query', ogvAddresses: Array<{ __typename?: 'OGVAddress', id: string, balance: string, staked: string, veogvBalance: string, votingPower: string, delegatee?: { __typename?: 'OGVAddress', id: string } | null }> };
+export type UserVotingPowerQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, address: string, balance: string, stakedBalance: string, votingPower: string, delegateTo?: { __typename?: 'ESAccount', address: string } | null, delegatesFrom: Array<{ __typename?: 'ESAccount', address: string }> }> };
 
 export type UserDelegatorsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type UserDelegatorsQuery = { __typename?: 'Query', ogvAddresses: Array<{ __typename?: 'OGVAddress', id: string, votingPower: string }> };
+export type UserDelegatorsQuery = { __typename?: 'Query', esAccounts: Array<{ __typename?: 'ESAccount', id: string, address: string, votingPower: string }> };
 
 
 
 export const ProposalsDocument = `
     query Proposals {
-  ogvProposals(
-    orderBy: timestamp_DESC
+  governanceProposals(
+    orderBy: [timestamp_DESC]
     limit: 1000
-    where: {status_not_in: Canceled}
+    where: {status_not_in: [Canceled]}
   ) {
     id
+    proposalId
+    address
     description
     timestamp
     startBlock
@@ -53,6 +62,7 @@ export const ProposalsDocument = `
     status
     choices
     scores
+    quorum
   }
 }
     `;
@@ -80,8 +90,10 @@ useProposalsQuery.fetcher = (variables?: ProposalsQueryVariables, options?: Requ
 
 export const ProposalDocument = `
     query Proposal($proposalId: String!) {
-  ogvProposalById(id: $proposalId) {
+  governanceProposalById(id: $proposalId) {
     id
+    proposalId
+    address
     description
     timestamp
     startBlock
@@ -91,25 +103,13 @@ export const ProposalDocument = `
     choices
     scores
     quorum
-    logs {
+    events {
       id
-      hash
+      txHash
       event
       timestamp
     }
-    proposer {
-      id
-    }
-  }
-  ogvProposalVotes(where: {proposal: {id_containsInsensitive: $proposalId}}) {
-    id
-    voter {
-      id
-    }
-    weight
-    type
-    txHash
-    timestamp
+    proposer
   }
 }
     `;
@@ -135,17 +135,63 @@ useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', va
 
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
 
+export const ProposalVotesDocument = `
+    query ProposalVotes($proposalId: String!) {
+  governanceProposalVotes(
+    where: {proposal: {id_containsInsensitive: $proposalId}}
+  ) {
+    id
+    address
+    voter
+    weight
+    type
+    txHash
+    timestamp
+    proposal {
+      id
+      address
+      proposalId
+      description
+      status
+    }
+  }
+}
+    `;
+
+export const useProposalVotesQuery = <
+      TData = ProposalVotesQuery,
+      TError = unknown
+    >(
+      variables: ProposalVotesQueryVariables,
+      options?: Omit<UseQueryOptions<ProposalVotesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<ProposalVotesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<ProposalVotesQuery, TError, TData>(
+      {
+    queryKey: ['ProposalVotes', variables],
+    queryFn: graphqlClient<ProposalVotesQuery, ProposalVotesQueryVariables>(ProposalVotesDocument, variables),
+    ...options
+  }
+    )};
+
+useProposalVotesQuery.getKey = (variables: ProposalVotesQueryVariables) => ['ProposalVotes', variables];
+
+
+useProposalVotesQuery.fetcher = (variables: ProposalVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalVotesQuery, ProposalVotesQueryVariables>(ProposalVotesDocument, variables, options);
+
 export const UserVotesDocument = `
     query UserVotes($address: String!) {
-  ogvProposalVotes(
-    where: {voter: {id_containsInsensitive: $address}}
-    orderBy: timestamp_DESC
+  governanceProposalVotes(
+    where: {voter_containsInsensitive: $address}
+    orderBy: [timestamp_DESC]
   ) {
     id
     type
     timestamp
     proposal {
       id
+      address
+      proposalId
       description
       status
     }
@@ -174,46 +220,50 @@ useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes',
 
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
 
-export const UserInfoDocument = `
-    query UserInfo($address: String!) {
-  ogvAddresses(where: {id_containsInsensitive: $address}) {
+export const UserVotingPowerDocument = `
+    query UserVotingPower($address: String!) {
+  esAccounts(where: {account_containsInsensitive: $address}) {
     id
+    address
     balance
-    staked
-    veogvBalance
+    stakedBalance
     votingPower
-    delegatee {
-      id
+    delegateTo {
+      address
+    }
+    delegatesFrom {
+      address
     }
   }
 }
     `;
 
-export const useUserInfoQuery = <
-      TData = UserInfoQuery,
+export const useUserVotingPowerQuery = <
+      TData = UserVotingPowerQuery,
       TError = unknown
     >(
-      variables: UserInfoQueryVariables,
-      options?: Omit<UseQueryOptions<UserInfoQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserInfoQuery, TError, TData>['queryKey'] }
+      variables: UserVotingPowerQueryVariables,
+      options?: Omit<UseQueryOptions<UserVotingPowerQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserVotingPowerQuery, TError, TData>['queryKey'] }
     ) => {
     
-    return useQuery<UserInfoQuery, TError, TData>(
+    return useQuery<UserVotingPowerQuery, TError, TData>(
       {
-    queryKey: ['UserInfo', variables],
-    queryFn: graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables),
+    queryKey: ['UserVotingPower', variables],
+    queryFn: graphqlClient<UserVotingPowerQuery, UserVotingPowerQueryVariables>(UserVotingPowerDocument, variables),
     ...options
   }
     )};
 
-useUserInfoQuery.getKey = (variables: UserInfoQueryVariables) => ['UserInfo', variables];
+useUserVotingPowerQuery.getKey = (variables: UserVotingPowerQueryVariables) => ['UserVotingPower', variables];
 
 
-useUserInfoQuery.fetcher = (variables: UserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables, options);
+useUserVotingPowerQuery.fetcher = (variables: UserVotingPowerQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotingPowerQuery, UserVotingPowerQueryVariables>(UserVotingPowerDocument, variables, options);
 
 export const UserDelegatorsDocument = `
     query UserDelegators($address: String!) {
-  ogvAddresses(where: {delegatee: {id_containsInsensitive: $address}}) {
+  esAccounts(where: {delegatesFrom_some: {account_containsInsensitive: $address}}) {
     id
+    address
     votingPower
   }
 }

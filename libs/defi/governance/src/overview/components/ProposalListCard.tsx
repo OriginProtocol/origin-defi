@@ -24,13 +24,13 @@ import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
-import { governanceTokens } from '../constants';
 import { useProposals } from '../hooks';
 import { ProposalTypeBadge } from './ProposalTypeBadge';
 import { StatusBadge } from './StatusBadge';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Option } from '@origin/shared/components';
+import type { Token } from '@origin/shared/contracts';
 
 import type { Proposal, ProposalType } from '../types';
 
@@ -250,6 +250,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         </Grid2>
         <Grid2 xs={12} sm={4}>
           <VotesGauge
+            token={proposal?.token}
             choices={proposal?.choices ?? []}
             scores={proposal?.scores ?? []}
             type={proposal?.type}
@@ -261,12 +262,19 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
 }
 
 type VotesGaugeProps = {
+  token?: Token;
   choices: string[];
   scores: number[];
   type: ProposalType;
 } & StackProps;
 
-function VotesGauge({ choices, scores, type, ...rest }: VotesGaugeProps) {
+function VotesGauge({
+  choices,
+  scores,
+  type,
+  token,
+  ...rest
+}: VotesGaugeProps) {
   const intl = useIntl();
   const { formatAmount } = useFormat();
 
@@ -290,11 +298,11 @@ function VotesGauge({ choices, scores, type, ...rest }: VotesGaugeProps) {
               {`${c[0]}:`}
             </TooltipLabel>
             <Typography>
-              {formatAmount(c[1], governanceTokens[type].decimals, undefined, {
+              {formatAmount(c[1], token?.decimals ?? 18, undefined, {
                 notation: 'compact',
                 maximumSignificantDigits: 4,
               })}
-              &nbsp;{governanceTokens[type].symbol}
+              &nbsp;{token?.symbol ?? ''}
             </Typography>
           </Stack>
           <LinearProgress

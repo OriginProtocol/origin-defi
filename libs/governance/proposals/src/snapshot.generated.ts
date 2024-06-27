@@ -498,10 +498,13 @@ export type Statement = {
   about?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
   delegate?: Maybe<Scalars['String']['output']>;
+  discourse?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   ipfs: Scalars['String']['output'];
+  network?: Maybe<Scalars['String']['output']>;
   space: Scalars['String']['output'];
   statement?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
   updated: Scalars['Int']['output'];
 };
 
@@ -579,9 +582,11 @@ export type User = {
   avatar?: Maybe<Scalars['String']['output']>;
   cover?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
+  farcaster?: Maybe<Scalars['String']['output']>;
   github?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   ipfs?: Maybe<Scalars['String']['output']>;
+  lens?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
   twitter?: Maybe<Scalars['String']['output']>;
 };

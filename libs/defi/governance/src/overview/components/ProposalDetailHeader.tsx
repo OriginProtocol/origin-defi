@@ -12,8 +12,6 @@ import { useIntl } from 'react-intl';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { useProposal } from '../hooks';
-import { useProposalQuery } from '../queries.generated';
-import { parseProposalContent } from '../utils';
 import { ProposalTypeBadge } from './ProposalTypeBadge';
 import { StatusBadge } from './StatusBadge';
 
@@ -24,11 +22,8 @@ export const ProposalDetailHeader = (props: StackProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { proposalId } = useParams();
-  const { data: propal } = useProposal(proposalId);
-  const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
-    {
-      proposalId: proposalId ?? '',
-    },
+  const { data: proposal, isLoading: isProposalLoading } = useProposal(
+    proposalId,
     { enabled: !!proposalId },
   );
 
@@ -40,13 +35,8 @@ export const ProposalDetailHeader = (props: StackProps) => {
     }
   };
 
-  const lastLog = last(
-    sort(ascend(prop('timestamp')), proposal?.ogvProposalById?.logs ?? []),
-  );
-  const proposer = proposal?.ogvProposalById?.proposer?.id as HexAddress;
-  const { title } = parseProposalContent(
-    proposal?.ogvProposalById?.description,
-  );
+  const lastLog = last(sort(ascend(prop('timestamp')), proposal?.events ?? []));
+  const proposer = proposal?.proposer as HexAddress;
 
   return (
     <Stack alignItems="flex-start" py={6} useFlexGap {...props}>
@@ -66,11 +56,8 @@ export const ProposalDetailHeader = (props: StackProps) => {
       </Button>
       <Stack direction="row" spacing={1} alignItems="center" mb={3.5}>
         <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 28 }} />
-        <ProposalTypeBadge type={propal?.type} />
-        <StatusBadge
-          status={proposal?.ogvProposalById?.status}
-          isLoading={isProposalLoading}
-        />
+        <ProposalTypeBadge type={proposal?.type} />
+        <StatusBadge status={proposal?.status} isLoading={isProposalLoading} />
       </Stack>
       <LoadingLabel
         variant="featured1"
@@ -86,7 +73,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
           mb: 6,
         }}
       >
-        {title}
+        {proposal?.title}
       </LoadingLabel>
       <Stack direction="row" alignItems="center" spacing={1}>
         <Typography color="text.secondary">

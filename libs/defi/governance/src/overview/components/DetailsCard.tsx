@@ -31,31 +31,25 @@ import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 import { useReadContract } from 'wagmi';
 
-import { governanceTokens } from '../constants';
 import { useProposal } from '../hooks';
-import { useProposalQuery } from '../queries.generated';
-import { parseProposalContent } from '../utils';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+
+import type { Proposal } from '../types';
 
 export const DetailsCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { proposalId } = useParams();
-  const { data: propal, isLoading: isPropalLoading } = useProposal(proposalId);
-  const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
-    { proposalId: proposalId ?? '' },
-    { enabled: !!proposalId, select: (data) => data?.ogvProposalById },
+  const { data: proposal, isLoading: isProposalLoading } = useProposal(
+    proposalId,
+    { enabled: !!proposalId },
   );
 
-  const token = governanceTokens[propal?.type ?? 'onchain_ogv'];
-  const { description } = parseProposalContent(proposal?.description);
-  const createdOn = proposal?.timestamp
-    ? new Date(proposal.timestamp)
-    : new Date();
-  const lastUpdated = proposal?.lastUpdated
-    ? new Date(proposal.lastUpdated)
+  const createdOn = proposal?.created ? new Date(proposal.created) : new Date();
+  const lastUpdated = proposal?.updated
+    ? new Date(proposal.updated)
     : new Date();
 
   return (
@@ -69,9 +63,8 @@ export const DetailsCard = (props: CardProps) => {
           >
             <CardContent>
               <LoadingLabel isLoading={isProposalLoading} sWidth={200}>
-                {isNilOrEmpty(description)
-                  ? intl.formatMessage({ defaultMessage: 'No description' })
-                  : description}
+                {proposal?.description ??
+                  intl.formatMessage({ defaultMessage: 'No description' })}
               </LoadingLabel>
             </CardContent>
           </SectionCard>
@@ -125,15 +118,15 @@ export const DetailsCard = (props: CardProps) => {
                     },
                     {
                       balance: formatAmount(
-                        BigInt(proposal?.quorum ?? 0),
-                        token?.decimals ?? 18,
+                        proposal?.quorum ?? 0n,
+                        proposal?.token?.decimals ?? 18,
                         undefined,
                         { notation: 'compact', maximumSignificantDigits: 5 },
                       ),
-                      symbol: token.symbol,
+                      symbol: proposal?.token.symbol ?? '',
                     },
                   )}
-                  isLoading={isPropalLoading}
+                  isLoading={isProposalLoading}
                 />
               </Stack>
             </CardContent>
@@ -141,7 +134,7 @@ export const DetailsCard = (props: CardProps) => {
           <SectionCard
             title={intl.formatMessage({ defaultMessage: 'Actions' })}
           >
-            <Actions />
+            <Actions proposal={proposal} />
           </SectionCard>
         </Stack>
       </CardContent>
@@ -163,18 +156,19 @@ const vl: Partial<ValueLabelProps> = {
   },
 };
 
-function Actions(props: StackProps) {
+type ActionsProps = { proposal?: Proposal } & StackProps;
+
+function Actions({ proposal, ...rest }: ActionsProps) {
   const intl = useIntl();
-  const { proposalId } = useParams();
   const [expanded, setExpanded] = useState<string[]>([]);
-  const { data: actions, isLoading: isActionsLoading } = useReadContract({
+  const { data: ogvActions, isLoading: isOgvActionsLoading } = useReadContract({
     address: contracts.mainnet.OUSDGovernance.address,
     abi: contracts.mainnet.OUSDGovernance.abi,
     functionName: 'getActions',
-    args: [BigInt(proposalId ?? '')],
+    args: [proposal?.proposalId ?? 0n],
     chainId: contracts.mainnet.OUSDGovernance.chainId,
     query: {
-      enabled: !!proposalId,
+      enabled: !!proposal && proposal?.type === 'onchain_ogv',
       select: (data) =>
         data?.[0]?.map((_, i) => {
           const res = /^([a-zA-Z0-9]+)\((.*)\)$/.exec(data[2][i]);
@@ -188,6 +182,28 @@ function Actions(props: StackProps) {
         }),
     },
   });
+  const { data: xOgnActions, isLoading: isxOgnActionsLoading } =
+    useReadContract({
+      address: contracts.mainnet.xOGNGovernance.address,
+      abi: contracts.mainnet.xOGNGovernance.abi,
+      functionName: 'getActions',
+      args: [proposal?.proposalId ?? 0n],
+      chainId: contracts.mainnet.xOGNGovernance.chainId,
+      query: {
+        enabled: !!proposal && proposal?.type === 'onchain',
+        select: (data) =>
+          data?.[0]?.map((_, i) => {
+            const res = /^([a-zA-Z0-9]+)\((.*)\)$/.exec(data[2][i]);
+
+            return {
+              address: data[0][i],
+              functionName: res?.[1],
+              argumentType: res?.[2],
+              args: data[3][i],
+            };
+          }),
+      },
+    });
 
   const handleToggleActionRow = (actionKey: string) => () => {
     const idx = expanded.findIndex((a) => a === actionKey);
@@ -198,8 +214,11 @@ function Actions(props: StackProps) {
     }
   };
 
+  const isActionsLoading = isOgvActionsLoading || isxOgnActionsLoading;
+  const actions = xOgnActions ?? ogvActions ?? [];
+
   return (
-    <Stack {...props} divider={<Divider />}>
+    <Stack {...rest} divider={<Divider />}>
       {isActionsLoading ? (
         <Box
           display="flex"
@@ -232,7 +251,7 @@ function Actions(props: StackProps) {
                 p: 0,
                 background: 'transparent',
                 border: 'none',
-                ...props?.sx,
+                ...rest?.sx,
               }}
               disableGutters
             >

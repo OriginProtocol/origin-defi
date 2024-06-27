@@ -29,7 +29,7 @@ import { useIntl } from 'react-intl';
 import { isAddressEqual } from 'viem';
 import { useAccount } from 'wagmi';
 
-import { useUserInfoQuery } from '../queries.generated';
+import { useUserVotingPowerQuery } from '../queries.generated';
 
 import type { ButtonProps, DialogProps } from '@mui/material';
 import type { HexAddress } from '@origin/shared/utils';
@@ -63,7 +63,7 @@ export const DelegateModal = (props: DialogProps) => {
         });
         queryClient.invalidateQueries({
           queryKey: [
-            useUserInfoQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+            useUserVotingPowerQuery.getKey({ address: address ?? '' }),
           ],
         });
       },

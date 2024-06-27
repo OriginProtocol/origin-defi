@@ -389,6 +389,9 @@
   "E1arCe": {
     "defaultMessage": "9m"
   },
+  "E1hVjL": {
+    "defaultMessage": "Legacy On-chain proposal"
+  },
   "E2sGaF": {
     "defaultMessage": "Exit"
   },
@@ -415,6 +418,9 @@
   },
   "F6lS59": {
     "defaultMessage": "0 months"
+  },
+  "FVYhKc": {
+    "defaultMessage": "Balances"
   },
   "Fbsq1t": {
     "defaultMessage": "Rebasing enabled"
@@ -695,6 +701,9 @@
   "SM1qll": {
     "defaultMessage": "Router"
   },
+  "Sjo1P4": {
+    "defaultMessage": "Custom"
+  },
   "SzA4oV": {
     "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
@@ -892,6 +901,9 @@
   },
   "djJp6c": {
     "defaultMessage": "History"
+  },
+  "djhXiy": {
+    "defaultMessage": "{slippage} slippage"
   },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"

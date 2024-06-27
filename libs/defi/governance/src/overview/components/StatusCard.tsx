@@ -14,30 +14,30 @@ import { ascend, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useParams } from 'react-router-dom';
 
-import { useProposalQuery } from '../queries.generated';
+import { useProposal } from '../hooks';
 
 import type { CardProps, StackProps } from '@mui/material';
 
-import type { ProposalLog } from '../types';
+import type { ProposalEvent } from '../types';
 
 export const StatusCard = (props: CardProps) => {
   const intl = useIntl();
   const { proposalId } = useParams();
-  const { data: logs, isLoading: isLogsLoading } = useProposalQuery(
-    { proposalId: proposalId ?? '' },
+  const { data: proposal, isLoading: isProposalLoading } = useProposal(
+    proposalId,
     {
       enabled: !!proposalId,
-      select: (data) =>
-        sort(ascend(prop('timestamp')), data?.ogvProposalById?.logs ?? []),
     },
   );
+
+  const events = sort(ascend(prop('timestamp')), proposal?.events ?? []);
 
   return (
     <Card {...props}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Status' })} />
       <Divider />
       <CardContent>
-        {isLogsLoading ? (
+        {isProposalLoading ? (
           <Stack
             sx={{
               display: 'flex',
@@ -49,7 +49,7 @@ export const StatusCard = (props: CardProps) => {
           >
             <CircularProgress size={20} />
           </Stack>
-        ) : isNilOrEmpty(logs) ? (
+        ) : isNilOrEmpty(events) ? (
           <Stack
             sx={{
               display: 'flex',
@@ -65,8 +65,8 @@ export const StatusCard = (props: CardProps) => {
           </Stack>
         ) : (
           <Stack position="relative" spacing={3}>
-            {logs?.map((log) => <LogItem key={log.id} log={log} />)}
-            {(logs?.length ?? 0) > 1 && (
+            {events?.map((event) => <EventItem key={event.id} event={event} />)}
+            {(events?.length ?? 0) > 1 && (
               <Box
                 sx={{
                   position: 'absolute',
@@ -86,9 +86,9 @@ export const StatusCard = (props: CardProps) => {
   );
 };
 
-type LogItemProps = { log: ProposalLog } & StackProps;
+type EventItemProps = { event: ProposalEvent } & StackProps;
 
-function LogItem({ log, ...rest }: LogItemProps) {
+function EventItem({ event, ...rest }: EventItemProps) {
   const intl = useIntl();
 
   return (
@@ -105,15 +105,15 @@ function LogItem({ log, ...rest }: LogItemProps) {
         }}
       />
       <Stack>
-        {isNilOrEmpty(log?.hash) ? (
-          <Typography>{log?.event}</Typography>
+        {isNilOrEmpty(event?.txHash) ? (
+          <Typography>{event?.event}</Typography>
         ) : (
-          <ExternalLink href={`https://etherscan.io/tx/${log.hash}`}>
-            {log?.event}
+          <ExternalLink href={`https://etherscan.io/tx/${event.txHash}`}>
+            {event?.event}
           </ExternalLink>
         )}
         <Typography variant="caption1" color="text.secondary">
-          {intl.formatDate(new Date(log.timestamp), {
+          {intl.formatDate(new Date(event.timestamp), {
             day: '2-digit',
             month: 'short',
             year: 'numeric',
