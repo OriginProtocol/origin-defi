@@ -140,12 +140,6 @@ function VoteCard({
       proposalId: proposal?.id as string,
     },
     callbacks: {
-      onWrite: () => {
-        console.log('click');
-      },
-      onSimulateError: (err) => {
-        console.log(err);
-      },
       onWriteSuccess: () => {
         queryClient.invalidateQueries();
       },
