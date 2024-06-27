@@ -1,16 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { snapshot } from '@origin/defi/shared';
-import { tokens } from '@origin/shared/contracts';
+import { contracts } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fromUnixTime, isAfter } from 'date-fns';
-import { descend, prop, sort, zipObj } from 'ramda';
-import { formatUnits } from 'viem';
+import { descend, prop, sort } from 'ramda';
 import { useAccount } from 'wagmi';
 
 import { spaceIds } from './constants';
-import { useProposalsQuery, useUserVotesQuery } from './queries.generated';
-import { parseProposalContent } from './utils';
+import {
+  useProposalQuery,
+  useProposalsQuery,
+  useUserVotesQuery,
+} from './queries.generated';
+import {
+  mapOffChainProposal,
+  mapOnchainProposal,
+  parseProposalContent,
+} from './utils';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 
@@ -41,37 +48,7 @@ export const useProposals = (
 
       const onChainProposals: Proposal[] =
         res[0].status === 'fulfilled'
-          ? res[0]?.value?.ogvProposals?.map((p) => {
-              const { title, description } = parseProposalContent(
-                p?.description,
-              );
-              const votes = {
-                For: 0,
-                Against: 0,
-                ...zipObj(
-                  p?.choices?.map((c) => c ?? 'key'),
-                  p.scores,
-                ),
-              };
-
-              return {
-                id: p.id,
-                type: 'onchain_ogv' as ProposalType,
-                title,
-                description,
-                created: p.timestamp,
-                start: fromUnixTime(Number(p.startBlock)).toISOString(),
-                end: fromUnixTime(Number(p.endBlock)).toISOString(),
-                updated: p.lastUpdated,
-                status: p.status,
-                choices: Object.keys(votes) as GovernanceChoice[],
-                scores: Object.values(votes).map(
-                  (v) => +formatUnits(BigInt(v), tokens.mainnet.OGV.decimals),
-                ),
-                quorum: 348e9,
-                link: '',
-              };
-            }) ?? []
+          ? res[0]?.value?.governanceProposals?.map(mapOnchainProposal) ?? []
           : [];
 
       const offChainProposals = [];
@@ -82,27 +59,15 @@ export const useProposals = (
               ? ('snapshot' as ProposalType)
               : ('snapshot_ogv' as ProposalType);
           if (
-            type === 'snapshot_ogv' &&
-            p?.created &&
-            isAfter(new Date('2024-05-01'), fromUnixTime(p?.created))
+            !p ||
+            (type === 'snapshot_ogv' &&
+              p?.created &&
+              isAfter(new Date('2024-05-01'), fromUnixTime(p?.created)))
           ) {
             continue;
           }
 
-          offChainProposals.push({
-            id: p?.id ?? `id-${type}-${p?.title}`,
-            type,
-            title: p?.title ?? '',
-            created: p?.created ? fromUnixTime(p.created).toISOString() : '',
-            start: p?.start ? fromUnixTime(p.start).toISOString() : '',
-            end: p?.end ? fromUnixTime(p.end).toISOString() : '',
-            updated: p?.updated ? fromUnixTime(p.updated).toISOString() : '',
-            status: p?.state ?? '',
-            choices: p?.choices as any,
-            scores: p?.scores as any,
-            quorum: p?.quorum,
-            link: p?.link as any,
-          });
+          offChainProposals.push(mapOffChainProposal(p));
         }
       }
 
@@ -144,30 +109,40 @@ export const useUserVotes = () => {
 
       const onChainVotes =
         res[0].status === 'fulfilled'
-          ? (res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
-              const { title } = parseProposalContent(v?.proposal?.description);
+          ? (res[0].value as UserVotesQuery)?.governanceProposalVotes?.map(
+              (v) => {
+                const type: ProposalType =
+                  v?.proposal?.address?.toLowerCase() ===
+                  contracts.mainnet.xOGNGovernance.address.toLowerCase()
+                    ? 'onchain'
+                    : 'onchain_ogv';
+                const { title } = parseProposalContent(
+                  v?.proposal?.description,
+                );
 
-              return {
-                id: v.id,
-                choice: v.type,
-                created: v.timestamp,
-                proposal: {
-                  id: v.proposal.id,
-                  type: 'onchain' as ProposalType,
-                  title,
-                  status: v.proposal.status,
-                },
-              };
-            }) ?? []
+                return {
+                  id: v.id,
+                  choice: v.type as GovernanceChoice,
+                  created: v.timestamp,
+                  proposal: {
+                    id: v.proposal.id,
+                    proposalId: v.proposal.proposalId,
+                    type,
+                    title,
+                    status: v.proposal.status as string,
+                  },
+                };
+              },
+            ) ?? []
           : [];
 
       const offChainVotes = [];
       if (isFulfilled(res[1]) && res?.[1]?.value?.votes) {
         for (const v of res[1].value.votes) {
-          const type =
+          const type: ProposalType =
             v?.proposal?.space?.id === spaceIds.snapshot
-              ? ('snapshot' as ProposalType)
-              : ('snapshot_ogv' as ProposalType);
+              ? 'snapshot'
+              : 'snapshot_ogv';
           if (
             type === 'snapshot_ogv' &&
             v?.proposal?.created &&
@@ -202,8 +177,34 @@ export const useUserVotes = () => {
   });
 };
 
-export const useProposal = (proposalId?: string) => {
-  const res = useProposals();
+export const useProposal = (
+  proposalId?: string,
+  options?: Omit<
+    UseQueryOptions<
+      Proposal | null,
+      Error,
+      Proposal,
+      ['useProposal', string | undefined]
+    >,
+    'queryKey'
+  >,
+) => {
+  const queryClient = useQueryClient();
 
-  return { ...res, data: res?.data?.find((p) => p.id === proposalId) };
+  return useQuery({
+    ...options,
+    queryKey: ['useProposal', proposalId],
+    queryFn: async () => {
+      if (!proposalId) {
+        return null;
+      }
+
+      const proposal = await queryClient.fetchQuery({
+        queryKey: useProposalQuery.getKey({ proposalId }),
+        queryFn: useProposalQuery.fetcher({ proposalId }),
+      });
+
+      return mapOnchainProposal(proposal?.governanceProposalById);
+    },
+  });
 };

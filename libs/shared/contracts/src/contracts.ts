@@ -232,7 +232,7 @@ export const contracts = {
     },
     // xOGN
     xOGNGovernance: {
-      address: '0x16890bdd817Ed1c4654430d67329CB20b0B71bB0', // TODO tenderly address
+      address: '0x1D3Fbd4d129Ddd2372EA85c5Fa00b2682081c9EC',
       chainId: mainnet.id,
       abi: xOGNGovernanceABI,
       name: 'xOGNGovernance',
