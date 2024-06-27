@@ -69,10 +69,6 @@ export const mapOnchainProposal = (
     quorum: +formatUnits(BigInt(input?.quorum ?? 348e9), token.decimals),
     events: (input as ProposalQuery['governanceProposalById'])?.events,
     proposer: (input as ProposalQuery['governanceProposalById'])?.proposer,
-    targets: (input as ProposalQuery['governanceProposalById'])?.targets,
-    values: (input as ProposalQuery['governanceProposalById'])?.values,
-    signatures: (input as ProposalQuery['governanceProposalById'])?.signatures,
-    calldatas: (input as ProposalQuery['governanceProposalById'])?.calldatas,
   };
 };
 

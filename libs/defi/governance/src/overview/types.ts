@@ -31,10 +31,6 @@ export type Proposal = {
   link?: string;
   events?: ProposalEvent[];
   proposer?: string;
-  targets?: (string | null)[];
-  values?: (string | null)[];
-  signatures?: (string | null)[];
-  calldatas?: (string | null)[];
 };
 
 export type Vote = {

@@ -40,10 +40,6 @@ query Proposal($proposalId: String!) {
       timestamp
     }
     proposer
-    targets
-    values
-    signatures
-    calldatas
   }
 }
 

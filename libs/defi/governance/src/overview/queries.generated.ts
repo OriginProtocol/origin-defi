@@ -12,7 +12,7 @@ export type ProposalQueryVariables = Types.Exact<{
 }>;
 
 
-export type ProposalQuery = { __typename?: 'Query', governanceProposalById?: { __typename?: 'GovernanceProposal', id: string, proposalId: string, address: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.GovernanceProposalState, choices: Array<string | null>, scores: Array<string | null>, quorum: string, proposer: string, targets: Array<string | null>, values: Array<string | null>, signatures: Array<string | null>, calldatas: Array<string | null>, events: Array<{ __typename?: 'GovernanceProposalEvent', id: string, txHash: string, event: Types.GovernanceProposalEventType, timestamp: string }> } | null };
+export type ProposalQuery = { __typename?: 'Query', governanceProposalById?: { __typename?: 'GovernanceProposal', id: string, proposalId: string, address: string, description?: string | null, timestamp: string, startBlock: string, endBlock: string, lastUpdated: string, status: Types.GovernanceProposalState, choices: Array<string | null>, scores: Array<string | null>, quorum: string, proposer: string, events: Array<{ __typename?: 'GovernanceProposalEvent', id: string, txHash: string, event: Types.GovernanceProposalEventType, timestamp: string }> } | null };
 
 export type ProposalVotesQueryVariables = Types.Exact<{
   proposalId: Types.Scalars['String']['input'];
@@ -110,10 +110,6 @@ export const ProposalDocument = `
       timestamp
     }
     proposer
-    targets
-    values
-    signatures
-    calldatas
   }
 }
     `;
