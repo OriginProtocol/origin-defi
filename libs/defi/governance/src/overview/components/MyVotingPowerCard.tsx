@@ -38,13 +38,12 @@ export const MyVotingPowerCard = (props: CardProps) => {
     },
   );
 
-  const votingPowerPercent =
-    toNumber(
-      div(
-        [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
-        [BigInt(ognInfo?.xOgnTotalSupply ?? 1), tokens.mainnet.xOGN.decimals],
-      ),
-    ) / 100;
+  const votingPowerPercent = toNumber(
+    div(
+      [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
+      [BigInt(ognInfo?.xOgnTotalSupply ?? 1), tokens.mainnet.xOGN.decimals],
+    ),
+  );
 
   return (
     <Card {...props}>
