@@ -17,19 +17,28 @@ export const YNBanner = (props: StackProps) => {
       sx={{
         backgroundColor: 'common.black',
         height: { xs: 300, md: 110 },
-        pr: 6,
+        pl: { xs: 2, md: 0 },
+        pr: { xs: 2, md: 6 },
         ...props?.sx,
       }}
     >
-      <BannerIcon width={300} />
-      <Stack width={1}>
-        <Typography variant="h4" color="common.white">
+      <BannerIcon width={{ xs: 1, md: 300 }} />
+      <Stack width={1} pt={{ xs: 16, md: 0 }}>
+        <Typography
+          variant="h4"
+          color="common.white"
+          textAlign={{ xs: 'center', md: 'start' }}
+        >
           {intl.formatMessage({
             defaultMessage:
               'Mint primeETH with OETH and start earning a piece of YieldNest',
           })}
         </Typography>
-        <Typography variant="subtitle1" color="text.secondary">
+        <Typography
+          variant="subtitle1"
+          color="text.secondary"
+          textAlign={{ xs: 'center', md: 'start' }}
+        >
           {intl.formatMessage({
             defaultMessage:
               'Become eligible for the YieldNest Seeds campaign and upcoming airdrop.',
@@ -43,6 +52,7 @@ export const YNBanner = (props: StackProps) => {
           color: 'common.white',
           minWidth: 200,
           minHeight: 44,
+          mt: { xs: 3, md: 0 },
         }}
       >
         {intl.formatMessage({ defaultMessage: 'Learn more' })}
@@ -53,28 +63,28 @@ export const YNBanner = (props: StackProps) => {
 
 const BannerIcon = (props: BoxProps) => {
   return (
-    <Box {...props}>
-      <Box position="relative">
-        <YieldNest
-          sx={{
-            position: 'absolute',
-            fontSize: 180,
-            color: 'rgba(255, 255, 255, 0.2)',
-            top: -90,
-            left: 20,
-          }}
-        />
-        <MultiTokenIcon
-          tokens={[tokens.mainnet.primeETH, tokens.mainnet.OETH]}
-          size={4}
-          zOrder="last"
-          sx={{
-            position: 'absolute',
-            top: -32,
-            left: 60,
-          }}
-        />
-      </Box>
+    <Box position="relative" {...props}>
+      <YieldNest
+        sx={{
+          position: 'absolute',
+          fontSize: 180,
+          color: 'rgba(255, 255, 255, 0.2)',
+          top: { xs: -35, md: -90 },
+          left: { xs: '50%', md: 20 },
+          transform: { xs: 'translateX(-50%)', md: 'none' },
+        }}
+      />
+      <MultiTokenIcon
+        tokens={[tokens.mainnet.primeETH, tokens.mainnet.OETH]}
+        size={4}
+        zOrder="last"
+        sx={{
+          position: 'absolute',
+          top: { xs: 20, md: -32 },
+          left: { xs: '50%', md: 60 },
+          transform: { xs: 'translate(-50%)', md: 'none' },
+        }}
+      />
     </Box>
   );
 };
