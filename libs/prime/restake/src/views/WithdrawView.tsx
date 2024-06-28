@@ -14,13 +14,14 @@ import { ExternalLink, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { WarningExclamation } from '@origin/shared/icons';
 import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
-import { format, mul } from 'dnum';
+import { format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../components/TokenInput';
+import { useOethWithdrawAmount } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -31,8 +32,7 @@ type Step = 'disclaimer' | 'form' | 'stepper';
 export const WithdrawView = () => {
   const [step, setStep] = useState<Step>('disclaimer');
   const [amount, setAmount] = useState(0n);
-
-  const converted = mul([amount, tokens.mainnet.primeETH.decimals], 1.1);
+  const converted = useOethWithdrawAmount(amount);
 
   if (step === 'disclaimer') {
     return (
@@ -171,6 +171,12 @@ const Form = ({
     setAmount(val);
   };
 
+  const buttonDisabled = amount === 0n || amount > (bal ?? 0n);
+  const buttonLabel =
+    amount > (bal ?? 0n)
+      ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+      : intl.formatMessage({ defaultMessage: 'Withdraw' });
+
   return (
     <Stack {...rest}>
       <Stack p={3}>
@@ -213,7 +219,6 @@ const Form = ({
         <Typography mb={2} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Receive' })}
         </Typography>
-
         <Typography>
           {intl.formatMessage(
             {
@@ -257,22 +262,24 @@ const Form = ({
       <Stack p={3} sx={{ backgroundColor: '#fff' }}>
         <ConnectedButton
           onClick={onContinueClick}
-          disabled={amount === 0n}
+          disabled={buttonDisabled}
           sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
         >
-          {intl.formatMessage({ defaultMessage: 'Withdraw' })}
+          {buttonLabel}
         </ConnectedButton>
       </Stack>
     </Stack>
   );
 };
 
-type StepperProps = { converted: Dnum } & StackProps;
+type StepperProps = {
+  converted: Dnum;
+} & StackProps;
 
 const Stepper = ({ converted, ...rest }: StepperProps) => {
   const intl = useIntl();
   const [checked, setChecked] = useState(false);
-  const [progress, setProgress] = useState(0);
+  const [progress] = useState(0);
 
   const steps = [
     intl.formatMessage({ defaultMessage: 'Initiate Withdrawal' }),

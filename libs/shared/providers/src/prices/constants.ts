@@ -267,6 +267,11 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     type: 'derived',
     dependsOn: ['primeETH_ETH', 'ETH_USD'],
   },
+  primeETH_OETH: {
+    id: 'primeETH_OETH',
+    type: 'derived',
+    dependsOn: ['primeETH_ETH', 'ETH_OETH'],
+  },
   mETH_ETH: {
     id: 'mETH_ETH',
     type: 'wagmi',
@@ -333,5 +338,10 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: 'OETH_ETH',
     type: 'rest',
     config: async () => 1 - OETH_REDEEM_FEE,
+  },
+  ETH_OETH: {
+    id: 'ETH_OETH',
+    type: 'rest',
+    config: async () => 1 / 1 - OETH_REDEEM_FEE,
   },
 };

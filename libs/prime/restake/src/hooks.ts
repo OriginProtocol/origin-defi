@@ -1,5 +1,7 @@
-import { useRoutingSwapState } from '@origin/shared/providers';
+import { tokens } from '@origin/shared/contracts';
+import { useRoutingSwapState, useTokenPrice } from '@origin/shared/providers';
 import { useQuery } from '@tanstack/react-query';
+import { from, mul } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
@@ -30,4 +32,12 @@ export const useExchangeRate = () => {
       return estimate > 0 ? 1 / estimate : 0;
     },
   });
+};
+
+export const useOethWithdrawAmount = (amountIn: bigint) => {
+  const { data: price, isLoading } = useTokenPrice('primeETH_OETH');
+
+  return isLoading || amountIn === 0n || !price
+    ? from(0, tokens.mainnet.primeETH.decimals)
+    : mul([amountIn, tokens.mainnet.primeETH.decimals], price);
 };
