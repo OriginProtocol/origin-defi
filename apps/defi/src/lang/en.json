@@ -965,6 +965,12 @@
       "value": "9m"
     }
   ],
+  "E1hVjL": [
+    {
+      "type": 0,
+      "value": "Legacy On-chain proposal"
+    }
+  ],
   "E2sGaF": [
     {
       "type": 0,
@@ -1041,6 +1047,12 @@
     {
       "type": 0,
       "value": "0 months"
+    }
+  ],
+  "FVYhKc": [
+    {
+      "type": 0,
+      "value": "Balances"
     }
   ],
   "Fbsq1t": [
@@ -1755,6 +1767,12 @@
       "value": "Router"
     }
   ],
+  "Sjo1P4": [
+    {
+      "type": 0,
+      "value": "Custom"
+    }
+  ],
   "SzA4oV": [
     {
       "offset": 0,
@@ -2283,6 +2301,16 @@
     {
       "type": 0,
       "value": "History"
+    }
+  ],
+  "djhXiy": [
+    {
+      "type": 1,
+      "value": "slippage"
+    },
+    {
+      "type": 0,
+      "value": " slippage"
     }
   ],
   "dtJo4Y": [

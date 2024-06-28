@@ -2,12 +2,10 @@ import { Button, Stack, Typography } from '@mui/material';
 import { InfoTooltipLabel, PercentInput } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { DEFAULT_SLIPPAGE, WARNING_THRESHOLD } from '../constants';
 import { useSlippage } from '../hooks';
 
 import type { ButtonProps, StackProps } from '@mui/material';
-
-const DEFAULT_SLIPPAGE = 0.001;
-const WARNING_THRESHOLD = 0.05;
 
 export type SlippageFormControlProps = {
   onChange?: (val: number) => void;

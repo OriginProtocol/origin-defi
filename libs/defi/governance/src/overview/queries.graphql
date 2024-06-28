@@ -1,24 +1,12 @@
 query Proposals {
-  ogvProposals(
-    orderBy: timestamp_DESC
+  governanceProposals(
+    orderBy: [timestamp_DESC]
     limit: 1000
-    where: { status_not_in: Canceled }
+    where: { status_not_in: [Canceled] }
   ) {
     id
-    description
-    timestamp
-    startBlock
-    endBlock
-    lastUpdated
-    status
-    choices
-    scores
-  }
-}
-
-query Proposal($proposalId: String!) {
-  ogvProposalById(id: $proposalId) {
-    id
+    proposalId
+    address
     description
     timestamp
     startBlock
@@ -28,62 +16,94 @@ query Proposal($proposalId: String!) {
     choices
     scores
     quorum
-    logs {
+  }
+}
+
+query Proposal($proposalId: String!) {
+  governanceProposalById(id: $proposalId) {
+    id
+    proposalId
+    address
+    description
+    timestamp
+    startBlock
+    endBlock
+    lastUpdated
+    status
+    choices
+    scores
+    quorum
+    events {
       id
-      hash
+      txHash
       event
       timestamp
     }
-    proposer {
-      id
-    }
+    proposer
   }
-  ogvProposalVotes(
+}
+
+query ProposalVotes($proposalId: String!) {
+  governanceProposalVotes(
     where: { proposal: { id_containsInsensitive: $proposalId } }
   ) {
     id
-    voter {
-      id
-    }
+    address
+    voter
     weight
     type
     txHash
     timestamp
-  }
-}
-
-query UserVotes($address: String!) {
-  ogvProposalVotes(
-    where: { voter: { id_containsInsensitive: $address } }
-    orderBy: timestamp_DESC
-  ) {
-    id
-    type
-    timestamp
     proposal {
       id
+      address
+      proposalId
       description
       status
     }
   }
 }
 
-query UserInfo($address: String!) {
-  ogvAddresses(where: { id_containsInsensitive: $address }) {
+query UserVotes($address: String!) {
+  governanceProposalVotes(
+    where: { voter_containsInsensitive: $address }
+    orderBy: [timestamp_DESC]
+  ) {
     id
-    balance
-    staked
-    veogvBalance
-    votingPower
-    delegatee {
+    type
+    timestamp
+    proposal {
       id
+      address
+      proposalId
+      description
+      status
+    }
+  }
+}
+
+query UserVotingPower($address: String!) {
+  esAccounts(where: { account_containsInsensitive: $address }) {
+    id
+    address
+    balance
+    stakedBalance
+    votingPower
+    delegateTo {
+      address
+    }
+    delegatesFrom {
+      address
     }
   }
 }
 
 query UserDelegators($address: String!) {
-  ogvAddresses(where: { delegatee: { id_containsInsensitive: $address } }) {
+  esAccounts(
+    where: { delegatesFrom_some: { account_containsInsensitive: $address } }
+  ) {
     id
+    address
     votingPower
   }
 }

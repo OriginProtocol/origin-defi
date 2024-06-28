@@ -10,16 +10,40 @@ import { TokenChip, useOgnInfo } from '@origin/defi/shared';
 import { LoadingLabel, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
+import { div, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
+
+import { useUserVotingPowerQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 
 export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { isConnected } = useAccount();
-  const { data: info, isLoading: isInfoLoading } = useOgnInfo();
+  const { address, isConnected } = useAccount();
+  const { data: ognInfo, isLoading: isOgnInfoLoading } = useOgnInfo();
+  const { data: info, isLoading: isInfoLoading } = useUserVotingPowerQuery(
+    {
+      address: address ?? '',
+    },
+    {
+      enabled: isConnected,
+      select: (data) =>
+        data.esAccounts.find(
+          (a) =>
+            a?.address?.toLowerCase() ===
+            tokens.mainnet.xOGN.address.toLowerCase(),
+        ),
+    },
+  );
+
+  const votingPowerPercent = toNumber(
+    div(
+      [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
+      [BigInt(ognInfo?.xOgnTotalSupply ?? 1), tokens.mainnet.xOGN.decimals],
+    ),
+  );
 
   return (
     <Card {...props}>
@@ -41,7 +65,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
               fontWeight="bold"
             >
               {formatAmount(
-                BigInt(info?.xOgnBalance ?? '0'),
+                BigInt(info?.votingPower ?? '0'),
                 tokens.mainnet.xOGN.decimals,
                 undefined,
                 { notation: 'compact', maximumSignificantDigits: 4 },
@@ -62,13 +86,13 @@ export const MyVotingPowerCard = (props: CardProps) => {
               color: 'text.secondary',
               fontWeight: 'medium',
             }}
-            isLoading={isInfoLoading}
+            isLoading={isInfoLoading || isOgnInfoLoading}
             value={intl.formatMessage(
               {
                 defaultMessage: '{value}',
               },
               {
-                value: intl.formatNumber(info?.votingPowerPercent ?? 0, {
+                value: intl.formatNumber(votingPowerPercent ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 5,

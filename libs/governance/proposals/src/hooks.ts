@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { tokens } from '@origin/shared/contracts';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { fromUnixTime } from 'date-fns';
 import { descend, prop, sort, zipObj } from 'ramda';
+import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useProposalsQuery, useUserVotesQuery } from './queries.generated';
@@ -69,7 +71,9 @@ export const useProposals = (
                 updated: p.lastUpdated,
                 status: p.status,
                 choices: Object.keys(votes) as GovernanceChoice[],
-                scores: Object.values(votes),
+                scores: Object.values(votes).map(
+                  (v) => +formatUnits(BigInt(v), tokens.mainnet.OGV.decimals),
+                ),
                 quorum: 348e9,
                 link: '',
               };

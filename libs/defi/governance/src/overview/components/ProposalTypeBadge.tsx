@@ -1,10 +1,9 @@
 import { Typography } from '@mui/material';
 import { ColorChip } from '@origin/defi/shared';
 import { TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { FaLinkRegular, Snapshot } from '@origin/shared/icons';
 import { defineMessage, useIntl } from 'react-intl';
-
-import { governanceTokens } from '../constants';
 
 import type { StackProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -18,18 +17,14 @@ export type ProposalTypeBadgeProps = {
 
 const icons: Record<ProposalType, ReactNode> = {
   onchain: <FaLinkRegular sx={{ color: 'text.secondary', fontSize: 14 }} />,
-  onchain_ogv: (
-    <TokenIcon token={governanceTokens.onchain_ogv} sx={{ fontSize: 14 }} />
-  ),
+  onchain_ogv: <TokenIcon token={tokens.mainnet.OGV} sx={{ fontSize: 14 }} />,
   snapshot: <Snapshot sx={{ color: 'text.secondary', fontSize: 14 }} />,
-  snapshot_ogv: (
-    <TokenIcon token={governanceTokens.snapshot_ogv} sx={{ fontSize: 14 }} />
-  ),
+  snapshot_ogv: <TokenIcon token={tokens.mainnet.OGV} sx={{ fontSize: 14 }} />,
 };
 
 const labels: Record<ProposalType, MessageDescriptor> = {
   onchain: defineMessage({ defaultMessage: 'On-chain proposal' }),
-  onchain_ogv: defineMessage({ defaultMessage: 'On-chain proposal' }),
+  onchain_ogv: defineMessage({ defaultMessage: 'Legacy On-chain proposal' }),
   snapshot: defineMessage({ defaultMessage: 'Snapshot proposal' }),
   snapshot_ogv: defineMessage({ defaultMessage: 'Legacy governance' }),
 };

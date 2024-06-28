@@ -26,7 +26,6 @@ import {
   ConnectedButton,
   getTokenPriceKey,
   isNativeCurrency,
-  SettingsButton,
   SwapProvider,
   useDeleteNotification,
   useFormat,
@@ -58,6 +57,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../Activities';
+import { SettingsButton } from '../Settings';
 import { TokenInput } from '../TokenInput';
 import { SwapRoute } from './SwapRoute';
 import { TokenSelectModal } from './TokenSelectModal';
@@ -335,11 +335,7 @@ function SwapperWrapped({
       <Card {...rest}>
         <CardHeader
           title={intl.formatMessage({ defaultMessage: 'Swap' })}
-          action={
-            <SettingsButton
-              sx={{ border: '1px solid', borderColor: 'divider' }}
-            />
-          }
+          action={<SettingsButton />}
         />
         <Divider />
         <Box
@@ -424,7 +420,7 @@ function SwapperWrapped({
                 {
                   slippage: intl.formatNumber(slippage, {
                     style: 'percent',
-                    minimumFractionDigits: 2,
+                    minimumFractionDigits: 0,
                     maximumFractionDigits: 2,
                   }),
                 },

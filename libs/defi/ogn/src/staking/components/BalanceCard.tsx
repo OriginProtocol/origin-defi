@@ -9,7 +9,7 @@ import {
 import { TokenChip } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat, useWatchBalance } from '@origin/shared/providers';
+import { useFormat, useWatchBalances } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -17,13 +17,13 @@ import type { CardProps } from '@mui/material';
 export const BalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatBalance } = useFormat();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet.OGN,
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [tokens.mainnet.OGN, tokens.mainnet.xOGN],
   });
 
   return (
     <Card {...props}>
-      <CardHeader title={intl.formatMessage({ defaultMessage: 'Balance' })} />
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'Balances' })} />
       <Divider />
       <CardContent>
         <Stack
@@ -36,12 +36,38 @@ export const BalanceCard = (props: CardProps) => {
           <LoadingLabel
             variant="featured3"
             fontWeight="bold"
-            isLoading={isBalanceLoading}
+            isLoading={isBalancesLoading}
           >
-            {formatBalance(balance, tokens.mainnet.OGN.decimals)}
+            {formatBalance(
+              balances?.[tokens.mainnet.OGN.id] ?? 0n,
+              tokens.mainnet.OGN.decimals,
+            )}
           </LoadingLabel>
           <TokenChip
             token={tokens.mainnet.OGN}
+            iconProps={{ sx: { fontSize: 24 } }}
+            labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
+          />
+        </Stack>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={1}
+          mb={3}
+        >
+          <LoadingLabel
+            variant="featured3"
+            fontWeight="bold"
+            isLoading={isBalancesLoading}
+          >
+            {formatBalance(
+              balances?.[tokens.mainnet.xOGN.id] ?? 0n,
+              tokens.mainnet.OGN.decimals,
+            )}
+          </LoadingLabel>
+          <TokenChip
+            token={tokens.mainnet.xOGN}
             iconProps={{ sx: { fontSize: 24 } }}
             labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
           />
