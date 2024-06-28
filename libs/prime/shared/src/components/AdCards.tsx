@@ -26,13 +26,6 @@ export const AdCards = (props: StackProps) => {
         defaultMessage:
           'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest Airdrop.',
       }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage({
-            defaultMessage: `Migrate primeETH is good for your skin!`,
-          })}
-        </Typography>
-      ),
     },
     {
       icon: <Seeds sx={{ width: 40, height: 40 }} />,
@@ -41,15 +34,8 @@ export const AdCards = (props: StackProps) => {
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'primeETH holders who migrate to ynLSD will receive a 5% Seeds Boost at the start of Season 1',
+          'primeETH holders who migrate to ynLSD will receive a 5% boost for the YND Season 1 airdrop',
       }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage({
-            defaultMessage: `There will be no 'Previously in...'`,
-          })}
-        </Typography>
-      ),
     },
     {
       icon: <YieldNestHexagon sx={{ width: 40, height: 40 }} />,
@@ -58,15 +44,8 @@ export const AdCards = (props: StackProps) => {
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Migrate at least 5 OETH to receive the Pioneer NFT which gives you a permanent 15% seeds boost',
+          'Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons',
       }),
-      tooltip: (
-        <Typography variant="body2">
-          {intl.formatMessage({
-            defaultMessage: `So much yield, you'll love it`,
-          })}
-        </Typography>
-      ),
     },
 
     // {
@@ -210,13 +189,15 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
           {ad.subtitle}
         </Typography>
       )}
-      <InfoTooltip
-        tooltipLabel={ad.tooltip}
-        tooltipProps={{
-          placement: 'right',
-          slotProps: { tooltip: { sx: { backgroundColor: '#fff' } } },
-        }}
-      />
+      {ad?.tooltip && (
+        <InfoTooltip
+          tooltipLabel={ad.tooltip}
+          tooltipProps={{
+            placement: 'right',
+            slotProps: { tooltip: { sx: { backgroundColor: '#fff' } } },
+          }}
+        />
+      )}
     </Card>
   );
 };

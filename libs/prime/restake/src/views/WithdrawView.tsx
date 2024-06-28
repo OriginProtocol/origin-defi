@@ -70,19 +70,23 @@ const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
   const intl = useIntl();
 
   const points = [
-    intl.formatMessage({ defaultMessage: `YieldNest YND season 1 airdrop` }),
     intl.formatMessage({
-      defaultMessage: `YieldNest Seeds bonus (+5% boost for primeETH users)`,
+      defaultMessage: `YieldNest <b>Season 1 Airdrop</b> + access to all upcoming seasons`,
     }),
     intl.formatMessage({
-      defaultMessage: `Pioneer NFT + 15% permanent boost for migrating ≥ 5 OETH`,
+      defaultMessage: `<b>+5% boost</b> for primeETH users for Season 1`,
     }),
     intl.formatMessage({
-      defaultMessage: `Access to all upcoming YND airdrop seasons`,
+      defaultMessage: `<b>15% boost</b> for ALL seasons for migrating ≥ 5 primeETH`,
     }),
-    intl.formatMessage({ defaultMessage: `Community incentives of +60%` }),
-    intl.formatMessage({ defaultMessage: `Collect EigenLayer points` }),
-    intl.formatMessage({ defaultMessage: `AVS/Network yields & airdrops` }),
+    intl.formatMessage({
+      defaultMessage: `<b>60+% YND</b> community incentives `,
+    }),
+    intl.formatMessage({ defaultMessage: `Collect <b>EigenLayer points</b>` }),
+
+    intl.formatMessage({
+      defaultMessage: `AVS/Network <b>yields & airdrops</b>`,
+    }),
   ];
 
   return (
@@ -105,7 +109,7 @@ const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
             'You will no longer be eligible for the following rewards if you withdraw:',
         })}
       </Typography>
-      <Stack component="ul" spacing={0.5}>
+      <Stack component="ul" spacing={0.5} sx={{ paddingInlineStart: 1 }}>
         {points.map((p) => (
           <Typography key={p} component="li">
             {p}
@@ -244,7 +248,7 @@ const Form = ({
           >
             {intl.formatMessage({
               defaultMessage:
-                'You will no longer be eligible for the Season 1 Airdrop or YieldNest Seeds if you withdraw.',
+                'You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw.',
             })}
           </Typography>
         </Stack>
@@ -349,12 +353,13 @@ const Stepper = ({ converted, ...rest }: StepperProps) => {
         </ConnectedButton>
         <Button
           component={RouterLink}
-          to="/restake/migrate"
+          to="/restake/"
           variant="text"
           sx={{
             fontSize: 16,
-            color: 'primary.main',
-            '&:hover': { color: 'primary.dark' },
+            color: 'text.primary',
+            textDecoration: 'underline',
+            '&:hover': { color: 'primary.dark', textDecoration: 'underline' },
           }}
         >
           {intl.formatMessage({
