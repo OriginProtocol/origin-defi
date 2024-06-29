@@ -11,20 +11,35 @@ import {
   Typography,
 } from '@mui/material';
 import { ExternalLink, TokenIcon, ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { WarningExclamation } from '@origin/shared/icons';
-import { ConnectedButton, useWatchBalance } from '@origin/shared/providers';
+import {
+  ConnectedButton,
+  TxButton,
+  useFormat,
+  useTxButton,
+  useWatchBalance,
+} from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../components/TokenInput';
 import { useOethWithdrawAmount } from '../hooks';
+import { useCurrentRequestsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type {
+  GasPrice,
+  WriteTransactionCallbacks,
+  WriteTransactionParameters,
+} from '@origin/shared/providers';
 import type { Dnum } from 'dnum';
 
 type Step = 'disclaimer' | 'form' | 'stepper';
@@ -33,6 +48,29 @@ export const WithdrawView = () => {
   const [step, setStep] = useState<Step>('disclaimer');
   const [amount, setAmount] = useState(0n);
   const converted = useOethWithdrawAmount(amount);
+  const { address } = useAccount();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const { params, callbacks, gasPrice } = useTxButton({
+    params: {
+      contract: contracts.mainnet.lrtDepositPool,
+      functionName: 'requestWithdrawal',
+      args: [tokens.mainnet.OETH.address, converted[0], amount],
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: [
+            useCurrentRequestsQuery.getKey({
+              address: address ?? ZERO_ADDRESS,
+            }),
+          ],
+        });
+        navigate('/restake/');
+      },
+    },
+    enableGas: true,
+  });
 
   if (step === 'disclaimer') {
     return (
@@ -57,11 +95,19 @@ export const WithdrawView = () => {
         setAmount={(val: bigint) => {
           setAmount(val);
         }}
+        gasPrice={gasPrice}
       />
     );
   }
 
-  return <Stepper converted={converted} />;
+  return (
+    <Stepper
+      amount={amount}
+      converted={converted}
+      params={params}
+      callbacks={callbacks}
+    />
+  );
 };
 
 type DisclaimerProps = { onContinueClick: () => void } & StackProps;
@@ -152,6 +198,7 @@ type FormProps = {
   amount: bigint;
   setAmount: (val: bigint) => void;
   converted: Dnum;
+  gasPrice: GasPrice | null | undefined;
 } & StackProps;
 
 const Form = ({
@@ -159,13 +206,18 @@ const Form = ({
   amount,
   setAmount,
   converted,
+  gasPrice,
   ...rest
 }: FormProps) => {
   const intl = useIntl();
+  const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
   const { data: bal, isLoading: isBalLoading } = useWatchBalance({
     token: tokens.mainnet.primeETH,
   });
+  const rate = useOethWithdrawAmount(
+    parseUnits('1', tokens.mainnet.primeETH.decimals),
+  );
 
   const handleAmountChange = (val: bigint) => {
     setAmount(val);
@@ -205,12 +257,15 @@ const Form = ({
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
-          value={intl.formatMessage({ defaultMessage: '1:1.1' })}
+          value={intl.formatMessage(
+            { defaultMessage: '1:{rate}' },
+            { rate: format(rate, 4) },
+          )}
           {...valueLabelProps}
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-          value={intl.formatMessage({ defaultMessage: '~$1.50' })}
+          value={formatCurrency(gasPrice?.gasCostUsd)}
           {...valueLabelProps}
         />
       </Stack>
@@ -273,10 +328,19 @@ const Form = ({
 };
 
 type StepperProps = {
+  amount: bigint;
   converted: Dnum;
+  params: WriteTransactionParameters;
+  callbacks: WriteTransactionCallbacks;
 } & StackProps;
 
-const Stepper = ({ converted, ...rest }: StepperProps) => {
+const Stepper = ({
+  amount,
+  converted,
+  params,
+  callbacks,
+  ...rest
+}: StepperProps) => {
   const intl = useIntl();
   const [checked, setChecked] = useState(false);
   const [progress] = useState(0);
@@ -352,12 +416,13 @@ const Stepper = ({ converted, ...rest }: StepperProps) => {
             typography: { fontSize: 16, fontWeight: 'medium' },
           }}
         />
-        <ConnectedButton
+        <TxButton
+          params={params}
+          callbacks={callbacks}
           disabled={!checked}
           sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-        >
-          {intl.formatMessage({ defaultMessage: 'Withdraw' })}
-        </ConnectedButton>
+          label={intl.formatMessage({ defaultMessage: 'Withdraw' })}
+        />
         <Button
           component={RouterLink}
           to="/restake/"

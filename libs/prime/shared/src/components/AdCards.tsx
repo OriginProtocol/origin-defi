@@ -1,6 +1,6 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { InfoTooltip } from '@origin/shared/components';
-import { Airdrop, Seeds, YieldNestHexagon } from '@origin/shared/icons';
+import { AirdropStar, Seeds, YieldNestHexagon } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -10,7 +10,8 @@ type Ad = {
   icon: ReactNode;
   title?: string;
   subtitle?: string;
-  tooltip: ReactNode;
+  tooltip?: ReactNode;
+  background?: string;
 };
 
 export const AdCards = (props: StackProps) => {
@@ -18,7 +19,7 @@ export const AdCards = (props: StackProps) => {
 
   const ads: Ad[] = [
     {
-      icon: <Airdrop sx={{ width: 40, height: 40 }} />,
+      icon: <AirdropStar sx={{ width: 60, height: 60 }} />,
       title: intl.formatMessage({
         defaultMessage: 'Participate in the YieldNest Airdrop',
       }),
@@ -26,6 +27,12 @@ export const AdCards = (props: StackProps) => {
         defaultMessage:
           'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest Airdrop.',
       }),
+      background: `
+        linear-gradient(-45deg, transparent 0, transparent 25px, #281928 25px, #281928 50px, transparent 50px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 220px, #281928 220px, #281928 260px, transparent 260px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 265px, #281928 265px, #281928 290px, transparent 290px, transparent 100%),
+        linear-gradient(-45deg, #101 0, #101 100%)
+      `,
     },
     {
       icon: <Seeds sx={{ width: 40, height: 40 }} />,
@@ -36,6 +43,12 @@ export const AdCards = (props: StackProps) => {
         defaultMessage:
           'primeETH holders who migrate to ynLSD will receive a 5% boost for the YND Season 1 airdrop',
       }),
+      background: `
+        linear-gradient(-45deg, transparent 0, transparent 10px, #281928 10px, #281928 30px, transparent 30px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 235px, #281928 235px, #281928 270px, transparent 270px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 275px, #281928 275px, #281928 290px, transparent 290px, transparent 100%),
+        linear-gradient(-45deg, #101 0, #101 100%)
+      `,
     },
     {
       icon: <YieldNestHexagon sx={{ width: 40, height: 40 }} />,
@@ -46,6 +59,12 @@ export const AdCards = (props: StackProps) => {
         defaultMessage:
           'Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons',
       }),
+      background: `
+        linear-gradient(-45deg, transparent 0, transparent 15px, #281928 15px, #281928 30px, transparent 30px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 35px, #281928 35px, #281928 60px, transparent 60px, transparent 100%),
+        linear-gradient(-45deg, transparent 0, transparent 240px, #281928 240px, #281928 270px, transparent 270px, transparent 100%),
+        linear-gradient(-45deg, #101 0, #101 100%)
+      `,
     },
 
     // {
@@ -173,14 +192,15 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
         justifyContent: 'center',
         gap: 1,
         p: 3,
-        border: (theme) => `1px solid ${theme.palette.divider}`,
+        border: (theme) => `1px solid ${theme.palette.common.black}`,
+        background: ad.background ?? '#101',
         borderRadius: 5,
         ...rest?.sx,
       }}
     >
       {ad.icon}
       {ad?.title && (
-        <Typography variant="h6" textAlign="center">
+        <Typography variant="h6" textAlign="center" sx={{ color: '#FAFBFB' }}>
           {ad.title}
         </Typography>
       )}
