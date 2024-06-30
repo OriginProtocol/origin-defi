@@ -38,10 +38,14 @@ export const MyVotingPowerCard = (props: CardProps) => {
     },
   );
 
+  const xOgnTotalSupply =
+    ognInfo?.xOgnTotalSupply === undefined || ognInfo?.xOgnTotalSupply === 0n
+      ? 1n
+      : BigInt(ognInfo?.xOgnTotalSupply);
   const votingPowerPercent = toNumber(
     div(
       [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
-      [BigInt(ognInfo?.xOgnTotalSupply ?? 1), tokens.mainnet.xOGN.decimals],
+      [xOgnTotalSupply, tokens.mainnet.xOGN.decimals],
     ),
   );
 
