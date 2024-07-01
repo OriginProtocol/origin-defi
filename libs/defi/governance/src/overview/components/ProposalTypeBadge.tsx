@@ -48,7 +48,7 @@ export const ProposalTypeBadge = ({
       {...rest}
     >
       {icons[type]}
-      <Typography variant="caption1" color="text.primary">
+      <Typography variant="caption1" color="text.primary" noWrap>
         {intl.formatMessage(labels[type])}
       </Typography>
     </ColorChip>
