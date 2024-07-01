@@ -5,17 +5,22 @@ import {
   CardHeader,
   Divider,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { TokenChip, useOgnInfo } from '@origin/defi/shared';
-import { InfoTooltipLabel, ValueLabel } from '@origin/shared/components';
+import {
+  InfoTooltipLabel,
+  ValueLabel,
+  WalletIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { formatUnits } from 'viem';
-import { useAccount } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 
 import { useOgnUserInfoQuery } from '../queries.generated';
 
@@ -24,12 +29,20 @@ import type { CardProps } from '@mui/material';
 export const VotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { isConnected, address } = useAccount();
+  const { address, isConnected, connector } = useAccount();
+  const { data: walletClient } = useWalletClient();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const { data: user, isLoading: isUserLoading } = useOgnUserInfoQuery(
     { address: address ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.esAccounts?.at?.(0) },
   );
+
+  const handleAddTokenToWallet = () => {
+    walletClient?.watchAsset({
+      type: 'ERC20',
+      options: tokens.mainnet.xOGN,
+    });
+  };
 
   const percent =
     +formatUnits(
@@ -71,11 +84,29 @@ export const VotingPowerCard = (props: CardProps) => {
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
             </Typography>
-            <TokenChip
-              token={tokens.mainnet.xOGN}
-              iconProps={{ sx: { fontSize: 24 } }}
-              labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
-            />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <TokenChip
+                token={tokens.mainnet.xOGN}
+                iconProps={{ sx: { fontSize: 24 } }}
+                labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
+              />
+              <Tooltip
+                title={intl.formatMessage({
+                  defaultMessage: 'Add to metamask',
+                })}
+              >
+                <Button
+                  variant="link"
+                  color="secondary"
+                  onClick={handleAddTokenToWallet}
+                >
+                  <WalletIcon
+                    walletName={connector?.name}
+                    sx={{ fontSize: 12 }}
+                  />
+                </Button>
+              </Tooltip>
+            </Stack>
           </Stack>
           <ValueLabel
             label={intl.formatMessage({

@@ -41,6 +41,12 @@ export const BalanceCard = (props: CardProps) => {
             {formatBalance(
               balances?.[tokens.mainnet.OGN.id] ?? 0n,
               tokens.mainnet.OGN.decimals,
+              undefined,
+              {
+                notation: 'compact',
+                minimumSignificantDigits: 6,
+                maximumSignificantDigits: 6,
+              },
             )}
           </LoadingLabel>
           <TokenChip
@@ -64,6 +70,12 @@ export const BalanceCard = (props: CardProps) => {
             {formatBalance(
               balances?.[tokens.mainnet.xOGN.id] ?? 0n,
               tokens.mainnet.OGN.decimals,
+              undefined,
+              {
+                notation: 'compact',
+                minimumSignificantDigits: 6,
+                maximumSignificantDigits: 6,
+              },
             )}
           </LoadingLabel>
           <TokenChip
