@@ -54,11 +54,11 @@ export const ConnectedButton = ({
     );
   }
 
-  if (
-    !disableNetworkCheck &&
-    ((targetChainId && targetChainId !== chain?.id) ||
-      isNilOrEmpty(chains.find((c) => c.id === chain?.id)))
-  ) {
+  const wrongChain =
+    (targetChainId && targetChainId !== chain?.id) ||
+    isNilOrEmpty(chains.find((c) => c.id === chain?.id));
+
+  if (!disableNetworkCheck && wrongChain) {
     return (
       <Button onClick={handleSwitchToDefaultNetwork} {...rest}>
         {intl.formatMessage({ defaultMessage: 'Switch network' })}
@@ -67,7 +67,7 @@ export const ConnectedButton = ({
   }
 
   return (
-    <Button onClick={onClick} disabled={disabled} {...rest}>
+    <Button onClick={onClick} disabled={wrongChain || disabled} {...rest}>
       {children}
     </Button>
   );

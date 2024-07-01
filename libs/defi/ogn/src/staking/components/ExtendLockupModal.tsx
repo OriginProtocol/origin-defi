@@ -47,7 +47,8 @@ import { useAccount } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
 
-import type { ButtonProps, DialogProps } from '@mui/material';
+import type { DialogProps } from '@mui/material';
+import type { ConnectedButtonProps } from '@origin/shared/providers';
 
 import type { Lockup } from '../types';
 
@@ -498,7 +499,7 @@ export const ExtendLockupModal = ({
 
 export type ExtendButtonProps = {
   lockup: Lockup;
-} & ButtonProps;
+} & ConnectedButtonProps;
 
 export const ExtendButton = ({ lockup, ...rest }: ExtendButtonProps) => {
   const [open, setOpen] = useState(false);

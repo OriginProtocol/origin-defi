@@ -49,7 +49,8 @@ import { useAccount } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
 
-import type { ButtonProps, DialogProps } from '@mui/material';
+import type { DialogProps } from '@mui/material';
+import type { ConnectedButtonProps } from '@origin/shared/providers';
 import type { ChangeEvent, MouseEvent } from 'react';
 
 import type { Lockup } from '../types';
@@ -462,7 +463,7 @@ export const AddToLockupModal = ({
 
 export type AddButtonProps = {
   lockup: Lockup;
-} & ButtonProps;
+} & ConnectedButtonProps;
 
 export const AddButton = ({ lockup, ...rest }: AddButtonProps) => {
   const [open, setOpen] = useState(false);
