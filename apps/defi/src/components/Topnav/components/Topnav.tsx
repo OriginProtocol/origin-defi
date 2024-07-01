@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   alpha,
@@ -48,6 +48,13 @@ export const Topnav = () => {
   const { status, pendingCount } = useActivitiesStatus();
   const isNonRebasingOETH = useIsRebaseBannerVisible(tokens.mainnet.OETH);
   const isNonRebasingOUSD = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
+  const once = useRef(true);
+
+  useEffect(() => {
+    if (once && (isNonRebasingOETH || isNonRebasingOUSD)) {
+      setAlertMenuOpen(true);
+    }
+  }, [isNonRebasingOETH, isNonRebasingOUSD]);
 
   const isLoading = status === 'pending' && pendingCount > 0;
   const showRebaseMenu = isNonRebasingOETH || isNonRebasingOUSD;
