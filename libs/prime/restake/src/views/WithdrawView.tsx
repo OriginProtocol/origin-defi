@@ -31,7 +31,7 @@ import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../components/TokenInput';
 import { useOethWithdrawAmount } from '../hooks';
-import { useCurrentRequestsQuery } from '../queries.generated';
+import { useUserActiveRequestsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -61,7 +61,7 @@ export const WithdrawView = () => {
       onWriteSuccess: () => {
         queryClient.invalidateQueries({
           queryKey: [
-            useCurrentRequestsQuery.getKey({
+            useUserActiveRequestsQuery.getKey({
               address: address ?? ZERO_ADDRESS,
             }),
           ],

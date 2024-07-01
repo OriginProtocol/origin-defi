@@ -1383,6 +1383,252 @@ export enum LrtWithdrawalOrderByInput {
   WithdrawerDescNullsLast = 'withdrawer_DESC_NULLS_LAST'
 }
 
+export type LrtWithdrawalRequest = {
+  __typename?: 'LRTWithdrawalRequest';
+  asset: Scalars['String']['output'];
+  assetAmount: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  claimedAmount: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  primeETHAmount: Scalars['BigInt']['output'];
+  sharesAmount: Scalars['BigInt']['output'];
+  status: LrtWithdrawalStatus;
+  strategy: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  withdrawal: LrtWithdrawal;
+  withdrawer: Scalars['String']['output'];
+};
+
+export type LrtWithdrawalRequestEdge = {
+  __typename?: 'LRTWithdrawalRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: LrtWithdrawalRequest;
+};
+
+export enum LrtWithdrawalRequestOrderByInput {
+  AssetAmountAsc = 'assetAmount_ASC',
+  AssetAmountAscNullsFirst = 'assetAmount_ASC_NULLS_FIRST',
+  AssetAmountDesc = 'assetAmount_DESC',
+  AssetAmountDescNullsLast = 'assetAmount_DESC_NULLS_LAST',
+  AssetAsc = 'asset_ASC',
+  AssetAscNullsFirst = 'asset_ASC_NULLS_FIRST',
+  AssetDesc = 'asset_DESC',
+  AssetDescNullsLast = 'asset_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ClaimedAmountAsc = 'claimedAmount_ASC',
+  ClaimedAmountAscNullsFirst = 'claimedAmount_ASC_NULLS_FIRST',
+  ClaimedAmountDesc = 'claimedAmount_DESC',
+  ClaimedAmountDescNullsLast = 'claimedAmount_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdDesc = 'id_DESC',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  PrimeEthAmountAsc = 'primeETHAmount_ASC',
+  PrimeEthAmountAscNullsFirst = 'primeETHAmount_ASC_NULLS_FIRST',
+  PrimeEthAmountDesc = 'primeETHAmount_DESC',
+  PrimeEthAmountDescNullsLast = 'primeETHAmount_DESC_NULLS_LAST',
+  SharesAmountAsc = 'sharesAmount_ASC',
+  SharesAmountAscNullsFirst = 'sharesAmount_ASC_NULLS_FIRST',
+  SharesAmountDesc = 'sharesAmount_DESC',
+  SharesAmountDescNullsLast = 'sharesAmount_DESC_NULLS_LAST',
+  StatusAsc = 'status_ASC',
+  StatusAscNullsFirst = 'status_ASC_NULLS_FIRST',
+  StatusDesc = 'status_DESC',
+  StatusDescNullsLast = 'status_DESC_NULLS_LAST',
+  StrategyAsc = 'strategy_ASC',
+  StrategyAscNullsFirst = 'strategy_ASC_NULLS_FIRST',
+  StrategyDesc = 'strategy_DESC',
+  StrategyDescNullsLast = 'strategy_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  WithdrawalBlockNumberAsc = 'withdrawal_blockNumber_ASC',
+  WithdrawalBlockNumberAscNullsFirst = 'withdrawal_blockNumber_ASC_NULLS_FIRST',
+  WithdrawalBlockNumberDesc = 'withdrawal_blockNumber_DESC',
+  WithdrawalBlockNumberDescNullsLast = 'withdrawal_blockNumber_DESC_NULLS_LAST',
+  WithdrawalDelegatedToAsc = 'withdrawal_delegatedTo_ASC',
+  WithdrawalDelegatedToAscNullsFirst = 'withdrawal_delegatedTo_ASC_NULLS_FIRST',
+  WithdrawalDelegatedToDesc = 'withdrawal_delegatedTo_DESC',
+  WithdrawalDelegatedToDescNullsLast = 'withdrawal_delegatedTo_DESC_NULLS_LAST',
+  WithdrawalIdAsc = 'withdrawal_id_ASC',
+  WithdrawalIdAscNullsFirst = 'withdrawal_id_ASC_NULLS_FIRST',
+  WithdrawalIdDesc = 'withdrawal_id_DESC',
+  WithdrawalIdDescNullsLast = 'withdrawal_id_DESC_NULLS_LAST',
+  WithdrawalNonceAsc = 'withdrawal_nonce_ASC',
+  WithdrawalNonceAscNullsFirst = 'withdrawal_nonce_ASC_NULLS_FIRST',
+  WithdrawalNonceDesc = 'withdrawal_nonce_DESC',
+  WithdrawalNonceDescNullsLast = 'withdrawal_nonce_DESC_NULLS_LAST',
+  WithdrawalStakerAsc = 'withdrawal_staker_ASC',
+  WithdrawalStakerAscNullsFirst = 'withdrawal_staker_ASC_NULLS_FIRST',
+  WithdrawalStakerDesc = 'withdrawal_staker_DESC',
+  WithdrawalStakerDescNullsLast = 'withdrawal_staker_DESC_NULLS_LAST',
+  WithdrawalStartBlockAsc = 'withdrawal_startBlock_ASC',
+  WithdrawalStartBlockAscNullsFirst = 'withdrawal_startBlock_ASC_NULLS_FIRST',
+  WithdrawalStartBlockDesc = 'withdrawal_startBlock_DESC',
+  WithdrawalStartBlockDescNullsLast = 'withdrawal_startBlock_DESC_NULLS_LAST',
+  WithdrawalStatusAsc = 'withdrawal_status_ASC',
+  WithdrawalStatusAscNullsFirst = 'withdrawal_status_ASC_NULLS_FIRST',
+  WithdrawalStatusDesc = 'withdrawal_status_DESC',
+  WithdrawalStatusDescNullsLast = 'withdrawal_status_DESC_NULLS_LAST',
+  WithdrawalTimestampAsc = 'withdrawal_timestamp_ASC',
+  WithdrawalTimestampAscNullsFirst = 'withdrawal_timestamp_ASC_NULLS_FIRST',
+  WithdrawalTimestampDesc = 'withdrawal_timestamp_DESC',
+  WithdrawalTimestampDescNullsLast = 'withdrawal_timestamp_DESC_NULLS_LAST',
+  WithdrawalWithdrawerAsc = 'withdrawal_withdrawer_ASC',
+  WithdrawalWithdrawerAscNullsFirst = 'withdrawal_withdrawer_ASC_NULLS_FIRST',
+  WithdrawalWithdrawerDesc = 'withdrawal_withdrawer_DESC',
+  WithdrawalWithdrawerDescNullsLast = 'withdrawal_withdrawer_DESC_NULLS_LAST',
+  WithdrawerAsc = 'withdrawer_ASC',
+  WithdrawerAscNullsFirst = 'withdrawer_ASC_NULLS_FIRST',
+  WithdrawerDesc = 'withdrawer_DESC',
+  WithdrawerDescNullsLast = 'withdrawer_DESC_NULLS_LAST'
+}
+
+export type LrtWithdrawalRequestWhereInput = {
+  AND?: InputMaybe<Array<LrtWithdrawalRequestWhereInput>>;
+  OR?: InputMaybe<Array<LrtWithdrawalRequestWhereInput>>;
+  assetAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  assetAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  assetAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  assetAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  asset_contains?: InputMaybe<Scalars['String']['input']>;
+  asset_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  asset_endsWith?: InputMaybe<Scalars['String']['input']>;
+  asset_eq?: InputMaybe<Scalars['String']['input']>;
+  asset_gt?: InputMaybe<Scalars['String']['input']>;
+  asset_gte?: InputMaybe<Scalars['String']['input']>;
+  asset_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  asset_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  asset_lt?: InputMaybe<Scalars['String']['input']>;
+  asset_lte?: InputMaybe<Scalars['String']['input']>;
+  asset_not_contains?: InputMaybe<Scalars['String']['input']>;
+  asset_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  asset_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  asset_not_eq?: InputMaybe<Scalars['String']['input']>;
+  asset_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  asset_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  asset_startsWith?: InputMaybe<Scalars['String']['input']>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  claimedAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  claimedAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  claimedAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  claimedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  primeETHAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  primeETHAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  primeETHAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  primeETHAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  sharesAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  sharesAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  sharesAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  sharesAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  status_eq?: InputMaybe<LrtWithdrawalStatus>;
+  status_in?: InputMaybe<Array<LrtWithdrawalStatus>>;
+  status_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  status_not_eq?: InputMaybe<LrtWithdrawalStatus>;
+  status_not_in?: InputMaybe<Array<LrtWithdrawalStatus>>;
+  strategy_contains?: InputMaybe<Scalars['String']['input']>;
+  strategy_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  strategy_endsWith?: InputMaybe<Scalars['String']['input']>;
+  strategy_eq?: InputMaybe<Scalars['String']['input']>;
+  strategy_gt?: InputMaybe<Scalars['String']['input']>;
+  strategy_gte?: InputMaybe<Scalars['String']['input']>;
+  strategy_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  strategy_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  strategy_lt?: InputMaybe<Scalars['String']['input']>;
+  strategy_lte?: InputMaybe<Scalars['String']['input']>;
+  strategy_not_contains?: InputMaybe<Scalars['String']['input']>;
+  strategy_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  strategy_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  strategy_not_eq?: InputMaybe<Scalars['String']['input']>;
+  strategy_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  strategy_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  strategy_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  withdrawal?: InputMaybe<LrtWithdrawalWhereInput>;
+  withdrawal_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  withdrawer_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_gt?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_gte?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawer_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  withdrawer_lt?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_lte?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawer_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type LrtWithdrawalRequestsConnection = {
+  __typename?: 'LRTWithdrawalRequestsConnection';
+  edges: Array<LrtWithdrawalRequestEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export enum LrtWithdrawalStatus {
   Claimed = 'Claimed',
   Requested = 'Requested'
@@ -1576,6 +1822,11 @@ export type Query = {
   lrtWithdrawalById?: Maybe<LrtWithdrawal>;
   /** @deprecated Use lrtWithdrawalById */
   lrtWithdrawalByUniqueInput?: Maybe<LrtWithdrawal>;
+  lrtWithdrawalRequestById?: Maybe<LrtWithdrawalRequest>;
+  /** @deprecated Use lrtWithdrawalRequestById */
+  lrtWithdrawalRequestByUniqueInput?: Maybe<LrtWithdrawalRequest>;
+  lrtWithdrawalRequests: Array<LrtWithdrawalRequest>;
+  lrtWithdrawalRequestsConnection: LrtWithdrawalRequestsConnection;
   lrtWithdrawals: Array<LrtWithdrawal>;
   lrtWithdrawalsConnection: LrtWithdrawalsConnection;
   squidStatus?: Maybe<SquidStatus>;
@@ -1829,6 +2080,32 @@ export type QueryLrtWithdrawalByIdArgs = {
 
 export type QueryLrtWithdrawalByUniqueInputArgs = {
   where: WhereIdInput;
+};
+
+
+export type QueryLrtWithdrawalRequestByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryLrtWithdrawalRequestByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryLrtWithdrawalRequestsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<LrtWithdrawalRequestOrderByInput>>;
+  where?: InputMaybe<LrtWithdrawalRequestWhereInput>;
+};
+
+
+export type QueryLrtWithdrawalRequestsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<LrtWithdrawalRequestOrderByInput>;
+  where?: InputMaybe<LrtWithdrawalRequestWhereInput>;
 };
 
 

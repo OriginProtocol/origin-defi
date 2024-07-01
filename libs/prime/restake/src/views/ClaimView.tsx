@@ -1,18 +1,125 @@
-import { alpha, Button, Divider, Stack, Typography } from '@mui/material';
-import { Countdown } from '@origin/shared/components';
-import { ConnectedButton, useFormat } from '@origin/shared/providers';
+import { CircularProgress, Divider, Stack, Typography } from '@mui/material';
+import { LrtWithdrawalStatus } from '@origin/prime/shared';
+import { Countdown, LoadingLabel } from '@origin/shared/components';
+import { contracts, tokens } from '@origin/shared/contracts';
+import {
+  TxButton,
+  useFormat,
+  useTokenPrice,
+  useTxButton,
+} from '@origin/shared/providers';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { add } from 'date-fns';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { formatUnits } from 'viem';
+import { useAccount, useBlockNumber } from 'wagmi';
+
+import { WAITING_BLOCK_AMOUNT } from '../constants';
+import { useUserWithdrawalsQuery } from '../queries.generated';
+
+import type { StackProps } from '@mui/material';
+import type { HexAddress } from '@origin/shared/utils';
+
+import type { UserWithdrawalsQuery } from '../queries.generated';
 
 export const ClaimView = () => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
+  const { address, isConnected } = useAccount();
+  const { data: withdrawals, isLoading: iswithdrawalsLoading } =
+    useUserWithdrawalsQuery(
+      { address: address ?? ZERO_ADDRESS },
+      {
+        enabled: isConnected,
+        select: (data) =>
+          data?.lrtWithdrawalRequests?.filter(
+            (r) => r.status === LrtWithdrawalStatus.Requested,
+          ) ?? [],
+      },
+    );
 
-  const targetDate = add(new Date('2024-06-20'), { days: 7 });
+  if (iswithdrawalsLoading) {
+    return (
+      <Stack
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        minHeight={350}
+      >
+        <CircularProgress size={36} />
+      </Stack>
+    );
+  }
 
   return (
-    <Stack p={3}>
+    <Stack spacing={3}>
+      <Stack divider={<Divider />}>
+        {isNilOrEmpty(withdrawals) ? (
+          <Stack
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            minHeight={350}
+          >
+            <Typography variant="h5">
+              {intl.formatMessage({ defaultMessage: 'No withdrawal to claim' })}
+            </Typography>
+          </Stack>
+        ) : (
+          withdrawals?.map((r) => <ClaimCard key={r.id} request={r} />)
+        )}
+      </Stack>
+    </Stack>
+  );
+};
+
+type ClaimCardProps = {
+  request: UserWithdrawalsQuery['lrtWithdrawalRequests'][number];
+} & StackProps;
+
+const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
+  const intl = useIntl();
+  const { formatCurrency, formatAmount } = useFormat();
+  const queryClient = useQueryClient();
+  const { data: blockNumber } = useBlockNumber({ watch: true });
+  const { data: price, isLoading: isPriceLoading } =
+    useTokenPrice('primeETH_USD');
+  const { params, callbacks, gasPrice } = useTxButton({
+    params: {
+      contract: contracts.mainnet.lrtDepositPool,
+      functionName: 'claimWithdrawal',
+      args: [
+        {
+          staker: request.withdrawal.staker as HexAddress,
+          delegatedTo: request.withdrawal.delegatedTo as HexAddress,
+          withdrawer: request.withdrawal.withdrawer as HexAddress,
+          nonce: BigInt(request.withdrawal.nonce),
+          startBlock: Number(request.withdrawal.startBlock),
+          strategies: request.withdrawal.strategies as HexAddress[],
+          shares: request.withdrawal?.shares?.map((s) => BigInt(s)) ?? [],
+        },
+      ],
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        queryClient.invalidateQueries();
+      },
+    },
+    enableGas: true,
+  });
+
+  const targetDate = add(new Date(request.timestamp), { days: 7 });
+  const isClaimDisabled =
+    request.blockNumber + WAITING_BLOCK_AMOUNT > (blockNumber ?? 0);
+  const primeConverted =
+    (price ?? 0) *
+    +formatUnits(
+      BigInt(request.primeETHAmount),
+      tokens.mainnet.primeETH.decimals,
+    );
+
+  return (
+    <Stack p={3} {...rest}>
       <Stack direction="row" alignItems="center" mb={4}>
         <Stack width={0.5}>
           <Typography color="text.secondary">
@@ -31,55 +138,38 @@ export const ClaimView = () => {
         <Stack direction="row" justifyContent="space-around" width={0.5} px={2}>
           <Stack alignItems="flex-start">
             <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Available' })}
+              {intl.formatMessage({ defaultMessage: 'PrimeETH' })}
             </Typography>
             <Typography fontSize={16} fontWeight="medium">
-              {intl.formatMessage(
-                { defaultMessage: 'Ξ {amount}' },
-                { amount: '62.257' },
-              )}
+              {formatAmount(BigInt(request.primeETHAmount))}
             </Typography>
-            <Typography variant="subtitle2">
-              {formatCurrency(13645456)}
-            </Typography>
+            <LoadingLabel variant="subtitle2" isLoading={isPriceLoading}>
+              {formatCurrency(primeConverted)}
+            </LoadingLabel>
           </Stack>
           <Stack alignItems="flex-start">
             <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Pending' })}
+              {intl.formatMessage({ defaultMessage: 'OETH to claim' })}
             </Typography>
             <Typography fontSize={16} fontWeight="medium">
-              {intl.formatMessage(
-                { defaultMessage: 'Ξ {amount}' },
-                { amount: '0' },
-              )}
+              {formatAmount(BigInt(request.sharesAmount))}
             </Typography>
-            <Typography variant="subtitle2">{formatCurrency(0)}</Typography>
           </Stack>
         </Stack>
       </Stack>
-      <ConnectedButton
+      <TxButton
+        params={params}
+        callbacks={callbacks}
+        label={intl.formatMessage({ defaultMessage: 'Claim OETH' })}
+        disabled={isClaimDisabled}
         sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60, mb: 2 }}
-      >
-        {intl.formatMessage({ defaultMessage: 'Claim OETH' })}
-      </ConnectedButton>
-      <Button
-        component={RouterLink}
-        to="/restake/migrate"
-        sx={{
-          fontSize: 20,
-          py: 2,
-          borderRadius: 8,
-          height: 60,
-          color: '#fff',
-          backgroundColor: '#000',
-          '&:hover': {
-            color: '#fff',
-            backgroundColor: alpha('#000', 0.8),
-          },
-        }}
-      >
-        {intl.formatMessage({ defaultMessage: 'Pre-Mint ynLSD' })}
-      </Button>
+      />
+      <Typography variant="body2" color="text.secondary" textAlign="center">
+        {intl.formatMessage(
+          { defaultMessage: 'Approximative gas cost: {gas}' },
+          { gas: formatCurrency(gasPrice?.gasCostUsd) },
+        )}
+      </Typography>
     </Stack>
   );
 };

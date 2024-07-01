@@ -4,7 +4,8 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink, Outlet, useMatch } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import { useCurrentRequestsQuery } from '../queries.generated';
+import { PastClaimsCard } from '../components/PastClaimsCard';
+import { useUserActiveRequestsQuery } from '../queries.generated';
 import { restakeRoute } from '../routes';
 
 import type { RouteObject } from 'react-router-dom';
@@ -14,9 +15,12 @@ export const RestakeView = () => {
   const {
     data: hasClaimableRequest,
     isLoading: isHsCurrentClaimableRequestLoading,
-  } = useCurrentRequestsQuery(
+  } = useUserActiveRequestsQuery(
     { address: address ?? ZERO_ADDRESS },
-    { enabled: !!address, select: (data) => data?.lrtWithdrawals?.length > 0 },
+    {
+      enabled: !!address,
+      select: (data) => data?.lrtWithdrawalRequests?.length > 1,
+    },
   );
 
   if (isHsCurrentClaimableRequestLoading) {
@@ -37,7 +41,7 @@ export const RestakeView = () => {
   );
 
   return (
-    <Stack alignItems="center">
+    <Stack alignItems="center" spacing={3}>
       <Card sx={{ maxWidth: 540, width: 1 }}>
         <Stack sx={{ p: 2, alignItems: 'center' }}>
           <Stack
@@ -55,6 +59,7 @@ export const RestakeView = () => {
         <Divider />
         <Outlet />
       </Card>
+      <PastClaimsCard sx={{ maxWidth: 540, width: 1 }} />
     </Stack>
   );
 };

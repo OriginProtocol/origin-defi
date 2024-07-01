@@ -2,45 +2,95 @@ import * as Types from '@origin/prime/shared';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/prime/shared';
-export type CurrentRequestsQueryVariables = Types.Exact<{
+export type UserActiveRequestsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
 }>;
 
 
-export type CurrentRequestsQuery = { __typename?: 'Query', lrtWithdrawals: Array<{ __typename?: 'LRTWithdrawal', id: string, startBlock: number, timestamp: string, shares?: Array<string> | null }> };
+export type UserActiveRequestsQuery = { __typename?: 'Query', lrtWithdrawalRequests: Array<{ __typename?: 'LRTWithdrawalRequest', id: string }> };
+
+export type UserWithdrawalsQueryVariables = Types.Exact<{
+  address: Types.Scalars['String']['input'];
+}>;
+
+
+export type UserWithdrawalsQuery = { __typename?: 'Query', lrtWithdrawalRequests: Array<{ __typename?: 'LRTWithdrawalRequest', id: string, sharesAmount: string, claimedAmount: string, blockNumber: number, timestamp: string, status: Types.LrtWithdrawalStatus, primeETHAmount: string, asset: string, withdrawal: { __typename?: 'LRTWithdrawal', id: string, shares?: Array<string> | null, staker: string, delegatedTo: string, withdrawer: string, nonce: string, strategies?: Array<string> | null, startBlock: number } }> };
 
 
 
-export const CurrentRequestsDocument = `
-    query CurrentRequests($address: String!) {
-  lrtWithdrawals(
+export const UserActiveRequestsDocument = `
+    query UserActiveRequests($address: String!) {
+  lrtWithdrawalRequests(
     where: {withdrawer_containsInsensitive: $address, status_in: [Requested]}
   ) {
     id
-    startBlock
-    timestamp
-    shares
   }
 }
     `;
 
-export const useCurrentRequestsQuery = <
-      TData = CurrentRequestsQuery,
+export const useUserActiveRequestsQuery = <
+      TData = UserActiveRequestsQuery,
       TError = unknown
     >(
-      variables: CurrentRequestsQueryVariables,
-      options?: Omit<UseQueryOptions<CurrentRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<CurrentRequestsQuery, TError, TData>['queryKey'] }
+      variables: UserActiveRequestsQueryVariables,
+      options?: Omit<UseQueryOptions<UserActiveRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserActiveRequestsQuery, TError, TData>['queryKey'] }
     ) => {
     
-    return useQuery<CurrentRequestsQuery, TError, TData>(
+    return useQuery<UserActiveRequestsQuery, TError, TData>(
       {
-    queryKey: ['CurrentRequests', variables],
-    queryFn: graphqlClient<CurrentRequestsQuery, CurrentRequestsQueryVariables>(CurrentRequestsDocument, variables),
+    queryKey: ['UserActiveRequests', variables],
+    queryFn: graphqlClient<UserActiveRequestsQuery, UserActiveRequestsQueryVariables>(UserActiveRequestsDocument, variables),
     ...options
   }
     )};
 
-useCurrentRequestsQuery.getKey = (variables: CurrentRequestsQueryVariables) => ['CurrentRequests', variables];
+useUserActiveRequestsQuery.getKey = (variables: UserActiveRequestsQueryVariables) => ['UserActiveRequests', variables];
 
 
-useCurrentRequestsQuery.fetcher = (variables: CurrentRequestsQueryVariables, options?: RequestInit['headers']) => graphqlClient<CurrentRequestsQuery, CurrentRequestsQueryVariables>(CurrentRequestsDocument, variables, options);
+useUserActiveRequestsQuery.fetcher = (variables: UserActiveRequestsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserActiveRequestsQuery, UserActiveRequestsQueryVariables>(UserActiveRequestsDocument, variables, options);
+
+export const UserWithdrawalsDocument = `
+    query UserWithdrawals($address: String!) {
+  lrtWithdrawalRequests(where: {withdrawer_containsInsensitive: $address}) {
+    id
+    sharesAmount
+    claimedAmount
+    blockNumber
+    timestamp
+    status
+    primeETHAmount
+    asset
+    withdrawal {
+      id
+      shares
+      staker
+      delegatedTo
+      withdrawer
+      nonce
+      strategies
+      startBlock
+    }
+  }
+}
+    `;
+
+export const useUserWithdrawalsQuery = <
+      TData = UserWithdrawalsQuery,
+      TError = unknown
+    >(
+      variables: UserWithdrawalsQueryVariables,
+      options?: Omit<UseQueryOptions<UserWithdrawalsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<UserWithdrawalsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<UserWithdrawalsQuery, TError, TData>(
+      {
+    queryKey: ['UserWithdrawals', variables],
+    queryFn: graphqlClient<UserWithdrawalsQuery, UserWithdrawalsQueryVariables>(UserWithdrawalsDocument, variables),
+    ...options
+  }
+    )};
+
+useUserWithdrawalsQuery.getKey = (variables: UserWithdrawalsQueryVariables) => ['UserWithdrawals', variables];
+
+
+useUserWithdrawalsQuery.fetcher = (variables: UserWithdrawalsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserWithdrawalsQuery, UserWithdrawalsQueryVariables>(UserWithdrawalsDocument, variables, options);
