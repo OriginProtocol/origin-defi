@@ -33,7 +33,7 @@ export const SwapView = () => {
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
           <Grid2 xs={12} md={3}>
-            <BridgePromoCard />
+            <BridgePromoCard small />
           </Grid2>
           <Grid2 xs={12} md={6}>
             <Swapper
