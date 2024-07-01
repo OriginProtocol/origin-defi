@@ -51,8 +51,9 @@ export const Topnav = () => {
   const once = useRef(true);
 
   useEffect(() => {
-    if (once && (isNonRebasingOETH || isNonRebasingOUSD)) {
+    if (once.current && (isNonRebasingOETH || isNonRebasingOUSD)) {
       setAlertMenuOpen(true);
+      once.current = false;
     }
   }, [isNonRebasingOETH, isNonRebasingOUSD]);
 
