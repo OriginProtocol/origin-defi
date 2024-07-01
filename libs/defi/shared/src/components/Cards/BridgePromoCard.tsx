@@ -5,14 +5,22 @@ import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { arbitrum, mainnet } from 'viem/chains';
 
-export const BridgePromoCard = () => {
+import type { CardProps } from '@mui/material';
+
+export const BridgePromoCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card sx={{ background: (theme) => theme.palette.background.gradientBlue }}>
+    <Card
+      {...props}
+      sx={{
+        background: (theme) => theme.palette.background.gradientBlue,
+        ...props?.sx,
+      }}
+    >
       <CardContent>
-        <Stack spacing={2} alignItems="flex-start">
-          <Typography variant="body2" fontWeight="bold">
+        <Stack spacing={4} alignItems="flex-start">
+          <Typography variant="h6" fontWeight="bold">
             {intl.formatMessage({
               defaultMessage: 'Use wOETH on Arbitrum to earn ARB rewards!',
             })}
@@ -31,13 +39,13 @@ export const BridgePromoCard = () => {
             <FaArrowRightRegular sx={{ fontSize: 20, color: 'text.primary' }} />
             <ChainIcon chainId={arbitrum.id} sx={{ fontSize: 32 }} />
           </Stack>
-          <Typography fontWeight="medium">
+          <Typography variant="body2" fontWeight="medium">
             {intl.formatMessage({
               defaultMessage:
                 'Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens.',
             })}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={1} width={1}>
+          <Stack spacing={1} width={1}>
             <Button fullWidth component={Link} to="/oeth/bridge">
               {intl.formatMessage({ defaultMessage: 'Bridge' })}
             </Button>
