@@ -14,7 +14,8 @@ import {
   FaCircleXmarkRegular,
 } from '@origin/shared/icons';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useIntervalEffect } from '@react-hookz/web';
+import { useIntervalEffect, usePrevious } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -26,20 +27,15 @@ import type { DialogProps } from '@mui/material';
 const INTERVAL = 2000; // ms
 const MAX_RETRY = 10; // 10 * 2s = 20s
 
-export type WithdrawProgressModalProps = { claimCount: number } & DialogProps;
-
 type Status = 'processing' | 'processed' | 'timeout';
 
-export const WithdrawProgressModal = ({
-  onClose,
-  claimCount,
-  ...rest
-}: WithdrawProgressModalProps) => {
+export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const intl = useIntl();
   const { address } = useAccount();
+  const queryClient = useQueryClient();
   const [retries, setRetries] = useState(0);
   const [status, setStatus] = useState<Status>('processing');
-  const { data: claimAmount } = useUserActiveRequestsQuery(
+  const { data: claimCount } = useUserActiveRequestsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
       enabled: !!address,
@@ -47,17 +43,26 @@ export const WithdrawProgressModal = ({
       select: (data) => data?.lrtWithdrawalRequests?.length ?? 0,
     },
   );
+  const prevClaimCount = usePrevious(claimCount);
 
-  useIntervalEffect(() => {
-    setRetries((prev) => prev + 1);
-    if (status === 'processing') {
-      if (claimAmount !== undefined && claimAmount > claimCount) {
-        setStatus('processed');
-      } else if (retries > MAX_RETRY) {
-        setStatus('timeout');
+  useIntervalEffect(
+    () => {
+      if (status === 'processing') {
+        setRetries((prev) => prev + 1);
+        if (
+          claimCount !== undefined &&
+          prevClaimCount !== undefined &&
+          claimCount > prevClaimCount
+        ) {
+          setStatus('processed');
+          queryClient.invalidateQueries();
+        } else if (retries > MAX_RETRY) {
+          setStatus('timeout');
+        }
       }
-    }
-  }, INTERVAL);
+    },
+    status === 'processing' ? INTERVAL : undefined,
+  );
 
   const icon = {
     processing: (
