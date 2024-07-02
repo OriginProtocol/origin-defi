@@ -2,7 +2,7 @@ import { tokens } from '@origin/shared/contracts';
 import { useRoutingSwapState, useTokenPrice } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { div } from 'dnum';
+import { div, from } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
@@ -48,7 +48,7 @@ export const usePrimeETH_OETH = (amountIn: bigint) => {
       });
 
       if (isNilOrEmpty(oeth_prime) || oeth_prime === 0) {
-        return [0n, tokens.mainnet.OETH.decimals];
+        return from(0);
       }
 
       return div([amountIn, tokens.mainnet.primeETH.decimals], oeth_prime);

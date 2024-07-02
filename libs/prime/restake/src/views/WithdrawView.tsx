@@ -64,9 +64,6 @@ export const WithdrawView = () => {
       ],
     },
     callbacks: {
-      onSimulateError: (err) => {
-        console.log(err);
-      },
       onTxSigned: () => {
         setModalOpen(true);
       },
