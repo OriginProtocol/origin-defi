@@ -444,7 +444,7 @@ const Stepper = ({
           sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
           label={intl.formatMessage({ defaultMessage: 'Withdraw' })}
           validatingTxLabel={intl.formatMessage({
-            defaultMessage: 'Validating',
+            defaultMessage: 'Withdraw',
           })}
         />
         <Button
