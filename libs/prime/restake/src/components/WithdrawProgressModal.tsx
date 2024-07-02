@@ -15,6 +15,7 @@ import {
 } from '@origin/shared/icons';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntervalEffect, usePrevious } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -33,6 +34,7 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const { address } = useAccount();
   const [retries, setRetries] = useState(0);
   const [status, setStatus] = useState<Status>('processing');
+  const queryClient = useQueryClient();
   const { data: claimAmount } = useUserActiveRequestsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
@@ -53,8 +55,15 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   useEffect(() => {
     if (claimAmount !== undefined && claimAmount > (prevClaimAmount ?? 0)) {
       setStatus('processed');
+      queryClient.invalidateQueries({
+        queryKey: [
+          useUserActiveRequestsQuery.getKey({
+            address: address ?? ZERO_ADDRESS,
+          }),
+        ],
+      });
     }
-  }, [claimAmount, prevClaimAmount]);
+  }, [address, claimAmount, prevClaimAmount, queryClient]);
 
   const icon = {
     processing: (
