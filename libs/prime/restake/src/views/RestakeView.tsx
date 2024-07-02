@@ -12,18 +12,15 @@ import type { RouteObject } from 'react-router-dom';
 
 export const RestakeView = () => {
   const { address } = useAccount();
-  const {
-    data: hasClaimableRequest,
-    isLoading: isHasCurrentClaimableRequestLoading,
-  } = useUserActiveRequestsQuery(
-    { address: address ?? ZERO_ADDRESS },
-    {
-      enabled: !!address,
-      select: (data) => data?.lrtWithdrawalRequests?.length > 1,
-    },
-  );
+  const { data: activeRequests, isLoading: isActiveRequestsLoading } =
+    useUserActiveRequestsQuery(
+      { address: address ?? ZERO_ADDRESS },
+      {
+        enabled: !!address,
+      },
+    );
 
-  if (isHasCurrentClaimableRequestLoading) {
+  if (isActiveRequestsLoading) {
     return (
       <Stack
         display="flex"
@@ -36,8 +33,10 @@ export const RestakeView = () => {
     );
   }
 
+  const hasActiveRequests =
+    (activeRequests?.lrtWithdrawalRequests?.length ?? 0) > 0;
   const routes = restakeRoute?.children?.filter(
-    (f) => f?.path !== 'claim' || (hasClaimableRequest && f?.path === 'claim'),
+    (f) => f?.path !== 'claim' || (hasActiveRequests && f?.path === 'claim'),
   );
 
   return (
