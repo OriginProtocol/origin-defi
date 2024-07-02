@@ -80,7 +80,11 @@ export const RewardCard = (props: CardProps) => {
           </Stack>
           <Collapse in={hasRewards}>
             <Stack useFlexGap>
-              <StakeRewardButton sx={{ mt: 3, mb: 1 }} variant="outlined">
+              <StakeRewardButton
+                sx={{ mt: 3, mb: 1 }}
+                variant="outlined"
+                disableNetworkCheck
+              >
                 {intl.formatMessage({ defaultMessage: 'Add to stake' })}
               </StakeRewardButton>
               <TxButton
@@ -88,6 +92,7 @@ export const RewardCard = (props: CardProps) => {
                 callbacks={callbacks}
                 label={intl.formatMessage({ defaultMessage: 'Claim' })}
                 variant="outlined"
+                disableNetworkCheck
               />
             </Stack>
           </Collapse>

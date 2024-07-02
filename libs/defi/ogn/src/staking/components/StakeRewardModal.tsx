@@ -63,7 +63,8 @@ import { useAccount } from 'wagmi';
 import { useStartLockupPolling } from '../hooks';
 import { useOgnLockupsQuery } from '../queries.generated';
 
-import type { ButtonProps, DialogProps, StackProps } from '@mui/material';
+import type { DialogProps, StackProps } from '@mui/material';
+import type { ConnectedButtonProps } from '@origin/shared/providers';
 import type { ChangeEvent, MouseEvent } from 'react';
 
 import type { Lockup } from '../types';
@@ -744,7 +745,7 @@ function LockupSelect({
   );
 }
 
-export const StakeRewardButton = (props: ButtonProps) => {
+export const StakeRewardButton = (props: ConnectedButtonProps) => {
   const [open, setOpen] = useState(false);
 
   return (

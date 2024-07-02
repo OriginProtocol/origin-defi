@@ -1,8 +1,8 @@
-import { Divider, Stack, Typography } from '@mui/material';
+import { Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useTxButton } from '@origin/defi/shared';
 import { ClickAwayPopover, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { PoweredBySafe } from '@origin/shared/icons';
+import { FaXmarkRegular, PoweredBySafe } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
@@ -30,8 +30,23 @@ export const AlertPopover = (
         },
       }}
     >
-      <Stack p={3} spacing={2}>
-        <PoweredBySafe sx={{ width: 1, height: 24 }} />
+      <Stack p={3} spacing={2} position="relative">
+        <IconButton
+          onClick={() => {
+            props?.onClose();
+          }}
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            width: 36,
+            height: 36,
+            border: (theme) => `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <FaXmarkRegular sx={{ fontSize: 16 }} />
+        </IconButton>
+        <PoweredBySafe sx={{ width: 1, height: 24, color: 'text.primary' }} />
         <Typography>
           {intl.formatMessage({
             defaultMessage:

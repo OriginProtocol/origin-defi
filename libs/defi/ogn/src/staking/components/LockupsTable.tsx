@@ -164,6 +164,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
+                disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
               </ExtendButton>
@@ -171,6 +172,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
+                disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Unlock' })}
               </UnstakeLockupButton>
@@ -178,6 +180,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
+                disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Add' })}
               </AddButton>

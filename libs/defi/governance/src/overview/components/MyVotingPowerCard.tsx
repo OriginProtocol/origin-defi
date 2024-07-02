@@ -1,18 +1,24 @@
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
   Divider,
   Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { TokenChip, useOgnInfo } from '@origin/defi/shared';
-import { LoadingLabel, ValueLabel } from '@origin/shared/components';
+import {
+  LoadingLabel,
+  ValueLabel,
+  WalletIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { div, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 
 import { useUserVotingPowerQuery } from '../queries.generated';
 
@@ -21,7 +27,8 @@ import type { CardProps } from '@mui/material';
 export const MyVotingPowerCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
-  const { address, isConnected } = useAccount();
+  const { address, isConnected, connector } = useAccount();
+  const { data: walletClient } = useWalletClient();
   const { data: ognInfo, isLoading: isOgnInfoLoading } = useOgnInfo();
   const { data: info, isLoading: isInfoLoading } = useUserVotingPowerQuery(
     {
@@ -38,10 +45,21 @@ export const MyVotingPowerCard = (props: CardProps) => {
     },
   );
 
+  const handleAddTokenToWallet = () => {
+    walletClient?.watchAsset({
+      type: 'ERC20',
+      options: tokens.mainnet.xOGN,
+    });
+  };
+
+  const xOgnTotalSupply =
+    ognInfo?.xOgnTotalSupply === undefined || ognInfo?.xOgnTotalSupply === 0n
+      ? 1n
+      : BigInt(ognInfo?.xOgnTotalSupply);
   const votingPowerPercent = toNumber(
     div(
       [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
-      [BigInt(ognInfo?.xOgnTotalSupply ?? 1), tokens.mainnet.xOGN.decimals],
+      [xOgnTotalSupply, tokens.mainnet.xOGN.decimals],
     ),
   );
 
@@ -71,11 +89,29 @@ export const MyVotingPowerCard = (props: CardProps) => {
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
             </LoadingLabel>
-            <TokenChip
-              token={tokens.mainnet.xOGN}
-              iconProps={{ sx: { fontSize: 24 } }}
-              labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
-            />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <TokenChip
+                token={tokens.mainnet.xOGN}
+                iconProps={{ sx: { fontSize: 24 } }}
+                labelProps={{ variant: 'featured3', fontWeight: 'medium' }}
+              />
+              <Tooltip
+                title={intl.formatMessage({
+                  defaultMessage: 'Add to metamask',
+                })}
+              >
+                <Button
+                  variant="link"
+                  color="secondary"
+                  onClick={handleAddTokenToWallet}
+                >
+                  <WalletIcon
+                    walletName={connector?.name}
+                    sx={{ fontSize: 12 }}
+                  />
+                </Button>
+              </Tooltip>
+            </Stack>
           </Stack>
           <ValueLabel
             label={intl.formatMessage({

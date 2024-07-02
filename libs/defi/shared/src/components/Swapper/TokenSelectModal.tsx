@@ -16,7 +16,7 @@ import {
   useSwapperPrices,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { ascend, descend, prop, sortWith } from 'ramda';
+import { ascend, prop, sortWith } from 'ramda';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -42,10 +42,7 @@ export const TokenSelectModal = ({
 }: TokenSelectModalProps) => {
   const intl = useIntl();
 
-  const sortedTokens = sortWith<TokenOption>([
-    ascend(prop('isSelected')),
-    descend(prop('isSwappable')),
-  ])(tokens);
+  const sortedTokens = sortWith<TokenOption>([ascend(prop('symbol'))])(tokens);
 
   return (
     <Dialog fullWidth maxWidth="sm" {...rest} onClose={onClose}>

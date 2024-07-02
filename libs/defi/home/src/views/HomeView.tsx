@@ -45,7 +45,7 @@ export const HomeView = () => {
               </Grid2>
             ))}
             <Grid2 xs={12} md={4}>
-              <BridgePromoCard />
+              <BridgePromoCard sx={{ height: 1 }} />
             </Grid2>
           </Grid2>
         </Box>

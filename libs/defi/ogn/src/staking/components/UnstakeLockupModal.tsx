@@ -28,7 +28,8 @@ import { useReadContract } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
 
-import type { ButtonProps, DialogProps } from '@mui/material';
+import type { DialogProps } from '@mui/material';
+import type { ConnectedButtonProps } from '@origin/shared/providers';
 
 import type { Lockup } from '../types';
 
@@ -212,7 +213,7 @@ export const UnstakeLockupModal = ({
 
 export type UnstakeLockupButtonProps = {
   lockup: Lockup;
-} & ButtonProps;
+} & ConnectedButtonProps;
 
 export const UnstakeLockupButton = ({
   lockup,
