@@ -304,7 +304,7 @@ const Form = ({
         >
           <WarningExclamation sx={{ fontSize: 74, color: 'primary.main' }} />
           <Typography
-            sx={{ fontSize: 16, fontWeight: 'medium', lineHeight: 2 }}
+            sx={{ fontSize: 16, fontWeight: 'medium', lineHeight: 1.5 }}
           >
             {intl.formatMessage({
               defaultMessage:
