@@ -5,6 +5,7 @@ import { tokens } from '@origin/shared/contracts';
 import { useFormat, useTokenPrice } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
+import { useMatch } from 'react-router-dom';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -17,6 +18,7 @@ export const PastClaimsCard = (props: CardProps) => {
   const intl = useIntl();
   const { formatAmount, formatCurrency } = useFormat();
   const { address, isConnected } = useAccount();
+  const match = useMatch('/restake/claim');
   const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
   const { data: withdrawals, isLoading: iswithdrawalsLoading } =
     useUserWithdrawalsQuery(
@@ -30,7 +32,7 @@ export const PastClaimsCard = (props: CardProps) => {
       },
     );
 
-  if (iswithdrawalsLoading || isNilOrEmpty(withdrawals)) {
+  if (!match || iswithdrawalsLoading || isNilOrEmpty(withdrawals)) {
     return null;
   }
 

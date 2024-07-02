@@ -20,18 +20,16 @@ import {
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useNavigate } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../components/TokenInput';
+import { WithdrawProgressModal } from '../components/WithdrawProgressModal';
 import { useOethWithdrawAmount } from '../hooks';
-import { useUserActiveRequestsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -47,10 +45,8 @@ type Step = 'disclaimer' | 'form' | 'stepper';
 export const WithdrawView = () => {
   const [step, setStep] = useState<Step>('disclaimer');
   const [amount, setAmount] = useState(0n);
+  const [modalOpen, setModalOpen] = useState(false);
   const converted = useOethWithdrawAmount(amount);
-  const { address } = useAccount();
-  const navigate = useNavigate();
-  const queryClient = useQueryClient();
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: contracts.mainnet.lrtDepositPool,
@@ -58,15 +54,8 @@ export const WithdrawView = () => {
       args: [tokens.mainnet.OETH.address, converted[0], amount],
     },
     callbacks: {
-      onWriteSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            useUserActiveRequestsQuery.getKey({
-              address: address ?? ZERO_ADDRESS,
-            }),
-          ],
-        });
-        navigate('/restake/');
+      onTxSigned: () => {
+        setModalOpen(true);
       },
     },
     enableGas: true,
@@ -101,12 +90,21 @@ export const WithdrawView = () => {
   }
 
   return (
-    <Stepper
-      amount={amount}
-      converted={converted}
-      params={params}
-      callbacks={callbacks}
-    />
+    <>
+      <Stepper
+        amount={amount}
+        converted={converted}
+        params={params}
+        callbacks={callbacks}
+      />
+      <WithdrawProgressModal
+        key={modalOpen ? '' : 'reset'}
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
+    </>
   );
 };
 

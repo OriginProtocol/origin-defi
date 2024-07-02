@@ -14,7 +14,7 @@ export const RestakeView = () => {
   const { address } = useAccount();
   const {
     data: hasClaimableRequest,
-    isLoading: isHsCurrentClaimableRequestLoading,
+    isLoading: isHasCurrentClaimableRequestLoading,
   } = useUserActiveRequestsQuery(
     { address: address ?? ZERO_ADDRESS },
     {
@@ -23,7 +23,7 @@ export const RestakeView = () => {
     },
   );
 
-  if (isHsCurrentClaimableRequestLoading) {
+  if (isHasCurrentClaimableRequestLoading) {
     return (
       <Stack
         display="flex"
