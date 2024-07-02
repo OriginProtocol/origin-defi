@@ -390,6 +390,7 @@ const Stepper = ({
         px={3}
         py={1}
         {...valueLabelProps}
+        labelProps={{ variant: 'body1', color: 'text.primary' }}
       />
       <Divider />
       <Stack px={3} py={1}>
