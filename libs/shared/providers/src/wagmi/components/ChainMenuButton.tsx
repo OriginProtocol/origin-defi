@@ -5,6 +5,9 @@ import { CircularProgress } from '@mui/material';
 import { ChainIcon, ClickAwayMenu } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaCheckRegular } from '@origin/shared/icons';
+import { FaXmarkRegular } from '@origin/shared/icons';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { useIntl } from 'react-intl';
 import { useAccount, useSwitchChain } from 'wagmi';
 
 import type { ButtonProps, MenuItemProps } from '@mui/material';
@@ -25,11 +28,13 @@ export const ChainMenuButton = ({
   iconSize = 24,
   menuProps,
   menuItemProps,
+  disabled,
   ...rest
 }: ChainMenuButtonProps) => {
+  const intl = useIntl();
   const [open, setOpen] = useState(false);
   const anchorEl = useRef(null);
-  const { chain } = useAccount();
+  const { chain, isConnected } = useAccount();
   const { chains, switchChain, isPending } = useSwitchChain();
 
   const handleChainClick = (chainId: number) => () => {
@@ -40,11 +45,14 @@ export const ChainMenuButton = ({
   };
 
   const chainId = chain?.id ?? chains[0].id;
+  const isWrongChain =
+    isConnected && isNilOrEmpty(chains.find((c) => c.id === chain?.id));
 
   return (
     <>
       <Button
         {...rest}
+        disabled={disabled || isWrongChain || !isConnected}
         onClick={() => {
           setOpen(true);
         }}
@@ -57,12 +65,16 @@ export const ChainMenuButton = ({
               color="inherit"
             />
           </Box>
+        ) : isWrongChain ? (
+          <FaXmarkRegular sx={{ fontSize: iconSize, color: 'error.main' }} />
         ) : (
           <ChainIcon chainId={chainId} sx={{ fontSize: iconSize }} />
         )}
         {!hideChainName && (
           <Typography sx={{ ml: 1 }}>
-            {supportedChainNames[chainId].short}
+            {isWrongChain
+              ? intl.formatMessage({ defaultMessage: 'Unsupported' })
+              : supportedChainNames[chainId].short}
           </Typography>
         )}
       </Button>
