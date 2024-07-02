@@ -25,6 +25,7 @@ import {
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { add, format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -35,6 +36,7 @@ import { useAccount } from 'wagmi';
 import { TokenInput } from '../components/TokenInput';
 import { WithdrawProgressModal } from '../components/WithdrawProgressModal';
 import { usePrimeETH_OETH } from '../hooks';
+import { useUserActiveRequestsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -48,9 +50,17 @@ import type { Dnum } from 'dnum';
 type Step = 'disclaimer' | 'form' | 'stepper';
 
 export const WithdrawView = () => {
+  const { address } = useAccount();
   const [step, setStep] = useState<Step>('disclaimer');
   const [amount, setAmount] = useState(0n);
   const [modalOpen, setModalOpen] = useState(false);
+  const { data: claimAmount } = useUserActiveRequestsQuery(
+    { address: address ?? ZERO_ADDRESS },
+    {
+      enabled: !!address,
+      select: (data) => data?.lrtWithdrawalRequests?.length ?? 0,
+    },
+  );
   const { data: converted, isLoading: isConvertedLoading } =
     usePrimeETH_OETH(amount);
   const { params, callbacks, gasPrice } = useTxButton({
@@ -117,6 +127,7 @@ export const WithdrawView = () => {
         onClose={() => {
           setModalOpen(false);
         }}
+        claimCount={claimAmount ?? 0}
       />
     </>
   );

@@ -14,7 +14,7 @@ import {
   FaCircleXmarkRegular,
 } from '@origin/shared/icons';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useIntervalEffect, usePrevious } from '@react-hookz/web';
+import { useIntervalEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -27,9 +27,15 @@ import type { DialogProps } from '@mui/material';
 const INTERVAL = 2000; // ms
 const MAX_RETRY = 10; // 10 * 2s = 20s
 
+export type WithdrawProgressModalProps = { claimCount: number } & DialogProps;
+
 type Status = 'processing' | 'processed' | 'timeout';
 
-export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
+export const WithdrawProgressModal = ({
+  onClose,
+  claimCount,
+  ...rest
+}: WithdrawProgressModalProps) => {
   const intl = useIntl();
   const { address } = useAccount();
   const [retries, setRetries] = useState(0);
@@ -43,7 +49,6 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
       select: (data) => data?.lrtWithdrawalRequests?.length ?? 0,
     },
   );
-  const prevClaimAmount = usePrevious(claimAmount);
 
   useIntervalEffect(() => {
     setRetries((prev) => prev + 1);
@@ -53,7 +58,7 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   }, INTERVAL);
 
   useEffect(() => {
-    if (claimAmount !== undefined && claimAmount > (prevClaimAmount ?? 0)) {
+    if (claimAmount !== undefined && claimAmount > claimCount) {
       setStatus('processed');
       queryClient.invalidateQueries({
         queryKey: [
@@ -63,7 +68,7 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
         ],
       });
     }
-  }, [address, claimAmount, prevClaimAmount, queryClient]);
+  }, [address, claimAmount, claimCount, queryClient]);
 
   const icon = {
     processing: (
