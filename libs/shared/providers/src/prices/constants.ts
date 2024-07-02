@@ -5,6 +5,7 @@ import {
   contracts,
   tokens,
 } from '@origin/shared/contracts';
+import { sub, toNumber } from 'dnum';
 import { pathOr } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
 import { mainnet } from 'wagmi/chains';
@@ -267,11 +268,6 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     type: 'derived',
     dependsOn: ['primeETH_ETH', 'ETH_USD'],
   },
-  primeETH_OETH: {
-    id: 'primeETH_OETH',
-    type: 'derived',
-    dependsOn: ['primeETH_ETH', 'ETH_OETH'],
-  },
   mETH_ETH: {
     id: 'mETH_ETH',
     type: 'wagmi',
@@ -339,9 +335,23 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     type: 'rest',
     config: async () => 1 - OETH_REDEEM_FEE,
   },
-  ETH_OETH: {
-    id: 'ETH_OETH',
-    type: 'rest',
-    config: async () => 1 / 1 - OETH_REDEEM_FEE,
+  OETH_primeETH: {
+    type: 'wagmi',
+    id: 'OETH_primeETH',
+    config: {
+      address: contracts.mainnet.lrtDepositPool.address,
+      abi: contracts.mainnet.lrtDepositPool.abi,
+      functionName: 'getMintAmount',
+      args: [
+        tokens.mainnet.OETH.address,
+        parseUnits('1', tokens.mainnet.OETH.decimals),
+      ],
+      chainId: mainnet.id,
+    },
+    mapResult: (OETH_primeETH: bigint) => {
+      const amt = sub([OETH_primeETH, tokens.mainnet.primeETH.decimals], 1e-18);
+
+      return toNumber(amt);
+    },
   },
 };
