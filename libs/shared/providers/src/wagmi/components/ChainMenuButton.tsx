@@ -4,8 +4,10 @@ import { Box, Button, MenuItem, Stack, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 import { ChainIcon, ClickAwayMenu } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
-import { FaCheckRegular } from '@origin/shared/icons';
-import { FaXmarkRegular } from '@origin/shared/icons';
+import {
+  FaCheckRegular,
+  FaCircleExclamationRegular,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -52,7 +54,7 @@ export const ChainMenuButton = ({
     <>
       <Button
         {...rest}
-        disabled={disabled || isWrongChain || !isConnected}
+        disabled={disabled || !isConnected}
         onClick={() => {
           setOpen(true);
         }}
@@ -66,7 +68,9 @@ export const ChainMenuButton = ({
             />
           </Box>
         ) : isWrongChain ? (
-          <FaXmarkRegular sx={{ fontSize: iconSize, color: 'error.main' }} />
+          <FaCircleExclamationRegular
+            sx={{ fontSize: iconSize, color: 'warning.main' }}
+          />
         ) : (
           <ChainIcon chainId={chainId} sx={{ fontSize: iconSize }} />
         )}
@@ -90,27 +94,48 @@ export const ChainMenuButton = ({
           setOpen(false);
         }}
       >
-        {chains.map((c) => (
+        {isWrongChain ? (
           <MenuItem
             {...menuItemProps}
-            key={c.id}
-            selected={c.id === chainId}
-            onClick={handleChainClick(c.id)}
-            sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            onClick={handleChainClick(chains[0].id)}
+            sx={{
+              minWidth: 150,
+              maxWidth: 200,
+              textWrap: 'balance',
+              ...menuItemProps?.sx,
+            }}
           >
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              useFlexGap
-            >
-              {supportedChainNames[c.id].short}
-              {c.id === chainId && (
-                <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
-              )}
-            </Stack>
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  'This dApp does not support the currently selected network, please switch to {name}',
+              },
+              { name: supportedChainNames[chainId].short },
+            )}
           </MenuItem>
-        ))}
+        ) : (
+          chains.map((c) => (
+            <MenuItem
+              {...menuItemProps}
+              key={c.id}
+              selected={c.id === chainId}
+              onClick={handleChainClick(c.id)}
+              sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                useFlexGap
+              >
+                {supportedChainNames[c.id].short}
+                {c.id === chainId && (
+                  <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
+                )}
+              </Stack>
+            </MenuItem>
+          ))
+        )}
       </ClickAwayMenu>
     </>
   );
