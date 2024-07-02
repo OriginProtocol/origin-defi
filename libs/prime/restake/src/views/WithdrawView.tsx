@@ -10,7 +10,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ExternalLink, TokenIcon, ValueLabel } from '@origin/shared/components';
+import {
+  ExternalLink,
+  LoadingLabel,
+  TokenIcon,
+  ValueLabel,
+} from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { WarningExclamation } from '@origin/shared/icons';
 import {
@@ -20,7 +25,7 @@ import {
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { format } from 'dnum';
+import { add, format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -29,7 +34,7 @@ import { useAccount } from 'wagmi';
 
 import { TokenInput } from '../components/TokenInput';
 import { WithdrawProgressModal } from '../components/WithdrawProgressModal';
-import { useOethWithdrawAmount } from '../hooks';
+import { usePrimeETH_OETH } from '../hooks';
 
 import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -46,18 +51,28 @@ export const WithdrawView = () => {
   const [step, setStep] = useState<Step>('disclaimer');
   const [amount, setAmount] = useState(0n);
   const [modalOpen, setModalOpen] = useState(false);
-  const converted = useOethWithdrawAmount(amount);
+  const { data: converted, isLoading: isConvertedLoading } =
+    usePrimeETH_OETH(amount);
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: contracts.mainnet.lrtDepositPool,
       functionName: 'requestWithdrawal',
-      args: [tokens.mainnet.OETH.address, converted[0], amount],
+      args: [
+        tokens.mainnet.OETH.address,
+        converted?.[0] ?? 0n,
+        add([amount, tokens.mainnet.primeETH.decimals], 1e-15)[0],
+      ],
     },
     callbacks: {
+      onSimulateError: (err) => {
+        console.log(err);
+      },
       onTxSigned: () => {
         setModalOpen(true);
       },
     },
+    disableActivity: true,
+    disableNotification: true,
     enableGas: true,
   });
 
@@ -81,6 +96,7 @@ export const WithdrawView = () => {
         }}
         amount={amount}
         converted={converted}
+        isConvertedLoading={isConvertedLoading}
         setAmount={(val: bigint) => {
           setAmount(val);
         }}
@@ -94,6 +110,7 @@ export const WithdrawView = () => {
       <Stepper
         amount={amount}
         converted={converted}
+        isConvertedLoading={isConvertedLoading}
         params={params}
         callbacks={callbacks}
       />
@@ -195,7 +212,8 @@ type FormProps = {
   onContinueClick: () => void;
   amount: bigint;
   setAmount: (val: bigint) => void;
-  converted: Dnum;
+  converted: Dnum | undefined;
+  isConvertedLoading: boolean;
   gasPrice: GasPrice | null | undefined;
 } & StackProps;
 
@@ -204,6 +222,7 @@ const Form = ({
   amount,
   setAmount,
   converted,
+  isConvertedLoading,
   gasPrice,
   ...rest
 }: FormProps) => {
@@ -213,7 +232,7 @@ const Form = ({
   const { data: bal, isLoading: isBalLoading } = useWatchBalance({
     token: tokens.mainnet.primeETH,
   });
-  const rate = useOethWithdrawAmount(
+  const { data: rate, isLoading: isRateLoading } = usePrimeETH_OETH(
     parseUnits('1', tokens.mainnet.primeETH.decimals),
   );
 
@@ -221,7 +240,8 @@ const Form = ({
     setAmount(val);
   };
 
-  const buttonDisabled = amount === 0n || amount > (bal ?? 0n);
+  const buttonDisabled =
+    isConvertedLoading || amount === 0n || amount > (bal ?? 0n);
   const buttonLabel =
     amount > (bal ?? 0n)
       ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
@@ -257,8 +277,9 @@ const Form = ({
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
           value={intl.formatMessage(
             { defaultMessage: '1:{rate}' },
-            { rate: format(rate, 4) },
+            { rate: format(rate ?? [0n, 18], 4) },
           )}
+          isLoading={isRateLoading}
           {...valueLabelProps}
         />
         <ValueLabel
@@ -272,14 +293,13 @@ const Form = ({
         <Typography mb={2} color="text.secondary">
           {intl.formatMessage({ defaultMessage: 'Receive' })}
         </Typography>
-        <Typography>
-          {intl.formatMessage(
-            {
-              defaultMessage: '{converted} OETH',
-            },
-            { converted: format(converted, 4) },
-          )}
-        </Typography>
+        <Stack direction="row" alignItems="center" spacing={0.5} pb={0.5}>
+          <LoadingLabel isLoading={isConvertedLoading}>
+            {amount === 0n || !converted ? '0.00' : format(converted, 4)}
+          </LoadingLabel>
+          <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 20 }} />
+          <Typography>{tokens.mainnet.OETH.symbol}</Typography>
+        </Stack>
         <Typography>
           {intl.formatMessage({
             defaultMessage: '7 days retention period',
@@ -327,7 +347,8 @@ const Form = ({
 
 type StepperProps = {
   amount: bigint;
-  converted: Dnum;
+  converted: Dnum | undefined;
+  isConvertedLoading: boolean;
   params: WriteTransactionParameters;
   callbacks: WriteTransactionCallbacks;
 } & StackProps;
@@ -335,6 +356,7 @@ type StepperProps = {
 const Stepper = ({
   amount,
   converted,
+  isConvertedLoading,
   params,
   callbacks,
   ...rest
@@ -350,6 +372,8 @@ const Stepper = ({
     intl.formatMessage({ defaultMessage: 'Return to Claim' }),
   ];
 
+  const buttonDisabled = isConvertedLoading || !checked;
+
   return (
     <Stack {...rest}>
       <Typography variant="h5" px={3} py={1}>
@@ -361,7 +385,9 @@ const Stepper = ({
         value={
           <Stack direction="row" alignItems="center" spacing={1}>
             <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
-            <Typography>{format(converted, 4)}</Typography>
+            <LoadingLabel isLoading={isConvertedLoading}>
+              {format(converted ?? [0n, 18], 4)}
+            </LoadingLabel>
           </Stack>
         }
         px={3}
@@ -417,9 +443,12 @@ const Stepper = ({
         <TxButton
           params={params}
           callbacks={callbacks}
-          disabled={!checked}
+          disabled={buttonDisabled}
           sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
           label={intl.formatMessage({ defaultMessage: 'Withdraw' })}
+          validatingTxLabel={intl.formatMessage({
+            defaultMessage: 'Validating',
+          })}
         />
         <Button
           component={RouterLink}

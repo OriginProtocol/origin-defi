@@ -1,7 +1,8 @@
 import { tokens } from '@origin/shared/contracts';
 import { useRoutingSwapState, useTokenPrice } from '@origin/shared/providers';
-import { useQuery } from '@tanstack/react-query';
-import { from, mul } from 'dnum';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { div } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig } from 'wagmi';
 
@@ -34,10 +35,23 @@ export const useExchangeRate = () => {
   });
 };
 
-export const useOethWithdrawAmount = (amountIn: bigint) => {
-  const { data: price, isLoading } = useTokenPrice('primeETH_OETH');
+export const usePrimeETH_OETH = (amountIn: bigint) => {
+  const config = useConfig();
+  const queryClient = useQueryClient();
 
-  return isLoading || amountIn === 0n || !price
-    ? from(0, tokens.mainnet.primeETH.decimals)
-    : mul([amountIn, tokens.mainnet.primeETH.decimals], price);
+  return useQuery({
+    queryKey: ['usePrimeETH_OETH', amountIn?.toString()],
+    queryFn: async () => {
+      const oeth_prime = await queryClient.fetchQuery({
+        queryKey: useTokenPrice.getKey('OETH_primeETH'),
+        queryFn: useTokenPrice.fetcher(config, queryClient),
+      });
+
+      if (isNilOrEmpty(oeth_prime) || oeth_prime === 0) {
+        return [0n, tokens.mainnet.OETH.decimals];
+      }
+
+      return div([amountIn, tokens.mainnet.primeETH.decimals], oeth_prime);
+    },
+  });
 };

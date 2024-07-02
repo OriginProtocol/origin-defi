@@ -1,6 +1,6 @@
 import { CircularProgress, Divider, Stack, Typography } from '@mui/material';
 import { LrtWithdrawalStatus } from '@origin/prime/shared';
-import { Countdown, LoadingLabel } from '@origin/shared/components';
+import { Countdown, LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import {
   TxButton,
@@ -82,8 +82,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const { formatCurrency, formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { data: price, isLoading: isPriceLoading } =
-    useTokenPrice('primeETH_USD');
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: contracts.mainnet.lrtDepositPool,
@@ -111,12 +110,12 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const targetDate = add(new Date(request.timestamp), { days: 7 });
   const isClaimDisabled =
     request.blockNumber + WAITING_BLOCK_AMOUNT > (blockNumber ?? 0);
-  const primeConverted =
-    (price ?? 0) *
-    +formatUnits(
-      BigInt(request.primeETHAmount),
-      tokens.mainnet.primeETH.decimals,
-    );
+  const available = isClaimDisabled ? 0n : BigInt(request.sharesAmount);
+  const pending = isClaimDisabled ? BigInt(request.sharesAmount) : 0n;
+  const availableConverted =
+    (price ?? 0) * +formatUnits(available, tokens.mainnet.OETH.decimals);
+  const pendingConverted =
+    (price ?? 0) * +formatUnits(pending, tokens.mainnet.OETH.decimals);
 
   return (
     <Stack p={3} {...rest}>
@@ -138,22 +137,39 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
         <Stack direction="row" justifyContent="space-around" width={0.5} px={2}>
           <Stack alignItems="flex-start">
             <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'PrimeETH' })}
+              {intl.formatMessage({ defaultMessage: 'Available' })}
             </Typography>
-            <Typography fontSize={16} fontWeight="medium">
-              {formatAmount(BigInt(request.primeETHAmount))}
-            </Typography>
-            <LoadingLabel variant="subtitle2" isLoading={isPriceLoading}>
-              {formatCurrency(primeConverted)}
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <TokenIcon token={tokens.mainnet.OETH} />
+              <Typography fontSize={16} fontWeight="medium">
+                {formatAmount(available)}
+              </Typography>
+            </Stack>
+            <LoadingLabel
+              variant="subtitle2"
+              color="text.secondary"
+              isLoading={isPriceLoading}
+            >
+              {formatCurrency(availableConverted)}
             </LoadingLabel>
           </Stack>
           <Stack alignItems="flex-start">
             <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'OETH to claim' })}
+              {intl.formatMessage({ defaultMessage: 'Pending' })}
             </Typography>
-            <Typography fontSize={16} fontWeight="medium">
-              {formatAmount(BigInt(request.sharesAmount))}
-            </Typography>
+            <Stack direction="row" alignItems="center" spacing={0.5}>
+              <TokenIcon token={tokens.mainnet.OETH} />
+              <Typography fontSize={16} fontWeight="medium">
+                {formatAmount(pending)}
+              </Typography>
+            </Stack>
+            <LoadingLabel
+              variant="subtitle2"
+              color="text.secondary"
+              isLoading={isPriceLoading}
+            >
+              {formatCurrency(pendingConverted)}
+            </LoadingLabel>
           </Stack>
         </Stack>
       </Stack>
