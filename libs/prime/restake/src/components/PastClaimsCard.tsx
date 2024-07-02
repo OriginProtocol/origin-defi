@@ -68,7 +68,7 @@ export const PastClaimsCard = (props: CardProps) => {
             value={intl.formatMessage(
               { defaultMessage: '{amount} {converted}' },
               {
-                amount: formatAmount(BigInt(r.claimedAmount)),
+                amount: formatAmount(BigInt(r.assetAmount)),
                 converted: (
                   <Typography
                     variant="body2"
@@ -79,7 +79,7 @@ export const PastClaimsCard = (props: CardProps) => {
                     {formatCurrency(
                       (price ?? 0) *
                         +formatUnits(
-                          BigInt(r.claimedAmount),
+                          BigInt(r.assetAmount),
                           tokens.mainnet.OETH.decimals,
                         ),
                     )}

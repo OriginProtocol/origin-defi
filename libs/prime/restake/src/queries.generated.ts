@@ -14,7 +14,7 @@ export type UserWithdrawalsQueryVariables = Types.Exact<{
 }>;
 
 
-export type UserWithdrawalsQuery = { __typename?: 'Query', lrtWithdrawalRequests: Array<{ __typename?: 'LRTWithdrawalRequest', id: string, sharesAmount: string, claimedAmount: string, blockNumber: number, timestamp: string, status: Types.LrtWithdrawalStatus, primeETHAmount: string, asset: string, withdrawal: { __typename?: 'LRTWithdrawal', id: string, shares?: Array<string> | null, staker: string, delegatedTo: string, withdrawer: string, nonce: string, strategies?: Array<string> | null, startBlock: number } }> };
+export type UserWithdrawalsQuery = { __typename?: 'Query', lrtWithdrawalRequests: Array<{ __typename?: 'LRTWithdrawalRequest', id: string, blockNumber: number, timestamp: string, status: Types.LrtWithdrawalStatus, assetAmount: string, primeETHAmount: string, asset: string, withdrawal: { __typename?: 'LRTWithdrawal', id: string, shares?: Array<string> | null, staker: string, delegatedTo: string, withdrawer: string, nonce: string, strategies?: Array<string> | null, startBlock: number } }> };
 
 
 
@@ -53,11 +53,10 @@ export const UserWithdrawalsDocument = `
     query UserWithdrawals($address: String!) {
   lrtWithdrawalRequests(where: {withdrawer_containsInsensitive: $address}) {
     id
-    sharesAmount
-    claimedAmount
     blockNumber
     timestamp
     status
+    assetAmount
     primeETHAmount
     asset
     withdrawal {

@@ -392,8 +392,6 @@ export type RankingObject = {
 
 export type RankingWhere = {
   category?: InputMaybe<Scalars['String']['input']>;
-  id?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   network?: InputMaybe<Scalars['String']['input']>;
   plugin?: InputMaybe<Scalars['String']['input']>;
   search?: InputMaybe<Scalars['String']['input']>;

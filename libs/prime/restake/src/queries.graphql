@@ -7,15 +7,12 @@ query UserActiveRequests($address: String!) {
 }
 
 query UserWithdrawals($address: String!) {
-  lrtWithdrawalRequests(
-    where: { withdrawer_containsInsensitive: $address }
-  ) {
+  lrtWithdrawalRequests(where: { withdrawer_containsInsensitive: $address }) {
     id
-    sharesAmount
-    claimedAmount
     blockNumber
     timestamp
     status
+    assetAmount
     primeETHAmount
     asset
     withdrawal {
