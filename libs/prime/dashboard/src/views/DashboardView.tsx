@@ -44,7 +44,7 @@ export const DashboardView = () => {
     <Stack
       sx={{
         maxWidth: 700,
-        width: '100%',
+        width: 1,
         mx: 'auto',
       }}
     >

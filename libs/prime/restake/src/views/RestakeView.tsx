@@ -41,7 +41,7 @@ export const RestakeView = () => {
 
   return (
     <Stack alignItems="center" spacing={3}>
-      <Card sx={{ maxWidth: 540, width: 1 }}>
+      <Card sx={{ maxWidth: { xs: 1, md: 540 }, width: 1 }}>
         <Stack sx={{ p: 2, alignItems: 'center' }}>
           <Stack
             direction="row"
@@ -58,7 +58,7 @@ export const RestakeView = () => {
         <Divider />
         <Outlet />
       </Card>
-      <PastClaimsCard sx={{ maxWidth: 540, width: 1 }} />
+      <PastClaimsCard sx={{ maxWidth: { xs: 1, md: 540 }, width: 1 }} />
     </Stack>
   );
 };

@@ -51,7 +51,10 @@ useUserActiveRequestsQuery.fetcher = (variables: UserActiveRequestsQueryVariable
 
 export const UserWithdrawalsDocument = `
     query UserWithdrawals($address: String!) {
-  lrtWithdrawalRequests(where: {withdrawer_containsInsensitive: $address}) {
+  lrtWithdrawalRequests(
+    where: {withdrawer_containsInsensitive: $address}
+    orderBy: [timestamp_DESC]
+  ) {
     id
     blockNumber
     timestamp

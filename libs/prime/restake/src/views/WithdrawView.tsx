@@ -181,11 +181,11 @@ const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
       </ExternalLink>
       <Button
         component={RouterLink}
-        to="/restake/"
+        to="/dashboard"
         fullWidth
         sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
       >
-        {intl.formatMessage({ defaultMessage: 'Back to staking' })}
+        {intl.formatMessage({ defaultMessage: 'Back to dashboard' })}
       </Button>
       <Button
         variant="text"

@@ -31,7 +31,7 @@ export const YNBanner = (props: StackProps) => {
         >
           {intl.formatMessage({
             defaultMessage:
-              'Mint primeETH with OETH and start earning a piece of YieldNest',
+              'Hold primeETH to start earning a piece of YieldNest',
           })}
         </Typography>
         <Typography
@@ -41,7 +41,7 @@ export const YNBanner = (props: StackProps) => {
         >
           {intl.formatMessage({
             defaultMessage:
-              'Become eligible for the YieldNest Seeds campaign and upcoming airdrop.',
+              'Become eligible for YieldNest’s YND airdrop based on primeETH XP earned.',
           })}
         </Typography>
       </Stack>

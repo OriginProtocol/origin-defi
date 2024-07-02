@@ -171,7 +171,7 @@ export const AdCards = (props: StackProps) => {
   ];
 
   return (
-    <Stack spacing={3} {...props}>
+    <Stack {...props}>
       {ads.map((a, i) => (
         <AdCard key={`ad-${i}`} ad={a} />
       ))}

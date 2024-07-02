@@ -7,7 +7,10 @@ query UserActiveRequests($address: String!) {
 }
 
 query UserWithdrawals($address: String!) {
-  lrtWithdrawalRequests(where: { withdrawer_containsInsensitive: $address }) {
+  lrtWithdrawalRequests(
+    where: { withdrawer_containsInsensitive: $address }
+    orderBy: [timestamp_DESC]
+  ) {
     id
     blockNumber
     timestamp
