@@ -5,7 +5,6 @@ import {
   contracts,
   tokens,
 } from '@origin/shared/contracts';
-import { sub, toNumber } from 'dnum';
 import { pathOr } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
 import { mainnet } from 'wagmi/chains';
@@ -191,7 +190,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: tokens.mainnet.wOETH.abi,
       functionName: 'previewRedeem',
       args: [parseUnits('1', tokens.mainnet.wOETH.decimals)],
-      chainId: mainnet.id,
+      chainId: tokens.mainnet.wOETH.chainId,
     },
     mapResult: (woeth_usd: bigint) => {
       return +formatUnits(woeth_usd, tokens.mainnet.wOETH.decimals);
@@ -210,7 +209,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: tokens.mainnet.wOUSD.abi,
       functionName: 'previewRedeem',
       args: [parseUnits('1', tokens.mainnet.wOUSD.decimals)],
-      chainId: mainnet.id,
+      chainId: tokens.mainnet.wOUSD.chainId,
     },
     mapResult: (wousd_usd: bigint) => {
       return +formatUnits(wousd_usd, tokens.mainnet.OUSD.decimals);
@@ -229,7 +228,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: tokens.mainnet.sfrxETH.abi,
       functionName: 'previewRedeem',
       args: [parseUnits('1', tokens.mainnet.sfrxETH.decimals)],
-      chainId: mainnet.id,
+      chainId: tokens.mainnet.sfrxETH.chainId,
     },
     mapResult: (sfrxeth_usd: bigint) => {
       return +formatUnits(sfrxeth_usd, tokens.mainnet.sfrxETH.decimals);
@@ -257,7 +256,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       address: contracts.mainnet.lrtOracle.address,
       abi: contracts.mainnet.lrtOracle.abi,
       functionName: 'primeETHPrice',
-      chainId: mainnet.id,
+      chainId: contracts.mainnet.lrtOracle.chainId,
     },
     mapResult: (primeETH_ETH: bigint) => {
       return +formatUnits(primeETH_ETH, tokens.mainnet.primeETH.decimals);
@@ -276,7 +275,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: contracts.mainnet.lrtOracle.abi,
       functionName: 'getAssetPrice',
       args: [tokens.mainnet.mETH.address],
-      chainId: mainnet.id,
+      chainId: contracts.mainnet.lrtOracle.chainId,
     },
     mapResult: (meth_eth: bigint) => {
       return +formatUnits(meth_eth, tokens.mainnet.mETH.decimals);
@@ -295,7 +294,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: contracts.mainnet.lrtOracle.abi,
       functionName: 'getAssetPrice',
       args: [tokens.mainnet.ETHx.address],
-      chainId: mainnet.id,
+      chainId: contracts.mainnet.lrtOracle.chainId,
     },
     mapResult: (ethx_eth: bigint) => {
       return +formatUnits(ethx_eth, tokens.mainnet.ETHx.decimals);
@@ -314,7 +313,7 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       abi: contracts.mainnet.lrtOracle.abi,
       functionName: 'getAssetPrice',
       args: [tokens.mainnet.swETH.address],
-      chainId: mainnet.id,
+      chainId: contracts.mainnet.lrtOracle.chainId,
     },
     mapResult: (sweth_eth: bigint) => {
       return +formatUnits(sweth_eth, tokens.mainnet.swETH.decimals);
@@ -334,24 +333,5 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: 'OETH_ETH',
     type: 'rest',
     config: async () => 1 - OETH_REDEEM_FEE,
-  },
-  OETH_primeETH: {
-    type: 'wagmi',
-    id: 'OETH_primeETH',
-    config: {
-      address: contracts.mainnet.lrtDepositPool.address,
-      abi: contracts.mainnet.lrtDepositPool.abi,
-      functionName: 'getMintAmount',
-      args: [
-        tokens.mainnet.OETH.address,
-        parseUnits('1', tokens.mainnet.OETH.decimals),
-      ],
-      chainId: mainnet.id,
-    },
-    mapResult: (OETH_primeETH: bigint) => {
-      const amt = sub([OETH_primeETH, tokens.mainnet.primeETH.decimals], 1e-18);
-
-      return toNumber(amt);
-    },
   },
 };
