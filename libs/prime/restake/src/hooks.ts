@@ -1,9 +1,9 @@
-import { tokens } from '@origin/shared/contracts';
-import { useRoutingSwapState, useTokenPrice } from '@origin/shared/providers';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { useRoutingSwapState } from '@origin/shared/providers';
+import { useQuery } from '@tanstack/react-query';
 import { mul } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
-import { useConfig } from 'wagmi';
+import { useConfig, useReadContract } from 'wagmi';
 
 export const useExchangeRate = () => {
   const config = useConfig();
@@ -35,18 +35,14 @@ export const useExchangeRate = () => {
 };
 
 export const usePrimeETH_OETH = (amountIn: bigint) => {
-  const config = useConfig();
-  const queryClient = useQueryClient();
-
-  return useQuery({
-    queryKey: ['usePrimeETH_OETH', amountIn?.toString()],
-    queryFn: async () => {
-      const prime_eth = await queryClient.fetchQuery({
-        queryKey: useTokenPrice.getKey('primeETH_ETH'),
-        queryFn: useTokenPrice.fetcher(config, queryClient),
-      });
-
-      return mul([amountIn, tokens.mainnet.primeETH.decimals], prime_eth);
+  return useReadContract({
+    address: contracts.mainnet.lrtOracle.address,
+    abi: contracts.mainnet.lrtOracle.abi,
+    functionName: 'primeETHPrice',
+    chainId: contracts.mainnet.lrtOracle.chainId,
+    query: {
+      select: (data) =>
+        mul([amountIn, tokens.mainnet.primeETH.decimals], [data, 18]),
     },
   });
 };

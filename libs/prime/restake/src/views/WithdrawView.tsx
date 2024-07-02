@@ -60,7 +60,7 @@ export const WithdrawView = () => {
       args: [
         tokens.mainnet.OETH.address,
         converted?.[0] ?? 0n,
-        add([amount, tokens.mainnet.primeETH.decimals], 1e-15)[0],
+        add([amount, tokens.mainnet.primeETH.decimals], 1e-18)[0],
       ],
     },
     callbacks: {
