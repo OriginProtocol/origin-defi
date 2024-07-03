@@ -73,7 +73,9 @@ export const ExtendLockupModal = ({
   const { data: staking, refetch } = useXOgnStakingApy(amount, duration, {
     enabled: false,
   });
-  const durationSeconds = BigInt(Math.min(duration * 60 * 60 * 24, 31_536_000));
+  const durationSeconds = BigInt(
+    Math.min(duration * 60 * 60 * 24 * 30, 31_536_000),
+  );
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
