@@ -39,6 +39,7 @@ export type WriteTransactionParameters<
 };
 
 export type WriteTransactionCallbacks = {
+  onClick?: () => void;
   onWrite?: () => void;
   onTxSigned?: () => void;
   onUserReject?: () => void;

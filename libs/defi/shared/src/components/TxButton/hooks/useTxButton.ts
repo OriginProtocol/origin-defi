@@ -112,13 +112,18 @@ export const useTxButton = <
     enabled: false,
   });
 
-  const onWrite = useCallback(() => {
+  const onClick = useCallback(() => {
     pushActivity({
       ...args.activity,
-      status: 'pending',
+      status: 'idle',
     });
-    args.callbacks?.onWrite?.();
+    args.callbacks?.onClick?.();
   }, [args, pushActivity]);
+
+  const onWrite = useCallback(() => {
+    updateActivity({ status: 'pending' });
+    args.callbacks?.onWrite?.();
+  }, [args.callbacks, updateActivity]);
 
   const onTxSigned = useCallback(() => {
     updateActivity({ status: 'signed' });
@@ -270,6 +275,7 @@ export const useTxButton = <
       isWriteGasLoading,
       params: args.params,
       callbacks: {
+        onClick,
         onWrite,
         onTxSigned,
         onUserReject,
@@ -287,6 +293,7 @@ export const useTxButton = <
       onSimulateSuccess,
       onTxSigned,
       onUserReject,
+      onClick,
       onWrite,
       onWriteError,
       onWriteSuccess,

@@ -167,6 +167,7 @@ export const TxButton = <
   ]);
 
   const handleClick = () => {
+    callbacks?.onClick?.();
     if (simulateError) {
       callbacks?.onSimulateError?.(simulateError);
     } else if (simulateData?.request) {
