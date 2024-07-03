@@ -134,43 +134,23 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
           />
         </Stack>
         <Divider orientation="vertical" flexItem />
-        <Stack direction="row" justifyContent="space-around" width={0.5} px={2}>
-          <Stack alignItems="flex-start">
-            <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Available' })}
+        <Stack alignItems="flex-start" px={2} spacing={0.25}>
+          <Typography variant="subtitle2" color="text.secondary">
+            {intl.formatMessage({ defaultMessage: 'Claimable amount' })}
+          </Typography>
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <TokenIcon token={tokens.mainnet.OETH} />
+            <Typography fontSize={16} fontWeight="medium">
+              {formatAmount(pending)}
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <TokenIcon token={tokens.mainnet.OETH} />
-              <Typography fontSize={16} fontWeight="medium">
-                {formatAmount(available)}
-              </Typography>
-            </Stack>
-            <LoadingLabel
-              variant="subtitle2"
-              color="text.secondary"
-              isLoading={isPriceLoading}
-            >
-              {formatCurrency(availableConverted)}
-            </LoadingLabel>
           </Stack>
-          <Stack alignItems="flex-start">
-            <Typography variant="subtitle2" color="text.secondary">
-              {intl.formatMessage({ defaultMessage: 'Pending' })}
-            </Typography>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
-              <TokenIcon token={tokens.mainnet.OETH} />
-              <Typography fontSize={16} fontWeight="medium">
-                {formatAmount(pending)}
-              </Typography>
-            </Stack>
-            <LoadingLabel
-              variant="subtitle2"
-              color="text.secondary"
-              isLoading={isPriceLoading}
-            >
-              {formatCurrency(pendingConverted)}
-            </LoadingLabel>
-          </Stack>
+          <LoadingLabel
+            variant="subtitle2"
+            color="text.secondary"
+            isLoading={isPriceLoading}
+          >
+            {formatCurrency(pendingConverted)}
+          </LoadingLabel>
         </Stack>
       </Stack>
       <TxButton
