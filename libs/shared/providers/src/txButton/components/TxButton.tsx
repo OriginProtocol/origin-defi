@@ -190,7 +190,7 @@ export const TxButton = <
           : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
-    (isSimulateLoading && !isNilOrEmpty(validatingTxLabel)) ||
+    isSimulateLoading ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

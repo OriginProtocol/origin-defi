@@ -273,9 +273,6 @@ function RedeemerWrapped({
             gas={gas + (gas * gasBuffer) / 100n}
             fullWidth
             disabled={redeemButtonDisabled}
-            validatingTxLabel={intl.formatMessage({
-              defaultMessage: 'Validating Transaction',
-            })}
             label={
               isEstimateLoading ? (
                 <CircularProgress size={32} color="inherit" />
