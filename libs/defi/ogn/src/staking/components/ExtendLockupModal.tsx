@@ -74,7 +74,7 @@ export const ExtendLockupModal = ({
     enabled: false,
   });
   const durationSeconds = BigInt(
-    Math.min(duration * 60 * 60 * 24 * 30, 31_536_000),
+    Math.min(duration * 60 * 60 * 24 * (365 / 12), 31_536_000),
   );
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
