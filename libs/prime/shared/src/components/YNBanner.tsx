@@ -47,6 +47,9 @@ export const YNBanner = (props: StackProps) => {
       </Stack>
       <Button
         variant="outlined"
+        href="https://www.originprotocol.com/primestaked-yieldnest-airdrop"
+        target="_blank"
+        rel="noopener noreferrer nofollow"
         sx={{
           borderColor: 'common.white',
           color: 'common.white',

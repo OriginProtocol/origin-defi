@@ -175,6 +175,7 @@ const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
         ))}
       </Stack>
       <ExternalLink
+        href="https://www.originprotocol.com/primestaked-yieldnest-airdrop"
         sx={{ alignSelf: 'flex-start', color: 'primary.main', mb: 3 }}
       >
         {intl.formatMessage({ defaultMessage: 'Learn More' })}
