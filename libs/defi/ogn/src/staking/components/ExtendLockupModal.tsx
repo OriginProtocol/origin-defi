@@ -33,7 +33,6 @@ import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import {
   addMonths,
   differenceInMonths,
-  differenceInSeconds,
   formatDistanceToNowStrict,
   formatDuration,
   isPast,
@@ -74,13 +73,7 @@ export const ExtendLockupModal = ({
   const { data: staking, refetch } = useXOgnStakingApy(amount, duration, {
     enabled: false,
   });
-  const durationSeconds = BigInt(
-    Math.min(
-      Math.max(0, differenceInSeconds(new Date(lockup.end), new Date())) +
-        duration * 60 * 60 * 24,
-      31_536_000,
-    ),
-  );
+  const durationSeconds = BigInt(Math.min(duration * 60 * 60 * 24, 31_536_000));
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
