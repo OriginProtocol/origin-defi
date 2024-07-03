@@ -552,9 +552,6 @@ export const ConvertModal = ({
           fullWidth
           label={intl.formatMessage({ defaultMessage: 'Convert' })}
           disabled={isConvertDisabled}
-          validatingTxLabel={intl.formatMessage({
-            defaultMessage: 'Validating',
-          })}
         />
       </DialogActions>
     </Dialog>

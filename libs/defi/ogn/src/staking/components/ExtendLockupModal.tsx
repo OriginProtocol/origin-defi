@@ -28,11 +28,7 @@ import {
   FaXmarkRegular,
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
-import {
-  getMonthDurationToSeconds,
-  isNilOrEmpty,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import {
   addMonths,
@@ -77,13 +73,16 @@ export const ExtendLockupModal = ({
   const { data: staking, refetch } = useXOgnStakingApy(amount, duration, {
     enabled: false,
   });
+  const durationSeconds = BigInt(
+    Math.min(duration * 60 * 60 * 24 * (365 / 12), 31_536_000),
+  );
   const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
       args: [
         0n,
-        getMonthDurationToSeconds(duration),
+        durationSeconds,
         address ?? ZERO_ADDRESS,
         true,
         BigInt(lockup.lockupId),

@@ -452,6 +452,7 @@ export const AddToLockupModal = ({
           params={writeParams}
           callbacks={writeCallbacks}
           label={intl.formatMessage({ defaultMessage: 'Stake' })}
+          validatingTxLabel={intl.formatMessage({ defaultMessage: 'Stake' })}
           disabled={isStakeDisabled}
           variant="action"
           fullWidth

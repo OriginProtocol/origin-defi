@@ -167,6 +167,7 @@ export const TxButton = <
   ]);
 
   const handleClick = () => {
+    callbacks?.onClick?.();
     if (simulateError) {
       callbacks?.onSimulateError?.(simulateError);
     } else if (simulateData?.request) {
@@ -189,7 +190,7 @@ export const TxButton = <
           : label ?? capitalize(params.functionName);
   const isDisabled =
     disabled ||
-    (isSimulateLoading && !isNilOrEmpty(validatingTxLabel)) ||
+    isSimulateLoading ||
     writeStatus === 'pending' ||
     (writeStatus === 'success' &&
       prevWriteStatus === 'pending' &&

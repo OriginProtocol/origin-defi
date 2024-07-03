@@ -26,7 +26,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatDistanceToNowStrict } from 'date-fns';
+import { differenceInDays, formatDistanceToNowStrict } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -153,6 +153,12 @@ export const LockupsTable = () => {
             );
           }
 
+          const extendDisabled =
+            differenceInDays(new Date(info.row.original.end), new Date()) >=
+            335;
+          const addDisabled =
+            differenceInDays(new Date(info.row.original.end), new Date()) < 30;
+
           return (
             <Stack
               direction="row"
@@ -164,6 +170,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
+                disabled={extendDisabled}
                 disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
@@ -180,6 +187,7 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
+                disabled={addDisabled}
                 disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Add' })}
