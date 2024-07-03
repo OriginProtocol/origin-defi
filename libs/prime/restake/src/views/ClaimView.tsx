@@ -180,12 +180,14 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
         disabled={isClaimDisabled}
         sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60, mb: 2 }}
       />
-      <Typography variant="body2" color="text.secondary" textAlign="center">
-        {intl.formatMessage(
-          { defaultMessage: 'Approximative gas cost: {gas}' },
-          { gas: formatCurrency(gasPrice?.gasCostUsd) },
-        )}
-      </Typography>
+      {!isClaimDisabled && (
+        <Typography variant="body2" color="text.secondary" textAlign="center">
+          {intl.formatMessage(
+            { defaultMessage: 'Approximate gas cost: {gas}' },
+            { gas: formatCurrency(gasPrice?.gasCostUsd) },
+          )}
+        </Typography>
+      )}
     </Stack>
   );
 };

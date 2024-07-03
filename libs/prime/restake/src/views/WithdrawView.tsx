@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import {
   ExternalLink,
+  InfoTooltipLabel,
   LoadingLabel,
   TokenIcon,
   ValueLabel,
@@ -298,11 +299,16 @@ const Form = ({
           <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 20 }} />
           <Typography>{tokens.mainnet.OETH.symbol}</Typography>
         </Stack>
-        <Typography>
+        <InfoTooltipLabel
+          tooltipLabel={intl.formatMessage({
+            defaultMessage:
+              'Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed.',
+          })}
+        >
           {intl.formatMessage({
             defaultMessage: '7 days retention period',
           })}
-        </Typography>
+        </InfoTooltipLabel>
       </Stack>
       <Divider />
       <Stack p={3}>
@@ -320,12 +326,30 @@ const Form = ({
         >
           <WarningExclamation sx={{ fontSize: 74, color: 'primary.main' }} />
           <Typography
-            sx={{ fontSize: 16, fontWeight: 'medium', lineHeight: 1.5 }}
+            component="span"
+            sx={{
+              display: 'inline-block',
+              fontSize: 16,
+              fontWeight: 'medium',
+              lineHeight: 1.5,
+            }}
           >
-            {intl.formatMessage({
-              defaultMessage:
-                'You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw.',
-            })}
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  'You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw. {link}',
+              },
+              {
+                link: (
+                  <ExternalLink
+                    href="https://www.originprotocol.com/primestaked-yieldnest-airdrop"
+                    sx={{ display: 'inline-flex', color: 'primary.main' }}
+                  >
+                    {intl.formatMessage({ defaultMessage: 'Learn more' })}
+                  </ExternalLink>
+                ),
+              },
+            )}
           </Typography>
         </Stack>
       </Stack>

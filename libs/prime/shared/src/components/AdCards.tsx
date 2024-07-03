@@ -19,13 +19,13 @@ export const AdCards = (props: StackProps) => {
 
   const ads: Ad[] = [
     {
-      icon: <AirdropStar sx={{ width: 60, height: 60 }} />,
+      icon: <AirdropStar sx={{ width: 50, height: 50 }} />,
       title: intl.formatMessage({
         defaultMessage: 'Participate in the YieldNest Airdrop',
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest Airdrop.',
+          'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop',
       }),
       background: `
         linear-gradient(-45deg, transparent 0, transparent 25px, #281928 25px, #281928 50px, transparent 50px, transparent 100%),

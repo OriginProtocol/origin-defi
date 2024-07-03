@@ -94,13 +94,13 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   }[status];
   const label = {
     processed: intl.formatMessage({
-      defaultMessage: 'Withdraw processed, check your claim',
+      defaultMessage: 'Withdrawal processed, check your claim',
     }),
     timeout: intl.formatMessage({
       defaultMessage: 'Error while processing, try to refresh the page',
     }),
     processing: intl.formatMessage({
-      defaultMessage: 'Your withdraw is being processed',
+      defaultMessage: 'Your withdrawal is being processed',
     }),
   }[status];
   const button = {
