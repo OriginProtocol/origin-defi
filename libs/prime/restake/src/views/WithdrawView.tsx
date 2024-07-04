@@ -306,7 +306,7 @@ const Form = ({
           })}
         >
           {intl.formatMessage({
-            defaultMessage: '7 days retention period',
+            defaultMessage: '7-day retention period',
           })}
         </InfoTooltipLabel>
       </Stack>
