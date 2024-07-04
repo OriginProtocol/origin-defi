@@ -1,11 +1,11 @@
 import type { CodegenConfig } from '@graphql-codegen/cli';
 
 const config: CodegenConfig = {
-  schema: 'https://origin.squids.live/prime-eth-squid/v/v13/graphql',
+  schema: 'https://origin.squids.live/prime-eth-squid/graphql',
   documents: 'libs/prime/**/src/**/*.graphql',
   generates: {
     'libs/prime/shared/src/generated/graphql.ts': {
-      schema: 'https://origin.squids.live/prime-eth-squid/v/v13/graphql',
+      schema: 'https://origin.squids.live/prime-eth-squid/graphql',
       plugins: ['typescript'],
       config: {
         scalars: {
