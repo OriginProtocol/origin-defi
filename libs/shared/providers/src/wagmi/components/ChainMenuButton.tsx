@@ -4,7 +4,10 @@ import { Box, Button, MenuItem, Stack, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
 import { ChainIcon, ClickAwayMenu } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
-import { FaCheckRegular } from '@origin/shared/icons';
+import {
+  FaCheckRegular,
+  FaTriangleExclamationRegular,
+} from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount, useSwitchChain } from 'wagmi';
@@ -51,7 +54,7 @@ export const ChainMenuButton = ({
     <>
       <Button
         {...rest}
-        disabled={disabled /* || isWrongChain || !isConnected */}
+        disabled={disabled || !isConnected}
         onClick={() => {
           setOpen(true);
         }}
@@ -63,19 +66,17 @@ export const ChainMenuButton = ({
               size={Math.max(20, iconSize - 6)}
               color="inherit"
             />
-          </Box> /* : isWrongChain ? (
-          <FaXmarkRegular sx={{ fontSize: iconSize, color: 'error.main' }} />
-        )  */
+          </Box>
+        ) : isWrongChain ? (
+          <FaTriangleExclamationRegular
+            sx={{ fontSize: iconSize, color: 'warning.main' }}
+          />
         ) : (
           <ChainIcon chainId={chainId} sx={{ fontSize: iconSize }} />
         )}
-        {!hideChainName && (
+        {!hideChainName && !isWrongChain && (
           <Typography sx={{ ml: 1 }}>
-            {
-              /* isWrongChain
-              ? intl.formatMessage({ defaultMessage: 'Unsupported' })
-              : */ supportedChainNames[chainId].short
-            }
+            {supportedChainNames[chainId].short}
           </Typography>
         )}
       </Button>
@@ -91,27 +92,43 @@ export const ChainMenuButton = ({
           setOpen(false);
         }}
       >
-        {chains.map((c) => (
+        {isWrongChain ? (
           <MenuItem
             {...menuItemProps}
-            key={c.id}
-            selected={c.id === chainId}
-            onClick={handleChainClick(c.id)}
+            onClick={handleChainClick(chains[0].id)}
             sx={{ minWidth: 150, ...menuItemProps?.sx }}
           >
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              useFlexGap
-            >
-              {supportedChainNames[c.id].short}
-              {c.id === chainId && (
-                <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
-              )}
-            </Stack>
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  'Current chain is not supported,<br></br>please switch to {chain}',
+              },
+              { chain: chains[0].name },
+            )}
           </MenuItem>
-        ))}
+        ) : (
+          chains.map((c) => (
+            <MenuItem
+              {...menuItemProps}
+              key={c.id}
+              selected={c.id === chainId}
+              onClick={handleChainClick(c.id)}
+              sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                useFlexGap
+              >
+                {supportedChainNames[c.id].short}
+                {c.id === chainId && (
+                  <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
+                )}
+              </Stack>
+            </MenuItem>
+          ))
+        )}
       </ClickAwayMenu>
     </>
   );

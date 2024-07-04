@@ -54,6 +54,7 @@ import SquareCheckSvg from './square-check.svg?react';
 import SquareListSvg from './square-list.svg?react';
 import SquareMinusSvg from './square-minus.svg?react';
 import SunBrightSvg from './sun-bright.svg?react';
+import TriangleExclamationSvg from './triangle-exclamation.svg?react';
 import UserSvg from './user.svg?react';
 import XmarkSvg from './xmark.svg?react';
 
@@ -420,6 +421,9 @@ export const FaSunBrightRegular = (props: SvgIconProps) => (
     component={SunBrightSvg}
     inheritViewBox
   />
+);
+export const FaTriangleExclamationRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={TriangleExclamationSvg} inheritViewBox />
 );
 export const FaUserRegular = (props: SvgIconProps) => (
   <SvgIcon fontSize="inherit" {...props} component={UserSvg} inheritViewBox />
