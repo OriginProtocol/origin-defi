@@ -93,6 +93,7 @@ export type SwapRoute<S = SwapAction, M = object> = {
   tokenOut: Token;
   action: S;
   meta?: M;
+  noSlippage?: boolean;
 };
 
 export type EstimatedSwapRoute = {

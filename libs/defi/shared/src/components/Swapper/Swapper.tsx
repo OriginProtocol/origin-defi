@@ -404,7 +404,13 @@ function SwapperWrapped({
           </Box>
         </Box>
         <SwapRoute sx={{ mx: 3 }} />
-        <Collapse in={amountOut > 0n}>
+        <Collapse
+          in={
+            amountOut > 0n &&
+            (isNilOrEmpty(selectedSwapRoute?.noSlippage) ||
+              !selectedSwapRoute?.noSlippage)
+          }
+        >
           <Stack
             direction="row"
             justifyContent="space-between"

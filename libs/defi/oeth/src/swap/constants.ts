@@ -22,6 +22,7 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-zapper-eth',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.WETH,
@@ -67,6 +68,7 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   //   tokenIn: tokens.mainnet.sfrxETH,
   //   tokenOut: tokens.mainnet.OETH,
   //   action: 'swap-zapper-sfrxeth',
+  //   noSlippage: true,
   // },
   // Redeem
   {
