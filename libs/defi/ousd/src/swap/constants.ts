@@ -34,6 +34,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
     action: 'mint-vault',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.DAI,
@@ -66,6 +67,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
     action: 'mint-vault',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.USDT,
@@ -98,6 +100,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
     action: 'mint-vault',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.USDC,
