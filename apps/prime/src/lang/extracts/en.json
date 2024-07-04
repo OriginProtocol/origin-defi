@@ -227,9 +227,6 @@
   "I37/d8": {
     "defaultMessage": "5% bonus on YieldNest Seeds"
   },
-  "I3cZbk": {
-    "defaultMessage": "Initiate Withdrawal"
-  },
   "ITyAtY": {
     "defaultMessage": "Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons"
   },
@@ -364,6 +361,9 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
+  },
+  "UG28K4": {
+    "defaultMessage": "Preview Withdrawal"
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"

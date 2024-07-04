@@ -559,12 +559,6 @@
       "value": "5% bonus on YieldNest Seeds"
     }
   ],
-  "I3cZbk": [
-    {
-      "type": 0,
-      "value": "Initiate Withdrawal"
-    }
-  ],
   "ITyAtY": [
     {
       "type": 0,
@@ -855,6 +849,12 @@
     {
       "type": 0,
       "value": "Account"
+    }
+  ],
+  "UG28K4": [
+    {
+      "type": 0,
+      "value": "Preview Withdrawal"
     }
   ],
   "ULVduL": [

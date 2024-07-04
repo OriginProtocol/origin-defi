@@ -388,7 +388,7 @@ const Stepper = ({
   const [progress] = useState(0);
 
   const steps = [
-    intl.formatMessage({ defaultMessage: 'Initiate Withdrawal' }),
+    intl.formatMessage({ defaultMessage: 'Preview Withdrawal' }),
     intl.formatMessage({ defaultMessage: 'Approve Withdrawal' }),
     intl.formatMessage({ defaultMessage: 'Wait 7 days' }),
     intl.formatMessage({ defaultMessage: 'Return to Claim' }),
