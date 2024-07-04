@@ -110,10 +110,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const targetDate = add(new Date(request.timestamp), { days: 7 });
   const isClaimDisabled =
     request.blockNumber + WAITING_BLOCK_AMOUNT > (blockNumber ?? 0);
-  const available = isClaimDisabled ? 0n : BigInt(request.assetAmount);
   const pending = isClaimDisabled ? BigInt(request.assetAmount) : 0n;
-  const availableConverted =
-    (price ?? 0) * +formatUnits(available, tokens.mainnet.OETH.decimals);
   const pendingConverted =
     (price ?? 0) * +formatUnits(pending, tokens.mainnet.OETH.decimals);
 

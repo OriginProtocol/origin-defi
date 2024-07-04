@@ -302,7 +302,7 @@ const Form = ({
         <InfoTooltipLabel
           tooltipLabel={intl.formatMessage({
             defaultMessage:
-              'Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed.',
+              'Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed.',
           })}
         >
           {intl.formatMessage({
