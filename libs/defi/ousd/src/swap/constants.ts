@@ -13,6 +13,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.DAI,
@@ -44,6 +45,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.USDT,
@@ -75,6 +77,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.USDC,
@@ -106,6 +109,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -132,6 +136,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -158,6 +163,7 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
     action: 'flipper',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.OUSD,
@@ -184,11 +190,13 @@ export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.wOUSD,
     action: 'wrap-ousd',
+    noSlippage: true,
   },
   // Unwrap wOUSD
   {
     tokenIn: tokens.mainnet.wOUSD,
     tokenOut: tokens.mainnet.OUSD,
     action: 'unwrap-wousd',
+    noSlippage: true,
   },
 ];

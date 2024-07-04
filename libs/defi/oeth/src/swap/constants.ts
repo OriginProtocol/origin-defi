@@ -28,6 +28,7 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenIn: tokens.mainnet.WETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'mint-vault',
+    noSlippage: true,
   },
   {
     tokenIn: tokens.mainnet.WETH,
@@ -38,6 +39,7 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   //   tokenIn: tokens.mainnet.stETH,
   //   tokenOut: tokens.mainnet.OETH,
   //   action: 'mint-vault',
+  //   noSlippage: true,
   // },
   // {
   //   tokenIn: tokens.mainnet.stETH,
@@ -53,11 +55,13 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   //   tokenIn: tokens.mainnet.rETH,
   //   tokenOut: tokens.mainnet.OETH,
   //   action: 'mint-vault',
+  //   noSlippage: true,
   // },
   // {
   //   tokenIn: tokens.mainnet.frxETH,
   //   tokenOut: tokens.mainnet.OETH,
   //   action: 'mint-vault',
+  //   noSlippage: true,
   // },
   // {
   //   tokenIn: tokens.mainnet.frxETH,
@@ -111,11 +115,13 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.wOETH,
     action: 'wrap-oeth',
+    noSlippage: true,
   },
   // Unwrap
   {
     tokenIn: tokens.mainnet.wOETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'unwrap-woeth',
+    noSlippage: true,
   },
 ];
