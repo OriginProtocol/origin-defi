@@ -959,6 +959,12 @@
       "value": "Discussion forum"
     }
   ],
+  "E1WhIq": [
+    {
+      "type": 0,
+      "value": "Add to metamask"
+    }
+  ],
   "E1arCe": [
     {
       "type": 0,
@@ -1329,12 +1335,6 @@
     {
       "type": 0,
       "value": "Succeeded"
-    }
-  ],
-  "Li58tH": [
-    {
-      "type": 0,
-      "value": "Validating"
     }
   ],
   "LpWMOQ": [
@@ -2841,12 +2841,6 @@
     {
       "type": 0,
       "value": "Error while bridging"
-    }
-  ],
-  "ppjHLD": [
-    {
-      "type": 0,
-      "value": "Validating Transaction"
     }
   ],
   "qNe+Iz": [
