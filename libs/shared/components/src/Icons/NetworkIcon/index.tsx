@@ -7,15 +7,17 @@ import type { BoxProps } from '@mui/material';
 
 type Shape = 'circle' | 'rounded' | 'square' | 'transparent';
 
+export type SupportedChain = keyof typeof supportedIcons;
+
 export type NetworkIconProps = {
-  chainId: keyof typeof supportedIcons;
+  chainId: SupportedChain;
   shape?: Shape;
   outlined?: boolean;
   outlineColor?: 'light' | 'dark' | string;
   size?: number;
 } & Omit<BoxProps, 'children'>;
 
-export const NetworkIconProps = ({
+export const NetworkIcon = ({
   chainId,
   shape = 'rounded',
   outlined = false,
@@ -33,8 +35,24 @@ export const NetworkIconProps = ({
 
   if (shape === 'transparent') {
     return (
-      <Box {...rest} sx={{ width: size, height: size }}>
-        <SvgIcon component={props.icon} sx={{ fontSize: size }} />
+      <Box
+        {...rest}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: size,
+          height: size,
+          ...('iconColor' in props &&
+            !isNilOrEmpty(props.iconColor) && { color: props.iconColor }),
+          ...rest?.sx,
+        }}
+      >
+        <SvgIcon
+          component={props.icon}
+          sx={{ fontSize: size }}
+          inheritViewBox
+        />
       </Box>
     );
   }
@@ -43,12 +61,17 @@ export const NetworkIconProps = ({
     <Box
       {...rest}
       sx={{
-        borderRadius: shape === 'rounded' ? 3 : shape === 'circle' ? '50%' : 0,
-        backgroundColor: props.backgroundColor,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
         width: size,
         height: size,
+        borderRadius: shape === 'rounded' ? 2 : shape === 'circle' ? '50%' : 0,
+        backgroundColor: props.backgroundColor,
+
         padding: 1,
         svg: {
+          fontSize: size * ('sizeRatio' in props ? props.sizeRatio : 1),
           ...('iconColor' in props &&
             !isNilOrEmpty(props.iconColor) && { color: props.iconColor }),
         },
@@ -56,7 +79,7 @@ export const NetworkIconProps = ({
         ...rest?.sx,
       }}
     >
-      <SvgIcon component={props.icon} />
+      <SvgIcon component={props.icon} inheritViewBox />
     </Box>
   );
 };
