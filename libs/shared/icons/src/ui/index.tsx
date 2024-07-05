@@ -22,6 +22,7 @@ import SendSvg from './send.svg?react';
 import SucceededSvg from './succeeded.svg?react';
 import SwapSvg from './swap.svg?react';
 import WalletFilledSvg from './wallet_filled.svg?react';
+import WarningExclamationSvg from './warning-exclamation.svg?react';
 import YieldSvg from './yield.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
@@ -95,6 +96,9 @@ export const Swap = (props: SvgIconProps) => (
 );
 export const WalletFilled = (props: SvgIconProps) => (
   <SvgIcon {...props} component={WalletFilledSvg} inheritViewBox />
+);
+export const WarningExclamation = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={WarningExclamationSvg} inheritViewBox />
 );
 export const Yield = (props: SvgIconProps) => (
   <SvgIcon {...props} component={YieldSvg} viewBox="0 0 32 32" />

@@ -116,11 +116,14 @@ const pricesFetcher: (
 
 export const useTokenPrices = <TData = Record<SupportedTokenPrice, number>>(
   tokenPrices: SupportedTokenPrice[],
-  options?: UseQueryOptions<
-    Record<SupportedTokenPrice, number>,
-    Error,
-    TData,
-    PricesKey
+  options?: Omit<
+    UseQueryOptions<
+      Record<SupportedTokenPrice, number>,
+      Error,
+      TData,
+      PricesKey
+    >,
+    'queryKey' | 'queryFn'
   >,
 ) => {
   const config = useConfig();
@@ -157,7 +160,10 @@ const priceFetcher: (
 
 export const useTokenPrice = (
   tokenPrice: SupportedTokenPrice,
-  options?: UseQueryOptions<number, Error, number, PriceKey>,
+  options?: Omit<
+    UseQueryOptions<number, Error, number, PriceKey>,
+    'queryKey' | 'queryFn'
+  >,
 ) => {
   const config = useConfig();
   const queryClient = useQueryClient();

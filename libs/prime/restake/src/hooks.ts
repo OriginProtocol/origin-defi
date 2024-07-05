@@ -1,7 +1,9 @@
+import { contracts, tokens } from '@origin/shared/contracts';
 import { useRoutingSwapState } from '@origin/shared/providers';
 import { useQuery } from '@tanstack/react-query';
+import { mul } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
-import { useConfig } from 'wagmi';
+import { useConfig, useReadContract } from 'wagmi';
 
 export const useExchangeRate = () => {
   const config = useConfig();
@@ -28,6 +30,19 @@ export const useExchangeRate = () => {
       const estimate = res ? +formatUnits(res, route.tokenOut.decimals) : 0;
 
       return estimate > 0 ? 1 / estimate : 0;
+    },
+  });
+};
+
+export const usePrimeETH_OETH = (amountIn: bigint) => {
+  return useReadContract({
+    address: contracts.mainnet.lrtOracle.address,
+    abi: contracts.mainnet.lrtOracle.abi,
+    functionName: 'primeETHPrice',
+    chainId: contracts.mainnet.lrtOracle.chainId,
+    query: {
+      select: (data) =>
+        mul([amountIn, tokens.mainnet.primeETH.decimals], [data, 18]),
     },
   });
 };

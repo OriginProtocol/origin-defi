@@ -19,11 +19,13 @@ import type { ValueLabelProps } from '../Labels';
 export type CountdownProps = {
   targetDate: Date;
   valueLabelProps?: Partial<ValueLabelProps>;
+  showUnits?: boolean;
 } & StackProps;
 
 export const Countdown = ({
   targetDate,
   valueLabelProps,
+  showUnits,
   ...rest
 }: CountdownProps) => {
   const intl = useIntl();
@@ -37,17 +39,17 @@ export const Countdown = ({
     <Stack direction="row" spacing={1} {...rest}>
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Days' })}
-        value={timeLeft.days}
+        value={`${timeLeft.days}${showUnits ? 'd' : ''}`}
         {...valueLabelProps}
       />
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Hours' })}
-        value={timeLeft.hours}
+        value={`${timeLeft.hours}${showUnits ? 'h' : ''}`}
         {...valueLabelProps}
       />
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Mins' })}
-        value={timeLeft.minutes}
+        value={`${timeLeft.minutes}${showUnits ? 'm' : ''}`}
         {...valueLabelProps}
       />
     </Stack>
