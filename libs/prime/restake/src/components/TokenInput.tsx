@@ -3,7 +3,6 @@ import { forwardRef } from 'react';
 import { Button, Skeleton, Stack, Typography } from '@mui/material';
 import { BigIntInput } from '@origin/shared/components';
 import { useFormat } from '@origin/shared/providers';
-import { sub } from 'dnum';
 import { useIntl } from 'react-intl';
 import { parseEther } from 'viem';
 
@@ -67,7 +66,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const handleMaxClick = () => {
       const max = isNativeCurrency
         ? balance - parseEther(MIN_ETH_FOR_GAS)
-        : sub([balance, decimals], 1e-18)[0];
+        : balance;
       onAmountChange?.(max);
     };
 
