@@ -1,0 +1,60 @@
+import {
+  arbitrum,
+  avalanche,
+  base,
+  bsc,
+  gnosis,
+  mainnet,
+  optimism,
+  polygon,
+} from 'viem/chains';
+
+import arbitrumMulti from './components/arbitrum_multi.svg?react';
+import avalancheCc from './components/avalanche_cc.svg?react';
+import baseCc from './components/base_cc.svg?react';
+import bscCc from './components/bsc_cc.svg?react';
+import gnosisCc from './components/gnosis_cc.svg?react';
+import mainnetMulti from './components/mainnetMulti.svg?react';
+import optimismCc from './components/optimism_cc.svg?react';
+import polygonCc from './components/polygon_cc.svg?react';
+
+export const supportedIcons = {
+  [arbitrum.id]: {
+    icon: arbitrumMulti,
+    backgroundColor: '#213147',
+  },
+  [avalanche.id]: {
+    icon: avalancheCc,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#E84142',
+  },
+  [base.id]: {
+    icon: baseCc,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#0052FF',
+  },
+  [bsc.id]: {
+    icon: bscCc,
+    iconColor: '#F8D12F',
+    backgroundColor: '#0B0E11',
+  },
+  [gnosis.id]: {
+    icon: gnosisCc,
+    iconColor: '#EFEFEF',
+    backgroundColor: '#04795B',
+  },
+  [mainnet.id]: {
+    icon: mainnetMulti,
+    backgroundColor: '#D9EAFF',
+  },
+  [optimism.id]: {
+    icon: optimismCc,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#FF0420',
+  },
+  [polygon.id]: {
+    icon: polygonCc,
+    iconColor: '#FFFFFF',
+    backgroundColor: '#8247E5',
+  },
+} as const;
