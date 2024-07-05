@@ -521,6 +521,9 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "di23JU": {
+    "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
   "dm9FiM": {
     "defaultMessage": "Delegate to self"
   },
@@ -646,6 +649,9 @@
   },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
+  },
+  "qGZxc4": {
+    "defaultMessage": "Connect your wallet to<br></br>select the network"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"

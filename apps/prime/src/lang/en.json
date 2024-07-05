@@ -847,6 +847,22 @@
       "value": "Route:"
     }
   ],
+  "di23JU": [
+    {
+      "type": 0,
+      "value": "Currently selected chain"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "is not supported"
+    }
+  ],
   "dtJo4Y": [
     {
       "type": 0,
@@ -997,6 +1013,22 @@
     {
       "type": 0,
       "value": "You will receive:"
+    }
+  ],
+  "qGZxc4": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "select the network"
     }
   ],
   "qQ/SRd": [

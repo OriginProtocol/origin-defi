@@ -365,6 +365,9 @@
   "dciLty": {
     "defaultMessage": "Route:"
   },
+  "di23JU": {
+    "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
@@ -436,6 +439,9 @@
   },
   "paprll": {
     "defaultMessage": "You will receive:"
+  },
+  "qGZxc4": {
+    "defaultMessage": "Connect your wallet to<br></br>select the network"
   },
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"

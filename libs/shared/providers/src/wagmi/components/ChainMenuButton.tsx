@@ -46,9 +46,13 @@ export const ChainMenuButton = ({
     }
   };
 
-  const chainId = chain?.id ?? chains[0].id;
   const isWrongChain =
     isConnected && isNilOrEmpty(chains.find((c) => c.id === chain?.id));
+  const chainId = isConnected
+    ? isWrongChain
+      ? 0
+      : chain?.id ?? chains[0].id
+    : chains[0].id;
 
   return (
     <>
@@ -95,7 +99,7 @@ export const ChainMenuButton = ({
           <MenuItem
             {...menuItemProps}
             key={c.id}
-            selected={c.id === chain?.id}
+            selected={c.id === chainId}
             onClick={handleChainClick(c.id)}
             sx={{ minWidth: 150, ...menuItemProps?.sx }}
           >
@@ -106,7 +110,7 @@ export const ChainMenuButton = ({
               useFlexGap
             >
               {supportedChainNames[c.id].short}
-              {c.id === chain?.id && (
+              {c.id === chainId && (
                 <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
               )}
             </Stack>
@@ -115,21 +119,28 @@ export const ChainMenuButton = ({
         {isWrongChain && (
           <Stack
             direction="row"
-            alignItems="center"
+            alignItems="flex-start"
             spacing={0.75}
             sx={{
               backgroundColor: 'warning.faded',
               p: 1,
+              mt: 0.5,
               borderRadius: 2,
               border: '1px solid',
               borderColor: 'warning.main',
             }}
           >
-            <FaTriangleExclamationRegular sx={{ color: 'warning.main' }} />
+            <FaTriangleExclamationRegular
+              sx={{ color: 'warning.main', transform: 'translateY(3px)' }}
+            />
             <Typography>
-              {intl.formatMessage({
-                defaultMessage: 'Current chain is not supported',
-              })}
+              {intl.formatMessage(
+                {
+                  defaultMessage:
+                    'Currently selected chain<br></br>is not supported',
+                },
+                { chain: chain?.name },
+              )}
             </Typography>
           </Stack>
         )}
@@ -153,7 +164,7 @@ export const ChainMenuButton = ({
             <Typography>
               {intl.formatMessage({
                 defaultMessage:
-                  'Connect your wallet<br></br>to update the network',
+                  'Connect your wallet to<br></br>select the network',
               })}
             </Typography>
           </Stack>

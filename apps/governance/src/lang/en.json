@@ -1349,6 +1349,22 @@
       "value": "Processing Transaction"
     }
   ],
+  "di23JU": [
+    {
+      "type": 0,
+      "value": "Currently selected chain"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "is not supported"
+    }
+  ],
   "dm9FiM": [
     {
       "type": 0,
@@ -1691,6 +1707,22 @@
     {
       "type": 0,
       "value": "Error while bridging"
+    }
+  ],
+  "qGZxc4": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "select the network"
     }
   ],
   "qQ/SRd": [

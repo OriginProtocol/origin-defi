@@ -272,6 +272,9 @@
   "dUJwm/": {
     "defaultMessage": "Processing Transaction"
   },
+  "di23JU": {
+    "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
   "djJp6c": {
     "defaultMessage": "History"
   },
@@ -334,6 +337,9 @@
   },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
+  },
+  "qGZxc4": {
+    "defaultMessage": "Connect your wallet to<br></br>select the network"
   },
   "qNe+Iz": {
     "defaultMessage": "Wrap with Origin"
