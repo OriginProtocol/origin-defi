@@ -91,27 +91,48 @@ export const ChainMenuButton = ({
           setOpen(false);
         }}
       >
-        {chains.map((c) => (
+        {
+          /* isWrongChain ? (
           <MenuItem
             {...menuItemProps}
-            key={c.id}
-            selected={c.id === chainId}
-            onClick={handleChainClick(c.id)}
-            sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            onClick={handleChainClick(chains[0].id)}
+            sx={{
+              minWidth: 150,
+              maxWidth: 200,
+              textWrap: 'balance',
+              ...menuItemProps?.sx,
+            }}
           >
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              useFlexGap
-            >
-              {supportedChainNames[c.id].short}
-              {c.id === chainId && (
-                <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
-              )}
-            </Stack>
+            {intl.formatMessage(
+              {
+                defaultMessage:
+                  'This dApp does not support the currently selected network, please switch to {name}',
+              },
+              { name: supportedChainNames[chainId].short },
+            )}
           </MenuItem>
-        ))}
+        ) : */ chains.map((c) => (
+            <MenuItem
+              {...menuItemProps}
+              key={c.id}
+              selected={c.id === chainId}
+              onClick={handleChainClick(c.id)}
+              sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            >
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+                useFlexGap
+              >
+                {supportedChainNames[c.id].short}
+                {c.id === chainId && (
+                  <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
+                )}
+              </Stack>
+            </MenuItem>
+          ))
+        }
       </ClickAwayMenu>
     </>
   );

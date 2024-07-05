@@ -1,0 +1,32 @@
+query UserActiveRequests($address: String!) {
+  lrtWithdrawalRequests(
+    where: { withdrawer_containsInsensitive: $address, status_in: [Requested] }
+  ) {
+    id
+  }
+}
+
+query UserWithdrawals($address: String!) {
+  lrtWithdrawalRequests(
+    where: { withdrawer_containsInsensitive: $address }
+    orderBy: [timestamp_DESC]
+  ) {
+    id
+    blockNumber
+    timestamp
+    status
+    assetAmount
+    primeETHAmount
+    asset
+    withdrawal {
+      id
+      shares
+      staker
+      delegatedTo
+      withdrawer
+      nonce
+      strategies
+      startBlock
+    }
+  }
+}

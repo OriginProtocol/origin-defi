@@ -58,6 +58,6 @@ export type SupportedToken =
   | 'wOETH'
   | 'wOUSD';
 
-export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH';
+export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH' | 'primeETH';
 
 export type SupportedTokenPrice = `${SupportedToken}_${Currency}`;

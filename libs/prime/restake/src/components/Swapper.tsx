@@ -186,6 +186,7 @@ function SwapperWrapped({
             onClick={() => {
               setTokenSource('tokenIn');
             }}
+            disabled={tokensIn.length === 1}
             sx={{
               py: 1.5,
               borderRadius: 4,
@@ -197,7 +198,9 @@ function SwapperWrapped({
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <TokenIcon token={tokenIn} sx={{ width: 34, height: 34 }} />
-              <Typography fontSize={20}>{tokenIn?.symbol}</Typography>
+              <Typography fontSize={20} sx={{ color: 'text.primary' }}>
+                {tokenIn?.symbol}
+              </Typography>
             </Stack>
 
             <Stack

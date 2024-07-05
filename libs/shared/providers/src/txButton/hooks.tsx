@@ -180,29 +180,26 @@ export const useTxButton = <
       deleteNotification(notifId);
       setNotifId(null);
     }
-    if (!args.disableNotification) {
-      pushNotification({
-        content: (
-          <NotificationSnack
-            icon={<SeverityIcon severity="warning" />}
-            title={intl.formatMessage({
-              defaultMessage: 'Operation Cancelled',
-            })}
-            subtitle={intl.formatMessage({
-              defaultMessage: 'User rejected operation',
-            })}
-            endIcon={act?.endIcon}
-          />
-        ),
-      });
-    }
+    pushNotification({
+      content: (
+        <NotificationSnack
+          icon={<SeverityIcon severity="warning" />}
+          title={intl.formatMessage({
+            defaultMessage: 'Operation Cancelled',
+          })}
+          subtitle={intl.formatMessage({
+            defaultMessage: 'User rejected operation',
+          })}
+          endIcon={act?.endIcon}
+        />
+      ),
+    });
     args.callbacks?.onUserReject?.();
   }, [
     act?.endIcon,
     act?.id,
     args.callbacks,
     args.disableActivity,
-    args.disableNotification,
     deleteActivity,
     deleteNotification,
     intl,
