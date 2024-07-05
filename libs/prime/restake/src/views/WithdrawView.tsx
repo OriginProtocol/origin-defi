@@ -61,7 +61,7 @@ export const WithdrawView = () => {
       args: [
         tokens.mainnet.OETH.address,
         converted?.[0] ?? 0n,
-        add([amount, tokens.mainnet.primeETH.decimals], 1e-18)[0],
+        add([amount, tokens.mainnet.primeETH.decimals], 1e-17)[0],
       ],
     },
     callbacks: {
@@ -86,8 +86,8 @@ export const WithdrawView = () => {
     );
   }
 
-  if (step === 'form') {
-    return (
+  return (
+    <>
       <Form
         onContinueClick={() => {
           setStep('stepper');
@@ -99,18 +99,15 @@ export const WithdrawView = () => {
           setAmount(val);
         }}
         gasPrice={gasPrice}
+        sx={{ display: step === 'form' ? 'block' : 'none' }}
       />
-    );
-  }
-
-  return (
-    <>
       <Stepper
         amount={amount}
         converted={converted}
         isConvertedLoading={isConvertedLoading}
         params={params}
         callbacks={callbacks}
+        sx={{ display: step === 'stepper' ? 'block' : 'none' }}
       />
       <WithdrawProgressModal
         key={modalOpen ? '' : 'reset'}

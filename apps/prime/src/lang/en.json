@@ -517,12 +517,6 @@
       "value": "Exchange rate:"
     }
   ],
-  "GDdlqE": [
-    {
-      "type": 0,
-      "value": "7 days retention period"
-    }
-  ],
   "GHdek4": [
     {
       "type": 0,
@@ -1291,6 +1285,12 @@
     {
       "type": 0,
       "value": "Recent Activity"
+    }
+  ],
+  "oNwEq5": [
+    {
+      "type": 0,
+      "value": "7-day retention period"
     }
   ],
   "p556q3": [

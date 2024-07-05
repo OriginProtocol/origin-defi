@@ -206,9 +206,6 @@
   "G9iNne": {
     "defaultMessage": "Exchange rate:"
   },
-  "GDdlqE": {
-    "defaultMessage": "7 days retention period"
-  },
   "GHdek4": {
     "defaultMessage": "Get even more primeETH XP when you invite your friends"
   },
@@ -550,6 +547,9 @@
   },
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
+  },
+  "oNwEq5": {
+    "defaultMessage": "7-day retention period"
   },
   "p556q3": {
     "defaultMessage": "Copied"

@@ -90,7 +90,6 @@ export const TxButton = <
     query: {
       enabled:
         isConnected &&
-        !disabled &&
         !!params.contract?.address &&
         params.contract.chainId === chain?.id,
     },
