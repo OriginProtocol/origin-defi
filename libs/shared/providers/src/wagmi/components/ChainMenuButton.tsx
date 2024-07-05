@@ -6,6 +6,7 @@ import { ChainIcon, ClickAwayMenu } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import {
   FaCheckRegular,
+  FaCircleInfoRegular,
   FaTriangleExclamationRegular,
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -30,7 +31,6 @@ export const ChainMenuButton = ({
   iconSize = 24,
   menuProps,
   menuItemProps,
-  disabled,
   ...rest
 }: ChainMenuButtonProps) => {
   const intl = useIntl();
@@ -54,7 +54,6 @@ export const ChainMenuButton = ({
     <>
       <Button
         {...rest}
-        disabled={disabled || !isConnected}
         onClick={() => {
           setOpen(true);
         }}
@@ -92,42 +91,72 @@ export const ChainMenuButton = ({
           setOpen(false);
         }}
       >
-        {isWrongChain ? (
+        {chains.map((c) => (
           <MenuItem
             {...menuItemProps}
-            onClick={handleChainClick(chains[0].id)}
+            key={c.id}
+            selected={c.id === chain?.id}
+            onClick={handleChainClick(c.id)}
             sx={{ minWidth: 150, ...menuItemProps?.sx }}
           >
-            {intl.formatMessage(
-              {
-                defaultMessage:
-                  'Current chain is not supported,<br></br>please switch to {chain}',
-              },
-              { chain: chains[0].name },
-            )}
-          </MenuItem>
-        ) : (
-          chains.map((c) => (
-            <MenuItem
-              {...menuItemProps}
-              key={c.id}
-              selected={c.id === chainId}
-              onClick={handleChainClick(c.id)}
-              sx={{ minWidth: 150, ...menuItemProps?.sx }}
+            <Stack
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
+              useFlexGap
             >
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                useFlexGap
-              >
-                {supportedChainNames[c.id].short}
-                {c.id === chainId && (
-                  <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
-                )}
-              </Stack>
-            </MenuItem>
-          ))
+              {supportedChainNames[c.id].short}
+              {c.id === chain?.id && (
+                <FaCheckRegular sx={{ fontSize: 16, ml: 2 }} />
+              )}
+            </Stack>
+          </MenuItem>
+        ))}
+        {isWrongChain && (
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={0.75}
+            sx={{
+              backgroundColor: 'warning.faded',
+              p: 1,
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'warning.main',
+            }}
+          >
+            <FaTriangleExclamationRegular sx={{ color: 'warning.main' }} />
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage: 'Current chain is not supported',
+              })}
+            </Typography>
+          </Stack>
+        )}
+        {!isConnected && (
+          <Stack
+            direction="row"
+            alignItems="flex-start"
+            spacing={0.75}
+            sx={{
+              backgroundColor: 'primary.faded',
+              p: 1,
+              mt: 0.5,
+              borderRadius: 2,
+              border: '1px solid',
+              borderColor: 'primary.main',
+            }}
+          >
+            <FaCircleInfoRegular
+              sx={{ color: 'primary.main', transform: 'translateY(3px)' }}
+            />
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage:
+                  'Connect your wallet<br></br>to update the network',
+              })}
+            </Typography>
+          </Stack>
         )}
       </ClickAwayMenu>
     </>
