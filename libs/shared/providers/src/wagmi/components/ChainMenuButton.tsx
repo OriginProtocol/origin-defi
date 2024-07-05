@@ -134,9 +134,9 @@ export const ChainMenuButton = ({
             }}
           >
             <FaTriangleExclamationRegular
-              sx={{ color: 'warning.main', transform: 'translateY(3px)' }}
+              sx={{ color: 'warning.main', fontSize: 14 }}
             />
-            <Typography>
+            <Typography sx={{ fontSize: 12 }}>
               {intl.formatMessage(
                 {
                   defaultMessage:
@@ -161,10 +161,8 @@ export const ChainMenuButton = ({
               borderColor: 'primary.main',
             }}
           >
-            <FaCircleInfoRegular
-              sx={{ color: 'primary.main', transform: 'translateY(3px)' }}
-            />
-            <Typography>
+            <FaCircleInfoRegular sx={{ color: 'primary.main', fontSize: 14 }} />
+            <Typography sx={{ fontSize: 12 }}>
               {intl.formatMessage({
                 defaultMessage:
                   'Connect your wallet to<br></br>select the network',
