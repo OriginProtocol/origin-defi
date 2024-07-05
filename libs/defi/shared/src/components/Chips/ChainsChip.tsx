@@ -1,10 +1,11 @@
 import { Stack, Typography } from '@mui/material';
-import { ChainIcon } from '@origin/shared/components';
+import { NetworkIcon } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { ColorChip } from './ColorChip';
 
 import type { StackProps } from '@mui/material';
+import type { SupportedChain } from '@origin/shared/components';
 
 type ChainsChipProps = {
   chainIds: readonly number[];
@@ -25,7 +26,11 @@ export const ChainsChip = ({
       </Typography>
       <Stack direction="row" alignItems="center" spacing={1}>
         {chainIds.map((id) => (
-          <ChainIcon key={id} chainId={id} sx={{ fontSize: iconSize }} />
+          <NetworkIcon
+            key={id}
+            chainId={id as SupportedChain}
+            size={iconSize}
+          />
         ))}
       </Stack>
     </ColorChip>

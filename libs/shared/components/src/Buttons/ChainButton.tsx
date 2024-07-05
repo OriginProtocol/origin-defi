@@ -1,20 +1,22 @@
 import { Button, emphasize, Typography } from '@mui/material';
 import { arbitrum } from 'viem/chains';
 
-import { ChainIcon } from '../Icons';
+import { NetworkIcon } from '../Icons';
 
-import type { ButtonProps, SvgIconProps, TypographyProps } from '@mui/material';
+import type { ButtonProps, TypographyProps } from '@mui/material';
 import type { Chain } from 'viem';
+
+import type { SupportedChain } from '../Icons';
 
 export type ChainButtonProps = {
   chain: Chain;
-  iconProps?: SvgIconProps;
+  iconSize?: number;
   labelProps?: TypographyProps;
 } & ButtonProps;
 
 export const ChainButton = ({
   chain,
-  iconProps,
+  iconSize,
   labelProps,
   ...rest
 }: ChainButtonProps) => {
@@ -49,7 +51,7 @@ export const ChainButton = ({
         ...rest?.sx,
       }}
     >
-      <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} {...iconProps} />
+      <NetworkIcon chainId={chain.id as SupportedChain} size={iconSize} />
       <Typography variant="inherit" {...labelProps}>
         {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
       </Typography>

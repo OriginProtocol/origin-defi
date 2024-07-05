@@ -1,5 +1,5 @@
 import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
-import { ChainIcon } from '@origin/shared/components';
+import { NetworkIcon } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
@@ -27,19 +27,20 @@ export const BridgePromoCard = ({ small, ...rest }: BridgePromoCardProps) => {
               defaultMessage: 'Use wOETH on Arbitrum to earn ARB rewards!',
             })}
           </Typography>
+
           <Stack
             direction="row"
             alignItems="center"
             spacing={1}
             sx={{
               p: 0.5,
-              borderRadius: 25,
+              borderRadius: 3,
               backgroundColor: 'background.highlight',
             }}
           >
-            <ChainIcon chainId={mainnet.id} sx={{ fontSize: 32 }} />
+            <NetworkIcon chainId={mainnet.id} size={32} />
             <FaArrowRightRegular sx={{ fontSize: 20, color: 'text.primary' }} />
-            <ChainIcon chainId={arbitrum.id} sx={{ fontSize: 32 }} />
+            <NetworkIcon chainId={arbitrum.id} size={32} />
           </Stack>
           <Typography variant={small ? 'body3' : 'body2'} fontWeight="medium">
             {intl.formatMessage({

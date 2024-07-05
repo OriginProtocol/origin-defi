@@ -20,8 +20,8 @@ import {
   useTxButton,
 } from '@origin/defi/shared';
 import {
-  ChainButton,
   InfoTooltip,
+  NetworkIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, getNativeToken } from '@origin/shared/contracts';
@@ -35,6 +35,7 @@ import { formatAmount, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 import { decodeEventLog, formatUnits } from 'viem';
+import { arbitrum } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { ccipRouter } from '../constants';
@@ -46,7 +47,10 @@ import { useToggleBridgeChain } from '../hooks/useToggleBridgeChain';
 import { useBridgeState } from '../state';
 import { TokenSelectModal } from './TokenSelectModal';
 
-import type { ValueLabelProps } from '@origin/shared/components';
+import type {
+  SupportedChain,
+  ValueLabelProps,
+} from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Hex, TransactionReceipt } from 'viem';
 
@@ -191,10 +195,15 @@ export const BridgeCard = () => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography fontWeight="medium">
+            <Typography variant="body2" fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'From' })}
             </Typography>
-            <ChainButton chain={srcChain} disabled />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <NetworkIcon chainId={srcChain.id as SupportedChain} size={28} />
+              <Typography variant="body2" fontWeight="bold">
+                {srcChain.id === arbitrum.id ? 'Arbitrum' : srcChain.name}
+              </Typography>
+            </Stack>
           </Stack>
           <TokenInput
             hideMaxButton={srcChain.nativeCurrency.symbol === srcToken.symbol}
@@ -222,10 +231,15 @@ export const BridgeCard = () => {
       <CardContent>
         <Stack spacing={2}>
           <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography fontWeight="medium">
+            <Typography variant="body2" fontWeight="medium">
               {intl.formatMessage({ defaultMessage: 'To' })}
             </Typography>
-            <ChainButton chain={dstChain} disabled />
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <NetworkIcon chainId={dstChain.id as SupportedChain} size={28} />
+              <Typography variant="body2" fontWeight="bold">
+                {dstChain.id === arbitrum.id ? 'Arbitrum' : dstChain.name}
+              </Typography>
+            </Stack>
           </Stack>
           <Stack direction={'row'} alignItems={'center'}>
             {ccipTxParams.data?.isEstimate ? (

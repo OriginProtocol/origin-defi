@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 import { Box, Button, MenuItem, Stack, Typography } from '@mui/material';
 import { CircularProgress } from '@mui/material';
-import { ChainIcon, ClickAwayMenu } from '@origin/shared/components';
+import { ClickAwayMenu, NetworkIcon } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import {
   FaCheckRegular,
@@ -14,7 +14,10 @@ import { useIntl } from 'react-intl';
 import { useAccount, useSwitchChain } from 'wagmi';
 
 import type { ButtonProps, MenuItemProps } from '@mui/material';
-import type { ClickAwayPopoverProps } from '@origin/shared/components';
+import type {
+  ClickAwayPopoverProps,
+  SupportedChain,
+} from '@origin/shared/components';
 
 export type ChainMenuButtonProps = {
   hideChainName?: boolean;
@@ -75,7 +78,7 @@ export const ChainMenuButton = ({
             sx={{ fontSize: iconSize, color: 'warning.main' }}
           />
         ) : (
-          <ChainIcon chainId={chainId} sx={{ fontSize: iconSize }} />
+          <NetworkIcon chainId={chainId as SupportedChain} size={iconSize} />
         )}
         {!hideChainName && !isWrongChain && (
           <Typography sx={{ ml: 1 }}>

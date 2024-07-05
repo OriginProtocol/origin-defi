@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ChainIcon, LoadingLabel } from '@origin/shared/components';
+import { LoadingLabel, NetworkIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
@@ -21,6 +21,7 @@ import { formatUnits } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
+import type { SupportedChain } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
@@ -86,7 +87,7 @@ export const BalanceRow = ({
       justifyContent={'space-between'}
     >
       <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
-        <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} />
+        <NetworkIcon chainId={chain.id as SupportedChain} />
         <Typography fontWeight="medium">
           {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
         </Typography>

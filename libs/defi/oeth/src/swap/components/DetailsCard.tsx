@@ -7,7 +7,11 @@ import {
   Typography,
 } from '@mui/material';
 import { ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
-import { ChainIcon, LoadingLabel, ValueLabel } from '@origin/shared/components';
+import {
+  LoadingLabel,
+  NetworkIcon,
+  ValueLabel,
+} from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
@@ -20,6 +24,7 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
 import type { AccordionProps } from '@mui/material';
+import type { SupportedChain } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 export type DetailsCardProps = {
@@ -69,7 +74,7 @@ export const DetailsCard = ({
           mr={1}
         >
           <Stack direction="row" alignItems="center" spacing={1}>
-            <ChainIcon chainId={token.chainId} sx={{ fontSize: 24 }} />
+            <NetworkIcon chainId={token.chainId as SupportedChain} />
             <Typography>{chainName}</Typography>
           </Stack>
           <ColorChip p={0.5}>
