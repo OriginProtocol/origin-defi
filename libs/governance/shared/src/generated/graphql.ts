@@ -2453,9 +2453,11 @@ export type Erc20Transfer = {
   blockNumber: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
   from: Scalars['String']['output'];
+  fromBalance: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
   to: Scalars['String']['output'];
+  toBalance: Scalars['BigInt']['output'];
   txHash: Scalars['String']['output'];
   value: Scalars['BigInt']['output'];
 };
@@ -2485,6 +2487,12 @@ export enum Erc20TransferOrderByInput {
   ChainIdDesc = 'chainId_DESC',
   ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
   ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  FromBalanceAsc = 'fromBalance_ASC',
+  FromBalanceAscNullsFirst = 'fromBalance_ASC_NULLS_FIRST',
+  FromBalanceAscNullsLast = 'fromBalance_ASC_NULLS_LAST',
+  FromBalanceDesc = 'fromBalance_DESC',
+  FromBalanceDescNullsFirst = 'fromBalance_DESC_NULLS_FIRST',
+  FromBalanceDescNullsLast = 'fromBalance_DESC_NULLS_LAST',
   FromAsc = 'from_ASC',
   FromAscNullsFirst = 'from_ASC_NULLS_FIRST',
   FromAscNullsLast = 'from_ASC_NULLS_LAST',
@@ -2503,6 +2511,12 @@ export enum Erc20TransferOrderByInput {
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
   TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  ToBalanceAsc = 'toBalance_ASC',
+  ToBalanceAscNullsFirst = 'toBalance_ASC_NULLS_FIRST',
+  ToBalanceAscNullsLast = 'toBalance_ASC_NULLS_LAST',
+  ToBalanceDesc = 'toBalance_DESC',
+  ToBalanceDescNullsFirst = 'toBalance_DESC_NULLS_FIRST',
+  ToBalanceDescNullsLast = 'toBalance_DESC_NULLS_LAST',
   ToAsc = 'to_ASC',
   ToAscNullsFirst = 'to_ASC_NULLS_FIRST',
   ToAscNullsLast = 'to_ASC_NULLS_LAST',
@@ -2561,6 +2575,15 @@ export type Erc20TransferWhereInput = {
   chainId_lte?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  fromBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fromBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  fromBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fromBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   from_contains?: InputMaybe<Scalars['String']['input']>;
   from_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   from_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -2604,6 +2627,15 @@ export type Erc20TransferWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  toBalance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  toBalance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  toBalance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  toBalance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   to_contains?: InputMaybe<Scalars['String']['input']>;
   to_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   to_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -6766,6 +6798,119 @@ export enum HistoryType {
   Sent = 'Sent',
   Yield = 'Yield'
 }
+
+export type LegacyStaker = {
+  __typename?: 'LegacyStaker';
+  balance: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  inputAmount: Scalars['BigInt']['output'];
+  outputAmount: Scalars['BigInt']['output'];
+  rewardAmount: Scalars['BigInt']['output'];
+};
+
+export type LegacyStakerEdge = {
+  __typename?: 'LegacyStakerEdge';
+  cursor: Scalars['String']['output'];
+  node: LegacyStaker;
+};
+
+export enum LegacyStakerOrderByInput {
+  BalanceAsc = 'balance_ASC',
+  BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
+  BalanceAscNullsLast = 'balance_ASC_NULLS_LAST',
+  BalanceDesc = 'balance_DESC',
+  BalanceDescNullsFirst = 'balance_DESC_NULLS_FIRST',
+  BalanceDescNullsLast = 'balance_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  InputAmountAsc = 'inputAmount_ASC',
+  InputAmountAscNullsFirst = 'inputAmount_ASC_NULLS_FIRST',
+  InputAmountAscNullsLast = 'inputAmount_ASC_NULLS_LAST',
+  InputAmountDesc = 'inputAmount_DESC',
+  InputAmountDescNullsFirst = 'inputAmount_DESC_NULLS_FIRST',
+  InputAmountDescNullsLast = 'inputAmount_DESC_NULLS_LAST',
+  OutputAmountAsc = 'outputAmount_ASC',
+  OutputAmountAscNullsFirst = 'outputAmount_ASC_NULLS_FIRST',
+  OutputAmountAscNullsLast = 'outputAmount_ASC_NULLS_LAST',
+  OutputAmountDesc = 'outputAmount_DESC',
+  OutputAmountDescNullsFirst = 'outputAmount_DESC_NULLS_FIRST',
+  OutputAmountDescNullsLast = 'outputAmount_DESC_NULLS_LAST',
+  RewardAmountAsc = 'rewardAmount_ASC',
+  RewardAmountAscNullsFirst = 'rewardAmount_ASC_NULLS_FIRST',
+  RewardAmountAscNullsLast = 'rewardAmount_ASC_NULLS_LAST',
+  RewardAmountDesc = 'rewardAmount_DESC',
+  RewardAmountDescNullsFirst = 'rewardAmount_DESC_NULLS_FIRST',
+  RewardAmountDescNullsLast = 'rewardAmount_DESC_NULLS_LAST'
+}
+
+export type LegacyStakerWhereInput = {
+  AND?: InputMaybe<Array<LegacyStakerWhereInput>>;
+  OR?: InputMaybe<Array<LegacyStakerWhereInput>>;
+  balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balance_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  inputAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  inputAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  inputAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  inputAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  outputAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  outputAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  outputAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  outputAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rewardAmount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  rewardAmount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  rewardAmount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  rewardAmount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export type LegacyStakersConnection = {
+  __typename?: 'LegacyStakersConnection';
+  edges: Array<LegacyStakerEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
 
 export type LiquidityDailyBalance = {
   __typename?: 'LiquidityDailyBalance';
@@ -16090,6 +16235,11 @@ export type Query = {
   governanceProposalVotesConnection: GovernanceProposalVotesConnection;
   governanceProposals: Array<GovernanceProposal>;
   governanceProposalsConnection: GovernanceProposalsConnection;
+  legacyStakerById?: Maybe<LegacyStaker>;
+  /** @deprecated Use legacyStakerById */
+  legacyStakerByUniqueInput?: Maybe<LegacyStaker>;
+  legacyStakers: Array<LegacyStaker>;
+  legacyStakersConnection: LegacyStakersConnection;
   liquidityDailyBalanceById?: Maybe<LiquidityDailyBalance>;
   /** @deprecated Use liquidityDailyBalanceById */
   liquidityDailyBalanceByUniqueInput?: Maybe<LiquidityDailyBalance>;
@@ -17231,6 +17381,32 @@ export type QueryGovernanceProposalsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<GovernanceProposalOrderByInput>;
   where?: InputMaybe<GovernanceProposalWhereInput>;
+};
+
+
+export type QueryLegacyStakerByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryLegacyStakerByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryLegacyStakersArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<LegacyStakerOrderByInput>>;
+  where?: InputMaybe<LegacyStakerWhereInput>;
+};
+
+
+export type QueryLegacyStakersConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<LegacyStakerOrderByInput>;
+  where?: InputMaybe<LegacyStakerWhereInput>;
 };
 
 
