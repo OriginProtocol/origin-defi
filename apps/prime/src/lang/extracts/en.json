@@ -77,6 +77,9 @@
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
   },
+  "3FATeG": {
+    "defaultMessage": "Approval Complete"
+  },
   "3uuR4F": {
     "defaultMessage": "1.5 primeETH XP Boost"
   },
@@ -299,6 +302,9 @@
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
+  "OP5p36": {
+    "defaultMessage": "Approval Cancelled"
+  },
   "OkXVGX": {
     "defaultMessage": "Approve {token}"
   },
@@ -331,6 +337,9 @@
   },
   "R0R6sx": {
     "defaultMessage": "You can always {link}"
+  },
+  "Rfvi8i": {
+    "defaultMessage": "Approval Failure"
   },
   "RsRRyW": {
     "defaultMessage": "Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed."

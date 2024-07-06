@@ -199,6 +199,12 @@
       "value": "Impossible to execute"
     }
   ],
+  "3FATeG": [
+    {
+      "type": 0,
+      "value": "Approval Complete"
+    }
+  ],
   "3uuR4F": [
     {
       "type": 0,
@@ -703,6 +709,12 @@
       "value": "No available route"
     }
   ],
+  "OP5p36": [
+    {
+      "type": 0,
+      "value": "Approval Cancelled"
+    }
+  ],
   "OkXVGX": [
     {
       "type": 0,
@@ -779,6 +791,12 @@
     {
       "type": 1,
       "value": "link"
+    }
+  ],
+  "Rfvi8i": [
+    {
+      "type": 0,
+      "value": "Approval Failure"
     }
   ],
   "RsRRyW": [
