@@ -1,4 +1,4 @@
-import { Collapse, Stack } from '@mui/material';
+import { Box, Collapse, Stack } from '@mui/material';
 import {
   NotificationStateProvider,
   useVisibleNotifications,
@@ -21,32 +21,34 @@ const NotificationsWrapped = ({ children }: StackProps) => {
   return (
     <>
       {children}
-      {!isNilOrEmpty(visibleNotifications) && (
-        <Stack
-          direction="column"
-          sx={{
-            position: 'fixed',
-            bottom: { xs: 16, sm: 40 },
-            right: { xs: 16, sm: 40 },
-            width: {
-              xs: 'calc(100% - 32px)',
-              sm: 416,
-            },
-            zIndex: (theme) => theme.zIndex.modal + 1,
-          }}
-        >
-          <TransitionGroup>
-            {visibleNotifications.map((notif) => (
-              <Collapse appear key={notif.id}>
-                <NotificationAlert
-                  notification={notif}
-                  sx={{ width: 1, mt: 1 }}
-                />
-              </Collapse>
-            ))}
-          </TransitionGroup>
-        </Stack>
-      )}
+      <Box>
+        {!isNilOrEmpty(visibleNotifications) && (
+          <Stack
+            direction="column"
+            sx={{
+              position: 'fixed',
+              bottom: { xs: 16, sm: 40 },
+              right: { xs: 16, sm: 40 },
+              width: {
+                xs: 'calc(100% - 32px)',
+                sm: 416,
+              },
+              zIndex: (theme) => theme.zIndex.modal + 1,
+            }}
+          >
+            <TransitionGroup>
+              {visibleNotifications.map((notif) => (
+                <Collapse appear key={notif.id}>
+                  <NotificationAlert
+                    notification={notif}
+                    sx={{ width: 1, mt: 1 }}
+                  />
+                </Collapse>
+              ))}
+            </TransitionGroup>
+          </Stack>
+        )}
+      </Box>
     </>
   );
 };

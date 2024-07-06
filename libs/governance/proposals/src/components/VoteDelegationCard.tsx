@@ -102,7 +102,7 @@ export const VoteDelegationCard = (props: CardProps) => {
             </Typography>
           </Stack>
         ) : (
-          <>
+          <Box>
             {!isSelfDelegating && (
               <CardContent>
                 <Typography color="text.secondary">
@@ -250,7 +250,7 @@ export const VoteDelegationCard = (props: CardProps) => {
                 )}
               </CardContent>
             )}
-          </>
+          </Box>
         )
       ) : (
         <Stack

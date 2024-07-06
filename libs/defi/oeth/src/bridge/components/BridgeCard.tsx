@@ -20,7 +20,7 @@ import {
   useTxButton,
 } from '@origin/defi/shared';
 import {
-  InfoTooltip,
+  InfoTooltipLabel,
   NetworkIcon,
   ValueLabel,
 } from '@origin/shared/components';
@@ -241,30 +241,27 @@ export const BridgeCard = () => {
               </Typography>
             </Stack>
           </Stack>
-          <Stack direction={'row'} alignItems={'center'}>
-            {ccipTxParams.data?.isEstimate ? (
-              <>
-                {intl.formatMessage({
-                  defaultMessage: 'You will receive approximately',
-                })}
-                <InfoTooltip
-                  sx={{ ml: 2 }}
-                  iconSize={18}
-                  tooltipLabel={intl.formatMessage({
-                    defaultMessage:
-                      'Exact amount received depends on a fluctuating bridge fee' +
-                      ' which cannot be guaranteed through the zapper.' +
-                      ' The amount you receive on the destination chain will be' +
-                      ' the amount you send converted to wOETH,' +
-                      ' plus the estimated bridge fee,' +
-                      ' minus the actual bridge fee.',
-                  })}
-                />
-              </>
-            ) : (
-              intl.formatMessage({ defaultMessage: 'You will receive' })
-            )}
-          </Stack>
+          {ccipTxParams.data?.isEstimate ? (
+            <InfoTooltipLabel
+              tooltipLabel={intl.formatMessage({
+                defaultMessage:
+                  'Exact amount received depends on a fluctuating bridge fee' +
+                  ' which cannot be guaranteed through the zapper.' +
+                  ' The amount you receive on the destination chain will be' +
+                  ' the amount you send converted to wOETH,' +
+                  ' plus the estimated bridge fee,' +
+                  ' minus the actual bridge fee.',
+              })}
+            >
+              {intl.formatMessage({
+                defaultMessage: 'You will receive approximately',
+              })}
+            </InfoTooltipLabel>
+          ) : (
+            <Typography>
+              {intl.formatMessage({ defaultMessage: 'You will receive' })}
+            </Typography>
+          )}
           <TokenInput
             readOnly
             isTokenClickDisabled={dstTokens.length === 1}
