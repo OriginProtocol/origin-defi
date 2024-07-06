@@ -113,8 +113,24 @@ function SwapperWrapped({
   const handleSwap = useHandleSwap();
 
   useEffect(() => {
-    if (status === 'waitingForSignature') {
+    if (
+      ['approvalWaitingForSignature', 'swapWaitingForSignature'].includes(
+        status,
+      )
+    ) {
       setTxProgressOpen(true);
+    }
+  }, [status]);
+
+  useEffect(() => {
+    if (
+      ['approvalTransactionSuccess', 'approvalTransactionRejected'].includes(
+        status,
+      )
+    ) {
+      setTimeout(() => {
+        setTxProgressOpen(false);
+      }, 1000);
     }
   }, [status]);
 
@@ -136,7 +152,6 @@ function SwapperWrapped({
   const isWarningLabelVisible =
     selectedSwapRoute?.action === 'uniswap' &&
     isBefore(new Date(), new Date('25 March 2024 12:00 PDT'));
-
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
@@ -347,7 +362,6 @@ function SwapperWrapped({
             </Stack>
           </Stack>
         </Collapse>
-
         <Collapse in={needsApproval}>
           <Box sx={{ backgroundColor: '#fff', px: 3, pt: 3, pb: 0 }}>
             <Button
@@ -373,7 +387,6 @@ function SwapperWrapped({
             </Button>
           </Box>
         </Collapse>
-
         <CardContent sx={{ backgroundColor: '#fff' }}>
           <ConnectedButton
             fullWidth

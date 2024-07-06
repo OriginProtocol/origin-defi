@@ -34,9 +34,12 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
   useEffect(() => {
     if (
       [
-        'transactionSuccess',
-        'transactionRejected',
-        'transactionFailure',
+        'approvalTransactionSuccess',
+        'approvalTransactionFailure',
+        'approvalTransactionRejected',
+        'swapTransactionSuccess',
+        'swapTransactionFailure',
+        'swapTransactionRejected',
       ].includes(status)
     ) {
       setTxResult(status);
@@ -51,15 +54,26 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
   };
 
   const icon = {
-    transactionSuccess: (
+    approvalTransactionSuccess: (
       <FaCircleCheckRegular sx={{ fontSize: 40, color: 'success.main' }} />
     ),
-    transactionRejected: (
+    swapTransactionSuccess: (
+      <FaCircleCheckRegular sx={{ fontSize: 40, color: 'success.main' }} />
+    ),
+    approvalTransactionRejected: (
       <FaCircleExclamationRegular
         sx={{ fontSize: 40, color: 'warning.main' }}
       />
     ),
-    transactionFailure: (
+    swapTransactionRejected: (
+      <FaCircleExclamationRegular
+        sx={{ fontSize: 40, color: 'warning.main' }}
+      />
+    ),
+    approvalTransactionFailure: (
+      <FaCircleXmarkRegular sx={{ fontSize: 40, color: 'primary.main' }} />
+    ),
+    swapTransactionFailure: (
       <FaCircleXmarkRegular sx={{ fontSize: 40, color: 'primary.main' }} />
     ),
   }[txResult] ?? (
@@ -84,13 +98,22 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
   );
   const label =
     {
-      transactionSuccess: intl.formatMessage({
+      approvalTransactionSuccess: intl.formatMessage({
+        defaultMessage: 'Approval Complete',
+      }),
+      swapTransactionSuccess: intl.formatMessage({
         defaultMessage: 'Transaction Complete',
       }),
-      transactionRejected: intl.formatMessage({
+      approvalTransactionRejected: intl.formatMessage({
+        defaultMessage: 'Approval Cancelled',
+      }),
+      swapTransactionRejected: intl.formatMessage({
         defaultMessage: 'Transaction Cancelled',
       }),
-      transactionFailure: intl.formatMessage({
+      approvalTransactionFailure: intl.formatMessage({
+        defaultMessage: 'Approval Failure',
+      }),
+      swapTransactionFailure: intl.formatMessage({
         defaultMessage: 'Transaction Failure',
       }),
     }[txResult] ??

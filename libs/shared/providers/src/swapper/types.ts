@@ -107,11 +107,16 @@ export type EstimatedSwapRoute = {
 export type SwapStatus =
   | 'idle'
   | 'swapRoutesLoading'
-  | 'waitingForSignature'
-  | 'waitingForTransaction'
-  | 'transactionSuccess'
-  | 'transactionRejected'
-  | 'transactionFailure'
+  | 'approvalWaitingForSignature'
+  | 'approvalWaitingForTransaction'
+  | 'approvalTransactionSuccess'
+  | 'approvalTransactionRejected'
+  | 'approvalTransactionFailure'
+  | 'swapWaitingForSignature'
+  | 'swapWaitingForTransaction'
+  | 'swapTransactionSuccess'
+  | 'swapTransactionRejected'
+  | 'swapTransactionFailure'
   | 'noAvailableRoute';
 
 export type SwapState = {

@@ -503,7 +503,7 @@ export const useHandleApprove = () => {
     setSwapState((state) => ({
       ...state,
       isApprovalWaitingForSignature: true,
-      status: 'waitingForSignature',
+      status: 'approvalWaitingForSignature',
     }));
 
     const trackId = onApproveStart?.(state);
@@ -524,7 +524,7 @@ export const useHandleApprove = () => {
         ...state,
         isApprovalWaitingForSignature: false,
         isApprovalLoading: true,
-        status: 'waitingForTransaction',
+        status: 'approvalWaitingForTransaction',
       }));
       if (hash) {
         const txReceipt = await waitForTransactionReceipt(config, { hash });
@@ -532,7 +532,7 @@ export const useHandleApprove = () => {
         setSwapState((state) => ({
           ...state,
           isApprovalLoading: false,
-          status: 'transactionSuccess',
+          status: 'approvalTransactionSuccess',
         }));
         onApproveSuccess?.({
           ...state,
@@ -555,7 +555,7 @@ export const useHandleApprove = () => {
       if (isUserRejected(error)) {
         setSwapState((state) => ({
           ...state,
-          status: 'transactionRejected',
+          status: 'approvalTransactionRejected',
         }));
         onApproveReject?.({ ...state, trackId, notifId });
         trackEvent?.({
@@ -565,7 +565,7 @@ export const useHandleApprove = () => {
       } else {
         setSwapState((state) => ({
           ...state,
-          status: 'transactionFailure',
+          status: 'approvalTransactionFailure',
         }));
         onApproveFailure?.({
           ...state,
@@ -628,7 +628,7 @@ export const useHandleSwap = () => {
     setSwapState((state) => ({
       ...state,
       isSwapWaitingForSignature: true,
-      status: 'waitingForSignature',
+      status: 'swapWaitingForSignature',
     }));
 
     const trackId = onSwapStart?.(state);
@@ -655,7 +655,7 @@ export const useHandleSwap = () => {
         ...state,
         isSwapWaitingForSignature: false,
         isSwapLoading: true,
-        status: 'waitingForTransaction',
+        status: 'swapWaitingForTransaction',
       }));
       if (hash) {
         const txReceipt = await waitForTransactionReceipt(config, { hash });
@@ -667,7 +667,7 @@ export const useHandleSwap = () => {
           amountOut: 0n,
           estimatedSwapRoutes: [],
           selectedSwapRoute: null,
-          status: 'transactionSuccess',
+          status: 'swapTransactionSuccess',
         }));
         onSwapSuccess?.({
           ...state,
@@ -692,7 +692,7 @@ export const useHandleSwap = () => {
       if (isUserRejected(error)) {
         setSwapState((state) => ({
           ...state,
-          status: 'transactionRejected',
+          status: 'swapTransactionRejected',
         }));
         onSwapReject?.({ ...state, trackId, notifId });
         trackEvent?.({
@@ -705,7 +705,7 @@ export const useHandleSwap = () => {
       } else {
         setSwapState((state) => ({
           ...state,
-          status: 'transactionFailure',
+          status: 'swapTransactionFailure',
         }));
         onSwapFailure?.({ ...state, error: error as Error, trackId, notifId });
         trackEvent?.({

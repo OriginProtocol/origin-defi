@@ -26,7 +26,7 @@ import {
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { add, format, sub } from 'dnum';
+import { add, format } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -60,7 +60,7 @@ export const WithdrawView = () => {
       functionName: 'requestWithdrawal',
       args: [
         tokens.mainnet.OETH.address,
-        sub(converted ?? [0n, 18], 1e-18)[0] ?? 0n,
+        converted?.[0] ?? 0n,
         add([amount, tokens.mainnet.primeETH.decimals], 1e-18)[0],
       ],
     },
