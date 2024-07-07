@@ -6,6 +6,7 @@ import {
   useTokenPrice,
   useTvl,
 } from '@origin/shared/providers';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -51,7 +52,7 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
-            value={formatCurrency(price)}
+            value={`$${format(price ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
             isLoading={isPriceLoading}
           />

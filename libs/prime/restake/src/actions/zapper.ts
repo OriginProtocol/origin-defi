@@ -3,7 +3,8 @@ import { contracts } from '@origin/shared/contracts';
 import { getReferrerId, useTokenPrices } from '@origin/shared/providers';
 import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
 import { getAccount, simulateContract, writeContract } from '@wagmi/core';
-import { formatUnits, maxUint256, parseUnits } from 'viem';
+import { div, eq, setDecimals } from 'dnum';
+import { formatUnits, maxUint256 } from 'viem';
 
 import type {
   Allowance,
@@ -26,14 +27,15 @@ const estimateAmount: EstimateAmount = async (
     queryFn: useTokenPrices.fetcher(config),
   });
 
-  if (!price?.primeETH_ETH || price.primeETH_ETH === 0) {
+  if (!price?.primeETH_ETH || eq(price.primeETH_ETH, 0)) {
     return 0n;
   }
 
-  const estimate =
-    +formatUnits(amountIn, tokenIn.decimals) / price.primeETH_ETH;
+  const estimate = div([amountIn, tokenIn.decimals], price.primeETH_ETH, {
+    rounding: 'ROUND_DOWN',
+  });
 
-  return parseUnits(estimate.toString(), tokenOut.decimals);
+  return setDecimals(estimate, tokenOut.decimals)[0];
 };
 
 const estimateRoute: EstimateRoute = async (

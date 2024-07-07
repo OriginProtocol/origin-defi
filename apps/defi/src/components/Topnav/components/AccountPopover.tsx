@@ -19,21 +19,21 @@ import {
   AddressLabel,
   getTokenPriceKey,
   ThemeModeIconButton,
-  useFormat,
   UserAvatar,
   useTokenPrices,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import { format, from, mul } from 'dnum';
 import { descend, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount, useDisconnect } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,
@@ -163,8 +163,8 @@ function BalanceList(props: StackProps) {
         <BalanceRow
           key={tok.symbol}
           token={tok}
-          balance={+formatUnits(balances?.[tok.id] ?? 0n, tok.decimals)}
-          price={prices?.[getTokenPriceKey(tok)] ?? 0}
+          balance={[balances?.[tok.id] ?? 0n, tok.decimals]}
+          price={prices?.[getTokenPriceKey(tok)] ?? from(0)}
           isBalanceLoading={balancesLoading}
           isPriceLoading={isPricesLoading}
         />
@@ -175,8 +175,8 @@ function BalanceList(props: StackProps) {
 
 type BalanceRowProps = {
   token: Token;
-  balance: number;
-  price: number;
+  balance: Dnum;
+  price: Dnum;
   isBalanceLoading: boolean;
   isPriceLoading: boolean;
 } & StackProps;
@@ -189,18 +189,15 @@ function BalanceRow({
   isPriceLoading,
   ...rest
 }: BalanceRowProps) {
-  const intl = useIntl();
-  const { formatCurrency } = useFormat();
-
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
       <TokenIcon token={token} sx={{ fontSize: 32 }} outlined />
       <Stack flexGrow={1}>
         <ValueLabel
           label={token.symbol}
-          value={intl.formatNumber(balance, {
-            minimumFractionDigits: 4,
-            maximumFractionDigits: 4,
+          value={format(balance, {
+            digits: getFormatPrecision(balance),
+            decimalsRounding: 'ROUND_DOWN',
           })}
           isLoading={isBalanceLoading}
           direction="row"
@@ -219,7 +216,7 @@ function BalanceRow({
         />
         <ValueLabel
           label={token.name}
-          value={formatCurrency(balance * price)}
+          value={`$${format(mul(balance, price), 2)}`}
           isLoading={isPriceLoading}
           direction="row"
           justifyContent="space-between"

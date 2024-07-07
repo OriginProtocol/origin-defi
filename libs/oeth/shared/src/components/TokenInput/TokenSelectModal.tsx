@@ -9,16 +9,13 @@ import {
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
-import {
-  useFormat,
-  useTokenPrice,
-  useWatchBalance,
-} from '@origin/shared/providers';
+import { useTokenPrice, useWatchBalance } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
-import { formatUnits } from 'viem';
+import { format, from, mul } from 'dnum';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 export type TokenSelectModalProps = {
   selectedToken: Token;
@@ -80,15 +77,14 @@ function TokenListItem({
   onClick,
   ...rest
 }: TokenListItemProps) {
-  const { formatAmount, formatCurrency } = useFormat();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
   });
 
   const { data: price } = useTokenPrice(getTokenPriceKey(token));
 
-  const bal = +formatUnits(balance ?? 0n, token.decimals);
-  const balUsd = bal * (price ?? 0);
+  const bal = [balance ?? 0n, token.decimals] as Dnum;
+  const balUsd = mul(bal, price ?? from(0));
 
   return (
     <MenuItem
@@ -133,14 +129,10 @@ function TokenListItem({
         )}
         <Box sx={{ textAlign: 'right' }}>
           <Typography fontWeight={500}>
-            {isBalanceLoading ? (
-              <Skeleton width={30} />
-            ) : (
-              formatAmount(balance as unknown as bigint, token.decimals)
-            )}
+            {isBalanceLoading ? <Skeleton width={30} /> : format(bal, 2)}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {formatCurrency(balUsd)}
+            ${format(balUsd, 2)}
           </Typography>
         </Box>
       </Stack>

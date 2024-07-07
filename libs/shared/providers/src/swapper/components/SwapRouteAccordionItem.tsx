@@ -1,13 +1,15 @@
 import { alpha, Skeleton, Stack, Typography } from '@mui/material';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
 import { useFormat } from '../../intl';
 import { getTokenPriceKey } from '../../prices';
 import { useSwapperPrices, useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
+
+import type { Dnum } from 'dnum';
 
 import type { EstimatedSwapRoute } from '../types';
 
@@ -44,12 +46,14 @@ export function SwapRouteAccordionItem({
   });
   const { data: allowance } = useSwapRouteAllowance(route);
 
-  const estimatedAmount = +formatUnits(
+  const estimatedAmount = [
     route.estimatedAmount,
     route.tokenOut.decimals,
+  ] as Dnum;
+  const convertedAmount = mul(
+    estimatedAmount,
+    prices?.[getTokenPriceKey(route.tokenOut)] ?? 0,
   );
-  const convertedAmount =
-    (prices?.[getTokenPriceKey(route.tokenOut)] ?? 1) * estimatedAmount;
   const isGasLoading =
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
@@ -117,7 +121,7 @@ export function SwapRouteAccordionItem({
               color="text.secondary"
               isLoading={isSwapRoutesLoading}
             >
-              ({formatCurrency(convertedAmount)})
+              (${format(convertedAmount, 2)})
             </LoadingLabel>
           </Stack>
           <LoadingLabel

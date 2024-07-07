@@ -32,6 +32,7 @@ export const NetworkIcon = ({
       : outlineColor === 'dark'
         ? '#111'
         : outlineColor;
+  const radius = size <= 16 ? 1 : 2;
 
   if (shape === 'transparent') {
     return (
@@ -66,7 +67,8 @@ export const NetworkIcon = ({
         alignItems: 'center',
         width: size,
         height: size,
-        borderRadius: shape === 'rounded' ? 2 : shape === 'circle' ? '50%' : 0,
+        borderRadius:
+          shape === 'rounded' ? radius : shape === 'circle' ? '50%' : 0,
         backgroundColor: props.backgroundColor,
 
         padding: 1,

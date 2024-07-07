@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { HexAddress } from '@origin/shared/utils';
+import type { Dnum } from 'dnum';
 import type { ReadContractParameters } from 'viem';
 
 export type WagmiOption = {
@@ -8,14 +9,14 @@ export type WagmiOption = {
     address: HexAddress;
     chainId: number;
   };
-  mapResult?: (args: any) => number;
+  mapResult?: (args: any) => Dnum;
   type: 'wagmi';
 };
 
 export type RestOption = {
   id: SupportedTokenPrice;
-  config: () => Promise<number>;
-  mapResult?: (args: any) => number;
+  config: () => Promise<Dnum>;
+  mapResult?: (args: any) => Dnum;
   type: 'rest';
 };
 

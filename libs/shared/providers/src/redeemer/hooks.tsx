@@ -9,10 +9,10 @@ import {
 } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
+import { add, div, from, gt, mul } from 'dnum';
 import { produce } from 'immer';
 import { uniq } from 'ramda';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import {
@@ -28,6 +28,7 @@ import { simulateContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
+import type { Dnum } from 'dnum';
 import type { TransactionReceipt } from 'viem';
 
 export const useHandleRedeemAmountInChange = () => {
@@ -226,15 +227,18 @@ export const useMixTokenPrice = () => {
       ? [0, 0]
       : split.reduce(
           (acc, curr) => {
-            const val = +formatUnits(curr.amount, curr.token.decimals);
+            const val = [curr.amount, curr.token.decimals] as Dnum;
 
             return [
-              acc[0] + val,
-              acc[1] + val * (prices?.[getTokenPriceKey(curr.token)] ?? 0),
+              add(acc[0], val),
+              add(
+                acc[1],
+                mul(val, prices?.[getTokenPriceKey(curr.token)] ?? 0),
+              ),
             ];
           },
-          [0, 0],
+          [from(0), from(0)],
         );
 
-  return total > 0 ? price / total : 0;
+  return gt(total, from(0)) ? div(price, total) : from(0);
 };

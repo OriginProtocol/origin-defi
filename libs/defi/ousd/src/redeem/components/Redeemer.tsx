@@ -23,7 +23,6 @@ import {
   MIX_TOKEN,
   RedeemProvider,
   TxButton,
-  useFormat,
   useHandleRedeemAmountInChange,
   useRedeemerPrices,
   useRedeemState,
@@ -32,12 +31,12 @@ import {
 } from '@origin/shared/providers';
 import {
   composeContexts,
+  getFormatPrecision,
   isNilOrEmpty,
-  subtractPercentage,
-  subtractSlippage,
+  subPercentage,
 } from '@origin/shared/utils';
+import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import { BreakdownAccordion } from './BreakdownAccordion';
 import { RedeemSplitCard } from './RedeemSplitCard';
@@ -45,6 +44,7 @@ import { RedeemSplitCard } from './RedeemSplitCard';
 import type { ButtonProps, CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { RedeemState } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 export type RedeemerProps = Pick<
   RedeemState,
@@ -81,7 +81,6 @@ function RedeemerWrapped({
   ...rest
 }: Omit<RedeemerProps, 'trackEvent' | 'tokenIn' | 'vaultContract'>) {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { value: slippage } = useSlippage();
   const [
     {
@@ -102,13 +101,14 @@ function RedeemerWrapped({
     token: tokenIn,
   });
   const handleAmountInChange = useHandleRedeemAmountInChange();
-  const minAmountOut = subtractSlippage(amountOut, 18, slippage);
+  const amt = [amountOut ?? 0n, 18] as Dnum;
+  const minAmountOut = subPercentage(amt, slippage);
 
   const { params, callbacks } = useTxButton({
     params: {
       contract: vaultContract,
       functionName: 'redeem',
-      args: [amountIn, minAmountOut],
+      args: [amountIn, minAmountOut[0]],
     },
     activity: {
       type: 'redeem',
@@ -134,14 +134,16 @@ function RedeemerWrapped({
     amountIn === 0n;
   const convertedAmount =
     isPricesLoading || isEstimateLoading || isNilOrEmpty(prices)
-      ? 0
+      ? from(0)
       : split.reduce((acc, curr) => {
-          return (
-            acc +
-            +formatUnits(curr.amount, curr.token.decimals) *
-              (prices?.[getTokenPriceKey(curr.token)] ?? 0)
+          return add(
+            acc,
+            mul(
+              [curr.amount, curr.token.decimals],
+              prices?.[getTokenPriceKey(curr.token)] ?? 0,
+            ),
           );
-        }, 0);
+        }, from(0));
 
   return (
     <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
@@ -203,10 +205,9 @@ function RedeemerWrapped({
                 variant="h6"
                 color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
               >
-                {intl.formatNumber(+formatUnits(amountOut, 18), {
-                  roundingMode: 'floor',
-                  maximumFractionDigits: 5,
-                  minimumFractionDigits: 0,
+                {format(amt, {
+                  digits: getFormatPrecision(amt),
+                  decimalsRounding: 'ROUND_DOWN',
                 })}
               </LoadingLabel>
               <LoadingLabel
@@ -214,7 +215,7 @@ function RedeemerWrapped({
                 sWidth={60}
                 color="text.secondary"
               >
-                {amountIn === 0n ? '$0.00' : formatCurrency(convertedAmount)}
+                ${amountIn === 0n ? '0.00' : format(convertedAmount, 2)}
               </LoadingLabel>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={1}>
@@ -257,9 +258,7 @@ function RedeemerWrapped({
                   sWidth={60}
                   fontWeight="medium"
                 >
-                  {formatCurrency(
-                    subtractPercentage(convertedAmount, slippage),
-                  )}
+                  ${format(subPercentage(convertedAmount, slippage), 2)}
                 </LoadingLabel>
               </Stack>
             </Stack>

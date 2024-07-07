@@ -12,8 +12,8 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import { useGasPrice } from '../../gas';
 import { useFormat } from '../../intl';
@@ -23,6 +23,7 @@ import { useRedeemerPrices } from '../hooks';
 import { useRedeemState } from '../state';
 
 import type { StackProps } from '@mui/material';
+import type { Dnum } from 'dnum';
 
 import type { RedeemEstimate } from '../types';
 
@@ -41,14 +42,16 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
 
   const convertedAmount =
     isPricesLoading || isEstimateLoading || isNilOrEmpty(prices)
-      ? 0
+      ? from(0)
       : split.reduce((acc, curr) => {
-          return (
-            acc +
-            +formatUnits(curr.amount, curr.token.decimals) *
-              (prices?.[getTokenPriceKey(curr.token)] ?? 0)
+          return add(
+            acc,
+            mul(
+              [curr.amount, curr.token.decimals],
+              prices?.[getTokenPriceKey(curr.token)] ?? 0,
+            ),
           );
-        }, 0);
+        }, from(0));
 
   return (
     <Stack
@@ -89,7 +92,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isEstimateLoading || isPricesLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `(${formatCurrency(convertedAmount)})`
+                  `($${format(convertedAmount, 2)})`
                 )}
               </Typography>
             </Stack>
@@ -158,7 +161,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
 
 type SplitRowProps = {
   estimate: RedeemEstimate;
-  price?: number;
+  price?: Dnum;
   isEstimateLoading: boolean;
   isPricesLoading: boolean;
 } & StackProps;
@@ -170,10 +173,9 @@ function SplitRow({
   isPricesLoading,
   ...rest
 }: SplitRowProps) {
-  const { formatAmount, formatCurrency } = useFormat();
+  const { formatAmount } = useFormat();
 
-  const converted =
-    +formatUnits(estimate.amount, estimate.token.decimals) * (price ?? 0);
+  const converted = mul([estimate.amount, estimate.token.decimals], price ?? 0);
 
   return (
     <Stack
@@ -212,7 +214,7 @@ function SplitRow({
             textAlign="end"
             minWidth={80}
           >
-            {formatCurrency(converted)}
+            ${format(converted, 2)}
           </Typography>
         )}
       </Stack>

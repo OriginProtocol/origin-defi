@@ -9,16 +9,16 @@ import {
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
+import { format, lt, mul } from 'dnum';
 import { ascend, descend, prop, sortWith } from 'ramda';
-import { formatUnits } from 'viem';
 
-import { useFormat } from '../../intl';
 import { getTokenPriceKey } from '../../prices';
 import { useWatchBalance } from '../../wagmi';
 import { useSwapperPrices } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 export type TokenOption = {
   isSwappable: boolean;
@@ -85,14 +85,14 @@ type TokenListItemProps = {
 } & MenuItemProps;
 
 function TokenListItem({ token, ...rest }: TokenListItemProps) {
-  const { formatAmount, formatCurrency } = useFormat();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
   });
   const { data: prices } = useSwapperPrices();
 
-  const bal = +formatUnits(balance ?? 0n, token.decimals);
-  const balUsd = bal * (prices?.[getTokenPriceKey(token)] ?? 0);
+  const bal = [balance ?? 0n, token.decimals] as Dnum;
+  const balDigits = lt(bal, 1) ? 6 : lt(bal, 10) ? 4 : 2;
+  const balUsd = mul(bal, prices?.[getTokenPriceKey(token)] ?? 0);
 
   return (
     <MenuItem
@@ -133,11 +133,11 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
-              formatAmount(balance as unknown as bigint, token.decimals)
+              format(bal, balDigits)
             )}
           </Typography>
           <Typography color="text.secondary" variant="body2">
-            {formatCurrency(balUsd)}
+            ${format(balUsd, 2)}
           </Typography>
         </Box>
       </Stack>

@@ -28,7 +28,6 @@ import {
   isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
-  useFormat,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
@@ -45,9 +44,11 @@ import {
 } from '@origin/shared/providers';
 import {
   formatError,
+  getFormatPrecision,
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
 } from '@origin/shared/utils';
+import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -252,7 +253,6 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
   const { isConnected, chainId } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
@@ -292,6 +292,10 @@ function SwapperWrapped({
     handleTokenChange(tokenSource, value);
   };
 
+  const minReceived = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const needsApproval =
     isConnected &&
     tokenIn.chainId === chainId &&
@@ -438,9 +442,10 @@ function SwapperWrapped({
                 sWidth={60}
                 fontWeight="medium"
               >
-                {formatAmount(
-                  subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                )}
+                {format(minReceived, {
+                  digits: getFormatPrecision(minReceived),
+                  decimalsRounding: 'ROUND_DOWN',
+                })}
               </LoadingLabel>
               <Typography fontWeight="medium">{tokenOut.symbol}</Typography>
             </Stack>

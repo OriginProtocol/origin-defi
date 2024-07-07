@@ -2,21 +2,21 @@ import { Card, CardHeader, Stack, Typography } from '@mui/material';
 import { LrtWithdrawalStatus } from '@origin/prime/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { useFormat, useTokenPrice } from '@origin/shared/providers';
+import { useTokenPrice } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useMatch } from 'react-router-dom';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useUserWithdrawalsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type { Dnum } from 'dnum';
 
 export const PastClaimsCard = (props: CardProps) => {
   const intl = useIntl();
-  const { formatAmount, formatCurrency } = useFormat();
   const { address, isConnected } = useAccount();
   const match = useMatch('/restake/claim');
   const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
@@ -57,41 +57,41 @@ export const PastClaimsCard = (props: CardProps) => {
             ...valueLabelProps?.labelProps,
           }}
         />
-        {withdrawals?.map((r) => (
-          <ValueLabel
-            key={r.id}
-            label={intl.formatDate(new Date(r.timestamp), {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric',
-            })}
-            value={intl.formatMessage(
-              { defaultMessage: '{amount} {converted}' },
-              {
-                amount: formatAmount(BigInt(r.assetAmount)),
-                converted: (
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    textAlign="start"
-                  >
-                    (
-                    {formatCurrency(
-                      (price ?? 0) *
-                        +formatUnits(
-                          BigInt(r.assetAmount),
-                          tokens.mainnet.OETH.decimals,
-                        ),
-                    )}
-                    )
-                  </Typography>
-                ),
-              },
-            )}
-            isLoading={isPriceLoading}
-            {...valueLabelProps}
-          />
-        ))}
+        {withdrawals?.map((r) => {
+          const amt = [
+            BigInt(r?.assetAmount ?? 0),
+            tokens.mainnet.OETH.decimals,
+          ] as Dnum;
+          const converted = mul(amt, price ?? 0);
+
+          return (
+            <ValueLabel
+              key={r.id}
+              label={intl.formatDate(new Date(r.timestamp), {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+              })}
+              value={intl.formatMessage(
+                { defaultMessage: '{amount} {converted}' },
+                {
+                  amount: format(amt, 4),
+                  converted: (
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      textAlign="start"
+                    >
+                      (${format(converted)})
+                    </Typography>
+                  ),
+                },
+              )}
+              isLoading={isPriceLoading}
+              {...valueLabelProps}
+            />
+          );
+        })}
       </Stack>
     </Card>
   );

@@ -1,5 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
+import { from, toNumber } from 'dnum';
 import { formatUnits } from 'viem';
 import { useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
@@ -43,7 +44,7 @@ const fetcher: (
       estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
     ]);
 
-    const gweiUsd = price.ETH_USD * 1e-9;
+    const gweiUsd = toNumber(price.ETH_USD ?? from(0)) * 1e-9;
     const gasPrice =
       +formatUnits(data.maxFeePerGas, 9) +
       +formatUnits(data.maxPriorityFeePerGas, 9);

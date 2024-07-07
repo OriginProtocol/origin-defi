@@ -8,11 +8,13 @@ import {
   useSwapRouteAllowance,
   useSwapState,
 } from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { EstimatedSwapRoute } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 export type SwapRouteAccordionItemProps = {
   route: EstimatedSwapRoute;
@@ -26,7 +28,7 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
-  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
+  const { formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = useSwapperPrices();
   const {
@@ -47,12 +49,14 @@ export function SwapRouteAccordionItem({
   });
   const { data: allowance } = useSwapRouteAllowance(route);
 
-  const estimatedAmount = +formatUnits(
-    route.estimatedAmount,
+  const estimatedAmount = [
+    route.estimatedAmount ?? 0n,
     route.tokenOut.decimals,
+  ] as Dnum;
+  const convertedAmount = mul(
+    estimatedAmount,
+    prices?.[getTokenPriceKey(route.tokenOut)] ?? 0,
   );
-  const convertedAmount =
-    (prices?.[getTokenPriceKey(route.tokenOut)] ?? 1) * estimatedAmount;
   const isGasLoading =
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
@@ -95,13 +99,16 @@ export function SwapRouteAccordionItem({
         <Stack direction="column" spacing={0.5}>
           <Stack direction="row" spacing={0.5} alignItems="baseline">
             <LoadingLabel fontWeight="medium" isLoading={isSwapRoutesLoading}>
-              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
+              {format(estimatedAmount, {
+                digits: getFormatPrecision(estimatedAmount),
+                decimalsRounding: 'ROUND_DOWN',
+              })}
             </LoadingLabel>
             <LoadingLabel
               color="text.secondary"
               isLoading={isSwapRoutesLoading}
             >
-              ({formatCurrency(convertedAmount)})
+              (${format(convertedAmount, 2)})
             </LoadingLabel>
           </Stack>
           <LoadingLabel isLoading={isSwapRoutesLoading} sWidth={80}>

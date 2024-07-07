@@ -31,17 +31,21 @@ import { tokens } from '@origin/shared/contracts';
 import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import {
+  getFormatPrecision,
   getMonthDurationToSeconds,
   isNilOrEmpty,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
+import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
+
+import type { Dnum } from 'dnum';
 
 export const StakingForm = () => {
   const intl = useIntl();
@@ -141,6 +145,7 @@ export const StakingForm = () => {
     setAmount(info?.ognBalance ?? 0n);
   };
 
+  const bal = [info?.ognBalance ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const votingPowerPercent = Math.min(
     1,
     (staking?.xOgnPreview ?? 0) /
@@ -186,10 +191,10 @@ export const StakingForm = () => {
             <Button variant="link" onClick={handleMaxClick}>
               <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
               <Typography noWrap fontWeight="medium">
-                {formatAmount(
-                  info?.ognBalance ?? 0n,
-                  tokens.mainnet.OGN.decimals,
-                )}
+                {format(bal, {
+                  digits: getFormatPrecision(bal),
+                  decimalsRounding: 'ROUND_DOWN',
+                })}
               </Typography>
             </Button>
           </Stack>

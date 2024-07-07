@@ -30,7 +30,6 @@ import {
   SwapNotification,
   SwapProvider,
   useDeleteActivity,
-  useFormat,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
@@ -43,6 +42,7 @@ import {
   useWatchBalance,
 } from '@origin/shared/providers';
 import { formatError, isNilOrEmpty } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -51,6 +51,7 @@ import { RedeemActionCard } from './RedeemActionCard';
 
 import type { StackProps } from '@mui/material';
 import type { SwapState } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 import type { MouseEvent } from 'react';
 
 export type SwapperProps = Pick<
@@ -188,7 +189,6 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const [
@@ -221,12 +221,14 @@ function SwapperWrapped({
     trackEvent?.({ name: 'open_settings' });
   };
 
-  const estimatedAmount = +formatUnits(
+  const estimatedAmount = [
     selectedSwapRoute?.estimatedAmount ?? 0n,
     tokenOut.decimals,
+  ] as Dnum;
+  const amountOutUsd = mul(
+    estimatedAmount,
+    prices?.[getTokenPriceKey(tokenOut)] ?? 0,
   );
-  const amountOutUsd =
-    (prices?.[getTokenPriceKey(tokenOut)] ?? 1) * estimatedAmount;
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
@@ -388,7 +390,7 @@ function SwapperWrapped({
                   sWidth={60}
                   color="text.secondary"
                 >
-                  {amountIn === 0n ? '$0.00' : formatCurrency(amountOutUsd)}
+                  ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
                 </LoadingLabel>
               </Stack>
               <Stack direction="row" alignItems="center" spacing={1}>

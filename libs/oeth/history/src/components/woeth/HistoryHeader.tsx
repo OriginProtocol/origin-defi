@@ -5,8 +5,8 @@ import {
   useTokenPrice,
   useWatchBalances,
 } from '@origin/shared/providers';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatEther } from 'viem';
 import { useAccount } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
@@ -29,7 +29,10 @@ export function HistoryHeader() {
           0n,
         )
       : 0n;
-  const woethOethValue = +formatEther(woethBalance) * (exchangeRate.data ?? 0);
+  const woethOethValue = mul(
+    [woethBalance, tokens.mainnet.wOETH.decimals],
+    exchangeRate?.data ?? 0,
+  );
 
   return (
     <Stack
@@ -48,7 +51,7 @@ export function HistoryHeader() {
       <Divider orientation="vertical" flexItem />
       <ValueContainer
         label={intl.formatMessage({ defaultMessage: 'Current value (OETH)' })}
-        value={formatAmount(woethOethValue)}
+        value={format(woethOethValue, 4)}
         isLoading={isConnected && woethLoading && exchangeRate.isLoading}
       />
       <Divider orientation="vertical" flexItem />

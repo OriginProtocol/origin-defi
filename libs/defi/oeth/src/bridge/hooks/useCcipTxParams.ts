@@ -6,8 +6,9 @@ import {
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
+import { div } from 'dnum';
 import useIdle from 'react-use/lib/useIdle';
-import { encodeAbiParameters, keccak256, parseUnits, toHex } from 'viem';
+import { encodeAbiParameters, keccak256, toHex } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -62,8 +63,6 @@ export const useCcipTxParams = ({
           chainId: contracts.mainnet.woethCcipZapper.chainId,
         });
 
-        // Tempted to make a simple function out of something like this.
-        // Such as: `fetchTokenPrice(config, queryClient, 'wOETH_ETH')
         const exchangeRate = await queryClient
           .fetchQuery({
             queryKey: useTokenPrices.getKey(['wOETH_ETH']),
@@ -74,8 +73,7 @@ export const useCcipTxParams = ({
         return {
           path: 'zap-eth-oeth-woeth-ccip',
           amount,
-          amountOut:
-            (amount * 10n ** 18n) / parseUnits(exchangeRate.toString(), 18),
+          amountOut: div([amount, srcToken.decimals], exchangeRate ?? 1)[0],
           fee,
           isEstimate: true,
           params: validateTxButtonParams({

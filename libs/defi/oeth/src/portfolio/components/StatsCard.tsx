@@ -8,9 +8,9 @@ import {
   useWatchBalance,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { getFormatPrecision, ZERO_ADDRESS } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { usePendingYield } from '../hooks';
@@ -92,8 +92,10 @@ export const WoethStats = (props: CardProps) => {
     (acc, curr) => acc + (curr ?? 0n),
     0n,
   );
-  const woethOethValue =
-    +formatUnits(woethBalance, tokens.mainnet.wOETH.decimals) * (price ?? 0);
+  const woethOethValue = mul(
+    [woethBalance ?? 0n, tokens.mainnet.wOETH.decimals],
+    price ?? 0,
+  );
 
   return (
     <Card
@@ -114,7 +116,14 @@ export const WoethStats = (props: CardProps) => {
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'Current value (OETH)' })}
-          value={isConnected ? formatAmount(woethOethValue) : '-'}
+          value={
+            isConnected
+              ? format(woethOethValue, {
+                  digits: getFormatPrecision(woethOethValue),
+                  decimalsRounding: 'ROUND_DOWN',
+                })
+              : '-'
+          }
           isLoading={isConnected && isPriceLoading}
         />
       </Stack>

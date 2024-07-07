@@ -7,29 +7,33 @@ import {
   CardHeader,
   Divider,
   keyframes,
-  Link,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { NetworkIcon, TokenIcon } from '@origin/shared/components';
+import {
+  ExternalLink,
+  NetworkIcon,
+  TokenIcon,
+} from '@origin/shared/components';
 import { getTokenByAddress } from '@origin/shared/contracts';
 import {
   FaArrowRightRegular,
-  FaArrowUpRightFromSquareRegular,
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
   FaLoaderDuotone,
 } from '@origin/shared/icons';
 import { getChain } from '@origin/shared/providers';
-import { formatAmount } from '@origin/shared/utils';
+import { getFormatPrecision } from '@origin/shared/utils';
 import { useIntervalEffect } from '@react-hookz/web';
+import { format } from 'dnum';
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useBridgeActivity } from '../hooks/useBridgeActivity';
 
 import type { SupportedChain } from '@origin/shared/components';
+import type { Dnum } from 'dnum';
 import type { MessageDescriptor } from 'react-intl';
 import type { Chain } from 'viem/chains';
 
@@ -80,6 +84,8 @@ export const BridgeActivityCard = () => {
             <CardContent>
               <Stack alignItems={'center'}>
                 <Button
+                  variant="outlined"
+                  color="secondary"
                   onClick={() => {
                     setLimit(limit + 2);
                   }}
@@ -152,18 +158,26 @@ export const BridgeTransfer = ({
   const config = useConfig();
   const token = getTokenByAddress(activity.tokenIn, activity.chainIn);
   const { title, subTitle } = messaging[activity.state];
+
+  const amt = [BigInt(activity?.amountOut ?? 0), token?.decimals ?? 18] as Dnum;
+
   return (
     <CardContent>
-      <Stack spacing={2} width={1}>
+      <Stack spacing={1.5} width={1}>
         <Stack direction={'row'} spacing={2} width={1}>
           <TokenIcon token={token} sx={{ fontSize: 40 }} />
-          <Stack width={1} spacing={0.25}>
+          <Stack width={1} spacing={0.5}>
             <Stack direction={'row'} justifyContent={'space-between'}>
               <Typography fontWeight="medium">
                 {intl.formatMessage(title)}
               </Typography>
               <Typography fontWeight="medium">
-                {formatAmount(activity.amountOut)} {token?.symbol}
+                {format(amt, {
+                  digits: getFormatPrecision(amt),
+                  decimalsRounding: 'ROUND_DOWN',
+                })}
+                &nbsp;
+                {token?.symbol}
               </Typography>
             </Stack>
             <BridgeRoute
@@ -175,29 +189,19 @@ export const BridgeTransfer = ({
         <Stack direction={'row'} width={1}>
           <Stack
             direction={'row'}
-            spacing={0.5}
+            spacing={0.75}
             alignItems={'center'}
             width={1}
           >
             <StatusIcon state={activity.state} />
-            <Typography fontSize={12}>
-              {intl.formatMessage(subTitle)}
-            </Typography>
-            <Link
+            <ExternalLink
               href={`https://ccip.chain.link/msg/${activity.messageId}`}
               target="_blank"
               rel="noopener noreferrer nofollow"
+              variant="caption2"
             >
-              <FaArrowUpRightFromSquareRegular
-                sx={{
-                  fontSize: 12,
-                  color: 'text.secondary',
-                  '&:hover': {
-                    color: 'text.primary',
-                  },
-                }}
-              />
-            </Link>
+              {intl.formatMessage(subTitle)}
+            </ExternalLink>
           </Stack>
           <Eta
             state={activity.state}
@@ -212,14 +216,22 @@ export const BridgeTransfer = ({
 export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
   <Stack
     direction={'row'}
-    spacing={{ xs: '3px' }}
+    spacing={0.5}
     alignItems={'center'}
     color={'text.secondary'}
   >
-    <NetworkIcon chainId={props.srcChain?.id as SupportedChain} size={16} />
+    <NetworkIcon
+      chainId={props.srcChain?.id as SupportedChain}
+      size={16}
+      sx={{ mr: 0.5 }}
+    />
     <Typography fontSize={12}>{props.srcChain?.name}</Typography>
     <FaArrowRightRegular sx={{ height: 12 }} />
-    <NetworkIcon chainId={props.dstChain?.id as SupportedChain} size={16} />
+    <NetworkIcon
+      chainId={props.dstChain?.id as SupportedChain}
+      size={16}
+      sx={{ mr: 0.5 }}
+    />
     <Typography fontSize={12}>{props.dstChain?.name}</Typography>
   </Stack>
 );

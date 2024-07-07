@@ -18,13 +18,14 @@ import {
   useTokenPrices,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatAmount, tokenHolderLink } from '@origin/shared/utils';
+import { getFormatPrecision, tokenHolderLink } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 import type { Chain } from 'viem/chains';
 
 export const BalancesCard = ({ title }: { title: string }) => {
@@ -73,14 +74,13 @@ export const BalanceRow = ({
 }: {
   chain: Chain;
   token: Token;
-  usdRate: number | undefined;
+  usdRate: Dnum | undefined;
 }) => {
-  const intl = useIntl();
   const { address: userAddress } = useAccount();
   const { data: balance, isLoading } = useWatchBalance({ token });
 
-  const converted =
-    +formatUnits(balance ?? 0n, token.decimals) * (usdRate ?? 0);
+  const bal = [balance ?? 0n, token.decimals] as Dnum;
+  const converted = mul([balance ?? 0n, token.decimals], usdRate ?? 0);
 
   return (
     <Stack
@@ -100,20 +100,17 @@ export const BalanceRow = ({
       <Stack direction={'column'} alignItems={'end'}>
         <Stack direction={'row'} spacing={1}>
           <LoadingLabel isLoading={isLoading} sWidth={60}>
-            {formatAmount(balance ?? 0n)}
+            {format(bal, {
+              digits: getFormatPrecision(bal),
+              decimalsRounding: 'ROUND_DOWN',
+            })}
           </LoadingLabel>
           <Typography>{tokens.mainnet.wOETH.symbol}</Typography>
         </Stack>
         {balance !== undefined && usdRate && (
-          <Box color={'text.secondary'}>
-            {intl.formatNumber(converted, {
-              style: 'currency',
-              currency: 'USD',
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-              currencyDisplay: 'narrowSymbol',
-            })}
-          </Box>
+          <Typography color={'text.secondary'}>
+            ${format(converted, 2)}
+          </Typography>
         )}
       </Stack>
     </Stack>

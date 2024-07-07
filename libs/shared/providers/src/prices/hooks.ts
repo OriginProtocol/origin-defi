@@ -2,6 +2,7 @@ import { isFulfilled, isNilOrEmpty } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import axios from 'axios';
+import { from, mul } from 'dnum';
 import { groupBy, pickBy } from 'ramda';
 import { useConfig } from 'wagmi';
 
@@ -14,6 +15,7 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
+import type { Dnum, Numberish } from 'dnum';
 
 import type {
   CoingeckoOption,
@@ -33,10 +35,10 @@ const getPricesKey = (tokenPrices: SupportedTokenPrice[]): PricesKey => [
 
 const pricesFetcher: (
   config: Config,
-) => QueryFunction<Record<SupportedTokenPrice, number>, PricesKey> =
+) => QueryFunction<Record<SupportedTokenPrice, Dnum>, PricesKey> =
   (config) =>
   async ({ queryKey: [, tokenPrices] }) => {
-    const allPrices = {} as Record<SupportedTokenPrice, number>;
+    const allPrices = {} as Record<SupportedTokenPrice, Dnum>;
 
     if (isNilOrEmpty(tokenPrices)) {
       return allPrices;
@@ -62,8 +64,8 @@ const pricesFetcher: (
           const key = wagmi[i].id;
           allPrices[key] =
             (wagmi[i] as WagmiOption)?.mapResult?.(res.result) ??
-            Number(res?.result) ??
-            0;
+            from(res?.result as Numberish) ??
+            from(0);
         });
       } catch {}
     }
@@ -77,9 +79,8 @@ const pricesFetcher: (
           const key = rest[i].id;
 
           allPrices[key] = isFulfilled(res)
-            ? (rest[i] as RestOption)?.mapResult?.(res.value) ??
-              Number(res.value)
-            : 0;
+            ? (rest[i] as RestOption)?.mapResult?.(res.value) ?? from(res.value)
+            : from(0);
         });
       } catch {}
     }
@@ -91,7 +92,7 @@ const pricesFetcher: (
         );
         coingecko.forEach((o) => {
           allPrices[o.id] =
-            cgRes?.data[(o as CoingeckoOption).config]?.usd ?? 0;
+            from(cgRes?.data[(o as CoingeckoOption).config]?.usd) ?? from(0);
         });
       } catch {}
     }
@@ -103,26 +104,24 @@ const pricesFetcher: (
       try {
         deps.forEach((dep) => {
           allPrices[dep.id] =
-            dep.dependsOn?.reduce((acc, curr) => acc * allPrices[curr], 1) ?? 0;
+            dep.dependsOn?.reduce(
+              (acc, curr) => mul(acc, allPrices[curr]),
+              from(1),
+            ) ?? from(0);
         });
       } catch {}
     }
 
     return pickBy((_, k) => tokenPrices.includes(k), allPrices) as Record<
       SupportedTokenPrice,
-      number
+      Dnum
     >;
   };
 
-export const useTokenPrices = <TData = Record<SupportedTokenPrice, number>>(
+export const useTokenPrices = <TData = Record<SupportedTokenPrice, Dnum>>(
   tokenPrices: SupportedTokenPrice[],
   options?: Omit<
-    UseQueryOptions<
-      Record<SupportedTokenPrice, number>,
-      Error,
-      TData,
-      PricesKey
-    >,
+    UseQueryOptions<Record<SupportedTokenPrice, Dnum>, Error, TData, PricesKey>,
     'queryKey' | 'queryFn'
   >,
 ) => {
@@ -147,7 +146,7 @@ const getPriceKey = (tokenPrice: SupportedTokenPrice): PriceKey => [
 const priceFetcher: (
   config: Config,
   queryClient: QueryClient,
-) => QueryFunction<number, PriceKey> =
+) => QueryFunction<Dnum, PriceKey> =
   (config, queryClient) =>
   async ({ queryKey: [, tokenPrice] }) => {
     const res = await queryClient.fetchQuery({
@@ -161,7 +160,7 @@ const priceFetcher: (
 export const useTokenPrice = (
   tokenPrice: SupportedTokenPrice,
   options?: Omit<
-    UseQueryOptions<number, Error, number, PriceKey>,
+    UseQueryOptions<Dnum, Error, Dnum, PriceKey>,
     'queryKey' | 'queryFn'
   >,
 ) => {

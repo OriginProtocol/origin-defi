@@ -29,7 +29,6 @@ import {
   isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
-  useFormat,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
@@ -42,11 +41,12 @@ import {
 } from '@origin/shared/providers';
 import {
   formatError,
+  getFormatPrecision,
   isNilOrEmpty,
-  subtractPercentage,
+  subPercentage,
 } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { RedeemActionCard } from './RedeemActionCard';
@@ -54,6 +54,7 @@ import { RedeemActionCard } from './RedeemActionCard';
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
 import type { SwapState } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -238,7 +239,6 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
   const [
     {
@@ -265,12 +265,15 @@ function SwapperWrapped({
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
 
-  const estimatedAmount = +formatUnits(
+  const estimatedAmount = [
     selectedSwapRoute?.estimatedAmount ?? 0n,
     tokenOut.decimals,
+  ] as Dnum;
+  const amountOutUsd = mul(
+    estimatedAmount,
+    prices?.[getTokenPriceKey(tokenOut)] ?? 0,
   );
-  const amountOutUsd =
-    (prices?.[getTokenPriceKey(tokenOut)] ?? 1) * estimatedAmount;
+  const minReceived = subPercentage(amountOutUsd, slippage);
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
@@ -373,21 +376,20 @@ function SwapperWrapped({
                   variant="h6"
                   color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
                 >
-                  {intl.formatNumber(
-                    +formatUnits(amountOut, tokenOut.decimals),
-                    {
-                      roundingMode: 'floor',
-                      maximumFractionDigits: 5,
-                      minimumFractionDigits: 0,
-                    },
-                  )}
+                  {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
+                    digits: getFormatPrecision([
+                      amountOut ?? 0n,
+                      tokenOut?.decimals ?? 18,
+                    ]),
+                    decimalsRounding: 'ROUND_DOWN',
+                  })}
                 </LoadingLabel>
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
                   color="text.secondary"
                 >
-                  {amountIn === 0n ? '$0.00' : formatCurrency(amountOutUsd)}
+                  ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
                 </LoadingLabel>
               </Stack>
               <Stack direction="row" alignItems="center" spacing={1}>
@@ -423,7 +425,11 @@ function SwapperWrapped({
                     sWidth={60}
                     fontWeight="medium"
                   >
-                    {formatCurrency(subtractPercentage(amountOutUsd, slippage))}
+                    $
+                    {format(minReceived, {
+                      digits: getFormatPrecision(minReceived),
+                      decimalsRounding: 'ROUND_DOWN',
+                    })}
                   </LoadingLabel>
                 </Stack>
               </Stack>

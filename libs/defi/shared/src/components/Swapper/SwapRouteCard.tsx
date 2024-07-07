@@ -8,12 +8,14 @@ import {
   useSwapRouteAllowance,
   useSwapState,
 } from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { EstimatedSwapRoute } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 export type SwapRouteCardProps = {
   isSelected: boolean;
@@ -30,7 +32,7 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
-  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
+  const { formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
   const { data: prices } = useSwapperPrices();
@@ -52,12 +54,14 @@ export function SwapRouteCard({
   });
   const { data: allowance } = useSwapRouteAllowance(route);
 
-  const estimatedAmount = +formatUnits(
+  const estimatedAmount = [
     route.estimatedAmount,
     route.tokenOut.decimals,
+  ] as Dnum;
+  const convertedAmount = mul(
+    estimatedAmount,
+    prices?.[getTokenPriceKey(route.tokenOut)] ?? 0,
   );
-  const convertedAmount =
-    (prices?.[getTokenPriceKey(route.tokenOut)] ?? 1) * estimatedAmount;
   const isGasLoading =
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
@@ -125,7 +129,10 @@ export function SwapRouteCard({
             isLoading={isSwapRoutesLoading}
             sWidth={100}
           >
-            {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
+            {format(estimatedAmount, {
+              digits: getFormatPrecision(estimatedAmount),
+              decimalsRounding: 'ROUND_DOWN',
+            })}
           </LoadingLabel>
         </Stack>
         <LoadingLabel
@@ -134,7 +141,7 @@ export function SwapRouteCard({
           isLoading={isSwapRoutesLoading}
           sWidth={60}
         >
-          ({formatCurrency(convertedAmount)})
+          (${format(convertedAmount, 2)})
         </LoadingLabel>
         <LoadingLabel
           fontWeight="medium"

@@ -11,8 +11,8 @@ import {
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { add } from 'date-fns';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount, useBlockNumber } from 'wagmi';
 
 import { WAITING_BLOCK_AMOUNT } from '../constants';
@@ -111,9 +111,10 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const isClaimDisabled =
     request.blockNumber + WAITING_BLOCK_AMOUNT > (blockNumber ?? 0);
   const pending = isClaimDisabled ? BigInt(request.assetAmount) : 0n;
-  const pendingConverted =
-    (price ?? 0) * +formatUnits(pending, tokens.mainnet.OETH.decimals);
-
+  const pendingConverted = mul(
+    [pending, tokens.mainnet.OETH.decimals],
+    price ?? 0,
+  );
   return (
     <Stack p={3} {...rest}>
       <Stack direction="row" alignItems="center" mb={4}>
@@ -146,7 +147,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
             color="text.secondary"
             isLoading={isPriceLoading}
           >
-            {formatCurrency(pendingConverted)}
+            ${format(pendingConverted, 2)}
           </LoadingLabel>
         </Stack>
       </Stack>

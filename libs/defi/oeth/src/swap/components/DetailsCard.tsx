@@ -21,6 +21,7 @@ import {
   useTvl,
 } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { AccordionProps } from '@mui/material';
@@ -112,7 +113,7 @@ export const DetailsCard = ({
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
             labelProps={{ fontWeight: 'medium' }}
-            value={formatCurrency(price)}
+            value={`$${format(price ?? from(0), 2)}`}
             isLoading={isPriceLoading}
           />
         </Stack>

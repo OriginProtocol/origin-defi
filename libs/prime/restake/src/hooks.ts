@@ -1,7 +1,7 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useRoutingSwapState } from '@origin/shared/providers';
 import { useQuery } from '@tanstack/react-query';
-import { mul, sub } from 'dnum';
+import { mul } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig, useReadContract } from 'wagmi';
 
@@ -42,10 +42,9 @@ export const usePrimeETH_OETH = (amountIn: bigint) => {
     chainId: contracts.mainnet.lrtOracle.chainId,
     query: {
       select: (data) =>
-        sub(
-          mul([amountIn, tokens.mainnet.primeETH.decimals], [data, 18]),
-          1e-18,
-        ),
+        mul([amountIn, tokens.mainnet.primeETH.decimals], [data, 18], {
+          rounding: 'ROUND_DOWN',
+        }),
     },
   });
 };

@@ -10,15 +10,16 @@ import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   getTokenPriceKey,
-  useFormat,
   useRedeemerPrices,
   useRedeemState,
 } from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
 import type { AccordionProps, StackProps } from '@mui/material';
 import type { RedeemEstimate } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
   const intl = useIntl();
@@ -59,7 +60,7 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
 
 type SplitRowProps = {
   estimate: RedeemEstimate;
-  price?: number;
+  price?: Dnum;
   isEstimateLoading: boolean;
   isPricesLoading: boolean;
 } & StackProps;
@@ -71,10 +72,8 @@ function SplitRow({
   isPricesLoading,
   ...rest
 }: SplitRowProps) {
-  const { formatAmount, formatCurrency } = useFormat();
-
-  const converted =
-    +formatUnits(estimate.amount, estimate.token.decimals) * (price ?? 0);
+  const estimated = [estimate?.amount ?? 0n, estimate.token.decimals] as Dnum;
+  const converted = mul(estimated, price ?? 0);
 
   return (
     <Stack
@@ -101,7 +100,10 @@ function SplitRow({
           isLoading={isEstimateLoading}
           sWidth={80}
         >
-          {formatAmount(estimate.amount, estimate.token.decimals)}
+          {format(estimated, {
+            digits: getFormatPrecision(estimated),
+            decimalsRounding: 'ROUND_DOWN',
+          })}
         </LoadingLabel>
         <LoadingLabel
           isLoading={isPricesLoading || isEstimateLoading}
@@ -112,7 +114,7 @@ function SplitRow({
           textAlign="end"
           minWidth={80}
         >
-          {formatCurrency(converted)}
+          ${format(converted, 2)}
         </LoadingLabel>
       </Stack>
     </Stack>

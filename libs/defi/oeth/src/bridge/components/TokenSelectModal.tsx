@@ -11,18 +11,16 @@ import {
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
-import {
-  useFormat,
-  useTokenPrice,
-  useWatchBalance,
-} from '@origin/shared/providers';
+import { useTokenPrice, useWatchBalance } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 export type TokenSelectModalProps = {
   selectedToken: Token;
@@ -72,15 +70,14 @@ function TokenListItem({
   onClick,
   ...rest
 }: TokenListItemProps) {
-  const { formatAmount, formatCurrency } = useFormat();
   const { isConnected } = useAccount();
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,
   });
   const { data: price } = useTokenPrice(getTokenPriceKey(token));
 
-  const bal = +formatUnits(balance ?? 0n, token.decimals);
-  const balUsd = bal * (price ?? 0);
+  const bal = [balance ?? 0n, token.decimals] as Dnum;
+  const balUsd = mul(bal, price ?? 0);
 
   return (
     <MenuItem
@@ -121,11 +118,14 @@ function TokenListItem({
               {isBalanceLoading ? (
                 <Skeleton width={30} />
               ) : (
-                formatAmount(balance as unknown as bigint, token.decimals)
+                format(bal, {
+                  digits: getFormatPrecision(bal),
+                  decimalsRounding: 'ROUND_DOWN',
+                })
               )}
             </Typography>
             <Typography color="text.secondary" variant="caption1">
-              {formatCurrency(balUsd)}
+              ${format(balUsd, 2)}
             </Typography>
           </Box>
         </Stack>

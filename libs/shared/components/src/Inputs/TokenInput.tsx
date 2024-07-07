@@ -1,14 +1,16 @@
 import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
-import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty } from '@origin/shared/utils';
+import { format, lt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { formatUnits, parseEther } from 'viem';
+import { parseEther } from 'viem';
 
-import { BigIntInput, TokenPicker } from '..';
+import { BigIntInput, LoadingLabel, TokenPicker } from '..';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 import type { BigintInputProps, TokenPickerProps } from '..';
 
@@ -32,7 +34,7 @@ export type TokenInputProps = {
   onTokenClick?: () => void;
   isNativeCurrency?: boolean;
   isTokenClickDisabled?: boolean;
-  tokenPriceUsd?: number;
+  tokenPriceUsd?: Dnum;
   isPriceLoading?: boolean;
   inputProps?: Omit<
     BigintInputProps,
@@ -76,7 +78,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       onAmountChange?.(max);
     };
 
-    const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
+    const bal = [balance ?? 0n, decimals] as Dnum;
+    const balDigits = lt(bal, 1) ? 6 : lt(bal, 10) ? 4 : 2;
+    const amountUsd = mul([amount, decimals], tokenPriceUsd ?? 0);
     const maxVisible =
       !hideMaxButton &&
       balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
@@ -125,20 +129,16 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             marginBlockStart: 1,
           }}
         >
-          {isPriceLoading ? (
-            <Skeleton width={50} />
-          ) : !isNilOrEmpty(tokenPriceUsd) && !isNaN(tokenPriceUsd) ? (
-            <Typography color="text.secondary">
-              {intl.formatNumber(amountUsd, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                currencyDisplay: 'narrowSymbol',
-              })}
-            </Typography>
-          ) : (
-            <Box />
-          )}
+          {!isNilOrEmpty(tokenPriceUsd) ? (
+            <LoadingLabel
+              isLoading={isPriceLoading}
+              sWidth={50}
+              color="text.secondary"
+            >
+              $
+              {format(amountUsd, { digits: 2, decimalsRounding: 'ROUND_DOWN' })}
+            </LoadingLabel>
+          ) : null}
           <Stack
             direction="row"
             alignItems="center"
@@ -163,7 +163,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     {intl.formatMessage(
                       { defaultMessage: 'Balance: {number}' },
                       {
-                        number: formatAmount(balance, decimals),
+                        number: format(bal, balDigits),
                       },
                     )}
                   </Typography>

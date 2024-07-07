@@ -1,7 +1,7 @@
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
-import { formatUnits } from 'viem';
+import { mul, toNumber } from 'dnum';
 import { useConfig } from 'wagmi';
 
 import { getTokenPriceKey, useTokenPrice } from '../prices';
@@ -42,7 +42,7 @@ const fetcher: (
       : 0n;
     const price = isFulfilled(res[1]) ? res[1].value : 0;
 
-    return +formatUnits(totalSupply, token.decimals) * price;
+    return toNumber(mul([totalSupply, token.decimals], price));
   };
 
 export const useTvl = (

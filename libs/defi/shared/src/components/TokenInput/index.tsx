@@ -3,8 +3,8 @@ import { forwardRef } from 'react';
 import { Button, Skeleton, Stack } from '@mui/material';
 import { BigIntInput, LoadingLabel } from '@origin/shared/components';
 import { WalletFilled } from '@origin/shared/icons';
-import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseEther } from 'viem';
 import { useAccount } from 'wagmi';
@@ -13,6 +13,7 @@ import { TokenButton } from '../TokenButton';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 import type { ReactNode } from 'react';
 
 // When clicking max on native currency, we leave this amount of token
@@ -35,7 +36,7 @@ export type TokenInputProps = {
   tokenButton?: ReactNode;
   onTokenClick?: () => void;
   isTokenClickDisabled?: boolean;
-  tokenPriceUsd?: number;
+  tokenPriceUsd?: Dnum;
   isPriceLoading?: boolean;
   readOnly?: boolean;
 } & StackProps;
@@ -66,7 +67,6 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     ref,
   ) => {
     const intl = useIntl();
-    const { formatBalance } = useFormat();
     const { isConnected } = useAccount();
 
     const handleMaxClick = () => {
@@ -78,7 +78,8 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       }
     };
 
-    const amountUsd = +formatUnits(amount, decimals) * tokenPriceUsd;
+    const bal = [balance ?? 0n, decimals] as Dnum;
+    const amountUsd = mul([amount, decimals], tokenPriceUsd ?? 0);
     const maxDisabled =
       disableMaxButton ||
       !isConnected ||
@@ -161,13 +162,8 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               sWidth={50}
               color="text.secondary"
             >
-              {intl.formatNumber(amountUsd, {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                currencyDisplay: 'narrowSymbol',
-                roundingMode: 'floor',
-              })}
+              $
+              {format(amountUsd, { digits: 2, decimalsRounding: 'ROUND_DOWN' })}
             </LoadingLabel>
           ) : null}
           <Stack
@@ -193,12 +189,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     ) : (
                       <>
                         <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
-                        {formatBalance(balance, decimals, undefined, {
-                          roundingMode: 'floor',
-                          minimumFractionDigits:
-                            balance < 10 ** (decimals - 1) ? 4 : 2,
-                          maximumFractionDigits:
-                            balance < 10 ** (decimals - 1) ? 4 : 2,
+                        {format(bal, {
+                          digits: getFormatPrecision(bal),
+                          decimalsRounding: 'ROUND_DOWN',
                         })}
                       </>
                     )}
