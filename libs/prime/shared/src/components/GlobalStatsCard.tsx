@@ -6,7 +6,8 @@ import {
   Typography,
 } from '@mui/material';
 import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
-import { useFormat } from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useAPY } from '../hooks';
@@ -16,7 +17,6 @@ import type { CardProps } from '@mui/material';
 
 export const GlobalStatsCard = (props: CardProps) => {
   const intl = useIntl();
-  const { formatAmount, formatCurrency } = useFormat();
   const { data: tvl, isLoading: isTvlLoading } = useTVL();
   const { data: apy, isLoading: isApyLoading } = useAPY();
 
@@ -42,11 +42,16 @@ export const GlobalStatsCard = (props: CardProps) => {
           >
             {intl.formatMessage(
               { defaultMessage: '{tvl} ETH' },
-              { tvl: formatAmount(tvl?.tvl) },
+              {
+                tvl: format(
+                  tvl?.tvl ?? from(0),
+                  getFormatPrecision(tvl?.tvl ?? from(2)),
+                ),
+              },
             )}
           </LoadingLabel>
           <LoadingLabel variant="body2" fontWeight="medium">
-            {formatCurrency(tvl?.tvlUsd)}
+            ${format(tvl?.tvlUsd ?? from(0), 2)}
           </LoadingLabel>
         </Stack>
         <Stack>

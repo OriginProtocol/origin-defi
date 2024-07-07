@@ -11,7 +11,7 @@ import {
   MultiTokenIcon,
   TokenIcon,
 } from '@origin/shared/components';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
@@ -29,7 +29,6 @@ import type { RedeemEstimate } from '../types';
 
 export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
   const intl = useIntl();
-  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const theme = useTheme();
   const isXs = useMediaQuery(theme.breakpoints.down('sm'));
   const { data: prices, isLoading: isPricesLoading } = useRedeemerPrices();
@@ -85,7 +84,10 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isEstimateLoading ? (
                   <Skeleton width={100} />
                 ) : (
-                  formatAmount(amountOut, MIX_TOKEN.decimals)
+                  format(
+                    [amountOut ?? 0n, MIX_TOKEN.decimals],
+                    getFormatPrecision([amountOut ?? 0n, MIX_TOKEN.decimals]),
+                  )
                 )}
               </Typography>
               <Typography variant="body2" noWrap color="text.secondary">
@@ -104,7 +106,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 {isEstimateLoading || gasPriceLoading ? (
                   <Skeleton width={60} />
                 ) : (
-                  `~${formatCurrency(gasPrice?.gasCostUsd)}`
+                  `~${format(gasPrice?.gasCostUsd ?? from(0), 2)}`
                 )}
               </Typography>
             </Stack>
@@ -133,7 +135,7 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
-              `1:${formatQuantity(rate)}`
+              `1:${format(from(rate ?? 0), 3)}`
             )}
           </Typography>
         </Stack>

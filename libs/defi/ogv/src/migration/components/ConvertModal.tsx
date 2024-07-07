@@ -36,11 +36,11 @@ import {
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaXmarkRegular } from '@origin/shared/icons';
-import { TxButton, useFormat } from '@origin/shared/providers';
+import { TxButton } from '@origin/shared/providers';
 import { getMonthDurationToSeconds, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { addMonths, formatDuration } from 'date-fns';
-import { format, mul, sub } from 'dnum';
+import { add, format, from, mul, sub } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -69,7 +69,6 @@ export const ConvertModal = ({
   ...rest
 }: ConvertModalProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const [stakingRatio, setSatkingRatio] = useState(100);
@@ -156,7 +155,10 @@ export const ConvertModal = ({
   };
 
   const lockupEnd = addMonths(new Date(), duration);
-  const gas = (approvalGas?.gasCostUsd ?? 0) + (writeGas?.gasCostUsd ?? 0);
+  const gas = add(
+    approvalGas?.gasCostUsd ?? from(0),
+    writeGas?.gasCostUsd ?? from(0),
+  );
   const isApprovalNeeded =
     !isAllowanceLoading &&
     !isNilOrEmpty(allowance) &&
@@ -526,10 +528,7 @@ export const ConvertModal = ({
           justifyContent="space-between"
           bgcolor="transparent"
           label={intl.formatMessage({ defaultMessage: 'Est. gas:' })}
-          value={formatCurrency(gas, undefined, undefined, {
-            maximumFractionDigits: 2,
-            roundingMode: 'ceil',
-          })}
+          value={`$${format(gas ?? from(0), 2)}`}
           isLoading={isWriteGasLoading}
           mt={3}
         />

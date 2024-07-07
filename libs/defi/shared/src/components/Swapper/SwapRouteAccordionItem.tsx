@@ -2,14 +2,13 @@ import { Skeleton, Stack } from '@mui/material';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
-  useFormat,
   useGasPrice,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
 } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, mul } from 'dnum';
+import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -28,7 +27,6 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
-  const { formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = useSwapperPrices();
   const {
@@ -61,9 +59,12 @@ export function SwapRouteAccordionItem({
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
     (approvalGasPriceLoading && approvalGasPriceFetching);
-  const gasPrice =
-    (swapGasPrice?.gasCostUsd ?? 0) +
-    ((allowance ?? 0n) < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+  const gasPrice = add(
+    swapGasPrice?.gasCostUsd ?? from(0),
+    (allowance ?? 0n) < amountIn
+      ? approvalGasPrice?.gasCostUsd ?? from(0)
+      : from(0),
+  );
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -122,7 +123,7 @@ export function SwapRouteAccordionItem({
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
           value={intl.formatMessage(
             { defaultMessage: '1:{value}' },
-            { value: formatQuantity(route.rate) },
+            { value: format(from(route?.rate ?? 0), 3) },
           )}
           isLoading={isSwapRoutesLoading}
         />
@@ -131,7 +132,7 @@ export function SwapRouteAccordionItem({
           label={intl.formatMessage({ defaultMessage: 'Gas:' })}
           value={intl.formatMessage(
             { defaultMessage: '~{value}' },
-            { value: formatCurrency(gasPrice) },
+            { value: `$${format(gasPrice, 2)}` },
           )}
           isLoading={isGasLoading}
         />

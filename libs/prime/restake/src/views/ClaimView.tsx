@@ -11,7 +11,7 @@ import {
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { add } from 'date-fns';
-import { format, mul } from 'dnum';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount, useBlockNumber } from 'wagmi';
 
@@ -79,7 +79,7 @@ type ClaimCardProps = {
 
 const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const intl = useIntl();
-  const { formatCurrency, formatAmount } = useFormat();
+  const { formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { data: blockNumber } = useBlockNumber({ watch: true });
   const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
@@ -162,7 +162,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
         <Typography variant="body2" color="text.secondary" textAlign="center">
           {intl.formatMessage(
             { defaultMessage: 'Approximate gas cost: {gas}' },
-            { gas: formatCurrency(gasPrice?.gasCostUsd) },
+            { gas: format(gasPrice?.gasCostUsd ?? from(0), 2) },
           )}
         </Typography>
       )}

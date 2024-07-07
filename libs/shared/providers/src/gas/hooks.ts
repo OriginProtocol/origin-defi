@@ -1,7 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
-import { from, toNumber } from 'dnum';
-import { formatUnits } from 'viem';
+import { add, from, mul } from 'dnum';
 import { useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
@@ -13,13 +12,13 @@ import type {
   UseQueryOptions,
 } from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
+import type { Dnum } from 'dnum';
 
 export type GasPrice = {
-  gweiUsd: number;
-  gasPrice: number;
-  gasCostUsd: number;
-  gasCostGwei: number;
-  gasCostWei: number;
+  gweiUsd: Dnum;
+  gasPrice: Dnum;
+  gasCostUsd: Dnum;
+  gasCostGwei: Dnum;
 };
 
 type Key = ['useGasPrice', string, number];
@@ -44,19 +43,28 @@ const fetcher: (
       estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
     ]);
 
-    const gweiUsd = toNumber(price.ETH_USD ?? from(0)) * 1e-9;
-    const gasPrice =
-      +formatUnits(data.maxFeePerGas, 9) +
-      +formatUnits(data.maxPriorityFeePerGas, 9);
-    const gasCostGwei = Number(gasAmount) * gasPrice;
-    const gasCostUsd = gasCostGwei * gweiUsd;
+    const gweiUsd = mul(price.ETH_USD, 1e-9, {
+      rounding: 'ROUND_UP',
+      decimals: 18,
+    });
+    const gasPrice = add(
+      [data?.maxFeePerGas ?? 0n, 9],
+      [data?.maxPriorityFeePerGas ?? 0n, 9],
+    );
+    const gasCostGwei = mul(from(gasAmount ?? 0), gasPrice, {
+      decimals: 18,
+      rounding: 'ROUND_UP',
+    });
+    const gasCostUsd = mul(gasCostGwei, gweiUsd, {
+      decimals: 18,
+      rounding: 'ROUND_UP',
+    });
 
     return {
       gweiUsd,
       gasPrice,
       gasCostUsd,
       gasCostGwei,
-      gasCostWei: gasCostGwei / 1e9,
     };
   };
 

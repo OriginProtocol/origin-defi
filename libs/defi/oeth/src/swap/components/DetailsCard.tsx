@@ -16,7 +16,6 @@ import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import {
   getTokenPriceKey,
-  useFormat,
   useTokenPrice,
   useTvl,
 } from '@origin/shared/providers';
@@ -39,7 +38,6 @@ export const DetailsCard = ({
   ...rest
 }: DetailsCardProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
     {
       token: token?.address ?? ZERO_ADDRESS,
@@ -103,9 +101,7 @@ export const DetailsCard = ({
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
             labelProps={{ fontWeight: 'medium' }}
-            value={formatCurrency(tvl, undefined, undefined, {
-              minimumFractionDigits: 2,
-            })}
+            value={format(tvl ?? from(0), 2)}
             isLoading={isTvlLoading}
           />
           <ValueLabel

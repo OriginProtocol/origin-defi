@@ -1,10 +1,7 @@
 import { Card, Stack, Typography } from '@mui/material';
 import { MultiTokenIcon, ValueLabel } from '@origin/shared/components';
-import {
-  useFormat,
-  useGasPrice,
-  useRedeemState,
-} from '@origin/shared/providers';
+import { useGasPrice, useRedeemState } from '@origin/shared/providers';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, TypographyProps } from '@mui/material';
@@ -12,7 +9,6 @@ import type { ValueLabelProps } from '@origin/shared/components';
 
 export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
   const intl = useIntl();
-  const { formatCurrency, formatQuantity } = useFormat();
   const [
     { vaultContract, amountIn, amountOut, gas, rate, split, isEstimateLoading },
   ] = useRedeemState();
@@ -89,7 +85,9 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
               ) : (
                 intl.formatMessage(
                   { defaultMessage: '1:{rate}' },
-                  { rate: formatQuantity(rate) },
+                  {
+                    rate: format(from(rate ?? 0), 3),
+                  },
                 )
               )
             }
@@ -104,7 +102,7 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
               ) : (
                 intl.formatMessage(
                   { defaultMessage: '~{value}' },
-                  { value: formatCurrency(gasPrice?.gasCostUsd) },
+                  { value: format(gasPrice?.gasCostUsd ?? from(0), 2) },
                 )
               )
             }

@@ -21,6 +21,7 @@ import { TxButton, useFormat, useTxButton } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatDistanceToNowStrict } from 'date-fns';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -130,7 +131,6 @@ function FormView({
   ...rest
 }: FormViewProps) {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
 
   return (
     <DialogContent
@@ -172,7 +172,7 @@ function FormView({
           {intl.formatMessage({ defaultMessage: 'Gas:' })}
         </Typography>
         <LoadingLabel fontWeight={500} isLoading={gasPrice === undefined}>
-          ~{formatCurrency(gasPrice?.gasCostUsd)}
+          ~{format(gasPrice?.gasCostUsd ?? from(0), 2)}
         </LoadingLabel>
       </Stack>
       <TxButton

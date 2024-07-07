@@ -1,10 +1,10 @@
 import { alpha, Skeleton, Stack, Typography } from '@mui/material';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
-import { format, mul } from 'dnum';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useGasPrice } from '../../gas';
-import { useFormat } from '../../intl';
 import { getTokenPriceKey } from '../../prices';
 import { useSwapperPrices, useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
@@ -25,7 +25,6 @@ export function SwapRouteAccordionItem({
   onSelect,
 }: SwapRouteAccordionItemProps) {
   const intl = useIntl();
-  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, isSwapRoutesLoading, swapActions }] = useSwapState();
   const { data: prices } = useSwapperPrices();
   const {
@@ -58,9 +57,12 @@ export function SwapRouteAccordionItem({
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
     (approvalGasPriceLoading && approvalGasPriceFetching);
-  const gasPrice =
-    (swapGasPrice?.gasCostUsd ?? 0) +
-    ((allowance ?? 0n) < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+  const gasPrice = add(
+    swapGasPrice?.gasCostUsd ?? from(0),
+    (allowance ?? 0n) < amountIn
+      ? approvalGasPrice?.gasCostUsd ?? from(0)
+      : from(0),
+  );
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -114,7 +116,13 @@ export function SwapRouteAccordionItem({
         >
           <Stack direction="row" spacing={0.5} alignItems="baseline">
             <LoadingLabel variant="body2" isLoading={isSwapRoutesLoading}>
-              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
+              {format(
+                [route.estimatedAmount ?? 0n, route.tokenOut.decimals],
+                getFormatPrecision([
+                  route.estimatedAmount ?? 0n,
+                  route.tokenOut.decimals,
+                ]),
+              )}
             </LoadingLabel>
             <LoadingLabel
               variant="body2"
@@ -144,7 +152,7 @@ export function SwapRouteAccordionItem({
             isLoading={isSwapRoutesLoading}
             sWidth={50}
           >
-            1:{formatQuantity(route.rate)}
+            1:{format(from(route?.rate ?? 0), 3)}
           </LoadingLabel>
         </Stack>
         <Stack direction="row" spacing={0.75} justifyContent="space-between">
@@ -157,7 +165,7 @@ export function SwapRouteAccordionItem({
             isLoading={isGasLoading}
             sWidth={40}
           >
-            ~{formatCurrency(gasPrice)}
+            ~${format(gasPrice, 2)}
           </LoadingLabel>
         </Stack>
       </Stack>

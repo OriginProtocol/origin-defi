@@ -50,6 +50,9 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
 
   // Create data response
   const data = useMemo(() => {
+    if (!address) {
+      return [];
+    }
     const transfers = [];
     if (bridgeTransfers.data?.bridgeTransfers) {
       transfers.push(...bridgeTransfers.data.bridgeTransfers);
@@ -64,7 +67,8 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
       };
     });
   }, [
-    bridgeTransfers.data?.bridgeTransfers,
+    address,
+    bridgeTransfers?.data?.bridgeTransfers,
     waitForTransfer,
     waitForTransferFound,
   ]);

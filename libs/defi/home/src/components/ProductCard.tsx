@@ -3,7 +3,12 @@ import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useFormat, useTvl } from '@origin/shared/providers';
-import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  formatAmount,
+  getFormatPrecision,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -18,7 +23,7 @@ export type ProductCardProps = {
 
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
-  const { formatBalance, formatCurrency } = useFormat();
+  const { formatBalance } = useFormat();
   const { address, isConnected } = useAccount();
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
   const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
@@ -37,6 +42,8 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     },
     { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
+
+  const bal = from(BigInt(user?.balance ?? 0));
 
   return (
     <Card
@@ -108,10 +115,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
           {intl.formatMessage(
             { defaultMessage: 'TVL: {tvl}' },
             {
-              tvl: formatCurrency(tvl, undefined, undefined, {
-                notation: 'compact',
-                minimumFractionDigits: 2,
-              }),
+              tvl: `$${format(tvl ?? from(0), { digits: 2, compact: true })}`,
             },
           )}
         </LoadingLabel>
@@ -159,7 +163,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
             value={
               <Stack direction="row" alignItems="baseline" spacing={0.75}>
                 <LoadingLabel isLoading={isUserLoading} fontWeight="medium">
-                  {formatBalance(BigInt(user?.balance ?? '0'))}
+                  {format(bal, getFormatPrecision(bal))}
                 </LoadingLabel>
                 <Typography variant="caption1">
                   {product.token.symbol}

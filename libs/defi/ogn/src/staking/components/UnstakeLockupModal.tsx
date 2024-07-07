@@ -19,9 +19,10 @@ import {
   FaCircleExclamationRegular,
   FaXmarkRegular,
 } from '@origin/shared/icons';
-import { ConnectedButton, TxButton, useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { ConnectedButton, TxButton } from '@origin/shared/providers';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useReadContract } from 'wagmi';
@@ -40,7 +41,6 @@ export const UnstakeLockupModal = ({
   ...rest
 }: UnstakeLockupModalProps) => {
   const intl = useIntl();
-  const { formatAmount, formatCurrency } = useFormat();
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const startPolling = useStartLockupPolling();
@@ -114,7 +114,15 @@ export const UnstakeLockupModal = ({
                 {
                   defaultMessage: 'Penalty for early unlock: {penalty} OGN',
                 },
-                { penalty: formatAmount(penalty, tokens.mainnet.OGN.decimals) },
+                {
+                  penalty: format(
+                    [penalty ?? 0n, tokens.mainnet.OGN.decimals],
+                    getFormatPrecision([
+                      penalty ?? 0n,
+                      tokens.mainnet.OGN.decimals,
+                    ]),
+                  ),
+                },
               )}
             </Typography>
           </ColorChip>
@@ -181,7 +189,12 @@ export const UnstakeLockupModal = ({
             value={
               <Stack direction="row" alignItems="center" spacing={1}>
                 <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
-                <Typography>{formatAmount(previewOgn)}</Typography>
+                <Typography>
+                  {format(
+                    from(previewOgn ?? 0),
+                    getFormatPrecision(from(previewOgn ?? 0)),
+                  )}
+                </Typography>
               </Stack>
             }
             isLoading={isPreviewOgnLoading}
@@ -193,7 +206,7 @@ export const UnstakeLockupModal = ({
             labelProps={{ variant: 'mono' }}
             value={intl.formatMessage(
               { defaultMessage: '~{gas}' },
-              { gas: formatCurrency(gasPrice?.gasCostUsd) },
+              { gas: format(gasPrice?.gasCostUsd ?? from(0), 2) },
             )}
             isLoading={isNilOrEmpty(gasPrice)}
           />

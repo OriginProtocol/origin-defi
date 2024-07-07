@@ -1,11 +1,11 @@
 import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
-import { format, mul } from 'dnum';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { add, format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useGasPrice } from '../../gas';
-import { useFormat } from '../../intl';
 import { getTokenPriceKey } from '../../prices';
 import { useSwapperPrices, useSwapRouteAllowance } from '../hooks';
 import { useSwapState } from '../state';
@@ -30,7 +30,6 @@ export function SwapRouteCard({
   ...rest
 }: SwapRouteCardProps) {
   const intl = useIntl();
-  const { formatAmount, formatCurrency, formatQuantity } = useFormat();
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
   const { data: prices } = useSwapperPrices();
@@ -64,9 +63,12 @@ export function SwapRouteCard({
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
     (approvalGasPriceLoading && approvalGasPriceFetching);
-  const gasPrice =
-    (swapGasPrice?.gasCostUsd ?? 0) +
-    ((allowance ?? 0n) < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+  const gasPrice = add(
+    swapGasPrice?.gasCostUsd ?? from(0),
+    (allowance ?? 0n) < amountIn
+      ? approvalGasPrice?.gasCostUsd ?? from(0)
+      : from(0),
+  );
   const routeLabel = swapActions[route.action].routeLabel;
 
   return (
@@ -142,7 +144,13 @@ export function SwapRouteCard({
               isLoading={isSwapRoutesLoading}
               sWidth={100}
             >
-              {formatAmount(route.estimatedAmount, route.tokenOut.decimals)}
+              {format(
+                [route.estimatedAmount ?? 0n, route.tokenOut.decimals],
+                getFormatPrecision([
+                  route.estimatedAmount ?? 0n,
+                  route.tokenOut.decimals,
+                ]),
+              )}
             </LoadingLabel>
           </Grid2>
           <Grid2 display="flex" alignItems="center" xs={12} sm="auto">
@@ -182,7 +190,7 @@ export function SwapRouteCard({
                 isLoading={isSwapRoutesLoading}
                 sWidth={60}
               >
-                1:{formatQuantity(route.rate)}
+                1:{format(from(route.rate ?? 0), 3)}
               </LoadingLabel>
             </Stack>
             <Stack
@@ -199,7 +207,7 @@ export function SwapRouteCard({
                 fontWeight={500}
                 isLoading={isGasLoading}
               >
-                ~{formatCurrency(gasPrice)}
+                ~{format(gasPrice, 2)}
               </LoadingLabel>
             </Stack>
           </Stack>

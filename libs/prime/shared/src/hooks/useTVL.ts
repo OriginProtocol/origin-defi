@@ -5,7 +5,10 @@ import {
 } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
+import { mul } from 'dnum';
 import { useConfig } from 'wagmi';
+
+import type { Dnum } from 'dnum';
 
 const chainlinkOracles = {
   ETH_USD: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
@@ -37,16 +40,19 @@ export const useTVL = () => {
         ],
       });
 
-      const primeETHPrice = data?.[0]?.result ?? 0n;
-      const tvl =
-        (primeETHPrice * ((data?.[1]?.result as unknown as bigint) ?? 1n)) /
-        10n ** 18n;
-      const tvlUsd =
-        (tvl * ((data?.[2]?.result as unknown as bigint) ?? 0n)) / 10n ** 8n;
+      const primeETHPrice = [
+        data?.[0]?.result ?? 0n,
+        tokens.mainnet.primeETH.decimals,
+      ] as Dnum;
+      const totalSupply = [
+        data?.[1]?.result ?? 1n,
+        tokens.mainnet.primeETH.decimals,
+      ] as Dnum;
+      const ethPrice = [data?.[2]?.result ?? 0, 8] as Dnum;
 
       return {
-        tvl,
-        tvlUsd,
+        tvl: mul(totalSupply, primeETHPrice),
+        tvlUsd: mul(totalSupply, ethPrice),
       };
     },
   });

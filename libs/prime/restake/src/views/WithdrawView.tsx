@@ -22,11 +22,10 @@ import { WarningExclamation } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TxButton,
-  useFormat,
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { add, format } from 'dnum';
+import { add, format, from } from 'dnum';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -223,7 +222,6 @@ const Form = ({
   ...rest
 }: FormProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { isConnected } = useAccount();
   const { data: bal, isLoading: isBalLoading } = useWatchBalance({
     token: tokens.mainnet.primeETH,
@@ -273,14 +271,14 @@ const Form = ({
           label={intl.formatMessage({ defaultMessage: 'Rate:' })}
           value={intl.formatMessage(
             { defaultMessage: '1:{rate}' },
-            { rate: format(rate ?? [0n, 18], 4) },
+            { rate: format(rate ?? from(0), 3) },
           )}
           isLoading={isRateLoading}
           {...valueLabelProps}
         />
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-          value={formatCurrency(gasPrice?.gasCostUsd)}
+          value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
           {...valueLabelProps}
         />
       </Stack>

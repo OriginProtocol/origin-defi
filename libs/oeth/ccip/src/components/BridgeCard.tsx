@@ -27,6 +27,7 @@ import {
 } from '@origin/shared/providers';
 import { formatAmount, ZERO_ADDRESS } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
+import { from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { decodeEventLog, formatUnits } from 'viem';
 import { useAccount, useReadContract } from 'wagmi';
@@ -188,7 +189,7 @@ export const BridgeCard = () => {
               },
             );
 
-  const estimateGasFee = txButton.gasPrice?.gasCostWei;
+  const estimateGasFee = mul(txButton.gasPrice?.gasCostGwei ?? from(0), 1e-9);
   const bridgeFee = ccipTxParams.data
     ? Number(formatUnits(ccipTxParams.data.fee, 18))
     : undefined;

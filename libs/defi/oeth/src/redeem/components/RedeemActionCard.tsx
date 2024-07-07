@@ -3,7 +3,6 @@ import { ValueLabel } from '@origin/shared/components';
 import { Curve, Origin } from '@origin/shared/icons';
 import {
   routeEq,
-  useFormat,
   useGasPrice,
   useHandleSelectSwapRoute,
   useIsSwapRouteAvailable,
@@ -11,6 +10,7 @@ import {
   useSwapState,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
+import { add, format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, TypographyProps } from '@mui/material';
@@ -27,7 +27,6 @@ export const RedeemActionCard = ({
   ...rest
 }: RedeemActionCardProps) => {
   const intl = useIntl();
-  const { formatCurrency, formatQuantity } = useFormat();
   const [
     {
       amountIn,
@@ -77,9 +76,12 @@ export const RedeemActionCard = ({
     isSwapRoutesLoading ||
     (swapGasPriceLoading && swapGasPriceFetching) ||
     (approvalGasPriceLoading && approvalGasPriceFetching);
-  const gasPrice =
-    (swapGasPrice?.gasCostUsd ?? 0) +
-    ((allowance ?? 0n) < amountIn ? approvalGasPrice?.gasCostUsd ?? 0 : 0);
+  const gasPrice = add(
+    swapGasPrice?.gasCostUsd ?? from(0),
+    (allowance ?? 0n) < amountIn
+      ? approvalGasPrice?.gasCostUsd ?? from(0)
+      : from(0),
+  );
   const routeLabel = swapActions[action].routeLabel;
   const isDisabled = !isRouteAvailableLoading && !isRouteAvailable;
 
@@ -161,7 +163,9 @@ export const RedeemActionCard = ({
                 ) : (
                   intl.formatMessage(
                     { defaultMessage: '1:{rate}' },
-                    { rate: formatQuantity(estimatedRoute?.rate) },
+                    {
+                      rate: format(from(estimatedRoute?.rate ?? 0), 3),
+                    },
                   )
                 )
               }
@@ -176,7 +180,9 @@ export const RedeemActionCard = ({
                 ) : (
                   intl.formatMessage(
                     { defaultMessage: '~{value}' },
-                    { value: formatCurrency(gasPrice) },
+                    {
+                      value: `$${format(gasPrice, 2)}`,
+                    },
                   )
                 )
               }

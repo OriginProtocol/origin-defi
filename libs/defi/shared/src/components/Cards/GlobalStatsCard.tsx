@@ -2,7 +2,6 @@ import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
-  useFormat,
   useTokenPrice,
   useTvl,
 } from '@origin/shared/providers';
@@ -16,7 +15,6 @@ export type GlobalStatsCardProps = { token: Token } & CardProps;
 
 export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
   const intl = useIntl();
-  const { formatCurrency } = useFormat();
   const { data: price, isLoading: isPriceLoading } = useTokenPrice(
     getTokenPriceKey(token),
   );
@@ -41,9 +39,7 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
               },
               { symbol: token.symbol },
             )}
-            value={formatCurrency(tvl, undefined, undefined, {
-              minimumFractionDigits: 2,
-            })}
+            value={`$${format(tvl ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
             isLoading={isTvlLoading}
           />
