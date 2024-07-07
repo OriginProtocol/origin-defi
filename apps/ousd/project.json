@@ -29,8 +29,7 @@
       "configurations": {
         "development": {
           "buildTarget": "ousd:build:development",
-          "hmr": true,
-          "host": true
+          "hmr": true
         },
         "production": {
           "buildTarget": "ousd:build:production",

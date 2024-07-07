@@ -29,8 +29,7 @@
       "configurations": {
         "development": {
           "buildTarget": "oeth:build:development",
-          "hmr": true,
-          "host": true
+          "hmr": true
         },
         "production": {
           "buildTarget": "oeth:build:production",
