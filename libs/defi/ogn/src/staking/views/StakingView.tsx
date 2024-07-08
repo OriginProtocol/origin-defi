@@ -36,7 +36,15 @@ export const StakingView = () => {
         </PageTitle>
         <PageSection containerProps={{ maxWidth: 'lg' }}>
           <Grid2 container spacing={3}>
-            <Grid2 xs={12} md={3}>
+            <Grid2 xs={12} sx={{ order: { xs: 3, md: 1 } }}>
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <LockupsCard />
+              </ErrorBoundary>
+            </Grid2>
+            <Grid2 xs={12} md={3} sx={{ order: { xs: 1, md: 2 } }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -44,7 +52,7 @@ export const StakingView = () => {
                 <StatsCard />
               </ErrorBoundary>
             </Grid2>
-            <Grid2 xs={12} md={6}>
+            <Grid2 xs={12} md={6} sx={{ order: { xs: 4, md: 3 } }}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -52,7 +60,7 @@ export const StakingView = () => {
                 <StakingForm />
               </ErrorBoundary>
             </Grid2>
-            <Grid2 xs={12} md={3}>
+            <Grid2 xs={12} md={3} sx={{ order: { xs: 2, md: 4 } }}>
               <Stack spacing={3}>
                 <ErrorBoundary
                   ErrorComponent={<ErrorCard />}
@@ -73,14 +81,6 @@ export const StakingView = () => {
                   <VotingPowerCard />
                 </ErrorBoundary>
               </Stack>
-            </Grid2>
-            <Grid2 xs={12}>
-              <ErrorBoundary
-                ErrorComponent={<ErrorCard />}
-                onError={trackSentryError}
-              >
-                <LockupsCard />
-              </ErrorBoundary>
             </Grid2>
           </Grid2>
         </PageSection>
