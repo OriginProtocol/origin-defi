@@ -5,7 +5,7 @@ import {
   simulateContractWithTxTracker,
   useCurve,
 } from '@origin/shared/providers';
-import { ETH_ADDRESS_CURVE, subtractSlippage } from '@origin/shared/utils';
+import { ETH_ADDRESS_CURVE, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -67,7 +67,10 @@ const estimateGas: EstimateGas = async (
 
   const { address } = getAccount(config);
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),
@@ -94,7 +97,7 @@ const estimateGas: EstimateGas = async (
           ),
         ),
         amountIn,
-        minAmountOut,
+        minAmountOut[0],
       ],
       ...(isTokenInNative && { value: amountIn }),
       account: address ?? ETH_ADDRESS_CURVE,
@@ -169,7 +172,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),
@@ -203,7 +209,7 @@ const swap: Swap = async (
         ),
       ),
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
     ],
     gas,
     ...(isTokenInNative && { value: amountIn }),

@@ -1,7 +1,7 @@
 import { queryClient } from '@origin/defi/shared';
 import { contracts } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -79,14 +79,17 @@ const estimateGas: EstimateGas = async (
 
   const { address } = getAccount(config);
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OETHVault.address,
       abi: contracts.mainnet.OETHVault.abi,
       functionName: 'mint',
-      args: [tokenIn.address, amountIn, minAmountOut],
+      args: [tokenIn.address, amountIn, minAmountOut[0]],
       account: address,
     });
 
@@ -241,7 +244,10 @@ const swap: Swap = async (
     throw new Error(`Mint vault is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,
@@ -256,7 +262,7 @@ const swap: Swap = async (
     address: contracts.mainnet.OETHVault.address,
     abi: contracts.mainnet.OETHVault.abi,
     functionName: 'mint',
-    args: [tokenIn.address, amountIn, minAmountOut],
+    args: [tokenIn.address, amountIn, minAmountOut[0]],
     gas,
   });
   const hash = await writeContract(config, request);

@@ -1,6 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { subtractSlippage, ZERO_ADDRESS } from '@origin/shared/utils';
+import { subPercentage, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -120,7 +120,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const path = getPath(tokenIn, tokenOut);
 
   gasEstimate =
@@ -137,7 +140,7 @@ const estimateGas: EstimateGas = async (
         functionName: 'swapExactTokensForTokens',
         args: [
           amountIn,
-          minAmountOut,
+          minAmountOut[0],
           path,
           address ?? ZERO_ADDRESS,
           BigInt(Date.now() + 2 * 60 * 1000),
@@ -255,7 +258,10 @@ const swap: Swap = async (
     throw new Error(`SushiSwap is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     tokenIn,
@@ -272,7 +278,7 @@ const swap: Swap = async (
     functionName: 'swapExactTokensForTokens',
     args: [
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
       getPath(tokenIn, tokenOut),
       address,
       BigInt(Date.now() + 2 * 60 * 1000),

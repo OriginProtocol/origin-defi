@@ -4,7 +4,7 @@ import { tokens } from '@origin/shared/contracts';
 import {
   formatError,
   scale,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
@@ -149,9 +149,8 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
         });
         const { address } = getAccount(config);
 
-        const minAmountOut = subtractSlippage(
-          total,
-          MIX_TOKEN.decimals,
+        const minAmountOut = subPercentage(
+          [total ?? 0n, MIX_TOKEN.decimals],
           slippage,
         );
 
@@ -160,7 +159,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
             queryKey: [
               'estimateGasRedeem',
               state.amountIn.toString(),
-              minAmountOut.toString(),
+              minAmountOut[0].toString(),
               address,
             ],
             queryFn: async () =>
@@ -168,7 +167,7 @@ export const { Provider: RedeemProvider, useTracked: useRedeemState } =
                 address: vaultContract.address,
                 abi: vaultContract.abi,
                 functionName: 'redeem',
-                args: [state.amountIn, minAmountOut],
+                args: [state.amountIn, minAmountOut[0]],
                 account: address,
               }),
           });

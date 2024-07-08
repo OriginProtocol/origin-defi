@@ -1,6 +1,6 @@
 import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -59,14 +59,17 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OETHVault.address,
       abi: contracts.mainnet.OETHVault.abi,
       functionName: 'redeem',
-      args: [amountIn, minAmountOut],
+      args: [amountIn, minAmountOut[0]],
       account: whales.mainnet.OETH,
     });
   } catch {
@@ -173,7 +176,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,
@@ -188,7 +194,7 @@ const swap: Swap = async (
     address: contracts.mainnet.OETHVault.address,
     abi: contracts.mainnet.OETHVault.abi,
     functionName: 'redeem',
-    args: [amountIn, minAmountOut],
+    args: [amountIn, minAmountOut[0]],
     gas,
   });
   const hash = await writeContract(config, request);

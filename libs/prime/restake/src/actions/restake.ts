@@ -5,7 +5,7 @@ import { contracts } from '@origin/shared/contracts';
 import { getReferrerId } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -90,14 +90,17 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.lrtDepositPool.address,
       abi: contracts.mainnet.lrtDepositPool.abi,
       functionName: 'depositAsset',
-      args: [tokenIn.address, amountIn, minAmountOut, 'Origin'],
+      args: [tokenIn.address, amountIn, minAmountOut[0], 'Origin'],
     });
   } catch {}
 
@@ -207,7 +210,10 @@ const swap: Swap = async (
     throw new Error(`Flipper is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const { request } = await simulateContract(config, {
     address: contracts.mainnet.lrtDepositPool.address,
@@ -216,7 +222,7 @@ const swap: Swap = async (
     args: [
       tokenIn.address as HexAddress,
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
       referrerId ?? '',
     ],
   });

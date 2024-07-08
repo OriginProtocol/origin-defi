@@ -2,7 +2,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -140,7 +140,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const path = getPath(tokenIn, tokenOut);
 
   try {
@@ -156,7 +159,7 @@ const estimateGas: EstimateGas = async (
             tokenIn: tokenIn.address,
             tokenOut: tokenOut.address,
             amountIn,
-            amountOutMinimum: minAmountOut,
+            amountOutMinimum: minAmountOut[0],
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             fee: 500,
             recipient: address ?? ZERO_ADDRESS,
@@ -173,7 +176,7 @@ const estimateGas: EstimateGas = async (
           {
             path,
             amountIn,
-            amountOutMinimum: minAmountOut,
+            amountOutMinimum: minAmountOut[0],
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             recipient: address ?? ZERO_ADDRESS,
           },
@@ -292,7 +295,10 @@ const swap: Swap = async (
     throw new Error(`Uniswap V3 is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   let txHash;
   if ([tokenIn.symbol, tokenOut.symbol].includes(tokens.mainnet.USDT.symbol)) {
@@ -305,7 +311,7 @@ const swap: Swap = async (
           tokenIn: tokenIn.address,
           tokenOut: tokenOut.address,
           amountIn: amountIn,
-          amountOutMinimum: minAmountOut,
+          amountOutMinimum: minAmountOut[0],
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           fee: 500,
           recipient: address,

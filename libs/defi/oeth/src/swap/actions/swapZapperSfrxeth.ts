@@ -1,6 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -188,7 +188,10 @@ const swap: Swap = async (
     throw new Error(`Swap zapper sfrxETH is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,
@@ -203,7 +206,7 @@ const swap: Swap = async (
     address: contracts.mainnet.OETHZapper.address,
     abi: contracts.mainnet.OETHZapper.abi,
     functionName: 'depositSFRXETH',
-    args: [amountIn, minAmountOut],
+    args: [amountIn, minAmountOut[0]],
     gas,
   });
   const hash = await writeContract(config, request);

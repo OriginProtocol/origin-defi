@@ -5,7 +5,7 @@ import {
   formatError,
   isNilOrEmpty,
   isUserRejected,
-  subtractSlippage,
+  subPercentage,
 } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
@@ -69,9 +69,8 @@ export const useHandleRedeem = () => {
       return;
     }
 
-    const minAmountOut = subtractSlippage(
-      amountOut,
-      MIX_TOKEN.decimals,
+    const minAmountOut = subPercentage(
+      [amountOut ?? 0n, MIX_TOKEN.decimals],
       slippage,
     );
 
@@ -98,7 +97,7 @@ export const useHandleRedeem = () => {
         address: vaultContract.address,
         abi: vaultContract.abi,
         functionName: 'redeem',
-        args: [amountIn, minAmountOut],
+        args: [amountIn, minAmountOut[0]],
         gas: gas + (gas * gasBuffer) / 100n,
         chainId: vaultContract.chainId,
       });

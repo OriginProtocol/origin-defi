@@ -7,7 +7,7 @@ import {
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -80,7 +80,10 @@ const estimateGas: EstimateGas = async (
 
   const { address } = getAccount(config);
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const curveConfig = path<{ routes: unknown[]; swapParams: unknown[] }>(
     [tokenIn.symbol, tokenOut.symbol],
@@ -110,7 +113,7 @@ const estimateGas: EstimateGas = async (
         curveConfig.routes,
         curveConfig.swapParams,
         amountIn,
-        minAmountOut,
+        minAmountOut[0],
       ],
       account: address ?? ETH_ADDRESS_CURVE,
       ...(isTokenInNative && { value: amountIn }),
@@ -262,7 +265,10 @@ const swap: Swap = async (
     throw new Error(`Swap curve is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const curveConfig = path<{ routes: unknown[]; swapParams: unknown[] }>(
     [tokenIn.symbol, tokenOut?.symbol],
@@ -290,7 +296,12 @@ const swap: Swap = async (
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'exchange_multiple',
-    args: [curveConfig.routes, curveConfig.swapParams, amountIn, minAmountOut],
+    args: [
+      curveConfig.routes,
+      curveConfig.swapParams,
+      amountIn,
+      minAmountOut[0],
+    ],
     gas,
     ...(isTokenInNative && { value: amountIn }),
   });

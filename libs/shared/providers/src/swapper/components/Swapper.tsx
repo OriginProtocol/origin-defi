@@ -23,9 +23,11 @@ import {
 } from '@origin/shared/components';
 import {
   formatError,
+  getFormatPrecision,
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
 } from '@origin/shared/utils';
+import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -36,7 +38,6 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '../../activities';
-import { useFormat } from '../../intl';
 import { usePushNotification } from '../../notifications';
 import { getTokenPriceKey } from '../../prices';
 import { SettingsButton } from '../../settings';
@@ -204,7 +205,6 @@ function SwapperWrapped({
   ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
-  const { formatAmount } = useFormat();
   const { value: slippage } = useSlippage();
   const { isConnected, chain: currentChain } = useAccount();
   const [tokenSource, setTokenSource] = useState<TokenSource | null>(null);
@@ -248,6 +248,10 @@ function SwapperWrapped({
     trackEvent?.({ name: 'open_settings' });
   };
 
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const needsApproval =
     isConnected &&
     currentChain?.id === tokenIn.chainId &&
@@ -423,9 +427,7 @@ function SwapperWrapped({
                     isLoading={isSwapRoutesLoading}
                     sWidth={60}
                   >
-                    {formatAmount(
-                      subtractSlippage(amountOut, tokenOut.decimals, slippage),
-                    )}
+                    {format(minAmountOut, getFormatPrecision(minAmountOut))}
                   </LoadingLabel>
                   <Typography variant="body2">{tokenOut.symbol}</Typography>
                 </Stack>

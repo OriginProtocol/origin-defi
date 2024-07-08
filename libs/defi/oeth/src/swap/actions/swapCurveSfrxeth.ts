@@ -3,7 +3,7 @@ import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   ETH_ADDRESS_CURVE,
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
 } from '@origin/shared/utils';
 import {
   getAccount,
@@ -76,14 +76,17 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.CurveRouter.address,
       abi: contracts.mainnet.CurveRouter.abi,
       functionName: 'exchange',
-      args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut],
+      args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut[0]],
       account: address ?? ETH_ADDRESS_CURVE,
     });
   } catch (e) {
@@ -209,7 +212,10 @@ const swap: Swap = async (
     throw new Error(`Swap curve is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,
@@ -224,7 +230,7 @@ const swap: Swap = async (
     address: contracts.mainnet.CurveRouter.address,
     abi: contracts.mainnet.CurveRouter.abi,
     functionName: 'exchange',
-    args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut],
+    args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut[0]],
     account: address,
     gas,
   });

@@ -3,7 +3,7 @@ import { contracts } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -89,14 +89,17 @@ const estimateGas: EstimateGas = async (
 
   const { address } = getAccount(config);
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OUSDVault.address,
       abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'mint',
-      args: [tokenIn.address, amountIn, minAmountOut],
+      args: [tokenIn.address, amountIn, minAmountOut[0]],
       account: address ?? ZERO_ADDRESS,
     });
 
@@ -251,7 +254,10 @@ const swap: Swap = async (
     throw new Error(`Mint vault is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,

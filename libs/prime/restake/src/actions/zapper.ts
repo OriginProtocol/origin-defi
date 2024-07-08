@@ -1,7 +1,7 @@
 import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
 import { getReferrerId, useTokenPrices } from '@origin/shared/providers';
-import { isNilOrEmpty, subtractSlippage } from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import { getAccount, simulateContract, writeContract } from '@wagmi/core';
 import { div, eq, setDecimals } from 'dnum';
 import { formatUnits, maxUint256 } from 'viem';
@@ -78,13 +78,16 @@ const swap: Swap = async (
     return null;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const { request } = await simulateContract(config, {
     address: contracts.mainnet.PrimeETHZapper.address,
     abi: contracts.mainnet.PrimeETHZapper.abi,
     functionName: 'deposit',
-    args: [minAmountOut, referrerId ?? ''],
+    args: [minAmountOut[0], referrerId ?? ''],
     value: amountIn,
     account: address,
   });

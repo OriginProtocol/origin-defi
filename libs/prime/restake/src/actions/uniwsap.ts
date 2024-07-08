@@ -1,6 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithReferral } from '@origin/shared/providers';
-import { subtractSlippage, ZERO_ADDRESS } from '@origin/shared/utils';
+import { subPercentage, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -67,7 +67,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -80,7 +83,7 @@ const estimateGas: EstimateGas = async (
           tokenIn: tokens.mainnet.WETH.address,
           tokenOut: tokenOut.address,
           amountIn,
-          amountOutMinimum: minAmountOut,
+          amountOutMinimum: minAmountOut[0],
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           fee: 500,
           recipient: address ?? ZERO_ADDRESS,
@@ -130,7 +133,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const { request } = await simulateContractWithReferral(config, {
     address: contracts.mainnet.uniswapV3Router.address,
@@ -143,7 +149,7 @@ const swap: Swap = async (
         tokenIn: tokens.mainnet.WETH.address,
         tokenOut: tokenOut.address,
         amountIn,
-        amountOutMinimum: minAmountOut,
+        amountOutMinimum: minAmountOut[0],
         deadline: BigInt(Date.now() + 2 * 60 * 1000),
         fee: 500,
         recipient: address,

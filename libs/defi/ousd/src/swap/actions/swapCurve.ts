@@ -6,7 +6,7 @@ import {
 } from '@origin/shared/providers';
 import {
   isAddressEqual,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -107,7 +107,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),
     queryFn: useCurve.fetcher(config),
@@ -131,7 +134,7 @@ const estimateGas: EstimateGas = async (
           ),
         ),
         amountIn,
-        minAmountOut,
+        minAmountOut[0],
       ],
       account: address,
     });
@@ -247,7 +250,10 @@ const swap: Swap = async (
     throw new Error(`Curve swap is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     tokenIn,
@@ -279,7 +285,7 @@ const swap: Swap = async (
         ),
       ),
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
     ],
     account: address,
     gas,
