@@ -19,7 +19,9 @@ export const getTokenByAddress = (
   chainId?: number,
 ) =>
   tokenList.find(
-    (t) => t.address === address && (!chainId || t.chainId === chainId),
+    (t) =>
+      t.address?.toLowerCase() === address?.toLowerCase() &&
+      (!chainId || t.chainId === chainId),
   );
 
 export const getTokenBySymbol = (symbol: string, chainId?: number) =>
