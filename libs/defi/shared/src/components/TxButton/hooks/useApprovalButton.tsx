@@ -63,6 +63,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         abi: erc20Abi,
         functionName: 'approve',
         args: [args.spender, args.amount],
+        account: address,
       });
 
       const gasPrice = await queryClient.fetchQuery({
@@ -89,15 +90,20 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
     },
   });
 
-  const onWrite = useCallback(() => {
+  const onClick = useCallback(() => {
     pushActivity({
       type: 'approval',
-      status: 'pending',
       amountIn: args.amount,
       tokenIdIn: args.token.id,
+      status: 'idle',
     });
+    args.callbacks?.onClick?.();
+  }, [args, pushActivity]);
+
+  const onWrite = useCallback(() => {
+    updateActivity({ status: 'pending' });
     args.callbacks?.onWrite?.();
-  }, [args.amount, args.callbacks, args.token.id, pushActivity]);
+  }, [args.callbacks, updateActivity]);
 
   const onTxSigned = useCallback(() => {
     updateActivity({ status: 'signed' });
@@ -269,6 +275,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
         args: [args.spender, args.amount],
       },
       callbacks: {
+        onClick,
         onWrite,
         onTxSigned,
         onUserReject,
@@ -290,6 +297,7 @@ export const useApprovalButton = (args: UseApprovalButtonProps) => {
       intl,
       isAllowanceGasLoading,
       isAllowanceLoading,
+      onClick,
       onSimulateError,
       onSimulateSuccess,
       onTxSigned,

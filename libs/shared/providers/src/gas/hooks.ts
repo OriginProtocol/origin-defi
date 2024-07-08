@@ -4,7 +4,7 @@ import { add, from, mul } from 'dnum';
 import { useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { useTokenPrices } from '../prices';
+import { useTokenPrice } from '../prices';
 
 import type {
   QueryClient,
@@ -15,10 +15,11 @@ import type { Config } from '@wagmi/core';
 import type { Dnum } from 'dnum';
 
 export type GasPrice = {
-  gweiUsd: Dnum;
   gasPrice: Dnum;
   gasCostUsd: Dnum;
+  gasCostWei: Dnum;
   gasCostGwei: Dnum;
+  gasCostEther: Dnum;
 };
 
 type Key = ['useGasPrice', string, number];
@@ -37,34 +38,33 @@ const fetcher: (
   async ({ queryKey: [, gasAmount, chainId] }) => {
     const [price, data] = await Promise.all([
       queryClient.fetchQuery({
-        queryKey: useTokenPrices.getKey(['ETH_USD']),
-        queryFn: useTokenPrices.fetcher(config),
+        queryKey: useTokenPrice.getKey('ETH_USD'),
+        queryFn: useTokenPrice.fetcher(config, queryClient),
       }),
-      estimateFeesPerGas(config, { formatUnits: 'gwei', chainId }),
+      estimateFeesPerGas(config, { chainId }),
     ]);
 
-    const gweiUsd = mul(price.ETH_USD, 1e-9, {
-      rounding: 'ROUND_UP',
-      decimals: 18,
-    });
     const gasPrice = add(
-      [data?.maxFeePerGas ?? 0n, 9],
-      [data?.maxPriorityFeePerGas ?? 0n, 9],
+      [data?.maxFeePerGas ?? 0n, 18],
+      [data?.maxPriorityFeePerGas ?? 0n, 18],
     );
-    const gasCostGwei = mul(from(gasAmount ?? 0), gasPrice, {
-      decimals: 18,
+    const gasCostEther = mul(gasPrice, from(gasAmount ?? 0), {
       rounding: 'ROUND_UP',
+      decimals: 18,
     });
-    const gasCostUsd = mul(gasCostGwei, gweiUsd, {
-      decimals: 18,
+    const gasCostGwei = mul(gasCostEther, 1e9);
+    const gasCostWei = mul(gasCostEther, 1e18);
+    const gasCostUsd = mul(gasCostEther, from(price), {
       rounding: 'ROUND_UP',
+      decimals: 6,
     });
 
     return {
-      gweiUsd,
       gasPrice,
       gasCostUsd,
+      gasCostWei,
       gasCostGwei,
+      gasCostEther,
     };
   };
 

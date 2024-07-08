@@ -31,11 +31,15 @@ import {
   TxButton,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { formatAmount, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  getFormatPrecision,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
-import { from, mul } from 'dnum';
+import { add, format, from } from 'dnum';
 import { useIntl } from 'react-intl';
-import { decodeEventLog, formatUnits } from 'viem';
+import { decodeEventLog } from 'viem';
 import { arbitrum } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
@@ -53,6 +57,7 @@ import type {
   ValueLabelProps,
 } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';
+import type { Dnum } from 'dnum';
 import type { Hex, TransactionReceipt } from 'viem';
 
 export const BridgeCard = () => {
@@ -91,16 +96,17 @@ export const BridgeCard = () => {
     dstToken,
     amount,
   });
-
   const {
     allowance,
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
+    gasPrice: approvalGasPrice,
   } = useApprovalButton({
     token: srcToken,
     spender: srcRouter.address,
     amount,
+    enableGas: true,
     enableAllowance: true,
   });
   const txButton = useTxButton({
@@ -183,11 +189,13 @@ export const BridgeCard = () => {
                 symbol: srcToken.symbol,
               },
             );
-
-  const estimateGasFee = mul(txButton.gasPrice?.gasCostGwei ?? from(0), 1e-9);
-  const bridgeFee = ccipTxParams.data
-    ? Number(formatUnits(ccipTxParams.data.fee, 18))
-    : undefined;
+  const gasPrice = add(
+    txButton?.gasPrice?.gasCostEther ?? from(0),
+    (allowance ?? 0n) < amount
+      ? approvalGasPrice?.gasCostEther ?? from(0)
+      : from(0),
+  );
+  const bridgeFee = [ccipTxParams?.data?.fee ?? 0n, 18] as Dnum;
 
   return (
     <Card sx={{ width: '100%' }}>
@@ -323,9 +331,9 @@ export const BridgeCard = () => {
                   defaultMessage: 'Est. bridge fee',
                 })}
                 value={
-                  typeof bridgeFee === 'number'
-                    ? `${formatAmount(bridgeFee)} ${srcChain.nativeCurrency.symbol}`
-                    : '-'
+                  bridgeFee[0] === 0n
+                    ? '-'
+                    : `${format(bridgeFee, { digits: getFormatPrecision(bridgeFee), decimalsRounding: 'ROUND_UP' })} ${srcChain.nativeCurrency.symbol}`
                 }
               />
               <ValueLabel
@@ -334,9 +342,9 @@ export const BridgeCard = () => {
                   defaultMessage: 'Est. gas fee',
                 })}
                 value={
-                  typeof estimateGasFee === 'number'
-                    ? `${formatAmount(estimateGasFee)} ${srcChain.nativeCurrency.symbol}`
-                    : '-'
+                  amount === 0n
+                    ? '-'
+                    : `~${format(gasPrice, { digits: getFormatPrecision(gasPrice), decimalsRounding: 'ROUND_UP' })} ${srcChain.nativeCurrency.symbol}`
                 }
               />
             </AccordionDetails>
