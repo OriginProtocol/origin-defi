@@ -37,7 +37,7 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { usePrevious } from '@react-hookz/web';
-import { add, format, from } from 'dnum';
+import { add, eq, format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { decodeEventLog } from 'viem';
 import { arbitrum } from 'viem/chains';
@@ -331,7 +331,7 @@ export const BridgeCard = () => {
                   defaultMessage: 'Est. bridge fee',
                 })}
                 value={
-                  bridgeFee[0] === 0n
+                  eq(bridgeFee, 0)
                     ? '-'
                     : `${format(bridgeFee, { digits: getFormatPrecision(bridgeFee), decimalsRounding: 'ROUND_UP' })} ${srcChain.nativeCurrency.symbol}`
                 }
@@ -342,7 +342,7 @@ export const BridgeCard = () => {
                   defaultMessage: 'Est. gas fee',
                 })}
                 value={
-                  amount === 0n
+                  eq(gasPrice[0], 0)
                     ? '-'
                     : `~${format(gasPrice, { digits: getFormatPrecision(gasPrice), decimalsRounding: 'ROUND_UP' })} ${srcChain.nativeCurrency.symbol}`
                 }
