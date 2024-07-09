@@ -75,7 +75,10 @@ export const ChainMenuButton = ({
           </Box>
         ) : isWrongChain ? (
           <FaTriangleExclamationRegular
-            sx={{ fontSize: iconSize, color: 'warning.main' }}
+            sx={{
+              fontSize: iconSize,
+              color: 'warning.main',
+            }}
           />
         ) : (
           <NetworkIcon chainId={chainId as SupportedChain} size={iconSize} />
