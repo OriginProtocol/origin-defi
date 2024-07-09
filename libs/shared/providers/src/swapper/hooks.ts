@@ -658,17 +658,12 @@ export const useHandleSwap = () => {
         status: 'swapWaitingForTransaction',
       }));
       if (hash) {
-        const txReceipt = await waitForTransactionReceipt(config, { hash });
-        queryClient.invalidateQueries();
         setSwapState((state) => ({
           ...state,
           isSwapLoading: false,
-          amountIn: 0n,
-          amountOut: 0n,
-          estimatedSwapRoutes: [],
-          selectedSwapRoute: null,
           status: 'swapTransactionSuccess',
         }));
+        const txReceipt = await waitForTransactionReceipt(config, { hash });
         onSwapSuccess?.({
           ...state,
           txReceipt: txReceipt as unknown as TransactionReceipt,
@@ -682,6 +677,14 @@ export const useHandleSwap = () => {
           swap_to: tokenOut.symbol,
           swap_amount: amountIn,
         });
+        queryClient.invalidateQueries();
+        setSwapState((state) => ({
+          ...state,
+          amountIn: 0n,
+          amountOut: 0n,
+          estimatedSwapRoutes: [],
+          selectedSwapRoute: null,
+        }));
       }
     } catch (error) {
       setSwapState((state) => ({
