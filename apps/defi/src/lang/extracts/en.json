@@ -26,6 +26,9 @@
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
+  "/0TOL5": {
+    "defaultMessage": "Amount"
+  },
   "/6/sPX": {
     "defaultMessage": "Docs"
   },
@@ -95,6 +98,9 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
+  "2+4p9v": {
+    "defaultMessage": "Claim tab"
+  },
   "2/2yg+": {
     "defaultMessage": "Add"
   },
@@ -103,6 +109,9 @@
   },
   "2CoE53": {
     "defaultMessage": "Powered by Chainlink CCIP"
+  },
+  "2MrktG": {
+    "defaultMessage": "~1 min"
   },
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
@@ -113,17 +122,11 @@
   "2R/YHR": {
     "defaultMessage": "Liquid staking"
   },
-  "2W3kP3": {
-    "defaultMessage": "~1min"
-  },
   "2ahSeJ": {
     "defaultMessage": "OETH analytics"
   },
   "2zUGfB": {
     "defaultMessage": "Enable rebasing"
-  },
-  "3Lr8o5": {
-    "defaultMessage": "Larger redemptions coming soon"
   },
   "3PhHPe": {
     "defaultMessage": "The variable APY currently being earned on staked xOGN."
@@ -343,9 +346,6 @@
   },
   "BY343C": {
     "defaultMessage": "Change"
-  },
-  "BhDX51": {
-    "defaultMessage": "No Lockups"
   },
   "BnSeXp": {
     "defaultMessage": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
@@ -671,6 +671,9 @@
   "RIV67a": {
     "defaultMessage": "Select lockup"
   },
+  "RR8vve": {
+    "defaultMessage": "Redeem via the ARM"
+  },
   "RVH0u3": {
     "defaultMessage": "Delegating Voting Power"
   },
@@ -704,6 +707,9 @@
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
+  "SsufnP": {
+    "defaultMessage": "Withdrawal request successfully sent"
+  },
   "SzA4oV": {
     "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
@@ -730,9 +736,6 @@
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
-  },
-  "UMJuaW": {
-    "defaultMessage": "Your APY:"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -881,8 +884,14 @@
   "cWvi0w": {
     "defaultMessage": "Add to stake"
   },
+  "cXVyuA": {
+    "defaultMessage": "Your request to withdraw {amountOut} {symbolOut} from {symbolIn} has been sent. Check the Claim tab to view your withdrawal requests."
+  },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
+  },
+  "cn8bYe": {
+    "defaultMessage": "~10 days"
   },
   "d0kJUi": {
     "defaultMessage": "Connect your wallet to see your voting power"
@@ -916,6 +925,9 @@
   },
   "e+yfm6": {
     "defaultMessage": "Connect your wallet to see your balances"
+  },
+  "e61Jf3": {
+    "defaultMessage": "Coming soon"
   },
   "e6Ph5+": {
     "defaultMessage": "Address"
@@ -1049,6 +1061,9 @@
   "kH1R79": {
     "defaultMessage": "Stake OGN"
   },
+  "kJmZxj": {
+    "defaultMessage": "Instant or async"
+  },
   "kWMpjI": {
     "defaultMessage": "Available on"
   },
@@ -1168,6 +1183,9 @@
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
+  },
+  "sjKCFv": {
+    "defaultMessage": "Approximate gas cost:"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."

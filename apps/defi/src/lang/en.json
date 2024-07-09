@@ -53,6 +53,12 @@
       "value": "Connect"
     }
   ],
+  "/0TOL5": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
   "/6/sPX": [
     {
       "type": 0,
@@ -223,6 +229,12 @@
       "value": "Return to Home Page"
     }
   ],
+  "2+4p9v": [
+    {
+      "type": 0,
+      "value": "Claim tab"
+    }
+  ],
   "2/2yg+": [
     {
       "type": 0,
@@ -239,6 +251,12 @@
     {
       "type": 0,
       "value": "Powered by Chainlink CCIP"
+    }
+  ],
+  "2MrktG": [
+    {
+      "type": 0,
+      "value": "~1 min"
     }
   ],
   "2NfxfO": [
@@ -259,12 +277,6 @@
       "value": "Liquid staking"
     }
   ],
-  "2W3kP3": [
-    {
-      "type": 0,
-      "value": "~1min"
-    }
-  ],
   "2ahSeJ": [
     {
       "type": 0,
@@ -275,12 +287,6 @@
     {
       "type": 0,
       "value": "Enable rebasing"
-    }
-  ],
-  "3Lr8o5": [
-    {
-      "type": 0,
-      "value": "Larger redemptions coming soon"
     }
   ],
   "3PhHPe": [
@@ -865,12 +871,6 @@
     {
       "type": 0,
       "value": "Change"
-    }
-  ],
-  "BhDX51": [
-    {
-      "type": 0,
-      "value": "No Lockups"
     }
   ],
   "BnSeXp": [
@@ -1707,6 +1707,12 @@
       "value": "Select lockup"
     }
   ],
+  "RR8vve": [
+    {
+      "type": 0,
+      "value": "Redeem via the ARM"
+    }
+  ],
   "RVH0u3": [
     {
       "type": 0,
@@ -1771,6 +1777,12 @@
     {
       "type": 0,
       "value": "Custom"
+    }
+  ],
+  "SsufnP": [
+    {
+      "type": 0,
+      "value": "Withdrawal request successfully sent"
     }
   ],
   "SzA4oV": [
@@ -1903,12 +1915,6 @@
     {
       "type": 0,
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
-    }
-  ],
-  "UMJuaW": [
-    {
-      "type": 0,
-      "value": "Your APY:"
     }
   ],
   "UkXeBW": [
@@ -2261,10 +2267,46 @@
       "value": "Add to stake"
     }
   ],
+  "cXVyuA": [
+    {
+      "type": 0,
+      "value": "Your request to withdraw "
+    },
+    {
+      "type": 1,
+      "value": "amountOut"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolOut"
+    },
+    {
+      "type": 0,
+      "value": " from "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    },
+    {
+      "type": 0,
+      "value": " has been sent. Check the Claim tab to view your withdrawal requests."
+    }
+  ],
   "cg1VJ2": [
     {
       "type": 0,
       "value": "Connect Wallet"
+    }
+  ],
+  "cn8bYe": [
+    {
+      "type": 0,
+      "value": "~10 days"
     }
   ],
   "d0kJUi": [
@@ -2345,6 +2387,12 @@
     {
       "type": 0,
       "value": "Connect your wallet to see your balances"
+    }
+  ],
+  "e61Jf3": [
+    {
+      "type": 0,
+      "value": "Coming soon"
     }
   ],
   "e6Ph5+": [
@@ -2651,6 +2699,12 @@
       "value": "Stake OGN"
     }
   ],
+  "kJmZxj": [
+    {
+      "type": 0,
+      "value": "Instant or async"
+    }
+  ],
   "kWMpjI": [
     {
       "type": 0,
@@ -2939,6 +2993,12 @@
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sjKCFv": [
+    {
+      "type": 0,
+      "value": "Approximate gas cost:"
     }
   ],
   "stTYBM": [

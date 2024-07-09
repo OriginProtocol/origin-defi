@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Button,
   Card,
@@ -48,11 +50,14 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { RedeemActionCard } from './RedeemActionCard';
+import { WithdrawalRequestModal } from './WithdrawalRequestModal';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
 import type { SwapState } from '@origin/shared/providers';
 import type { Dnum } from 'dnum';
+
+import type { WithdrawalRequestModalProps } from './WithdrawalRequestModal';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -73,6 +78,8 @@ export const Swapper = ({
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
+  const [open, setOpen] = useState(false);
+  const [info, setInfo] = useState<Partial<WithdrawalRequestModalProps>>();
 
   return (
     <SwapProvider
@@ -181,7 +188,21 @@ export const Swapper = ({
 
         return notifId;
       }}
-      onSwapSuccess={({ trackId, txReceipt, notifId }) => {
+      onSwapSuccess={({
+        amountOut,
+        tokenIn,
+        tokenOut,
+        trackId,
+        txReceipt,
+        notifId,
+      }) => {
+        setInfo({
+          amountOut,
+          tokenIn,
+          tokenOut,
+          txReceipt,
+        });
+        setOpen(true);
         deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
@@ -228,6 +249,15 @@ export const Swapper = ({
       }}
     >
       <SwapperWrapped {...rest} />
+      <WithdrawalRequestModal
+        key={open ? 'open' : 'reset'}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        keepMounted={false}
+        {...info}
+      />
     </SwapProvider>
   );
 };
@@ -435,7 +465,9 @@ function SwapperWrapped({
                     defaultMessage: 'Waiting for signature',
                   })
                 ) : isApprovalLoading ? (
-                  intl.formatMessage({ defaultMessage: 'Processing Approval' })
+                  intl.formatMessage({
+                    defaultMessage: 'Processing Approval',
+                  })
                 ) : (
                   intl.formatMessage({ defaultMessage: 'Approve' })
                 )}
@@ -451,9 +483,13 @@ function SwapperWrapped({
               {isSwapRoutesLoading ? (
                 <CircularProgress size={32} color="inherit" />
               ) : isSwapWaitingForSignature ? (
-                intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+                intl.formatMessage({
+                  defaultMessage: 'Waiting for signature',
+                })
               ) : isSwapLoading ? (
-                intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+                intl.formatMessage({
+                  defaultMessage: 'Processing Transaction',
+                })
               ) : (
                 swapButtonLabel
               )}
