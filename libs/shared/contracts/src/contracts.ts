@@ -16,6 +16,7 @@ import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
 import { MigratorABI } from './abis/Migrator';
 import { OETHDripperABI } from './abis/OETHDripper';
+import { OETHVaultABI } from './abis/OETHVault';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
@@ -113,7 +114,7 @@ export const contracts = {
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
-      abi: IVaultABI,
+      abi: OETHVaultABI,
       name: 'OETHVault',
     },
     OETHZapper: {

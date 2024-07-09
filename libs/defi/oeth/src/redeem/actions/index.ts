@@ -1,6 +1,8 @@
 import { defineMessage } from 'react-intl';
 
+import arm from './arm';
 import redeemVault from './redeemVault';
+import redeemVaultAsync from './redeemVaultAsync';
 import swapCurve from './swapCurve';
 
 import type { SwapApi } from '@origin/shared/providers';
@@ -63,6 +65,18 @@ export const redeemActions: Record<OethRedeemAction, SwapApi> = {
   'redeem-vault': {
     ...defaultApi,
     ...redeemVault,
+    routeLabel: defineMessage({ defaultMessage: 'Redeem via OETH Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+  },
+  arm: {
+    ...defaultApi,
+    ...arm,
+    routeLabel: defineMessage({ defaultMessage: 'Redeem via the ARM' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+  },
+  'redeem-vault-async': {
+    ...defaultApi,
+    ...redeemVaultAsync,
     routeLabel: defineMessage({ defaultMessage: 'Redeem via OETH Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
   },

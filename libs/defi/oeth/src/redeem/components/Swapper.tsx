@@ -11,7 +11,6 @@ import {
 } from '@mui/material';
 import {
   activityOptions,
-  SettingsButton,
   TokenButton,
   TokenInput,
   useDeleteActivity,
@@ -29,11 +28,11 @@ import {
   isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
+  useGasPrice,
   useHandleAmountInChange,
   useHandleApprove,
   useHandleSwap,
   usePushNotification,
-  useSlippage,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
@@ -43,9 +42,8 @@ import {
   formatError,
   getFormatPrecision,
   isNilOrEmpty,
-  subPercentage,
 } from '@origin/shared/utils';
-import { format, mul } from 'dnum';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -255,12 +253,14 @@ function SwapperWrapped({
       swapActions,
     },
   ] = useSwapState();
-  const { value: slippage } = useSlippage();
   const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { data: balTokenIn, isLoading: isBalTokenInLoading } = useWatchBalance({
     token: tokenIn,
   });
+  const { data: gasPrice, isLoading: isGasPriceLoading } = useGasPrice(
+    selectedSwapRoute?.gas,
+  );
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
   const handleSwap = useHandleSwap();
@@ -273,7 +273,6 @@ function SwapperWrapped({
     estimatedAmount,
     prices?.[getTokenPriceKey(tokenOut)] ?? 0,
   );
-  const minReceived = subPercentage(amountOutUsd, slippage);
   const needsApproval =
     isConnected &&
     amountIn > 0n &&
@@ -317,14 +316,13 @@ function SwapperWrapped({
         <Card>
           <CardHeader
             title={intl.formatMessage({ defaultMessage: 'Redeem' })}
-            action={<SettingsButton />}
           />
           <Divider />
           <CardContent
             sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
           >
             <Typography fontWeight="medium">
-              {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
+              {intl.formatMessage({ defaultMessage: 'Amount' })}
             </Typography>
             <TokenInput
               amount={amountIn}
@@ -348,11 +346,11 @@ function SwapperWrapped({
               }}
             />
             <Typography fontWeight="medium" pt={1.5}>
-              {intl.formatMessage({ defaultMessage: 'Route' })}
+              {intl.formatMessage({ defaultMessage: 'Instant or async' })}
             </Typography>
             <Stack direction="row" spacing={2}>
-              <RedeemActionCard action="redeem-vault" sx={{ width: 1 }} />
-              <RedeemActionCard action="swap-curve" sx={{ width: 1 }} />
+              <RedeemActionCard action="arm" sx={{ width: 1 }} />
+              <RedeemActionCard action="redeem-vault-async" sx={{ width: 1 }} />
             </Stack>
             <Typography fontWeight="medium" pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Receive amount' })}
@@ -405,31 +403,17 @@ function SwapperWrapped({
                 px={1}
               >
                 <Typography color="text.secondary" fontWeight="medium">
-                  {intl.formatMessage(
-                    {
-                      defaultMessage:
-                        'Minimum received with {slippage} slippage:',
-                    },
-                    {
-                      slippage: intl.formatNumber(slippage, {
-                        style: 'percent',
-                        minimumFractionDigits: 2,
-                        maximumFractionDigits: 2,
-                      }),
-                    },
-                  )}
+                  {intl.formatMessage({
+                    defaultMessage: 'Approximate gas cost:',
+                  })}
                 </Typography>
                 <Stack direction="row" alignItems="center" spacing={0.5}>
                   <LoadingLabel
-                    isLoading={isSwapRoutesLoading}
+                    isLoading={isGasPriceLoading || isSwapRoutesLoading}
                     sWidth={60}
                     fontWeight="medium"
                   >
-                    $
-                    {format(minReceived, {
-                      digits: getFormatPrecision(minReceived),
-                      decimalsRounding: 'ROUND_DOWN',
-                    })}
+                    ${format(gasPrice?.gasCostUsd ?? from(0), 2)}
                   </LoadingLabel>
                 </Stack>
               </Stack>
