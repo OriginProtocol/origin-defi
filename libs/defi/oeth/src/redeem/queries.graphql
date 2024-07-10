@@ -1,0 +1,12 @@
+query WithdrawalRequests($address: String!) {
+  oethWithdrawalRequests(where: { withdrawer_containsInsensitive: $address }) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    blockNumber
+    requestId
+  }
+}

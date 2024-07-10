@@ -9933,6 +9933,169 @@ export type OethVaultsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type OethWithdrawalRequest = {
+  __typename?: 'OETHWithdrawalRequest';
+  amount: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  claimed: Scalars['Boolean']['output'];
+  id: Scalars['String']['output'];
+  queued: Scalars['BigInt']['output'];
+  requestId: Scalars['BigInt']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  withdrawer: Scalars['String']['output'];
+};
+
+export type OethWithdrawalRequestEdge = {
+  __typename?: 'OETHWithdrawalRequestEdge';
+  cursor: Scalars['String']['output'];
+  node: OethWithdrawalRequest;
+};
+
+export enum OethWithdrawalRequestOrderByInput {
+  AmountAsc = 'amount_ASC',
+  AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
+  AmountAscNullsLast = 'amount_ASC_NULLS_LAST',
+  AmountDesc = 'amount_DESC',
+  AmountDescNullsFirst = 'amount_DESC_NULLS_FIRST',
+  AmountDescNullsLast = 'amount_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ClaimedAsc = 'claimed_ASC',
+  ClaimedAscNullsFirst = 'claimed_ASC_NULLS_FIRST',
+  ClaimedAscNullsLast = 'claimed_ASC_NULLS_LAST',
+  ClaimedDesc = 'claimed_DESC',
+  ClaimedDescNullsFirst = 'claimed_DESC_NULLS_FIRST',
+  ClaimedDescNullsLast = 'claimed_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  QueuedAsc = 'queued_ASC',
+  QueuedAscNullsFirst = 'queued_ASC_NULLS_FIRST',
+  QueuedAscNullsLast = 'queued_ASC_NULLS_LAST',
+  QueuedDesc = 'queued_DESC',
+  QueuedDescNullsFirst = 'queued_DESC_NULLS_FIRST',
+  QueuedDescNullsLast = 'queued_DESC_NULLS_LAST',
+  RequestIdAsc = 'requestId_ASC',
+  RequestIdAscNullsFirst = 'requestId_ASC_NULLS_FIRST',
+  RequestIdAscNullsLast = 'requestId_ASC_NULLS_LAST',
+  RequestIdDesc = 'requestId_DESC',
+  RequestIdDescNullsFirst = 'requestId_DESC_NULLS_FIRST',
+  RequestIdDescNullsLast = 'requestId_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  WithdrawerAsc = 'withdrawer_ASC',
+  WithdrawerAscNullsFirst = 'withdrawer_ASC_NULLS_FIRST',
+  WithdrawerAscNullsLast = 'withdrawer_ASC_NULLS_LAST',
+  WithdrawerDesc = 'withdrawer_DESC',
+  WithdrawerDescNullsFirst = 'withdrawer_DESC_NULLS_FIRST',
+  WithdrawerDescNullsLast = 'withdrawer_DESC_NULLS_LAST'
+}
+
+export type OethWithdrawalRequestWhereInput = {
+  AND?: InputMaybe<Array<OethWithdrawalRequestWhereInput>>;
+  OR?: InputMaybe<Array<OethWithdrawalRequestWhereInput>>;
+  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  claimed_eq?: InputMaybe<Scalars['Boolean']['input']>;
+  claimed_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  claimed_not_eq?: InputMaybe<Scalars['Boolean']['input']>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  queued_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  queued_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  queued_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  queued_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  requestId_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  requestId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  requestId_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  requestId_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  withdrawer_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_gt?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_gte?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawer_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  withdrawer_lt?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_lte?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_contains?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_eq?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  withdrawer_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  withdrawer_startsWith?: InputMaybe<Scalars['String']['input']>;
+};
+
+export type OethWithdrawalRequestsConnection = {
+  __typename?: 'OETHWithdrawalRequestsConnection';
+  edges: Array<OethWithdrawalRequestEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type OgnStatsResult = {
   __typename?: 'OGNStatsResult';
   circulatingSupply: Scalars['Float']['output'];
@@ -16370,6 +16533,11 @@ export type Query = {
   oethVaultByUniqueInput?: Maybe<OethVault>;
   oethVaults: Array<OethVault>;
   oethVaultsConnection: OethVaultsConnection;
+  oethWithdrawalRequestById?: Maybe<OethWithdrawalRequest>;
+  /** @deprecated Use oethWithdrawalRequestById */
+  oethWithdrawalRequestByUniqueInput?: Maybe<OethWithdrawalRequest>;
+  oethWithdrawalRequests: Array<OethWithdrawalRequest>;
+  oethWithdrawalRequestsConnection: OethWithdrawalRequestsConnection;
   ognStats: OgnStatsResult;
   ogvAddressById?: Maybe<OgvAddress>;
   /** @deprecated Use ogvAddressById */
@@ -18083,6 +18251,32 @@ export type QueryOethVaultsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<OethVaultOrderByInput>;
   where?: InputMaybe<OethVaultWhereInput>;
+};
+
+
+export type QueryOethWithdrawalRequestByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryOethWithdrawalRequestByUniqueInputArgs = {
+  where: WhereIdInput;
+};
+
+
+export type QueryOethWithdrawalRequestsArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OethWithdrawalRequestOrderByInput>>;
+  where?: InputMaybe<OethWithdrawalRequestWhereInput>;
+};
+
+
+export type QueryOethWithdrawalRequestsConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<OethWithdrawalRequestOrderByInput>;
+  where?: InputMaybe<OethWithdrawalRequestWhereInput>;
 };
 
 

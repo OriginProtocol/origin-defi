@@ -107,7 +107,9 @@ export const WithdrawalRequestModal = ({
             size="large"
             sx={{ mb: 3 }}
           >
-            {intl.formatMessage({ defaultMessage: 'Claim tab' })}
+            {intl.formatMessage({
+              defaultMessage: 'View your withdrawal requests',
+            })}
           </Button>
           {txReceipt && <BlockExplorerLink hash={txReceipt?.transactionHash} />}
         </Stack>

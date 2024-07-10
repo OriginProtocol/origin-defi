@@ -23,6 +23,7 @@ import {
   ErrorBoundary,
   ErrorCard,
   LoadingLabel,
+  ValueLabel,
 } from '@origin/shared/components';
 import {
   ConnectedButton,
@@ -376,7 +377,7 @@ function SwapperWrapped({
               }}
             />
             <Typography fontWeight="medium" pt={1.5}>
-              {intl.formatMessage({ defaultMessage: 'Instant or async' })}
+              {intl.formatMessage({ defaultMessage: 'Duration' })}
             </Typography>
             <Stack direction="row" spacing={2}>
               <RedeemActionCard action="arm" sx={{ width: 1 }} />
@@ -425,28 +426,25 @@ function SwapperWrapped({
               </Stack>
             </Stack>
             <Collapse in={amountOut > 0n}>
-              <Stack
+              <ValueLabel
+                label={intl.formatMessage({
+                  defaultMessage: 'Approximate gas cost:',
+                })}
+                labelInfoTooltip={intl.formatMessage({
+                  defaultMessage:
+                    'Claiming your withdrawal will incur this estimated additional gas fee',
+                })}
+                value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
                 direction="row"
                 justifyContent="space-between"
-                alignItems="center"
-                py={3}
+                pt={1}
+                pb={3}
                 px={1}
-              >
-                <Typography color="text.secondary" fontWeight="medium">
-                  {intl.formatMessage({
-                    defaultMessage: 'Approximate gas cost:',
-                  })}
-                </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
-                  <LoadingLabel
-                    isLoading={isGasPriceLoading || isSwapRoutesLoading}
-                    sWidth={60}
-                    fontWeight="medium"
-                  >
-                    ${format(gasPrice?.gasCostUsd ?? from(0), 2)}
-                  </LoadingLabel>
-                </Stack>
-              </Stack>
+                labelProps={{
+                  variant: 'body3',
+                  fontWeight: 'medium',
+                }}
+              />
             </Collapse>
           </CardContent>
           <CardContent sx={{ pt: 0 }}>

@@ -28,8 +28,8 @@ export const RedeemView = () => {
         token={tokens.mainnet.OETH}
       />
 
-      <PageSection>
-        <Stack spacing={5}>
+      <PageSection containerProps={{ maxWidth: 'sm' }}>
+        <Stack spacing={6}>
           <ViewSwitch />
           <ErrorBoundary
             ErrorComponent={<ErrorCard />}

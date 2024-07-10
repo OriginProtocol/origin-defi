@@ -78,6 +78,6 @@ export const redeemActions: Record<OethRedeemAction, SwapApi> = {
     ...defaultApi,
     ...redeemVaultAsync,
     routeLabel: defineMessage({ defaultMessage: 'Redeem via OETH Vault' }),
-    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Request withdrawal' }),
   },
 };

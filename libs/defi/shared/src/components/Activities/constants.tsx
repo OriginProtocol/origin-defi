@@ -24,6 +24,7 @@ import type {
   ApprovalActivity,
   BridgeActivity,
   ClaimRewardsActivity,
+  ClaimWithdrawalActivity,
   DelegateVoteActivity,
   ExtendStakeActivity,
   MigrateActivity,
@@ -171,6 +172,47 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
           defaultMessage: 'Collect {amount} rewards',
         },
         { amount },
+      );
+    },
+    icon: (activity) => {
+      const { tokenIdIn } = activity as ClaimRewardsActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return (
+        <BadgeIcon
+          badgeContent={
+            <FaArrowDownRegular
+              sx={{ fontSize: 10, color: 'primary.contrastText' }}
+            />
+          }
+          badgeBkgColor="primary.main"
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
+        </BadgeIcon>
+      );
+    },
+  },
+  'claim-withdrawal': {
+    title: (activity, intl) =>
+      ({
+        pending: intl.formatMessage({ defaultMessage: 'Claiming Withdrawal' }),
+        signed: intl.formatMessage({ defaultMessage: 'Claiming Withdrawal' }),
+        success: intl.formatMessage({ defaultMessage: 'Claimed Withdrawal' }),
+        error: intl.formatMessage({
+          defaultMessage: 'Error while claiming withdrawal',
+        }),
+        idle: intl.formatMessage({ defaultMessage: 'Claim Withdrawal' }),
+      })[activity.status],
+    subtitle: (activity, intl) => {
+      const { amountIn, tokenIdIn } = activity as ClaimWithdrawalActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
+
+      return intl.formatMessage(
+        {
+          defaultMessage: 'Claim {amount} {symbolIn}',
+        },
+        { amount, symbolIn: tokenIn.symbol },
       );
     },
     icon: (activity) => {
