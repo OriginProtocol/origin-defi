@@ -155,7 +155,7 @@ export const Topnav = () => {
               color="secondary"
               hideChainName={isMd}
               sx={{ flexShrink: 0 }}
-              iconSize={18}
+              iconSize={24}
               menuProps={{
                 paperProps: {
                   sx: {
