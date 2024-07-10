@@ -76,7 +76,7 @@ export const ChainMenuButton = ({
         ) : isWrongChain ? (
           <FaTriangleExclamationRegular
             sx={{
-              fontSize: iconSize,
+              fontSize: 20,
               color: 'warning.main',
             }}
           />

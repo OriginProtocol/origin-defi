@@ -62,7 +62,7 @@ export const ErrorCard = ({
       </Typography>
       {message}
       {!hideSupport && (
-        <Typography variant="body2">
+        <Typography>
           {intl.formatMessage(
             {
               defaultMessage:
