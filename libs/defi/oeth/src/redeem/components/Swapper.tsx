@@ -435,6 +435,7 @@ function SwapperWrapped({
                     'Claiming your withdrawal will incur this estimated additional gas fee',
                 })}
                 value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+                isLoading={isGasPriceLoading}
                 direction="row"
                 justifyContent="space-between"
                 pt={1}
