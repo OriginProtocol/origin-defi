@@ -439,7 +439,6 @@ function SwapperWrapped({
                 direction="row"
                 justifyContent="space-between"
                 pt={1}
-                pb={3}
                 px={1}
                 labelProps={{
                   variant: 'body3',
