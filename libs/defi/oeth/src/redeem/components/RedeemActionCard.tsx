@@ -1,18 +1,13 @@
 import { alpha, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
 import { OETH } from '@origin/shared/icons';
-import {
-  routeEq,
-  useHandleSelectSwapRoute,
-  useIsSwapRouteAvailable,
-  useSwapState,
-} from '@origin/shared/providers';
+import { routeEq, useSwapState } from '@origin/shared/providers';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps, TypographyProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-import type { EstimatedSwapRoute, SwapRoute } from '@origin/shared/providers';
+import type { SwapRoute } from '@origin/shared/providers';
 
 import type { Meta, OethRedeemAction } from '../types';
 
@@ -37,20 +32,15 @@ export const RedeemActionCard = ({
       swapActions,
     },
   ] = useSwapState();
-  const handleSelectSwapRoute = useHandleSelectSwapRoute();
   const route = swapRoutes.find((r) =>
     routeEq({ tokenIn, tokenOut, action }, r),
   );
-  const { data: isRouteAvailable, isLoading: isRouteAvailableLoading } =
-    useIsSwapRouteAvailable(route);
   const estimatedRoute = estimatedSwapRoutes.find((r) => routeEq(r, route));
   const isSelected = routeEq({ tokenIn, tokenOut, action }, selectedSwapRoute);
   const isEmptyValue = amountIn === 0n;
   const isComingSoon =
     (route as SwapRoute<OethRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
-  const isDisabled =
-    isComingSoon || (!isRouteAvailableLoading && !isRouteAvailable);
 
   return (
     <Card
@@ -72,12 +62,6 @@ export const RedeemActionCard = ({
           borderColor: 'primary.main',
         }),
         ...rest?.sx,
-      }}
-      role="button"
-      onClick={() => {
-        if (!isDisabled && amountIn > 0n) {
-          handleSelectSwapRoute(route as unknown as EstimatedSwapRoute);
-        }
       }}
     >
       {isComingSoon && (
