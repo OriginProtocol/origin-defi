@@ -128,7 +128,9 @@ const IconChip = ({ claimable, amount, ...rest }: IconChipProps) => {
       }}
     >
       {claimable ? <FaCircleCheckRegular /> : <FaClockRegular />}
-      <Typography>{amount}</Typography>
+      <Typography variant="body2" fontWeight="bold">
+        {amount}
+      </Typography>
     </Stack>
   );
 };
