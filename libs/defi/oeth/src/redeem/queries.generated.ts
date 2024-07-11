@@ -7,7 +7,7 @@ export type WithdrawalRequestsQueryVariables = Types.Exact<{
 }>;
 
 
-export type WithdrawalRequestsQuery = { __typename?: 'Query', oethWithdrawalRequests: Array<{ __typename?: 'OETHWithdrawalRequest', id: string, requestId: string, timestamp: string, amount: string, queued: string, claimed: boolean, blockNumber: number }> };
+export type WithdrawalRequestsQuery = { __typename?: 'Query', oethWithdrawalRequests: Array<{ __typename?: 'OETHWithdrawalRequest', id: string, requestId: string, timestamp: string, amount: string, queued: string, claimed: boolean, blockNumber: number, txHash: string }> };
 
 
 
@@ -22,6 +22,7 @@ export const WithdrawalRequestsDocument = `
     claimed
     blockNumber
     requestId
+    txHash
   }
 }
     `;

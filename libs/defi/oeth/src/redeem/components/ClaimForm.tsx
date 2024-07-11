@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 
 import {
+  Button,
   Checkbox,
   CircularProgress,
   Collapse,
@@ -12,7 +13,11 @@ import {
 import { SectionCard, useTxButton } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { FaCircleCheckRegular, FaClockRegular } from '@origin/shared/icons';
+import {
+  FaArrowUpRightRegular,
+  FaCircleCheckRegular,
+  FaClockRegular,
+} from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import {
   getFormatPrecision,
@@ -201,7 +206,18 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
         disabled={!request.claimable}
         disableTypography
       />
-      <ClaimChip claimable={request.claimable} />
+      <Stack direction="row" alignItems="center" spacing={1}>
+        <ClaimChip claimable={request.claimable} />
+        <Button
+          variant="outlined"
+          color="secondary"
+          href={`https://etherscan.io/tx/${request.txHash}`}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+        >
+          <FaArrowUpRightRegular sx={{ fontSize: 16 }} />
+        </Button>
+      </Stack>
     </Stack>
   );
 };

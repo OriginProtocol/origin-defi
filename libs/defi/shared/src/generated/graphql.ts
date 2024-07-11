@@ -9942,6 +9942,7 @@ export type OethWithdrawalRequest = {
   queued: Scalars['BigInt']['output'];
   requestId: Scalars['BigInt']['output'];
   timestamp: Scalars['DateTime']['output'];
+  txHash: Scalars['String']['output'];
   withdrawer: Scalars['String']['output'];
 };
 
@@ -9994,6 +9995,12 @@ export enum OethWithdrawalRequestOrderByInput {
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
   TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TxHashAsc = 'txHash_ASC',
+  TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
+  TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
+  TxHashDesc = 'txHash_DESC',
+  TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
   WithdrawerAsc = 'withdrawer_ASC',
   WithdrawerAscNullsFirst = 'withdrawer_ASC_NULLS_FIRST',
   WithdrawerAscNullsLast = 'withdrawer_ASC_NULLS_LAST',
@@ -10070,6 +10077,23 @@ export type OethWithdrawalRequestWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  txHash_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_gt?: InputMaybe<Scalars['String']['input']>;
+  txHash_gte?: InputMaybe<Scalars['String']['input']>;
+  txHash_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  txHash_lt?: InputMaybe<Scalars['String']['input']>;
+  txHash_lte?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_contains?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_eq?: InputMaybe<Scalars['String']['input']>;
+  txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
   withdrawer_contains?: InputMaybe<Scalars['String']['input']>;
   withdrawer_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   withdrawer_endsWith?: InputMaybe<Scalars['String']['input']>;

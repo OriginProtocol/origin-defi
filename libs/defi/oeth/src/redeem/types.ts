@@ -24,4 +24,5 @@ export type WithdrawalRequest = {
   claimed: boolean;
   blockNumber: number;
   claimable: boolean;
+  txHash: string;
 };

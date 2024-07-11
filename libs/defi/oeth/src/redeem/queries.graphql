@@ -8,5 +8,6 @@ query WithdrawalRequests($address: String!) {
     claimed
     blockNumber
     requestId
+    txHash
   }
 }
