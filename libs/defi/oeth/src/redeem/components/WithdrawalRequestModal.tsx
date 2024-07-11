@@ -252,7 +252,7 @@ export const WithdrawalRequestModal = ({
           </Typography>
           {button}
           {txReceipt && (
-            <BlockExplorerLink hash={txReceipt?.transactionHash} mt={1} />
+            <BlockExplorerLink hash={txReceipt?.transactionHash} mt={3} />
           )}
         </Stack>
       </DialogContent>
