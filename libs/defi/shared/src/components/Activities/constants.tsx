@@ -62,7 +62,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
 
       return intl.formatMessage(
         {
-          defaultMessage: '{amount} {symbol}',
+          defaultMessage: '{amount} {symbolIn}',
         },
         {
           amount,
