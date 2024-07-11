@@ -247,7 +247,12 @@ export const WithdrawalRequestModal = ({
           >
             {label.title}
           </Typography>
-          <Typography variant="mono" textAlign="center" mb={3}>
+          <Typography
+            variant="mono"
+            textAlign="center"
+            mb={3}
+            color="text.secondary"
+          >
             {label.subtitle}
           </Typography>
           {button}
