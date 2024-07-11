@@ -2,6 +2,7 @@ import { alpha, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
 import { OETH } from '@origin/shared/icons';
 import { routeEq, useSwapState } from '@origin/shared/providers';
+import { isNilOrEmpty } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
@@ -126,6 +127,14 @@ export const RedeemActionCard = ({
                 )
               )
             }
+            valueProps={{
+              ...valueLabelProps.valueProps,
+              ...(estimatedRoute?.meta !== undefined &&
+                'waitTimeColor' in estimatedRoute.meta &&
+                !isNilOrEmpty(estimatedRoute.meta.waitTimeColor) && {
+                  color: estimatedRoute?.meta.waitTimeColor as string,
+                }),
+            }}
             isLoading={isSwapRoutesLoading}
           />
           <ValueLabel

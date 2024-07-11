@@ -19,12 +19,7 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/defi/shared';
-import {
-  ErrorBoundary,
-  ErrorCard,
-  LoadingLabel,
-  ValueLabel,
-} from '@origin/shared/components';
+import { LoadingLabel, ValueLabel } from '@origin/shared/components';
 import {
   ConnectedButton,
   getTokenPriceKey,
@@ -342,159 +337,153 @@ function SwapperWrapped({
     amountIn === 0n;
 
   return (
-    <Stack spacing={3} {...rest}>
-      <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
-        <Card>
-          <CardHeader
-            title={intl.formatMessage({ defaultMessage: 'Redeem' })}
+    <Card>
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'Redeem' })} />
+      <Divider />
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', pb: 0 }}>
+        <Typography fontWeight="medium" mb={1.5}>
+          {intl.formatMessage({ defaultMessage: 'Amount' })}
+        </Typography>
+        <TokenInput
+          amount={amountIn}
+          decimals={tokenIn.decimals}
+          onAmountChange={handleAmountInChange}
+          balance={balTokenIn as unknown as bigint}
+          isBalanceLoading={isBalTokenInLoading}
+          isNativeCurrency={isNativeCurrency(tokenIn)}
+          token={tokenIn}
+          tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+          isTokenClickDisabled
+          isPriceLoading={isPriceLoading}
+          isAmountDisabled={amountInInputDisabled}
+          sx={{
+            px: 3,
+            py: 2,
+            mb: 3,
+            borderRadius: 3,
+            backgroundColor: 'background.highlight',
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
+        />
+        <Typography fontWeight="medium" mb={1.5}>
+          {intl.formatMessage({ defaultMessage: 'Duration' })}
+        </Typography>
+        <Stack direction="row" spacing={2} mb={3}>
+          <RedeemActionCard action="arm" sx={{ width: 1 }} />
+          <RedeemActionCard action="redeem-vault-async" sx={{ width: 1 }} />
+        </Stack>
+        <Typography fontWeight="medium" mb={1.5}>
+          {intl.formatMessage({ defaultMessage: 'Receive amount' })}
+        </Typography>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{
+            backgroundColor: 'background.highlight',
+            p: 3,
+            mb: 3,
+            borderRadius: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+          }}
+        >
+          <Stack spacing={1.5}>
+            <LoadingLabel
+              isLoading={isSwapRoutesLoading}
+              sWidth={60}
+              variant="h6"
+              color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
+            >
+              {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
+                digits: getFormatPrecision([
+                  amountOut ?? 0n,
+                  tokenOut?.decimals ?? 18,
+                ]),
+                decimalsRounding: 'ROUND_DOWN',
+              })}
+            </LoadingLabel>
+            <LoadingLabel
+              isLoading={isSwapRoutesLoading}
+              sWidth={60}
+              color="text.secondary"
+            >
+              ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
+            </LoadingLabel>
+          </Stack>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <TokenButton token={tokenOut} disabled />
+          </Stack>
+        </Stack>
+        <Collapse in={amountOut > 0n}>
+          <ValueLabel
+            label={intl.formatMessage({
+              defaultMessage: 'Approximate gas cost:',
+            })}
+            labelInfoTooltip={intl.formatMessage({
+              defaultMessage:
+                'Claiming your withdrawal will incur this estimated additional gas fee',
+            })}
+            value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+            isLoading={isGasPriceLoading}
+            direction="row"
+            justifyContent="space-between"
+            px={1}
+            mb={3}
+            labelProps={{
+              variant: 'body3',
+              fontWeight: 'medium',
+            }}
           />
-          <Divider />
-          <CardContent
-            sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
+        </Collapse>
+      </CardContent>
+      <CardContent sx={{ pt: 0 }}>
+        <Collapse in={needsApproval}>
+          <Button
+            fullWidth
+            variant="action"
+            disabled={approveButtonDisabled}
+            onClick={handleApprove}
+            sx={{ mb: 1.5 }}
           >
-            <Typography fontWeight="medium">
-              {intl.formatMessage({ defaultMessage: 'Amount' })}
-            </Typography>
-            <TokenInput
-              amount={amountIn}
-              decimals={tokenIn.decimals}
-              onAmountChange={handleAmountInChange}
-              balance={balTokenIn as unknown as bigint}
-              isBalanceLoading={isBalTokenInLoading}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
-              token={tokenIn}
-              tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
-              isTokenClickDisabled
-              isPriceLoading={isPriceLoading}
-              isAmountDisabled={amountInInputDisabled}
-              sx={{
-                px: 3,
-                py: 2,
-                borderRadius: 3,
-                backgroundColor: 'background.highlight',
-                border: '1px solid',
-                borderColor: 'divider',
-              }}
-            />
-            <Typography fontWeight="medium" pt={1.5}>
-              {intl.formatMessage({ defaultMessage: 'Duration' })}
-            </Typography>
-            <Stack direction="row" spacing={2}>
-              <RedeemActionCard action="arm" sx={{ width: 1 }} />
-              <RedeemActionCard action="redeem-vault-async" sx={{ width: 1 }} />
-            </Stack>
-            <Typography fontWeight="medium" pt={1.5}>
-              {intl.formatMessage({ defaultMessage: 'Receive amount' })}
-            </Typography>
-            <Stack
-              direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              sx={{
-                backgroundColor: 'background.highlight',
-                p: 3,
-                borderRadius: 3,
-                border: '1px solid',
-                borderColor: 'divider',
-              }}
-            >
-              <Stack spacing={1.5}>
-                <LoadingLabel
-                  isLoading={isSwapRoutesLoading}
-                  sWidth={60}
-                  variant="h6"
-                  color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
-                >
-                  {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
-                    digits: getFormatPrecision([
-                      amountOut ?? 0n,
-                      tokenOut?.decimals ?? 18,
-                    ]),
-                    decimalsRounding: 'ROUND_DOWN',
-                  })}
-                </LoadingLabel>
-                <LoadingLabel
-                  isLoading={isSwapRoutesLoading}
-                  sWidth={60}
-                  color="text.secondary"
-                >
-                  ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
-                </LoadingLabel>
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <TokenButton token={tokenOut} disabled />
-              </Stack>
-            </Stack>
-            <Collapse in={amountOut > 0n}>
-              <ValueLabel
-                label={intl.formatMessage({
-                  defaultMessage: 'Approximate gas cost:',
-                })}
-                labelInfoTooltip={intl.formatMessage({
-                  defaultMessage:
-                    'Claiming your withdrawal will incur this estimated additional gas fee',
-                })}
-                value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
-                isLoading={isGasPriceLoading}
-                direction="row"
-                justifyContent="space-between"
-                pt={1}
-                px={1}
-                labelProps={{
-                  variant: 'body3',
-                  fontWeight: 'medium',
-                }}
-              />
-            </Collapse>
-          </CardContent>
-          <CardContent sx={{ pt: 0 }}>
-            <Collapse in={needsApproval}>
-              <Button
-                fullWidth
-                variant="action"
-                disabled={approveButtonDisabled}
-                onClick={handleApprove}
-                sx={{ mb: 1.5 }}
-              >
-                {isSwapRoutesLoading ? (
-                  <CircularProgress size={32} color="inherit" />
-                ) : isApprovalWaitingForSignature ? (
-                  intl.formatMessage({
-                    defaultMessage: 'Waiting for signature',
-                  })
-                ) : isApprovalLoading ? (
-                  intl.formatMessage({
-                    defaultMessage: 'Processing Approval',
-                  })
-                ) : (
-                  intl.formatMessage({ defaultMessage: 'Approve' })
-                )}
-              </Button>
-            </Collapse>
-            <ConnectedButton
-              fullWidth
-              variant="action"
-              disabled={swapButtonDisabled}
-              onClick={handleSwap}
-              targetChainId={tokenIn.chainId}
-            >
-              {isSwapRoutesLoading ? (
-                <CircularProgress size={32} color="inherit" />
-              ) : isSwapWaitingForSignature ? (
-                intl.formatMessage({
-                  defaultMessage: 'Waiting for signature',
-                })
-              ) : isSwapLoading ? (
-                intl.formatMessage({
-                  defaultMessage: 'Processing Transaction',
-                })
-              ) : (
-                swapButtonLabel
-              )}
-            </ConnectedButton>
-          </CardContent>
-        </Card>
-      </ErrorBoundary>
-    </Stack>
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isApprovalWaitingForSignature ? (
+              intl.formatMessage({
+                defaultMessage: 'Waiting for signature',
+              })
+            ) : isApprovalLoading ? (
+              intl.formatMessage({
+                defaultMessage: 'Processing Approval',
+              })
+            ) : (
+              intl.formatMessage({ defaultMessage: 'Approve' })
+            )}
+          </Button>
+        </Collapse>
+        <ConnectedButton
+          fullWidth
+          variant="action"
+          disabled={swapButtonDisabled}
+          onClick={handleSwap}
+          targetChainId={tokenIn.chainId}
+        >
+          {isSwapRoutesLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : isSwapWaitingForSignature ? (
+            intl.formatMessage({
+              defaultMessage: 'Waiting for signature',
+            })
+          ) : isSwapLoading ? (
+            intl.formatMessage({
+              defaultMessage: 'Processing Transaction',
+            })
+          ) : (
+            swapButtonLabel
+          )}
+        </ConnectedButton>
+      </CardContent>
+    </Card>
   );
 }

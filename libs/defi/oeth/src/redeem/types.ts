@@ -5,6 +5,7 @@ import type { MessageDescriptor } from 'react-intl';
 export type Meta = {
   icon?: ComponentType<SvgIconProps>;
   waitTime?: MessageDescriptor;
+  waitTimeColor?: string;
   comingSoon?: boolean;
 };
 
