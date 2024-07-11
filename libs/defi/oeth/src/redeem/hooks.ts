@@ -3,7 +3,8 @@ import { useMemo } from 'react';
 import { contracts } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { readContract } from '@wagmi/core';
+import { getBlock, readContract } from '@wagmi/core';
+import { addMinutes, fromUnixTime, isAfter } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -67,20 +68,34 @@ export const useWithdrawalRequests = (
             address: address ?? ZERO_ADDRESS,
           }),
         }),
+        getBlock(config, {
+          blockTag: 'finalized',
+          chainId: contracts.mainnet.OETHVault.chainId,
+        }),
       ]);
       const queueData = isFulfilled(res[0]) ? res[0].value : null;
       const requests = isFulfilled(res[1])
         ? res[1].value?.oethWithdrawalRequests ?? []
         : [];
+      const block = isFulfilled(res[2]) ? res[2].value : null;
 
-      return requests.map((r) => ({
-        ...r,
-        requestId: BigInt(r.requestId),
-        amount: BigInt(r.amount),
-        queued: BigInt(r.queued),
-        claimable:
-          !r.claimed && BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0),
-      }));
+      return requests.map((r) => {
+        const claimable =
+          !r.claimed &&
+          BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0) &&
+          isAfter(
+            new Date(r.timestamp),
+            addMinutes(fromUnixTime(Number(block?.timestamp ?? 0)), 30),
+          );
+
+        return {
+          ...r,
+          requestId: BigInt(r.requestId),
+          amount: BigInt(r.amount),
+          queued: BigInt(r.queued),
+          claimable,
+        };
+      });
     },
   });
 };

@@ -35,7 +35,7 @@ export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
     action: 'redeem-vault-async',
     meta: {
       icon: OETH,
-      waitTime: defineMessage({ defaultMessage: '~a few days' }),
+      waitTime: defineMessage({ defaultMessage: '~30 min - few days' }),
       waitTimeColor: 'warning.main',
     },
   },
