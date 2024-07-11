@@ -19,7 +19,11 @@ import {
   usePushActivity,
   useUpdateActivity,
 } from '@origin/defi/shared';
-import { LoadingLabel, ValueLabel } from '@origin/shared/components';
+import {
+  InfoTooltipLabel,
+  LoadingLabel,
+  ValueLabel,
+} from '@origin/shared/components';
 import {
   ConnectedButton,
   getTokenPriceKey,
@@ -50,7 +54,11 @@ import { WithdrawalRequestModal } from './WithdrawalRequestModal';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
-import type { SwapState } from '@origin/shared/providers';
+import type {
+  EstimatedSwapRoute,
+  GasPrice,
+  SwapState,
+} from '@origin/shared/providers';
 import type { Dnum } from 'dnum';
 
 import type { WithdrawalRequestModalProps } from './WithdrawalRequestModal';
@@ -260,7 +268,6 @@ export const Swapper = ({
 
 function SwapperWrapped({
   onError,
-  ...rest
 }: Omit<SwapperProps, 'swapActions' | 'swapRoutes' | 'trackEvent'>) {
   const intl = useIntl();
   const { isConnected } = useAccount();
@@ -421,11 +428,9 @@ function SwapperWrapped({
             label={intl.formatMessage({
               defaultMessage: 'Approximate gas cost:',
             })}
-            labelInfoTooltip={intl.formatMessage({
-              defaultMessage:
-                'Claiming your withdrawal will incur this estimated additional gas fee',
-            })}
-            value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+            value={
+              <GasPriceLabel gasPrice={gasPrice} route={selectedSwapRoute} />
+            }
             isLoading={isGasPriceLoading}
             direction="row"
             justifyContent="space-between"
@@ -487,3 +492,33 @@ function SwapperWrapped({
     </Card>
   );
 }
+
+type GasPriceLabelProps = {
+  route?: EstimatedSwapRoute | null;
+  gasPrice?: GasPrice;
+};
+
+const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
+  const intl = useIntl();
+
+  if (!gasPrice || !route || isNilOrEmpty(gasPrice?.gasCostUsd)) {
+    return `$0.00`;
+  }
+
+  if (route.action !== 'redeem-vault-async') {
+    return `$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`;
+  }
+
+  const req = mul(gasPrice.gasCostUsd, 0.6);
+  const claim = mul(gasPrice.gasCostUsd, 0.4);
+
+  return (
+    <InfoTooltipLabel
+      fontWeight="medium"
+      tooltipLabel={intl.formatMessage({
+        defaultMessage:
+          'Claiming your withdrawal will incur this estimated additional gas fee',
+      })}
+    >{`~$${format(req, 2)} + ~$${format(claim, 2)}`}</InfoTooltipLabel>
+  );
+};
