@@ -200,6 +200,9 @@
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
+  "EUPZOz": {
+    "defaultMessage": "blocks left"
+  },
   "FdfIVU": {
     "defaultMessage": "All your XP will be redeemable for YND tokens at the TGE."
   },
@@ -445,6 +448,9 @@
   },
   "c7tNet": {
     "defaultMessage": "Withdrawal Process"
+  },
+  "cOKXho": {
+    "defaultMessage": "Claimable"
   },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"

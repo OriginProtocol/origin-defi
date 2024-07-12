@@ -326,9 +326,6 @@
   "AtWUBa": {
     "defaultMessage": "Redeem via OETH Vault"
   },
-  "Awi257": {
-    "defaultMessage": "{amount} {symbol}"
-  },
   "B0mIqy": {
     "defaultMessage": "Extending Stake"
   },
@@ -343,9 +340,6 @@
   },
   "BY343C": {
     "defaultMessage": "Change"
-  },
-  "BhDX51": {
-    "defaultMessage": "No Lockups"
   },
   "BnSeXp": {
     "defaultMessage": "Decreasing lock-up duration decreases APY and the amount of xOGN you will receive."
@@ -730,9 +724,6 @@
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
-  },
-  "UMJuaW": {
-    "defaultMessage": "Your APY:"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."

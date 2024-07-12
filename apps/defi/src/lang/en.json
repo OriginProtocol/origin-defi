@@ -823,20 +823,6 @@
       "value": "Redeem via OETH Vault"
     }
   ],
-  "Awi257": [
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
-    }
-  ],
   "B0mIqy": [
     {
       "type": 0,
@@ -865,12 +851,6 @@
     {
       "type": 0,
       "value": "Change"
-    }
-  ],
-  "BhDX51": [
-    {
-      "type": 0,
-      "value": "No Lockups"
     }
   ],
   "BnSeXp": [
@@ -1903,12 +1883,6 @@
     {
       "type": 0,
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
-    }
-  ],
-  "UMJuaW": [
-    {
-      "type": 0,
-      "value": "Your APY:"
     }
   ],
   "UkXeBW": [
