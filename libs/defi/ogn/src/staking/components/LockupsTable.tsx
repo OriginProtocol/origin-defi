@@ -153,9 +153,6 @@ export const LockupsTable = () => {
             );
           }
 
-          const extendDisabled =
-            differenceInDays(new Date(info.row.original.end), new Date()) >=
-            335;
           const addDisabled =
             differenceInDays(new Date(info.row.original.end), new Date()) < 30;
 
@@ -170,7 +167,6 @@ export const LockupsTable = () => {
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
-                disabled={extendDisabled}
                 disableNetworkCheck
               >
                 {intl.formatMessage({ defaultMessage: 'Extend' })}
