@@ -2,7 +2,7 @@ import { Box, Button, Card, Collapse, Stack, Typography } from '@mui/material';
 import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
-import { useFormat, useTvl } from '@origin/shared/providers';
+import { useTvl } from '@origin/shared/providers';
 import {
   formatAmount,
   getFormatPrecision,
@@ -23,7 +23,6 @@ export type ProductCardProps = {
 
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
-  const { formatBalance } = useFormat();
   const { address, isConnected } = useAccount();
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
   const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
@@ -43,7 +42,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
 
-  const bal = from(BigInt(user?.balance ?? 0));
+  const bal = [BigInt(user?.balance ?? 0), product.token.decimals];
 
   return (
     <Card
