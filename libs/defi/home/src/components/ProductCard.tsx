@@ -14,6 +14,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
+import type { Dnum } from 'dnum';
 
 import type { Product } from '../constants';
 
@@ -42,7 +43,7 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
 
-  const bal = [BigInt(user?.balance ?? 0), product.token.decimals];
+  const bal = [BigInt(user?.balance ?? 0), product.token.decimals] as Dnum;
 
   return (
     <Card
