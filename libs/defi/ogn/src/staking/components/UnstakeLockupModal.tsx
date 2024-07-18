@@ -31,6 +31,7 @@ import { useStartLockupPolling } from '../hooks';
 
 import type { DialogProps } from '@mui/material';
 import type { ConnectedButtonProps } from '@origin/shared/providers';
+import type { Dnum } from 'dnum';
 
 import type { Lockup } from '../types';
 
@@ -73,6 +74,7 @@ export const UnstakeLockupModal = ({
     enableGas: true,
   });
 
+  const preview = [previewOgn ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const ognLockup = BigInt(lockup.amount);
   const penalty = ognLockup - (previewOgn ?? ognLockup);
   const penaltyPercent =
@@ -190,10 +192,7 @@ export const UnstakeLockupModal = ({
               <Stack direction="row" alignItems="center" spacing={1}>
                 <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
                 <Typography>
-                  {format(
-                    from(previewOgn ?? 0),
-                    getFormatPrecision(from(previewOgn ?? 0)),
-                  )}
+                  {format(preview, getFormatPrecision(preview))}
                 </Typography>
               </Stack>
             }
