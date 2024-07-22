@@ -4,7 +4,7 @@ import { readContract } from '@wagmi/core';
 import { mul } from 'dnum';
 import { useConfig } from 'wagmi';
 
-import { getTokenPriceKey, useTokenPrice } from '../prices';
+import { getTokenPriceKey, useTokenPrice } from '../../prices';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
