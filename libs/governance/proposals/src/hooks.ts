@@ -47,7 +47,7 @@ export const useProposals = (
 
       const onChainProposals: Proposal[] =
         res[0].status === 'fulfilled'
-          ? res[0]?.value?.ogvProposals?.map((p) => {
+          ? (res[0]?.value?.ogvProposals?.map((p) => {
               const { title, description } = parseProposalContent(
                 p?.description,
               );
@@ -77,12 +77,12 @@ export const useProposals = (
                 quorum: 348e9,
                 link: '',
               };
-            }) ?? []
+            }) ?? [])
           : [];
 
       const offChainProposals: Proposal[] =
         res[1].status === 'fulfilled'
-          ? (res[1].value as SnapshotProposalsQuery)?.proposals?.map((p) => ({
+          ? ((res[1].value as SnapshotProposalsQuery)?.proposals?.map((p) => ({
               id: p?.id ?? 'id',
               type: 'snapshot' as ProposalType,
               title: p?.title ?? '',
@@ -95,7 +95,7 @@ export const useProposals = (
               scores: p?.scores as any,
               quorum: p?.quorum,
               link: p?.link as any,
-            })) ?? []
+            })) ?? [])
           : [];
 
       return sort(descend(prop('created')), [
@@ -136,7 +136,7 @@ export const useUserVotes = () => {
 
       const onChainVotes =
         res[0].status === 'fulfilled'
-          ? (res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
+          ? ((res[0].value as UserVotesQuery)?.ogvProposalVotes?.map((v) => {
               const { title } = parseProposalContent(v?.proposal?.description);
 
               return {
@@ -150,12 +150,12 @@ export const useUserVotes = () => {
                   status: v.proposal.status,
                 },
               };
-            }) ?? []
+            }) ?? [])
           : [];
 
       const offChainVotes =
         res[1].status === 'fulfilled'
-          ? (res[1].value as SnapshotUserVotesQuery)?.votes?.map((v) => {
+          ? ((res[1].value as SnapshotUserVotesQuery)?.votes?.map((v) => {
               const idx =
                 Number(Array.isArray(v?.choice) ? v.choice.at(0) : v?.choice) -
                 1;
@@ -175,7 +175,7 @@ export const useUserVotes = () => {
                   link: v?.proposal?.link,
                 },
               };
-            }) ?? []
+            }) ?? [])
           : [];
 
       return sort(descend(prop('created')), [

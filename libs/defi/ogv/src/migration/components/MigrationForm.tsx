@@ -233,8 +233,8 @@ export const MigrationForm = (props: StackProps) => {
           <SummaryCard
             ogv={ogvTotal}
             convertProps={{
-              ogvBalance: selected.balance ? info?.ogvBalance ?? 0n : 0n,
-              ogvRewards: selected.rewards ? info?.veOgvRewards ?? 0n : 0n,
+              ogvBalance: selected.balance ? (info?.ogvBalance ?? 0n) : 0n,
+              ogvRewards: selected.rewards ? (info?.veOgvRewards ?? 0n) : 0n,
               veOgvlockups: selected.lockups,
               disabled: isConvertDisabled,
             }}

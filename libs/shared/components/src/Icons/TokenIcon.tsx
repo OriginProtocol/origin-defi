@@ -103,7 +103,7 @@ export const TokenIcon = ({ token, outlined, ...rest }: TokenIconProps) => {
   }
 
   const Icon = outlined
-    ? outlinedMap[token.symbol] ?? regularMap[token.symbol]
+    ? (outlinedMap[token.symbol] ?? regularMap[token.symbol])
     : regularMap[token.symbol];
 
   return <Icon {...rest} />;

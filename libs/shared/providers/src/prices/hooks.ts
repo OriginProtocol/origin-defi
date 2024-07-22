@@ -79,7 +79,8 @@ const pricesFetcher: (
           const key = rest[i].id;
 
           allPrices[key] = isFulfilled(res)
-            ? (rest[i] as RestOption)?.mapResult?.(res.value) ?? from(res.value)
+            ? ((rest[i] as RestOption)?.mapResult?.(res.value) ??
+              from(res.value))
             : from(0);
         });
       } catch {}

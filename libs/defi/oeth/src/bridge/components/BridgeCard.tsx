@@ -192,7 +192,7 @@ export const BridgeCard = () => {
   const gasPrice = add(
     txButton?.gasPrice?.gasCostEther ?? from(0),
     (allowance ?? 0n) < amount
-      ? approvalGasPrice?.gasCostEther ?? from(0)
+      ? (approvalGasPrice?.gasCostEther ?? from(0))
       : from(0),
   );
   const bridgeFee = [ccipTxParams?.data?.fee ?? 0n, 18] as Dnum;

@@ -79,7 +79,7 @@ export const RedeemActionCard = ({
   const gasPrice = add(
     swapGasPrice?.gasCostUsd ?? from(0),
     (allowance ?? 0n) < amountIn
-      ? approvalGasPrice?.gasCostUsd ?? from(0)
+      ? (approvalGasPrice?.gasCostUsd ?? from(0))
       : from(0),
   );
   const routeLabel = swapActions[action].routeLabel;
