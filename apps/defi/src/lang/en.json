@@ -1,4 +1,10 @@
 {
+  "+0NTt9": [
+    {
+      "type": 0,
+      "value": "Withdrawal request is taking a long time to process"
+    }
+  ],
   "+0zAiT": [
     {
       "type": 0,
@@ -57,6 +63,12 @@
     {
       "type": 0,
       "value": "Amount"
+    }
+  ],
+  "/2Xryp": [
+    {
+      "type": 0,
+      "value": "Claimed Withdrawal"
     }
   ],
   "/6/sPX": [
@@ -229,12 +241,6 @@
       "value": "Return to Home Page"
     }
   ],
-  "2+4p9v": [
-    {
-      "type": 0,
-      "value": "Claim tab"
-    }
-  ],
   "2/2yg+": [
     {
       "type": 0,
@@ -305,6 +311,12 @@
     {
       "type": 0,
       "value": "Legacy governance"
+    }
+  ],
+  "3cpPa4": [
+    {
+      "type": 0,
+      "value": "Claiming your withdrawal will incur this estimated additional gas fee"
     }
   ],
   "3lOoIq": [
@@ -393,6 +405,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "monthDuration"
+    }
+  ],
+  "3t3uoD": [
+    {
+      "type": 0,
+      "value": "You have no withdrawal requests"
     }
   ],
   "3townk": [
@@ -493,6 +511,12 @@
       "value": "No description"
     }
   ],
+  "5yP3uI": [
+    {
+      "type": 0,
+      "value": "Claim Withdrawal"
+    }
+  ],
   "5zH79K": [
     {
       "type": 0,
@@ -551,6 +575,12 @@
     {
       "type": 0,
       "value": "Amount to Stake"
+    }
+  ],
+  "7+beT+": [
+    {
+      "type": 0,
+      "value": "~30 min - few days"
     }
   ],
   "7CPiAt": [
@@ -893,6 +923,12 @@
       "value": "Stablecoin mix"
     }
   ],
+  "DK7ein": [
+    {
+      "type": 0,
+      "value": "Your pending amount"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -989,6 +1025,12 @@
     {
       "type": 1,
       "value": "symbolOut"
+    }
+  ],
+  "EJv8r2": [
+    {
+      "type": 0,
+      "value": "Refresh the page"
     }
   ],
   "EMU/OA": [
@@ -1105,6 +1147,12 @@
       "value": "Waiting for CCIP"
     }
   ],
+  "Gtdie8": [
+    {
+      "type": 0,
+      "value": "Available to claim"
+    }
+  ],
   "H1+3mH": [
     {
       "type": 0,
@@ -1191,10 +1239,22 @@
       "value": "Error while enabling rebasing"
     }
   ],
+  "IZFEUg": [
+    {
+      "type": 0,
+      "value": "Ready"
+    }
+  ],
   "IfZsEo": [
     {
       "type": 0,
       "value": "Vote against"
+    }
+  ],
+  "IuFETn": [
+    {
+      "type": 0,
+      "value": "Duration"
     }
   ],
   "IzHsvX": [
@@ -1369,6 +1429,12 @@
     {
       "type": 0,
       "value": "Reload Page"
+    }
+  ],
+  "MTN/Zf": [
+    {
+      "type": 0,
+      "value": "Try to refresh the page and go to the Claim tab to see your withdrawal request"
     }
   ],
   "MW9FHt": [
@@ -1575,6 +1641,12 @@
       "value": "The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup"
     }
   ],
+  "PEzaGo": [
+    {
+      "type": 0,
+      "value": "Request withdrawal"
+    }
+  ],
   "PFtMy9": [
     {
       "type": 0,
@@ -1615,6 +1687,12 @@
     {
       "type": 1,
       "value": "symbolOut"
+    }
+  ],
+  "Pkf9/r": [
+    {
+      "type": 0,
+      "value": "This operation can take a few seconds to complete"
     }
   ],
   "PmkP1H": [
@@ -1797,6 +1875,12 @@
       "value": "count"
     }
   ],
+  "T1d+7b": [
+    {
+      "type": 0,
+      "value": "Claiming Withdrawal"
+    }
+  ],
   "TIBoMl": [
     {
       "type": 0,
@@ -1889,6 +1973,12 @@
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
     }
   ],
+  "UjXhyn": [
+    {
+      "type": 0,
+      "value": "Your requests"
+    }
+  ],
   "UkXeBW": [
     {
       "type": 0,
@@ -1959,6 +2049,12 @@
       "value": "Origin Ether"
     }
   ],
+  "W7LOXq": [
+    {
+      "type": 0,
+      "value": "Error while claiming withdrawal"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -1997,6 +2093,12 @@
     {
       "type": 0,
       "value": "Redeem"
+    }
+  ],
+  "XrnF+v": [
+    {
+      "type": 0,
+      "value": "Processing withdrawal request"
     }
   ],
   "Y/oE4U": [
@@ -2275,12 +2377,6 @@
       "value": "Connect Wallet"
     }
   ],
-  "cn8bYe": [
-    {
-      "type": 0,
-      "value": "~10 days"
-    }
-  ],
   "d0kJUi": [
     {
       "type": 0,
@@ -2353,6 +2449,16 @@
     {
       "type": 0,
       "value": "Claiming Rewards"
+    }
+  ],
+  "dxLIdA": [
+    {
+      "type": 0,
+      "value": "Claim"
+    },
+    {
+      "type": 1,
+      "value": "amount"
     }
   ],
   "e+yfm6": [
@@ -2671,12 +2777,6 @@
       "value": "Stake OGN"
     }
   ],
-  "kJmZxj": [
-    {
-      "type": 0,
-      "value": "Instant or async"
-    }
-  ],
   "kWMpjI": [
     {
       "type": 0,
@@ -2695,6 +2795,12 @@
       "value": "Connect wallet to view"
     }
   ],
+  "lN55fl": [
+    {
+      "type": 0,
+      "value": "Your withdrawal is being processed"
+    }
+  ],
   "lQmZjB": [
     {
       "type": 0,
@@ -2705,6 +2811,12 @@
     {
       "type": 0,
       "value": "Mins"
+    }
+  ],
+  "lc3LYh": [
+    {
+      "type": 0,
+      "value": "Your claims"
     }
   ],
   "lozEho": [
@@ -2889,6 +3001,24 @@
     {
       "type": 0,
       "value": "Error while bridging"
+    }
+  ],
+  "phZMsU": [
+    {
+      "type": 0,
+      "value": "Claim "
+    },
+    {
+      "type": 1,
+      "value": "amount"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
     }
   ],
   "qGZxc4": [
@@ -3077,6 +3207,12 @@
     {
       "type": 0,
       "value": "Redeem amount"
+    }
+  ],
+  "uD4xKE": [
+    {
+      "type": 0,
+      "value": "View withdrawal requests"
     }
   ],
   "uEFsHG": [

@@ -91,6 +91,42 @@ export type Item = {
   spacesCount?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Leaderboard = {
+  __typename?: 'Leaderboard';
+  lastVote?: Maybe<Scalars['Int']['output']>;
+  proposalsCount?: Maybe<Scalars['Int']['output']>;
+  space?: Maybe<Scalars['String']['output']>;
+  user?: Maybe<Scalars['String']['output']>;
+  votesCount?: Maybe<Scalars['Int']['output']>;
+};
+
+export type LeaderboardsWhere = {
+  proposal_count?: InputMaybe<Scalars['Int']['input']>;
+  proposal_count_gt?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  proposal_count_gte?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  proposal_count_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  proposal_count_lt?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  proposal_count_lte?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  proposal_count_not?: InputMaybe<Scalars['Int']['input']>;
+  proposal_count_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  space?: InputMaybe<Scalars['String']['input']>;
+  space_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  space_not?: InputMaybe<Scalars['String']['input']>;
+  space_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  user?: InputMaybe<Scalars['String']['input']>;
+  user_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  user_not?: InputMaybe<Scalars['String']['input']>;
+  user_not_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  vote_count?: InputMaybe<Scalars['Int']['input']>;
+  vote_count_gt?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  vote_count_gte?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  vote_count_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  vote_count_lt?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  vote_count_lte?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+  vote_count_not?: InputMaybe<Scalars['Int']['input']>;
+  vote_count_not_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
+};
+
 export type Message = {
   __typename?: 'Message';
   address?: Maybe<Scalars['String']['output']>;
@@ -231,6 +267,7 @@ export type Query = {
   __typename?: 'Query';
   aliases?: Maybe<Array<Maybe<Alias>>>;
   follows?: Maybe<Array<Maybe<Follow>>>;
+  leaderboards?: Maybe<Array<Maybe<Leaderboard>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   networks?: Maybe<Array<Maybe<Item>>>;
   plugins?: Maybe<Array<Maybe<Item>>>;
@@ -270,6 +307,15 @@ export type QueryFollowsArgs = {
   orderDirection?: InputMaybe<OrderDirection>;
   skip?: Scalars['Int']['input'];
   where?: InputMaybe<FollowWhere>;
+};
+
+
+export type QueryLeaderboardsArgs = {
+  first?: Scalars['Int']['input'];
+  orderBy?: InputMaybe<Scalars['String']['input']>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  skip?: Scalars['Int']['input'];
+  where?: InputMaybe<LeaderboardsWhere>;
 };
 
 
@@ -579,14 +625,17 @@ export type User = {
   about?: Maybe<Scalars['String']['output']>;
   avatar?: Maybe<Scalars['String']['output']>;
   cover?: Maybe<Scalars['String']['output']>;
-  created: Scalars['Int']['output'];
+  created?: Maybe<Scalars['Int']['output']>;
   farcaster?: Maybe<Scalars['String']['output']>;
   github?: Maybe<Scalars['String']['output']>;
   id: Scalars['String']['output'];
   ipfs?: Maybe<Scalars['String']['output']>;
+  lastVote?: Maybe<Scalars['Int']['output']>;
   lens?: Maybe<Scalars['String']['output']>;
   name?: Maybe<Scalars['String']['output']>;
+  proposalsCount?: Maybe<Scalars['Int']['output']>;
   twitter?: Maybe<Scalars['String']['output']>;
+  votesCount?: Maybe<Scalars['Int']['output']>;
 };
 
 export type UsersWhere = {

@@ -1,4 +1,7 @@
 {
+  "+0NTt9": {
+    "defaultMessage": "Withdrawal request is taking a long time to process"
+  },
   "+0zAiT": {
     "defaultMessage": "The updated amount of xOGN you will receive by adding OGN to this lockup."
   },
@@ -28,6 +31,9 @@
   },
   "/0TOL5": {
     "defaultMessage": "Amount"
+  },
+  "/2Xryp": {
+    "defaultMessage": "Claimed Withdrawal"
   },
   "/6/sPX": {
     "defaultMessage": "Docs"
@@ -98,9 +104,6 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
-  "2+4p9v": {
-    "defaultMessage": "Claim tab"
-  },
   "2/2yg+": {
     "defaultMessage": "Add"
   },
@@ -137,8 +140,14 @@
   "3at7Yr": {
     "defaultMessage": "Legacy governance"
   },
+  "3cpPa4": {
+    "defaultMessage": "Claiming your withdrawal will incur this estimated additional gas fee"
+  },
   "3lOoIq": {
     "defaultMessage": "{monthDuration,plural,=1{Extend lockup {lockupId} by {amount} {symbolIn} for # month} other{Extend lockup {lockupId} by {amount} {symbolIn} for # months}}"
+  },
+  "3t3uoD": {
+    "defaultMessage": "You have no withdrawal requests"
   },
   "3townk": {
     "defaultMessage": "Max vAPY"
@@ -185,6 +194,9 @@
   "5lVaeB": {
     "defaultMessage": "No description"
   },
+  "5yP3uI": {
+    "defaultMessage": "Claim Withdrawal"
+  },
   "5zH79K": {
     "defaultMessage": "Your veOGV staked positions"
   },
@@ -214,6 +226,9 @@
   },
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
+  },
+  "7+beT+": {
+    "defaultMessage": "~30 min - few days"
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
@@ -365,6 +380,9 @@
   "DBP9Xf": {
     "defaultMessage": "Stablecoin mix"
   },
+  "DK7ein": {
+    "defaultMessage": "Your pending amount"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -397,6 +415,9 @@
   },
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
+  },
+  "EJv8r2": {
+    "defaultMessage": "Refresh the page"
   },
   "EMU/OA": {
     "defaultMessage": "The amount of xOGN you will receive today in return for your lockup. The more xOGN you have, the more voting power you have and the more staking rewards you will earn."
@@ -449,6 +470,9 @@
   "GtABHs": {
     "defaultMessage": "Waiting for CCIP"
   },
+  "Gtdie8": {
+    "defaultMessage": "Available to claim"
+  },
   "H1+3mH": {
     "defaultMessage": "A superior LST for earning yield across DeFi"
   },
@@ -482,8 +506,14 @@
   "IP0AHa": {
     "defaultMessage": "Error while enabling rebasing"
   },
+  "IZFEUg": {
+    "defaultMessage": "Ready"
+  },
   "IfZsEo": {
     "defaultMessage": "Vote against"
+  },
+  "IuFETn": {
+    "defaultMessage": "Duration"
   },
   "IzHsvX": {
     "defaultMessage": "Est. gas:"
@@ -566,6 +596,9 @@
   "MSTVqC": {
     "defaultMessage": "Reload Page"
   },
+  "MTN/Zf": {
+    "defaultMessage": "Try to refresh the page and go to the Claim tab to see your withdrawal request"
+  },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
   },
@@ -629,6 +662,9 @@
   "P9sirH": {
     "defaultMessage": "The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup"
   },
+  "PEzaGo": {
+    "defaultMessage": "Request withdrawal"
+  },
   "PFtMy9": {
     "defaultMessage": "Canceled"
   },
@@ -637,6 +673,9 @@
   },
   "PdEKuc": {
     "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
+  },
+  "Pkf9/r": {
+    "defaultMessage": "This operation can take a few seconds to complete"
   },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
@@ -707,6 +746,9 @@
   "SzA4oV": {
     "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
+  "T1d+7b": {
+    "defaultMessage": "Claiming Withdrawal"
+  },
   "TIBoMl": {
     "defaultMessage": "Total value locked {symbol}"
   },
@@ -730,6 +772,9 @@
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+  },
+  "UjXhyn": {
+    "defaultMessage": "Your requests"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -758,6 +803,9 @@
   "W33FNz": {
     "defaultMessage": "Origin Ether"
   },
+  "W7LOXq": {
+    "defaultMessage": "Error while claiming withdrawal"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
@@ -775,6 +823,9 @@
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
+  },
+  "XrnF+v": {
+    "defaultMessage": "Processing withdrawal request"
   },
   "Y/oE4U": {
     "defaultMessage": "Calldata"
@@ -884,9 +935,6 @@
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
   },
-  "cn8bYe": {
-    "defaultMessage": "~10 days"
-  },
   "d0kJUi": {
     "defaultMessage": "Connect your wallet to see your voting power"
   },
@@ -916,6 +964,9 @@
   },
   "dx9Xxj": {
     "defaultMessage": "Claiming Rewards"
+  },
+  "dxLIdA": {
+    "defaultMessage": "Claim{amount}"
   },
   "e+yfm6": {
     "defaultMessage": "Connect your wallet to see your balances"
@@ -1055,9 +1106,6 @@
   "kH1R79": {
     "defaultMessage": "Stake OGN"
   },
-  "kJmZxj": {
-    "defaultMessage": "Instant or async"
-  },
   "kWMpjI": {
     "defaultMessage": "Available on"
   },
@@ -1067,11 +1115,17 @@
   "ksTDub": {
     "defaultMessage": "Connect wallet to view"
   },
+  "lN55fl": {
+    "defaultMessage": "Your withdrawal is being processed"
+  },
   "lQmZjB": {
     "defaultMessage": "Swap via Curve"
   },
   "lb8m6m": {
     "defaultMessage": "Mins"
+  },
+  "lc3LYh": {
+    "defaultMessage": "Your claims"
   },
   "lozEho": {
     "defaultMessage": "Error while approving"
@@ -1144,6 +1198,9 @@
   },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
+  },
+  "phZMsU": {
+    "defaultMessage": "Claim {amount} {symbolIn}"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -1231,6 +1288,9 @@
   },
   "u53ROb": {
     "defaultMessage": "Redeem amount"
+  },
+  "uD4xKE": {
+    "defaultMessage": "View withdrawal requests"
   },
   "uEFsHG": {
     "defaultMessage": "Discord forum"
