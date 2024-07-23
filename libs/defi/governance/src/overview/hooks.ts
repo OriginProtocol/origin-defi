@@ -48,7 +48,7 @@ export const useProposals = (
 
       const onChainProposals: Proposal[] =
         res[0].status === 'fulfilled'
-          ? res[0]?.value?.governanceProposals?.map(mapOnchainProposal) ?? []
+          ? (res[0]?.value?.governanceProposals?.map(mapOnchainProposal) ?? [])
           : [];
 
       const offChainProposals = [];
@@ -109,7 +109,7 @@ export const useUserVotes = () => {
 
       const onChainVotes =
         res[0].status === 'fulfilled'
-          ? (res[0].value as UserVotesQuery)?.governanceProposalVotes?.map(
+          ? ((res[0].value as UserVotesQuery)?.governanceProposalVotes?.map(
               (v) => {
                 const type: ProposalType =
                   v?.proposal?.address?.toLowerCase() ===
@@ -133,7 +133,7 @@ export const useUserVotes = () => {
                   },
                 };
               },
-            ) ?? []
+            ) ?? [])
           : [];
 
       const offChainVotes = [];

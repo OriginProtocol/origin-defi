@@ -1,6 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { ChainsChip, ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { arbitrum, mainnet } from 'viem/chains';
@@ -16,15 +16,25 @@ export const PageTitleSection = (props: StackProps) => {
     },
     {
       select: (data) => {
-        const apies = [
-          data?.oTokenApies?.[0].apy7DayAvg,
-          data?.oTokenApies?.[0].apy30DayAvg,
-        ];
-
-        return apies.sort();
+        return data?.oTokenApies[0];
       },
     },
   );
+
+  const { apy, tooltip } =
+    (apies?.apy30DayAvg ?? 0) > (apies?.apy7DayAvg ?? 0)
+      ? {
+          apy: apies?.apy30DayAvg,
+          tooltip: intl.formatMessage({
+            defaultMessage: '30-day trailing APY',
+          }),
+        }
+      : {
+          apy: apies?.apy7DayAvg,
+          tooltip: intl.formatMessage({
+            defaultMessage: '7-day trailing APY',
+          }),
+        };
 
   return (
     <Stack
@@ -42,23 +52,16 @@ export const PageTitleSection = (props: StackProps) => {
           fontWeight="bold"
           sWidth={90}
         >
-          {intl.formatMessage(
-            { defaultMessage: '{apy_low} - {apy_high}' },
-            {
-              apy_low: intl.formatNumber(apies?.[0] ?? 0, {
-                style: 'percent',
-                minimumFractionDigits: 2,
-              }),
-              apy_high: intl.formatNumber(apies?.[1] ?? 0, {
-                style: 'percent',
-                minimumFractionDigits: 2,
-              }),
-            },
-          )}
+          {intl.formatNumber(apy ?? 0, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+            style: 'percent',
+          })}
         </LoadingLabel>
         <Typography variant="caption1" color="inherit">
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
+        <InfoTooltip tooltipLabel={tooltip} iconColor="primary.main" />
       </ColorChip>
       <ChainsChip chainIds={[mainnet.id, arbitrum.id]} minHeight={40} />
     </Stack>

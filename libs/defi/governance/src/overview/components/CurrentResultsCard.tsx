@@ -75,7 +75,7 @@ export const CurrentResultsCard = (props: CardProps) => {
               proposal?.choices?.findIndex(
                 (c) => c!.toLowerCase() === choice.toLowerCase(),
               ) ?? -1;
-            const score = idx > -1 ? proposal?.scores?.at(idx) ?? 0 : 0;
+            const score = idx > -1 ? (proposal?.scores?.at(idx) ?? 0) : 0;
 
             return (
               <Grid2 key={choice} xs={12} sm={12 / governanceChoices.length}>

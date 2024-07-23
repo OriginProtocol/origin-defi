@@ -67,7 +67,9 @@ export const ApyHeader = (props: StackProps) => {
         isLoading={apyLoading || isNilOrEmpty(trailing)}
       >
         {intl.formatNumber(
-          trailing?.value === 30 ? apy?.apy30DayAvg ?? 0 : apy?.apy7DayAvg ?? 0,
+          trailing?.value === 30
+            ? (apy?.apy30DayAvg ?? 0)
+            : (apy?.apy7DayAvg ?? 0),
           {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,

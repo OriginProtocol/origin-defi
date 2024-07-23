@@ -75,14 +75,14 @@ export const PastClaimsCard = (props: CardProps) => {
               value={intl.formatMessage(
                 { defaultMessage: '{amount} {converted}' },
                 {
-                  amount: format(amt, 4),
+                  amount: `${format(amt, 4)} OETH`,
                   converted: (
                     <Typography
                       variant="body2"
                       color="text.secondary"
                       textAlign="start"
                     >
-                      (${format(converted)})
+                      (${format(converted, 2)})
                     </Typography>
                   ),
                 },

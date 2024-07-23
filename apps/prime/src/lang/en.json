@@ -505,6 +505,12 @@
       "value": "symbolOut"
     }
   ],
+  "EUPZOz": [
+    {
+      "type": 0,
+      "value": "blocks left"
+    }
+  ],
   "FdfIVU": [
     {
       "type": 0,
@@ -1045,6 +1051,12 @@
     {
       "type": 0,
       "value": "Withdrawal Process"
+    }
+  ],
+  "cOKXho": [
+    {
+      "type": 0,
+      "value": "Claimable"
     }
   ],
   "cg1VJ2": [

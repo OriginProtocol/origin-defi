@@ -553,20 +553,6 @@
       "value": "Amount to Stake"
     }
   ],
-  "74CdrO": [
-    {
-      "type": 1,
-      "value": "apy_low"
-    },
-    {
-      "type": 0,
-      "value": " - "
-    },
-    {
-      "type": 1,
-      "value": "apy_high"
-    }
-  ],
   "7CPiAt": [
     {
       "type": 0,
@@ -827,20 +813,6 @@
     {
       "type": 0,
       "value": "Redeem via OETH Vault"
-    }
-  ],
-  "Awi257": [
-    {
-      "type": 1,
-      "value": "amount"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
     }
   ],
   "B0mIqy": [
@@ -2883,6 +2855,12 @@
       "value": "Approval cancelled"
     }
   ],
+  "oz/WEO": [
+    {
+      "type": 0,
+      "value": "30-day trailing APY"
+    }
+  ],
   "p1P+hQ": [
     {
       "type": 0,
@@ -3255,6 +3233,12 @@
     {
       "type": 0,
       "value": "Wrong Network"
+    }
+  ],
+  "xXgeM8": [
+    {
+      "type": 0,
+      "value": "7-day trailing APY"
     }
   ],
   "xZIm6b": [

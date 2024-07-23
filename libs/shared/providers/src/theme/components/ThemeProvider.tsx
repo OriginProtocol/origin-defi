@@ -25,7 +25,7 @@ export const ThemeProvider = ({
       ? light
       : mode === 'dark' && !!dark
         ? dark
-        : dark ?? light) ?? createTheme();
+        : (dark ?? light)) ?? createTheme();
 
   return (
     <MuiThemeProvider theme={theme}>

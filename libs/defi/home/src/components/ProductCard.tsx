@@ -1,8 +1,16 @@
-import { Box, Button, Card, Collapse, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Card,
+  Collapse,
+  Stack,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useOTokenAddressQuery, useOTokenApyQuery } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
-import { FaArrowRightRegular } from '@origin/shared/icons';
-import { useFormat, useTvl } from '@origin/shared/providers';
+import { FaArrowRightRegular, FaCircleInfoRegular } from '@origin/shared/icons';
+import { useTvl } from '@origin/shared/providers';
 import {
   formatAmount,
   getFormatPrecision,
@@ -14,6 +22,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
+import type { Dnum } from 'dnum';
 
 import type { Product } from '../constants';
 
@@ -23,14 +32,13 @@ export type ProductCardProps = {
 
 export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
   const intl = useIntl();
-  const { formatBalance } = useFormat();
   const { address, isConnected } = useAccount();
   const { data: tvl, isLoading: isTvlLoading } = useTvl(product.token);
-  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
+  const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
     { token: product.token.address, chainId: product.token.chainId },
     {
       select: (data) => {
-        return data?.oTokenApies[0].apy30DayAvg ?? 0;
+        return data?.oTokenApies[0];
       },
     },
   );
@@ -43,7 +51,21 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
     { enabled: isConnected, select: (data) => data?.oTokenAddresses?.[0] },
   );
 
-  const bal = from(BigInt(user?.balance ?? 0));
+  const bal = [BigInt(user?.balance ?? 0), product.token.decimals] as Dnum;
+  const { apy, tooltip } =
+    (apies?.apy30DayAvg ?? 0) > (apies?.apy7DayAvg ?? 0)
+      ? {
+          apy: apies?.apy30DayAvg,
+          tooltip: intl.formatMessage({
+            defaultMessage: '30-day trailing APY',
+          }),
+        }
+      : {
+          apy: apies?.apy7DayAvg,
+          tooltip: intl.formatMessage({
+            defaultMessage: '7-day trailing APY',
+          }),
+        };
 
   return (
     <Card
@@ -94,23 +116,27 @@ export const ProductCard = ({ product, ...rest }: ProductCardProps) => {
         </Typography>
       </Stack>
       <Stack py={3} spacing={1}>
-        <Stack direction="row" spacing={1} alignItems="baseline">
-          <LoadingLabel
-            isLoading={isApyLoading}
-            variant="featured1"
-            color="primary"
-            fontWeight="bold"
-          >
-            {intl.formatNumber(apy ?? 0, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-              style: 'percent',
-            })}
-          </LoadingLabel>
-          <Typography variant="body2" color="primary">
-            {intl.formatMessage({ defaultMessage: 'APY' })}
-          </Typography>
-        </Stack>
+        <Tooltip title={tooltip}>
+          <Stack direction="row" alignItems="baseline">
+            <LoadingLabel
+              isLoading={isApiesLoading}
+              variant="featured1"
+              color="primary"
+              fontWeight="bold"
+              mr={1}
+            >
+              {intl.formatNumber(apy ?? 0, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+                style: 'percent',
+              })}
+            </LoadingLabel>
+            <Typography variant="body2" color="primary.main" mr={0.5}>
+              {intl.formatMessage({ defaultMessage: 'APY' })}
+            </Typography>
+            <FaCircleInfoRegular sx={{ fontSize: 14, color: 'primary.main' }} />
+          </Stack>
+        </Tooltip>
         <LoadingLabel isLoading={isTvlLoading} sWidth={60}>
           {intl.formatMessage(
             { defaultMessage: 'TVL: {tvl}' },

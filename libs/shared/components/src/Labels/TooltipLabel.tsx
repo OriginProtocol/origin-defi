@@ -20,7 +20,7 @@ export const TooltipLabel = ({
 
   const strLength = Array.isArray(children)
     ? children.filter((c) => typeof c === 'string').join('').length
-    : children?.toString().length ?? 0;
+    : (children?.toString().length ?? 0);
 
   if (strLength <= maxChars) {
     return <Typography {...rest}>{children}</Typography>;

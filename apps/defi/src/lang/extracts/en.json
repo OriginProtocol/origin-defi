@@ -215,9 +215,6 @@
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
   },
-  "74CdrO": {
-    "defaultMessage": "{apy_low} - {apy_high}"
-  },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
@@ -328,9 +325,6 @@
   },
   "AtWUBa": {
     "defaultMessage": "Redeem via OETH Vault"
-  },
-  "Awi257": {
-    "defaultMessage": "{amount} {symbol}"
   },
   "B0mIqy": {
     "defaultMessage": "Extending Stake"
@@ -1133,6 +1127,9 @@
   "oy7udF": {
     "defaultMessage": "Approval cancelled"
   },
+  "oz/WEO": {
+    "defaultMessage": "30-day trailing APY"
+  },
   "p1P+hQ": {
     "defaultMessage": "Request"
   },
@@ -1297,6 +1294,9 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
+  },
+  "xXgeM8": {
+    "defaultMessage": "7-day trailing APY"
   },
   "xZIm6b": {
     "defaultMessage": "Your transaction may be frontrun"

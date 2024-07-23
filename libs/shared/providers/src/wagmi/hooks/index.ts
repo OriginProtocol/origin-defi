@@ -1,4 +1,6 @@
 export * from './useIsContract';
+export * from './useTokenBalance';
+export * from './useTvl';
 export * from './useWriteTransaction';
 export * from './useWatchBalance';
 export * from './useWatchContracts';

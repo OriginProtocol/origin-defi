@@ -179,14 +179,14 @@ export const TxButton = <
     isSimulateLoading && !isNilOrEmpty(validatingTxLabel)
       ? validatingTxLabel
       : writeStatus === 'pending'
-        ? waitingSignatureLabel ??
-          intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+        ? (waitingSignatureLabel ??
+          intl.formatMessage({ defaultMessage: 'Waiting for signature' }))
         : writeStatus === 'success' &&
             prevWriteStatus === 'pending' &&
             waitTxStatus === 'pending'
-          ? waitingTxLabel ??
-            intl.formatMessage({ defaultMessage: 'Processing Transaction' })
-          : label ?? capitalize(params.functionName);
+          ? (waitingTxLabel ??
+            intl.formatMessage({ defaultMessage: 'Processing Transaction' }))
+          : (label ?? capitalize(params.functionName));
   const isDisabled =
     disabled ||
     isSimulateLoading ||

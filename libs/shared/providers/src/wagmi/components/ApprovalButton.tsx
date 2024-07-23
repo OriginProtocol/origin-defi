@@ -262,11 +262,11 @@ export const ApprovalButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? waitingSignatureLabel ??
-      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? (waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' }))
     : isApprovalLoading
-      ? waitingTxLabel ??
-        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? (waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' }))
       : isNilOrEmpty(label)
         ? intl.formatMessage({ defaultMessage: 'Approve' })
         : label;

@@ -297,11 +297,11 @@ export const TransactionButton = ({
   };
 
   const buttonLabel = isWriteLoading
-    ? waitingSignatureLabel ??
-      intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+    ? (waitingSignatureLabel ??
+      intl.formatMessage({ defaultMessage: 'Waiting for signature' }))
     : isTxLoading
-      ? waitingTxLabel ??
-        intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+      ? (waitingTxLabel ??
+        intl.formatMessage({ defaultMessage: 'Processing Transaction' }))
       : isNilOrEmpty(label)
         ? capitalize(functionName)
         : label;

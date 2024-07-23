@@ -54,7 +54,7 @@ export const ChainMenuButton = ({
   const chainId = isConnected
     ? isWrongChain
       ? 0
-      : chain?.id ?? chains[0].id
+      : (chain?.id ?? chains[0].id)
     : chains[0].id;
 
   return (

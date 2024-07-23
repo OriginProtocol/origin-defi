@@ -7,7 +7,10 @@ import { useBlockNumber, useReadContract } from 'wagmi';
 import type { Config } from '@wagmi/core';
 import type { ReadContractData } from '@wagmi/core/query';
 import type { Abi, ContractFunctionArgs, ContractFunctionName } from 'viem';
-import type { UseReadContractParameters } from 'wagmi';
+import type {
+  UseReadContractParameters,
+  UseReadContractReturnType,
+} from 'wagmi';
 
 export const useWatchContract = <
   abi extends Abi | readonly unknown[] = Abi,
@@ -23,13 +26,13 @@ export const useWatchContract = <
   config extends Config = Config,
   selectData = ReadContractData<abi, functionName, args>,
 >(
-  config?: UseReadContractParameters<
+  config: UseReadContractParameters<
     abi,
     functionName,
     args,
     config,
     selectData
-  >,
+  > = {} as any,
 ) => {
   const isIdle = useIdle();
   const { data: blockNumber } = useBlockNumber({
@@ -37,7 +40,7 @@ export const useWatchContract = <
     query: { enabled: !isIdle },
   });
   const prev = usePrevious(Number(blockNumber));
-  const res = useReadContract(config);
+  const res = useReadContract(config as any);
 
   useEffect(() => {
     if (Number(blockNumber) !== prev) {
@@ -45,5 +48,5 @@ export const useWatchContract = <
     }
   }, [blockNumber, prev, res]);
 
-  return res;
+  return res as UseReadContractReturnType<abi, functionName, args, selectData>;
 };

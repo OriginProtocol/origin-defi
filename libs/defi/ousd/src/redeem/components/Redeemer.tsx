@@ -284,7 +284,7 @@ function RedeemerWrapped({
                   defaultMessage: 'Processing Transaction',
                 })
               ) : (
-                redeemButtonLabel ?? ''
+                (redeemButtonLabel ?? '')
               )
             }
           />

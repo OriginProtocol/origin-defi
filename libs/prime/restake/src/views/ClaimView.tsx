@@ -2,6 +2,7 @@ import { CircularProgress, Divider, Stack, Typography } from '@mui/material';
 import { LrtWithdrawalStatus } from '@origin/prime/shared';
 import { Countdown, LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
+import { FaCircleCheckRegular } from '@origin/shared/icons';
 import {
   TxButton,
   useFormat,
@@ -10,7 +11,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { add } from 'date-fns';
+import { add, isBefore } from 'date-fns';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount, useBlockNumber } from 'wagmi';
@@ -108,13 +109,15 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   });
 
   const targetDate = add(new Date(request.timestamp), { days: 7 });
-  const isClaimDisabled =
-    request.blockNumber + WAITING_BLOCK_AMOUNT > (blockNumber ?? 0);
-  const pending = isClaimDisabled ? BigInt(request.assetAmount) : 0n;
+  const blocksLeft =
+    request.blockNumber + WAITING_BLOCK_AMOUNT - Number(blockNumber ?? 0);
+  const isClaimDisabled = !blockNumber || blocksLeft > 0;
+  const pending = BigInt(request.assetAmount);
   const pendingConverted = mul(
     [pending, tokens.mainnet.OETH.decimals],
     price ?? 0,
   );
+
   return (
     <Stack p={3} {...rest}>
       <Stack direction="row" alignItems="center" mb={4}>
@@ -122,14 +125,36 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
           <Typography color="text.secondary">
             {intl.formatMessage({ defaultMessage: 'Wait time' })}
           </Typography>
-          <Countdown
-            targetDate={targetDate}
-            valueLabelProps={{
-              labelProps: { sx: { display: 'none' } },
-              valueProps: { fontSize: 32, fontWeight: 'medium' },
-            }}
-            showUnits
-          />
+          {isClaimDisabled ? (
+            isBefore(targetDate, new Date()) ? (
+              <Stack direction="row" alignItems="baseline" spacing={1}>
+                <Typography sx={{ fontSize: 32, fontWeight: 'medium' }}>
+                  {blocksLeft}
+                </Typography>
+                <Typography variant="body2">
+                  {intl.formatMessage({ defaultMessage: 'blocks left' })}
+                </Typography>
+              </Stack>
+            ) : (
+              <Countdown
+                targetDate={targetDate}
+                valueLabelProps={{
+                  labelProps: { sx: { display: 'none' } },
+                  valueProps: { fontSize: 32, fontWeight: 'medium' },
+                }}
+                showUnits
+              />
+            )
+          ) : (
+            <Stack direction="row" alignItems="center" spacing={1} mt={1}>
+              <FaCircleCheckRegular
+                sx={{ fontSize: 36, color: 'success.main' }}
+              />
+              <Typography>
+                {intl.formatMessage({ defaultMessage: 'Claimable' })}
+              </Typography>
+            </Stack>
+          )}
         </Stack>
         <Divider orientation="vertical" flexItem />
         <Stack alignItems="flex-start" px={2} spacing={0.25}>

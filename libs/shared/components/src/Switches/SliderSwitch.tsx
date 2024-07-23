@@ -112,7 +112,7 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
           px: 2,
           py: 1,
           zIndex: 2,
-          color: isSelected ? textColor ?? 'text.primary' : 'text.secondary',
+          color: isSelected ? (textColor ?? 'text.primary') : 'text.secondary',
           transition: 'color 0.2s ease',
           ':hover': {
             backgroundColor: 'transparent',
