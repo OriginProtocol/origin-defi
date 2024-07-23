@@ -6,6 +6,8 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
+import { WITHDRAW_DELAY } from '../constants';
+
 import type { CardProps, TypographyProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { SwapRoute } from '@origin/shared/providers';
@@ -124,6 +126,7 @@ export const RedeemActionCard = ({
                 intl.formatMessage(
                   (route as SwapRoute<OethRedeemAction, Meta>)?.meta
                     ?.waitTime ?? { defaultMessage: '~1 min' },
+                  { WITHDRAW_DELAY },
                 )
               )
             }

@@ -8,6 +8,7 @@ import { addMinutes, fromUnixTime, isAfter } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
 
+import { WITHDRAW_DELAY } from './constants';
 import { useWithdrawalRequestsQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
@@ -75,7 +76,7 @@ export const useWithdrawalRequests = (
       ]);
       const queueData = isFulfilled(res[0]) ? res[0].value : null;
       const requests = isFulfilled(res[1])
-        ? res[1].value?.oethWithdrawalRequests ?? []
+        ? (res[1].value?.oethWithdrawalRequests ?? [])
         : [];
       const block = isFulfilled(res[2]) ? res[2].value : null;
 
@@ -85,7 +86,10 @@ export const useWithdrawalRequests = (
           BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0) &&
           isAfter(
             new Date(r.timestamp),
-            addMinutes(fromUnixTime(Number(block?.timestamp ?? 0)), 30),
+            addMinutes(
+              fromUnixTime(Number(block?.timestamp ?? 0)),
+              WITHDRAW_DELAY,
+            ),
           );
 
         return {
