@@ -227,9 +227,6 @@
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
   },
-  "7+beT+": {
-    "defaultMessage": "~30 min - few days"
-  },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
@@ -271,6 +268,9 @@
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
+  },
+  "8g703D": {
+    "defaultMessage": "~{WITHDRAW_DELAY} min - few days"
   },
   "8nvhZ9": {
     "defaultMessage": "Last"

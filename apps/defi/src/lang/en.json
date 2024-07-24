@@ -577,12 +577,6 @@
       "value": "Amount to Stake"
     }
   ],
-  "7+beT+": [
-    {
-      "type": 0,
-      "value": "~30 min - few days"
-    }
-  ],
   "7CPiAt": [
     {
       "type": 0,
@@ -665,6 +659,20 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
+    }
+  ],
+  "8g703D": [
+    {
+      "type": 0,
+      "value": "~"
+    },
+    {
+      "type": 1,
+      "value": "WITHDRAW_DELAY"
+    },
+    {
+      "type": 0,
+      "value": " min - few days"
     }
   ],
   "8nvhZ9": [

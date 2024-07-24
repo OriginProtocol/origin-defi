@@ -88,7 +88,7 @@ export const useWithdrawalRequests = (
             new Date(r.timestamp),
             addMinutes(
               fromUnixTime(Number(block?.timestamp ?? 0)),
-              WITHDRAW_DELAY,
+              WITHDRAW_DELAY + 1,
             ),
           );
 

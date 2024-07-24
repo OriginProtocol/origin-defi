@@ -22,6 +22,7 @@ import {
 import { BlockExplorerLink } from '@origin/shared/providers';
 import { getFormatPrecision, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntervalEffect, usePrevious } from '@react-hookz/web';
+import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -58,6 +59,7 @@ export const WithdrawalRequestModal = ({
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const { update } = useViewSelect();
+  const queryClient = useQueryClient();
   const { address } = useAccount();
   const [status, setStatus] = useState<Status>('processing');
   const [retries, setRetries] = useState(0);
@@ -207,6 +209,9 @@ export const WithdrawalRequestModal = ({
         fullWidth
         onClick={() => {
           update('claim');
+          queryClient.invalidateQueries({
+            queryKey: ['useClaimableRequests', address],
+          });
           onClose?.({}, 'backdropClick');
         }}
         size="large"

@@ -24,18 +24,12 @@ export const ClaimHeader = (props: StackProps) => {
   );
   const availableToClaim =
     claimable?.reduce(
-      (acc, curr) =>
-        curr.claimable
-          ? add([curr.amount, tokens.mainnet.WETH.decimals], acc)
-          : acc,
+      (acc, curr) => add([curr.amount, tokens.mainnet.WETH.decimals], acc),
       from(0),
     ) ?? from(0);
   const pendingAmount =
     pending?.reduce(
-      (acc, curr) =>
-        curr.claimable
-          ? add([curr.amount, tokens.mainnet.WETH.decimals], acc)
-          : acc,
+      (acc, curr) => add([curr.amount, tokens.mainnet.WETH.decimals], acc),
       from(0),
     ) ?? from(0);
 
