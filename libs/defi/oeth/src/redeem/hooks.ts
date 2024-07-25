@@ -74,13 +74,7 @@ export const useWithdrawalRequests = (
       const requests = isFulfilled(res[1])
         ? (res[1].value?.oethWithdrawalRequests ?? [])
         : [];
-      console.log(queueData);
       return requests.map((r) => {
-        console.log(
-          r.queued,
-          queueData?.claimable,
-          BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0),
-        );
         const claimable =
           !r.claimed &&
           BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0) &&
