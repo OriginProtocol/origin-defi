@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import {
   alpha,
@@ -19,9 +19,8 @@ import {
   FaExclamationRegular,
   FaXmarkRegular,
 } from '@origin/shared/icons';
-import { BlockExplorerLink } from '@origin/shared/providers';
+import { BlockExplorerLink, useRefresher } from '@origin/shared/providers';
 import { getFormatPrecision, ZERO_ADDRESS } from '@origin/shared/utils';
-import { useIntervalEffect, usePrevious } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -35,8 +34,7 @@ import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 import type { TransactionReceipt } from 'viem';
 
-const INTERVAL = 2000; // ms
-const MAX_RETRY = 10; // 10 * 2s = 20s
+import type { WithdrawalRequestsQuery } from '../queries.generated';
 
 export type WithdrawalRequestModalProps = {
   amountOut?: bigint;
@@ -45,13 +43,12 @@ export type WithdrawalRequestModalProps = {
   txReceipt?: TransactionReceipt;
 } & DialogProps;
 
-type Status = 'processing' | 'processed' | 'timeout';
-
 export const WithdrawalRequestModal = ({
   amountOut,
   tokenIn,
   tokenOut,
   txReceipt,
+  open,
   onClose,
   ...rest
 }: WithdrawalRequestModalProps) => {
@@ -61,35 +58,22 @@ export const WithdrawalRequestModal = ({
   const { update } = useViewSelect();
   const queryClient = useQueryClient();
   const { address } = useAccount();
-  const [status, setStatus] = useState<Status>('processing');
-  const [retries, setRetries] = useState(0);
-  const { data: count } = useWithdrawalRequestsQuery(
-    { address: address ?? ZERO_ADDRESS },
-    {
-      enabled: !!address,
-      refetchInterval: status === 'processing' ? INTERVAL : undefined,
-      select: (data) => data?.oethWithdrawalRequests?.length ?? 0,
-    },
-  );
-  const prevCount = usePrevious(count);
+  const { status, startRefresh } = useRefresher<WithdrawalRequestsQuery>({
+    queryKey: useWithdrawalRequestsQuery.getKey({
+      address: address ?? ZERO_ADDRESS,
+    }),
+    queryFn: useWithdrawalRequestsQuery.fetcher({
+      address: address ?? ZERO_ADDRESS,
+    }),
+    isResultProcessed: (prev, next) =>
+      prev.oethWithdrawalRequests.length < next.oethWithdrawalRequests.length,
+  });
 
-  useIntervalEffect(
-    () => {
-      if (status === 'processing') {
-        setRetries((prev) => prev + 1);
-        if (
-          count !== undefined &&
-          prevCount !== undefined &&
-          count > prevCount
-        ) {
-          setStatus('processed');
-        } else if (retries > MAX_RETRY) {
-          setStatus('timeout');
-        }
-      }
-    },
-    status === 'processing' ? INTERVAL : undefined,
-  );
+  useEffect(() => {
+    if (open) {
+      startRefresh();
+    }
+  }, [open, startRefresh]);
 
   const handleClaimClick = () => {
     update('claim');
@@ -98,7 +82,9 @@ export const WithdrawalRequestModal = ({
 
   const amt = [amountOut ?? 0n, tokenOut?.decimals ?? 18] as Dnum;
   const icon = {
-    processing: (
+    idle: null,
+    error: null,
+    polling: (
       <Box sx={{ position: 'relative', width: 85, height: 85 }}>
         <CircularProgress
           variant="determinate"
@@ -154,6 +140,8 @@ export const WithdrawalRequestModal = ({
     ),
   }[status];
   const label = {
+    idle: null,
+    error: null,
     processed: {
       title: intl.formatMessage({
         defaultMessage: 'Withdrawal request successfully sent',
@@ -179,7 +167,7 @@ export const WithdrawalRequestModal = ({
           'Try to refresh the page and go to the Claim tab to see your withdrawal request',
       }),
     },
-    processing: {
+    polling: {
       title: intl.formatMessage({
         defaultMessage: 'Your withdrawal is being processed',
       }),
@@ -189,6 +177,8 @@ export const WithdrawalRequestModal = ({
     },
   }[status];
   const button = {
+    idle: null,
+    error: null,
     timeout: (
       <Button
         fullWidth
@@ -197,7 +187,7 @@ export const WithdrawalRequestModal = ({
           window.location.reload();
         }}
         size="large"
-        disabled={status === 'processing'}
+        disabled={status === 'polling'}
       >
         {intl.formatMessage({
           defaultMessage: 'Refresh the page',
@@ -221,7 +211,7 @@ export const WithdrawalRequestModal = ({
         })}
       </Button>
     ),
-    processing: (
+    polling: (
       <Button fullWidth onClick={handleClaimClick} size="large" disabled>
         {intl.formatMessage({
           defaultMessage: 'Processing withdrawal request',
@@ -231,7 +221,13 @@ export const WithdrawalRequestModal = ({
   }[status];
 
   return (
-    <Dialog {...rest} maxWidth="xs" fullWidth fullScreen={fullScreen}>
+    <Dialog
+      {...rest}
+      open={open}
+      maxWidth="xs"
+      fullWidth
+      fullScreen={fullScreen}
+    >
       <DialogTitle display="flex" justifyContent="flex-end" alignItems="center">
         <IconButton
           onClick={(evt) => {
@@ -250,7 +246,7 @@ export const WithdrawalRequestModal = ({
             textAlign="center"
             mb={2}
           >
-            {label.title}
+            {label?.title}
           </Typography>
           <Typography
             variant="mono"
@@ -258,7 +254,7 @@ export const WithdrawalRequestModal = ({
             mb={3}
             color="text.secondary"
           >
-            {label.subtitle}
+            {label?.subtitle}
           </Typography>
           {button}
           {txReceipt && (

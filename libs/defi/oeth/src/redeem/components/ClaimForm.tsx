@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import {
   Button,
@@ -18,7 +18,7 @@ import {
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
-import { TxButton } from '@origin/shared/providers';
+import { TxButton, useRefresher } from '@origin/shared/providers';
 import {
   getFormatPrecision,
   isNilOrEmpty,
@@ -28,10 +28,9 @@ import { useQueryClient } from '@tanstack/react-query';
 import { add, eq, format, from } from 'dnum';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useWithdrawalRequests } from '../hooks';
-import { useWithdrawalRequestsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 import type { Dnum } from 'dnum';
@@ -40,13 +39,21 @@ import type { WithdrawalRequest } from '../types';
 
 export const ClaimForm = (props: StackProps) => {
   const intl = useIntl();
-  const queryClient = useQueryClient();
   const { address } = useAccount();
+  const config = useConfig();
+  const queryClient = useQueryClient();
   const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
   const { data: requests, isLoading: isRequestsLoading } =
     useWithdrawalRequests({
       select: (data) => data?.filter((r) => !r.claimed),
     });
+  const { startRefresh, status } = useRefresher<WithdrawalRequest[]>({
+    queryKey: useWithdrawalRequests.getKey(address ?? ZERO_ADDRESS),
+    queryFn: useWithdrawalRequests.fetcher(config, queryClient),
+    isResultProcessed: (prev, next) =>
+      prev.filter((r) => r.claimed).length <
+      next.filter((r) => r.claimed).length,
+  });
   const args =
     selectedClaimIds.length === 1
       ? {
@@ -59,7 +66,6 @@ export const ClaimForm = (props: StackProps) => {
           functionName: 'claimWithdrawals',
           args: [selectedClaimIds],
         };
-
   const selectedAmount = useMemo(
     () =>
       selectedClaimIds.reduce((acc, curr) => {
@@ -73,13 +79,7 @@ export const ClaimForm = (props: StackProps) => {
     params: args as any,
     callbacks: {
       onWriteSuccess: () => {
-        queryClient.invalidateQueries({
-          queryKey: [
-            useWithdrawalRequestsQuery.getKey({
-              address: address ?? ZERO_ADDRESS,
-            }),
-          ],
-        });
+        startRefresh();
       },
     },
     activity: {
@@ -90,6 +90,13 @@ export const ClaimForm = (props: StackProps) => {
     },
     enableGas: true,
   });
+
+  useEffect(() => {
+    if (['timeout', 'processed', 'error'].includes(status)) {
+      setSelectedClaimIds([]);
+      queryClient.invalidateQueries();
+    }
+  }, [address, queryClient, status]);
 
   const handleClaimClick = (requestId: bigint) => () => {
     const idx = selectedClaimIds.findIndex((id) => id === requestId);
@@ -133,6 +140,9 @@ export const ClaimForm = (props: StackProps) => {
                 request={r}
                 selected={selectedClaimIds.includes(r.requestId)}
                 onSelect={handleClaimClick(r.requestId)}
+                isProcessing={
+                  selectedClaimIds.includes(r.requestId) && status === 'polling'
+                }
               />
             ))
           )}
@@ -159,7 +169,7 @@ export const ClaimForm = (props: StackProps) => {
         params={params}
         callbacks={callbacks}
         variant="action"
-        disabled={isNilOrEmpty(selectedClaimIds)}
+        disabled={isNilOrEmpty(selectedClaimIds) || status === 'polling'}
         label={intl.formatMessage(
           { defaultMessage: 'Claim{amount}' },
           {
@@ -177,10 +187,18 @@ type ClaimRowProps = {
   request: WithdrawalRequest;
   selected: boolean;
   onSelect: () => void;
+  isProcessing: boolean;
 } & StackProps;
 
-const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
+const ClaimRow = ({
+  request,
+  selected,
+  onSelect,
+  isProcessing,
+  ...rest
+}: ClaimRowProps) => {
   const amt = [request?.amount ?? 0n, tokens.mainnet.WETH.decimals] as Dnum;
+  const disabled = !request.claimable || isProcessing;
 
   return (
     <Stack
@@ -209,11 +227,11 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
           </Stack>
         }
         onChange={onSelect}
-        disabled={!request.claimable}
+        disabled={disabled}
         disableTypography
       />
       <Stack direction="row" alignItems="center" spacing={1}>
-        <ClaimChip claimable={request.claimable} />
+        <ClaimChip claimable={request.claimable} isProcessing={isProcessing} />
         <Button
           variant="outlined"
           color="secondary"
@@ -228,36 +246,51 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
   );
 };
 
-type ClaimChipProps = { claimable: boolean } & StackProps;
+type ClaimChipProps = {
+  claimable: boolean;
+  isProcessing: boolean;
+} & StackProps;
 
-const ClaimChip = ({ claimable, ...rest }: ClaimChipProps) => {
+const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
   const intl = useIntl();
 
-  const icon = claimable ? (
+  const icon = isProcessing ? (
+    <CircularProgress size={16} />
+  ) : claimable ? (
     <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
   ) : (
     <FaClockRegular sx={{ color: 'warning.dark' }} />
   );
-  const label = claimable
-    ? intl.formatMessage({ defaultMessage: 'Ready' })
-    : intl.formatMessage({ defaultMessage: 'Pending' });
+  const label = isProcessing
+    ? intl.formatMessage({ defaultMessage: 'Processing' })
+    : claimable
+      ? intl.formatMessage({ defaultMessage: 'Ready' })
+      : intl.formatMessage({ defaultMessage: 'Pending' });
+  const color = isProcessing
+    ? 'primary.main'
+    : claimable
+      ? 'success.dark'
+      : 'warning.dark';
+  const bgColor = isProcessing
+    ? 'primary.faded'
+    : claimable
+      ? 'success.faded'
+      : 'warning.faded';
 
   return (
     <Stack
       direction="row"
       alignItems="center"
       spacing={1}
-      color={claimable ? 'success.dark' : 'warning.dark'}
-      bgcolor={claimable ? 'success.faded' : 'warning.faded'}
+      color={color}
+      bgcolor={bgColor}
       px={2}
       py={1}
       borderRadius={2}
       {...rest}
     >
       {icon}
-      <Typography color={claimable ? 'success.dark' : 'warning.dark'}>
-        {label}
-      </Typography>
+      <Typography color={color}>{label}</Typography>
     </Stack>
   );
 };
