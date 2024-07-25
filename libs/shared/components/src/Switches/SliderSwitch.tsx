@@ -1,4 +1,4 @@
-import { forwardRef, useLayoutEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { Box, Button, emphasize, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -28,9 +28,9 @@ export const SliderSwitch = ({
   const refs = useRef<HTMLButtonElement[]>([]);
   const [itemsWidth, setItemsWidth] = useState<number[]>([]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     setItemsWidth(refs.current.map((o) => o.offsetWidth));
-  }, []);
+  }, [options]);
 
   const idx = options.findIndex((o) =>
     isNilOrEmpty(o.value) ? isNilOrEmpty(value) : o.value === value,
