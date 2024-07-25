@@ -57,7 +57,7 @@ export const ClaimForm = (props: StackProps) => {
       : {
           contract: contracts.mainnet.OETHVault,
           functionName: 'claimWithdrawals',
-          args: selectedClaimIds,
+          args: [selectedClaimIds],
         };
 
   const selectedAmount = useMemo(
@@ -101,7 +101,7 @@ export const ClaimForm = (props: StackProps) => {
   };
 
   return (
-    <Stack>
+    <Stack {...props}>
       <SectionCard
         title={intl.formatMessage({ defaultMessage: 'Your claims' })}
         titleProps={{ fontWeight: 'medium' }}
@@ -189,11 +189,17 @@ const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
       spacing={1}
       p={2}
       justifyContent="space-between"
+      {...rest}
     >
       <FormControlLabel
         control={<Checkbox checked={request.claimable && selected} />}
         label={
-          <Stack direction="row" alignItems="baseline" spacing={0.5}>
+          <Stack
+            direction="row"
+            alignItems="baseline"
+            spacing={0.5}
+            color={request.claimable ? 'text.primary' : 'text.secondary'}
+          >
             <Typography variant="body2" fontWeight="medium">
               {format(amt, getFormatPrecision(amt))}
             </Typography>

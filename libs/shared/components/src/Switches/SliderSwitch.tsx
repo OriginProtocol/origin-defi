@@ -81,6 +81,7 @@ export const SliderSwitch = ({
           zIndex: 1,
           top: 0,
           left: 0,
+          right: 0,
           width: itemsWidth[idx],
           height: 1,
           transform: `translateX(${translateX}px)`,
