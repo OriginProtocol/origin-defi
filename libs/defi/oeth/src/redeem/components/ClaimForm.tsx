@@ -80,6 +80,7 @@ export const ClaimForm = (props: StackProps) => {
     [requests, selectedClaimIds],
   );
   const { params, callbacks, gasPrice, isWriteGasLoading } = useTxButton({
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: args as any,
     callbacks: {
       onWriteSuccess: () => {
