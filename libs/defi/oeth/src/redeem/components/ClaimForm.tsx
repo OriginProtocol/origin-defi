@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import {
   Button,
@@ -53,6 +53,10 @@ export const ClaimForm = (props: StackProps) => {
     isResultProcessed: (prev, next) =>
       prev.filter((r) => r.claimed).length <
       next.filter((r) => r.claimed).length,
+    onSettled: () => {
+      setSelectedClaimIds([]);
+      queryClient.invalidateQueries();
+    },
   });
   const args =
     selectedClaimIds.length === 1
@@ -90,13 +94,6 @@ export const ClaimForm = (props: StackProps) => {
     },
     enableGas: true,
   });
-
-  useEffect(() => {
-    if (['timeout', 'processed', 'error'].includes(status)) {
-      setSelectedClaimIds([]);
-      queryClient.invalidateQueries();
-    }
-  }, [address, queryClient, status]);
 
   const handleClaimClick = (requestId: bigint) => () => {
     const idx = selectedClaimIds.findIndex((id) => id === requestId);
@@ -170,14 +167,18 @@ export const ClaimForm = (props: StackProps) => {
         callbacks={callbacks}
         variant="action"
         disabled={isNilOrEmpty(selectedClaimIds) || status === 'polling'}
-        label={intl.formatMessage(
-          { defaultMessage: 'Claim{amount}' },
-          {
-            amount: eq(selectedAmount, 0)
-              ? ''
-              : ` ${format(selectedAmount, getFormatPrecision(selectedAmount))} ${tokens.mainnet.WETH.symbol}`,
-          },
-        )}
+        label={
+          status === 'polling'
+            ? intl.formatMessage({ defaultMessage: 'Processing' })
+            : intl.formatMessage(
+                { defaultMessage: 'Claim{amount}' },
+                {
+                  amount: eq(selectedAmount, 0)
+                    ? ''
+                    : ` ${format(selectedAmount, getFormatPrecision(selectedAmount))} ${tokens.mainnet.WETH.symbol}`,
+                },
+              )
+        }
       />
     </Stack>
   );

@@ -17,6 +17,7 @@ export type UseRefresherProps<QueryResult = any> = {
   queryKey: QueryKey;
   queryFn: QueryFunction<QueryResult>;
   isResultProcessed: (prev: QueryResult, next: QueryResult) => boolean;
+  onSettled?: (status: RefreshStatus, next: QueryResult) => void;
   maxRetries?: number;
   interval?: number;
 };
@@ -25,6 +26,7 @@ export const useRefresher = <QueryResult = any>({
   queryKey,
   queryFn,
   isResultProcessed,
+  onSettled,
   maxRetries = 10,
   interval = 2000,
 }: UseRefresherProps<QueryResult>) => {
@@ -58,16 +60,20 @@ export const useRefresher = <QueryResult = any>({
         if (!prev || !next) {
           setPollInterval(undefined);
           setStatus('error');
+          onSettled?.('error', next);
         } else if (retries > maxRetries) {
           setPollInterval(undefined);
           setStatus('timeout');
+          onSettled?.('timeout', next);
         } else if (isResultProcessed(prev, next)) {
           setPollInterval(undefined);
           setStatus('processed');
+          onSettled?.('processed', next);
         }
       } catch {
         setPollInterval(undefined);
         setStatus('error');
+        onSettled?.('error', next);
       }
       setRetries((prev) => prev + 1);
     })();
