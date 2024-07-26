@@ -11,6 +11,7 @@ export * from './notifications';
 export * from './prices';
 export * from './rebaseBanner';
 export * from './redeemer';
+export * from './refresher';
 export * from './settings';
 export * from './slippage';
 export * from './swapper';
