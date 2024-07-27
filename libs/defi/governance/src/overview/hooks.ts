@@ -151,7 +151,8 @@ export const useUserVotes = () => {
             continue;
           }
           const idx =
-            Number(Array.isArray(v?.choice) ? v.choice.at(0) : v?.choice) - 1;
+            Number(Array.isArray(v?.choice) ? v.choice?.at?.(0) : v?.choice) -
+            1;
           const choice = v?.proposal?.choices?.at?.(idx) ?? '';
 
           offChainVotes.push({
