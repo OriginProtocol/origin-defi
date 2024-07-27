@@ -37,12 +37,14 @@ const fetcher: (config: Config) => QueryFunction<
         abi: contracts.mainnet.CurveAddressProvider.abi,
         functionName: 'get_address',
         args: [2n],
+        chainId: contracts.mainnet.CurveAddressProvider.chainId,
       },
       {
         address: contracts.mainnet.CurveAddressProvider.address,
         abi: contracts.mainnet.CurveAddressProvider.abi,
         functionName: 'get_address',
         args: [3n],
+        chainId: contracts.mainnet.CurveAddressProvider.chainId,
       },
     ],
   });
@@ -54,12 +56,14 @@ const fetcher: (config: Config) => QueryFunction<
         abi: CurveFactoryABI,
         functionName: 'get_coins',
         args: [contracts.mainnet.OETHCurvePool.address],
+        chainId: contracts.mainnet.OETHCurvePool.chainId,
       },
       {
         address: addresses[1].result ?? ZERO_ADDRESS,
         abi: CurveFactoryABI,
         functionName: 'get_underlying_coins',
         args: [contracts.mainnet.OUSDCurveMetaPool.address],
+        chainId: contracts.mainnet.OUSDCurveMetaPool.chainId,
       },
     ],
   });

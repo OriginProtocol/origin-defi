@@ -30,7 +30,9 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 200000n;
 
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OETHZapper.chainId,
+  });
 
   if (amountIn === 0n || !address || !publicClient) {
     return gasEstimate;
@@ -65,6 +67,7 @@ const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OETHZapper.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -76,7 +79,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (
     amountIn === 0n ||
@@ -148,6 +151,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -184,6 +188,7 @@ const swap: Swap = async (
     functionName: 'deposit',
     value: amountIn,
     gas,
+    chainId: contracts.mainnet.OETHZapper.chainId,
   });
   const hash = await writeContract(config, request);
 

@@ -49,6 +49,7 @@ const estimateAmount: EstimateAmount = async (
       tokenOut.address ?? ETH_ADDRESS_CURVE,
       amountIn,
     ],
+    chainId: curve.CurveRegistryExchange.chainId,
   });
 
   return amountOut as unknown as bigint;
@@ -59,7 +60,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OETHCurvePool.chainId,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -206,6 +209,7 @@ const swap: Swap = async (
       minAmountOut,
     ],
     gas,
+    chainId: contracts.mainnet.OETHCurvePool.chainId,
     ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);

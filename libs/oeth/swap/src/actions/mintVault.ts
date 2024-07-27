@@ -33,6 +33,7 @@ const isRouteAvailable: IsRouteAvailable = async (config, { tokenIn }) => {
         abi: contracts.mainnet.OETHVault.abi,
         functionName: 'priceUnitMint',
         args: [tokenIn.address],
+        chainId: contracts.mainnet.OETHVault.chainId,
       });
 
       return true;
@@ -55,6 +56,7 @@ const estimateAmount: EstimateAmount = async (
     abi: contracts.mainnet.OETHVault.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
+    chainId: contracts.mainnet.OETHVault.chainId,
   });
 
   return parseUnits(
@@ -71,7 +73,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OETHVault.chainId,
+  });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
@@ -103,11 +107,13 @@ const estimateGas: EstimateGas = async (
               address: contracts.mainnet.OETHVault.address,
               abi: contracts.mainnet.OETHVault.abi,
               functionName: 'rebaseThreshold',
+              chainId: contracts.mainnet.OETHVault.chainId,
             },
             {
               address: contracts.mainnet.OETHVault.address,
               abi: contracts.mainnet.OETHVault.abi,
               functionName: 'autoAllocateThreshold',
+              chainId: contracts.mainnet.OETHVault.chainId,
             },
           ],
         }),
@@ -137,6 +143,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OETHVault.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -148,7 +155,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -219,6 +226,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHVault.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -258,6 +266,7 @@ const swap: Swap = async (
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,
+    chainId: contracts.mainnet.OETHVault.chainId,
   });
   const hash = await writeContract(config, request);
 
