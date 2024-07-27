@@ -21,7 +21,12 @@ import {
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
-import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
+import {
+  differenceInDays,
+  formatDistanceToNowStrict,
+  getUnixTime,
+  isPast,
+} from 'date-fns';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
@@ -80,6 +85,17 @@ export const UnstakeLockupModal = ({
   const penaltyPercent =
     +formatUnits(penalty, tokens.mainnet.OGN.decimals) /
     +formatUnits(ognLockup, tokens.mainnet.OGN.decimals);
+  const timeRemaining = isPast(new Date(lockup.end))
+    ? '-'
+    : differenceInDays(new Date(lockup.end), new Date()) > 31
+      ? formatDistanceToNowStrict(new Date(lockup.end), {
+          unit: 'month',
+          roundingMethod: 'floor',
+        })
+      : formatDistanceToNowStrict(new Date(lockup.end), {
+          unit: 'day',
+          roundingMethod: 'ceil',
+        });
 
   return (
     <Dialog {...rest} maxWidth="sm" fullWidth fullScreen={fullScreen}>
@@ -157,12 +173,7 @@ export const UnstakeLockupModal = ({
                 },
               )}
             </Typography>
-            <Typography>
-              {formatDistanceToNowStrict(new Date(lockup.end), {
-                unit: 'month',
-                roundingMethod: 'floor',
-              })}
-            </Typography>
+            <Typography>{timeRemaining}</Typography>
             <LoadingLabel isLoading={isPreviewOgnLoading}>
               {intl.formatNumber(penaltyPercent, {
                 style: 'percent',

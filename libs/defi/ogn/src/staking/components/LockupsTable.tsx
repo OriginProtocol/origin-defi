@@ -26,7 +26,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { differenceInDays, formatDistanceToNowStrict } from 'date-fns';
+import { differenceInDays, formatDistanceToNowStrict, isPast } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -86,10 +86,17 @@ export const LockupsTable = () => {
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
         cell: (info) =>
-          formatDistanceToNowStrict(new Date(info.row.original.end), {
-            unit: 'month',
-            roundingMethod: 'floor',
-          }),
+          isPast(new Date(info.row.original.end))
+            ? '-'
+            : differenceInDays(new Date(info.row.original.end), new Date()) > 31
+              ? formatDistanceToNowStrict(new Date(info.row.original.end), {
+                  unit: 'month',
+                  roundingMethod: 'floor',
+                })
+              : formatDistanceToNowStrict(new Date(info.row.original.end), {
+                  unit: 'day',
+                  roundingMethod: 'ceil',
+                }),
       }),
       ...(isSm
         ? []
