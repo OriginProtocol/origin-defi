@@ -2,7 +2,6 @@ import { defineMessage } from 'react-intl';
 
 import { ClaimView } from './views/ClaimView';
 import { RestakeView } from './views/RestakeView';
-import { StakeView } from './views/StakeView';
 import { WithdrawView } from './views/WithdrawView';
 
 import type { NonIndexRouteObject } from 'react-router-dom';
@@ -14,23 +13,25 @@ export const restakeRoute: NonIndexRouteObject = {
   children: [
     {
       index: true,
-      Component: StakeView,
-      handle: { label: defineMessage({ defaultMessage: 'Stake' }) },
+      Component: WithdrawView,
+      handle: {
+        label: defineMessage({ defaultMessage: 'Withdraw' }),
+      },
     },
     // {
     //   path: 'migrate',
     //   Component: MigrateView,
     //   handle: { label: defineMessage({ defaultMessage: 'Migrate' }) },
     // },
-    {
-      path: 'withdraw',
-      Component: WithdrawView,
-      handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
-    },
+    // {
+    //   path: 'withdraw',
+    //   Component: WithdrawView,
+    //   handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
+    // },
     {
       path: 'claim',
       Component: ClaimView,
-      handle: { label: defineMessage({ defaultMessage: 'Claim' }) },
+      handle: { label: defineMessage({ defaultMessage: 'Claim or Migrate' }) },
     },
   ],
 };

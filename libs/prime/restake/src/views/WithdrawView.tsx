@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import {
-  alpha,
   Box,
   Button,
   Checkbox,
@@ -18,7 +17,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { WarningExclamation } from '@origin/shared/icons';
+import { YieldNestInverted } from '@origin/shared/icons';
 import {
   ConnectedButton,
   TxButton,
@@ -75,13 +74,11 @@ export const WithdrawView = () => {
 
   if (step === 'disclaimer') {
     return (
-      <Stack p={3}>
-        <Disclaimer
-          onContinueClick={() => {
-            setStep('form');
-          }}
-        />
-      </Stack>
+      <Disclaimer
+        onContinueClick={() => {
+          setStep('form');
+        }}
+      />
     );
   }
 
@@ -124,81 +121,127 @@ type DisclaimerProps = { onContinueClick: () => void } & StackProps;
 const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
   const intl = useIntl();
 
-  const points = [
-    intl.formatMessage({
-      defaultMessage: `YieldNest <b>Season 1 Airdrop</b> + access to all upcoming seasons`,
-    }),
-    intl.formatMessage({
-      defaultMessage: `<b>+5% boost</b> for primeETH users for Season 1`,
-    }),
-    intl.formatMessage({
-      defaultMessage: `<b>15% boost</b> for ALL seasons for migrating ≥ 5 primeETH`,
-    }),
-    intl.formatMessage({
-      defaultMessage: `<b>60+% YND</b> community incentives `,
-    }),
-    intl.formatMessage({ defaultMessage: `Collect <b>EigenLayer points</b>` }),
+  return (
+    <Stack {...rest}>
+      <MigrationDisclaimer />
+      <Divider />
+      <Breakdown />
+      <Divider />
+      <Stack p={3}>
+        <Button
+          onClick={onContinueClick}
+          fullWidth
+          sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
+        >
+          {intl.formatMessage({ defaultMessage: 'Get started' })}
+        </Button>
+      </Stack>
+    </Stack>
+  );
+};
 
-    intl.formatMessage({
-      defaultMessage: `AVS/Network <b>yields & airdrops</b>`,
-    }),
+const MigrationDisclaimer = (props: StackProps) => {
+  const intl = useIntl();
+
+  return (
+    <Stack alignItems="center" p={3} {...props}>
+      <YieldNestInverted sx={{ fontSize: 110 }} />
+      <Typography my={2} variant="h4" textAlign="center">
+        {intl.formatMessage({
+          defaultMessage: `ynLSDe migration is live!`,
+        })}
+      </Typography>
+      <Typography textAlign="center">
+        {intl.formatMessage({
+          defaultMessage: `PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below. `,
+        })}
+      </Typography>
+      <ExternalLink sx={{ color: 'primary.main', mt: 2 }}>
+        {intl.formatMessage({ defaultMessage: 'Learn more' })}
+      </ExternalLink>
+    </Stack>
+  );
+};
+
+const Breakdown = (props: StackProps) => {
+  const intl = useIntl();
+
+  const rows = [
+    {
+      title: intl.formatMessage({ defaultMessage: 'Initiate withdrawal' }),
+      subtitle: intl.formatMessage({
+        defaultMessage: 'Withdraw your funds from EigenLayer.',
+      }),
+    },
+    {
+      title: intl.formatMessage({ defaultMessage: 'Wait 7 days' }),
+      subtitle: intl.formatMessage({
+        defaultMessage: 'Wait for EigenLayer to process the withdrawal.',
+      }),
+    },
+    {
+      title: intl.formatMessage({ defaultMessage: 'Migrate or Claim' }),
+      subtitle: intl.formatMessage({
+        defaultMessage:
+          'You will have the option to either withdraw your funds (in the form of OETH) or migrate them to ynLSD.',
+      }),
+    },
   ];
 
   return (
-    <Stack
-      {...rest}
-      sx={{
-        p: 3,
-        alignItems: 'center',
-        border: '1px solid',
-        borderColor: 'primary.main',
-        backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.2),
-        borderRadius: 2,
-        ...rest?.sx,
-      }}
-    >
-      <WarningExclamation sx={{ fontSize: 74, color: 'primary.main' }} />
-      <Typography variant="h5" textAlign="center" mb={1}>
+    <Stack p={3} {...props}>
+      <Typography mb={2} fontWeight="medium" color="text.secondary">
         {intl.formatMessage({
-          defaultMessage:
-            'You will no longer be eligible for the following rewards if you withdraw:',
+          defaultMessage: `Withdrawal Process Breakdown`,
         })}
       </Typography>
-      <Stack component="ul" spacing={0.5} sx={{ paddingInlineStart: 1 }}>
-        {points.map((p) => (
-          <Typography key={p} component="li">
-            {p}
-          </Typography>
+      <Stack spacing={2}>
+        {rows.map((row, index) => (
+          <BreakDownRow
+            key={`row-${index}`}
+            index={index}
+            title={row.title}
+            subtitle={row.subtitle}
+          />
         ))}
       </Stack>
-      <ExternalLink
-        href="https://www.originprotocol.com/primestaked-yieldnest-airdrop"
-        sx={{ alignSelf: 'flex-start', color: 'primary.main', mb: 3 }}
-      >
-        {intl.formatMessage({ defaultMessage: 'Learn More' })}
-      </ExternalLink>
-      <Button
-        component={RouterLink}
-        to="/dashboard"
-        fullWidth
-        sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-      >
-        {intl.formatMessage({ defaultMessage: 'Back to dashboard' })}
-      </Button>
-      <Button
-        variant="text"
-        onClick={onContinueClick}
+    </Stack>
+  );
+};
+
+type BreakDownRowProps = {
+  index: number;
+  title: string;
+  subtitle: string;
+} & StackProps;
+
+const BreakDownRow = ({
+  index,
+  title,
+  subtitle,
+  ...rest
+}: BreakDownRowProps) => {
+  return (
+    <Stack direction="row" alignItems="flex-start" spacing={2} {...rest}>
+      <Box
         sx={{
-          fontSize: 20,
-          py: 2,
-          borderRadius: 8,
-          height: 60,
-          color: 'primary.main',
-          '&:hover': { color: 'primary.dark' },
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          border: '2px solid',
+          borderColor: 'primary.main',
+          p: 2,
+          borderRadius: '50%',
+          height: 32,
+          width: 32,
         }}
       >
-        {intl.formatMessage({ defaultMessage: 'Continue anyway' })}
-      </Button>
+        <Typography variant="h6">{index + 1}</Typography>
+      </Box>
+      <Stack spacing={0.5}>
+        <Typography variant="h6">{title}</Typography>
+        <Typography color="text.secondary">{subtitle}</Typography>
+      </Stack>
     </Stack>
   );
 };
@@ -304,49 +347,6 @@ const Form = ({
             defaultMessage: '7-day retention period',
           })}
         </InfoTooltipLabel>
-      </Stack>
-      <Divider />
-      <Stack p={3}>
-        <Stack
-          direction="row"
-          spacing={2}
-          sx={{
-            p: 3,
-            alignItems: 'center',
-            border: '1px solid',
-            borderColor: 'primary.main',
-            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.2),
-            borderRadius: 2,
-          }}
-        >
-          <WarningExclamation sx={{ fontSize: 74, color: 'primary.main' }} />
-          <Typography
-            component="span"
-            sx={{
-              display: 'inline-block',
-              fontSize: 16,
-              fontWeight: 'medium',
-              lineHeight: 1.5,
-            }}
-          >
-            {intl.formatMessage(
-              {
-                defaultMessage:
-                  'You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw. {link}',
-              },
-              {
-                link: (
-                  <ExternalLink
-                    href="https://www.originprotocol.com/primestaked-yieldnest-airdrop"
-                    sx={{ display: 'inline-flex', color: 'primary.main' }}
-                  >
-                    {intl.formatMessage({ defaultMessage: 'Learn more' })}
-                  </ExternalLink>
-                ),
-              },
-            )}
-          </Typography>
-        </Stack>
       </Stack>
       <Divider />
       <Stack p={3} sx={{ backgroundColor: '#fff' }}>
