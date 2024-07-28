@@ -330,7 +330,7 @@ const swap: Swap = async (
         {
           path: getPath(tokenIn, tokenOut),
           amountIn: amountIn,
-          amountOutMinimum: minAmountOut,
+          amountOutMinimum: minAmountOut[0],
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           recipient: address,
         },
