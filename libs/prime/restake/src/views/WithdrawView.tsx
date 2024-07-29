@@ -1,14 +1,6 @@
 import { useState } from 'react';
 
-import {
-  Box,
-  Button,
-  Checkbox,
-  Divider,
-  FormControlLabel,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import {
   ExternalLink,
   InfoTooltipLabel,
@@ -17,17 +9,14 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { YieldNestInverted } from '@origin/shared/icons';
+import { PrimePoints, YieldNestInverted } from '@origin/shared/icons';
 import {
-  ConnectedButton,
   TxButton,
   useTxButton,
   useWatchBalance,
 } from '@origin/shared/providers';
 import { add, format, from } from 'dnum';
-import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
 import { parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
@@ -44,7 +33,7 @@ import type {
 } from '@origin/shared/providers';
 import type { Dnum } from 'dnum';
 
-type Step = 'disclaimer' | 'form' | 'stepper';
+type Step = 'disclaimer' | 'form';
 
 export const WithdrawView = () => {
   const [step, setStep] = useState<Step>('disclaimer');
@@ -85,9 +74,8 @@ export const WithdrawView = () => {
   return (
     <>
       <Form
-        onContinueClick={() => {
-          setStep('stepper');
-        }}
+        params={params}
+        callbacks={callbacks}
         amount={amount}
         converted={converted}
         isConvertedLoading={isConvertedLoading}
@@ -96,14 +84,6 @@ export const WithdrawView = () => {
         }}
         gasPrice={gasPrice}
         sx={{ display: step === 'form' ? 'block' : 'none' }}
-      />
-      <Stepper
-        amount={amount}
-        converted={converted}
-        isConvertedLoading={isConvertedLoading}
-        params={params}
-        callbacks={callbacks}
-        sx={{ display: step === 'stepper' ? 'block' : 'none' }}
       />
       <WithdrawProgressModal
         key={modalOpen ? '' : 'reset'}
@@ -247,7 +227,8 @@ const BreakDownRow = ({
 };
 
 type FormProps = {
-  onContinueClick: () => void;
+  params: WriteTransactionParameters;
+  callbacks: WriteTransactionCallbacks;
   amount: bigint;
   setAmount: (val: bigint) => void;
   converted: Dnum | undefined;
@@ -256,7 +237,8 @@ type FormProps = {
 } & StackProps;
 
 const Form = ({
-  onContinueClick,
+  params,
+  callbacks,
   amount,
   setAmount,
   converted,
@@ -349,168 +331,28 @@ const Form = ({
         </InfoTooltipLabel>
       </Stack>
       <Divider />
-      <Stack p={3} sx={{ backgroundColor: '#fff' }}>
-        <ConnectedButton
-          onClick={onContinueClick}
-          disabled={buttonDisabled}
-          sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-        >
-          {buttonLabel}
-        </ConnectedButton>
-      </Stack>
-    </Stack>
-  );
-};
-
-type StepperProps = {
-  amount: bigint;
-  converted: Dnum | undefined;
-  isConvertedLoading: boolean;
-  params: WriteTransactionParameters;
-  callbacks: WriteTransactionCallbacks;
-} & StackProps;
-
-const Stepper = ({
-  amount,
-  converted,
-  isConvertedLoading,
-  params,
-  callbacks,
-  ...rest
-}: StepperProps) => {
-  const intl = useIntl();
-  const [checked, setChecked] = useState(false);
-  const [progress] = useState(0);
-
-  const steps = [
-    intl.formatMessage({ defaultMessage: 'Preview Withdrawal' }),
-    intl.formatMessage({ defaultMessage: 'Approve Withdrawal' }),
-    intl.formatMessage({ defaultMessage: 'Wait 7 days' }),
-    intl.formatMessage({ defaultMessage: 'Return to Claim' }),
-  ];
-
-  const buttonDisabled = isConvertedLoading || !checked;
-
-  return (
-    <Stack {...rest}>
-      <Typography variant="h5" px={3} py={1}>
-        {intl.formatMessage({ defaultMessage: 'Withdrawal Details' })}
-      </Typography>
-      <Divider />
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: 'You will receive' })}
-        value={
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
-            <LoadingLabel isLoading={isConvertedLoading}>
-              {format(converted ?? [0n, 18], 4)}
-            </LoadingLabel>
-          </Stack>
-        }
-        px={3}
-        py={1}
-        {...valueLabelProps}
-        labelProps={{ variant: 'body1', color: 'text.primary' }}
-      />
-      <Divider />
-      <Stack px={3} py={1}>
-        <Typography mb={1}>
-          {intl.formatMessage({ defaultMessage: 'Withdrawal Process' })}
-        </Typography>
-        <Stack position="relative" spacing={2}>
-          {steps.map((step, index) => (
-            <ProcessStep
-              key={`${step}${index}`}
-              index={index}
-              progress={progress}
-              label={step}
-            />
-          ))}
-          <Box
-            sx={{
-              position: 'absolute',
-              zIndex: 1,
-              top: 0,
-              left: 8,
-              bottom: 8,
-              width: '1px',
-              backgroundColor: 'primary.main',
-            }}
-          />
-        </Stack>
-      </Stack>
-      <Divider />
-      <Stack px={3} pt={1} pb={3} spacing={2}>
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={checked}
-              onChange={() => {
-                setChecked(not);
-              }}
-            />
-          }
-          label={intl.formatMessage({
+      <Stack p={3} direction="row" alignItems="center" spacing={2}>
+        <PrimePoints sx={{ fontSize: 36 }} />
+        <Typography color="text.secondary">
+          {intl.formatMessage({
             defaultMessage:
-              'I understand it will take 7 days to receive my funds',
+              'Accrued XP will be redeemable for retroactive YND airdrop at the TGE',
           })}
-          componentsProps={{
-            typography: { fontSize: 16, fontWeight: 'medium' },
-          }}
-        />
+        </Typography>
+      </Stack>
+      <Divider />
+      <Stack p={3} sx={{ backgroundColor: '#fff' }}>
         <TxButton
           params={params}
           callbacks={callbacks}
           disabled={buttonDisabled}
           sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-          label={intl.formatMessage({ defaultMessage: 'Withdraw' })}
+          label={buttonLabel}
           validatingTxLabel={intl.formatMessage({
             defaultMessage: 'Withdraw',
           })}
         />
-        <Button
-          component={RouterLink}
-          to="/restake/"
-          variant="text"
-          sx={{
-            fontSize: 16,
-            color: 'text.primary',
-            textDecoration: 'underline',
-            '&:hover': { color: 'primary.dark', textDecoration: 'underline' },
-          }}
-        >
-          {intl.formatMessage({
-            defaultMessage: 'Wait, I want to earn rewards instead',
-          })}
-        </Button>
       </Stack>
-    </Stack>
-  );
-};
-
-type ProcessStepProps = {
-  label: string;
-  progress: number;
-  index: number;
-} & StackProps;
-
-const ProcessStep = ({ label, index, progress, ...rest }: ProcessStepProps) => {
-  return (
-    <Stack {...rest} direction="row" spacing={2} alignItems="center">
-      <Box
-        sx={{
-          border: '2px solid',
-          borderColor: 'primary.main',
-          borderRadius: '50%',
-          width: 16,
-          height: 16,
-          backgroundColor:
-            index <= progress ? 'primary.main' : 'background.default',
-          zIndex: 2,
-        }}
-      />
-
-      <Typography>{label}</Typography>
     </Stack>
   );
 };

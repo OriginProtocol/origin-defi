@@ -69,6 +69,67 @@ export const LrtDepositPoolABI = [
   },
   {
     type: 'function',
+    name: 'claimWithdrawalYn',
+    inputs: [
+      {
+        name: 'withdrawal',
+        type: 'tuple',
+        internalType: 'struct IDelegationManager.Withdrawal',
+        components: [
+          {
+            name: 'staker',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'delegatedTo',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'withdrawer',
+            type: 'address',
+            internalType: 'address',
+          },
+          {
+            name: 'nonce',
+            type: 'uint256',
+            internalType: 'uint256',
+          },
+          {
+            name: 'startBlock',
+            type: 'uint32',
+            internalType: 'uint32',
+          },
+          {
+            name: 'strategies',
+            type: 'address[]',
+            internalType: 'contract IStrategy[]',
+          },
+          {
+            name: 'shares',
+            type: 'uint256[]',
+            internalType: 'uint256[]',
+          },
+        ],
+      },
+    ],
+    outputs: [
+      {
+        name: 'asset',
+        type: 'address',
+        internalType: 'address',
+      },
+      {
+        name: 'assets',
+        type: 'uint256',
+        internalType: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+  },
+  {
+    type: 'function',
     name: 'claimWithdrawal',
     inputs: [
       {
