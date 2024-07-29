@@ -40,7 +40,7 @@ export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
       waitTime: defineMessage({
         defaultMessage: `a few days`,
       }),
-      waitTimeColor: 'warning.main',
+      waitTimeColor: 'warning.dark',
     },
   },
 ];

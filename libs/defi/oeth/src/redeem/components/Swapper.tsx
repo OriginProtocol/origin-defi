@@ -513,12 +513,19 @@ const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
   const claim = mul(gasPrice.gasCostUsd, 0.4);
 
   return (
-    <InfoTooltipLabel
-      fontWeight="medium"
-      tooltipLabel={intl.formatMessage({
-        defaultMessage:
-          'Claiming your withdrawal will incur this estimated additional gas fee',
-      })}
-    >{`~$${format(req, 2)} + ~$${format(claim, 2)}`}</InfoTooltipLabel>
+    <Stack direction="row" alignItems="center" spacing={0.75}>
+      <Typography>${format(req, 2)}&nbsp;</Typography>
+      <InfoTooltipLabel
+        fontWeight="medium"
+        tooltipLabel={intl.formatMessage({
+          defaultMessage:
+            'Claiming your withdrawal will incur this estimated additional gas fee',
+        })}
+        labelProps={{ color: 'warning.dark' }}
+        infoTooltipProps={{ iconColor: 'warning.dark' }}
+      >
+        {`+ $${format(claim, 2)}`}
+      </InfoTooltipLabel>
+    </Stack>
   );
 };
