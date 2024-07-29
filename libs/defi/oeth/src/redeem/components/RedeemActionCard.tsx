@@ -3,12 +3,9 @@ import { ValueLabel } from '@origin/shared/components';
 import { OETH } from '@origin/shared/icons';
 import { routeEq, useSwapState } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
-import { WITHDRAW_DELAY } from '../constants';
-
-import type { CardProps, TypographyProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { SwapRoute } from '@origin/shared/providers';
 
@@ -30,17 +27,14 @@ export const RedeemActionCard = ({
       tokenOut,
       isSwapRoutesLoading,
       selectedSwapRoute,
-      estimatedSwapRoutes,
       swapRoutes,
       swapActions,
     },
   ] = useSwapState();
   const route = swapRoutes.find((r) =>
     routeEq({ tokenIn, tokenOut, action }, r),
-  );
-  const estimatedRoute = estimatedSwapRoutes.find((r) => routeEq(r, route));
+  ) as SwapRoute<OethRedeemAction, Meta>;
   const isSelected = routeEq({ tokenIn, tokenOut, action }, selectedSwapRoute);
-  const isEmptyValue = amountIn === 0n;
   const isComingSoon =
     (route as SwapRoute<OethRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
@@ -109,9 +103,7 @@ export const RedeemActionCard = ({
             {intl.formatMessage(routeLabel ?? { defaultMessage: 'Route' })}
           </Typography>
           <SvgIcon
-            component={
-              (route as SwapRoute<OethRedeemAction, Meta>)?.meta?.icon ?? OETH
-            }
+            component={route?.meta?.icon ?? OETH}
             sx={{ fontSize: 20 }}
           />
         </Stack>
@@ -119,23 +111,17 @@ export const RedeemActionCard = ({
           <ValueLabel
             {...valueLabelProps}
             label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
-            value={
-              isEmptyValue ? (
-                <EmptyValue />
-              ) : (
-                intl.formatMessage(
-                  (route as SwapRoute<OethRedeemAction, Meta>)?.meta
-                    ?.waitTime ?? { defaultMessage: '~1 min' },
-                  { WITHDRAW_DELAY },
-                )
-              )
-            }
+            value={intl.formatMessage(
+              route?.meta?.waitTime ?? {
+                defaultMessage: '~1 min',
+              },
+            )}
             valueProps={{
               ...valueLabelProps.valueProps,
-              ...(estimatedRoute?.meta !== undefined &&
-                'waitTimeColor' in estimatedRoute.meta &&
-                !isNilOrEmpty(estimatedRoute.meta.waitTimeColor) && {
-                  color: estimatedRoute?.meta.waitTimeColor as string,
+              ...(route?.meta &&
+                'waitTimeColor' in route.meta &&
+                !isNilOrEmpty(route.meta.waitTimeColor) && {
+                  color: route.meta.waitTimeColor as string,
                 }),
             }}
             isLoading={isSwapRoutesLoading}
@@ -143,18 +129,12 @@ export const RedeemActionCard = ({
           <ValueLabel
             {...valueLabelProps}
             label={intl.formatMessage({ defaultMessage: 'Rate:' })}
-            value={
-              isEmptyValue ? (
-                <EmptyValue />
-              ) : (
-                intl.formatMessage(
-                  { defaultMessage: '1:{rate}' },
-                  {
-                    rate: format(from(estimatedRoute?.rate ?? 0), 3),
-                  },
-                )
-              )
-            }
+            value={intl.formatMessage(
+              { defaultMessage: '1:{rate}' },
+              {
+                rate: 1,
+              },
+            )}
             isLoading={isSwapRoutesLoading}
           />
         </Stack>
@@ -162,14 +142,6 @@ export const RedeemActionCard = ({
     </Card>
   );
 };
-
-function EmptyValue(props: TypographyProps) {
-  return (
-    <Typography color="text.secondary" pr={0.5} {...props}>
-      -
-    </Typography>
-  );
-}
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',

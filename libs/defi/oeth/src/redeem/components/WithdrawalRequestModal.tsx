@@ -152,7 +152,10 @@ export const WithdrawalRequestModal = ({
             'Your request to withdraw {amountOut} {symbolOut} from {symbolIn} has been sent. Check the Claim tab to view your withdrawal requests.',
         },
         {
-          amountOut: format(amt, getFormatPrecision(amt)),
+          amountOut: format(amt, {
+            digits: getFormatPrecision(amt),
+            decimalsRounding: 'ROUND_DOWN',
+          }),
           symbolIn: tokenIn?.symbol ?? '',
           symbolOut: tokenOut?.symbol ?? '',
         },
