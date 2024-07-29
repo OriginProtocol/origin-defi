@@ -235,6 +235,9 @@ export const WithdrawalRequestModal = ({
         <IconButton
           onClick={(evt) => {
             onClose?.(evt, 'backdropClick');
+            queryClient.invalidateQueries({
+              queryKey: ['useClaimableRequests', address],
+            });
           }}
         >
           <FaXmarkRegular sx={{ fontSize: 14 }} />
