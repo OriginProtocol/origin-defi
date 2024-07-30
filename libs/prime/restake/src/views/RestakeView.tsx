@@ -50,7 +50,7 @@ const NavLink = ({ route }: NavLinkProps) => {
       component={RouterLink}
       to={`${restakeRoute.path}/${route.index ? '' : route.path}`}
       sx={{
-        px: 3,
+        px: { xs: 1.5, md: 3 },
         py: 1,
         lineHeight: '1.625',
         color: 'text.secondary',

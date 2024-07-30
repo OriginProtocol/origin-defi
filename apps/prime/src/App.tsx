@@ -7,7 +7,6 @@ import {
   trackEvent,
   trackPage,
   trackSentryError,
-  YNBanner,
 } from '@origin/prime/shared';
 import { ErrorBoundary, ErrorCard, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
@@ -30,7 +29,6 @@ export const App = () => {
         }}
       >
         <Stack minWidth={370} mb={5}>
-          <YNBanner />
           <Topnav />
           <Box px={{ xs: 2, md: 4 }}>
             <Grid2 container spacing={4}>

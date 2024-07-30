@@ -1,15 +1,14 @@
 import { useState } from 'react';
 
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 import {
-  ExternalLink,
   InfoTooltipLabel,
   LoadingLabel,
   TokenIcon,
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { PrimePoints, YieldNestInverted } from '@origin/shared/icons';
+import { PrimePoints } from '@origin/shared/icons';
 import {
   TxButton,
   useTxButton,
@@ -24,23 +23,21 @@ import { TokenInput } from '../components/TokenInput';
 import { WithdrawProgressModal } from '../components/WithdrawProgressModal';
 import { usePrimeETH_OETH } from '../hooks';
 
-import type { StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-import type {
-  GasPrice,
-  WriteTransactionCallbacks,
-  WriteTransactionParameters,
-} from '@origin/shared/providers';
-import type { Dnum } from 'dnum';
-
-type Step = 'disclaimer' | 'form';
 
 export const WithdrawView = () => {
-  const [step, setStep] = useState<Step>('disclaimer');
+  const intl = useIntl();
+  const { isConnected } = useAccount();
   const [amount, setAmount] = useState(0n);
   const [modalOpen, setModalOpen] = useState(false);
   const { data: converted, isLoading: isConvertedLoading } =
     usePrimeETH_OETH(amount);
+  const { data: bal, isLoading: isBalLoading } = useWatchBalance({
+    token: tokens.mainnet.primeETH,
+  });
+  const { data: rate, isLoading: isRateLoading } = usePrimeETH_OETH(
+    parseUnits('1', tokens.mainnet.primeETH.decimals),
+  );
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: contracts.mainnet.lrtDepositPool,
@@ -61,200 +58,6 @@ export const WithdrawView = () => {
     enableGas: true,
   });
 
-  if (step === 'disclaimer') {
-    return (
-      <Disclaimer
-        onContinueClick={() => {
-          setStep('form');
-        }}
-      />
-    );
-  }
-
-  return (
-    <>
-      <Form
-        params={params}
-        callbacks={callbacks}
-        amount={amount}
-        converted={converted}
-        isConvertedLoading={isConvertedLoading}
-        setAmount={(val: bigint) => {
-          setAmount(val);
-        }}
-        gasPrice={gasPrice}
-        sx={{ display: step === 'form' ? 'block' : 'none' }}
-      />
-      <WithdrawProgressModal
-        key={modalOpen ? '' : 'reset'}
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-      />
-    </>
-  );
-};
-
-type DisclaimerProps = { onContinueClick: () => void } & StackProps;
-
-const Disclaimer = ({ onContinueClick, ...rest }: DisclaimerProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest}>
-      <MigrationDisclaimer />
-      <Divider />
-      <Breakdown />
-      <Divider />
-      <Stack p={3}>
-        <Button
-          onClick={onContinueClick}
-          fullWidth
-          sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-        >
-          {intl.formatMessage({ defaultMessage: 'Get started' })}
-        </Button>
-      </Stack>
-    </Stack>
-  );
-};
-
-const MigrationDisclaimer = (props: StackProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack alignItems="center" p={3} {...props}>
-      <YieldNestInverted sx={{ fontSize: 110 }} />
-      <Typography my={2} variant="h4" textAlign="center">
-        {intl.formatMessage({
-          defaultMessage: `ynLSDe migration is live!`,
-        })}
-      </Typography>
-      <Typography textAlign="center">
-        {intl.formatMessage({
-          defaultMessage: `PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below. `,
-        })}
-      </Typography>
-      <ExternalLink sx={{ color: 'primary.main', mt: 2 }}>
-        {intl.formatMessage({ defaultMessage: 'Learn more' })}
-      </ExternalLink>
-    </Stack>
-  );
-};
-
-const Breakdown = (props: StackProps) => {
-  const intl = useIntl();
-
-  const rows = [
-    {
-      title: intl.formatMessage({ defaultMessage: 'Initiate withdrawal' }),
-      subtitle: intl.formatMessage({
-        defaultMessage: 'Withdraw your funds from EigenLayer.',
-      }),
-    },
-    {
-      title: intl.formatMessage({ defaultMessage: 'Wait 7 days' }),
-      subtitle: intl.formatMessage({
-        defaultMessage: 'Wait for EigenLayer to process the withdrawal.',
-      }),
-    },
-    {
-      title: intl.formatMessage({ defaultMessage: 'Migrate or Claim' }),
-      subtitle: intl.formatMessage({
-        defaultMessage:
-          'You will have the option to either withdraw your funds (in the form of OETH) or migrate them to ynLSD.',
-      }),
-    },
-  ];
-
-  return (
-    <Stack p={3} {...props}>
-      <Typography mb={2} fontWeight="medium" color="text.secondary">
-        {intl.formatMessage({
-          defaultMessage: `Withdrawal Process Breakdown`,
-        })}
-      </Typography>
-      <Stack spacing={2}>
-        {rows.map((row, index) => (
-          <BreakDownRow
-            key={`row-${index}`}
-            index={index}
-            title={row.title}
-            subtitle={row.subtitle}
-          />
-        ))}
-      </Stack>
-    </Stack>
-  );
-};
-
-type BreakDownRowProps = {
-  index: number;
-  title: string;
-  subtitle: string;
-} & StackProps;
-
-const BreakDownRow = ({
-  index,
-  title,
-  subtitle,
-  ...rest
-}: BreakDownRowProps) => {
-  return (
-    <Stack direction="row" alignItems="flex-start" spacing={2} {...rest}>
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          border: '2px solid',
-          borderColor: 'primary.main',
-          p: 2,
-          borderRadius: '50%',
-          height: 32,
-          width: 32,
-        }}
-      >
-        <Typography variant="h6">{index + 1}</Typography>
-      </Box>
-      <Stack spacing={0.5}>
-        <Typography variant="h6">{title}</Typography>
-        <Typography color="text.secondary">{subtitle}</Typography>
-      </Stack>
-    </Stack>
-  );
-};
-
-type FormProps = {
-  params: WriteTransactionParameters;
-  callbacks: WriteTransactionCallbacks;
-  amount: bigint;
-  setAmount: (val: bigint) => void;
-  converted: Dnum | undefined;
-  isConvertedLoading: boolean;
-  gasPrice: GasPrice | null | undefined;
-} & StackProps;
-
-const Form = ({
-  params,
-  callbacks,
-  amount,
-  setAmount,
-  converted,
-  isConvertedLoading,
-  gasPrice,
-  ...rest
-}: FormProps) => {
-  const intl = useIntl();
-  const { isConnected } = useAccount();
-  const { data: bal, isLoading: isBalLoading } = useWatchBalance({
-    token: tokens.mainnet.primeETH,
-  });
-  const { data: rate, isLoading: isRateLoading } = usePrimeETH_OETH(
-    parseUnits('1', tokens.mainnet.primeETH.decimals),
-  );
-
   const handleAmountChange = (val: bigint) => {
     setAmount(val);
   };
@@ -267,93 +70,102 @@ const Form = ({
       : intl.formatMessage({ defaultMessage: 'Withdraw' });
 
   return (
-    <Stack {...rest}>
-      <Stack p={3}>
-        <Typography mb={0.75} color="text.secondary">
-          {intl.formatMessage({ defaultMessage: 'Enter amount' })}
-        </Typography>
-        <TokenInput
-          amount={amount}
-          decimals={tokens.mainnet.primeETH.decimals}
-          onAmountChange={handleAmountChange}
-          balance={bal}
-          isBalanceLoading={isBalLoading}
-          disableMaxButton={isBalLoading}
-          token={tokens.mainnet.primeETH}
-          isNativeCurrency={false}
-          isConnected={isConnected}
-          isAmountDisabled={isBalLoading}
-        />
-      </Stack>
-      <Divider />
-      <Stack p={3} spacing={1}>
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
-          value={intl.formatMessage({ defaultMessage: '7 days' })}
-          {...valueLabelProps}
-        />
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Rate:' })}
-          value={intl.formatMessage(
-            { defaultMessage: '1:{rate}' },
-            { rate: format(rate ?? from(0), 3) },
-          )}
-          isLoading={isRateLoading}
-          {...valueLabelProps}
-        />
-        <ValueLabel
-          label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-          value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
-          {...valueLabelProps}
-        />
-      </Stack>
-      <Divider />
-      <Stack p={3}>
-        <Typography mb={2} color="text.secondary">
-          {intl.formatMessage({ defaultMessage: 'Receive' })}
-        </Typography>
-        <Stack direction="row" alignItems="center" spacing={0.5} pb={0.5}>
-          <LoadingLabel isLoading={isConvertedLoading}>
-            {amount === 0n || !converted ? '0.00' : format(converted, 4)}
-          </LoadingLabel>
-          <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 20 }} />
-          <Typography>{tokens.mainnet.OETH.symbol}</Typography>
+    <>
+      <Stack>
+        <Stack p={3}>
+          <Typography mb={0.75} color="text.secondary">
+            {intl.formatMessage({ defaultMessage: 'Enter amount' })}
+          </Typography>
+          <TokenInput
+            amount={amount}
+            decimals={tokens.mainnet.primeETH.decimals}
+            onAmountChange={handleAmountChange}
+            balance={bal}
+            isBalanceLoading={isBalLoading}
+            disableMaxButton={isBalLoading}
+            token={tokens.mainnet.primeETH}
+            isNativeCurrency={false}
+            isConnected={isConnected}
+            isAmountDisabled={isBalLoading}
+          />
         </Stack>
-        <InfoTooltipLabel
-          tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed.',
-          })}
-        >
-          {intl.formatMessage({
-            defaultMessage: '7-day retention period',
-          })}
-        </InfoTooltipLabel>
+        <Divider />
+        <Stack p={3} spacing={1}>
+          <ValueLabel
+            label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
+            value={intl.formatMessage({ defaultMessage: '7 days' })}
+            {...valueLabelProps}
+          />
+          <ValueLabel
+            label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+            value={intl.formatMessage(
+              { defaultMessage: '1:{rate}' },
+              { rate: format(rate ?? from(0), 3) },
+            )}
+            isLoading={isRateLoading}
+            {...valueLabelProps}
+          />
+          <ValueLabel
+            label={intl.formatMessage({ defaultMessage: 'Gas:' })}
+            value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+            {...valueLabelProps}
+          />
+        </Stack>
+        <Divider />
+        <Stack p={3}>
+          <Typography mb={2} color="text.secondary">
+            {intl.formatMessage({ defaultMessage: 'Receive' })}
+          </Typography>
+          <Stack direction="row" alignItems="center" spacing={0.5} pb={0.5}>
+            <LoadingLabel isLoading={isConvertedLoading}>
+              {amount === 0n || !converted ? '0.00' : format(converted, 4)}
+            </LoadingLabel>
+            <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 20 }} />
+            <Typography>{tokens.mainnet.OETH.symbol}</Typography>
+          </Stack>
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'Funds withdrawn from EigenLayer go through a 7-day escrow period before being able to be claimed.',
+            })}
+          >
+            {intl.formatMessage({
+              defaultMessage: '7-day retention period',
+            })}
+          </InfoTooltipLabel>
+        </Stack>
+        <Divider />
+        <Stack p={3} direction="row" alignItems="center" spacing={2}>
+          <PrimePoints sx={{ fontSize: 36 }} />
+          <Typography color="text.secondary">
+            {intl.formatMessage({
+              defaultMessage:
+                'Accrued XP will be redeemable for retroactive YND airdrop at the TGE',
+            })}
+          </Typography>
+        </Stack>
+        <Divider />
+        <Stack p={3} sx={{ backgroundColor: '#fff' }}>
+          <TxButton
+            params={params}
+            callbacks={callbacks}
+            disabled={buttonDisabled}
+            sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
+            label={buttonLabel}
+            validatingTxLabel={intl.formatMessage({
+              defaultMessage: 'Withdraw',
+            })}
+          />
+        </Stack>
       </Stack>
-      <Divider />
-      <Stack p={3} direction="row" alignItems="center" spacing={2}>
-        <PrimePoints sx={{ fontSize: 36 }} />
-        <Typography color="text.secondary">
-          {intl.formatMessage({
-            defaultMessage:
-              'Accrued XP will be redeemable for retroactive YND airdrop at the TGE',
-          })}
-        </Typography>
-      </Stack>
-      <Divider />
-      <Stack p={3} sx={{ backgroundColor: '#fff' }}>
-        <TxButton
-          params={params}
-          callbacks={callbacks}
-          disabled={buttonDisabled}
-          sx={{ fontSize: 20, py: 2, borderRadius: 8, height: 60 }}
-          label={buttonLabel}
-          validatingTxLabel={intl.formatMessage({
-            defaultMessage: 'Withdraw',
-          })}
-        />
-      </Stack>
-    </Stack>
+      <WithdrawProgressModal
+        key={modalOpen ? '' : 'reset'}
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+      />
+    </>
   );
 };
 

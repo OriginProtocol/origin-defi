@@ -87,7 +87,7 @@ export function Topnav(props: BoxProps) {
               />
             </Stack>
           </Grid2>
-          <Grid2 xs={3}>
+          <Grid2 xs={6}>
             {!isSm && (
               <Navigation
                 direction="row"
@@ -97,7 +97,7 @@ export function Topnav(props: BoxProps) {
               />
             )}
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 xs={3}>
             <Box
               sx={{
                 display: 'flex',

@@ -1,5 +1,6 @@
 import { defineMessage } from 'react-intl';
 
+import { AboutView } from './views/AboutView';
 import { ClaimView } from './views/ClaimView';
 import { RestakeView } from './views/RestakeView';
 import { WithdrawView } from './views/WithdrawView';
@@ -9,29 +10,24 @@ import type { NonIndexRouteObject } from 'react-router-dom';
 export const restakeRoute: NonIndexRouteObject = {
   path: '/restake',
   Component: RestakeView,
-  handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
+  handle: { label: defineMessage({ defaultMessage: 'Withdraw/Migrate' }) },
   children: [
     {
       index: true,
-      Component: WithdrawView,
+      Component: AboutView,
       handle: {
-        label: defineMessage({ defaultMessage: 'Withdraw' }),
+        label: defineMessage({ defaultMessage: 'Overview' }),
       },
     },
-    // {
-    //   path: 'migrate',
-    //   Component: MigrateView,
-    //   handle: { label: defineMessage({ defaultMessage: 'Migrate' }) },
-    // },
-    // {
-    //   path: 'withdraw',
-    //   Component: WithdrawView,
-    //   handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
-    // },
+    {
+      path: 'withdraw',
+      Component: WithdrawView,
+      handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
+    },
     {
       path: 'claim',
       Component: ClaimView,
-      handle: { label: defineMessage({ defaultMessage: 'Claim or Migrate' }) },
+      handle: { label: defineMessage({ defaultMessage: 'Claim/Migrate' }) },
     },
   ],
 };
