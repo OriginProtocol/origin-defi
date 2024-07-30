@@ -10,6 +10,8 @@ import {
 } from '@wagmi/core';
 import { erc20Abi, formatUnits } from 'viem';
 
+import { defaultRoute } from '../defaultRoute';
+
 import type {
   Allowance,
   Approve,
@@ -213,6 +215,7 @@ const swap: Swap = async (
 };
 
 export const wrapOethWoeth = {
+  ...defaultRoute,
   estimateAmount,
   estimateGas,
   estimateRoute,

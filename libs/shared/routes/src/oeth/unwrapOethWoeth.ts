@@ -8,6 +8,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
 
+import { defaultRoute } from '../defaultRoute';
+
 import type {
   Allowance,
   Approve,
@@ -148,6 +150,7 @@ const swap: Swap = async ({ config }, { amountIn }) => {
 };
 
 export const unwrapOethWoeth = {
+  ...defaultRoute,
   estimateAmount,
   estimateGas,
   estimateRoute,

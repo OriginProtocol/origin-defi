@@ -18,6 +18,7 @@ import {
 import { formatUnits } from 'viem';
 
 import { GAS_BUFFER, MAX_PRICE } from '../constants';
+import { defaultRoute } from '../defaultRoute';
 
 import type {
   Allowance,
@@ -308,6 +309,7 @@ const swap: Swap = async (
 };
 
 export const swapCurveOusd = {
+  ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
   estimateGas,

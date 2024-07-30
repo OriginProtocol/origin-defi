@@ -16,6 +16,7 @@ import { last } from 'ramda';
 import { formatUnits } from 'viem';
 
 import { GAS_BUFFER, MAX_PRICE } from '../constants';
+import { defaultRoute } from '../defaultRoute';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
@@ -310,6 +311,7 @@ const swap: Swap = async (
 };
 
 export const swapUniswapV2Ousd = {
+  ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
   estimateGas,

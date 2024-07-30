@@ -17,6 +17,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
 
+import { defaultRoute } from '../defaultRoute';
+
 import type {
   Allowance,
   Approve,
@@ -234,6 +236,7 @@ const swap: Swap = async (
 };
 
 export const restakePrime = {
+  ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
   estimateRoute,

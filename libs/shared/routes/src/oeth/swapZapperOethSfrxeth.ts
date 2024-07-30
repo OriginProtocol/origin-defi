@@ -12,6 +12,7 @@ import {
 import { erc20Abi, formatUnits, maxUint256, parseUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
+import { defaultRoute } from '../defaultRoute';
 
 import type {
   Allowance,
@@ -229,6 +230,7 @@ const swap: Swap = async (
 };
 
 export const swapZapperOethSfrxeth = {
+  ...defaultRoute,
   estimateAmount,
   estimateGas,
   estimateRoute,

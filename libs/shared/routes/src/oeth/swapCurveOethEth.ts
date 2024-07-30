@@ -14,6 +14,7 @@ import {
 import { formatUnits, isAddressEqual, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
+import { defaultRoute } from '../defaultRoute';
 
 import type {
   Allowance,
@@ -227,6 +228,7 @@ const swap: Swap = async (
 };
 
 export const swapCurveOethEth = {
+  ...defaultRoute,
   estimateAmount,
   estimateGas,
   estimateRoute,

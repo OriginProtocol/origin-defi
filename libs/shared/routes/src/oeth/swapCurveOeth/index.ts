@@ -20,6 +20,7 @@ import { path } from 'ramda';
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../../constants';
+import { defaultRoute } from '../../defaultRoute';
 import { curveRoutes } from './curveRoutes';
 
 import type {
@@ -330,6 +331,7 @@ const swap: Swap = async (
 };
 
 export const SwapCurveOeth = {
+  ...defaultRoute,
   estimateAmount,
   estimateGas,
   estimateRoute,

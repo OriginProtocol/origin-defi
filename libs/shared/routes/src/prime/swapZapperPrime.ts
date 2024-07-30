@@ -5,6 +5,8 @@ import { getAccount, simulateContract, writeContract } from '@wagmi/core';
 import { div, eq, setDecimals } from 'dnum';
 import { formatUnits, maxUint256 } from 'viem';
 
+import { defaultRoute } from '../defaultRoute';
+
 import type {
   Allowance,
   Approve,
@@ -96,6 +98,7 @@ const swap: Swap = async (
 };
 
 export const swapZapperPrime = {
+  ...defaultRoute,
   estimateAmount,
   estimateRoute,
   allowance,

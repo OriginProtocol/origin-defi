@@ -16,6 +16,7 @@ import {
 import { formatUnits, parseUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
+import { defaultRoute } from '../defaultRoute';
 
 import type {
   Allowance,
@@ -298,6 +299,7 @@ const swap: Swap = async (
 };
 
 export const mintVaultOusd = {
+  ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
   estimateGas,

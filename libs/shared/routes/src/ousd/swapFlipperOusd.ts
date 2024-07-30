@@ -10,6 +10,8 @@ import {
 } from '@wagmi/core';
 import { formatUnits } from 'viem';
 
+import { defaultRoute } from '../defaultRoute';
+
 import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
@@ -217,6 +219,7 @@ const swap: Swap = async (
 };
 
 export const swapFlipperOusd = {
+  ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
   estimateGas,
