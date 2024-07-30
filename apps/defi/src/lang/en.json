@@ -1,10 +1,4 @@
 {
-  "+0zAiT": [
-    {
-      "type": 0,
-      "value": "The updated amount of xOGN you will receive by adding OGN to this lockup."
-    }
-  ],
   "+14VoL": [
     {
       "type": 0,
@@ -221,12 +215,6 @@
     {
       "type": 0,
       "value": "Return to Home Page"
-    }
-  ],
-  "2/2yg+": [
-    {
-      "type": 0,
-      "value": "Add"
     }
   ],
   "20KPDF": [
@@ -821,12 +809,6 @@
       "value": "Bridging activity"
     }
   ],
-  "BLAy25": [
-    {
-      "type": 0,
-      "value": "Extend"
-    }
-  ],
   "BNFT1w": [
     {
       "type": 0,
@@ -1019,6 +1001,12 @@
     {
       "type": 0,
       "value": "0 months"
+    }
+  ],
+  "FIG7wh": [
+    {
+      "type": 0,
+      "value": "Any unclaimed rewards will transferred to your wallet immediately when you extend your stake."
     }
   ],
   "FVYhKc": [
@@ -1277,12 +1265,6 @@
     {
       "type": 1,
       "value": "symbol"
-    }
-  ],
-  "Kzhxqf": [
-    {
-      "type": 0,
-      "value": "Select the additional OGN you would like to add to your lockup"
     }
   ],
   "L2dDDV": [
@@ -2011,12 +1993,6 @@
       "value": "Learn about governance"
     }
   ],
-  "YnTVWE": [
-    {
-      "type": 0,
-      "value": "Adding to lockup"
-    }
-  ],
   "YnftYz": [
     {
       "type": 0,
@@ -2307,6 +2283,20 @@
       "value": "Connect your wallet to see your balances"
     }
   ],
+  "e/f0yl": [
+    {
+      "type": 0,
+      "value": "Add unclaimed rewards to stake ("
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " OGN)"
+    }
+  ],
   "e6Ph5+": [
     {
       "type": 0,
@@ -2477,6 +2467,12 @@
       "value": "Gas"
     }
   ],
+  "hsG1EM": [
+    {
+      "type": 0,
+      "value": "Extend/Add"
+    }
+  ],
   "hsqHqR": [
     {
       "type": 0,
@@ -2505,20 +2501,6 @@
     {
       "type": 0,
       "value": "Error while estimating"
-    }
-  ],
-  "iRGhsn": [
-    {
-      "type": 0,
-      "value": "Add unclaimed rewards ("
-    },
-    {
-      "type": 1,
-      "value": "rewards"
-    },
-    {
-      "type": 0,
-      "value": " OGN)"
     }
   ],
   "iaS0YY": [
@@ -2597,12 +2579,6 @@
     {
       "type": 0,
       "value": "Your voting power"
-    }
-  ],
-  "kDaImL": [
-    {
-      "type": 0,
-      "value": "Add to lockup"
     }
   ],
   "kH1R79": [
@@ -2697,6 +2673,12 @@
     {
       "type": 0,
       "value": "."
+    }
+  ],
+  "mDjDir": [
+    {
+      "type": 0,
+      "value": "Manage Stake"
     }
   ],
   "mTz9QI": [
@@ -3179,12 +3161,6 @@
     {
       "type": 0,
       "value": "Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens."
-    }
-  ],
-  "xiGfmr": [
-    {
-      "type": 0,
-      "value": "Extend stake"
     }
   ],
   "xkKA0U": [
