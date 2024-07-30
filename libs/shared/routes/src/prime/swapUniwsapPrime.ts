@@ -27,6 +27,7 @@ const isRouteAvailable: IsRouteAvailable = async ({ config }, { amountIn }) => {
       abi: tokens.mainnet.primeETH.abi,
       functionName: 'balanceOf',
       args: [contracts.mainnet.uniswapV3WETHPrimeETHPool.address],
+      chainId: tokens.mainnet.primeETH.chainId,
     });
 
     return poolBalance > amountIn;
@@ -40,7 +41,9 @@ const estimateAmount: EstimateAmount = async (
   { amountIn, tokenOut },
 ) => {
   let estimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Quoter.chainId,
+  });
   if (amountIn === 0n || !tokenOut?.address || !publicClient) {
     return estimate;
   }
@@ -62,7 +65,9 @@ const estimateGas: EstimateGas = async (
   { tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Quoter.chainId,
+  });
 
   if (amountIn === 0n || !publicClient || !tokenOut?.address) {
     return gasEstimate;
@@ -158,6 +163,7 @@ const swap: Swap = async (
         sqrtPriceLimitX96: 0n,
       },
     ],
+    chainId: contracts.mainnet.uniswapV3Quoter.chainId,
   });
   const hash = await writeContract(config, request);
 

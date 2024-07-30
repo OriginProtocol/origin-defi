@@ -91,6 +91,7 @@ const swap: Swap = async (
     args: [minAmountOut[0], referrerId ?? ''],
     value: amountIn,
     account: address,
+    chainId: contracts.mainnet.PrimeETHZapper.chainId,
   });
   const hash = await writeContract(config, request);
 

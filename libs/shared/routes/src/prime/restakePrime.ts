@@ -37,6 +37,7 @@ const isRouteAvailable: IsRouteAvailable = async ({ config }) => {
       address: contracts.mainnet.lrtDepositPool.address,
       abi: contracts.mainnet.lrtDepositPool.abi,
       functionName: 'paused',
+      chainId: contracts.mainnet.lrtDepositPool.chainId,
     });
 
     return !paused;
@@ -62,12 +63,14 @@ const estimateAmount: EstimateAmount = async (
             address: contracts.mainnet.lrtOracle.address,
             abi: contracts.mainnet.lrtOracle.abi,
             functionName: 'primeETHPrice',
+            chainId: contracts.mainnet.lrtOracle.chainId,
           },
           {
             address: contracts.mainnet.lrtOracle.address,
             abi: contracts.mainnet.lrtOracle.abi,
             functionName: 'getAssetPrice',
             args: [tokenIn.address ?? ZERO_ADDRESS],
+            chainId: contracts.mainnet.lrtOracle.chainId,
           },
         ],
       }),
@@ -85,7 +88,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.lrtDepositPool.chainId,
+  });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
@@ -144,6 +149,7 @@ const allowance: Allowance = async ({ config, queryClient }, { tokenIn }) => {
         abi: tokenIn.abi,
         functionName: 'allowance',
         args: [address, contracts.mainnet.lrtDepositPool.address],
+        chainId: tokenIn.chainId,
       }),
     staleTime: 15e3,
   });
@@ -157,7 +163,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -188,6 +194,7 @@ const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.lrtDepositPool.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -229,6 +236,7 @@ const swap: Swap = async (
       minAmountOut[0],
       referrerId ?? '',
     ],
+    chainId: contracts.mainnet.lrtDepositPool.chainId,
   });
   const hash = await writeContract(config, request);
 
