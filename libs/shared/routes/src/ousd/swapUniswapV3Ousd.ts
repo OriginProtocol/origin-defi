@@ -77,14 +77,14 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
 };
 
 const isRouteAvailable: IsRouteAvailable = async (
-  config,
+  { config },
   { amountIn, tokenIn },
 ) => {
   return +formatUnits(amountIn, tokenIn.decimals) > 0.000003;
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { amountIn, tokenIn, tokenOut },
 ) => {
   let estimate = 0n;
@@ -126,7 +126,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -223,7 +223,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -242,7 +242,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -268,7 +268,10 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -286,7 +289,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -295,7 +298,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Uniswap V3 is not approved`);

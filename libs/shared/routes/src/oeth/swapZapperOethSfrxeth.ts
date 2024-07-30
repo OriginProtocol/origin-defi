@@ -24,7 +24,7 @@ import type {
 } from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { tokenOut, amountIn },
 ) => {
   if (amountIn === 0n) {
@@ -69,7 +69,7 @@ const estimateGas: EstimateGas = async () => {
   return 90000n;
 };
 
-const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
+const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
   const { address } = getAccount(config);
 
   if (!address) {
@@ -92,7 +92,7 @@ const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, tokenOut, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -159,7 +159,10 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
   if (!tokenIn?.address || !tokenOut?.address) {
     return null;
   }
@@ -177,7 +180,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -186,7 +189,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Swap zapper sfrxETH is not approved`);
@@ -197,13 +203,16 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(config, {
-    amountIn,
-    slippage,
-    tokenIn,
-    tokenOut,
-    amountOut,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      amountIn,
+      slippage,
+      tokenIn,
+      tokenOut,
+      amountOut,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {

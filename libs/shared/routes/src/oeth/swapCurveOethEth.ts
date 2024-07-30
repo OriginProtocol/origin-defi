@@ -1,4 +1,3 @@
-import { queryClient } from '@origin/defi/shared';
 import { contracts } from '@origin/shared/contracts';
 import {
   isNativeCurrency,
@@ -27,7 +26,7 @@ import type {
 } from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn },
 ) => {
   if (amountIn === 0n) {
@@ -57,7 +56,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -169,7 +168,7 @@ const approve: Approve = async () => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   if (amountIn === 0n) {
@@ -186,13 +185,16 @@ const swap: Swap = async (
     queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
-  const estimatedGas = await estimateGas(config, {
-    amountIn,
-    slippage,
-    tokenIn,
-    tokenOut,
-    amountOut,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      amountIn,
+      slippage,
+      tokenIn,
+      tokenOut,
+      amountOut,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const isTokenInNative = isNativeCurrency(tokenIn);

@@ -4,191 +4,188 @@ import type { SwapRoute } from '@origin/shared/providers';
 
 import type { SwapAction } from './types';
 
-export const GAS_BUFFER = 10n; // 10%
-export const MAX_PRICE = 1.2;
-
 export const swapRoutes: SwapRoute<SwapAction>[] = [
   // Mint DAI -> OUSD
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'mint-vault',
+    action: 'mint-vault-ousd',
   },
   {
     tokenIn: tokens.mainnet.DAI,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   // Mint USDT -> OUSD
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'mint-vault',
+    action: 'mint-vault-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDT,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   // Mint USDC -> OUSD
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'mint-vault',
+    action: 'mint-vault-ousd',
   },
   {
     tokenIn: tokens.mainnet.USDC,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   // Redeem OUSD -> DAI
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.DAI,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   // Redeem OUSD -> USDT
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDT,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   // Redeem OUSD -> USDC
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'flipper',
+    action: 'swap-flipper-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'sushiswap',
+    action: 'swap-sushiswap-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'uniswap-v2',
+    action: 'swap-uniswap-v2-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'uniswap-v3',
+    action: 'swap-uniswap-v3-ousd',
   },
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.USDC,
-    action: 'swap-curve',
+    action: 'swap-curve-ousd',
   },
   // Wrap OUSD
   {
     tokenIn: tokens.mainnet.OUSD,
     tokenOut: tokens.mainnet.wOUSD,
-    action: 'wrap-ousd',
+    action: 'wrap-ousd-wousd',
   },
   // Unwrap wOUSD
   {
     tokenIn: tokens.mainnet.wOUSD,
     tokenOut: tokens.mainnet.OUSD,
-    action: 'unwrap-wousd',
+    action: 'unwrap-ousd-wousd',
   },
 ];

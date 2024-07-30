@@ -1,4 +1,3 @@
-import { queryClient } from '@origin/defi/shared';
 import { contracts } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
@@ -25,7 +24,7 @@ import type {
 } from '@origin/shared/providers';
 import type { EstimateAmount } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async (config, { tokenIn }) => {
+const isRouteAvailable: IsRouteAvailable = async ({ config }, { tokenIn }) => {
   try {
     if (tokenIn?.address) {
       await readContract(config, {
@@ -44,7 +43,7 @@ const isRouteAvailable: IsRouteAvailable = async (config, { tokenIn }) => {
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { tokenIn, tokenOut, amountIn },
 ) => {
   if (amountIn === 0n || !tokenIn?.address) {
@@ -69,7 +68,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
@@ -134,7 +133,7 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -153,7 +152,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -180,7 +179,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 };
 
 const estimateRoute: EstimateRoute = async (
-  config,
+  client,
   { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   if (amountIn === 0n) {
@@ -195,11 +194,11 @@ const estimateRoute: EstimateRoute = async (
   }
 
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
-    allowance(config, { tokenIn, tokenOut }),
-    estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
+    estimateAmount(client, { tokenIn, tokenOut, amountIn }),
+    allowance(client, { tokenIn, tokenOut }),
+    estimateApprovalGas(client, { amountIn, tokenIn, tokenOut }),
   ]);
-  const gas = await estimateGas(config, {
+  const gas = await estimateGas(client, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -219,7 +218,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -237,7 +236,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -246,7 +245,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Mint vault is not approved`);
@@ -257,13 +259,16 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(config, {
-    amountIn,
-    slippage,
-    tokenIn,
-    tokenOut,
-    amountOut,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      amountIn,
+      slippage,
+      tokenIn,
+      tokenOut,
+      amountOut,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {

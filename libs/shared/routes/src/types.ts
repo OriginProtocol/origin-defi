@@ -18,3 +18,8 @@ export type OusdRoute =
   | 'swap-uniswap-v3-ousd'
   | 'unwrap-ousd-wousd'
   | 'wrap-ousd-wousd';
+
+export type PrimeRoute =
+  | 'restake-prime'
+  | 'swap-uniswap-prime'
+  | 'swap-zapper-prime';

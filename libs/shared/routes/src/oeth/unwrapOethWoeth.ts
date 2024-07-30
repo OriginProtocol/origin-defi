@@ -18,7 +18,7 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
+const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
   if (amountIn === 0n) {
     return 0n;
   }
@@ -34,7 +34,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   return data as unknown as bigint;
 };
 
-const estimateGas: EstimateGas = async (config, { amountIn }) => {
+const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
   let gasEstimate = 0n;
 
   const publicClient = getPublicClient(config, {
@@ -128,7 +128,7 @@ const approve: Approve = async () => {
   return null;
 };
 
-const swap: Swap = async (config, { amountIn }) => {
+const swap: Swap = async ({ config }, { amountIn }) => {
   const { address } = getAccount(config);
 
   if (amountIn === 0n || !address) {

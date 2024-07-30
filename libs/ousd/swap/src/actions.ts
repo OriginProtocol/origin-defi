@@ -1,17 +1,18 @@
+import {
+  mintVaultOusd,
+  swapCurveOusd,
+  swapFlipperOusd,
+  swapSushiswapOusd,
+  swapUniswapV2Ousd,
+  swapUniswapV3Ousd,
+  unwrapOusdWousd,
+  wrapOusdWousd,
+} from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
-
-import flipper from './flipper';
-import mintVault from './mintVault';
-import sushiswap from './sushiswap';
-import swapCurve from './swapCurve';
-import uniswapV2 from './uniswapV2';
-import uniswapV3 from './uniswapV3';
-import unwrapWOUSD from './unwrapWOUSD';
-import wrapOUSD from './wrapOUSD';
 
 import type { SwapApi } from '@origin/shared/providers';
 
-import type { SwapAction } from '../types';
+import type { SwapAction } from './types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
@@ -60,46 +61,46 @@ const defaultApi: SwapApi = {
 };
 
 export const swapActions: Record<SwapAction, SwapApi> = {
-  flipper: {
+  'swap-flipper-ousd': {
     ...defaultApi,
-    ...flipper,
-    routeLabel: defineMessage({ defaultMessage: 'Flipper' }),
+    ...swapFlipperOusd,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Flipper' }),
   },
-  'mint-vault': {
+  'mint-vault-ousd': {
     ...defaultApi,
-    ...mintVault,
-    routeLabel: defineMessage({ defaultMessage: 'Origin Vault' }),
+    ...mintVaultOusd,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
-  sushiswap: {
+  'swap-sushiswap-ousd': {
     ...defaultApi,
-    ...sushiswap,
-    routeLabel: defineMessage({ defaultMessage: 'SushiSwap' }),
+    ...swapSushiswapOusd,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via SushiSwap' }),
   },
-  'swap-curve': {
+  'swap-curve-ousd': {
     ...defaultApi,
-    ...swapCurve,
-    routeLabel: defineMessage({ defaultMessage: 'Curve' }),
+    ...swapCurveOusd,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
   },
-  'uniswap-v2': {
+  'swap-uniswap-v2-ousd': {
     ...defaultApi,
-    ...uniswapV2,
-    routeLabel: defineMessage({ defaultMessage: 'Uniswap V2' }),
+    ...swapUniswapV2Ousd,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V2' }),
   },
-  'uniswap-v3': {
+  'swap-uniswap-v3-ousd': {
     ...defaultApi,
-    ...uniswapV3,
-    routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
+    ...swapUniswapV3Ousd,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V3' }),
   },
-  'wrap-ousd': {
+  'wrap-ousd-wousd': {
     ...defaultApi,
-    ...wrapOUSD,
+    ...wrapOusdWousd,
     routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
   },
-  'unwrap-wousd': {
+  'unwrap-ousd-wousd': {
     ...defaultApi,
-    ...unwrapWOUSD,
+    ...unwrapOusdWousd,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
   },

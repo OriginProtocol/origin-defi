@@ -1,4 +1,3 @@
-import { queryClient } from '@origin/defi/shared';
 import {
   isNativeCurrency,
   simulateContractWithTxTracker,
@@ -34,7 +33,7 @@ import type {
 } from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn },
 ) => {
   const curve = await queryClient.fetchQuery({
@@ -69,7 +68,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -133,7 +132,7 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config, queryClient }, { tokenIn }) => {
   const { address } = getAccount(config);
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),
@@ -161,7 +160,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config, queryClient },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -194,7 +193,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 };
 
 const estimateRoute: EstimateRoute = async (
-  config,
+  client,
   { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   if (amountIn === 0n) {
@@ -209,11 +208,11 @@ const estimateRoute: EstimateRoute = async (
   }
 
   const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
-    estimateAmount(config, { tokenIn, tokenOut, amountIn }),
-    allowance(config, { tokenIn, tokenOut }),
-    estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
+    estimateAmount(client, { tokenIn, tokenOut, amountIn }),
+    allowance(client, { tokenIn, tokenOut }),
+    estimateApprovalGas(client, { amountIn, tokenIn, tokenOut }),
   ]);
-  const gas = await estimateGas(config, {
+  const gas = await estimateGas(client, {
     tokenIn,
     tokenOut,
     amountIn,
@@ -233,7 +232,10 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async (
+  { config, queryClient },
+  { tokenIn, amountIn },
+) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -255,7 +257,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   const { address } = getAccount(config);
@@ -269,7 +271,10 @@ const swap: Swap = async (
     queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Swap curve is not approved`);
@@ -291,13 +296,16 @@ const swap: Swap = async (
     );
   }
 
-  const estimatedGas = await estimateGas(config, {
-    amountIn,
-    slippage,
-    tokenIn,
-    tokenOut,
-    amountOut,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      amountIn,
+      slippage,
+      tokenIn,
+      tokenOut,
+      amountOut,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const isTokenInNative = isNativeCurrency(tokenIn);

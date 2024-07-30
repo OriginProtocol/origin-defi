@@ -128,7 +128,7 @@ export const RedeemActionCard = ({
           <Typography fontWeight={500}>
             {intl.formatMessage(routeLabel)}
           </Typography>
-          {action === 'redeem-vault' ? (
+          {action === 'redeem-vault-oeth' ? (
             <Origin sx={{ fontSize: 20 }} />
           ) : (
             <Curve sx={{ fontSize: 20 }} />

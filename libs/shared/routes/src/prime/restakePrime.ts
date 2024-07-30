@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable unused-imports/no-unused-vars */
-import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
 import { getReferrerId } from '@origin/shared/providers';
 import {
@@ -30,7 +29,7 @@ import type {
 } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 
-const isRouteAvailable: IsRouteAvailable = async (config) => {
+const isRouteAvailable: IsRouteAvailable = async ({ config }) => {
   try {
     const paused = await readContract(config, {
       address: contracts.mainnet.lrtDepositPool.address,
@@ -45,7 +44,7 @@ const isRouteAvailable: IsRouteAvailable = async (config) => {
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config, queryClient },
   { amountIn, tokenIn, tokenOut },
 ) => {
   if (amountIn === 0n || !tokenIn?.address) {
@@ -80,7 +79,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -128,7 +127,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config, queryClient }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -151,7 +150,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -177,7 +176,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -194,7 +193,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -204,7 +203,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Flipper is not approved`);
@@ -231,7 +233,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export default {
+export const restakePrime = {
   isRouteAvailable,
   estimateAmount,
   estimateRoute,

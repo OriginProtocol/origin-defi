@@ -38,7 +38,7 @@ const getFunctionName = (tokenIn: Token, tokenOut: Token) => {
 };
 
 const isRouteAvailable: IsRouteAvailable = async (
-  config,
+  { config },
   { amountIn, tokenIn, tokenOut },
 ) => {
   const amtIn = +formatUnits(amountIn, tokenIn.decimals);
@@ -65,7 +65,7 @@ const isRouteAvailable: IsRouteAvailable = async (
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { amountIn, tokenIn, tokenOut },
 ) => {
   const publicClient = getPublicClient(config, {
@@ -120,7 +120,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -139,7 +139,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -165,7 +165,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -182,7 +182,10 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
   return hash;
 };
 
-const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
+const swap: Swap = async (
+  { config, queryClient },
+  { tokenIn, tokenOut, amountIn },
+) => {
   const { address } = getAccount(config);
   const functionName = getFunctionName(tokenIn, tokenOut);
 
@@ -190,7 +193,10 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Flipper is not approved`);

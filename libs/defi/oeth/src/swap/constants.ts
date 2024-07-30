@@ -4,8 +4,6 @@ import type { SwapRoute } from '@origin/shared/providers';
 
 import type { OethSwapAction } from './types';
 
-export const GAS_BUFFER = 10n; // 10%
-
 export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   // Mint
   {

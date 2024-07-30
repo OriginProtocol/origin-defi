@@ -1,12 +1,13 @@
+import {
+  restakePrime,
+  swapUniswapPrime,
+  swapZapperPrime,
+} from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
-
-import restake from './restake';
-import uniswap from './uniwsap';
-import zapper from './zapper';
 
 import type { SwapApi } from '@origin/shared/providers';
 
-import type { RestakeAction } from '../types';
+import type { RestakeAction } from './types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
@@ -55,18 +56,18 @@ const defaultApi: SwapApi = {
 };
 
 export const restakeActions: Record<RestakeAction, SwapApi> = {
-  restake: {
+  'restake-prime': {
     ...defaultApi,
-    ...restake,
+    ...restakePrime,
   },
-  uniswap: {
+  'swap-uniswap-prime': {
     ...defaultApi,
-    ...uniswap,
+    ...swapUniswapPrime,
     buttonLabel: defineMessage({ defaultMessage: 'Swap with Uniswap' }),
     routeLabel: defineMessage({ defaultMessage: 'Uniswap V3' }),
   },
-  zapper: {
+  'swap-zapper-prime': {
     ...defaultApi,
-    ...zapper,
+    ...swapZapperPrime,
   },
 };

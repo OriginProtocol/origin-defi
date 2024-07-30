@@ -18,7 +18,7 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async (config, { amountIn }) => {
+const isRouteAvailable: IsRouteAvailable = async ({ config }, { amountIn }) => {
   try {
     const poolBalance = await readContract(config, {
       address: tokens.mainnet.primeETH.address,
@@ -34,7 +34,7 @@ const isRouteAvailable: IsRouteAvailable = async (config, { amountIn }) => {
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { amountIn, tokenOut },
 ) => {
   let estimate = 0n;
@@ -56,7 +56,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config },
   { tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -124,7 +124,7 @@ const allowance: Allowance = async () => {
 };
 
 const swap: Swap = async (
-  config,
+  { config },
   { tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -162,7 +162,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export default {
+export const swapUniswapPrime = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,

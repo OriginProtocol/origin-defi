@@ -1,4 +1,3 @@
-import { queryClient } from '@origin/ousd/shared';
 import { contracts } from '@origin/shared/contracts';
 import {
   simulateContractWithTxTracker,
@@ -32,7 +31,7 @@ import type {
 } from '@origin/shared/providers';
 
 const isRouteAvailable: IsRouteAvailable = async (
-  config,
+  { config, queryClient },
   { amountIn, tokenIn, tokenOut },
 ) => {
   const curve = await queryClient.fetchQuery({
@@ -64,7 +63,7 @@ const isRouteAvailable: IsRouteAvailable = async (
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config, queryClient },
   { amountIn, tokenIn, tokenOut },
 ) => {
   if (amountIn === 0n) {
@@ -93,7 +92,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -178,7 +177,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -197,7 +196,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -223,7 +222,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   if (amountIn === 0n || !tokenIn?.address) {
     return null;
   }
@@ -241,7 +240,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -250,7 +249,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`Curve swap is not approved`);
@@ -261,13 +263,16 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(config, {
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut,
-    slippage,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      tokenIn,
+      tokenOut,
+      amountIn,
+      amountOut,
+      slippage,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),

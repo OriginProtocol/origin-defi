@@ -4,9 +4,6 @@ import type { SwapRoute } from '@origin/shared/providers';
 
 import type { OusdSwapAction } from './types';
 
-export const GAS_BUFFER = 10n; // 10%
-export const MAX_PRICE = 1.2;
-
 export const ousdSwapRoutes: SwapRoute<OusdSwapAction>[] = [
   // Mint DAI -> OUSD
   {

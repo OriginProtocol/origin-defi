@@ -64,7 +64,7 @@ const getPath = (tokenIn: Token, tokenOut: Token) => {
 };
 
 const isRouteAvailable: IsRouteAvailable = async (
-  config,
+  { config },
   { amountIn, tokenIn, tokenOut },
 ) => {
   const path = getPath(tokenIn, tokenOut);
@@ -90,7 +90,7 @@ const isRouteAvailable: IsRouteAvailable = async (
 };
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config },
   { amountIn, tokenIn, tokenOut },
 ) => {
   const path = getPath(tokenIn, tokenOut);
@@ -111,7 +111,7 @@ const estimateAmount: EstimateAmount = async (
 };
 
 const estimateGas: EstimateGas = async (
-  config,
+  { config },
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
@@ -186,7 +186,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const allowance: Allowance = async (config, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
@@ -205,7 +205,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
-  config,
+  { config },
   { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
@@ -231,7 +231,10 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
+const approve: Approve = async (
+  { config },
+  { tokenIn, tokenOut, amountIn },
+) => {
   if (amountIn === 0n || !tokenIn?.address) {
     return null;
   }
@@ -249,7 +252,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
 };
 
 const swap: Swap = async (
-  config,
+  { config, queryClient },
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -258,7 +261,10 @@ const swap: Swap = async (
     return null;
   }
 
-  const approved = await allowance(config, { tokenIn, tokenOut });
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
 
   if (approved < amountIn) {
     throw new Error(`SushiSwap is not approved`);
@@ -269,13 +275,16 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(config, {
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut,
-    slippage,
-  });
+  const estimatedGas = await estimateGas(
+    { config, queryClient },
+    {
+      tokenIn,
+      tokenOut,
+      amountIn,
+      amountOut,
+      slippage,
+    },
+  );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {

@@ -1,11 +1,9 @@
+import { redeemVaultOeth, SwapCurveOeth } from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
-
-import redeemVault from './redeemVault';
-import swapCurve from './swapCurve';
 
 import type { SwapApi } from '@origin/shared/providers';
 
-import type { RedeemAction } from '../types';
+import type { OethRedeemAction } from './types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
@@ -53,16 +51,16 @@ const defaultApi: SwapApi = {
   routeLabel: defineMessage({ defaultMessage: 'Redeem' }),
 };
 
-export const redeemActions: Record<RedeemAction, SwapApi> = {
-  'swap-curve': {
+export const redeemActions: Record<OethRedeemAction, SwapApi> = {
+  'swap-curve-oeth': {
     ...defaultApi,
-    ...swapCurve,
+    ...SwapCurveOeth,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
-    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
   },
-  'redeem-vault': {
+  'redeem-vault-oeth': {
     ...defaultApi,
-    ...redeemVault,
+    ...redeemVaultOeth,
     routeLabel: defineMessage({ defaultMessage: 'Redeem via OETH Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
   },

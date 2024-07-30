@@ -1,4 +1,3 @@
-import { queryClient } from '@origin/prime/shared';
 import { contracts } from '@origin/shared/contracts';
 import { getReferrerId, useTokenPrices } from '@origin/shared/providers';
 import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
@@ -15,7 +14,7 @@ import type {
 } from '@origin/shared/providers';
 
 const estimateAmount: EstimateAmount = async (
-  config,
+  { config, queryClient },
   { amountIn, tokenIn, tokenOut },
 ) => {
   if (amountIn === 0n) {
@@ -68,7 +67,7 @@ const approve: Approve = async () => {
 };
 
 const swap: Swap = async (
-  config,
+  { config },
   { tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
@@ -96,7 +95,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export default {
+export const swapZapperPrime = {
   estimateAmount,
   estimateRoute,
   allowance,
