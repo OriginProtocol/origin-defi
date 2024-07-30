@@ -1,17 +1,18 @@
+import {
+  mintVaultOeth,
+  SwapCurveOeth,
+  swapCurveOethEth,
+  swapCurveOethSfrxeth,
+  swapZapperOethEth,
+  swapZapperOethSfrxeth,
+  unwrapOethWoeth,
+  wrapOethWoeth,
+} from '@origin/shared/routes';
 import { defineMessage } from 'react-intl';
-
-import flipper from './flipper';
-import mintVault from './mintVault';
-import sushiswap from './sushiswap';
-import swapCurve from './swapCurve';
-import uniswapV2 from './uniswapV2';
-import uniswapV3 from './uniswapV3';
-import unwrapWOUSD from './unwrapWOUSD';
-import wrapOUSD from './wrapOUSD';
 
 import type { SwapApi } from '@origin/shared/providers';
 
-import type { OusdSwapAction } from '../types';
+import type { OethSwapAction } from './types';
 
 const defaultApi: SwapApi = {
   isRouteAvailable: async () => true,
@@ -55,51 +56,56 @@ const defaultApi: SwapApi = {
     console.log('Route swap operation not implemented');
     return null;
   },
-  routeLabel: defineMessage({ defaultMessage: 'Swap' }),
   buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  routeLabel: defineMessage({ defaultMessage: 'Swap' }),
 };
 
-export const ousdSwapActions: Record<OusdSwapAction, SwapApi> = {
-  flipper: {
+export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
+  'swap-curve-oeth': {
     ...defaultApi,
-    ...flipper,
-    routeLabel: defineMessage({ defaultMessage: 'Swap via Flipper' }),
+    ...SwapCurveOeth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
-  'mint-vault': {
+  'swap-curve-oeth-eth': {
     ...defaultApi,
-    ...mintVault,
+    ...swapCurveOethEth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via CurvePool' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-curve-oeth-sfrxeth': {
+    ...defaultApi,
+    ...swapCurveOethSfrxeth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
+  'swap-zapper-oeth-eth': {
+    ...defaultApi,
+    ...swapZapperOethEth,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
-  sushiswap: {
+  'swap-zapper-oeth-sfrxeth': {
     ...defaultApi,
-    ...sushiswap,
-    routeLabel: defineMessage({ defaultMessage: 'Swap via SushiSwap' }),
+    ...swapZapperOethSfrxeth,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
-  'swap-curve': {
+  'mint-vault-oeth': {
     ...defaultApi,
-    ...swapCurve,
-    routeLabel: defineMessage({ defaultMessage: 'Swap via Curve' }),
+    ...mintVaultOeth,
+    routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Mint' }),
   },
-  'uniswap-v2': {
+  'wrap-oeth-oeth': {
     ...defaultApi,
-    ...uniswapV2,
-    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V2' }),
-  },
-  'uniswap-v3': {
-    ...defaultApi,
-    ...uniswapV3,
-    routeLabel: defineMessage({ defaultMessage: 'Swap via Uniswap V3' }),
-  },
-  'wrap-ousd': {
-    ...defaultApi,
-    ...wrapOUSD,
+    ...wrapOethWoeth,
     routeLabel: defineMessage({ defaultMessage: 'Wrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Wrap' }),
   },
-  'unwrap-wousd': {
+  'unwrap-oeth-woeth': {
     ...defaultApi,
-    ...unwrapWOUSD,
+    ...unwrapOethWoeth,
     routeLabel: defineMessage({ defaultMessage: 'Unwrap with Origin' }),
     buttonLabel: defineMessage({ defaultMessage: 'Unwrap' }),
   },

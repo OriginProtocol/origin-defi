@@ -1,10 +1,6 @@
-import { contracts, tokens } from '@origin/shared/contracts';
+import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import {
-  ETH_ADDRESS_CURVE,
-  isNilOrEmpty,
-  subPercentage,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -12,70 +8,57 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits } from 'viem';
+import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 
 import type {
   Allowance,
   Approve,
-  EstimateAmount,
   EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
+  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+import type { EstimateAmount } from '@origin/shared/providers';
 
-const curveConfig = {
-  routes: [
-    tokens.mainnet.OETH.address,
-    contracts.mainnet.OETHCurvePool.address,
-    ETH_ADDRESS_CURVE,
-    '0xa1f8a6807c402e4a15ef4eba36528a3fed24e577',
-    tokens.mainnet.frxETH.address,
-    tokens.mainnet.sfrxETH.address,
-    tokens.mainnet.sfrxETH.address,
-    '0x0000000000000000000000000000000000000000',
-    '0x0000000000000000000000000000000000000000',
-    '0x0000000000000000000000000000000000000000',
-    '0x0000000000000000000000000000000000000000',
-  ],
-  params: [
-    [1n, 0n, 1n, 1n, 2n],
-    [0n, 1n, 1n, 1n, 2n],
-    [0n, 0n, 8n, 0n, 0n],
-    [0n, 0n, 0n, 0n, 0n],
-    [0n, 0n, 0n, 0n, 0n],
-  ],
-} as const;
+const isRouteAvailable: IsRouteAvailable = async (
+  config,
+  { tokenIn, amountIn },
+) => {
+  try {
+    if (tokenIn?.address) {
+      const bal = await readContract(config, {
+        address: tokens.mainnet.WETH.address,
+        abi: tokens.mainnet.WETH.abi,
+        functionName: 'balanceOf',
+        args: [contracts.mainnet.OETHVault.address],
+        chainId: tokens.mainnet.WETH.chainId,
+      });
+
+      return amountIn <= bal;
+    }
+  } catch {}
+
+  return false;
+};
 
 const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
-  if (amountIn === 0n) {
-    return 0n;
-  }
-
-  const amountOut = await readContract(config, {
-    address: contracts.mainnet.CurveRouter.address,
-    abi: contracts.mainnet.CurveRouter.abi,
-    functionName: 'get_dy',
-    args: [curveConfig.routes, curveConfig.params, amountIn],
-    chainId: contracts.mainnet.CurveRouter.chainId,
-  });
-
-  return amountOut as unknown as bigint;
+  // 0.1% redeem fee
+  return amountIn - amountIn / 1000n;
 };
 
 const estimateGas: EstimateGas = async (
   config,
-  { tokenOut, amountIn, amountOut, slippage },
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
-  const { address } = getAccount(config);
   const publicClient = getPublicClient(config, {
-    chainId: contracts.mainnet.CurveRouter.chainId,
+    chainId: contracts.mainnet.OETHVault.chainId,
   });
 
-  if (amountIn === 0n || !publicClient) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
   }
 
@@ -86,35 +69,21 @@ const estimateGas: EstimateGas = async (
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.CurveRouter.address,
-      abi: contracts.mainnet.CurveRouter.abi,
-      functionName: 'exchange',
-      args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut[0]],
-      account: address ?? ETH_ADDRESS_CURVE,
+      address: contracts.mainnet.OETHVault.address,
+      abi: contracts.mainnet.OETHVault.abi,
+      functionName: 'redeem',
+      args: [amountIn, minAmountOut[0]],
+      account: whales.mainnet.OETH,
     });
-  } catch (e) {
-    gasEstimate = 350000n;
+  } catch {
+    gasEstimate = 1500000n;
   }
 
   return gasEstimate;
 };
 
 const allowance: Allowance = async (config, { tokenIn }) => {
-  const { address } = getAccount(config);
-
-  if (!address || !tokenIn?.address) {
-    return 0n;
-  }
-
-  const allowance = await readContract(config, {
-    address: tokenIn.address,
-    abi: erc20Abi,
-    functionName: 'allowance',
-    args: [address, contracts.mainnet.CurveRouter.address],
-    chainId: tokenIn.chainId,
-  });
-
-  return allowance;
+  return maxUint256;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
@@ -125,7 +94,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !tokenIn?.address || !publicClient) {
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
 
@@ -134,7 +103,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [contracts.mainnet.CurveRouter.address, amountIn],
+      args: [contracts.mainnet.OETHVault.address, amountIn],
       account: address,
     });
   } catch {
@@ -168,8 +137,8 @@ const estimateRoute: EstimateRoute = async (
     tokenIn,
     tokenOut,
     amountIn,
-    amountOut: estimatedAmount,
     slippage,
+    amountOut: estimatedAmount,
   });
 
   return {
@@ -184,7 +153,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -193,7 +162,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [contracts.mainnet.CurveRouter.address, amountIn],
+    args: [contracts.mainnet.OETHVault.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -203,18 +172,12 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
 
 const swap: Swap = async (
   config,
-  { tokenIn, tokenOut, amountIn, amountOut, slippage },
+  { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   const { address } = getAccount(config);
 
   if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
-  }
-
-  const approved = await allowance(config, { tokenIn, tokenOut });
-
-  if (approved < amountIn) {
-    throw new Error(`Swap curve is not approved`);
   }
 
   const minAmountOut = subPercentage(
@@ -232,20 +195,20 @@ const swap: Swap = async (
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.CurveRouter.address,
-    abi: contracts.mainnet.CurveRouter.abi,
-    functionName: 'exchange',
-    args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut[0]],
-    account: address,
+    address: contracts.mainnet.OETHVault.address,
+    abi: contracts.mainnet.OETHVault.abi,
+    functionName: 'redeem',
+    args: [amountIn, minAmountOut[0]],
     gas,
-    chainId: contracts.mainnet.CurveRouter.chainId,
+    chainId: contracts.mainnet.OETHVault.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export default {
+export const redeemVaultOeth = {
+  isRouteAvailable,
   estimateAmount,
   estimateGas,
   estimateRoute,

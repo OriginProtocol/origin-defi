@@ -279,7 +279,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export default {
+export const mintVaultOeth = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,

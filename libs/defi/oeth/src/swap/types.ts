@@ -1,9 +1,13 @@
-export type OethSwapAction =
-  | 'swap-curve'
-  | 'swap-curve-eth'
-  | 'swap-curve-sfrxeth'
-  | 'swap-zapper-eth'
-  | 'swap-zapper-sfrxeth'
-  | 'mint-vault'
-  | 'wrap-oeth'
-  | 'unwrap-woeth';
+import type { OethRoute } from '@origin/shared/routes';
+
+export type OethSwapAction = Extract<
+  OethRoute,
+  | 'mint-vault-oeth'
+  | 'swap-curve-oeth'
+  | 'swap-curve-oeth-eth'
+  | 'swap-curve-oeth-sfrxeth'
+  | 'swap-zapper-oeth-eth'
+  | 'swap-zapper-oeth-sfrxeth'
+  | 'unwrap-oeth-woeth'
+  | 'wrap-oeth-oeth'
+>;

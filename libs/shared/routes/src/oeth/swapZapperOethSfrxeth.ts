@@ -219,7 +219,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export default {
+export const swapZapperOethSfrxeth = {
   estimateAmount,
   estimateGas,
   estimateRoute,

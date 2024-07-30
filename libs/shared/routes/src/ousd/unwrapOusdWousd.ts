@@ -24,24 +24,24 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   }
 
   const data = await readContract(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToAssets',
     args: [amountIn],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
 
-  return data as unknown as bigint;
+  return data;
 };
 
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
   const publicClient = getPublicClient(config, {
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
 
-  if (amountIn === 0n) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
@@ -49,28 +49,26 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 
   if (address) {
     try {
-      gasEstimate =
-        (await publicClient?.estimateContractGas({
-          address: tokens.mainnet.wOETH.address,
-          abi: tokens.mainnet.wOETH.abi,
-          functionName: 'redeem',
-          args: [amountIn, address, address],
-          account: address,
-        })) ?? 0n;
+      gasEstimate = await publicClient.estimateContractGas({
+        address: tokens.mainnet.wOUSD.address,
+        abi: tokens.mainnet.wOUSD.abi,
+        functionName: 'redeem',
+        args: [amountIn, address, address],
+        account: address,
+      });
 
       return gasEstimate;
     } catch {}
   }
 
   try {
-    gasEstimate =
-      (await publicClient?.estimateContractGas({
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
-        functionName: 'redeem',
-        args: [amountIn, whales.mainnet.wOETH, whales.mainnet.wOETH],
-        account: whales.mainnet.wOETH,
-      })) ?? 21000n;
+    gasEstimate = await publicClient.estimateContractGas({
+      address: tokens.mainnet.wOUSD.address,
+      abi: tokens.mainnet.wOUSD.abi,
+      functionName: 'redeem',
+      args: [amountIn, whales.mainnet.wOUSD, whales.mainnet.wOUSD],
+      account: whales.mainnet.wOUSD,
+    });
   } catch {
     gasEstimate = 21000n;
   }
@@ -79,12 +77,12 @@ const estimateGas: EstimateGas = async (config, { amountIn }) => {
 };
 
 const allowance: Allowance = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap wOUSD does not require approval
   return maxUint256;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap wOUSD does not require approval
   return 0n;
 };
 
@@ -108,7 +106,7 @@ const estimateRoute: EstimateRoute = async (
       estimateAmount(config, { tokenIn, tokenOut, amountIn }),
       estimateGas(config, { tokenIn, tokenOut, amountIn, slippage }),
       allowance(config, { tokenIn, tokenOut }),
-      estimateApprovalGas(config, { amountIn, tokenIn, tokenOut }),
+      estimateApprovalGas(config, { tokenIn, tokenOut, amountIn }),
     ]);
 
   return {
@@ -124,7 +122,7 @@ const estimateRoute: EstimateRoute = async (
 };
 
 const approve: Approve = async () => {
-  // Unwrap wOETH does not require approval
+  // Unwrap wOUSD does not require approval
   return null;
 };
 
@@ -136,18 +134,18 @@ const swap: Swap = async (config, { amountIn }) => {
   }
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: tokens.mainnet.wOUSD.address,
+    abi: tokens.mainnet.wOUSD.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export default {
+export const unwrapOusdWousd = {
   estimateAmount,
   estimateGas,
   estimateRoute,

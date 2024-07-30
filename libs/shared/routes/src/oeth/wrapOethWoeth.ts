@@ -206,7 +206,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
   return hash;
 };
 
-export default {
+export const wrapOethWoeth = {
   estimateAmount,
   estimateGas,
   estimateRoute,

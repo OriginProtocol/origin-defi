@@ -351,7 +351,7 @@ const swap: Swap = async (
   return txHash;
 };
 
-export default {
+export const swapUniswapV3Ousd = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,

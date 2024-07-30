@@ -1,6 +1,10 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { subPercentage, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subPercentage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -68,19 +72,20 @@ const isRouteAvailable: IsRouteAvailable = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   const path = getPath(tokenIn, tokenOut);
+
   try {
     if (path) {
       const estimate = await readContract(config, {
-        address: contracts.mainnet.sushiswapRouter.address,
-        abi: contracts.mainnet.sushiswapRouter.abi,
+        address: contracts.mainnet.uniswapV2Router.address,
+        abi: contracts.mainnet.uniswapV2Router.abi,
         functionName: 'getAmountsOut',
         args: [amountIn, path],
-        chainId: contracts.mainnet.sushiswapRouter.chainId,
+        chainId: contracts.mainnet.uniswapV2Router.chainId,
       });
 
       return (
         +formatUnits(amountIn, tokenIn.decimals) /
-          +formatUnits(last(estimate) ?? 1n, tokenOut.decimals) <
+          +formatUnits(last(estimate) ?? 0n, tokenOut.decimals) <
         MAX_PRICE
       );
     }
@@ -94,17 +99,16 @@ const estimateAmount: EstimateAmount = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   const path = getPath(tokenIn, tokenOut);
-
   if (amountIn === 0n || !path) {
     return 0n;
   }
 
   const estimate = await readContract(config, {
-    address: contracts.mainnet.sushiswapRouter.address,
-    abi: contracts.mainnet.sushiswapRouter.abi,
+    address: contracts.mainnet.uniswapV2Router.address,
+    abi: contracts.mainnet.uniswapV2Router.abi,
     functionName: 'getAmountsOut',
     args: [amountIn, path],
-    chainId: contracts.mainnet.sushiswapRouter.chainId,
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
 
   return last(estimate) ?? 0n;
@@ -116,43 +120,41 @@ const estimateGas: EstimateGas = async (
 ) => {
   let gasEstimate = 0n;
   const publicClient = getPublicClient(config, {
-    chainId: contracts.mainnet.sushiswapRouter.chainId,
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
+  const { address } = getAccount(config);
+  const path = getPath(tokenIn, tokenOut);
 
-  if (amountIn === 0n || !publicClient) {
+  if (amountIn === 0n || !publicClient || !path) {
     return gasEstimate;
   }
 
-  const { address } = getAccount(config);
   const minAmountOut = subPercentage(
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
-  const path = getPath(tokenIn, tokenOut);
-
-  gasEstimate =
-    tokenIn.symbol === tokens.mainnet.USDT.symbol ||
-    tokenOut.symbol === tokens.mainnet.USDT.symbol
-      ? 175000n
-      : 230000n;
 
   try {
-    if (path) {
-      gasEstimate = await publicClient.estimateContractGas({
-        address: contracts.mainnet.sushiswapRouter.address,
-        abi: contracts.mainnet.sushiswapRouter.abi,
-        functionName: 'swapExactTokensForTokens',
-        args: [
-          amountIn,
-          minAmountOut[0],
-          path,
-          address ?? ZERO_ADDRESS,
-          BigInt(Date.now() + 2 * 60 * 1000),
-        ],
-        account: address,
-      });
-    }
-  } catch {}
+    gasEstimate = await publicClient.estimateContractGas({
+      address: contracts.mainnet.uniswapV2Router.address,
+      abi: contracts.mainnet.uniswapV2Router.abi,
+      functionName: 'swapExactTokensForTokens',
+      args: [
+        amountIn,
+        minAmountOut[0],
+        path,
+        address ?? ZERO_ADDRESS,
+        BigInt(Date.now() + 2 * 60 * 1000),
+      ],
+      account: address,
+    });
+  } catch {
+    gasEstimate =
+      tokenIn.symbol === tokens.mainnet.USDT.symbol ||
+      tokenOut.symbol === tokens.mainnet.USDT.symbol
+        ? 175000n
+        : 230000n;
+  }
 
   return gasEstimate;
 };
@@ -197,7 +199,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.sushiswapRouter.address],
+    args: [address, contracts.mainnet.uniswapV2Router.address],
     chainId: tokenIn.chainId,
   });
 
@@ -212,7 +214,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
+  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
 
@@ -221,8 +223,8 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.sushiswapRouter.address, amountIn],
-      account: address ?? ZERO_ADDRESS,
+      args: [contracts.mainnet.uniswapV2Router.address, amountIn],
+      account: address,
     });
   } catch {
     approvalEstimate = 60000n;
@@ -232,7 +234,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 };
 
 const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
-  if (amountIn === 0n || !tokenIn?.address) {
+  if (!tokenIn?.address) {
     return null;
   }
 
@@ -240,7 +242,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.sushiswapRouter.address, amountIn],
+    args: [contracts.mainnet.uniswapV2Router.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -254,14 +256,14 @@ const swap: Swap = async (
 ) => {
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || !address) {
+  if (amountIn === 0n || isNilOrEmpty(address)) {
     return null;
   }
 
   const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    throw new Error(`SushiSwap is not approved`);
+    throw new Error(`Uniswap V2 is not approved`);
   }
 
   const minAmountOut = subPercentage(
@@ -279,8 +281,8 @@ const swap: Swap = async (
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.sushiswapRouter.address,
-    abi: contracts.mainnet.sushiswapRouter.abi,
+    address: contracts.mainnet.uniswapV2Router.address,
+    abi: contracts.mainnet.uniswapV2Router.abi,
     functionName: 'swapExactTokensForTokens',
     args: [
       amountIn,
@@ -291,14 +293,14 @@ const swap: Swap = async (
     ],
     account: address,
     gas,
-    chainId: contracts.mainnet.sushiswapRouter.chainId,
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export default {
+export const swapUniswapV2Ousd = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,

@@ -1,14 +1,6 @@
-import { queryClient } from '@origin/ousd/shared';
-import { contracts } from '@origin/shared/contracts';
-import {
-  simulateContractWithTxTracker,
-  useCurve,
-} from '@origin/shared/providers';
-import {
-  isAddressEqual,
-  subPercentage,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { simulateContractWithTxTracker } from '@origin/shared/providers';
+import { subPercentage, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -16,10 +8,12 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
+import { last } from 'ramda';
 import { formatUnits } from 'viem';
 
 import { GAS_BUFFER, MAX_PRICE } from '../constants';
 
+import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
   Approve,
@@ -31,33 +25,65 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
+const getPath = (tokenIn: Token, tokenOut: Token) => {
+  if (tokenIn.symbol === tokens.mainnet.OUSD.symbol) {
+    return {
+      [tokens.mainnet.DAI.symbol]: [
+        tokens.mainnet.OUSD.address,
+        tokens.mainnet.USDT.address,
+        tokens.mainnet.DAI.address,
+      ] as const,
+      [tokens.mainnet.USDT.symbol]: [
+        tokens.mainnet.OUSD.address,
+        tokens.mainnet.USDT.address,
+      ] as const,
+      [tokens.mainnet.USDC.symbol]: [
+        tokens.mainnet.OUSD.address,
+        tokens.mainnet.USDT.address,
+        tokens.mainnet.USDC.address,
+      ] as const,
+    }[tokenOut.symbol];
+  } else if (tokenOut.symbol === tokens.mainnet.OUSD.symbol) {
+    return {
+      [tokens.mainnet.DAI.symbol]: [
+        tokens.mainnet.DAI.address,
+        tokens.mainnet.USDT.address,
+        tokens.mainnet.OUSD.address,
+      ] as const,
+      [tokens.mainnet.USDT.symbol]: [
+        tokens.mainnet.USDT.address,
+        tokens.mainnet.OUSD.address,
+      ] as const,
+      [tokens.mainnet.USDC.symbol]: [
+        tokens.mainnet.USDC.address,
+        tokens.mainnet.USDT.address,
+        tokens.mainnet.OUSD.address,
+      ] as const,
+    }[tokenIn.symbol];
+  }
+};
+
 const isRouteAvailable: IsRouteAvailable = async (
   config,
   { amountIn, tokenIn, tokenOut },
 ) => {
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
+  const path = getPath(tokenIn, tokenOut);
   try {
-    const estimate = await readContract(config, {
-      address: curve.CurveRegistryExchange.address,
-      abi: curve.CurveRegistryExchange.abi,
-      functionName: 'get_exchange_amount',
-      args: [
-        contracts.mainnet.OUSDCurveMetaPool.address,
-        tokenIn.address,
-        tokenOut.address,
-        amountIn,
-      ],
-      chainId: curve.CurveRegistryExchange.chainId,
-    });
-    return (
-      +formatUnits(amountIn, tokenIn.decimals) /
-        +formatUnits(estimate as unknown as bigint, tokenOut.decimals) <
-      MAX_PRICE
-    );
+    if (path) {
+      const estimate = await readContract(config, {
+        address: contracts.mainnet.sushiswapRouter.address,
+        abi: contracts.mainnet.sushiswapRouter.abi,
+        functionName: 'getAmountsOut',
+        args: [amountIn, path],
+        chainId: contracts.mainnet.sushiswapRouter.chainId,
+      });
+
+      return (
+        +formatUnits(amountIn, tokenIn.decimals) /
+          +formatUnits(last(estimate) ?? 1n, tokenOut.decimals) <
+        MAX_PRICE
+      );
+    }
   } catch {}
 
   return false;
@@ -67,29 +93,21 @@ const estimateAmount: EstimateAmount = async (
   config,
   { amountIn, tokenIn, tokenOut },
 ) => {
-  if (amountIn === 0n) {
+  const path = getPath(tokenIn, tokenOut);
+
+  if (amountIn === 0n || !path) {
     return 0n;
   }
 
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
   const estimate = await readContract(config, {
-    address: curve.CurveRegistryExchange.address,
-    abi: curve.CurveRegistryExchange.abi,
-    functionName: 'get_exchange_amount',
-    args: [
-      contracts.mainnet.OUSDCurveMetaPool.address,
-      tokenIn.address,
-      tokenOut.address,
-      amountIn,
-    ],
-    chainId: curve.CurveRegistryExchange.chainId,
+    address: contracts.mainnet.sushiswapRouter.address,
+    abi: contracts.mainnet.sushiswapRouter.abi,
+    functionName: 'getAmountsOut',
+    args: [amountIn, path],
+    chainId: contracts.mainnet.sushiswapRouter.chainId,
   });
 
-  return estimate as unknown as bigint;
+  return last(estimate) ?? 0n;
 };
 
 const estimateGas: EstimateGas = async (
@@ -98,15 +116,10 @@ const estimateGas: EstimateGas = async (
 ) => {
   let gasEstimate = 0n;
   const publicClient = getPublicClient(config, {
-    chainId: contracts.mainnet.OUSDCurveMetaPool.chainId,
+    chainId: contracts.mainnet.sushiswapRouter.chainId,
   });
 
-  if (
-    amountIn === 0n ||
-    !publicClient ||
-    !tokenIn?.address ||
-    !tokenOut?.address
-  ) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
@@ -115,36 +128,31 @@ const estimateGas: EstimateGas = async (
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
+  const path = getPath(tokenIn, tokenOut);
+
+  gasEstimate =
+    tokenIn.symbol === tokens.mainnet.USDT.symbol ||
+    tokenOut.symbol === tokens.mainnet.USDT.symbol
+      ? 175000n
+      : 230000n;
 
   try {
-    gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OUSDCurveMetaPool.address,
-      abi: contracts.mainnet.OUSDCurveMetaPool.abi,
-      functionName: 'exchange_underlying',
-      args: [
-        BigInt(
-          curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenIn.address ?? ZERO_ADDRESS),
-          ),
-        ),
-        BigInt(
-          curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-            isAddressEqual(t, tokenOut.address ?? ZERO_ADDRESS),
-          ),
-        ),
-        amountIn,
-        minAmountOut[0],
-      ],
-      account: address,
-    });
-  } catch {
-    gasEstimate = 350000n;
-  }
+    if (path) {
+      gasEstimate = await publicClient.estimateContractGas({
+        address: contracts.mainnet.sushiswapRouter.address,
+        abi: contracts.mainnet.sushiswapRouter.abi,
+        functionName: 'swapExactTokensForTokens',
+        args: [
+          amountIn,
+          minAmountOut[0],
+          path,
+          address ?? ZERO_ADDRESS,
+          BigInt(Date.now() + 2 * 60 * 1000),
+        ],
+        account: address,
+      });
+    }
+  } catch {}
 
   return gasEstimate;
 };
@@ -189,7 +197,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.OUSDCurveMetaPool.address],
+    args: [address, contracts.mainnet.sushiswapRouter.address],
     chainId: tokenIn.chainId,
   });
 
@@ -204,7 +212,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
+  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
   }
 
@@ -213,8 +221,8 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: tokenIn.abi,
       functionName: 'approve',
-      args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
-      account: address,
+      args: [contracts.mainnet.sushiswapRouter.address, amountIn],
+      account: address ?? ZERO_ADDRESS,
     });
   } catch {
     approvalEstimate = 60000n;
@@ -223,7 +231,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   return approvalEstimate;
 };
 
-const approve: Approve = async (config, { tokenIn, amountIn }) => {
+const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
   if (amountIn === 0n || !tokenIn?.address) {
     return null;
   }
@@ -232,7 +240,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     address: tokenIn.address,
     abi: tokenIn.abi,
     functionName: 'approve',
-    args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
+    args: [contracts.mainnet.sushiswapRouter.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -246,14 +254,14 @@ const swap: Swap = async (
 ) => {
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || !address || !tokenIn?.address || !tokenOut?.address) {
+  if (amountIn === 0n || !address) {
     return null;
   }
 
   const approved = await allowance(config, { tokenIn, tokenOut });
 
   if (approved < amountIn) {
-    throw new Error(`Curve swap is not approved`);
+    throw new Error(`SushiSwap is not approved`);
   }
 
   const minAmountOut = subPercentage(
@@ -269,40 +277,28 @@ const swap: Swap = async (
     slippage,
   });
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
-  const curve = await queryClient.fetchQuery({
-    queryKey: useCurve.getKey(),
-    queryFn: useCurve.fetcher(config),
-    staleTime: Infinity,
-  });
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.OUSDCurveMetaPool.address,
-    abi: contracts.mainnet.OUSDCurveMetaPool.abi,
-    functionName: 'exchange_underlying',
+    address: contracts.mainnet.sushiswapRouter.address,
+    abi: contracts.mainnet.sushiswapRouter.abi,
+    functionName: 'swapExactTokensForTokens',
     args: [
-      BigInt(
-        curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenIn.address ?? ZERO_ADDRESS),
-        ),
-      ),
-      BigInt(
-        curve.OusdMetaPoolUnderlyings.findIndex((t) =>
-          isAddressEqual(t, tokenOut.address ?? ZERO_ADDRESS),
-        ),
-      ),
       amountIn,
       minAmountOut[0],
+      getPath(tokenIn, tokenOut),
+      address,
+      BigInt(Date.now() + 2 * 60 * 1000),
     ],
     account: address,
     gas,
-    chainId: contracts.mainnet.OUSDCurveMetaPool.chainId,
+    chainId: contracts.mainnet.sushiswapRouter.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export default {
+export const swapSushiswapOusd = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,

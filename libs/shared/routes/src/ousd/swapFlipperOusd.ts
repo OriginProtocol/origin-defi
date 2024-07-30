@@ -210,7 +210,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
   return hash;
 };
 
-export default {
+export const swapFlipperOusd = {
   isRouteAvailable,
   estimateAmount,
   estimateGas,
