@@ -139,12 +139,6 @@
       "value": " slippage:"
     }
   ],
-  "4D9M13": [
-    {
-      "type": 0,
-      "value": "Swap with CurvePool"
-    }
-  ],
   "4LOwM/": [
     {
       "type": 0,
@@ -365,12 +359,6 @@
     {
       "type": 0,
       "value": "Theme:"
-    }
-  ],
-  "C73Nbd": [
-    {
-      "type": 0,
-      "value": "Swap with Curve"
     }
   ],
   "CcqmCh": [
@@ -867,6 +855,12 @@
     {
       "type": 0,
       "value": "Est. bridge fee"
+    }
+  ],
+  "eerX6M": [
+    {
+      "type": 0,
+      "value": "Swap via CurvePool"
     }
   ],
   "fBhctx": [

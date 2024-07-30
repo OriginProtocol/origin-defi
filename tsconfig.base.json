@@ -50,6 +50,7 @@
       "@origin/shared/contracts": ["libs/shared/contracts/src/index.ts"],
       "@origin/shared/icons": ["libs/shared/icons/src/index.ts"],
       "@origin/shared/providers": ["libs/shared/providers/src/index.ts"],
+      "@origin/shared/routes": ["libs/shared/routes/src/index.ts"],
       "@origin/shared/utils": ["libs/shared/utils/src/index.ts"]
     }
   },

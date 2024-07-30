@@ -29,12 +29,6 @@
       "value": "Opt in"
     }
   ],
-  "00AJDy": [
-    {
-      "type": 0,
-      "value": "Origin Vault"
-    }
-  ],
   "024MfN": [
     {
       "type": 0,
@@ -219,12 +213,6 @@
       "value": "lastPage"
     }
   ],
-  "BONcjO": [
-    {
-      "type": 0,
-      "value": "Uniswap V3"
-    }
-  ],
   "BY343C": [
     {
       "type": 0,
@@ -311,6 +299,12 @@
       "value": "Apply"
     }
   ],
+  "GdHGdR": [
+    {
+      "type": 0,
+      "value": "Swap via Uniswap V2"
+    }
+  ],
   "H5+NAX": [
     {
       "type": 0,
@@ -339,12 +333,6 @@
     {
       "type": 0,
       "value": "Gas:"
-    }
-  ],
-  "KE0cl6": [
-    {
-      "type": 0,
-      "value": "Curve"
     }
   ],
   "KN7zKn": [
@@ -395,12 +383,6 @@
       "value": "Bridge"
     }
   ],
-  "NNBdoh": [
-    {
-      "type": 0,
-      "value": "Uniswap V2"
-    }
-  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -431,16 +413,16 @@
       "value": "No available route"
     }
   ],
-  "OhU4K0": [
-    {
-      "type": 0,
-      "value": "SushiSwap"
-    }
-  ],
   "OwO+Nr": [
     {
       "type": 0,
       "value": "Mint"
+    }
+  ],
+  "Ozw3aL": [
+    {
+      "type": 0,
+      "value": "Mint with Vault"
     }
   ],
   "PKgDoL": [
@@ -487,12 +469,6 @@
     {
       "type": 0,
       "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
-    }
-  ],
-  "TrXNPz": [
-    {
-      "type": 0,
-      "value": "Flipper"
     }
   ],
   "TwyMau": [
@@ -567,6 +543,12 @@
     {
       "type": 0,
       "value": "Redeem"
+    }
+  ],
+  "Y4FfAH": [
+    {
+      "type": 0,
+      "value": "Swap via Uniswap V3"
     }
   ],
   "ZmLuI/": [
@@ -663,6 +645,12 @@
       "value": "Lifetime Earnings (OUSD)"
     }
   ],
+  "f7AFus": [
+    {
+      "type": 0,
+      "value": "Swap via SushiSwap"
+    }
+  ],
   "fBhctx": [
     {
       "type": 0,
@@ -735,6 +723,12 @@
     {
       "type": 0,
       "value": "30-Day Trailing APY"
+    }
+  ],
+  "lQmZjB": [
+    {
+      "type": 0,
+      "value": "Swap via Curve"
     }
   ],
   "lb8m6m": [
@@ -829,6 +823,12 @@
     {
       "type": 0,
       "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+    }
+  ],
+  "tDcoCl": [
+    {
+      "type": 0,
+      "value": "Swap via Flipper"
     }
   ],
   "tFriEi": [
