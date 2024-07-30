@@ -9,7 +9,7 @@ import type { NonIndexRouteObject } from 'react-router-dom';
 export const restakeRoute: NonIndexRouteObject = {
   path: '/restake',
   Component: RestakeView,
-  handle: { label: defineMessage({ defaultMessage: 'Restake' }) },
+  handle: { label: defineMessage({ defaultMessage: 'Withdraw' }) },
   children: [
     {
       index: true,
