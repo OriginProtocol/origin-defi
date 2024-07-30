@@ -107,9 +107,6 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
-  "2/2yg+": {
-    "defaultMessage": "Add"
-  },
   "20KPDF": {
     "defaultMessage": "Registered Voters"
   },
@@ -350,9 +347,6 @@
   "BB94QK": {
     "defaultMessage": "Bridging activity"
   },
-  "BLAy25": {
-    "defaultMessage": "Extend"
-  },
   "BNFT1w": {
     "defaultMessage": "Global stats"
   },
@@ -439,6 +433,9 @@
   },
   "F6lS59": {
     "defaultMessage": "0 months"
+  },
+  "FIG7wh": {
+    "defaultMessage": "Any unclaimed rewards will transferred to your wallet immediately when you extend your stake."
   },
   "FVYhKc": {
     "defaultMessage": "Balances"
@@ -559,9 +556,6 @@
   },
   "Kw1jw2": {
     "defaultMessage": "Get {symbol}"
-  },
-  "Kzhxqf": {
-    "defaultMessage": "Select the additional OGN you would like to add to your lockup"
   },
   "L2dDDV": {
     "defaultMessage": "The percentage of total Origin DeFi DAO voting power represented by this lockup."
@@ -845,9 +839,6 @@
   "Yl2sc/": {
     "defaultMessage": "Learn about governance"
   },
-  "YnTVWE": {
-    "defaultMessage": "Adding to lockup"
-  },
   "YnftYz": {
     "defaultMessage": "Wait time:"
   },
@@ -1046,6 +1037,9 @@
   "hjWYtP": {
     "defaultMessage": "Gas"
   },
+  "hsG1EM": {
+    "defaultMessage": "Extend/Add"
+  },
   "hsqHqR": {
     "defaultMessage": "Time remaining"
   },
@@ -1060,9 +1054,6 @@
   },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
-  },
-  "iRGhsn": {
-    "defaultMessage": "Add unclaimed rewards ({rewards} OGN)"
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
@@ -1103,9 +1094,6 @@
   "kBjaSb": {
     "defaultMessage": "Your voting power"
   },
-  "kDaImL": {
-    "defaultMessage": "Add to lockup"
-  },
   "kH1R79": {
     "defaultMessage": "Stake OGN"
   },
@@ -1144,6 +1132,9 @@
   },
   "m9XypM": {
     "defaultMessage": "Sending {amount} {symbolIn} to {chainOut}."
+  },
+  "mDjDir": {
+    "defaultMessage": "Manage Stake"
   },
   "mTz9QI": {
     "defaultMessage": "Casted vote"
@@ -1366,9 +1357,6 @@
   },
   "xc6pWX": {
     "defaultMessage": "Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens."
-  },
-  "xiGfmr": {
-    "defaultMessage": "Extend stake"
   },
   "xkKA0U": {
     "defaultMessage": "Delegate on-chain voting power to:"

@@ -8,23 +8,11 @@ import type { Meta, OethRedeemAction } from './types';
 
 export const WITHDRAW_DELAY = 10; // minutes
 
-export const GAS_BUFFER = 10n; // 10%
-
 export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
-  // {
-  //   tokenIn: tokens.mainnet.OETH,
-  //   tokenOut: tokens.mainnet.WETH,
-  //   action: 'swap-curve',
-  // },
-  // {
-  //   tokenIn: tokens.mainnet.OETH,
-  //   tokenOut: tokens.mainnet.WETH,
-  //   action: 'redeem-vault',
-  // },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
-    action: 'arm',
+    action: 'redeem-arm-oeth',
     meta: {
       icon: ARM,
       waitTime: defineMessage({ defaultMessage: '~1 min' }),
@@ -34,7 +22,7 @@ export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
-    action: 'redeem-vault-async',
+    action: 'redeem-vault-async-oeth',
     meta: {
       icon: OETH,
       waitTime: defineMessage({

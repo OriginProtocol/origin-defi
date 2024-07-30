@@ -21,13 +21,14 @@ import {
 } from '@origin/shared/icons';
 import { ConnectedButton, TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
-import { formatDistanceToNowStrict, getUnixTime } from 'date-fns';
+import { getUnixTime } from 'date-fns';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useReadContract } from 'wagmi';
 
 import { useStartLockupPolling } from '../hooks';
+import { formatTimeRemaining } from '../utils';
 
 import type { DialogProps } from '@mui/material';
 import type { ConnectedButtonProps } from '@origin/shared/providers';
@@ -157,12 +158,7 @@ export const UnstakeLockupModal = ({
                 },
               )}
             </Typography>
-            <Typography>
-              {formatDistanceToNowStrict(new Date(lockup.end), {
-                unit: 'month',
-                roundingMethod: 'floor',
-              })}
-            </Typography>
+            <Typography>{formatTimeRemaining(lockup.end)}</Typography>
             <LoadingLabel isLoading={isPreviewOgnLoading}>
               {intl.formatNumber(penaltyPercent, {
                 style: 'percent',

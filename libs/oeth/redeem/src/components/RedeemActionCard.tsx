@@ -15,10 +15,10 @@ import { useIntl } from 'react-intl';
 
 import type { CardProps, StackProps, TypographyProps } from '@mui/material';
 
-import type { RedeemAction } from '../types';
+import type { OethRedeemAction } from '../types';
 
 export type RedeemActionCardProps = {
-  action: RedeemAction;
+  action: OethRedeemAction;
 } & Omit<CardProps, 'onSelect'>;
 
 export const RedeemActionCard = ({
@@ -134,7 +134,7 @@ export const RedeemActionCard = ({
           <Typography fontWeight={500}>
             {intl.formatMessage(routeLabel)}
           </Typography>
-          {action === 'redeem-vault' ? (
+          {action === 'redeem-vault-oeth' ? (
             <Origin sx={{ fontSize: 16 }} />
           ) : (
             <Curve sx={{ fontSize: 16 }} />

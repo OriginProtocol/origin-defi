@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
+import type { QueryClient } from '@tanstack/react-query';
 import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
 import type { Config } from 'wagmi';
@@ -19,18 +20,23 @@ type Args = {
   estimatedRoute: EstimatedSwapRoute;
 };
 
+type Client = {
+  config: Config;
+  queryClient: QueryClient;
+};
+
 export type IsRouteAvailable = (
-  config: Config,
+  client: Client,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<boolean>;
 
 export type EstimateAmount = (
-  config: Config,
+  client: Client,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type EstimateGas = (
-  config: Config,
+  client: Client,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage'
@@ -38,7 +44,7 @@ export type EstimateGas = (
 ) => Promise<bigint>;
 
 export type EstimateRoute = (
-  config: Config,
+  client: Client,
   args: Pick<
     Args,
     'tokenIn' | 'tokenOut' | 'amountIn' | 'amountOut' | 'slippage' | 'route'
@@ -46,22 +52,22 @@ export type EstimateRoute = (
 ) => Promise<EstimatedSwapRoute>;
 
 export type Allowance = (
-  config: Config,
+  client: Client,
   args: Pick<Args, 'tokenIn' | 'tokenOut'>,
 ) => Promise<bigint>;
 
 export type EstimateApprovalGas = (
-  config: Config,
+  client: Client,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<bigint>;
 
 export type Approve = (
-  config: Config,
+  client: Client,
   args: Pick<Args, 'tokenIn' | 'tokenOut' | 'amountIn'>,
 ) => Promise<HexAddress | null>;
 
 export type Swap = (
-  config: Config,
+  client: Client,
   args: Pick<
     Args,
     | 'tokenIn'

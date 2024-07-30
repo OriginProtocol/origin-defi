@@ -377,8 +377,11 @@ function SwapperWrapped({
           {intl.formatMessage({ defaultMessage: 'Duration' })}
         </Typography>
         <Stack direction="row" spacing={2} mb={3}>
-          <RedeemActionCard action="arm" sx={{ width: 1 }} />
-          <RedeemActionCard action="redeem-vault-async" sx={{ width: 1 }} />
+          <RedeemActionCard action="redeem-arm-oeth" sx={{ width: 1 }} />
+          <RedeemActionCard
+            action="redeem-vault-async-oeth"
+            sx={{ width: 1 }}
+          />
         </Stack>
         <Typography fontWeight="medium" mb={1.5}>
           {intl.formatMessage({ defaultMessage: 'Receive amount' })}

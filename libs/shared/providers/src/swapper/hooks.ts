@@ -244,11 +244,14 @@ export const useHandleTokenFlip = () => {
     const newRoutes = getAvailableRoutes(swapRoutes, tokenOut, tokenIn);
     const availabilities = await Promise.allSettled(
       newRoutes.map((r) =>
-        swapActions[r.action].isRouteAvailable(config, {
-          amountIn: amountIn,
-          tokenIn: r.tokenIn,
-          tokenOut: r.tokenOut,
-        }),
+        swapActions[r.action].isRouteAvailable(
+          { config, queryClient },
+          {
+            amountIn: amountIn,
+            tokenIn: r.tokenIn,
+            tokenOut: r.tokenOut,
+          },
+        ),
       ),
     );
     const filteredRoutes = newRoutes.filter(
@@ -313,14 +316,17 @@ export const useHandleTokenFlip = () => {
               queryFn: async () => {
                 let res: EstimatedSwapRoute;
                 try {
-                  res = await swapActions[route.action].estimateRoute(config, {
-                    tokenIn: route.tokenIn,
-                    tokenOut: route.tokenOut,
-                    amountIn: scaledAmountIn,
-                    amountOut: scaledAmountOut,
-                    route,
-                    slippage,
-                  });
+                  res = await swapActions[route.action].estimateRoute(
+                    { config, queryClient },
+                    {
+                      tokenIn: route.tokenIn,
+                      tokenOut: route.tokenOut,
+                      amountIn: scaledAmountIn,
+                      amountOut: scaledAmountOut,
+                      route,
+                      slippage,
+                    },
+                  );
                 } catch (error) {
                   console.error(
                     `Fail to estimate route ${route.action}\n${formatError(error)}`,
@@ -416,6 +422,7 @@ export const useHandleSelectSwapRoute = () => {
 export const useIsSwapRouteAvailable = (
   route: SwapRoute | undefined | null,
 ) => {
+  const queryClient = useQueryClient();
   const config = useConfig();
   const [{ amountIn, swapActions }] = useSwapState();
 
@@ -433,11 +440,14 @@ export const useIsSwapRouteAvailable = (
       }
       let res = false;
       try {
-        res = await swapActions[route.action].isRouteAvailable(config, {
-          tokenIn: route.tokenIn,
-          tokenOut: route.tokenOut,
-          amountIn,
-        });
+        res = await swapActions[route.action].isRouteAvailable(
+          { config, queryClient },
+          {
+            tokenIn: route.tokenIn,
+            tokenOut: route.tokenOut,
+            amountIn,
+          },
+        );
       } catch {}
 
       return res;
@@ -447,6 +457,7 @@ export const useIsSwapRouteAvailable = (
 };
 
 export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
+  const queryClient = useQueryClient();
   const config = useConfig();
   const [{ swapActions }] = useSwapState();
 
@@ -463,10 +474,13 @@ export const useSwapRouteAllowance = (route: SwapRoute | undefined | null) => {
       }
       let res = 0n;
       try {
-        res = await swapActions[route.action].allowance(config, {
-          tokenIn: route.tokenIn,
-          tokenOut: route.tokenOut,
-        });
+        res = await swapActions[route.action].allowance(
+          { config, queryClient },
+          {
+            tokenIn: route.tokenIn,
+            tokenOut: route.tokenOut,
+          },
+        );
       } catch {}
 
       return res;
@@ -514,11 +528,14 @@ export const useHandleApprove = () => {
     let notifId;
 
     try {
-      const hash = await swapActions[selectedSwapRoute.action].approve(config, {
-        tokenIn,
-        tokenOut,
-        amountIn,
-      });
+      const hash = await swapActions[selectedSwapRoute.action].approve(
+        { config, queryClient },
+        {
+          tokenIn,
+          tokenOut,
+          amountIn,
+        },
+      );
       notifId = onApproveSigned?.({ ...state, trackId });
       setSwapState((state) => ({
         ...state,
@@ -642,14 +659,17 @@ export const useHandleSwap = () => {
     let notifId;
 
     try {
-      const hash = await swapActions[selectedSwapRoute.action].swap(config, {
-        tokenIn,
-        tokenOut,
-        amountIn,
-        estimatedRoute: selectedSwapRoute,
-        slippage,
-        amountOut,
-      });
+      const hash = await swapActions[selectedSwapRoute.action].swap(
+        { config, queryClient },
+        {
+          tokenIn,
+          tokenOut,
+          amountIn,
+          estimatedRoute: selectedSwapRoute,
+          slippage,
+          amountOut,
+        },
+      );
       notifId = onSwapSigned?.({ ...state, trackId });
       setSwapState((state) => ({
         ...state,

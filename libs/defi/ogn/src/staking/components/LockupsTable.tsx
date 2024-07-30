@@ -26,15 +26,14 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { differenceInDays, formatDistanceToNowStrict } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
 import { useOgnLockupsQuery } from '../queries.generated';
 import { useLockupPolling } from '../state';
-import { AddButton } from './AddToLockupModal';
-import { ExtendButton } from './ExtendLockupModal';
+import { formatTimeRemaining } from '../utils';
+import { ExtendAddButton } from './ExtendAddLockupModal';
 import { UnstakeLockupButton } from './UnstakeLockupModal';
 
 import type { Lockup } from '../types';
@@ -85,11 +84,7 @@ export const LockupsTable = () => {
       columnHelper.display({
         id: 'timeRemaining',
         header: intl.formatMessage({ defaultMessage: 'Time Remaining' }),
-        cell: (info) =>
-          formatDistanceToNowStrict(new Date(info.row.original.end), {
-            unit: 'month',
-            roundingMethod: 'floor',
-          }),
+        cell: (info) => formatTimeRemaining(info.row.original.end),
       }),
       ...(isSm
         ? []
@@ -153,9 +148,6 @@ export const LockupsTable = () => {
             );
           }
 
-          const addDisabled =
-            differenceInDays(new Date(info.row.original.end), new Date()) < 30;
-
           return (
             <Stack
               direction="row"
@@ -163,14 +155,14 @@ export const LockupsTable = () => {
               alignItems="stretch"
               justifyContent="flex-end"
             >
-              <ExtendButton
+              <ExtendAddButton
                 lockup={info.row.original}
                 variant="outlined"
                 color="secondary"
                 disableNetworkCheck
               >
-                {intl.formatMessage({ defaultMessage: 'Extend' })}
-              </ExtendButton>
+                {intl.formatMessage({ defaultMessage: 'Extend/Add' })}
+              </ExtendAddButton>
               <UnstakeLockupButton
                 lockup={info.row.original}
                 variant="outlined"
@@ -179,15 +171,6 @@ export const LockupsTable = () => {
               >
                 {intl.formatMessage({ defaultMessage: 'Unlock' })}
               </UnstakeLockupButton>
-              <AddButton
-                lockup={info.row.original}
-                variant="outlined"
-                color="secondary"
-                disabled={addDisabled}
-                disableNetworkCheck
-              >
-                {intl.formatMessage({ defaultMessage: 'Add' })}
-              </AddButton>
               <Button
                 variant="outlined"
                 color="secondary"

@@ -1,4 +1,5 @@
 import type { SvgIconProps } from '@mui/material';
+import type { OethRoute } from '@origin/shared/routes';
 import type { ComponentType } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 
@@ -9,11 +10,10 @@ export type Meta = {
   comingSoon?: boolean;
 };
 
-export type OethRedeemAction =
-  | 'arm'
-  | 'redeem-vault'
-  | 'redeem-vault-async'
-  | 'swap-curve';
+export type OethRedeemAction = Extract<
+  OethRoute,
+  'redeem-arm-oeth' | 'redeem-vault-async-oeth'
+>;
 
 export type WithdrawalRequest = {
   id: string;

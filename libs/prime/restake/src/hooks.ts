@@ -1,11 +1,12 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useRoutingSwapState } from '@origin/shared/providers';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { mul } from 'dnum';
 import { formatUnits, parseUnits } from 'viem';
 import { useConfig, useReadContract } from 'wagmi';
 
 export const useExchangeRate = () => {
+  const queryClient = useQueryClient();
   const config = useConfig();
   const { action, route } = useRoutingSwapState();
 
@@ -21,11 +22,14 @@ export const useExchangeRate = () => {
         return 0;
       }
 
-      const res = await action.estimateAmount(config, {
-        amountIn: parseUnits('1', route.tokenIn.decimals),
-        tokenIn: route.tokenIn,
-        tokenOut: route.tokenOut,
-      });
+      const res = await action.estimateAmount(
+        { config, queryClient },
+        {
+          amountIn: parseUnits('1', route.tokenIn.decimals),
+          tokenIn: route.tokenIn,
+          tokenOut: route.tokenOut,
+        },
+      );
 
       const estimate = res ? +formatUnits(res, route.tokenOut.decimals) : 0;
 
