@@ -62,6 +62,7 @@ const estimateAmount: EstimateAmount = async (
     abi: curve.CurveRegistryExchange.abi,
     functionName: 'get_exchange_multiple_amount',
     args: [curveConfig.routes, curveConfig.swapParams, amountIn],
+    chainId: curve.CurveRegistryExchange.chainId,
   });
 
   return amountOut as unknown as bigint;
@@ -72,9 +73,8 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
 
-  if (amountIn === 0n || !publicClient) {
+  if (amountIn === 0n) {
     return gasEstimate;
   }
 
@@ -101,6 +101,14 @@ const estimateGas: EstimateGas = async (
     queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
+
+  const publicClient = getPublicClient(config, {
+    chainId: curve.CurveRegistryExchange.chainId,
+  });
+
+  if (!publicClient) {
+    return gasEstimate;
+  }
 
   const isTokenInNative = isNativeCurrency(tokenIn);
 
@@ -146,6 +154,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, curve.CurveRegistryExchange.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -157,7 +166,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient) {
     return approvalEstimate;
@@ -238,6 +247,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [curve.CurveRegistryExchange.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -303,6 +313,7 @@ const swap: Swap = async (
       minAmountOut[0],
     ],
     gas,
+    chainId: curve.CurveRegistryExchange.chainId,
     ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);

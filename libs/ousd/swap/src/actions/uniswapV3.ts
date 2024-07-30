@@ -2,7 +2,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -88,7 +88,9 @@ const estimateAmount: EstimateAmount = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   let estimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Quoter.chainId,
+  });
   if (
     amountIn === 0n ||
     !publicClient ||
@@ -128,7 +130,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Router.chainId,
+  });
 
   if (
     amountIn === 0n ||
@@ -140,7 +144,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const path = getPath(tokenIn, tokenOut);
 
   try {
@@ -156,7 +163,7 @@ const estimateGas: EstimateGas = async (
             tokenIn: tokenIn.address,
             tokenOut: tokenOut.address,
             amountIn,
-            amountOutMinimum: minAmountOut,
+            amountOutMinimum: minAmountOut[0],
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             fee: 500,
             recipient: address ?? ZERO_ADDRESS,
@@ -173,7 +180,7 @@ const estimateGas: EstimateGas = async (
           {
             path,
             amountIn,
-            amountOutMinimum: minAmountOut,
+            amountOutMinimum: minAmountOut[0],
             deadline: BigInt(Date.now() + 2 * 60 * 1000),
             recipient: address ?? ZERO_ADDRESS,
           },
@@ -228,6 +235,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.uniswapV3Router.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -239,7 +247,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -270,6 +278,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.uniswapV3Router.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -292,7 +301,10 @@ const swap: Swap = async (
     throw new Error(`Uniswap V3 is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   let txHash;
   if ([tokenIn.symbol, tokenOut.symbol].includes(tokens.mainnet.USDT.symbol)) {
@@ -305,13 +317,14 @@ const swap: Swap = async (
           tokenIn: tokenIn.address,
           tokenOut: tokenOut.address,
           amountIn: amountIn,
-          amountOutMinimum: minAmountOut,
+          amountOutMinimum: minAmountOut[0],
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           fee: 500,
           recipient: address,
           sqrtPriceLimitX96: 0n,
         },
       ],
+      chainId: contracts.mainnet.uniswapV3Router.chainId,
     });
     const hash = await writeContract(config, request);
     txHash = hash;
@@ -324,11 +337,12 @@ const swap: Swap = async (
         {
           path: getPath(tokenIn, tokenOut),
           amountIn: amountIn,
-          amountOutMinimum: minAmountOut,
+          amountOutMinimum: minAmountOut[0],
           deadline: BigInt(Date.now() + 2 * 60 * 1000),
           recipient: address,
         },
       ],
+      chainId: contracts.mainnet.uniswapV3Router.chainId,
     });
     const hash = await writeContract(config, request);
     txHash = hash;

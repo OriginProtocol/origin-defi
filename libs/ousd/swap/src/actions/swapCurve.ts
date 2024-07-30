@@ -6,7 +6,7 @@ import {
 } from '@origin/shared/providers';
 import {
   isAddressEqual,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -51,6 +51,7 @@ const isRouteAvailable: IsRouteAvailable = async (
         tokenOut.address,
         amountIn,
       ],
+      chainId: curve.CurveRegistryExchange.chainId,
     });
     return (
       +formatUnits(amountIn, tokenIn.decimals) /
@@ -85,6 +86,7 @@ const estimateAmount: EstimateAmount = async (
       tokenOut.address,
       amountIn,
     ],
+    chainId: curve.CurveRegistryExchange.chainId,
   });
 
   return estimate as unknown as bigint;
@@ -95,7 +97,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OUSDCurveMetaPool.chainId,
+  });
 
   if (
     amountIn === 0n ||
@@ -107,7 +111,10 @@ const estimateGas: EstimateGas = async (
   }
 
   const { address } = getAccount(config);
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
   const curve = await queryClient.fetchQuery({
     queryKey: useCurve.getKey(),
     queryFn: useCurve.fetcher(config),
@@ -131,7 +138,7 @@ const estimateGas: EstimateGas = async (
           ),
         ),
         amountIn,
-        minAmountOut,
+        minAmountOut[0],
       ],
       account: address,
     });
@@ -183,6 +190,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OUSDCurveMetaPool.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -194,7 +202,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -225,6 +233,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDCurveMetaPool.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -247,7 +256,10 @@ const swap: Swap = async (
     throw new Error(`Curve swap is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     tokenIn,
@@ -279,10 +291,11 @@ const swap: Swap = async (
         ),
       ),
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
     ],
     account: address,
     gas,
+    chainId: contracts.mainnet.OUSDCurveMetaPool.chainId,
   });
   const hash = await writeContract(config, request);
 

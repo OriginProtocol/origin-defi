@@ -30,6 +30,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToShares',
     args: [amountIn],
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
 
   return data;
@@ -38,7 +39,9 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: tokens.mainnet.wOUSD.chainId,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -87,6 +90,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, tokens.mainnet.wOUSD.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -98,7 +102,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -164,6 +168,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [tokens.mainnet.wOUSD.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -188,6 +193,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'deposit',
     args: [amountIn, address],
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
   const hash = await writeContract(config, request);
 

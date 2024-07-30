@@ -34,6 +34,7 @@ const isRouteAvailable: IsRouteAvailable = async (
         abi: tokens.mainnet.WETH.abi,
         functionName: 'balanceOf',
         args: [contracts.mainnet.OETHVault.address],
+        chainId: tokens.mainnet.WETH.chainId,
       });
 
       return amountIn <= bal;
@@ -53,7 +54,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OETHVault.chainId,
+  });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
@@ -89,7 +92,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -160,6 +163,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHVault.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -196,6 +200,7 @@ const swap: Swap = async (
     functionName: 'redeem',
     args: [amountIn, minAmountOut[0]],
     gas,
+    chainId: contracts.mainnet.OETHVault.chainId,
   });
   const hash = await writeContract(config, request);
 

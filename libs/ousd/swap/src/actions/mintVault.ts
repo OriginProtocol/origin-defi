@@ -3,7 +3,7 @@ import { contracts } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -40,6 +40,7 @@ const isRouteAvailable: IsRouteAvailable = async (
         abi: contracts.mainnet.OUSDVault.abi,
         functionName: 'priceUnitMint',
         args: [tokenIn.address],
+        chainId: contracts.mainnet.OUSDVault.chainId,
       });
 
       return (
@@ -66,6 +67,7 @@ const estimateAmount: EstimateAmount = async (
     abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'priceUnitMint',
     args: [tokenIn.address],
+    chainId: contracts.mainnet.OUSDVault.chainId,
   });
 
   return parseUnits(
@@ -81,7 +83,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OUSDVault.chainId,
+  });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return gasEstimate;
@@ -89,14 +93,17 @@ const estimateGas: EstimateGas = async (
 
   const { address } = getAccount(config);
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OUSDVault.address,
       abi: contracts.mainnet.OUSDVault.abi,
       functionName: 'mint',
-      args: [tokenIn.address, amountIn, minAmountOut],
+      args: [tokenIn.address, amountIn, minAmountOut[0]],
       account: address ?? ZERO_ADDRESS,
     });
 
@@ -113,11 +120,13 @@ const estimateGas: EstimateGas = async (
               address: contracts.mainnet.OUSDVault.address,
               abi: contracts.mainnet.OUSDVault.abi,
               functionName: 'rebaseThreshold',
+              chainId: contracts.mainnet.OUSDVault.chainId,
             },
             {
               address: contracts.mainnet.OUSDVault.address,
               abi: contracts.mainnet.OUSDVault.abi,
               functionName: 'autoAllocateThreshold',
+              chainId: contracts.mainnet.OUSDVault.chainId,
             },
           ],
         }),
@@ -187,6 +196,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OUSDVault.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -198,7 +208,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -229,6 +239,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDVault.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -251,7 +262,10 @@ const swap: Swap = async (
     throw new Error(`Mint vault is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     amountIn,
@@ -268,6 +282,7 @@ const swap: Swap = async (
     functionName: 'mint',
     args: [tokenIn.address, amountIn, minAmountOut],
     gas,
+    chainId: contracts.mainnet.OUSDVault.chainId,
   });
   const hash = await writeContract(config, request);
 

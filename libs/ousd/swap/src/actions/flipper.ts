@@ -53,6 +53,7 @@ const isRouteAvailable: IsRouteAvailable = async (
       abi: tokenOut.abi,
       functionName: 'balanceOf',
       args: [contracts.mainnet.OUSDFlipper.address],
+      chainId: tokenOut.chainId,
     });
 
     const bal = +formatUnits(balance as unknown as bigint, tokenOut.decimals);
@@ -67,7 +68,9 @@ const estimateAmount: EstimateAmount = async (
   config,
   { amountIn, tokenIn, tokenOut },
 ) => {
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OUSDFlipper.chainId,
+  });
   const functionName = getFunctionName(tokenIn, tokenOut);
 
   try {
@@ -129,6 +132,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OUSDFlipper.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -140,7 +144,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -171,6 +175,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.OUSDFlipper.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -198,6 +203,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: contracts.mainnet.OUSDFlipper.abi,
     functionName,
     args: [scaledAmount],
+    chainId: contracts.mainnet.OUSDFlipper.chainId,
   });
   const hash = await writeContract(config, request);
 

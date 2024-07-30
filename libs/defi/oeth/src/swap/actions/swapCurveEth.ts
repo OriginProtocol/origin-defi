@@ -39,6 +39,7 @@ const estimateAmount: EstimateAmount = async (
     queryFn: useCurve.fetcher(config),
     staleTime: Infinity,
   });
+
   const amountOut = await readContract(config, {
     address: curve.CurveRegistryExchange.address,
     abi: curve.CurveRegistryExchange.abi,
@@ -49,6 +50,7 @@ const estimateAmount: EstimateAmount = async (
       tokenOut.address ?? ETH_ADDRESS_CURVE,
       amountIn,
     ],
+    chainId: curve.CurveRegistryExchange.chainId,
   });
 
   return amountOut as unknown as bigint;
@@ -59,7 +61,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.OETHCurvePool.chainId,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -212,6 +216,7 @@ const swap: Swap = async (
       minAmountOut[0],
     ],
     gas,
+    chainId: contracts.mainnet.OETHCurvePool.chainId,
     ...(isTokenInNative && { value: amountIn }),
   });
   const hash = await writeContract(config, request);

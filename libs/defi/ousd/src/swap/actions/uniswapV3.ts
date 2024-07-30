@@ -88,7 +88,9 @@ const estimateAmount: EstimateAmount = async (
   { amountIn, tokenIn, tokenOut },
 ) => {
   let estimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Quoter.chainId,
+  });
   if (
     amountIn === 0n ||
     !publicClient ||
@@ -128,7 +130,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV3Router.chainId,
+  });
 
   if (
     amountIn === 0n ||
@@ -231,6 +235,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.uniswapV3Router.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -242,7 +247,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -273,6 +278,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.uniswapV3Router.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -318,6 +324,7 @@ const swap: Swap = async (
           sqrtPriceLimitX96: 0n,
         },
       ],
+      chainId: contracts.mainnet.uniswapV3Router.chainId,
     });
     const hash = await writeContract(config, request);
     txHash = hash;
@@ -335,6 +342,7 @@ const swap: Swap = async (
           recipient: address,
         },
       ],
+      chainId: contracts.mainnet.uniswapV3Router.chainId,
     });
     const hash = await writeContract(config, request);
     txHash = hash;

@@ -80,6 +80,7 @@ const isRouteAvailable: IsRouteAvailable = async (
         abi: contracts.mainnet.uniswapV2Router.abi,
         functionName: 'getAmountsOut',
         args: [amountIn, path],
+        chainId: contracts.mainnet.uniswapV2Router.chainId,
       });
 
       return (
@@ -107,6 +108,7 @@ const estimateAmount: EstimateAmount = async (
     abi: contracts.mainnet.uniswapV2Router.abi,
     functionName: 'getAmountsOut',
     args: [amountIn, path],
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
 
   return last(estimate) ?? 0n;
@@ -117,7 +119,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
+  });
   const { address } = getAccount(config);
   const path = getPath(tokenIn, tokenOut);
 
@@ -196,6 +200,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.uniswapV2Router.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -207,7 +212,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -238,6 +243,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.uniswapV2Router.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -287,6 +293,7 @@ const swap: Swap = async (
     ],
     account: address,
     gas,
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
   const hash = await writeContract(config, request);
 

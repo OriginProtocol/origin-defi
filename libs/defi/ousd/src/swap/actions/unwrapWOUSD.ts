@@ -28,6 +28,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'convertToAssets',
     args: [amountIn],
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
 
   return data;
@@ -36,7 +37,9 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: tokens.mainnet.wOUSD.chainId,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -135,6 +138,7 @@ const swap: Swap = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOUSD.abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
+    chainId: tokens.mainnet.wOUSD.chainId,
   });
   const hash = await writeContract(config, request);
 

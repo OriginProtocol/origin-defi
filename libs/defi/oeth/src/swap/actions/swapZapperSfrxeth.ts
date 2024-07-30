@@ -38,12 +38,14 @@ const estimateAmount: EstimateAmount = async (
         abi: tokens.mainnet.sfrxETH.abi,
         functionName: 'previewRedeem',
         args: [amountIn],
+        chainId: tokens.mainnet.sfrxETH.chainId,
       },
       {
         address: contracts.mainnet.OETHVault.address,
         abi: contracts.mainnet.OETHVault.abi,
         functionName: 'priceUnitMint',
         args: [tokens.mainnet.frxETH.address],
+        chainId: contracts.mainnet.OETHVault.chainId,
       },
     ],
   });
@@ -83,6 +85,7 @@ const allowance: Allowance = async (config, { tokenIn, tokenOut }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.OETHZapper.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -94,7 +97,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (
     amountIn === 0n ||
@@ -166,6 +169,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.OETHZapper.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -208,6 +212,7 @@ const swap: Swap = async (
     functionName: 'depositSFRXETH',
     args: [amountIn, minAmountOut[0]],
     gas,
+    chainId: contracts.mainnet.OETHZapper.chainId,
   });
   const hash = await writeContract(config, request);
 

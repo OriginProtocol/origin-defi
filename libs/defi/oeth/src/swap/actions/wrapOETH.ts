@@ -30,6 +30,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'convertToShares',
     args: [amountIn],
+    chainId: tokens.mainnet.wOETH.chainId,
   });
 
   return data as unknown as bigint;
@@ -38,7 +39,9 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
 const estimateGas: EstimateGas = async (config, { amountIn }) => {
   let gasEstimate = 0n;
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: tokens.mainnet.wOETH.chainId,
+  });
 
   if (amountIn === 0n) {
     return gasEstimate;
@@ -90,6 +93,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, tokens.mainnet.wOETH.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -106,7 +110,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
     return approvalEstimate;
   }
 
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   try {
     if (publicClient) {
@@ -170,6 +174,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [tokens.mainnet.wOETH.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -194,6 +199,7 @@ const swap: Swap = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokens.mainnet.wOETH.abi,
     functionName: 'deposit',
     args: [amountIn, address],
+    chainId: tokens.mainnet.wOETH.chainId,
   });
   const hash = await writeContract(config, request);
 

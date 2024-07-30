@@ -2,7 +2,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
-  subtractSlippage,
+  subPercentage,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import {
@@ -80,6 +80,7 @@ const isRouteAvailable: IsRouteAvailable = async (
         abi: contracts.mainnet.uniswapV2Router.abi,
         functionName: 'getAmountsOut',
         args: [amountIn, path],
+        chainId: contracts.mainnet.uniswapV2Router.chainId,
       });
 
       return (
@@ -107,6 +108,7 @@ const estimateAmount: EstimateAmount = async (
     abi: contracts.mainnet.uniswapV2Router.abi,
     functionName: 'getAmountsOut',
     args: [amountIn, path],
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
 
   return last(estimate) ?? 0n;
@@ -117,7 +119,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   let gasEstimate = 0n;
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
+  });
   const { address } = getAccount(config);
   const path = getPath(tokenIn, tokenOut);
 
@@ -125,7 +129,10 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -134,7 +141,7 @@ const estimateGas: EstimateGas = async (
       functionName: 'swapExactTokensForTokens',
       args: [
         amountIn,
-        minAmountOut,
+        minAmountOut[0],
         path,
         address ?? ZERO_ADDRESS,
         BigInt(Date.now() + 2 * 60 * 1000),
@@ -193,6 +200,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: tokenIn.abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.uniswapV2Router.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance as unknown as bigint;
@@ -204,7 +212,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
     return approvalEstimate;
@@ -235,6 +243,7 @@ const approve: Approve = async (config, { tokenIn, tokenOut, amountIn }) => {
     abi: tokenIn.abi,
     functionName: 'approve',
     args: [contracts.mainnet.uniswapV2Router.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -257,7 +266,10 @@ const swap: Swap = async (
     throw new Error(`Uniswap V2 is not approved`);
   }
 
-  const minAmountOut = subtractSlippage(amountOut, tokenOut.decimals, slippage);
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
 
   const estimatedGas = await estimateGas(config, {
     tokenIn,
@@ -274,13 +286,14 @@ const swap: Swap = async (
     functionName: 'swapExactTokensForTokens',
     args: [
       amountIn,
-      minAmountOut,
+      minAmountOut[0],
       getPath(tokenIn, tokenOut),
       address,
       BigInt(Date.now() + 2 * 60 * 1000),
     ],
     account: address,
     gas,
+    chainId: contracts.mainnet.uniswapV2Router.chainId,
   });
   const hash = await writeContract(config, request);
 

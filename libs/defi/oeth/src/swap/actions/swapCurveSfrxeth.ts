@@ -59,6 +59,7 @@ const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
     abi: contracts.mainnet.CurveRouter.abi,
     functionName: 'get_dy',
     args: [curveConfig.routes, curveConfig.params, amountIn],
+    chainId: contracts.mainnet.CurveRouter.chainId,
   });
 
   return amountOut as unknown as bigint;
@@ -70,7 +71,9 @@ const estimateGas: EstimateGas = async (
 ) => {
   let gasEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, {
+    chainId: contracts.mainnet.CurveRouter.chainId,
+  });
 
   if (amountIn === 0n || !publicClient) {
     return gasEstimate;
@@ -108,6 +111,7 @@ const allowance: Allowance = async (config, { tokenIn }) => {
     abi: erc20Abi,
     functionName: 'allowance',
     args: [address, contracts.mainnet.CurveRouter.address],
+    chainId: tokenIn.chainId,
   });
 
   return allowance;
@@ -119,7 +123,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
-  const publicClient = getPublicClient(config);
+  const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (amountIn === 0n || !address || !tokenIn?.address || !publicClient) {
     return approvalEstimate;
@@ -190,6 +194,7 @@ const approve: Approve = async (config, { tokenIn, amountIn }) => {
     abi: erc20Abi,
     functionName: 'approve',
     args: [contracts.mainnet.CurveRouter.address, amountIn],
+    chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
 
@@ -233,6 +238,7 @@ const swap: Swap = async (
     args: [curveConfig.routes, curveConfig.params, amountIn, minAmountOut[0]],
     account: address,
     gas,
+    chainId: contracts.mainnet.CurveRouter.chainId,
   });
   const hash = await writeContract(config, request);
 
