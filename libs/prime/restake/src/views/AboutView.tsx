@@ -59,7 +59,8 @@ const Breakdown = (props: StackProps) => {
     {
       title: intl.formatMessage({ defaultMessage: 'Initiate withdrawal' }),
       subtitle: intl.formatMessage({
-        defaultMessage: 'Withdraw your funds from EigenLayer.',
+        defaultMessage:
+          'Withdraw your funds from Eigenlayer. If you plan to partially migrate to ynLSDe, please initiate one withdrawal request for the amount you wish to migrate and another for the amount you wish to claim.',
       }),
     },
     {
@@ -72,7 +73,7 @@ const Breakdown = (props: StackProps) => {
       title: intl.formatMessage({ defaultMessage: 'Migrate or Claim' }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'You will have the option to either withdraw your funds (in the form of OETH) or migrate them to ynLSD.',
+          'For each withdrawal request, you will have the option to claim your funds (in the form of OETH) or migrate them to ynLSDe.',
       }),
     },
   ];

@@ -1,12 +1,18 @@
 {
+  "+0NTt9": {
+    "defaultMessage": "Withdrawal request is taking a long time to process"
+  },
+  "+3PfZP": {
+    "defaultMessage": "PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below."
+  },
   "+HMSZw": {
     "defaultMessage": "Enter amount"
   },
   "+LmzMn": {
     "defaultMessage": "max"
   },
-  "+ZuaY7": {
-    "defaultMessage": "<b>+5% boost</b> for primeETH users for Season 1"
+  "+cAs9B": {
+    "defaultMessage": "claim"
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
@@ -23,6 +29,9 @@
   "/LAiSt": {
     "defaultMessage": "{amount} {converted}"
   },
+  "/aBLH2": {
+    "defaultMessage": "Get started"
+  },
   "/xvR4F": {
     "defaultMessage": "Opt in"
   },
@@ -37,9 +46,6 @@
   },
   "0fR+fE": {
     "defaultMessage": "Route"
-  },
-  "0fTzni": {
-    "defaultMessage": "<b>15% boost</b> for ALL seasons for migrating ≥ 5 primeETH"
   },
   "1+ROfp": {
     "defaultMessage": "Transaction"
@@ -65,9 +71,6 @@
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
-  "2+D011": {
-    "defaultMessage": "- You'll contribute buying drones to protect the European jungles"
-  },
   "20X0BC": {
     "defaultMessage": "Transaction Cancelled"
   },
@@ -86,14 +89,14 @@
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
   },
-  "4H2kiz": {
-    "defaultMessage": "primeETH holders who migrate to ynLSD will receive a 5% boost for the YND Season 1 airdrop"
-  },
   "4K1INe": {
     "defaultMessage": "Your Balance"
   },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
+  },
+  "4WNsNT": {
+    "defaultMessage": "Migrated"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -107,9 +110,6 @@
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
-  "6Sj2lN": {
-    "defaultMessage": "Claim"
-  },
   "6XFO/C": {
     "defaultMessage": "Approved"
   },
@@ -119,11 +119,8 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
-  "7DIW6+": {
-    "defaultMessage": "Learn More"
-  },
-  "7pXMMT": {
-    "defaultMessage": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop"
+  "7lXfDA": {
+    "defaultMessage": "You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw."
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
@@ -146,8 +143,11 @@
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
   },
-  "A6Gy5+": {
-    "defaultMessage": "Withdrawal Details"
+  "9uOFF3": {
+    "defaultMessage": "Overview"
+  },
+  "A1y3T3": {
+    "defaultMessage": "Claimed"
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
@@ -161,17 +161,20 @@
   "BONcjO": {
     "defaultMessage": "Uniswap V3"
   },
-  "BensOT": {
-    "defaultMessage": "Here's why you should consider pre-mint:"
-  },
   "BuhEl+": {
     "defaultMessage": "Theme:"
+  },
+  "CEnNcA": {
+    "defaultMessage": "Transaction Type"
   },
   "CFpVX2": {
     "defaultMessage": "1.1 primeETH XP Boost"
   },
   "CpUP6g": {
     "defaultMessage": "Hold primeETH to start earning a piece of YieldNest"
+  },
+  "Cpk9+u": {
+    "defaultMessage": "60% YND Allocation"
   },
   "DGg45W": {
     "defaultMessage": "PrimeStaked"
@@ -194,17 +197,11 @@
   "E2sGaF": {
     "defaultMessage": "Exit"
   },
-  "E4RL77": {
-    "defaultMessage": "Continue anyway"
-  },
   "EEwopl": {
     "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
   "EUPZOz": {
     "defaultMessage": "blocks left"
-  },
-  "FdfIVU": {
-    "defaultMessage": "All your XP will be redeemable for YND tokens at the TGE."
   },
   "FrAoo9": {
     "defaultMessage": "7 days"
@@ -215,9 +212,6 @@
   "GHdek4": {
     "defaultMessage": "Get even more primeETH XP when you invite your friends"
   },
-  "GRzwu7": {
-    "defaultMessage": "pre-mint ynLSD"
-  },
   "H5+NAX": {
     "defaultMessage": "Balance"
   },
@@ -227,11 +221,11 @@
   "HyhkDr": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
-  "I37/d8": {
-    "defaultMessage": "5% bonus on YieldNest Seeds"
+  "INlWvJ": {
+    "defaultMessage": "OR"
   },
-  "ITyAtY": {
-    "defaultMessage": "Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons"
+  "IvIRrt": {
+    "defaultMessage": "For each withdrawal request, you will have the option to claim your funds (in the form of OETH) or migrate them to ynLSDe."
   },
   "IxGtTe": {
     "defaultMessage": "+ EigenLayer Points"
@@ -241,9 +235,6 @@
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
-  },
-  "JF9MWa": {
-    "defaultMessage": "I understand it will take 7 days to receive my funds"
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
@@ -263,20 +254,20 @@
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
-  "LUdwbC": {
-    "defaultMessage": "Restake"
-  },
   "LVRE3W": {
     "defaultMessage": "Swaps are eligible for bonus XP & EigenLayer points"
   },
-  "LzF9sr": {
-    "defaultMessage": "- It'll make your life easier"
+  "LmHsKL": {
+    "defaultMessage": "migrated"
   },
   "MLTKb6": {
     "defaultMessage": "APY"
   },
   "MSTVqC": {
     "defaultMessage": "Reload Page"
+  },
+  "MTN/Zf": {
+    "defaultMessage": "Try to refresh the page and go to the Claim tab to see your withdrawal request"
   },
   "MW9FHt": {
     "defaultMessage": "Ooops..."
@@ -299,9 +290,6 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
-  "Na5xdK": {
-    "defaultMessage": "Back to dashboard"
-  },
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
@@ -320,6 +308,9 @@
   "PXAur5": {
     "defaultMessage": "Withdraw"
   },
+  "Pkf9/r": {
+    "defaultMessage": "This operation can take a few seconds to complete"
+  },
   "PmkP1H": {
     "defaultMessage": "Unsupported Network"
   },
@@ -331,6 +322,9 @@
   },
   "PzlMqG": {
     "defaultMessage": "Best"
+  },
+  "QORRZ/": {
+    "defaultMessage": "Withdrawal Process Breakdown"
   },
   "QtUsiE": {
     "defaultMessage": "Claimable amount"
@@ -359,8 +353,11 @@
   "SKB/G9": {
     "defaultMessage": "TVL"
   },
-  "SnHmtG": {
-    "defaultMessage": "Collect <b>EigenLayer points</b>"
+  "SjPlkr": {
+    "defaultMessage": "Exclusive Boosts"
+  },
+  "T4/Df8": {
+    "defaultMessage": "Earn 5% to 15% boosts on YieldNest Seeds for being part of the PrimeStaked community."
   },
   "TdTXXf": {
     "defaultMessage": "Learn more"
@@ -370,9 +367,6 @@
   },
   "TwyMau": {
     "defaultMessage": "Account"
-  },
-  "UG28K4": {
-    "defaultMessage": "Preview Withdrawal"
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
@@ -389,9 +383,6 @@
   "UlMgTq": {
     "defaultMessage": "If the problem persists, contact us on our {support}."
   },
-  "UvpW4k": {
-    "defaultMessage": "YieldNest Pioneer NFT"
-  },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
@@ -406,6 +397,9 @@
   },
   "Wt2imN": {
     "defaultMessage": "Native ETH Restaking is Live!"
+  },
+  "X/S866": {
+    "defaultMessage": "Withdrawal request successfully {type}."
   },
   "XRPY5F": {
     "defaultMessage": "Global Stats"
@@ -437,17 +431,8 @@
   "aXTK45": {
     "defaultMessage": "primeETH XP"
   },
-  "b0XMBI": {
-    "defaultMessage": "You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw. {link}"
-  },
-  "bh6lBg": {
-    "defaultMessage": "You will receive"
-  },
   "c31Feo": {
     "defaultMessage": "Swapping"
-  },
-  "c7tNet": {
-    "defaultMessage": "Withdrawal Process"
   },
   "cOKXho": {
     "defaultMessage": "Claimable"
@@ -470,8 +455,11 @@
   "dtJo4Y": {
     "defaultMessage": "Exchange rate"
   },
-  "eBtkJl": {
-    "defaultMessage": "Return to Claim"
+  "eWA3GW": {
+    "defaultMessage": "Initiate withdrawal"
+  },
+  "ej99BN": {
+    "defaultMessage": "Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest."
   },
   "fBhctx": {
     "defaultMessage": "Download CSV"
@@ -479,11 +467,8 @@
   "fZ5HRc": {
     "defaultMessage": "Your rewards"
   },
-  "fqli/X": {
-    "defaultMessage": "AVS/Network <b>yields & airdrops</b>"
-  },
-  "ftdwnS": {
-    "defaultMessage": "Approve Withdrawal"
+  "fl4e36": {
+    "defaultMessage": "Accrued XP will be redeemable for retroactive YND airdrop at the TGE"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
@@ -491,17 +476,14 @@
   "gBm7FQ": {
     "defaultMessage": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
   },
-  "gI0IFe": {
-    "defaultMessage": "<b>60+% YND</b> community incentives"
+  "gxbLzh": {
+    "defaultMessage": "Withdraw/Migrate"
   },
   "h88CQM": {
     "defaultMessage": "sell primeETH on Uniswap."
   },
   "hWyxI7": {
     "defaultMessage": "% of total"
-  },
-  "hmYxm5": {
-    "defaultMessage": "≥ {converted} YN LSD Tokens + YND tokens (at the TGE)"
   },
   "hzSNj4": {
     "defaultMessage": "Dashboard"
@@ -518,17 +500,26 @@
   "iUAsKY": {
     "defaultMessage": "Participate in the YieldNest Airdrop"
   },
+  "iVa4gM": {
+    "defaultMessage": "Claim/Migrate"
+  },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
   },
-  "j9JcZR": {
-    "defaultMessage": "- Your hair will re-grow"
+  "iySQsQ": {
+    "defaultMessage": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop."
   },
   "j9Y9nu": {
     "defaultMessage": "Hours"
   },
+  "jS1Li6": {
+    "defaultMessage": "Migrate or Claim"
+  },
   "jTHHrj": {
     "defaultMessage": "Past Claims"
+  },
+  "joOlUw": {
+    "defaultMessage": "claimed"
   },
   "jvnqxK": {
     "defaultMessage": "Bridging"
@@ -538,6 +529,9 @@
   },
   "k4k+WY": {
     "defaultMessage": "Go to claims"
+  },
+  "kuZlcE": {
+    "defaultMessage": "Wait for EigenLayer to process the withdrawal."
   },
   "kyOIfE": {
     "defaultMessage": "Wait 7 days"
@@ -551,11 +545,17 @@
   "lb8m6m": {
     "defaultMessage": "Mins"
   },
+  "lgcLxH": {
+    "defaultMessage": "YieldNest plans to distribute at least 60% of the total YND token supply to its community."
+  },
   "lozEho": {
     "defaultMessage": "Error while approving"
   },
   "m/L3sK": {
     "defaultMessage": "Approving"
+  },
+  "mdkEkL": {
+    "defaultMessage": "Your {type} is being processed"
   },
   "n9f17V": {
     "defaultMessage": "Become eligible for YieldNest’s YND airdrop based on primeETH XP earned."
@@ -566,20 +566,23 @@
   "nc8QpJ": {
     "defaultMessage": "Recent Activity"
   },
+  "oAlAdy": {
+    "defaultMessage": "Withdraw your funds from Eigenlayer. If you plan to partially migrate to ynLSDe, please initiate one withdrawal request for the amount you wish to migrate and another for the amount you wish to claim."
+  },
   "oNwEq5": {
     "defaultMessage": "7-day retention period"
   },
   "p556q3": {
     "defaultMessage": "Copied"
   },
+  "pAbH2A": {
+    "defaultMessage": "migration"
+  },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
   },
   "paprll": {
     "defaultMessage": "You will receive:"
-  },
-  "qEpegt": {
-    "defaultMessage": "You will no longer be eligible for the following rewards if you withdraw:"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -593,8 +596,8 @@
   "rELDbB": {
     "defaultMessage": "Refresh"
   },
-  "rGHT9M": {
-    "defaultMessage": "YieldNest <b>Season 1 Airdrop</b> + access to all upcoming seasons"
+  "rbrahO": {
+    "defaultMessage": "Close"
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
@@ -602,11 +605,11 @@
   "sEtHlS": {
     "defaultMessage": "Withdrawal processed, check your claim"
   },
+  "sjPJxA": {
+    "defaultMessage": "Migrate to ynLSDe"
+  },
   "sokm79": {
     "defaultMessage": "{rate} {token} = 1 primeETH"
-  },
-  "st1mE1": {
-    "defaultMessage": "Wait, I want to earn rewards instead"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
@@ -620,11 +623,17 @@
   "tQxA15": {
     "defaultMessage": "Visit PrimeStaked on X"
   },
+  "u/ejCQ": {
+    "defaultMessage": "View on YieldNest Website"
+  },
   "u8Ngfh": {
     "defaultMessage": "1M Extra EigenLayer pts - 50 extra EL pts per ETHx minted and restaked"
   },
   "ugjHU2": {
     "defaultMessage": "Select a token"
+  },
+  "vns1w2": {
+    "defaultMessage": "ynLSDe migration is live!"
   },
   "vugtF7": {
     "defaultMessage": "No Activity"
@@ -634,6 +643,9 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
+  },
+  "wtQ7BM": {
+    "defaultMessage": "Visit YieldNest dApp to view your ynLSDe balance."
   },
   "wwZKEr": {
     "defaultMessage": "Approximate gas cost: {gas}"

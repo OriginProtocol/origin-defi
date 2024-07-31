@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Divider, Stack, Typography } from '@mui/material';
+import { alpha, Divider, Stack, Typography } from '@mui/material';
 import {
   InfoTooltipLabel,
   LoadingLabel,
@@ -8,7 +8,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { PrimePoints } from '@origin/shared/icons';
+import { PrimePoints, WarningExclamation } from '@origin/shared/icons';
 import {
   TxButton,
   useTxButton,
@@ -88,6 +88,29 @@ export const WithdrawView = () => {
             isConnected={isConnected}
             isAmountDisabled={isBalLoading}
           />
+          <Stack
+            direction="row"
+            alignItems="center"
+            spacing={2}
+            sx={{
+              p: 2,
+              mt: 2,
+              alignItems: 'center',
+              border: '1px solid',
+              borderColor: 'primary.main',
+              backgroundColor: (theme) =>
+                alpha(theme.palette.primary.main, 0.2),
+              borderRadius: 2,
+            }}
+          >
+            <WarningExclamation sx={{ fontSize: 36, color: 'primary.main' }} />
+            <Typography>
+              {intl.formatMessage({
+                defaultMessage:
+                  'Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest.',
+              })}
+            </Typography>
+          </Stack>
         </Stack>
         <Divider />
         <Stack p={3} spacing={1}>

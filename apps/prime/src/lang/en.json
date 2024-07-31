@@ -1,4 +1,16 @@
 {
+  "+0NTt9": [
+    {
+      "type": 0,
+      "value": "Withdrawal request is taking a long time to process"
+    }
+  ],
+  "+3PfZP": [
+    {
+      "type": 0,
+      "value": "PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below."
+    }
+  ],
   "+HMSZw": [
     {
       "type": 0,
@@ -11,20 +23,10 @@
       "value": "max"
     }
   ],
-  "+ZuaY7": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "+5% boost"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
+  "+cAs9B": [
     {
       "type": 0,
-      "value": " for primeETH users for Season 1"
+      "value": "claim"
     }
   ],
   "+vVZ/G": [
@@ -65,6 +67,12 @@
       "value": "converted"
     }
   ],
+  "/aBLH2": [
+    {
+      "type": 0,
+      "value": "Get started"
+    }
+  ],
   "/xvR4F": [
     {
       "type": 0,
@@ -93,22 +101,6 @@
     {
       "type": 0,
       "value": "Route"
-    }
-  ],
-  "0fTzni": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "15% boost"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
-    {
-      "type": 0,
-      "value": " for ALL seasons for migrating ≥ 5 primeETH"
     }
   ],
   "1+ROfp": [
@@ -175,12 +167,6 @@
       "value": "Return to Home Page"
     }
   ],
-  "2+D011": [
-    {
-      "type": 0,
-      "value": "- You'll contribute buying drones to protect the European jungles"
-    }
-  ],
   "20X0BC": [
     {
       "type": 0,
@@ -225,12 +211,6 @@
       "value": " slippage:"
     }
   ],
-  "4H2kiz": [
-    {
-      "type": 0,
-      "value": "primeETH holders who migrate to ynLSD will receive a 5% boost for the YND Season 1 airdrop"
-    }
-  ],
   "4K1INe": [
     {
       "type": 0,
@@ -241,6 +221,12 @@
     {
       "type": 0,
       "value": "Your transaction is being processed on-chain."
+    }
+  ],
+  "4WNsNT": [
+    {
+      "type": 0,
+      "value": "Migrated"
     }
   ],
   "5RMD2G": [
@@ -267,12 +253,6 @@
       "value": "The selected network is not supported by the application."
     }
   ],
-  "6Sj2lN": [
-    {
-      "type": 0,
-      "value": "Claim"
-    }
-  ],
   "6XFO/C": [
     {
       "type": 0,
@@ -291,16 +271,10 @@
       "value": "Redeemed"
     }
   ],
-  "7DIW6+": [
+  "7lXfDA": [
     {
       "type": 0,
-      "value": "Learn More"
-    }
-  ],
-  "7pXMMT": [
-    {
-      "type": 0,
-      "value": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop"
+      "value": "You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw."
     }
   ],
   "8XZjyW": [
@@ -349,10 +323,16 @@
       "value": "Discord support channel"
     }
   ],
-  "A6Gy5+": [
+  "9uOFF3": [
     {
       "type": 0,
-      "value": "Withdrawal Details"
+      "value": "Overview"
+    }
+  ],
+  "A1y3T3": [
+    {
+      "type": 0,
+      "value": "Claimed"
     }
   ],
   "ASNc/h": [
@@ -395,16 +375,16 @@
       "value": "Uniswap V3"
     }
   ],
-  "BensOT": [
-    {
-      "type": 0,
-      "value": "Here's why you should consider pre-mint:"
-    }
-  ],
   "BuhEl+": [
     {
       "type": 0,
       "value": "Theme:"
+    }
+  ],
+  "CEnNcA": [
+    {
+      "type": 0,
+      "value": "Transaction Type"
     }
   ],
   "CFpVX2": [
@@ -417,6 +397,12 @@
     {
       "type": 0,
       "value": "Hold primeETH to start earning a piece of YieldNest"
+    }
+  ],
+  "Cpk9+u": [
+    {
+      "type": 0,
+      "value": "60% YND Allocation"
     }
   ],
   "DGg45W": [
@@ -469,12 +455,6 @@
       "value": "Exit"
     }
   ],
-  "E4RL77": [
-    {
-      "type": 0,
-      "value": "Continue anyway"
-    }
-  ],
   "EEwopl": [
     {
       "type": 1,
@@ -511,12 +491,6 @@
       "value": "blocks left"
     }
   ],
-  "FdfIVU": [
-    {
-      "type": 0,
-      "value": "All your XP will be redeemable for YND tokens at the TGE."
-    }
-  ],
   "FrAoo9": [
     {
       "type": 0,
@@ -533,12 +507,6 @@
     {
       "type": 0,
       "value": "Get even more primeETH XP when you invite your friends"
-    }
-  ],
-  "GRzwu7": [
-    {
-      "type": 0,
-      "value": "pre-mint ynLSD"
     }
   ],
   "H5+NAX": [
@@ -559,16 +527,16 @@
       "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
     }
   ],
-  "I37/d8": [
+  "INlWvJ": [
     {
       "type": 0,
-      "value": "5% bonus on YieldNest Seeds"
+      "value": "OR"
     }
   ],
-  "ITyAtY": [
+  "IvIRrt": [
     {
       "type": 0,
-      "value": "Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons"
+      "value": "For each withdrawal request, you will have the option to claim your funds (in the form of OETH) or migrate them to ynLSDe."
     }
   ],
   "IxGtTe": [
@@ -587,12 +555,6 @@
     {
       "type": 0,
       "value": "Operation Cancelled"
-    }
-  ],
-  "JF9MWa": [
-    {
-      "type": 0,
-      "value": "I understand it will take 7 days to receive my funds"
     }
   ],
   "JrepQU": [
@@ -631,22 +593,16 @@
       "value": "Sorry, we can't seem to find that page"
     }
   ],
-  "LUdwbC": [
-    {
-      "type": 0,
-      "value": "Restake"
-    }
-  ],
   "LVRE3W": [
     {
       "type": 0,
       "value": "Swaps are eligible for bonus XP & EigenLayer points"
     }
   ],
-  "LzF9sr": [
+  "LmHsKL": [
     {
       "type": 0,
-      "value": "- It'll make your life easier"
+      "value": "migrated"
     }
   ],
   "MLTKb6": [
@@ -659,6 +615,12 @@
     {
       "type": 0,
       "value": "Reload Page"
+    }
+  ],
+  "MTN/Zf": [
+    {
+      "type": 0,
+      "value": "Try to refresh the page and go to the Claim tab to see your withdrawal request"
     }
   ],
   "MW9FHt": [
@@ -703,12 +665,6 @@
       "value": "Your operation has been executed"
     }
   ],
-  "Na5xdK": [
-    {
-      "type": 0,
-      "value": "Back to dashboard"
-    }
-  ],
   "OBfWz0": [
     {
       "type": 0,
@@ -749,6 +705,12 @@
       "value": "Withdraw"
     }
   ],
+  "Pkf9/r": [
+    {
+      "type": 0,
+      "value": "This operation can take a few seconds to complete"
+    }
+  ],
   "PmkP1H": [
     {
       "type": 0,
@@ -771,6 +733,12 @@
     {
       "type": 0,
       "value": "Best"
+    }
+  ],
+  "QORRZ/": [
+    {
+      "type": 0,
+      "value": "Withdrawal Process Breakdown"
     }
   ],
   "QtUsiE": [
@@ -835,20 +803,16 @@
       "value": "TVL"
     }
   ],
-  "SnHmtG": [
+  "SjPlkr": [
     {
       "type": 0,
-      "value": "Collect "
-    },
+      "value": "Exclusive Boosts"
+    }
+  ],
+  "T4/Df8": [
     {
-      "children": [
-        {
-          "type": 0,
-          "value": "EigenLayer points"
-        }
-      ],
-      "type": 8,
-      "value": "b"
+      "type": 0,
+      "value": "Earn 5% to 15% boosts on YieldNest Seeds for being part of the PrimeStaked community."
     }
   ],
   "TdTXXf": [
@@ -867,12 +831,6 @@
     {
       "type": 0,
       "value": "Account"
-    }
-  ],
-  "UG28K4": [
-    {
-      "type": 0,
-      "value": "Preview Withdrawal"
     }
   ],
   "ULVduL": [
@@ -921,12 +879,6 @@
       "value": "."
     }
   ],
-  "UvpW4k": [
-    {
-      "type": 0,
-      "value": "YieldNest Pioneer NFT"
-    }
-  ],
   "V/q7w4": [
     {
       "type": 0,
@@ -959,6 +911,20 @@
     {
       "type": 0,
       "value": "Native ETH Restaking is Live!"
+    }
+  ],
+  "X/S866": [
+    {
+      "type": 0,
+      "value": "Withdrawal request successfully "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": "."
     }
   ],
   "XRPY5F": [
@@ -1025,32 +991,10 @@
       "value": "primeETH XP"
     }
   ],
-  "b0XMBI": [
-    {
-      "type": 0,
-      "value": "You will no longer be eligible for the YND Season 1 Airdrop or Seeds (points) boost if you withdraw. "
-    },
-    {
-      "type": 1,
-      "value": "link"
-    }
-  ],
-  "bh6lBg": [
-    {
-      "type": 0,
-      "value": "You will receive"
-    }
-  ],
   "c31Feo": [
     {
       "type": 0,
       "value": "Swapping"
-    }
-  ],
-  "c7tNet": [
-    {
-      "type": 0,
-      "value": "Withdrawal Process"
     }
   ],
   "cOKXho": [
@@ -1105,10 +1049,16 @@
       "value": "Exchange rate"
     }
   ],
-  "eBtkJl": [
+  "eWA3GW": [
     {
       "type": 0,
-      "value": "Return to Claim"
+      "value": "Initiate withdrawal"
+    }
+  ],
+  "ej99BN": [
+    {
+      "type": 0,
+      "value": "Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest."
     }
   ],
   "fBhctx": [
@@ -1123,26 +1073,10 @@
       "value": "Your rewards"
     }
   ],
-  "fqli/X": [
+  "fl4e36": [
     {
       "type": 0,
-      "value": "AVS/Network "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "yields & airdrops"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    }
-  ],
-  "ftdwnS": [
-    {
-      "type": 0,
-      "value": "Approve Withdrawal"
+      "value": "Accrued XP will be redeemable for retroactive YND airdrop at the TGE"
     }
   ],
   "fuV7zb": [
@@ -1165,20 +1099,10 @@
       "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
     }
   ],
-  "gI0IFe": [
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "60+% YND"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
+  "gxbLzh": [
     {
       "type": 0,
-      "value": " community incentives"
+      "value": "Withdraw/Migrate"
     }
   ],
   "h88CQM": [
@@ -1191,20 +1115,6 @@
     {
       "type": 0,
       "value": "% of total"
-    }
-  ],
-  "hmYxm5": [
-    {
-      "type": 0,
-      "value": "≥ "
-    },
-    {
-      "type": 1,
-      "value": "converted"
-    },
-    {
-      "type": 0,
-      "value": " YN LSD Tokens + YND tokens (at the TGE)"
     }
   ],
   "hzSNj4": [
@@ -1237,16 +1147,22 @@
       "value": "Participate in the YieldNest Airdrop"
     }
   ],
+  "iVa4gM": [
+    {
+      "type": 0,
+      "value": "Claim/Migrate"
+    }
+  ],
   "iaS0YY": [
     {
       "type": 0,
       "value": "I have read and agree to the above terms"
     }
   ],
-  "j9JcZR": [
+  "iySQsQ": [
     {
       "type": 0,
-      "value": "- Your hair will re-grow"
+      "value": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop."
     }
   ],
   "j9Y9nu": [
@@ -1255,10 +1171,22 @@
       "value": "Hours"
     }
   ],
+  "jS1Li6": [
+    {
+      "type": 0,
+      "value": "Migrate or Claim"
+    }
+  ],
   "jTHHrj": [
     {
       "type": 0,
       "value": "Past Claims"
+    }
+  ],
+  "joOlUw": [
+    {
+      "type": 0,
+      "value": "claimed"
     }
   ],
   "jvnqxK": [
@@ -1277,6 +1205,12 @@
     {
       "type": 0,
       "value": "Go to claims"
+    }
+  ],
+  "kuZlcE": [
+    {
+      "type": 0,
+      "value": "Wait for EigenLayer to process the withdrawal."
     }
   ],
   "kyOIfE": [
@@ -1303,6 +1237,12 @@
       "value": "Mins"
     }
   ],
+  "lgcLxH": [
+    {
+      "type": 0,
+      "value": "YieldNest plans to distribute at least 60% of the total YND token supply to its community."
+    }
+  ],
   "lozEho": [
     {
       "type": 0,
@@ -1313,6 +1253,20 @@
     {
       "type": 0,
       "value": "Approving"
+    }
+  ],
+  "mdkEkL": [
+    {
+      "type": 0,
+      "value": "Your "
+    },
+    {
+      "type": 1,
+      "value": "type"
+    },
+    {
+      "type": 0,
+      "value": " is being processed"
     }
   ],
   "n9f17V": [
@@ -1333,6 +1287,12 @@
       "value": "Recent Activity"
     }
   ],
+  "oAlAdy": [
+    {
+      "type": 0,
+      "value": "Withdraw your funds from Eigenlayer. If you plan to partially migrate to ynLSDe, please initiate one withdrawal request for the amount you wish to migrate and another for the amount you wish to claim."
+    }
+  ],
   "oNwEq5": [
     {
       "type": 0,
@@ -1345,6 +1305,12 @@
       "value": "Copied"
     }
   ],
+  "pAbH2A": [
+    {
+      "type": 0,
+      "value": "migration"
+    }
+  ],
   "pYbH7c": [
     {
       "type": 0,
@@ -1355,12 +1321,6 @@
     {
       "type": 0,
       "value": "You will receive:"
-    }
-  ],
-  "qEpegt": [
-    {
-      "type": 0,
-      "value": "You will no longer be eligible for the following rewards if you withdraw:"
     }
   ],
   "qGZxc4": [
@@ -1397,24 +1357,10 @@
       "value": "Refresh"
     }
   ],
-  "rGHT9M": [
+  "rbrahO": [
     {
       "type": 0,
-      "value": "YieldNest "
-    },
-    {
-      "children": [
-        {
-          "type": 0,
-          "value": "Season 1 Airdrop"
-        }
-      ],
-      "type": 8,
-      "value": "b"
-    },
-    {
-      "type": 0,
-      "value": " + access to all upcoming seasons"
+      "value": "Close"
     }
   ],
   "s8BnAC": [
@@ -1427,6 +1373,12 @@
     {
       "type": 0,
       "value": "Withdrawal processed, check your claim"
+    }
+  ],
+  "sjPJxA": [
+    {
+      "type": 0,
+      "value": "Migrate to ynLSDe"
     }
   ],
   "sokm79": [
@@ -1445,12 +1397,6 @@
     {
       "type": 0,
       "value": " = 1 primeETH"
-    }
-  ],
-  "st1mE1": [
-    {
-      "type": 0,
-      "value": "Wait, I want to earn rewards instead"
     }
   ],
   "stTYBM": [
@@ -1481,6 +1427,12 @@
       "value": "Visit PrimeStaked on X"
     }
   ],
+  "u/ejCQ": [
+    {
+      "type": 0,
+      "value": "View on YieldNest Website"
+    }
+  ],
   "u8Ngfh": [
     {
       "type": 0,
@@ -1491,6 +1443,12 @@
     {
       "type": 0,
       "value": "Select a token"
+    }
+  ],
+  "vns1w2": [
+    {
+      "type": 0,
+      "value": "ynLSDe migration is live!"
     }
   ],
   "vugtF7": [
@@ -1509,6 +1467,12 @@
     {
       "type": 0,
       "value": "Wrong Network"
+    }
+  ],
+  "wtQ7BM": [
+    {
+      "type": 0,
+      "value": "Visit YieldNest dApp to view your ynLSDe balance."
     }
   ],
   "wwZKEr": [
