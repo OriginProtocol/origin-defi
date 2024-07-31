@@ -288,7 +288,6 @@ export const components = (base: Theme): ThemeOptions => ({
       },
       styleOverrides: (theme) => ({
         body: {
-          height: '100%',
           WebkitFontSmoothing: 'antialiased',
           MozOsxFontSmoothing: 'grayscale',
           textRendering: 'optimizeLegibility',

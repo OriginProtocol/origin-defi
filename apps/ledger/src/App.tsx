@@ -1,22 +1,39 @@
 import { Stack } from '@mui/material';
-import { trackSentryError } from '@origin/ledger/shared';
+import { Footer, Topnav, trackSentryError } from '@origin/ledger/shared';
 import { SwapView } from '@origin/ledger/swap';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 
 export const App = () => {
   return (
-    <ErrorBoundary
-      ErrorComponent={<ErrorPage height={1} width={1} />}
-      onError={trackSentryError}
-    >
+    <>
+      <Topnav />
       <Stack
-        minWidth={370}
-        px={{ xs: 1, md: 3 }}
-        pt={{ xs: 5, md: 10 }}
-        alignItems="center"
+        sx={{
+          height: 1,
+          width: 1,
+          minWidth: 370,
+          px: { xs: 1, md: 3 },
+          pt: 20,
+          pb: 3,
+          display: 'flex',
+          alignItems: 'center',
+        }}
       >
-        <SwapView sx={{ maxWidth: 600 }} />
+        <ErrorBoundary
+          ErrorComponent={<ErrorPage height={1} width={1} />}
+          onError={trackSentryError}
+        >
+          <SwapView sx={{ maxWidth: 600 }} />
+        </ErrorBoundary>
       </Stack>
-    </ErrorBoundary>
+      <Footer
+        sx={{
+          position: 'fixed',
+          bottom: 36,
+          left: { xs: 16, md: 36 },
+          width: 1,
+        }}
+      />
+    </>
   );
 };
