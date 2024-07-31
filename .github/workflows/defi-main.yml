@@ -44,7 +44,7 @@ jobs:
           VITE_ALCHEMY_ID=$alchemy_id \
           VITE_GTM_CONTAINER_ID=$gtm_container \
           VITE_SENTRY_DSN=$wc_project_id \
-          pnpm nx run build defi
+          pnpm nx run defi:build:production
 
       - name: Upload to IPFS
         run: fleek storage add ./dist/apps/defi
