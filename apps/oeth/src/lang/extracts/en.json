@@ -59,9 +59,6 @@
   "45EvZ3": {
     "defaultMessage": "Minimum received with {slippage} slippage:"
   },
-  "4D9M13": {
-    "defaultMessage": "Swap with CurvePool"
-  },
   "4LOwM/": {
     "defaultMessage": "OETH Transactions"
   },
@@ -148,9 +145,6 @@
   },
   "BuhEl+": {
     "defaultMessage": "Theme:"
-  },
-  "C73Nbd": {
-    "defaultMessage": "Swap with Curve"
   },
   "CcqmCh": {
     "defaultMessage": "OETH Balance"
@@ -364,6 +358,9 @@
   },
   "eJNRiB": {
     "defaultMessage": "Est. bridge fee"
+  },
+  "eerX6M": {
+    "defaultMessage": "Swap via CurvePool"
   },
   "fBhctx": {
     "defaultMessage": "Download CSV"

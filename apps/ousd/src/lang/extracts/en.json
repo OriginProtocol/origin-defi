@@ -14,9 +14,6 @@
   "/xvR4F": {
     "defaultMessage": "Opt in"
   },
-  "00AJDy": {
-    "defaultMessage": "Origin Vault"
-  },
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
@@ -95,9 +92,6 @@
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
   },
-  "BONcjO": {
-    "defaultMessage": "Uniswap V3"
-  },
   "BY343C": {
     "defaultMessage": "Change"
   },
@@ -125,6 +119,9 @@
   "EWw/tK": {
     "defaultMessage": "Apply"
   },
+  "GdHGdR": {
+    "defaultMessage": "Swap via Uniswap V2"
+  },
   "H5+NAX": {
     "defaultMessage": "Balance"
   },
@@ -139,9 +136,6 @@
   },
   "JrepQU": {
     "defaultMessage": "Gas:"
-  },
-  "KE0cl6": {
-    "defaultMessage": "Curve"
   },
   "KN7zKn": {
     "defaultMessage": "Error"
@@ -167,9 +161,6 @@
   "MZCNjq": {
     "defaultMessage": "Bridge"
   },
-  "NNBdoh": {
-    "defaultMessage": "Uniswap V2"
-  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -185,11 +176,11 @@
   "OBfWz0": {
     "defaultMessage": "No available route"
   },
-  "OhU4K0": {
-    "defaultMessage": "SushiSwap"
-  },
   "OwO+Nr": {
     "defaultMessage": "Mint"
+  },
+  "Ozw3aL": {
+    "defaultMessage": "Mint with Vault"
   },
   "PKgDoL": {
     "defaultMessage": "Estimating..."
@@ -211,9 +202,6 @@
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
-  },
-  "TrXNPz": {
-    "defaultMessage": "Flipper"
   },
   "TwyMau": {
     "defaultMessage": "Account"
@@ -241,6 +229,9 @@
   },
   "XSdWHA": {
     "defaultMessage": "Redeem"
+  },
+  "Y4FfAH": {
+    "defaultMessage": "Swap via Uniswap V3"
   },
   "ZmLuI/": {
     "defaultMessage": "Rate:"
@@ -284,6 +275,9 @@
   "f0gqO4": {
     "defaultMessage": "Lifetime Earnings (OUSD)"
   },
+  "f7AFus": {
+    "defaultMessage": "Swap via SushiSwap"
+  },
   "fBhctx": {
     "defaultMessage": "Download CSV"
   },
@@ -316,6 +310,9 @@
   },
   "kF1zxQ": {
     "defaultMessage": "30-Day Trailing APY"
+  },
+  "lQmZjB": {
+    "defaultMessage": "Swap via Curve"
   },
   "lb8m6m": {
     "defaultMessage": "Mins"
@@ -358,6 +355,9 @@
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+  },
+  "tDcoCl": {
+    "defaultMessage": "Swap via Flipper"
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"

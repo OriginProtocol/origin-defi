@@ -352,8 +352,8 @@ function SwapperWrapped({
               {intl.formatMessage({ defaultMessage: 'Route' })}
             </Typography>
             <Stack direction="row" spacing={2}>
-              <RedeemActionCard action="redeem-vault" sx={{ width: 1 }} />
-              <RedeemActionCard action="swap-curve" sx={{ width: 1 }} />
+              <RedeemActionCard action="redeem-vault-oeth" sx={{ width: 1 }} />
+              <RedeemActionCard action="swap-curve-oeth" sx={{ width: 1 }} />
             </Stack>
             <Typography pt={1.5}>
               {intl.formatMessage({ defaultMessage: 'Receive amount' })}

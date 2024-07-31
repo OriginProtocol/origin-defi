@@ -129,11 +129,14 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           );
           const availabilities = await Promise.allSettled(
             availableRoutes.map((r) =>
-              swapActions[r.action].isRouteAvailable(config, {
-                amountIn: state.amountIn,
-                tokenIn: r.tokenIn,
-                tokenOut: r.tokenOut,
-              }),
+              swapActions[r.action].isRouteAvailable(
+                { config, queryClient },
+                {
+                  amountIn: state.amountIn,
+                  tokenIn: r.tokenIn,
+                  tokenOut: r.tokenOut,
+                },
+              ),
             ),
           );
           const filteredRoutes = availableRoutes.filter(
@@ -170,7 +173,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                   let res: EstimatedSwapRoute;
                   try {
                     res = await swapActions[route.action].estimateRoute(
-                      config,
+                      { config, queryClient },
                       {
                         tokenIn: route.tokenIn,
                         tokenOut: route.tokenOut,
