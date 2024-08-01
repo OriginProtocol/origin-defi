@@ -149,7 +149,7 @@ export const UnstakeLockupModal = ({
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
-                  BigInt(lockup.amount),
+                  BigInt(lockup.amount ?? 0),
                   tokens.mainnet.OGN.decimals,
                 ),
                 {
@@ -160,7 +160,7 @@ export const UnstakeLockupModal = ({
             </Typography>
             <Typography>{formatTimeRemaining(lockup.end)}</Typography>
             <LoadingLabel isLoading={isPreviewOgnLoading}>
-              {intl.formatNumber(penaltyPercent, {
+              {intl.formatNumber(penaltyPercent ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,

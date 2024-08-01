@@ -412,7 +412,7 @@ export const StakingForm = () => {
                             votingPowerPercent <= 1e-6 && votingPowerPercent > 0
                               ? `~ `
                               : '',
-                          value: intl.formatNumber(votingPowerPercent, {
+                          value: intl.formatNumber(votingPowerPercent ?? 0, {
                             style: 'percent',
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 5,

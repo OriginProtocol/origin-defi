@@ -28,7 +28,7 @@ export const useFormat = () => {
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
     ) => {
-      if (!amount || amount === 0n) return zeroPlaceholder;
+      if (!amount || amount === 0n || amount === 0) return zeroPlaceholder;
 
       const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
@@ -55,7 +55,7 @@ export const useFormat = () => {
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
     ) => {
-      if (!amount || amount === 0n) return zeroPlaceholder;
+      if (!amount || amount === 0n || amount === 0) return zeroPlaceholder;
 
       const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
@@ -76,7 +76,7 @@ export const useFormat = () => {
       zeroPlaceholder = '$0.00',
       options?: FormatNumberOptions,
     ) => {
-      if (!amount || amount === 0n) return zeroPlaceholder;
+      if (!amount || amount === 0n || amount === 0) return zeroPlaceholder;
 
       const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;
@@ -100,7 +100,7 @@ export const useFormat = () => {
       zeroPlaceholder = '0.00',
       options?: FormatNumberOptions,
     ) => {
-      if (!amount || amount === 0n) return zeroPlaceholder;
+      if (!amount || amount === 0n || amount === 0) return zeroPlaceholder;
 
       const amt =
         typeof amount === 'bigint' ? +formatUnits(amount, decimals) : amount;

@@ -61,7 +61,10 @@ export const LockupsTable = () => {
         header: intl.formatMessage({ defaultMessage: 'OGN' }),
         cell: (info) =>
           intl.formatNumber(
-            +formatUnits(BigInt(info.getValue()), tokens.mainnet.OGN.decimals),
+            +formatUnits(
+              BigInt(info.getValue() ?? 0),
+              tokens.mainnet.OGN.decimals,
+            ),
             {
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
@@ -95,7 +98,7 @@ export const LockupsTable = () => {
               cell: (info) =>
                 intl.formatNumber(
                   +formatUnits(
-                    BigInt(info.getValue()),
+                    BigInt(info.getValue() ?? 0),
                     tokens.mainnet.xOGN.decimals,
                   ),
                   {
@@ -116,7 +119,7 @@ export const LockupsTable = () => {
           >
             {intl.formatNumber(
               +formatUnits(
-                BigInt(info.getValue()) ?? 0n,
+                BigInt(info.getValue() ?? 0),
                 tokens.mainnet.xOGN.decimals,
               ) /
                 +formatUnits(
