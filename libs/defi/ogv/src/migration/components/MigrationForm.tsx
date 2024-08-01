@@ -363,7 +363,7 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
   const intl = useIntl();
 
   const converted =
-    +formatUnits(ogv, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
+    +formatUnits(ogv ?? 0n, tokens.mainnet.OGV.decimals) * ogvToOgnRate;
 
   return (
     <Card {...rest}>
@@ -379,7 +379,9 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
           spacing={1}
         >
           <Typography variant="featured2" fontWeight="bold">
-            {intl.formatNumber(+formatUnits(ogv, tokens.mainnet.OGV.decimals))}
+            {intl.formatNumber(
+              +formatUnits(ogv ?? 0n, tokens.mainnet.OGV.decimals),
+            )}
           </Typography>
           <TokenChip
             token={tokens.mainnet.OGV}

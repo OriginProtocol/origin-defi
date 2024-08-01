@@ -59,7 +59,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
   const votingPowerPercent = toNumber(
     div(
       [BigInt(info?.votingPower ?? 0), tokens.mainnet.xOGN.decimals],
-      [xOgnTotalSupply, tokens.mainnet.xOGN.decimals],
+      [xOgnTotalSupply ?? 1n, tokens.mainnet.xOGN.decimals],
     ),
   );
 

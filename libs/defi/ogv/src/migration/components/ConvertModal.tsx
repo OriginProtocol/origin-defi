@@ -250,7 +250,7 @@ export const ConvertModal = ({
               >
                 <Collapse orientation="horizontal" in={!ratioOpen}>
                   <Typography mr={0.75}>
-                    {intl.formatNumber(stakingRatio / 100, {
+                    {intl.formatNumber((stakingRatio ?? 0) / 100, {
                       style: 'percent',
                     })}
                   </Typography>
@@ -267,7 +267,9 @@ export const ConvertModal = ({
                   fontWeight="bold"
                   color="primary.main"
                 >
-                  {intl.formatNumber(stakingRatio / 100, { style: 'percent' })}
+                  {intl.formatNumber((stakingRatio ?? 0) / 100, {
+                    style: 'percent',
+                  })}
                 </Typography>
                 <Slider
                   value={stakingRatio}

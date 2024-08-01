@@ -123,7 +123,7 @@ export const VotingPowerCard = (props: CardProps) => {
                 defaultMessage: '{tilt}{value}',
               },
               {
-                value: intl.formatNumber(percent, {
+                value: intl.formatNumber(percent ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 5,
