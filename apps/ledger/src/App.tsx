@@ -9,12 +9,10 @@ export const App = () => {
       <Topnav />
       <Stack
         sx={{
-          height: 1,
           width: 1,
           minWidth: 370,
-          px: { xs: 1, md: 3 },
-          pt: 20,
-          pb: 3,
+          px: 3,
+          pt: { xs: 3, md: 6 },
           display: 'flex',
           alignItems: 'center',
         }}

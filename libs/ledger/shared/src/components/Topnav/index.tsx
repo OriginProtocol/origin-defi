@@ -32,21 +32,13 @@ export const Topnav = (props: StackProps) => {
               setOpen(true);
             }
           }}
-          sx={{
-            minWidth: { xs: 36, md: 40 },
-            maxWidth: { xs: isConnected ? 36 : 160, sm: 160, lg: 220 },
-            paddingX: {
-              md: 2,
-              xs: isConnected ? 0.75 : 2,
-            },
-          }}
+          sx={{ px: 2 }}
           connectedProps={{ color: 'secondary' }}
           disconnectedProps={{
             color: 'primary',
             sx: { '&&&': { minWidth: 80, borderRadius: 2 } },
           }}
           hideWrongNetwork
-          variant="nav"
         />
       </Stack>
       <AccountPopover
