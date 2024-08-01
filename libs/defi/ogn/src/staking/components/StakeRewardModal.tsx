@@ -553,7 +553,7 @@ export const StakeRewardModal = (props: DialogProps) => {
                         : '',
                     value:
                       amount > 0n
-                        ? intl.formatNumber(votingPowerPercent, {
+                        ? intl.formatNumber(votingPowerPercent ?? 0, {
                             style: 'percent',
                             minimumFractionDigits: 2,
                             maximumFractionDigits: 5,
@@ -621,7 +621,10 @@ function LockupSelect({
         header: intl.formatMessage({ defaultMessage: 'OGN' }),
         cell: (info) =>
           intl.formatNumber(
-            +formatUnits(BigInt(info.getValue()), tokens.mainnet.OGN.decimals),
+            +formatUnits(
+              BigInt(info.getValue() ?? 0),
+              tokens.mainnet.OGN.decimals,
+            ),
             {
               minimumFractionDigits: 0,
               maximumFractionDigits: 0,
@@ -643,7 +646,7 @@ function LockupSelect({
         cell: (info) =>
           intl.formatNumber(
             +formatUnits(
-              BigInt(info.getValue()) ?? 0n,
+              BigInt(info.getValue() ?? 0),
               tokens.mainnet.xOGN.decimals,
             ) /
               +formatUnits(

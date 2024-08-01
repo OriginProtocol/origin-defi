@@ -51,7 +51,7 @@ function BalanceRow({
         {isBalanceLoading ? (
           <Skeleton width={38} />
         ) : (
-          intl.formatNumber(balance, {
+          intl.formatNumber(balance ?? 0, {
             minimumFractionDigits: 4,
             maximumFractionDigits: 4,
           })
