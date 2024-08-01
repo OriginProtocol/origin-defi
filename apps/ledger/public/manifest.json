@@ -1,6 +1,33 @@
 {
-  "name": "Origin Ledger dApp",
-  "description": "The official dapp for our groundbreaking multichain yield ecosystem",
-  "iconPath": "https://raw.githubusercontent.com/OriginProtocol/origin-defi/main/libs/shared/icons/src/origin/origin-logo.svg",
-  "providedBy": { "name": "Origin", "url": "https://www.originprotocol.com/" }
+  "id": "origin",
+  "name": "Origin",
+  "url": "https://feat-ledger.d1f22w1vltt066.amplifyapp.com/",
+  "dapp": {
+    "nanoApp": "origin-plugin",
+    "networks": [
+      {
+        "currency": "ethereum",
+        "chainID": 1,
+        "nodeURL": "https://eth-dapps.api.live.ledger.com"
+      }
+    ]
+  },
+  "homepageUrl": "https://www.originprotocol.com/",
+  "icon": "https://raw.githubusercontent.com/OriginProtocol/origin-defi/main/libs/shared/icons/src/origin/origin-logo.svg",
+  "platform": "all",
+  "apiVersion": "^2.0.0",
+  "manifestVersion": "2",
+  "branch": "main",
+  "categories": ["staking", "defi"],
+  "currencies": ["ethereum", "bsc", "polygon", "arbitrum", "optimism"],
+  "content": {
+    "shortDescription": {
+      "en": "The official dapp for our groundbreaking multichain yield ecosystem."
+    },
+    "description": {
+      "en": "The official dapp for our groundbreaking multichain yield ecosystem."
+    }
+  },
+  "permissions": [],
+  "domains": ["https://"]
 }
