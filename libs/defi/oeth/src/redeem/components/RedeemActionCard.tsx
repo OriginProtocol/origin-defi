@@ -1,7 +1,12 @@
 import { alpha, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
 import { OETH } from '@origin/shared/icons';
-import { routeEq, useSwapState } from '@origin/shared/providers';
+import {
+  routeEq,
+  useHandleSelectSwapRoute,
+  useIsSwapRouteAvailable,
+  useSwapState,
+} from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 
@@ -29,15 +34,23 @@ export const RedeemActionCard = ({
       selectedSwapRoute,
       swapRoutes,
       swapActions,
+      estimatedSwapRoutes,
     },
   ] = useSwapState();
+  const handleSelectSwapRoute = useHandleSelectSwapRoute();
+
   const route = swapRoutes.find((r) =>
     routeEq({ tokenIn, tokenOut, action }, r),
   ) as SwapRoute<OethRedeemAction, Meta>;
+  const { data: isRouteAvailable, isLoading: isRouteAvailableLoading } =
+    useIsSwapRouteAvailable(route);
+  const estimatedRoute = estimatedSwapRoutes.find((r) => routeEq(route, r));
   const isSelected = routeEq({ tokenIn, tokenOut, action }, selectedSwapRoute);
   const isComingSoon =
     (route as SwapRoute<OethRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
+  const isDisabled =
+    !isRouteAvailable || isRouteAvailableLoading || isComingSoon;
 
   return (
     <Card
@@ -48,17 +61,28 @@ export const RedeemActionCard = ({
         border: '1px solid',
         borderColor: 'divider',
         backgroundColor: 'background.highlight',
-        ...(amountIn > 0n &&
-          !isComingSoon && {
-            cursor: 'pointer',
-            '&:hover': {
-              borderColor: 'primary.main',
-            },
-          }),
-        ...(isSelected && {
-          borderColor: 'primary.main',
-        }),
+        ...(isDisabled
+          ? { opacity: 0.5, cursor: 'default' }
+          : isSelected
+            ? {
+                borderColor: 'primary.main',
+                backgroundColor: 'background.highlight',
+              }
+            : amountIn > 0n
+              ? {
+                  cursor: 'pointer',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                  },
+                }
+              : {}),
         ...rest?.sx,
+      }}
+      role="button"
+      onClick={() => {
+        if (!isDisabled && estimatedRoute && amountIn > 0n) {
+          handleSelectSwapRoute(estimatedRoute);
+        }
       }}
     >
       {isComingSoon && (
