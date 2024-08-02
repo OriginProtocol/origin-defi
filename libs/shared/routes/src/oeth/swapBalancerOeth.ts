@@ -1,4 +1,4 @@
-import { contracts } from '@origin/shared/contracts';
+import { contracts, whales } from '@origin/shared/contracts';
 import {
   isNilOrEmpty,
   subPercentage,
@@ -11,7 +11,7 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits } from 'viem';
+import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 
 import { defaultRoute } from '../defaultRoute';
 
@@ -50,7 +50,7 @@ const estimateAmount: EstimateAmount = async (
   { config },
   { tokenIn, tokenOut, amountIn },
 ) => {
-  if (amountIn === 0n || !tokenIn?.address || !tokenOut?.address) {
+  if (amountIn === 0n) {
     return 0n;
   }
 
@@ -62,8 +62,8 @@ const estimateAmount: EstimateAmount = async (
       {
         poolId: WethWoethPoolId,
         kind: 0,
-        assetIn: tokenIn.address,
-        assetOut: tokenOut.address,
+        assetIn: tokenIn.address ?? ZERO_ADDRESS,
+        assetOut: tokenOut.address ?? ZERO_ADDRESS,
         amount: amountIn,
         userData: defaultUserData,
       },
@@ -84,15 +84,9 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
-  const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (
-    amountIn === 0n ||
-    !publicClient ||
-    !tokenIn?.address ||
-    !tokenOut.address
-  ) {
+  if (amountIn === 0n || !publicClient) {
     return gasEstimate;
   }
 
@@ -100,6 +94,9 @@ const estimateGas: EstimateGas = async (
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
+  const user = isNilOrEmpty(tokenIn?.address)
+    ? whales.arbitrum.ETH
+    : whales.arbitrum.wOETH;
 
   try {
     gasEstimate = await publicClient.estimateContractGas({
@@ -110,20 +107,21 @@ const estimateGas: EstimateGas = async (
         {
           poolId: WethWoethPoolId,
           kind: 0,
-          assetIn: tokenIn.address,
-          assetOut: tokenOut.address,
+          assetIn: tokenIn.address ?? ZERO_ADDRESS,
+          assetOut: tokenOut.address ?? ZERO_ADDRESS,
           amount: amountIn,
           userData: defaultUserData,
         },
         {
-          recipient: address ?? ZERO_ADDRESS,
-          sender: address ?? ZERO_ADDRESS,
+          recipient: user,
+          sender: user,
           fromInternalBalance: false,
           toInternalBalance: false,
         },
         minAmountOut[0],
         deadline,
       ],
+      ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
     });
   } catch {
     gasEstimate = 220_000n;
@@ -132,11 +130,11 @@ const estimateGas: EstimateGas = async (
   return gasEstimate;
 };
 
-const allowance: Allowance = async ({ config }, { tokenIn }) => {
+const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
   const { address } = getAccount(config);
 
   if (!address || !tokenIn?.address) {
-    return 0n;
+    return maxUint256;
   }
 
   const allowance = await readContract(config, {
@@ -152,7 +150,7 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
 
 const estimateApprovalGas: EstimateApprovalGas = async (
   { config },
-  { tokenIn, amountIn },
+  { tokenIn, amountIn, tokenOut },
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
@@ -217,10 +215,7 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (
-  { config },
-  { tokenIn, tokenOut, amountIn },
-) => {
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   if (!tokenIn?.address) {
     return null;
   }
@@ -243,13 +238,7 @@ const swap: Swap = async (
 ) => {
   const { address } = getAccount(config);
 
-  if (
-    amountIn === 0n ||
-    isNilOrEmpty(address) ||
-    !tokenIn.address ||
-    !tokenOut.address ||
-    !address
-  ) {
+  if (amountIn === 0n || !address) {
     return null;
   }
 
@@ -275,8 +264,8 @@ const swap: Swap = async (
       {
         poolId: WethWoethPoolId,
         kind: 0,
-        assetIn: tokenIn.address,
-        assetOut: tokenOut.address,
+        assetIn: tokenIn.address ?? ZERO_ADDRESS,
+        assetOut: tokenOut.address ?? ZERO_ADDRESS,
         amount: amountIn,
         userData: defaultUserData,
       },
@@ -289,6 +278,7 @@ const swap: Swap = async (
       minAmountOut[0],
       deadline,
     ],
+    ...(isNilOrEmpty(tokenIn.address) && { value: amountIn }),
   });
   const hash = await writeContract(config, request);
 
