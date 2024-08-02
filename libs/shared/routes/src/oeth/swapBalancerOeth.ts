@@ -13,7 +13,6 @@ import {
 } from '@wagmi/core';
 import { erc20Abi, formatUnits } from 'viem';
 
-import { GAS_BUFFER } from '../constants';
 import { defaultRoute } from '../defaultRoute';
 
 import type {
@@ -85,6 +84,7 @@ const estimateGas: EstimateGas = async (
   { tokenIn, tokenOut, amountIn, slippage, amountOut },
 ) => {
   let gasEstimate = 0n;
+  const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
   if (
@@ -116,8 +116,8 @@ const estimateGas: EstimateGas = async (
           userData: defaultUserData,
         },
         {
-          recipient: ZERO_ADDRESS,
-          sender: ZERO_ADDRESS,
+          recipient: address ?? ZERO_ADDRESS,
+          sender: address ?? ZERO_ADDRESS,
           fromInternalBalance: false,
           toInternalBalance: false,
         },
@@ -125,8 +125,6 @@ const estimateGas: EstimateGas = async (
         deadline,
       ],
     });
-
-    console.log(gasEstimate);
   } catch {
     gasEstimate = 220_000n;
   }
@@ -269,18 +267,6 @@ const swap: Swap = async (
     slippage,
   );
 
-  const estimatedGas = await estimateGas(
-    { config, queryClient },
-    {
-      amountIn,
-      slippage,
-      tokenIn,
-      tokenOut,
-      amountOut,
-    },
-  );
-  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
-
   const { request } = await simulateContract(config, {
     address: contracts.arbitrum.balancerVault.address,
     abi: contracts.arbitrum.balancerVault.abi,
@@ -303,7 +289,6 @@ const swap: Swap = async (
       minAmountOut[0],
       deadline,
     ],
-    gas,
   });
   const hash = await writeContract(config, request);
 
