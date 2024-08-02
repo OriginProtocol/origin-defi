@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   formatError,
@@ -9,10 +9,11 @@ import {
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { createContainer } from 'react-tracked';
-import { useConfig } from 'wagmi';
+import { mainnet } from 'viem/chains';
+import { useAccount, useConfig } from 'wagmi';
 
 import { useSlippage } from '../slippage';
-import { getAvailableRoutes } from './utils';
+import { getAvailableRoutes, getFilteredSwapRoutes } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -65,13 +66,25 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       onSwapReject,
       onSwapFailure,
     }) => {
+      const { chain } = useAccount();
+      const queryClient = useQueryClient();
+      const config = useConfig();
+      const { value: slippage } = useSlippage();
+      const filteredSwapRoutes = getFilteredSwapRoutes(
+        swapRoutes,
+        chain ?? mainnet,
+      );
+      const routes = isNilOrEmpty(filteredSwapRoutes)
+        ? swapRoutes
+        : filteredSwapRoutes;
+
       const [state, setState] = useState<SwapState>({
         swapActions,
-        swapRoutes: swapRoutes,
+        swapRoutes: routes,
         amountIn: 0n,
-        tokenIn: swapRoutes[0]?.tokenIn,
+        tokenIn: routes[0]?.tokenIn,
         amountOut: 0n,
-        tokenOut: swapRoutes[0]?.tokenOut,
+        tokenOut: routes[0]?.tokenOut,
         estimatedSwapRoutes: [],
         selectedSwapRoute: null,
         isSwapWaitingForSignature: false,
@@ -98,9 +111,25 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
         onSwapReject,
         onSwapFailure,
       });
-      const queryClient = useQueryClient();
-      const config = useConfig();
-      const { value: slippage } = useSlippage();
+
+      useEffect(() => {
+        const filteredSwapRoutes = getFilteredSwapRoutes(
+          swapRoutes,
+          chain ?? mainnet,
+        );
+        const routes = isNilOrEmpty(filteredSwapRoutes)
+          ? swapRoutes
+          : filteredSwapRoutes;
+        setState((prev) => ({
+          ...prev,
+          swapRoutes: routes,
+          tokenIn: routes[0]?.tokenIn,
+          amountOut: 0n,
+          tokenOut: routes[0]?.tokenOut,
+          estimatedSwapRoutes: [],
+          selectedSwapRoute: null,
+        }));
+      }, [chain, swapRoutes]);
 
       useDebouncedEffect(
         async () => {

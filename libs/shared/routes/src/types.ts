@@ -1,6 +1,7 @@
 export type OethRoute =
   | 'mint-vault-oeth'
   | 'redeem-vault-oeth'
+  | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
   | 'swap-curve-oeth-eth'
   | 'swap-curve-oeth-sfrxeth'
