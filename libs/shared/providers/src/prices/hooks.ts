@@ -107,7 +107,7 @@ const pricesFetcher: (
           allPrices[dep.id] =
             dep.dependsOn?.reduce(
               (acc, curr) => mul(acc, allPrices[curr]),
-              from(1),
+              from(1, 18),
             ) ?? from(0);
         });
       } catch {}
