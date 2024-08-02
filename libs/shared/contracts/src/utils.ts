@@ -1,8 +1,10 @@
+import { supportedChains } from '@origin/shared/constants';
+
 import { tokenIdMap, tokenList } from './tokens';
 
 import type { Chain } from 'viem/chains';
 
-import type { Token, TokenId } from './types';
+import type { SupportedChainId, Token, TokenId } from './types';
 
 export const getNativeToken = (chain: Chain): Token => {
   return {
@@ -12,6 +14,12 @@ export const getNativeToken = (chain: Chain): Token => {
     address: undefined,
     abi: [],
   };
+};
+
+export const getNativeTokenByChainId = (chainId: SupportedChainId): Token => {
+  const chain = supportedChains[chainId];
+
+  return getNativeToken(chain);
 };
 
 export const getTokenByAddress = (

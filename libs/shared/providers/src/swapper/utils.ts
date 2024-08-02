@@ -115,8 +115,8 @@ export const routeEq = (
   }
 
   return (
-    a.tokenIn.symbol === b.tokenIn.symbol &&
-    a.tokenOut.symbol === b.tokenOut.symbol &&
+    a.tokenIn.id === b.tokenIn.id &&
+    a.tokenOut.id === b.tokenOut.id &&
     a.action === b.action
   );
 };

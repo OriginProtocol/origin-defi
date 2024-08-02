@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
+import { supportedChainNames } from '@origin/shared/constants';
 import {
   getTokenPriceKey,
   useTokenPrice,
@@ -35,9 +36,11 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             labelInfoTooltip={intl.formatMessage(
               {
-                defaultMessage: 'Total value locked {symbol}',
+                defaultMessage: 'Total value locked on {chainName}',
               },
-              { symbol: token.symbol },
+              {
+                chainName: supportedChainNames[token.chainId].short,
+              },
             )}
             value={`$${format(tvl ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
@@ -47,6 +50,15 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
             direction="row"
             justifyContent="space-between"
             label={intl.formatMessage({ defaultMessage: 'Price' })}
+            labelInfoTooltip={intl.formatMessage(
+              {
+                defaultMessage: 'USD price of {symbol} on {chainName}',
+              },
+              {
+                symbol: token.symbol,
+                chainName: supportedChainNames[token.chainId].short,
+              },
+            )}
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
             value={`$${format(price ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}

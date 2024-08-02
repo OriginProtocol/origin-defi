@@ -8,7 +8,7 @@ import {
 import { from } from 'dnum';
 import { pathOr } from 'ramda';
 import { parseUnits } from 'viem';
-import { mainnet } from 'wagmi/chains';
+import { arbitrum, mainnet } from 'wagmi/chains';
 
 import type { Dnum } from 'dnum';
 
@@ -47,6 +47,7 @@ export const chainlinkOraclesMainnet = {
 
 export const chainlinkOraclesArbitrum = {
   ETH_USD: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
+  wOETH_OETH: '0x03a1f4b19aaeA6e68f0f104dc4346dA3E942cC45',
 } as const;
 
 const chainLinkUsdMapper = (data: any) => [pathOr(0n, [1], data), 8] as Dnum;
@@ -337,5 +338,37 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     id: '1:OETH_1:ETH',
     type: 'rest',
     config: async () => from(1 - OETH_REDEEM_FEE),
+  },
+  '42161:ETH_USD': {
+    id: '42161:ETH_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesArbitrum.ETH_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: arbitrum.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
+  '42161:wOETH_42161:OETH': {
+    id: '42161:wOETH_42161:OETH',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesArbitrum.wOETH_OETH,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: arbitrum.id,
+    },
+    mapResult: chainLinkEthMapper,
+  },
+  '42161:wOETH_USD': {
+    id: '42161:wOETH_USD',
+    type: 'derived',
+    dependsOn: ['42161:wOETH_42161:OETH', '42161:ETH_USD'],
+  },
+  '42161:WETH_USD': {
+    id: '42161:WETH_USD',
+    type: 'derived',
+    dependsOn: ['42161:ETH_USD'],
   },
 };
