@@ -11,6 +11,8 @@ import {
 } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
+import { mainnet } from 'viem/chains';
+import { useAccount } from 'wagmi';
 
 import { oethSwapActions } from '../actions';
 import { AnalyticsCard } from '../components/AnalyticsCard';
@@ -19,6 +21,13 @@ import { oethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
   const intl = useIntl();
+  const { chain } = useAccount();
+
+  const token =
+    (chain ?? mainnet).id === mainnet.id
+      ? tokens.mainnet.OETH
+      : tokens.arbitrum.wOETH;
+
   return (
     <Page>
       <PageTitle
@@ -45,7 +54,7 @@ export const SwapView = () => {
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <GlobalStatsCard token={tokens.mainnet.OETH} />
+              <GlobalStatsCard token={token} />
               <AnalyticsCard />
             </Stack>
           </Grid2>

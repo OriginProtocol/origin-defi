@@ -19,13 +19,7 @@ export const getNativeToken = (chain: Chain): Token => {
 export const getNativeTokenByChainId = (chainId: SupportedChainId): Token => {
   const chain = supportedChains[chainId];
 
-  return {
-    ...chain.nativeCurrency,
-    id: `${chain.id}:${chain.nativeCurrency.symbol}` as TokenId,
-    chainId: chain.id,
-    address: undefined,
-    abi: [],
-  };
+  return getNativeToken(chain);
 };
 
 export const getTokenByAddress = (
