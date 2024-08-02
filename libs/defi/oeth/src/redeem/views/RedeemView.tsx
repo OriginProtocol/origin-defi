@@ -1,12 +1,22 @@
-import { Page, PageSection, PageTitle } from '@origin/defi/shared';
+import { Stack } from '@mui/material';
+import {
+  Page,
+  PageSection,
+  PageTitle,
+  trackSentryError,
+} from '@origin/defi/shared';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { Outlet } from 'react-router-dom';
+
+import { ViewSwitch } from '../components/ViewSwitch';
+import { useViewSelect } from '../hooks';
+import { ClaimView } from './ClaimView';
+import { RequestView } from './RequestView';
 
 export const RedeemView = () => {
   const intl = useIntl();
-  // const navigate = useNavigate();
-  // const location = useLocation();
+  const { view } = useViewSelect();
 
   return (
     <Page>
@@ -17,30 +27,17 @@ export const RedeemView = () => {
         })}
         token={tokens.mainnet.OETH}
       />
-      {/* <Tabs
-        centered
-        value={location.pathname}
-        onChange={(_, value) => {
-          navigate(value);
-        }}
-        sx={{ mb: 5 }}
-      >
-        {oethRedeemRoute?.children?.map((route) => {
-          const path = route.index
-            ? '/oeth/redeem'
-            : `/oeth/redeem/${route.path}`;
 
-          return (
-            <Tab
-              key={path}
-              value={path}
-              label={intl.formatMessage(route.handle.label)}
-            />
-          );
-        })}
-      </Tabs> */}
-      <PageSection>
-        <Outlet />
+      <PageSection containerProps={{ maxWidth: 'sm' }}>
+        <Stack spacing={6}>
+          <ViewSwitch />
+          <ErrorBoundary
+            ErrorComponent={<ErrorCard />}
+            onError={trackSentryError}
+          >
+            {view === 'request' ? <RequestView /> : <ClaimView />}
+          </ErrorBoundary>
+        </Stack>
       </PageSection>
     </Page>
   );
