@@ -18,11 +18,11 @@ export const ProposalsCountCard = (props: CardProps) => {
         token: tokens.mainnet.xOGN.address,
         chainId: tokens.mainnet.xOGN.chainId,
       },
-      { select: (data) => data?.erc20HoldersConnection?.totalCount },
+      { select: (data) => data?.erc20HoldersConnection?.totalCount ?? 0 },
     );
 
   const active =
-    proposals?.filter((p) =>
+    proposals?.filter?.((p) =>
       [OgvProposalState.Active.toLowerCase()].includes(p.status.toLowerCase()),
     )?.length ?? 0;
 

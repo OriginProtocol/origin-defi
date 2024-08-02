@@ -6,24 +6,26 @@ import type { Token } from '@origin/shared/contracts';
 
 import type {
   CoingeckoOption,
-  Currency,
   DerivedOption,
   PriceOption,
   RestOption,
+  SupportedCurrency,
   SupportedTokenPrice,
   WagmiOption,
 } from './types';
 
-export const getTokenPriceKey = (token: Token, currency = 'USD' as Currency) =>
-  `${token.symbol}_${currency}` as SupportedTokenPrice;
+export const getTokenPriceKey = (
+  token: Token,
+  currency = 'USD' as SupportedCurrency,
+) => `${token.id}_${currency}` as SupportedTokenPrice;
 
 export const parseTokenPriceKey = (key: SupportedTokenPrice) => {
   if (isNilOrEmpty(key) || !/^\w*_\w*$/.test(key)) {
     return null;
   }
-  const [symbol, currency] = key.split('_');
+  const [id, currency] = key.split('_');
 
-  return { symbol, currency };
+  return { id, currency };
 };
 
 export const reduceOptions = (
@@ -32,7 +34,7 @@ export const reduceOptions = (
 ) => {
   const parsedOption = parseTokenPriceKey(curr);
 
-  if (parsedOption && parsedOption.symbol === parsedOption.currency) {
+  if (parsedOption && parsedOption.id === parsedOption.currency) {
     return { ...acc, [curr]: { type: 'rest', id: curr, config: () => 1n } };
   }
 

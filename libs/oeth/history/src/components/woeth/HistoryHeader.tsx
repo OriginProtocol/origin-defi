@@ -16,7 +16,7 @@ export function HistoryHeader() {
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
 
-  const exchangeRate = useTokenPrice('wOETH_OETH');
+  const exchangeRate = useTokenPrice('1:wOETH_1:OETH');
   const woethBalances = useWatchBalances({
     tokens: [tokens.mainnet.wOETH, tokens.arbitrum.wOETH],
   });

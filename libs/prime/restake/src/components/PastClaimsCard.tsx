@@ -29,7 +29,8 @@ export const PastClaimsCard = (props: CardProps) => {
   const intl = useIntl();
   const { address, isConnected } = useAccount();
   const match = useMatch('/restake/claim');
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
+  const { data: price, isLoading: isPriceLoading } =
+    useTokenPrice('1:OETH_USD');
   const { data: withdrawals, isLoading: iswithdrawalsLoading } =
     useUserWithdrawalsQuery(
       { address: address ?? ZERO_ADDRESS },

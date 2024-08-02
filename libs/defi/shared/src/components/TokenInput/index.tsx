@@ -106,7 +106,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               flexGrow={1}
               color={amount === 0n ? 'text.secondary' : 'text.primary'}
             >
-              {intl.formatNumber(+formatUnits(amount, decimals), {
+              {intl.formatNumber(+formatUnits(amount ?? 0n, decimals), {
                 roundingMode: 'floor',
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 8,

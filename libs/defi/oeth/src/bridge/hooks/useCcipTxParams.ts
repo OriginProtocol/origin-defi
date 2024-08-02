@@ -65,10 +65,10 @@ export const useCcipTxParams = ({
 
         const exchangeRate = await queryClient
           .fetchQuery({
-            queryKey: useTokenPrices.getKey(['wOETH_ETH']),
+            queryKey: useTokenPrices.getKey(['1:wOETH_1:ETH']),
             queryFn: useTokenPrices.fetcher(config),
           })
-          .then((r) => r['wOETH_ETH']);
+          .then((r) => r['1:wOETH_1:ETH']);
 
         return {
           path: 'zap-eth-oeth-woeth-ccip',

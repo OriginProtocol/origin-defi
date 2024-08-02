@@ -93,7 +93,8 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const [open, setOpen] = useState(false);
   const [type, setType] = useState<WithdrawalType>('claim');
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
+  const { data: price, isLoading: isPriceLoading } =
+    useTokenPrice('1:OETH_USD');
   const {
     params: claimParams,
     callbacks: claimCallbacks,

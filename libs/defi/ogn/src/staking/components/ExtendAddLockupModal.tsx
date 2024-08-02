@@ -313,7 +313,7 @@ export const ExtendAddLockupModal = ({
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
-                  BigInt(lockup.amount),
+                  BigInt(lockup?.amount ?? 0),
                   tokens.mainnet.OGN.decimals,
                 ),
                 {
@@ -326,7 +326,7 @@ export const ExtendAddLockupModal = ({
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
-                  BigInt(lockup.points) ?? 0n,
+                  BigInt(lockup?.points ?? 0),
                   tokens.mainnet.xOGN.decimals,
                 ) /
                   +formatUnits(
@@ -523,7 +523,7 @@ export const ExtendAddLockupModal = ({
                       votingPowerPercent <= 1e-6 && votingPowerPercent > 0
                         ? `~ `
                         : '',
-                    value: intl.formatNumber(votingPowerPercent, {
+                    value: intl.formatNumber(votingPowerPercent ?? 0, {
                       style: 'percent',
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 5,
