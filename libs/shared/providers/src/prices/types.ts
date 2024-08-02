@@ -60,10 +60,18 @@ export type SupportedToken = Extract<
   | '1:WETH'
   | '1:wOETH'
   | '1:wOUSD'
+  | '42161:ETH'
+  | '42161:WETH'
+  | '42161:OETH'
+  | '42161:wOETH'
 >;
 
 export type SupportedCurrency =
   | 'USD'
-  | Extract<TokenId, '1:ETH' | '1:frxETH' | '1:OETH' | '1:OUSD' | '1:primeETH'>;
+  | '42161:OETH'
+  | Extract<
+      TokenId,
+      '1:ETH' | '1:frxETH' | '1:OETH' | '1:OUSD' | '1:primeETH' | '42161:ETH'
+    >;
 
 export type SupportedTokenPrice = `${SupportedToken}_${SupportedCurrency}`;
