@@ -1,5 +1,5 @@
 import { contracts } from '@origin/shared/contracts';
-import { getReferrerId, useTokenPrices } from '@origin/shared/providers';
+import { getReferrerId, useTokenPrice } from '@origin/shared/providers';
 import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import { getAccount, simulateContract, writeContract } from '@wagmi/core';
 import { div, eq, setDecimals } from 'dnum';
@@ -24,15 +24,15 @@ const estimateAmount: EstimateAmount = async (
   }
 
   const price = await queryClient.fetchQuery({
-    queryKey: useTokenPrices.getKey(['primeETH_ETH']),
-    queryFn: useTokenPrices.fetcher(config),
+    queryKey: useTokenPrice.getKey('1:primeETH_1:ETH'),
+    queryFn: useTokenPrice.fetcher(config, queryClient),
   });
 
-  if (!price?.primeETH_ETH || eq(price.primeETH_ETH, 0)) {
+  if (!price || eq(price, 0)) {
     return 0n;
   }
 
-  const estimate = div([amountIn, tokenIn.decimals], price.primeETH_ETH, {
+  const estimate = div([amountIn, tokenIn.decimals], price, {
     rounding: 'ROUND_DOWN',
   });
 

@@ -34,7 +34,7 @@ export const coingeckoTokenIds = {
   FRAX: 'frax',
 } as const;
 
-export const chainlinkOracles = {
+export const chainlinkOraclesMainnet = {
   ETH_USD: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419',
   DAI_USD: '0xAed0c38402a5d19df6E4c03F4E2DceD6e29c1ee9',
   USDC_USD: '0x8fFfFfd4AfB6115b954Bd326cbe7B4BA576818f6',
@@ -45,25 +45,29 @@ export const chainlinkOracles = {
   rETH_ETH: '0x536218f9e9eb48863970252233c8f271f554c2d0',
 } as const;
 
+export const chainlinkOraclesArbitrum = {
+  ETH_USD: '0x639Fe6ab55C921f74e7fac1ee960C0B6293ba612',
+} as const;
+
 const chainLinkUsdMapper = (data: any) => [pathOr(0n, [1], data), 8] as Dnum;
 const chainLinkEthMapper = (data: any) => [pathOr(0n, [1], data), 18] as Dnum;
 const diaOracleUsdMapper = (data: any) => [pathOr(0n, [0], data), 8] as Dnum;
 
 export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
-  ETH_USD: {
+  '1:ETH_USD': {
     type: 'wagmi',
-    id: 'ETH_USD',
+    id: '1:ETH_USD',
     config: {
-      address: chainlinkOracles.ETH_USD,
+      address: chainlinkOraclesMainnet.ETH_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkUsdMapper,
   },
-  OETH_USD: {
+  '1:OETH_USD': {
     type: 'wagmi',
-    id: 'OETH_USD',
+    id: '1:OETH_USD',
     config: {
       address: contracts.mainnet.DIAOracle.address,
       abi: contracts.mainnet.DIAOracle.abi,
@@ -73,9 +77,9 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     },
     mapResult: diaOracleUsdMapper,
   },
-  OUSD_USD: {
+  '1:OUSD_USD': {
     type: 'wagmi',
-    id: 'OUSD_USD',
+    id: '1:OUSD_USD',
     config: {
       address: contracts.mainnet.DIAOracle.address,
       abi: contracts.mainnet.DIAOracle.abi,
@@ -85,106 +89,106 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     },
     mapResult: diaOracleUsdMapper,
   },
-  DAI_USD: {
+  '1:DAI_USD': {
     type: 'wagmi',
-    id: 'DAI_USD',
+    id: '1:DAI_USD',
     config: {
-      address: chainlinkOracles.DAI_USD,
+      address: chainlinkOraclesMainnet.DAI_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkUsdMapper,
   },
-  USDC_USD: {
+  '1:USDC_USD': {
     type: 'wagmi',
-    id: 'USDC_USD',
+    id: '1:USDC_USD',
     config: {
-      address: chainlinkOracles.USDC_USD,
+      address: chainlinkOraclesMainnet.USDC_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkUsdMapper,
   },
-  USDT_USD: {
+  '1:USDT_USD': {
     type: 'wagmi',
-    id: 'USDT_USD',
+    id: '1:USDT_USD',
     config: {
-      address: chainlinkOracles.USDT_USD,
+      address: chainlinkOraclesMainnet.USDT_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkUsdMapper,
   },
-  FRAX_USD: {
+  '1:FRAX_USD': {
     type: 'wagmi',
-    id: 'FRAX_USD',
+    id: '1:FRAX_USD',
     config: {
-      address: chainlinkOracles.FRAX_USD,
+      address: chainlinkOraclesMainnet.FRAX_USD,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkUsdMapper,
   },
-  frxETH_ETH: {
+  '1:frxETH_1:ETH': {
     type: 'wagmi',
-    id: 'frxETH_ETH',
+    id: '1:frxETH_1:ETH',
     config: {
-      address: chainlinkOracles.frxETH_ETH,
+      address: chainlinkOraclesMainnet.frxETH_ETH,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkEthMapper,
   },
-  frxETH_USD: {
+  '1:frxETH_USD': {
     type: 'derived',
-    id: 'frxETH_USD',
-    dependsOn: ['frxETH_ETH', 'ETH_USD'],
+    id: '1:frxETH_USD',
+    dependsOn: ['1:frxETH_1:ETH', '1:ETH_USD'],
   },
-  rETH_ETH: {
+  '1:rETH_1:ETH': {
     type: 'wagmi',
-    id: 'rETH_ETH',
+    id: '1:rETH_1:ETH',
     config: {
-      address: chainlinkOracles.rETH_ETH,
+      address: chainlinkOraclesMainnet.rETH_ETH,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkEthMapper,
   },
-  rETH_USD: {
+  '1:rETH_USD': {
     type: 'derived',
-    id: 'rETH_USD',
-    dependsOn: ['rETH_ETH', 'ETH_USD'],
+    id: '1:rETH_USD',
+    dependsOn: ['1:rETH_1:ETH', '1:ETH_USD'],
   },
-  stETH_ETH: {
+  '1:stETH_1:ETH': {
     type: 'wagmi',
-    id: 'stETH_ETH',
+    id: '1:stETH_1:ETH',
     config: {
-      address: chainlinkOracles.stETH_ETH,
+      address: chainlinkOraclesMainnet.stETH_ETH,
       abi: ChainlinkAggregatorABI,
       functionName: 'latestRoundData',
       chainId: mainnet.id,
     },
     mapResult: chainLinkEthMapper,
   },
-  stETH_USD: {
+  '1:stETH_USD': {
     type: 'derived',
-    id: 'stETH_USD',
-    dependsOn: ['stETH_ETH', 'ETH_USD'],
+    id: '1:stETH_USD',
+    dependsOn: ['1:stETH_1:ETH', '1:ETH_USD'],
   },
-  wOETH_ETH: {
+  '1:wOETH_1:ETH': {
     type: 'derived',
-    id: 'wOETH_ETH',
-    dependsOn: ['wOETH_OETH', 'OETH_ETH'],
+    id: '1:wOETH_1:ETH',
+    dependsOn: ['1:wOETH_1:OETH', '1:OETH_1:ETH'],
   },
-  wOETH_OETH: {
+  '1:wOETH_1:OETH': {
     type: 'wagmi',
-    id: 'wOETH_OETH',
+    id: '1:wOETH_1:OETH',
     config: {
       address: tokens.mainnet.wOETH.address,
       abi: tokens.mainnet.wOETH.abi,
@@ -196,14 +200,14 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [woeth_usd, tokens.mainnet.wOETH.decimals];
     },
   },
-  wOETH_USD: {
+  '1:wOETH_USD': {
     type: 'derived',
-    id: 'wOETH_USD',
-    dependsOn: ['wOETH_OETH', 'OETH_USD'],
+    id: '1:wOETH_USD',
+    dependsOn: ['1:wOETH_1:OETH', '1:OETH_USD'],
   },
-  wOUSD_OUSD: {
+  '1:wOUSD_1:OUSD': {
     type: 'wagmi',
-    id: 'wOUSD_OUSD',
+    id: '1:wOUSD_1:OUSD',
     config: {
       address: tokens.mainnet.wOUSD.address,
       abi: tokens.mainnet.wOUSD.abi,
@@ -215,14 +219,14 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [wousd_usd, tokens.mainnet.OUSD.decimals];
     },
   },
-  wOUSD_USD: {
+  '1:wOUSD_USD': {
     type: 'derived',
-    id: 'wOUSD_USD',
-    dependsOn: ['wOUSD_OUSD', 'OUSD_USD'],
+    id: '1:wOUSD_USD',
+    dependsOn: ['1:wOUSD_1:OUSD', '1:OUSD_USD'],
   },
-  sfrxETH_frxETH: {
+  '1:sfrxETH_1:frxETH': {
     type: 'wagmi',
-    id: 'sfrxETH_frxETH',
+    id: '1:sfrxETH_1:frxETH',
     config: {
       address: tokens.mainnet.sfrxETH.address,
       abi: tokens.mainnet.sfrxETH.abi,
@@ -234,23 +238,23 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [sfrxeth_usd, tokens.mainnet.sfrxETH.decimals];
     },
   },
-  sfrxETH_USD: {
+  '1:sfrxETH_USD': {
     type: 'derived',
-    id: 'sfrxETH_USD',
-    dependsOn: ['sfrxETH_frxETH', 'frxETH_ETH', 'ETH_USD'],
+    id: '1:sfrxETH_USD',
+    dependsOn: ['1:sfrxETH_1:frxETH', '1:frxETH_1:ETH', '1:ETH_USD'],
   },
-  WETH_USD: {
+  '1:WETH_USD': {
     type: 'derived',
-    id: 'WETH_USD',
-    dependsOn: ['WETH_ETH', 'ETH_USD'],
+    id: '1:WETH_USD',
+    dependsOn: ['1:WETH_1:ETH', '1:ETH_USD'],
   },
-  OGN_USD: {
+  '1:OGN_USD': {
     type: 'coingecko',
-    id: 'OGN_USD',
+    id: '1:OGN_USD',
     config: coingeckoTokenIds.OGN,
   },
-  primeETH_ETH: {
-    id: 'primeETH_ETH',
+  '1:primeETH_1:ETH': {
+    id: '1:primeETH_1:ETH',
     type: 'wagmi',
     config: {
       address: contracts.mainnet.lrtOracle.address,
@@ -262,13 +266,13 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [primeETH_ETH, tokens.mainnet.primeETH.decimals];
     },
   },
-  primeETH_USD: {
-    id: 'primeETH_USD',
+  '1:primeETH_USD': {
+    id: '1:primeETH_USD',
     type: 'derived',
-    dependsOn: ['primeETH_ETH', 'ETH_USD'],
+    dependsOn: ['1:primeETH_1:ETH', '1:ETH_USD'],
   },
-  mETH_ETH: {
-    id: 'mETH_ETH',
+  '1:mETH_1:ETH': {
+    id: '1:mETH_1:ETH',
     type: 'wagmi',
     config: {
       address: contracts.mainnet.lrtOracle.address,
@@ -281,13 +285,13 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [meth_eth, tokens.mainnet.mETH.decimals];
     },
   },
-  mETH_USD: {
-    id: 'mETH_USD',
+  '1:mETH_USD': {
+    id: '1:mETH_USD',
     type: 'derived',
-    dependsOn: ['mETH_ETH', 'ETH_USD'],
+    dependsOn: ['1:mETH_1:ETH', '1:ETH_USD'],
   },
-  ETHx_ETH: {
-    id: 'ETHx_ETH',
+  '1:ETHx_1:ETH': {
+    id: '1:ETHx_1:ETH',
     type: 'wagmi',
     config: {
       address: contracts.mainnet.lrtOracle.address,
@@ -300,13 +304,13 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [ethx_eth, tokens.mainnet.ETHx.decimals];
     },
   },
-  ETHx_USD: {
-    id: 'ETHx_USD',
+  '1:ETHx_USD': {
+    id: '1:ETHx_USD',
     type: 'derived',
-    dependsOn: ['ETHx_ETH', 'ETH_USD'],
+    dependsOn: ['1:ETHx_1:ETH', '1:ETH_USD'],
   },
-  swETH_ETH: {
-    id: 'swETH_ETH',
+  '1:swETH_1:ETH': {
+    id: '1:swETH_1:ETH',
     type: 'wagmi',
     config: {
       address: contracts.mainnet.lrtOracle.address,
@@ -319,18 +323,18 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
       return [sweth_eth, tokens.mainnet.swETH.decimals];
     },
   },
-  swETH_USD: {
-    id: 'swETH_USD',
+  '1:swETH_USD': {
+    id: '1:swETH_USD',
     type: 'derived',
-    dependsOn: ['swETH_ETH', 'ETH_USD'],
+    dependsOn: ['1:swETH_1:ETH', '1:ETH_USD'],
   },
-  WETH_ETH: {
-    id: 'WETH_ETH',
+  '1:WETH_1:ETH': {
+    id: '1:WETH_1:ETH',
     type: 'rest',
     config: async () => from(1),
   },
-  OETH_ETH: {
-    id: 'OETH_ETH',
+  '1:OETH_1:ETH': {
+    id: '1:OETH_1:ETH',
     type: 'rest',
     config: async () => from(1 - OETH_REDEEM_FEE),
   },

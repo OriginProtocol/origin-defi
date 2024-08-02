@@ -83,7 +83,7 @@ export const WoethStats = (props: CardProps) => {
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
   const { data: price, isLoading: isPriceLoading } =
-    useTokenPrice('wOETH_OETH');
+    useTokenPrice('1:wOETH_1:OETH');
   const { data: bals, isLoading: isBalsLoading } = useWatchBalances({
     tokens: [tokens.mainnet.wOETH, tokens.arbitrum.wOETH],
   });

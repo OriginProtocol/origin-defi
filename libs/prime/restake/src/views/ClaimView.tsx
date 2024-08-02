@@ -83,7 +83,8 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
   const { formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice('OETH_USD');
+  const { data: price, isLoading: isPriceLoading } =
+    useTokenPrice('1:OETH_USD');
   const { params, callbacks, gasPrice } = useTxButton({
     params: {
       contract: contracts.mainnet.lrtDepositPool,
