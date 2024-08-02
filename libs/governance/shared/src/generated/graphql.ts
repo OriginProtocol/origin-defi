@@ -14,6 +14,15 @@ export type Scalars = {
   Float: { input: number; output: number; }
   BigInt: { input: string; output: string; }
   DateTime: { input: string; output: string; }
+  JSON: { input: any; output: any; }
+};
+
+export type Balance = {
+  __typename?: 'Balance';
+  asset: Scalars['String']['output'];
+  balance: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  timestamp: Scalars['DateTime']['output'];
 };
 
 export type BalancerPool = {
@@ -2302,6 +2311,15 @@ export type Erc20State = {
   /** Format: 'address:blockNumber' */
   id: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
+  totalSupply: Scalars['BigInt']['output'];
+};
+
+export type Erc20StateByDay = {
+  __typename?: 'ERC20StateByDay';
+  address: Scalars['String']['output'];
+  chainId: Scalars['String']['output'];
+  day: Scalars['DateTime']['output'];
+  holderCount: Scalars['Int']['output'];
   totalSupply: Scalars['BigInt']['output'];
 };
 
@@ -11878,21 +11896,14 @@ export type OTokenActivitiesConnection = {
 
 export type OTokenActivity = {
   __typename?: 'OTokenActivity';
-  action?: Maybe<Scalars['String']['output']>;
-  address?: Maybe<Scalars['String']['output']>;
-  amount?: Maybe<Scalars['BigInt']['output']>;
   blockNumber: Scalars['Int']['output'];
-  callDataLast4Bytes: Scalars['String']['output'];
   chainId: Scalars['Int']['output'];
-  exchange?: Maybe<Scalars['String']['output']>;
-  fromSymbol?: Maybe<Scalars['String']['output']>;
+  data?: Maybe<Scalars['JSON']['output']>;
   id: Scalars['String']['output'];
-  interface?: Maybe<Scalars['String']['output']>;
   otoken: Scalars['String']['output'];
-  sighash?: Maybe<Scalars['String']['output']>;
   timestamp: Scalars['DateTime']['output'];
-  toSymbol?: Maybe<Scalars['String']['output']>;
   txHash: Scalars['String']['output'];
+  type?: Maybe<OTokenActivityType>;
 };
 
 export type OTokenActivityEdge = {
@@ -11902,144 +11913,72 @@ export type OTokenActivityEdge = {
 };
 
 export enum OTokenActivityOrderByInput {
-  ActionAsc = 'action_ASC',
-  ActionAscNullsFirst = 'action_ASC_NULLS_FIRST',
-  ActionAscNullsLast = 'action_ASC_NULLS_LAST',
-  ActionDesc = 'action_DESC',
-  ActionDescNullsFirst = 'action_DESC_NULLS_FIRST',
-  ActionDescNullsLast = 'action_DESC_NULLS_LAST',
-  AddressAsc = 'address_ASC',
-  AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
-  AddressAscNullsLast = 'address_ASC_NULLS_LAST',
-  AddressDesc = 'address_DESC',
-  AddressDescNullsFirst = 'address_DESC_NULLS_FIRST',
-  AddressDescNullsLast = 'address_DESC_NULLS_LAST',
-  AmountAsc = 'amount_ASC',
-  AmountAscNullsFirst = 'amount_ASC_NULLS_FIRST',
-  AmountAscNullsLast = 'amount_ASC_NULLS_LAST',
-  AmountDesc = 'amount_DESC',
-  AmountDescNullsFirst = 'amount_DESC_NULLS_FIRST',
-  AmountDescNullsLast = 'amount_DESC_NULLS_LAST',
   BlockNumberAsc = 'blockNumber_ASC',
   BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
   BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
   BlockNumberDesc = 'blockNumber_DESC',
   BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
   BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  CallDataLast4BytesAsc = 'callDataLast4Bytes_ASC',
-  CallDataLast4BytesAscNullsFirst = 'callDataLast4Bytes_ASC_NULLS_FIRST',
-  CallDataLast4BytesAscNullsLast = 'callDataLast4Bytes_ASC_NULLS_LAST',
-  CallDataLast4BytesDesc = 'callDataLast4Bytes_DESC',
-  CallDataLast4BytesDescNullsFirst = 'callDataLast4Bytes_DESC_NULLS_FIRST',
-  CallDataLast4BytesDescNullsLast = 'callDataLast4Bytes_DESC_NULLS_LAST',
   ChainIdAsc = 'chainId_ASC',
   ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
   ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
   ChainIdDesc = 'chainId_DESC',
   ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
   ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
-  ExchangeAsc = 'exchange_ASC',
-  ExchangeAscNullsFirst = 'exchange_ASC_NULLS_FIRST',
-  ExchangeAscNullsLast = 'exchange_ASC_NULLS_LAST',
-  ExchangeDesc = 'exchange_DESC',
-  ExchangeDescNullsFirst = 'exchange_DESC_NULLS_FIRST',
-  ExchangeDescNullsLast = 'exchange_DESC_NULLS_LAST',
-  FromSymbolAsc = 'fromSymbol_ASC',
-  FromSymbolAscNullsFirst = 'fromSymbol_ASC_NULLS_FIRST',
-  FromSymbolAscNullsLast = 'fromSymbol_ASC_NULLS_LAST',
-  FromSymbolDesc = 'fromSymbol_DESC',
-  FromSymbolDescNullsFirst = 'fromSymbol_DESC_NULLS_FIRST',
-  FromSymbolDescNullsLast = 'fromSymbol_DESC_NULLS_LAST',
   IdAsc = 'id_ASC',
   IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
   IdAscNullsLast = 'id_ASC_NULLS_LAST',
   IdDesc = 'id_DESC',
   IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
   IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  InterfaceAsc = 'interface_ASC',
-  InterfaceAscNullsFirst = 'interface_ASC_NULLS_FIRST',
-  InterfaceAscNullsLast = 'interface_ASC_NULLS_LAST',
-  InterfaceDesc = 'interface_DESC',
-  InterfaceDescNullsFirst = 'interface_DESC_NULLS_FIRST',
-  InterfaceDescNullsLast = 'interface_DESC_NULLS_LAST',
   OtokenAsc = 'otoken_ASC',
   OtokenAscNullsFirst = 'otoken_ASC_NULLS_FIRST',
   OtokenAscNullsLast = 'otoken_ASC_NULLS_LAST',
   OtokenDesc = 'otoken_DESC',
   OtokenDescNullsFirst = 'otoken_DESC_NULLS_FIRST',
   OtokenDescNullsLast = 'otoken_DESC_NULLS_LAST',
-  SighashAsc = 'sighash_ASC',
-  SighashAscNullsFirst = 'sighash_ASC_NULLS_FIRST',
-  SighashAscNullsLast = 'sighash_ASC_NULLS_LAST',
-  SighashDesc = 'sighash_DESC',
-  SighashDescNullsFirst = 'sighash_DESC_NULLS_FIRST',
-  SighashDescNullsLast = 'sighash_DESC_NULLS_LAST',
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
   TimestampDesc = 'timestamp_DESC',
   TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
   TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  ToSymbolAsc = 'toSymbol_ASC',
-  ToSymbolAscNullsFirst = 'toSymbol_ASC_NULLS_FIRST',
-  ToSymbolAscNullsLast = 'toSymbol_ASC_NULLS_LAST',
-  ToSymbolDesc = 'toSymbol_DESC',
-  ToSymbolDescNullsFirst = 'toSymbol_DESC_NULLS_FIRST',
-  ToSymbolDescNullsLast = 'toSymbol_DESC_NULLS_LAST',
   TxHashAsc = 'txHash_ASC',
   TxHashAscNullsFirst = 'txHash_ASC_NULLS_FIRST',
   TxHashAscNullsLast = 'txHash_ASC_NULLS_LAST',
   TxHashDesc = 'txHash_DESC',
   TxHashDescNullsFirst = 'txHash_DESC_NULLS_FIRST',
-  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST'
+  TxHashDescNullsLast = 'txHash_DESC_NULLS_LAST',
+  TypeAsc = 'type_ASC',
+  TypeAscNullsFirst = 'type_ASC_NULLS_FIRST',
+  TypeAscNullsLast = 'type_ASC_NULLS_LAST',
+  TypeDesc = 'type_DESC',
+  TypeDescNullsFirst = 'type_DESC_NULLS_FIRST',
+  TypeDescNullsLast = 'type_DESC_NULLS_LAST'
+}
+
+export enum OTokenActivityType {
+  Approval = 'Approval',
+  Bridge = 'Bridge',
+  ClaimRewards = 'ClaimRewards',
+  DelegateVote = 'DelegateVote',
+  ExtendStake = 'ExtendStake',
+  Migrate = 'Migrate',
+  Mint = 'Mint',
+  Redeem = 'Redeem',
+  Stake = 'Stake',
+  Swap = 'Swap',
+  Transfer = 'Transfer',
+  Unstake = 'Unstake',
+  Unwrap = 'Unwrap',
+  Vote = 'Vote',
+  Wrap = 'Wrap',
+  Zap = 'Zap'
 }
 
 export type OTokenActivityWhereInput = {
   AND?: InputMaybe<Array<OTokenActivityWhereInput>>;
   OR?: InputMaybe<Array<OTokenActivityWhereInput>>;
-  action_contains?: InputMaybe<Scalars['String']['input']>;
-  action_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  action_endsWith?: InputMaybe<Scalars['String']['input']>;
-  action_eq?: InputMaybe<Scalars['String']['input']>;
-  action_gt?: InputMaybe<Scalars['String']['input']>;
-  action_gte?: InputMaybe<Scalars['String']['input']>;
-  action_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  action_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  action_lt?: InputMaybe<Scalars['String']['input']>;
-  action_lte?: InputMaybe<Scalars['String']['input']>;
-  action_not_contains?: InputMaybe<Scalars['String']['input']>;
-  action_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  action_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  action_not_eq?: InputMaybe<Scalars['String']['input']>;
-  action_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  action_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  action_startsWith?: InputMaybe<Scalars['String']['input']>;
-  address_contains?: InputMaybe<Scalars['String']['input']>;
-  address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  address_endsWith?: InputMaybe<Scalars['String']['input']>;
-  address_eq?: InputMaybe<Scalars['String']['input']>;
-  address_gt?: InputMaybe<Scalars['String']['input']>;
-  address_gte?: InputMaybe<Scalars['String']['input']>;
-  address_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  address_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  address_lt?: InputMaybe<Scalars['String']['input']>;
-  address_lte?: InputMaybe<Scalars['String']['input']>;
-  address_not_contains?: InputMaybe<Scalars['String']['input']>;
-  address_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  address_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  address_not_eq?: InputMaybe<Scalars['String']['input']>;
-  address_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  address_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  address_startsWith?: InputMaybe<Scalars['String']['input']>;
-  amount_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  amount_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  amount_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  amount_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -12049,23 +11988,6 @@ export type OTokenActivityWhereInput = {
   blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
   blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  callDataLast4Bytes_contains?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_eq?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_gt?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_gte?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callDataLast4Bytes_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  callDataLast4Bytes_lt?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_lte?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_not_contains?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_not_eq?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  callDataLast4Bytes_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  callDataLast4Bytes_startsWith?: InputMaybe<Scalars['String']['input']>;
   chainId_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_gt?: InputMaybe<Scalars['Int']['input']>;
   chainId_gte?: InputMaybe<Scalars['Int']['input']>;
@@ -12075,40 +11997,11 @@ export type OTokenActivityWhereInput = {
   chainId_lte?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  exchange_contains?: InputMaybe<Scalars['String']['input']>;
-  exchange_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  exchange_endsWith?: InputMaybe<Scalars['String']['input']>;
-  exchange_eq?: InputMaybe<Scalars['String']['input']>;
-  exchange_gt?: InputMaybe<Scalars['String']['input']>;
-  exchange_gte?: InputMaybe<Scalars['String']['input']>;
-  exchange_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  exchange_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  exchange_lt?: InputMaybe<Scalars['String']['input']>;
-  exchange_lte?: InputMaybe<Scalars['String']['input']>;
-  exchange_not_contains?: InputMaybe<Scalars['String']['input']>;
-  exchange_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  exchange_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  exchange_not_eq?: InputMaybe<Scalars['String']['input']>;
-  exchange_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  exchange_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  exchange_startsWith?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_contains?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_endsWith?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_eq?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_gt?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_gte?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  fromSymbol_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  fromSymbol_lt?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_lte?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_not_contains?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_not_eq?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  fromSymbol_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  fromSymbol_startsWith?: InputMaybe<Scalars['String']['input']>;
+  data_eq?: InputMaybe<Scalars['JSON']['input']>;
+  data_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  data_jsonContains?: InputMaybe<Scalars['JSON']['input']>;
+  data_jsonHasKey?: InputMaybe<Scalars['JSON']['input']>;
+  data_not_eq?: InputMaybe<Scalars['JSON']['input']>;
   id_contains?: InputMaybe<Scalars['String']['input']>;
   id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   id_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -12126,23 +12019,6 @@ export type OTokenActivityWhereInput = {
   id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  interface_contains?: InputMaybe<Scalars['String']['input']>;
-  interface_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  interface_endsWith?: InputMaybe<Scalars['String']['input']>;
-  interface_eq?: InputMaybe<Scalars['String']['input']>;
-  interface_gt?: InputMaybe<Scalars['String']['input']>;
-  interface_gte?: InputMaybe<Scalars['String']['input']>;
-  interface_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  interface_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  interface_lt?: InputMaybe<Scalars['String']['input']>;
-  interface_lte?: InputMaybe<Scalars['String']['input']>;
-  interface_not_contains?: InputMaybe<Scalars['String']['input']>;
-  interface_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  interface_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  interface_not_eq?: InputMaybe<Scalars['String']['input']>;
-  interface_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  interface_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  interface_startsWith?: InputMaybe<Scalars['String']['input']>;
   otoken_contains?: InputMaybe<Scalars['String']['input']>;
   otoken_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   otoken_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -12160,23 +12036,6 @@ export type OTokenActivityWhereInput = {
   otoken_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   otoken_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   otoken_startsWith?: InputMaybe<Scalars['String']['input']>;
-  sighash_contains?: InputMaybe<Scalars['String']['input']>;
-  sighash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  sighash_endsWith?: InputMaybe<Scalars['String']['input']>;
-  sighash_eq?: InputMaybe<Scalars['String']['input']>;
-  sighash_gt?: InputMaybe<Scalars['String']['input']>;
-  sighash_gte?: InputMaybe<Scalars['String']['input']>;
-  sighash_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  sighash_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  sighash_lt?: InputMaybe<Scalars['String']['input']>;
-  sighash_lte?: InputMaybe<Scalars['String']['input']>;
-  sighash_not_contains?: InputMaybe<Scalars['String']['input']>;
-  sighash_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  sighash_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  sighash_not_eq?: InputMaybe<Scalars['String']['input']>;
-  sighash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  sighash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  sighash_startsWith?: InputMaybe<Scalars['String']['input']>;
   timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
@@ -12186,23 +12045,6 @@ export type OTokenActivityWhereInput = {
   timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  toSymbol_contains?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_endsWith?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_eq?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_gt?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_gte?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  toSymbol_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  toSymbol_lt?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_lte?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_not_contains?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_not_eq?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  toSymbol_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  toSymbol_startsWith?: InputMaybe<Scalars['String']['input']>;
   txHash_contains?: InputMaybe<Scalars['String']['input']>;
   txHash_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   txHash_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -12220,6 +12062,11 @@ export type OTokenActivityWhereInput = {
   txHash_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   txHash_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   txHash_startsWith?: InputMaybe<Scalars['String']['input']>;
+  type_eq?: InputMaybe<OTokenActivityType>;
+  type_in?: InputMaybe<Array<OTokenActivityType>>;
+  type_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  type_not_eq?: InputMaybe<OTokenActivityType>;
+  type_not_in?: InputMaybe<Array<OTokenActivityType>>;
 };
 
 export type OTokenAddress = {
@@ -16315,6 +16162,7 @@ export type Query = {
   erc20HolderByUniqueInput?: Maybe<Erc20Holder>;
   erc20Holders: Array<Erc20Holder>;
   erc20HoldersConnection: Erc20HoldersConnection;
+  erc20StateByDay: Array<Erc20StateByDay>;
   erc20StateById?: Maybe<Erc20State>;
   /** @deprecated Use erc20StateById */
   erc20StateByUniqueInput?: Maybe<Erc20State>;
@@ -16674,6 +16522,7 @@ export type Query = {
   processingStatuses: Array<ProcessingStatus>;
   processingStatusesConnection: ProcessingStatusesConnection;
   squidStatus?: Maybe<SquidStatus>;
+  strategies: Array<Strategy>;
   strategyBalanceById?: Maybe<StrategyBalance>;
   /** @deprecated Use strategyBalanceById */
   strategyBalanceByUniqueInput?: Maybe<StrategyBalance>;
@@ -17011,6 +16860,13 @@ export type QueryErc20HoldersConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<Erc20HolderOrderByInput>;
   where?: InputMaybe<Erc20HolderWhereInput>;
+};
+
+
+export type QueryErc20StateByDayArgs = {
+  address: Scalars['String']['input'];
+  from: Scalars['String']['input'];
+  to?: InputMaybe<Scalars['String']['input']>;
 };
 
 
@@ -18876,6 +18732,11 @@ export type QueryProcessingStatusesConnectionArgs = {
 };
 
 
+export type QueryStrategiesArgs = {
+  timestamp?: InputMaybe<Scalars['String']['input']>;
+};
+
+
 export type QueryStrategyBalanceByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -18962,6 +18823,16 @@ export type SquidStatus = {
   __typename?: 'SquidStatus';
   /** The height of the processed part of the chain */
   height?: Maybe<Scalars['Int']['output']>;
+};
+
+export type Strategy = {
+  __typename?: 'Strategy';
+  address: Scalars['String']['output'];
+  balances: Array<Balance>;
+  contractName: Scalars['String']['output'];
+  kind: Scalars['String']['output'];
+  name: Scalars['String']['output'];
+  oTokenAddress: Scalars['String']['output'];
 };
 
 export type StrategyBalance = {
