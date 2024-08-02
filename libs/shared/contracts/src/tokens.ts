@@ -42,6 +42,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'ETHx',
     },
+    FRAX: {
+      id: '1:FRAX',
+      address: '0x853d955aCEf822Db058eb8505911ED77F175b99e',
+      chainId: mainnet.id,
+      abi: erc20Abi,
+      name: 'Frax',
+      decimals: 18,
+      symbol: 'frxETH',
+    },
     frxETH: {
       id: '1:frxETH',
       address: '0x5E8422345238F34275888049021821E8E08CAa1f',
@@ -214,6 +223,15 @@ export const tokens = {
       name: 'Ethereum',
       decimals: 18,
       symbol: 'ETH',
+    },
+    WETH: {
+      id: '42161:WETH',
+      address: '0x82aF49447D8a07e3bd95BD0d56f35241523fBab1',
+      chainId: arbitrum.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether',
+      decimals: 18,
+      symbol: 'WETH',
     },
     wOETH: {
       id: '42161:wOETH',

@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import type { TokenId } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Dnum } from 'dnum';
 import type { ReadContractParameters } from 'viem';
@@ -38,27 +39,31 @@ export type PriceOption =
   | CoingeckoOption
   | DerivedOption;
 
-export type SupportedToken =
-  | 'DAI'
-  | 'ETH'
-  | 'ETHx'
-  | 'FRAX'
-  | 'frxETH'
-  | 'mETH'
-  | 'OETH'
-  | 'OGN'
-  | 'OUSD'
-  | 'primeETH'
-  | 'rETH'
-  | 'sfrxETH'
-  | 'stETH'
-  | 'swETH'
-  | 'USDC'
-  | 'USDT'
-  | 'WETH'
-  | 'wOETH'
-  | 'wOUSD';
+export type SupportedToken = Extract<
+  TokenId,
+  | '1:DAI'
+  | '1:ETH'
+  | '1:ETHx'
+  | '1:FRAX'
+  | '1:frxETH'
+  | '1:mETH'
+  | '1:OETH'
+  | '1:OGN'
+  | '1:OUSD'
+  | '1:primeETH'
+  | '1:rETH'
+  | '1:sfrxETH'
+  | '1:stETH'
+  | '1:swETH'
+  | '1:USDC'
+  | '1:USDT'
+  | '1:WETH'
+  | '1:wOETH'
+  | '1:wOUSD'
+>;
 
-export type Currency = 'USD' | 'ETH' | 'OETH' | 'OUSD' | 'frxETH' | 'primeETH';
+export type SupportedCurrency =
+  | 'USD'
+  | Extract<TokenId, '1:ETH' | '1:frxETH' | '1:OETH' | '1:OUSD' | '1:primeETH'>;
 
-export type SupportedTokenPrice = `${SupportedToken}_${Currency}`;
+export type SupportedTokenPrice = `${SupportedToken}_${SupportedCurrency}`;

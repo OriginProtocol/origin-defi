@@ -26,7 +26,7 @@ import {
 import type { Token } from '@origin/shared/contracts';
 import type { TransactionReceipt } from 'viem';
 
-import type { Currency } from '../prices/types';
+import type { SupportedCurrency } from '../prices/types';
 import type {
   EstimatedSwapRoute,
   SwapRoute,
@@ -759,7 +759,7 @@ export const useHandleSwap = () => {
   ]);
 };
 
-export const useSwapperPrices = (currency?: Currency) => {
+export const useSwapperPrices = (currency?: SupportedCurrency) => {
   const [{ swapRoutes }] = useSwapState();
   const tokensIn = getAllAvailableTokens(swapRoutes, 'tokenIn');
   const tokensOut = getAllAvailableTokens(swapRoutes, 'tokenOut');

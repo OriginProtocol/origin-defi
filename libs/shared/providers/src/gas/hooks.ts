@@ -38,7 +38,7 @@ const fetcher: (
   async ({ queryKey: [, gasAmount, chainId] }) => {
     const [price, data] = await Promise.all([
       queryClient.fetchQuery({
-        queryKey: useTokenPrice.getKey('ETH_USD'),
+        queryKey: useTokenPrice.getKey('1:ETH_USD'),
         queryFn: useTokenPrice.fetcher(config, queryClient),
       }),
       estimateFeesPerGas(config, { chainId }),
