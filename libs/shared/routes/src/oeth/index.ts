@@ -1,5 +1,6 @@
 export * from './mintVaultOeth';
 export * from './redeemVaultOeth';
+export * from './swapBalancerOeth';
 export * from './swapCurveOeth';
 export * from './swapCurveOethEth';
 export * from './swapCurveOethSfrxeth';

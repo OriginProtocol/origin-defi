@@ -1,10 +1,11 @@
+import { getNativeTokenByChainId } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
 import { add, from, mul } from 'dnum';
 import { useConfig } from 'wagmi';
 import { mainnet } from 'wagmi/chains';
 
-import { useTokenPrice } from '../prices';
+import { getTokenPriceKey, useTokenPrice } from '../prices';
 
 import type {
   QueryClient,
@@ -38,7 +39,9 @@ const fetcher: (
   async ({ queryKey: [, gasAmount, chainId] }) => {
     const [price, data] = await Promise.all([
       queryClient.fetchQuery({
-        queryKey: useTokenPrice.getKey('1:ETH_USD'),
+        queryKey: useTokenPrice.getKey(
+          getTokenPriceKey(getNativeTokenByChainId(chainId)),
+        ),
         queryFn: useTokenPrice.fetcher(config, queryClient),
       }),
       estimateFeesPerGas(config, { chainId }),

@@ -1,7 +1,10 @@
+import type { supportedChains } from '@origin/shared/constants';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Abi } from 'viem';
 
 import type { tokenList } from './tokens';
+
+export type SupportedChainId = keyof typeof supportedChains;
 
 export type Contract<A = Abi> = {
   address: HexAddress;

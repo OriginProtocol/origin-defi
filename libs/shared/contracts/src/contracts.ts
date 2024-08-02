@@ -1,5 +1,7 @@
 import { arbitrum, mainnet } from 'wagmi/chains';
 
+import { BalancerQueriesABI } from './abis/BalancerQueries';
+import { BalancerVaultABI } from './abis/BalancerVault';
 import { CCIPEvm2EvmOnRamp } from './abis/CCIPEvm2EvmOnRamp';
 import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
@@ -239,6 +241,19 @@ export const contracts = {
     },
   },
   arbitrum: {
+    // Balancer
+    balancerQueries: {
+      address: '0xE39B5e3B6D74016b2F6A9673D7d7493B6DF549d5',
+      chainId: arbitrum.id,
+      abi: BalancerQueriesABI,
+      name: 'balancerQueries',
+    },
+    balancerVault: {
+      address: '0xBA12222222228d8Ba445958a75a0704d566BF2C8',
+      chainId: arbitrum.id,
+      abi: BalancerVaultABI,
+      name: 'balancerVault',
+    },
     // Chainlink CCIP
     ccipRouter: {
       address: '0x141fa059441E0ca23ce184B6A78bafD2A517DdE8',
