@@ -128,7 +128,7 @@ export const ExtendAddLockupModal = ({
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
       args: [
-        totalAmount[0],
+        amountToAdd[0],
         durationSeconds,
         address ?? ZERO_ADDRESS,
         addRewards,
