@@ -1,5 +1,9 @@
-// DO NOT EDIT - GENERATED
 export const OETHVaultABI = [
+  {
+    inputs: [{ internalType: 'address', name: '_weth', type: 'address' }],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
@@ -67,11 +71,42 @@ export const OETHVaultABI = [
         type: 'address',
       },
     ],
+    name: 'AssetRemoved',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_asset',
+        type: 'address',
+      },
+    ],
     name: 'AssetSupported',
     type: 'event',
   },
   { anonymous: false, inputs: [], name: 'CapitalPaused', type: 'event' },
-  { anonymous: false, inputs: [], name: 'CapitalUnpaused', type: 'event' },
+  {
+    anonymous: false,
+    inputs: [],
+    name: 'CapitalUnpaused',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_dripper',
+        type: 'address',
+      },
+    ],
+    name: 'DripperChanged',
+    type: 'event',
+  },
   {
     anonymous: false,
     inputs: [
@@ -245,6 +280,19 @@ export const OETHVaultABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: true,
+        internalType: 'address',
+        name: 'strategy',
+        type: 'address',
+      },
+    ],
+    name: 'StrategyAddedToMintWhitelist',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: false,
         internalType: 'address',
         name: '_addr',
@@ -265,6 +313,95 @@ export const OETHVaultABI = [
       },
     ],
     name: 'StrategyRemoved',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: 'strategy',
+        type: 'address',
+      },
+    ],
+    name: 'StrategyRemovedFromMintWhitelist',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_basis',
+        type: 'uint256',
+      },
+    ],
+    name: 'SwapAllowedUndervalueChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_asset',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_basis',
+        type: 'uint256',
+      },
+    ],
+    name: 'SwapSlippageChanged',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_fromAsset',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_toAsset',
+        type: 'address',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_fromAssetAmount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_toAssetAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'Swapped',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'address',
+        name: '_address',
+        type: 'address',
+      },
+    ],
+    name: 'SwapperChanged',
     type: 'event',
   },
   {
@@ -309,6 +446,81 @@ export const OETHVaultABI = [
   {
     anonymous: false,
     inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_claimable',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_newClaimable',
+        type: 'uint256',
+      },
+    ],
+    name: 'WithdrawalClaimable',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_withdrawer',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_requestId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'WithdrawalClaimed',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: 'address',
+        name: '_withdrawer',
+        type: 'address',
+      },
+      {
+        indexed: true,
+        internalType: 'uint256',
+        name: '_requestId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_queued',
+        type: 'uint256',
+      },
+    ],
+    name: 'WithdrawalRequested',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
       { indexed: false, internalType: 'address', name: '_to', type: 'address' },
       {
         indexed: false,
@@ -326,9 +538,24 @@ export const OETHVaultABI = [
     name: 'YieldDistribution',
     type: 'event',
   },
+  { stateMutability: 'nonpayable', type: 'fallback' },
   {
-    inputs: [{ internalType: 'address', name: '_addr', type: 'address' }],
-    name: 'approveStrategy',
+    inputs: [],
+    name: 'CLAIM_DELAY',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'addWithdrawalQueueLiquidity',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'allocate',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -348,16 +575,37 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
-    name: 'cacheDecimals',
+    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
+    name: 'burnForStrategy',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [],
+    name: 'cacheWETHAssetIndex',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
+    name: 'calculateRedeemOutputs',
+    outputs: [{ internalType: 'uint256[]', name: '', type: 'uint256[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'capitalPaused',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+    name: 'checkBalance',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -369,14 +617,92 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_strategyToAddress', type: 'address' },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
-    ],
-    name: 'depositToStrategy',
-    outputs: [],
+    inputs: [{ internalType: 'uint256', name: '_requestId', type: 'uint256' }],
+    name: 'claimWithdrawal',
+    outputs: [{ internalType: 'uint256', name: 'amount', type: 'uint256' }],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256[]', name: '_requestIds', type: 'uint256[]' },
+    ],
+    name: 'claimWithdrawals',
+    outputs: [
+      { internalType: 'uint256[]', name: 'amounts', type: 'uint256[]' },
+      {
+        internalType: 'uint256',
+        name: 'totalAmount',
+        type: 'uint256',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'dripper',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getAllAssets',
+    outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getAllStrategies',
+    outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+    name: 'getAssetConfig',
+    outputs: [
+      {
+        components: [
+          {
+            internalType: 'bool',
+            name: 'isSupported',
+            type: 'bool',
+          },
+          {
+            internalType: 'enum VaultStorage.UnitConversion',
+            name: 'unitConversion',
+            type: 'uint8',
+          },
+          { internalType: 'uint8', name: 'decimals', type: 'uint8' },
+          {
+            internalType: 'uint16',
+            name: 'allowedOracleSlippageBps',
+            type: 'uint16',
+          },
+        ],
+        internalType: 'struct VaultStorage.Asset',
+        name: 'config',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getAssetCount',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'getStrategyCount',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -389,7 +715,11 @@ export const OETHVaultABI = [
   {
     inputs: [
       { internalType: 'address', name: '_priceProvider', type: 'address' },
-      { internalType: 'address', name: '_ousd', type: 'address' },
+      {
+        internalType: 'address',
+        name: '_oToken',
+        type: 'address',
+      },
     ],
     name: 'initialize',
     outputs: [],
@@ -404,10 +734,46 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
+    inputs: [{ internalType: 'address', name: '', type: 'address' }],
+    name: 'isMintWhitelistedStrategy',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
+    name: 'isSupportedAsset',
+    outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'maxSupplyDiff',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: '_asset', type: 'address' },
+      {
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+      { internalType: 'uint256', name: '_minimumOusdAmount', type: 'uint256' },
+    ],
+    name: 'mint',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
+    name: 'mintForStrategy',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -433,37 +799,28 @@ export const OETHVaultABI = [
   },
   {
     inputs: [],
-    name: 'pauseCapital',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'pauseRebase',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'priceProvider',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      {
-        internalType: 'address',
-        name: '_strategyFromAddress',
-        type: 'address',
-      },
-      { internalType: 'address', name: '_strategyToAddress', type: 'address' },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
-    ],
-    name: 'reallocate',
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitMint',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: 'asset', type: 'address' }],
+    name: 'priceUnitRedeem',
+    outputs: [{ internalType: 'uint256', name: 'price', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'rebase',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -483,6 +840,29 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
+    inputs: [
+      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: '_minimumUnitAmount',
+        type: 'uint256',
+      },
+    ],
+    name: 'redeem',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256', name: '_minimumUnitAmount', type: 'uint256' },
+    ],
+    name: 'redeemAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
     inputs: [],
     name: 'redeemFeeBps',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
@@ -490,112 +870,22 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'address', name: '_addr', type: 'address' }],
-    name: 'removeStrategy',
-    outputs: [],
+    inputs: [{ internalType: 'uint256', name: '_amount', type: 'uint256' }],
+    name: 'requestWithdrawal',
+    outputs: [
+      { internalType: 'uint256', name: 'requestId', type: 'uint256' },
+      {
+        internalType: 'uint256',
+        name: 'queued',
+        type: 'uint256',
+      },
+    ],
     stateMutability: 'nonpayable',
     type: 'function',
   },
   {
     inputs: [{ internalType: 'address', name: 'newImpl', type: 'address' }],
     name: 'setAdminImpl',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'address', name: '_strategy', type: 'address' },
-    ],
-    name: 'setAssetDefaultStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
-    name: 'setAutoAllocateThreshold',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: '_maxSupplyDiff', type: 'uint256' },
-    ],
-    name: 'setMaxSupplyDiff',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
-    name: 'setNetOusdMintForStrategyThreshold',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_ousdMetaStrategy', type: 'address' },
-    ],
-    name: 'setOusdMetaStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_priceProvider', type: 'address' },
-    ],
-    name: 'setPriceProvider',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_threshold', type: 'uint256' }],
-    name: 'setRebaseThreshold',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: '_redeemFeeBps', type: 'uint256' },
-    ],
-    name: 'setRedeemFeeBps',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
-    name: 'setStrategistAddr',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'address', name: '_address', type: 'address' }],
-    name: 'setTrusteeAddress',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [{ internalType: 'uint256', name: '_basis', type: 'uint256' }],
-    name: 'setTrusteeFeeBps',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'uint256', name: '_vaultBuffer', type: 'uint256' },
-    ],
-    name: 'setVaultBuffer',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -608,13 +898,10 @@ export const OETHVaultABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint8', name: '_unitConversion', type: 'uint8' },
-    ],
-    name: 'supportAsset',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    inputs: [],
+    name: 'totalValue',
+    outputs: [{ internalType: 'uint256', name: 'value', type: 'uint256' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -622,16 +909,6 @@ export const OETHVaultABI = [
       { internalType: 'address', name: '_newGovernor', type: 'address' },
     ],
     name: 'transferGovernance',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
-    ],
-    name: 'transferToken',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -652,20 +929,6 @@ export const OETHVaultABI = [
   },
   {
     inputs: [],
-    name: 'unpauseCapital',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'unpauseRebase',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'vaultBuffer',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
@@ -673,33 +936,57 @@ export const OETHVaultABI = [
   },
   {
     inputs: [],
-    name: 'withdrawAllFromStrategies',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    name: 'weth',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_strategyAddr', type: 'address' },
-    ],
-    name: 'withdrawAllFromStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    inputs: [],
+    name: 'wethAssetIndex',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [
+    inputs: [],
+    name: 'withdrawalQueueMetadata',
+    outputs: [
+      { internalType: 'uint128', name: 'queued', type: 'uint128' },
       {
-        internalType: 'address',
-        name: '_strategyFromAddress',
-        type: 'address',
+        internalType: 'uint128',
+        name: 'claimable',
+        type: 'uint128',
       },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'uint256[]', name: '_amounts', type: 'uint256[]' },
+      { internalType: 'uint128', name: 'claimed', type: 'uint128' },
+      {
+        internalType: 'uint128',
+        name: 'nextWithdrawalIndex',
+        type: 'uint128',
+      },
     ],
-    name: 'withdrawFromStrategy',
-    outputs: [],
-    stateMutability: 'nonpayable',
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    name: 'withdrawalRequests',
+    outputs: [
+      { internalType: 'address', name: 'withdrawer', type: 'address' },
+      {
+        internalType: 'bool',
+        name: 'claimed',
+        type: 'bool',
+      },
+      { internalType: 'uint40', name: 'timestamp', type: 'uint40' },
+      {
+        internalType: 'uint128',
+        name: 'amount',
+        type: 'uint128',
+      },
+      { internalType: 'uint128', name: 'queued', type: 'uint128' },
+    ],
+    stateMutability: 'view',
     type: 'function',
   },
 ] as const;

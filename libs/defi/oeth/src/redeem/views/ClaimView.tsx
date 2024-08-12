@@ -1,10 +1,15 @@
-import { Typography } from '@mui/material';
-import { useIntl } from 'react-intl';
+import { Card, CardContent } from '@mui/material';
+
+import { ClaimForm } from '../components/ClaimForm';
+import { ClaimHeader } from '../components/ClaimHeader';
 
 export const ClaimView = () => {
-  const intl = useIntl();
-
   return (
-    <Typography>{intl.formatMessage({ defaultMessage: 'Claim' })}</Typography>
+    <Card>
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <ClaimHeader />
+        <ClaimForm />
+      </CardContent>
+    </Card>
   );
 };
