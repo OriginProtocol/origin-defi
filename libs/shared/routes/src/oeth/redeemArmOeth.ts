@@ -1,6 +1,10 @@
-import { contracts, tokens, whales } from '@origin/shared/contracts';
+import { contracts, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subPercentage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -8,7 +12,7 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits, maxUint256 } from 'viem';
+import { erc20Abi, formatUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
 import { defaultRoute } from '../defaultRoute';
@@ -24,61 +28,87 @@ import type {
 } from '@origin/shared/providers';
 import type { EstimateAmount } from '@origin/shared/providers';
 
-const isRouteAvailable: IsRouteAvailable = async (
-  { config },
-  { tokenIn, amountIn },
-) => {
-  try {
-    if (tokenIn?.address) {
-      const bal = await readContract(config, {
-        address: tokens.mainnet.WETH.address,
-        abi: tokens.mainnet.WETH.abi,
-        functionName: 'balanceOf',
-        args: [contracts.mainnet.OETHVault.address],
-        chainId: tokens.mainnet.WETH.chainId,
-      });
-
-      return amountIn <= bal;
-    }
-  } catch {}
+const isRouteAvailable: IsRouteAvailable = async ({ config }, { amountIn }) => {
+  // try {
+  //   const wethBalance = await readContract(config, {
+  //     address: tokens.mainnet.WETH.address,
+  //     abi: tokens.mainnet.WETH.abi,
+  //     functionName: 'balanceOf',
+  //     args: [contracts.mainnet.ARM.address],
+  //     chainId: tokens.mainnet.WETH.chainId,
+  //   });
+  //
+  //   return wethBalance >= amountIn;
+  // } catch {}
 
   return false;
 };
 
-const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
+const estimateAmount: EstimateAmount = async (config, { amountIn }) => {
   return amountIn;
 };
 
 const estimateGas: EstimateGas = async (
   { config },
-  { tokenIn, tokenOut, amountIn, slippage, amountOut },
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
-  let gasEstimate = 0n;
+  const { address } = getAccount(config);
   const publicClient = getPublicClient(config, {
-    chainId: contracts.mainnet.OETHVault.chainId,
+    chainId: contracts.mainnet.ARM.chainId,
   });
 
-  if (amountIn === 0n || !publicClient || !tokenIn?.address) {
-    return gasEstimate;
+  if (
+    amountIn === 0n ||
+    !publicClient ||
+    !tokenIn?.address ||
+    !tokenOut?.address
+  ) {
+    return 0n;
   }
 
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
+  let requestGasEstimate = 0n;
   try {
-    gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OETHVault.address,
-      abi: contracts.mainnet.OETHVault.abi,
-      functionName: 'requestWithdrawal',
-      args: [amountIn],
+    requestGasEstimate = await publicClient.estimateContractGas({
+      address: contracts.mainnet.ARM.address,
+      abi: contracts.mainnet.ARM.abi,
+      functionName: 'swapExactTokensForTokens',
+      args: [
+        tokenIn.address,
+        tokenOut.address,
+        amountIn,
+        minAmountOut[0],
+        address ?? ZERO_ADDRESS,
+      ],
       account: whales.mainnet.OETH,
     });
   } catch {
-    gasEstimate = 1500000n;
+    requestGasEstimate = 161_000n;
   }
 
-  return gasEstimate;
+  return requestGasEstimate;
 };
 
 const allowance: Allowance = async ({ config }, { tokenIn }) => {
-  return maxUint256;
+  const { address } = getAccount(config);
+
+  if (!address || !tokenIn?.address) {
+    return 0n;
+  }
+
+  const allowance = await readContract(config, {
+    address: tokenIn.address,
+    abi: erc20Abi,
+    functionName: 'allowance',
+    args: [address, contracts.mainnet.ARM.address],
+    chainId: tokenIn.chainId,
+  });
+
+  return allowance;
 };
 
 const estimateApprovalGas: EstimateApprovalGas = async (
@@ -89,7 +119,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (amountIn === 0n || !address || !publicClient || !tokenIn?.address) {
+  if (amountIn === 0n || !address || !tokenIn?.address || !publicClient) {
     return approvalEstimate;
   }
 
@@ -98,7 +128,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       address: tokenIn.address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [contracts.mainnet.OETHVault.address, amountIn],
+      args: [contracts.mainnet.ARM.address, amountIn],
       account: address,
     });
   } catch {
@@ -132,8 +162,8 @@ const estimateRoute: EstimateRoute = async (
     tokenIn,
     tokenOut,
     amountIn,
-    slippage,
     amountOut: estimatedAmount,
+    slippage,
   });
 
   return {
@@ -157,7 +187,7 @@ const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [contracts.mainnet.OETHVault.address, amountIn],
+    args: [contracts.mainnet.ARM.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -175,6 +205,20 @@ const swap: Swap = async (
     return null;
   }
 
+  const approved = await allowance(
+    { config, queryClient },
+    { tokenIn, tokenOut },
+  );
+
+  if (approved < amountIn) {
+    throw new Error(`ARM is not approved`);
+  }
+
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
   const estimatedGas = await estimateGas(
     { config, queryClient },
     {
@@ -188,19 +232,25 @@ const swap: Swap = async (
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.OETHVault.address,
-    abi: contracts.mainnet.OETHVault.abi,
-    functionName: 'requestWithdrawal',
-    args: [amountIn],
+    address: contracts.mainnet.ARM.address,
+    abi: contracts.mainnet.ARM.abi,
+    functionName: 'swapExactTokensForTokens',
+    args: [
+      tokenIn.address,
+      tokenOut.address,
+      amountIn,
+      minAmountOut[0],
+      address,
+    ],
     gas,
-    chainId: contracts.mainnet.OETHVault.chainId,
+    chainId: contracts.mainnet.CurveRouter.chainId,
   });
   const hash = await writeContract(config, request);
 
   return hash;
 };
 
-export const redeemVaultOeth = {
+export const redeemArmOeth = {
   ...defaultRoute,
   isRouteAvailable,
   estimateAmount,
