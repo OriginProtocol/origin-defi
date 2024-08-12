@@ -40,11 +40,7 @@ import {
   useSwapState,
   useWatchBalance,
 } from '@origin/shared/providers';
-import {
-  formatError,
-  getFormatPrecision,
-  isNilOrEmpty,
-} from '@origin/shared/utils';
+import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -344,7 +340,7 @@ function SwapperWrapped({
     amountIn === 0n;
 
   return (
-    <Card>
+    <Card sx={{ maxWidth: '100%' }}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Redeem' })} />
       <Divider />
       <CardContent sx={{ display: 'flex', flexDirection: 'column', pb: 0 }}>
@@ -399,7 +395,7 @@ function SwapperWrapped({
             borderColor: 'divider',
           }}
         >
-          <Stack spacing={1.5}>
+          <Stack spacing={1.5} overflow={'hidden'}>
             <LoadingLabel
               isLoading={isSwapRoutesLoading}
               sWidth={60}
@@ -407,10 +403,7 @@ function SwapperWrapped({
               color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
             >
               {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
-                digits: getFormatPrecision([
-                  amountOut ?? 0n,
-                  tokenOut?.decimals ?? 18,
-                ]),
+                digits: 18,
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </LoadingLabel>
