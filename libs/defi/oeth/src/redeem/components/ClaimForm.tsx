@@ -176,7 +176,10 @@ export const ClaimForm = (props: StackProps) => {
                 {
                   amount: eq(selectedAmount, 0)
                     ? ''
-                    : ` ${format(selectedAmount, getFormatPrecision(selectedAmount))} ${tokens.mainnet.WETH.symbol}`,
+                    : ` ${format(selectedAmount, {
+                        digits: getFormatPrecision(selectedAmount),
+                        decimalsRounding: 'ROUND_DOWN',
+                      })} ${tokens.mainnet.WETH.symbol}`,
                 },
               )
         }
@@ -221,7 +224,10 @@ const ClaimRow = ({
             color={request.claimable ? 'text.primary' : 'text.secondary'}
           >
             <Typography variant="body2" fontWeight="medium">
-              {format(amt, getFormatPrecision(amt))}
+              {format(amt, {
+                digits: getFormatPrecision(amt),
+                decimalsRounding: 'ROUND_DOWN',
+              })}
             </Typography>
             <Typography variant="caption1">
               {tokens.mainnet.WETH.symbol}
