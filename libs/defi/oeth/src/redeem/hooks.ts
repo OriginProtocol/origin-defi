@@ -74,7 +74,7 @@ const fetcher: (
     return requests.map((r) => {
       const claimable =
         !r.claimed &&
-        BigInt(r.queued) <= BigInt(queueData?.claimable ?? 0) &&
+        BigInt(r.queued) <= BigInt(queueData?.[1] ?? 0) &&
         isAfter(
           new Date(),
           addMinutes(new Date(r.timestamp), WITHDRAW_DELAY + 1),
