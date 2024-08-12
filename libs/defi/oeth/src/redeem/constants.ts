@@ -16,6 +16,7 @@ export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
     meta: {
       icon: ARM,
       waitTime: defineMessage({ defaultMessage: '~1 min' }),
+      comingSoon: true,
     },
   },
   {

@@ -1,4 +1,4 @@
-import { contracts, tokens, whales } from '@origin/shared/contracts';
+import { contracts, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   isNilOrEmpty,
@@ -29,17 +29,17 @@ import type {
 import type { EstimateAmount } from '@origin/shared/providers';
 
 const isRouteAvailable: IsRouteAvailable = async ({ config }, { amountIn }) => {
-  try {
-    const wethBalance = await readContract(config, {
-      address: tokens.mainnet.WETH.address,
-      abi: tokens.mainnet.WETH.abi,
-      functionName: 'balanceOf',
-      args: [contracts.mainnet.ARM.address],
-      chainId: tokens.mainnet.WETH.chainId,
-    });
-
-    return wethBalance >= amountIn;
-  } catch {}
+  // try {
+  //   const wethBalance = await readContract(config, {
+  //     address: tokens.mainnet.WETH.address,
+  //     abi: tokens.mainnet.WETH.abi,
+  //     functionName: 'balanceOf',
+  //     args: [contracts.mainnet.ARM.address],
+  //     chainId: tokens.mainnet.WETH.chainId,
+  //   });
+  //
+  //   return wethBalance >= amountIn;
+  // } catch {}
 
   return false;
 };
