@@ -501,7 +501,7 @@ const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
     return `$0.00`;
   }
 
-  if (route.action !== 'redeem-vault-async') {
+  if (route.action !== 'redeem-vault-async-oeth') {
     return `$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`;
   }
 
