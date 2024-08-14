@@ -1,6 +1,6 @@
 import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -46,7 +46,8 @@ const isRouteAvailable: IsRouteAvailable = async (
 };
 
 const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
-  return amountIn;
+  // 0.1% redeem fee
+  return amountIn - amountIn / 1000n;
 };
 
 const estimateGas: EstimateGas = async (
@@ -62,12 +63,17 @@ const estimateGas: EstimateGas = async (
     return gasEstimate;
   }
 
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
   try {
     gasEstimate = await publicClient.estimateContractGas({
       address: contracts.mainnet.OETHVault.address,
       abi: contracts.mainnet.OETHVault.abi,
-      functionName: 'requestWithdrawal',
-      args: [amountIn],
+      functionName: 'redeem',
+      args: [amountIn, minAmountOut[0]],
       account: whales.mainnet.OETH,
     });
   } catch {
@@ -175,6 +181,11 @@ const swap: Swap = async (
     return null;
   }
 
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
   const estimatedGas = await estimateGas(
     { config, queryClient },
     {
@@ -190,8 +201,8 @@ const swap: Swap = async (
   const { request } = await simulateContractWithTxTracker(config, {
     address: contracts.mainnet.OETHVault.address,
     abi: contracts.mainnet.OETHVault.abi,
-    functionName: 'requestWithdrawal',
-    args: [amountIn],
+    functionName: 'redeem',
+    args: [amountIn, minAmountOut[0]],
     gas,
     chainId: contracts.mainnet.OETHVault.chainId,
   });
