@@ -11,8 +11,10 @@ import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
+import { LSTCard } from '../components/LSTCard';
 import { ProductCard } from '../components/ProductCard';
 import { StakeOGNCard } from '../components/StakeOGNCard';
+import { SuperOethbBanner } from '../components/SuperOethbBanner';
 import { products } from '../constants';
 
 export const HomeView = () => {
@@ -33,6 +35,8 @@ export const HomeView = () => {
             })}
           </Typography>
         </Stack>
+        <SuperOethbBanner />
+        <LSTCard />
         <SectionTitle
           dotColor="primary.main"
           label={intl.formatMessage({ defaultMessage: 'Products' })}
