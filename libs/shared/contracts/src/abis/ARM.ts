@@ -33,18 +33,19 @@ export const ARMABI = [
       {
         indexed: false,
         internalType: 'address',
-        name: 'previousAdmin',
-        type: 'address',
-      },
-      {
-        indexed: false,
-        internalType: 'address',
         name: 'newAdmin',
         type: 'address',
       },
     ],
     name: 'OperatorChanged',
     type: 'event',
+  },
+  {
+    inputs: [],
+    name: 'approvals',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
   },
   {
     inputs: [{ internalType: 'uint256', name: 'requestId', type: 'uint256' }],
@@ -60,6 +61,20 @@ export const ARMABI = [
     name: 'claimWithdrawals',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'address', name: '_operator', type: 'address' }],
+    name: 'initialize',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'oeth',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
