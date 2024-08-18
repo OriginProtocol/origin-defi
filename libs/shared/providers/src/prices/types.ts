@@ -64,6 +64,8 @@ export type SupportedToken = Extract<
   | '42161:WETH'
   | '42161:OETH'
   | '42161:wOETH'
+  | '8453:superOETHb'
+  | '10:superOETHo'
 >;
 
 export type SupportedCurrency =

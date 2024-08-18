@@ -371,4 +371,14 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     type: 'derived',
     dependsOn: ['42161:ETH_USD'],
   },
+  '8453:superOETHb_USD': {
+    id: '8453:superOETHb_USD',
+    type: 'rest',
+    config: async () => from(2473), // TODO replace with real price
+  },
+  '10:superOETHo_USD': {
+    id: '10:superOETHo_USD',
+    type: 'rest',
+    config: async () => from(2473), // TODO replace with real price
+  },
 };

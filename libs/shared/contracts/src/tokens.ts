@@ -1,6 +1,6 @@
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet, optimism } from 'wagmi/chains';
 
 import { DAIABI } from './abis/DAI';
 import { OETHABI } from './abis/OETH';
@@ -243,11 +243,35 @@ export const tokens = {
       symbol: 'wOETH',
     },
   },
+  base: {
+    superOETHb: {
+      id: '8453:superOETHb',
+      address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3', // TODO update with real address
+      chainId: base.id,
+      abi: OETHABI,
+      name: 'Super Origin Ether',
+      decimals: 18,
+      symbol: 'superOETHb',
+    },
+  },
+  optimism: {
+    superOETHo: {
+      id: '10:superOETHo',
+      address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3', // TODO update with real address
+      chainId: optimism.id,
+      abi: OETHABI,
+      name: 'Super Origin Ether',
+      decimals: 18,
+      symbol: 'superOETHo',
+    },
+  },
 } as const;
 
 export const tokenList = [
   ...Object.values(tokens.mainnet),
   ...Object.values(tokens.arbitrum),
+  ...Object.values(tokens.base),
+  ...Object.values(tokens.optimism),
 ];
 
 export const tokenIdMap = indexBy(prop('id'), tokenList);
