@@ -1,18 +1,33 @@
 import { tokens } from '@origin/shared/contracts';
+import { ARM, OETH } from '@origin/shared/icons';
+import { defineMessage } from 'react-intl';
 
 import type { SwapRoute } from '@origin/shared/providers';
 
-import type { OethRedeemAction } from './types';
+import type { Meta, OethRedeemAction } from './types';
 
-export const redeemRoutes: SwapRoute<OethRedeemAction>[] = [
+export const WITHDRAW_DELAY = 10; // minutes
+
+export const redeemRoutes: SwapRoute<OethRedeemAction, Meta>[] = [
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
-    action: 'swap-curve-oeth',
+    action: 'redeem-arm-oeth',
+    meta: {
+      icon: ARM,
+      waitTime: defineMessage({ defaultMessage: '~1 min' }),
+    },
   },
   {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
-    action: 'redeem-vault-oeth',
+    action: 'redeem-vault-async-oeth',
+    meta: {
+      icon: OETH,
+      waitTime: defineMessage({
+        defaultMessage: `a few days`,
+      }),
+      waitTimeColor: 'warning.dark',
+    },
   },
 ];

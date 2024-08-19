@@ -1,5 +1,6 @@
 import { arbitrum, mainnet } from 'wagmi/chains';
 
+import { ARMABI } from './abis/ARM';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
 import { BalancerVaultABI } from './abis/BalancerVault';
 import { CCIPEvm2EvmOnRamp } from './abis/CCIPEvm2EvmOnRamp';
@@ -18,6 +19,7 @@ import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
 import { MigratorABI } from './abis/Migrator';
 import { OETHDripperABI } from './abis/OETHDripper';
+import { OETHVaultABI } from './abis/OETHVault';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
 import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
@@ -34,6 +36,12 @@ import { xOGNGovernanceABI } from './abis/xOGNGovernance';
 
 export const contracts = {
   mainnet: {
+    ARM: {
+      address: '0x6bac785889A4127dB0e0CeFEE88E0a9F1Aaf3cC7',
+      chainId: mainnet.id,
+      abi: ARMABI,
+      name: 'ARM',
+    },
     // Chainlink CCIP
     ccipRouter: {
       address: '0x80226fc0Ee2b096224EeAc085Bb9a8cba1146f7D',
@@ -94,6 +102,7 @@ export const contracts = {
       name: 'lrtConfig',
     },
     // OETH
+
     OETHCurvePool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
@@ -115,7 +124,7 @@ export const contracts = {
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
-      abi: IVaultABI,
+      abi: OETHVaultABI,
       name: 'OETHVault',
     },
     OETHZapper: {

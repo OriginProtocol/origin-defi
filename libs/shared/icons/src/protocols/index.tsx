@@ -1,6 +1,7 @@
 import { SvgIcon } from '@mui/material';
 
 import AaveFullSvg from './aave-full.svg?react';
+import ArmSvg from './arm.svg?react';
 import AuraFullWebp from './aura-full.webp';
 import BalancerFullSvg from './balancer-full.svg?react';
 import ChainlinkCCIPSvg from './chainlink-ccip.svg?react';
@@ -23,6 +24,9 @@ import type { SvgIconProps } from '@mui/material';
 
 export const AaveFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={AaveFullSvg} inheritViewBox />
+);
+export const ARM = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={ArmSvg} inheritViewBox />
 );
 export const AuraFull = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 47.3 16">

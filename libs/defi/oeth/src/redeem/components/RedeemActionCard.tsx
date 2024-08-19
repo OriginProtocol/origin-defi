@@ -1,22 +1,20 @@
-import { Card, Stack, Typography } from '@mui/material';
+import { alpha, Card, Stack, SvgIcon, Typography } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
-import { Curve, Origin } from '@origin/shared/icons';
+import { OETH } from '@origin/shared/icons';
 import {
   routeEq,
-  useGasPrice,
   useHandleSelectSwapRoute,
   useIsSwapRouteAvailable,
-  useSwapRouteAllowance,
   useSwapState,
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { add, format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
-import type { CardProps, TypographyProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type { SwapRoute } from '@origin/shared/providers';
 
-import type { OethRedeemAction } from '../types';
+import type { Meta, OethRedeemAction } from '../types';
 
 export type RedeemActionCardProps = {
   action: OethRedeemAction;
@@ -33,9 +31,9 @@ export const RedeemActionCard = ({
       tokenIn,
       tokenOut,
       isSwapRoutesLoading,
+      selectedSwapRoute,
       swapRoutes,
       swapActions,
-      selectedSwapRoute,
       estimatedSwapRoutes,
     },
   ] = useSwapState();
@@ -43,61 +41,26 @@ export const RedeemActionCard = ({
 
   const route = swapRoutes.find((r) =>
     routeEq({ tokenIn, tokenOut, action }, r),
-  );
-  const estimatedRoute = estimatedSwapRoutes.find((r) => routeEq(route, r));
-
-  const {
-    data: swapGasPrice,
-    isLoading: swapGasPriceLoading,
-    isFetching: swapGasPriceFetching,
-  } = useGasPrice(estimatedRoute?.gas, estimatedRoute?.tokenIn.chainId, {
-    refetchInterval: 30e3,
-    enabled: !!estimatedRoute && estimatedRoute?.gas > 0n,
-  });
-  const {
-    data: approvalGasPrice,
-    isLoading: approvalGasPriceLoading,
-    isFetching: approvalGasPriceFetching,
-  } = useGasPrice(
-    estimatedRoute?.approvalGas,
-    estimatedRoute?.tokenIn.chainId,
-    {
-      refetchInterval: 30e3,
-      enabled: !!estimatedRoute && estimatedRoute?.approvalGas > 0n,
-    },
-  );
-  const { data: allowance } = useSwapRouteAllowance(route);
+  ) as SwapRoute<OethRedeemAction, Meta>;
   const { data: isRouteAvailable, isLoading: isRouteAvailableLoading } =
     useIsSwapRouteAvailable(route);
-
-  const isSelected = routeEq(selectedSwapRoute, route);
-  const isEmptyValue = isNilOrEmpty(estimatedRoute) || amountIn === 0n;
-  const isGasLoading =
-    isSwapRoutesLoading ||
-    (swapGasPriceLoading && swapGasPriceFetching) ||
-    (approvalGasPriceLoading && approvalGasPriceFetching);
-  const gasPrice = add(
-    swapGasPrice?.gasCostUsd ?? from(0),
-    (allowance ?? 0n) < amountIn
-      ? (approvalGasPrice?.gasCostUsd ?? from(0))
-      : from(0),
-  );
+  const estimatedRoute = estimatedSwapRoutes.find((r) => routeEq(route, r));
+  const isSelected = routeEq({ tokenIn, tokenOut, action }, selectedSwapRoute);
+  const isComingSoon =
+    (route as SwapRoute<OethRedeemAction, Meta>)?.meta?.comingSoon ?? false;
   const routeLabel = swapActions[action].routeLabel;
-  const isDisabled = !isRouteAvailableLoading && !isRouteAvailable;
+  const isDisabled =
+    !isRouteAvailable || isRouteAvailableLoading || isComingSoon;
 
   return (
     <Card
       {...rest}
       sx={{
+        position: 'relative',
         p: 2,
         border: '1px solid',
         borderColor: 'divider',
-        ...(amountIn > 0n && {
-          cursor: 'pointer',
-          '&:hover': {
-            borderColor: 'primary.main',
-          },
-        }),
+        backgroundColor: 'background.highlight',
         ...(isDisabled
           ? { opacity: 0.5, cursor: 'default' }
           : isSelected
@@ -105,7 +68,14 @@ export const RedeemActionCard = ({
                 borderColor: 'primary.main',
                 backgroundColor: 'background.highlight',
               }
-            : {}),
+            : amountIn > 0n
+              ? {
+                  cursor: 'pointer',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                  },
+                }
+              : {}),
         ...rest?.sx,
       }}
       role="button"
@@ -115,6 +85,34 @@ export const RedeemActionCard = ({
         }
       }}
     >
+      {isComingSoon && (
+        <Stack
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            width: 1,
+            height: 1,
+            background: (theme) =>
+              alpha(theme.palette.background.highlight, 0.8),
+            backdropFilter: 'blur(px)',
+          }}
+        >
+          <Typography
+            sx={{
+              color: (theme) =>
+                theme.palette.getContrastText(
+                  theme.palette.background.highlight,
+                ),
+            }}
+          >
+            {intl.formatMessage({ defaultMessage: 'Coming soon' })}
+          </Typography>
+        </Stack>
+      )}
       <Stack useFlexGap>
         <Stack
           direction="row"
@@ -126,82 +124,48 @@ export const RedeemActionCard = ({
           }}
         >
           <Typography fontWeight={500}>
-            {intl.formatMessage(routeLabel)}
+            {intl.formatMessage(routeLabel ?? { defaultMessage: 'Route' })}
           </Typography>
-          {action === 'redeem-vault-oeth' ? (
-            <Origin sx={{ fontSize: 20 }} />
-          ) : (
-            <Curve sx={{ fontSize: 20 }} />
-          )}
+          <SvgIcon
+            component={route?.meta?.icon ?? OETH}
+            sx={{ fontSize: 20 }}
+          />
         </Stack>
-        {isDisabled ? (
-          <Typography color="text.secondary">
-            {intl.formatMessage({
-              defaultMessage: 'Larger redemptions coming soon',
-            })}
-          </Typography>
-        ) : (
-          <Stack spacing={1.25}>
-            <ValueLabel
-              {...valueLabelProps}
-              label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
-              value={
-                isEmptyValue ? (
-                  <EmptyValue />
-                ) : (
-                  intl.formatMessage({ defaultMessage: '~1min' })
-                )
-              }
-              isLoading={isSwapRoutesLoading}
-            />
-            <ValueLabel
-              {...valueLabelProps}
-              label={intl.formatMessage({ defaultMessage: 'Rate:' })}
-              value={
-                isEmptyValue ? (
-                  <EmptyValue />
-                ) : (
-                  intl.formatMessage(
-                    { defaultMessage: '1:{rate}' },
-                    {
-                      rate: format(from(estimatedRoute?.rate ?? 0), 3),
-                    },
-                  )
-                )
-              }
-              isLoading={isSwapRoutesLoading}
-            />
-            <ValueLabel
-              {...valueLabelProps}
-              label={intl.formatMessage({ defaultMessage: 'Gas:' })}
-              value={
-                isEmptyValue ? (
-                  <EmptyValue />
-                ) : (
-                  intl.formatMessage(
-                    { defaultMessage: '~{value}' },
-                    {
-                      value: `$${format(gasPrice, 2)}`,
-                    },
-                  )
-                )
-              }
-              isLoading={isGasLoading}
-            />
-          </Stack>
-        )}
+        <Stack spacing={1.25}>
+          <ValueLabel
+            {...valueLabelProps}
+            label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
+            value={intl.formatMessage(
+              route?.meta?.waitTime ?? {
+                defaultMessage: '~1 min',
+              },
+            )}
+            valueProps={{
+              ...valueLabelProps.valueProps,
+              ...(route?.meta &&
+                'waitTimeColor' in route.meta &&
+                !isNilOrEmpty(route.meta.waitTimeColor) && {
+                  color: route.meta.waitTimeColor as string,
+                }),
+            }}
+            isLoading={isSwapRoutesLoading}
+          />
+          <ValueLabel
+            {...valueLabelProps}
+            label={intl.formatMessage({ defaultMessage: 'Rate:' })}
+            value={intl.formatMessage(
+              { defaultMessage: '1:{rate}' },
+              {
+                rate: 1,
+              },
+            )}
+            isLoading={isSwapRoutesLoading}
+          />
+        </Stack>
       </Stack>
     </Card>
   );
 };
-
-function EmptyValue(props: TypographyProps) {
-  return (
-    <Typography color="text.secondary" pr={0.5} {...props}>
-      -
-    </Typography>
-  );
-}
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',

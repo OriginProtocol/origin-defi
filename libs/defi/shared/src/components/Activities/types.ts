@@ -35,6 +35,12 @@ export interface ClaimRewardsActivity extends ActivityBase {
   amountIn: bigint;
 }
 
+export interface ClaimWithdrawalActivity extends ActivityBase {
+  type: 'claim-withdrawal';
+  amountIn: bigint;
+  tokenIdIn: TokenId;
+}
+
 export interface DelegateVoteActivity extends ActivityBase {
   type: 'delegate';
   tokenIdIn: TokenId;
@@ -105,6 +111,7 @@ export type Activity =
   | ApprovalActivity
   | BridgeActivity
   | ClaimRewardsActivity
+  | ClaimWithdrawalActivity
   | DelegateVoteActivity
   | ExtendStakeActivity
   | MigrateActivity

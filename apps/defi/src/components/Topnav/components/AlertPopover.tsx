@@ -2,7 +2,7 @@ import { Divider, IconButton, Stack, Typography } from '@mui/material';
 import { useTxButton } from '@origin/defi/shared';
 import { ClickAwayPopover, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { FaXmarkRegular, PoweredBySafe } from '@origin/shared/icons';
+import { FaXmarkRegular } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useIntl } from 'react-intl';
 
@@ -46,7 +46,6 @@ export const AlertPopover = (
         >
           <FaXmarkRegular sx={{ fontSize: 16 }} />
         </IconButton>
-        <PoweredBySafe sx={{ width: 1, height: 24, color: 'text.primary' }} />
         <Typography>
           {intl.formatMessage({
             defaultMessage:

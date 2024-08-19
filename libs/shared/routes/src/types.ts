@@ -1,5 +1,7 @@
 export type OethRoute =
   | 'mint-vault-oeth'
+  | 'redeem-arm-oeth'
+  | 'redeem-vault-async-oeth'
   | 'redeem-vault-oeth'
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
