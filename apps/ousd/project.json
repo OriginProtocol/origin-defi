@@ -3,6 +3,7 @@
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "apps/ousd/src",
   "projectType": "application",
+  "tags": [],
   "targets": {
     "build": {
       "executor": "@nx/vite:build",
@@ -50,7 +51,8 @@
         "production": {
           "buildTarget": "ousd:build:production"
         }
-      }
+      },
+      "dependsOn": ["build"]
     },
     "lint": {
       "executor": "@nx/eslint:lint",
@@ -69,6 +71,5 @@
         "command": "pnpm formatjs compile-folder --ast apps/ousd/src/lang/extracts apps/ousd/src/lang"
       }
     }
-  },
-  "tags": []
+  }
 }
