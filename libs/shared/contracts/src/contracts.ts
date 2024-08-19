@@ -37,7 +37,7 @@ import { xOGNGovernanceABI } from './abis/xOGNGovernance';
 export const contracts = {
   mainnet: {
     ARM: {
-      address: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D', // TODO update address when available
+      address: '0x6bac785889A4127dB0e0CeFEE88E0a9F1Aaf3cC7',
       chainId: mainnet.id,
       abi: ARMABI,
       name: 'ARM',

@@ -1,5 +1,6 @@
 import {
   mintVaultOeth,
+  redeemArmOeth,
   swapBalancerOeth,
   SwapCurveOeth,
   swapCurveOethEth,
@@ -16,6 +17,11 @@ import type { SwapApi } from '@origin/shared/providers';
 import type { OethSwapAction } from './types';
 
 export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
+  'redeem-arm-oeth': {
+    ...redeemArmOeth,
+    routeLabel: defineMessage({ defaultMessage: 'Redeem via the ARM' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+  },
   'swap-balancer-oeth': {
     ...swapBalancerOeth,
     routeLabel: defineMessage({ defaultMessage: 'Swap via Balancer' }),

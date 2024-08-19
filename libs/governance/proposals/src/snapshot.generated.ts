@@ -565,6 +565,7 @@ export type StatementsWhere = {
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   ipfs?: InputMaybe<Scalars['String']['input']>;
   ipfs_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  network?: InputMaybe<Scalars['String']['input']>;
   space?: InputMaybe<Scalars['String']['input']>;
   space_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };

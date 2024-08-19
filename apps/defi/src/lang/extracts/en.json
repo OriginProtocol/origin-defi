@@ -2,9 +2,6 @@
   "+0NTt9": {
     "defaultMessage": "Withdrawal request is taking a long time to process"
   },
-  "+0zAiT": {
-    "defaultMessage": "The updated amount of xOGN you will receive by adding OGN to this lockup."
-  },
   "+14VoL": {
     "defaultMessage": "Staking"
   },
@@ -170,6 +167,9 @@
   "4cdhFd": {
     "defaultMessage": "Instant"
   },
+  "4n/4uB": {
+    "defaultMessage": "a few days"
+  },
   "56jhQz": {
     "defaultMessage": "New Snapshot Proposal"
   },
@@ -268,9 +268,6 @@
   },
   "8cCxx8": {
     "defaultMessage": "Redeem for mix via Origin Vault"
-  },
-  "8g703D": {
-    "defaultMessage": "~{WITHDRAW_DELAY} min - few days"
   },
   "8nvhZ9": {
     "defaultMessage": "Last"
@@ -746,9 +743,6 @@
   "T1d+7b": {
     "defaultMessage": "Claiming Withdrawal"
   },
-  "TIBoMl": {
-    "defaultMessage": "Total value locked {symbol}"
-  },
   "TJOfi8": {
     "defaultMessage": "Yield bearing stablecoin"
   },
@@ -760,6 +754,9 @@
   },
   "Th/AXT": {
     "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}, staked for {amountStaked} {symbolStaked}"
+  },
+  "TqlPp5": {
+    "defaultMessage": "USD price of {symbol} on {chainName}"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -935,6 +932,9 @@
   "d8EqQY": {
     "defaultMessage": "Days"
   },
+  "dCHBKG": {
+    "defaultMessage": "Total value locked on {chainName}"
+  },
   "dIb4Xv": {
     "defaultMessage": "Snapshot proposals"
   },
@@ -964,6 +964,9 @@
   },
   "e+yfm6": {
     "defaultMessage": "Connect your wallet to see your balances"
+  },
+  "e/f0yl": {
+    "defaultMessage": "Add unclaimed rewards to stake ({rewards} OGN)"
   },
   "e61Jf3": {
     "defaultMessage": "Coming soon"
