@@ -42,7 +42,7 @@ export const SuperOethbBanner = (props: StackProps) => {
           backgroundRepeat: 'no-repeat',
           backgroundPosition: {
             xs: 'right -200px center',
-            md: '110% center',
+            md: '100% center',
           },
           backgroundSize: { xs: 400, md: 200 },
           backgroundBlendMode: 'darken',

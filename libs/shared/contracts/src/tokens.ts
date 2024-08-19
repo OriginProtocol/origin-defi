@@ -246,10 +246,10 @@ export const tokens = {
   base: {
     superOETHb: {
       id: '8453:superOETHb',
-      address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3', // TODO update with real address
+      address: '0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3',
       chainId: base.id,
       abi: OETHABI,
-      name: 'Super Origin Ether',
+      name: 'Super OETH',
       decimals: 18,
       symbol: 'superOETHb',
     },
@@ -260,7 +260,7 @@ export const tokens = {
       address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3', // TODO update with real address
       chainId: optimism.id,
       abi: OETHABI,
-      name: 'Super Origin Ether',
+      name: 'Super OETH',
       decimals: 18,
       symbol: 'superOETHo',
     },

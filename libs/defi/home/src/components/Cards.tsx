@@ -75,7 +75,7 @@ export const LSTCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/circles3Pattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: '100%',
+            backgroundSize: 'auto 100%',
             backgroundPosition: 'right center',
             p: 3,
             my: 3,
@@ -133,7 +133,7 @@ export const StakingCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/stakingPattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: '100%',
+            backgroundSize: 'auto 100%',
             backgroundPosition: 'right center',
             p: 3,
             mb: 3,
