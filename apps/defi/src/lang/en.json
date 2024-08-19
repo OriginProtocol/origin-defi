@@ -5,12 +5,6 @@
       "value": "Withdrawal request is taking a long time to process"
     }
   ],
-  "+0zAiT": [
-    {
-      "type": 0,
-      "value": "The updated amount of xOGN you will receive by adding OGN to this lockup."
-    }
-  ],
   "+14VoL": [
     {
       "type": 0,
@@ -463,6 +457,12 @@
       "value": "Instant"
     }
   ],
+  "4n/4uB": [
+    {
+      "type": 0,
+      "value": "a few days"
+    }
+  ],
   "56jhQz": [
     {
       "type": 0,
@@ -659,20 +659,6 @@
     {
       "type": 0,
       "value": "Redeem for mix via Origin Vault"
-    }
-  ],
-  "8g703D": [
-    {
-      "type": 0,
-      "value": "~"
-    },
-    {
-      "type": 1,
-      "value": "WITHDRAW_DELAY"
-    },
-    {
-      "type": 0,
-      "value": " min - few days"
     }
   ],
   "8nvhZ9": [
@@ -1883,16 +1869,6 @@
       "value": "Claiming Withdrawal"
     }
   ],
-  "TIBoMl": [
-    {
-      "type": 0,
-      "value": "Total value locked "
-    },
-    {
-      "type": 1,
-      "value": "symbol"
-    }
-  ],
   "TJOfi8": [
     {
       "type": 0,
@@ -1955,6 +1931,24 @@
     {
       "type": 1,
       "value": "symbolStaked"
+    }
+  ],
+  "TqlPp5": [
+    {
+      "type": 0,
+      "value": "USD price of "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " on "
+    },
+    {
+      "type": 1,
+      "value": "chainName"
     }
   ],
   "TrKxvg": [
@@ -2385,6 +2379,16 @@
       "value": "Days"
     }
   ],
+  "dCHBKG": [
+    {
+      "type": 0,
+      "value": "Total value locked on "
+    },
+    {
+      "type": 1,
+      "value": "chainName"
+    }
+  ],
   "dIb4Xv": [
     {
       "type": 0,
@@ -2461,6 +2465,20 @@
     {
       "type": 0,
       "value": "Connect your wallet to see your balances"
+    }
+  ],
+  "e/f0yl": [
+    {
+      "type": 0,
+      "value": "Add unclaimed rewards to stake ("
+    },
+    {
+      "type": 1,
+      "value": "rewards"
+    },
+    {
+      "type": 0,
+      "value": " OGN)"
     }
   ],
   "e61Jf3": [
