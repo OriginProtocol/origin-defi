@@ -11,7 +11,7 @@ import {
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
 import { createConfig, fallback, http } from 'wagmi';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet } from 'wagmi/chains';
 
 const connectors = connectorsForWallets(
   [
@@ -36,7 +36,7 @@ const connectors = connectorsForWallets(
 );
 
 export const wagmiConfig = createConfig({
-  chains: [mainnet, arbitrum],
+  chains: [mainnet, arbitrum, base],
   connectors,
   transports: {
     [mainnet.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_RPC)
@@ -59,5 +59,15 @@ export const wagmiConfig = createConfig({
           http(),
         ])
       : http(import.meta.env.VITE_CUSTOM_ARBITRUM_RPC),
+    [base.id]: isNilOrEmpty(import.meta.env?.VITE_CUSTOM_BASE_RPC)
+      ? fallback([
+          http(
+            `${import.meta.env.VITE_ALCHEMY_BASE_RPC}${
+              import.meta.env.VITE_ALCHEMY_ID
+            }`,
+          ),
+          http(),
+        ])
+      : http(import.meta.env.VITE_CUSTOM_BASE_RPC),
   },
 });

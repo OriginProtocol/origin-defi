@@ -1,9 +1,10 @@
-import { arbitrum, mainnet, optimism } from 'viem/chains';
+import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
 export const supportedChains = {
   [mainnet.id.toString()]: mainnet,
   [arbitrum.id.toString()]: arbitrum,
   [optimism.id.toString()]: optimism,
+  [base.id.toString()]: optimism,
 } as const;
 
 export const supportedChainNames = {
@@ -18,5 +19,9 @@ export const supportedChainNames = {
   [optimism.id.toString()]: {
     short: 'Optimism',
     long: 'Optimism',
+  },
+  [base.id.toString()]: {
+    short: 'Base',
+    long: 'Base',
   },
 } as const;
