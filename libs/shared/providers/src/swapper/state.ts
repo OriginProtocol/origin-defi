@@ -113,13 +113,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
       });
 
       useEffect(() => {
-        const filteredSwapRoutes = getFilteredSwapRoutes(
-          swapRoutes,
-          chain ?? mainnet,
-        );
-        const routes = isNilOrEmpty(filteredSwapRoutes)
-          ? swapRoutes
-          : filteredSwapRoutes;
+        const routes = getFilteredSwapRoutes(swapRoutes, chain);
         setState((prev) => ({
           ...prev,
           swapRoutes: routes,

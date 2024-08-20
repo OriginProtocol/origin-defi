@@ -7,16 +7,6 @@ import type { OethSwapAction } from './types';
 export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   // Mint
   {
-    tokenIn: tokens.arbitrum.ETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.WETH,
-    tokenOut: tokens.arbitrum.wOETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
     tokenIn: tokens.mainnet.ETH,
     tokenOut: tokens.mainnet.OETH,
     action: 'swap-curve-oeth',
@@ -77,5 +67,16 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     tokenOut: tokens.mainnet.OETH,
     action: 'unwrap-oeth-woeth',
     noSlippage: true,
+  },
+  // Arbitrum
+  {
+    tokenIn: tokens.arbitrum.ETH,
+    tokenOut: tokens.arbitrum.wOETH,
+    action: 'swap-balancer-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.WETH,
+    tokenOut: tokens.arbitrum.wOETH,
+    action: 'swap-balancer-oeth',
   },
 ];

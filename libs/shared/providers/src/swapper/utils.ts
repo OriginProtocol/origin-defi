@@ -17,7 +17,15 @@ export const getFilteredSwapRoutes = (
   }
   const chainId = chain?.id ?? mainnet.id;
 
-  return swapRoutes.filter((r) => r.tokenIn.chainId === chainId);
+  let filtered = swapRoutes.filter((r) => r.tokenIn.chainId === chainId);
+
+  if (isNilOrEmpty(filtered)) {
+    filtered = swapRoutes.filter(
+      (r) => r.tokenIn.chainId === swapRoutes[0].tokenIn.chainId,
+    );
+  }
+
+  return filtered;
 };
 
 export const getAllAvailableChainIds = (swapRoutes: SwapRoute[]) => {
