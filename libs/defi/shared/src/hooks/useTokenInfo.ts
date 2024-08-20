@@ -34,6 +34,7 @@ export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
   });
   const { data: price, isLoading: isPriceLoading } = useTokenPrice(
     getTokenPriceKey(token),
+    { enabled },
   );
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token,

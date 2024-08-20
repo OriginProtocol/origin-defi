@@ -7,14 +7,13 @@ import {
   useOTokenHistoriesQuery,
   useTransfersQuery,
 } from '@origin/defi/shared';
-import { contracts, tokens } from '@origin/shared/contracts';
+import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort, sortBy, uniq } from 'ramda';
 import { useSearchParams } from 'react-router-dom';
-import { formatEther, formatUnits, parseUnits } from 'viem';
-import { useAccount, useConfig } from 'wagmi';
+import { formatUnits, parseUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type {
   BalancesQuery,
@@ -22,8 +21,7 @@ import type {
   OTokenHistoriesQuery,
   TransfersQuery,
 } from '@origin/defi/shared';
-import type { HexAddress } from '@origin/shared/utils';
-import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { DailyHistory, WOETHHistoryType } from './types';
 
@@ -44,79 +42,6 @@ export const useTokenSelect = () => {
     }),
     [search, setSearch],
   );
-};
-
-export const usePendingYield = (
-  options?: QueryOptions<
-    number,
-    Error,
-    number,
-    ['usePendingYield', HexAddress | undefined, boolean]
-  >,
-) => {
-  const config = useConfig();
-  const { address, isConnected } = useAccount();
-
-  return useQuery({
-    queryKey: ['usePendingYield', address, isConnected],
-    queryFn: async () => {
-      if (!isConnected || !address) {
-        return 0;
-      }
-
-      const [
-        totalValue,
-        totalSupply,
-        availableFunds,
-        nonRebasingSupply,
-        balance,
-      ] = (
-        await readContracts(config, {
-          contracts: [
-            {
-              address: contracts.mainnet.OETHVault.address,
-              abi: contracts.mainnet.OETHVault.abi,
-              functionName: 'totalValue',
-            },
-            {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
-              functionName: 'totalSupply',
-            },
-            {
-              address: contracts.mainnet.OETHDripper.address,
-              abi: contracts.mainnet.OETHDripper.abi,
-              functionName: 'availableFunds',
-            },
-            {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
-              functionName: 'nonRebasingSupply',
-            },
-            {
-              address: tokens.mainnet.OETH.address,
-              abi: tokens.mainnet.OETH.abi,
-              functionName: 'balanceOf',
-              args: [address],
-            },
-          ],
-        })
-      ).map((res) =>
-        res.status === 'success'
-          ? +formatEther(res?.result as unknown as bigint)
-          : 0,
-      );
-
-      const vaultYield = totalValue - totalSupply;
-      const expectedYield = vaultYield + availableFunds;
-      const rebasingSupply = totalSupply - nonRebasingSupply;
-      const expectedYieldPerOeth = expectedYield / rebasingSupply;
-      const expectedYieldPerOethWithFee = expectedYieldPerOeth * 0.8;
-
-      return balance * expectedYieldPerOethWithFee;
-    },
-    ...options,
-  });
 };
 
 export const useOethHistory = (

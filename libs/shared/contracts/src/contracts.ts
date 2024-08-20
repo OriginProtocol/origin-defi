@@ -277,5 +277,11 @@ export const contracts = {
       abi: OETHVaultABI,
       name: 'superOETHbVault',
     },
+    superOETHbDripper: {
+      address: '0x02f2C609950E90934ce99e58b4d7326aD0d7f8d6',
+      chainId: base.id,
+      abi: DripperABI,
+      name: 'superOETHbDripper',
+    },
   },
 } as const;

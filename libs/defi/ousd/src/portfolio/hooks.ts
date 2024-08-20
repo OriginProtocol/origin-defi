@@ -2,94 +2,16 @@ import { useCallback } from 'react';
 
 import { useOTokenHistoriesQuery } from '@origin/defi/shared';
 import { HistoryType } from '@origin/ousd/shared';
-import { contracts, tokens } from '@origin/shared/contracts';
+import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
-import { useQuery } from '@tanstack/react-query';
-import { readContracts } from '@wagmi/core';
 import { descend, groupBy, sort } from 'ramda';
-import { formatEther, formatUnits, parseUnits } from 'viem';
-import { useAccount, useConfig } from 'wagmi';
+import { formatUnits, parseUnits } from 'viem';
+import { useAccount } from 'wagmi';
 
 import type { OTokenHistoriesQuery } from '@origin/defi/shared';
-import type { HexAddress } from '@origin/shared/utils';
-import type { QueryOptions, UseQueryOptions } from '@tanstack/react-query';
+import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { DailyHistory } from './types';
-
-export const usePendingYield = (
-  isWrapped = false,
-  options?: QueryOptions<
-    number,
-    Error,
-    number,
-    ['usePendingYield', boolean, HexAddress, boolean]
-  >,
-) => {
-  const config = useConfig();
-  const { address, isConnected } = useAccount();
-
-  return useQuery({
-    queryKey: [
-      'usePendingYield',
-      isWrapped,
-      address ?? ZERO_ADDRESS,
-      isConnected,
-    ],
-    queryFn: async () => {
-      if (!isConnected || !address) {
-        return 0;
-      }
-
-      const [
-        totalValue,
-        totalSupply,
-        availableFunds,
-        nonRebasingSupply,
-        balance,
-      ] = (
-        await readContracts(config, {
-          contracts: [
-            {
-              address: contracts.mainnet.OUSDVault.address,
-              abi: contracts.mainnet.OUSDVault.abi,
-              functionName: 'totalValue',
-            },
-            {
-              address: tokens.mainnet.OUSD.address,
-              abi: tokens.mainnet.OUSD.abi,
-              functionName: 'totalSupply',
-            },
-            {
-              address: contracts.mainnet.OUSDDripper.address,
-              abi: contracts.mainnet.OUSDDripper.abi,
-              functionName: 'availableFunds',
-            },
-            {
-              address: tokens.mainnet.OUSD.address,
-              abi: tokens.mainnet.OUSD.abi,
-              functionName: 'nonRebasingSupply',
-            },
-            {
-              address: tokens.mainnet.OUSD.address,
-              abi: tokens.mainnet.OUSD.abi,
-              functionName: 'balanceOf',
-              args: [address],
-            },
-          ],
-        })
-      ).map((res) => (res.status === 'success' ? +formatEther(res.result) : 0));
-
-      const vaultYield = totalValue - totalSupply;
-      const expectedYield = vaultYield + availableFunds;
-      const rebasingSupply = totalSupply - nonRebasingSupply;
-      const expectedYieldPerOusd = expectedYield / rebasingSupply;
-      const expectedYieldPerOusdWithFee = expectedYieldPerOusd * 0.8;
-
-      return balance * expectedYieldPerOusdWithFee;
-    },
-    ...options,
-  });
-};
 
 export const useOusdHistory = (
   filters?: HistoryType[],
