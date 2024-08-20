@@ -80,16 +80,8 @@ export const LSTCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/circles3Pattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: {
-              xs: '1000px 100%',
-              sm: '1200px 100%',
-              md: 'auto 100%',
-            },
-            backgroundPosition: {
-              xs: 'right -200px center',
-              sm: 'right -400px center',
-              md: 'right center',
-            },
+            backgroundSize: 'auto 100%',
+            backgroundPosition: 'right center',
             p: 3,
             my: 3,
           }}
@@ -146,8 +138,14 @@ export const StakingCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/stakingPattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'auto 100%',
-            backgroundPosition: 'right center',
+            backgroundSize: {
+              xs: '800px 100%',
+              md: 'auto 100%',
+            },
+            backgroundPosition: {
+              xs: 'right -10px top -100px',
+              md: 'right center',
+            },
             p: 3,
             mb: 3,
           }}
@@ -209,7 +207,7 @@ export const StableCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/wavePattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'cover 100%',
+            backgroundSize: { xs: '300px', md: 'cover 100%' },
             backgroundPosition: 'right top',
             p: 3,
           }}
