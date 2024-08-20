@@ -1,10 +1,9 @@
 import { Stack } from '@mui/material';
-import { Page, PageSection, PageTitle } from '@origin/defi/shared';
+import { Page, PageSection, PageTitle, StatsCard } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
 import { HistoryCard } from '../components/HistoryCard';
-import { StatsCard } from '../components/StatsCard';
 
 export const PortfolioView = () => {
   const intl = useIntl();
@@ -20,7 +19,7 @@ export const PortfolioView = () => {
       />
       <PageSection>
         <Stack spacing={5}>
-          <StatsCard />
+          <StatsCard token={tokens.mainnet.OUSD} />
           <HistoryCard />
         </Stack>
       </PageSection>
