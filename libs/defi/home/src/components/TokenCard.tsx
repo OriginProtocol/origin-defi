@@ -41,8 +41,8 @@ export const TokenCard = ({
         ...rest?.sx,
       }}
     >
-      <Grid2 columns={14} spacing={{ xs: 1, md: 3 }} container>
-        <Grid2 xs={2} md={1} order={{ xs: 2, md: 1 }}>
+      <Grid2 columns={14} spacing={{ xs: 1, sm: 2, md: 3 }} container>
+        <Grid2 xs={1} order={{ xs: 2, md: 1 }}>
           <Stack alignItems={{ xs: 'flex-end', md: 'center' }}>
             <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
           </Stack>
@@ -101,7 +101,7 @@ export const TokenCard = ({
             </GradientChip>
           )}
         </Grid2>
-        <Grid2 xs={14} md={3} order={4}>
+        <Grid2 xs={14} md={2} order={4}>
           <Stack
             direction={{ xs: 'row', md: 'column' }}
             alignItems={{ xs: 'center', md: 'flex-start' }}
@@ -184,7 +184,7 @@ export const TokenCard = ({
             </Typography>
           </Stack>
         </Grid2>
-        <Grid2 xs={14} md={2} order={7}>
+        <Grid2 xs={14} md={3} order={7}>
           <Button
             component={RouterLink}
             to={`/${token.symbol}`}

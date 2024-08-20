@@ -80,8 +80,16 @@ export const LSTCard = (props: CardProps) => {
             background: (theme) =>
               `url('/images/circles3Pattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'auto 100%',
-            backgroundPosition: 'right center',
+            backgroundSize: {
+              xs: '1000px 100%',
+              sm: '1200px 100%',
+              md: 'auto 100%',
+            },
+            backgroundPosition: {
+              xs: 'right -200px center',
+              sm: 'right -400px center',
+              md: 'right center',
+            },
             p: 3,
             my: 3,
           }}

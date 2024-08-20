@@ -12,8 +12,8 @@ export const BridgeBanner = (props: StackProps) => {
 
   return (
     <Stack
-      direction="row"
-      alignItems="center"
+      direction={{ xs: 'column', sm: 'row' }}
+      alignItems={{ xs: 'flex-start', sm: 'center' }}
       spacing={3}
       {...props}
       sx={{
@@ -24,8 +24,16 @@ export const BridgeBanner = (props: StackProps) => {
         overflow: 'hidden',
         background: `url('/images/arbitrum-icon.svg'),linear-gradient(83deg, rgba(18, 170, 255, 0.20) 12.85%, rgba(33, 49, 71, 0.20) 112.14%), #225180;`,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: 'auto 100%',
-        backgroundPosition: 'right center',
+        backgroundSize: {
+          xs: '500px 100%, cover',
+          sm: '200px 100%, cover',
+          md: 'auto 100%',
+        },
+        backgroundPosition: {
+          xs: 'right -250px center, center',
+          sm: 'right -100px center, center',
+          md: 'right center',
+        },
         p: 2,
         ...props?.sx,
       }}
@@ -57,7 +65,11 @@ export const BridgeBanner = (props: StackProps) => {
           })}
         </Typography>
       </Stack>
-      <Stack direction="row" spacing={1}>
+      <Stack
+        direction={{ xs: 'row', sm: 'column', md: 'row' }}
+        spacing={1}
+        width={{ xs: 1, sm: 0.4 }}
+      >
         <Button
           fullWidth
           component={Link}
