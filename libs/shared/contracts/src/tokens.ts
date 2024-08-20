@@ -1,6 +1,7 @@
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, base, mainnet, optimism } from 'wagmi/chains';
+import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
 import { DAIABI } from './abis/DAI';
 import { OETHABI } from './abis/OETH';
@@ -244,6 +245,24 @@ export const tokens = {
     },
   },
   base: {
+    ETH: {
+      id: '8453:ETH',
+      address: undefined,
+      chainId: base.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    WETH: {
+      id: '8453:WETH',
+      address: '0x4200000000000000000000000000000000000006',
+      chainId: base.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether',
+      decimals: 18,
+      symbol: 'WETH',
+    },
     superOETHb: {
       id: '8453:superOETHb',
       address: '0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3',
@@ -253,16 +272,43 @@ export const tokens = {
       decimals: 18,
       symbol: 'superOETHb',
     },
+    wsuperOETHb: {
+      id: '8453:wsuperOETHb',
+      address: '0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6',
+      chainId: base.id,
+      abi: WOETHABI,
+      name: 'Wrapped Super OETH',
+      decimals: 18,
+      symbol: 'wsuperOETHb',
+    },
   },
   optimism: {
+    ETH: {
+      id: '10:ETH',
+      address: undefined,
+      chainId: optimism.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
     superOETHo: {
       id: '10:superOETHo',
-      address: '0x856c4Efb76C1D1AE02e20CEB03A2A6a08b0b8dC3', // TODO update with real address
+      address: ZERO_ADDRESS, // TODO update with real address
       chainId: optimism.id,
       abi: OETHABI,
       name: 'Super OETH',
       decimals: 18,
       symbol: 'superOETHo',
+    },
+    wsuperOETHo: {
+      id: '10:wsuperOETHo',
+      address: ZERO_ADDRESS, // TODO update with real address
+      chainId: optimism.id,
+      abi: WOETHABI,
+      name: 'Wrapped Super OETH',
+      decimals: 18,
+      symbol: 'wsuperOETHo',
     },
   },
 } as const;

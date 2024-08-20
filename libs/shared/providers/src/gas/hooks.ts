@@ -2,8 +2,8 @@ import { getNativeTokenByChainId } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { estimateFeesPerGas } from '@wagmi/core';
 import { add, from, mul } from 'dnum';
+import { mainnet } from 'viem/chains';
 import { useConfig } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import { getTokenPriceKey, useTokenPrice } from '../prices';
 

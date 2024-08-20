@@ -10,6 +10,7 @@ import {
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt } from '@wagmi/core';
 import { uniq } from 'ramda';
+import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
 import { getTokenPriceKey, useTokenPrices } from '../prices';
@@ -780,5 +781,5 @@ export const useSwapperTargetChainId = () => {
 
   const available = getAllAvailableChainIds(swapRoutes);
 
-  return available.includes(chainId ?? 0) ? chainId : available[0];
+  return available.includes(chainId ?? mainnet.id) ? chainId : available[0];
 };

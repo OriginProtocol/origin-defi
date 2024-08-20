@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { useOTokenApyQuery } from '@origin/defi/shared';
 import {
   getTokenPriceKey,
   useTokenPrice,
@@ -11,6 +10,8 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { from, mul } from 'dnum';
 import { useAccount } from 'wagmi';
 
+import { useOTokenApyQuery } from '../queries';
+
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
@@ -18,14 +19,14 @@ type UseTokenInfoProps = { token: Token; enabled?: boolean };
 
 export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
   const { isConnected } = useAccount();
-  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
+  const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
     {
       token: token.address ?? ZERO_ADDRESS,
       chainId: token.chainId,
     },
     {
       enabled,
-      select: (data) => data?.oTokenApies?.[0]?.apy,
+      select: (data) => data?.oTokenApies?.[0],
     },
   );
   const { data: tvl, isLoading: isTvlLoading } = useTvl(token, {
@@ -43,20 +44,20 @@ export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
   return useMemo(
     () => ({
       isLoading:
-        isApyLoading ||
+        isApiesLoading ||
         isTvlLoading ||
         isPriceLoading ||
         (isConnected && isBalanceLoading),
-      apy,
+      apies,
       tvl,
       tvlUsd,
       balance: [balance ?? 0n, token.decimals] as Dnum,
       yieldEarned: from(2.73), // TODO replace
     }),
     [
-      apy,
+      apies,
       balance,
-      isApyLoading,
+      isApiesLoading,
       isBalanceLoading,
       isConnected,
       isPriceLoading,

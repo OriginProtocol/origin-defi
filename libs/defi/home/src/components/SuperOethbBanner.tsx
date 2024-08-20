@@ -1,23 +1,16 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { useOTokenApyQuery } from '@origin/defi/shared';
+import { useTokenInfo } from '@origin/defi/shared';
 import { LoadingLabel, NetworkIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
-import { base, mainnet } from 'viem/chains';
+import { base } from 'viem/chains';
 
 import type { StackProps } from '@mui/material';
 
 export const SuperOethbBanner = (props: StackProps) => {
   const intl = useIntl();
-  // TODO use base token
-  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
-    {
-      token: tokens.mainnet.OETH.address,
-      chainId: mainnet.id,
-    },
-    { select: (data) => data?.oTokenApies?.[0]?.apy },
-  );
+  const { apy, isLoading } = useTokenInfo({ token: tokens.base.superOETHb });
 
   return (
     <Stack
@@ -63,10 +56,10 @@ export const SuperOethbBanner = (props: StackProps) => {
                 })}
               </Typography>
               <LoadingLabel
-                isLoading={isApyLoading}
+                isLoading={isLoading}
                 variant="featured2"
                 fontWeight="bold"
-                sx={{ textDecoration: isApyLoading ? 'none' : 'underline' }}
+                sx={{ textDecoration: isLoading ? 'none' : 'underline' }}
               >
                 {intl.formatNumber(apy ?? 0, {
                   style: 'percent',

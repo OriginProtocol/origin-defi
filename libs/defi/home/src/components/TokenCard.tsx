@@ -1,14 +1,12 @@
 import { Button, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { GradientChip } from '@origin/defi/shared';
+import { GradientChip, useTokenInfo } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-
-import { useTokenInfo } from '../hooks';
 
 import type { Grid2Props } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

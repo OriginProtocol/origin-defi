@@ -24,6 +24,7 @@ import {
   WETH,
   wOETH,
   wOUSD,
+  wsuperOETH,
   xOGN,
   xOGNOutlined,
 } from '@origin/shared/icons';
@@ -56,6 +57,7 @@ const supportedSymbols = [
   'rETH',
   'sfrxETH',
   'stETH',
+  'superOETH',
   'superOETHb',
   'superOETHo',
   'swETH',
@@ -65,6 +67,9 @@ const supportedSymbols = [
   'WETH',
   'wOETH',
   'wOUSD',
+  'wsuperOETH',
+  'wsuperOETHb',
+  'wsuperOETHo',
   'xOGN',
 ];
 
@@ -85,6 +90,7 @@ const regularMap: Record<
   rETH: rETH,
   sfrxETH: sfrxETH,
   stETH: stETH,
+  superOETH: superOETH,
   superOETHb: superOETH,
   superOETHo: superOETH,
   swETH: swETH,
@@ -94,6 +100,9 @@ const regularMap: Record<
   WETH: WETH,
   wOETH: wOETH,
   wOUSD: wOUSD,
+  wsuperOETH: wsuperOETH,
+  wsuperOETHb: wsuperOETH,
+  wsuperOETHo: wsuperOETH,
   xOGN: xOGN,
 };
 

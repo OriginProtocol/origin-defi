@@ -1,6 +1,6 @@
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { erc20Abi } from 'viem';
-import { mainnet } from 'wagmi/chains';
+import { mainnet } from 'viem/chains';
 
 import type { Token, TokenId } from '@origin/shared/contracts';
 

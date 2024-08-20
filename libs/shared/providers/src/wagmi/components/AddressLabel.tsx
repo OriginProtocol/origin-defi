@@ -1,8 +1,8 @@
 import { Skeleton } from '@mui/material';
 import { MiddleTruncatedLabel } from '@origin/shared/components';
 import { isNilOrEmpty, middleTruncate } from '@origin/shared/utils';
+import { mainnet } from 'viem/chains';
 import { useEnsName } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import type { MiddleTruncatedLabelProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';

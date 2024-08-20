@@ -1,4 +1,4 @@
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet } from 'viem/chains';
 
 import { ARMABI } from './abis/ARM';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
@@ -102,7 +102,6 @@ export const contracts = {
       name: 'lrtConfig',
     },
     // OETH
-
     OETHCurvePool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
@@ -269,6 +268,14 @@ export const contracts = {
       chainId: arbitrum.id,
       abi: CCIPRouterABI,
       name: 'ccipRouter',
+    },
+  },
+  base: {
+    superOETHbVault: {
+      address: '0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93',
+      chainId: base.id,
+      abi: OETHVaultABI,
+      name: 'superOETHbVault',
     },
   },
 } as const;

@@ -9,6 +9,7 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { erc20Abi, formatUnits } from 'viem';
+import { base, mainnet } from 'viem/chains';
 
 import { defaultRoute } from '../defaultRoute';
 
@@ -22,27 +23,40 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
+const wrappedTokens = {
+  [mainnet.id.toString()]: tokens.mainnet.wOETH,
+  [base.id.toString()]: tokens.base.wsuperOETHb,
+};
+
+const whale = {
+  [mainnet.id.toString()]: whales.mainnet.OETH,
+  [base.id.toString()]: whales.base.superOETHb,
+};
+
+const estimateAmount: EstimateAmount = async (
+  { config },
+  { amountIn, tokenIn },
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
   const data = await readContract(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: wrappedTokens[tokenIn.chainId].address,
+    abi: wrappedTokens[tokenIn.chainId].abi,
     functionName: 'convertToShares',
     args: [amountIn],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: wrappedTokens[tokenIn.chainId].chainId,
   });
 
   return data as unknown as bigint;
 };
 
-const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
+const estimateGas: EstimateGas = async ({ config }, { amountIn, tokenIn }) => {
   let gasEstimate = 0n;
 
   const publicClient = getPublicClient(config, {
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: tokenIn.chainId,
   });
 
   if (amountIn === 0n) {
@@ -55,8 +69,8 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
     try {
       gasEstimate =
         (await publicClient?.estimateContractGas({
-          address: tokens.mainnet.wOETH.address,
-          abi: tokens.mainnet.wOETH.abi,
+          address: wrappedTokens[tokenIn.chainId].address,
+          abi: wrappedTokens[tokenIn.chainId].abi,
           functionName: 'deposit',
           args: [amountIn, address],
           account: address,
@@ -69,11 +83,11 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
   try {
     if (publicClient) {
       gasEstimate = await publicClient.estimateContractGas({
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
+        address: wrappedTokens[tokenIn.chainId].address,
+        abi: wrappedTokens[tokenIn.chainId].abi,
         functionName: 'deposit',
-        args: [amountIn, whales.mainnet.OETH],
-        account: whales.mainnet.OETH,
+        args: [amountIn, whale[tokenIn.chainId]],
+        account: whale[tokenIn.chainId],
       });
     }
   } catch {
@@ -94,7 +108,7 @@ const allowance: Allowance = async ({ config }, { tokenIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, tokens.mainnet.wOETH.address],
+    args: [address, wrappedTokens[tokenIn.chainId].address],
     chainId: tokenIn.chainId,
   });
 
@@ -120,7 +134,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
         address: tokenIn.address,
         abi: erc20Abi,
         functionName: 'approve',
-        args: [tokens.mainnet.wOETH.address, amountIn],
+        args: [wrappedTokens[tokenIn.chainId].address, amountIn],
         account: address,
       });
     }
@@ -175,7 +189,7 @@ const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
     address: tokenIn.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [tokens.mainnet.wOETH.address, amountIn],
+    args: [wrappedTokens[tokenIn.chainId].address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -203,11 +217,11 @@ const swap: Swap = async (
   }
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: wrappedTokens[tokenIn.chainId].address,
+    abi: wrappedTokens[tokenIn.chainId].abi,
     functionName: 'deposit',
     args: [amountIn, address],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: wrappedTokens[tokenIn.chainId].chainId,
   });
   const hash = await writeContract(config, request);
 

@@ -3,8 +3,8 @@ import { useState } from 'react';
 import { Button, Popover, Stack, Typography } from '@mui/material';
 import { ChainIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
+import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { arbitrum, mainnet } from 'wagmi/chains';
 
 import type { ButtonProps } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';

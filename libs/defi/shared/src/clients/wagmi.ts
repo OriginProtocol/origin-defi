@@ -10,8 +10,8 @@ import {
   trustWallet,
   walletConnectWallet,
 } from '@rainbow-me/rainbowkit/wallets';
+import { arbitrum, base, mainnet } from 'viem/chains';
 import { createConfig, fallback, http } from 'wagmi';
-import { arbitrum, base, mainnet } from 'wagmi/chains';
 
 const connectors = connectorsForWallets(
   [

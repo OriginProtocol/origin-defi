@@ -8,7 +8,7 @@ import {
 import { from } from 'dnum';
 import { pathOr } from 'ramda';
 import { parseUnits } from 'viem';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, mainnet } from 'viem/chains';
 
 import type { Dnum } from 'dnum';
 

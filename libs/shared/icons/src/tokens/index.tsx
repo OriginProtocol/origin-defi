@@ -16,6 +16,8 @@ import rETHSvg from './rETH.svg?react';
 import sfrxETHSvg from './sfrxETH.svg?react';
 import stETHSvg from './stETH.svg?react';
 import superOETHSvg from './superOETH.svg?react';
+import superOETHbSvg from './superOETHb.svg?react';
+import superOETHoSvg from './superOETHo.svg?react';
 import swETHSvg from './swETH.svg?react';
 import USDCSvg from './USDC.svg?react';
 import USDTSvg from './USDT.svg?react';
@@ -24,6 +26,9 @@ import veOGVOutlinedSvg from './veOGV_outlined.svg?react';
 import WETHSvg from './WETH.svg?react';
 import wOETHSvg from './wOETH.svg?react';
 import wOUSDSvg from './wOUSD.svg?react';
+import wsuperOETHSvg from './wsuperOETH.svg?react';
+import wsuperOETHbSvg from './wsuperOETHb.svg?react';
+import wsuperOETHoSvg from './wsuperOETHo.svg?react';
 import xOGNSvg from './xOGN.svg?react';
 import xOGNOutlinedSvg from './xOGN_outlined.svg?react';
 import YNDSvg from './YND.svg?react';
@@ -78,6 +83,12 @@ export const stETH = (props: SvgIconProps) => (
 export const superOETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={superOETHSvg} inheritViewBox />
 );
+export const superOETHb = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={superOETHbSvg} inheritViewBox />
+);
+export const superOETHo = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={superOETHoSvg} inheritViewBox />
+);
 export const swETH = (props: SvgIconProps) => (
   <SvgIcon {...props} component={swETHSvg} inheritViewBox />
 );
@@ -101,6 +112,15 @@ export const wOETH = (props: SvgIconProps) => (
 );
 export const wOUSD = (props: SvgIconProps) => (
   <SvgIcon {...props} component={wOUSDSvg} viewBox="0 0 300 300" />
+);
+export const wsuperOETH = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wsuperOETHSvg} inheritViewBox />
+);
+export const wsuperOETHb = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wsuperOETHbSvg} inheritViewBox />
+);
+export const wsuperOETHo = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={wsuperOETHoSvg} inheritViewBox />
 );
 export const xOGN = (props: SvgIconProps) => (
   <SvgIcon {...props} component={xOGNSvg} inheritViewBox />
