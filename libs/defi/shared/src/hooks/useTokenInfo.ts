@@ -51,6 +51,7 @@ export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
       apies,
       tvl,
       tvlUsd,
+      price,
       balance: [balance ?? 0n, token.decimals] as Dnum,
       yieldEarned: from(2.73), // TODO replace
     }),
@@ -62,6 +63,7 @@ export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
       isConnected,
       isPriceLoading,
       isTvlLoading,
+      price,
       token.decimals,
       tvl,
       tvlUsd,

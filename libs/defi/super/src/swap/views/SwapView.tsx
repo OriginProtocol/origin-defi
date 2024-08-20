@@ -8,12 +8,13 @@ import {
   trackEvent,
 } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
+import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
 import { AnalyticsCard } from '../components/AnalyticsCard';
+import { DetailsCard } from '../components/DetailsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
-import { StatsCard } from '../components/StatsCard';
 import { oethSwapRoutes } from '../constants';
 
 export const SwapView = () => {
@@ -26,7 +27,7 @@ export const SwapView = () => {
         subtitle={intl.formatMessage({
           defaultMessage: 'Beyond liquid staking',
         })}
-        token={tokens.base.superOETHb}
+        icon={superOETH}
       >
         <PageTitleSection />
       </PageTitle>
@@ -42,7 +43,7 @@ export const SwapView = () => {
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <StatsCard token={tokens.base.superOETHb} />
+              <DetailsCard token={tokens.base.superOETHb} />
               <AnalyticsCard />
             </Stack>
           </Grid2>

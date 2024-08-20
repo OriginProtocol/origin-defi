@@ -59,18 +59,14 @@ export const reduceOptions = (
   return { ...acc, [curr]: option };
 };
 
-export const isWagmiOption = (
-  option: PriceOption | undefined,
-): option is WagmiOption => !!option && option.type === 'wagmi';
+export const isWagmiOption = (option: unknown): option is WagmiOption =>
+  !!option && (option as WagmiOption).type === 'wagmi';
 
-export const isCoingeckoOption = (
-  option: PriceOption | undefined,
-): option is CoingeckoOption => !!option && option.type === 'coingecko';
+export const isCoingeckoOption = (option: unknown): option is CoingeckoOption =>
+  !!option && (option as CoingeckoOption).type === 'coingecko';
 
-export const isRestOption = (
-  option: PriceOption | undefined,
-): option is RestOption => !!option && option.type === 'rest';
+export const isRestOption = (option: unknown): option is RestOption =>
+  !!option && (option as RestOption).type === 'rest';
 
-export const isDerivedOption = (
-  option: PriceOption | undefined,
-): option is DerivedOption => !!option && option.type === 'derived';
+export const isDerivedOption = (option: unknown): option is DerivedOption =>
+  !!option && (option as DerivedOption).type === 'derived';

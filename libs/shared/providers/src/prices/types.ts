@@ -4,6 +4,8 @@ import type { HexAddress } from '@origin/shared/utils';
 import type { Dnum } from 'dnum';
 import type { ReadContractParameters } from 'viem';
 
+import type { priceOptions } from './constants';
+
 export type WagmiOption = {
   id: SupportedTokenPrice;
   config: ReadContractParameters & {
@@ -64,8 +66,14 @@ export type SupportedToken = Extract<
   | '42161:WETH'
   | '42161:OETH'
   | '42161:wOETH'
+  | '8453:ETH'
+  | '8453:WETH'
   | '8453:superOETHb'
+  | '8453:wsuperOETHb'
+  | '10:ETH'
+  | '10:WETH'
   | '10:superOETHo'
+  | '10:wsuperOETHo'
 >;
 
 export type SupportedCurrency =
@@ -76,4 +84,4 @@ export type SupportedCurrency =
       '1:ETH' | '1:frxETH' | '1:OETH' | '1:OUSD' | '1:primeETH' | '42161:ETH'
     >;
 
-export type SupportedTokenPrice = `${SupportedToken}_${SupportedCurrency}`;
+export type SupportedTokenPrice = keyof typeof priceOptions;

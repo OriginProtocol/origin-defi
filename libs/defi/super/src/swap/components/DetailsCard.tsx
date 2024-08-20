@@ -6,25 +6,13 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ColorChip, useOTokenApyQuery } from '@origin/defi/shared';
-import {
-  LoadingLabel,
-  NetworkIcon,
-  ValueLabel,
-} from '@origin/shared/components';
-import { supportedChainNames } from '@origin/shared/constants';
+import { ColorChip, useTokenInfo } from '@origin/defi/shared';
+import { TokenIcon, ValueLabel } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
-import {
-  getTokenPriceKey,
-  useTokenPrice,
-  useTvl,
-} from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { AccordionProps } from '@mui/material';
-import type { SupportedChain } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 export type DetailsCardProps = {
@@ -38,21 +26,7 @@ export const DetailsCard = ({
   ...rest
 }: DetailsCardProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useOTokenApyQuery(
-    {
-      token: token?.address ?? ZERO_ADDRESS,
-      chainId: token.chainId,
-    },
-    {
-      select: (data) => data?.oTokenApies[0].apy30DayAvg ?? 0,
-    },
-  );
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    getTokenPriceKey(token),
-  );
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(token);
-
-  const chainName = supportedChainNames[token.chainId].short;
+  const { apies, tvl, price, isLoading } = useTokenInfo({ token });
 
   return (
     <Accordion
@@ -65,31 +39,18 @@ export const DetailsCard = ({
       }}
     >
       <AccordionSummary expandIcon={<FaChevronDownRegular />} sx={{ p: 3 }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          width={1}
-          mr={1}
-        >
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <NetworkIcon chainId={token.chainId as SupportedChain} />
-            <Typography>{chainName}</Typography>
-          </Stack>
-          <ColorChip p={0.5}>
-            <LoadingLabel
-              isLoading={isApyLoading}
-              variant="caption1"
-              fontWeight="bold"
-            >
-              {intl.formatNumber(apy ?? 0, {
+        <Stack direction="row" alignItems="center" spacing={1}>
+          <TokenIcon token={token} />
+          <Typography fontWeight="medium">{token.symbol}</Typography>
+          <ColorChip alignItems="baseline">
+            <Typography variant="caption1" fontWeight="bold">
+              {intl.formatNumber(apies?.apr ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
               })}
-            </LoadingLabel>
-            <Typography variant="caption2">
-              {intl.formatMessage({ defaultMessage: 'APY' })}
             </Typography>
+            <Typography variant="caption2">APR</Typography>
           </ColorChip>
         </Stack>
       </AccordionSummary>
@@ -102,7 +63,7 @@ export const DetailsCard = ({
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
             labelProps={{ fontWeight: 'medium' }}
             value={format(tvl ?? from(0), 2)}
-            isLoading={isTvlLoading}
+            isLoading={isLoading}
           />
           <ValueLabel
             direction="row"
@@ -110,7 +71,7 @@ export const DetailsCard = ({
             label={intl.formatMessage({ defaultMessage: 'Price' })}
             labelProps={{ fontWeight: 'medium' }}
             value={`$${format(price ?? from(0), 2)}`}
-            isLoading={isPriceLoading}
+            isLoading={isLoading}
           />
         </Stack>
       </AccordionDetails>

@@ -16,6 +16,8 @@ import {
   sfrxETH,
   stETH,
   superOETH,
+  superOETHb,
+  superOETHo,
   swETH,
   USDC,
   USDT,
@@ -25,6 +27,8 @@ import {
   wOETH,
   wOUSD,
   wsuperOETH,
+  wsuperOETHb,
+  wsuperOETHo,
   xOGN,
   xOGNOutlined,
 } from '@origin/shared/icons';
@@ -91,8 +95,8 @@ const regularMap: Record<
   sfrxETH: sfrxETH,
   stETH: stETH,
   superOETH: superOETH,
-  superOETHb: superOETH,
-  superOETHo: superOETH,
+  superOETHb: superOETHb,
+  superOETHo: superOETHo,
   swETH: swETH,
   USDC: USDC,
   USDT: USDT,
@@ -101,8 +105,8 @@ const regularMap: Record<
   wOETH: wOETH,
   wOUSD: wOUSD,
   wsuperOETH: wsuperOETH,
-  wsuperOETHb: wsuperOETH,
-  wsuperOETHo: wsuperOETH,
+  wsuperOETHb: wsuperOETHb,
+  wsuperOETHo: wsuperOETHo,
   xOGN: xOGN,
 };
 
@@ -115,6 +119,13 @@ const outlinedMap: Record<
   veOGV: VeOGVOutlined,
   xOGN: xOGNOutlined,
 };
+
+const networkAlreadyIncludedTokenIds = [
+  '8453:superOETHb',
+  '8453:wsuperOETHb',
+  '10:superOETHo',
+  '10:wsuperOETHo',
+];
 
 export const TokenIcon = ({
   token,
@@ -131,7 +142,7 @@ export const TokenIcon = ({
     ? (outlinedMap[token.symbol] ?? regularMap[token.symbol])
     : regularMap[token.symbol];
 
-  if (showNetwork) {
+  if (showNetwork && !networkAlreadyIncludedTokenIds.includes(token.id)) {
     return (
       <BadgeIcon
         badgeContent={

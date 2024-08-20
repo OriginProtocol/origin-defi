@@ -292,6 +292,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'ETH',
     },
+    WETH: {
+      id: '10:WETH',
+      address: '0x4200000000000000000000000000000000000006',
+      chainId: optimism.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether',
+      decimals: 18,
+      symbol: 'WETH',
+    },
     superOETHo: {
       id: '10:superOETHo',
       address: ZERO_ADDRESS, // TODO update with real address

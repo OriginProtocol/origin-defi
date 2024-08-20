@@ -25,7 +25,7 @@ export const TokenCard = ({
 }: TokenCardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { isLoading, apy, balance, tvl, tvlUsd, yieldEarned } = useTokenInfo({
+  const { isLoading, apies, balance, tvl, tvlUsd, yieldEarned } = useTokenInfo({
     token,
     enabled: !isComingSoon,
   });
@@ -64,7 +64,7 @@ export const TokenCard = ({
               fontWeight="bold"
               color="primary.main"
             >
-              {intl.formatNumber(apy ?? 0, {
+              {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
                 style: 'percent',
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
@@ -80,7 +80,7 @@ export const TokenCard = ({
               intl.formatMessage({ defaultMessage: 'Coming soon' })
             ) : (
               <LoadingLabel isLoading={isLoading}>
-                {intl.formatNumber(apy ?? 0, {
+                {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
