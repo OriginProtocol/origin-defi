@@ -1,4 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { GradientChip, useTokenInfo } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
@@ -8,14 +8,14 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import type { Grid2Props } from '@mui/material';
+import type { BoxProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 export type TokenCardProps = {
   token: Token;
   isComingSoon?: boolean;
   hideGradient?: boolean;
-} & Grid2Props;
+} & BoxProps;
 
 export const TokenCard = ({
   token,
@@ -31,135 +31,174 @@ export const TokenCard = ({
   });
 
   return (
-    <Grid2
-      columns={14}
-      spacing={3}
-      container
+    <Box
       {...rest}
       sx={{
         px: 3,
         py: 2,
         color: 'text.primary',
         backgroundColor: 'background.highlight',
-        alignItems: 'center',
-        justifyContent: 'space-between',
+        ...rest?.sx,
       }}
     >
-      <Grid2 xs={1}>
-        <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
-      </Grid2>
-      <Grid2 xs={3}>
-        <Stack>
-          <Typography variant="body2" fontWeight="bold">
-            {token.name}
-          </Typography>
-          <Typography variant="caption1">{token.symbol}</Typography>
-        </Stack>
-      </Grid2>
-      <Grid2 xs={2}>
-        {hideGradient ? (
-          <Stack direction="row" alignItems="baseline" spacing={1}>
-            <Typography
-              variant="featured2"
-              fontWeight="bold"
-              color="primary.main"
-            >
-              {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
-                style: 'percent',
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </Typography>
-            <Typography variant="caption1" color="primary.main">
-              {intl.formatMessage({ defaultMessage: 'APY' })}
-            </Typography>
+      <Grid2 columns={14} spacing={{ xs: 1, md: 3 }} container>
+        <Grid2 xs={2} md={1} order={{ xs: 2, md: 1 }}>
+          <Stack alignItems={{ xs: 'flex-end', md: 'center' }}>
+            <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
           </Stack>
-        ) : (
-          <GradientChip>
-            {isComingSoon ? (
-              intl.formatMessage({ defaultMessage: 'Coming soon' })
-            ) : (
-              <LoadingLabel isLoading={isLoading}>
+        </Grid2>
+        <Grid2 xs={12} md={2} order={{ xs: 1, md: 2 }}>
+          <Stack>
+            <Typography variant="body2" fontWeight="bold">
+              {token.name}
+            </Typography>
+            <Typography variant="caption1">{token.symbol}</Typography>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={14} md={2} order={3}>
+          {hideGradient ? (
+            <Stack direction="row" alignItems="baseline" spacing={1}>
+              <Typography
+                variant="featured2"
+                fontWeight="bold"
+                color="primary.main"
+              >
                 {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
-              </LoadingLabel>
-            )}
-          </GradientChip>
-        )}
-      </Grid2>
-      <Grid2 xs={2}>
-        <Stack>
-          <Typography variant="caption1">
-            {intl.formatMessage({ defaultMessage: 'TVL' })}
-          </Typography>
-          <LoadingLabel
-            fontWeight="bold"
-            isLoading={isLoading && !isComingSoon}
-          >
-            {isComingSoon
-              ? '-'
-              : `三 ${format(tvl ?? from(0), { compact: true })}`}
-          </LoadingLabel>
-          {!isComingSoon && (
-            <LoadingLabel
-              variant="caption2"
-              fontWeight="medium"
-              isLoading={isLoading}
+              </Typography>
+              <Typography variant="caption1" color="primary.main">
+                {intl.formatMessage({ defaultMessage: 'APY' })}
+              </Typography>
+            </Stack>
+          ) : (
+            <GradientChip
+              direction="row"
+              alignItems="baseline"
+              justifyContent="center"
+              spacing={1}
+              maxWidth={120}
+              sx={{ whiteSpace: 'nowrap' }}
             >
-              $&nbsp;{format(tvlUsd, { compact: true })}
-            </LoadingLabel>
+              {isComingSoon ? (
+                intl.formatMessage({ defaultMessage: 'Coming soon' })
+              ) : (
+                <>
+                  <LoadingLabel isLoading={isLoading} fontWeight="bold">
+                    {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
+                      style: 'percent',
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </LoadingLabel>{' '}
+                  <Typography variant="caption1" color="primary.contrastText">
+                    {intl.formatMessage({ defaultMessage: 'APY' })}
+                  </Typography>
+                </>
+              )}
+            </GradientChip>
           )}
-        </Stack>
-      </Grid2>
-      <Grid2 xs={2}>
-        <Stack alignItems="flex-end">
-          <Typography variant="caption1">
-            {intl.formatMessage({ defaultMessage: 'Your balance' })}
-          </Typography>
-          <LoadingLabel
-            fontWeight="bold"
-            isLoading={isLoading && !isComingSoon}
+        </Grid2>
+        <Grid2 xs={14} md={3} order={4}>
+          <Stack
+            direction={{ xs: 'row', md: 'column' }}
+            alignItems={{ xs: 'center', md: 'flex-start' }}
+            spacing={0.5}
+            pl={{ xs: 0, md: 1 }}
           >
-            {!isConnected || isComingSoon
-              ? '-'
-              : format(balance, {
-                  digits: getFormatPrecision(balance),
-                })}
-          </LoadingLabel>
-        </Stack>
-      </Grid2>
-      <Grid2 xs={2}>
-        <Stack alignItems="flex-end">
-          <Typography variant="caption1">
-            {intl.formatMessage({ defaultMessage: 'Yield earned' })}
-          </Typography>
-          <Typography fontWeight="bold">
-            {!isConnected || isComingSoon
-              ? '-'
-              : format(yieldEarned, {
-                  digits: getFormatPrecision(yieldEarned),
-                })}
-          </Typography>
-        </Stack>
-      </Grid2>
-      <Grid2 xs={2}>
-        {!isComingSoon && (
+            <Typography variant="caption1">
+              {intl.formatMessage({ defaultMessage: 'TVL' })}
+            </Typography>
+            <Stack
+              direction="row"
+              alignItems="baseline"
+              flexWrap="nowrap"
+              spacing={0.75}
+              divider={
+                <Divider variant="middle" orientation="vertical" flexItem />
+              }
+            >
+              <LoadingLabel
+                fontWeight="bold"
+                isLoading={isLoading && !isComingSoon}
+                noWrap
+              >
+                {isComingSoon
+                  ? '-'
+                  : `三 ${format(tvl ?? from(0), { compact: true, digits: 2 })}`}
+              </LoadingLabel>
+              {!isComingSoon && (
+                <LoadingLabel
+                  variant="caption2"
+                  fontWeight="medium"
+                  isLoading={isLoading}
+                >
+                  $&nbsp;{format(tvlUsd, { compact: true })}
+                </LoadingLabel>
+              )}
+            </Stack>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={14} md={2} order={5}>
+          <Stack
+            direction={{ xs: 'row', md: 'column' }}
+            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+            justifyContent={{ xs: 'space-between', md: 'flex-end' }}
+            pt={{ xs: 2, md: 0 }}
+            spacing={0.5}
+          >
+            <Typography variant="caption1">
+              {intl.formatMessage({ defaultMessage: 'Your balance' })}
+            </Typography>
+            <LoadingLabel
+              fontWeight="bold"
+              isLoading={isLoading && !isComingSoon}
+            >
+              {!isConnected || isComingSoon
+                ? '-'
+                : format(balance, {
+                    digits: getFormatPrecision(balance),
+                  })}
+            </LoadingLabel>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={14} md={2} order={6}>
+          <Stack
+            direction={{ xs: 'row', md: 'column' }}
+            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+            justifyContent={{ xs: 'space-between', md: 'flex-end' }}
+            pb={{ xs: 2, md: 0 }}
+            spacing={0.5}
+          >
+            <Typography variant="caption1">
+              {intl.formatMessage({ defaultMessage: 'Yield earned' })}
+            </Typography>
+            <Typography fontWeight="bold">
+              {!isConnected || isComingSoon
+                ? '-'
+                : format(yieldEarned, {
+                    digits: getFormatPrecision(yieldEarned),
+                  })}
+            </Typography>
+          </Stack>
+        </Grid2>
+        <Grid2 xs={14} md={2} order={7}>
           <Button
             component={RouterLink}
             to={`/${token.symbol}`}
             sx={{ whiteSpace: 'nowrap' }}
             fullWidth
+            disabled={isComingSoon}
           >
             {intl.formatMessage(
               { defaultMessage: 'Get {symbol}' },
               { symbol: token.symbol },
             )}
           </Button>
-        )}
+        </Grid2>
       </Grid2>
-    </Grid2>
+    </Box>
   );
 };

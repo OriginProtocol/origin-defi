@@ -10,7 +10,7 @@ import type { StackProps } from '@mui/material';
 
 export const SuperOethbBanner = (props: StackProps) => {
   const intl = useIntl();
-  const { apy, isLoading } = useTokenInfo({ token: tokens.base.superOETHb });
+  const { apies, isLoading } = useTokenInfo({ token: tokens.base.superOETHb });
 
   return (
     <Stack
@@ -23,66 +23,78 @@ export const SuperOethbBanner = (props: StackProps) => {
       }}
     >
       <Stack
-        direction={{ xs: 'column', md: 'row' }}
+        direction={{ xs: 'column', sm: 'row' }}
         alignItems={{ xs: 'flex-start', md: 'center' }}
         spacing={3}
         sx={{
-          px: 4,
+          px: { xs: 2, md: 4 },
           py: 3,
           overflow: 'hidden',
           color: 'primary.contrastText',
           backgroundImage: `url('/images/base-icon.svg')`,
           backgroundRepeat: 'no-repeat',
           backgroundPosition: {
-            xs: 'right -200px center',
-            md: '100% center',
+            xs: 'right -300px center',
+            sm: 'right -300px center',
+            md: 'right -50px center',
           },
           backgroundSize: { xs: 400, md: 200 },
           backgroundBlendMode: 'darken',
         }}
       >
-        <Stack direction="row" spacing={3}>
-          <NetworkIcon chainId={base.id} outlined size={48} />
-          <Stack>
-            <Typography fontWeight="medium" noWrap>
-              {intl.formatMessage({
-                defaultMessage: 'Super OETH now available on BASE!',
-              })}
-            </Typography>
-            <Stack direction="row" alignItems="baseline" spacing={1}>
-              <Typography variant="featured2" fontWeight="bold">
+        <Stack
+          direction={{ xs: 'column', lg: 'row' }}
+          spacing={{ xs: 3, sm: 2 }}
+          width={1}
+        >
+          <Stack direction="row" spacing={{ xs: 1, md: 3 }}>
+            <NetworkIcon chainId={base.id} outlined size={48} />
+            <Stack>
+              <Typography fontWeight="medium" noWrap>
                 {intl.formatMessage({
-                  defaultMessage: 'Earn',
+                  defaultMessage: 'Super OETH now available on BASE!',
                 })}
               </Typography>
-              <LoadingLabel
-                isLoading={isLoading}
-                variant="featured2"
-                fontWeight="bold"
-                sx={{ textDecoration: isLoading ? 'none' : 'underline' }}
-              >
-                {intl.formatNumber(apy ?? 0, {
-                  style: 'percent',
-                  maximumFractionDigits: 2,
-                  minimumFractionDigits: 2,
-                })}
-              </LoadingLabel>
-              <Typography>APY</Typography>
+              <Stack direction="row" alignItems="baseline" spacing={1}>
+                <Typography variant="featured2" fontWeight="bold">
+                  {intl.formatMessage({
+                    defaultMessage: 'Earn',
+                  })}
+                </Typography>
+                <LoadingLabel
+                  isLoading={isLoading}
+                  variant="featured2"
+                  fontWeight="bold"
+                  sx={{ textDecoration: isLoading ? 'none' : 'underline' }}
+                >
+                  {intl.formatNumber(apies?.apy ?? 0, {
+                    style: 'percent',
+                    maximumFractionDigits: 2,
+                    minimumFractionDigits: 2,
+                  })}
+                </LoadingLabel>
+                <Typography>APY</Typography>
+              </Stack>
             </Stack>
           </Stack>
+          <Typography>
+            {intl.formatMessage({
+              defaultMessage:
+                'Mint superOETHb to maximize your ETH position. Super OETH combines Ethereum liquid staking yield with Aerodrome rewards.',
+            })}
+          </Typography>
         </Stack>
-        <Typography width={1}>
-          {intl.formatMessage({
-            defaultMessage:
-              'Mint superOETHb to maximize your ETH position. Super OETH combines Ethereum liquid staking yield with Aerodrome rewards.',
-          })}
-        </Typography>
-        <Stack direction="row" spacing={1} width={1}>
+        <Stack
+          direction={{ xs: 'row', sm: 'column', lg: 'row' }}
+          spacing={1}
+          width={{ xs: 1, sm: 0.4 }}
+        >
           <Button
             fullWidth
             component={RouterLink}
             to="/oeth"
             color="secondary"
+            size="large"
             sx={{ whiteSpace: 'nowrap' }}
           >
             {intl.formatMessage({ defaultMessage: 'Get Super OETH' })}
@@ -91,6 +103,7 @@ export const SuperOethbBanner = (props: StackProps) => {
             fullWidth
             variant="outlined"
             color="secondary"
+            size="large"
             sx={{ color: 'primary.contrastText', whiteSpace: 'nowrap' }}
           >
             {intl.formatMessage({ defaultMessage: 'Learn more' })}

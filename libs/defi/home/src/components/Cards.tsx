@@ -31,7 +31,11 @@ export const LSTCard = (props: CardProps) => {
             overflow: 'hidden',
             background: `url('/images/circlesWavePattern.svg'),radial-gradient(167.75% 95.71% at 76.09% 50.05%, #1E313F 0%, #15181B 100%)`,
             backgroundRepeat: 'no-repeat',
-            backgroundSize: 'auto 100%',
+            backgroundSize: {
+              xs: '800px 100%, 100%',
+              sm: '1000px 100%, 100%',
+              md: '800px 100%, 100%',
+            },
             backgroundPosition: 'right center',
             p: 3,
           }}
@@ -53,12 +57,13 @@ export const LSTCard = (props: CardProps) => {
             {intl.formatMessage({ defaultMessage: 'Beyond liquid staking' })}
           </Typography>
           <Stack
-            divider={<Divider flexItem />}
+            divider={<Divider />}
             sx={{
               border: '1px solid',
               borderColor: 'divider',
               borderRadius: 4,
               overflow: 'hidden',
+              height: 1,
             }}
           >
             <TokenCard token={tokens.base.superOETHb} />
