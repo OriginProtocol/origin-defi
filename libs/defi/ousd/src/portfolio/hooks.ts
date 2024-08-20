@@ -1,14 +1,13 @@
 import { useCallback } from 'react';
 
 import { useOTokenHistoriesQuery } from '@origin/defi/shared';
-import { HistoryType } from '@origin/ousd/shared';
 import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { descend, groupBy, sort } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import type { OTokenHistoriesQuery } from '@origin/defi/shared';
+import type { HistoryType, OTokenHistoriesQuery } from '@origin/defi/shared';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
 import type { DailyHistory } from './types';

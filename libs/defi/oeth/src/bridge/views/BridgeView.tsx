@@ -1,6 +1,10 @@
 import { Box, Stack } from '@mui/material';
-import { Page, PageSection, PageTitle } from '@origin/defi/shared';
-import { trackSentryError } from '@origin/oeth/shared';
+import {
+  Page,
+  PageSection,
+  PageTitle,
+  trackSentryError,
+} from '@origin/defi/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
