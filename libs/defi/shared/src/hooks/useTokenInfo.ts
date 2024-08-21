@@ -1,73 +1,146 @@
-import { useMemo } from 'react';
-
 import {
   getTokenPriceKey,
+  useTokenBalance,
   useTokenPrice,
   useTvl,
-  useWatchBalance,
 } from '@origin/shared/providers';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { hasKey, isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { from, mul } from 'dnum';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig } from 'wagmi';
 
-import { useOTokenApyQuery } from '../queries';
+import { useOTokenAddressQuery, useOTokenApyQuery } from '../queries';
 
 import type { Token } from '@origin/shared/contracts';
+import type { HexAddress } from '@origin/shared/utils';
+import type {
+  QueryClient,
+  QueryFunction,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import type { Dnum } from 'dnum';
+import type { Config } from 'wagmi';
 
-type UseTokenInfoProps = { token: Token; enabled?: boolean };
+import type { OTokenApyQuery } from '../queries';
 
-export const useTokenInfo = ({ token, enabled }: UseTokenInfoProps) => {
-  const { isConnected } = useAccount();
-  const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
-    {
-      token: token.address ?? ZERO_ADDRESS,
-      chainId: token.chainId,
-    },
-    {
-      enabled,
-      select: (data) => data?.oTokenApies?.[0],
-    },
-  );
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(token, {
-    enabled,
-  });
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    getTokenPriceKey(token),
-    { enabled },
-  );
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token,
-  });
+type Key = ['useTokenInfo', Token, HexAddress | undefined];
 
-  const tvlUsd = mul(tvl ?? from(0), price ?? from(0));
+const getKey = (token: Token, address: HexAddress | undefined): Key => [
+  'useTokenInfo',
+  token,
+  address,
+];
 
-  return useMemo(
-    () => ({
-      isLoading:
-        isApiesLoading ||
-        isTvlLoading ||
-        isPriceLoading ||
-        (isConnected && isBalanceLoading),
-      apies,
-      tvl,
-      tvlUsd,
-      price,
-      balance: [balance ?? 0n, token.decimals] as Dnum,
-      yieldEarned: from(2.73), // TODO replace
-    }),
-    [
-      apies,
-      balance,
-      isApiesLoading,
-      isBalanceLoading,
-      isConnected,
-      isPriceLoading,
-      isTvlLoading,
-      price,
-      token.decimals,
-      tvl,
-      tvlUsd,
-    ],
-  );
+type TokenInfo = {
+  apies: OTokenApyQuery['oTokenApies'][0];
+  bestApy: {
+    value: number;
+    trailingDays: number;
+  };
+  tvl: Dnum;
+  tvlUsd: Dnum;
+  price: Dnum;
+  balance: Dnum;
+  yieldEarned: Dnum;
 };
+
+const fetcher: (
+  config: Config,
+  queryClient: QueryClient,
+) => QueryFunction<TokenInfo, Key> =
+  (config, queryClient) =>
+  async ({ queryKey: [, token, address] }) => {
+    const res = await Promise.allSettled([
+      queryClient.fetchQuery({
+        queryKey: useOTokenApyQuery.getKey({
+          token: token.address ?? ZERO_ADDRESS,
+          chainId: token.chainId,
+        }),
+        queryFn: useOTokenApyQuery.fetcher({
+          token: token.address ?? ZERO_ADDRESS,
+          chainId: token.chainId,
+        }),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useTvl.getKey(token),
+        queryFn: useTvl.fetcher(config, queryClient),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useTokenPrice.getKey(getTokenPriceKey(token)),
+        queryFn: useTokenPrice.fetcher(config, queryClient),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useTokenBalance.getKey(token, address),
+        queryFn: useTokenBalance.fetcher(config),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useOTokenAddressQuery.getKey({
+          address: address ?? ZERO_ADDRESS,
+          token: token.address ?? ZERO_ADDRESS,
+          chainId: token.chainId,
+        }),
+        queryFn: useOTokenAddressQuery.fetcher({
+          address: address ?? ZERO_ADDRESS,
+          token: token.address ?? ZERO_ADDRESS,
+          chainId: token.chainId,
+        }),
+      }),
+    ]);
+
+    const apies = isFulfilled(res[0])
+      ? res[0].value.oTokenApies[0]
+      : { apy7DayAvg: 0, apy14DayAvg: 0, apy30DayAvg: 0, apr: 0, apy: 0 };
+    const tvl = isFulfilled(res[1]) ? res[1].value : from(0);
+    const price = isFulfilled(res[2]) ? res[2].value : from(0);
+    const balance = isFulfilled(res[3])
+      ? ([res[3].value, token.decimals] as Dnum)
+      : from(0);
+    const yieldEarned = isFulfilled(res[4])
+      ? ([
+          BigInt(res[4].value.oTokenAddresses[0].earned),
+          token.decimals,
+        ] as Dnum)
+      : from(0);
+
+    const apiesTrailing = { apy14DayAvg: 14, apy7DayAvg: 7, apy30DayAvg: 30 };
+    const bestApy = Object.entries(apies).reduce(
+      (acc, [k, v]) => {
+        if (
+          hasKey(apiesTrailing, k) &&
+          typeof v === 'number' &&
+          acc.value < v
+        ) {
+          return { value: v, trailingDays: apiesTrailing[k] };
+        }
+
+        return acc;
+      },
+      {
+        value: 0,
+        trailingDays: 0,
+      },
+    );
+    const tvlUsd = mul(tvl, price);
+
+    return { apies, bestApy, tvl, tvlUsd, price, balance, yieldEarned };
+  };
+
+export const useTokenInfo = (
+  token: Token,
+  options?: Omit<
+    UseQueryOptions<TokenInfo, Error, TokenInfo, Key>,
+    'queryKey' | 'queryFn'
+  >,
+) => {
+  const { address } = useAccount();
+  const config = useConfig();
+  const queryClient = useQueryClient();
+
+  return useQuery({
+    ...options,
+    queryKey: getKey(token, address),
+    queryFn: fetcher(config, queryClient),
+  });
+};
+useTokenInfo.getKey = getKey;
+useTokenInfo.fetcher = fetcher;

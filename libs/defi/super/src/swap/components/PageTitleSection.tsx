@@ -12,24 +12,9 @@ import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { apies, isLoading } = useTokenInfo({
-    token: tokens.base.superOETHb,
-  });
-
-  const { apy, tooltip } =
-    (apies?.apy30DayAvg ?? 0) > (apies?.apy7DayAvg ?? 0)
-      ? {
-          apy: apies?.apy30DayAvg,
-          tooltip: intl.formatMessage({
-            defaultMessage: '30-day trailing APY',
-          }),
-        }
-      : {
-          apy: apies?.apy7DayAvg,
-          tooltip: intl.formatMessage({
-            defaultMessage: '7-day trailing APY',
-          }),
-        };
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
+    tokens.base.superOETHb,
+  );
 
   return (
     <Stack
@@ -43,12 +28,12 @@ export const PageTitleSection = (props: StackProps) => {
       <ColorChip spacing={0.5} minHeight={40}>
         <TokenIcon token={tokens.base.superOETHb} sx={{ fontSize: 24 }} />
         <LoadingLabel
-          isLoading={isLoading}
+          isLoading={isInfoLoading}
           color="inherit"
           fontWeight="bold"
           sWidth={90}
         >
-          {intl.formatNumber(apy ?? 0, {
+          {intl.formatNumber(info?.bestApy?.value ?? 0, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'percent',
@@ -57,7 +42,15 @@ export const PageTitleSection = (props: StackProps) => {
         <Typography variant="caption1" color="inherit">
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
-        <InfoTooltip tooltipLabel={tooltip} iconColor="primary.main" />
+        <InfoTooltip
+          tooltipLabel={intl.formatMessage(
+            {
+              defaultMessage: '{trailingDays}-day trailing APY',
+            },
+            { trailingDays: info?.bestApy?.trailingDays },
+          )}
+          iconColor="primary.main"
+        />
       </ColorChip>
     </Stack>
   );

@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenIcon, ValueLabel } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import { format, from } from 'dnum';
@@ -33,7 +33,7 @@ export const GlobalStatsCard = ({
   ...rest
 }: GlobalStatsCardProps) => {
   const intl = useIntl();
-  const { apies, tvl, price, isLoading } = useTokenInfo({ token });
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(token);
 
   return (
     <Accordion
@@ -59,13 +59,17 @@ export const GlobalStatsCard = ({
           )}
           {showAprChip && (
             <ColorChip alignItems="baseline">
-              <Typography variant="caption1" fontWeight="bold">
-                {intl.formatNumber(apies?.apr ?? 0, {
+              <LoadingLabel
+                variant="caption1"
+                fontWeight="bold"
+                isLoading={isInfoLoading}
+              >
+                {intl.formatNumber(info?.apies?.apr ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
                 })}
-              </Typography>
+              </LoadingLabel>
               <Typography variant="caption2">APR</Typography>
             </ColorChip>
           )}
@@ -87,9 +91,9 @@ export const GlobalStatsCard = ({
                 chainName: supportedChainNames[token.chainId].short,
               },
             )}
-            value={`$${format(tvl ?? from(0), 2)}`}
+            value={`$${format(info?.tvl ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
-            isLoading={isLoading}
+            isLoading={isInfoLoading}
           />
           <ValueLabel
             direction="row"
@@ -105,9 +109,9 @@ export const GlobalStatsCard = ({
               },
             )}
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
-            value={`$${format(price ?? from(0), 2)}`}
+            value={`$${format(info?.price ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
-            isLoading={isLoading}
+            isLoading={isInfoLoading}
           />
         </Stack>
       </AccordionDetails>

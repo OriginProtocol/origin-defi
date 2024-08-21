@@ -31,8 +31,7 @@ export const TokenCard = ({
 }: TokenCardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { isLoading, apies, balance, tvl, tvlUsd, yieldEarned } = useTokenInfo({
-    token,
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(token, {
     enabled: !isComingSoon,
   });
 
@@ -69,7 +68,7 @@ export const TokenCard = ({
                 fontWeight="bold"
                 color="primary.main"
               >
-                {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
+                {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
                   style: 'percent',
                   minimumFractionDigits: 2,
                   maximumFractionDigits: 2,
@@ -92,8 +91,8 @@ export const TokenCard = ({
                 intl.formatMessage({ defaultMessage: 'Coming soon' })
               ) : (
                 <>
-                  <LoadingLabel isLoading={isLoading} fontWeight="bold">
-                    {intl.formatNumber(apies?.apy30DayAvg ?? 0, {
+                  <LoadingLabel isLoading={isInfoLoading} fontWeight="bold">
+                    {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
                       style: 'percent',
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
@@ -128,20 +127,20 @@ export const TokenCard = ({
             >
               <LoadingLabel
                 fontWeight="bold"
-                isLoading={isLoading && !isComingSoon}
+                isLoading={isInfoLoading && !isComingSoon}
                 noWrap
               >
                 {isComingSoon
                   ? '-'
-                  : `三 ${format(tvl ?? from(0), { compact: true, digits: 2 })}`}
+                  : `三 ${format(info?.tvl ?? from(0), { compact: true, digits: 2 })}`}
               </LoadingLabel>
               {!isComingSoon && (
                 <LoadingLabel
                   variant="caption2"
                   fontWeight="medium"
-                  isLoading={isLoading}
+                  isLoading={isInfoLoading}
                 >
-                  $&nbsp;{format(tvlUsd, { compact: true })}
+                  $&nbsp;{format(info?.tvlUsd ?? from(0), { compact: true })}
                 </LoadingLabel>
               )}
             </Stack>
@@ -160,12 +159,12 @@ export const TokenCard = ({
             </Typography>
             <LoadingLabel
               fontWeight="bold"
-              isLoading={isLoading && !isComingSoon}
+              isLoading={isInfoLoading && !isComingSoon}
             >
               {!isConnected || isComingSoon
                 ? '-'
-                : format(balance, {
-                    digits: getFormatPrecision(balance),
+                : format(info?.balance ?? from(0), {
+                    digits: getFormatPrecision(info?.balance ?? from(0)),
                   })}
             </LoadingLabel>
           </Stack>
@@ -184,8 +183,8 @@ export const TokenCard = ({
             <Typography fontWeight="bold">
               {!isConnected || isComingSoon
                 ? '-'
-                : format(yieldEarned, {
-                    digits: getFormatPrecision(yieldEarned),
+                : format(info?.yieldEarned ?? from(0), {
+                    digits: getFormatPrecision(info?.yieldEarned ?? from(0)),
                   })}
             </Typography>
           </Stack>

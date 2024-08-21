@@ -11,7 +11,9 @@ import type { StackProps } from '@mui/material';
 
 export const SuperOethbBanner = (props: StackProps) => {
   const intl = useIntl();
-  const { apies, isLoading } = useTokenInfo({ token: tokens.base.superOETHb });
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(
+    tokens.base.superOETHb,
+  );
 
   return (
     <Stack
@@ -63,12 +65,12 @@ export const SuperOethbBanner = (props: StackProps) => {
                   })}
                 </Typography>
                 <LoadingLabel
-                  isLoading={isLoading}
+                  isLoading={isInfoLoading}
                   variant="featured2"
                   fontWeight="bold"
-                  sx={{ textDecoration: isLoading ? 'none' : 'underline' }}
+                  sx={{ textDecoration: isInfoLoading ? 'none' : 'underline' }}
                 >
-                  {intl.formatNumber(apies?.apy ?? 0, {
+                  {intl.formatNumber(info?.apies?.apy ?? 0, {
                     style: 'percent',
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
