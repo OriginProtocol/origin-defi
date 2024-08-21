@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  AnalyticsCard,
   BridgePromoCard,
   GlobalStatsCard,
   Page,
@@ -9,13 +10,13 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
+import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { oethSwapActions } from '../actions';
-import { AnalyticsCard } from '../components/AnalyticsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
 
@@ -55,7 +56,7 @@ export const SwapView = () => {
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
               <GlobalStatsCard token={token} />
-              <AnalyticsCard />
+              <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />
             </Stack>
           </Grid2>
         </Grid2>

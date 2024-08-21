@@ -1,19 +1,20 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  AnalyticsCard,
+  GlobalStatsCard,
   Page,
   PageSection,
   PageTitle,
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
+import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
-import { AnalyticsCard } from '../components/AnalyticsCard';
-import { DetailsCard } from '../components/DetailsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
 
@@ -43,8 +44,15 @@ export const SwapView = () => {
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <DetailsCard token={tokens.base.superOETHb} />
-              <AnalyticsCard />
+              <GlobalStatsCard
+                token={tokens.base.superOETHb}
+                showTokenHeader
+                showAprChip
+              />
+              <AnalyticsCard
+                token={tokens.base.superOETHb}
+                href={OETH_ANALYTICS_URL}
+              />
             </Stack>
           </Grid2>
         </Grid2>
