@@ -13,12 +13,18 @@ import type { Token } from '@origin/shared/contracts';
 
 export type TokenCardProps = {
   token: Token;
+  hrefLabel?: string;
+  href?: string;
+  externalHref?: string;
   isComingSoon?: boolean;
   hideGradient?: boolean;
 } & BoxProps;
 
 export const TokenCard = ({
   token,
+  hrefLabel,
+  href,
+  externalHref,
   isComingSoon,
   hideGradient,
   ...rest
@@ -185,18 +191,37 @@ export const TokenCard = ({
           </Stack>
         </Grid2>
         <Grid2 xs={14} md={3} order={7}>
-          <Button
-            component={RouterLink}
-            to={`/${token.symbol}`}
-            sx={{ whiteSpace: 'nowrap' }}
-            fullWidth
-            disabled={isComingSoon}
-          >
-            {intl.formatMessage(
-              { defaultMessage: 'Get {symbol}' },
-              { symbol: token.symbol },
-            )}
-          </Button>
+          {!!href && (
+            <Button
+              component={RouterLink}
+              to={href}
+              sx={{ whiteSpace: 'nowrap' }}
+              fullWidth
+              disabled={isComingSoon}
+            >
+              {hrefLabel ??
+                intl.formatMessage(
+                  { defaultMessage: 'Get {symbol}' },
+                  { symbol: token.symbol },
+                )}
+            </Button>
+          )}
+          {!!externalHref && (
+            <Button
+              href={externalHref}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              sx={{ whiteSpace: 'nowrap' }}
+              fullWidth
+              disabled={isComingSoon}
+            >
+              {hrefLabel ??
+                intl.formatMessage(
+                  { defaultMessage: 'Get {symbol}' },
+                  { symbol: token.symbol },
+                )}
+            </Button>
+          )}
         </Grid2>
       </Grid2>
     </Box>

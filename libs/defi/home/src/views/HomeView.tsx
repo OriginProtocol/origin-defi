@@ -1,9 +1,8 @@
 import { Container, Stack, Typography } from '@mui/material';
-import { Page } from '@origin/defi/shared';
+import { Page, SuperOethbBanner } from '@origin/defi/shared';
 import { useIntl } from 'react-intl';
 
 import { LSTCard, StableCard, StakingCard } from '../components/Cards';
-import { SuperOethbBanner } from '../components/SuperOethbBanner';
 
 export const HomeView = () => {
   const intl = useIntl();

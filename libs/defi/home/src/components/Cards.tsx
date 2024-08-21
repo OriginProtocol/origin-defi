@@ -66,8 +66,12 @@ export const LSTCard = (props: CardProps) => {
               height: 1,
             }}
           >
-            <TokenCard token={tokens.base.superOETHb} />
-            <TokenCard token={tokens.optimism.superOETHo} isComingSoon />
+            <TokenCard token={tokens.base.superOETHb} href="/super" />
+            <TokenCard
+              token={tokens.optimism.superOETHo}
+              href="/super"
+              isComingSoon
+            />
           </Stack>
         </Stack>
         <Stack
@@ -113,7 +117,7 @@ export const LSTCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.mainnet.OETH} hideGradient />
+            <TokenCard token={tokens.mainnet.OETH} hideGradient href="/oeth" />
           </Stack>
         </Stack>
         <BridgeBanner />
@@ -176,7 +180,11 @@ export const StakingCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.mainnet.OGN} hideGradient />
+            <TokenCard
+              token={tokens.mainnet.OGN}
+              hideGradient
+              externalHref="https://app.uniswap.org/swap?outputCurrency=0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26&chain=mainnet"
+            />
           </Stack>
         </Stack>
         <MergerBanner
@@ -238,7 +246,7 @@ export const StableCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.mainnet.OUSD} hideGradient />
+            <TokenCard token={tokens.mainnet.OUSD} href="/ousd" hideGradient />
           </Stack>
         </Stack>
       </CardContent>

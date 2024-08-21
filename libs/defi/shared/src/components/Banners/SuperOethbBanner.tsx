@@ -1,10 +1,11 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { useTokenInfo } from '@origin/defi/shared';
 import { LoadingLabel, NetworkIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { base } from 'viem/chains';
+
+import { useTokenInfo } from '../../hooks';
 
 import type { StackProps } from '@mui/material';
 
@@ -92,7 +93,7 @@ export const SuperOethbBanner = (props: StackProps) => {
           <Button
             fullWidth
             component={RouterLink}
-            to="/oeth"
+            to="/super"
             color="secondary"
             size="large"
             sx={{ whiteSpace: 'nowrap' }}
