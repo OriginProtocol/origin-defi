@@ -139,10 +139,19 @@ export const ClaimMigrateProgressModal = ({
       }),
     },
   }[status];
+  const title =
+    type === 'claim'
+      ? intl.formatMessage({ defaultMessage: 'Process Withdrawal' })
+      : intl.formatMessage({ defaultMessage: 'Process Migration' });
 
   return (
     <Dialog {...rest} open={open} maxWidth="xs" fullWidth>
-      <DialogTitle display="flex" justifyContent="flex-end" alignItems="center">
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        {title}
         <IconButton
           onClick={(evt) => {
             onClose?.(evt, 'backdropClick');
@@ -164,7 +173,10 @@ export const ClaimMigrateProgressModal = ({
             </Typography>
           )}
           {type === 'migration' ? (
-            <ExternalLink href="https://app.yieldnest.finance/portfolio">
+            <ExternalLink
+              href="https://app.yieldnest.finance/portfolio"
+              color="primary.main"
+            >
               {intl.formatMessage({
                 defaultMessage:
                   'Visit YieldNest dApp to view your ynLSDe balance.',

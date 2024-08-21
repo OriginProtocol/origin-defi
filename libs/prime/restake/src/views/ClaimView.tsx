@@ -223,7 +223,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
         </Stack>
         {!isClaimDisabled && (
           <>
-            <Divider />
+            <Divider variant="middle" />
             <Stack p={3}>
               <TxButton
                 params={migrateParams}
@@ -247,7 +247,7 @@ const ClaimCard = ({ request, ...rest }: ClaimCardProps) => {
                 </Typography>
               )}
             </Stack>
-            <Divider>
+            <Divider variant="middle">
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'OR' })}
               </Typography>
