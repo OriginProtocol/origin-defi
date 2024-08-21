@@ -20,6 +20,7 @@ import {
   FiltersButton,
   HistoryType,
   useOTokenHistoriesQuery,
+  useTokenHistory,
 } from '@origin/defi/shared';
 import {
   DownloadCsvButton,
@@ -42,8 +43,6 @@ import {
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useOusdHistory } from '../hooks';
-
 import type { StackProps } from '@mui/material';
 import type { ExpandedState } from '@tanstack/react-table';
 
@@ -65,7 +64,13 @@ export const HistoryCard = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<HistoryType[]>([]);
-  const { data: rows, isFetching: isRowsFetching } = useOusdHistory(filters);
+  const { data: rows, isFetching: isRowsFetching } = useTokenHistory(
+    tokens.mainnet.OUSD,
+    filters,
+    {
+      placeholderData: { oTokenHistories: [] },
+    },
+  );
 
   return (
     <Card>
@@ -169,7 +174,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
   const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data } = useOusdHistory(filters);
+  const { data } = useTokenHistory(tokens.mainnet.OUSD, filters);
 
   const columns = useMemo(
     () => [

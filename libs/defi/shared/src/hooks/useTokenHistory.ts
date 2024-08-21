@@ -1,22 +1,30 @@
 import { useCallback } from 'react';
 
-import { useOTokenHistoriesQuery } from '@origin/defi/shared';
-import { tokens } from '@origin/shared/contracts';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { descend, groupBy, sort } from 'ramda';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
 
-import type { HistoryType, OTokenHistoriesQuery } from '@origin/defi/shared';
+import { HistoryType } from '../generated/graphql';
+import { useOTokenHistoriesQuery } from '../queries';
+
+import type { Token } from '@origin/shared/contracts';
 import type { UseQueryOptions } from '@tanstack/react-query';
 
-import type { DailyHistory } from './types';
+import type { OTokenHistoriesQuery } from '../queries';
 
-export const useOusdHistory = (
+export type History = OTokenHistoriesQuery['oTokenHistories'][number];
+
+export type DailyHistory = History & {
+  transactions?: History[];
+};
+
+export const useTokenHistory = (
+  token: Token,
   filters?: HistoryType[],
   options?: Omit<
     UseQueryOptions<OTokenHistoriesQuery, Error, DailyHistory[]>,
-    'select'
+    'queryKey' | 'queryFn'
   >,
 ) => {
   const { address, isConnected } = useAccount();
@@ -24,16 +32,14 @@ export const useOusdHistory = (
   return useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
+      chainId: token.chainId,
+      token: token.address ?? ZERO_ADDRESS,
       filters: isNilOrEmpty(filters) ? undefined : filters,
-      token: tokens.mainnet.OUSD.address,
-      chainId: tokens.mainnet.OUSD.chainId,
     },
     {
-      refetchOnWindowFocus: false,
       staleTime: 120e3,
-      ...options,
-      enabled: isConnected && !isNilOrEmpty(address),
-      placeholderData: { oTokenHistories: [] },
+      refetchOnWindowFocus: false,
+      enabled: isConnected && !!address,
       select: useCallback((data: OTokenHistoriesQuery) => {
         const history = data?.oTokenHistories;
 
@@ -114,6 +120,7 @@ export const useOusdHistory = (
           aggregated,
         ) as DailyHistory[];
       }, []),
+      ...options,
     },
   );
 };
