@@ -48,13 +48,7 @@ import type { DownloadCsvButtonProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { ExpandedState } from '@tanstack/react-table';
 
-import type { OTokenHistoriesQuery } from '../../queries';
-
-export type History = OTokenHistoriesQuery['oTokenHistories'][number];
-
-export type DailyHistory = History & {
-  transactions?: History[];
-};
+import type { DailyHistory } from '../../hooks';
 
 const filterOptions = [
   {
