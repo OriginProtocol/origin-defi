@@ -16,22 +16,16 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  ConnectPage,
-  FiltersButton,
-  HistoryType,
-  useOTokenHistoriesQuery,
-  useTokenHistory,
-} from '@origin/defi/shared';
-import {
   DownloadCsvButton,
   ExpandIcon,
   TablePagination,
   TransactionIcon,
 } from '@origin/shared/components';
+import { supportedChains } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { isNilOrEmpty, txLink, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -43,10 +37,24 @@ import {
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import type { StackProps } from '@mui/material';
+import { HistoryType } from '../../generated/graphql';
+import { useTokenHistory } from '../../hooks';
+import { useOTokenHistoriesQuery } from '../../queries';
+import { FiltersButton } from '../FiltersButton';
+import { ConnectPage } from '../Page';
+
+import type { CardProps, StackProps } from '@mui/material';
+import type { DownloadCsvButtonProps } from '@origin/shared/components';
+import type { Token } from '@origin/shared/contracts';
 import type { ExpandedState } from '@tanstack/react-table';
 
-import type { DailyHistory } from '../types';
+import type { OTokenHistoriesQuery } from '../../queries';
+
+export type History = OTokenHistoriesQuery['oTokenHistories'][number];
+
+export type DailyHistory = History & {
+  transactions?: History[];
+};
 
 const filterOptions = [
   {
@@ -60,12 +68,14 @@ const filterOptions = [
   },
 ];
 
-export const OethHistoryCard = () => {
+export type HistoryCardProps = { token: Token } & CardProps;
+
+export const HistoryCard = ({ token, ...rest }: HistoryCardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<HistoryType[]>([]);
   const { data: rows, isFetching: isRowsFetching } = useTokenHistory(
-    tokens.mainnet.OETH,
+    token,
     filters,
     {
       placeholderData: { oTokenHistories: [] },
@@ -73,7 +83,7 @@ export const OethHistoryCard = () => {
   );
 
   return (
-    <Card>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Transactions' })}
         action={
@@ -84,7 +94,7 @@ export const OethHistoryCard = () => {
               filterOptions={filterOptions}
               disabled={isRowsFetching || isNilOrEmpty(rows)}
             />
-            <ExportDataButton />
+            <ExportDataButton token={token} />
           </Stack>
         }
       />
@@ -117,7 +127,7 @@ export const OethHistoryCard = () => {
             </Typography>
           </Stack>
         ) : (
-          <HistoryTable filters={filters} />
+          <HistoryTable token={token} filters={filters} />
         )
       ) : (
         <ConnectPage sx={{ borderRadius: 0 }} />
@@ -126,7 +136,9 @@ export const OethHistoryCard = () => {
   );
 };
 
-function ExportDataButton() {
+type ExportDataButton = { token: Token } & DownloadCsvButtonProps;
+
+function ExportDataButton({ token, ...rest }: ExportDataButton) {
   const { address, isConnected } = useAccount();
   const { data: txData } = useOTokenHistoriesQuery(
     {
@@ -160,6 +172,7 @@ function ExportDataButton() {
       color="secondary"
       buttonLabel="CSV"
       disabled={!isConnected || txData?.length === 1}
+      {...rest}
     />
   );
 }
@@ -167,14 +180,15 @@ function ExportDataButton() {
 const columnHelper = createColumnHelper<DailyHistory>();
 
 type HistoryTableProps = {
+  token: Token;
   filters: HistoryType[];
-};
+} & StackProps;
 
-function HistoryTable({ filters }: HistoryTableProps) {
+function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
   const intl = useIntl();
   const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data } = useTokenHistory(tokens.mainnet.OETH, filters);
+  const { data } = useTokenHistory(token, filters);
 
   const columns = useMemo(
     () => [
@@ -243,7 +257,10 @@ function HistoryTable({ filters }: HistoryTableProps) {
 
           return (
             <IconButton
-              href={`https://etherscan.io/tx/${info.row.original.txHash}`}
+              href={txLink(
+                supportedChains[token.chainId],
+                info.row.original.txHash,
+              )}
               target="_blank"
               rel="noopener noreferrer nofollow"
               sx={{
@@ -260,7 +277,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
         },
       }),
     ],
-    [formatAmount, formatQuantity, intl],
+    [formatAmount, formatQuantity, intl, token.chainId],
   );
 
   const table = useReactTable({
@@ -285,7 +302,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
   });
 
   return (
-    <Stack>
+    <Stack {...rest}>
       <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
         <TableHead>
           {table.getHeaderGroups().map((headerGroup) => (

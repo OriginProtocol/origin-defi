@@ -1,7 +1,0 @@
-query OusdDailyYield($start: DateTime!) {
-  ousdDailyStats(orderBy: timestamp_DESC, where: { timestamp_gte: $start }) {
-    yieldETH
-    yieldETH7Day
-    yieldETHAllTime
-  }
-}

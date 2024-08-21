@@ -1,5 +1,6 @@
 import { Stack } from '@mui/material';
 import {
+  HistoryCard,
   Page,
   PageSection,
   PageTitle,
@@ -10,7 +11,6 @@ import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
-import { OethHistoryCard } from '../components/OethHistoryCard';
 import { WoethStats } from '../components/StatsCard';
 import { TokenSwitch } from '../components/TokenSwitch';
 import { WoethHistoryCard } from '../components/WoethHistoryCard';
@@ -41,7 +41,11 @@ export const PortfolioView = () => {
             ) : (
               <WoethStats />
             )}
-            {token === 'oeth' ? <OethHistoryCard /> : <WoethHistoryCard />}
+            {token === 'oeth' ? (
+              <HistoryCard token={tokens.mainnet.OETH} />
+            ) : (
+              <WoethHistoryCard />
+            )}
           </ErrorBoundary>
         </Stack>
       </PageSection>
