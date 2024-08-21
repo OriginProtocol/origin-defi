@@ -20,6 +20,7 @@ import {
   FiltersButton,
   HistoryType,
   useOTokenHistoriesQuery,
+  useTokenHistory,
 } from '@origin/defi/shared';
 import {
   DownloadCsvButton,
@@ -42,8 +43,6 @@ import {
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useOethHistory } from '../hooks';
-
 import type { StackProps } from '@mui/material';
 import type { ExpandedState } from '@tanstack/react-table';
 
@@ -61,11 +60,15 @@ const filterOptions = [
   },
 ];
 
-export const OethHistoryCard = () => {
+export const SuperOethHistoryCard = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<HistoryType[]>([]);
-  const { data: rows, isFetching: isRowsFetching } = useOethHistory(filters);
+  const { data: rows, isFetching: isRowsFetching } = useTokenHistory(
+    tokens.base.superOETHb,
+    filters,
+    { placeholderData: { oTokenHistories: [] } },
+  );
 
   return (
     <Card>
@@ -126,8 +129,8 @@ function ExportDataButton() {
   const { data: txData } = useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
-      chainId: tokens.mainnet.OETH.chainId,
-      token: tokens.mainnet.OETH.address,
+      chainId: tokens.base.superOETHb.chainId,
+      token: tokens.base.superOETHb.address,
     },
     {
       enabled: isConnected,
@@ -150,7 +153,7 @@ function ExportDataButton() {
   return (
     <DownloadCsvButton
       data={txData}
-      filename="oeth_transaction_history.csv"
+      filename="superOETHb_transaction_history.csv"
       variant="outlined"
       color="secondary"
       buttonLabel="CSV"
@@ -169,7 +172,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
   const intl = useIntl();
   const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data } = useOethHistory(filters);
+  const { data } = useTokenHistory(tokens.base.superOETHb, filters);
 
   const columns = useMemo(
     () => [
@@ -352,7 +355,7 @@ function HistoryTypeCell({
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
+      <TransactionIcon type={type} zIndex={1} token={tokens.base.superOETHb} />
       <Stack spacing={0.5}>
         <Typography fontWeight="medium">{type}</Typography>
         <Typography color="text.secondary" variant="caption1">
