@@ -13,21 +13,24 @@ import {
 import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { mainnet } from 'viem/chains';
+import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { oethSwapActions } from '../actions';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
 
+const supportedTokens = {
+  [mainnet.id.toString()]: tokens.mainnet.OETH,
+  [arbitrum.id.toString()]: tokens.arbitrum.wOETH,
+};
+
 export const SwapView = () => {
   const intl = useIntl();
   const { chain } = useAccount();
 
   const token =
-    (chain ?? mainnet).id === mainnet.id
-      ? tokens.mainnet.OETH
-      : tokens.arbitrum.wOETH;
+    supportedTokens[chain?.id ?? mainnet.id] ?? supportedTokens[mainnet.id];
 
   return (
     <Page>

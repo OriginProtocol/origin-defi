@@ -4,7 +4,12 @@ import {
   useTokenPrice,
   useTvl,
 } from '@origin/shared/providers';
-import { hasKey, isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  hasKey,
+  isFulfilled,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { from, mul } from 'dnum';
 import { useAccount, useConfig } from 'wagmi';
@@ -87,20 +92,22 @@ const fetcher: (
       }),
     ]);
 
-    const apies = isFulfilled(res[0])
-      ? res[0].value.oTokenApies[0]
-      : { apy7DayAvg: 0, apy14DayAvg: 0, apy30DayAvg: 0, apr: 0, apy: 0 };
+    const apies =
+      isFulfilled(res[0]) && !isNilOrEmpty(res[0].value?.oTokenApies?.[0])
+        ? res[0].value.oTokenApies[0]
+        : { apy7DayAvg: 0, apy14DayAvg: 0, apy30DayAvg: 0, apr: 0, apy: 0 };
     const tvl = isFulfilled(res[1]) ? res[1].value : from(0);
     const price = isFulfilled(res[2]) ? res[2].value : from(0);
     const balance = isFulfilled(res[3])
       ? ([res[3].value, token.decimals] as Dnum)
       : from(0);
-    const yieldEarned = isFulfilled(res[4])
-      ? ([
-          BigInt(res[4].value.oTokenAddresses[0].earned),
-          token.decimals,
-        ] as Dnum)
-      : from(0);
+    const yieldEarned =
+      isFulfilled(res[4]) && !isNilOrEmpty(res[4].value?.oTokenAddresses?.[0])
+        ? ([
+            BigInt(res[4].value.oTokenAddresses[0].earned),
+            token.decimals,
+          ] as Dnum)
+        : from(0);
 
     const apiesTrailing = { apy14DayAvg: 14, apy7DayAvg: 7, apy30DayAvg: 30 };
     const bestApy = Object.entries(apies).reduce(
