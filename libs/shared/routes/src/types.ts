@@ -3,6 +3,7 @@ export type OethRoute =
   | 'redeem-arm-oeth'
   | 'redeem-vault-async-oeth'
   | 'redeem-vault-oeth'
+  | 'swap-aerodrome-oeth'
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
   | 'swap-curve-oeth-eth'

@@ -2,6 +2,7 @@ export * from './mintVaultOeth';
 export * from './redeemArmOeth';
 export * from './redeemVaultAsyncOeth';
 export * from './redeemVaultOeth';
+export * from './swapAerodromeOeth';
 export * from './swapBalancerOeth';
 export * from './swapCurveOeth';
 export * from './swapCurveOethEth';

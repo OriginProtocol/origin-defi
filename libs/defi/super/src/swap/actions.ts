@@ -1,5 +1,6 @@
 import {
   mintVaultOeth,
+  swapAerodromeOeth,
   unwrapOethWoeth,
   wrapOethWoeth,
 } from '@origin/shared/routes';
@@ -10,6 +11,11 @@ import type { SwapApi } from '@origin/shared/providers';
 import type { OethSwapAction } from './types';
 
 export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
+  'swap-aerodrome-oeth': {
+    ...swapAerodromeOeth,
+    routeLabel: defineMessage({ defaultMessage: 'Swap with Aerodrome' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
+  },
   'mint-vault-oeth': {
     ...mintVaultOeth,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),
