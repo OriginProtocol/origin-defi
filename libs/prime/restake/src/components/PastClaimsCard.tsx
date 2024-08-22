@@ -38,7 +38,7 @@ export const PastClaimsCard = (props: CardProps) => {
         enabled: isConnected,
         select: (data) =>
           data?.lrtWithdrawalRequests?.filter(
-            (r) => r.status === LrtWithdrawalStatus.Claimed,
+            (r) => r.status !== LrtWithdrawalStatus.Requested,
           ) ?? [],
       },
     );
@@ -101,6 +101,7 @@ export const PastClaimsCard = (props: CardProps) => {
                                 variant="body2"
                                 color="text.secondary"
                                 textAlign="start"
+                                component="span"
                               >
                                 (${format(converted, 2)})
                               </Typography>
