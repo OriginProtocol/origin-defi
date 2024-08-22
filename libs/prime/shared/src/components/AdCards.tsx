@@ -25,7 +25,7 @@ export const AdCards = (props: StackProps) => {
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop.',
+          'Migrate primeETH to ynSLDe and get whitelisted for the upcoming YieldNest airdrop.',
       }),
       background: `
         linear-gradient(-45deg, transparent 0, transparent 25px, #281928 25px, #281928 50px, transparent 50px, transparent 100%),
