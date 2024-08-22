@@ -30,11 +30,7 @@ import type { DialogProps } from '@mui/material';
 
 import type { UserActiveRequestsQuery } from '../queries.generated';
 
-export const WithdrawProgressModal = ({
-  open,
-  onClose,
-  ...rest
-}: DialogProps) => {
+export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const intl = useIntl();
   const { address } = useAccount();
   const queryClient = useQueryClient();
@@ -50,10 +46,11 @@ export const WithdrawProgressModal = ({
   });
 
   useEffect(() => {
-    if (open) {
+    if (rest.open) {
       startRefresh();
     }
-  }, [open, startRefresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const icon = {
     idle: null,
@@ -127,7 +124,7 @@ export const WithdrawProgressModal = ({
   }[status];
 
   return (
-    <Dialog {...rest} open={open} maxWidth="xs" fullWidth>
+    <Dialog {...rest} maxWidth="xs" fullWidth>
       <DialogTitle
         display="flex"
         justifyContent="space-between"

@@ -29,7 +29,7 @@ export const WithdrawView = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [amount, setAmount] = useState(0n);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const { data: converted, isLoading: isConvertedLoading } =
     usePrimeETH_OETH(amount);
   const { data: bal, isLoading: isBalLoading } = useWatchBalance({
@@ -50,7 +50,7 @@ export const WithdrawView = () => {
     },
     callbacks: {
       onTxSigned: () => {
-        setModalOpen(true);
+        setOpen(true);
       },
     },
     disableActivity: true,
@@ -182,10 +182,10 @@ export const WithdrawView = () => {
         </Stack>
       </Stack>
       <WithdrawProgressModal
-        key={modalOpen ? '' : 'reset'}
-        open={modalOpen}
+        key={open ? '' : 'reset'}
+        open={open}
         onClose={() => {
-          setModalOpen(false);
+          setOpen(false);
         }}
       />
     </>

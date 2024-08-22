@@ -37,7 +37,6 @@ export type ClaimMigrateProgressModalProps = {
 } & DialogProps;
 
 export const ClaimMigrateProgressModal = ({
-  open,
   onClose,
   type,
   ...rest
@@ -55,17 +54,20 @@ export const ClaimMigrateProgressModal = ({
     isResultProcessed: (prev, next) =>
       prev.lrtWithdrawalRequests.filter(
         (q) => q.status === LrtWithdrawalStatus.Requested,
-      ).length <
+      ).length >
       next.lrtWithdrawalRequests.filter(
         (q) => q.status === LrtWithdrawalStatus.Requested,
       ).length,
   });
 
   useEffect(() => {
-    if (open) {
+    if (rest.open) {
       startRefresh();
     }
-  }, [open, startRefresh]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  console.log('claim progress', status);
 
   const icon = {
     idle: null,
@@ -139,13 +141,48 @@ export const ClaimMigrateProgressModal = ({
       }),
     },
   }[status];
+  const button = {
+    idle: null,
+    error: null,
+    polling: null,
+    processed:
+      type === 'migration' ? (
+        <ExternalLink
+          href="https://app.yieldnest.finance/portfolio"
+          color="primary.main"
+        >
+          {intl.formatMessage({
+            defaultMessage: 'Visit YieldNest dApp to view your ynLSDe balance.',
+          })}
+        </ExternalLink>
+      ) : (
+        <Button
+          onClick={(evt) => {
+            onClose?.(evt, 'backdropClick');
+            queryClient.invalidateQueries();
+          }}
+        >
+          {intl.formatMessage({ defaultMessage: 'Close' })}
+        </Button>
+      ),
+    timeout: (
+      <Button
+        onClick={() => {
+          onClose?.({}, 'backdropClick');
+          window.location.reload();
+        }}
+      >
+        {intl.formatMessage({ defaultMessage: 'Refresh' })}
+      </Button>
+    ),
+  }[status];
   const title =
     type === 'claim'
       ? intl.formatMessage({ defaultMessage: 'Process Withdrawal' })
       : intl.formatMessage({ defaultMessage: 'Process Migration' });
 
   return (
-    <Dialog {...rest} open={open} maxWidth="xs" fullWidth>
+    <Dialog {...rest} maxWidth="xs" fullWidth>
       <DialogTitle
         display="flex"
         justifyContent="space-between"
@@ -172,26 +209,7 @@ export const ClaimMigrateProgressModal = ({
               {label?.subtitle}
             </Typography>
           )}
-          {type === 'migration' ? (
-            <ExternalLink
-              href="https://app.yieldnest.finance/portfolio"
-              color="primary.main"
-            >
-              {intl.formatMessage({
-                defaultMessage:
-                  'Visit YieldNest dApp to view your ynLSDe balance.',
-              })}
-            </ExternalLink>
-          ) : (
-            <Button
-              onClick={(evt) => {
-                onClose?.(evt, 'backdropClick');
-                queryClient.invalidateQueries();
-              }}
-            >
-              {intl.formatMessage({ defaultMessage: 'Close' })}
-            </Button>
-          )}
+          {button}
         </Stack>
       </DialogContent>
     </Dialog>
