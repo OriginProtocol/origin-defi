@@ -91,7 +91,7 @@ export const GlobalStatsCard = ({
                 chainName: supportedChainNames[token.chainId].short,
               },
             )}
-            value={`$${format(info?.tvl ?? from(0), 2)}`}
+            value={`$${format(info?.tvlUsd ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
             isLoading={isInfoLoading}
           />

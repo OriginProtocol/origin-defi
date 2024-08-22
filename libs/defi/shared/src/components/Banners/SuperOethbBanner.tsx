@@ -47,6 +47,7 @@ export const SuperOethbBanner = (props: StackProps) => {
       >
         <Stack
           direction={{ xs: 'column', lg: 'row' }}
+          alignItems={{ xs: 'flex-start', lg: 'center' }}
           spacing={{ xs: 3, sm: 2 }}
           width={1}
         >
@@ -68,7 +69,10 @@ export const SuperOethbBanner = (props: StackProps) => {
                   isLoading={isInfoLoading}
                   variant="featured2"
                   fontWeight="bold"
-                  sx={{ textDecoration: isInfoLoading ? 'none' : 'underline' }}
+                  sx={{
+                    textDecoration: isInfoLoading ? 'none' : 'underline',
+                    textUnderlineOffset: 4,
+                  }}
                 >
                   {intl.formatNumber(info?.apies?.apy ?? 0, {
                     style: 'percent',

@@ -132,7 +132,9 @@ export const TokenCard = ({
               >
                 {isComingSoon
                   ? '-'
-                  : `三 ${format(info?.tvl ?? from(0), { compact: true, digits: 2 })}`}
+                  : ['OGN', 'OUSD'].includes(token.symbol)
+                    ? `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
+                    : `Ξ ${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })}`}
               </LoadingLabel>
               {!isComingSoon && (
                 <LoadingLabel
@@ -140,7 +142,11 @@ export const TokenCard = ({
                   fontWeight="medium"
                   isLoading={isInfoLoading}
                 >
-                  $&nbsp;{format(info?.tvlUsd ?? from(0), { compact: true })}
+                  $&nbsp;
+                  {format(info?.tvlUsd ?? from(0), {
+                    compact: true,
+                    digits: 2,
+                  })}
                 </LoadingLabel>
               )}
             </Stack>

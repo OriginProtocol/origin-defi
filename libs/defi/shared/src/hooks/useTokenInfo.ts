@@ -2,7 +2,6 @@ import {
   getTokenPriceKey,
   useTokenBalance,
   useTokenPrice,
-  useTvl,
 } from '@origin/shared/providers';
 import {
   hasKey,
@@ -11,6 +10,7 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { readContract } from '@wagmi/core';
 import { from, mul } from 'dnum';
 import { useAccount, useConfig } from 'wagmi';
 
@@ -42,7 +42,7 @@ type TokenInfo = {
     value: number;
     trailingDays: number;
   };
-  tvl: Dnum;
+  totalSupply: Dnum;
   tvlUsd: Dnum;
   price: Dnum;
   balance: Dnum;
@@ -66,9 +66,11 @@ const fetcher: (
           chainId: token.chainId,
         }),
       }),
-      queryClient.fetchQuery({
-        queryKey: useTvl.getKey(token),
-        queryFn: useTvl.fetcher(config, queryClient),
+      readContract(config, {
+        address: token.address ?? ZERO_ADDRESS,
+        abi: token.abi,
+        functionName: 'totalSupply',
+        chainId: token.chainId,
       }),
       queryClient.fetchQuery({
         queryKey: useTokenPrice.getKey(getTokenPriceKey(token)),
@@ -96,7 +98,9 @@ const fetcher: (
       isFulfilled(res[0]) && !isNilOrEmpty(res[0].value?.oTokenApies?.[0])
         ? res[0].value.oTokenApies[0]
         : { apy7DayAvg: 0, apy14DayAvg: 0, apy30DayAvg: 0, apr: 0, apy: 0 };
-    const tvl = isFulfilled(res[1]) ? res[1].value : from(0);
+    const totalSupply = isFulfilled(res[1])
+      ? ([res[1].value, token.decimals] as Dnum)
+      : from(0);
     const price = isFulfilled(res[2]) ? res[2].value : from(0);
     const balance = isFulfilled(res[3])
       ? ([res[3].value, token.decimals] as Dnum)
@@ -127,9 +131,9 @@ const fetcher: (
         trailingDays: 0,
       },
     );
-    const tvlUsd = mul(tvl, price);
+    const tvlUsd = mul(totalSupply, price);
 
-    return { apies, bestApy, tvl, tvlUsd, price, balance, yieldEarned };
+    return { apies, bestApy, totalSupply, tvlUsd, price, balance, yieldEarned };
   };
 
 export const useTokenInfo = (
