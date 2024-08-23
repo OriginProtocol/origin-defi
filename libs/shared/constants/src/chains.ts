@@ -4,7 +4,7 @@ export const supportedChains = {
   [mainnet.id.toString()]: mainnet,
   [arbitrum.id.toString()]: arbitrum,
   [optimism.id.toString()]: optimism,
-  [base.id.toString()]: optimism,
+  [base.id.toString()]: base,
 } as const;
 
 export const supportedChainNames = {
