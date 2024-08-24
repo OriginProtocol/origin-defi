@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 
 import {
-  formatError,
   isFulfilled,
   isNilOrEmpty,
   scale,
+  timeoutRejectPromise,
+  timeoutResolvePromise,
 } from '@origin/shared/utils';
 import { useDebouncedEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
@@ -17,7 +18,9 @@ import { getAvailableRoutes, getFilteredSwapRoutes } from './utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
-import type { EstimatedSwapRoute, SwapState } from './types';
+import type { SwapState } from './types';
+
+export const ESTIMATE_ROUTE_TIMEOUT = 5000; // ms
 
 export const { Provider: SwapProvider, useTracked: useSwapState } =
   createContainer<
@@ -152,14 +155,17 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           );
           const availabilities = await Promise.allSettled(
             availableRoutes.map((r) =>
-              swapActions[r.action].isRouteAvailable(
-                { config, queryClient },
-                {
-                  amountIn: state.amountIn,
-                  tokenIn: r.tokenIn,
-                  tokenOut: r.tokenOut,
-                },
-              ),
+              Promise.race([
+                swapActions[r.action].isRouteAvailable(
+                  { config, queryClient },
+                  {
+                    amountIn: state.amountIn,
+                    tokenIn: r.tokenIn,
+                    tokenOut: r.tokenOut,
+                  },
+                ),
+                timeoutRejectPromise(ESTIMATE_ROUTE_TIMEOUT),
+              ]),
             ),
           );
           const filteredRoutes = availableRoutes.filter(
@@ -193,9 +199,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                   state.amountIn.toString(),
                 ] as const,
                 queryFn: async () => {
-                  let res: EstimatedSwapRoute;
-                  try {
-                    res = await swapActions[route.action].estimateRoute(
+                  return await Promise.race([
+                    swapActions[route.action].estimateRoute(
                       { config, queryClient },
                       {
                         tokenIn: route.tokenIn,
@@ -205,12 +210,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                         route,
                         slippage,
                       },
-                    );
-                  } catch (error) {
-                    console.error(
-                      `Fail to estimate route ${route.action}\n${formatError(error)}`,
-                    );
-                    res = {
+                    ),
+                    timeoutResolvePromise(ESTIMATE_ROUTE_TIMEOUT, {
                       tokenIn: route.tokenIn,
                       tokenOut: route.tokenOut,
                       estimatedAmount: 0n,
@@ -219,10 +220,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
                       approvalGas: 0n,
                       gas: 0n,
                       rate: 0,
-                    };
-                  }
-
-                  return res;
+                    }),
+                  ]);
                 },
               }),
             ),

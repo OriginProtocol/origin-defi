@@ -2,10 +2,11 @@ import { useCallback, useMemo } from 'react';
 
 import {
   formatError,
-  isFulfilled,
   isNilOrEmpty,
   isUserRejected,
   scale,
+  timeoutRejectPromise,
+  timeoutResolvePromise,
 } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { waitForTransactionReceipt } from '@wagmi/core';
@@ -15,7 +16,7 @@ import { useAccount, useConfig } from 'wagmi';
 
 import { getTokenPriceKey, useTokenPrices } from '../prices';
 import { useSlippage } from '../slippage';
-import { useSwapState } from './state';
+import { ESTIMATE_ROUTE_TIMEOUT, useSwapState } from './state';
 import {
   getAllAvailableChainIds,
   getAllAvailableTokens,
@@ -245,14 +246,17 @@ export const useHandleTokenFlip = () => {
     const newRoutes = getAvailableRoutes(swapRoutes, tokenOut, tokenIn);
     const availabilities = await Promise.allSettled(
       newRoutes.map((r) =>
-        swapActions[r.action].isRouteAvailable(
-          { config, queryClient },
-          {
-            amountIn: amountIn,
-            tokenIn: r.tokenIn,
-            tokenOut: r.tokenOut,
-          },
-        ),
+        Promise.race([
+          swapActions[r.action].isRouteAvailable(
+            { config, queryClient },
+            {
+              amountIn: amountIn,
+              tokenIn: r.tokenIn,
+              tokenOut: r.tokenOut,
+            },
+          ),
+          timeoutRejectPromise(ESTIMATE_ROUTE_TIMEOUT),
+        ]),
       ),
     );
     const filteredRoutes = newRoutes.filter(
@@ -302,7 +306,7 @@ export const useHandleTokenFlip = () => {
           selectedSwapRoute: null,
           status: 'swapRoutesLoading',
         }));
-        const routes = await Promise.allSettled(
+        const routes = await Promise.all(
           newRoutes.map((route) =>
             queryClient.fetchQuery({
               queryKey: [
@@ -317,17 +321,29 @@ export const useHandleTokenFlip = () => {
               queryFn: async () => {
                 let res: EstimatedSwapRoute;
                 try {
-                  res = await swapActions[route.action].estimateRoute(
-                    { config, queryClient },
-                    {
+                  res = await Promise.race([
+                    swapActions[route.action].estimateRoute(
+                      { config, queryClient },
+                      {
+                        tokenIn: route.tokenIn,
+                        tokenOut: route.tokenOut,
+                        amountIn: state.amountIn,
+                        amountOut: state.amountOut,
+                        route,
+                        slippage,
+                      },
+                    ),
+                    timeoutResolvePromise(ESTIMATE_ROUTE_TIMEOUT, {
                       tokenIn: route.tokenIn,
                       tokenOut: route.tokenOut,
-                      amountIn: scaledAmountIn,
-                      amountOut: scaledAmountOut,
-                      route,
-                      slippage,
-                    },
-                  );
+                      estimatedAmount: 0n,
+                      action: route.action,
+                      allowanceAmount: 0n,
+                      approvalGas: 0n,
+                      gas: 0n,
+                      rate: 0,
+                    }),
+                  ]);
                 } catch (error) {
                   console.error(
                     `Fail to estimate route ${route.action}\n${formatError(error)}`,
@@ -350,19 +366,16 @@ export const useHandleTokenFlip = () => {
           ),
         );
 
-        const sortedRoutes = routes
-          .filter(isFulfilled)
-          .map((r) => r.value)
-          .sort((a, b) => {
-            const valA =
-              scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
-              (a.gas + (a.allowanceAmount < amountIn ? a.approvalGas : 0n));
-            const valB =
-              scale(b.estimatedAmount, b.tokenOut.decimals, 18) -
-              (b.gas + (b.allowanceAmount < amountIn ? b.approvalGas : 0n));
+        const sortedRoutes = routes.sort((a, b) => {
+          const valA =
+            scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
+            (a.gas + (a.allowanceAmount < amountIn ? a.approvalGas : 0n));
+          const valB =
+            scale(b.estimatedAmount, b.tokenOut.decimals, 18) -
+            (b.gas + (b.allowanceAmount < amountIn ? b.approvalGas : 0n));
 
-            return valA < valB ? 1 : valA > valB ? -1 : 0;
-          });
+          return valA < valB ? 1 : valA > valB ? -1 : 0;
+        });
 
         setSwapState((state) => ({
           ...state,
@@ -439,21 +452,16 @@ export const useIsSwapRouteAvailable = (
       if (!route) {
         return false;
       }
-      let res = false;
-      try {
-        res = await swapActions[route.action].isRouteAvailable(
-          { config, queryClient },
-          {
-            tokenIn: route.tokenIn,
-            tokenOut: route.tokenOut,
-            amountIn,
-          },
-        );
-      } catch {}
 
-      return res;
+      return await swapActions[route.action].isRouteAvailable(
+        { config, queryClient },
+        {
+          tokenIn: route.tokenIn,
+          tokenOut: route.tokenOut,
+          amountIn,
+        },
+      );
     },
-    enabled: !isNilOrEmpty(route),
   });
 };
 
