@@ -8,14 +8,28 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   {
     tokenIn: tokens.base.WETH,
     tokenOut: tokens.base.superOETHb,
-    action: 'swap-aerodrome-oeth',
+    action: 'mint-vault-oeth',
     noSlippage: true,
+  },
+  {
+    tokenIn: tokens.base.ETH,
+    tokenOut: tokens.base.superOETHb,
+    action: 'swap-aerodrome-oeth',
   },
   {
     tokenIn: tokens.base.WETH,
     tokenOut: tokens.base.superOETHb,
-    action: 'mint-vault-oeth',
-    noSlippage: true,
+    action: 'swap-aerodrome-oeth',
+  },
+  {
+    tokenIn: tokens.base.superOETHb,
+    tokenOut: tokens.base.ETH,
+    action: 'swap-aerodrome-oeth',
+  },
+  {
+    tokenIn: tokens.base.superOETHb,
+    tokenOut: tokens.base.WETH,
+    action: 'swap-aerodrome-oeth',
   },
   // Wrap
   {

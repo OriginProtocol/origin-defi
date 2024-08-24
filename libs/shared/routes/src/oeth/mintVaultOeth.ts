@@ -9,7 +9,8 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits, parseUnits } from 'viem';
+import { mul } from 'dnum';
+import { erc20Abi, formatUnits } from 'viem';
 import { base, mainnet } from 'viem/chains';
 
 import { GAS_BUFFER } from '../constants';
@@ -65,13 +66,9 @@ const estimateAmount: EstimateAmount = async (
     chainId: vaults[tokenIn.chainId].chainId,
   });
 
-  return parseUnits(
-    (
-      +formatUnits(amountIn, tokenIn.decimals) *
-      +formatUnits(priceUnitMint as unknown as bigint, 18)
-    ).toString(),
-    tokenOut.decimals,
-  );
+  return mul([amountIn, tokenIn.decimals], [BigInt(priceUnitMint ?? 0), 18], {
+    decimals: tokenOut.decimals,
+  })[0];
 };
 
 const estimateGas: EstimateGas = async (

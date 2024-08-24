@@ -1,6 +1,9 @@
 import { contracts, tokens } from '@origin/shared/contracts';
-import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  isNilOrEmpty,
+  subPercentage,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -8,11 +11,13 @@ import {
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { erc20Abi, formatUnits, maxUint256 } from 'viem';
+import { div, from, lt } from 'dnum';
+import { encodeAbiParameters, encodePacked, erc20Abi, formatUnits } from 'viem';
 
-import { GAS_BUFFER } from '../constants';
+import { MAX_PRICE } from '../constants';
 import { defaultRoute } from '../defaultRoute';
 
+import type { Token } from '@origin/shared/contracts';
 import type {
   Allowance,
   Approve,
@@ -23,21 +28,145 @@ import type {
   IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
+import type { HexAddress } from '@origin/shared/utils';
 
-const isRouteAvailable: IsRouteAvailable = async (
-  { config },
-  { amountIn, tokenOut },
-) => {
+const POOL_FEE = 1;
+
+const swapCodes = {
+  V3_SWAP_EXACT_IN: '00',
+  WRAP_ETH: '0b',
+  UNWRAP_WETH: '0c',
+};
+
+const abis = {
+  V3_SWAP_EXACT_IN: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'amount',
+      type: 'uint256',
+    },
+    {
+      internalType: 'uint256',
+      name: 'minAmountOut',
+      type: 'uint256',
+    },
+    {
+      internalType: 'bytes',
+      name: 'path',
+      type: 'bytes',
+    },
+    {
+      internalType: 'bool',
+      name: 'payerIsUser',
+      type: 'bool',
+    },
+  ],
+  WRAP_ETH: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'amount',
+      type: 'uint256',
+    },
+  ],
+  UNWRAP_WETH: [
+    {
+      internalType: 'address',
+      name: 'recipient',
+      type: 'address',
+    },
+    {
+      internalType: 'uint256',
+      name: 'minAmountOut',
+      type: 'uint256',
+    },
+  ],
+};
+
+const getPath = (addressIn: HexAddress, addressOut: HexAddress) =>
+  encodePacked(
+    ['address', 'uint24', 'address'],
+    [addressIn, POOL_FEE, addressOut],
+  );
+
+const getArgs = (
+  tokenIn: Token,
+  tokenOut: Token,
+  amountIn: bigint,
+  minAmountOut: bigint,
+  address: HexAddress,
+) =>
+  ({
+    [`${tokens.base.ETH.id}_${tokens.base.superOETHb.id}`]: [
+      `0x${swapCodes.WRAP_ETH}${swapCodes.V3_SWAP_EXACT_IN}`,
+      [
+        encodeAbiParameters(abis.WRAP_ETH, [address, amountIn]),
+        encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+          address,
+          amountIn,
+          minAmountOut,
+          getPath(tokens.base.WETH.address, tokens.base.superOETHb.address),
+          true,
+        ]),
+      ],
+    ],
+    [`${tokens.base.WETH.id}_${tokens.base.superOETHb.id}`]: [
+      `0x${swapCodes.V3_SWAP_EXACT_IN}`,
+      [
+        encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+          address,
+          amountIn,
+          minAmountOut,
+          getPath(tokens.base.WETH.address, tokens.base.superOETHb.address),
+          true,
+        ]),
+      ],
+    ],
+    [`${tokens.base.superOETHb.id}_${tokens.base.ETH.id}`]: [
+      `0x${swapCodes.V3_SWAP_EXACT_IN}${swapCodes.UNWRAP_WETH}`,
+      [
+        encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+          contracts.base.aerodromeUniversalRouter.address,
+          amountIn,
+          minAmountOut,
+          getPath(tokens.base.superOETHb.address, tokens.base.WETH.address),
+          true,
+        ]),
+        encodeAbiParameters(abis.UNWRAP_WETH, [address, minAmountOut]),
+      ],
+    ],
+    [`${tokens.base.superOETHb.id}_${tokens.base.WETH.id}`]: [
+      `0x${swapCodes.V3_SWAP_EXACT_IN}`,
+      [
+        encodeAbiParameters(abis.V3_SWAP_EXACT_IN, [
+          address,
+          amountIn,
+          minAmountOut,
+          getPath(tokens.base.superOETHb.address, tokens.base.WETH.address),
+          true,
+        ]),
+      ],
+    ],
+  })[`${tokenIn.id}_${tokenOut.id}`];
+
+const isRouteAvailable: IsRouteAvailable = async (clients, args) => {
   try {
-    const bal = await readContract(config, {
-      address: tokenOut.address ?? tokens.base.superOETHb.address,
-      abi: tokenOut.abi,
-      chainId: tokenOut.chainId,
-      functionName: 'balanceOf',
-      args: [contracts.base.aerodromeWethSuperOethbPool.address],
-    });
+    const estimate = await estimateAmount(clients, args);
+    const { amountIn, tokenIn, tokenOut } = args;
 
-    return (bal as unknown as bigint) > amountIn;
+    return lt(
+      div([amountIn, tokenIn.decimals], [estimate, tokenOut.decimals]),
+      from(MAX_PRICE),
+    );
   } catch {}
 
   return false;
@@ -58,10 +187,10 @@ const estimateAmount: EstimateAmount = async (
     args: [
       {
         amountIn,
-        tokenIn: tokenIn.address ?? ZERO_ADDRESS,
-        tokenOut: tokenOut.address ?? ZERO_ADDRESS,
-        sqrtPriceLimitX96: 0n,
+        tokenIn: tokenIn?.address ?? tokens.base.WETH.address,
+        tokenOut: tokenOut?.address ?? tokens.base.WETH.address,
         tickSpacing: 1,
+        sqrtPriceLimitX96: 0n,
       },
     ],
   });
@@ -69,7 +198,10 @@ const estimateAmount: EstimateAmount = async (
   return quote[0];
 };
 
-const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
+const estimateGas: EstimateGas = async (
+  { config },
+  { amountIn, amountOut, slippage, tokenIn, tokenOut },
+) => {
   let gasEstimate = 200000n;
 
   const { address } = getAccount(config);
@@ -81,13 +213,19 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
     return gasEstimate;
   }
 
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
   try {
     gasEstimate = await publicClient.estimateContractGas({
-      address: contracts.mainnet.OETHZapper.address,
-      abi: contracts.mainnet.OETHZapper.abi,
-      functionName: 'deposit',
-      value: amountIn,
-      account: address,
+      address: contracts.base.aerodromeUniversalRouter.address,
+      abi: contracts.base.aerodromeUniversalRouter.abi,
+      functionName: 'execute',
+      args: getArgs(tokenIn, tokenOut, amountIn, minAmountOut[0], address),
+      ...(tokenIn.symbol === 'ETH' && { value: amountIn }),
+      ...(tokenOut.symbol === 'ETH' && { value: amountOut }),
     });
   } catch {}
 
@@ -101,15 +239,11 @@ const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
     return 0n;
   }
 
-  if (!tokenIn?.address || !tokenOut?.address) {
-    return maxUint256;
-  }
-
   const allowance = await readContract(config, {
-    address: tokenIn.address,
+    address: tokenIn.address ?? tokens.base.WETH.address,
     abi: erc20Abi,
     functionName: 'allowance',
-    args: [address, contracts.mainnet.OETHZapper.address],
+    args: [address, contracts.base.aerodromeUniversalRouter.address],
     chainId: tokenIn.chainId,
   });
 
@@ -118,28 +252,22 @@ const allowance: Allowance = async ({ config }, { tokenIn, tokenOut }) => {
 
 const estimateApprovalGas: EstimateApprovalGas = async (
   { config },
-  { tokenIn, tokenOut, amountIn },
+  { tokenIn, amountIn },
 ) => {
   let approvalEstimate = 0n;
   const { address } = getAccount(config);
   const publicClient = getPublicClient(config, { chainId: tokenIn.chainId });
 
-  if (
-    amountIn === 0n ||
-    !address ||
-    !tokenIn?.address ||
-    !tokenOut?.address ||
-    !publicClient
-  ) {
+  if (amountIn === 0n || !address || !publicClient) {
     return approvalEstimate;
   }
 
   try {
     approvalEstimate = await publicClient.estimateContractGas({
-      address: tokenIn.address,
+      address: tokenIn.address ?? tokens.base.WETH.address,
       abi: erc20Abi,
       functionName: 'approve',
-      args: [contracts.mainnet.OETHZapper.address, amountIn],
+      args: [contracts.base.aerodromeUniversalRouter.address, amountIn],
       account: address,
     });
   } catch {
@@ -150,7 +278,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
 };
 
 const estimateRoute: EstimateRoute = async (
-  config,
+  client,
   { tokenIn, tokenOut, amountIn, route, slippage },
 ) => {
   if (amountIn === 0n) {
@@ -164,13 +292,18 @@ const estimateRoute: EstimateRoute = async (
     };
   }
 
-  const [estimatedAmount, gas, allowanceAmount, approvalGas] =
-    await Promise.all([
-      estimateAmount(config, { tokenIn, tokenOut, amountIn }),
-      estimateGas(config, { tokenIn, tokenOut, amountIn, slippage }),
-      allowance(config, { tokenIn, tokenOut }),
-      estimateApprovalGas(config, { tokenIn, tokenOut, amountIn }),
-    ]);
+  const [estimatedAmount, allowanceAmount, approvalGas] = await Promise.all([
+    estimateAmount(client, { tokenIn, tokenOut, amountIn }),
+    allowance(client, { tokenIn, tokenOut }),
+    estimateApprovalGas(client, { tokenIn, tokenOut, amountIn }),
+  ]);
+  const gas = await estimateGas(client, {
+    tokenIn,
+    tokenOut,
+    amountIn,
+    slippage,
+    amountOut: estimatedAmount,
+  });
 
   return {
     ...route,
@@ -184,19 +317,12 @@ const estimateRoute: EstimateRoute = async (
   };
 };
 
-const approve: Approve = async (
-  { config },
-  { tokenIn, tokenOut, amountIn },
-) => {
-  if (!tokenIn?.address || !tokenOut?.address) {
-    return null;
-  }
-
+const approve: Approve = async ({ config }, { tokenIn, amountIn }) => {
   const { request } = await simulateContract(config, {
-    address: tokenIn.address,
+    address: tokenIn.address ?? tokens.base.WETH.address,
     abi: erc20Abi,
     functionName: 'approve',
-    args: [contracts.mainnet.OETHZapper.address, amountIn],
+    args: [contracts.base.aerodromeUniversalRouter.address, amountIn],
     chainId: tokenIn.chainId,
   });
   const hash = await writeContract(config, request);
@@ -206,7 +332,7 @@ const approve: Approve = async (
 
 const swap: Swap = async (
   { config, queryClient },
-  { tokenIn, tokenOut, amountIn, slippage },
+  { tokenIn, tokenOut, amountIn, amountOut, slippage },
 ) => {
   const { address } = getAccount(config);
 
@@ -220,27 +346,28 @@ const swap: Swap = async (
   );
 
   if (approved < amountIn) {
-    throw new Error(`Swap zapper is not approved`);
+    throw new Error(`Swap aerodrome is not approved`);
   }
 
-  const estimatedGas = await estimateGas(
-    { config, queryClient },
-    {
+  const minAmountOut = subPercentage(
+    [amountOut ?? 0n, tokenOut.decimals],
+    slippage,
+  );
+
+  const { request } = await simulateContract(config, {
+    address: contracts.base.aerodromeUniversalRouter.address,
+    abi: contracts.base.aerodromeUniversalRouter.abi,
+    chainId: contracts.base.aerodromeUniversalRouter.chainId,
+    functionName: 'execute',
+    args: getArgs(
       tokenIn,
       tokenOut,
       amountIn,
-      slippage,
-    },
-  );
-  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
-
-  const { request } = await simulateContractWithTxTracker(config, {
-    address: contracts.mainnet.OETHZapper.address,
-    abi: contracts.mainnet.OETHZapper.abi,
-    functionName: 'deposit',
-    value: amountIn,
-    gas,
-    chainId: contracts.mainnet.OETHZapper.chainId,
+      minAmountOut[0],
+      address ?? ZERO_ADDRESS,
+    ),
+    ...(tokenIn.symbol === 'ETH' && { value: amountIn }),
+    ...(tokenOut.symbol === 'ETH' && { value: amountOut }),
   });
   const hash = await writeContract(config, request);
 

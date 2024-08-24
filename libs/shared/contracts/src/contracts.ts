@@ -2,7 +2,7 @@ import { arbitrum, base, mainnet } from 'viem/chains';
 
 import { AerodromePoolABI } from './abis/AerodromePool';
 import { AerodromeQuoterABI } from './abis/AerodromeQuoter';
-import { AerodromeRouterABI } from './abis/AerodromeRouter';
+import { AerodromeUniversalRouterABI } from './abis/AerodromeUniversalRouter';
 import { ARMABI } from './abis/ARM';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
 import { BalancerVaultABI } from './abis/BalancerVault';
@@ -274,17 +274,18 @@ export const contracts = {
     },
   },
   base: {
+    // Aerodrome
     aerodromeQuoter: {
       address: '0x254cF9E1E6e233aa1AC962CB9B05b2cfeAaE15b0',
       chainId: base.id,
       abi: AerodromeQuoterABI,
       name: 'aerodromeQuoter',
     },
-    aerodromeRouter: {
-      address: '0xcF77a3Ba9A5CA399B7c97c74d54e5b1Beb874E43',
+    aerodromeUniversalRouter: {
+      address: '0x6Cb442acF35158D5eDa88fe602221b67B400Be3E',
       chainId: base.id,
-      abi: AerodromeRouterABI,
-      name: 'aerodromeRouter',
+      abi: AerodromeUniversalRouterABI,
+      name: 'aerodromeUniversalRouter',
     },
     aerodromeWethSuperOethbPool: {
       address: '0x6446021F4E396dA3df4235C62537431372195D38',
@@ -292,6 +293,7 @@ export const contracts = {
       abi: AerodromePoolABI,
       name: 'aerodromeWethSuperOethbPool',
     },
+    // superOETHb
     superOETHbVault: {
       address: '0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93',
       chainId: base.id,
