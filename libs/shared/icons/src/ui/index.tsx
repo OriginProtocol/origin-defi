@@ -18,6 +18,7 @@ import LoaderSvg from './loader.svg?react';
 import PendingSvg from './pending.svg?react';
 import PoweredBySafeSvg from './poweredBySafe.svg?react';
 import ReceivedSvg from './received.svg?react';
+import RocketSvg from './rocket.svg?react';
 import SendSvg from './send.svg?react';
 import SucceededSvg from './succeeded.svg?react';
 import SwapSvg from './swap.svg?react';
@@ -84,6 +85,9 @@ export const PoweredBySafe = (props: SvgIconProps) => (
 );
 export const Received = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ReceivedSvg} viewBox="0 0 16 16" />
+);
+export const Rocket = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={RocketSvg} inheritViewBox />
 );
 export const Send = (props: SvgIconProps) => (
   <SvgIcon {...props} component={SendSvg} viewBox="0 0 16 16" />

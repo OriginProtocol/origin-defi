@@ -1,7 +1,8 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { GradientChip, useTokenInfo } from '@origin/defi/shared';
+import { useTokenInfo } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { Rocket } from '@origin/shared/icons';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -17,7 +18,6 @@ export type TokenCardProps = {
   href?: string;
   externalHref?: string;
   isComingSoon?: boolean;
-  hideGradient?: boolean;
 } & BoxProps;
 
 export const TokenCard = ({
@@ -26,7 +26,6 @@ export const TokenCard = ({
   href,
   externalHref,
   isComingSoon,
-  hideGradient,
   ...rest
 }: TokenCardProps) => {
   const intl = useIntl();
@@ -61,50 +60,71 @@ export const TokenCard = ({
           </Stack>
         </Grid2>
         <Grid2 xs={14} md={2} order={3}>
-          {hideGradient ? (
-            <Stack direction="row" alignItems="baseline" spacing={1}>
-              <Typography
-                variant="featured2"
-                fontWeight="bold"
-                color="primary.main"
+          <Stack direction="row" alignItems="center" height={1}>
+            {isComingSoon ? (
+              <Stack
+                direction="row"
+                alignItems="center"
+                spacing={0.25}
+                sx={{
+                  background: (theme) =>
+                    theme.palette.background.gradientBlueDark,
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
               >
-                {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
-                  style: 'percent',
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </Typography>
-              <Typography variant="caption1" color="primary.main">
-                {intl.formatMessage({ defaultMessage: 'APY' })}
-              </Typography>
-            </Stack>
-          ) : (
-            <GradientChip
-              direction="row"
-              alignItems="baseline"
-              justifyContent="center"
-              spacing={1}
-              maxWidth={120}
-              sx={{ whiteSpace: 'nowrap' }}
-            >
-              {isComingSoon ? (
-                intl.formatMessage({ defaultMessage: 'Coming soon' })
-              ) : (
-                <>
-                  <LoadingLabel isLoading={isInfoLoading} fontWeight="bold">
-                    {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
-                      style: 'percent',
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </LoadingLabel>{' '}
-                  <Typography variant="caption1" color="primary.contrastText">
-                    {intl.formatMessage({ defaultMessage: 'APY' })}
-                  </Typography>
-                </>
-              )}
-            </GradientChip>
-          )}
+                <Rocket sx={{ fontSize: 32 }} />
+                <Typography noWrap variant="caption1" fontWeight="medium">
+                  {intl.formatMessage({ defaultMessage: 'APY coming soon' })}
+                </Typography>
+              </Stack>
+            ) : (
+              <Stack direction="row" alignItems="baseline" spacing={1} sx={{}}>
+                <LoadingLabel
+                  isLoading={isInfoLoading}
+                  variant="featured2"
+                  fontWeight="bold"
+                  sx={{
+                    background: (theme) =>
+                      theme.palette.background.gradientBlueDark,
+                    backgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    position: 'relative',
+                    ...(!isInfoLoading && {
+                      '::after': {
+                        content: '""',
+                        position: 'absolute',
+                        left: 0,
+                        right: 2,
+                        bottom: 1,
+                        height: 2,
+                        background: (theme) =>
+                          theme.palette.background.gradientBlueDark,
+                      },
+                    }),
+                  }}
+                >
+                  {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
+                    style: 'percent',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </LoadingLabel>
+                <Typography
+                  variant="caption1"
+                  color="primary.contrastText"
+                  sx={{
+                    background: (theme) =>
+                      theme.palette.background.gradientBlueDark,
+                    backgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {intl.formatMessage({ defaultMessage: 'APY' })}
+                </Typography>
+              </Stack>
+            )}
+          </Stack>
         </Grid2>
         <Grid2 xs={14} md={2} order={4}>
           <Stack
@@ -164,7 +184,7 @@ export const TokenCard = ({
               {intl.formatMessage({ defaultMessage: 'Your balance' })}
             </Typography>
             <LoadingLabel
-              fontWeight="bold"
+              fontWeight="medium"
               isLoading={isInfoLoading && !isComingSoon}
             >
               {!isConnected || isComingSoon
@@ -186,7 +206,7 @@ export const TokenCard = ({
             <Typography variant="caption1">
               {intl.formatMessage({ defaultMessage: 'Yield earned' })}
             </Typography>
-            <Typography fontWeight="bold">
+            <Typography fontWeight="medium">
               {!isConnected || isComingSoon
                 ? '-'
                 : format(info?.yieldEarned ?? from(0), {

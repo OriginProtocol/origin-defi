@@ -117,7 +117,7 @@ export const LSTCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.mainnet.OETH} hideGradient href="/oeth" />
+            <TokenCard token={tokens.mainnet.OETH} href="/oeth" />
           </Stack>
         </Stack>
         <BridgeBanner />
@@ -182,7 +182,6 @@ export const StakingCard = (props: CardProps) => {
           >
             <TokenCard
               token={tokens.mainnet.OGN}
-              hideGradient
               externalHref="https://app.uniswap.org/swap?outputCurrency=0x8207c1FfC5B6804F6024322CcF34F29c3541Ae26&chain=mainnet"
             />
           </Stack>
@@ -246,7 +245,7 @@ export const StableCard = (props: CardProps) => {
               overflow: 'hidden',
             }}
           >
-            <TokenCard token={tokens.mainnet.OUSD} href="/ousd" hideGradient />
+            <TokenCard token={tokens.mainnet.OUSD} href="/ousd" />
           </Stack>
         </Stack>
       </CardContent>
