@@ -19,7 +19,6 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import {
   getTokenPriceKey,
-  isNativeCurrency,
   MIX_TOKEN,
   RedeemProvider,
   TxButton,
@@ -164,7 +163,6 @@ function RedeemerWrapped({
             onAmountChange={handleAmountInChange}
             balance={balance}
             isBalanceLoading={isBalanceLoading}
-            isNativeCurrency={isNativeCurrency(tokenIn)}
             token={tokenIn}
             isTokenClickDisabled
             tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}

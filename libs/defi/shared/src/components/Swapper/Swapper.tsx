@@ -25,7 +25,6 @@ import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   getTokenPriceKey,
-  isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
   useHandleAmountInChange,
@@ -363,7 +362,6 @@ function SwapperWrapped({
               onAmountChange={handleAmountInChange}
               balance={balances?.[tokenIn.id] ?? 0n}
               isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
               onTokenClick={() => {
                 setTokenSource('tokenIn');
@@ -388,7 +386,6 @@ function SwapperWrapped({
               balance={balances?.[tokenOut.id] ?? 0n}
               isAmountLoading={isSwapRoutesLoading}
               isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenOut)}
               token={tokenOut}
               onTokenClick={() => {
                 setTokenSource('tokenOut');

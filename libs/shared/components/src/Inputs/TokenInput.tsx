@@ -2,9 +2,8 @@ import { forwardRef } from 'react';
 
 import { alpha, Box, Button, Skeleton, Stack, Typography } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { format, lt, mul } from 'dnum';
+import { format, from, gt, lt, mul, sub } from 'dnum';
 import { useIntl } from 'react-intl';
-import { parseEther } from 'viem';
 
 import { BigIntInput, LoadingLabel, TokenPicker } from '..';
 
@@ -13,10 +12,6 @@ import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
 import type { BigintInputProps, TokenPickerProps } from '..';
-
-// When clicking max on native currency, we leave this amount of token
-// on the wallet so the user can afford the transaction gas fees
-const MIN_ETH_FOR_GAS = '0.015';
 
 export type TokenInputProps = {
   amount: bigint;
@@ -41,6 +36,7 @@ export type TokenInputProps = {
     'value' | 'decimals' | 'onChange' | 'isLoading' | 'isError'
   >;
   tokenPickerProps?: Omit<TokenPickerProps, 'token'>;
+  nativeMinimumForGas?: Dnum;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -62,6 +58,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       isNativeCurrency = false,
       isTokenClickDisabled,
       tokenPriceUsd = 0,
+      nativeMinimumForGas = from(15000000000000000, 18), // 0.015 ETH
       isPriceLoading,
       inputProps,
       tokenPickerProps,
@@ -71,20 +68,22 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
   ) => {
     const intl = useIntl();
 
+    const bal = [balance ?? 0n, decimals] as Dnum;
+    const minForGas = isNativeCurrency ? nativeMinimumForGas : from(0);
+
     const handleMaxClick = () => {
-      const max = isNativeCurrency
-        ? balance - parseEther(MIN_ETH_FOR_GAS)
-        : balance;
+      const max = sub(bal, minForGas)[0];
       onAmountChange?.(max);
     };
 
-    const bal = [balance ?? 0n, decimals] as Dnum;
     const balDigits = lt(bal, 1) ? 6 : lt(bal, 10) ? 4 : 2;
     const amountUsd = mul([amount, decimals], tokenPriceUsd ?? 0);
-    const maxVisible =
-      !hideMaxButton &&
-      balance > (isNativeCurrency ? parseEther(MIN_ETH_FOR_GAS) : 0n);
-    const maxDisabled = disableMaxButton || !isConnected || isBalanceLoading;
+    const maxVisible = !hideMaxButton && gt([balance, decimals], minForGas);
+    const maxDisabled =
+      disableMaxButton ||
+      !isConnected ||
+      isBalanceLoading ||
+      gt(minForGas, bal);
 
     return (
       <Stack {...rest}>

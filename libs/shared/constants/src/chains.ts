@@ -1,3 +1,4 @@
+import { from } from 'dnum';
 import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
 export const supportedChains = {
@@ -25,3 +26,12 @@ export const supportedChainNames = {
     long: 'Base',
   },
 } as const;
+
+// minimum amount of native token to leave on the user
+// wallet so he can afford the transaction gas fees
+export const nativeMinimumForGas = {
+  [mainnet.id.toString()]: from(0.015, mainnet.nativeCurrency.decimals),
+  [arbitrum.id.toString()]: from(0.0015, arbitrum.nativeCurrency.decimals),
+  [optimism.id.toString()]: from(0.0015, optimism.nativeCurrency.decimals),
+  [base.id.toString()]: from(0.0015, base.nativeCurrency.decimals),
+};
