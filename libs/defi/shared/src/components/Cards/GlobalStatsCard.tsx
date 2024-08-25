@@ -5,6 +5,8 @@ import {
   Divider,
   Stack,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { supportedChainNames } from '@origin/shared/constants';
@@ -33,6 +35,9 @@ export const GlobalStatsCard = ({
   ...rest
 }: GlobalStatsCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token);
 
   return (
@@ -46,7 +51,7 @@ export const GlobalStatsCard = ({
       }}
     >
       <AccordionSummary expandIcon={<FaChevronDownRegular />} sx={{ p: 3 }}>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" alignItems="center" spacing={1} pr={0.5}>
           {showTokenHeader ? (
             <>
               <TokenIcon token={token} sx={{ fontSize: 24 }} />
@@ -57,8 +62,8 @@ export const GlobalStatsCard = ({
               {intl.formatMessage({ defaultMessage: 'Global stats' })}
             </Typography>
           )}
-          {showAprChip && (
-            <ColorChip alignItems="baseline">
+          {showAprChip && (!isMd || isSm) && (
+            <ColorChip alignItems="baseline" px={0.5}>
               <LoadingLabel
                 variant="caption1"
                 fontWeight="bold"

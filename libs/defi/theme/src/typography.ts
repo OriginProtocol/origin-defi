@@ -84,18 +84,30 @@ export const typography = (base: Theme): ThemeOptions => ({
       fontSize: 18,
       lineHeight: 1.555,
       fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 16,
+        lineHeight: 1.25,
+      },
     },
     body2: {
       fontFamily: 'inter',
       fontSize: 16,
       lineHeight: 1.5,
       fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 14,
+        lineHeight: 1.25,
+      },
     },
     body3: {
       fontFamily: 'inter',
       fontSize: 14,
       lineHeight: 1.428,
       fontWeight: 400,
+      [base.breakpoints.down('sm')]: {
+        fontSize: 13,
+        lineHeight: 1.25,
+      },
     },
     button: {
       fontFamily: 'inter',

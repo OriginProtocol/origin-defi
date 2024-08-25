@@ -1,7 +1,13 @@
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import {
+  Box,
+  Button,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { useTokenInfo, useXOgnStakingApy } from '@origin/defi/shared';
-import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { Rocket } from '@origin/shared/icons';
 import { getFormatPrecision } from '@origin/shared/utils';
@@ -10,7 +16,8 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 
-import type { BoxProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 export type TokenCardProps = {
@@ -19,7 +26,7 @@ export type TokenCardProps = {
   href?: string;
   externalHref?: string;
   isComingSoon?: boolean;
-} & BoxProps;
+} & StackProps;
 
 export const TokenCard = ({
   token,
@@ -30,6 +37,8 @@ export const TokenCard = ({
   ...rest
 }: TokenCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token, {
     enabled: !isComingSoon,
@@ -50,223 +59,233 @@ export const TokenCard = ({
     : intl.formatMessage({ defaultMessage: 'APY' });
 
   return (
-    <Box
+    <Stack
       {...rest}
+      direction={{ xs: 'column', md: 'row' }}
+      alignItems={{ xs: 'stretch', md: 'center' }}
+      spacing={{ xs: 1, md: 3 }}
       sx={{
-        px: 3,
         py: 2,
+        px: 3,
         color: 'text.primary',
         backgroundColor: 'background.highlight',
         ...rest?.sx,
       }}
     >
-      <Grid2 columns={14} spacing={{ xs: 1, sm: 2, md: 3 }} container>
-        <Grid2 xs={1} order={{ xs: 2, md: 1 }}>
-          <Stack alignItems={{ xs: 'flex-end', md: 'center' }}>
-            <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
-          </Stack>
-        </Grid2>
-        <Grid2 xs={12} md={2} order={{ xs: 1, md: 2 }}>
-          <Stack>
-            <Typography variant="body2" fontWeight="bold">
-              {token.name}
-            </Typography>
-            <Typography variant="caption1">{token.symbol}</Typography>
-          </Stack>
-        </Grid2>
-        <Grid2 xs={14} md={2} order={3}>
-          <Stack direction="row" alignItems="center" height={1}>
-            {isComingSoon ? (
-              <Stack
-                direction="row"
-                alignItems="center"
-                spacing={0.25}
-                sx={{
-                  background: (theme) =>
-                    theme.palette.background.gradientBlueDark,
-                  backgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                <Rocket sx={{ fontSize: 32 }} />
-                <Typography noWrap variant="caption1" fontWeight="medium">
-                  {intl.formatMessage({ defaultMessage: 'APY coming soon' })}
-                </Typography>
-              </Stack>
-            ) : (
-              <Stack direction="row" alignItems="baseline" spacing={1} sx={{}}>
-                <LoadingLabel
-                  isLoading={isApyLoading}
-                  variant="featured2"
-                  fontWeight="bold"
-                  sx={{
-                    background: (theme) =>
-                      theme.palette.background.gradientBlueDark,
-                    backgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    position: 'relative',
-                    ...(!isApyLoading && {
-                      '::after': {
-                        content: '""',
-                        position: 'absolute',
-                        left: 0,
-                        right: 2,
-                        bottom: 1,
-                        height: 2,
-                        background: (theme) =>
-                          theme.palette.background.gradientBlueDark,
-                      },
-                    }),
-                  }}
-                >
-                  {intl.formatNumber(apy ?? 0, {
-                    style: 'percent',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  })}
-                </LoadingLabel>
-                <Typography
-                  variant="caption1"
-                  color="primary.contrastText"
-                  noWrap
-                  sx={{
-                    background: (theme) =>
-                      theme.palette.background.gradientBlueDark,
-                    backgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                  }}
-                >
-                  {apyLabel}
-                </Typography>
-              </Stack>
-            )}
-          </Stack>
-        </Grid2>
-        <Grid2 xs={14} md={2} order={4}>
+      <Stack
+        justifyContent={{ xs: 'space-between', md: 'flex-start' }}
+        alignItems="center"
+        direction={{ xs: 'row-reverse', md: 'row' }}
+        spacing={2}
+      >
+        <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
+        <Stack height={1} justifyContent="center">
+          <Typography variant="body2" fontWeight="bold" noWrap>
+            {token.name}
+          </Typography>
+          <Typography variant="caption1" noWrap>
+            {token.symbol}
+          </Typography>
+        </Stack>
+      </Stack>
+
+      <Stack
+        direction="row"
+        alignItems="center"
+        mb={{ xs: 0.5, md: 0 }}
+        minWidth={130}
+      >
+        {isComingSoon ? (
           <Stack
-            direction={{ xs: 'row', md: 'column' }}
-            alignItems={{ xs: 'center', md: 'flex-start' }}
-            spacing={0.5}
-            pl={{ xs: 0, md: 1 }}
+            direction="row"
+            alignItems="center"
+            spacing={0.25}
+            sx={{
+              background: (theme) => theme.palette.background.gradientBlueDark,
+              backgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
           >
-            <Typography variant="caption1">
-              {intl.formatMessage({ defaultMessage: 'TVL' })}
+            <Rocket sx={{ fontSize: 32 }} />
+            <Typography noWrap variant="caption1" fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'APY coming soon' })}
             </Typography>
-            <Stack
-              direction="row"
-              alignItems="baseline"
-              flexWrap="nowrap"
-              spacing={0.75}
-              divider={
-                <Divider variant="middle" orientation="vertical" flexItem />
-              }
-            >
-              <LoadingLabel
-                fontWeight="bold"
-                isLoading={isInfoLoading && !isComingSoon}
-                noWrap
-              >
-                {isComingSoon
-                  ? '-'
-                  : ['OGN', 'OUSD'].includes(token.symbol)
-                    ? `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
-                    : `Ξ ${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })}`}
-              </LoadingLabel>
-              {!isComingSoon && (
-                <LoadingLabel
-                  variant="caption2"
-                  fontWeight="medium"
-                  isLoading={isInfoLoading}
-                >
-                  $&nbsp;
-                  {format(info?.tvlUsd ?? from(0), {
-                    compact: true,
-                    digits: 2,
-                  })}
-                </LoadingLabel>
-              )}
-            </Stack>
           </Stack>
-        </Grid2>
-        <Grid2 xs={14} md={2} order={5}>
-          <Stack
-            direction={{ xs: 'row', md: 'column' }}
-            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
-            justifyContent={{ xs: 'space-between', md: 'flex-end' }}
-            pt={{ xs: 2, md: 0 }}
-            spacing={0.5}
-          >
-            <Typography variant="caption1">
-              {intl.formatMessage({ defaultMessage: 'Your balance' })}
-            </Typography>
+        ) : (
+          <Stack direction="row" alignItems="baseline" spacing={1} sx={{}}>
             <LoadingLabel
-              fontWeight="medium"
-              isLoading={isInfoLoading && !isComingSoon}
+              isLoading={isApyLoading}
+              variant="featured2"
+              fontWeight="bold"
+              sx={{
+                background: (theme) =>
+                  theme.palette.background.gradientBlueDark,
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                position: 'relative',
+                ...(!isApyLoading && {
+                  '::after': {
+                    content: '""',
+                    position: 'absolute',
+                    left: 0,
+                    right: 2,
+                    bottom: 1,
+                    height: 2,
+                    background: (theme) =>
+                      theme.palette.background.gradientBlueDark,
+                  },
+                }),
+              }}
             >
-              {!isConnected || isComingSoon
-                ? '-'
-                : format(info?.balance ?? from(0), {
-                    digits: getFormatPrecision(info?.balance ?? from(0)),
-                  })}
+              {intl.formatNumber(apy ?? 0, {
+                style: 'percent',
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}
             </LoadingLabel>
+            <Typography
+              variant="caption1"
+              color="primary.contrastText"
+              noWrap
+              sx={{
+                background: (theme) =>
+                  theme.palette.background.gradientBlueDark,
+                backgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}
+            >
+              {apyLabel}
+            </Typography>
           </Stack>
-        </Grid2>
-        <Grid2 xs={14} md={2} order={6}>
-          {!isOgn && (
-            <Stack
-              direction={{ xs: 'row', md: 'column' }}
-              alignItems={{ xs: 'flex-start', md: 'flex-end' }}
-              justifyContent={{ xs: 'space-between', md: 'flex-end' }}
-              pb={{ xs: 2, md: 0 }}
-              spacing={0.5}
-            >
-              <Typography variant="caption1">
-                {intl.formatMessage({ defaultMessage: 'Yield earned' })}
-              </Typography>
-              <Typography fontWeight="medium">
-                {!isConnected || isComingSoon
-                  ? '-'
-                  : format(info?.yieldEarned ?? from(0), {
-                      digits: getFormatPrecision(info?.yieldEarned ?? from(0)),
-                    })}
-              </Typography>
-            </Stack>
+        )}
+      </Stack>
+
+      <Stack
+        direction={{ xs: 'row', md: 'column' }}
+        alignItems={{ xs: 'center', md: 'flex-start' }}
+        spacing={{ xs: 1, md: 0 }}
+        pl={{ xs: 0, md: 1 }}
+        pb={{ xs: 2, md: 0 }}
+        width={1}
+      >
+        <Typography variant="caption1">
+          {intl.formatMessage({ defaultMessage: 'TVL' })}
+          {isSm && `: `}
+        </Typography>
+        <Stack
+          direction={{ xs: 'row', md: 'column' }}
+          alignItems={{ xs: 'baseline', md: 'flex-start' }}
+          flexWrap="nowrap"
+          spacing={{ xs: 0.5, md: 0 }}
+        >
+          <LoadingLabel
+            fontWeight="bold"
+            isLoading={isInfoLoading && !isComingSoon}
+            noWrap
+          >
+            {isComingSoon
+              ? '-'
+              : ['OGN', 'OUSD'].includes(token.symbol)
+                ? `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
+                : `Ξ ${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })}`}
+          </LoadingLabel>
+          {!isComingSoon && isSm && (
+            <Box
+              sx={{
+                width: '1px',
+                height: 10,
+                backgroundColor: 'divider',
+              }}
+            />
           )}
-        </Grid2>
-        <Grid2 xs={14} md={3} order={7}>
-          {!!href && (
-            <Button
-              component={RouterLink}
-              to={href}
-              sx={{ whiteSpace: 'nowrap' }}
-              fullWidth
-              disabled={isComingSoon}
+          {!isComingSoon && (
+            <LoadingLabel
+              variant="caption2"
+              fontWeight="medium"
+              isLoading={isInfoLoading}
             >
-              {hrefLabel ??
-                intl.formatMessage(
-                  { defaultMessage: 'Get {symbol}' },
-                  { symbol: token.symbol },
-                )}
-            </Button>
+              $&nbsp;
+              {format(info?.tvlUsd ?? from(0), {
+                compact: true,
+                digits: 2,
+              })}
+            </LoadingLabel>
           )}
-          {!!externalHref && (
-            <Button
-              href={externalHref}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              sx={{ whiteSpace: 'nowrap' }}
-              fullWidth
-              disabled={isComingSoon}
-            >
-              {hrefLabel ??
-                intl.formatMessage(
-                  { defaultMessage: 'Get {symbol}' },
-                  { symbol: token.symbol },
-                )}
-            </Button>
-          )}
-        </Grid2>
-      </Grid2>
-    </Box>
+        </Stack>
+      </Stack>
+
+      <ValueLabel
+        label={intl.formatMessage({ defaultMessage: 'Your balance' })}
+        value={`${
+          !isConnected || isComingSoon
+            ? '-'
+            : format(info?.balance ?? from(0), {
+                digits: getFormatPrecision(info?.balance ?? from(0)),
+              })
+        }`}
+        {...valueLabelProps}
+        isLoading={isInfoLoading && !isComingSoon}
+      />
+
+      {!isOgn && (
+        <ValueLabel
+          label={intl.formatMessage({ defaultMessage: 'Yield earned' })}
+          value={`${
+            !isConnected || isComingSoon
+              ? '-'
+              : format(info?.yieldEarned ?? from(0), {
+                  digits: getFormatPrecision(info?.yieldEarned ?? from(0)),
+                })
+          }`}
+          {...valueLabelProps}
+          isLoading={isInfoLoading && !isComingSoon}
+        />
+      )}
+
+      <Stack justifyContent="center" pt={{ xs: 2, md: 0 }}>
+        {!!href && (
+          <Button
+            component={RouterLink}
+            to={href}
+            sx={{ whiteSpace: 'nowrap' }}
+            fullWidth
+            disabled={isComingSoon}
+            size={isSm ? 'large' : 'medium'}
+          >
+            {hrefLabel ??
+              intl.formatMessage(
+                { defaultMessage: 'Get {symbol}' },
+                { symbol: token.symbol },
+              )}
+          </Button>
+        )}
+        {!!externalHref && (
+          <Button
+            href={externalHref}
+            target="_blank"
+            rel="noopener noreferrer nofollow"
+            sx={{ whiteSpace: 'nowrap' }}
+            fullWidth
+            disabled={isComingSoon}
+            size={isSm ? 'large' : 'medium'}
+          >
+            {hrefLabel ??
+              intl.formatMessage(
+                { defaultMessage: 'Get {symbol}' },
+                { symbol: token.symbol },
+              )}
+          </Button>
+        )}
+      </Stack>
+    </Stack>
   );
+};
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  direction: { xs: 'row', md: 'column' },
+  alignItems: { xs: 'center', md: 'flex-end' },
+  justifyContent: { xs: 'space-between', md: 'center' },
+  spacing: 0.5,
+  labelProps: { variant: 'caption1', noWrap: true },
+  valueProps: { fontWeight: 'medium', noWrap: true },
 };
