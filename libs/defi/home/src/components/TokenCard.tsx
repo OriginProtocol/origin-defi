@@ -1,7 +1,8 @@
 import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
-import { useTokenInfo } from '@origin/defi/shared';
+import { useTokenInfo, useXOgnStakingApy } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import { Rocket } from '@origin/shared/icons';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from } from 'dnum';
@@ -33,6 +34,20 @@ export const TokenCard = ({
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token, {
     enabled: !isComingSoon,
   });
+  const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy(
+    undefined,
+    12,
+    {
+      enabled: token.id === tokens.mainnet.OGN.id,
+    },
+  );
+
+  const isOgn = token.id === tokens.mainnet.OGN.id;
+  const apy = isOgn ? staking?.xOgnApyPercentage : info?.apies?.apy;
+  const isApyLoading = isOgn ? isStakingLoading : isInfoLoading;
+  const apyLabel = isOgn
+    ? intl.formatMessage({ defaultMessage: 'Max vAPY' })
+    : intl.formatMessage({ defaultMessage: 'APY' });
 
   return (
     <Box
@@ -81,7 +96,7 @@ export const TokenCard = ({
             ) : (
               <Stack direction="row" alignItems="baseline" spacing={1} sx={{}}>
                 <LoadingLabel
-                  isLoading={isInfoLoading}
+                  isLoading={isApyLoading}
                   variant="featured2"
                   fontWeight="bold"
                   sx={{
@@ -90,7 +105,7 @@ export const TokenCard = ({
                     backgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     position: 'relative',
-                    ...(!isInfoLoading && {
+                    ...(!isApyLoading && {
                       '::after': {
                         content: '""',
                         position: 'absolute',
@@ -104,7 +119,7 @@ export const TokenCard = ({
                     }),
                   }}
                 >
-                  {intl.formatNumber(info?.apies?.apy30DayAvg ?? 0, {
+                  {intl.formatNumber(apy ?? 0, {
                     style: 'percent',
                     minimumFractionDigits: 2,
                     maximumFractionDigits: 2,
@@ -113,6 +128,7 @@ export const TokenCard = ({
                 <Typography
                   variant="caption1"
                   color="primary.contrastText"
+                  noWrap
                   sx={{
                     background: (theme) =>
                       theme.palette.background.gradientBlueDark,
@@ -120,7 +136,7 @@ export const TokenCard = ({
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  {intl.formatMessage({ defaultMessage: 'APY' })}
+                  {apyLabel}
                 </Typography>
               </Stack>
             )}
@@ -196,24 +212,26 @@ export const TokenCard = ({
           </Stack>
         </Grid2>
         <Grid2 xs={14} md={2} order={6}>
-          <Stack
-            direction={{ xs: 'row', md: 'column' }}
-            alignItems={{ xs: 'flex-start', md: 'flex-end' }}
-            justifyContent={{ xs: 'space-between', md: 'flex-end' }}
-            pb={{ xs: 2, md: 0 }}
-            spacing={0.5}
-          >
-            <Typography variant="caption1">
-              {intl.formatMessage({ defaultMessage: 'Yield earned' })}
-            </Typography>
-            <Typography fontWeight="medium">
-              {!isConnected || isComingSoon
-                ? '-'
-                : format(info?.yieldEarned ?? from(0), {
-                    digits: getFormatPrecision(info?.yieldEarned ?? from(0)),
-                  })}
-            </Typography>
-          </Stack>
+          {!isOgn && (
+            <Stack
+              direction={{ xs: 'row', md: 'column' }}
+              alignItems={{ xs: 'flex-start', md: 'flex-end' }}
+              justifyContent={{ xs: 'space-between', md: 'flex-end' }}
+              pb={{ xs: 2, md: 0 }}
+              spacing={0.5}
+            >
+              <Typography variant="caption1">
+                {intl.formatMessage({ defaultMessage: 'Yield earned' })}
+              </Typography>
+              <Typography fontWeight="medium">
+                {!isConnected || isComingSoon
+                  ? '-'
+                  : format(info?.yieldEarned ?? from(0), {
+                      digits: getFormatPrecision(info?.yieldEarned ?? from(0)),
+                    })}
+              </Typography>
+            </Stack>
+          )}
         </Grid2>
         <Grid2 xs={14} md={3} order={7}>
           {!!href && (
