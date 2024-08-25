@@ -6,11 +6,12 @@ import {
   BadgeIcon,
   ClickAwayPopover,
   ClipboardButton,
+  NetworkIcon,
   TokenIcon,
   ValueLabel,
   WalletIcon,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenById, tokens } from '@origin/shared/contracts';
 import {
   FaArrowRightFromBracketRegular,
   FaCopyRegular,
@@ -25,9 +26,10 @@ import {
 } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
-import { descend, pipe, sort, take } from 'ramda';
+import { descend, filter, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount, useDisconnect } from 'wagmi';
+import { mainnet } from 'viem/chains';
+import { useAccount, useConfig, useDisconnect } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
@@ -39,9 +41,16 @@ export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,
 ) => {
   const intl = useIntl();
-  const { address, connector } = useAccount();
+  const { address, connector, chain } = useAccount();
+  const [selectedChainId, setSelectedChainId] = useState(
+    chain?.id ?? mainnet.id,
+  );
   const { disconnect } = useDisconnect();
   const [tab, setTab] = useState<'balances' | 'activities'>('balances');
+
+  const handleSelectChain = (chainId: number) => {
+    setSelectedChainId(chainId);
+  };
 
   if (!address) {
     return null;
@@ -110,11 +119,18 @@ export const AccountPopover = (
           </Button>
         </Stack>
       </Stack>
+      <Divider />
+      <ChainSelector
+        selectedChainId={selectedChainId}
+        onSelectChain={handleSelectChain}
+      />
+      <Divider />
       <Tabs
         value={tab}
         onChange={(_, value) => {
           setTab(value);
         }}
+        sx={{ minHeight: 0 }}
       >
         <Tab
           label={intl.formatMessage({ defaultMessage: 'Tokens' })}
@@ -122,8 +138,8 @@ export const AccountPopover = (
           sx={(theme) => ({
             ...theme.typography.body3,
             fontWeight: 'medium',
-            py: 1,
             mx: 1,
+            py: 1.5,
           })}
         />
         <Tab
@@ -132,24 +148,75 @@ export const AccountPopover = (
           sx={(theme) => ({
             ...theme.typography.body3,
             fontWeight: 'medium',
-            py: 1,
+            py: 1.5,
           })}
         />
       </Tabs>
       <Divider />
-      {tab === 'balances' ? <BalanceList /> : <ActivityList />}
+      {tab === 'balances' ? (
+        <BalanceList selectedChainId={selectedChainId} />
+      ) : (
+        <ActivityList selectedChainId={selectedChainId} />
+      )}
     </ClickAwayPopover>
   );
 };
 
+type ChainSelectorProps = {
+  selectedChainId: number;
+  onSelectChain: (chainId: number) => void;
+} & StackProps;
+
+function ChainSelector({
+  selectedChainId,
+  onSelectChain,
+  ...rest
+}: ChainSelectorProps) {
+  const { chains } = useConfig();
+
+  return (
+    <Stack direction="row" alignItems="center" {...rest}>
+      {chains.map((c) => (
+        <Button
+          key={c.id}
+          onClick={() => {
+            onSelectChain(c.id);
+          }}
+          variant="text"
+          fullWidth
+          sx={{
+            borderRadius: 0,
+            backgroundColor:
+              c.id === selectedChainId ? 'primary.faded' : 'transparent',
+          }}
+        >
+          <NetworkIcon chainId={c.id} />
+        </Button>
+      ))}
+    </Stack>
+  );
+}
+
 const balanceTokens = [
   tokens.mainnet.ETH,
+  tokens.mainnet.WETH,
   tokens.mainnet.OETH,
   tokens.mainnet.OUSD,
   tokens.mainnet.OGN,
+  tokens.arbitrum.ETH,
+  tokens.arbitrum.WETH,
+  tokens.arbitrum.wOETH,
+  tokens.base.ETH,
+  tokens.base.WETH,
+  tokens.base.superOETHb,
+  tokens.base.wsuperOETHb,
+  tokens.optimism.ETH,
+  tokens.optimism.WETH,
 ];
 
-function BalanceList(props: StackProps) {
+type BalanceListProps = { selectedChainId: number } & StackProps;
+
+function BalanceList({ selectedChainId, ...rest }: BalanceListProps) {
   const { data: balances, isLoading: balancesLoading } = useWatchBalances({
     tokens: balanceTokens ?? [],
   });
@@ -158,17 +225,19 @@ function BalanceList(props: StackProps) {
   );
 
   return (
-    <Stack px={2} py={3} spacing={2} {...props}>
-      {balanceTokens.map((tok) => (
-        <BalanceRow
-          key={tok.symbol}
-          token={tok}
-          balance={[balances?.[tok.id] ?? 0n, tok.decimals]}
-          price={prices?.[getTokenPriceKey(tok)] ?? from(0)}
-          isBalanceLoading={balancesLoading}
-          isPriceLoading={isPricesLoading}
-        />
-      ))}
+    <Stack px={2} py={3} spacing={2} {...rest}>
+      {balanceTokens
+        .filter((t) => t.chainId === selectedChainId)
+        .map((tok) => (
+          <BalanceRow
+            key={tok.symbol}
+            token={tok}
+            balance={[balances?.[tok.id] ?? 0n, tok.decimals]}
+            price={prices?.[getTokenPriceKey(tok)] ?? from(0)}
+            isBalanceLoading={balancesLoading}
+            isPriceLoading={isPricesLoading}
+          />
+        ))}
     </Stack>
   );
 }
@@ -234,10 +303,17 @@ function BalanceRow({
   );
 }
 
-function ActivityList(props: StackProps) {
+type ActivityListProps = { selectedChainId: number } & StackProps;
+
+function ActivityList({ selectedChainId, ...rest }: ActivityListProps) {
   const [{ activities, maxVisible }] = useActivityState();
 
   const sortedActivities = pipe(
+    filter((a: Activity) => {
+      const { chainId } = getTokenById(a.tokenIdIn);
+
+      return chainId === selectedChainId;
+    }),
     sort(descend((a: Activity) => a?.createdOn ?? a.status)),
     take(maxVisible),
   )(activities) as Activity[];
@@ -248,14 +324,14 @@ function ActivityList(props: StackProps) {
 
   return (
     <Stack
-      {...props}
+      {...rest}
       sx={{
         pt: 3,
         pb: 1.5,
         maxHeight: '50dvh',
         overflowY: 'auto',
         overflowX: 'hidden',
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
       {sortedActivities.map((a) => (
