@@ -63,6 +63,7 @@ export const TokenCard = ({
       {...rest}
       direction={{ xs: 'column', md: 'row' }}
       alignItems={{ xs: 'stretch', md: 'center' }}
+      justifyContent={{ xs: 'stretch', md: 'space-between' }}
       spacing={{ xs: 1, md: 3 }}
       sx={{
         py: 2,
@@ -92,13 +93,14 @@ export const TokenCard = ({
       <Stack
         direction="row"
         alignItems="center"
+        justifyContent="flex-start"
         mb={{ xs: 0.5, md: 0 }}
-        minWidth={130}
       >
         {isComingSoon ? (
           <Stack
             direction="row"
             alignItems="center"
+            justifyContent="flex-start"
             spacing={0.25}
             sx={{
               background: (theme) => theme.palette.background.gradientBlueDark,
@@ -112,7 +114,7 @@ export const TokenCard = ({
             </Typography>
           </Stack>
         ) : (
-          <Stack direction="row" alignItems="baseline" spacing={1} sx={{}}>
+          <Stack direction="row" alignItems="baseline" spacing={1}>
             <LoadingLabel
               isLoading={isApyLoading}
               variant="featured2"
@@ -162,11 +164,8 @@ export const TokenCard = ({
 
       <Stack
         direction={{ xs: 'row', md: 'column' }}
-        alignItems={{ xs: 'center', md: 'flex-start' }}
+        alignItems={{ xs: 'baseline', md: 'flex-end' }}
         spacing={{ xs: 1, md: 0 }}
-        pl={{ xs: 0, md: 1 }}
-        pb={{ xs: 2, md: 0 }}
-        width={1}
       >
         <Typography variant="caption1">
           {intl.formatMessage({ defaultMessage: 'TVL' })}
@@ -174,7 +173,7 @@ export const TokenCard = ({
         </Typography>
         <Stack
           direction={{ xs: 'row', md: 'column' }}
-          alignItems={{ xs: 'baseline', md: 'flex-start' }}
+          alignItems={{ xs: 'baseline', md: 'flex-end' }}
           flexWrap="nowrap"
           spacing={{ xs: 0.5, md: 0 }}
         >
@@ -225,6 +224,7 @@ export const TokenCard = ({
         }`}
         {...valueLabelProps}
         isLoading={isInfoLoading && !isComingSoon}
+        pt={{ xs: 2, md: 0 }}
       />
 
       {!isOgn && (
