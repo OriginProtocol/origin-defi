@@ -199,6 +199,7 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
 
           return (
             <HistoryTypeCell
+              token={token}
               type={info.getValue()}
               timestamp={info.row.original.timestamp}
               showTime={!info.row.getCanExpand()}
@@ -353,12 +354,14 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
 }
 
 type HistoryTypeCellProps = {
+  token: Token;
   timestamp: string;
   type: HistoryType;
   showTime: boolean;
 } & StackProps;
 
 function HistoryTypeCell({
+  token,
   timestamp,
   type,
   showTime,
@@ -368,7 +371,7 @@ function HistoryTypeCell({
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
+      <TransactionIcon type={type} zIndex={1} token={token} />
       <Stack spacing={0.5}>
         <Typography fontWeight="medium">{type}</Typography>
         <Typography color="text.secondary" variant="caption1">
