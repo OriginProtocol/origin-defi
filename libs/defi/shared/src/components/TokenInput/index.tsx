@@ -66,9 +66,9 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     const intl = useIntl();
     const { isConnected, chainId } = useAccount();
 
-    const bal = [balance, decimals] as Dnum;
+    const bal = [balance ?? 0n, decimals] as Dnum;
     const minimumForGas = isNativeCurrency(token)
-      ? nativeMinimumForGas[chainId ?? mainnet.id]
+      ? (nativeMinimumForGas[chainId ?? mainnet.id] ?? from(0))
       : from(0);
 
     const handleMaxClick = () => {
