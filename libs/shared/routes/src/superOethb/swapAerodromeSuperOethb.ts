@@ -183,6 +183,7 @@ const estimateAmount: EstimateAmount = async (
   const quote = await readContract(config, {
     address: contracts.base.aerodromeQuoter.address,
     abi: contracts.base.aerodromeQuoter.abi,
+    chainId: contracts.base.aerodromeQuoter.chainId,
     functionName: 'quoteExactInputSingle',
     args: [
       {
