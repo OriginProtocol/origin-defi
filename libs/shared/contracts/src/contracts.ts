@@ -30,6 +30,7 @@ import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
+import { superOETHbZapperABI } from './abis/superOETHbZapper';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
@@ -305,6 +306,12 @@ export const contracts = {
       chainId: base.id,
       abi: DripperABI,
       name: 'superOETHbDripper',
+    },
+    superOETHbZapper: {
+      address: '0x3b56c09543D3068f8488ED34e6F383c3854d2bC1',
+      chainId: base.id,
+      abi: superOETHbZapperABI,
+      name: 'superOETHbZapper',
     },
   },
 } as const;

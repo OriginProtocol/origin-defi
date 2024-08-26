@@ -374,7 +374,7 @@ const swap: Swap = async (
   return hash;
 };
 
-export const swapAerodromeOeth = {
+export const swapAerodromeSuperOethb = {
   ...defaultRoute,
   isRouteAvailable,
   estimateAmount,

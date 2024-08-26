@@ -3,13 +3,19 @@ export type OethRoute =
   | 'redeem-arm-oeth'
   | 'redeem-vault-async-oeth'
   | 'redeem-vault-oeth'
-  | 'swap-aerodrome-oeth'
   | 'swap-balancer-oeth'
   | 'swap-curve-oeth'
   | 'swap-curve-oeth-eth'
   | 'swap-curve-oeth-sfrxeth'
   | 'swap-zapper-oeth-eth'
   | 'swap-zapper-oeth-sfrxeth'
+  | 'unwrap-oeth-woeth'
+  | 'wrap-oeth-oeth';
+
+export type SuperOethbRoute =
+  | 'mint-vault-oeth'
+  | 'swap-aerodrome-superOethb'
+  | 'swap-zapper-superOethb'
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';
 
