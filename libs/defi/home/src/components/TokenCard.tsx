@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Box,
   Button,
@@ -9,11 +11,12 @@ import {
 import { useTokenInfo, useXOgnStakingApy } from '@origin/defi/shared';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { Rocket } from '@origin/shared/icons';
 import { getFormatPrecision } from '@origin/shared/utils';
+import { useIntervalEffect } from '@react-hookz/web';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
+import SlotCounter from 'react-slot-counter';
 import { useAccount } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
@@ -70,6 +73,11 @@ export const TokenCard = ({
         px: 3,
         color: 'text.primary',
         backgroundColor: 'background.highlight',
+        [theme.breakpoints.up('md')]: {
+          '>*': {
+            width: 1,
+          },
+        },
         ...rest?.sx,
       }}
     >
@@ -93,26 +101,12 @@ export const TokenCard = ({
       <Stack
         direction="row"
         alignItems="center"
-        justifyContent="flex-start"
         mb={{ xs: 0.5, md: 0 }}
+        pl={{ xs: 0, md: 2 }}
+        minWidth={140}
       >
         {isComingSoon ? (
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="flex-start"
-            spacing={0.25}
-            sx={{
-              background: (theme) => theme.palette.background.gradientBlueDark,
-              backgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-            }}
-          >
-            <Rocket sx={{ fontSize: 32 }} />
-            <Typography noWrap variant="caption1" fontWeight="medium">
-              {intl.formatMessage({ defaultMessage: 'APY coming soon' })}
-            </Typography>
-          </Stack>
+          <ComingSoonAPY />
         ) : (
           <Stack direction="row" alignItems="baseline" spacing={1}>
             <LoadingLabel
@@ -164,7 +158,7 @@ export const TokenCard = ({
 
       <Stack
         direction={{ xs: 'row', md: 'column' }}
-        alignItems={{ xs: 'baseline', md: 'flex-end' }}
+        alignItems={{ xs: 'baseline', md: 'flex-start' }}
         spacing={{ xs: 1, md: 0 }}
       >
         <Typography variant="caption1">
@@ -289,3 +283,70 @@ const valueLabelProps: Partial<ValueLabelProps> = {
   labelProps: { variant: 'caption1', noWrap: true },
   valueProps: { fontWeight: 'medium', noWrap: true },
 };
+
+function ComingSoonAPY(props: StackProps) {
+  const intl = useIntl();
+  const [fakeApy, setFakeApy] = useState('17.52');
+
+  useIntervalEffect(() => {
+    const val = (Math.random() * (20 - 10 + 1) + 10) * 1.132151;
+    setFakeApy(val.toFixed(2));
+  }, 5500);
+
+  return (
+    <Stack alignItems="flex-start" {...props}>
+      <Stack
+        direction="row"
+        alignItems="center"
+        sx={(theme) => ({
+          '.slot': (theme) => ({
+            ...theme.typography.featured2,
+            fontWeight: 'bold',
+            background: (theme) => theme.palette.background.gradientBlueDark,
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            letterSpacing: '-3px',
+          }),
+          '.sep': {
+            ...theme.typography.featured2,
+            background: (theme) => theme.palette.background.gradientBlueDark,
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            fontWeight: 'bold',
+            px: -0.25,
+          },
+        })}
+      >
+        <SlotCounter
+          value={fakeApy}
+          duration={5}
+          speed={5}
+          numberClassName="slot"
+          separatorClassName="sep"
+          containerClassName="container"
+        />
+        <Typography
+          variant="featured2"
+          fontWeight="bold"
+          sx={{
+            background: (theme) => theme.palette.background.gradientBlueDark,
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }}
+        >
+          %
+        </Typography>
+      </Stack>
+      <Typography
+        variant="caption1"
+        sx={{
+          background: (theme) => theme.palette.background.gradientBlueDark,
+          backgroundClip: 'text',
+          WebkitTextFillColor: 'transparent',
+        }}
+      >
+        {intl.formatMessage({ defaultMessage: 'coming soon' })}
+      </Typography>
+    </Stack>
+  );
+}
