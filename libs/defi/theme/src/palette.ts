@@ -124,6 +124,7 @@ export const darkPalette: ThemeOptions = {
       gradientPurple:
         'linear-gradient(90deg, rgba(179, 97, 230, 0.50) -28.99%, rgba(106, 54, 252, 0.50) 144.97%)',
       gradientOrange: 'linear-gradient(91deg, #FEDBA8 -3.29%, #CF75D5 106.42%)',
+      gradientBlueDark: `linear-gradient(97deg, #DE66DC -32.69%, #0074F0 122.04%)`,
     },
     action: {
       hoverOpacity: 0.05,
