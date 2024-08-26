@@ -289,9 +289,16 @@ function ComingSoonAPY(props: StackProps) {
   const [fakeApy, setFakeApy] = useState('17.52');
 
   useIntervalEffect(() => {
-    const val = (Math.random() * (20 - 10 + 1) + 10) * 1.132151;
-    setFakeApy(val.toFixed(2));
-  }, 5500);
+    const val = intl.formatNumber(
+      (Math.random() * (20 - 5 + 1) + 5) * 1.132151,
+      {
+        minimumIntegerDigits: 2,
+        maximumFractionDigits: 2,
+        minimumFractionDigits: 2,
+      },
+    );
+    setFakeApy(val);
+  }, 2500);
 
   return (
     <Stack alignItems="flex-start" {...props}>
@@ -305,7 +312,7 @@ function ComingSoonAPY(props: StackProps) {
             background: (theme) => theme.palette.background.gradientBlueDark,
             backgroundClip: 'text',
             WebkitTextFillColor: 'transparent',
-            letterSpacing: '-3px',
+            width: 14,
           }),
           '.sep': {
             ...theme.typography.featured2,
@@ -319,8 +326,8 @@ function ComingSoonAPY(props: StackProps) {
       >
         <SlotCounter
           value={fakeApy}
-          duration={5}
-          speed={5}
+          duration={2}
+          speed={2}
           numberClassName="slot"
           separatorClassName="sep"
           containerClassName="container"
