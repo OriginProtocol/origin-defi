@@ -1,6 +1,14 @@
 import { useState } from 'react';
 
-import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Button,
+  Divider,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { ActivityTile, useActivityState } from '@origin/defi/shared';
 import {
   BadgeIcon,
@@ -24,12 +32,17 @@ import {
   useTokenPrices,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  getFormatPrecision,
+  isInArray,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
 import { descend, filter, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 import { mainnet } from 'viem/chains';
-import { useAccount, useConfig, useDisconnect } from 'wagmi';
+import { useAccount, useConfig, useDisconnect, useWalletClient } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
@@ -242,6 +255,8 @@ function BalanceList({ selectedChainId, ...rest }: BalanceListProps) {
   );
 }
 
+const tokensToAdd = [tokens.base.superOETHb.id, tokens.base.wsuperOETHb.id];
+
 type BalanceRowProps = {
   token: Token;
   balance: Dnum;
@@ -258,12 +273,55 @@ function BalanceRow({
   isPriceLoading,
   ...rest
 }: BalanceRowProps) {
+  const intl = useIntl();
+  const { isConnected, connector } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const handleAddTokenToWallet = () => {
+    walletClient?.watchAsset({
+      type: 'ERC20',
+      options: {
+        address: token.address ?? ZERO_ADDRESS,
+        decimals: token.decimals,
+        symbol: token.symbol,
+      },
+    });
+  };
+
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
       <TokenIcon token={token} sx={{ fontSize: 32 }} outlined />
       <Stack flexGrow={1}>
         <ValueLabel
-          label={token.symbol}
+          label={
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                color="text.primary"
+              >
+                {token.symbol}
+              </Typography>
+              {isInArray(token.id, tokensToAdd) && isConnected && (
+                <Tooltip
+                  title={intl.formatMessage({
+                    defaultMessage: 'Add to metamask',
+                  })}
+                >
+                  <Button
+                    variant="link"
+                    color="secondary"
+                    onClick={handleAddTokenToWallet}
+                  >
+                    <WalletIcon
+                      walletName={connector?.name}
+                      sx={{ fontSize: 12 }}
+                    />
+                  </Button>
+                </Tooltip>
+              )}
+            </Stack>
+          }
           value={format(balance, {
             digits: getFormatPrecision(balance),
             decimalsRounding: 'ROUND_DOWN',
@@ -271,11 +329,6 @@ function BalanceRow({
           isLoading={isBalanceLoading}
           direction="row"
           justifyContent="space-between"
-          labelProps={{
-            variant: 'body2',
-            fontWeight: 'bold',
-            color: 'text.primary',
-          }}
           valueProps={{
             variant: 'body2',
             fontWeight: 'bold',
@@ -283,6 +336,7 @@ function BalanceRow({
             textAlign: 'end',
           }}
         />
+
         <ValueLabel
           label={token.name}
           value={`$${format(mul(balance, price), 2)}`}
