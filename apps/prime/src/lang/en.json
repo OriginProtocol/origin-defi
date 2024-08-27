@@ -109,12 +109,6 @@
       "value": "Transaction"
     }
   ],
-  "1OYHoE": [
-    {
-      "type": 0,
-      "value": "+ primeETH XP"
-    }
-  ],
   "1RqSR8": [
     {
       "type": 0,
@@ -247,6 +241,12 @@
       "value": "I agree"
     }
   ],
+  "5mh8MJ": [
+    {
+      "type": 0,
+      "value": "Process Withdrawal"
+    }
+  ],
   "6GZbSi": [
     {
       "type": 0,
@@ -301,14 +301,10 @@
       "value": "Last"
     }
   ],
-  "8vKit3": [
+  "9YIGd7": [
     {
       "type": 0,
-      "value": "Restake "
-    },
-    {
-      "type": 1,
-      "value": "when"
+      "value": "Process withdrawal request"
     }
   ],
   "9ghOJK": [
@@ -879,6 +875,12 @@
       "value": "."
     }
   ],
+  "Usk4mK": [
+    {
+      "type": 0,
+      "value": "Process Migration"
+    }
+  ],
   "V/q7w4": [
     {
       "type": 0,
@@ -1061,6 +1063,12 @@
       "value": "Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest."
     }
   ],
+  "exq/WV": [
+    {
+      "type": 0,
+      "value": "Migrate primeETH to ynSLDe and get whitelisted for the upcoming YieldNest airdrop."
+    }
+  ],
   "fBhctx": [
     {
       "type": 0,
@@ -1157,12 +1165,6 @@
     {
       "type": 0,
       "value": "I have read and agree to the above terms"
-    }
-  ],
-  "iySQsQ": [
-    {
-      "type": 0,
-      "value": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop."
     }
   ],
   "j9Y9nu": [

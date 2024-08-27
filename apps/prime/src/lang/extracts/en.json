@@ -50,9 +50,6 @@
   "1+ROfp": {
     "defaultMessage": "Transaction"
   },
-  "1OYHoE": {
-    "defaultMessage": "+ primeETH XP"
-  },
   "1RqSR8": {
     "defaultMessage": "2x primeETH XP Boost"
   },
@@ -107,6 +104,9 @@
   "5h3TFE": {
     "defaultMessage": "I agree"
   },
+  "5mh8MJ": {
+    "defaultMessage": "Process Withdrawal"
+  },
   "6GZbSi": {
     "defaultMessage": "The selected network is not supported by the application."
   },
@@ -134,8 +134,8 @@
   "8nvhZ9": {
     "defaultMessage": "Last"
   },
-  "8vKit3": {
-    "defaultMessage": "Restake {when}"
+  "9YIGd7": {
+    "defaultMessage": "Process withdrawal request"
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
@@ -383,6 +383,9 @@
   "UlMgTq": {
     "defaultMessage": "If the problem persists, contact us on our {support}."
   },
+  "Usk4mK": {
+    "defaultMessage": "Process Migration"
+  },
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
@@ -461,6 +464,9 @@
   "ej99BN": {
     "defaultMessage": "Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest."
   },
+  "exq/WV": {
+    "defaultMessage": "Migrate primeETH to ynSLDe and get whitelisted for the upcoming YieldNest airdrop."
+  },
   "fBhctx": {
     "defaultMessage": "Download CSV"
   },
@@ -505,9 +511,6 @@
   },
   "iaS0YY": {
     "defaultMessage": "I have read and agree to the above terms"
-  },
-  "iySQsQ": {
-    "defaultMessage": "Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop."
   },
   "j9Y9nu": {
     "defaultMessage": "Hours"
