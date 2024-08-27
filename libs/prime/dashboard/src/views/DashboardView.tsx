@@ -32,6 +32,7 @@ export const DashboardView = () => {
           18,
         )
       : undefined;
+
   const percentTotalELPoints =
     points?.totalELPoints && points?.totalELPoints > 0n
       ? +formatUnits(
@@ -39,6 +40,8 @@ export const DashboardView = () => {
           18,
         )
       : undefined;
+
+  console.log(points, percentTotalELPoints);
 
   return (
     <Stack
@@ -203,6 +206,7 @@ export const DashboardView = () => {
                   >
                     {intl.formatNumber(percentTotalELPoints, {
                       style: 'percent',
+                      maximumFractionDigits: 6,
                     })}
                   </LoadingLabel>
                 ) : (
