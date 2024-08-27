@@ -167,7 +167,7 @@ export const TokenCard = ({
         </Typography>
         <Stack
           direction={{ xs: 'row', md: 'column' }}
-          alignItems={{ xs: 'baseline', md: 'flex-end' }}
+          alignItems={{ xs: 'baseline', md: 'flex-start' }}
           flexWrap="nowrap"
           spacing={{ xs: 0.5, md: 0 }}
         >
@@ -330,7 +330,6 @@ function ComingSoonAPY(props: StackProps) {
           speed={2}
           numberClassName="slot"
           separatorClassName="sep"
-          containerClassName="container"
         />
         <Typography
           variant="featured2"
