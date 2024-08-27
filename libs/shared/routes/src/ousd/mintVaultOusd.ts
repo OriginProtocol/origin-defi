@@ -289,7 +289,7 @@ const swap: Swap = async (
     address: contracts.mainnet.OUSDVault.address,
     abi: contracts.mainnet.OUSDVault.abi,
     functionName: 'mint',
-    args: [tokenIn.address, amountIn, minAmountOut],
+    args: [tokenIn.address, amountIn, minAmountOut[0]],
     gas,
     chainId: contracts.mainnet.OUSDVault.chainId,
   });
