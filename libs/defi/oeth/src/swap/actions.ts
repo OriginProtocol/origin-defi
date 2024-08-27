@@ -19,8 +19,8 @@ import type { OethSwapAction } from './types';
 export const oethSwapActions: Record<OethSwapAction, SwapApi> = {
   'redeem-arm-oeth': {
     ...redeemArmOeth,
-    routeLabel: defineMessage({ defaultMessage: 'Redeem via the ARM' }),
-    buttonLabel: defineMessage({ defaultMessage: 'Redeem' }),
+    routeLabel: defineMessage({ defaultMessage: 'Swap via the ARM' }),
+    buttonLabel: defineMessage({ defaultMessage: 'Swap' }),
   },
   'swap-balancer-oeth': {
     ...swapBalancerOeth,
