@@ -1,10 +1,6 @@
 import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import {
-  isNilOrEmpty,
-  subPercentage,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
+import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -82,9 +78,8 @@ const estimateGas: EstimateGas = async (
         tokenOut.address,
         amountIn,
         minAmountOut[0],
-        address ?? ZERO_ADDRESS,
+        address ?? whales.mainnet.OETH,
       ],
-      account: whales.mainnet.OETH,
     });
   } catch {
     requestGasEstimate = 161_000n;
@@ -243,7 +238,7 @@ const swap: Swap = async (
       address,
     ],
     gas,
-    chainId: contracts.mainnet.CurveRouter.chainId,
+    chainId: contracts.mainnet.ARM.chainId,
   });
   const hash = await writeContract(config, request);
 
