@@ -47,7 +47,7 @@ const MigrationDisclaimer = (props: StackProps) => {
       </Typography>
       <ExternalLink
         sx={{ color: 'primary.main', mt: 2 }}
-        href="https://medium.com/@yieldnest/introducing-yieldnests-new-liquid-restaking-token-ynlsde-2c2ccfc88e9c"
+        href="https://www.originprotocol.com/primeeth-ynlsde-migration-guide"
       >
         {intl.formatMessage({ defaultMessage: 'Learn more' })}
       </ExternalLink>
