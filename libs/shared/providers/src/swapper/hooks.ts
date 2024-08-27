@@ -678,12 +678,12 @@ export const useHandleSwap = () => {
         status: 'swapWaitingForTransaction',
       }));
       if (hash) {
+        const txReceipt = await waitForTransactionReceipt(config, { hash });
         setSwapState((state) => ({
           ...state,
           isSwapLoading: false,
           status: 'swapTransactionSuccess',
         }));
-        const txReceipt = await waitForTransactionReceipt(config, { hash });
         onSwapSuccess?.({
           ...state,
           txReceipt: txReceipt as unknown as TransactionReceipt,
