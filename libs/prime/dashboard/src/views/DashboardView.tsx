@@ -32,6 +32,7 @@ export const DashboardView = () => {
           18,
         )
       : undefined;
+
   const percentTotalELPoints =
     points?.totalELPoints && points?.totalELPoints > 0n
       ? +formatUnits(
@@ -39,6 +40,8 @@ export const DashboardView = () => {
           18,
         )
       : undefined;
+
+  console.log(points, percentTotalELPoints);
 
   return (
     <Stack
@@ -82,10 +85,7 @@ export const DashboardView = () => {
           </Grid2>
           <Grid2 {...gridItemProps}>
             <Button component={Link} to="/">
-              {intl.formatMessage(
-                { defaultMessage: 'Restake {when}' },
-                { when: points?.primePoints === 0n ? 'now' : 'more' },
-              )}
+              {intl.formatMessage({ defaultMessage: 'Withdraw/Migrate' })}
             </Button>
           </Grid2>
         </Grid2>
@@ -206,6 +206,7 @@ export const DashboardView = () => {
                   >
                     {intl.formatNumber(percentTotalELPoints, {
                       style: 'percent',
+                      maximumFractionDigits: 6,
                     })}
                   </LoadingLabel>
                 ) : (

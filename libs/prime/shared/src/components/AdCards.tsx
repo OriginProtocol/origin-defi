@@ -25,7 +25,7 @@ export const AdCards = (props: StackProps) => {
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Mint primeETH with OETH and get whitelisted for the upcoming YieldNest airdrop',
+          'Migrate primeETH to ynSLDe and get whitelisted for the upcoming YieldNest airdrop.',
       }),
       background: `
         linear-gradient(-45deg, transparent 0, transparent 25px, #281928 25px, #281928 50px, transparent 50px, transparent 100%),
@@ -37,11 +37,11 @@ export const AdCards = (props: StackProps) => {
     {
       icon: <Seeds sx={{ width: 40, height: 40 }} />,
       title: intl.formatMessage({
-        defaultMessage: '5% bonus on YieldNest Seeds',
+        defaultMessage: '60% YND Allocation',
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'primeETH holders who migrate to ynLSD will receive a 5% boost for the YND Season 1 airdrop',
+          'YieldNest plans to distribute at least 60% of the total YND token supply to its community.',
       }),
       background: `
         linear-gradient(-45deg, transparent 0, transparent 10px, #281928 10px, #281928 30px, transparent 30px, transparent 100%),
@@ -53,11 +53,11 @@ export const AdCards = (props: StackProps) => {
     {
       icon: <YieldNestHexagon sx={{ width: 40, height: 40 }} />,
       title: intl.formatMessage({
-        defaultMessage: 'YieldNest Pioneer NFT',
+        defaultMessage: 'Exclusive Boosts',
       }),
       subtitle: intl.formatMessage({
         defaultMessage:
-          'Migrate at least 5 primeETH to ynLSD to get the Pioneer NFT which earns a permanent 15% boost for all YND airdrop seasons',
+          'Earn 5% to 15% boosts on YieldNest Seeds for being part of the PrimeStaked community.',
       }),
       background: `
         linear-gradient(-45deg, transparent 0, transparent 15px, #281928 15px, #281928 30px, transparent 30px, transparent 100%),

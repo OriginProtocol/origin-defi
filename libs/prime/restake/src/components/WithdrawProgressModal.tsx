@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect } from 'react';
 
 import {
   alpha,
@@ -7,14 +7,18 @@ import {
   CircularProgress,
   Dialog,
   DialogContent,
+  DialogTitle,
+  IconButton,
+  Stack,
   Typography,
 } from '@mui/material';
 import {
   FaCircleCheckRegular,
   FaCircleXmarkRegular,
+  FaXmarkRegular,
 } from '@origin/shared/icons';
+import { useRefresher } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
-import { useIntervalEffect, usePrevious } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -24,48 +28,39 @@ import { useUserActiveRequestsQuery } from '../queries.generated';
 
 import type { DialogProps } from '@mui/material';
 
-const INTERVAL = 2000; // ms
-const MAX_RETRY = 10; // 10 * 2s = 20s
-
-type Status = 'processing' | 'processed' | 'timeout';
+import type { UserActiveRequestsQuery } from '../queries.generated';
 
 export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const intl = useIntl();
   const { address } = useAccount();
   const queryClient = useQueryClient();
-  const [retries, setRetries] = useState(0);
-  const [status, setStatus] = useState<Status>('processing');
-  const { data: claimCount } = useUserActiveRequestsQuery(
-    { address: address ?? ZERO_ADDRESS },
-    {
-      enabled: !!address,
-      refetchInterval: status === 'processing' ? INTERVAL : undefined,
-      select: (data) => data?.lrtWithdrawalRequests?.length ?? 0,
-    },
-  );
-  const prevClaimCount = usePrevious(claimCount);
+  const { data } = useUserActiveRequestsQuery({
+    address: address ?? ZERO_ADDRESS,
+  });
+  const { status, startRefresh } = useRefresher<UserActiveRequestsQuery>({
+    queryKey: useUserActiveRequestsQuery.getKey({
+      address: address ?? ZERO_ADDRESS,
+    }),
+    queryFn: useUserActiveRequestsQuery.fetcher({
+      address: address ?? ZERO_ADDRESS,
+    }),
+    isResultProcessed: (prev, next) =>
+      prev?.lrtWithdrawalRequests?.length < next?.lrtWithdrawalRequests?.length,
+  });
 
-  useIntervalEffect(
-    () => {
-      if (status === 'processing') {
-        setRetries((prev) => prev + 1);
-        if (
-          claimCount !== undefined &&
-          prevClaimCount !== undefined &&
-          claimCount > prevClaimCount
-        ) {
-          setStatus('processed');
-          queryClient.invalidateQueries();
-        } else if (retries > MAX_RETRY) {
-          setStatus('timeout');
-        }
-      }
-    },
-    status === 'processing' ? INTERVAL : undefined,
-  );
+  console.log(status);
+
+  useEffect(() => {
+    if (rest.open) {
+      startRefresh(data);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const icon = {
-    processing: (
+    idle: null,
+    error: null,
+    polling: (
       <Box sx={{ position: 'relative', width: 40, height: 40 }}>
         <CircularProgress
           variant="determinate"
@@ -93,23 +88,29 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
     ),
   }[status];
   const label = {
+    idle: null,
+    error: null,
     processed: intl.formatMessage({
       defaultMessage: 'Withdrawal processed, check your claim',
     }),
     timeout: intl.formatMessage({
       defaultMessage: 'Error while processing, try to refresh the page',
     }),
-    processing: intl.formatMessage({
+    polling: intl.formatMessage({
       defaultMessage: 'Your withdrawal is being processed',
     }),
   }[status];
   const button = {
+    idle: null,
+    error: null,
+    polling: null,
     processed: (
       <Button
         component={RouterLink}
         to="/restake/claim"
         onClick={() => {
           onClose?.({}, 'backdropClick');
+          queryClient.invalidateQueries();
         }}
       >
         {intl.formatMessage({ defaultMessage: 'Go to claims' })}
@@ -125,23 +126,33 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
         {intl.formatMessage({ defaultMessage: 'Refresh' })}
       </Button>
     ),
-    processing: null,
   }[status];
 
   return (
     <Dialog {...rest} maxWidth="xs" fullWidth>
-      <DialogContent
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 3,
-          py: 4,
-        }}
+      <DialogTitle
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
       >
-        {icon}
-        <Typography>{label}</Typography>
-        {button}
+        {intl.formatMessage({ defaultMessage: 'Process withdrawal request' })}
+        <IconButton
+          onClick={(evt) => {
+            onClose?.(evt, 'backdropClick');
+            queryClient.invalidateQueries();
+          }}
+        >
+          <FaXmarkRegular sx={{ fontSize: 14 }} />
+        </IconButton>
+      </DialogTitle>
+      <DialogContent>
+        <Stack alignItems="center" pt={2}>
+          <Box mb={3}>{icon}</Box>
+          <Typography fontWeight="bold" textAlign="center" mb={2}>
+            {label}
+          </Typography>
+          {button}
+        </Stack>
       </DialogContent>
     </Dialog>
   );

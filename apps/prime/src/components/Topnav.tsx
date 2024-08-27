@@ -30,11 +30,7 @@ import {
   PrimePoints,
   PrimeStake,
 } from '@origin/shared/icons';
-import {
-  AddressLabel,
-  BalanceList,
-  OpenAccountModalButton,
-} from '@origin/shared/providers';
+import { AddressLabel, OpenAccountModalButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -50,6 +46,7 @@ import type { RouteObject } from 'react-router-dom';
 export function Topnav(props: BoxProps) {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   return (
@@ -75,27 +72,31 @@ export function Topnav(props: BoxProps) {
         })}
       >
         <Grid2 container sx={{ width: 1 }}>
-          <Grid2 xs={3}>
-            <Stack
-              direction="row"
-              component={RouterLink}
-              to="/"
-              justifyContent="flex-start"
-            >
-              <PrimeStake
-                sx={{ width: { xs: 140, md: 160 }, height: { xs: 36, md: 44 } }}
-              />
-            </Stack>
-          </Grid2>
-          <Grid2 xs={3}>
-            {!isSm && (
-              <Navigation
+          <Grid2 xs={6}>
+            <Stack direction="row" alignItems="center" spacing={3}>
+              <Stack
                 direction="row"
-                spacing={3}
-                alignItems="center"
-                height={1}
-              />
-            )}
+                component={RouterLink}
+                to="/"
+                justifyContent="flex-start"
+              >
+                <PrimeStake
+                  sx={{
+                    width: { xs: 140, md: 160 },
+                    height: { xs: 36, md: 44 },
+                  }}
+                />
+              </Stack>
+              {!isSm && (
+                <Navigation
+                  direction="row"
+                  spacing={3}
+                  alignItems="center"
+                  justifyContent={{ xs: 'center', lg: 'flex-end' }}
+                  height={1}
+                />
+              )}
+            </Stack>
           </Grid2>
           <Grid2 xs={6}>
             <Box
@@ -106,7 +107,7 @@ export function Topnav(props: BoxProps) {
                 gap: 1,
               }}
             >
-              {!isSm && <PointsBadges mr={2} />}
+              {!isMd && <PointsBadges mr={2} />}
               <AccountPopoverButton />
 
               {isSm && (
@@ -228,16 +229,18 @@ const NavLink = ({ route, onLinkClick }: NavLinkProps) => {
   );
 };
 
-const PointsBadges = (props: StackProps) => {
+type PointsBadgesProps = { iconSize?: number } & StackProps;
+
+const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
   const intl = useIntl();
   const { data: points, isLoading: isPointsLoading } = usePoints();
 
   return (
-    <Stack direction="row" alignItems="center" spacing={3} {...props}>
+    <Stack direction="row" alignItems="center" spacing={3} {...rest}>
       <Stack direction="row" alignItems="center" spacing={0.5}>
         <TokenIcon
           token={tokens.mainnet.primeETH}
-          sx={{ width: 28, height: 28 }}
+          sx={{ fontSize: iconSize }}
         />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
           {intl.formatNumber(+formatUnits(points?.primePoints ?? 0n, 18), {
@@ -247,7 +250,7 @@ const PointsBadges = (props: StackProps) => {
         </LoadingLabel>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={0.5}>
-        <PrimePoints sx={{ width: 28, height: 28 }} />
+        <PrimePoints sx={{ fontSize: iconSize }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
           {intl.formatNumber(+formatUnits(points?.xpPoints ?? 0n, 18), {
             maximumFractionDigits: 0,
@@ -256,7 +259,7 @@ const PointsBadges = (props: StackProps) => {
         </LoadingLabel>
       </Stack>
       <Stack direction="row" alignItems="center" spacing={0.5}>
-        <EigenPoints sx={{ width: 28, height: 28 }} />
+        <EigenPoints sx={{ fontSize: iconSize }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
           {intl.formatNumber(+formatUnits(points?.elPoints ?? 0n, 18), {
             maximumFractionDigits: 2,
@@ -272,6 +275,7 @@ const AccountPopoverButton = () => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const [accountModalAnchor, setAccountModalAnchor] =
     useState<HTMLButtonElement | null>(null);
   const { address, isConnected, connector } = useAccount();
@@ -384,8 +388,19 @@ const AccountPopoverButton = () => {
               })}
             </Button>
           </Stack>
-          <Divider />
-          <BalanceList balanceTokens={[tokens.mainnet.ETH]} />
+          {isMd && (
+            <>
+              <Divider />
+              <PointsBadges
+                direction="column"
+                alignItems="flex-start"
+                spacing={2}
+                iconSize={20}
+                px={2}
+                py={2}
+              />
+            </>
+          )}
         </Stack>
       </Popover>
     </>

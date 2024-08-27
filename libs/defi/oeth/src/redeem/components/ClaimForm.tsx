@@ -43,10 +43,8 @@ export const ClaimForm = (props: StackProps) => {
   const config = useConfig();
   const queryClient = useQueryClient();
   const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
-  const { data: requests, isLoading: isRequestsLoading } =
-    useWithdrawalRequests({
-      select: (data) => data?.filter((r) => !r.claimed),
-    });
+  const { data, isLoading: isRequestsLoading } = useWithdrawalRequests();
+  const requests = data?.filter((r) => !r.claimed);
   const { startRefresh, status } = useRefresher<WithdrawalRequest[]>({
     queryKey: useWithdrawalRequests.getKey(address ?? ZERO_ADDRESS),
     queryFn: useWithdrawalRequests.fetcher(config, queryClient),
@@ -84,7 +82,7 @@ export const ClaimForm = (props: StackProps) => {
     params: args as any,
     callbacks: {
       onWriteSuccess: () => {
-        startRefresh();
+        startRefresh(data);
       },
     },
     activity: {
