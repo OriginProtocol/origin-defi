@@ -15,7 +15,6 @@ import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
-import { PageTitleSection } from '../components/PageTitleSection';
 import { superOethbSwapRoutes } from '../constants';
 
 export const SwapView = () => {
@@ -29,9 +28,7 @@ export const SwapView = () => {
           defaultMessage: 'Beyond liquid staking',
         })}
         icon={superOETH}
-      >
-        <PageTitleSection />
-      </PageTitle>
+      />
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
           <Grid2 xs={12} md={6} mdOffset={3}>
@@ -44,11 +41,7 @@ export const SwapView = () => {
           </Grid2>
           <Grid2 xs={12} md={3}>
             <Stack spacing={4}>
-              <GlobalStatsCard
-                token={tokens.base.superOETHb}
-                showTokenHeader
-                showAprChip
-              />
+              <GlobalStatsCard token={tokens.base.superOETHb} showTokenHeader />
               <AnalyticsCard
                 token={tokens.base.superOETHb}
                 href={OETH_ANALYTICS_URL}

@@ -40,7 +40,6 @@
     "react-intl": "^6.6.8",
     "react-jazzicon": "^1.0.4",
     "react-router-dom": "6.26.1",
-    "react-slot-counter": "^3.0.1",
     "react-tracked": "^2.0.0",
     "react-transition-group": "^4.4.5",
     "react-use": "^17.5.1",
