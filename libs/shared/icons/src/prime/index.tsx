@@ -11,6 +11,7 @@ import PrimeStakeSvg from './prime-stake.svg?react';
 import SeedsSvg from './seeds.svg?react';
 import WhaleSvg from './whale.svg?react';
 import YieldNestHexagonSvg from './yield-nest-hexagon.svg?react';
+import YieldNestInvertedSvg from './yield-nest-inverted.svg?react';
 
 import type { SvgIconProps } from '@mui/material';
 
@@ -46,4 +47,7 @@ export const Whale = (props: SvgIconProps) => (
 );
 export const YieldNestHexagon = (props: SvgIconProps) => (
   <SvgIcon {...props} component={YieldNestHexagonSvg} inheritViewBox />
+);
+export const YieldNestInverted = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={YieldNestInvertedSvg} inheritViewBox />
 );

@@ -7,3 +7,5 @@ export type RestakeAction = Extract<
 >;
 
 export type Meta = { boost?: SupportedBoost };
+
+export type WithdrawalType = 'claim' | 'migration';

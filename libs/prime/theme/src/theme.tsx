@@ -383,7 +383,7 @@ export const theme = createTheme({
     MuiDialogTitle: {
       styleOverrides: {
         root: ({ theme }) => ({
-          padding: theme.spacing(3, 2),
+          padding: theme.spacing(2),
           fontSize: 14,
           fontWeight: 500,
           lineHeight: 1.5,

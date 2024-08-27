@@ -78,9 +78,6 @@ export const GlobalStatsCard = (props: CardProps) => {
           <Typography variant="body2">
             {intl.formatMessage({ defaultMessage: '+ EigenLayer Points' })}
           </Typography>
-          <Typography variant="body2">
-            {intl.formatMessage({ defaultMessage: '+ primeETH XP' })}
-          </Typography>
         </Stack>
       </CardContent>
     </Card>

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 
 import { useIntervalEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
@@ -31,7 +31,7 @@ export const useRefresher = <QueryResult = any>({
   interval = 2000,
 }: UseRefresherProps<QueryResult>) => {
   const queryClient = useQueryClient();
-  const prev = queryClient.getQueryData<QueryResult>(queryKey);
+  const prev = useRef(queryClient.getQueryData<QueryResult>(queryKey));
   const [retries, setRetries] = useState(0);
   const [status, setStatus] = useState<RefreshStatus>('idle');
   const [pollInterval, setPollInterval] = useState<number | undefined>(
@@ -56,8 +56,12 @@ export const useRefresher = <QueryResult = any>({
         staleTime: 0,
       });
 
+      if (!prev.current) {
+        prev.current = next;
+      }
+
       try {
-        if (!prev || !next) {
+        if (!prev.current || !next) {
           setPollInterval(undefined);
           setStatus('error');
           onSettled?.('error', next);
@@ -65,7 +69,7 @@ export const useRefresher = <QueryResult = any>({
           setPollInterval(undefined);
           setStatus('timeout');
           onSettled?.('timeout', next);
-        } else if (isResultProcessed(prev, next)) {
+        } else if (isResultProcessed(prev.current, next)) {
           setPollInterval(undefined);
           setStatus('processed');
           onSettled?.('processed', next);
