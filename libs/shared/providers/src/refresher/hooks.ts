@@ -31,17 +31,27 @@ export const useRefresher = <QueryResult = any>({
   interval = 2000,
 }: UseRefresherProps<QueryResult>) => {
   const queryClient = useQueryClient();
-  const prev = useRef(queryClient.getQueryData<QueryResult>(queryKey));
+  const prev = useRef<QueryResult | null>(null);
   const [retries, setRetries] = useState(0);
   const [status, setStatus] = useState<RefreshStatus>('idle');
   const [pollInterval, setPollInterval] = useState<number | undefined>(
     undefined,
   );
 
-  const startRefresh = useCallback(() => {
-    setPollInterval(interval);
-    setStatus('polling');
-  }, [interval]);
+  const startRefresh = useCallback(
+    async (initialData: QueryResult | undefined) => {
+      if (initialData) {
+        prev.current = initialData;
+        setPollInterval(interval);
+        setStatus('polling');
+      } else {
+        setTimeout(() => {
+          setStatus('processed');
+        }, 12000);
+      }
+    },
+    [interval],
+  );
 
   const stopRefresh = useCallback(() => {
     setPollInterval(undefined);
@@ -55,10 +65,6 @@ export const useRefresher = <QueryResult = any>({
         queryFn,
         staleTime: 0,
       });
-
-      if (!prev.current) {
-        prev.current = next;
-      }
 
       try {
         if (!prev.current || !next) {

@@ -58,6 +58,9 @@ export const WithdrawalRequestModal = ({
   const { update } = useViewSelect();
   const queryClient = useQueryClient();
   const { address } = useAccount();
+  const { data } = useWithdrawalRequestsQuery({
+    address: address ?? ZERO_ADDRESS,
+  });
   const { status, startRefresh } = useRefresher<WithdrawalRequestsQuery>({
     queryKey: useWithdrawalRequestsQuery.getKey({
       address: address ?? ZERO_ADDRESS,
@@ -71,8 +74,9 @@ export const WithdrawalRequestModal = ({
 
   useEffect(() => {
     if (open) {
-      startRefresh();
+      startRefresh(data);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open, startRefresh]);
 
   const handleClaimClick = () => {

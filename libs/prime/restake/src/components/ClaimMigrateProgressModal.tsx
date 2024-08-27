@@ -44,6 +44,7 @@ export const ClaimMigrateProgressModal = ({
   const intl = useIntl();
   const queryClient = useQueryClient();
   const { address } = useAccount();
+  const { data } = useUserWithdrawalsQuery({ address: ZERO_ADDRESS });
   const { status, startRefresh } = useRefresher<UserWithdrawalsQuery>({
     queryKey: useUserWithdrawalsQuery.getKey({
       address: address ?? ZERO_ADDRESS,
@@ -62,7 +63,7 @@ export const ClaimMigrateProgressModal = ({
 
   useEffect(() => {
     if (rest.open) {
-      startRefresh();
+      startRefresh(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

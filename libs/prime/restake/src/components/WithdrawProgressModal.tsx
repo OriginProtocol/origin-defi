@@ -34,6 +34,9 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const intl = useIntl();
   const { address } = useAccount();
   const queryClient = useQueryClient();
+  const { data } = useUserActiveRequestsQuery({
+    address: address ?? ZERO_ADDRESS,
+  });
   const { status, startRefresh } = useRefresher<UserActiveRequestsQuery>({
     queryKey: useUserActiveRequestsQuery.getKey({
       address: address ?? ZERO_ADDRESS,
@@ -45,9 +48,11 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
       prev?.lrtWithdrawalRequests?.length < next?.lrtWithdrawalRequests?.length,
   });
 
+  console.log(status);
+
   useEffect(() => {
     if (rest.open) {
-      startRefresh();
+      startRefresh(data);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
