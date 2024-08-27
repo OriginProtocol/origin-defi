@@ -45,7 +45,10 @@ const MigrationDisclaimer = (props: StackProps) => {
           defaultMessage: `PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below. `,
         })}
       </Typography>
-      <ExternalLink sx={{ color: 'primary.main', mt: 2 }}>
+      <ExternalLink
+        sx={{ color: 'primary.main', mt: 2 }}
+        href="https://medium.com/@yieldnest/introducing-yieldnests-new-liquid-restaking-token-ynlsde-2c2ccfc88e9c"
+      >
         {intl.formatMessage({ defaultMessage: 'Learn more' })}
       </ExternalLink>
     </Stack>
