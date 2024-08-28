@@ -1,6 +1,5 @@
 import { contracts, tokens, whales } from '@origin/shared/contracts';
-import { simulateContractWithTxTracker } from '@origin/shared/providers';
-import { isNilOrEmpty, subPercentage } from '@origin/shared/utils';
+import { subPercentage } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
@@ -80,6 +79,7 @@ const estimateGas: EstimateGas = async (
         minAmountOut[0],
         address ?? whales.mainnet.OETH,
       ],
+      account: address ?? whales.mainnet.OETH,
     });
   } catch {
     requestGasEstimate = 161_000n;
@@ -196,10 +196,9 @@ const swap: Swap = async (
 ) => {
   const { address } = getAccount(config);
 
-  if (amountIn === 0n || isNilOrEmpty(address)) {
+  if (amountIn === 0n || !address || !tokenIn.address || !tokenOut.address) {
     return null;
   }
-
   const approved = await allowance(
     { config, queryClient },
     { tokenIn, tokenOut },
@@ -213,7 +212,6 @@ const swap: Swap = async (
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
   );
-
   const estimatedGas = await estimateGas(
     { config, queryClient },
     {
@@ -226,7 +224,7 @@ const swap: Swap = async (
   );
   const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
 
-  const { request } = await simulateContractWithTxTracker(config, {
+  const { request } = await simulateContract(config, {
     address: contracts.mainnet.ARM.address,
     abi: contracts.mainnet.ARM.abi,
     functionName: 'swapExactTokensForTokens',
