@@ -13,7 +13,6 @@ import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { base } from 'viem/chains';
 
-import { TokenSwitch } from '../components/TokenSwitch';
 import { useTokenSelect } from '../hooks';
 
 export const PortfolioView = () => {
@@ -33,7 +32,7 @@ export const PortfolioView = () => {
       />
       <PageSection>
         <Stack spacing={5}>
-          <TokenSwitch />
+          {/* <TokenSwitch /> */}
           <ErrorBoundary
             ErrorComponent={<ErrorCard />}
             onError={trackSentryError}
