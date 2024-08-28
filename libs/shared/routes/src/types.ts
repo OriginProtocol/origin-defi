@@ -12,6 +12,13 @@ export type OethRoute =
   | 'unwrap-oeth-woeth'
   | 'wrap-oeth-oeth';
 
+export type SuperOethbRoute =
+  | 'mint-vault-oeth'
+  | 'swap-aerodrome-superOethb'
+  | 'swap-zapper-superOethb'
+  | 'unwrap-oeth-woeth'
+  | 'wrap-oeth-oeth';
+
 export type OusdRoute =
   | 'mint-vault-ousd'
   | 'swap-flipper-ousd'

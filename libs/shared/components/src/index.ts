@@ -8,5 +8,6 @@ export * from './Labels';
 export * from './Links';
 export * from './Menus';
 export * from './Notifications';
+export * from './NumberSpinner';
 export * from './Pagination';
 export * from './Switches';

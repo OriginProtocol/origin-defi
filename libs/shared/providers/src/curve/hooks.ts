@@ -2,8 +2,8 @@ import { contracts } from '@origin/shared/contracts';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
+import { mainnet } from 'viem/chains';
 import { useConfig } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import { CurveFactoryABI } from './abis/CurveFactory';
 import { CurveRegistryExchangeABI } from './abis/CurveRegistryExchange';

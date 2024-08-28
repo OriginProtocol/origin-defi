@@ -1,82 +1,18 @@
 import { Card, Stack } from '@mui/material';
-import { useOTokenAddressQuery } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   useFormat,
   useTokenPrice,
-  useWatchBalance,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { getFormatPrecision, ZERO_ADDRESS } from '@origin/shared/utils';
+import { getFormatPrecision } from '@origin/shared/utils';
 import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { usePendingYield } from '../hooks';
-
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-
-export const OethStats = (props: CardProps) => {
-  const intl = useIntl();
-  const { formatAmount } = useFormat();
-  const { address, isConnected } = useAccount();
-  const { data: oethBalance, isLoading: oethLoading } = useWatchBalance({
-    token: tokens.mainnet.OETH,
-  });
-  const { data: oethEarned, isLoading: isOethEarnedLoading } =
-    useOTokenAddressQuery(
-      {
-        address: address ?? ZERO_ADDRESS,
-        chainId: tokens.mainnet.OETH.chainId,
-        token: tokens.mainnet.OETH.address,
-      },
-      {
-        enabled: !!address,
-        select: (data) => data?.oTokenAddresses?.[0]?.earned,
-      },
-    );
-  const { data: pendingYield, isLoading: isPendingYieldLoading } =
-    usePendingYield();
-
-  return (
-    <Card
-      {...props}
-      sx={{ backgroundColor: 'background.default', ...props?.sx }}
-    >
-      <Stack direction="row" justifyContent="space-between">
-        <ValueLabel
-          {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'OETH Balance' })}
-          value={
-            isConnected
-              ? formatAmount(
-                  oethBalance as unknown as bigint,
-                  tokens.mainnet.OETH.decimals,
-                )
-              : '-'
-          }
-          isLoading={isConnected && oethLoading}
-        />
-        <ValueLabel
-          {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'Pending Yield' })}
-          value={isConnected ? formatAmount(pendingYield) : '-'}
-          isLoading={isConnected && isPendingYieldLoading}
-        />
-        <ValueLabel
-          {...valueLabelProps}
-          label={intl.formatMessage({
-            defaultMessage: 'Lifetime Earnings (OETH)',
-          })}
-          value={isConnected ? formatAmount(BigInt(oethEarned ?? '0')) : '-'}
-          isLoading={isConnected && isOethEarnedLoading}
-        />
-      </Stack>
-    </Card>
-  );
-};
 
 export const WoethStats = (props: CardProps) => {
   const intl = useIntl();

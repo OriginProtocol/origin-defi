@@ -1,15 +1,26 @@
 import { Button, Card, CardContent, Typography } from '@mui/material';
-import { OUSD_ANALYTICS_URL } from '@origin/shared/constants';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 
-export const AnalyticsCard = (props: CardProps) => {
+export type AnalyticsCardProps = {
+  token: Token;
+  title?: string;
+  href: string;
+} & CardProps;
+
+export const AnalyticsCard = ({
+  token,
+  href,
+  title,
+  ...rest
+}: AnalyticsCardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props}>
+    <Card {...rest}>
       <CardContent
         sx={{
           display: 'flex',
@@ -18,7 +29,10 @@ export const AnalyticsCard = (props: CardProps) => {
         }}
       >
         <Typography mb={1} fontWeight="medium">
-          {intl.formatMessage({ defaultMessage: 'OUSD analytics' })}
+          {intl.formatMessage(
+            { defaultMessage: '{symbol} analytics' },
+            { symbol: title ?? token.symbol },
+          )}
         </Typography>
         <Typography variant="caption1" mb={3}>
           {intl.formatMessage({
@@ -28,7 +42,7 @@ export const AnalyticsCard = (props: CardProps) => {
         <Button
           variant="outlined"
           color="secondary"
-          href={OUSD_ANALYTICS_URL}
+          href={href}
           target="_blank"
           rel="noopener noreferrer nofollow"
         >

@@ -11,26 +11,21 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
 } from '@mui/material';
-import {
-  ConnectPage,
-  FiltersButton,
-  HistoryType,
-  useOTokenHistoriesQuery,
-} from '@origin/defi/shared';
 import {
   DownloadCsvButton,
   ExpandIcon,
   TablePagination,
   TransactionIcon,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { supportedChains } from '@origin/shared/constants';
 import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { isNilOrEmpty, txLink, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   createColumnHelper,
   flexRender,
@@ -42,12 +37,18 @@ import {
 import { defineMessage, useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useOusdHistory } from '../hooks';
+import { HistoryType } from '../../generated/graphql';
+import { useTokenHistory } from '../../hooks';
+import { useOTokenHistoriesQuery } from '../../queries';
+import { FiltersButton } from '../FiltersButton';
+import { ConnectPage } from '../Page';
 
-import type { StackProps } from '@mui/material';
+import type { CardProps, StackProps } from '@mui/material';
+import type { DownloadCsvButtonProps } from '@origin/shared/components';
+import type { Token } from '@origin/shared/contracts';
 import type { ExpandedState } from '@tanstack/react-table';
 
-import type { DailyHistory } from '../types';
+import type { DailyHistory } from '../../hooks';
 
 const filterOptions = [
   {
@@ -61,14 +62,22 @@ const filterOptions = [
   },
 ];
 
-export const HistoryCard = () => {
+export type HistoryCardProps = { token: Token } & CardProps;
+
+export const HistoryCard = ({ token, ...rest }: HistoryCardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const [filters, setFilters] = useState<HistoryType[]>([]);
-  const { data: rows, isFetching: isRowsFetching } = useOusdHistory(filters);
+  const { data: rows, isFetching: isRowsFetching } = useTokenHistory(
+    token,
+    filters,
+    {
+      placeholderData: { oTokenHistories: [] },
+    },
+  );
 
   return (
-    <Card>
+    <Card {...rest}>
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Transactions' })}
         action={
@@ -79,7 +88,7 @@ export const HistoryCard = () => {
               filterOptions={filterOptions}
               disabled={isRowsFetching || isNilOrEmpty(rows)}
             />
-            <ExportDataButton />
+            <ExportDataButton token={token} />
           </Stack>
         }
       />
@@ -112,7 +121,7 @@ export const HistoryCard = () => {
             </Typography>
           </Stack>
         ) : (
-          <HistoryTable filters={filters} />
+          <HistoryTable token={token} filters={filters} />
         )
       ) : (
         <ConnectPage sx={{ borderRadius: 0 }} />
@@ -121,13 +130,15 @@ export const HistoryCard = () => {
   );
 };
 
-function ExportDataButton() {
+type ExportDataButton = { token: Token } & DownloadCsvButtonProps;
+
+function ExportDataButton({ token, ...rest }: ExportDataButton) {
   const { address, isConnected } = useAccount();
   const { data: txData } = useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
-      token: tokens.mainnet.OUSD.address,
-      chainId: tokens.mainnet.OUSD.chainId,
+      chainId: token.chainId,
+      token: token.address ?? ZERO_ADDRESS,
     },
     {
       enabled: isConnected,
@@ -150,11 +161,12 @@ function ExportDataButton() {
   return (
     <DownloadCsvButton
       data={txData}
-      filename="ousd_transaction_history.csv"
+      filename={`${token.symbol}_transaction_history.csv`}
       variant="outlined"
       color="secondary"
       buttonLabel="CSV"
       disabled={!isConnected || txData?.length === 1}
+      {...rest}
     />
   );
 }
@@ -162,14 +174,15 @@ function ExportDataButton() {
 const columnHelper = createColumnHelper<DailyHistory>();
 
 type HistoryTableProps = {
+  token: Token;
   filters: HistoryType[];
-};
+} & StackProps;
 
-function HistoryTable({ filters }: HistoryTableProps) {
+function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
   const intl = useIntl();
   const { formatAmount, formatQuantity } = useFormat();
   const [expanded, setExpanded] = useState<ExpandedState>({});
-  const { data } = useOusdHistory(filters);
+  const { data } = useTokenHistory(token, filters);
 
   const columns = useMemo(
     () => [
@@ -186,6 +199,7 @@ function HistoryTable({ filters }: HistoryTableProps) {
 
           return (
             <HistoryTypeCell
+              token={token}
               type={info.getValue()}
               timestamp={info.row.original.timestamp}
               showTime={!info.row.getCanExpand()}
@@ -237,27 +251,28 @@ function HistoryTable({ filters }: HistoryTableProps) {
           }
 
           return (
-            !isNilOrEmpty(info.row.original.txHash) && (
-              <IconButton
-                href={`https://etherscan.io/tx/${info.row.original.txHash}`}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                sx={{
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  borderRadius: '50%',
-                  width: 28,
-                  height: 28,
-                }}
-              >
-                <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
-              </IconButton>
-            )
+            <IconButton
+              href={txLink(
+                supportedChains[token.chainId],
+                info.row.original.txHash,
+              )}
+              target="_blank"
+              rel="noopener noreferrer nofollow"
+              sx={{
+                border: '1px solid',
+                borderColor: 'divider',
+                borderRadius: '50%',
+                width: 28,
+                height: 28,
+              }}
+            >
+              <FaArrowUpRightFromSquareRegular sx={{ fontSize: 12 }} />
+            </IconButton>
           );
         },
       }),
     ],
-    [formatAmount, formatQuantity, intl],
+    [formatAmount, formatQuantity, intl, token],
   );
 
   const table = useReactTable({
@@ -282,48 +297,53 @@ function HistoryTable({ filters }: HistoryTableProps) {
   });
 
   return (
-    <Stack>
-      <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableCell key={header.id} sx={{ width: header.getSize() }}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              onClick={row.getToggleExpandedHandler()}
-              sx={{
-                ...(row.getCanExpand() && {
-                  cursor: 'pointer',
-                  ':hover': {
-                    backgroundColor: 'primary.faded',
-                  },
-                }),
-                ...(row.depth > 0 && {
-                  borderTopStyle: 'hidden',
-                }),
-              }}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} sx={{ width: cell.column.getSize() }}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <Stack {...rest}>
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCell key={header.id} sx={{ width: header.getSize() }}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                onClick={row.getToggleExpandedHandler()}
+                sx={{
+                  ...(row.getCanExpand() && {
+                    cursor: 'pointer',
+                    ':hover': {
+                      backgroundColor: 'primary.faded',
+                    },
+                  }),
+                  ...(row.depth > 0 && {
+                    borderTopStyle: 'hidden',
+                  }),
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{ width: cell.column.getSize() }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Stack alignItems="center" justifyContent="center">
         <TablePagination
           table={table}
@@ -339,12 +359,14 @@ function HistoryTable({ filters }: HistoryTableProps) {
 }
 
 type HistoryTypeCellProps = {
+  token: Token;
   timestamp: string;
   type: HistoryType;
   showTime: boolean;
 } & StackProps;
 
 function HistoryTypeCell({
+  token,
   timestamp,
   type,
   showTime,
@@ -354,7 +376,7 @@ function HistoryTypeCell({
 
   return (
     <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
-      <TransactionIcon type={type} zIndex={1} token={tokens.mainnet.OETH} />
+      <TransactionIcon type={type} zIndex={1} token={token} />
       <Stack spacing={0.5}>
         <Typography fontWeight="medium">{type}</Typography>
         <Typography color="text.secondary" variant="caption1">

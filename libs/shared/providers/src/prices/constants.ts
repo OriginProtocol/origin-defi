@@ -8,11 +8,9 @@ import {
 import { from } from 'dnum';
 import { pathOr } from 'ramda';
 import { parseUnits } from 'viem';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
 import type { Dnum } from 'dnum';
-
-import type { PriceOption, SupportedTokenPrice } from './types';
 
 export const coingeckoApiEndpoint = 'https://api.coingecko.com/api/v3';
 
@@ -50,11 +48,19 @@ export const chainlinkOraclesArbitrum = {
   wOETH_OETH: '0x03a1f4b19aaeA6e68f0f104dc4346dA3E942cC45',
 } as const;
 
+export const chainlinkOraclesBase = {
+  ETH_USD: '0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70',
+} as const;
+
+export const chainlinkOraclesOptimism = {
+  ETH_USD: '0x13e3Ee699D1909E989722E753853AE30b17e08c5',
+} as const;
+
 const chainLinkUsdMapper = (data: any) => [pathOr(0n, [1], data), 8] as Dnum;
 const chainLinkEthMapper = (data: any) => [pathOr(0n, [1], data), 18] as Dnum;
 const diaOracleUsdMapper = (data: any) => [pathOr(0n, [0], data), 8] as Dnum;
 
-export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
+export const priceOptions = {
   '1:ETH_USD': {
     type: 'wagmi',
     id: '1:ETH_USD',
@@ -371,4 +377,56 @@ export const priceOptions: Partial<Record<SupportedTokenPrice, PriceOption>> = {
     type: 'derived',
     dependsOn: ['42161:ETH_USD'],
   },
-};
+  '8453:ETH_USD': {
+    id: '8453:ETH_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesBase.ETH_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: base.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
+  '8453:WETH_USD': {
+    id: '8453:WETH_USD',
+    type: 'derived',
+    dependsOn: ['8453:ETH_USD'],
+  },
+  '8453:superOETHb_USD': {
+    id: '8453:superOETHb_USD',
+    type: 'derived',
+    dependsOn: ['8453:ETH_USD'],
+  },
+  '8453:wsuperOETHb_USD': {
+    id: '8453:wsuperOETHb_USD',
+    type: 'derived',
+    dependsOn: ['8453:ETH_USD'],
+  },
+  '10:ETH_USD': {
+    id: '10:ETH_USD',
+    type: 'wagmi',
+    config: {
+      address: chainlinkOraclesOptimism.ETH_USD,
+      abi: ChainlinkAggregatorABI,
+      functionName: 'latestRoundData',
+      chainId: optimism.id,
+    },
+    mapResult: chainLinkUsdMapper,
+  },
+  '10:WETH_USD': {
+    id: '10:WETH_USD',
+    type: 'derived',
+    dependsOn: ['10:ETH_USD'],
+  },
+  '10:superOETHo_USD': {
+    id: '10:superOETHo_USD',
+    type: 'derived',
+    dependsOn: ['10:ETH_USD'],
+  },
+  '10:wsuperOETHo_USD': {
+    id: '10:wsuperOETHo_USD',
+    type: 'derived',
+    dependsOn: ['10:ETH_USD'],
+  },
+} as const;

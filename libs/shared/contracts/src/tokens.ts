@@ -1,6 +1,7 @@
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
 import { DAIABI } from './abis/DAI';
 import { OETHABI } from './abis/OETH';
@@ -243,11 +244,89 @@ export const tokens = {
       symbol: 'wOETH',
     },
   },
+  base: {
+    ETH: {
+      id: '8453:ETH',
+      address: undefined,
+      chainId: base.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    WETH: {
+      id: '8453:WETH',
+      address: '0x4200000000000000000000000000000000000006',
+      chainId: base.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+    superOETHb: {
+      id: '8453:superOETHb',
+      address: '0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3',
+      chainId: base.id,
+      abi: OETHABI,
+      name: 'Super OETH',
+      decimals: 18,
+      symbol: 'superOETHb',
+    },
+    wsuperOETHb: {
+      id: '8453:wsuperOETHb',
+      address: '0x7FcD174E80f264448ebeE8c88a7C4476AAF58Ea6',
+      chainId: base.id,
+      abi: WOETHABI,
+      name: 'Wrapped Super OETH',
+      decimals: 18,
+      symbol: 'wsuperOETHb',
+    },
+  },
+  optimism: {
+    ETH: {
+      id: '10:ETH',
+      address: undefined,
+      chainId: optimism.id,
+      abi: erc20Abi,
+      name: 'Ethereum',
+      decimals: 18,
+      symbol: 'ETH',
+    },
+    WETH: {
+      id: '10:WETH',
+      address: '0x4200000000000000000000000000000000000006',
+      chainId: optimism.id,
+      abi: erc20Abi,
+      name: 'Wrapped Ether',
+      decimals: 18,
+      symbol: 'WETH',
+    },
+    superOETHo: {
+      id: '10:superOETHo',
+      address: ZERO_ADDRESS, // TODO update with real address
+      chainId: optimism.id,
+      abi: OETHABI,
+      name: 'Super OETH',
+      decimals: 18,
+      symbol: 'superOETHo',
+    },
+    wsuperOETHo: {
+      id: '10:wsuperOETHo',
+      address: ZERO_ADDRESS, // TODO update with real address
+      chainId: optimism.id,
+      abi: WOETHABI,
+      name: 'Wrapped Super OETH',
+      decimals: 18,
+      symbol: 'wsuperOETHo',
+    },
+  },
 } as const;
 
 export const tokenList = [
   ...Object.values(tokens.mainnet),
   ...Object.values(tokens.arbitrum),
+  ...Object.values(tokens.base),
+  ...Object.values(tokens.optimism),
 ];
 
 export const tokenIdMap = indexBy(prop('id'), tokenList);

@@ -4,6 +4,7 @@ import * as oeth from '@origin/defi/oeth';
 import * as ogn from '@origin/defi/ogn';
 import * as ogv from '@origin/defi/ogv';
 import * as ousd from '@origin/defi/ousd';
+import * as superOeth from '@origin/defi/super';
 import { NotFoundPage } from '@origin/shared/components';
 import {
   Bridge,
@@ -16,6 +17,7 @@ import {
   OETH,
   OGN,
   OUSD,
+  superOETH,
 } from '@origin/shared/icons';
 import { defineMessage } from 'react-intl';
 
@@ -31,6 +33,32 @@ export const routes: RouteObject[] = [
       {
         index: true,
         Component: HomeView,
+      },
+      {
+        index: false,
+        path: 'super',
+        handle: {
+          title: defineMessage({ defaultMessage: 'Super OETH' }),
+          icon: superOETH,
+        },
+        children: [
+          {
+            index: true,
+            Component: superOeth.SwapView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Swap' }),
+              icon: FaArrowRightArrowLeftRegular,
+            },
+          },
+          {
+            path: 'history',
+            Component: superOeth.PortfolioView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'History' }),
+              icon: FaClockRegular,
+            },
+          },
+        ],
       },
       {
         index: false,

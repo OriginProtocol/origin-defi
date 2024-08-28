@@ -1,7 +1,7 @@
 import { ExternalLink } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
+import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
-import { mainnet } from 'wagmi/chains';
 
 import type { ExternalLinkProps } from '@origin/shared/components';
 import type { HexAddress } from '@origin/shared/utils';

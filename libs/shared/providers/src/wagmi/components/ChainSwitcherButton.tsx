@@ -1,10 +1,10 @@
 import { useState } from 'react';
 
 import { Button, Popover, Stack, Typography } from '@mui/material';
-import { ChainIcon } from '@origin/shared/components';
+import { NetworkIcon } from '@origin/shared/components';
 import { FaCheckRegular } from '@origin/shared/icons';
+import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount, useSwitchChain } from 'wagmi';
-import { arbitrum, mainnet } from 'wagmi/chains';
 
 import type { ButtonProps } from '@mui/material';
 import type { Dispatch, SetStateAction } from 'react';
@@ -36,7 +36,7 @@ export const ChainSwitcherButton = (props: Omit<ButtonProps, 'onClick'>) => {
         }}
         onClick={(e) => setPopoverAnchor(e.currentTarget)}
       >
-        <ChainIcon chainId={chain.id} sx={{ fontSize: 24 }} />
+        <NetworkIcon chainId={chain.id} sx={{ fontSize: 24 }} />
         <Typography
           variant="inherit"
           sx={{ display: { xs: 'none', lg: 'block' } }}
@@ -110,7 +110,7 @@ export function ChainSwitcherPopover({
               close();
             }}
           >
-            <ChainIcon chainId={chain.id} />
+            <NetworkIcon chainId={chain.id} />
             <Typography>
               {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
             </Typography>

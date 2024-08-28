@@ -11,7 +11,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { ChainIcon, TokenIcon } from '@origin/shared/components';
+import { NetworkIcon, TokenIcon } from '@origin/shared/components';
 import { getTokenByAddress } from '@origin/shared/contracts';
 import {
   FaArrowRightRegular,
@@ -24,6 +24,7 @@ import { getChain } from '@origin/shared/providers';
 import { formatAmount } from '@origin/shared/utils';
 import { useIntervalEffect } from '@react-hookz/web';
 import { defineMessage, useIntl } from 'react-intl';
+import { mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useBridgeActivity } from '../hooks/useBridgeActivity';
@@ -213,10 +214,16 @@ export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
     alignItems={'center'}
     color={'text.secondary'}
   >
-    <ChainIcon chainId={props.srcChain?.id} sx={{ fontSize: 14 }} />
+    <NetworkIcon
+      chainId={props.srcChain?.id ?? mainnet.id}
+      sx={{ fontSize: 14 }}
+    />
     <Typography fontSize={12}>{props.srcChain?.name}</Typography>
     <FaArrowRightRegular sx={{ height: 12 }} />
-    <ChainIcon chainId={props.dstChain?.id} sx={{ fontSize: 14 }} />
+    <NetworkIcon
+      chainId={props.dstChain?.id ?? mainnet.id}
+      sx={{ fontSize: 14 }}
+    />
     <Typography fontSize={12}>{props.dstChain?.name}</Typography>
   </Stack>
 );

@@ -1,6 +1,7 @@
 import { Stack } from '@mui/material';
 import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
+  AnalyticsCard,
   BridgePromoCard,
   GlobalStatsCard,
   Page,
@@ -9,24 +10,27 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
+import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { mainnet } from 'viem/chains';
+import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount } from 'wagmi';
 
 import { oethSwapActions } from '../actions';
-import { AnalyticsCard } from '../components/AnalyticsCard';
 import { PageTitleSection } from '../components/PageTitleSection';
 import { oethSwapRoutes } from '../constants';
+
+const supportedTokens = {
+  [mainnet.id.toString()]: tokens.mainnet.OETH,
+  [arbitrum.id.toString()]: tokens.arbitrum.wOETH,
+};
 
 export const SwapView = () => {
   const intl = useIntl();
   const { chain } = useAccount();
 
   const token =
-    (chain ?? mainnet).id === mainnet.id
-      ? tokens.mainnet.OETH
-      : tokens.arbitrum.wOETH;
+    supportedTokens[chain?.id ?? mainnet.id] ?? supportedTokens[mainnet.id];
 
   return (
     <Page>
@@ -41,10 +45,10 @@ export const SwapView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 xs={12} md={3}>
+          <Grid2 xs={12} md={3} order={{ xs: 3, md: 1 }}>
             <BridgePromoCard small />
           </Grid2>
-          <Grid2 xs={12} md={6}>
+          <Grid2 xs={12} md={6} order={{ xs: 1, md: 2 }}>
             <Swapper
               swapActions={oethSwapActions}
               swapRoutes={oethSwapRoutes}
@@ -52,10 +56,10 @@ export const SwapView = () => {
               trackEvent={trackEvent}
             />
           </Grid2>
-          <Grid2 xs={12} md={3}>
+          <Grid2 xs={12} md={3} order={{ xs: 2, md: 3 }}>
             <Stack spacing={4}>
               <GlobalStatsCard token={token} />
-              <AnalyticsCard />
+              <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />
             </Stack>
           </Grid2>
         </Grid2>

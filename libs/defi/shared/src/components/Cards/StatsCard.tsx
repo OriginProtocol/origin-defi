@@ -1,58 +1,55 @@
 import { Card, Stack } from '@mui/material';
-import { useOTokenAddressQuery } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { useFormat, useWatchBalance } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { usePendingYield } from '../hooks';
+import { usePendingYield } from '../../hooks';
+import { useOTokenAddressQuery } from '../../queries';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type { Token } from '@origin/shared/contracts';
 
-export const StatsCard = (props: CardProps) => {
+export type StatsCardProps = { token: Token } & CardProps;
+
+export const StatsCard = ({ token, ...rest }: StatsCardProps) => {
   const intl = useIntl();
   const { formatAmount } = useFormat();
   const { address, isConnected } = useAccount();
-  const { data: ousdBalance, isLoading: isOusdBalanceLoading } =
-    useWatchBalance({
-      token: tokens.mainnet.OUSD,
-    });
-  const { data: ousdEarned, isLoading: isOusdEarnedLoading } =
-    useOTokenAddressQuery(
-      {
-        address: address ?? ZERO_ADDRESS,
-        token: tokens.mainnet.OUSD.address,
-        chainId: tokens.mainnet.OUSD.chainId,
-      },
-      {
-        enabled: !!address,
-        select: (data) => data?.oTokenAddresses?.[0]?.earned,
-      },
-    );
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token,
+  });
+  const { data: earned, isLoading: isEarnedLoading } = useOTokenAddressQuery(
+    {
+      address: address ?? ZERO_ADDRESS,
+      chainId: token.chainId,
+      token: token.address ?? ZERO_ADDRESS,
+    },
+    {
+      enabled: !!address,
+      select: (data) => data?.oTokenAddresses?.[0]?.earned,
+    },
+  );
   const { data: pendingYield, isLoading: isPendingYieldLoading } =
-    usePendingYield();
+    usePendingYield(token);
 
   return (
-    <Card
-      {...props}
-      sx={{ backgroundColor: 'background.default', ...props?.sx }}
-    >
+    <Card {...rest} sx={{ backgroundColor: 'background.default', ...rest?.sx }}>
       <Stack direction="row" justifyContent="space-between">
         <ValueLabel
           {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'OUSD Balance' })}
+          label={intl.formatMessage(
+            { defaultMessage: '{symbol} Balance' },
+            { symbol: token.symbol },
+          )}
           value={
             isConnected
-              ? formatAmount(
-                  ousdBalance as unknown as bigint,
-                  tokens.mainnet.OUSD.decimals,
-                )
+              ? formatAmount(balance as unknown as bigint, token.decimals)
               : '-'
           }
-          isLoading={isConnected && isOusdBalanceLoading}
+          isLoading={isConnected && isBalanceLoading}
         />
         <ValueLabel
           {...valueLabelProps}
@@ -63,10 +60,10 @@ export const StatsCard = (props: CardProps) => {
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({
-            defaultMessage: 'Lifetime Earnings (OUSD)',
+            defaultMessage: 'Lifetime Earnings',
           })}
-          value={isConnected ? formatAmount(BigInt(ousdEarned ?? '0')) : '-'}
-          isLoading={isConnected && isOusdEarnedLoading}
+          value={isConnected ? formatAmount(BigInt(earned ?? '0')) : '-'}
+          isLoading={isConnected && isEarnedLoading}
         />
       </Stack>
     </Card>

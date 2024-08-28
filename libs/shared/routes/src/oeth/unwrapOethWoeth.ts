@@ -7,6 +7,7 @@ import {
   writeContract,
 } from '@wagmi/core';
 import { formatUnits, maxUint256 } from 'viem';
+import { base, mainnet } from 'viem/chains';
 
 import { defaultRoute } from '../defaultRoute';
 
@@ -20,27 +21,40 @@ import type {
   Swap,
 } from '@origin/shared/providers';
 
-const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
+const wrappedTokens = {
+  [mainnet.id.toString()]: tokens.mainnet.wOETH,
+  [base.id.toString()]: tokens.base.wsuperOETHb,
+};
+
+const whale = {
+  [mainnet.id.toString()]: whales.mainnet.OETH,
+  [base.id.toString()]: whales.base.superOETHb,
+};
+
+const estimateAmount: EstimateAmount = async (
+  { config },
+  { amountIn, tokenIn },
+) => {
   if (amountIn === 0n) {
     return 0n;
   }
 
   const data = await readContract(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: wrappedTokens[tokenIn.chainId].address,
+    abi: wrappedTokens[tokenIn.chainId].abi,
     functionName: 'convertToAssets',
     args: [amountIn],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: wrappedTokens[tokenIn.chainId].chainId,
   });
 
   return data as unknown as bigint;
 };
 
-const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
+const estimateGas: EstimateGas = async ({ config }, { amountIn, tokenIn }) => {
   let gasEstimate = 0n;
 
   const publicClient = getPublicClient(config, {
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: wrappedTokens[tokenIn.chainId].chainId,
   });
 
   if (amountIn === 0n) {
@@ -53,8 +67,8 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
     try {
       gasEstimate =
         (await publicClient?.estimateContractGas({
-          address: tokens.mainnet.wOETH.address,
-          abi: tokens.mainnet.wOETH.abi,
+          address: wrappedTokens[tokenIn.chainId].address,
+          abi: wrappedTokens[tokenIn.chainId].abi,
           functionName: 'redeem',
           args: [amountIn, address, address],
           account: address,
@@ -67,11 +81,11 @@ const estimateGas: EstimateGas = async ({ config }, { amountIn }) => {
   try {
     gasEstimate =
       (await publicClient?.estimateContractGas({
-        address: tokens.mainnet.wOETH.address,
-        abi: tokens.mainnet.wOETH.abi,
+        address: wrappedTokens[tokenIn.chainId].address,
+        abi: wrappedTokens[tokenIn.chainId].abi,
         functionName: 'redeem',
-        args: [amountIn, whales.mainnet.wOETH, whales.mainnet.wOETH],
-        account: whales.mainnet.wOETH,
+        args: [amountIn, whale[tokenIn.chainId], whale[tokenIn.chainId]],
+        account: whale[tokenIn.chainId],
       })) ?? 21000n;
   } catch {
     gasEstimate = 21000n;
@@ -130,7 +144,7 @@ const approve: Approve = async () => {
   return null;
 };
 
-const swap: Swap = async ({ config }, { amountIn }) => {
+const swap: Swap = async ({ config }, { amountIn, tokenIn }) => {
   const { address } = getAccount(config);
 
   if (amountIn === 0n || !address) {
@@ -138,11 +152,11 @@ const swap: Swap = async ({ config }, { amountIn }) => {
   }
 
   const { request } = await simulateContractWithTxTracker(config, {
-    address: tokens.mainnet.wOETH.address,
-    abi: tokens.mainnet.wOETH.abi,
+    address: wrappedTokens[tokenIn.chainId].address,
+    abi: wrappedTokens[tokenIn.chainId].abi,
     functionName: 'redeem',
     args: [amountIn, address, address],
-    chainId: tokens.mainnet.wOETH.chainId,
+    chainId: wrappedTokens[tokenIn.chainId].chainId,
   });
   const hash = await writeContract(config, request);
 

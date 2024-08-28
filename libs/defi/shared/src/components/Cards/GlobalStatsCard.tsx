@@ -1,33 +1,90 @@
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
-import { ValueLabel } from '@origin/shared/components';
-import { supportedChainNames } from '@origin/shared/constants';
 import {
-  getTokenPriceKey,
-  useTokenPrice,
-  useTvl,
-} from '@origin/shared/providers';
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
+import { supportedChainNames } from '@origin/shared/constants';
+import { FaChevronDownRegular } from '@origin/shared/icons';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
-import type { CardProps } from '@mui/material';
+import { useTokenInfo } from '../../hooks';
+import { ColorChip } from '../Chips';
+
+import type { AccordionProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-export type GlobalStatsCardProps = { token: Token } & CardProps;
+export type GlobalStatsCardProps = {
+  token: Token;
+  borderRadius?: number;
+  showTokenHeader?: boolean;
+  showAprChip?: boolean;
+} & Omit<AccordionProps, 'children'>;
 
-export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
+export const GlobalStatsCard = ({
+  token,
+  borderRadius = 4,
+  showTokenHeader = false,
+  showAprChip = false,
+  ...rest
+}: GlobalStatsCardProps) => {
   const intl = useIntl();
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    getTokenPriceKey(token),
-  );
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(token);
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isMd = useMediaQuery(theme.breakpoints.down('lg'));
+  const { data: info, isLoading: isInfoLoading } = useTokenInfo(token);
 
   return (
-    <Card {...rest}>
-      <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Global stats' })}
-      />
+    <Accordion
+      defaultExpanded
+      {...rest}
+      sx={{
+        backgroundColor: 'background.default',
+        '&&&': { borderRadius },
+        ...rest?.sx,
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<FaChevronDownRegular />}
+        sx={{ p: 3, minHeight: 72 }}
+      >
+        <Stack direction="row" alignItems="center" spacing={1} pr={0.5}>
+          {showTokenHeader ? (
+            <>
+              <TokenIcon token={token} sx={{ fontSize: 24 }} />
+              <Typography fontWeight="medium">{token.symbol}</Typography>
+            </>
+          ) : (
+            <Typography fontWeight="medium">
+              {intl.formatMessage({ defaultMessage: 'Global stats' })}
+            </Typography>
+          )}
+          {showAprChip && (!isMd || isSm) && (
+            <ColorChip alignItems="baseline" px={0.5}>
+              <LoadingLabel
+                variant="caption1"
+                fontWeight="bold"
+                isLoading={isInfoLoading}
+              >
+                {intl.formatNumber(info?.apies?.apr ?? 0, {
+                  style: 'percent',
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })}
+              </LoadingLabel>
+              <Typography variant="caption2">APR</Typography>
+            </ColorChip>
+          )}
+        </Stack>
+      </AccordionSummary>
       <Divider />
-      <CardContent>
+      <AccordionDetails sx={{ p: 3 }}>
         <Stack spacing={3}>
           <ValueLabel
             direction="row"
@@ -42,9 +99,9 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
                 chainName: supportedChainNames[token.chainId].short,
               },
             )}
-            value={`$${format(tvl ?? from(0), 2)}`}
+            value={`$${format(info?.tvlUsd ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
-            isLoading={isTvlLoading}
+            isLoading={isInfoLoading}
           />
           <ValueLabel
             direction="row"
@@ -60,12 +117,12 @@ export const GlobalStatsCard = ({ token, ...rest }: GlobalStatsCardProps) => {
               },
             )}
             labelProps={{ variant: 'body3', fontWeight: 'medium' }}
-            value={`$${format(price ?? from(0), 2)}`}
+            value={`$${format(info?.price ?? from(0), 2)}`}
             valueProps={{ fontWeight: 'medium' }}
-            isLoading={isPriceLoading}
+            isLoading={isInfoLoading}
           />
         </Stack>
-      </CardContent>
-    </Card>
+      </AccordionDetails>
+    </Accordion>
   );
 };

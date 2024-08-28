@@ -115,6 +115,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
           color: 'text.primary',
           backgroundColor: open ? 'primary.faded' : 'transparent',
           svg: { ml: 0.75, width: 12, height: 12 },
+          whiteSpace: 'nowrap',
           ...rest?.sx,
         }}
         ref={anchorEl}

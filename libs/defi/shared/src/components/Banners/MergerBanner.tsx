@@ -20,17 +20,18 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
       sx={{
         width: 1,
         borderRadius: 4,
-        background: (theme) => theme.palette.background.gradientBlue,
+        background: (theme) => theme.palette.background.highlight,
         border: '1px solid',
         borderColor: 'primary.main',
-        p: 5,
+        px: 2,
+        py: 2.5,
         rowGap: 3,
         ...rest?.sx,
       }}
     >
       <MultiTokenIcon
         tokens={[tokens.mainnet.OGV, tokens.mainnet.OGN]}
-        size={3.5}
+        size={3}
         zOrder="last"
       />
       <Stack
@@ -38,10 +39,13 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
         alignItems={{ xs: 'center', md: 'flex-start' }}
         pr={{ xs: 0, md: 2 }}
       >
-        <Typography variant="h6" fontWeight={800} pb={1.5}>
+        <Typography variant="body2" fontWeight="bold" pb={1}>
           {intl.formatMessage({ defaultMessage: 'Convert OGV to OGN now!' })}
         </Typography>
-        <Typography textAlign={{ xs: 'center', md: 'start' }}>
+        <Typography
+          fontWeight="medium"
+          textAlign={{ xs: 'center', md: 'start' }}
+        >
           {intl.formatMessage({
             defaultMessage:
               'OGV & OGN are merging. Conversion will be open for 1 year.',

@@ -1,4 +1,10 @@
-import { Box, Button, emphasize, Typography } from '@mui/material';
+import {
+  Button,
+  emphasize,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 
@@ -10,6 +16,9 @@ export type TokenButtonProps = {
 } & ButtonProps;
 
 export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
+  const theme = useTheme();
+  const isXs = useMediaQuery(theme.breakpoints.down('sm'));
+
   if (!token) {
     return null;
   }
@@ -45,21 +54,12 @@ export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
         ...rest?.sx,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: '50%',
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <TokenIcon token={token} sx={{ fontSize: 28 }} />
-      </Box>
-      <Typography variant="body2" fontWeight="bold" flexGrow={1}>
-        {token.symbol}
-      </Typography>
+      <TokenIcon token={token} sx={{ fontSize: 28 }} outlined />
+      {!isXs && (
+        <Typography variant="body2" fontWeight="bold" flexGrow={1}>
+          {token.symbol}
+        </Typography>
+      )}
       {!rest?.disabled && (
         <FaChevronDownRegular sx={{ fontSize: 14, ml: 0.5 }} />
       )}

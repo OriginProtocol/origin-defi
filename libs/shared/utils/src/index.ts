@@ -12,3 +12,4 @@ export * from './promises';
 export * from './isNilOrEmpty';
 export * from './maths';
 export * from './types';
+export * from './typescript';

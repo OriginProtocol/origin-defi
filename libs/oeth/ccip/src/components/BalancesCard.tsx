@@ -7,9 +7,9 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  ChainIcon,
   ExternalLink,
   LoadingLabel,
+  NetworkIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -89,7 +89,7 @@ export const BalanceRow = ({
       justifyContent={'space-between'}
     >
       <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
-        <ChainIcon chainId={chain.id} />
+        <NetworkIcon chainId={chain.id} />
         <Box>{chain.id === arbitrum.id ? 'Arbitrum' : chain.name}</Box>
         {token.address && userAddress && (
           <ExternalLink

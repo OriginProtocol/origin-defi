@@ -15,6 +15,9 @@ import {
   rETH,
   sfrxETH,
   stETH,
+  superOETH,
+  superOETHb,
+  superOETHo,
   swETH,
   USDC,
   USDT,
@@ -23,9 +26,15 @@ import {
   WETH,
   wOETH,
   wOUSD,
+  wsuperOETH,
+  wsuperOETHb,
+  wsuperOETHo,
   xOGN,
   xOGNOutlined,
 } from '@origin/shared/icons';
+
+import { BadgeIcon } from './BadgeIcon';
+import { NetworkIcon } from './NetworkIcon';
 
 import type { SvgIconProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -34,6 +43,8 @@ import type { ComponentType } from 'react';
 export type TokenIconProps = {
   token?: Token;
   outlined?: boolean;
+  showNetwork?: boolean;
+  networkIconSize?: number;
 } & SvgIconProps;
 
 const supportedSymbols = [
@@ -50,6 +61,9 @@ const supportedSymbols = [
   'rETH',
   'sfrxETH',
   'stETH',
+  'superOETH',
+  'superOETHb',
+  'superOETHo',
   'swETH',
   'USDC',
   'USDT',
@@ -57,6 +71,9 @@ const supportedSymbols = [
   'WETH',
   'wOETH',
   'wOUSD',
+  'wsuperOETH',
+  'wsuperOETHb',
+  'wsuperOETHo',
   'xOGN',
 ];
 
@@ -77,6 +94,9 @@ const regularMap: Record<
   rETH: rETH,
   sfrxETH: sfrxETH,
   stETH: stETH,
+  superOETH: superOETH,
+  superOETHb: superOETHb,
+  superOETHo: superOETHo,
   swETH: swETH,
   USDC: USDC,
   USDT: USDT,
@@ -84,6 +104,9 @@ const regularMap: Record<
   WETH: WETH,
   wOETH: wOETH,
   wOUSD: wOUSD,
+  wsuperOETH: wsuperOETH,
+  wsuperOETHb: wsuperOETHb,
+  wsuperOETHo: wsuperOETHo,
   xOGN: xOGN,
 };
 
@@ -97,7 +120,20 @@ const outlinedMap: Record<
   xOGN: xOGNOutlined,
 };
 
-export const TokenIcon = ({ token, outlined, ...rest }: TokenIconProps) => {
+const networkAlreadyIncludedTokenIds = [
+  '8453:superOETHb',
+  '8453:wsuperOETHb',
+  '10:superOETHo',
+  '10:wsuperOETHo',
+];
+
+export const TokenIcon = ({
+  token,
+  outlined,
+  showNetwork,
+  networkIconSize = 14,
+  ...rest
+}: TokenIconProps) => {
   if (!token?.symbol || !supportedSymbols.includes(token.symbol)) {
     return <FaCircleDollarRegular {...rest} />;
   }
@@ -105,6 +141,23 @@ export const TokenIcon = ({ token, outlined, ...rest }: TokenIconProps) => {
   const Icon = outlined
     ? (outlinedMap[token.symbol] ?? regularMap[token.symbol])
     : regularMap[token.symbol];
+
+  if (showNetwork && !networkAlreadyIncludedTokenIds.includes(token.id)) {
+    return (
+      <BadgeIcon
+        badgeContent={
+          <NetworkIcon
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            chainId={token.chainId as any}
+            outlined
+            size={networkIconSize}
+          />
+        }
+      >
+        <Icon {...rest} />
+      </BadgeIcon>
+    );
+  }
 
   return <Icon {...rest} />;
 };

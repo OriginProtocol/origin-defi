@@ -1,5 +1,8 @@
-import { arbitrum, mainnet } from 'wagmi/chains';
+import { arbitrum, base, mainnet } from 'viem/chains';
 
+import { AerodromePoolABI } from './abis/AerodromePool';
+import { AerodromeQuoterABI } from './abis/AerodromeQuoter';
+import { AerodromeUniversalRouterABI } from './abis/AerodromeUniversalRouter';
 import { ARMABI } from './abis/ARM';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
 import { BalancerVaultABI } from './abis/BalancerVault';
@@ -27,6 +30,7 @@ import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
+import { superOETHbZapperABI } from './abis/superOETHbZapper';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
 import { UniswapV3RouterABI } from './abis/UniswapV3Router';
@@ -102,7 +106,6 @@ export const contracts = {
       name: 'lrtConfig',
     },
     // OETH
-
     OETHCurvePool: {
       address: '0x94B17476A93b3262d87B9a326965D1E91f9c13E7',
       chainId: mainnet.id,
@@ -269,6 +272,46 @@ export const contracts = {
       chainId: arbitrum.id,
       abi: CCIPRouterABI,
       name: 'ccipRouter',
+    },
+  },
+  base: {
+    // Aerodrome
+    aerodromeQuoter: {
+      address: '0x254cF9E1E6e233aa1AC962CB9B05b2cfeAaE15b0',
+      chainId: base.id,
+      abi: AerodromeQuoterABI,
+      name: 'aerodromeQuoter',
+    },
+    aerodromeUniversalRouter: {
+      address: '0x6Cb442acF35158D5eDa88fe602221b67B400Be3E',
+      chainId: base.id,
+      abi: AerodromeUniversalRouterABI,
+      name: 'aerodromeUniversalRouter',
+    },
+    aerodromeWethSuperOethbPool: {
+      address: '0x6446021F4E396dA3df4235C62537431372195D38',
+      chainId: base.id,
+      abi: AerodromePoolABI,
+      name: 'aerodromeWethSuperOethbPool',
+    },
+    // superOETHb
+    superOETHbVault: {
+      address: '0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93',
+      chainId: base.id,
+      abi: OETHVaultABI,
+      name: 'superOETHbVault',
+    },
+    superOETHbDripper: {
+      address: '0x02f2C609950E90934ce99e58b4d7326aD0d7f8d6',
+      chainId: base.id,
+      abi: DripperABI,
+      name: 'superOETHbDripper',
+    },
+    superOETHbZapper: {
+      address: '0x3b56c09543D3068f8488ED34e6F383c3854d2bC1',
+      chainId: base.id,
+      abi: superOETHbZapperABI,
+      name: 'superOETHbZapper',
     },
   },
 } as const;

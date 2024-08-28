@@ -1,16 +1,26 @@
 import { useState } from 'react';
 
-import { Button, Divider, Stack, Tab, Tabs, Typography } from '@mui/material';
+import {
+  Button,
+  Collapse,
+  Divider,
+  Stack,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { ActivityTile, useActivityState } from '@origin/defi/shared';
 import {
   BadgeIcon,
   ClickAwayPopover,
   ClipboardButton,
+  NetworkIcon,
   TokenIcon,
   ValueLabel,
   WalletIcon,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenById, tokens } from '@origin/shared/contracts';
 import {
   FaArrowRightFromBracketRegular,
   FaCopyRegular,
@@ -23,11 +33,17 @@ import {
   useTokenPrices,
   useWatchBalances,
 } from '@origin/shared/providers';
-import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import {
+  getFormatPrecision,
+  isInArray,
+  isNilOrEmpty,
+  ZERO_ADDRESS,
+} from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
-import { descend, pipe, sort, take } from 'ramda';
+import { descend, filter, not, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount, useDisconnect } from 'wagmi';
+import { mainnet } from 'viem/chains';
+import { useAccount, useConfig, useDisconnect, useWalletClient } from 'wagmi';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
@@ -39,9 +55,17 @@ export const AccountPopover = (
   props: Omit<ClickAwayPopoverProps, 'children'>,
 ) => {
   const intl = useIntl();
-  const { address, connector } = useAccount();
+  const { address, connector, chain } = useAccount();
+  const [selectedChainId, setSelectedChainId] = useState(
+    chain?.id ?? mainnet.id,
+  );
+  const [showChains, setShowChains] = useState(false);
   const { disconnect } = useDisconnect();
   const [tab, setTab] = useState<'balances' | 'activities'>('balances');
+
+  const handleSelectChain = (chainId: number) => {
+    setSelectedChainId(chainId);
+  };
 
   if (!address) {
     return null;
@@ -110,46 +134,120 @@ export const AccountPopover = (
           </Button>
         </Stack>
       </Stack>
-      <Tabs
-        value={tab}
-        onChange={(_, value) => {
-          setTab(value);
-        }}
-      >
-        <Tab
-          label={intl.formatMessage({ defaultMessage: 'Tokens' })}
-          value="balances"
-          sx={(theme) => ({
-            ...theme.typography.body3,
-            fontWeight: 'medium',
-            py: 1,
-            mx: 1,
-          })}
-        />
-        <Tab
-          label={intl.formatMessage({ defaultMessage: 'Activity' })}
-          value="activities"
-          sx={(theme) => ({
-            ...theme.typography.body3,
-            fontWeight: 'medium',
-            py: 1,
-          })}
-        />
-      </Tabs>
       <Divider />
-      {tab === 'balances' ? <BalanceList /> : <ActivityList />}
+
+      <Stack direction="row" alignItems="center">
+        <Tabs
+          value={tab}
+          onChange={(_, value) => {
+            setTab(value);
+          }}
+          sx={{ minHeight: 0, width: 1 }}
+        >
+          <Tab
+            label={intl.formatMessage({ defaultMessage: 'Tokens' })}
+            value="balances"
+            sx={(theme) => ({
+              ...theme.typography.body3,
+              fontWeight: 'medium',
+              mx: 1,
+              py: 1.5,
+            })}
+          />
+          <Tab
+            label={intl.formatMessage({ defaultMessage: 'Activity' })}
+            value="activities"
+            sx={(theme) => ({
+              ...theme.typography.body3,
+              fontWeight: 'medium',
+              py: 1.5,
+            })}
+          />
+        </Tabs>
+        <Button
+          variant="text"
+          color="secondary"
+          size="small"
+          onClick={() => {
+            setShowChains(not);
+          }}
+          sx={{ mr: 2 }}
+        >
+          <NetworkIcon chainId={selectedChainId} />
+        </Button>
+      </Stack>
+      <Collapse in={showChains}>
+        <Divider />
+        <ChainSelector
+          selectedChainId={selectedChainId}
+          onSelectChain={handleSelectChain}
+        />
+      </Collapse>
+      <Divider />
+      {tab === 'balances' ? (
+        <BalanceList selectedChainId={selectedChainId} />
+      ) : (
+        <ActivityList selectedChainId={selectedChainId} />
+      )}
     </ClickAwayPopover>
   );
 };
 
+type ChainSelectorProps = {
+  selectedChainId: number;
+  onSelectChain: (chainId: number) => void;
+} & StackProps;
+
+function ChainSelector({
+  selectedChainId,
+  onSelectChain,
+  ...rest
+}: ChainSelectorProps) {
+  const { chains } = useConfig();
+
+  return (
+    <Stack direction="row" alignItems="center" {...rest}>
+      {chains.map((c) => (
+        <Button
+          key={c.id}
+          onClick={() => {
+            onSelectChain(c.id);
+          }}
+          variant="text"
+          fullWidth
+          sx={{
+            borderRadius: 0,
+            backgroundColor:
+              c.id === selectedChainId ? 'primary.faded' : 'transparent',
+          }}
+        >
+          <NetworkIcon chainId={c.id} />
+        </Button>
+      ))}
+    </Stack>
+  );
+}
+
 const balanceTokens = [
   tokens.mainnet.ETH,
+  tokens.mainnet.WETH,
   tokens.mainnet.OETH,
   tokens.mainnet.OUSD,
   tokens.mainnet.OGN,
+  tokens.arbitrum.ETH,
+  tokens.arbitrum.WETH,
+  tokens.arbitrum.wOETH,
+  tokens.base.ETH,
+  tokens.base.WETH,
+  tokens.base.superOETHb,
+  tokens.base.wsuperOETHb,
+  tokens.optimism.ETH,
+  tokens.optimism.WETH,
 ];
 
-function BalanceList(props: StackProps) {
+type BalanceListProps = { selectedChainId: number } & StackProps;
+
+function BalanceList({ selectedChainId, ...rest }: BalanceListProps) {
   const { data: balances, isLoading: balancesLoading } = useWatchBalances({
     tokens: balanceTokens ?? [],
   });
@@ -158,20 +256,27 @@ function BalanceList(props: StackProps) {
   );
 
   return (
-    <Stack px={2} py={3} spacing={2} {...props}>
-      {balanceTokens.map((tok) => (
-        <BalanceRow
-          key={tok.symbol}
-          token={tok}
-          balance={[balances?.[tok.id] ?? 0n, tok.decimals]}
-          price={prices?.[getTokenPriceKey(tok)] ?? from(0)}
-          isBalanceLoading={balancesLoading}
-          isPriceLoading={isPricesLoading}
-        />
-      ))}
+    <Stack px={2} py={3} spacing={2} {...rest}>
+      {balanceTokens
+        .filter((t) => t.chainId === selectedChainId)
+        .map((tok) => (
+          <BalanceRow
+            key={tok.symbol}
+            token={tok}
+            balance={[balances?.[tok.id] ?? 0n, tok.decimals]}
+            price={prices?.[getTokenPriceKey(tok)] ?? from(0)}
+            isBalanceLoading={balancesLoading}
+            isPriceLoading={isPricesLoading}
+          />
+        ))}
     </Stack>
   );
 }
+
+const tokensToAddToWallet = [
+  tokens.base.superOETHb.id,
+  tokens.base.wsuperOETHb.id,
+];
 
 type BalanceRowProps = {
   token: Token;
@@ -189,12 +294,55 @@ function BalanceRow({
   isPriceLoading,
   ...rest
 }: BalanceRowProps) {
+  const intl = useIntl();
+  const { isConnected, connector } = useAccount();
+  const { data: walletClient } = useWalletClient();
+
+  const handleAddTokenToWallet = () => {
+    walletClient?.watchAsset({
+      type: 'ERC20',
+      options: {
+        address: token.address ?? ZERO_ADDRESS,
+        decimals: token.decimals,
+        symbol: token.symbol,
+      },
+    });
+  };
+
   return (
     <Stack direction="row" alignItems="center" gap={1} {...rest}>
       <TokenIcon token={token} sx={{ fontSize: 32 }} outlined />
       <Stack flexGrow={1}>
         <ValueLabel
-          label={token.symbol}
+          label={
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Typography
+                variant="body2"
+                fontWeight="bold"
+                color="text.primary"
+              >
+                {token.symbol}
+              </Typography>
+              {isInArray(token.id, tokensToAddToWallet) && isConnected && (
+                <Tooltip
+                  title={intl.formatMessage({
+                    defaultMessage: 'Add to metamask',
+                  })}
+                >
+                  <Button
+                    variant="link"
+                    color="secondary"
+                    onClick={handleAddTokenToWallet}
+                  >
+                    <WalletIcon
+                      walletName={connector?.name}
+                      sx={{ fontSize: 12 }}
+                    />
+                  </Button>
+                </Tooltip>
+              )}
+            </Stack>
+          }
           value={format(balance, {
             digits: getFormatPrecision(balance),
             decimalsRounding: 'ROUND_DOWN',
@@ -202,11 +350,6 @@ function BalanceRow({
           isLoading={isBalanceLoading}
           direction="row"
           justifyContent="space-between"
-          labelProps={{
-            variant: 'body2',
-            fontWeight: 'bold',
-            color: 'text.primary',
-          }}
           valueProps={{
             variant: 'body2',
             fontWeight: 'bold',
@@ -214,6 +357,7 @@ function BalanceRow({
             textAlign: 'end',
           }}
         />
+
         <ValueLabel
           label={token.name}
           value={`$${format(mul(balance, price), 2)}`}
@@ -234,10 +378,17 @@ function BalanceRow({
   );
 }
 
-function ActivityList(props: StackProps) {
+type ActivityListProps = { selectedChainId: number } & StackProps;
+
+function ActivityList({ selectedChainId, ...rest }: ActivityListProps) {
   const [{ activities, maxVisible }] = useActivityState();
 
   const sortedActivities = pipe(
+    filter((a: Activity) => {
+      const { chainId } = getTokenById(a.tokenIdIn);
+
+      return chainId === selectedChainId;
+    }),
     sort(descend((a: Activity) => a?.createdOn ?? a.status)),
     take(maxVisible),
   )(activities) as Activity[];
@@ -248,14 +399,14 @@ function ActivityList(props: StackProps) {
 
   return (
     <Stack
-      {...props}
+      {...rest}
       sx={{
         pt: 3,
         pb: 1.5,
         maxHeight: '50dvh',
         overflowY: 'auto',
         overflowX: 'hidden',
-        ...props?.sx,
+        ...rest?.sx,
       }}
     >
       {sortedActivities.map((a) => (

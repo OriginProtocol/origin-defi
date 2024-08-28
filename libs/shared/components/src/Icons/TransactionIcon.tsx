@@ -7,9 +7,7 @@ import {
   Yield,
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { mainnet } from 'viem/chains';
 
-import { ChainIcon } from './ChainIcon';
 import { TokenIcon } from './TokenIcon';
 
 import type { BoxProps, SvgIconProps } from '@mui/material';
@@ -47,10 +45,6 @@ export function TransactionIcon({
       />
     );
 
-  const chainIcon = token.chainId !== mainnet.id && (
-    <ChainIcon chainId={token.chainId} {...chainIconProps} />
-  );
-
   const subIcon =
     type === 'Bridge' ? (
       <BridgeCircle {...subIconProps} />
@@ -73,7 +67,6 @@ export function TransactionIcon({
       }}
     >
       {icon}
-      {chainIcon}
       {subIcon}
       {type === 'Swap' && !isNilOrEmpty(swapToken) && (
         <Box
@@ -99,27 +92,16 @@ export function TransactionIcon({
   );
 }
 
-const chainIconProps: Partial<SvgIconProps> = {
-  sx: {
-    width: 14 / 32,
-    height: 14 / 32,
-    position: 'absolute',
-    right: `${(-4 / 32) * 100}%`,
-    top: `${(-1 / 32) * 100}%`,
-    zIndex: 1,
-    backgroundColor: '#1E1F25',
-    border: 'solid 1px #1E1F25',
-    borderRadius: 999,
-  },
-};
-
 const subIconProps: Partial<SvgIconProps> = {
   sx: {
-    width: 16 / 32,
-    height: 16 / 32,
+    width: 16,
+    height: 16,
     position: 'absolute',
-    right: `${(-6 / 32) * 100}%`,
-    bottom: `${(-2 / 32) * 100}%`,
+    left: -3,
+    bottom: -1,
     zIndex: 1,
+    borderRadius: '50%',
+    border: '2px solid',
+    borderColor: 'background.default',
   },
 };

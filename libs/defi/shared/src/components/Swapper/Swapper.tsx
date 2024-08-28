@@ -25,7 +25,6 @@ import { FaArrowDownRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
   getTokenPriceKey,
-  isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
   useHandleAmountInChange,
@@ -342,13 +341,7 @@ function SwapperWrapped({
           action={<SettingsButton />}
         />
         <Divider />
-        <Box
-          sx={{
-            px: 3,
-            pt: 3,
-            pb: 0,
-          }}
-        >
+        <CardContent sx={{ pb: 0 }}>
           <Box
             sx={{
               display: 'flex',
@@ -363,7 +356,6 @@ function SwapperWrapped({
               onAmountChange={handleAmountInChange}
               balance={balances?.[tokenIn.id] ?? 0n}
               isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenIn)}
               token={tokenIn}
               onTokenClick={() => {
                 setTokenSource('tokenIn');
@@ -372,8 +364,7 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                px: 3,
-                py: 2,
+                p: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -388,7 +379,6 @@ function SwapperWrapped({
               balance={balances?.[tokenOut.id] ?? 0n}
               isAmountLoading={isSwapRoutesLoading}
               isBalanceLoading={isBalancesLoading}
-              isNativeCurrency={isNativeCurrency(tokenOut)}
               token={tokenOut}
               onTokenClick={() => {
                 setTokenSource('tokenOut');
@@ -396,8 +386,7 @@ function SwapperWrapped({
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               sx={{
-                px: 3,
-                py: 2,
+                p: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -406,7 +395,7 @@ function SwapperWrapped({
             />
             <ArrowButton onClick={handleTokenFlip} />
           </Box>
-        </Box>
+        </CardContent>
         <SwapRoute sx={{ mx: 3 }} />
         <Collapse
           in={

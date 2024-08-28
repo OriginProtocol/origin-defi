@@ -27,7 +27,6 @@ import {
 import {
   ConnectedButton,
   getTokenPriceKey,
-  isNativeCurrency,
   SwapProvider,
   useDeleteNotification,
   useGasPrice,
@@ -353,7 +352,6 @@ function SwapperWrapped({
           onAmountChange={handleAmountInChange}
           balance={balTokenIn as unknown as bigint}
           isBalanceLoading={isBalTokenInLoading}
-          isNativeCurrency={isNativeCurrency(tokenIn)}
           token={tokenIn}
           tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
           isTokenClickDisabled

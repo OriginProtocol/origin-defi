@@ -48,7 +48,10 @@ const fetcher: (
 
 export const useTvl = (
   token: Token,
-  options?: UseQueryOptions<Dnum, Error, Dnum, Key>,
+  options?: Omit<
+    UseQueryOptions<Dnum, Error, Dnum, Key>,
+    'queryKey' | 'queryFn'
+  >,
 ) => {
   const config = useConfig();
   const queryClient = useQueryClient();

@@ -199,8 +199,7 @@ function HistoryTable({ rows }: HistoryTableProps) {
                 type={info.row.original.type}
                 token={token}
                 sx={{
-                  width: { xs: 24, sm: 32 },
-                  height: { xs: 24, sm: 32 },
+                  fontSize: { xs: 24, sm: 32 },
                 }}
               />
               <Stack spacing={0.5}>

@@ -1,13 +1,13 @@
 import { Box, SvgIcon } from '@mui/material';
-import { isNilOrEmpty } from '@origin/shared/utils';
+import { hasKey, isNilOrEmpty } from '@origin/shared/utils';
 
+import mainnetMulti from './components/mainnet_multi.svg?react';
 import { supportedIcons } from './constants';
 
 import type { BoxProps } from '@mui/material';
-
 type Shape = 'circle' | 'rounded' | 'square' | 'transparent';
 
-export type SupportedChain = keyof typeof supportedIcons;
+export type SupportedChain = keyof typeof supportedIcons | number;
 
 export type NetworkIconProps = {
   chainId: SupportedChain;
@@ -25,7 +25,13 @@ export const NetworkIcon = ({
   size = 24,
   ...rest
 }: NetworkIconProps) => {
-  const props = supportedIcons[chainId];
+  const props = hasKey(supportedIcons, chainId)
+    ? supportedIcons[chainId]
+    : {
+        icon: mainnetMulti,
+        sizeRatio: 0.75,
+        backgroundColor: '#D9EAFF',
+      };
   const oc =
     outlineColor === 'light'
       ? '#E5E5E7'
