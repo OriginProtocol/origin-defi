@@ -19,7 +19,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/defi',
 
   server: {
-    port: 4202,
+    port: 4200,
     host: 'localhost',
     fs: {
       allow: ['../..'],
@@ -27,7 +27,7 @@ export default defineConfig({
   },
 
   preview: {
-    port: 4302,
+    port: 4300,
     host: 'localhost',
   },
 

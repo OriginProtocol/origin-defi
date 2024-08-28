@@ -19,7 +19,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/governance',
 
   server: {
-    port: 4203,
+    port: 4201,
     host: 'localhost',
     fs: {
       allow: ['../..'],
@@ -27,7 +27,7 @@ export default defineConfig({
   },
 
   preview: {
-    port: 4303,
+    port: 4301,
     host: 'localhost',
   },
 

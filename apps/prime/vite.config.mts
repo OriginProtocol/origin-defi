@@ -19,7 +19,7 @@ export default defineConfig({
   cacheDir: '../../node_modules/.vite/apps/prime',
 
   server: {
-    port: 4204,
+    port: 4202,
     host: 'localhost',
     fs: {
       allow: ['../..'],
@@ -27,7 +27,7 @@ export default defineConfig({
   },
 
   preview: {
-    port: 4304,
+    port: 4302,
     host: 'localhost',
   },
 
