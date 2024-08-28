@@ -23,7 +23,6 @@ import {
   TransactionIcon,
 } from '@origin/shared/components';
 import { supportedChains } from '@origin/shared/constants';
-import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightFromSquareRegular } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty, txLink, ZERO_ADDRESS } from '@origin/shared/utils';
@@ -138,8 +137,8 @@ function ExportDataButton({ token, ...rest }: ExportDataButton) {
   const { data: txData } = useOTokenHistoriesQuery(
     {
       address: address ?? ZERO_ADDRESS,
-      chainId: tokens.mainnet.OETH.chainId,
-      token: tokens.mainnet.OETH.address,
+      chainId: token.chainId,
+      token: token.address ?? ZERO_ADDRESS,
     },
     {
       enabled: isConnected,
@@ -162,7 +161,7 @@ function ExportDataButton({ token, ...rest }: ExportDataButton) {
   return (
     <DownloadCsvButton
       data={txData}
-      filename="oeth_transaction_history.csv"
+      filename={`${token.symbol}_transaction_history.csv`}
       variant="outlined"
       color="secondary"
       buttonLabel="CSV"
