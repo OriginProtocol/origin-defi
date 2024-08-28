@@ -16,7 +16,7 @@ export type TransfersQueryVariables = Types.Exact<{
 }>;
 
 
-export type TransfersQuery = { __typename?: 'Query', erc20Transfers: Array<{ __typename?: 'ERC20Transfer', id: string, chainId: number, txHash: string, blockNumber: number, timestamp: string, address: string, from: string, to: string, value: string }> };
+export type TransfersQuery = { __typename?: 'Query', erc20Transfers: Array<{ __typename?: 'ERC20Transfer', id: string, chainId: number, txHash: string, blockNumber: number, timestamp: string, address: string, from: string, to: string, value: string, fromBalance: string, toBalance: string }> };
 
 export type BalancesQueryVariables = Types.Exact<{
   tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
@@ -78,6 +78,8 @@ export const TransfersDocument = `
     from
     to
     value
+    fromBalance
+    toBalance
   }
 }
     `;

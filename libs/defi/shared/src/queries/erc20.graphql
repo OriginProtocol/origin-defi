@@ -31,6 +31,8 @@ query Transfers($tokens: [String!], $account: String!) {
     from
     to
     value
+    fromBalance
+    toBalance
   }
 }
 

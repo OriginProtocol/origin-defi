@@ -13,6 +13,9 @@ import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { base } from 'viem/chains';
 
+import { TokenSwitch } from '../components/TokenSwitch';
+import { WsuperOethbStats } from '../components/WsuperOethbStatsCard';
+import { WsuperOethHistoryCard } from '../components/WsuperOethHistoryCard';
 import { useTokenSelect } from '../hooks';
 
 export const PortfolioView = () => {
@@ -32,13 +35,21 @@ export const PortfolioView = () => {
       />
       <PageSection>
         <Stack spacing={5}>
-          {/* <TokenSwitch /> */}
+          <TokenSwitch />
           <ErrorBoundary
             ErrorComponent={<ErrorCard />}
             onError={trackSentryError}
           >
-            <StatsCard token={token} />
-            <HistoryCard token={token} />
+            {symbol === tokens.base.superOETHb.symbol ? (
+              <StatsCard token={token} />
+            ) : (
+              <WsuperOethbStats />
+            )}
+            {symbol === tokens.base.superOETHb.symbol ? (
+              <HistoryCard token={token} />
+            ) : (
+              <WsuperOethHistoryCard />
+            )}
           </ErrorBoundary>
         </Stack>
       </PageSection>

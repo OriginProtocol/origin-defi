@@ -1631,6 +1631,7 @@ export type LrtWithdrawalRequestsConnection = {
 
 export enum LrtWithdrawalStatus {
   Claimed = 'Claimed',
+  Migrated = 'Migrated',
   Requested = 'Requested'
 }
 

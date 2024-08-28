@@ -53,6 +53,7 @@ export type DelegationPortal = {
   __typename?: 'DelegationPortal';
   delegationApi: Scalars['String']['output'];
   delegationContract: Scalars['String']['output'];
+  delegationNetwork: Scalars['String']['output'];
   delegationType: Scalars['String']['output'];
 };
 
@@ -535,6 +536,7 @@ export type SpaceWhere = {
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   plugin?: InputMaybe<Scalars['String']['input']>;
   strategy?: InputMaybe<Scalars['String']['input']>;
+  verified?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 export type Statement = {
@@ -546,6 +548,7 @@ export type Statement = {
   id: Scalars['String']['output'];
   ipfs: Scalars['String']['output'];
   network?: Maybe<Scalars['String']['output']>;
+  source?: Maybe<Scalars['String']['output']>;
   space: Scalars['String']['output'];
   statement?: Maybe<Scalars['String']['output']>;
   status?: Maybe<Scalars['String']['output']>;
@@ -566,6 +569,8 @@ export type StatementsWhere = {
   ipfs?: InputMaybe<Scalars['String']['input']>;
   ipfs_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   network?: InputMaybe<Scalars['String']['input']>;
+  source?: InputMaybe<Scalars['String']['input']>;
+  source_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   space?: InputMaybe<Scalars['String']['input']>;
   space_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
 };
