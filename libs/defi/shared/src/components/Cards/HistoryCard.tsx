@@ -11,6 +11,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TableRow,
   Typography,
@@ -272,7 +273,7 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
         },
       }),
     ],
-    [formatAmount, formatQuantity, intl, token.chainId],
+    [formatAmount, formatQuantity, intl, token],
   );
 
   const table = useReactTable({
@@ -298,47 +299,52 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
 
   return (
     <Stack {...rest}>
-      <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
-        <TableHead>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => (
-                <TableCell key={header.id} sx={{ width: header.getSize() }}>
-                  {flexRender(
-                    header.column.columnDef.header,
-                    header.getContext(),
-                  )}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableHead>
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow
-              key={row.id}
-              onClick={row.getToggleExpandedHandler()}
-              sx={{
-                ...(row.getCanExpand() && {
-                  cursor: 'pointer',
-                  ':hover': {
-                    backgroundColor: 'primary.faded',
-                  },
-                }),
-                ...(row.depth > 0 && {
-                  borderTopStyle: 'hidden',
-                }),
-              }}
-            >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id} sx={{ width: cell.column.getSize() }}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCell key={header.id} sx={{ width: header.getSize() }}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow
+                key={row.id}
+                onClick={row.getToggleExpandedHandler()}
+                sx={{
+                  ...(row.getCanExpand() && {
+                    cursor: 'pointer',
+                    ':hover': {
+                      backgroundColor: 'primary.faded',
+                    },
+                  }),
+                  ...(row.depth > 0 && {
+                    borderTopStyle: 'hidden',
+                  }),
+                }}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{ width: cell.column.getSize() }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
       <Stack alignItems="center" justifyContent="center">
         <TablePagination
           table={table}

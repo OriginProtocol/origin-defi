@@ -341,13 +341,7 @@ function SwapperWrapped({
           action={<SettingsButton />}
         />
         <Divider />
-        <Box
-          sx={{
-            px: 3,
-            pt: 3,
-            pb: 0,
-          }}
-        >
+        <CardContent sx={{ pb: 0 }}>
           <Box
             sx={{
               display: 'flex',
@@ -370,8 +364,7 @@ function SwapperWrapped({
               isPriceLoading={isPriceLoading}
               isAmountDisabled={amountInInputDisabled}
               sx={{
-                px: 3,
-                py: 2,
+                p: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -393,8 +386,7 @@ function SwapperWrapped({
               tokenPriceUsd={prices?.[getTokenPriceKey(tokenOut)]}
               isPriceLoading={isSwapRoutesLoading || isPriceLoading}
               sx={{
-                px: 3,
-                py: 2,
+                p: 2,
                 borderRadius: 3,
                 backgroundColor: 'background.highlight',
                 border: '1px solid',
@@ -403,7 +395,7 @@ function SwapperWrapped({
             />
             <ArrowButton onClick={handleTokenFlip} />
           </Box>
-        </Box>
+        </CardContent>
         <SwapRoute sx={{ mx: 3 }} />
         <Collapse
           in={

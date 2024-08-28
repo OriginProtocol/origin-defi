@@ -233,11 +233,15 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiCardHeader: {
       styleOverrides: {
         root: ({ theme }) => ({
+          display: 'flex',
+          alignItems: 'center',
           minHeight: 72,
-          padding: theme.spacing(3),
+          paddingLeft: theme.spacing(3),
+          paddingRight: theme.spacing(3),
           [theme.breakpoints.down('md')]: {
             minHeight: 56,
-            padding: theme.spacing(1.5),
+            paddingLeft: theme.spacing(1.5),
+            paddingRight: theme.spacing(1.5),
           },
         }),
         title: ({ theme }) => ({

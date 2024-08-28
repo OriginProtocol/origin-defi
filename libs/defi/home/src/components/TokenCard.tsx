@@ -194,6 +194,10 @@ export const TokenCard = ({
           spacing={{ xs: 0.5, md: 0 }}
         >
           <LoadingLabel
+            fontSize={(theme) => ({
+              xs: theme.typography.caption1.fontSize,
+              md: theme.typography.body3.fontSize,
+            })}
             fontWeight="bold"
             isLoading={isInfoLoading && !isComingSoon}
             noWrap
@@ -240,7 +244,7 @@ export const TokenCard = ({
         }`}
         {...valueLabelProps}
         isLoading={isInfoLoading && !disabled}
-        pt={{ xs: 2, md: 0 }}
+        pt={{ xs: 1, md: 0 }}
       />
 
       {!isOgn && (
@@ -303,7 +307,14 @@ const valueLabelProps: Partial<ValueLabelProps> = {
   justifyContent: { xs: 'space-between', md: 'center' },
   spacing: 0.5,
   labelProps: { variant: 'caption1', noWrap: true },
-  valueProps: { fontWeight: 'medium', noWrap: true },
+  valueProps: {
+    fontWeight: 'medium',
+    noWrap: true,
+    fontSize: (theme) => ({
+      xs: theme.typography.caption1.fontSize,
+      md: theme.typography.body3.fontSize,
+    }),
+  },
 };
 
 function ComingSoonAPY(props: StackProps) {

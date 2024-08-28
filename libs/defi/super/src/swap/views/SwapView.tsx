@@ -44,6 +44,7 @@ export const SwapView = () => {
               <GlobalStatsCard token={tokens.base.superOETHb} showTokenHeader />
               <AnalyticsCard
                 token={tokens.base.superOETHb}
+                title="superOETH"
                 href={OETH_ANALYTICS_URL}
               />
             </Stack>

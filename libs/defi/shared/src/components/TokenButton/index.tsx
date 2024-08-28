@@ -1,5 +1,4 @@
 import {
-  Box,
   Button,
   emphasize,
   Typography,
@@ -55,18 +54,7 @@ export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
         ...rest?.sx,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          borderRadius: '50%',
-          border: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <TokenIcon token={token} sx={{ fontSize: 28 }} />
-      </Box>
+      <TokenIcon token={token} sx={{ fontSize: 28 }} outlined />
       {!isXs && (
         <Typography variant="body2" fontWeight="bold" flexGrow={1}>
           {token.symbol}

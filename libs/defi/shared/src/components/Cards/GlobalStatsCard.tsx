@@ -50,7 +50,10 @@ export const GlobalStatsCard = ({
         ...rest?.sx,
       }}
     >
-      <AccordionSummary expandIcon={<FaChevronDownRegular />} sx={{ p: 3 }}>
+      <AccordionSummary
+        expandIcon={<FaChevronDownRegular />}
+        sx={{ p: 3, minHeight: 72 }}
+      >
         <Stack direction="row" alignItems="center" spacing={1} pr={0.5}>
           {showTokenHeader ? (
             <>

@@ -8,12 +8,19 @@ import {
   trackSentryError,
 } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenBySymbol, tokens } from '@origin/shared/contracts';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
+import { base } from 'viem/chains';
+
+import { TokenSwitch } from '../components/TokenSwitch';
+import { useTokenSelect } from '../hooks';
 
 export const PortfolioView = () => {
   const intl = useIntl();
+  const { symbol } = useTokenSelect();
+
+  const token = getTokenBySymbol(symbol, base.id) ?? tokens.base.superOETHb;
 
   return (
     <Page>
@@ -26,12 +33,13 @@ export const PortfolioView = () => {
       />
       <PageSection>
         <Stack spacing={5}>
+          <TokenSwitch />
           <ErrorBoundary
             ErrorComponent={<ErrorCard />}
             onError={trackSentryError}
           >
-            <StatsCard token={tokens.base.superOETHb} />
-            <HistoryCard token={tokens.base.superOETHb} />
+            <StatsCard token={token} />
+            <HistoryCard token={token} />
           </ErrorBoundary>
         </Stack>
       </PageSection>

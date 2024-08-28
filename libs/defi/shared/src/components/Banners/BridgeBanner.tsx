@@ -48,12 +48,12 @@ export const BridgeBanner = (props: StackProps) => {
         <NetworkIcon chainId={arbitrum.id} size={32} />
       </Stack>
       <Stack width={1}>
-        <Typography variant="body2" fontWeight="bold" width={1}>
+        <Typography variant="body2" fontWeight="bold" width={1} gutterBottom>
           {intl.formatMessage({
             defaultMessage: 'Use wOETH on Arbitrum to earn ARB rewards!',
           })}
         </Typography>
-        <Typography fontWeight="medium">
+        <Typography variant="caption1">
           {intl.formatMessage({
             defaultMessage:
               'Bridge your ETH in a single transaction and use wOETH across Arbitrum to earn ARB tokens.',

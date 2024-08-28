@@ -5,9 +5,18 @@ import { useIntl } from 'react-intl';
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-export type AnalyticsCardProps = { token: Token; href: string } & CardProps;
+export type AnalyticsCardProps = {
+  token: Token;
+  title?: string;
+  href: string;
+} & CardProps;
 
-export const AnalyticsCard = ({ token, href, ...rest }: AnalyticsCardProps) => {
+export const AnalyticsCard = ({
+  token,
+  href,
+  title,
+  ...rest
+}: AnalyticsCardProps) => {
   const intl = useIntl();
 
   return (
@@ -22,7 +31,7 @@ export const AnalyticsCard = ({ token, href, ...rest }: AnalyticsCardProps) => {
         <Typography mb={1} fontWeight="medium">
           {intl.formatMessage(
             { defaultMessage: '{symbol} analytics' },
-            { symbol: token.symbol },
+            { symbol: title ?? token.symbol },
           )}
         </Typography>
         <Typography variant="caption1" mb={3}>

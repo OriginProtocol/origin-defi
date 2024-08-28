@@ -59,12 +59,9 @@ export const StatsCard = ({ token, ...rest }: StatsCardProps) => {
         />
         <ValueLabel
           {...valueLabelProps}
-          label={intl.formatMessage(
-            {
-              defaultMessage: 'Lifetime Earnings (symbol)',
-            },
-            { symbol: token.symbol },
-          )}
+          label={intl.formatMessage({
+            defaultMessage: 'Lifetime Earnings',
+          })}
           value={isConnected ? formatAmount(BigInt(earned ?? '0')) : '-'}
           isLoading={isConnected && isEarnedLoading}
         />
