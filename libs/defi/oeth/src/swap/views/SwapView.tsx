@@ -45,10 +45,10 @@ export const SwapView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 xs={12} md={3}>
+          <Grid2 xs={12} md={3} order={{ xs: 3, md: 1 }}>
             <BridgePromoCard small />
           </Grid2>
-          <Grid2 xs={12} md={6}>
+          <Grid2 xs={12} md={6} order={{ xs: 1, md: 2 }}>
             <Swapper
               swapActions={oethSwapActions}
               swapRoutes={oethSwapRoutes}
@@ -56,7 +56,7 @@ export const SwapView = () => {
               trackEvent={trackEvent}
             />
           </Grid2>
-          <Grid2 xs={12} md={3}>
+          <Grid2 xs={12} md={3} order={{ xs: 2, md: 3 }}>
             <Stack spacing={4}>
               <GlobalStatsCard token={token} />
               <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />

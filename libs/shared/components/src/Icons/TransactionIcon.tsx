@@ -7,7 +7,6 @@ import {
   Yield,
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { mainnet } from 'viem/chains';
 
 import { TokenIcon } from './TokenIcon';
 
@@ -38,7 +37,6 @@ export function TransactionIcon({
     ) : (
       <TokenIcon
         token={token}
-        showNetwork={token.chainId !== mainnet.id}
         sx={{
           position: 'absolute',
           width: 1,
@@ -83,7 +81,6 @@ export function TransactionIcon({
         >
           <TokenIcon
             token={swapToken}
-            showNetwork={swapToken?.chainId !== mainnet.id}
             sx={{
               width: { xs: '1.375rem', md: '2rem' },
               height: { xs: '1.375rem', md: '2rem' },

@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import {
   Button,
+  Collapse,
   Divider,
   Stack,
   Tab,
@@ -39,7 +40,7 @@ import {
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
-import { descend, filter, pipe, sort, take } from 'ramda';
+import { descend, filter, not, pipe, sort, take } from 'ramda';
 import { useIntl } from 'react-intl';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig, useDisconnect, useWalletClient } from 'wagmi';
@@ -58,6 +59,7 @@ export const AccountPopover = (
   const [selectedChainId, setSelectedChainId] = useState(
     chain?.id ?? mainnet.id,
   );
+  const [showChains, setShowChains] = useState(false);
   const { disconnect } = useDisconnect();
   const [tab, setTab] = useState<'balances' | 'activities'>('balances');
 
@@ -133,38 +135,54 @@ export const AccountPopover = (
         </Stack>
       </Stack>
       <Divider />
-      <ChainSelector
-        selectedChainId={selectedChainId}
-        onSelectChain={handleSelectChain}
-      />
-      <Divider />
-      <Tabs
-        value={tab}
-        onChange={(_, value) => {
-          setTab(value);
-        }}
-        sx={{ minHeight: 0 }}
-      >
-        <Tab
-          label={intl.formatMessage({ defaultMessage: 'Tokens' })}
-          value="balances"
-          sx={(theme) => ({
-            ...theme.typography.body3,
-            fontWeight: 'medium',
-            mx: 1,
-            py: 1.5,
-          })}
+
+      <Stack direction="row" alignItems="center">
+        <Tabs
+          value={tab}
+          onChange={(_, value) => {
+            setTab(value);
+          }}
+          sx={{ minHeight: 0, width: 1 }}
+        >
+          <Tab
+            label={intl.formatMessage({ defaultMessage: 'Tokens' })}
+            value="balances"
+            sx={(theme) => ({
+              ...theme.typography.body3,
+              fontWeight: 'medium',
+              mx: 1,
+              py: 1.5,
+            })}
+          />
+          <Tab
+            label={intl.formatMessage({ defaultMessage: 'Activity' })}
+            value="activities"
+            sx={(theme) => ({
+              ...theme.typography.body3,
+              fontWeight: 'medium',
+              py: 1.5,
+            })}
+          />
+        </Tabs>
+        <Button
+          variant="text"
+          color="secondary"
+          size="small"
+          onClick={() => {
+            setShowChains(not);
+          }}
+          sx={{ mr: 2 }}
+        >
+          <NetworkIcon chainId={selectedChainId} />
+        </Button>
+      </Stack>
+      <Collapse in={showChains}>
+        <Divider />
+        <ChainSelector
+          selectedChainId={selectedChainId}
+          onSelectChain={handleSelectChain}
         />
-        <Tab
-          label={intl.formatMessage({ defaultMessage: 'Activity' })}
-          value="activities"
-          sx={(theme) => ({
-            ...theme.typography.body3,
-            fontWeight: 'medium',
-            py: 1.5,
-          })}
-        />
-      </Tabs>
+      </Collapse>
       <Divider />
       {tab === 'balances' ? (
         <BalanceList selectedChainId={selectedChainId} />
@@ -255,7 +273,10 @@ function BalanceList({ selectedChainId, ...rest }: BalanceListProps) {
   );
 }
 
-const tokensToAdd = [tokens.base.superOETHb.id, tokens.base.wsuperOETHb.id];
+const tokensToAddToWallet = [
+  tokens.base.superOETHb.id,
+  tokens.base.wsuperOETHb.id,
+];
 
 type BalanceRowProps = {
   token: Token;
@@ -302,7 +323,7 @@ function BalanceRow({
               >
                 {token.symbol}
               </Typography>
-              {isInArray(token.id, tokensToAdd) && isConnected && (
+              {isInArray(token.id, tokensToAddToWallet) && isConnected && (
                 <Tooltip
                   title={intl.formatMessage({
                     defaultMessage: 'Add to metamask',
