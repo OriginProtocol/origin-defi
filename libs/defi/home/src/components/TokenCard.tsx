@@ -47,7 +47,7 @@ export const TokenCard = ({
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token, {
-    enabled: !isComingSoon && !disabled,
+    enabled: !disabled,
   });
   const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy(
     undefined,
