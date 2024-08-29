@@ -1,5 +1,4 @@
-import { Stack } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Grid2, Stack } from '@mui/material';
 import {
   Page,
   PageSection,
@@ -32,7 +31,12 @@ export const OverviewView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 xs={12} md={8}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 8,
+            }}
+          >
             <Stack spacing={5}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
@@ -48,7 +52,12 @@ export const OverviewView = () => {
               </ErrorBoundary>
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={4}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 4,
+            }}
+          >
             <Stack spacing={5}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}

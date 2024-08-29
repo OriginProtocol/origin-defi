@@ -1,4 +1,4 @@
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Grid2 } from '@mui/material';
 
 import { useHandleSelectSwapRoute } from '../hooks';
 import { useSwapState } from '../state';
@@ -18,7 +18,7 @@ export function BestRoutes(props: Grid2Props) {
   return (
     <Grid2 spacing={1} {...props} container>
       {estimatedSwapRoutes.slice(0, 2).map((route, index) => (
-        <Grid2 key={route.action} xs={isOnlyRoute ? 12 : 6}>
+        <Grid2 key={route.action} size={isOnlyRoute ? 12 : 6}>
           <SwapRouteCard
             key={`bestRoute-${index}`}
             isSelected={routeEq(selectedSwapRoute, route)}

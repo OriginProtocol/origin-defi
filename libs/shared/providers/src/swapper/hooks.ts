@@ -88,10 +88,12 @@ export const useTokenOptions = <M = object>(): {
           ({
             ...t,
             isSelected: t.symbol === tokenIn.symbol,
+
             isSwappable: availableTokensIn.reduce(
               (acc, curr) => acc || curr.symbol === t.symbol,
               false,
             ),
+
             meta: getTokenMeta(swapRoutes, 'tokenIn', t),
           }) as TokenOption<M>,
       ),
@@ -100,10 +102,12 @@ export const useTokenOptions = <M = object>(): {
           ({
             ...t,
             isSelected: t.symbol === tokenOut.symbol,
+
             isSwappable: availableTokensOut.reduce(
               (acc, curr) => acc || curr.symbol === t.symbol,
               false,
             ),
+
             meta: getTokenMeta(swapRoutes, 'tokenIn', t),
           }) as TokenOption<M>,
       ),

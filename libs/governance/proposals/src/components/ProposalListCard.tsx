@@ -6,11 +6,11 @@ import {
   CardHeader,
   CircularProgress,
   Divider,
+  Grid2,
   LinearProgress,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   SliderSwitch,
   TokenIcon,
@@ -170,7 +170,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
       }}
     >
       <Grid2 container spacing={2}>
-        <Grid2 xs={12} sm={8}>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 8,
+          }}
+        >
           <Stack spacing={1.5}>
             <Stack direction="row" spacing={2}>
               <TokenIcon token={tokens.mainnet.OETH} />
@@ -277,7 +282,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
             </Stack>
           </Stack>
         </Grid2>
-        <Grid2 xs={12} sm={4}>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 4,
+          }}
+        >
           <VotesGauge
             choices={proposal?.choices ?? []}
             scores={proposal?.scores ?? []}

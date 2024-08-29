@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Box, Card, CardHeader, LinearProgress, Stack } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import {
+  Box,
+  Card,
+  CardHeader,
+  Grid2,
+  LinearProgress,
+  Stack,
+} from '@mui/material';
 import { OgvProposalState, useUserInfoQuery } from '@origin/governance/shared';
 import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
@@ -72,7 +78,13 @@ export const CurrentResultsCard = (props: CardProps) => {
                 : 0;
 
             return (
-              <Grid2 key={choice} xs={12} sm={12 / governanceChoices.length}>
+              <Grid2
+                key={choice}
+                size={{
+                  xs: 12,
+                  sm: 12 / governanceChoices.length,
+                }}
+              >
                 <VoteCard
                   choice={choice}
                   score={score}

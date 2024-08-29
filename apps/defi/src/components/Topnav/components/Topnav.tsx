@@ -6,12 +6,12 @@ import {
   Button,
   CircularProgress,
   Drawer,
+  Grid2,
   Stack,
   Typography,
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent, useActivitiesStatus } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -93,12 +93,12 @@ export const Topnav = () => {
       >
         <Grid2 container height={1} width={1}>
           <Grid2
-            xs={2}
             sx={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
             }}
+            size={2}
           >
             <Box
               component={RouterLink}
@@ -113,18 +113,28 @@ export const Topnav = () => {
               <OriginLabel />
             </Box>
           </Grid2>
-          <Grid2 xs={0} md={7} mdOffset={0.5}>
+          <Grid2
+            size={{
+              xs: 0,
+              md: 7,
+            }}
+            offset={{
+              md: 0.5,
+            }}
+          >
             {!isSm && <HoverMenu />}
           </Grid2>
           <Grid2
-            xs={10}
-            md={2.5}
             sx={{
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
               justifyContent: 'flex-end',
               gap: 1.25,
+            }}
+            size={{
+              xs: 10,
+              md: 2.5,
             }}
           >
             {showRebaseMenu && (

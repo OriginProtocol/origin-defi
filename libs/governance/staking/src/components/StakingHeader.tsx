@@ -1,5 +1,4 @@
-import { Box, Button, Divider, Stack, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Box, Button, Divider, Grid2, Stack, Typography } from '@mui/material';
 import {
   MergerBanner,
   useGovernanceInfo,
@@ -37,7 +36,12 @@ export const StakingHeader = () => {
     <Stack spacing={3}>
       <Box py={{ xs: 3, sm: 5 }}>
         <Grid2 container spacing={3}>
-          <Grid2 xs={12} md={5}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 5,
+            }}
+          >
             <Stack alignItems="flex-start" justifyContent="center" spacing={3}>
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
@@ -55,7 +59,12 @@ export const StakingHeader = () => {
               </Button>
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={7}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 7,
+            }}
+          >
             <Stack
               direction="row"
               spacing={{ xs: 2, sm: 4 }}
@@ -110,7 +119,12 @@ export const StakingHeader = () => {
       <MergerBanner />
       <Box>
         <Grid2 container spacing={3}>
-          <Grid2 xs={12} md={6}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 6,
+            }}
+          >
             <Stack
               direction="row"
               bgcolor="background.paper"
@@ -174,7 +188,12 @@ export const StakingHeader = () => {
               />
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={6}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 6,
+            }}
+          >
             <Stack
               bgcolor="background.paper"
               borderRadius={2}

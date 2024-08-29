@@ -4,10 +4,10 @@ import {
   Card,
   CardHeader,
   Divider,
+  Grid2,
   LinearProgress,
   Stack,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { GovernanceProposalState, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
@@ -78,7 +78,13 @@ export const CurrentResultsCard = (props: CardProps) => {
             const score = idx > -1 ? (proposal?.scores?.at?.(idx) ?? 0) : 0;
 
             return (
-              <Grid2 key={choice} xs={12} sm={12 / governanceChoices.length}>
+              <Grid2
+                key={choice}
+                size={{
+                  xs: 12,
+                  sm: 12 / governanceChoices.length,
+                }}
+              >
                 <VoteCard
                   proposal={proposal}
                   choice={choice}

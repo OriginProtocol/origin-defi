@@ -1,5 +1,4 @@
-import { Button, Card, Stack, Tooltip, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Button, Card, Grid2, Stack, Tooltip, Typography } from '@mui/material';
 import { usePoints } from '@origin/prime/shared';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -229,8 +228,7 @@ const gridContainerProps: Grid2Props = {
 };
 
 const gridItemProps: Grid2Props = {
-  xs: 12,
-  sm: 4,
+  size: { xs: 12, sm: 4 },
   sx: {
     display: 'flex',
     flexDirection: 'row',

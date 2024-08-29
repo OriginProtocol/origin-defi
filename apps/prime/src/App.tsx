@@ -1,6 +1,4 @@
-import { Stack } from '@mui/material';
-import Box from '@mui/material/Box';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Box, Grid2, Stack } from '@mui/material';
 import {
   AdCards,
   GlobalStatsCard,
@@ -32,7 +30,13 @@ export const App = () => {
           <Topnav />
           <Box px={{ xs: 2, md: 4 }}>
             <Grid2 container spacing={4}>
-              <Grid2 xs={12} md={3} sx={{ order: { xs: 2, md: 1 } }}>
+              <Grid2
+                sx={{ order: { xs: 2, md: 1 } }}
+                size={{
+                  xs: 12,
+                  md: 3,
+                }}
+              >
                 <AdCards
                   sx={{
                     gap: 3,
@@ -41,10 +45,22 @@ export const App = () => {
                   }}
                 />
               </Grid2>
-              <Grid2 xs={12} md={6} sx={{ order: { xs: 1, md: 2 } }}>
+              <Grid2
+                sx={{ order: { xs: 1, md: 2 } }}
+                size={{
+                  xs: 12,
+                  md: 6,
+                }}
+              >
                 <Outlet />
               </Grid2>
-              <Grid2 xs={12} md={3} sx={{ order: 3 }}>
+              <Grid2
+                sx={{ order: 3 }}
+                size={{
+                  xs: 12,
+                  md: 3,
+                }}
+              >
                 <Stack alignItems="flex-end">
                   <ErrorBoundary
                     ErrorComponent={<ErrorCard />}

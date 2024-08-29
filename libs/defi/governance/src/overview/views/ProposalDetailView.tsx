@@ -1,5 +1,4 @@
-import { Container, Stack } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Container, Grid2, Stack } from '@mui/material';
 import { Page, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 
@@ -15,7 +14,12 @@ export const ProposalDetailView = () => {
       <Container maxWidth="lg">
         <ProposalDetailHeader />
         <Grid2 container spacing={3}>
-          <Grid2 xs={12} md={8}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 8,
+            }}
+          >
             <Stack spacing={3}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
@@ -31,7 +35,12 @@ export const ProposalDetailView = () => {
               </ErrorBoundary>
             </Stack>
           </Grid2>
-          <Grid2 xs={12} md={4}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 4,
+            }}
+          >
             <Stack spacing={3}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}

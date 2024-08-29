@@ -9,10 +9,10 @@ import {
   CardContent,
   CardHeader,
   CircularProgress,
+  Grid2,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   ExpandIcon,
   ExternalLink,
@@ -236,7 +236,7 @@ function Actions(props: StackProps) {
             >
               <AccordionSummary sx={{ px: 0 }}>
                 <Grid2 container width={1} spacing={2}>
-                  <Grid2 xs={3}>
+                  <Grid2 size={3}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}
                       sx={{ maxWidth: 120, color: 'secondary.main' }}
@@ -244,19 +244,19 @@ function Actions(props: StackProps) {
                       <MiddleTruncatedLabel>{a.address}</MiddleTruncatedLabel>
                     </ExternalLink>
                   </Grid2>
-                  <Grid2 xs={4}>
+                  <Grid2 size={4}>
                     <TooltipLabel maxChars={23} noWrap>
                       {a.functionName}
                     </TooltipLabel>
                   </Grid2>
-                  <Grid2 xs={4}>
+                  <Grid2 size={4}>
                     <TooltipLabel maxChars={30} noWrap>
                       {a.argumentType}
                     </TooltipLabel>
                   </Grid2>
                   <Grid2
-                    xs={1}
                     sx={{ display: 'flex', justifyContent: 'flex-end' }}
+                    size={1}
                   >
                     <ExpandIcon
                       isExpanded={expanded.includes(getKey(a.address, i))}

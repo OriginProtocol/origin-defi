@@ -10,10 +10,10 @@ import {
   CardHeader,
   CircularProgress,
   Divider,
+  Grid2,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { SectionCard } from '@origin/defi/shared';
 import {
   ExternalLink,
@@ -260,7 +260,7 @@ function Actions({ proposal, ...rest }: ActionsProps) {
                 expandIcon={<FaChevronDownRegular />}
               >
                 <Grid2 container width={1} spacing={2}>
-                  <Grid2 xs={4}>
+                  <Grid2 size={4}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}
                       sx={{ maxWidth: 150, color: 'text.secondary' }}
@@ -268,7 +268,7 @@ function Actions({ proposal, ...rest }: ActionsProps) {
                       <MiddleTruncatedLabel>{a.address}</MiddleTruncatedLabel>
                     </ExternalLink>
                   </Grid2>
-                  <Grid2 xs={4}>
+                  <Grid2 size={4}>
                     <TooltipLabel maxChars={23} noWrap>
                       {a.functionName}
                     </TooltipLabel>

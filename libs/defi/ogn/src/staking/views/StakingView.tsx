@@ -1,5 +1,4 @@
-import { Stack } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Grid2, Stack } from '@mui/material';
 import {
   Page,
   PageSection,
@@ -36,7 +35,7 @@ export const StakingView = () => {
         </PageTitle>
         <PageSection containerProps={{ maxWidth: 'lg' }}>
           <Grid2 container spacing={3}>
-            <Grid2 xs={12} sx={{ order: { xs: 3, md: 1 } }}>
+            <Grid2 sx={{ order: { xs: 3, md: 1 } }} size={12}>
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -44,7 +43,13 @@ export const StakingView = () => {
                 <LockupsCard />
               </ErrorBoundary>
             </Grid2>
-            <Grid2 xs={12} md={3} sx={{ order: { xs: 1, md: 2 } }}>
+            <Grid2
+              sx={{ order: { xs: 1, md: 2 } }}
+              size={{
+                xs: 12,
+                md: 3,
+              }}
+            >
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -52,7 +57,13 @@ export const StakingView = () => {
                 <StatsCard />
               </ErrorBoundary>
             </Grid2>
-            <Grid2 xs={12} md={6} sx={{ order: { xs: 4, md: 3 } }}>
+            <Grid2
+              sx={{ order: { xs: 4, md: 3 } }}
+              size={{
+                xs: 12,
+                md: 6,
+              }}
+            >
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -60,7 +71,13 @@ export const StakingView = () => {
                 <StakingForm />
               </ErrorBoundary>
             </Grid2>
-            <Grid2 xs={12} md={3} sx={{ order: { xs: 2, md: 4 } }}>
+            <Grid2
+              sx={{ order: { xs: 2, md: 4 } }}
+              size={{
+                xs: 12,
+                md: 3,
+              }}
+            >
               <Stack spacing={3}>
                 <ErrorBoundary
                   ErrorComponent={<ErrorCard />}

@@ -2,10 +2,10 @@ import {
   Card,
   CardContent,
   CardHeader,
+  Grid2,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import {
   InfoTooltip,
   LoadingLabel,
@@ -49,7 +49,7 @@ export const AssetDepositedCard = (props: CardProps) => {
       <CardContent>
         <Grid2 container spacing={3}>
           {assets.map((a, i) => (
-            <Grid2 key={a.symbol} xs={6}>
+            <Grid2 key={a.symbol} size={6}>
               <Stack spacing={0.5}>
                 <Stack direction="row" gap={0.5} alignItems="center">
                   <TokenIcon

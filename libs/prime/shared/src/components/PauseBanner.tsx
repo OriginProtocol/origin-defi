@@ -1,5 +1,4 @@
-import { Button, Stack, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Button, Grid2, Stack, Typography } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular } from '@origin/shared/icons';
@@ -20,12 +19,14 @@ export const PauseBanner = () => {
     >
       <Grid2 container rowGap={2}>
         <Grid2
-          xs={12}
-          md={1}
           sx={{
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+          }}
+          size={{
+            xs: 12,
+            md: 1,
           }}
         >
           <TokenIcon
@@ -33,7 +34,12 @@ export const PauseBanner = () => {
             sx={{ width: { xs: 32, md: 48 }, height: { xs: 36, md: 54 } }}
           />
         </Grid2>
-        <Grid2 xs={12} md={8}>
+        <Grid2
+          size={{
+            xs: 12,
+            md: 8,
+          }}
+        >
           <Stack
             sx={{ alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}
           >
@@ -55,12 +61,14 @@ export const PauseBanner = () => {
           </Stack>
         </Grid2>
         <Grid2
-          xs={12}
-          md={3}
           sx={{
             display: 'flex',
             justifyContent: { xs: 'center', md: 'flex-end' },
             alignItems: 'center',
+          }}
+          size={{
+            xs: 12,
+            md: 3,
           }}
         >
           <Button

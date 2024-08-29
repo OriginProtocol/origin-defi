@@ -6,6 +6,7 @@ import {
   Button,
   Divider,
   Drawer,
+  Grid2,
   Link,
   Popover,
   Stack,
@@ -13,7 +14,6 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { trackEvent } from '@origin/prime/shared';
 import { usePoints } from '@origin/prime/shared';
 import {
@@ -72,7 +72,7 @@ export function Topnav(props: BoxProps) {
         })}
       >
         <Grid2 container sx={{ width: 1 }}>
-          <Grid2 xs={6}>
+          <Grid2 size={6}>
             <Stack direction="row" alignItems="center" spacing={3}>
               <Stack
                 direction="row"
@@ -98,7 +98,7 @@ export function Topnav(props: BoxProps) {
               )}
             </Stack>
           </Grid2>
-          <Grid2 xs={6}>
+          <Grid2 size={6}>
             <Box
               sx={{
                 display: 'flex',

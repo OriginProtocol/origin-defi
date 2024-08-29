@@ -7,10 +7,10 @@ import {
   Checkbox,
   Divider,
   FormControlLabel,
+  Grid2,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
 import { TokenChip, useOgvInfo } from '@origin/defi/shared';
 import {
   InfoTooltipLabel,
@@ -115,9 +115,11 @@ export const MigrationForm = (props: StackProps) => {
     <Stack {...props}>
       <Grid2 container spacing={5}>
         <Grid2
-          xs={12}
-          md={7}
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+          size={{
+            xs: 12,
+            md: 7,
+          }}
         >
           <Typography variant="featured3" fontWeight="medium">
             {intl.formatMessage({
@@ -226,9 +228,11 @@ export const MigrationForm = (props: StackProps) => {
           </Stack>
         </Grid2>
         <Grid2
-          xs={12}
-          md={5}
           sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}
+          size={{
+            xs: 12,
+            md: 5,
+          }}
         >
           <SummaryCard
             ogv={ogvTotal}

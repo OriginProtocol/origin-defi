@@ -1,5 +1,4 @@
-import { Stack } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import { Grid2, Stack } from '@mui/material';
 import {
   AnalyticsCard,
   BridgePromoCard,
@@ -45,10 +44,22 @@ export const SwapView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 xs={12} md={3} order={{ xs: 3, md: 1 }}>
+          <Grid2
+            order={{ xs: 3, md: 1 }}
+            size={{
+              xs: 12,
+              md: 3,
+            }}
+          >
             <BridgePromoCard small />
           </Grid2>
-          <Grid2 xs={12} md={6} order={{ xs: 1, md: 2 }}>
+          <Grid2
+            order={{ xs: 1, md: 2 }}
+            size={{
+              xs: 12,
+              md: 6,
+            }}
+          >
             <Swapper
               swapActions={oethSwapActions}
               swapRoutes={oethSwapRoutes}
@@ -56,7 +67,13 @@ export const SwapView = () => {
               trackEvent={trackEvent}
             />
           </Grid2>
-          <Grid2 xs={12} md={3} order={{ xs: 2, md: 3 }}>
+          <Grid2
+            order={{ xs: 2, md: 3 }}
+            size={{
+              xs: 12,
+              md: 3,
+            }}
+          >
             <Stack spacing={4}>
               <GlobalStatsCard token={token} />
               <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />

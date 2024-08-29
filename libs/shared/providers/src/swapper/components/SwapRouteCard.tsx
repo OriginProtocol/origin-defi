@@ -1,5 +1,12 @@
-import { alpha, Box, Card, Skeleton, Stack, Typography } from '@mui/material';
-import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import {
+  alpha,
+  Box,
+  Card,
+  Grid2,
+  Skeleton,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { add, format, from, mul } from 'dnum';
@@ -153,7 +160,14 @@ export function SwapRouteCard({
               )}
             </LoadingLabel>
           </Grid2>
-          <Grid2 display="flex" alignItems="center" xs={12} sm="auto">
+          <Grid2
+            display="flex"
+            alignItems="center"
+            size={{
+              xs: 12,
+              sm: 'auto',
+            }}
+          >
             <LoadingLabel
               color="text.secondary"
               variant="body2"
