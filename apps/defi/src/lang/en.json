@@ -271,18 +271,6 @@
       "value": "Bridge failed"
     }
   ],
-  "2R/YHR": [
-    {
-      "type": 0,
-      "value": "Liquid staking"
-    }
-  ],
-  "2ahSeJ": [
-    {
-      "type": 0,
-      "value": "OETH analytics"
-    }
-  ],
   "2zUGfB": [
     {
       "type": 0,
@@ -445,6 +433,12 @@
       "value": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
     }
   ],
+  "4SoDfQ": [
+    {
+      "type": 0,
+      "value": "coming soon"
+    }
+  ],
   "4WNsNT": [
     {
       "type": 0,
@@ -485,12 +479,6 @@
     {
       "type": 0,
       "value": "Your veOGV Lockups"
-    }
-  ],
-  "5cnWDe": [
-    {
-      "type": 0,
-      "value": "View latest governance proposals"
     }
   ],
   "5h3TFE": [
@@ -559,12 +547,6 @@
       "value": "Approved"
     }
   ],
-  "6ZG3zQ": [
-    {
-      "type": 0,
-      "value": "Own a stake in the network and benefit from the growth of Origin's products."
-    }
-  ],
   "6cYAtm": [
     {
       "type": 0,
@@ -587,12 +569,6 @@
     {
       "type": 0,
       "value": "Learn More"
-    }
-  ],
-  "7NFfmz": [
-    {
-      "type": 0,
-      "value": "Products"
     }
   ],
   "7SxOry": [
@@ -679,16 +655,6 @@
       "value": "Signing"
     }
   ],
-  "94TAJq": [
-    {
-      "type": 0,
-      "value": "TVL: "
-    },
-    {
-      "type": 1,
-      "value": "tvl"
-    }
-  ],
   "9GqOyW": [
     {
       "type": 0,
@@ -711,12 +677,6 @@
     {
       "type": 0,
       "value": "Unhandled Error!"
-    }
-  ],
-  "9iP/A8": [
-    {
-      "type": 0,
-      "value": "Lifetime Earnings (OETH)"
     }
   ],
   "9j3hXO": [
@@ -751,12 +711,6 @@
     {
       "type": 0,
       "value": "Enter an amount"
-    }
-  ],
-  "ATvmI7": [
-    {
-      "type": 0,
-      "value": "Yield earned:"
     }
   ],
   "AXUFyu": [
@@ -879,12 +833,6 @@
     {
       "type": 0,
       "value": "Locked Tokens Received Now"
-    }
-  ],
-  "CcqmCh": [
-    {
-      "type": 0,
-      "value": "OETH Balance"
     }
   ],
   "Cnm0QA": [
@@ -1075,6 +1023,12 @@
       "value": "Rebasing enabled"
     }
   ],
+  "Fc9ORQ": [
+    {
+      "type": 0,
+      "value": "Get Super OETH"
+    }
+  ],
   "FfOtze": [
     {
       "type": 1,
@@ -1147,6 +1101,12 @@
       "value": "Available to claim"
     }
   ],
+  "GufXy5": [
+    {
+      "type": 0,
+      "value": "Value"
+    }
+  ],
   "H1+3mH": [
     {
       "type": 0,
@@ -1157,6 +1117,12 @@
     {
       "type": 0,
       "value": "Balance"
+    }
+  ],
+  "HAP3kg": [
+    {
+      "type": 0,
+      "value": "Super OETH history"
     }
   ],
   "HPegJm": [
@@ -1357,6 +1323,12 @@
       "value": "Succeeded"
     }
   ],
+  "LU9l68": [
+    {
+      "type": 0,
+      "value": "Your balance"
+    }
+  ],
   "LpWMOQ": [
     {
       "type": 0,
@@ -1525,12 +1497,6 @@
     {
       "type": 1,
       "value": "symbolIn"
-    }
-  ],
-  "Nvcaj3": [
-    {
-      "type": 0,
-      "value": "Your balance:"
     }
   ],
   "OBfWz0": [
@@ -1729,6 +1695,12 @@
       "value": "Clear all"
     }
   ],
+  "QmssWc": [
+    {
+      "type": 0,
+      "value": "Super OETH now available on BASE!"
+    }
+  ],
   "Qz1fcp": [
     {
       "type": 0,
@@ -1769,6 +1741,12 @@
       "value": "On-chain proposal"
     }
   ],
+  "RxRWqd": [
+    {
+      "type": 0,
+      "value": "wsuperOETHb Transactions"
+    }
+  ],
   "S+gf+n": [
     {
       "type": 0,
@@ -1785,12 +1763,6 @@
     {
       "type": 0,
       "value": "Stake"
-    }
-  ],
-  "S9kbtc": [
-    {
-      "type": 0,
-      "value": "Stake OGN to participate in governance and earn rewards."
     }
   ],
   "SGXihn": [
@@ -1875,10 +1847,22 @@
       "value": "Yield bearing stablecoin"
     }
   ],
+  "TTccxt": [
+    {
+      "type": 0,
+      "value": "Stablecoins"
+    }
+  ],
   "TdHjj5": [
     {
       "type": 0,
       "value": "Origin DeFi Governance"
+    }
+  ],
+  "TdTXXf": [
+    {
+      "type": 0,
+      "value": "Learn more"
     }
   ],
   "Tfx/3J": [
@@ -2015,6 +1999,12 @@
       "value": "Finding the best route..."
     }
   ],
+  "VCCZaw": [
+    {
+      "type": 0,
+      "value": "Sustainable yield with no hidden exit costs"
+    }
+  ],
   "VK+Ydv": [
     {
       "type": 0,
@@ -2061,10 +2051,22 @@
       "value": "name"
     }
   ],
+  "W9cTVS": [
+    {
+      "type": 0,
+      "value": "Earn"
+    }
+  ],
   "WCaf5C": [
     {
       "type": 0,
       "value": "Approve"
+    }
+  ],
+  "WQ5X6K": [
+    {
+      "type": 0,
+      "value": "Super OETH"
     }
   ],
   "WrGSr6": [
@@ -2109,6 +2111,16 @@
       "value": "Swap via Uniswap V3"
     }
   ],
+  "YA3Bty": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " analytics"
+    }
+  ],
   "YGiRwq": [
     {
       "type": 0,
@@ -2131,6 +2143,12 @@
     {
       "type": 0,
       "value": "Wait time:"
+    }
+  ],
+  "YqwF2+": [
+    {
+      "type": 0,
+      "value": "Supercharged LSTs"
     }
   ],
   "YtTAoV": [
@@ -2523,12 +2541,6 @@
       "value": "Error while staking"
     }
   ],
-  "f0gqO4": [
-    {
-      "type": 0,
-      "value": "Lifetime Earnings (OUSD)"
-    }
-  ],
   "f7AFus": [
     {
       "type": 0,
@@ -2567,6 +2579,16 @@
       "value": "symbolIn"
     }
   ],
+  "g/qeil": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " Balance"
+    }
+  ],
   "g28dhk": [
     {
       "type": 0,
@@ -2603,10 +2625,22 @@
       "value": "Sent"
     }
   ],
+  "glPoBW": [
+    {
+      "type": 0,
+      "value": "Mint superOETHb to maximize your ETH position. Super OETH combines Ethereum liquid staking yield with Aerodrome rewards."
+    }
+  ],
   "grhR82": [
     {
       "type": 0,
       "value": "OGV & OGN are merging. Conversion will be open for 1 year."
+    }
+  ],
+  "gxg+PR": [
+    {
+      "type": 0,
+      "value": "Short description."
     }
   ],
   "h9gJgF": [
@@ -2681,12 +2715,6 @@
       "value": "Transaction executed"
     }
   ],
-  "iGcPXd": [
-    {
-      "type": 0,
-      "value": "OUSD analytics"
-    }
-  ],
   "iLgjES": [
     {
       "type": 0,
@@ -2733,6 +2761,12 @@
     {
       "type": 0,
       "value": "Earn rewards and help govern Origin products"
+    }
+  ],
+  "jGoyWr": [
+    {
+      "type": 0,
+      "value": "Swap with Aerodrome"
     }
   ],
   "jgzSp1": [
@@ -2895,12 +2929,6 @@
       "value": "Casted vote"
     }
   ],
-  "mVILQT": [
-    {
-      "type": 0,
-      "value": "OUSD Balance"
-    }
-  ],
   "mcotxc": [
     {
       "type": 1,
@@ -2919,6 +2947,12 @@
     {
       "type": 0,
       "value": "Send wOETH across chains"
+    }
+  ],
+  "n5cmll": [
+    {
+      "type": 0,
+      "value": "LSTs"
     }
   ],
   "n6nILs": [
@@ -3085,6 +3119,16 @@
       "value": "Disconnect"
     }
   ],
+  "r0l2tG": [
+    {
+      "type": 1,
+      "value": "trailingDays"
+    },
+    {
+      "type": 0,
+      "value": "-day trailing APY"
+    }
+  ],
   "r7kiOG": [
     {
       "type": 0,
@@ -3171,6 +3215,12 @@
     {
       "type": 0,
       "value": "Redeem to a mix of stablecoins"
+    }
+  ],
+  "tcK6I+": [
+    {
+      "type": 0,
+      "value": "Current value (USD)"
     }
   ],
   "tkxBJL": [
@@ -3295,6 +3345,12 @@
       "value": "Enabling rebasing"
     }
   ],
+  "vKzI0S": [
+    {
+      "type": 0,
+      "value": "Lifetime Earnings"
+    }
+  ],
   "vLIiaK": [
     {
       "type": 0,
@@ -3305,10 +3361,10 @@
       "value": "symbol"
     }
   ],
-  "vMrueH": [
+  "var6Pi": [
     {
       "type": 0,
-      "value": "Restaking"
+      "value": "Stake OGN to participate in governance and earn rewards. Own a stake in the network and benefit from the growth of Origin's products."
     }
   ],
   "vdpci9": [
@@ -3387,6 +3443,12 @@
     {
       "type": 0,
       "value": "Wrong Network"
+    }
+  ],
+  "wyZ3k/": [
+    {
+      "type": 0,
+      "value": "wsuperOETHb Balance"
     }
   ],
   "xXgeM8": [
@@ -3565,6 +3627,12 @@
       "value": "monthDuration"
     }
   ],
+  "zGckFA": [
+    {
+      "type": 0,
+      "value": "Yield earned"
+    }
+  ],
   "zQvVDJ": [
     {
       "type": 0,
@@ -3601,6 +3669,12 @@
     {
       "type": 0,
       "value": "Waiting for signature"
+    }
+  ],
+  "zqgS/c": [
+    {
+      "type": 0,
+      "value": "Beyond liquid staking"
     }
   ]
 }

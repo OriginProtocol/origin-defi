@@ -119,12 +119,6 @@
   "2PYY5G": {
     "defaultMessage": "Bridge failed"
   },
-  "2R/YHR": {
-    "defaultMessage": "Liquid staking"
-  },
-  "2ahSeJ": {
-    "defaultMessage": "OETH analytics"
-  },
   "2zUGfB": {
     "defaultMessage": "Enable rebasing"
   },
@@ -161,6 +155,9 @@
   "4R0mVR": {
     "defaultMessage": "Choose the proportion of converted OGN you want to stake into a xOGN lockup."
   },
+  "4SoDfQ": {
+    "defaultMessage": "coming soon"
+  },
   "4WNsNT": {
     "defaultMessage": "Migrated"
   },
@@ -181,9 +178,6 @@
   },
   "5cKJ7r": {
     "defaultMessage": "Your veOGV Lockups"
-  },
-  "5cnWDe": {
-    "defaultMessage": "View latest governance proposals"
   },
   "5h3TFE": {
     "defaultMessage": "I agree"
@@ -218,9 +212,6 @@
   "6XFO/C": {
     "defaultMessage": "Approved"
   },
-  "6ZG3zQ": {
-    "defaultMessage": "Own a stake in the network and benefit from the growth of Origin's products."
-  },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
   },
@@ -232,9 +223,6 @@
   },
   "7DIW6+": {
     "defaultMessage": "Learn More"
-  },
-  "7NFfmz": {
-    "defaultMessage": "Products"
   },
   "7SxOry": {
     "defaultMessage": "Current Lockup Ends:"
@@ -278,9 +266,6 @@
   "9/afiv": {
     "defaultMessage": "Signing"
   },
-  "94TAJq": {
-    "defaultMessage": "TVL: {tvl}"
-  },
   "9GqOyW": {
     "defaultMessage": "Current value (OETH)"
   },
@@ -292,9 +277,6 @@
   },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
-  },
-  "9iP/A8": {
-    "defaultMessage": "Lifetime Earnings (OETH)"
   },
   "9j3hXO": {
     "defaultMessage": "To"
@@ -310,9 +292,6 @@
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
-  },
-  "ATvmI7": {
-    "defaultMessage": "Yield earned:"
   },
   "AXUFyu": {
     "defaultMessage": "{amount} {symbolIn}, staked for {amountStaked} {symbolStaked}"
@@ -358,9 +337,6 @@
   },
   "CKr0mb": {
     "defaultMessage": "Locked Tokens Received Now"
-  },
-  "CcqmCh": {
-    "defaultMessage": "OETH Balance"
   },
   "Cnm0QA": {
     "defaultMessage": "Queued"
@@ -440,6 +416,9 @@
   "Fbsq1t": {
     "defaultMessage": "Rebasing enabled"
   },
+  "Fc9ORQ": {
+    "defaultMessage": "Get Super OETH"
+  },
   "FfOtze": {
     "defaultMessage": "{value}"
   },
@@ -470,11 +449,17 @@
   "Gtdie8": {
     "defaultMessage": "Available to claim"
   },
+  "GufXy5": {
+    "defaultMessage": "Value"
+  },
   "H1+3mH": {
     "defaultMessage": "A superior LST for earning yield across DeFi"
   },
   "H5+NAX": {
     "defaultMessage": "Balance"
+  },
+  "HAP3kg": {
+    "defaultMessage": "Super OETH history"
   },
   "HPegJm": {
     "defaultMessage": "Delegate {votingPower} {symbolIn} to {delegateTo}"
@@ -563,6 +548,9 @@
   "LOghU6": {
     "defaultMessage": "Succeeded"
   },
+  "LU9l68": {
+    "defaultMessage": "Your balance"
+  },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
@@ -622,9 +610,6 @@
   },
   "NlA37n": {
     "defaultMessage": "{amount} {symbolIn}"
-  },
-  "Nvcaj3": {
-    "defaultMessage": "Your balance:"
   },
   "OBfWz0": {
     "defaultMessage": "No available route"
@@ -692,6 +677,9 @@
   "QW+Q5N": {
     "defaultMessage": "Clear all"
   },
+  "QmssWc": {
+    "defaultMessage": "Super OETH now available on BASE!"
+  },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
@@ -710,6 +698,9 @@
   "RxMChd": {
     "defaultMessage": "On-chain proposal"
   },
+  "RxRWqd": {
+    "defaultMessage": "wsuperOETHb Transactions"
+  },
   "S+gf+n": {
     "defaultMessage": "Defeated"
   },
@@ -718,9 +709,6 @@
   },
   "S5tBcz": {
     "defaultMessage": "Stake"
-  },
-  "S9kbtc": {
-    "defaultMessage": "Stake OGN to participate in governance and earn rewards."
   },
   "SGXihn": {
     "defaultMessage": "OETH"
@@ -746,8 +734,14 @@
   "TJOfi8": {
     "defaultMessage": "Yield bearing stablecoin"
   },
+  "TTccxt": {
+    "defaultMessage": "Stablecoins"
+  },
   "TdHjj5": {
     "defaultMessage": "Origin DeFi Governance"
+  },
+  "TdTXXf": {
+    "defaultMessage": "Learn more"
   },
   "Tfx/3J": {
     "defaultMessage": "Start block"
@@ -782,6 +776,9 @@
   "V/q7w4": {
     "defaultMessage": "Finding the best route..."
   },
+  "VCCZaw": {
+    "defaultMessage": "Sustainable yield with no hidden exit costs"
+  },
   "VK+Ydv": {
     "defaultMessage": "OUSD"
   },
@@ -803,8 +800,14 @@
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
+  "W9cTVS": {
+    "defaultMessage": "Earn"
+  },
   "WCaf5C": {
     "defaultMessage": "Approve"
+  },
+  "WQ5X6K": {
+    "defaultMessage": "Super OETH"
   },
   "WrGSr6": {
     "defaultMessage": "Convert"
@@ -827,6 +830,9 @@
   "Y4FfAH": {
     "defaultMessage": "Swap via Uniswap V3"
   },
+  "YA3Bty": {
+    "defaultMessage": "{symbol} analytics"
+  },
   "YGiRwq": {
     "defaultMessage": "Voting Power"
   },
@@ -838,6 +844,9 @@
   },
   "YnftYz": {
     "defaultMessage": "Wait time:"
+  },
+  "YqwF2+": {
+    "defaultMessage": "Supercharged LSTs"
   },
   "YtTAoV": {
     "defaultMessage": "Vote {choice} on proposal {proposalId}"
@@ -989,9 +998,6 @@
   "ewhSbE": {
     "defaultMessage": "Error while staking"
   },
-  "f0gqO4": {
-    "defaultMessage": "Lifetime Earnings (OUSD)"
-  },
   "f7AFus": {
     "defaultMessage": "Swap via SushiSwap"
   },
@@ -1006,6 +1012,9 @@
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
+  },
+  "g/qeil": {
+    "defaultMessage": "{symbol} Balance"
   },
   "g28dhk": {
     "defaultMessage": "Extended Stake"
@@ -1025,8 +1034,14 @@
   "gcuDcH": {
     "defaultMessage": "Sent"
   },
+  "glPoBW": {
+    "defaultMessage": "Mint superOETHb to maximize your ETH position. Super OETH combines Ethereum liquid staking yield with Aerodrome rewards."
+  },
   "grhR82": {
     "defaultMessage": "OGV & OGN are merging. Conversion will be open for 1 year."
+  },
+  "gxg+PR": {
+    "defaultMessage": "Short description."
   },
   "h9gJgF": {
     "defaultMessage": "Impossible to execute approval"
@@ -1052,9 +1067,6 @@
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
   },
-  "iGcPXd": {
-    "defaultMessage": "OUSD analytics"
-  },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
   },
@@ -1078,6 +1090,9 @@
   },
   "j9lsz3": {
     "defaultMessage": "Earn rewards and help govern Origin products"
+  },
+  "jGoyWr": {
+    "defaultMessage": "Swap with Aerodrome"
   },
   "jgzSp1": {
     "defaultMessage": "Error while casting vote"
@@ -1145,14 +1160,14 @@
   "mTz9QI": {
     "defaultMessage": "Casted vote"
   },
-  "mVILQT": {
-    "defaultMessage": "OUSD Balance"
-  },
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
   },
   "mpWMMq": {
     "defaultMessage": "Send wOETH across chains"
+  },
+  "n5cmll": {
+    "defaultMessage": "LSTs"
   },
   "n6nILs": {
     "defaultMessage": "Receive amount"
@@ -1223,6 +1238,9 @@
   "qj1uhz": {
     "defaultMessage": "Disconnect"
   },
+  "r0l2tG": {
+    "defaultMessage": "{trailingDays}-day trailing APY"
+  },
   "r7kiOG": {
     "defaultMessage": "Wrap"
   },
@@ -1264,6 +1282,9 @@
   },
   "tZtBsJ": {
     "defaultMessage": "Redeem to a mix of stablecoins"
+  },
+  "tcK6I+": {
+    "defaultMessage": "Current value (USD)"
   },
   "tkxBJL": {
     "defaultMessage": "Lockup Ends:"
@@ -1322,11 +1343,14 @@
   "v0B1E9": {
     "defaultMessage": "Enabling rebasing"
   },
+  "vKzI0S": {
+    "defaultMessage": "Lifetime Earnings"
+  },
   "vLIiaK": {
     "defaultMessage": "Bridge {symbol}"
   },
-  "vMrueH": {
-    "defaultMessage": "Restaking"
+  "var6Pi": {
+    "defaultMessage": "Stake OGN to participate in governance and earn rewards. Own a stake in the network and benefit from the growth of Origin's products."
   },
   "vdpci9": {
     "defaultMessage": "Rewards available"
@@ -1357,6 +1381,9 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
+  },
+  "wyZ3k/": {
+    "defaultMessage": "wsuperOETHb Balance"
   },
   "xXgeM8": {
     "defaultMessage": "7-day trailing APY"
@@ -1403,6 +1430,9 @@
   "z7DIYb": {
     "defaultMessage": "{monthDuration,plural,=1{Lock {amount} {symbolIn} for # month} other{Lock {amount} {symbolIn} for # months}}"
   },
+  "zGckFA": {
+    "defaultMessage": "Yield earned"
+  },
   "zQvVDJ": {
     "defaultMessage": "All"
   },
@@ -1417,5 +1447,8 @@
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
+  },
+  "zqgS/c": {
+    "defaultMessage": "Beyond liquid staking"
   }
 }
