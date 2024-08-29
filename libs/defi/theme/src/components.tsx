@@ -64,7 +64,7 @@ export const components = (base: Theme): ThemeOptions => ({
         },
       },
       styleOverrides: {
-        root: ({ theme, ownerState }) => ({
+        root: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
           color: theme.palette.text.primary,
           boxShadow: theme.shadows[2],
@@ -343,11 +343,17 @@ export const components = (base: Theme): ThemeOptions => ({
           padding: theme.spacing(3),
           background: `
             linear-gradient(rgba(255, 255, 255, 0), ${theme.palette.background.paper} 70%) center bottom,
-            radial-gradient(farthest-side at 50% 100%, ${theme.palette.mode === 'light' ? alpha(theme.palette.common.black, 0.25) : alpha(theme.palette.common.white, 0.25)}, rgba(0, 0, 0, 0)) center bottom
+            radial-gradient(farthest-side at 50% 100%, ${alpha(theme.palette.common.white, 0.25)}, rgba(0, 0, 0, 0)) center bottom
           `,
           backgroundRepeat: 'no-repeat',
           backgroundSize: '100% 40px, 100% 10px',
           backgroundAttachment: 'local, scroll',
+          ...theme.applyStyles('light', {
+            background: `
+  linear-gradient(rgba(255, 255, 255, 0), ${alpha(theme.palette.common.black, 0.25)} 70%) center bottom,
+  radial-gradient(farthest-side at 50% 100%, , rgba(0, 0, 0, 0)) center bottom
+`,
+          }),
         }),
       },
     },

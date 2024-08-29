@@ -213,6 +213,7 @@ export const theme = createTheme({
         color: 'primary',
         disableElevation: true,
       },
+
       styleOverrides: {
         root: ({ theme }) => ({
           display: 'flex',
@@ -233,6 +234,70 @@ export const theme = createTheme({
           },
           boxShadow: 'none',
           minWidth: 0,
+          variants: [
+            {
+              props: { variant: 'action' },
+              style: {
+                background:
+                  'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
+                color: theme.palette.text.primary,
+                padding: theme.spacing(2),
+                fontSize: 20,
+                lineHeight: 1.6,
+                borderRadius: theme.shape.borderRadius * 2,
+                fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
+                fontWeight: 500,
+                fontStyle: 'normal',
+                '&:hover': {
+                  background:
+                    'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                  opacity: 1,
+                },
+                '&:disabled': {
+                  opacity: 0.5,
+                  color: theme.palette.text.primary,
+                },
+                [base.breakpoints.down('sm')]: {
+                  fontSize: 18,
+                },
+              },
+            },
+            {
+              props: { variant: 'connect' },
+              style: {
+                background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                color: theme.palette.text.primary,
+                borderRadius: theme.shape.borderRadius * 8,
+                fontStyle: 'normal',
+                '&:hover': {
+                  background:
+                    'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
+                  opacity: 1,
+                },
+                '&:disabled': {
+                  opacity: 0.5,
+                  color: theme.palette.text.primary,
+                },
+              },
+            },
+            {
+              props: { variant: 'nav' },
+              style: {
+                background: lighten(theme.palette.background.paper, 0.05),
+                '&:hover': {
+                  background: lighten(theme.palette.background.paper, 0.1),
+                },
+                minWidth: 36,
+                minHeight: 36,
+                [base.breakpoints.up('md')]: {
+                  paddingX: 2,
+                  paddingY: 0,
+                  minWidth: 44,
+                  minHeight: 44,
+                },
+              },
+            },
+          ],
         }),
         sizeSmall: {
           fontSize: 12,
@@ -297,70 +362,6 @@ export const theme = createTheme({
           },
         }),
       },
-      variants: [
-        {
-          props: { variant: 'action' },
-          style: ({ theme }) => ({
-            background:
-              'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
-            color: theme.palette.text.primary,
-            padding: theme.spacing(2),
-            fontSize: 20,
-            lineHeight: 1.6,
-            borderRadius: theme.shape.borderRadius * 2,
-            fontFamily: 'Sailec, Inter, Helvetica, Arial, sans-serif',
-            fontWeight: 500,
-            fontStyle: 'normal',
-            '&:hover': {
-              background:
-                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-              opacity: 1,
-            },
-            '&:disabled': {
-              opacity: 0.5,
-              color: theme.palette.text.primary,
-            },
-            [base.breakpoints.down('sm')]: {
-              fontSize: 18,
-            },
-          }),
-        },
-        {
-          props: { variant: 'connect' },
-          style: ({ theme }) => ({
-            background: 'linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-            color: theme.palette.text.primary,
-            borderRadius: theme.shape.borderRadius * 8,
-            fontStyle: 'normal',
-            '&:hover': {
-              background:
-                'linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, #8C66FC 0%, #0274F1 100%)',
-              opacity: 1,
-            },
-            '&:disabled': {
-              opacity: 0.5,
-              color: theme.palette.text.primary,
-            },
-          }),
-        },
-        {
-          props: { variant: 'nav' },
-          style: ({ theme }) => ({
-            background: lighten(theme.palette.background.paper, 0.05),
-            '&:hover': {
-              background: lighten(theme.palette.background.paper, 0.1),
-            },
-            minWidth: 36,
-            minHeight: 36,
-            [base.breakpoints.up('md')]: {
-              paddingX: 2,
-              paddingY: 0,
-              minWidth: 44,
-              minHeight: 44,
-            },
-          }),
-        },
-      ],
     },
     MuiButtonBase: {
       defaultProps: {
@@ -427,37 +428,31 @@ export const theme = createTheme({
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
           }
-
           input[type=number] {
             -moz-appearance: textfield;
           }
-
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
           }
-
           @font-face {
             font-family: "Inter";
             font-weight: 400;
             src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 400;
             src: url(/fonts/Sailec-Regular.otf) format('opentype');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 500;
             src: url(/fonts/Sailec-Medium.otf) format('opentype');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 700;
@@ -553,7 +548,6 @@ export const theme = createTheme({
           width: 'auto',
           paddingBlock: theme.spacing(0.5),
           paddingInline: theme.spacing(1.5),
-
           '& .MuiInputBase-input': {
             color: theme.palette.text.primary,
             fontSize: theme.typography.fontSize,

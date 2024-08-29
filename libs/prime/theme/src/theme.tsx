@@ -331,37 +331,31 @@ export const theme = createTheme({
             -moz-osx-font-smoothing: grayscale;
             text-rendering: optimizeLegibility;
           }
-
           input[type=number] {
             -moz-appearance: textfield;
           }
-
           input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
             -webkit-appearance: none;
             margin: 0;
           }
-
           @font-face {
             font-family: "Inter";
             font-weight: 400;
             src: url(/fonts/Inter-Regular.woff2) format('woff2');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 400;
             src: url(/fonts/Sailec-Regular.otf) format('opentype');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 500;
             src: url(/fonts/Sailec-Medium.otf) format('opentype');
             font-display: swap;
           }
-
           @font-face {
             font-family: Sailec;
             font-weight: 700;
@@ -437,7 +431,6 @@ export const theme = createTheme({
           width: 'auto',
           paddingBlock: theme.spacing(0.5),
           paddingInline: theme.spacing(1.5),
-
           '& .MuiInputBase-input': {
             color: theme.palette.text.primary,
             fontSize: theme.typography.fontSize,
