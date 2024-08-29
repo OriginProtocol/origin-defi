@@ -17,7 +17,7 @@
     "@analytics/google-tag-manager": "^0.5.5",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
-    "@mui/material": "^5.16.7",
+    "@mui/material": "^6.0.0",
     "@rainbow-me/rainbowkit": "2.1.5",
     "@react-hookz/web": "^24.0.2",
     "@sentry/react": "8.27.0",
