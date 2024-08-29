@@ -104,7 +104,6 @@ export const TokenCard = ({
           </Typography>
         </Stack>
       </Stack>
-
       <Stack
         direction="row"
         alignItems="center"
@@ -120,17 +119,30 @@ export const TokenCard = ({
               isLoading={isApyLoading && !isComingSoon}
               variant="featured2"
               fontWeight="bold"
-              sx={{
-                position: 'relative',
-                ...(isFancy
+              sx={[
+                {
+                  position: 'relative',
+                },
+                isFancy
                   ? {
                       background: (theme) =>
                         theme.palette.background.gradientBlueDark,
                       backgroundClip: 'text',
                       WebkitTextFillColor: 'transparent',
                     }
-                  : { color: 'primary.main' }),
-                ...(!isApyLoading &&
+                  : { color: 'primary.main' },
+                isFancy
+                  ? {
+                      '::after': {
+                        background: theme.palette.background.gradientBlueDark,
+                      },
+                    }
+                  : {
+                      '::after': {
+                        background: theme.palette.primary.main,
+                      },
+                    },
+                !isApyLoading &&
                   !disabled && {
                     '::after': {
                       content: '""',
@@ -139,13 +151,9 @@ export const TokenCard = ({
                       right: 2,
                       bottom: 1,
                       height: 2,
-                      background: (theme) =>
-                        isFancy
-                          ? theme.palette.background.gradientBlueDark
-                          : theme.palette.primary.main,
                     },
-                  }),
-              }}
+                  },
+              ]}
             >
               {disabled
                 ? '-'
@@ -177,7 +185,6 @@ export const TokenCard = ({
           </Stack>
         )}
       </Stack>
-
       <Stack
         direction={{ xs: 'row', md: 'column' }}
         alignItems={{ xs: 'baseline', md: 'flex-start' }}
@@ -232,7 +239,6 @@ export const TokenCard = ({
           )}
         </Stack>
       </Stack>
-
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Your balance' })}
         value={`${
@@ -246,7 +252,6 @@ export const TokenCard = ({
         isLoading={isInfoLoading && !disabled}
         pt={{ xs: 1, md: 0 }}
       />
-
       {!isOgn && (
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Yield earned' })}
@@ -261,7 +266,6 @@ export const TokenCard = ({
           isLoading={isInfoLoading && !disabled}
         />
       )}
-
       <Stack justifyContent="center" pt={{ xs: 2, md: 0 }}>
         {!!href && (
           <Button
@@ -331,11 +335,11 @@ function ComingSoonAPY(props: StackProps) {
       </Stack>
       <Typography
         variant="caption1"
-        sx={{
-          background: (theme) => theme.palette.background.gradientBlueDark,
+        sx={(theme) => ({
+          background: theme.palette.background.gradientBlueDark,
           backgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
-        }}
+        })}
       >
         {intl.formatMessage({ defaultMessage: 'coming soon' })}
       </Typography>

@@ -65,8 +65,8 @@ export const ActivityPopover = ({
         vertical: 'top',
         horizontal: 'right',
       }}
-      sx={{
-        zIndex: (theme) => theme.zIndex.modal + 2,
+      sx={(theme) => ({
+        zIndex: theme.zIndex.modal + 2,
         '& .MuiPopover-paper': {
           borderRadius: 1,
           width: (theme) => ({
@@ -79,7 +79,7 @@ export const ActivityPopover = ({
             marginInline: 'auto',
           },
         },
-      }}
+      })}
     >
       <Stack>
         <Stack

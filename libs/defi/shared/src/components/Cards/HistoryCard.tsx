@@ -319,17 +319,17 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
               <TableRow
                 key={row.id}
                 onClick={row.getToggleExpandedHandler()}
-                sx={{
-                  ...(row.getCanExpand() && {
+                sx={[
+                  row.getCanExpand() && {
                     cursor: 'pointer',
                     ':hover': {
                       backgroundColor: 'primary.faded',
                     },
-                  }),
-                  ...(row.depth > 0 && {
+                  },
+                  row.depth > 0 && {
                     borderTopStyle: 'hidden',
-                  }),
-                }}
+                  },
+                ]}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell

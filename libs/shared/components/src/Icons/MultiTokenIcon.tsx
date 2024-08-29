@@ -40,12 +40,20 @@ export const MultiTokenIcon = ({
           key={token.symbol}
           token={token}
           outlined
-          sx={{
-            height: `${size}rem`,
-            width: `${size}rem`,
-            zIndex: zOrder === 'first' ? arr.length - index : index,
-            transform: `translateX(-${(index * size) / spacing}rem)`,
-          }}
+          sx={[
+            {
+              height: `${size}rem`,
+              width: `${size}rem`,
+              transform: `translateX(-${(index * size) / spacing}rem)`,
+            },
+            zOrder === 'first'
+              ? {
+                  zIndex: arr.length - index,
+                }
+              : {
+                  zIndex: index,
+                },
+          ]}
         />
       ))}
     </Stack>

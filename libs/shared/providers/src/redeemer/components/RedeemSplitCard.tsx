@@ -54,16 +54,15 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
 
   return (
     <Stack
-      sx={{
+      sx={(theme) => ({
         borderRadius: 1,
         border: '1px solid',
         borderColor: 'transparent',
-        background: (theme) =>
-          `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+        background: `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
         ...props?.sx,
         overflow: 'hidden',
         whiteSpace: 'nowrap',
-      }}
+      })}
     >
       <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
         {!isXs && (

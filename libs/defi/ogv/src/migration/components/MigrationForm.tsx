@@ -311,13 +311,11 @@ function LockupsList({
     </Stack>
   );
 }
-
 type LockupRowProps = {
   lockup: Lockup;
   isSelected: boolean;
   onSelectLockup: (lockup: Lockup) => void;
 } & StackProps;
-
 function LockupRow({
   lockup,
   isSelected,
@@ -325,7 +323,6 @@ function LockupRow({
   ...rest
 }: LockupRowProps) {
   const { formatAmount } = useFormat();
-
   return (
     <Stack direction="row" px={2} py={1} alignItems="center" {...rest}>
       <FormControlLabel

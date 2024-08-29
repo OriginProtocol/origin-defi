@@ -215,11 +215,18 @@ function ChainSelector({
           }}
           variant="text"
           fullWidth
-          sx={{
-            borderRadius: 0,
-            backgroundColor:
-              c.id === selectedChainId ? 'primary.faded' : 'transparent',
-          }}
+          sx={[
+            {
+              borderRadius: 0,
+            },
+            c.id === selectedChainId
+              ? {
+                  backgroundColor: 'primary.faded',
+                }
+              : {
+                  backgroundColor: 'transparent',
+                },
+          ]}
         >
           <NetworkIcon chainId={c.id} />
         </Button>

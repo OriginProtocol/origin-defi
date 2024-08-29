@@ -707,12 +707,20 @@ function LockupSelect({
                 {headerGroup.headers.map((header, index) => (
                   <TableCell
                     key={header.id}
-                    sx={{
-                      width: header.getSize(),
-                      textAlign: index === 0 ? 'start' : 'end',
-                      color: 'text.secondary',
-                      py: 2,
-                    }}
+                    sx={[
+                      {
+                        width: header.getSize(),
+                        color: 'text.secondary',
+                        py: 2,
+                      },
+                      index === 0
+                        ? {
+                            textAlign: 'start',
+                          }
+                        : {
+                            textAlign: 'end',
+                          },
+                    ]}
                   >
                     <Typography noWrap variant="caption1" fontWeight="medium">
                       {flexRender(
@@ -731,10 +739,18 @@ function LockupSelect({
                 {row.getVisibleCells().map((cell, index) => (
                   <TableCell
                     key={cell.id}
-                    sx={{
-                      textAlign: index === 0 ? 'start' : 'end',
-                      py: 1,
-                    }}
+                    sx={[
+                      {
+                        py: 1,
+                      },
+                      index === 0
+                        ? {
+                            textAlign: 'start',
+                          }
+                        : {
+                            textAlign: 'end',
+                          },
+                    ]}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

@@ -15,12 +15,11 @@ export const RestakeView = () => {
         <Stack sx={{ p: 2, alignItems: 'center' }}>
           <Stack
             direction="row"
-            sx={{
+            sx={(theme) => ({
               alignItems: 'center',
-              boxShadow: (theme) =>
-                `inset 0px 0px 0px 1px ${theme.palette.divider}`,
+              boxShadow: `inset 0px 0px 0px 1px ${theme.palette.divider}`,
               borderRadius: 25,
-            }}
+            })}
           >
             {restakeRoute?.children?.map((r) => (
               <NavLink key={r?.path ?? 'index'} route={r} />
@@ -34,33 +33,32 @@ export const RestakeView = () => {
     </Stack>
   );
 };
-
 type NavLinkProps = {
   route: RouteObject;
 };
-
 const NavLink = ({ route }: NavLinkProps) => {
   const intl = useIntl();
   const match = useMatch(
     `${restakeRoute.path}/${route.index ? '' : route.path}`,
   );
-
   return (
     <Link
       component={RouterLink}
       to={`${restakeRoute.path}/${route.index ? '' : route.path}`}
-      sx={{
-        px: { xs: 1.5, md: 3 },
-        py: 1,
-        lineHeight: '1.625',
-        color: 'text.secondary',
-        fontWeight: 'medium',
-        ...(!isNilOrEmpty(match) && {
+      sx={[
+        {
+          px: { xs: 1.5, md: 3 },
+          py: 1,
+          lineHeight: '1.625',
+          color: 'text.secondary',
+          fontWeight: 'medium',
+        },
+        !isNilOrEmpty(match) && {
           color: 'primary.contrastText',
           backgroundColor: 'primary.main',
           borderRadius: 25,
-        }),
-      }}
+        },
+      ]}
     >
       {intl.formatMessage(route.handle.label)}
     </Link>

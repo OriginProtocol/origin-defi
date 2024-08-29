@@ -330,36 +330,34 @@ function SwapperWrapped({
                 isConnected={isConnected}
                 isAmountDisabled={amountInInputDisabled}
                 inputProps={{ sx: tokenInputStyles }}
-                sx={{
+                sx={(theme) => ({
                   paddingBlock: 2.5,
                   paddingBlockStart: 2.625,
                   paddingInline: 2,
                   border: '1px solid',
                   borderColor: 'divider',
-                  borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-                  borderTopRightRadius: (theme) => theme.shape.borderRadius,
+                  borderTopLeftRadius: theme.shape.borderRadius,
+                  borderTopRightRadius: theme.shape.borderRadius,
                   backgroundColor: 'grey.900',
                   borderBottomColor: 'transparent',
                   '&:hover, &:focus-within': {
                     borderColor: 'transparent',
                   },
                   '&:hover': {
-                    background: (theme) =>
-                      `linear-gradient(${theme.palette.grey[900]}, ${
-                        theme.palette.grey[900]
-                      }) padding-box, linear-gradient(90deg, ${alpha(
-                        theme.palette.primary.main,
-                        0.4,
-                      )} 0%, ${alpha(
-                        theme.palette.primary.dark,
-                        0.4,
-                      )} 100%) border-box;`,
+                    background: `linear-gradient(${theme.palette.grey[900]}, ${
+                      theme.palette.grey[900]
+                    }) padding-box, linear-gradient(90deg, ${alpha(
+                      theme.palette.primary.main,
+                      0.4,
+                    )} 0%, ${alpha(
+                      theme.palette.primary.dark,
+                      0.4,
+                    )} 100%) border-box;`,
                   },
                   '&:focus-within': {
-                    background: (theme) =>
-                      `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+                    background: `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
                   },
-                }}
+                })}
               />
               <TokenInput
                 amount={amountOut}
@@ -377,26 +375,26 @@ function SwapperWrapped({
                 isConnected={isConnected}
                 hideMaxButton
                 inputProps={{ readOnly: true, sx: tokenInputStyles }}
-                sx={{
+                sx={(theme) => ({
                   paddingBlock: 2.5,
                   paddingBlockStart: 2.625,
                   paddingInline: 2,
                   border: '1px solid',
                   borderColor: 'divider',
-                  borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-                  borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+                  borderBottomLeftRadius: theme.shape.borderRadius,
+                  borderBottomRightRadius: theme.shape.borderRadius,
                   backgroundColor: (theme) =>
                     alpha(theme.palette.grey[400], 0.2),
-                }}
+                })}
               />
               <ArrowButton onClick={handleTokenFlip} />
             </Box>
             <SwapRoute
-              sx={{
+              sx={(theme) => ({
                 mt: 1.5,
                 borderRadius: 1,
-                border: (theme) => `1px solid ${theme.palette.divider}`,
-              }}
+                border: `1px solid ${theme.palette.divider}`,
+              })}
             />
             <Collapse in={amountOut > 0n}>
               <Stack
@@ -433,7 +431,18 @@ function SwapperWrapped({
                 </Stack>
               </Stack>
             </Collapse>
-            <Collapse in={needsApproval} sx={{ mt: needsApproval ? 1.5 : 0 }}>
+            <Collapse
+              in={needsApproval}
+              sx={[
+                needsApproval
+                  ? {
+                      mt: 1.5,
+                    }
+                  : {
+                      mt: 0,
+                    },
+              ]}
+            >
               <Button
                 fullWidth
                 {...buttonsProps}
@@ -485,7 +494,6 @@ function SwapperWrapped({
     </Stack>
   );
 }
-
 const tokenInputStyles = {
   border: 'none',
   backgroundColor: 'transparent',

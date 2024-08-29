@@ -134,10 +134,10 @@ export const DelegateModal = (props: DialogProps) => {
             placeholder={intl.formatMessage({
               defaultMessage: 'Enter address',
             })}
-            sx={{
-              border: (theme) => `1px solid ${theme.palette.divider}`,
+            sx={(theme) => ({
+              border: `1px solid ${theme.palette.divider}`,
               borderRadius: 2,
-            }}
+            })}
           />
         </Stack>
         <TransactionButton

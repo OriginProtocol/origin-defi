@@ -81,9 +81,15 @@ export const NotificationAlert = forwardRef<
       severity={severity as AlertColor}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
-      sx={{
-        position: 'relative',
-        ...(hideDuration
+      sx={[
+        {
+          position: 'relative',
+          '.MuiAlert-message': {
+            width: 1,
+          },
+          ...rest?.sx,
+        },
+        hideDuration
           ? {
               borderTopRightRadius: (theme) => theme.shape.borderRadius,
               borderTopLeftRadius: (theme) => theme.shape.borderRadius,
@@ -92,12 +98,8 @@ export const NotificationAlert = forwardRef<
             }
           : {
               borderRadius: 1,
-            }),
-        '.MuiAlert-message': {
-          width: 1,
-        },
-        ...rest?.sx,
-      }}
+            },
+      ]}
       {...((!!content || !!icon) && { icon: false })}
       onClose={handleCloseClick}
     >
@@ -165,14 +167,14 @@ export const NotificationAlert = forwardRef<
         <CountDown
           value={countdown}
           color={severity === 'pending' ? 'primary' : (severity as AlertColor)}
-          sx={{
+          sx={(theme) => ({
             position: 'absolute',
             bottom: 0,
             left: 0,
             width: 1,
-            borderBottomRightRadius: (theme) => theme.shape.borderRadius,
-            borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
-          }}
+            borderBottomRightRadius: theme.shape.borderRadius,
+            borderBottomLeftRadius: theme.shape.borderRadius,
+          })}
         />
       )}
     </Alert>

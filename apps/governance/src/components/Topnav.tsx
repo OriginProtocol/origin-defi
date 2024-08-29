@@ -49,12 +49,12 @@ export function Topnav(props: BoxProps) {
   return (
     <>
       <Box
-        sx={{
+        sx={(theme) => ({
           height: (theme) => ({
             xs: '112px',
             md: `${theme.mixins.toolbar.height}px`,
           }),
-        }}
+        })}
       />
       <Box
         component="nav"
@@ -241,16 +241,16 @@ export function Topnav(props: BoxProps) {
           />
         </Box>
         <Divider
-          sx={{
+          sx={(theme) => ({
             display: { xs: 'block', md: 'none' },
             gridColumn: 'span 2',
             gridRowStart: 1,
-            borderColor: (theme) => theme.palette.background.paper,
+            borderColor: theme.palette.background.paper,
             position: 'relative',
             width: 'calc(100% + 1.5rem)',
             bottom: '-3rem',
             left: '-0.75rem',
-          }}
+          })}
         />
       </Box>
     </>

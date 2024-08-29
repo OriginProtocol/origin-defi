@@ -16,15 +16,15 @@ export const InviteCard = (props: StackProps) => {
     <Stack
       spacing={1}
       {...props}
-      sx={{
+      sx={(theme) => ({
         alignItems: 'center',
         justifyContent: 'center',
         p: 3,
-        border: (theme) => `1px solid ${theme.palette.divider}`,
+        border: `1px solid ${theme.palette.divider}`,
         borderRadius: 5,
         minHeight: 200,
         ...props?.sx,
-      }}
+      })}
     >
       <Friends sx={{ width: 40, height: 40, color: 'primary.main' }} />
       <Typography variant="h6" textAlign="center">

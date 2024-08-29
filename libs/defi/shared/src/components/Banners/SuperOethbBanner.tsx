@@ -69,10 +69,18 @@ export const SuperOethbBanner = (props: StackProps) => {
                   isLoading={isInfoLoading}
                   variant="featured2"
                   fontWeight="bold"
-                  sx={{
-                    textDecoration: isInfoLoading ? 'none' : 'underline',
-                    textUnderlineOffset: 4,
-                  }}
+                  sx={[
+                    {
+                      textUnderlineOffset: 4,
+                    },
+                    isInfoLoading
+                      ? {
+                          textDecoration: 'none',
+                        }
+                      : {
+                          textDecoration: 'underline',
+                        },
+                  ]}
                 >
                   {intl.formatNumber(info?.apies?.apy ?? 0, {
                     style: 'percent',

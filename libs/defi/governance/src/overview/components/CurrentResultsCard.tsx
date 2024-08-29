@@ -92,12 +92,12 @@ export const CurrentResultsCard = (props: CardProps) => {
                   totalVotes={totalVotes}
                   isLoading={isProposalLoading}
                   isVotingEnabled={isVotingEnabled}
-                  sx={{
-                    ...(i > 0 && {
-                      borderLeft: (theme) =>
-                        `1px solid ${theme.palette.divider}`,
-                    }),
-                  }}
+                  sx={[
+                    i > 0 &&
+                      ((theme) => ({
+                        borderLeft: `1px solid ${theme.palette.divider}`,
+                      })),
+                  ]}
                 />
               </Grid2>
             );
@@ -179,22 +179,30 @@ function VoteCard({
       <LinearProgress
         value={(score / totalVotes) * 100}
         variant={'determinate'}
-        sx={{
-          borderRadius: 1,
-          backgroundColor: 'divider',
-          '.MuiLinearProgress-bar': {
-            backgroundColor: (theme) =>
-              isLoading
-                ? theme.palette.divider
-                : choice === 'For'
-                  ? theme.palette.success.main
-                  : choice === 'Against'
-                    ? theme.palette.error.main
-                    : choice === 'Abstain'
-                      ? theme.palette.warning.main
-                      : theme.palette.primary.main,
+        sx={[
+          {
+            borderRadius: 1,
+            backgroundColor: 'divider',
           },
-        }}
+          isLoading
+            ? {
+                '.MuiLinearProgress-bar': {
+                  backgroundColor: theme.palette.divider,
+                },
+              }
+            : {
+                '.MuiLinearProgress-bar': {
+                  backgroundColor:
+                    choice === 'For'
+                      ? theme.palette.success.main
+                      : choice === 'Against'
+                        ? theme.palette.error.main
+                        : choice === 'Abstain'
+                          ? theme.palette.warning.main
+                          : theme.palette.primary.main,
+                },
+              },
+        ]}
       />
       {isVotingEnabled && (
         <Stack pt={2} alignItems="flex-start">

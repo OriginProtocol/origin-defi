@@ -38,37 +38,48 @@ export const TokenButton = ({
       role="button"
       gap={1}
       {...rest}
-      sx={{
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        minHeight: 32,
-        borderRadius: 25,
-        fontSize: 16,
-        border: (theme) =>
-          active
-            ? `1px solid ${theme.palette.primary.main}`
-            : '1px solid transparent',
-        background: (theme) => alpha(theme.palette.common.white, 0.1),
-        fontStyle: 'normal',
-        cursor: disabled ? 'default' : 'pointer',
-        fontWeight: 500,
-        boxSizing: 'border-box',
-        position: 'relative',
-        ...sizeProps[size],
-        ...rest?.sx,
-        ...(!disabled && {
-          ':hover': {
-            ...(rest.sx as any)?.[':hover'],
-            background: (theme) =>
-              `linear-gradient(${theme.palette.grey[600]}, ${
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          minHeight: 32,
+          borderRadius: 25,
+          fontSize: 16,
+          background: (theme) => alpha(theme.palette.common.white, 0.1),
+          fontStyle: 'normal',
+          fontWeight: 500,
+          boxSizing: 'border-box',
+          position: 'relative',
+          ...sizeProps[size],
+          ...rest?.sx,
+        },
+        active
+          ? {
+              border: `1px solid ${theme.palette.primary.main}`,
+            }
+          : {
+              border: '1px solid transparent',
+            },
+        disabled
+          ? {
+              cursor: 'default',
+            }
+          : {
+              cursor: 'pointer',
+            },
+        !disabled &&
+          ((theme) => ({
+            ':hover': {
+              ...(rest.sx as any)?.[':hover'],
+              background: `linear-gradient(${theme.palette.grey[600]}, ${
                 theme.palette.grey[600]
               }) padding-box, linear-gradient(90deg, ${alpha(
                 theme.palette.primary.main,
                 0.4,
               )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
-          },
-        }),
-      }}
+            },
+          })),
+      ]}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />
       <Typography variant="inherit">{token.symbol}</Typography>

@@ -63,14 +63,16 @@ export function SlippageFormControl({
         </Button>
       </Stack>
       <Typography
-        sx={{
-          mt: 1.25,
-          fontSize: 12,
-          color: (theme) => theme.palette.warning.main,
-          fontWeight: 400,
-          fontStyle: 'normal',
-          ...(slippage <= WARNING_THRESHOLD && { visibility: 'hidden' }),
-        }}
+        sx={[
+          (theme) => ({
+            mt: 1.25,
+            fontSize: 12,
+            color: theme.palette.warning.main,
+            fontWeight: 400,
+            fontStyle: 'normal',
+          }),
+          slippage <= WARNING_THRESHOLD && { visibility: 'hidden' },
+        ]}
       >
         {intl.formatMessage({
           defaultMessage: 'Your transaction may be frontrun',

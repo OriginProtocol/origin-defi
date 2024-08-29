@@ -25,7 +25,7 @@ const NotificationsWrapped = ({ children }: StackProps) => {
         {!isNilOrEmpty(visibleNotifications) && (
           <Stack
             direction="column"
-            sx={{
+            sx={(theme) => ({
               position: 'fixed',
               bottom: { xs: 16, sm: 40 },
               right: { xs: 16, sm: 40 },
@@ -33,8 +33,8 @@ const NotificationsWrapped = ({ children }: StackProps) => {
                 xs: 'calc(100% - 32px)',
                 sm: 416,
               },
-              zIndex: (theme) => theme.zIndex.modal + 1,
-            }}
+              zIndex: theme.zIndex.modal + 1,
+            })}
           >
             <TransitionGroup>
               {visibleNotifications.map((notif) => (

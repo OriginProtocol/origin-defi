@@ -23,13 +23,15 @@ export const SettingsButton = () => {
         }}
         variant="outlined"
         color={value > WARNING_THRESHOLD ? 'warning' : 'secondary'}
-        sx={{
-          borderRadius: 25,
-          gap: 1,
-          ...(value > WARNING_THRESHOLD && {
+        sx={[
+          {
+            borderRadius: 25,
+            gap: 1,
+          },
+          value > WARNING_THRESHOLD && {
             backgroundColor: 'warning.faded',
-          }),
-        }}
+          },
+        ]}
       >
         <Typography
           variant="body3"

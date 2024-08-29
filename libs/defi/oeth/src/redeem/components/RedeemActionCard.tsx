@@ -55,13 +55,16 @@ export const RedeemActionCard = ({
   return (
     <Card
       {...rest}
-      sx={{
-        position: 'relative',
-        p: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: 'background.highlight',
-        ...(isDisabled
+      sx={[
+        {
+          position: 'relative',
+          p: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          backgroundColor: 'background.highlight',
+          ...rest?.sx,
+        },
+        isDisabled
           ? { opacity: 0.5, cursor: 'default' }
           : isSelected
             ? {
@@ -75,9 +78,8 @@ export const RedeemActionCard = ({
                     borderColor: 'primary.main',
                   },
                 }
-              : {}),
-        ...rest?.sx,
-      }}
+              : {},
+      ]}
       role="button"
       onClick={() => {
         if (!isDisabled && estimatedRoute && amountIn > 0n) {
@@ -102,12 +104,11 @@ export const RedeemActionCard = ({
           }}
         >
           <Typography
-            sx={{
-              color: (theme) =>
-                theme.palette.getContrastText(
-                  theme.palette.background.highlight,
-                ),
-            }}
+            sx={(theme) => ({
+              color: theme.palette.getContrastText(
+                theme.palette.background.highlight,
+              ),
+            })}
           >
             {intl.formatMessage({ defaultMessage: 'Coming soon' })}
           </Typography>

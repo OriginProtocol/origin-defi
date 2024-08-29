@@ -44,16 +44,18 @@ export const NetworkIcon = ({
     return (
       <Box
         {...rest}
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          width: size,
-          height: size,
-          ...('iconColor' in props &&
-            !isNilOrEmpty(props.iconColor) && { color: props.iconColor }),
-          ...rest?.sx,
-        }}
+        sx={[
+          {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: size,
+            height: size,
+            ...rest?.sx,
+          },
+          'iconColor' in props &&
+            !isNilOrEmpty(props.iconColor) && { color: props.iconColor },
+        ]}
       >
         <SvgIcon
           component={props.icon}
@@ -63,29 +65,33 @@ export const NetworkIcon = ({
       </Box>
     );
   }
-
   return (
     <Box
       {...rest}
-      sx={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: size,
-        height: size,
-        borderRadius:
-          shape === 'rounded' ? radius : shape === 'circle' ? '50%' : 0,
-        backgroundColor: props.backgroundColor,
-
-        padding: 1,
-        svg: {
-          fontSize: size * ('sizeRatio' in props ? props.sizeRatio : 1),
-          ...('iconColor' in props &&
-            !isNilOrEmpty(props.iconColor) && { color: props.iconColor }),
+      sx={[
+        {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          width: size,
+          height: size,
+          backgroundColor: props.backgroundColor,
+          padding: 1,
+          ...rest?.sx,
         },
-        ...(outlined && { border: '1px solid', borderColor: oc }),
-        ...rest?.sx,
-      }}
+        shape === 'rounded'
+          ? {
+              borderRadius: radius,
+            }
+          : {
+              borderRadius: shape === 'circle' ? '50%' : 0,
+            },
+        'iconColor' in props &&
+          !isNilOrEmpty(props.iconColor) && {
+            svg: { color: props.iconColor },
+          },
+        outlined && { border: '1px solid', borderColor: oc },
+      ]}
     >
       <SvgIcon component={props.icon} inheritViewBox />
     </Box>

@@ -98,20 +98,20 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
     <MenuItem
       {...rest}
       disabled={token.isSelected}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         paddingInline: 2,
         paddingBlock: 1,
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
-        background: (theme) => theme.palette.background.paper,
+        background: theme.palette.background.paper,
         borderRadius: 1,
         '&:hover': {
-          background: (theme) => theme.palette.action.hover,
+          background: theme.palette.action.hover,
         },
         ...rest?.sx,
-      }}
+      })}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
         <TokenIcon token={token} sx={{ width: 20, height: 20 }} />

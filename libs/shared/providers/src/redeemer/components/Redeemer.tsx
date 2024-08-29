@@ -138,7 +138,7 @@ function RedeemerWrapped({
                   },
                 },
               }}
-              sx={{
+              sx={(theme) => ({
                 paddingBlock: 2.5,
                 paddingBlockStart: 2.625,
                 paddingInline: 2,
@@ -150,23 +150,18 @@ function RedeemerWrapped({
                   borderColor: 'transparent',
                 },
                 '&:hover': {
-                  background: (theme) =>
-                    `linear-gradient(${theme.palette.grey[900]}, ${
-                      theme.palette.grey[900]
-                    }) padding-box,
-              linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.4,
-              )} 0%, ${alpha(
-                theme.palette.primary.dark,
-                0.4,
-              )} 100%) border-box;`,
+                  background: `linear-gradient(${theme.palette.grey[900]}, ${
+                    theme.palette.grey[900]
+                  }) padding-box,
+            linear-gradient(90deg, ${alpha(
+              theme.palette.primary.main,
+              0.4,
+            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
                 },
                 '&:focus-within': {
-                  background: (theme) =>
-                    `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+                  background: `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
                 },
-              }}
+              })}
             />
             <Stack sx={{ position: 'relative', width: 1, height: 12 }}>
               <ArrowButton />
@@ -207,7 +202,7 @@ function ArrowButton(props: BoxProps) {
   return (
     <Box
       {...props}
-      sx={{
+      sx={(theme) => ({
         position: 'absolute',
         borderRadius: '50%',
         display: 'flex',
@@ -218,11 +213,11 @@ function ArrowButton(props: BoxProps) {
         width: { md: 40, xs: 36 },
         height: { md: 40, xs: 36 },
         zIndex: 2,
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper,
         border: '1px solid',
         borderColor: 'divider',
         ...props?.sx,
-      }}
+      })}
     >
       <ArrowDown
         sx={{

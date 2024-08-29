@@ -79,14 +79,13 @@ export const LSTCard = (props: CardProps) => {
           </Stack>
         </Stack>
         <Stack
-          sx={{
+          sx={(theme) => ({
             borderRadius: 4,
             border: '1px solid',
             borderColor: 'divider',
             color: 'text.primary',
             overflow: 'hidden',
-            background: (theme) =>
-              `url('/images/circles3Pattern.svg'),${theme.palette.background.default}`,
+            background: `url('/images/circles3Pattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: {
               xs: 'contain, 100%',
@@ -98,7 +97,7 @@ export const LSTCard = (props: CardProps) => {
             },
             p: 3,
             my: 3,
-          }}
+          })}
         >
           <Stack direction="row" alignItems="center" spacing={1} mb={1}>
             <Box
@@ -143,14 +142,13 @@ export const StakingCard = (props: CardProps) => {
     <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
       <CardContent>
         <Stack
-          sx={{
+          sx={(theme) => ({
             borderRadius: 4,
             border: '1px solid',
             borderColor: 'divider',
             color: 'text.primary',
             overflow: 'hidden',
-            background: (theme) =>
-              `url('/images/stakingPattern.svg'),${theme.palette.background.default}`,
+            background: `url('/images/stakingPattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: {
               xs: 'auto 50%',
@@ -162,7 +160,7 @@ export const StakingCard = (props: CardProps) => {
             },
             p: 3,
             mb: 3,
-          }}
+          })}
         >
           <Stack direction="row" alignItems="center" spacing={1} mb={1}>
             <Box
@@ -215,14 +213,13 @@ export const StableCard = (props: CardProps) => {
     <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
       <CardContent>
         <Stack
-          sx={{
+          sx={(theme) => ({
             borderRadius: 4,
             border: '1px solid',
             borderColor: 'divider',
             color: 'text.primary',
             overflow: 'hidden',
-            background: (theme) =>
-              `url('/images/wavePattern.svg'),${theme.palette.background.default}`,
+            background: `url('/images/wavePattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: {
               xs: '80%, 100%',
@@ -234,7 +231,7 @@ export const StableCard = (props: CardProps) => {
               md: 'right top',
             },
             p: 3,
-          }}
+          })}
         >
           <Stack direction="row" alignItems="center" spacing={1} mb={1}>
             <Box

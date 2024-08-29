@@ -17,17 +17,17 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
       alignItems="center"
       spacing={{ xs: 0, md: 3 }}
       {...rest}
-      sx={{
+      sx={(theme) => ({
         width: 1,
         borderRadius: 4,
-        background: (theme) => theme.palette.background.highlight,
+        background: theme.palette.background.highlight,
         border: '1px solid',
         borderColor: 'primary.main',
         px: 2,
         py: 2.5,
         rowGap: 3,
         ...rest?.sx,
-      }}
+      })}
     >
       <MultiTokenIcon
         tokens={[tokens.mainnet.OGV, tokens.mainnet.OGN]}

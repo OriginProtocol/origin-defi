@@ -318,18 +318,26 @@ function VotesGauge({
           <LinearProgress
             value={(c[1] / total) * 100}
             variant="determinate"
-            sx={{
-              borderRadius: 1,
-              backgroundColor: 'divider',
-              '.MuiLinearProgress-bar': {
-                backgroundColor: (theme) =>
-                  c[0] === 'For'
-                    ? theme.palette.success.main
-                    : c[0] === 'Against'
-                      ? theme.palette.error.main
-                      : theme.palette.primary.main,
+            sx={[
+              {
+                borderRadius: 1,
+                backgroundColor: 'divider',
               },
-            }}
+              c[0] === 'For'
+                ? {
+                    '.MuiLinearProgress-bar': {
+                      backgroundColor: theme.palette.success.main,
+                    },
+                  }
+                : {
+                    '.MuiLinearProgress-bar': {
+                      backgroundColor:
+                        c[0] === 'Against'
+                          ? theme.palette.error.main
+                          : theme.palette.primary.main,
+                    },
+                  },
+            ]}
           />
         </Stack>
       ))}

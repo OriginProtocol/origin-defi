@@ -80,18 +80,21 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         alignItems="center"
         spacing={2}
         {...rest}
-        sx={{
-          border: '1px solid',
-          borderColor: 'divider',
-          borderRadius: 5,
-          backgroundColor: 'common.white',
-          p: 2,
-          ...(!isAmountDisabled && {
-            '&:hover, &:focus-within': {
-              outline: (theme) => `2px solid ${theme.palette.text.primary}`,
-            },
-          }),
-        }}
+        sx={[
+          {
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 5,
+            backgroundColor: 'common.white',
+            p: 2,
+          },
+          !isAmountDisabled &&
+            ((theme) => ({
+              '&:hover, &:focus-within': {
+                outline: `2px solid ${theme.palette.text.primary}`,
+              },
+            })),
+        ]}
       >
         <Stack direction="row" alignItems="center" sx={{ flexGrow: 1, py: 1 }}>
           {isAmountLoading ? (
@@ -137,9 +140,15 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   <Typography
                     noWrap
                     color="text.secondary"
-                    sx={{
-                      visibility: balance === undefined ? 'hidden' : 'visible',
-                    }}
+                    sx={[
+                      balance === undefined
+                        ? {
+                            visibility: 'hidden',
+                          }
+                        : {
+                            visibility: 'visible',
+                          },
+                    ]}
                   >
                     {intl.formatMessage({ defaultMessage: 'Balance' })}
                   </Typography>

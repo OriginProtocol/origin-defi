@@ -13,10 +13,10 @@ export const GradientChip = (props: StackProps) => {
       py={1}
       borderRadius={2}
       {...props}
-      sx={{
-        background: (theme) => theme.palette.background.gradientBlueDark,
+      sx={(theme) => ({
+        background: theme.palette.background.gradientBlueDark,
         ...props?.sx,
-      }}
+      })}
     />
   );
 };

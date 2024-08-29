@@ -23,15 +23,15 @@ export const RebaseBanner = (props: StackProps) => {
       {...props}
       direction={{ xs: 'column', md: 'row' }}
       spacing={{ xs: 1, md: 3 }}
-      sx={{
-        backgroundColor: (theme) => theme.palette.secondary.main,
+      sx={(theme) => ({
+        backgroundColor: theme.palette.secondary.main,
         color: 'text.primary',
         p: { xs: 1.5, md: 1 },
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
         ...props?.sx,
-      }}
+      })}
     >
       <PoweredBySafe sx={{ height: 20 }} />
       <Typography textAlign="center" noWrap={!isSmall}>

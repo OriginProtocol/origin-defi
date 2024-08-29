@@ -7,7 +7,7 @@ export function ArrowButton(props: IconButtonProps) {
   return (
     <IconButton
       {...props}
-      sx={{
+      sx={(theme) => ({
         position: 'absolute',
         top: 0,
         left: 0,
@@ -17,11 +17,11 @@ export function ArrowButton(props: IconButtonProps) {
         height: { md: 40, xs: 36 },
         margin: 'auto',
         zIndex: 2,
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: theme.palette.background.paper,
         border: '1px solid',
         borderColor: 'divider',
         svg: {
-          transition: (theme) => theme.transitions.create('transform'),
+          transition: theme.transitions.create('transform'),
         },
         '&:hover': {
           backgroundColor: (theme) =>
@@ -31,7 +31,7 @@ export function ArrowButton(props: IconButtonProps) {
           },
         },
         ...props?.sx,
-      }}
+      })}
     >
       <ArrowDown
         sx={{

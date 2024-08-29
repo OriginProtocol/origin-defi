@@ -113,13 +113,25 @@ const IconChip = ({ claimable, amount, ...rest }: IconChipProps) => {
       alignItems="center"
       spacing={1}
       {...rest}
-      sx={{
-        svg: {
-          fontSize: 24,
-          color: claimable ? 'success.main' : 'warning.main',
+      sx={[
+        {
+          svg: {
+            fontSize: 24,
+          },
+          ...rest?.sx,
         },
-        ...rest?.sx,
-      }}
+        claimable
+          ? {
+              svg: {
+                color: 'success.main',
+              },
+            }
+          : {
+              svg: {
+                color: 'warning.main',
+              },
+            },
+      ]}
     >
       {claimable ? <FaCircleCheckRegular /> : <FaClockRegular />}
       <Typography variant="body2" fontWeight="bold">

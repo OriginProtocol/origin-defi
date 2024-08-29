@@ -186,8 +186,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   alignItems="center"
                   spacing={0.75}
                   sx={{
-                    border: (theme) =>
-                      `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                    border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
@@ -206,8 +205,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   alignItems="center"
                   spacing={0.75}
                   sx={{
-                    border: (theme) =>
-                      `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
+                    border: `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
@@ -337,18 +335,26 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
           <LinearProgress
             value={(c[1] / total) * 100}
             variant="determinate"
-            sx={{
-              borderRadius: 1,
-              backgroundColor: 'grey.600',
-              '.MuiLinearProgress-bar': {
-                backgroundColor: (theme) =>
-                  c[0] === 'For'
-                    ? theme.palette.success.main
-                    : c[0] === 'Against'
-                      ? theme.palette.error.main
-                      : theme.palette.info.main,
+            sx={[
+              {
+                borderRadius: 1,
+                backgroundColor: 'grey.600',
               },
-            }}
+              c[0] === 'For'
+                ? {
+                    '.MuiLinearProgress-bar': {
+                      backgroundColor: theme.palette.success.main,
+                    },
+                  }
+                : {
+                    '.MuiLinearProgress-bar': {
+                      backgroundColor:
+                        c[0] === 'Against'
+                          ? theme.palette.error.main
+                          : theme.palette.info.main,
+                    },
+                  },
+            ]}
           />
         </Stack>
       ))}

@@ -42,9 +42,9 @@ export function RedeemRoute(
               variant="circular"
               width="0.5rem"
               height="0.5rem"
-              sx={{
-                backgroundColor: (theme) => theme.palette.primary.contrastText,
-              }}
+              sx={(theme) => ({
+                backgroundColor: theme.palette.primary.contrastText,
+              })}
             />
             <Typography variant="body2">
               {intl.formatMessage({

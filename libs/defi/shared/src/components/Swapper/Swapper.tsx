@@ -532,7 +532,7 @@ function ArrowButton({ onClick, ...rest }: BoxProps) {
       <Box
         onClick={onClick}
         role="button"
-        sx={{
+        sx={(theme) => ({
           borderRadius: '50%',
           backgroundColor: 'background.highlight',
           border: '1px solid',
@@ -545,7 +545,7 @@ function ArrowButton({ onClick, ...rest }: BoxProps) {
           alignItems: 'center',
           zIndex: 3,
           svg: {
-            transition: (theme) => theme.transitions.create('transform'),
+            transition: theme.transitions.create('transform'),
           },
           '&:hover': {
             backgroundColor: (theme) =>
@@ -554,7 +554,7 @@ function ArrowButton({ onClick, ...rest }: BoxProps) {
               transform: 'rotate(-180deg)',
             },
           },
-        }}
+        })}
       >
         <FaArrowDownRegular
           sx={{

@@ -408,7 +408,7 @@ export const BridgeDivider = () => {
     <Divider sx={{ '& .MuiDivider-wrapper': { px: 0 } }}>
       <IconButton
         onClick={toggleChain}
-        sx={{
+        sx={(theme) => ({
           width: { md: 50, xs: 42 },
           height: { md: 50, xs: 42 },
           zIndex: 2,
@@ -416,7 +416,7 @@ export const BridgeDivider = () => {
           border: '1px solid',
           borderColor: 'divider',
           svg: {
-            transition: (theme) => theme.transitions.create('transform'),
+            transition: theme.transitions.create('transform'),
           },
           '&:hover': {
             backgroundColor: (theme) =>
@@ -425,7 +425,7 @@ export const BridgeDivider = () => {
               transform: 'rotate(-180deg)',
             },
           },
-        }}
+        })}
       >
         <FaArrowDownRegular
           sx={{

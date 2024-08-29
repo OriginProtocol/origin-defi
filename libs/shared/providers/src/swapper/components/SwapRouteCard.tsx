@@ -81,16 +81,19 @@ export function SwapRouteCard({
   return (
     <Card
       {...rest}
-      sx={{
-        px: 1.5,
-        pb: 2,
-        pt: 3,
-        cursor: 'pointer',
-        border: `1px solid transparent`,
-        position: 'relative',
-        boxShadow: 'none',
-        height: 1,
-        ...(isSelected
+      sx={[
+        {
+          px: 1.5,
+          pb: 2,
+          pt: 3,
+          cursor: 'pointer',
+          border: `1px solid transparent`,
+          position: 'relative',
+          boxShadow: 'none',
+          height: 1,
+          ...rest?.sx,
+        },
+        isSelected
           ? {
               borderColor: 'transparent',
               background: (theme) =>
@@ -111,9 +114,8 @@ export function SwapRouteCard({
                     0.4,
                   )} 100%) border-box;`,
               },
-            }),
-        ...rest?.sx,
-      }}
+            },
+      ]}
       role="button"
       onClick={() => {
         onSelect(route);
@@ -121,9 +123,9 @@ export function SwapRouteCard({
     >
       {isBest && (
         <Box
-          sx={{
+          sx={(theme) => ({
             position: 'absolute',
-            borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+            borderBottomLeftRadius: theme.shape.borderRadius,
             background:
               'linear-gradient(90deg,#8c66fc -28.99%,#0274f1 144.97%)',
             fontSize: 12,
@@ -131,7 +133,7 @@ export function SwapRouteCard({
             right: 0,
             px: 1,
             pt: 0.25,
-          }}
+          })}
         >
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>

@@ -74,12 +74,20 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         variant="text"
         size="large"
         {...rest}
-        sx={{
-          color: 'text.primary',
-          backgroundColor: open ? 'primary.faded' : 'transparent',
-          svg: { ml: 0.75, width: 12, height: 12 },
-          ...rest?.sx,
-        }}
+        sx={[
+          {
+            color: 'text.primary',
+            svg: { ml: 0.75, width: 12, height: 12 },
+            ...rest?.sx,
+          },
+          open
+            ? {
+                backgroundColor: 'primary.faded',
+              }
+            : {
+                backgroundColor: 'transparent',
+              },
+        ]}
         onClick={() => {
           navigate(`${route?.path ?? ''}/`);
         }}
@@ -111,13 +119,21 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
         variant="text"
         size="large"
         {...rest}
-        sx={{
-          color: 'text.primary',
-          backgroundColor: open ? 'primary.faded' : 'transparent',
-          svg: { ml: 0.75, width: 12, height: 12 },
-          whiteSpace: 'nowrap',
-          ...rest?.sx,
-        }}
+        sx={[
+          {
+            color: 'text.primary',
+            svg: { ml: 0.75, width: 12, height: 12 },
+            whiteSpace: 'nowrap',
+            ...rest?.sx,
+          },
+          open
+            ? {
+                backgroundColor: 'primary.faded',
+              }
+            : {
+                backgroundColor: 'transparent',
+              },
+        ]}
         ref={anchorEl}
         onMouseEnter={() => {
           setOpen(true);
@@ -233,23 +249,37 @@ const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
             rel: 'noopener noreferrer nofollow',
             component: 'a',
           })}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 1,
-        borderRadius: 1,
-        backgroundColor: isSelected ? 'primary.faded' : 'transparent',
-        color: isSelected ? 'primary.main' : 'text.primary',
-        '&&&': { minHeight: 36 },
-        '&:hover': {
-          backgroundColor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity,
-            ),
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 1,
+          borderRadius: 1,
+          '&&&': { minHeight: 36 },
+          '&:hover': {
+            backgroundColor: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.hoverOpacity,
+              ),
+          },
         },
-      }}
+        isSelected
+          ? {
+              backgroundColor: 'primary.faded',
+            }
+          : {
+              backgroundColor: 'transparent',
+            },
+        isSelected
+          ? {
+              color: 'primary.main',
+            }
+          : {
+              color: 'text.primary',
+            },
+      ]}
     >
       <Typography fontWeight="medium">
         {intl.formatMessage(item.title)}

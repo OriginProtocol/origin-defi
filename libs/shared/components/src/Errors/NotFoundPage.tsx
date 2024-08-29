@@ -43,7 +43,7 @@ export const NotFoundPage = () => {
       </Typography>
       <Button
         href="/"
-        sx={{
+        sx={(theme) => ({
           borderRadius: 8,
           minWidth: 300,
           color: 'text.primary',
@@ -53,15 +53,14 @@ export const NotFoundPage = () => {
           fontWeight: 500,
           fontStyle: 'normal',
           '&:hover': {
-            background: (theme) =>
-              `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+            background: `linear-gradient(0deg, rgba(0, 0, 0, 0.20) 0%, rgba(0, 0, 0, 0.20) 100%), linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
             opacity: 1,
           },
           '&:disabled': {
             opacity: 0.5,
             color: 'text.primary',
           },
-        }}
+        })}
       >
         {intl.formatMessage({
           defaultMessage: 'Go back home',

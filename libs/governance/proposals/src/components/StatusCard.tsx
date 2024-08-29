@@ -74,16 +74,15 @@ export const StatusCard = (props: CardProps) => {
             {logs?.map((log) => <LogItem key={log.id} log={log} />)}
             {(logs?.length ?? 0) > 1 && (
               <Box
-                sx={{
+                sx={(theme) => ({
                   position: 'absolute',
                   zIndex: 1,
                   top: 0,
                   left: 15,
                   bottom: 20,
                   width: '1px',
-                  background: (theme) =>
-                    `linear-gradient(0deg, ${theme.palette.grey[300]} 0%, ${theme.palette.grey[800]} 100%)`,
-                }}
+                  background: `linear-gradient(0deg, ${theme.palette.grey[300]} 0%, ${theme.palette.grey[800]} 100%)`,
+                })}
               />
             )}
           </Stack>

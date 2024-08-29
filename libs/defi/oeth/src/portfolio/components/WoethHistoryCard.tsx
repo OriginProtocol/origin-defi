@@ -300,14 +300,14 @@ function HistoryTable({ rows }: HistoryTableProps) {
             <TableRow
               key={row.id}
               onClick={row.getToggleExpandedHandler()}
-              sx={{
-                ...(row.getCanExpand() && {
+              sx={[
+                row.getCanExpand() && {
                   cursor: 'pointer',
                   ':hover': {
                     backgroundColor: 'primary.faded',
                   },
-                }),
-              }}
+                },
+              ]}
             >
               {row.getVisibleCells().map((cell) => (
                 <TableCell key={cell.id} sx={{ width: cell.column.getSize() }}>

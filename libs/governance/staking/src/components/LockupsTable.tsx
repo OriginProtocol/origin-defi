@@ -188,11 +188,19 @@ export const LockupsTable = () => {
                 {headerGroup.headers.map((header, index) => (
                   <TableCell
                     key={header.id}
-                    sx={{
-                      width: header.getSize(),
-                      textAlign: index === 0 ? 'start' : 'end',
-                      color: 'text.secondary',
-                    }}
+                    sx={[
+                      {
+                        width: header.getSize(),
+                        color: 'text.secondary',
+                      },
+                      index === 0
+                        ? {
+                            textAlign: 'start',
+                          }
+                        : {
+                            textAlign: 'end',
+                          },
+                    ]}
                   >
                     <Typography noWrap>
                       {flexRender(
@@ -211,9 +219,15 @@ export const LockupsTable = () => {
                 {row.getVisibleCells().map((cell, index) => (
                   <TableCell
                     key={cell.id}
-                    sx={{
-                      textAlign: index === 0 ? 'start' : 'end',
-                    }}
+                    sx={[
+                      index === 0
+                        ? {
+                            textAlign: 'start',
+                          }
+                        : {
+                            textAlign: 'end',
+                          },
+                    ]}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>

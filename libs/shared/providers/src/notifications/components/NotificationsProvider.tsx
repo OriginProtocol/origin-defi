@@ -27,13 +27,13 @@ const NotificationsWrapped = ({ children, ...rest }: StackProps) => {
             direction="column"
             spacing={1}
             {...rest}
-            sx={{
+            sx={(theme) => ({
               position: 'fixed',
-              top: (theme) => theme.spacing(8),
-              right: (theme) => theme.spacing(1),
-              zIndex: (theme) => theme.zIndex.modal + 1,
+              top: theme.spacing(8),
+              right: theme.spacing(1),
+              zIndex: theme.zIndex.modal + 1,
               ...rest?.sx,
-            }}
+            })}
           >
             {visibleNotifications.map((notif) => (
               <NotificationAlert key={notif.id} notification={notif} />

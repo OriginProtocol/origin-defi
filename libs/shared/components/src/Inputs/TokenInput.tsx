@@ -114,10 +114,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             onClick={onTokenClick}
             isDisabled={isTokenClickDisabled}
             {...tokenPickerProps}
-            sx={{
-              ...(!isConnected && { transform: 'translateY(50%)' }),
-              ...tokenPickerProps?.sx,
-            }}
+            sx={[
+              {
+                ...tokenPickerProps?.sx,
+              },
+              !isConnected && { transform: 'translateY(50%)' },
+            ]}
           />
         </Box>
         <Box
@@ -153,11 +155,19 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                   <Typography
                     noWrap
                     color="text.secondary"
-                    sx={{
-                      justifySelf: 'flex-end',
-                      visibility: balance === undefined ? 'hidden' : 'visible',
-                      textOverflow: 'ellipsis',
-                    }}
+                    sx={[
+                      {
+                        justifySelf: 'flex-end',
+                        textOverflow: 'ellipsis',
+                      },
+                      balance === undefined
+                        ? {
+                            visibility: 'hidden',
+                          }
+                        : {
+                            visibility: 'visible',
+                          },
+                    ]}
                   >
                     {intl.formatMessage(
                       { defaultMessage: 'Balance: {number}' },
@@ -170,7 +180,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     <Button
                       onClick={handleMaxClick}
                       disabled={maxDisabled}
-                      sx={{
+                      sx={(theme) => ({
                         display: 'flex',
                         justifyContent: 'center',
                         alignItems: 'center',
@@ -178,13 +188,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                         minWidth: 36,
                         lineHeight: 1,
                         color: 'text.secondary',
-                        padding: (theme) => theme.spacing(0.25, 0.5),
+                        padding: theme.spacing(0.25, 0.5),
                         background: (theme) =>
                           alpha(theme.palette.common.white, 0.1),
                         ':hover': {
-                          background: (theme) => theme.palette.grey[600],
+                          background: theme.palette.grey[600],
                         },
-                      }}
+                      })}
                     >
                       {intl.formatMessage({ defaultMessage: 'max' })}
                     </Button>

@@ -133,7 +133,20 @@ export const VoteDelegationCard = (props: CardProps) => {
                 </Stack>
               </CardContent>
             )}
-            <CardContent sx={{ pt: isSelfDelegating ? 2 : 0, pl: 2 }}>
+            <CardContent
+              sx={[
+                {
+                  pl: 2,
+                },
+                isSelfDelegating
+                  ? {
+                      pt: 2,
+                    }
+                  : {
+                      pt: 0,
+                    },
+              ]}
+            >
               {isSelfDelegating ? (
                 <DelegateButton
                   variant="outlined"

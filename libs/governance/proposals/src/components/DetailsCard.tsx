@@ -218,20 +218,30 @@ function Actions(props: StackProps) {
               key={getKey(a.address, i)}
               expanded={expanded.includes(getKey(a.address, i))}
               onChange={handleToggleActionRow(getKey(a.address, i))}
-              sx={{
-                p: 0,
-                background: 'transparent',
-                borderTop: (theme) =>
-                  i === 0 ? 'none' : `1px solid ${theme.palette.divider}`,
-                borderBottom: (theme) =>
-                  i === actions.length - 1
-                    ? 'none'
-                    : `1px solid ${theme.palette.divider}`,
-                borderRight: 'none',
-                borderLeft: 'none',
-                borderColor: 'divider',
-                ...props?.sx,
-              }}
+              sx={[
+                {
+                  p: 0,
+                  background: 'transparent',
+                  borderRight: 'none',
+                  borderLeft: 'none',
+                  borderColor: 'divider',
+                  ...props?.sx,
+                },
+                i === 0
+                  ? {
+                      borderTop: 'none',
+                    }
+                  : {
+                      borderTop: `1px solid ${theme.palette.divider}`,
+                    },
+                i === actions.length - 1
+                  ? {
+                      borderBottom: 'none',
+                    }
+                  : {
+                      borderBottom: `1px solid ${theme.palette.divider}`,
+                    },
+              ]}
               disableGutters
             >
               <AccordionSummary sx={{ px: 0 }}>

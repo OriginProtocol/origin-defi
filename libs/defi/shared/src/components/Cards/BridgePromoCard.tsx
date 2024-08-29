@@ -15,10 +15,10 @@ export const BridgePromoCard = ({ small, ...rest }: BridgePromoCardProps) => {
   return (
     <Card
       {...rest}
-      sx={{
-        background: (theme) => theme.palette.background.gradientBlue,
+      sx={(theme) => ({
+        background: theme.palette.background.gradientBlue,
         ...rest?.sx,
-      }}
+      })}
     >
       <CardContent>
         <Stack spacing={small ? 2 : 4} alignItems="flex-start">

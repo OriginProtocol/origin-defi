@@ -185,18 +185,18 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
   return (
     <Card
       {...rest}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
         gap: 1,
         p: 3,
-        border: (theme) => `1px solid ${theme.palette.common.black}`,
+        border: `1px solid ${theme.palette.common.black}`,
         background: ad.background ?? '#101',
         borderRadius: 5,
         ...rest?.sx,
-      }}
+      })}
     >
       {ad.icon}
       {ad?.title && (

@@ -84,16 +84,24 @@ function TokenListItem({
       {...rest}
       onClick={isSelected ? undefined : onClick}
       selected={isSelected}
-      sx={{
-        display: 'flex',
-        px: 3,
-        py: 1.5,
-        justifyContent: 'space-between',
-        gap: 1.5,
-        alignItems: 'center',
-        cursor: isSelected ? 'default' : 'pointer',
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          display: 'flex',
+          px: 3,
+          py: 1.5,
+          justifyContent: 'space-between',
+          gap: 1.5,
+          alignItems: 'center',
+          ...rest?.sx,
+        },
+        isSelected
+          ? {
+              cursor: 'default',
+            }
+          : {
+              cursor: 'pointer',
+            },
+      ]}
     >
       <Stack direction="row" gap={1.5} alignItems="center">
         <TokenIcon token={token} sx={{ fontSize: 36 }} />

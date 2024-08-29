@@ -35,14 +35,14 @@ export const AlertPopover = (
           onClick={() => {
             props?.onClose();
           }}
-          sx={{
+          sx={(theme) => ({
             position: 'absolute',
             top: 8,
             right: 8,
             width: 36,
             height: 36,
-            border: (theme) => `1px solid ${theme.palette.divider}`,
-          }}
+            border: `1px solid ${theme.palette.divider}`,
+          })}
         >
           <FaXmarkRegular sx={{ fontSize: 16 }} />
         </IconButton>

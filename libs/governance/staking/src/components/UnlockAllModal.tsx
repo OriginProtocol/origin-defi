@@ -233,15 +233,12 @@ function LockupRow({ lockup, ...rest }: LockupRowProps) {
     </Stack>
   );
 }
-
 type SuccessViewProps = {
   onClose: (evt: MouseEvent<HTMLButtonElement>) => void;
 } & DialogContentProps;
-
 function SuccessView({ onClose, ...rest }: SuccessViewProps) {
   const intl = useIntl();
   const { data: ognApy, isLoading: isOgnApyLoading } = useOgnStakingApy();
-
   return (
     <DialogContent
       {...rest}

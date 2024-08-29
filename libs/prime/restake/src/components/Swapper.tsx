@@ -226,15 +226,15 @@ function SwapperWrapped({
             >
               {boost && <BoostChip boost={boost} />}
               <Box
-                sx={{
+                sx={(theme) => ({
                   borderRadius: '50%',
-                  border: (theme) => `1px solid ${theme.palette.divider}`,
+                  border: `1px solid ${theme.palette.divider}`,
                   backgroundColor: 'background.paper',
                   p: 1,
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                }}
+                })}
               >
                 <FaChevronDownRegular sx={{ fontSize: 16 }} />
               </Box>

@@ -30,7 +30,6 @@ export const NumberSpinner = ({
         overflow: 'hidden',
         position: 'relative',
         maskImage: `linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)`,
-
         '.spinner-wheel': {
           display: 'flex',
           justifyContent: 'center',
@@ -41,13 +40,11 @@ export const NumberSpinner = ({
           transformStyle: 'preserve-3d',
           animation: `${spin} ${duration}s linear infinite`,
         },
-
         '.spinner-number': {
           position: 'absolute',
           color: 'inherit',
           backfaceVisibility: 'hidden',
         },
-
         '.spinner-number:nth-child(1)': {
           transform: `rotateX(36deg) translateZ(1.75em)`,
         },

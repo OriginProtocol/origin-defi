@@ -59,11 +59,11 @@ export const DrawerMenu = ({ onClose, ...rest }: DrawerMenuProps) => {
         </Box>
         <IconButton
           onClick={onClose}
-          sx={{
+          sx={(theme) => ({
             width: 36,
             height: 36,
-            border: (theme) => `1px solid ${theme.palette.divider}`,
-          }}
+            border: `1px solid ${theme.palette.divider}`,
+          })}
         >
           <FaXmarkRegular sx={{ fontSize: 16 }} />
         </IconButton>
@@ -251,18 +251,26 @@ const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
             rel: 'noopener noreferrer nofollow',
             component: 'a',
           })}
-      sx={{
-        display: 'flex',
-        flexDirection: 'row',
-        alignItems: 'center',
-        gap: 1.5,
-        height: 36,
-        pl: 3,
-        pr: 2,
-        my: 0.25,
-        borderRadius: 1,
-        color: isSelected ? 'primary.main' : 'text.primary',
-      }}
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 1.5,
+          height: 36,
+          pl: 3,
+          pr: 2,
+          my: 0.25,
+          borderRadius: 1,
+        },
+        isSelected
+          ? {
+              color: 'primary.main',
+            }
+          : {
+              color: 'text.primary',
+            },
+      ]}
     >
       <Typography fontWeight="medium">
         {intl.formatMessage(item.title)}

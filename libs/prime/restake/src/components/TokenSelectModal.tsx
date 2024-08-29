@@ -86,7 +86,7 @@ function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
   return (
     <MenuItem
       {...rest}
-      sx={{
+      sx={(theme) => ({
         display: 'flex',
         px: 3,
         py: 1.2,
@@ -94,13 +94,13 @@ function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
         justifyContent: 'space-between',
         gap: 1.5,
         alignItems: 'center',
-        background: (theme) => theme.palette.background.paper,
+        background: theme.palette.background.paper,
         borderRadius: 1,
         '&:hover': {
-          background: (theme) => theme.palette.action.hover,
+          background: theme.palette.action.hover,
         },
         ...rest?.sx,
-      }}
+      })}
     >
       <Stack direction="row" gap={2} alignItems="center">
         <TokenIcon token={token} sx={{ width: 28, height: 28 }} />

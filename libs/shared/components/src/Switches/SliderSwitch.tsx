@@ -108,19 +108,27 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
         variant="text"
         {...rest}
         ref={ref}
-        sx={{
-          typography: 'body2',
-          px: 2,
-          py: 1,
-          zIndex: 2,
-          color: isSelected ? (textColor ?? 'text.primary') : 'text.secondary',
-          transition: 'color 0.2s ease',
-          ':hover': {
-            backgroundColor: 'transparent',
-            '.label': { color: textColor ?? 'text.primary' },
+        sx={[
+          {
+            typography: 'body2',
+            px: 2,
+            py: 1,
+            zIndex: 2,
+            transition: 'color 0.2s ease',
+            ':hover': {
+              backgroundColor: 'transparent',
+              '.label': { color: textColor ?? 'text.primary' },
+            },
+            ...rest?.sx,
           },
-          ...rest?.sx,
-        }}
+          isSelected
+            ? {
+                color: textColor ?? 'text.primary',
+              }
+            : {
+                color: 'text.secondary',
+              },
+        ]}
       >
         {typeof option.label === 'string' ? (
           <Typography className="label">{option.label}</Typography>

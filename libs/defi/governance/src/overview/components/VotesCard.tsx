@@ -90,14 +90,16 @@ export const VoteCard = (props: CardProps) => {
               key={c}
               label={c}
               value={c}
-              sx={{
-                py: 2,
-                ...(c === filter && {
+              sx={[
+                {
+                  py: 2,
+                },
+                c === filter && {
                   '&.MuiButtonBase-root.MuiButtonBase-root': {
                     color: indicatorColor,
                   },
-                }),
-              }}
+                },
+              ]}
             />
           ))}
         </Tabs>

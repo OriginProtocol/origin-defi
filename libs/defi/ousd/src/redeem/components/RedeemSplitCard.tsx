@@ -24,26 +24,28 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
   return (
     <Card
       {...props}
-      sx={{
-        p: 2,
-        border: '1px solid',
-        borderColor: 'divider',
-        ...(amountIn > 0n && {
+      sx={[
+        {
+          p: 2,
+          border: '1px solid',
+          borderColor: 'divider',
+          ...props?.sx,
+        },
+        amountIn > 0n && {
           cursor: 'pointer',
           '&:hover': {
             borderColor: 'primary.main',
           },
-        }),
-        ...(isDisabled
+        },
+        isDisabled
           ? { opacity: 0.5, cursor: 'default' }
           : isSelected
             ? {
                 borderColor: 'primary.main',
                 backgroundColor: 'background.highlight',
               }
-            : {}),
-        ...props?.sx,
-      }}
+            : {},
+      ]}
       role="button"
     >
       <Stack useFlexGap>

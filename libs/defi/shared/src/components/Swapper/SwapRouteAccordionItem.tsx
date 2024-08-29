@@ -72,22 +72,24 @@ export function SwapRouteAccordionItem({
       direction={{ xs: 'column', sm: 'row' }}
       justifyContent="space-between"
       spacing={1}
-      sx={{
-        borderRadius: 3,
-        backgroundColor: 'background.default',
-        border: `1px solid`,
-        borderColor: 'divider',
-        px: 2,
-        py: 1.5,
-        cursor: 'pointer',
-        ':hover': {
-          borderColor: 'primary.main',
+      sx={[
+        {
+          borderRadius: 3,
+          backgroundColor: 'background.default',
+          border: `1px solid`,
+          borderColor: 'divider',
+          px: 2,
+          py: 1.5,
+          cursor: 'pointer',
+          ':hover': {
+            borderColor: 'primary.main',
+          },
         },
-        ...(isSelected && {
+        isSelected && {
           borderColor: 'primary.main',
           backgroundColor: 'background.highlight',
-        }),
-      }}
+        },
+      ]}
       onClick={() => onSelect(route)}
       role="button"
     >

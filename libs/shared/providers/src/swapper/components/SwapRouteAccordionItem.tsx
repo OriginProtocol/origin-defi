@@ -70,18 +70,20 @@ export function SwapRouteAccordionItem({
       direction={{ xs: 'column', sm: 'row' }}
       justifyContent="space-between"
       gap={1}
-      sx={{
-        borderRadius: 1,
-        backgroundColor: 'background.paper',
-        border: '1px solid',
-        px: 2,
-        py: 1,
-        ...(isSelected
+      sx={[
+        {
+          borderRadius: 1,
+          backgroundColor: 'background.paper',
+          border: '1px solid',
+          px: 2,
+          py: 1,
+        },
+        isSelected
           ? {
               borderColor: 'transparent',
               background: (theme) =>
                 `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
-              linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+            linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
               borderColor: 'grey.800',
@@ -91,16 +93,13 @@ export function SwapRouteAccordionItem({
                   `linear-gradient(${theme.palette.grey[800]}, ${
                     theme.palette.grey[800]
                   }) padding-box,
-              linear-gradient(90deg, ${alpha(
-                theme.palette.primary.main,
-                0.4,
-              )} 0%, ${alpha(
-                theme.palette.primary.dark,
-                0.4,
-              )} 100%) border-box;`,
+            linear-gradient(90deg, ${alpha(
+              theme.palette.primary.main,
+              0.4,
+            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
               },
-            }),
-      }}
+            },
+      ]}
       onClick={() => onSelect(route)}
       role="button"
     >

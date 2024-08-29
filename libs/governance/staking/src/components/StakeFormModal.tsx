@@ -160,7 +160,7 @@ export const StakeFormModal = (props: DialogProps) => {
               <Button
                 onClick={handleMaxClick}
                 disabled={isNilOrEmpty(info) || info?.ogvBalance === 0n}
-                sx={{
+                sx={(theme) => ({
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
@@ -172,9 +172,9 @@ export const StakeFormModal = (props: DialogProps) => {
                   px: 0.5,
                   background: (theme) => alpha(theme.palette.common.white, 0.1),
                   ':hover': {
-                    background: (theme) => theme.palette.grey[600],
+                    background: theme.palette.grey[600],
                   },
-                }}
+                })}
               >
                 {intl.formatMessage({ defaultMessage: 'max' })}
               </Button>
@@ -188,11 +188,11 @@ export const StakeFormModal = (props: DialogProps) => {
               <Stack
                 direction="row"
                 alignItems="center"
-                sx={{
-                  borderLeft: (theme) => `1px solid ${theme.palette.grey[800]}`,
+                sx={(theme) => ({
+                  borderLeft: `1px solid ${theme.palette.grey[800]}`,
                   pl: 1,
                   gap: 1,
-                }}
+                })}
               >
                 <TokenIcon token={tokens.mainnet.OGV} sx={{ width: 28 }} />
                 <Typography fontSize={20}>
@@ -203,7 +203,7 @@ export const StakeFormModal = (props: DialogProps) => {
             inputProps={{
               style: { fontSize: 24 },
             }}
-            sx={{
+            sx={(theme) => ({
               px: 3,
               py: 2,
               borderRadius: 1,
@@ -213,22 +213,20 @@ export const StakeFormModal = (props: DialogProps) => {
                 borderColor: 'transparent',
               },
               '&:hover': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${
-                    theme.palette.grey[900]
-                  }) padding-box, linear-gradient(90deg, ${alpha(
-                    theme.palette.primary.main,
-                    0.4,
-                  )} 0%, ${alpha(
-                    theme.palette.primary.dark,
-                    0.4,
-                  )} 100%) border-box;`,
+                background: `linear-gradient(${theme.palette.grey[900]}, ${
+                  theme.palette.grey[900]
+                }) padding-box, linear-gradient(90deg, ${alpha(
+                  theme.palette.primary.main,
+                  0.4,
+                )} 0%, ${alpha(
+                  theme.palette.primary.dark,
+                  0.4,
+                )} 100%) border-box;`,
               },
               '&:focus-within': {
-                background: (theme) =>
-                  `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+                background: `linear-gradient(${theme.palette.grey[900]}, ${theme.palette.grey[900]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
               },
-            }}
+            })}
           />
         </Stack>
         <Stack pt={3}>
