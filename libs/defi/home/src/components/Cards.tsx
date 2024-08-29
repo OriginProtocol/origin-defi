@@ -251,7 +251,7 @@ export const StableCard = (props: CardProps) => {
           </Stack>
           <Typography variant="caption1" mb={3}>
             {intl.formatMessage({
-              defaultMessage: `Short description.`,
+              defaultMessage: `Auto-compounding yield and diversification since Summer 2020.`,
             })}
           </Typography>
           <Stack

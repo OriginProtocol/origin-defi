@@ -1040,9 +1040,6 @@
   "grhR82": {
     "defaultMessage": "OGV & OGN are merging. Conversion will be open for 1 year."
   },
-  "gxg+PR": {
-    "defaultMessage": "Short description."
-  },
   "h9gJgF": {
     "defaultMessage": "Impossible to execute approval"
   },
@@ -1231,6 +1228,9 @@
   },
   "qXCbgZ": {
     "defaultMessage": "Unlock"
+  },
+  "qZbg2x": {
+    "defaultMessage": "Auto-compounding yield and diversification since Summer 2020."
   },
   "qaYPXz": {
     "defaultMessage": "No calldata"
