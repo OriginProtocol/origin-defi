@@ -75,22 +75,42 @@ export const GeoFenceProvider = ({
             }}
             spacing={3}
           >
-            <Typography component="li" fontSize={12}>
+            <Typography
+              component="li"
+              sx={{
+                fontSize: 12,
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: `You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States.`,
               })}
             </Typography>
-            <Typography component="li" fontSize={12}>
+            <Typography
+              component="li"
+              sx={{
+                fontSize: 12,
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: `You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury.`,
               })}
             </Typography>
-            <Typography component="li" fontSize={12}>
+            <Typography
+              component="li"
+              sx={{
+                fontSize: 12,
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: `You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions.`,
               })}
             </Typography>
-            <Typography component="li" fontSize={12}>
+            <Typography
+              component="li"
+              sx={{
+                fontSize: 12,
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: `You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)`,
               })}

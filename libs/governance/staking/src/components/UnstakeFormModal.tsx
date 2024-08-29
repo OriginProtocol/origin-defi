@@ -78,29 +78,47 @@ export const UnstakeFormModal = ({
           <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
             <Stack
               direction="row"
-              px={3}
-              pt={2}
-              pb={1}
-              sx={{ '> *': { width: 1, color: 'text.secondary' } }}
+              sx={{
+                px: 3,
+                pt: 2,
+                pb: 1,
+                '> *': { width: 1, color: 'text.secondary' },
+              }}
             >
               <Typography>{tokens.mainnet.OGV.symbol}</Typography>
-              <Typography textAlign="end">
+              <Typography
+                sx={{
+                  textAlign: 'end',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Current APY' })}
               </Typography>
-              <Typography textAlign="end">
+              <Typography
+                sx={{
+                  textAlign: 'end',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Voting Power' })}
               </Typography>
             </Stack>
             <Divider />
             <Stack
               direction="row"
-              px={3}
-              pt={1}
-              pb={2}
-              alignItems="baseline"
-              sx={{ '> *': { width: 1 } }}
+              sx={{
+                px: 3,
+                pt: 1,
+                pb: 2,
+                alignItems: 'baseline',
+                '> *': { width: 1 },
+              }}
             >
-              <Stack direction="row" spacing={1} alignItems="baseline">
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <TokenIcon token={tokens.mainnet.OGV} />
                 <Typography variant="h3">
                   {formatAmount(
@@ -125,14 +143,20 @@ export const UnstakeFormModal = ({
               <Stack
                 direction="row"
                 spacing={1}
-                alignItems="baseline"
-                justifyContent="flex-end"
+                sx={{
+                  alignItems: 'baseline',
+                  justifyContent: 'flex-end',
+                }}
               >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ transform: 'translateY(4px)' }}
                 />
-                <Typography fontWeight={700}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                  }}
+                >
                   {formatAmount(
                     BigInt(lockup.veogv),
                     tokens.mainnet.veOGV.decimals,

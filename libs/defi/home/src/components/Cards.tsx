@@ -40,7 +40,14 @@ export const LSTCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
             <Box
               sx={{
                 borderRadius: '50%',
@@ -53,7 +60,12 @@ export const LSTCard = (props: CardProps) => {
               {intl.formatMessage({ defaultMessage: 'Supercharged LSTs' })}
             </Typography>
           </Stack>
-          <Typography variant="caption1" mb={3}>
+          <Typography
+            variant="caption1"
+            sx={{
+              mb: 3,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Beyond liquid staking' })}
           </Typography>
           <Stack
@@ -99,7 +111,14 @@ export const LSTCard = (props: CardProps) => {
             my: 3,
           })}
         >
-          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
             <Box
               sx={{
                 borderRadius: '50%',
@@ -112,7 +131,12 @@ export const LSTCard = (props: CardProps) => {
               {intl.formatMessage({ defaultMessage: 'LSTs' })}
             </Typography>
           </Stack>
-          <Typography variant="caption1" mb={3}>
+          <Typography
+            variant="caption1"
+            sx={{
+              mb: 3,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Sustainable yield with no hidden exit costs',
             })}
@@ -162,7 +186,14 @@ export const StakingCard = (props: CardProps) => {
             mb: 3,
           })}
         >
-          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
             <Box
               sx={{
                 borderRadius: '50%',
@@ -175,7 +206,12 @@ export const StakingCard = (props: CardProps) => {
               {intl.formatMessage({ defaultMessage: 'Staking' })}
             </Typography>
           </Stack>
-          <Typography variant="caption1" mb={3}>
+          <Typography
+            variant="caption1"
+            sx={{
+              mb: 3,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: `Stake OGN to participate in governance and earn rewards. Own a stake in the network and benefit from the growth of Origin's products.`,
             })}
@@ -233,7 +269,14 @@ export const StableCard = (props: CardProps) => {
             p: 3,
           })}
         >
-          <Stack direction="row" alignItems="center" spacing={1} mb={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
             <Box
               sx={{
                 borderRadius: '50%',
@@ -246,7 +289,12 @@ export const StableCard = (props: CardProps) => {
               {intl.formatMessage({ defaultMessage: 'Stablecoins' })}
             </Typography>
           </Stack>
-          <Typography variant="caption1" mb={3}>
+          <Typography
+            variant="caption1"
+            sx={{
+              mb: 3,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: `Auto-compounding yield and diversification since Summer 2020.`,
             })}

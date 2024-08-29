@@ -223,7 +223,12 @@ export const StakeRewardModal = (props: DialogProps) => {
       </DialogTitle>
       <Divider />
       <DialogContent sx={{ px: 0 }}>
-        <Stack mb={3} px={3}>
+        <Stack
+          sx={{
+            mb: 3,
+            px: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage: 'The amount of OGN you want to lock',
@@ -238,9 +243,9 @@ export const StakeRewardModal = (props: DialogProps) => {
           </InfoTooltipLabel>
           <Stack
             direction="row"
-            justifyContent="space-between"
             spacing={2}
             sx={{
+              justifyContent: 'space-between',
               border: '1px solid',
               borderColor: 'divider',
               borderRadius: 3,
@@ -258,22 +263,40 @@ export const StakeRewardModal = (props: DialogProps) => {
                 tokens.mainnet.OGN.decimals,
               )}
             </LoadingLabel>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 28 }} />
-              <Typography variant="body2" fontWeight="bold">
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 'bold',
+                }}
+              >
                 {tokens.mainnet.OGN.symbol}
               </Typography>
             </Stack>
           </Stack>
         </Stack>
         <Collapse in={showOgnInput}>
-          <Stack mb={3} px={3}>
+          <Stack
+            sx={{
+              mb: 3,
+              px: 3,
+            }}
+          >
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              width={1}
-              mb={1.5}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: 1,
+                mb: 1.5,
+              }}
             >
               <InfoTooltipLabel
                 tooltipLabel={intl.formatMessage({
@@ -302,9 +325,20 @@ export const StakeRewardModal = (props: DialogProps) => {
               decimals={tokens.mainnet.OGN.decimals}
               onChange={handleAmountChange}
               endAdornment={
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center',
+                  }}
+                >
                   <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 28 }} />
-                  <Typography variant="body2" fontWeight="bold">
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      fontWeight: 'bold',
+                    }}
+                  >
                     {tokens.mainnet.OGN.symbol}
                   </Typography>
                 </Stack>
@@ -361,7 +395,12 @@ export const StakeRewardModal = (props: DialogProps) => {
           </AccordionDetails>
         </Accordion>
         <Collapse in={!addToExisting}>
-          <Stack mb={3} px={3}>
+          <Stack
+            sx={{
+              mb: 3,
+              px: 3,
+            }}
+          >
             <InfoTooltipLabel
               tooltipLabel={intl.formatMessage({
                 defaultMessage:
@@ -385,12 +424,20 @@ export const StakeRewardModal = (props: DialogProps) => {
             >
               <Stack
                 direction="row"
-                alignItems="baseline"
-                justifyContent="space-between"
-                flexWrap="wrap"
-                rowGap={1}
+                sx={{
+                  alignItems: 'baseline',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  rowGap: 1,
+                }}
               >
-                <Typography variant="featured3" minWidth={170} mr={1}>
+                <Typography
+                  variant="featured3"
+                  sx={{
+                    minWidth: 170,
+                    mr: 1,
+                  }}
+                >
                   {duration === 0
                     ? intl.formatMessage({ defaultMessage: '0 months' })
                     : formatDuration(
@@ -404,10 +451,19 @@ export const StakeRewardModal = (props: DialogProps) => {
                       )}
                 </Typography>
                 <Stack direction="row" spacing={1}>
-                  <Typography variant="mono" color="text.secondary">
+                  <Typography
+                    variant="mono"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({ defaultMessage: 'Lockup Ends:' })}
                   </Typography>
-                  <Typography minWidth={92}>
+                  <Typography
+                    sx={{
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(addMonths(new Date(), duration), {
                       day: '2-digit',
                       month: 'short',
@@ -450,7 +506,12 @@ export const StakeRewardModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Collapse>
-        <Stack mb={3} px={3}>
+        <Stack
+          sx={{
+            mb: 3,
+            px: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -487,7 +548,11 @@ export const StakeRewardModal = (props: DialogProps) => {
             </LoadingLabel>
           </Stack>
         </Stack>
-        <Stack px={3}>
+        <Stack
+          sx={{
+            px: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -512,12 +577,20 @@ export const StakeRewardModal = (props: DialogProps) => {
           >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <LoadingLabel
                   variant="featured3"
                   fontWeight="bold"
@@ -530,7 +603,12 @@ export const StakeRewardModal = (props: DialogProps) => {
                     : '0.00'}
                 </LoadingLabel>
                 <TokenIcon token={tokens.mainnet.xOGN} sx={{ fontSize: 28 }} />
-                <Typography variant="body2" fontWeight="bold">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
                   {tokens.mainnet.xOGN.symbol}
                 </Typography>
               </Stack>
@@ -695,7 +773,12 @@ function LockupSelect({
         ...rest?.sx,
       }}
     >
-      <Typography fontWeight="medium" p={3}>
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+          p: 3,
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Select lockup' })}
       </Typography>
       <Divider />
@@ -722,7 +805,13 @@ function LockupSelect({
                           },
                     ]}
                   >
-                    <Typography noWrap variant="caption1" fontWeight="medium">
+                    <Typography
+                      noWrap
+                      variant="caption1"
+                      sx={{
+                        fontWeight: 'medium',
+                      }}
+                    >
                       {flexRender(
                         header.column.columnDef.header,
                         header.getContext(),

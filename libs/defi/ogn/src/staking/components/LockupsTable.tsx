@@ -143,8 +143,10 @@ export const LockupsTable = () => {
               <Stack
                 direction="row"
                 spacing={1}
-                alignItems="center"
-                justifyContent="center"
+                sx={{
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
                 <Skeleton width={275} height={37} />
               </Stack>
@@ -155,8 +157,10 @@ export const LockupsTable = () => {
             <Stack
               direction="row"
               spacing={1}
-              alignItems="stretch"
-              justifyContent="flex-end"
+              sx={{
+                alignItems: 'stretch',
+                justifyContent: 'flex-end',
+              }}
             >
               <ExtendAddButton
                 lockup={info.row.original}

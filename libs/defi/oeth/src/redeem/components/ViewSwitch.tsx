@@ -41,10 +41,15 @@ export const ViewSwitch = (props: StackProps) => {
 
   return (
     <Stack
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
       {...props}
+      sx={[
+        {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <SliderSwitch
         options={options}

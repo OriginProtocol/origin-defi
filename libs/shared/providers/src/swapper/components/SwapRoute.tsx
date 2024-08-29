@@ -39,7 +39,13 @@ export function SwapRoute(
         sx={{ p: 0, '&&.MuiAccordionSummary-root': { cursor: 'default' } }}
       >
         {isSwapRoutesLoading ? (
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
             <Skeleton
               variant="circular"
               width="0.5rem"
@@ -57,10 +63,12 @@ export function SwapRoute(
         ) : (
           <Stack
             direction="row"
-            gap={0.5}
             component={Typography}
             variant="body2"
-            alignItems="center"
+            sx={{
+              gap: 0.5,
+              alignItems: 'center',
+            }}
           >
             {intl.formatMessage({ defaultMessage: 'Route' })}
             <InfoTooltip

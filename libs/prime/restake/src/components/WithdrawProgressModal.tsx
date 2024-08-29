@@ -146,9 +146,26 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Stack alignItems="center" pt={2}>
-          <Box mb={3}>{icon}</Box>
-          <Typography fontWeight="bold" textAlign="center" mb={2}>
+        <Stack
+          sx={{
+            alignItems: 'center',
+            pt: 2,
+          }}
+        >
+          <Box
+            sx={{
+              mb: 3,
+            }}
+          >
+            {icon}
+          </Box>
+          <Typography
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              mb: 2,
+            }}
+          >
             {label}
           </Typography>
           {button}

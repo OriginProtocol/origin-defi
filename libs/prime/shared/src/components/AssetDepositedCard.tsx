@@ -51,12 +51,23 @@ export const AssetDepositedCard = (props: CardProps) => {
           {assets.map((a, i) => (
             <Grid2 key={a.symbol} size={6}>
               <Stack spacing={0.5}>
-                <Stack direction="row" gap={0.5} alignItems="center">
+                <Stack
+                  direction="row"
+                  sx={{
+                    gap: 0.5,
+                    alignItems: 'center',
+                  }}
+                >
                   <TokenIcon
                     token={a.symbol === 'WETH' ? tokens.mainnet.ETH : a}
                     sx={{ width: 20, height: 20 }}
                   />
-                  <Typography fontWeight="medium" color="text.secondary">
+                  <Typography
+                    sx={{
+                      fontWeight: 'medium',
+                      color: 'text.secondary',
+                    }}
+                  >
                     {a.symbol === 'WETH' ? tokens.mainnet.ETH.symbol : a.symbol}
                   </Typography>
                   <InfoTooltip

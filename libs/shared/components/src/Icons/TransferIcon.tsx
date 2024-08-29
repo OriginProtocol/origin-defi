@@ -21,7 +21,17 @@ export const TransferIcon = ({
   const arrowSize = iconSize * 0.7;
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1} {...rest}>
+    <Stack
+      direction="row"
+      spacing={1}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <TokenIcon token={tokenIn} sx={{ fontSize: iconSize }} />
       <FaArrowRightRegular sx={{ fontSize: arrowSize }} />
       <TokenIcon token={tokenOut} sx={{ fontSize: iconSize }} />

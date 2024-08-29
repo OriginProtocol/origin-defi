@@ -115,9 +115,11 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             isDisabled={isTokenClickDisabled}
             {...tokenPickerProps}
             sx={[
-              {
-                ...tokenPickerProps?.sx,
-              },
+              ...(tokenPickerProps?.sx
+                ? Array.isArray(tokenPickerProps.sx)
+                  ? tokenPickerProps.sx
+                  : [tokenPickerProps.sx]
+                : []),
               !isConnected && { transform: 'translateY(50%)' },
             ]}
           />
@@ -142,10 +144,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           ) : null}
           <Stack
             direction="row"
-            alignItems="center"
             spacing={0.5}
-            overflow="hidden"
-            whiteSpace="nowrap"
+            sx={{
+              alignItems: 'center',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
           >
             {isConnected ? (
               isBalanceLoading ? (
@@ -154,8 +158,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 <>
                   <Typography
                     noWrap
-                    color="text.secondary"
                     sx={[
+                      {
+                        color: 'text.secondary',
+                      },
                       {
                         justifySelf: 'flex-end',
                         textOverflow: 'ellipsis',

@@ -132,19 +132,35 @@ export const StakeFormModal = (props: DialogProps) => {
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Stack pt={3}>
+        <Stack
+          sx={{
+            pt: 3,
+          }}
+        >
           <Stack
             direction="row"
-            justifyContent="space-between"
-            flexWrap="wrap"
-            rowGap={1}
-            mb={1.5}
+            sx={{
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              rowGap: 1,
+              mb: 1.5,
+            }}
           >
-            <Typography fontWeight={700} mr={1}>
+            <Typography
+              sx={{
+                fontWeight: 700,
+                mr: 1,
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Amount to Stake' })}
             </Typography>
             <Stack direction="row" spacing={1}>
-              <Typography color="text.secondary" noWrap>
+              <Typography
+                noWrap
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage: 'Balance: {balance}',
@@ -187,15 +203,23 @@ export const StakeFormModal = (props: DialogProps) => {
             endAdornment={
               <Stack
                 direction="row"
-                alignItems="center"
-                sx={(theme) => ({
-                  borderLeft: `1px solid ${theme.palette.grey[800]}`,
-                  pl: 1,
-                  gap: 1,
-                })}
+                sx={[
+                  {
+                    alignItems: 'center',
+                  },
+                  (theme) => ({
+                    borderLeft: `1px solid ${theme.palette.grey[800]}`,
+                    pl: 1,
+                    gap: 1,
+                  }),
+                ]}
               >
                 <TokenIcon token={tokens.mainnet.OGV} sx={{ width: 28 }} />
-                <Typography fontSize={20}>
+                <Typography
+                  sx={{
+                    fontSize: 20,
+                  }}
+                >
                   {tokens.mainnet.OGV.symbol}
                 </Typography>
               </Stack>
@@ -229,8 +253,17 @@ export const StakeFormModal = (props: DialogProps) => {
             })}
           />
         </Stack>
-        <Stack pt={3}>
-          <Typography fontWeight={700} mb={1.5}>
+        <Stack
+          sx={{
+            pt: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}&nbsp;
             <InfoTooltip
               tooltipLabel={intl.formatMessage({
@@ -239,15 +272,30 @@ export const StakeFormModal = (props: DialogProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              alignItems="baseline"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Typography variant="h3" minWidth={170} mr={1}>
+              <Typography
+                variant="h3"
+                sx={{
+                  minWidth: 170,
+                  mr: 1,
+                }}
+              >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -264,7 +312,12 @@ export const StakeFormModal = (props: DialogProps) => {
                 <Typography sx={{ color: 'text.secondary' }}>
                   {intl.formatMessage({ defaultMessage: 'Lock up Ends:' })}
                 </Typography>
-                <Typography fontWeight={700} minWidth={92}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                    minWidth: 92,
+                  }}
+                >
                   {intl.formatDate(addMonths(new Date(), duration), {
                     day: '2-digit',
                     month: 'short',
@@ -306,8 +359,17 @@ export const StakeFormModal = (props: DialogProps) => {
             </Box>
           </Stack>
         </Stack>
-        <Stack pt={3}>
-          <Typography fontWeight={700} mb={1.5}>
+        <Stack
+          sx={{
+            pt: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
             &nbsp;
             <InfoTooltip
@@ -317,13 +379,22 @@ export const StakeFormModal = (props: DialogProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
               <LoadingLabel
                 variant="h3"
@@ -343,13 +414,23 @@ export const StakeFormModal = (props: DialogProps) => {
                   maximumFractionDigits: 2,
                 })}
               </LoadingLabel>
-              <Stack direction="row" flexWrap="wrap">
+              <Stack
+                direction="row"
+                sx={{
+                  flexWrap: 'wrap',
+                }}
+              >
                 <Typography sx={{ color: 'text.secondary', mr: 1 }}>
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
                 </Typography>
-                <Typography fontWeight={700} noWrap>
+                <Typography
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                  }}
+                >
                   {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
@@ -367,8 +448,17 @@ export const StakeFormModal = (props: DialogProps) => {
             </Stack>
           </Stack>
         </Stack>
-        <Stack pt={3}>
-          <Typography fontWeight={700} mb={1.5}>
+        <Stack
+          sx={{
+            pt: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Locked Tokens Received Now',
             })}
@@ -380,15 +470,30 @@ export const StakeFormModal = (props: DialogProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Stack direction="row" alignItems="baseline" mr={1}>
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                  mr: 1,
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ mr: 1, width: 28, transform: 'translateY(4px)' }}
@@ -404,11 +509,20 @@ export const StakeFormModal = (props: DialogProps) => {
                     : '0.00'}
                 </LoadingLabel>
                 &nbsp;
-                <Typography color="text.secondary">
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {tokens.mainnet.veOGV.symbol}
                 </Typography>
               </Stack>
-              <Stack direction="row" alignItems="baseline">
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <Typography
                   sx={{
                     mr: 1,
@@ -444,15 +558,25 @@ export const StakeFormModal = (props: DialogProps) => {
           </Stack>
         </Stack>
         {showRewardLabel && (
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={1} mt={3}>
+          <Stack
+            spacing={1}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+              mt: 3,
+            }}
+          >
             <Typography>
               {intl.formatMessage({
                 defaultMessage: 'OGV Rewards Will be Collected',
               })}
             </Typography>
             <Typography
-              color="text.secondary"
-              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
+              sx={{
+                color: 'text.secondary',
+                b: { fontWeight: 'normal', color: 'text.primary' },
+              }}
             >
               {intl.formatMessage(
                 {

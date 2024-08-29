@@ -65,12 +65,22 @@ export const StatusCard = (props: CardProps) => {
               width: 1,
             }}
           >
-            <Typography variant="body2" color="text.secondary">
+            <Typography
+              variant="body2"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No activity' })}
             </Typography>
           </Stack>
         ) : (
-          <Stack position="relative" spacing={3}>
+          <Stack
+            spacing={3}
+            sx={{
+              position: 'relative',
+            }}
+          >
             {logs?.map((log) => <LogItem key={log.id} log={log} />)}
             {(logs?.length ?? 0) > 1 && (
               <Box
@@ -111,7 +121,17 @@ function LogItem({ log, ...rest }: LogItemProps) {
   }[log?.event] ?? <FaCircleQuestionRegular />;
 
   return (
-    <Stack {...rest} direction="row" spacing={2} alignItems="center">
+    <Stack
+      {...rest}
+      direction="row"
+      spacing={2}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <SvgIcon
         sx={{
           width: 30,
@@ -130,7 +150,12 @@ function LogItem({ log, ...rest }: LogItemProps) {
             {log?.event}
           </ExternalLink>
         )}
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatDate(new Date(log.timestamp), {
             day: '2-digit',
             month: 'short',

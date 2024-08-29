@@ -155,7 +155,11 @@ function RedeemerWrapped({
         <CardContent
           sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, pb: 0 }}
         >
-          <Typography fontWeight="medium">
+          <Typography
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Redeem amount' })}
           </Typography>
           <TokenInput
@@ -177,18 +181,28 @@ function RedeemerWrapped({
               borderColor: 'divider',
             }}
           />
-          <Typography pt={1.5} fontWeight="medium">
+          <Typography
+            sx={{
+              pt: 1.5,
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Route' })}
           </Typography>
           <RedeemSplitCard />
-          <Typography pt={1.5} fontWeight="medium">
+          <Typography
+            sx={{
+              pt: 1.5,
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Receive amount' })}
           </Typography>
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
             sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
               backgroundColor: 'background.highlight',
               p: 3,
               border: '1px solid',
@@ -216,7 +230,13 @@ function RedeemerWrapped({
                 ${amountIn === 0n ? '0.00' : format(convertedAmount, 2)}
               </LoadingLabel>
             </Stack>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <MixTokenButton
                 tokens={split.map((s) => s.token)}
                 label={
@@ -230,12 +250,19 @@ function RedeemerWrapped({
             <BreakdownAccordion />
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              py={3}
-              px={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                py: 3,
+                px: 1,
+              }}
             >
-              <Typography color="text.secondary" fontWeight="medium">
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                  fontWeight: 'medium',
+                }}
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage:
@@ -250,7 +277,13 @@ function RedeemerWrapped({
                   },
                 )}
               </Typography>
-              <Stack direction="row" alignItems="center" spacing={0.5}>
+              <Stack
+                direction="row"
+                spacing={0.5}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <LoadingLabel
                   isLoading={isRedeemLoading}
                   sWidth={60}

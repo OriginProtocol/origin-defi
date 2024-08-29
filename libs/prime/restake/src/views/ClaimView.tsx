@@ -53,10 +53,12 @@ export const ClaimView = () => {
   if (iswithdrawalsLoading) {
     return (
       <Stack
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        minHeight={350}
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          minHeight: 350,
+        }}
       >
         <CircularProgress size={36} />
       </Stack>
@@ -73,10 +75,12 @@ export const ClaimView = () => {
       <Stack divider={<Divider />}>
         {isNilOrEmpty(withdrawals) ? (
           <Stack
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            minHeight={350}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: 350,
+            }}
           >
             <Typography variant="h5">
               {intl.formatMessage({ defaultMessage: 'No withdrawal to claim' })}
@@ -182,14 +186,34 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
 
   return (
     <Stack {...rest}>
-      <Stack direction="row" alignItems="center" p={3}>
-        <Stack width={0.5}>
-          <Typography color="text.secondary">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          p: 3,
+        }}
+      >
+        <Stack
+          sx={{
+            width: 0.5,
+          }}
+        >
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Wait time' })}
           </Typography>
           {isClaimDisabled ? (
             isBefore(targetDate, new Date()) ? (
-              <Stack direction="row" alignItems="baseline" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <Typography sx={{ fontSize: 32, fontWeight: 'medium' }}>
                   {blocksLeft}
                 </Typography>
@@ -202,13 +226,20 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
                 targetDate={targetDate}
                 valueLabelProps={{
                   labelProps: { sx: { display: 'none' } },
-                  valueProps: { fontSize: 32, fontWeight: 'medium' },
+                  valueProps: { sx: { fontSize: 32, fontWeight: 'medium' } },
                 }}
                 showUnits
               />
             )
           ) : (
-            <Stack direction="row" alignItems="center" spacing={1} mt={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+                mt: 1,
+              }}
+            >
               <FaCircleCheckRegular
                 sx={{ fontSize: 36, color: 'success.main' }}
               />
@@ -219,13 +250,35 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
           )}
         </Stack>
         <Divider orientation="vertical" flexItem />
-        <Stack alignItems="flex-start" px={2} spacing={0.25}>
-          <Typography variant="subtitle2" color="text.secondary">
+        <Stack
+          spacing={0.25}
+          sx={{
+            alignItems: 'flex-start',
+            px: 2,
+          }}
+        >
+          <Typography
+            variant="subtitle2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Claimable amount' })}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <TokenIcon token={tokens.mainnet.OETH} />
-            <Typography fontSize={16} fontWeight="medium">
+            <Typography
+              sx={{
+                fontSize: 16,
+                fontWeight: 'medium',
+              }}
+            >
               {formatAmount(pending)}
             </Typography>
           </Stack>
@@ -241,7 +294,11 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
       {!isClaimDisabled && (
         <>
           <Divider variant="middle" />
-          <Stack p={3}>
+          <Stack
+            sx={{
+              p: 3,
+            }}
+          >
             <TxButton
               params={migrateParams}
               callbacks={migrateCallbacks}
@@ -254,8 +311,10 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
             {!isClaimDisabled && (
               <Typography
                 variant="body2"
-                color="text.secondary"
-                textAlign="center"
+                sx={{
+                  color: 'text.secondary',
+                  textAlign: 'center',
+                }}
               >
                 {intl.formatMessage(
                   { defaultMessage: 'Approximate gas cost: {gas}' },
@@ -269,15 +328,18 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
               {intl.formatMessage({ defaultMessage: 'OR' })}
             </Typography>
           </Divider>
-          <Stack p={3}>
+          <Stack
+            sx={{
+              p: 3,
+            }}
+          >
             <Stack
               direction="row"
-              alignItems="center"
               spacing={2}
               sx={{
+                alignItems: 'center',
                 p: 2,
                 mb: 2,
-                alignItems: 'center',
                 border: '1px solid',
                 borderColor: 'primary.main',
                 backgroundColor: (theme) =>
@@ -306,8 +368,10 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
             {!isClaimDisabled && (
               <Typography
                 variant="body2"
-                color="text.secondary"
-                textAlign="center"
+                sx={{
+                  color: 'text.secondary',
+                  textAlign: 'center',
+                }}
               >
                 {intl.formatMessage(
                   { defaultMessage: 'Approximate gas cost: {gas}' },

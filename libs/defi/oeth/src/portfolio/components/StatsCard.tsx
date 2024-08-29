@@ -38,7 +38,12 @@ export const WoethStats = (props: CardProps) => {
       {...props}
       sx={{ backgroundColor: 'background.default', ...props?.sx }}
     >
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage({ defaultMessage: 'wOETH Balance' })}
@@ -68,6 +73,6 @@ export const WoethStats = (props: CardProps) => {
 };
 
 const valueLabelProps: Partial<ValueLabelProps> = {
-  valueProps: { variant: 'featured2', fontWeight: 'bold' },
+  valueProps: { variant: 'featured2', sx: { fontWeight: 'bold' } },
   sx: { width: 1, alignItems: 'center', p: 3 },
 };

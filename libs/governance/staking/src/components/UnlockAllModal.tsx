@@ -140,16 +140,26 @@ function FormView({
       <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
         <Stack
           direction="row"
-          px={3}
-          pt={2}
-          pb={1}
-          sx={{ '> *': { width: 1, color: 'text.secondary' } }}
+          sx={{
+            px: 3,
+            pt: 2,
+            pb: 1,
+            '> *': { width: 1, color: 'text.secondary' },
+          }}
         >
           <Typography>{tokens.mainnet.OGV.symbol}</Typography>
-          <Typography textAlign="end">
+          <Typography
+            sx={{
+              textAlign: 'end',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
           </Typography>
-          <Typography textAlign="end">
+          <Typography
+            sx={{
+              textAlign: 'end',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Voting Power' })}
           </Typography>
         </Stack>
@@ -160,15 +170,19 @@ function FormView({
       </Stack>
       <Stack
         direction="row"
-        justifyContent="space-between"
         sx={{
+          justifyContent: 'space-between',
           border: '1px solid',
           borderColor: 'divider',
           borderRadius: 2,
           p: 2,
         }}
       >
-        <Typography color="text.secondary">
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Gas:' })}
         </Typography>
         <LoadingLabel fontWeight={500} isLoading={gasPrice === undefined}>
@@ -195,20 +209,36 @@ function LockupRow({ lockup, ...rest }: LockupRowProps) {
   return (
     <Stack
       direction="row"
-      px={3}
-      pt={1}
-      pb={2}
-      alignItems="center"
       {...rest}
-      sx={{ '> *': { width: 1 }, ...rest?.sx }}
+      sx={[
+        {
+          px: 3,
+          pt: 1,
+          pb: 2,
+          alignItems: 'center',
+          '> *': { width: 1 },
+          ...rest?.sx,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
-      <Stack direction="row" spacing={1} alignItems="center">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={tokens.mainnet.OGV} />
         <Typography>
           {formatAmount(BigInt(lockup.amount), tokens.mainnet.OGV.decimals)}
         </Typography>
       </Stack>
-      <Typography textAlign="end">
+      <Typography
+        sx={{
+          textAlign: 'end',
+        }}
+      >
         {formatDistanceToNowStrict(new Date(lockup.end), {
           unit: 'month',
           roundingMethod: 'floor',
@@ -217,11 +247,17 @@ function LockupRow({ lockup, ...rest }: LockupRowProps) {
       <Stack
         direction="row"
         spacing={1}
-        alignItems="center"
-        justifyContent="flex-end"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+        }}
       >
         <TokenIcon token={tokens.mainnet.veOGV} />
-        <Typography fontWeight={700}>
+        <Typography
+          sx={{
+            fontWeight: 700,
+          }}
+        >
           {formatAmount(
             BigInt(lockup.veogv),
             tokens.mainnet.veOGV.decimals,
@@ -249,12 +285,28 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
         ...rest?.sx,
       }}
     >
-      <Stack alignItems="center" maxWidth={350} useFlexGap spacing={1}>
+      <Stack
+        useFlexGap
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+          maxWidth: 350,
+        }}
+      >
         <CheckCircle sx={{ fontSize: 100, m: 2 }} />
-        <Typography textAlign="center" variant="h3">
+        <Typography
+          variant="h3"
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Unlock Successful' })}
         </Typography>
-        <Typography textAlign="center">
+        <Typography
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           {intl.formatMessage({
             defaultMessage:
               'Your OGV Tokens are unlocked. Convert your OGV to OGN to earn staking rewards.',
@@ -287,7 +339,14 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
           sx={{ mt: 2 }}
         />
       </Stack>
-      <Stack direction="row" mt={4} spacing={2} width={1}>
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          mt: 4,
+          width: 1,
+        }}
+      >
         <Button
           onClick={onClose}
           variant="outlined"

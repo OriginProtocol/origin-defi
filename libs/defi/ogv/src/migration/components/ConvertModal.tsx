@@ -183,16 +183,20 @@ export const ConvertModal = ({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Typography fontWeight="medium">
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
           {intl.formatMessage({
             defaultMessage: 'Your OGV/veOGV is equivalent to',
           })}
         </Typography>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
             p: 3,
             mt: 1.5,
             mb: 3,
@@ -221,9 +225,11 @@ export const ConvertModal = ({
           <AccordionSummary>
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              width={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: 1,
+              }}
             >
               <InfoTooltipLabel
                 fontWeight="medium"
@@ -236,20 +242,25 @@ export const ConvertModal = ({
               </InfoTooltipLabel>
               <Stack
                 direction="row"
-                alignItems="center"
                 sx={{
+                  alignItems: 'center',
                   border: '1px solid',
                   borderColor: 'divider',
                   borderRadius: 25,
                   px: 1,
                   py: 0.5,
+
                   '&:hover': {
                     backgroundColor: 'background.faded',
                   },
                 }}
               >
                 <Collapse orientation="horizontal" in={!ratioOpen}>
-                  <Typography mr={0.75}>
+                  <Typography
+                    sx={{
+                      mr: 0.75,
+                    }}
+                  >
                     {intl.formatNumber((stakingRatio ?? 0) / 100, {
                       style: 'percent',
                     })}
@@ -260,12 +271,31 @@ export const ConvertModal = ({
             </Stack>
           </AccordionSummary>
           <AccordionDetails sx={{ px: 0 }}>
-            <Stack {...cardStackProps} useFlexGap p={0} spacing={0}>
-              <Stack p={3} spacing={1}>
+            <Stack
+              {...cardStackProps}
+              useFlexGap
+              spacing={0}
+              sx={[
+                {
+                  p: 0,
+                },
+                ...(Array.isArray(cardStackProps.sx)
+                  ? cardStackProps.sx
+                  : [cardStackProps.sx]),
+              ]}
+            >
+              <Stack
+                spacing={1}
+                sx={{
+                  p: 3,
+                }}
+              >
                 <Typography
                   variant="featured3"
-                  fontWeight="bold"
-                  color="primary.main"
+                  sx={{
+                    fontWeight: 'bold',
+                    color: 'primary.main',
+                  }}
                 >
                   {intl.formatNumber((stakingRatio ?? 0) / 100, {
                     style: 'percent',
@@ -313,17 +343,24 @@ export const ConvertModal = ({
                   value={
                     <Stack
                       direction="row"
-                      alignItems="center"
                       spacing={1}
-                      px={3}
-                      py={1.5}
-                      width={1}
+                      sx={{
+                        alignItems: 'center',
+                        px: 3,
+                        py: 1.5,
+                        width: 1,
+                      }}
                     >
                       <TokenIcon
                         token={tokens.mainnet.OGN}
                         sx={{ fontSize: 24 }}
                       />
-                      <Typography variant="body1" fontWeight="medium">
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          fontWeight: 'medium',
+                        }}
+                      >
                         {format(liquidConverted, 4)}
                       </Typography>
                     </Stack>
@@ -344,11 +381,13 @@ export const ConvertModal = ({
                   value={
                     <Stack
                       direction="row"
-                      alignItems="center"
                       spacing={1}
-                      px={3}
-                      py={1.5}
-                      width={1}
+                      sx={{
+                        alignItems: 'center',
+                        px: 3,
+                        py: 1.5,
+                        width: 1,
+                      }}
                     >
                       <TokenIcon
                         token={tokens.mainnet.xOGN}
@@ -383,13 +422,31 @@ export const ConvertModal = ({
           >
             {intl.formatMessage({ defaultMessage: 'Lockup Duration' })}
           </InfoTooltipLabel>
-          <Stack {...cardStackProps} useFlexGap mb={3}>
-            <Stack direction="row" alignItems="center">
+          <Stack
+            {...cardStackProps}
+            useFlexGap
+            sx={[
+              {
+                mb: 3,
+              },
+              ...(Array.isArray(cardStackProps.sx)
+                ? cardStackProps.sx
+                : [cardStackProps.sx]),
+            ]}
+          >
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <Typography
                 variant="featured3"
-                fontWeight="bold"
-                color="primary.main"
-                mr={1}
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'primary.main',
+                  mr: 1,
+                }}
               >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
@@ -403,14 +460,34 @@ export const ConvertModal = ({
                       },
                     )}
               </Typography>
-              <Stack spacing={0.5} flexGrow={1}>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Typography variant="mono" color="text.secondary">
+              <Stack
+                spacing={0.5}
+                sx={{
+                  flexGrow: 1,
+                }}
+              >
+                <Stack
+                  direction="row"
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    variant="mono"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Lockup Ends:',
                     })}
                   </Typography>
-                  <Typography textAlign="end" minWidth={92}>
+                  <Typography
+                    sx={{
+                      textAlign: 'end',
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(lockupEnd, {
                       day: '2-digit',
                       month: 'short',
@@ -420,7 +497,11 @@ export const ConvertModal = ({
                 </Stack>
               </Stack>
             </Stack>
-            <Box mx={1}>
+            <Box
+              sx={{
+                mx: 1,
+              }}
+            >
               <Slider
                 value={duration}
                 onChange={handleDurationChange}
@@ -470,14 +551,18 @@ export const ConvertModal = ({
               </Alert>
             </Collapse>
           </Stack>
-          <Typography fontWeight="medium">
+          <Typography
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'xOGN Received' })}
           </Typography>
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
             sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
               p: 3,
               my: 1.5,
               mb: 3,
@@ -509,7 +594,17 @@ export const ConvertModal = ({
           >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
           </InfoTooltipLabel>
-          <Stack {...cardStackProps} bgcolor="transparent">
+          <Stack
+            {...cardStackProps}
+            sx={[
+              {
+                bgcolor: 'transparent',
+              },
+              ...(Array.isArray(cardStackProps.sx)
+                ? cardStackProps.sx
+                : [cardStackProps.sx]),
+            ]}
+          >
             <LoadingLabel
               variant="featured3"
               fontWeight="bold"

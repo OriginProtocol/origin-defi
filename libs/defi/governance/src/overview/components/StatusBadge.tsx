@@ -76,16 +76,26 @@ export const StatusBadge = ({
 
   return (
     <ColorChip
-      bgcolor={alpha(color, 0.07)}
-      px={1}
-      py={0.5}
-      color={color}
-      borderRadius={1}
       spacing={0.5}
       {...rest}
+      sx={[
+        {
+          backgroundColor: alpha(color, 0.07),
+          px: 1,
+          py: 0.5,
+          color,
+          borderRadius: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {icon}
-      <Typography variant="caption1" color="inherit">
+      <Typography
+        variant="caption1"
+        sx={{
+          color: 'inherit',
+        }}
+      >
         {isLoading ? <Skeleton width={60} /> : intl.formatMessage(label)}
       </Typography>
     </ColorChip>

@@ -94,20 +94,21 @@ export function ChainSwitcherPopover({
         {chains.map((chain) => (
           <Stack
             key={chain.id}
-            alignItems="center"
             direction="row"
             spacing={1.5}
+            onClick={() => {
+              switchChain({ connector, chainId: chain.id });
+              close();
+            }}
             sx={{
+              alignItems: 'center',
               px: 2,
               py: 1.5,
+
               ':hover': {
                 cursor: 'pointer',
                 backgroundColor: 'rgba(255,255,255,.05)',
               },
-            }}
-            onClick={() => {
-              switchChain({ connector, chainId: chain.id });
-              close();
             }}
           >
             <NetworkIcon chainId={chain.id} />

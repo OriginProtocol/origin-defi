@@ -248,21 +248,36 @@ export const WithdrawalRequestModal = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Stack alignItems="center" pt={2}>
-          <Box mb={3}>{icon}</Box>
+        <Stack
+          sx={{
+            alignItems: 'center',
+            pt: 2,
+          }}
+        >
+          <Box
+            sx={{
+              mb: 3,
+            }}
+          >
+            {icon}
+          </Box>
           <Typography
             variant="featured2"
-            fontWeight="bold"
-            textAlign="center"
-            mb={2}
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              mb: 2,
+            }}
           >
             {label?.title}
           </Typography>
           <Typography
             variant="mono"
-            textAlign="center"
-            mb={3}
-            color="text.secondary"
+            sx={{
+              textAlign: 'center',
+              mb: 3,
+              color: 'text.secondary',
+            }}
           >
             {label?.subtitle}
           </Typography>

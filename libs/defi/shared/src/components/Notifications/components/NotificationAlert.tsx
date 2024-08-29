@@ -87,7 +87,6 @@ export const NotificationAlert = forwardRef<
           '.MuiAlert-message': {
             width: 1,
           },
-          ...rest?.sx,
         },
         hideDuration
           ? {
@@ -99,13 +98,20 @@ export const NotificationAlert = forwardRef<
           : {
               borderRadius: 1,
             },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
       {...((!!content || !!icon) && { icon: false })}
       onClose={handleCloseClick}
     >
       {isNilOrEmpty(content) ? (
         <Stack spacing={1.5}>
-          <Stack direction="row" alignItems="center" spacing={2}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             {!!notification?.icon && (
               <Box
                 sx={{

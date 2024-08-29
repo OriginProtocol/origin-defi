@@ -6,14 +6,19 @@ export const ColorChip = (props: StackProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
       spacing={0.5}
-      color="primary.light"
-      bgcolor="primary.faded"
-      px={2}
-      py={1}
-      borderRadius={2}
       {...props}
+      sx={[
+        {
+          alignItems: 'center',
+          color: 'primary.light',
+          backgroundColor: 'primary.faded',
+          px: 2,
+          py: 1,
+          borderRadius: 2,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     />
   );
 };

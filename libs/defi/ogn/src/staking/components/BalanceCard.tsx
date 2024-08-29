@@ -28,10 +28,12 @@ export const BalanceCard = (props: CardProps) => {
       <CardContent>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           spacing={1}
-          mb={3}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 3,
+          }}
         >
           <LoadingLabel
             variant="featured3"
@@ -57,10 +59,12 @@ export const BalanceCard = (props: CardProps) => {
         </Stack>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           spacing={1}
-          mb={3}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            mb: 3,
+          }}
         >
           <LoadingLabel
             variant="featured3"

@@ -99,9 +99,11 @@ export const PastClaimsCard = (props: CardProps) => {
                             converted: (
                               <Typography
                                 variant="body2"
-                                color="text.secondary"
-                                textAlign="start"
                                 component="span"
+                                sx={{
+                                  color: 'text.secondary',
+                                  textAlign: 'start',
+                                }}
                               >
                                 (${format(converted, 2)})
                               </Typography>

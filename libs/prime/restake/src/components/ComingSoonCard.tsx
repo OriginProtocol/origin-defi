@@ -9,7 +9,12 @@ export const ComingSoonCard = () => {
       spacing={3}
       sx={{ height: 300, p: 3, alignItems: 'center', justifyContent: 'center' }}
     >
-      <Typography fontStyle="italic" variant="h3">
+      <Typography
+        variant="h3"
+        sx={{
+          fontStyle: 'italic',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Still cooking...' })}
       </Typography>
       <Typography variant="h4">

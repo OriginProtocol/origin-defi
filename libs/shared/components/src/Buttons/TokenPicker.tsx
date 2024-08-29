@@ -20,9 +20,11 @@ export const TokenPicker = ({
     <Stack
       direction="row"
       role="button"
-      gap={1}
       {...rest}
       sx={[
+        {
+          gap: 1,
+        },
         {
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -64,6 +66,7 @@ export const TokenPicker = ({
               )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
             },
           })),
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />

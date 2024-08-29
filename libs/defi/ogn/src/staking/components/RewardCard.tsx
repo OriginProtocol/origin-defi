@@ -61,9 +61,11 @@ export const RewardCard = (props: CardProps) => {
         <Stack useFlexGap>
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
             spacing={1}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
           >
             <LoadingLabel
               variant="featured3"

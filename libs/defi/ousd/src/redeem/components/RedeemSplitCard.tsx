@@ -29,7 +29,6 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
           p: 2,
           border: '1px solid',
           borderColor: 'divider',
-          ...props?.sx,
         },
         amountIn > 0n && {
           cursor: 'pointer',
@@ -45,6 +44,7 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
                 backgroundColor: 'background.highlight',
               }
             : {},
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
       role="button"
     >
@@ -58,7 +58,12 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
             mb: 1.5,
           }}
         >
-          <Typography noWrap fontWeight={500}>
+          <Typography
+            noWrap
+            sx={{
+              fontWeight: 500,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Redeem for mix via Origin Vault',
             })}
@@ -118,7 +123,16 @@ export const RedeemSplitCard = (props: Omit<CardProps, 'children'>) => {
 
 function EmptyValue(props: TypographyProps) {
   return (
-    <Typography color="text.secondary" pr={0.5} {...props}>
+    <Typography
+      {...props}
+      sx={[
+        {
+          color: 'text.secondary',
+          pr: 0.5,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       -
     </Typography>
   );
@@ -126,12 +140,10 @@ function EmptyValue(props: TypographyProps) {
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
+  sx: { justifyContent: 'space-between', minWidth: 120 },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { fontWeight: 'medium' },
-  minWidth: 120,
+  valueProps: { sx: { fontWeight: 'medium' } },
 };

@@ -156,33 +156,55 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
         </IconButton>
       </DialogTitle>
       <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        <Stack pt={3}>
+        <Stack
+          sx={{
+            pt: 3,
+          }}
+        >
           <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
             <Stack
               direction="row"
-              px={3}
-              pt={2}
-              pb={1}
-              sx={{ '> *': { width: 1, color: 'text.secondary' } }}
+              sx={{
+                px: 3,
+                pt: 2,
+                pb: 1,
+                '> *': { width: 1, color: 'text.secondary' },
+              }}
             >
               <Typography>{tokens.mainnet.OGV.symbol}</Typography>
-              <Typography textAlign="end">
+              <Typography
+                sx={{
+                  textAlign: 'end',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Time Remaining' })}
               </Typography>
-              <Typography textAlign="end">
+              <Typography
+                sx={{
+                  textAlign: 'end',
+                }}
+              >
                 {tokens.mainnet.veOGV.symbol}
               </Typography>
             </Stack>
             <Divider />
             <Stack
               direction="row"
-              px={3}
-              pt={1}
-              pb={2}
-              alignItems="baseline"
-              sx={{ '> *': { width: 1 } }}
+              sx={{
+                px: 3,
+                pt: 1,
+                pb: 2,
+                alignItems: 'baseline',
+                '> *': { width: 1 },
+              }}
             >
-              <Stack direction="row" spacing={1} alignItems="baseline">
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.OGV}
                   sx={{ transform: 'translateY(4px)' }}
@@ -196,7 +218,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   )}
                 </Typography>
               </Stack>
-              <Typography textAlign="end" fontWeight={700}>
+              <Typography
+                sx={{
+                  textAlign: 'end',
+                  fontWeight: 700,
+                }}
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage:
@@ -208,14 +235,20 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               <Stack
                 direction="row"
                 spacing={1}
-                alignItems="baseline"
-                justifyContent="flex-end"
+                sx={{
+                  alignItems: 'baseline',
+                  justifyContent: 'flex-end',
+                }}
               >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ transform: 'translateY(4px)' }}
                 />
-                <Typography fontWeight={700}>
+                <Typography
+                  sx={{
+                    fontWeight: 700,
+                  }}
+                >
                   {formatAmount(
                     BigInt(lockup.veogv),
                     tokens.mainnet.veOGV.decimals,
@@ -228,7 +261,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           </Stack>
         </Stack>
         <Stack>
-          <Typography fontWeight={700} mb={1.5}>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Lock-up Duration' })}&nbsp;
             <InfoTooltip
               tooltipLabel={intl.formatMessage({
@@ -237,15 +275,29 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Typography variant="h3" mr={1}>
+              <Typography
+                variant="h3"
+                sx={{
+                  mr: 1,
+                }}
+              >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -258,14 +310,34 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                       },
                     )}
               </Typography>
-              <Stack spacing={0.5} flexGrow={1}>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Typography color="text.secondary">
+              <Stack
+                spacing={0.5}
+                sx={{
+                  flexGrow: 1,
+                }}
+              >
+                <Stack
+                  direction="row"
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Current Lock-up Ends:',
                     })}
                   </Typography>
-                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      textAlign: 'end',
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(new Date(lockup.end), {
                       day: '2-digit',
                       month: 'short',
@@ -273,13 +345,28 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     })}
                   </Typography>
                 </Stack>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Typography color="text.secondary">
+                <Stack
+                  direction="row"
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Extended Lock up Ends:',
                     })}
                   </Typography>
-                  <Typography fontWeight={700} textAlign="end" minWidth={92}>
+                  <Typography
+                    sx={{
+                      fontWeight: 700,
+                      textAlign: 'end',
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(extendLockupEnd, {
                       day: '2-digit',
                       month: 'short',
@@ -323,7 +410,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           </Stack>
         </Stack>
         <Stack>
-          <Typography fontWeight={700} mb={1.5}>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Current Staking vAPY' })}
             &nbsp;
             <InfoTooltip
@@ -333,13 +425,22 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
               <LoadingLabel
                 variant="h3"
@@ -359,13 +460,28 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   maximumFractionDigits: 2,
                 })}
               </LoadingLabel>
-              <Stack direction="row" flexWrap="wrap">
-                <Typography color="text.secondary" mr={1}>
+              <Stack
+                direction="row"
+                sx={{
+                  flexWrap: 'wrap',
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                    mr: 1,
+                  }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Next Emissions Reduction Event:',
                   })}
                 </Typography>
-                <Typography fontWeight={700} noWrap>
+                <Typography
+                  noWrap
+                  sx={{
+                    fontWeight: 700,
+                  }}
+                >
                   {intl.formatDate(getNextEmissionDate(), {
                     day: '2-digit',
                     month: 'short',
@@ -384,7 +500,12 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           </Stack>
         </Stack>
         <Stack>
-          <Typography fontWeight={700} mb={1.5}>
+          <Typography
+            sx={{
+              fontWeight: 700,
+              mb: 1.5,
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Locked Tokens Received Now',
             })}
@@ -396,15 +517,30 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
               })}
             />
           </Typography>
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={2}>
+          <Stack
+            spacing={2}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Stack direction="row" alignItems="baseline" mr={1}>
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                  mr: 1,
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ mr: 1, width: 28, transform: 'translateY(4px)' }}
@@ -418,11 +554,20 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                   {formatQuantity(veOGVReceived)}
                 </LoadingLabel>
                 &nbsp;
-                <Typography color="text.secondary">
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {tokens.mainnet.veOGV.symbol}
                 </Typography>
               </Stack>
-              <Stack direction="row" alignItems="baseline">
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <Typography
                   sx={{
                     mr: 1,
@@ -453,15 +598,24 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           </Stack>
         </Stack>
         {showRewardLabel && (
-          <Stack bgcolor="grey.900" px={3} py={2} spacing={1}>
+          <Stack
+            spacing={1}
+            sx={{
+              bgcolor: 'grey.900',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Typography>
               {intl.formatMessage({
                 defaultMessage: 'OGV Rewards Will be Collected',
               })}
             </Typography>
             <Typography
-              color="text.secondary"
-              sx={{ b: { fontWeight: 'normal', color: 'text.primary' } }}
+              sx={{
+                color: 'text.secondary',
+                b: { fontWeight: 'normal', color: 'text.primary' },
+              }}
             >
               {intl.formatMessage(
                 {

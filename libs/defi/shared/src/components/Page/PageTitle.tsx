@@ -25,14 +25,17 @@ export const PageTitle = ({
 
   return (
     <Stack
-      alignItems="center"
-      py={6}
       {...rest}
-      sx={{
-        borderBottom: '1px solid',
-        borderBottomColor: 'divider',
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          alignItems: 'center',
+          py: 6,
+          borderBottom: '1px solid',
+          borderBottomColor: 'divider',
+          ...rest?.sx,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {icon ? (
         <Box component={icon} sx={{ fontSize: 52 }} />
@@ -41,13 +44,24 @@ export const PageTitle = ({
       ) : null}
       <Stack
         direction="row"
-        alignItems="center"
-        pt={1.5}
-        pb={2}
         spacing={2}
         {...rest}
+        sx={[
+          {
+            alignItems: 'center',
+            pt: 1.5,
+            pb: 2,
+          },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+        ]}
       >
-        <Typography variant="h5" textAlign="center" px={3}>
+        <Typography
+          variant="h5"
+          sx={{
+            textAlign: 'center',
+            px: 3,
+          }}
+        >
           {isSm && token && `${token.symbol} `}
           {title}
         </Typography>
@@ -55,9 +69,11 @@ export const PageTitle = ({
       {subtitle && (
         <Typography
           variant="mono"
-          color="text.secondary"
-          textAlign="center"
-          px={3}
+          sx={{
+            color: 'text.secondary',
+            textAlign: 'center',
+            px: 3,
+          }}
         >
           {subtitle}
         </Typography>

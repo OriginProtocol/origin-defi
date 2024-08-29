@@ -54,8 +54,10 @@ export const ClaimRewardsModal = (props: DialogProps) => {
             </Typography>
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+              }}
             >
               <LoadingLabel variant="h3" isLoading={isInfoLoading}>
                 {formatAmount(
@@ -65,7 +67,12 @@ export const ClaimRewardsModal = (props: DialogProps) => {
                   { notation: 'compact', maximumSignificantDigits: 4 },
                 )}
               </LoadingLabel>
-              <Stack direction="row" alignItems="baseline">
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.OGV}
                   sx={{ width: 30, transform: 'translateY(4px)' }}

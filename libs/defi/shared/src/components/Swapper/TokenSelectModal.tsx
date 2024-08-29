@@ -98,13 +98,29 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
         ...rest?.sx,
       }}
     >
-      <Stack direction="row" gap={1.5} alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1.5,
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={token} sx={{ fontSize: 36 }} />
         <Stack spacing={0.5}>
-          <Typography variant="body2" fontWeight="bold">
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {token?.symbol}
           </Typography>
-          <Typography variant="caption1" color="text.secondary">
+          <Typography
+            variant="caption1"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {token.name}
           </Typography>
         </Stack>
@@ -112,12 +128,23 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
       {isConnected && (
         <Stack direction="row" spacing={2}>
           {token?.isSelected && (
-            <Stack display="flex" justifyContent="center" alignItems="center">
+            <Stack
+              sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
               <FaCheckRegular sx={{ fontSize: 16 }} />
             </Stack>
           )}
           <Stack spacing={0.5} sx={{ textAlign: 'right' }}>
-            <Typography variant="body2" fontWeight="bold">
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
               {isBalanceLoading ? (
                 <Skeleton width={30} />
               ) : (
@@ -127,7 +154,12 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
                 })
               )}
             </Typography>
-            <Typography color="text.secondary" variant="caption1">
+            <Typography
+              variant="caption1"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               ${format(balUsd, 2)}
             </Typography>
           </Stack>

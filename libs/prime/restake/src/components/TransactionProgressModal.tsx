@@ -131,7 +131,12 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
         }}
       >
         {icon}
-        <Typography variant="h5" mb={1}>
+        <Typography
+          variant="h5"
+          sx={{
+            mb: 1,
+          }}
+        >
           {label}
         </Typography>
         <Button

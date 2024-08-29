@@ -54,32 +54,66 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
 
   return (
     <Stack
-      sx={(theme) => ({
-        borderRadius: 1,
-        border: '1px solid',
-        borderColor: 'transparent',
-        background: `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
-        ...props?.sx,
-        overflow: 'hidden',
-        whiteSpace: 'nowrap',
-      })}
+      sx={[
+        {
+          borderRadius: 1,
+          border: '1px solid',
+          borderColor: 'transparent',
+          background: `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box, linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+        {
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        },
+      ]}
     >
-      <Stack direction="row" alignItems="stretch" spacing={1} px={2} py={1.5}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'stretch',
+          px: 2,
+          py: 1.5,
+        }}
+      >
         {!isXs && (
-          <Stack justifyContent="center">
+          <Stack
+            sx={{
+              justifyContent: 'center',
+            }}
+          >
             <MultiTokenIcon tokens={split.map((s) => s.token)} />
           </Stack>
         )}
-        <Stack flex={1} direction="column" gap={0.5}>
+        <Stack
+          direction="column"
+          sx={{
+            flex: 1,
+            gap: 0.5,
+          }}
+        >
           <Stack
             direction="row"
-            alignItems="baseline"
-            justifyContent="space-between"
-            overflow="hidden"
-            whiteSpace="nowrap"
+            sx={{
+              alignItems: 'baseline',
+              justifyContent: 'space-between',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
           >
-            <Stack direction="row" gap={1} alignItems="baseline">
-              <Typography fontWeight={500}>
+            <Stack
+              direction="row"
+              sx={{
+                gap: 1,
+                alignItems: 'baseline',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 500,
+                }}
+              >
                 {isEstimateLoading ? (
                   <Skeleton width={100} />
                 ) : (
@@ -89,7 +123,13 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                   )
                 )}
               </Typography>
-              <Typography variant="body2" noWrap color="text.secondary">
+              <Typography
+                variant="body2"
+                noWrap
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {isEstimateLoading || isPricesLoading ? (
                   <Skeleton width={60} />
                 ) : (
@@ -97,11 +137,26 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
                 )}
               </Typography>
             </Stack>
-            <Stack direction="row" gap={1}>
-              <Typography variant="body2" color="text.secondary">
+            <Stack
+              direction="row"
+              sx={{
+                gap: 1,
+              }}
+            >
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Gas:' })}
               </Typography>
-              <Typography variant="body2" fontWeight={500}>
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 500,
+                }}
+              >
                 {isEstimateLoading || gasPriceLoading ? (
                   <Skeleton width={60} />
                 ) : (
@@ -120,17 +175,35 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
       <Divider />
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
         spacing={1}
-        px={1.5}
-        py={1.5}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          px: 1.5,
+          py: 1.5,
+        }}
       >
-        <Stack direction="row" justifyContent="space-between" gap={1}>
-          <Typography variant="body2" color="text.secondary">
+        <Stack
+          direction="row"
+          sx={{
+            justifyContent: 'space-between',
+            gap: 1,
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
-          <Typography variant="body2" fontWeight={500}>
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+            }}
+          >
             {isEstimateLoading ? (
               <Skeleton width={60} />
             ) : (
@@ -145,7 +218,13 @@ export const RedeemSplitCard = (props: Omit<StackProps, 'children'>) => {
         />
       </Stack>
       <Divider />
-      <Stack spacing={2} py={1.5} px={2}>
+      <Stack
+        spacing={2}
+        sx={{
+          py: 1.5,
+          px: 2,
+        }}
+      >
         {split?.map((s) => (
           <SplitRow
             key={s.token.symbol}
@@ -181,24 +260,47 @@ function SplitRow({
   return (
     <Stack
       direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      gap={1}
       {...rest}
+      sx={[
+        {
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={estimate.token} />
-        <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 500,
+          }}
+        >
+          {estimate.token.symbol}
+        </Typography>
       </Stack>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
         spacing={2}
-        overflow="hidden"
-        whiteSpace="nowrap"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        }}
       >
-        <Typography fontWeight={500}>
+        <Typography
+          sx={{
+            fontWeight: 500,
+          }}
+        >
           {isEstimateLoading ? (
             <Skeleton width={80} />
           ) : (
@@ -210,10 +312,12 @@ function SplitRow({
         ) : (
           <Typography
             noWrap
-            fontWeight={500}
-            color="text.secondary"
-            textAlign="end"
-            minWidth={80}
+            sx={{
+              fontWeight: 500,
+              color: 'text.secondary',
+              textAlign: 'end',
+              minWidth: 80,
+            }}
           >
             ${format(converted, 2)}
           </Typography>

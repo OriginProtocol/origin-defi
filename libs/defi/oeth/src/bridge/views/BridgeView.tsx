@@ -31,13 +31,20 @@ export function BridgeView() {
         />
         <PageSection containerProps={{ maxWidth: 'lg' }}>
           <Stack
-            width={1}
-            justifyContent={{ lg: 'center' }}
-            alignItems={{ xs: 'center', lg: 'inherit' }}
             direction={{ xs: 'column', lg: 'row' }}
-            gap={3}
+            sx={{
+              width: 1,
+              justifyContent: { lg: 'center' },
+              alignItems: { xs: 'center', lg: 'inherit' },
+              gap: 3,
+            }}
           >
-            <Box minWidth={cardWidth} maxWidth={cardWidth}>
+            <Box
+              sx={{
+                minWidth: cardWidth,
+                maxWidth: cardWidth,
+              }}
+            >
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
@@ -45,7 +52,13 @@ export function BridgeView() {
                 <BridgeCard />
               </ErrorBoundary>
             </Box>
-            <Stack minWidth={cardWidthSide} maxWidth={cardWidthSide} gap={3}>
+            <Stack
+              sx={{
+                minWidth: cardWidthSide,
+                maxWidth: cardWidthSide,
+                gap: 3,
+              }}
+            >
               <ErrorBoundary
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}

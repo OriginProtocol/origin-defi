@@ -27,11 +27,13 @@ export const AccountPanel = ({
   return (
     <Stack {...rest}>
       <Stack
-        justifyContent="space-between"
-        alignItems="center"
         direction="row"
-        py={1.5}
-        px={px}
+        sx={{
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          py: 1.5,
+          px: px,
+        }}
       >
         <Typography>
           {intl.formatMessage({ defaultMessage: 'Account' })}
@@ -47,7 +49,14 @@ export const AccountPanel = ({
         </Button>
       </Stack>
       <Divider />
-      <Stack alignItems="center" direction="row" px={px} py={3}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          px: px,
+          py: 3,
+        }}
+      >
         <WalletIcon
           walletName={connector?.name}
           sx={{ width: 20, height: 20, mr: 1.5 }}

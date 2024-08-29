@@ -68,21 +68,18 @@ export const components = (base: Theme): ThemeOptions => ({
           borderRadius: theme.shape.borderRadius * 3,
           color: theme.palette.text.primary,
           boxShadow: theme.shadows[2],
-          ...{
-            info: {
-              backgroundColor: theme.palette.background.highlight,
-            },
-            error: {
-              backgroundColor: theme.palette.error.faded,
-            },
-            success: {
-              backgroundColor: theme.palette.success.faded,
-            },
-            warning: { backgroundColor: theme.palette.background.highlight },
-            pending: {
-              backgroundColor: theme.palette.background.highlight,
-            },
-          }[ownerState?.severity ?? 'info'],
+        }),
+        colorInfo: ({ theme }) => ({
+          backgroundColor: theme.palette.background.highlight,
+        }),
+        colorWarning: ({ theme }) => ({
+          backgroundColor: theme.palette.background.highlight,
+        }),
+        colorError: ({ theme }) => ({
+          backgroundColor: theme.palette.error.faded,
+        }),
+        colorSuccess: ({ theme }) => ({
+          backgroundColor: theme.palette.success.faded,
         }),
       },
     },

@@ -10,6 +10,7 @@ import {
   LinearProgress,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import {
   SliderSwitch,
@@ -133,7 +134,13 @@ export const ProposalListCard = (props: CardProps) => {
           ))}
         </Stack>
       )}
-      <Stack justifyContent="center" alignItems="center" py={2}>
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          py: 2,
+        }}
+      >
         <Button
           variant="outlined"
           color="secondary"
@@ -166,22 +173,27 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
     <Stack
       role="button"
       onClick={handleClick}
-      p={3}
       {...rest}
-      sx={{
-        cursor: 'pointer',
-        ':hover': {
-          background: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.hoverOpacity,
-            ),
-          '.title': {
-            textDecoration: 'underline',
+      sx={[
+        {
+          p: 3,
+          cursor: 'pointer',
+
+          ':hover': {
+            background: (theme) =>
+              alpha(
+                theme.palette.primary.main,
+                theme.palette.action.hoverOpacity,
+              ),
+            '.title': {
+              textDecoration: 'underline',
+            },
           },
+
+          ...rest?.sx,
         },
-        ...rest?.sx,
-      }}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Grid2 container spacing={2}>
         <Grid2
@@ -243,7 +255,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 />
               }
             >
-              <Typography variant="caption1" color="text.secondary">
+              <Typography
+                variant="caption1"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatDate(new Date(proposal.created), {
                   day: '2-digit',
                   month: 'short',
@@ -286,6 +303,7 @@ function VotesGauge({
   ...rest
 }: VotesGaugeProps) {
   const intl = useIntl();
+  const theme = useTheme();
   const { formatAmount } = useFormat();
 
   const scoreVote = sort(
@@ -296,53 +314,57 @@ function VotesGauge({
 
   return (
     <Stack {...rest} spacing={3}>
-      {take(2, scoreVote).map((c) => (
-        <Stack key={c[0]} spacing={1}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            spacing={1}
-          >
-            <TooltipLabel color="text.secondary" noWrap>
-              {`${c[0]}:`}
-            </TooltipLabel>
-            <Typography>
-              {formatAmount(c[1], token?.decimals ?? 18, undefined, {
-                notation: 'compact',
-                maximumSignificantDigits: 4,
-              })}
-              &nbsp;{token?.symbol ?? ''}
-            </Typography>
-          </Stack>
-          <LinearProgress
-            value={(c[1] / total) * 100}
-            variant="determinate"
-            sx={[
-              {
-                borderRadius: 1,
-                backgroundColor: 'divider',
-              },
-              c[0] === 'For'
-                ? {
-                    '.MuiLinearProgress-bar': {
-                      backgroundColor: theme.palette.success.main,
-                    },
-                  }
-                : {
-                    '.MuiLinearProgress-bar': {
-                      backgroundColor:
-                        c[0] === 'Against'
-                          ? theme.palette.error.main
-                          : theme.palette.primary.main,
-                    },
+      {take(2, scoreVote).map((c) => {
+        const progressColor =
+          {
+            For: theme.palette.success.main,
+            Against: theme.palette.error.main,
+          }[c[0] as string] ?? theme.palette.primary.main;
+
+        return (
+          <Stack key={c[0]} spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <TooltipLabel color="text.secondary" noWrap>
+                {`${c[0]}:`}
+              </TooltipLabel>
+              <Typography>
+                {formatAmount(c[1], token?.decimals ?? 18, undefined, {
+                  notation: 'compact',
+                  maximumSignificantDigits: 4,
+                })}
+                &nbsp;{token?.symbol ?? ''}
+              </Typography>
+            </Stack>
+            <LinearProgress
+              value={(c[1] / total) * 100}
+              variant="determinate"
+              sx={[
+                {
+                  borderRadius: 1,
+                  backgroundColor: 'divider',
+                  '.MuiLinearProgress-bar': {
+                    backgroundColor: progressColor,
                   },
-            ]}
-          />
-        </Stack>
-      ))}
+                },
+              ]}
+            />
+          </Stack>
+        );
+      })}
       {scoreVote.length > 2 && (
-        <Typography variant="caption1" color="text.secondary">
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage(
             {
               defaultMessage:

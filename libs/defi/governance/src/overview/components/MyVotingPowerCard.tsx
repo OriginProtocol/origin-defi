@@ -73,9 +73,11 @@ export const MyVotingPowerCard = (props: CardProps) => {
         <CardContent>
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={3}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 3,
+            }}
           >
             <LoadingLabel
               isLoading={isInfoLoading}
@@ -89,7 +91,13 @@ export const MyVotingPowerCard = (props: CardProps) => {
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
             </LoadingLabel>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <TokenChip
                 token={tokens.mainnet.xOGN}
                 iconProps={{ sx: { fontSize: 24 } }}
@@ -141,7 +149,11 @@ export const MyVotingPowerCard = (props: CardProps) => {
         </CardContent>
       ) : (
         <CardContent>
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Connect your wallet to see your voting power',
             })}

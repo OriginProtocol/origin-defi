@@ -68,7 +68,13 @@ export const WsuperOethHistoryCard = () => {
           defaultMessage: 'wsuperOETHb Transactions',
         })}
         action={
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
             <FiltersButton
               filters={filters}
               setFilters={setFilters}
@@ -187,7 +193,13 @@ function HistoryTable({ rows }: HistoryTableProps) {
       columnHelper.accessor('type', {
         cell: (info) => {
           return (
-            <Stack direction="row" alignItems="center" gap={1.5}>
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+                gap: 1.5,
+              }}
+            >
               <TransactionIcon
                 type={info.row.original.type}
                 token={tokens.base.wsuperOETHb}
@@ -196,10 +208,19 @@ function HistoryTable({ rows }: HistoryTableProps) {
                 }}
               />
               <Stack spacing={0.5}>
-                <Typography fontWeight="medium">
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                  }}
+                >
                   {intl.formatMessage(typeLabels[info.row.original.type])}
                 </Typography>
-                <Typography color="text.secondary" variant="caption1">
+                <Typography
+                  variant="caption1"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatDate(new Date(info.row.original.timestamp), {
                     dateStyle: 'short',
                     timeStyle: 'short',
@@ -308,7 +329,12 @@ function HistoryTable({ rows }: HistoryTableProps) {
           ))}
         </TableBody>
       </Table>
-      <Stack alignItems="center" justifyContent="center">
+      <Stack
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <TablePagination
           table={table}
           disableScrollToTop

@@ -22,7 +22,17 @@ export const InfoTooltipLabel = ({
   ...rest
 }: InfoTooltipLabelProps) => {
   return (
-    <Stack direction="row" alignItems="center" spacing={0.75} {...rest}>
+    <Stack
+      direction="row"
+      spacing={0.75}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {typeof children === 'string' ? (
         <Typography variant="inherit" {...labelProps}>
           {children}

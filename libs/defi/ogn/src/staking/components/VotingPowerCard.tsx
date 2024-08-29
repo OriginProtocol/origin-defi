@@ -72,11 +72,18 @@ export const VotingPowerCard = (props: CardProps) => {
         <CardContent>
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            mb={3}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 3,
+            }}
           >
-            <Typography variant="featured3" fontWeight="bold">
+            <Typography
+              variant="featured3"
+              sx={{
+                fontWeight: 'bold',
+              }}
+            >
               {formatAmount(
                 BigInt(user?.votingPower ?? '0'),
                 tokens.mainnet.xOGN.decimals,
@@ -84,7 +91,13 @@ export const VotingPowerCard = (props: CardProps) => {
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <TokenChip
                 token={tokens.mainnet.xOGN}
                 iconProps={{ sx: { fontSize: 24 } }}
@@ -136,7 +149,11 @@ export const VotingPowerCard = (props: CardProps) => {
         </CardContent>
       ) : (
         <CardContent>
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Connect your wallet to see your voting power',
             })}

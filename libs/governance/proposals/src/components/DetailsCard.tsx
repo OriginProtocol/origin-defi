@@ -57,7 +57,12 @@ export const DetailsCard = (props: CardProps) => {
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Details' })} />
       <Stack>
         <CardContent>
-          <Typography variant="h5" pb={3}>
+          <Typography
+            variant="h5"
+            sx={{
+              pb: 3,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Description' })}
           </Typography>
           <LoadingLabel
@@ -71,7 +76,12 @@ export const DetailsCard = (props: CardProps) => {
           </LoadingLabel>
         </CardContent>
         <CardContent>
-          <Typography variant="h5" pb={3}>
+          <Typography
+            variant="h5"
+            sx={{
+              pb: 3,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Details' })}
           </Typography>
           <Stack spacing={1}>
@@ -132,7 +142,12 @@ export const DetailsCard = (props: CardProps) => {
           </Stack>
         </CardContent>
         <CardContent>
-          <Typography variant="h5" pb={3}>
+          <Typography
+            variant="h5"
+            sx={{
+              pb: 3,
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Actions' })}
           </Typography>
           <Actions />
@@ -192,19 +207,23 @@ function Actions(props: StackProps) {
     <Stack {...props}>
       {isActionsLoading ? (
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="5rem"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '5rem',
+          }}
         >
           <CircularProgress size={20} />
         </Box>
       ) : isNilOrEmpty(actions) ? (
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="5rem"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '5rem',
+          }}
         >
           <Typography>
             {intl.formatMessage({ defaultMessage: 'No actions' })}
@@ -225,27 +244,35 @@ function Actions(props: StackProps) {
                   borderRight: 'none',
                   borderLeft: 'none',
                   borderColor: 'divider',
-                  ...props?.sx,
                 },
                 i === 0
                   ? {
                       borderTop: 'none',
                     }
                   : {
-                      borderTop: `1px solid ${theme.palette.divider}`,
+                      borderTop: (theme) =>
+                        `1px solid ${theme.palette.divider}`,
                     },
                 i === actions.length - 1
                   ? {
                       borderBottom: 'none',
                     }
                   : {
-                      borderBottom: `1px solid ${theme.palette.divider}`,
+                      borderBottom: (theme) =>
+                        `1px solid ${theme.palette.divider}`,
                     },
+                ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
               ]}
               disableGutters
             >
               <AccordionSummary sx={{ px: 0 }}>
-                <Grid2 container width={1} spacing={2}>
+                <Grid2
+                  container
+                  spacing={2}
+                  sx={{
+                    width: 1,
+                  }}
+                >
                   <Grid2 size={3}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}

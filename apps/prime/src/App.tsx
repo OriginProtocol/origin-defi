@@ -26,9 +26,18 @@ export const App = () => {
           trackEvent({ name: 'connect', connect_address, connect_wallet });
         }}
       >
-        <Stack minWidth={370} mb={5}>
+        <Stack
+          sx={{
+            minWidth: 370,
+            mb: 5,
+          }}
+        >
           <Topnav />
-          <Box px={{ xs: 2, md: 4 }}>
+          <Box
+            sx={{
+              px: { xs: 2, md: 4 },
+            }}
+          >
             <Grid2 container spacing={4}>
               <Grid2
                 sx={{ order: { xs: 2, md: 1 } }}
@@ -61,7 +70,11 @@ export const App = () => {
                   md: 3,
                 }}
               >
-                <Stack alignItems="flex-end">
+                <Stack
+                  sx={{
+                    alignItems: 'flex-end',
+                  }}
+                >
                   <ErrorBoundary
                     ErrorComponent={<ErrorCard />}
                     onError={trackSentryError}

@@ -78,7 +78,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
           {
             color: 'text.primary',
             svg: { ml: 0.75, width: 12, height: 12 },
-            ...rest?.sx,
           },
           open
             ? {
@@ -87,6 +86,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
             : {
                 backgroundColor: 'transparent',
               },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
         onClick={() => {
           navigate(`${route?.path ?? ''}/`);
@@ -124,7 +124,6 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
             color: 'text.primary',
             svg: { ml: 0.75, width: 12, height: 12 },
             whiteSpace: 'nowrap',
-            ...rest?.sx,
           },
           open
             ? {
@@ -133,6 +132,7 @@ const NavMenuItem = ({ route, ...rest }: NavMenuItemProps) => {
             : {
                 backgroundColor: 'transparent',
               },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
         ref={anchorEl}
         onMouseEnter={() => {
@@ -281,7 +281,11 @@ const ListMenuItem = ({ route, item, setOpen, ...rest }: ListMenuItemProps) => {
             },
       ]}
     >
-      <Typography fontWeight="medium">
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
         {intl.formatMessage(item.title)}
       </Typography>
       {!isNilOrEmpty(item?.href) && (

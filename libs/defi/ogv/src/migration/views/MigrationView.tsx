@@ -29,7 +29,11 @@ export const MigrationView = () => {
       />
       <PageSection>
         <MergerBanner />
-        <Stack pt={5}>
+        <Stack
+          sx={{
+            pt: 5,
+          }}
+        >
           {isConnected ? (
             <ErrorBoundary
               ErrorComponent={<ErrorCard />}

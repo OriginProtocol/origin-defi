@@ -112,7 +112,11 @@ export const UnstakeLockupModal = ({
             <FaCircleExclamationRegular
               sx={{ fontSize: 24, color: 'warning.dark' }}
             />
-            <Typography fontWeight="medium">
+            <Typography
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage(
                 {
                   defaultMessage: 'Penalty for early unlock: {penalty} OGN',
@@ -133,19 +137,48 @@ export const UnstakeLockupModal = ({
         <Stack
           sx={{ borderRadius: 3, border: '1px solid', borderColor: 'divider' }}
         >
-          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
-            <Typography variant="caption1" fontWeight="medium">
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              px: 3,
+              py: 2,
+            }}
+          >
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'OGN' })}
             </Typography>
-            <Typography variant="caption1" fontWeight="medium">
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Time remaining' })}
             </Typography>
-            <Typography variant="caption1" fontWeight="medium">
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Penalty' })}
             </Typography>
           </Stack>
           <Divider />
-          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
@@ -185,7 +218,13 @@ export const UnstakeLockupModal = ({
             })}
             labelProps={{ variant: 'mono' }}
             value={
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
                 <Typography>
                   {format(preview, getFormatPrecision(preview))}

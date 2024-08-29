@@ -73,12 +73,20 @@ export function Topnav(props: BoxProps) {
       >
         <Grid2 container sx={{ width: 1 }}>
           <Grid2 size={6}>
-            <Stack direction="row" alignItems="center" spacing={3}>
+            <Stack
+              direction="row"
+              spacing={3}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <Stack
                 direction="row"
                 component={RouterLink}
                 to="/"
-                justifyContent="flex-start"
+                sx={{
+                  justifyContent: 'flex-start',
+                }}
               >
                 <PrimeStake
                   sx={{
@@ -236,8 +244,24 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
   const { data: points, isLoading: isPointsLoading } = usePoints();
 
   return (
-    <Stack direction="row" alignItems="center" spacing={3} {...rest}>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
+    <Stack
+      direction="row"
+      spacing={3}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon
           token={tokens.mainnet.primeETH}
           sx={{ fontSize: iconSize }}
@@ -249,7 +273,13 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
           })}
         </LoadingLabel>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <PrimePoints sx={{ fontSize: iconSize }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
           {intl.formatNumber(+formatUnits(points?.xpPoints ?? 0n, 18), {
@@ -258,7 +288,13 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
           })}
         </LoadingLabel>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={0.5}>
+      <Stack
+        direction="row"
+        spacing={0.5}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <EigenPoints sx={{ fontSize: iconSize }} />
         <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
           {intl.formatNumber(+formatUnits(points?.elPoints ?? 0n, 18), {
@@ -346,10 +382,13 @@ const AccountPopoverButton = () => {
       >
         <Stack>
           <Stack
-            justifyContent="space-between"
-            alignItems="center"
             direction="row"
-            sx={{ px: 2, py: 1.5 }}
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              px: 2,
+              py: 1.5,
+            }}
           >
             <Typography>
               {intl.formatMessage({ defaultMessage: 'Account' })}
@@ -365,7 +404,12 @@ const AccountPopoverButton = () => {
           </Stack>
           <Divider />
           <Stack spacing={2} sx={{ px: 2, py: 3 }}>
-            <Stack direction="row" alignItems="center">
+            <Stack
+              direction="row"
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <WalletIcon
                 walletName={connector?.name}
                 sx={{ width: 20, height: 20, mr: 1.5 }}

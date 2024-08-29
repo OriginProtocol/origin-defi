@@ -67,7 +67,13 @@ export const ChainMenuButton = ({
         ref={anchorEl}
       >
         {isPending ? (
-          <Box display="flex" justifyContent="center" alignItems="center">
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <CircularProgress
               size={Math.max(20, iconSize - 6)}
               color="inherit"
@@ -111,9 +117,11 @@ export const ChainMenuButton = ({
           >
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
               useFlexGap
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
               {supportedChainNames[c.id].short}
               {c.id === chainId && (
@@ -125,9 +133,9 @@ export const ChainMenuButton = ({
         {isWrongChain && (
           <Stack
             direction="row"
-            alignItems="flex-start"
             spacing={0.75}
             sx={{
+              alignItems: 'flex-start',
               backgroundColor: 'warning.faded',
               p: 1,
               mt: 0.5,
@@ -153,9 +161,9 @@ export const ChainMenuButton = ({
         {!isConnected && (
           <Stack
             direction="row"
-            alignItems="flex-start"
             spacing={0.75}
             sx={{
+              alignItems: 'flex-start',
               backgroundColor: 'primary.faded',
               p: 1,
               mt: 0.5,

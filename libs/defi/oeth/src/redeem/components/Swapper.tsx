@@ -343,7 +343,12 @@ function SwapperWrapped({
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Redeem' })} />
       <Divider />
       <CardContent sx={{ display: 'flex', flexDirection: 'column', pb: 0 }}>
-        <Typography fontWeight="medium" mb={1.5}>
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+            mb: 1.5,
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Amount' })}
         </Typography>
         <TokenInput
@@ -367,24 +372,40 @@ function SwapperWrapped({
             borderColor: 'divider',
           }}
         />
-        <Typography fontWeight="medium" mb={1.5}>
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+            mb: 1.5,
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Duration' })}
         </Typography>
-        <Stack direction="row" spacing={2} mb={3}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            mb: 3,
+          }}
+        >
           <RedeemActionCard action="redeem-arm-oeth" sx={{ width: 1 }} />
           <RedeemActionCard
             action="redeem-vault-async-oeth"
             sx={{ width: 1 }}
           />
         </Stack>
-        <Typography fontWeight="medium" mb={1.5}>
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+            mb: 1.5,
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Receive amount' })}
         </Typography>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
             backgroundColor: 'background.highlight',
             p: 3,
             mb: 3,
@@ -393,7 +414,12 @@ function SwapperWrapped({
             borderColor: 'divider',
           }}
         >
-          <Stack spacing={1.5} overflow={'hidden'}>
+          <Stack
+            spacing={1.5}
+            sx={{
+              overflow: 'hidden',
+            }}
+          >
             <LoadingLabel
               isLoading={isSwapRoutesLoading}
               sWidth={60}
@@ -413,7 +439,13 @@ function SwapperWrapped({
               ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
             </LoadingLabel>
           </Stack>
-          <Stack direction="row" alignItems="center" spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <TokenButton token={tokenOut} disabled />
           </Stack>
         </Stack>
@@ -507,7 +539,13 @@ const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
   const claim = mul(gasPrice.gasCostUsd, 0.4);
 
   return (
-    <Stack direction="row" alignItems="center" spacing={0.75}>
+    <Stack
+      direction="row"
+      spacing={0.75}
+      sx={{
+        alignItems: 'center',
+      }}
+    >
       <Typography>${format(req, 2)}&nbsp;</Typography>
       <InfoTooltipLabel
         fontWeight="medium"

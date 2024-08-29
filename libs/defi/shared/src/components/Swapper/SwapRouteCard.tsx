@@ -91,12 +91,12 @@ export function SwapRouteCard({
           '&:hover': {
             borderColor: 'primary.main',
           },
-          ...rest?.sx,
         },
         isSelected && {
           borderColor: 'primary.main',
           backgroundColor: 'background.highlight',
         },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
       role="button"
       onClick={() => {
@@ -120,8 +120,20 @@ export function SwapRouteCard({
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>
       )}
-      <Stack height={1} useFlexGap>
-        <Stack direction="row" spacing={0.5} alignItems="center" mb={0.5}>
+      <Stack
+        useFlexGap
+        sx={{
+          height: 1,
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={0.5}
+          sx={{
+            alignItems: 'center',
+            mb: 0.5,
+          }}
+        >
           {isSwapRoutesLoading ? (
             <Skeleton variant="circular" width={20} height={20} />
           ) : (
@@ -181,11 +193,10 @@ export function SwapRouteCard({
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
+  sx: { justifyContent: 'space-between' },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { fontWeight: 'medium' },
+  valueProps: { sx: { fontWeight: 'medium' } },
 };

@@ -203,13 +203,35 @@ export const BridgeCard = () => {
       <Divider />
       <CardContent>
         <Stack spacing={2}>
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography variant="body2" fontWeight="medium">
+          <Stack
+            direction={'row'}
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'From' })}
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <NetworkIcon chainId={srcChain.id as SupportedChain} size={28} />
-              <Typography variant="body2" fontWeight="bold">
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 'bold',
+                }}
+              >
                 {srcChain.id === arbitrum.id ? 'Arbitrum' : srcChain.name}
               </Typography>
             </Stack>
@@ -239,13 +261,35 @@ export const BridgeCard = () => {
       <BridgeDivider />
       <CardContent>
         <Stack spacing={2}>
-          <Stack direction={'row'} alignItems={'center'} spacing={2}>
-            <Typography variant="body2" fontWeight="medium">
+          <Stack
+            direction={'row'}
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'To' })}
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <NetworkIcon chainId={dstChain.id as SupportedChain} size={28} />
-              <Typography variant="body2" fontWeight="bold">
+              <Typography
+                variant="body2"
+                sx={{
+                  fontWeight: 'bold',
+                }}
+              >
                 {dstChain.id === arbitrum.id ? 'Arbitrum' : dstChain.name}
               </Typography>
             </Stack>
@@ -370,9 +414,11 @@ export const BridgeCard = () => {
           />
           <Stack
             direction={'row'}
-            justifyContent={'center'}
-            alignItems={'center'}
             spacing={1}
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
           >
             <ChainlinkCCIP />
             <Box>
@@ -497,11 +543,10 @@ function createOptimisticTransferObject(
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
+  sx: { justifyContent: 'space-between' },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { fontWeight: 'medium' },
+  valueProps: { sx: { fontWeight: 'medium' } },
 };

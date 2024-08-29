@@ -10,6 +10,7 @@ import {
   LinearProgress,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import {
   SliderSwitch,
@@ -123,7 +124,13 @@ export const ProposalListCard = (props: CardProps) => {
           ))}
         </Stack>
       )}
-      <Stack justifyContent="center" alignItems="center" py={2}>
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          py: 2,
+        }}
+      >
         <Button
           variant="outlined"
           color="secondary"
@@ -156,18 +163,23 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
     <Stack
       role="button"
       onClick={handleClick}
-      p={3}
       {...rest}
-      sx={{
-        cursor: 'pointer',
-        ':hover': {
-          backgroundColor: (theme) => alpha(theme.palette.common.white, 0.01),
-          '.title': {
-            textDecoration: 'underline',
+      sx={[
+        {
+          p: 3,
+          cursor: 'pointer',
+
+          ':hover': {
+            backgroundColor: (theme) => alpha(theme.palette.common.white, 0.01),
+            '.title': {
+              textDecoration: 'underline',
+            },
           },
+
+          ...rest?.sx,
         },
-        ...rest?.sx,
-      }}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Grid2 container spacing={2}>
         <Grid2
@@ -183,17 +195,23 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               {proposal.type === 'snapshot' ? (
                 <Stack
                   direction="row"
-                  alignItems="center"
                   spacing={0.75}
                   sx={{
-                    border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                    alignItems: 'center',
+                    border: (theme) =>
+                      `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
                   }}
                 >
                   <Snapshot color="warning" sx={{ fontSize: 14 }} />
-                  <Typography variant="body2" color="warning.main">
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'warning.main',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Snapshot proposal',
                     })}
@@ -202,20 +220,27 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               ) : (
                 <Stack
                   direction="row"
-                  alignItems="center"
                   spacing={0.75}
                   sx={{
-                    border: `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
+                    alignItems: 'center',
+                    border: (theme) =>
+                      `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
+
                     svg: {
                       color: 'secondary.light',
                     },
                   }}
                 >
                   <FaLinkRegular sx={{ fontSize: 14 }} />
-                  <Typography variant="body2" color="secondary.light">
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      color: 'secondary.light',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'On-chain proposal',
                     })}
@@ -270,7 +295,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 />
               }
             >
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatDate(new Date(proposal.created), {
                   day: '2-digit',
                   month: 'short',
@@ -303,6 +333,7 @@ type VotesGaugeProps = {
 
 function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
   const intl = useIntl();
+  const theme = useTheme();
   const { formatAmount } = useFormat();
 
   const scoreVote = sort(
@@ -313,53 +344,57 @@ function VotesGauge({ choices, scores, ...rest }: VotesGaugeProps) {
 
   return (
     <Stack {...rest} spacing={3}>
-      {take(2, scoreVote).map((c) => (
-        <Stack key={c[0]} spacing={1}>
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            spacing={1}
-          >
-            <TooltipLabel color="text.secondary" noWrap>
-              {`${c[0]}:`}
-            </TooltipLabel>
-            <Typography>
-              {formatAmount(c[1], tokens.mainnet.veOGV.decimals, undefined, {
-                notation: 'compact',
-                maximumSignificantDigits: 4,
-              })}
-              &nbsp;{tokens.mainnet.veOGV.symbol}
-            </Typography>
-          </Stack>
-          <LinearProgress
-            value={(c[1] / total) * 100}
-            variant="determinate"
-            sx={[
-              {
-                borderRadius: 1,
-                backgroundColor: 'grey.600',
-              },
-              c[0] === 'For'
-                ? {
-                    '.MuiLinearProgress-bar': {
-                      backgroundColor: theme.palette.success.main,
-                    },
-                  }
-                : {
-                    '.MuiLinearProgress-bar': {
-                      backgroundColor:
-                        c[0] === 'Against'
-                          ? theme.palette.error.main
-                          : theme.palette.info.main,
-                    },
+      {take(2, scoreVote).map((c) => {
+        const progressColor =
+          {
+            For: theme.palette.success.main,
+            Against: theme.palette.error.main,
+          }[c[0] as string] ?? theme.palette.primary.main;
+
+        return (
+          <Stack key={c[0]} spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
+            >
+              <TooltipLabel color="text.secondary" noWrap>
+                {`${c[0]}:`}
+              </TooltipLabel>
+              <Typography>
+                {formatAmount(c[1], tokens.mainnet.veOGV.decimals, undefined, {
+                  notation: 'compact',
+                  maximumSignificantDigits: 4,
+                })}
+                &nbsp;{tokens.mainnet.veOGV.symbol}
+              </Typography>
+            </Stack>
+            <LinearProgress
+              value={(c[1] / total) * 100}
+              variant="determinate"
+              sx={[
+                {
+                  borderRadius: 1,
+                  backgroundColor: 'grey.600',
+                  '.MuiLinearProgress-bar': {
+                    backgroundColor: progressColor,
                   },
-            ]}
-          />
-        </Stack>
-      ))}
+                },
+              ]}
+            />
+          </Stack>
+        );
+      })}
       {scoreVote.length > 2 && (
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage(
             {
               defaultMessage:

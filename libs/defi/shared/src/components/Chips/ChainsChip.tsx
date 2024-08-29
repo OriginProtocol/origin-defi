@@ -21,10 +21,21 @@ export const ChainsChip = ({
 
   return (
     <ColorChip spacing={1.5} {...rest}>
-      <Typography variant="caption1" color="primary.light">
+      <Typography
+        variant="caption1"
+        sx={{
+          color: 'primary.light',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Available on' })}
       </Typography>
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {chainIds.map((id) => (
           <NetworkIcon
             key={id}

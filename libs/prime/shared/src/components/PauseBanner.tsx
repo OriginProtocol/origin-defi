@@ -17,7 +17,12 @@ export const PauseBanner = () => {
         color: 'common.white',
       }}
     >
-      <Grid2 container rowGap={2}>
+      <Grid2
+        container
+        sx={{
+          rowGap: 2,
+        }}
+      >
         <Grid2
           sx={{
             display: 'flex',
@@ -44,15 +49,22 @@ export const PauseBanner = () => {
             sx={{ alignItems: { xs: 'center', md: 'flex-start' }, gap: 0.5 }}
           >
             <Typography
-              fontSize={{ xs: 20, md: 24 }}
-              fontWeight="medium"
               noWrap
+              sx={{
+                fontSize: { xs: 20, md: 24 },
+                fontWeight: 'medium',
+              }}
             >
               {intl.formatMessage({
                 defaultMessage: 'Native ETH Restaking is Live!',
               })}
             </Typography>
-            <Typography fontSize={{ xs: 14, md: 18 }} noWrap>
+            <Typography
+              noWrap
+              sx={{
+                fontSize: { xs: 14, md: 18 },
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage:
                   'Earn Boosted EigenLayer points and maximize your XP',

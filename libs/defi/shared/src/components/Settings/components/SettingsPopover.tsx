@@ -69,7 +69,13 @@ export const SettingsPopover = (
         >
           {intl.formatMessage({ defaultMessage: 'Max slippage' })}
         </InfoTooltipLabel>
-        <Stack direction="row" alignItems="center" spacing={2}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <SliderSwitch
             options={options}
             value={option}
@@ -100,9 +106,9 @@ export const SettingsPopover = (
         <Collapse in={value > WARNING_THRESHOLD}>
           <Stack
             direction="row"
-            alignItems="center"
             spacing={1}
             sx={{
+              alignItems: 'center',
               backgroundColor: 'warning.faded',
               p: 1,
               mt: 2,
@@ -114,7 +120,11 @@ export const SettingsPopover = (
             <FaCircleExclamationRegular
               sx={{ color: 'warning.main', fontSize: 18 }}
             />
-            <Typography color="warning.dark">
+            <Typography
+              sx={{
+                color: 'warning.dark',
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: 'Your transaction may be frontrun',
               })}

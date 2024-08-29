@@ -63,9 +63,11 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
       >
         <Typography
           component="span"
-          sx={{ flex: 1 }}
           variant="body2"
-          color="text.secondary"
+          sx={{
+            color: 'text.secondary',
+            flex: 1,
+          }}
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
@@ -81,7 +83,12 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
           px: 0,
         }}
       >
-        <Stack gap={0.25} mt={1.5}>
+        <Stack
+          sx={{
+            gap: 0.25,
+            mt: 1.5,
+          }}
+        >
           {estimatedSwapRoutes.slice(2).map((route, index) => (
             <SwapRouteAccordionItem
               key={`route-${index}`}

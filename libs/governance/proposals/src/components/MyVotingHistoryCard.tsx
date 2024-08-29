@@ -80,7 +80,11 @@ export const MyVotingHistoryCard = (props: CardProps) => {
               p: 3,
             }}
           >
-            <Typography color="text.secondary">
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No votes' })}
             </Typography>
           </Stack>
@@ -92,7 +96,13 @@ export const MyVotingHistoryCard = (props: CardProps) => {
                 <VoteHistory key={vote.id} vote={vote as any} />
               ))}
             </Stack>
-            <Stack justifyContent="center" alignItems="center" py={2}>
+            <Stack
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                py: 2,
+              }}
+            >
               <Button
                 variant="outlined"
                 color="secondary"
@@ -114,7 +124,11 @@ export const MyVotingHistoryCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Connect wallet to view' })}
           </Typography>
         </Stack>
@@ -156,12 +170,33 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
   }[vote.choice] ?? <Snapshot color="warning" sx={{ fontSize: 14 }} />;
 
   return (
-    <Stack spacing={1.5} px={3} py={1.5} {...rest}>
-      <Stack direction="row" spacing={2} alignItems="center">
+    <Stack
+      spacing={1.5}
+      {...rest}
+      sx={[
+        {
+          px: 3,
+          py: 1.5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={tokens.mainnet.OETH} />
         <StatusBadge status={vote?.proposal?.status} />
         {vote.proposal.type === 'snapshot' && (
-          <Typography variant="body2" color="warning.main">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'warning.main',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Snapshot' })}
           </Typography>
         )}
@@ -189,8 +224,19 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
           {vote?.proposal?.title}
         </TooltipLabel>
       </MuiLink>
-      <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="body2" color="text.secondary">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatDate(new Date(vote.created), {
             day: '2-digit',
             month: 'short',
@@ -200,8 +246,10 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
         <Stack
           direction="row"
           spacing={1}
-          alignItems="center"
-          justifyContent="flex-end"
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+          }}
         >
           {icon}&nbsp;
           <TooltipLabel noWrap variant="body2" maxWidth={120} maxChars={20}>

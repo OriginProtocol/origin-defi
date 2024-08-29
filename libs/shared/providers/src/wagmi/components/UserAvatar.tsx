@@ -31,7 +31,17 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
 
   if (isNilOrEmpty(adr)) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" {...rest}>
+      <Box
+        {...rest}
+        sx={[
+          {
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+        ]}
+      >
         <FaUserRegular sx={{ fontSize: rest?.width ?? 24 }} />
       </Box>
     );
@@ -40,30 +50,40 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   if (ensAvatar) {
     return (
       <Box
-        borderRadius="50%"
         {...rest}
-        width={rest?.width ?? 24}
-        height={rest?.width ?? 24}
         component="img"
         src={ensAvatar}
+        sx={[
+          {
+            borderRadius: '50%',
+            width: rest?.width ?? 24,
+            height: rest?.width ?? 24,
+          },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+        ]}
       />
     );
   }
 
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
       {...rest}
-      sx={{
-        'svg, img': {
-          borderRadius: '50%',
-          width: rest?.width ?? 24,
-          height: rest?.width ?? 24,
+      sx={[
+        {
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+
+          'svg, img': {
+            borderRadius: '50%',
+            width: rest?.width ?? 24,
+            height: rest?.width ?? 24,
+          },
+
+          ...rest?.sx,
         },
-        ...rest?.sx,
-      }}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Jazzicon
         diameter={rest?.width ?? 24}

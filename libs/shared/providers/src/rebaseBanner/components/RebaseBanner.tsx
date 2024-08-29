@@ -23,18 +23,25 @@ export const RebaseBanner = (props: StackProps) => {
       {...props}
       direction={{ xs: 'column', md: 'row' }}
       spacing={{ xs: 1, md: 3 }}
-      sx={(theme) => ({
-        backgroundColor: theme.palette.secondary.main,
-        color: 'text.primary',
-        p: { xs: 1.5, md: 1 },
-        alignItems: 'center',
-        justifyContent: 'center',
-        overflow: 'hidden',
-        ...props?.sx,
-      })}
+      sx={[
+        {
+          backgroundColor: 'secondary.main',
+          color: 'text.primary',
+          p: { xs: 1.5, md: 1 },
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflow: 'hidden',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <PoweredBySafe sx={{ height: 20 }} />
-      <Typography textAlign="center" noWrap={!isSmall}>
+      <Typography
+        noWrap={!isSmall}
+        sx={{
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({
           defaultMessage:
             'It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield.',

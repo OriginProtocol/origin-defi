@@ -98,45 +98,79 @@ function TokenListItem({ token, ...rest }: TokenListItemProps) {
     <MenuItem
       {...rest}
       disabled={token.isSelected}
-      sx={(theme) => ({
-        display: 'flex',
-        paddingInline: 2,
-        paddingBlock: 1,
-        justifyContent: 'space-between',
-        gap: 1.5,
-        alignItems: 'center',
-        background: theme.palette.background.paper,
-        borderRadius: 1,
-        '&:hover': {
-          background: theme.palette.action.hover,
+      sx={[
+        {
+          display: 'flex',
+          paddingInline: 2,
+          paddingBlock: 1,
+          justifyContent: 'space-between',
+          gap: 1.5,
+          alignItems: 'center',
+          background: 'background.paper',
+          borderRadius: 1,
+          '&:hover': {
+            background: 'action.hover',
+          },
         },
-        ...rest?.sx,
-      })}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
-      <Stack direction="row" gap={1.5} alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          gap: 1.5,
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
         <Box>
-          <Typography fontWeight={500}>{token?.name}</Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography
+            sx={{
+              fontWeight: 500,
+            }}
+          >
+            {token?.name}
+          </Typography>
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {token.symbol}
           </Typography>
         </Box>
       </Stack>
       <Stack direction="row" spacing={2}>
         {token?.isSelected && (
-          <Stack display="flex" justifyContent="center" alignItems="center">
+          <Stack
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <FaCheckRegular sx={{ color: '#fff', fontSize: 16 }} />
           </Stack>
         )}
         <Box sx={{ textAlign: 'right' }}>
-          <Typography fontWeight={500}>
+          <Typography
+            sx={{
+              fontWeight: 500,
+            }}
+          >
             {isBalanceLoading ? (
               <Skeleton width={30} />
             ) : (
               format(bal, balDigits)
             )}
           </Typography>
-          <Typography color="text.secondary" variant="body2">
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             ${format(balUsd, 2)}
           </Typography>
         </Box>

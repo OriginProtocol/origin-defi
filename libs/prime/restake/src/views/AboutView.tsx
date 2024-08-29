@@ -15,7 +15,11 @@ export const AboutView = () => {
       <Divider />
       <Breakdown />
       <Divider />
-      <Stack p={3}>
+      <Stack
+        sx={{
+          p: 3,
+        }}
+      >
         <Button
           component={RouterLink}
           to="withdraw"
@@ -33,14 +37,33 @@ const MigrationDisclaimer = (props: StackProps) => {
   const intl = useIntl();
 
   return (
-    <Stack alignItems="center" p={3} {...props}>
+    <Stack
+      {...props}
+      sx={[
+        {
+          alignItems: 'center',
+          p: 3,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <YieldNestInverted sx={{ fontSize: 110 }} />
-      <Typography my={2} variant="h4" textAlign="center">
+      <Typography
+        variant="h4"
+        sx={{
+          my: 2,
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({
           defaultMessage: `ynLSDe migration is live!`,
         })}
       </Typography>
-      <Typography textAlign="center">
+      <Typography
+        sx={{
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({
           defaultMessage: `PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below. `,
         })}
@@ -82,8 +105,22 @@ const Breakdown = (props: StackProps) => {
   ];
 
   return (
-    <Stack p={3} {...props}>
-      <Typography mb={2} fontWeight="medium" color="text.secondary">
+    <Stack
+      {...props}
+      sx={[
+        {
+          p: 3,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <Typography
+        sx={{
+          mb: 2,
+          fontWeight: 'medium',
+          color: 'text.secondary',
+        }}
+      >
         {intl.formatMessage({
           defaultMessage: `Withdrawal Process Breakdown`,
         })}
@@ -115,7 +152,17 @@ const BreakDownRow = ({
   ...rest
 }: BreakDownRowProps) => {
   return (
-    <Stack direction="row" alignItems="flex-start" spacing={2} {...rest}>
+    <Stack
+      direction="row"
+      spacing={2}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'flex-start',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Box
         sx={{
           display: 'flex',
@@ -133,7 +180,13 @@ const BreakDownRow = ({
       </Box>
       <Stack spacing={0.5}>
         <Typography variant="h6">{title}</Typography>
-        <Typography color="text.secondary">{subtitle}</Typography>
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
+          {subtitle}
+        </Typography>
       </Stack>
     </Stack>
   );

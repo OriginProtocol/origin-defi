@@ -59,12 +59,21 @@ export const StatusCard = (props: CardProps) => {
               width: 1,
             }}
           >
-            <Typography color="text.secondary">
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No activity' })}
             </Typography>
           </Stack>
         ) : (
-          <Stack position="relative" spacing={3}>
+          <Stack
+            spacing={3}
+            sx={{
+              position: 'relative',
+            }}
+          >
             {events?.map((event) => <EventItem key={event.id} event={event} />)}
             {(events?.length ?? 0) > 1 && (
               <Box
@@ -92,7 +101,17 @@ function EventItem({ event, ...rest }: EventItemProps) {
   const intl = useIntl();
 
   return (
-    <Stack {...rest} direction="row" spacing={2} alignItems="center">
+    <Stack
+      {...rest}
+      direction="row"
+      spacing={2}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Box
         sx={{
           border: '2px solid',
@@ -112,7 +131,12 @@ function EventItem({ event, ...rest }: EventItemProps) {
             {event?.event}
           </ExternalLink>
         )}
-        <Typography variant="caption1" color="text.secondary">
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatDate(new Date(event.timestamp), {
             day: '2-digit',
             month: 'short',

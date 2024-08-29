@@ -15,7 +15,17 @@ export const SectionTitle = ({
   ...rest
 }: SectionTitleProps) => {
   return (
-    <Stack direction="row" alignItems="center" spacing={1} {...rest}>
+    <Stack
+      direction="row"
+      spacing={1}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Box
         sx={{
           borderRadius: '50%',

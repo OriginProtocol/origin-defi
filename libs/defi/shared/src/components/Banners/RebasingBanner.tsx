@@ -50,7 +50,12 @@ export const RebasingBanner = ({ token, ...rest }: RebasingBannerProps) => {
         }}
       >
         <TokenIcon token={token} sx={{ fontSize: 36 }} />
-        <Typography textAlign="center" noWrap={!isSmall}>
+        <Typography
+          noWrap={!isSmall}
+          sx={{
+            textAlign: 'center',
+          }}
+        >
           {intl.formatMessage({
             defaultMessage:
               'It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield.',

@@ -22,7 +22,13 @@ export const SectionCard = ({
 }: SectionCardProps) => {
   return (
     <Stack spacing={1.5} {...rest}>
-      <Stack direction="row" alignItems="center" spacing={0.75}>
+      <Stack
+        direction="row"
+        spacing={0.75}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {typeof title === 'string' ? (
           <Typography {...titleProps}>{title}</Typography>
         ) : (

@@ -406,12 +406,19 @@ function SwapperWrapped({
         >
           <Stack
             direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            py={3}
-            px={3}
+            sx={{
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              py: 3,
+              px: 3,
+            }}
           >
-            <Typography color="text.secondary" fontWeight="medium">
+            <Typography
+              sx={{
+                color: 'text.secondary',
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage(
                 {
                   defaultMessage: 'Minimum received with {slippage} slippage:',
@@ -425,7 +432,13 @@ function SwapperWrapped({
                 },
               )}
             </Typography>
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Stack
+              direction="row"
+              spacing={0.5}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <LoadingLabel
                 isLoading={isSwapRoutesLoading}
                 sWidth={60}
@@ -436,7 +449,13 @@ function SwapperWrapped({
                   decimalsRounding: 'ROUND_DOWN',
                 })}
               </LoadingLabel>
-              <Typography fontWeight="medium">{tokenOut.symbol}</Typography>
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
+                {tokenOut.symbol}
+              </Typography>
             </Stack>
           </Stack>
         </Collapse>

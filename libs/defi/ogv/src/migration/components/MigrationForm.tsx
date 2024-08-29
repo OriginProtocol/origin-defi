@@ -121,7 +121,12 @@ export const MigrationForm = (props: StackProps) => {
             md: 7,
           }}
         >
-          <Typography variant="featured3" fontWeight="medium">
+          <Typography
+            variant="featured3"
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Select which balances you wish to convert',
             })}
@@ -147,9 +152,6 @@ export const MigrationForm = (props: StackProps) => {
                   }}
                 />
               }
-              componentsProps={{
-                typography: { variant: 'featured2', fontWeight: 'bold' },
-              }}
               label={intl.formatNumber(
                 +formatUnits(
                   info?.ogvBalance ?? 0n,
@@ -158,6 +160,9 @@ export const MigrationForm = (props: StackProps) => {
                 { notation: 'compact', maximumSignificantDigits: 4 },
               )}
               disabled={isInfoLoading || info?.ogvBalance === 0n}
+              slotProps={{
+                typography: { variant: 'featured2', fontWeight: 'bold' },
+              }}
             />
             <TokenChip
               token={tokens.mainnet.OGV}
@@ -188,14 +193,14 @@ export const MigrationForm = (props: StackProps) => {
                   }}
                 />
               }
-              componentsProps={{
-                typography: { variant: 'featured2', fontWeight: 'bold' },
-              }}
               label={formatAmount(
                 info?.veOgvRewards ?? 0n,
                 tokens.mainnet.OGV.decimals,
               )}
               disabled={isInfoLoading || info?.veOgvRewards === 0n}
+              slotProps={{
+                typography: { variant: 'featured2', fontWeight: 'bold' },
+              }}
             />
             <TokenChip
               token={tokens.mainnet.OGV}
@@ -267,8 +272,18 @@ function LockupsList({
 
   if (isNilOrEmpty(lockups)) {
     return (
-      <Stack justifyContent="center" alignItems="center" p={3}>
-        <Typography color="text.secondary">
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          p: 3,
+        }}
+      >
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'No lockups to convert' })}
         </Typography>
       </Stack>
@@ -276,11 +291,23 @@ function LockupsList({
   }
 
   return (
-    <Stack {...rest} flexGrow={1} divider={<Divider flexItem />}>
+    <Stack
+      {...rest}
+      divider={<Divider flexItem />}
+      sx={[
+        {
+          flexGrow: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Stack
         direction="row"
-        alignItems="center"
-        sx={{ p: 2, '> *': { color: 'text.secondary' } }}
+        sx={{
+          alignItems: 'center',
+          p: 2,
+          '> *': { color: 'text.secondary' },
+        }}
       >
         <FormControlLabel
           control={
@@ -324,7 +351,18 @@ function LockupRow({
 }: LockupRowProps) {
   const { formatAmount } = useFormat();
   return (
-    <Stack direction="row" px={2} py={1} alignItems="center" {...rest}>
+    <Stack
+      direction="row"
+      {...rest}
+      sx={[
+        {
+          px: 2,
+          py: 1,
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <FormControlLabel
         control={
           <Checkbox
@@ -334,9 +372,6 @@ function LockupRow({
             }}
           />
         }
-        componentsProps={{
-          typography: { fontWeight: 'bold' },
-        }}
         label={formatAmount(
           BigInt(lockup.amount),
           tokens.mainnet.OGV.decimals,
@@ -344,6 +379,9 @@ function LockupRow({
           { minimumFractionDigits: 3, maximumFractionDigits: 3 },
         )}
         sx={{ width: 0.5, m: 0, gap: 3 }}
+        slotProps={{
+          typography: { fontWeight: 'bold' },
+        }}
       />
       <Typography sx={{ textAlign: 'end', width: 0.5 }}>
         {formatDistanceToNowStrict(new Date(lockup.end), {
@@ -375,11 +413,18 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
       <CardContent>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           spacing={1}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
         >
-          <Typography variant="featured2" fontWeight="bold">
+          <Typography
+            variant="featured2"
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {intl.formatNumber(
               +formatUnits(ogv ?? 0n, tokens.mainnet.OGV.decimals),
             )}
@@ -400,9 +445,19 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
             label={intl.formatMessage({ defaultMessage: 'You will get:' })}
             labelProps={{ variant: 'body3' }}
             value={
-              <Stack direction="row" alignItems="center" spacing={0.75}>
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <TokenIcon token={tokens.mainnet.OGN} sx={{ fontSize: 20 }} />
-                <Typography fontWeight="medium">
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                  }}
+                >
                   {intl.formatNumber(converted)}
                 </Typography>
               </Stack>

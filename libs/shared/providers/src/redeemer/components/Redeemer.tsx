@@ -202,22 +202,27 @@ function ArrowButton(props: BoxProps) {
   return (
     <Box
       {...props}
-      sx={(theme) => ({
-        position: 'absolute',
-        borderRadius: '50%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        top: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
-        left: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
-        width: { md: 40, xs: 36 },
-        height: { md: 40, xs: 36 },
-        zIndex: 2,
-        backgroundColor: theme.palette.background.paper,
-        border: '1px solid',
-        borderColor: 'divider',
-        ...props?.sx,
-      })}
+      sx={[
+        {
+          position: 'absolute',
+          borderRadius: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          top: { md: `calc(50% - ${40 / 2}px)`, xs: `calc(50% - ${36 / 2}px)` },
+          left: {
+            md: `calc(50% - ${40 / 2}px)`,
+            xs: `calc(50% - ${36 / 2}px)`,
+          },
+          width: { md: 40, xs: 36 },
+          height: { md: 40, xs: 36 },
+          zIndex: 2,
+          backgroundColor: 'background.paper',
+          border: '1px solid',
+          borderColor: 'divider',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <ArrowDown
         sx={{

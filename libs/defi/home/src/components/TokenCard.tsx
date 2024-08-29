@@ -72,31 +72,49 @@ export const TokenCard = ({
     <Stack
       {...rest}
       direction={{ xs: 'column', md: 'row' }}
-      alignItems={{ xs: 'stretch', md: 'center' }}
-      justifyContent={{ xs: 'stretch', md: 'space-between' }}
       spacing={{ xs: 1, md: 3 }}
-      sx={{
-        py: 2,
-        px: 3,
-        color: 'text.primary',
-        backgroundColor: 'background.highlight',
-        [theme.breakpoints.up('md')]: {
-          '>*': {
-            width: 1,
+      sx={[
+        {
+          alignItems: { xs: 'stretch', md: 'center' },
+          justifyContent: { xs: 'stretch', md: 'space-between' },
+          py: 2,
+          px: 3,
+          color: 'text.primary',
+          backgroundColor: 'background.highlight',
+
+          [theme.breakpoints.up('md')]: {
+            '>*': {
+              width: 1,
+            },
           },
+
+          ...rest?.sx,
         },
-        ...rest?.sx,
-      }}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Stack
-        justifyContent={{ xs: 'space-between', md: 'flex-start' }}
-        alignItems="center"
         direction={{ xs: 'row-reverse', md: 'row' }}
         spacing={2}
+        sx={{
+          justifyContent: { xs: 'space-between', md: 'flex-start' },
+          alignItems: 'center',
+        }}
       >
         <TokenIcon token={token} showNetwork sx={{ fontSize: 40 }} />
-        <Stack height={1} justifyContent="center">
-          <Typography variant="body2" fontWeight="bold" noWrap>
+        <Stack
+          sx={{
+            height: 1,
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="body2"
+            noWrap
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
             {token.name}
           </Typography>
           <Typography variant="caption1" noWrap>
@@ -106,15 +124,23 @@ export const TokenCard = ({
       </Stack>
       <Stack
         direction="row"
-        alignItems="center"
-        mb={{ xs: 0.5, md: 0 }}
-        pl={{ xs: 0, md: 2 }}
-        minWidth={140}
+        sx={{
+          alignItems: 'center',
+          mb: { xs: 0.5, md: 0 },
+          pl: { xs: 0, md: 2 },
+          minWidth: 140,
+        }}
       >
         {isComingSoon ? (
           <ComingSoonAPY />
         ) : (
-          <Stack direction="row" alignItems="baseline" spacing={1}>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'baseline',
+            }}
+          >
             <LoadingLabel
               isLoading={isApyLoading && !isComingSoon}
               variant="featured2"
@@ -166,9 +192,11 @@ export const TokenCard = ({
             {!disabled && (
               <Typography
                 variant="caption1"
-                color="primary.contrastText"
                 noWrap
-                sx={
+                sx={[
+                  {
+                    color: 'primary.contrastText',
+                  },
                   isFancy
                     ? {
                         background: (theme) =>
@@ -176,8 +204,8 @@ export const TokenCard = ({
                         backgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
                       }
-                    : { color: 'primary.main' }
-                }
+                    : { color: 'primary.main' },
+                ]}
               >
                 {apyLabel}
               </Typography>
@@ -187,8 +215,10 @@ export const TokenCard = ({
       </Stack>
       <Stack
         direction={{ xs: 'row', md: 'column' }}
-        alignItems={{ xs: 'baseline', md: 'flex-start' }}
         spacing={{ xs: 1, md: 0 }}
+        sx={{
+          alignItems: { xs: 'baseline', md: 'flex-start' },
+        }}
       >
         <Typography variant="caption1">
           {intl.formatMessage({ defaultMessage: 'TVL' })}
@@ -196,9 +226,11 @@ export const TokenCard = ({
         </Typography>
         <Stack
           direction={{ xs: 'row', md: 'column' }}
-          alignItems={{ xs: 'baseline', md: 'flex-start' }}
-          flexWrap="nowrap"
           spacing={{ xs: 0.5, md: 0 }}
+          sx={{
+            alignItems: { xs: 'baseline', md: 'flex-start' },
+            flexWrap: 'nowrap',
+          }}
         >
           <LoadingLabel
             fontSize={(theme) => ({
@@ -266,7 +298,12 @@ export const TokenCard = ({
           isLoading={isInfoLoading && !disabled}
         />
       )}
-      <Stack justifyContent="center" pt={{ xs: 2, md: 0 }}>
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          pt: { xs: 2, md: 0 },
+        }}
+      >
         {!!href && (
           <Button
             component={RouterLink}
@@ -307,17 +344,21 @@ export const TokenCard = ({
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: { xs: 'row', md: 'column' },
-  alignItems: { xs: 'center', md: 'flex-end' },
-  justifyContent: { xs: 'space-between', md: 'center' },
+  sx: {
+    alignItems: { xs: 'center', md: 'flex-end' },
+    justifyContent: { xs: 'space-between', md: 'center' },
+  },
   spacing: 0.5,
   labelProps: { variant: 'caption1', noWrap: true },
   valueProps: {
-    fontWeight: 'medium',
     noWrap: true,
-    fontSize: (theme) => ({
-      xs: theme.typography.caption1.fontSize,
-      md: theme.typography.body3.fontSize,
-    }),
+    sx: {
+      fontWeight: 'medium',
+      fontSize: (theme) => ({
+        xs: theme.typography.caption1.fontSize,
+        md: theme.typography.body3.fontSize,
+      }),
+    },
   },
 };
 
@@ -325,8 +366,21 @@ function ComingSoonAPY(props: StackProps) {
   const intl = useIntl();
 
   return (
-    <Stack alignItems="flex-start" {...props}>
-      <Stack direction="row" alignItems="center">
+    <Stack
+      {...props}
+      sx={[
+        {
+          alignItems: 'flex-start',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <NumberSpinner height={32} typographyProps={textProps} />
         <NumberSpinner height={32} duration={1.5} typographyProps={textProps} />
         <Typography {...textProps}>.</Typography>

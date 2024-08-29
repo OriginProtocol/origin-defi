@@ -39,21 +39,29 @@ export const ErrorCard = ({
       }}
     >
       <Typography
-        pb={3}
-        sx={(theme) => ({
-          fontSize: 20,
-          fontWeight: 800,
-          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        })}
+        sx={[
+          {
+            pb: 3,
+          },
+          (theme) => ({
+            fontSize: 20,
+            fontWeight: 800,
+            background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }),
+        ]}
       >
         {title ??
           intl.formatMessage({
             defaultMessage: 'Unhandled Error!',
           })}
       </Typography>
-      <Typography pb={2}>
+      <Typography
+        sx={{
+          pb: 2,
+        }}
+      >
         {subtitle ??
           intl.formatMessage({
             defaultMessage:
@@ -74,7 +82,9 @@ export const ErrorCard = ({
                   href={DISCORD_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  color="primary.main"
+                  sx={{
+                    color: 'primary.main',
+                  }}
                 >
                   {intl.formatMessage({
                     defaultMessage: 'Discord support channel',

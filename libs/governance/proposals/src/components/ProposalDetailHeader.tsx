@@ -49,7 +49,17 @@ export const ProposalDetailHeader = (props: StackProps) => {
   );
 
   return (
-    <Stack alignItems="flex-start" spacing={4} py={{ xs: 3, sm: 5 }} {...props}>
+    <Stack
+      spacing={4}
+      {...props}
+      sx={[
+        {
+          alignItems: 'flex-start',
+          py: { xs: 3, sm: 5 },
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <Button
         variant="text"
         onClick={handleBack}
@@ -63,7 +73,13 @@ export const ProposalDetailHeader = (props: StackProps) => {
         <FaChevronLeftRegular sx={{ fontSize: 10 }} />
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={tokens.mainnet.OETH} />
         <StatusBadge
           status={proposal?.ogvProposalById?.status}
@@ -112,8 +128,18 @@ export const ProposalDetailHeader = (props: StackProps) => {
           <FaArrowUpRightRegular />
         </Button>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography color="text.secondary">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage(
             { defaultMessage: '{event} {date}' },
             {
@@ -130,7 +156,11 @@ export const ProposalDetailHeader = (props: StackProps) => {
             ml: 2,
           }}
         />
-        <Typography color="text.secondary">
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Proposed by' })}
         </Typography>
         <UserAvatar address={proposer} width={20} />

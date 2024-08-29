@@ -40,7 +40,13 @@ export const MyVotingPowerCard = (props: CardProps) => {
           isLoading={isInfoLoading || isUserLoading}
           value={
             isConnected ? (
-              <Stack direction="row" alignItems="baseline" spacing={0.75}>
+              <Stack
+                direction="row"
+                spacing={0.75}
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ width: 26, transform: 'translateY(4px)' }}
@@ -53,7 +59,12 @@ export const MyVotingPowerCard = (props: CardProps) => {
                     { notation: 'compact', maximumSignificantDigits: 4 },
                   )}
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {percent <= 1e-6 && percent > 0 && `~ `}
                   {intl.formatMessage(
                     {

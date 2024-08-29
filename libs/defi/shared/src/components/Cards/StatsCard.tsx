@@ -37,7 +37,12 @@ export const StatsCard = ({ token, ...rest }: StatsCardProps) => {
 
   return (
     <Card {...rest} sx={{ backgroundColor: 'background.default', ...rest?.sx }}>
-      <Stack direction="row" justifyContent="space-between">
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+        }}
+      >
         <ValueLabel
           {...valueLabelProps}
           label={intl.formatMessage(
@@ -71,6 +76,6 @@ export const StatsCard = ({ token, ...rest }: StatsCardProps) => {
 };
 
 const valueLabelProps: Partial<ValueLabelProps> = {
-  valueProps: { variant: 'featured2', fontWeight: 'bold' },
+  valueProps: { variant: 'featured2', sx: { fontWeight: 'bold' } },
   sx: { width: 1, alignItems: 'center', p: 3 },
 };

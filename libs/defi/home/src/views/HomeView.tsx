@@ -11,12 +11,23 @@ export const HomeView = () => {
     <Page showFooterMargin>
       <Container>
         <Stack spacing={2} sx={{ justifyContent: 'center', py: 6 }}>
-          <Typography variant="h5" textAlign="center">
+          <Typography
+            variant="h5"
+            sx={{
+              textAlign: 'center',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'Better yield. Everywhere.',
             })}
           </Typography>
-          <Typography variant="mono" textAlign="center" color="text.secondary">
+          <Typography
+            variant="mono"
+            sx={{
+              textAlign: 'center',
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage: 'The easiest way to earn more yield on-chain',
             })}

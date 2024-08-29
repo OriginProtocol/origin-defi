@@ -70,9 +70,13 @@ export function SwapRouteAccordionItem({
   return (
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
-      justifyContent="space-between"
       spacing={1}
+      onClick={() => onSelect(route)}
+      role="button"
       sx={[
+        {
+          justifyContent: 'space-between',
+        },
         {
           borderRadius: 3,
           backgroundColor: 'background.default',
@@ -90,17 +94,27 @@ export function SwapRouteAccordionItem({
           backgroundColor: 'background.highlight',
         },
       ]}
-      onClick={() => onSelect(route)}
-      role="button"
     >
-      <Stack direction="row" alignItems="center" spacing={1.5}>
+      <Stack
+        direction="row"
+        spacing={1.5}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {isSwapRoutesLoading ? (
           <Skeleton variant="circular" width={28} height={28} />
         ) : (
           <TokenIcon token={route.tokenOut} sx={{ fontSize: 28 }} />
         )}
         <Stack direction="column" spacing={0.5}>
-          <Stack direction="row" spacing={0.5} alignItems="baseline">
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'baseline',
+            }}
+          >
             <LoadingLabel fontWeight="medium" isLoading={isSwapRoutesLoading}>
               {format(estimatedAmount, {
                 digits: getFormatPrecision(estimatedAmount),
@@ -145,12 +159,10 @@ export function SwapRouteAccordionItem({
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
+  sx: { justifyContent: 'space-between', minWidth: 120 },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { fontWeight: 'medium' },
-  minWidth: 120,
+  valueProps: { sx: { fontWeight: 'medium' } },
 };

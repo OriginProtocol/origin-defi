@@ -89,11 +89,13 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       <Stack spacing={1.5} {...rest}>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
           spacing={1}
-          height={52}
-          overflow="hidden"
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            height: 52,
+            overflow: 'hidden',
+          }}
         >
           {readOnly ? (
             <LoadingLabel
@@ -149,10 +151,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         </Stack>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          gap={1}
-          height={24}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: 1,
+            height: 24,
+          }}
         >
           {!isNilOrEmpty(tokenPriceUsd) ? (
             <LoadingLabel
@@ -166,10 +170,12 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
           ) : null}
           <Stack
             direction="row"
-            alignItems="center"
             spacing={1}
-            overflow="hidden"
-            whiteSpace="nowrap"
+            sx={{
+              alignItems: 'center',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+            }}
           >
             {isConnected && balance !== undefined
               ? !hideMaxButton && (

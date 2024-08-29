@@ -19,7 +19,12 @@ export const EnsureNetworkProvider = ({ children }: RequiredChildren) => {
 
   if (chain?.id && isNilOrEmpty(found)) {
     return (
-      <Stack p={4} spacing={2}>
+      <Stack
+        spacing={2}
+        sx={{
+          p: 4,
+        }}
+      >
         <Typography variant="h1">
           {intl.formatMessage({ defaultMessage: 'Unsupported Network' })}
         </Typography>

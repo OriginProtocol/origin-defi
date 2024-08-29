@@ -45,19 +45,23 @@ export const SwapView = () => {
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
           <Grid2
-            order={{ xs: 3, md: 1 }}
             size={{
               xs: 12,
               md: 3,
+            }}
+            sx={{
+              order: { xs: 3, md: 1 },
             }}
           >
             <BridgePromoCard small />
           </Grid2>
           <Grid2
-            order={{ xs: 1, md: 2 }}
             size={{
               xs: 12,
               md: 6,
+            }}
+            sx={{
+              order: { xs: 1, md: 2 },
             }}
           >
             <Swapper
@@ -68,10 +72,12 @@ export const SwapView = () => {
             />
           </Grid2>
           <Grid2
-            order={{ xs: 2, md: 3 }}
             size={{
               xs: 12,
               md: 3,
+            }}
+            sx={{
+              order: { xs: 2, md: 3 },
             }}
           >
             <Stack spacing={4}>

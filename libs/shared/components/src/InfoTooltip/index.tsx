@@ -34,7 +34,12 @@ export function InfoTooltip(props: InfoTooltipProps) {
     <Tooltip
       {...tooltipProps}
       title={
-        <Typography color="text.secondary" variant="body2">
+        <Typography
+          variant="body2"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {tooltipLabel}
         </Typography>
       }

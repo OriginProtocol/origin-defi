@@ -118,12 +118,28 @@ export const ClaimForm = (props: StackProps) => {
       >
         <Stack divider={<Divider />}>
           {isRequestsLoading ? (
-            <Stack justifyContent="center" alignItems="center" minHeight="5rem">
+            <Stack
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '5rem',
+              }}
+            >
               <CircularProgress size={24} />
             </Stack>
           ) : isNilOrEmpty(requests) ? (
-            <Stack justifyContent="center" alignItems="center" minHeight="5rem">
-              <Typography color="text.secondary">
+            <Stack
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                minHeight: '5rem',
+              }}
+            >
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage({
                   defaultMessage: 'You have no withdrawal requests',
                 })}
@@ -206,22 +222,34 @@ const ClaimRow = ({
   return (
     <Stack
       direction="row"
-      alignItems="center"
       spacing={1}
-      p={2}
-      justifyContent="space-between"
       {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+          p: 2,
+          justifyContent: 'space-between',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <FormControlLabel
         control={<Checkbox checked={request.claimable && selected} />}
         label={
           <Stack
             direction="row"
-            alignItems="baseline"
             spacing={0.5}
-            color={request.claimable ? 'text.primary' : 'text.secondary'}
+            sx={{
+              alignItems: 'baseline',
+              color: request.claimable ? 'text.primary' : 'text.secondary',
+            }}
           >
-            <Typography variant="body2" fontWeight="medium">
+            <Typography
+              variant="body2"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {format(amt, {
                 digits: getFormatPrecision(amt),
                 decimalsRounding: 'ROUND_DOWN',
@@ -236,7 +264,13 @@ const ClaimRow = ({
         disabled={disabled}
         disableTypography
       />
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <ClaimChip claimable={request.claimable} isProcessing={isProcessing} />
         <Button
           variant="outlined"
@@ -286,17 +320,28 @@ const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
       spacing={1}
-      color={color}
-      bgcolor={bgColor}
-      px={2}
-      py={1}
-      borderRadius={2}
       {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+          color: color,
+          bgcolor: bgColor,
+          px: 2,
+          py: 1,
+          borderRadius: 2,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {icon}
-      <Typography color={color}>{label}</Typography>
+      <Typography
+        sx={{
+          color: color,
+        }}
+      >
+        {label}
+      </Typography>
     </Stack>
   );
 };

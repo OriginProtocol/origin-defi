@@ -28,9 +28,25 @@ export const NotificationSnack = ({
   ...rest
 }: NotificationSnackProps) => {
   return (
-    <Stack width={1} direction="row" justifyContent="space-between" {...rest}>
+    <Stack
+      direction="row"
+      {...rest}
+      sx={[
+        {
+          width: 1,
+          justifyContent: 'space-between',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Stack spacing={1}>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {icon}
           {!isNilOrEmpty(href) && typeof title === 'string' ? (
             <ExternalLink href={href}>{title}</ExternalLink>
@@ -40,9 +56,26 @@ export const NotificationSnack = ({
             title
           )}
         </Stack>
-        <Stack direction="row" alignItems="center">
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {typeof subtitle === 'string' ? (
-            <Typography color="text.secondary" {...subtitleProps}>
+            <Typography
+              {...subtitleProps}
+              sx={[
+                {
+                  color: 'text.secondary',
+                },
+                ...(subtitleProps?.sx
+                  ? Array.isArray(subtitleProps.sx)
+                    ? subtitleProps.sx
+                    : [subtitleProps.sx]
+                  : []),
+              ]}
+            >
               {subtitle}
             </Typography>
           ) : (
@@ -50,7 +83,13 @@ export const NotificationSnack = ({
           )}
         </Stack>
       </Stack>
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {endIcon}
       </Stack>
     </Stack>

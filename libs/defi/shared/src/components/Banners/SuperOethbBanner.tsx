@@ -27,40 +27,60 @@ export const SuperOethbBanner = (props: StackProps) => {
     >
       <Stack
         direction={{ xs: 'column', sm: 'row' }}
-        alignItems={{ xs: 'flex-start', md: 'center' }}
         spacing={3}
         sx={{
+          alignItems: { xs: 'flex-start', md: 'center' },
           px: { xs: 2, md: 4 },
           py: 3,
           overflow: 'hidden',
           color: 'primary.contrastText',
           backgroundImage: `url('/images/base-icon.svg')`,
           backgroundRepeat: 'no-repeat',
+
           backgroundPosition: {
             xs: 'right -300px center',
             sm: 'right -300px center',
             md: 'right -50px center',
           },
+
           backgroundSize: { xs: 400, md: 200 },
           backgroundBlendMode: 'darken',
         }}
       >
         <Stack
           direction={{ xs: 'column', lg: 'row' }}
-          alignItems={{ xs: 'flex-start', lg: 'center' }}
           spacing={{ xs: 3, sm: 2 }}
-          width={1}
+          sx={{
+            alignItems: { xs: 'flex-start', lg: 'center' },
+            width: 1,
+          }}
         >
           <Stack direction="row" spacing={{ xs: 1, md: 3 }}>
             <NetworkIcon chainId={base.id} outlined size={48} />
             <Stack>
-              <Typography fontWeight="medium" noWrap>
+              <Typography
+                noWrap
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {intl.formatMessage({
                   defaultMessage: 'Super OETH now available on BASE!',
                 })}
               </Typography>
-              <Stack direction="row" alignItems="baseline" spacing={1}>
-                <Typography variant="featured2" fontWeight="bold">
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
+                <Typography
+                  variant="featured2"
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Earn',
                   })}
@@ -102,7 +122,9 @@ export const SuperOethbBanner = (props: StackProps) => {
         <Stack
           direction={{ xs: 'row', sm: 'column', lg: 'row' }}
           spacing={1}
-          width={{ xs: 1, sm: 0.4 }}
+          sx={{
+            width: { xs: 1, sm: 0.4 },
+          }}
         >
           <Button
             fullWidth

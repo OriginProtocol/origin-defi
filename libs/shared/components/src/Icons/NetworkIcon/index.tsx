@@ -51,10 +51,10 @@ export const NetworkIcon = ({
             alignItems: 'center',
             width: size,
             height: size,
-            ...rest?.sx,
           },
           'iconColor' in props &&
             !isNilOrEmpty(props.iconColor) && { color: props.iconColor },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
       >
         <SvgIcon
@@ -77,7 +77,6 @@ export const NetworkIcon = ({
           height: size,
           backgroundColor: props.backgroundColor,
           padding: 1,
-          ...rest?.sx,
         },
         shape === 'rounded'
           ? {
@@ -91,6 +90,7 @@ export const NetworkIcon = ({
             svg: { color: props.iconColor },
           },
         outlined && { border: '1px solid', borderColor: oc },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
       <SvgIcon component={props.icon} inheritViewBox />

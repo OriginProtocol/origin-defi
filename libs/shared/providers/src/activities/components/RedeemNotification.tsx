@@ -57,7 +57,11 @@ export const RedeemNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage(
               {
                 defaultMessage: '{amountIn} {symbolIn}',
@@ -76,11 +80,23 @@ export const RedeemNotification = ({
             )}
           </Typography>
         ) : (
-          <Typography color="error">{error}</Typography>
+          <Typography
+            sx={{
+              color: 'error',
+            }}
+          >
+            {error}
+          </Typography>
         )
       }
       endIcon={
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
         </Stack>
       }

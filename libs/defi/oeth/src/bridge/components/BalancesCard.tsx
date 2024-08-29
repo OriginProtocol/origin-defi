@@ -51,7 +51,12 @@ export const BalancesCard = ({ title }: { title: string }) => {
             />
           </Stack>
         ) : (
-          <Stack spacing={3} alignItems={'center'}>
+          <Stack
+            spacing={3}
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <Typography>
               {intl.formatMessage({
                 defaultMessage: 'Connect your wallet to see your balances',
@@ -82,16 +87,33 @@ export const BalanceRow = ({
   return (
     <Stack
       direction={'row'}
-      alignItems={'center'}
-      justifyContent={'space-between'}
+      sx={{
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
     >
-      <Stack direction={'row'} alignItems={'center'} spacing={1.5}>
+      <Stack
+        direction={'row'}
+        spacing={1.5}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <NetworkIcon chainId={chain.id as SupportedChain} />
-        <Typography fontWeight="medium">
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
           {chain.id === arbitrum.id ? 'Arbitrum' : chain.name}
         </Typography>
       </Stack>
-      <Stack direction={'column'} alignItems={'end'}>
+      <Stack
+        direction={'column'}
+        sx={{
+          alignItems: 'end',
+        }}
+      >
         <Stack direction={'row'} spacing={1}>
           <LoadingLabel isLoading={isLoading} sWidth={60} fontWeight="medium">
             {format(bal, {
@@ -99,12 +121,20 @@ export const BalanceRow = ({
               decimalsRounding: 'ROUND_DOWN',
             })}
           </LoadingLabel>
-          <Typography fontWeight="medium">
+          <Typography
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
             {tokens.mainnet.wOETH.symbol}
           </Typography>
         </Stack>
         {balance !== undefined && usdRate && (
-          <Typography color={'text.secondary'}>
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             ${format(converted, 2)}
           </Typography>
         )}

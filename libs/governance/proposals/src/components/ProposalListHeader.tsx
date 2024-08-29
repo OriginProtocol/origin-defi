@@ -10,11 +10,16 @@ export const ProposalListHeader = (props: StackProps) => {
 
   return (
     <Stack
-      alignItems="flex-start"
-      justifyContent="center"
       spacing={3}
-      py={{ xs: 3, sm: 5 }}
       {...props}
+      sx={[
+        {
+          alignItems: 'flex-start',
+          justifyContent: 'center',
+          py: { xs: 3, sm: 5 },
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Typography variant="h1">
         {intl.formatMessage({
@@ -23,8 +28,11 @@ export const ProposalListHeader = (props: StackProps) => {
       </Typography>
       <Stack
         direction="row"
-        flexWrap="wrap"
-        sx={{ rowGap: 2, columnGap: { xs: 1, sm: 2 } }}
+        sx={{
+          flexWrap: 'wrap',
+          rowGap: 2,
+          columnGap: { xs: 1, sm: 2 },
+        }}
       >
         <Button
           href={GOVERNANCE_OGV_SNAPSHOT_VOTES_URL}

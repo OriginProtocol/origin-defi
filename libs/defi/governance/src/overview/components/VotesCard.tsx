@@ -105,9 +105,11 @@ export const VoteCard = (props: CardProps) => {
         </Tabs>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          p={3}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            p: 3,
+          }}
         >
           <LoadingLabel isLoading={isProposalLoading} color="text.secondary">
             {intl.formatMessage(
@@ -142,11 +144,18 @@ export const VoteCard = (props: CardProps) => {
         {isNilOrEmpty(votes) ? (
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="center"
-            p={3}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 3,
+            }}
           >
-            <Typography variant="body3" color="text.secondary">
+            <Typography
+              variant="body3"
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: 'No one voted for this choice',
               })}
@@ -157,12 +166,20 @@ export const VoteCard = (props: CardProps) => {
             <Stack
               key={v.id}
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
               spacing={1}
-              p={3}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                p: 3,
+              }}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <UserAvatar address={v.voter as HexAddress} width={20} />
                 <ExternalLink href={`https://etherscan.io/address/${v.voter}`}>
                   <AddressLabel address={v.voter as HexAddress} maxWidth={60} />
@@ -196,9 +213,11 @@ export const VoteCard = (props: CardProps) => {
         {votes.length > DEFAULT_VISIBLE && (
           <Stack
             direction="row"
-            alignItems="center"
-            justifyContent="center"
-            p={1.5}
+            sx={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              p: 1.5,
+            }}
           >
             <Button
               variant="outlined"

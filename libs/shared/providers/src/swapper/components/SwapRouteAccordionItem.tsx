@@ -68,9 +68,13 @@ export function SwapRouteAccordionItem({
   return (
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
-      justifyContent="space-between"
-      gap={1}
+      onClick={() => onSelect(route)}
+      role="button"
       sx={[
+        {
+          justifyContent: 'space-between',
+          gap: 1,
+        },
         {
           borderRadius: 1,
           backgroundColor: 'background.paper',
@@ -83,7 +87,7 @@ export function SwapRouteAccordionItem({
               borderColor: 'transparent',
               background: (theme) =>
                 `linear-gradient(${theme.palette.grey[800]}, ${theme.palette.grey[800]}) padding-box,
-            linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
+          linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%) border-box;`,
             }
           : {
               borderColor: 'grey.800',
@@ -93,17 +97,21 @@ export function SwapRouteAccordionItem({
                   `linear-gradient(${theme.palette.grey[800]}, ${
                     theme.palette.grey[800]
                   }) padding-box,
-            linear-gradient(90deg, ${alpha(
-              theme.palette.primary.main,
-              0.4,
-            )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
+          linear-gradient(90deg, ${alpha(
+            theme.palette.primary.main,
+            0.4,
+          )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
               },
             },
       ]}
-      onClick={() => onSelect(route)}
-      role="button"
     >
-      <Stack direction="row" alignItems="center" gap={1}>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
         {isSwapRoutesLoading ? (
           <Skeleton variant="circular" width={24} height={24} />
         ) : (
@@ -113,7 +121,13 @@ export function SwapRouteAccordionItem({
           direction={{ xs: 'row', sm: 'column' }}
           spacing={{ xs: 1, sm: 0 }}
         >
-          <Stack direction="row" spacing={0.5} alignItems="baseline">
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'baseline',
+            }}
+          >
             <LoadingLabel variant="body2" isLoading={isSwapRoutesLoading}>
               {format(
                 [route.estimatedAmount ?? 0n, route.tokenOut.decimals],
@@ -141,8 +155,19 @@ export function SwapRouteAccordionItem({
         </Stack>
       </Stack>
       <Stack>
-        <Stack direction="row" spacing={0.75} justifyContent="space-between">
-          <Typography variant="body2" color="text.secondary">
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Rate:' })}
           </Typography>
           <LoadingLabel
@@ -154,8 +179,19 @@ export function SwapRouteAccordionItem({
             1:{format(from(route?.rate ?? 0), 3)}
           </LoadingLabel>
         </Stack>
-        <Stack direction="row" spacing={0.75} justifyContent="space-between">
-          <Typography variant="body2" color="text.secondary">
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography
+            variant="body2"
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Est gas:' })}
           </Typography>
           <LoadingLabel

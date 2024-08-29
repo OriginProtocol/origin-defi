@@ -16,21 +16,36 @@ export const InviteCard = (props: StackProps) => {
     <Stack
       spacing={1}
       {...props}
-      sx={(theme) => ({
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 3,
-        border: `1px solid ${theme.palette.divider}`,
-        borderRadius: 5,
-        minHeight: 200,
-        ...props?.sx,
-      })}
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          p: 3,
+          border: `1px solid`,
+          borderColor: 'divider',
+          borderRadius: 5,
+          minHeight: 200,
+          ...props?.sx,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Friends sx={{ width: 40, height: 40, color: 'primary.main' }} />
-      <Typography variant="h6" textAlign="center">
+      <Typography
+        variant="h6"
+        sx={{
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Invite your friends' })}
       </Typography>
-      <Typography textAlign="center" variant="body2" color="text.secondary">
+      <Typography
+        variant="body2"
+        sx={{
+          textAlign: 'center',
+          color: 'text.secondary',
+        }}
+      >
         {intl.formatMessage({
           defaultMessage:
             'Get even more primeETH XP when you invite your friends',

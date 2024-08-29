@@ -69,8 +69,10 @@ export const DelegateModal = (props: DialogProps) => {
             </Typography>
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="baseline"
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'baseline',
+              }}
             >
               <LoadingLabel variant="h3" isLoading={isInfoLoading}>
                 {formatAmount(
@@ -80,7 +82,12 @@ export const DelegateModal = (props: DialogProps) => {
                   { notation: 'compact', maximumSignificantDigits: 4 },
                 )}
               </LoadingLabel>
-              <Stack direction="row" alignItems="baseline">
+              <Stack
+                direction="row"
+                sx={{
+                  alignItems: 'baseline',
+                }}
+              >
                 <TokenIcon
                   token={tokens.mainnet.veOGV}
                   sx={{ width: 30, transform: 'translateY(4px)' }}
@@ -120,7 +127,12 @@ export const DelegateModal = (props: DialogProps) => {
             )}
           </Typography>
         </Stack>
-        <Stack spacing={1.5} pb={1.5}>
+        <Stack
+          spacing={1.5}
+          sx={{
+            pb: 1.5,
+          }}
+        >
           <Typography>
             {intl.formatMessage({
               defaultMessage: 'Delegate on-chain voting power',

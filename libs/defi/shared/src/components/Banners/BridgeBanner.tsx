@@ -13,31 +13,36 @@ export const BridgeBanner = (props: StackProps) => {
   return (
     <Stack
       direction={{ xs: 'column', sm: 'row' }}
-      alignItems={{ xs: 'flex-start', sm: 'center' }}
       spacing={3}
       {...props}
-      sx={{
-        borderRadius: 4,
-        border: '1px solid',
-        borderColor: 'divider',
-        color: 'primary.contrastText',
-        overflow: 'hidden',
-        background: `url('/images/arbitrum-icon.svg'),linear-gradient(83deg, rgba(18, 170, 255, 0.20) 12.85%, rgba(33, 49, 71, 0.20) 112.14%), #225180;`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: {
-          xs: '60% 100%, cover',
-          md: 'auto 100%, cover',
+      sx={[
+        {
+          alignItems: { xs: 'flex-start', sm: 'center' },
+          borderRadius: 4,
+          border: '1px solid',
+          borderColor: 'divider',
+          color: 'primary.contrastText',
+          overflow: 'hidden',
+          background: `url('/images/arbitrum-icon.svg'),linear-gradient(83deg, rgba(18, 170, 255, 0.20) 12.85%, rgba(33, 49, 71, 0.20) 112.14%), #225180;`,
+          backgroundRepeat: 'no-repeat',
+
+          backgroundSize: {
+            xs: '60% 100%, cover',
+            md: 'auto 100%, cover',
+          },
+
+          backgroundPosition: 'right -100px center, center',
+          p: 2,
+          ...props?.sx,
         },
-        backgroundPosition: 'right -100px center, center',
-        p: 2,
-        ...props?.sx,
-      }}
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Stack
         direction="row"
-        alignItems="center"
         spacing={1}
         sx={{
+          alignItems: 'center',
           p: 0.5,
           borderRadius: 3,
           backgroundColor: 'background.highlight',
@@ -47,8 +52,19 @@ export const BridgeBanner = (props: StackProps) => {
         <FaArrowRightRegular sx={{ fontSize: 20, color: 'text.primary' }} />
         <NetworkIcon chainId={arbitrum.id} size={32} />
       </Stack>
-      <Stack width={1}>
-        <Typography variant="body2" fontWeight="bold" width={1} gutterBottom>
+      <Stack
+        sx={{
+          width: 1,
+        }}
+      >
+        <Typography
+          variant="body2"
+          gutterBottom
+          sx={{
+            fontWeight: 'bold',
+            width: 1,
+          }}
+        >
           {intl.formatMessage({
             defaultMessage: 'Use wOETH on Arbitrum to earn ARB rewards!',
           })}
@@ -63,7 +79,9 @@ export const BridgeBanner = (props: StackProps) => {
       <Stack
         direction={{ xs: 'row', sm: 'column', md: 'row' }}
         spacing={1}
-        width={{ xs: 1, sm: 0.4 }}
+        sx={{
+          width: { xs: 1, sm: 0.4 },
+        }}
       >
         <Button
           fullWidth

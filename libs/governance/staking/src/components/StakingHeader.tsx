@@ -34,7 +34,11 @@ export const StakingHeader = () => {
 
   return (
     <Stack spacing={3}>
-      <Box py={{ xs: 3, sm: 5 }}>
+      <Box
+        sx={{
+          py: { xs: 3, sm: 5 },
+        }}
+      >
         <Grid2 container spacing={3}>
           <Grid2
             size={{
@@ -42,7 +46,13 @@ export const StakingHeader = () => {
               md: 5,
             }}
           >
-            <Stack alignItems="flex-start" justifyContent="center" spacing={3}>
+            <Stack
+              spacing={3}
+              sx={{
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+              }}
+            >
               <Typography variant="h1">
                 {intl.formatMessage({ defaultMessage: 'Origin DeFi Staking' })}
               </Typography>
@@ -80,8 +90,11 @@ export const StakingHeader = () => {
               <ValueLabel
                 label={
                   <Typography
-                    color="text.secondary"
-                    sx={{ textWrap: 'balance', textAlign: 'center' }}
+                    sx={{
+                      color: 'text.secondary',
+                      textWrap: 'balance',
+                      textAlign: 'center',
+                    }}
                   >
                     {intl.formatMessage({
                       defaultMessage: 'Total OGV staked',
@@ -127,12 +140,14 @@ export const StakingHeader = () => {
           >
             <Stack
               direction="row"
-              bgcolor="background.paper"
-              borderRadius={2}
-              p={3}
-              height={1}
-              justifyContent="space-between"
               spacing={2}
+              sx={{
+                bgcolor: 'background.paper',
+                borderRadius: 2,
+                p: 3,
+                height: 1,
+                justifyContent: 'space-between',
+              }}
             >
               <ValueLabel
                 width={1}
@@ -142,7 +157,13 @@ export const StakingHeader = () => {
                 })}
                 labelProps={{ fontSize: 14 }}
                 value={
-                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    spacing={0.75}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <TokenIcon token={tokens.mainnet.OGV} sx={{ width: 20 }} />
                     <LoadingLabel
                       variant="h3"
@@ -168,7 +189,13 @@ export const StakingHeader = () => {
                 })}
                 labelProps={{ fontSize: 14 }}
                 value={
-                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    spacing={0.75}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <TokenIcon token={tokens.mainnet.OGV} />
                     <LoadingLabel
                       variant="h3"
@@ -195,14 +222,16 @@ export const StakingHeader = () => {
             }}
           >
             <Stack
-              bgcolor="background.paper"
-              borderRadius={2}
-              p={3}
-              height={1}
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
               spacing={2}
+              sx={{
+                bgcolor: 'background.paper',
+                borderRadius: 2,
+                p: 3,
+                height: 1,
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
             >
               <ValueLabel
                 alignItems="flex-start"
@@ -211,7 +240,13 @@ export const StakingHeader = () => {
                 })}
                 labelProps={{ fontSize: 14 }}
                 value={
-                  <Stack direction="row" alignItems="center" spacing={0.75}>
+                  <Stack
+                    direction="row"
+                    spacing={0.75}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <TokenIcon token={tokens.mainnet.OGV} />
                     <LoadingLabel
                       variant="h3"

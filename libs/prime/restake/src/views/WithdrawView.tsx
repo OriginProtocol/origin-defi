@@ -72,8 +72,17 @@ export const WithdrawView = () => {
   return (
     <>
       <Stack>
-        <Stack p={3}>
-          <Typography mb={0.75} color="text.secondary">
+        <Stack
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              mb: 0.75,
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Enter amount' })}
           </Typography>
           <TokenInput
@@ -90,16 +99,16 @@ export const WithdrawView = () => {
           />
           <Stack
             direction="row"
-            alignItems="center"
             spacing={2}
             sx={{
+              alignItems: 'center',
               p: 2,
               mt: 2,
-              alignItems: 'center',
               border: '1px solid',
               borderColor: 'primary.main',
               backgroundColor: (theme) =>
                 alpha(theme.palette.primary.main, 0.2),
+
               borderRadius: 2,
             }}
           >
@@ -113,7 +122,12 @@ export const WithdrawView = () => {
           </Stack>
         </Stack>
         <Divider />
-        <Stack p={3} spacing={1}>
+        <Stack
+          spacing={1}
+          sx={{
+            p: 3,
+          }}
+        >
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Wait time:' })}
             value={intl.formatMessage({ defaultMessage: '7 days' })}
@@ -135,11 +149,27 @@ export const WithdrawView = () => {
           />
         </Stack>
         <Divider />
-        <Stack p={3}>
-          <Typography mb={2} color="text.secondary">
+        <Stack
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              mb: 2,
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Receive' })}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={0.5} pb={0.5}>
+          <Stack
+            direction="row"
+            spacing={0.5}
+            sx={{
+              alignItems: 'center',
+              pb: 0.5,
+            }}
+          >
             <LoadingLabel isLoading={isConvertedLoading}>
               {amount === 0n || !converted ? '0.00' : format(converted, 4)}
             </LoadingLabel>
@@ -158,9 +188,20 @@ export const WithdrawView = () => {
           </InfoTooltipLabel>
         </Stack>
         <Divider />
-        <Stack p={3} direction="row" alignItems="center" spacing={2}>
+        <Stack
+          direction="row"
+          spacing={2}
+          sx={{
+            p: 3,
+            alignItems: 'center',
+          }}
+        >
           <PrimePoints sx={{ fontSize: 36 }} />
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({
               defaultMessage:
                 'Accrued XP will be redeemable for retroactive YND airdrop at the TGE',
@@ -168,7 +209,12 @@ export const WithdrawView = () => {
           </Typography>
         </Stack>
         <Divider />
-        <Stack p={3} sx={{ backgroundColor: '#fff' }}>
+        <Stack
+          sx={{
+            p: 3,
+            backgroundColor: '#fff',
+          }}
+        >
           <TxButton
             params={params}
             callbacks={callbacks}
@@ -194,6 +240,6 @@ export const WithdrawView = () => {
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
   spacing: 1,
+  sx: { justifyContent: 'space-between' },
 };

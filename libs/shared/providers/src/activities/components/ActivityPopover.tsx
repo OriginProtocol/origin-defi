@@ -84,9 +84,12 @@ export const ActivityPopover = ({
       <Stack>
         <Stack
           direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          sx={{ px: 3, py: 2 }}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            px: 3,
+            py: 2,
+          }}
         >
           <Typography>
             {intl.formatMessage({ defaultMessage: 'Recent Activity' })}
@@ -159,7 +162,17 @@ function EmptyActivity(props: StackProps) {
   const intl = useIntl();
 
   return (
-    <Stack {...props} justifyContent="center" alignItems="center" py={3}>
+    <Stack
+      {...props}
+      sx={[
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+          py: 3,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <Typography>
         {intl.formatMessage({ defaultMessage: 'No Activity' })}
       </Typography>

@@ -24,7 +24,11 @@ export const RedeemView = () => {
         token={tokens.mainnet.OUSD}
       />
       <PageSection>
-        <Stack alignItems="center">
+        <Stack
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <Redeemer
             tokenIn={tokens.mainnet.OUSD}
             vaultContract={contracts.mainnet.OUSDVault}

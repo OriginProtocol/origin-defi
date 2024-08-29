@@ -141,8 +141,10 @@ export const LockupsTable = () => {
             <Stack
               direction="row"
               spacing={1}
-              alignItems="center"
-              justifyContent="flex-end"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
             >
               <UnstakeButton
                 lockup={info.row.original}

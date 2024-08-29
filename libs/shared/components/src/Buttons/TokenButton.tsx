@@ -36,9 +36,11 @@ export const TokenButton = ({
     <Stack
       direction="row"
       role="button"
-      gap={1}
       {...rest}
       sx={[
+        {
+          gap: 1,
+        },
         {
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -55,7 +57,8 @@ export const TokenButton = ({
         },
         active
           ? {
-              border: `1px solid ${theme.palette.primary.main}`,
+              border: `1px solid`,
+              borderColor: 'primary.main',
             }
           : {
               border: '1px solid transparent',
@@ -79,6 +82,7 @@ export const TokenButton = ({
               )} 0%, ${alpha(theme.palette.primary.dark, 0.4)} 100%) border-box;`,
             },
           })),
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
       <TokenIcon token={token} sx={{ width: '1.75rem', height: 'auto' }} />

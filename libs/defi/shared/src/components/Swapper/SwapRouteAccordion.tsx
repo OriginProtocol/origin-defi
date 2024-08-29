@@ -48,17 +48,26 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
         sx={{ py: 2, pl: 1, pr: 2 }}
       >
         <Typography
-          sx={{ pl: 1, flex: 1 }}
-          color="text.secondary"
           variant="caption1"
-          fontWeight="medium"
+          sx={{
+            color: 'text.secondary',
+            fontWeight: 'medium',
+            pl: 1,
+            flex: 1,
+          }}
         >
           {intl.formatMessage({ defaultMessage: 'Show more' })}
         </Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ pb: 1, pt: 0, px: 0 }}>
         <Divider />
-        <Stack gap={1} px={1} pt={1}>
+        <Stack
+          sx={{
+            gap: 1,
+            px: 1,
+            pt: 1,
+          }}
+        >
           {estimatedSwapRoutes.slice(2).map((route, index) => (
             <SwapRouteAccordionItem
               key={`route-${index}`}

@@ -19,14 +19,18 @@ export const NotFoundPage = () => {
       }}
     >
       <Typography
-        py={3}
-        sx={(theme) => ({
-          fontSize: { xs: 32, sm: 56 },
-          fontWeight: 800,
-          background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
-          backgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-        })}
+        sx={[
+          {
+            py: 3,
+          },
+          (theme) => ({
+            fontSize: { xs: 32, sm: 56 },
+            fontWeight: 800,
+            background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+            backgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+          }),
+        ]}
       >
         {intl.formatMessage({ defaultMessage: 'Ooops...' })}
       </Typography>

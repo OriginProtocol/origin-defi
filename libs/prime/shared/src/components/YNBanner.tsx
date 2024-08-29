@@ -12,22 +12,32 @@ export const YNBanner = (props: StackProps) => {
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
-      alignItems="center"
       {...props}
-      sx={{
-        backgroundColor: 'common.black',
-        height: { xs: 300, md: 110 },
-        pl: { xs: 2, md: 0 },
-        pr: { xs: 2, md: 6 },
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          alignItems: 'center',
+          backgroundColor: 'common.black',
+          height: { xs: 300, md: 110 },
+          pl: { xs: 2, md: 0 },
+          pr: { xs: 2, md: 6 },
+          ...props?.sx,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <BannerIcon width={{ xs: 1, md: 300 }} />
-      <Stack width={1} pt={{ xs: 16, md: 0 }}>
+      <Stack
+        sx={{
+          width: 1,
+          pt: { xs: 16, md: 0 },
+        }}
+      >
         <Typography
           variant="h4"
-          color="common.white"
-          textAlign={{ xs: 'center', md: 'start' }}
+          sx={{
+            color: 'common.white',
+            textAlign: { xs: 'center', md: 'start' },
+          }}
         >
           {intl.formatMessage({
             defaultMessage:
@@ -36,8 +46,10 @@ export const YNBanner = (props: StackProps) => {
         </Typography>
         <Typography
           variant="subtitle1"
-          color="text.secondary"
-          textAlign={{ xs: 'center', md: 'start' }}
+          sx={{
+            color: 'text.secondary',
+            textAlign: { xs: 'center', md: 'start' },
+          }}
         >
           {intl.formatMessage({
             defaultMessage:
@@ -66,7 +78,15 @@ export const YNBanner = (props: StackProps) => {
 
 const BannerIcon = (props: BoxProps) => {
   return (
-    <Box position="relative" {...props}>
+    <Box
+      {...props}
+      sx={[
+        {
+          position: 'relative',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <YieldNest
         sx={{
           position: 'absolute',

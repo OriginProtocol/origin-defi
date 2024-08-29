@@ -200,13 +200,36 @@ export const ClaimMigrateProgressModal = ({
         </IconButton>
       </DialogTitle>
       <DialogContent>
-        <Stack alignItems="center" pt={2}>
-          <Box mb={3}>{icon}</Box>
-          <Typography fontWeight="bold" textAlign="center" mb={2}>
+        <Stack
+          sx={{
+            alignItems: 'center',
+            pt: 2,
+          }}
+        >
+          <Box
+            sx={{
+              mb: 3,
+            }}
+          >
+            {icon}
+          </Box>
+          <Typography
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              mb: 2,
+            }}
+          >
             {label?.title}
           </Typography>
           {label?.subtitle && (
-            <Typography textAlign="center" color="text.secondary" mb={2}>
+            <Typography
+              sx={{
+                textAlign: 'center',
+                color: 'text.secondary',
+                mb: 2,
+              }}
+            >
               {label?.subtitle}
             </Typography>
           )}

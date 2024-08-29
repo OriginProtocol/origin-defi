@@ -186,12 +186,10 @@ export const DelegationPanel = (props: StackProps) => {
 };
 
 const valueLabelProps: Partial<ValueLabelProps> = {
-  alignItems: 'flex-start',
+  sx: { alignItems: 'flex-start' },
   spacing: 2,
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
-    minWidth: 120,
+    sx: { fontWeight: 'medium', color: 'text.secondary', minWidth: 120 },
   },
 };

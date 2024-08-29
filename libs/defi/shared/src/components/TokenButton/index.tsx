@@ -56,7 +56,13 @@ export const TokenButton = ({ token, ...rest }: TokenButtonProps) => {
     >
       <TokenIcon token={token} sx={{ fontSize: 28 }} outlined />
       {!isXs && (
-        <Typography variant="body2" fontWeight="bold" flexGrow={1}>
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 'bold',
+            flexGrow: 1,
+          }}
+        >
           {token.symbol}
         </Typography>
       )}

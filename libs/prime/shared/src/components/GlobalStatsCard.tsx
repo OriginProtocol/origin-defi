@@ -26,7 +26,11 @@ export const GlobalStatsCard = (props: CardProps) => {
         title={intl.formatMessage({ defaultMessage: 'Global Stats' })}
       />
       <CardContent>
-        <Stack mb={3}>
+        <Stack
+          sx={{
+            mb: 3,
+          }}
+        >
           <Typography gutterBottom>
             {intl.formatMessage({ defaultMessage: 'TVL' })}&nbsp;
             <InfoTooltip

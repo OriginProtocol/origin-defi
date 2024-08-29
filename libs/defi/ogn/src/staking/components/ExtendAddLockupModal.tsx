@@ -214,20 +214,36 @@ export const ExtendAddLockupModal = ({
       </DialogTitle>
       <Divider />
       <DialogContent>
-        <Stack mb={2}>
+        <Stack
+          sx={{
+            mb: 2,
+          }}
+        >
           <Stack
             direction="row"
-            justifyContent="space-between"
-            flexWrap="wrap"
-            rowGap={1}
-            mb={1.5}
+            sx={{
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              rowGap: 1,
+              mb: 1.5,
+            }}
           >
-            <Typography fontWeight="medium" color="text.secondary">
+            <Typography
+              sx={{
+                fontWeight: 'medium',
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Amount to add' })}
             </Typography>
             <Button variant="link" onClick={handleMaxClick}>
               <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
-              <Typography noWrap fontWeight="medium">
+              <Typography
+                noWrap
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {format(bal, {
                   digits: getFormatPrecision(bal),
                   decimalsRounding: 'ROUND_DOWN',
@@ -284,7 +300,11 @@ export const ExtendAddLockupModal = ({
             <FaCircleExclamationRegular
               sx={{ fontSize: 20, color: 'primary.main' }}
             />
-            <Typography fontWeight="medium">
+            <Typography
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage:
                   'Any unclaimed rewards will transferred to your wallet immediately when you extend your stake.',
@@ -297,19 +317,48 @@ export const ExtendAddLockupModal = ({
           mb={3}
           {...sectionCardProps}
         >
-          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
-            <Typography variant="caption1" fontWeight="medium">
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              px: 3,
+              py: 2,
+            }}
+          >
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'OGN' })}
             </Typography>
-            <Typography variant="caption1" fontWeight="medium">
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Time remaining' })}
             </Typography>
-            <Typography variant="caption1" fontWeight="medium">
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Voting power' })}
             </Typography>
           </Stack>
           <Divider />
-          <Stack direction="row" justifyContent="space-between" px={3} py={2}>
+          <Stack
+            direction="row"
+            sx={{
+              justifyContent: 'space-between',
+              px: 3,
+              py: 2,
+            }}
+          >
             <Typography>
               {intl.formatNumber(
                 +formatUnits(
@@ -354,13 +403,21 @@ export const ExtendAddLockupModal = ({
           <CardContent>
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              rowGap={1}
-              mb={2}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                rowGap: 1,
+                mb: 2,
+              }}
             >
-              <Typography variant="featured3" minWidth={170} mr={1}>
+              <Typography
+                variant="featured3"
+                sx={{
+                  minWidth: 170,
+                  mr: 1,
+                }}
+              >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
                   : formatDuration(
@@ -373,14 +430,34 @@ export const ExtendAddLockupModal = ({
                       },
                     )}
               </Typography>
-              <Stack spacing={0.5} flexGrow={1}>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Typography variant="mono" color="text.secondary">
+              <Stack
+                spacing={0.5}
+                sx={{
+                  flexGrow: 1,
+                }}
+              >
+                <Stack
+                  direction="row"
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    variant="mono"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Current Lockup Ends:',
                     })}
                   </Typography>
-                  <Typography textAlign="end" minWidth={92}>
+                  <Typography
+                    sx={{
+                      textAlign: 'end',
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(new Date(lockup.end), {
                       day: '2-digit',
                       month: 'short',
@@ -388,13 +465,28 @@ export const ExtendAddLockupModal = ({
                     })}
                   </Typography>
                 </Stack>
-                <Stack direction="row" justifyContent="flex-end">
-                  <Typography variant="mono" color="text.secondary">
+                <Stack
+                  direction="row"
+                  sx={{
+                    justifyContent: 'flex-end',
+                  }}
+                >
+                  <Typography
+                    variant="mono"
+                    sx={{
+                      color: 'text.secondary',
+                    }}
+                  >
                     {intl.formatMessage({
                       defaultMessage: 'Extended Lockup Ends:',
                     })}
                   </Typography>
-                  <Typography textAlign="end" minWidth={92}>
+                  <Typography
+                    sx={{
+                      textAlign: 'end',
+                      minWidth: 92,
+                    }}
+                  >
                     {intl.formatDate(extendLockupEnd, {
                       day: '2-digit',
                       month: 'short',
@@ -482,12 +574,20 @@ export const ExtendAddLockupModal = ({
           <CardContent>
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <LoadingLabel
                   variant="featured3"
                   fontWeight="bold"
@@ -502,7 +602,12 @@ export const ExtendAddLockupModal = ({
                   outlined
                   sx={{ fontSize: 28 }}
                 />
-                <Typography variant="body2" fontWeight="bold">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
                   {tokens.mainnet.xOGN.symbol}
                 </Typography>
               </Stack>

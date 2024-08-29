@@ -50,7 +50,13 @@ export const DashboardView = () => {
         mx: 'auto',
       }}
     >
-      <Typography variant="h5" pb={3} textAlign="center">
+      <Typography
+        variant="h5"
+        sx={{
+          pb: 3,
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Your Balance' })}
       </Typography>
       <Card sx={{ backgroundColor: 'common.white' }}>
@@ -62,8 +68,17 @@ export const DashboardView = () => {
             />
           </Grid2>
           <Grid2 {...gridItemProps}>
-            <Stack spacing={1} alignItems="center">
-              <Typography fontWeight="medium">
+            <Stack
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'primeETH Balance' })}
               </Typography>
               {isConnected ? (
@@ -89,7 +104,13 @@ export const DashboardView = () => {
           </Grid2>
         </Grid2>
       </Card>
-      <Typography variant="h5" py={3} textAlign="center">
+      <Typography
+        variant="h5"
+        sx={{
+          py: 3,
+          textAlign: 'center',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'Your rewards' })}
       </Typography>
       <Stack spacing={2}>
@@ -99,8 +120,18 @@ export const DashboardView = () => {
               <PrimePoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium" color="text.secondary">
+              <Stack
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: 'primeETH XP' })}
                 </Typography>
                 {isConnected ? (
@@ -121,8 +152,18 @@ export const DashboardView = () => {
             </Grid2>
 
             <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium" color="text.secondary">
+              <Stack
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected && !!percentTotalXp ? (
@@ -149,8 +190,18 @@ export const DashboardView = () => {
               <EigenPoints sx={{ width: 48, height: 48 }} />
             </Grid2>
             <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium" color="text.secondary">
+              <Stack
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: 'EigenLayer Points' })}
                 </Typography>
                 {isConnected ? (
@@ -193,8 +244,18 @@ export const DashboardView = () => {
               </Stack>
             </Grid2>
             <Grid2 {...gridItemProps}>
-              <Stack spacing={1} alignItems="center">
-                <Typography fontWeight="medium" color="text.secondary">
+              <Stack
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: '% of total' })}
                 </Typography>
                 {isConnected && !!percentTotalELPoints ? (

@@ -15,14 +15,17 @@ export const PageSection = ({
 }: PageSectionProps) => {
   return (
     <Stack
-      bgcolor="background.paper"
-      py={hideVerticalPadding ? 0 : 6}
-      flexGrow={1}
       {...rest}
-      sx={{
-        position: 'relative',
-        ...rest.sx,
-      }}
+      sx={[
+        {
+          bgcolor: 'background.paper',
+          py: hideVerticalPadding ? 0 : 6,
+          flexGrow: 1,
+          position: 'relative',
+          ...rest.sx,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Box
         sx={{

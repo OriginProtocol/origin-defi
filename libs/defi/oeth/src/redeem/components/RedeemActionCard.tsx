@@ -62,7 +62,6 @@ export const RedeemActionCard = ({
           border: '1px solid',
           borderColor: 'divider',
           backgroundColor: 'background.highlight',
-          ...rest?.sx,
         },
         isDisabled
           ? { opacity: 0.5, cursor: 'default' }
@@ -79,6 +78,7 @@ export const RedeemActionCard = ({
                   },
                 }
               : {},
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
       role="button"
       onClick={() => {
@@ -89,17 +89,19 @@ export const RedeemActionCard = ({
     >
       {isComingSoon && (
         <Stack
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
           sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
             position: 'absolute',
             top: 0,
             left: 0,
             width: 1,
             height: 1,
+
             background: (theme) =>
               alpha(theme.palette.background.highlight, 0.8),
+
             backdropFilter: 'blur(px)',
           }}
         >
@@ -124,7 +126,11 @@ export const RedeemActionCard = ({
             mb: 1.5,
           }}
         >
-          <Typography fontWeight={500}>
+          <Typography
+            sx={{
+              fontWeight: 500,
+            }}
+          >
             {intl.formatMessage(routeLabel ?? { defaultMessage: 'Route' })}
           </Typography>
           <SvgIcon
@@ -170,12 +176,10 @@ export const RedeemActionCard = ({
 
 const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
-  justifyContent: 'space-between',
+  sx: { justifyContent: 'space-between', minWidth: 120 },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { fontWeight: 'medium' },
-  minWidth: 120,
+  valueProps: { sx: { fontWeight: 'medium' } },
 };

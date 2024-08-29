@@ -15,13 +15,18 @@ export const PageTitleSection = (props: StackProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="center"
-      flexWrap="wrap"
       spacing={1}
-      rowGap={1}
-      pt={3}
       {...props}
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          rowGap: 1,
+          pt: 3,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Button
         variant="outlined"

@@ -81,7 +81,13 @@ export const HistoryCard = ({ token, ...rest }: HistoryCardProps) => {
       <CardHeader
         title={intl.formatMessage({ defaultMessage: 'Transactions' })}
         action={
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
             <FiltersButton
               filters={filters}
               setFilters={setFilters}
@@ -344,7 +350,12 @@ function HistoryTable({ token, filters, ...rest }: HistoryTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
-      <Stack alignItems="center" justifyContent="center">
+      <Stack
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
         <TablePagination
           table={table}
           disableScrollToTop
@@ -375,11 +386,32 @@ function HistoryTypeCell({
   const intl = useIntl();
 
   return (
-    <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
+    <Stack
+      {...rest}
+      direction="row"
+      sx={[
+        {
+          alignItems: 'center',
+          gap: 1.5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <TransactionIcon type={type} zIndex={1} token={token} />
       <Stack spacing={0.5}>
-        <Typography fontWeight="medium">{type}</Typography>
-        <Typography color="text.secondary" variant="caption1">
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
+          {type}
+        </Typography>
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatDate(
             new Date(timestamp),
             showTime
@@ -406,7 +438,17 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
   const intl = useIntl();
 
   return (
-    <Stack {...rest} direction="row" alignItems="center" gap={1.5}>
+    <Stack
+      {...rest}
+      direction="row"
+      sx={[
+        {
+          alignItems: 'center',
+          gap: 1.5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Box
         sx={{
           position: 'relative',
@@ -438,7 +480,12 @@ function AggregatedTypeCell({ timestamp, type, ...rest }: AggregatedCellProps) {
         />
       </Box>
       <Stack>
-        <Typography color="text.secondary" variant="caption1">
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatDate(new Date(timestamp), {
             hourCycle: 'h23',
             hour: '2-digit',

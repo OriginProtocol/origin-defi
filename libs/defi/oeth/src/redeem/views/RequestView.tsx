@@ -8,7 +8,11 @@ import { redeemRoutes } from '../constants';
 
 export const RequestView = () => {
   return (
-    <Stack alignItems="center">
+    <Stack
+      sx={{
+        alignItems: 'center',
+      }}
+    >
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={trackSentryError}>
         <Swapper
           swapActions={redeemActions}

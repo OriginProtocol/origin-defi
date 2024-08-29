@@ -7,6 +7,7 @@ import {
   Grid2,
   LinearProgress,
   Stack,
+  useTheme,
 } from '@mui/material';
 import { GovernanceProposalState, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, TooltipLabel } from '@origin/shared/components';
@@ -127,6 +128,7 @@ function VoteCard({
   ...rest
 }: VoteCardProps) {
   const intl = useIntl();
+  const theme = useTheme();
   const { formatAmount } = useFormat();
   const queryClient = useQueryClient();
   const { params, callbacks } = useTxButton({
@@ -158,13 +160,31 @@ function VoteCard({
     Abstain: intl.formatMessage({ defaultMessage: 'Abstain' }),
   }[choice];
 
+  const progressColor =
+    {
+      For: theme.palette.success.main,
+      Against: theme.palette.error.main,
+      Abstain: theme.palette.warning.main,
+    }[choice] ?? theme.palette.primary.main;
+
   return (
-    <Stack p={3} spacing={1} {...rest}>
+    <Stack
+      spacing={1}
+      {...rest}
+      sx={[
+        {
+          p: 3,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
         spacing={1}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
       >
         <TooltipLabel color="text.secondary" noWrap>
           {choice}
@@ -192,20 +212,18 @@ function VoteCard({
               }
             : {
                 '.MuiLinearProgress-bar': {
-                  backgroundColor:
-                    choice === 'For'
-                      ? theme.palette.success.main
-                      : choice === 'Against'
-                        ? theme.palette.error.main
-                        : choice === 'Abstain'
-                          ? theme.palette.warning.main
-                          : theme.palette.primary.main,
+                  backgroundColor: progressColor,
                 },
               },
         ]}
       />
       {isVotingEnabled && (
-        <Stack pt={2} alignItems="flex-start">
+        <Stack
+          sx={{
+            pt: 2,
+            alignItems: 'flex-start',
+          }}
+        >
           <TxButton
             params={params}
             callbacks={callbacks}

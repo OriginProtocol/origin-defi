@@ -172,13 +172,19 @@ export const StakingForm = () => {
       <CardHeader title={intl.formatMessage({ defaultMessage: 'Stake OGN' })} />
       <Divider />
       <CardContent>
-        <Stack mb={3}>
+        <Stack
+          sx={{
+            mb: 3,
+          }}
+        >
           <Stack
             direction="row"
-            justifyContent="space-between"
-            flexWrap="wrap"
-            rowGap={1}
-            mb={1.5}
+            sx={{
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              rowGap: 1,
+              mb: 1.5,
+            }}
           >
             <InfoTooltipLabel
               tooltipLabel={intl.formatMessage({
@@ -190,7 +196,12 @@ export const StakingForm = () => {
             </InfoTooltipLabel>
             <Button variant="link" onClick={handleMaxClick}>
               <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
-              <Typography noWrap fontWeight="medium">
+              <Typography
+                noWrap
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {format(bal, {
                   digits: getFormatPrecision(bal),
                   decimalsRounding: 'ROUND_DOWN',
@@ -214,7 +225,11 @@ export const StakingForm = () => {
             }}
           />
         </Stack>
-        <Stack mb={3}>
+        <Stack
+          sx={{
+            mb: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -237,17 +252,21 @@ export const StakingForm = () => {
           >
             <Stack
               direction="row"
-              alignItems="baseline"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
               <Typography
                 variant="featured3"
-                fontWeight="bold"
-                color="primary.main"
-                minWidth={170}
-                mr={1}
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'primary.main',
+                  minWidth: 170,
+                  mr: 1,
+                }}
               >
                 {duration === 0
                   ? intl.formatMessage({ defaultMessage: '0 months' })
@@ -262,10 +281,18 @@ export const StakingForm = () => {
                     )}
               </Typography>
               <Stack direction="row" spacing={1}>
-                <Typography color="text.secondary">
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: 'Lockup Ends:' })}
                 </Typography>
-                <Typography minWidth={92}>
+                <Typography
+                  sx={{
+                    minWidth: 92,
+                  }}
+                >
                   {intl.formatDate(addMonths(new Date(), duration), {
                     day: '2-digit',
                     month: 'short',
@@ -312,7 +339,11 @@ export const StakingForm = () => {
             </Box>
           </Stack>
         </Stack>
-        <Stack mb={3}>
+        <Stack
+          sx={{
+            mb: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -348,7 +379,11 @@ export const StakingForm = () => {
             </LoadingLabel>
           </Stack>
         </Stack>
-        <Stack mb={3}>
+        <Stack
+          sx={{
+            mb: 3,
+          }}
+        >
           <InfoTooltipLabel
             tooltipLabel={intl.formatMessage({
               defaultMessage:
@@ -372,12 +407,20 @@ export const StakingForm = () => {
           >
             <Stack
               direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-              flexWrap="wrap"
-              rowGap={1}
+              sx={{
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                flexWrap: 'wrap',
+                rowGap: 1,
+              }}
             >
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <LoadingLabel
                   variant="featured3"
                   fontWeight="bold"
@@ -444,12 +487,20 @@ export const StakingForm = () => {
               sx={{ fontSize: 20, color: 'primary.main' }}
             />
             <Stack>
-              <Typography fontWeight="medium">
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {intl.formatMessage({
                   defaultMessage: 'OGN Rewards Will be Collected',
                 })}
               </Typography>
-              <Typography color="text.secondary">
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage(
                   {
                     defaultMessage:

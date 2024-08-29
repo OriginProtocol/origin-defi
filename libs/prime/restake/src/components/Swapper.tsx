@@ -191,7 +191,12 @@ function SwapperWrapped({
     <Stack {...rest}>
       <ErrorBoundary ErrorComponent={<ErrorCard />} onError={onError}>
         <CardContent>
-          <Typography pb={2} fontWeight="medium">
+          <Typography
+            sx={{
+              pb: 2,
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Select the asset' })}
           </Typography>
           <Button
@@ -211,18 +216,31 @@ function SwapperWrapped({
               justifyContent: 'space-between',
             }}
           >
-            <Stack direction="row" spacing={1} alignItems="center">
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <TokenIcon token={tokenIn} sx={{ width: 34, height: 34 }} />
-              <Typography fontSize={20} sx={{ color: 'text.primary' }}>
+              <Typography
+                sx={{
+                  fontSize: 20,
+                  color: 'text.primary',
+                }}
+              >
                 {tokenIn?.symbol}
               </Typography>
             </Stack>
 
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="flex-end"
               spacing={1}
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+              }}
             >
               {boost && <BoostChip boost={boost} />}
               <Box
@@ -240,7 +258,13 @@ function SwapperWrapped({
               </Box>
             </Stack>
           </Button>
-          <Typography pt={4} pb={2} fontWeight="medium">
+          <Typography
+            sx={{
+              pt: 4,
+              pb: 2,
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Enter amount' })}
           </Typography>
           <TokenInput
@@ -266,13 +290,21 @@ function SwapperWrapped({
           >
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'You will receive:' })}
               </Typography>
-              <Stack direction="row" alignItems="center" spacing={1}>
+              <Stack
+                direction="row"
+                spacing={1}
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
@@ -289,15 +321,22 @@ function SwapperWrapped({
                   )}
                 </LoadingLabel>
                 <TokenIcon token={tokenOut} sx={{ fontSize: 22 }} />
-                <Typography fontWeight="medium" fontSize={16}>
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                    fontSize: 16,
+                  }}
+                >
                   {tokenOut.symbol}
                 </Typography>
               </Stack>
             </Stack>
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'Exchange rate:' })}
@@ -324,21 +363,34 @@ function SwapperWrapped({
             </Stack>
             <Stack
               direction="row"
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
               <Typography>
                 {intl.formatMessage({ defaultMessage: 'Route:' })}
               </Typography>
               <Stack>
-                <Typography fontWeight="medium">{routeLabel}</Typography>
+                <Typography
+                  sx={{
+                    fontWeight: 'medium',
+                  }}
+                >
+                  {routeLabel}
+                </Typography>
               </Stack>
             </Stack>
           </CardContent>
           <Divider />
         </Collapse>
         <Collapse in={isWarningLabelVisible}>
-          <Stack px={3} pt={3}>
+          <Stack
+            sx={{
+              px: 3,
+              pt: 3,
+            }}
+          >
             <Stack
               sx={{
                 border: '1px solid',

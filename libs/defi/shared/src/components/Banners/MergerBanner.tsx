@@ -14,20 +14,24 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
   return (
     <Stack
       direction={{ xs: 'column', md: 'row' }}
-      alignItems="center"
       spacing={{ xs: 0, md: 3 }}
       {...rest}
-      sx={(theme) => ({
-        width: 1,
-        borderRadius: 4,
-        background: theme.palette.background.highlight,
-        border: '1px solid',
-        borderColor: 'primary.main',
-        px: 2,
-        py: 2.5,
-        rowGap: 3,
-        ...rest?.sx,
-      })}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        (theme) => ({
+          width: 1,
+          borderRadius: 4,
+          background: theme.palette.background.highlight,
+          border: '1px solid',
+          borderColor: 'primary.main',
+          px: 2,
+          py: 2.5,
+          rowGap: 3,
+        }),
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <MultiTokenIcon
         tokens={[tokens.mainnet.OGV, tokens.mainnet.OGN]}
@@ -35,16 +39,26 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
         zOrder="last"
       />
       <Stack
-        flexGrow={1}
-        alignItems={{ xs: 'center', md: 'flex-start' }}
-        pr={{ xs: 0, md: 2 }}
+        sx={{
+          flexGrow: 1,
+          alignItems: { xs: 'center', md: 'flex-start' },
+          pr: { xs: 0, md: 2 },
+        }}
       >
-        <Typography variant="body2" fontWeight="bold" pb={1}>
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 'bold',
+            pb: 1,
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Convert OGV to OGN now!' })}
         </Typography>
         <Typography
-          fontWeight="medium"
-          textAlign={{ xs: 'center', md: 'start' }}
+          sx={{
+            fontWeight: 'medium',
+            textAlign: { xs: 'center', md: 'start' },
+          }}
         >
           {intl.formatMessage({
             defaultMessage:
@@ -56,7 +70,7 @@ export const MergerBanner = ({ endSlot, ...rest }: MergerBannerProps) => {
         targetDate={new Date('2025-05-28T00:00:00.0000Z')}
         spacing={3}
         valueLabelProps={{
-          labelProps: { textAlign: 'center', variant: 'mono' },
+          labelProps: { variant: 'mono', sx: { textAlign: 'center' } },
           valueProps: {
             sx: {
               fontSize: 32,

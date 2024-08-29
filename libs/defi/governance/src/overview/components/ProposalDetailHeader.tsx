@@ -39,7 +39,17 @@ export const ProposalDetailHeader = (props: StackProps) => {
   const proposer = proposal?.proposer as HexAddress;
 
   return (
-    <Stack alignItems="flex-start" py={6} useFlexGap {...props}>
+    <Stack
+      useFlexGap
+      {...props}
+      sx={[
+        {
+          alignItems: 'flex-start',
+          py: 6,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <Button
         variant="text"
         onClick={handleBack}
@@ -54,9 +64,16 @@ export const ProposalDetailHeader = (props: StackProps) => {
         <FaChevronLeftRegular sx={{ fontSize: 10 }} />
         {intl.formatMessage({ defaultMessage: 'Proposals' })}
       </Button>
-      <Stack direction="row" spacing={1} alignItems="center" mb={3.5}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+          mb: 3.5,
+        }}
+      >
         <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 28 }} />
-        <ProposalTypeBadge type={proposal?.type} />
+        <ProposalTypeBadge type={proposal?.type} sx={{ color: 'red' }} />
         <StatusBadge status={proposal?.status} isLoading={isProposalLoading} />
       </Stack>
       <LoadingLabel
@@ -75,8 +92,18 @@ export const ProposalDetailHeader = (props: StackProps) => {
       >
         {proposal?.title}
       </LoadingLabel>
-      <Stack direction="row" alignItems="center" spacing={1}>
-        <Typography color="text.secondary">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage(
             { defaultMessage: '{event} {date}' },
             {
@@ -93,7 +120,11 @@ export const ProposalDetailHeader = (props: StackProps) => {
             ml: 2,
           }}
         />
-        <Typography color="text.secondary">
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Proposed by' })}
         </Typography>
         <UserAvatar address={proposer} width={20} />

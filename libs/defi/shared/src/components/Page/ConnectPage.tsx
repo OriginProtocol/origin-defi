@@ -31,12 +31,20 @@ export const ConnectPage = ({
         ...rest?.sx,
       }}
     >
-      <Stack spacing={0.75} alignItems="center" useFlexGap>
+      <Stack
+        spacing={0.75}
+        useFlexGap
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <DefaultWallet sx={{ fontSize: 64, color: 'primary.main' }} />
         <Typography
           variant="featured2"
-          fontWeight="bold"
-          sx={{ textAlign: 'center' }}
+          sx={{
+            fontWeight: 'bold',
+            textAlign: 'center',
+          }}
         >
           {title ??
             intl.formatMessage({

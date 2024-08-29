@@ -42,7 +42,12 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
         <Divider />
-        <Stack spacing={2} p={2}>
+        <Stack
+          spacing={2}
+          sx={{
+            p: 2,
+          }}
+        >
           {split?.map((s) => (
             <SplitRow
               key={s.token.symbol}
@@ -78,22 +83,41 @@ function SplitRow({
   return (
     <Stack
       direction="row"
-      justifyContent="space-between"
-      alignItems="center"
-      gap={1}
       {...rest}
+      sx={[
+        {
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
-      <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={estimate.token} sx={{ fontSize: 20 }} />
-        <Typography fontWeight={500}>{estimate.token.symbol}</Typography>
+        <Typography
+          sx={{
+            fontWeight: 500,
+          }}
+        >
+          {estimate.token.symbol}
+        </Typography>
       </Stack>
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
         spacing={2}
-        overflow="hidden"
-        whiteSpace="nowrap"
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'flex-end',
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+        }}
       >
         <LoadingLabel
           fontWeight={500}

@@ -93,13 +93,21 @@ export const FiltersButton = <FilterValue extends string>({
           },
         }}
       >
-        <Stack p={3}>
+        <Stack
+          sx={{
+            p: 3,
+          }}
+        >
           <Typography>
             {intl.formatMessage({ defaultMessage: 'Filters' })}
           </Typography>
         </Stack>
         <Divider />
-        <Stack p={3}>
+        <Stack
+          sx={{
+            p: 3,
+          }}
+        >
           {filterOptions.map((filter) => (
             <FormControlLabel
               key={filter.value}
@@ -117,7 +125,14 @@ export const FiltersButton = <FilterValue extends string>({
               sx={{ mx: 0, my: 1 }}
             />
           ))}
-          <Stack direction="row" justifyContent="flex-end" pt={2} spacing={1.5}>
+          <Stack
+            direction="row"
+            spacing={1.5}
+            sx={{
+              justifyContent: 'flex-end',
+              pt: 2,
+            }}
+          >
             <Button
               variant="text"
               color="secondary"

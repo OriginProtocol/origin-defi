@@ -41,14 +41,25 @@ export const ProposalTypeBadge = ({
 
   return (
     <ColorChip
-      px={1}
-      py={0.5}
-      bgcolor="background.faded"
-      borderRadius={1}
       {...rest}
+      sx={[
+        {
+          px: 1,
+          py: 0.5,
+          backgroundColor: 'background.faded',
+          borderRadius: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {icons[type]}
-      <Typography variant="caption1" color="text.primary" noWrap>
+      <Typography
+        variant="caption1"
+        noWrap
+        sx={{
+          color: 'text.primary',
+        }}
+      >
         {intl.formatMessage(labels[type])}
       </Typography>
     </ColorChip>

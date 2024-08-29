@@ -28,12 +28,40 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
     : `https://etherscan.io/tx/${activity?.txHash}`;
 
   return (
-    <Stack width={1} direction="row" spacing={1} {...rest}>
-      <Box display="flex" justifyContent="center" alignItems="center">
+    <Stack
+      direction="row"
+      spacing={1}
+      {...rest}
+      sx={[
+        {
+          width: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         {icon}
       </Box>
-      <Stack spacing={1} flexGrow={1} overflow="hidden">
-        <Stack direction="row" alignItems="center" spacing={1}>
+      <Stack
+        spacing={1}
+        sx={{
+          flexGrow: 1,
+          overflow: 'hidden',
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <ActivityIcon status={activity.status} sx={{ fontSize: 20 }} />
           {!isNilOrEmpty(href) ? (
             <ExternalLink href={href}>{title}</ExternalLink>
@@ -50,7 +78,13 @@ export const ActivityTile = ({ activity, ...rest }: ActivityTileProps) => {
         )}
       </Stack>
       {!isNilOrEmpty(option?.endIcon?.(activity)) && (
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {option?.endIcon?.(activity)}
         </Stack>
       )}

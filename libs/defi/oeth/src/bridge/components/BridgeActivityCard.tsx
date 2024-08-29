@@ -63,15 +63,27 @@ export const BridgeActivityCard = () => {
       <Divider />
       {!activity.data || activity.data?.length === 0 ? (
         <CardContent>
-          <Stack alignItems={'center'}>
-            <Typography color="text.secondary">
+          <Stack
+            sx={{
+              alignItems: 'center',
+            }}
+          >
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No activity' })}
             </Typography>
           </Stack>
         </CardContent>
       ) : activity.isLoading && !activity.data ? (
         <CardContent>
-          <Stack alignItems={'center'}>
+          <Stack
+            sx={{
+              alignItems: 'center',
+            }}
+          >
             <Skeleton width={120} />
           </Stack>
         </CardContent>
@@ -82,7 +94,11 @@ export const BridgeActivityCard = () => {
           })}
           {limit <= activity.data?.length && (
             <CardContent>
-              <Stack alignItems={'center'}>
+              <Stack
+                sx={{
+                  alignItems: 'center',
+                }}
+              >
                 <Button
                   variant="outlined"
                   color="secondary"
@@ -163,15 +179,44 @@ export const BridgeTransfer = ({
 
   return (
     <CardContent>
-      <Stack spacing={1.5} width={1}>
-        <Stack direction={'row'} spacing={2} width={1}>
+      <Stack
+        spacing={1.5}
+        sx={{
+          width: 1,
+        }}
+      >
+        <Stack
+          direction={'row'}
+          spacing={2}
+          sx={{
+            width: 1,
+          }}
+        >
           <TokenIcon token={token} sx={{ fontSize: 40 }} />
-          <Stack width={1} spacing={0.5}>
-            <Stack direction={'row'} justifyContent={'space-between'}>
-              <Typography fontWeight="medium">
+          <Stack
+            spacing={0.5}
+            sx={{
+              width: 1,
+            }}
+          >
+            <Stack
+              direction={'row'}
+              sx={{
+                justifyContent: 'space-between',
+              }}
+            >
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {intl.formatMessage(title)}
               </Typography>
-              <Typography fontWeight="medium">
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
                 {format(amt, {
                   digits: getFormatPrecision(amt),
                   decimalsRounding: 'ROUND_DOWN',
@@ -186,12 +231,19 @@ export const BridgeTransfer = ({
             />
           </Stack>
         </Stack>
-        <Stack direction={'row'} width={1}>
+        <Stack
+          direction={'row'}
+          sx={{
+            width: 1,
+          }}
+        >
           <Stack
             direction={'row'}
             spacing={0.75}
-            alignItems={'center'}
-            width={1}
+            sx={{
+              alignItems: 'center',
+              width: 1,
+            }}
           >
             <StatusIcon state={activity.state} />
             <ExternalLink
@@ -217,22 +269,36 @@ export const BridgeRoute = (props: { srcChain?: Chain; dstChain?: Chain }) => (
   <Stack
     direction={'row'}
     spacing={0.5}
-    alignItems={'center'}
-    color={'text.secondary'}
+    sx={{
+      alignItems: 'center',
+      color: 'text.secondary',
+    }}
   >
     <NetworkIcon
       chainId={props.srcChain?.id as SupportedChain}
       size={16}
       sx={{ mr: 0.5 }}
     />
-    <Typography fontSize={12}>{props.srcChain?.name}</Typography>
+    <Typography
+      sx={{
+        fontSize: 12,
+      }}
+    >
+      {props.srcChain?.name}
+    </Typography>
     <FaArrowRightRegular sx={{ height: 12 }} />
     <NetworkIcon
       chainId={props.dstChain?.id as SupportedChain}
       size={16}
       sx={{ mr: 0.5 }}
     />
-    <Typography fontSize={12}>{props.dstChain?.name}</Typography>
+    <Typography
+      sx={{
+        fontSize: 12,
+      }}
+    >
+      {props.dstChain?.name}
+    </Typography>
   </Stack>
 );
 
@@ -253,13 +319,26 @@ export const Eta = (props: {
     return (
       <Stack
         direction={'row'}
-        width={1}
         spacing={1}
-        justifyContent={'flex-end'}
+        sx={{
+          width: 1,
+          justifyContent: 'flex-end',
+        }}
       >
-        <Stack direction={'row'} alignItems={'center'} spacing={1}>
+        <Stack
+          direction={'row'}
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           {remaining > 0 && (
-            <Typography color={'text.secondary'} fontSize={12}>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+                fontSize: 12,
+              }}
+            >
               {intl.formatMessage(
                 { defaultMessage: '~{remaining} mins left' },
                 { remaining },

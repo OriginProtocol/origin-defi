@@ -91,7 +91,13 @@ export const Topnav = () => {
           },
         })}
       >
-        <Grid2 container height={1} width={1}>
+        <Grid2
+          container
+          sx={{
+            height: 1,
+            width: 1,
+          }}
+        >
           <Grid2
             sx={{
               display: 'flex',
@@ -217,10 +223,21 @@ export const Topnav = () => {
               hideWrongNetwork
             >
               {isLoading ? (
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center',
+                  }}
+                >
                   <CircularProgress size={16} />
                   {!isMd && (
-                    <Typography noWrap color="primary.main">
+                    <Typography
+                      noWrap
+                      sx={{
+                        color: 'primary.main',
+                      }}
+                    >
                       {intl.formatMessage(
                         { defaultMessage: '{pendingCount} pending' },
                         { pendingCount },

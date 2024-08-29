@@ -19,13 +19,18 @@ export const PageTitleSection = (props: StackProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="center"
-      flexWrap="wrap"
-      rowGap={2}
       spacing={1}
-      pt={3}
       {...props}
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          rowGap: 2,
+          pt: 3,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <ColorChip spacing={0.5} minHeight={40}>
         <LoadingLabel
@@ -38,7 +43,12 @@ export const PageTitleSection = (props: StackProps) => {
             minimumFractionDigits: 2,
           })}
         </LoadingLabel>
-        <Typography variant="caption1" color="inherit">
+        <Typography
+          variant="caption1"
+          sx={{
+            color: 'inherit',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Max vAPY' })}
         </Typography>
       </ColorChip>

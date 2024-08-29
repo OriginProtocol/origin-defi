@@ -35,7 +35,10 @@ export const SettingsButton = () => {
       >
         <Typography
           variant="body3"
-          color={value > WARNING_THRESHOLD ? 'warning.dark' : 'text.secondary'}
+          sx={{
+            color:
+              value > WARNING_THRESHOLD ? 'warning.dark' : 'text.secondary',
+          }}
         >
           {intl.formatMessage(
             { defaultMessage: '{slippage} slippage' },

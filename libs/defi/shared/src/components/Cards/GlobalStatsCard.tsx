@@ -54,14 +54,31 @@ export const GlobalStatsCard = ({
         expandIcon={<FaChevronDownRegular />}
         sx={{ p: 3, minHeight: 72 }}
       >
-        <Stack direction="row" alignItems="center" spacing={1} pr={0.5}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+            pr: 0.5,
+          }}
+        >
           {showTokenHeader ? (
             <>
               <TokenIcon token={token} sx={{ fontSize: 24 }} />
-              <Typography fontWeight="medium">{token.symbol}</Typography>
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
+                {token.symbol}
+              </Typography>
             </>
           ) : (
-            <Typography fontWeight="medium">
+            <Typography
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'Global stats' })}
             </Typography>
           )}

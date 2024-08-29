@@ -51,7 +51,13 @@ export const TokenSelectModal = ({
       </DialogTitle>
       <MenuList>
         {isBalancesLoading ? (
-          <Stack justifyContent="center" alignItems="center" p={3}>
+          <Stack
+            sx={{
+              justifyContent: 'center',
+              alignItems: 'center',
+              p: 3,
+            }}
+          >
             <CircularProgress size={24} />
           </Stack>
         ) : (
@@ -102,23 +108,63 @@ function TokenListItem({ token, balance, ...rest }: TokenListItemProps) {
         ...rest?.sx,
       })}
     >
-      <Stack direction="row" gap={2} alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          gap: 2,
+          alignItems: 'center',
+        }}
+      >
         <TokenIcon token={token} sx={{ width: 28, height: 28 }} />
         <Stack spacing={0.25}>
-          <Stack direction="row" spacing={1} alignItems="baseline">
-            <Typography fontWeight="medium">{token?.name}</Typography>
-            <Typography color="text.secondary">{token.symbol}</Typography>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'baseline',
+            }}
+          >
+            <Typography
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
+              {token?.name}
+            </Typography>
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
+              {token.symbol}
+            </Typography>
           </Stack>
         </Stack>
       </Stack>
-      <Stack direction="row" spacing={2} alignItems="center">
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {token?.isSelected && (
-          <Stack display="flex" justifyContent="center" alignItems="center">
+          <Stack
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
             <FaCheckRegular sx={{ color: '#fff', fontSize: 16 }} />
           </Stack>
         )}
         <Box sx={{ textAlign: 'right' }}>
-          <Typography fontWeight={500}>
+          <Typography
+            sx={{
+              fontWeight: 500,
+            }}
+          >
             {formatAmount(balance, token?.decimals)}
           </Typography>
         </Box>

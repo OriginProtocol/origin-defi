@@ -185,27 +185,42 @@ const AdCard = ({ ad, ...rest }: AdCardProps) => {
   return (
     <Card
       {...rest}
-      sx={(theme) => ({
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: 1,
-        p: 3,
-        border: `1px solid ${theme.palette.common.black}`,
-        background: ad.background ?? '#101',
-        borderRadius: 5,
-        ...rest?.sx,
-      })}
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 1,
+          p: 3,
+          border: `1px solid`,
+          borderColor: 'common.black',
+          background: ad.background ?? '#101',
+          borderRadius: 5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {ad.icon}
       {ad?.title && (
-        <Typography variant="h6" textAlign="center" sx={{ color: '#FAFBFB' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            textAlign: 'center',
+            color: '#FAFBFB',
+          }}
+        >
           {ad.title}
         </Typography>
       )}
       {ad?.subtitle && (
-        <Typography textAlign="center" variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          sx={{
+            textAlign: 'center',
+            color: 'text.secondary',
+          }}
+        >
           {ad.subtitle}
         </Typography>
       )}

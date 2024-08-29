@@ -35,7 +35,13 @@ export function SlippageFormControl({
       >
         {intl.formatMessage({ defaultMessage: 'Max slippage' })}
       </InfoTooltipLabel>
-      <Stack direction="row" gap={2} pt={1}>
+      <Stack
+        direction="row"
+        sx={{
+          gap: 2,
+          pt: 1,
+        }}
+      >
         <PercentInput
           value={slippage}
           onChange={handleSlippageChange}

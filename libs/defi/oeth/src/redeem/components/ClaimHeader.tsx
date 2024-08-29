@@ -44,11 +44,27 @@ export const ClaimHeader = (props: StackProps) => {
         ...props?.sx,
       }}
     >
-      <Stack alignItems="center" p={3} spacing={1}>
-        <Typography color="text.secondary">
+      <Stack
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+          p: 3,
+        }}
+      >
+        <Typography
+          sx={{
+            color: 'text.secondary',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Available to claim' })}
         </Typography>
-        <Stack direction="row" alignItems="baseline" spacing={0.75}>
+        <Stack
+          direction="row"
+          spacing={0.75}
+          sx={{
+            alignItems: 'baseline',
+          }}
+        >
           <LoadingLabel
             isLoading={isRequestsLoading}
             variant="featured1"
@@ -62,27 +78,63 @@ export const ClaimHeader = (props: StackProps) => {
         </Stack>
       </Stack>
       <Divider />
-      <Stack direction="row" alignItems="center">
-        <Stack width={1} alignItems="center" p={3} spacing={1}>
-          <Typography color="text.secondary">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+        }}
+      >
+        <Stack
+          spacing={1}
+          sx={{
+            width: 1,
+            alignItems: 'center',
+            p: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Your requests' })}
           </Typography>
-          <Stack direction="row" alignItems="center" spacing={2} minHeight={32}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              alignItems: 'center',
+              minHeight: 32,
+            }}
+          >
             <IconChip claimable amount={claimable?.length ?? 0} />
             <Divider orientation="vertical" flexItem />
             <IconChip claimable={false} amount={pending?.length ?? 0} />
           </Stack>
         </Stack>
         <Divider orientation="vertical" flexItem />
-        <Stack width={1} alignItems="center" p={3} spacing={1}>
-          <Typography color="text.secondary">
+        <Stack
+          spacing={1}
+          sx={{
+            width: 1,
+            alignItems: 'center',
+            p: 3,
+          }}
+        >
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Your pending amount' })}
           </Typography>
           <Stack
             direction="row"
-            alignItems="baseline"
             spacing={0.75}
-            minHeight={32}
+            sx={{
+              alignItems: 'baseline',
+              minHeight: 32,
+            }}
           >
             <LoadingLabel
               isLoading={isRequestsLoading}
@@ -110,15 +162,16 @@ const IconChip = ({ claimable, amount, ...rest }: IconChipProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
       spacing={1}
       {...rest}
       sx={[
         {
+          alignItems: 'center',
+        },
+        {
           svg: {
             fontSize: 24,
           },
-          ...rest?.sx,
         },
         claimable
           ? {
@@ -131,10 +184,16 @@ const IconChip = ({ claimable, amount, ...rest }: IconChipProps) => {
                 color: 'warning.main',
               },
             },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
       {claimable ? <FaCircleCheckRegular /> : <FaClockRegular />}
-      <Typography variant="body2" fontWeight="bold">
+      <Typography
+        variant="body2"
+        sx={{
+          fontWeight: 'bold',
+        }}
+      >
         {amount}
       </Typography>
     </Stack>

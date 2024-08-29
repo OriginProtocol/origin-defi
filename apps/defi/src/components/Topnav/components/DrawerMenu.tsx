@@ -44,7 +44,13 @@ export const DrawerMenu = ({ onClose, ...rest }: DrawerMenuProps) => {
 
   return (
     <Stack {...rest}>
-      <Stack direction="row" justifyContent="space-between" p={2}>
+      <Stack
+        direction="row"
+        sx={{
+          justifyContent: 'space-between',
+          p: 2,
+        }}
+      >
         <Box
           component={RouterLink}
           to="/"
@@ -93,7 +99,11 @@ export const DrawerMenu = ({ onClose, ...rest }: DrawerMenuProps) => {
           color: 'text.primary',
         }}
       >
-        <Typography fontWeight="medium">
+        <Typography
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
           {intl.formatMessage({ defaultMessage: 'Docs' })}
         </Typography>
         <FaArrowUpRightRegular className="arrow" />
@@ -189,13 +199,19 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
         }}
       >
         <Stack
-          width={1}
           direction="row"
           spacing={1}
-          alignItems="center"
-          justifyContent="space-between"
+          sx={{
+            width: 1,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
         >
-          <Typography fontWeight="medium">
+          <Typography
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
             {intl.formatMessage(route.handle.title)}
           </Typography>
           <ExpandIcon
@@ -272,7 +288,11 @@ const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
             },
       ]}
     >
-      <Typography fontWeight="medium">
+      <Typography
+        sx={{
+          fontWeight: 'medium',
+        }}
+      >
         {intl.formatMessage(item.title)}
       </Typography>
       {!isNilOrEmpty(item?.href) && (

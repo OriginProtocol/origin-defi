@@ -30,7 +30,13 @@ export const AlertPopover = (
         },
       }}
     >
-      <Stack p={3} spacing={2} position="relative">
+      <Stack
+        spacing={2}
+        sx={{
+          p: 3,
+          position: 'relative',
+        }}
+      >
         <IconButton
           onClick={() => {
             props?.onClose();
@@ -82,10 +88,15 @@ const RebaseRow = ({ token, ...rest }: RebaseRowProps) => {
   return (
     <Stack
       direction="row"
-      alignItems="center"
-      justifyContent="space-between"
       spacing={0.5}
       {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <TokenIcon token={token} sx={{ fontSize: 36 }} />
       <Typography>

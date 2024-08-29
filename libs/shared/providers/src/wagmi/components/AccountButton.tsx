@@ -19,7 +19,13 @@ export const AccountButton = ({
   return (
     <Button {...rest}>
       {isNilOrEmpty(children) ? (
-        <Stack direction="row" alignItems="center" gap={1}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+            gap: 1,
+          }}
+        >
           <UserAvatar />
           {!hideAddress && (
             <AddressLabel address={address} enableEnsName short />

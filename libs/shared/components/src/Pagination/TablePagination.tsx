@@ -26,11 +26,18 @@ export const TablePagination = ({
   return (
     <Stack
       direction="row"
-      alignItems="stretch"
-      justifyContent="flex-end"
       spacing={1}
       {...rest}
-      sx={{ px: { xs: 2, md: 3 }, py: 2, ...rest?.sx }}
+      sx={[
+        {
+          alignItems: 'stretch',
+          justifyContent: 'flex-end',
+          px: { xs: 2, md: 3 },
+          py: 2,
+          ...rest?.sx,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Button
         size="small"
@@ -58,7 +65,13 @@ export const TablePagination = ({
       >
         <FaChevronLeftRegular />
       </Button>
-      <Typography fontSize={13} px={2} sx={{ alignSelf: 'center' }}>
+      <Typography
+        sx={{
+          fontSize: 13,
+          px: 2,
+          alignSelf: 'center',
+        }}
+      >
         {intl.formatMessage(
           { defaultMessage: '{page} of {lastPage}' },
           {

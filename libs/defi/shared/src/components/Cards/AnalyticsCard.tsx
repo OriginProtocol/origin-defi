@@ -28,13 +28,23 @@ export const AnalyticsCard = ({
           alignItems: 'flex-start',
         }}
       >
-        <Typography mb={1} fontWeight="medium">
+        <Typography
+          sx={{
+            mb: 1,
+            fontWeight: 'medium',
+          }}
+        >
           {intl.formatMessage(
             { defaultMessage: '{symbol} analytics' },
             { symbol: title ?? token.symbol },
           )}
         </Typography>
-        <Typography variant="caption1" mb={3}>
+        <Typography
+          variant="caption1"
+          sx={{
+            mb: 3,
+          }}
+        >
           {intl.formatMessage({
             defaultMessage: 'Detailed analytics on Origin products',
           })}

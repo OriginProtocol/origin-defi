@@ -399,12 +399,19 @@ function SwapperWrapped({
             <Collapse in={amountOut > 0n}>
               <Stack
                 direction="row"
-                justifyContent="space-between"
-                alignItems="center"
-                pt={2}
-                pb={1}
+                sx={{
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  pt: 2,
+                  pb: 1,
+                }}
               >
-                <Typography variant="body2" color="text.secondary">
+                <Typography
+                  variant="body2"
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage(
                     {
                       defaultMessage:
@@ -419,7 +426,13 @@ function SwapperWrapped({
                     },
                   )}
                 </Typography>
-                <Stack direction="row" alignItems="center" spacing={0.5}>
+                <Stack
+                  direction="row"
+                  spacing={0.5}
+                  sx={{
+                    alignItems: 'center',
+                  }}
+                >
                   <LoadingLabel
                     variant="body2"
                     isLoading={isSwapRoutesLoading}

@@ -16,7 +16,17 @@ export const BalanceList = ({ balanceTokens, ...rest }: BalanceListProps) => {
   });
 
   return (
-    <Stack px={2} py={3} spacing={2} {...rest}>
+    <Stack
+      spacing={2}
+      {...rest}
+      sx={[
+        {
+          px: 2,
+          py: 3,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {!!balanceTokens &&
         balanceTokens.map((tok) => (
           <BalanceRow
@@ -45,7 +55,17 @@ function BalanceRow({
   const intl = useIntl();
 
   return (
-    <Stack direction="row" alignItems="center" gap={1} {...rest}>
+    <Stack
+      direction="row"
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+          gap: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <TokenIcon token={token} sx={{ width: 20, height: 20 }} />
       <Typography>
         {isBalanceLoading ? (

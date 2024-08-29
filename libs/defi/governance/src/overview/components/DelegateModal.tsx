@@ -101,10 +101,17 @@ export const DelegateModal = (props: DialogProps) => {
             <CardContent>
               <Stack
                 direction="row"
-                alignItems="center"
-                justifyContent="space-between"
+                sx={{
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}
               >
-                <Typography variant="featured3" fontWeight="bold">
+                <Typography
+                  variant="featured3"
+                  sx={{
+                    fontWeight: 'bold',
+                  }}
+                >
                   {formatAmount(
                     BigInt(info?.xOgnBalance ?? '0'),
                     tokens.mainnet.xOGN.decimals,

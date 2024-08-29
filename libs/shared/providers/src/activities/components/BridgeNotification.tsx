@@ -59,7 +59,11 @@ export const BridgeNotification = ({
       }
       subtitle={
         isNilOrEmpty(error) ? (
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage(
               {
                 defaultMessage: '{amountIn} {symbolIn}',

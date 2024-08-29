@@ -91,7 +91,6 @@ export function SwapRouteCard({
           position: 'relative',
           boxShadow: 'none',
           height: 1,
-          ...rest?.sx,
         },
         isSelected
           ? {
@@ -115,6 +114,7 @@ export function SwapRouteCard({
                   )} 100%) border-box;`,
               },
             },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
       role="button"
       onClick={() => {
@@ -138,16 +138,30 @@ export function SwapRouteCard({
           {intl.formatMessage({ defaultMessage: 'Best' })}
         </Box>
       )}
-      <Stack height={1}>
+      <Stack
+        sx={{
+          height: 1,
+        }}
+      >
         <Grid2 container spacing={0.5}>
-          <Grid2 display="flex" alignItems="center">
+          <Grid2
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             {isSwapRoutesLoading ? (
               <Skeleton variant="circular" width={16} height={16} />
             ) : (
               <TokenIcon token={tokenOut} sx={{ fontSize: 16 }} />
             )}
           </Grid2>
-          <Grid2 display="flex" alignItems="center">
+          <Grid2
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <LoadingLabel
               fontWeight={500}
               isLoading={isSwapRoutesLoading}
@@ -163,11 +177,13 @@ export function SwapRouteCard({
             </LoadingLabel>
           </Grid2>
           <Grid2
-            display="flex"
-            alignItems="center"
             size={{
               xs: 12,
               sm: 'auto',
+            }}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
             <LoadingLabel
@@ -181,7 +197,12 @@ export function SwapRouteCard({
             </LoadingLabel>
           </Grid2>
         </Grid2>
-        <Stack justifyContent="space-between" height={1}>
+        <Stack
+          sx={{
+            justifyContent: 'space-between',
+            height: 1,
+          }}
+        >
           <LoadingLabel
             fontWeight={500}
             sx={{ fontSize: 12, my: { xs: 1.5, md: 1 } }}
@@ -190,14 +211,25 @@ export function SwapRouteCard({
           >
             {intl.formatMessage(routeLabel)}
           </LoadingLabel>
-          <Stack gap={0.5}>
+          <Stack
+            sx={{
+              gap: 0.5,
+            }}
+          >
             <Stack
               direction="row"
-              gap={1}
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                gap: 1,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Rate:' })}
               </Typography>
               <LoadingLabel
@@ -211,11 +243,18 @@ export function SwapRouteCard({
             </Stack>
             <Stack
               direction="row"
-              gap={1}
-              alignItems="center"
-              justifyContent="space-between"
+              sx={{
+                gap: 1,
+                alignItems: 'center',
+                justifyContent: 'space-between',
+              }}
             >
-              <Typography variant="body2" color="text.secondary">
+              <Typography
+                variant="body2"
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
                 {intl.formatMessage({ defaultMessage: 'Gas:' })}
               </Typography>
               <LoadingLabel

@@ -97,7 +97,11 @@ export const VoteDelegationCard = (props: CardProps) => {
               p: 3,
             }}
           >
-            <Typography color="text.secondary">
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No voting power' })}
             </Typography>
           </Stack>
@@ -105,10 +109,21 @@ export const VoteDelegationCard = (props: CardProps) => {
           <Box>
             {!isSelfDelegating && (
               <CardContent>
-                <Typography color="text.secondary">
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({ defaultMessage: 'Delegating to' })}
                 </Typography>
-                <Stack direction="row" alignItems="center" spacing={1} pt={2}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center',
+                    pt: 2,
+                  }}
+                >
                   {isSelfDelegating ? (
                     <Typography>
                       {intl.formatMessage({ defaultMessage: 'Self' })}
@@ -201,17 +216,23 @@ export const VoteDelegationCard = (props: CardProps) => {
             </CardContent>
             {!isNilOrEmpty(visibleDelegators) && (
               <CardContent sx={{ pt: 0 }}>
-                <Typography color="text.secondary">
+                <Typography
+                  sx={{
+                    color: 'text.secondary',
+                  }}
+                >
                   {intl.formatMessage({
                     defaultMessage: 'Delegated to me',
                   })}
                 </Typography>
                 {isDelegatorsLoading ? (
                   <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    pt={3}
+                    sx={{
+                      display: 'flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      pt: 3,
+                    }}
                   >
                     <CircularProgress size={20} />
                   </Box>
@@ -221,12 +242,20 @@ export const VoteDelegationCard = (props: CardProps) => {
                       <Stack
                         key={d.id}
                         direction="row"
-                        alignItems="center"
-                        justifyContent="space-between"
                         spacing={1}
-                        pt={3}
+                        sx={{
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          pt: 3,
+                        }}
                       >
-                        <Stack direction="row" alignItems="center" spacing={1}>
+                        <Stack
+                          direction="row"
+                          spacing={1}
+                          sx={{
+                            alignItems: 'center',
+                          }}
+                        >
                           <UserAvatar address={d.id as HexAddress} width={20} />
                           <ExternalLink
                             href={`https://etherscan.io/address/${d.id}`}
@@ -274,7 +303,11 @@ export const VoteDelegationCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Connect wallet to view' })}
           </Typography>
         </Stack>

@@ -77,11 +77,11 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
     return (
       <Stack
         direction="row"
-        alignItems="center"
         spacing={2}
         {...rest}
         sx={[
           {
+            alignItems: 'center',
             border: '1px solid',
             borderColor: 'divider',
             borderRadius: 5,
@@ -94,9 +94,17 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                 outline: `2px solid ${theme.palette.text.primary}`,
               },
             })),
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}
       >
-        <Stack direction="row" alignItems="center" sx={{ flexGrow: 1, py: 1 }}>
+        <Stack
+          direction="row"
+          sx={{
+            alignItems: 'center',
+            flexGrow: 1,
+            py: 1,
+          }}
+        >
           {isAmountLoading ? (
             <Skeleton width={100} height={36} />
           ) : (
@@ -130,17 +138,30 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             />
           )}
         </Stack>
-        <Stack alignItems="flex-end" spacing={1}>
+        <Stack
+          spacing={1}
+          sx={{
+            alignItems: 'flex-end',
+          }}
+        >
           {isConnected ? (
             isBalanceLoading ? (
               <Skeleton width={38} />
             ) : (
               <>
-                <Stack direction="row" alignItems="center" spacing={1}>
+                <Stack
+                  direction="row"
+                  spacing={1}
+                  sx={{
+                    alignItems: 'center',
+                  }}
+                >
                   <Typography
                     noWrap
-                    color="text.secondary"
                     sx={[
+                      {
+                        color: 'text.secondary',
+                      },
                       balance === undefined
                         ? {
                             visibility: 'hidden',

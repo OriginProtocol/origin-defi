@@ -26,9 +26,31 @@ export const ValueLabel = ({
   ...rest
 }: ValueLabelProps) => {
   return (
-    <Stack spacing={1} alignItems="center" {...rest}>
+    <Stack
+      spacing={1}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {typeof label === 'string' ? (
-        <Typography color="text.secondary" variant="body2" {...labelProps}>
+        <Typography
+          variant="body2"
+          {...labelProps}
+          sx={[
+            {
+              color: 'text.secondary',
+            },
+            ...(labelProps?.sx
+              ? Array.isArray(labelProps.sx)
+                ? labelProps.sx
+                : [labelProps.sx]
+              : []),
+          ]}
+        >
           {label}
           {labelInfoTooltip ? (
             <InfoTooltip

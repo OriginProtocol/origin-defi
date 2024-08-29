@@ -88,11 +88,19 @@ export const AccountPopover = (
     >
       <Stack
         direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        p={3}
+        sx={{
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          p: 3,
+        }}
       >
-        <Stack direction="row" alignItems="center" spacing={1.5}>
+        <Stack
+          direction="row"
+          spacing={1.5}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <BadgeIcon
             badgeContent={
               <WalletIcon walletName={connector?.name} sx={{ fontSize: 10 }} />
@@ -116,7 +124,13 @@ export const AccountPopover = (
             <FaCopyRegular />
           </ClipboardButton>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
           <ThemeModeIconButton
             variant="outlined"
             color="secondary"
@@ -135,8 +149,12 @@ export const AccountPopover = (
         </Stack>
       </Stack>
       <Divider />
-
-      <Stack direction="row" alignItems="center">
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         <Tabs
           value={tab}
           onChange={(_, value) => {
@@ -206,7 +224,16 @@ function ChainSelector({
   const { chains } = useConfig();
 
   return (
-    <Stack direction="row" alignItems="center" {...rest}>
+    <Stack
+      direction="row"
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {chains.map((c) => (
         <Button
           key={c.id}
@@ -263,7 +290,17 @@ function BalanceList({ selectedChainId, ...rest }: BalanceListProps) {
   );
 
   return (
-    <Stack px={2} py={3} spacing={2} {...rest}>
+    <Stack
+      spacing={2}
+      {...rest}
+      sx={[
+        {
+          px: 2,
+          py: 3,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {balanceTokens
         .filter((t) => t.chainId === selectedChainId)
         .map((tok) => (
@@ -317,16 +354,38 @@ function BalanceRow({
   };
 
   return (
-    <Stack direction="row" alignItems="center" gap={1} {...rest}>
+    <Stack
+      direction="row"
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+          gap: 1,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <TokenIcon token={token} sx={{ fontSize: 32 }} outlined />
-      <Stack flexGrow={1}>
+      <Stack
+        sx={{
+          flexGrow: 1,
+        }}
+      >
         <ValueLabel
           label={
-            <Stack direction="row" alignItems="center" spacing={1}>
+            <Stack
+              direction="row"
+              spacing={1}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <Typography
                 variant="body2"
-                fontWeight="bold"
-                color="text.primary"
+                sx={{
+                  fontWeight: 'bold',
+                  color: 'text.primary',
+                }}
               >
                 {token.symbol}
               </Typography>
@@ -431,8 +490,22 @@ function EmptyActivity(props: StackProps) {
   const intl = useIntl();
 
   return (
-    <Stack {...props} justifyContent="center" alignItems="center" py={5}>
-      <Typography color="text.secondary">
+    <Stack
+      {...props}
+      sx={[
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+          py: 5,
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <Typography
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         {intl.formatMessage({ defaultMessage: 'No Activity' })}
       </Typography>
     </Stack>

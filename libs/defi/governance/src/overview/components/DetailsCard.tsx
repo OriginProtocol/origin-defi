@@ -63,8 +63,9 @@ export const DetailsCard = (props: CardProps) => {
           >
             <CardContent>
               <LoadingLabel isLoading={isProposalLoading} sWidth={200}>
-                {proposal?.description ??
-                  intl.formatMessage({ defaultMessage: 'No description' })}
+                {isNilOrEmpty(proposal?.description)
+                  ? intl.formatMessage({ defaultMessage: 'No description' })
+                  : proposal?.description}
               </LoadingLabel>
             </CardContent>
           </SectionCard>
@@ -221,19 +222,23 @@ function Actions({ proposal, ...rest }: ActionsProps) {
     <Stack {...rest} divider={<Divider />}>
       {isActionsLoading ? (
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="5rem"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '5rem',
+          }}
         >
           <CircularProgress size={20} />
         </Box>
       ) : isNilOrEmpty(actions) ? (
         <Box
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-          minHeight="5rem"
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '5rem',
+          }}
         >
           <Typography>
             {intl.formatMessage({ defaultMessage: 'No actions' })}
@@ -259,7 +264,13 @@ function Actions({ proposal, ...rest }: ActionsProps) {
                 sx={{ px: 2, py: 2 }}
                 expandIcon={<FaChevronDownRegular />}
               >
-                <Grid2 container width={1} spacing={2}>
+                <Grid2
+                  container
+                  spacing={2}
+                  sx={{
+                    width: 1,
+                  }}
+                >
                   <Grid2 size={4}>
                     <ExternalLink
                       href={`https://etherscan.io/address/${a.address}`}
@@ -277,7 +288,12 @@ function Actions({ proposal, ...rest }: ActionsProps) {
               </AccordionSummary>
               <AccordionDetails>
                 <Divider />
-                <Stack spacing={2} py={2}>
+                <Stack
+                  spacing={2}
+                  sx={{
+                    py: 2,
+                  }}
+                >
                   <ValueLabel
                     {...valueLabelProps}
                     label={intl.formatMessage({
@@ -338,12 +354,10 @@ function Actions({ proposal, ...rest }: ActionsProps) {
 }
 
 const valueLabelProps: Partial<ValueLabelProps> = {
-  alignItems: 'flex-start',
+  sx: { alignItems: 'flex-start' },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
-    minWidth: 120,
+    sx: { fontWeight: 'medium', color: 'text.secondary', minWidth: 120 },
   },
   valueProps: { variant: 'mono' },
 };

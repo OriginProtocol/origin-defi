@@ -22,11 +22,32 @@ export const TokenChip = ({
   ...rest
 }: TokenChipProps) => {
   return (
-    <Stack direction="row" alignItems="center" spacing={0.5} {...rest}>
+    <Stack
+      direction="row"
+      spacing={0.5}
+      {...rest}
+      sx={[
+        {
+          alignItems: 'center',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       {iconPlacement === 'before' && (
         <TokenIcon outlined {...iconProps} token={token} />
       )}
-      <Typography variant="inherit" fontWeight="medium" {...labelProps}>
+      <Typography
+        variant="inherit"
+        {...labelProps}
+        sx={[
+          {
+            fontWeight: 'medium',
+          },
+          ...(labelProps && Array.isArray(labelProps.sx)
+            ? labelProps.sx
+            : [labelProps?.sx]),
+        ]}
+      >
         {label ?? token.symbol}
       </Typography>
       {iconPlacement === 'after' && (

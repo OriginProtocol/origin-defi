@@ -44,9 +44,20 @@ export function SwapRoute(
         }}
       >
         {isSwapRoutesLoading ? (
-          <Stack direction="row" alignItems="center" gap={1}>
+          <Stack
+            direction="row"
+            sx={{
+              alignItems: 'center',
+              gap: 1,
+            }}
+          >
             <CircularProgress size={14} />
-            <Typography variant="caption1" fontWeight="medium">
+            <Typography
+              variant="caption1"
+              sx={{
+                fontWeight: 'medium',
+              }}
+            >
               {intl.formatMessage({
                 defaultMessage: 'Finding the best route...',
               })}

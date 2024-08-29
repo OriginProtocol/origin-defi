@@ -68,8 +68,7 @@ const valueLabelProps: Partial<ValueLabelProps> = {
   sx: { width: 1 },
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    color: 'text.secondary',
+    sx: { fontWeight: 'medium', color: 'text.secondary' },
   },
-  valueProps: { variant: 'body3', fontWeight: 'medium' },
+  valueProps: { variant: 'body3', sx: { fontWeight: 'medium' } },
 };

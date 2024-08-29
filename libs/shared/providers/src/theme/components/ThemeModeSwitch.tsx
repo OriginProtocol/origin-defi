@@ -15,10 +15,15 @@ export const ThemeModeSwitch = (props: StackProps) => {
     <Stack
       {...props}
       direction="row"
-      px={2}
-      py={1.5}
-      alignItems="center"
-      justifyContent="space-between"
+      sx={[
+        {
+          px: 2,
+          py: 1.5,
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Typography>
         {intl.formatMessage({ defaultMessage: 'Theme:' })}

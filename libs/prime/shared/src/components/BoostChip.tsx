@@ -24,7 +24,13 @@ export const BoostChip = ({ boost, ...rest }: BoostChipProps) => {
           size="small"
           {...rest}
           label={
-            <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Stack
+              direction="row"
+              spacing={0.5}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
               <Typography variant="inherit">
                 {intl.formatMessage({ defaultMessage: 'Eigen Turbocharge' })}
               </Typography>

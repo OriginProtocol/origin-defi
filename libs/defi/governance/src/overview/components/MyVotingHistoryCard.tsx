@@ -81,7 +81,11 @@ export const MyVotingHistoryCard = (props: CardProps) => {
               p: 3,
             }}
           >
-            <Typography color="text.secondary">
+            <Typography
+              sx={{
+                color: 'text.secondary',
+              }}
+            >
               {intl.formatMessage({ defaultMessage: 'No votes' })}
             </Typography>
           </Stack>
@@ -93,7 +97,13 @@ export const MyVotingHistoryCard = (props: CardProps) => {
                 <VoteHistory key={vote.id} vote={vote as any} />
               ))}
             </Stack>
-            <Stack justifyContent="center" alignItems="center" py={2}>
+            <Stack
+              sx={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                py: 2,
+              }}
+            >
               <Button
                 variant="outlined"
                 color="secondary"
@@ -115,7 +125,11 @@ export const MyVotingHistoryCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <Typography color="text.secondary">
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
             {intl.formatMessage({ defaultMessage: 'Connect wallet to view' })}
           </Typography>
         </Stack>
@@ -157,13 +171,25 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
   }[vote.choice] ?? <Snapshot color="warning" sx={{ fontSize: 14 }} />;
 
   return (
-    <Stack spacing={1.5} px={3} py={1.5} {...rest}>
+    <Stack
+      spacing={1.5}
+      {...rest}
+      sx={[
+        {
+          px: 3,
+          py: 1.5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <Stack
         direction="row"
-        alignItems="center"
-        flexWrap="wrap"
-        rowGap={1}
-        columnGap={1}
+        sx={{
+          alignItems: 'center',
+          flexWrap: 'wrap',
+          rowGap: 1,
+          columnGap: 1,
+        }}
       >
         <TokenIcon token={tokens.mainnet.OETH} sx={{ fontSize: 24 }} />
         <ProposalTypeBadge type={vote?.proposal.type} />
@@ -192,13 +218,24 @@ function VoteHistory({ vote, ...rest }: VoteHistoryProps) {
           {vote?.proposal?.title}
         </TooltipLabel>
       </MuiLink>
-      <Stack direction="row" spacing={1} alignItems="center">
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          alignItems: 'center',
+        }}
+      >
         {icon}
         <TooltipLabel noWrap variant="caption1" maxChars={29}>
           {label}
         </TooltipLabel>
       </Stack>
-      <Typography variant="caption1" color="text.secondary">
+      <Typography
+        variant="caption1"
+        sx={{
+          color: 'text.secondary',
+        }}
+      >
         {intl.formatDate(new Date(vote.created), {
           day: '2-digit',
           month: 'short',
