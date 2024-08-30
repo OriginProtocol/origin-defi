@@ -272,12 +272,15 @@ function LockupRow({ lockup, ...rest }: LockupRowProps) {
     </Stack>
   );
 }
+
 type SuccessViewProps = {
   onClose: (evt: MouseEvent<HTMLButtonElement>) => void;
 } & DialogContentProps;
+
 function SuccessView({ onClose, ...rest }: SuccessViewProps) {
   const intl = useIntl();
   const { data: ognApy, isLoading: isOgnApyLoading } = useOgnStakingApy();
+
   return (
     <DialogContent
       {...rest}
@@ -325,6 +328,7 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
             maximumFractionDigits: 2,
             minimumFractionDigits: 2,
           })}
+          isLoading={isOgnApyLoading}
           valueProps={{
             sx: {
               fontSize: 32,
