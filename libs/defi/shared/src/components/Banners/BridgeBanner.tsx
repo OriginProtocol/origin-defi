@@ -25,12 +25,10 @@ export const BridgeBanner = (props: StackProps) => {
           overflow: 'hidden',
           background: `url('/images/arbitrum-icon.svg'),linear-gradient(83deg, rgba(18, 170, 255, 0.20) 12.85%, rgba(33, 49, 71, 0.20) 112.14%), #225180;`,
           backgroundRepeat: 'no-repeat',
-
           backgroundSize: {
             xs: '60% 100%, cover',
             md: 'auto 100%, cover',
           },
-
           backgroundPosition: 'right -100px center, center',
           p: 2,
           ...props?.sx,

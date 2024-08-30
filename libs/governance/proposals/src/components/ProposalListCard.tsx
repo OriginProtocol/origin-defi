@@ -168,15 +168,12 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         {
           p: 3,
           cursor: 'pointer',
-
           ':hover': {
             backgroundColor: (theme) => alpha(theme.palette.common.white, 0.01),
             '.title': {
               textDecoration: 'underline',
             },
           },
-
-          ...rest?.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
@@ -198,8 +195,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   spacing={0.75}
                   sx={{
                     alignItems: 'center',
-                    border: (theme) =>
-                      `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
+                    border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
@@ -223,12 +219,10 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                   spacing={0.75}
                   sx={{
                     alignItems: 'center',
-                    border: (theme) =>
-                      `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
+                    border: `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
-
                     svg: {
                       color: 'secondary.light',
                     },

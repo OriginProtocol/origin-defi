@@ -215,9 +215,15 @@ function RedeemerWrapped({
                 isLoading={isEstimateLoading}
                 sWidth={60}
                 variant="h6"
-                sx={{
-                  color: amountIn === 0n ? 'text.secondary' : 'text.primary',
-                }}
+                sx={[
+                  amountIn === 0n
+                    ? {
+                        color: 'text.secondary',
+                      }
+                    : {
+                        color: 'text.primary',
+                      },
+                ]}
               >
                 {format(amt, {
                   digits: getFormatPrecision(amt),

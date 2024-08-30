@@ -424,9 +424,15 @@ function SwapperWrapped({
               isLoading={isSwapRoutesLoading}
               sWidth={60}
               variant="h6"
-              sx={{
-                color: amountIn === 0n ? 'text.secondary' : 'text.primary',
-              }}
+              sx={[
+                amountIn === 0n
+                  ? {
+                      color: 'text.secondary',
+                    }
+                  : {
+                      color: 'text.primary',
+                    },
+              ]}
             >
               {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
                 digits: 18,

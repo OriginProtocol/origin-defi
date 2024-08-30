@@ -178,7 +178,6 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
         {
           p: 3,
           cursor: 'pointer',
-
           ':hover': {
             background: (theme) =>
               alpha(
@@ -189,8 +188,6 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
               textDecoration: 'underline',
             },
           },
-
-          ...rest?.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}

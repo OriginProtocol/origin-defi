@@ -108,7 +108,6 @@ export const WithdrawView = () => {
               borderColor: 'primary.main',
               backgroundColor: (theme) =>
                 alpha(theme.palette.primary.main, 0.2),
-
               borderRadius: 2,
             }}
           >

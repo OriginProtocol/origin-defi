@@ -36,13 +36,11 @@ export const SuperOethbBanner = (props: StackProps) => {
           color: 'primary.contrastText',
           backgroundImage: `url('/images/base-icon.svg')`,
           backgroundRepeat: 'no-repeat',
-
           backgroundPosition: {
             xs: 'right -300px center',
             sm: 'right -300px center',
             md: 'right -50px center',
           },
-
           backgroundSize: { xs: 400, md: 200 },
           backgroundBlendMode: 'darken',
         }}

@@ -98,10 +98,8 @@ export const RedeemActionCard = ({
             left: 0,
             width: 1,
             height: 1,
-
             background: (theme) =>
               alpha(theme.palette.background.highlight, 0.8),
-
             backdropFilter: 'blur(px)',
           }}
         >

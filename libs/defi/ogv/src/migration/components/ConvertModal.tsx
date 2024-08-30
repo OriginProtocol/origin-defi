@@ -249,7 +249,6 @@ export const ConvertModal = ({
                   borderRadius: 25,
                   px: 1,
                   py: 0.5,
-
                   '&:hover': {
                     backgroundColor: 'background.faded',
                   },

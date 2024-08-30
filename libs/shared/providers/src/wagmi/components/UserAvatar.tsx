@@ -73,13 +73,11 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-
           'svg, img': {
             borderRadius: '50%',
             width: rest?.width ?? 24,
             height: rest?.width ?? 24,
           },
-
           ...rest?.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),

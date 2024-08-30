@@ -16,11 +16,16 @@ export const Page = ({ children, showFooterMargin, ...rest }: PageProps) => {
     <Stack
       {...rest}
       sx={[
-        {
-          minHeight: (theme) =>
-            `calc(100Dvh - ${theme.mixins.toolbar.height}px)`,
-          mb: showFooterMargin ? 6 : 0,
-        },
+        (theme) => ({
+          minHeight: `calc(100Dvh - ${theme.mixins.toolbar.height}px)`,
+        }),
+        showFooterMargin
+          ? {
+              mb: 6,
+            }
+          : {
+              mb: 0,
+            },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >

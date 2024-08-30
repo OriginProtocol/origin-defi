@@ -81,14 +81,11 @@ export const TokenCard = ({
           px: 3,
           color: 'text.primary',
           backgroundColor: 'background.highlight',
-
           [theme.breakpoints.up('md')]: {
             '>*': {
               width: 1,
             },
           },
-
-          ...rest?.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}

@@ -104,7 +104,6 @@ export function ChainSwitcherPopover({
               alignItems: 'center',
               px: 2,
               py: 1.5,
-
               ':hover': {
                 cursor: 'pointer',
                 backgroundColor: 'rgba(255,255,255,.05)',
