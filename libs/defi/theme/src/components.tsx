@@ -90,11 +90,91 @@ export const components = (base: Theme): ThemeOptions => ({
         disableElevation: true,
       },
       styleOverrides: {
-        root: {
+        root: ({ theme }) => ({
           textTransform: 'none',
           boxShadow: 'none',
           minWidth: 0,
-        },
+          variants: [
+            {
+              props: { variant: 'action' },
+              style: {
+                background: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+                fontSize: 20,
+                lineHeight: 1.6,
+                fontStyle: 'normal',
+                '&:hover': {
+                  background: theme.palette.primary.dark,
+                },
+                '&:disabled': {
+                  opacity: 0.5,
+                  color: theme.palette.primary.contrastText,
+                },
+              },
+            },
+            {
+              props: { variant: 'link' },
+              style: {
+                padding: 0,
+                minWidth: 0,
+                minHeight: 0,
+                color: theme.palette.primary.main,
+                '&:hover': {
+                  color: theme.palette.primary.light,
+                  backgroundColor: 'transparent',
+                },
+                '&:disabled': {
+                  opacity: 0.5,
+                  color: theme.palette.text.secondary,
+                },
+              },
+            },
+            {
+              props: { variant: 'nav' },
+              style: {
+                height: 40,
+                padding: theme.spacing(0.75, 2),
+                [base.breakpoints.up('md')]: {
+                  minWidth: 58,
+                },
+                [base.breakpoints.down('md')]: {
+                  width: 40,
+                  borderRadius: '50%',
+                },
+                [base.breakpoints.down('sm')]: {
+                  height: 36,
+                  width: 36,
+                  borderRadius: '50%',
+                },
+              },
+            },
+            {
+              props: { variant: 'nav', color: 'secondary' },
+              style: {
+                background: theme.palette.secondary.main,
+                color: theme.palette.secondary.contrastText,
+                border: '1px solid',
+                borderColor: theme.palette.divider,
+                '&:hover': {
+                  borderColor: emphasize(theme.palette.divider, 0.2),
+                  background: emphasize(theme.palette.background.default, 0.2),
+                },
+              },
+            },
+            {
+              props: { variant: 'nav', color: 'primary' },
+              style: {
+                backgroundColor: theme.palette.primary.main,
+                color: theme.palette.primary.contrastText,
+                border: '1px solid',
+                borderColor: theme.palette.divider,
+                '&:hover': {
+                  backgroundColor: theme.palette.primary.dark,
+                },
+              },
+            },
+          ],
+        }),
         sizeSmall: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius,
           padding: theme.spacing(0.75, 1),
@@ -103,6 +183,14 @@ export const components = (base: Theme): ThemeOptions => ({
           borderRadius: theme.shape.borderRadius * 2,
           padding: theme.spacing(1, 1.5),
           minHeight: 36,
+          variants: [
+            {
+              props: { variant: 'action' },
+              style: {
+                padding: theme.spacing(2),
+              },
+            },
+          ],
         }),
         sizeLarge: ({ theme }) => ({
           borderRadius: theme.shape.borderRadius * 3,
@@ -127,87 +215,6 @@ export const components = (base: Theme): ThemeOptions => ({
           },
         }),
       },
-      variants: [
-        {
-          props: { variant: 'action' },
-          style: ({ theme }) => ({
-            background: theme.palette.primary.main,
-            color: theme.palette.primary.contrastText,
-            padding: theme.spacing(2),
-            fontSize: 20,
-            lineHeight: 1.6,
-            fontStyle: 'normal',
-            '&:hover': {
-              background: theme.palette.primary.dark,
-            },
-            '&:disabled': {
-              opacity: 0.5,
-              color: theme.palette.primary.contrastText,
-            },
-          }),
-        },
-        {
-          props: { variant: 'link' },
-          style: ({ theme }) => ({
-            padding: 0,
-            minWidth: 0,
-            minHeight: 0,
-            color: theme.palette.primary.main,
-            '&:hover': {
-              color: theme.palette.primary.light,
-              backgroundColor: 'transparent',
-            },
-            '&:disabled': {
-              opacity: 0.5,
-              color: theme.palette.text.secondary,
-            },
-          }),
-        },
-        {
-          props: { variant: 'nav' },
-          style: ({ theme }) => ({
-            height: 40,
-            padding: theme.spacing(0.75, 2),
-            [base.breakpoints.up('md')]: {
-              minWidth: 58,
-            },
-            [base.breakpoints.down('md')]: {
-              width: 40,
-              borderRadius: '50%',
-            },
-            [base.breakpoints.down('sm')]: {
-              height: 36,
-              width: 36,
-              borderRadius: '50%',
-            },
-          }),
-        },
-        {
-          props: { variant: 'nav', color: 'secondary' },
-          style: ({ theme }) => ({
-            background: theme.palette.secondary.main,
-            color: theme.palette.secondary.contrastText,
-            border: '1px solid',
-            borderColor: theme.palette.divider,
-            '&:hover': {
-              borderColor: emphasize(theme.palette.divider, 0.2),
-              background: emphasize(theme.palette.background.default, 0.2),
-            },
-          }),
-        },
-        {
-          props: { variant: 'nav', color: 'primary' },
-          style: ({ theme }) => ({
-            backgroundColor: theme.palette.primary.main,
-            color: theme.palette.primary.contrastText,
-            border: '1px solid',
-            borderColor: theme.palette.divider,
-            '&:hover': {
-              backgroundColor: theme.palette.primary.dark,
-            },
-          }),
-        },
-      ],
     },
     MuiButtonBase: {
       defaultProps: {
@@ -347,9 +354,9 @@ export const components = (base: Theme): ThemeOptions => ({
           backgroundAttachment: 'local, scroll',
           ...theme.applyStyles('light', {
             background: `
-  linear-gradient(rgba(255, 255, 255, 0), ${alpha(theme.palette.common.black, 0.25)} 70%) center bottom,
-  radial-gradient(farthest-side at 50% 100%, , rgba(0, 0, 0, 0)) center bottom
-`,
+              linear-gradient(rgba(255, 255, 255, 0), ${alpha(theme.palette.common.black, 0.25)} 70%) center bottom,
+              radial-gradient(farthest-side at 50% 100%, , rgba(0, 0, 0, 0)) center bottom
+            `,
           }),
         }),
       },
