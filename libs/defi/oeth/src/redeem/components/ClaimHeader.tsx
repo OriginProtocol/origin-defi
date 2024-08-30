@@ -68,7 +68,7 @@ export const ClaimHeader = (props: StackProps) => {
           <LoadingLabel
             isLoading={isRequestsLoading}
             variant="featured1"
-            fontWeight="bold"
+            sx={{ fontWeight: 'bold' }}
           >
             {eq(availableToClaim, 0)
               ? '0.0'
@@ -139,7 +139,7 @@ export const ClaimHeader = (props: StackProps) => {
             <LoadingLabel
               isLoading={isRequestsLoading}
               variant="featured2"
-              fontWeight="bold"
+              sx={{ fontWeight: 'bold' }}
             >
               {format(pendingAmount, getFormatPrecision(pendingAmount))}
             </LoadingLabel>

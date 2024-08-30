@@ -266,7 +266,7 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
           token={tokens.mainnet.primeETH}
           sx={{ fontSize: iconSize }}
         />
-        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+        <LoadingLabel isLoading={isPointsLoading} sx={{ fontWeight: 'medium' }}>
           {intl.formatNumber(+formatUnits(points?.primePoints ?? 0n, 18), {
             maximumFractionDigits: 3,
             roundingMode: 'floor',
@@ -281,7 +281,7 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
         }}
       >
         <PrimePoints sx={{ fontSize: iconSize }} />
-        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+        <LoadingLabel isLoading={isPointsLoading} sx={{ fontWeight: 'medium' }}>
           {intl.formatNumber(+formatUnits(points?.xpPoints ?? 0n, 18), {
             maximumFractionDigits: 0,
             roundingMode: 'floor',
@@ -296,7 +296,7 @@ const PointsBadges = ({ iconSize = 28, ...rest }: PointsBadgesProps) => {
         }}
       >
         <EigenPoints sx={{ fontSize: iconSize }} />
-        <LoadingLabel isLoading={isPointsLoading} fontWeight="medium">
+        <LoadingLabel isLoading={isPointsLoading} sx={{ fontWeight: 'medium' }}>
           {intl.formatNumber(+formatUnits(points?.elPoints ?? 0n, 18), {
             maximumFractionDigits: 2,
             roundingMode: 'floor',

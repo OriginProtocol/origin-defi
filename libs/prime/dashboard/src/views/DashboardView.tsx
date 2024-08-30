@@ -84,8 +84,7 @@ export const DashboardView = () => {
               {isConnected ? (
                 <LoadingLabel
                   isLoading={isPointsLoading}
-                  fontSize={24}
-                  fontWeight="medium"
+                  sx={{ fontSize: 24, fontWeight: 'medium' }}
                 >
                   {intl.formatNumber(
                     +formatUnits(points?.primePoints ?? 0n, 18),
@@ -169,8 +168,7 @@ export const DashboardView = () => {
                 {isConnected && !!percentTotalXp ? (
                   <LoadingLabel
                     isLoading={isPointsLoading}
-                    fontSize={24}
-                    fontWeight="medium"
+                    sx={{ fontSize: 24, fontWeight: 'medium' }}
                   >
                     {intl.formatNumber(percentTotalXp, {
                       style: 'percent',
@@ -232,8 +230,7 @@ export const DashboardView = () => {
                   >
                     <LoadingLabel
                       isLoading={isPointsLoading}
-                      fontSize={24}
-                      fontWeight="medium"
+                      sx={{ fontSize: 24, fontWeight: 'medium' }}
                     >
                       {formatAmount(points?.elPoints)}
                     </LoadingLabel>
@@ -261,8 +258,7 @@ export const DashboardView = () => {
                 {isConnected && !!percentTotalELPoints ? (
                   <LoadingLabel
                     isLoading={isPointsLoading}
-                    fontSize={24}
-                    fontWeight="medium"
+                    sx={{ fontSize: 24, fontWeight: 'medium' }}
                   >
                     {intl.formatNumber(percentTotalELPoints, {
                       style: 'percent',

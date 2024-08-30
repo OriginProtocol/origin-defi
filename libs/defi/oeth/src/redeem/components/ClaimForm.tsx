@@ -168,13 +168,11 @@ export const ClaimForm = (props: StackProps) => {
           value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
           isLoading={isWriteGasLoading}
           direction="row"
-          justifyContent="space-between"
+          sx={{ justifyContent: 'space-between', mb: 3 }}
           labelProps={{
             variant: 'body3',
-            color: 'text.primary',
-            fontWeight: 'medium',
+            sx: { color: 'text.primary', fontWeight: 'medium' },
           }}
-          mb={3}
         />
       </Collapse>
       <TxButton
@@ -311,7 +309,7 @@ const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
     : claimable
       ? 'success.dark'
       : 'warning.dark';
-  const bgColor = isProcessing
+  const backgroundColor = isProcessing
     ? 'primary.faded'
     : claimable
       ? 'success.faded'
@@ -325,8 +323,8 @@ const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
       sx={[
         {
           alignItems: 'center',
-          color: color,
-          bgcolor: bgColor,
+          color,
+          backgroundColor,
           px: 2,
           py: 1,
           borderRadius: 2,

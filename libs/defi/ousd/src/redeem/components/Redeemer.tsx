@@ -215,7 +215,9 @@ function RedeemerWrapped({
                 isLoading={isEstimateLoading}
                 sWidth={60}
                 variant="h6"
-                color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
+                sx={{
+                  color: amountIn === 0n ? 'text.secondary' : 'text.primary',
+                }}
               >
                 {format(amt, {
                   digits: getFormatPrecision(amt),
@@ -225,7 +227,7 @@ function RedeemerWrapped({
               <LoadingLabel
                 isLoading={isEstimateLoading}
                 sWidth={60}
-                color="text.secondary"
+                sx={{ color: 'text.secondary' }}
               >
                 ${amountIn === 0n ? '0.00' : format(convertedAmount, 2)}
               </LoadingLabel>
@@ -287,7 +289,7 @@ function RedeemerWrapped({
                 <LoadingLabel
                   isLoading={isRedeemLoading}
                   sWidth={60}
-                  fontWeight="medium"
+                  sx={{ fontWeight: 'medium' }}
                 >
                   ${format(subPercentage(convertedAmount, slippage), 2)}
                 </LoadingLabel>

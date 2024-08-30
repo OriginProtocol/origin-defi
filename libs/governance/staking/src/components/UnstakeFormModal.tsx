@@ -130,8 +130,7 @@ export const UnstakeFormModal = ({
                 </Typography>
               </Stack>
               <LoadingLabel
-                textAlign="end"
-                fontWeight={700}
+                sx={{ textAlign: 'end', fontWeight: 'bold' }}
                 isLoading={isStakingLoading}
               >
                 {intl.formatNumber((staking?.stakingAPY ?? 0) / 100, {

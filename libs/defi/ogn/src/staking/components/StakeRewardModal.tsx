@@ -255,7 +255,7 @@ export const StakeRewardModal = (props: DialogProps) => {
           >
             <LoadingLabel
               variant="h6"
-              fontWeight="bold"
+              sx={{ fontWeight: 'bold' }}
               isLoading={isInfoLoading}
             >
               {formatAmount(
@@ -534,8 +534,7 @@ export const StakeRewardModal = (props: DialogProps) => {
           >
             <LoadingLabel
               variant="featured3"
-              fontWeight="bold"
-              color="primary"
+              sx={{ color: 'primary.main', fontWeight: 'bold' }}
               sWidth={60}
               isLoading={isLoading}
             >
@@ -593,8 +592,7 @@ export const StakeRewardModal = (props: DialogProps) => {
               >
                 <LoadingLabel
                   variant="featured3"
-                  fontWeight="bold"
-                  color="primary"
+                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
                 >
@@ -639,7 +637,7 @@ export const StakeRewardModal = (props: DialogProps) => {
                         : '0.00%',
                   },
                 )}
-                valueProps={{ variant: 'body3', fontWeight: 'medium' }}
+                valueProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
                 sx={{ alignItems: 'flex-end' }}
               />
             </Stack>

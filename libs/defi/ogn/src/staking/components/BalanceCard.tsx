@@ -37,8 +37,8 @@ export const BalanceCard = (props: CardProps) => {
         >
           <LoadingLabel
             variant="featured3"
-            fontWeight="bold"
             isLoading={isBalancesLoading}
+            sx={{ fontWeight: 'bold' }}
           >
             {formatBalance(
               balances?.[tokens.mainnet.OGN.id] ?? 0n,
@@ -68,7 +68,7 @@ export const BalanceCard = (props: CardProps) => {
         >
           <LoadingLabel
             variant="featured3"
-            fontWeight="bold"
+            sx={{ fontWeight: 'bold' }}
             isLoading={isBalancesLoading}
           >
             {formatBalance(

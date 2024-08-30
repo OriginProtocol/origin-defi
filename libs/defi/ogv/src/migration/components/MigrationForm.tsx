@@ -221,7 +221,7 @@ export const MigrationForm = (props: StackProps) => {
               border: '1px solid',
               borderColor: 'divider',
               borderRadius: 3,
-              bgcolor: 'background.highlight',
+              backgroundColor: 'background.highlight',
             }}
           >
             <LockupsList
@@ -441,7 +441,7 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
         <Stack spacing={3}>
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'You will get:' })}
             labelProps={{ variant: 'body3' }}
             value={
@@ -465,14 +465,14 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
           />
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'Conversion rate:' })}
             labelProps={{ variant: 'body3' }}
             value={intl.formatMessage(
               { defaultMessage: '1 OGV = {rate} OGN' },
               { rate: ogvToOgnRate },
             )}
-            valueProps={{ fontWeight: 'medium' }}
+            valueProps={{ sx: { fontWeight: 'medium' } }}
           />
         </Stack>
       </CardContent>
@@ -487,12 +487,14 @@ function SummaryCard({ ogv, convertProps, ...rest }: SummaryCardProps) {
 
 const cardStackProps: StackProps = {
   direction: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  p: 3,
   spacing: 1,
-  border: '1px solid',
-  borderColor: 'divider',
-  borderRadius: 3,
-  bgcolor: 'background.highlight',
+  sx: {
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    p: 3,
+    border: '1px solid',
+    borderColor: 'divider',
+    borderRadius: 3,
+    backgroundColor: 'background.highlight',
+  },
 };

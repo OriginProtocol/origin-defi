@@ -104,10 +104,12 @@ export const UnstakeLockupModal = ({
       >
         {penalty > 0 && (
           <ColorChip
-            color="text.primary"
-            bgcolor="warning.faded"
-            p={2}
             spacing={1}
+            sx={{
+              color: 'text.primary',
+              backgroundColor: 'warning.faded',
+              p: 2,
+            }}
           >
             <FaCircleExclamationRegular
               sx={{ fontSize: 24, color: 'warning.dark' }}
@@ -212,7 +214,7 @@ export const UnstakeLockupModal = ({
         >
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({
               defaultMessage: 'Amount after penalty',
             })}
@@ -235,7 +237,7 @@ export const UnstakeLockupModal = ({
           />
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'Gas' })}
             labelProps={{ variant: 'mono' }}
             value={intl.formatMessage(

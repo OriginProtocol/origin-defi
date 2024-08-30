@@ -284,7 +284,7 @@ const ClaimCard = ({ request, onWriteSuccess, ...rest }: ClaimCardProps) => {
           </Stack>
           <LoadingLabel
             variant="subtitle2"
-            color="text.secondary"
+            sx={{ color: 'text.secondary' }}
             isLoading={isPriceLoading}
           >
             ${format(pendingConverted, 2)}

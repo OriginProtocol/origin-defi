@@ -140,7 +140,7 @@ export function SwapRouteCard({
             <TokenIcon token={tokenOut} sx={{ fontSize: 20 }} />
           )}
           <LoadingLabel
-            fontWeight="bold"
+            sx={{ fontWeight: 'bold' }}
             isLoading={isSwapRoutesLoading}
             sWidth={100}
           >
@@ -151,7 +151,7 @@ export function SwapRouteCard({
           </LoadingLabel>
         </Stack>
         <LoadingLabel
-          color="text.secondary"
+          sx={{ color: 'text.secondary' }}
           noWrap
           isLoading={isSwapRoutesLoading}
           sWidth={60}
@@ -159,11 +159,10 @@ export function SwapRouteCard({
           (${format(convertedAmount, 2)})
         </LoadingLabel>
         <LoadingLabel
-          fontWeight="medium"
           noWrap
           isLoading={isSwapRoutesLoading}
           sWidth={60}
-          my={1.25}
+          sx={{ color: 'primary.main', fontWeight: 'medium', my: 1.25 }}
         >
           {intl.formatMessage(routeLabel)}
         </LoadingLabel>
@@ -175,7 +174,7 @@ export function SwapRouteCard({
             { value: format(from(route?.rate ?? 0), 3) },
           )}
           isLoading={isSwapRoutesLoading}
-          mb={0.5}
+          sx={{ ...valueLabelProps.sx, mb: 0.5 }}
         />
         <ValueLabel
           {...valueLabelProps}

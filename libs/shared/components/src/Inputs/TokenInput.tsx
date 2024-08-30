@@ -136,7 +136,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             <LoadingLabel
               isLoading={isPriceLoading}
               sWidth={50}
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
             >
               $
               {format(amountUsd, { digits: 2, decimalsRounding: 'ROUND_DOWN' })}

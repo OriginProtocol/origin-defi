@@ -365,8 +365,7 @@ export const StakingForm = () => {
           >
             <LoadingLabel
               variant="featured3"
-              fontWeight="bold"
-              color="primary"
+              sx={{ color: 'primary.main', fontWeight: 'bold' }}
               sWidth={60}
               isLoading={isLoading}
             >
@@ -423,8 +422,7 @@ export const StakingForm = () => {
               >
                 <LoadingLabel
                   variant="featured3"
-                  fontWeight="bold"
-                  color="primary"
+                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
                   isLoading={isLoading && amount > 0n}
                   sWidth={100}
                 >
@@ -464,7 +462,7 @@ export const StakingForm = () => {
                       )
                     : '-'
                 }
-                valueProps={{ variant: 'body3', fontWeight: 'medium' }}
+                valueProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
                 sx={{ alignItems: 'flex-end' }}
               />
             </Stack>

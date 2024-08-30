@@ -41,8 +41,7 @@ export const GlobalStatsCard = (props: CardProps) => {
           </Typography>
           <LoadingLabel
             isLoading={isTvlLoading}
-            fontWeight="medium"
-            fontSize={20}
+            sx={{ fontSize: 20, fontWeight: 'medium' }}
           >
             {intl.formatMessage(
               { defaultMessage: '{tvl} ETH' },
@@ -54,7 +53,7 @@ export const GlobalStatsCard = (props: CardProps) => {
               },
             )}
           </LoadingLabel>
-          <LoadingLabel variant="body2" fontWeight="medium">
+          <LoadingLabel variant="body2" sx={{ fontWeight: 'medium' }}>
             ${format(tvl?.tvlUsd ?? from(0), 2)}
           </LoadingLabel>
         </Stack>
@@ -70,8 +69,7 @@ export const GlobalStatsCard = (props: CardProps) => {
           </Typography>
           <LoadingLabel
             isLoading={isApyLoading}
-            fontWeight="medium"
-            fontSize={20}
+            sx={{ fontSize: 20, fontWeight: 'medium' }}
           >
             {intl.formatNumber((apy ?? 0) / 100, {
               style: 'percent',

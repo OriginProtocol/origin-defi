@@ -18,11 +18,10 @@ export const PageSection = ({
       {...rest}
       sx={[
         {
-          bgcolor: 'background.paper',
+          backgroundColor: 'background.paper',
           py: hideVerticalPadding ? 0 : 6,
           flexGrow: 1,
           position: 'relative',
-          ...rest.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}

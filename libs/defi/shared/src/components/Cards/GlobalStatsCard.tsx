@@ -86,8 +86,8 @@ export const GlobalStatsCard = ({
             <ColorChip alignItems="baseline" px={0.5}>
               <LoadingLabel
                 variant="caption1"
-                fontWeight="bold"
                 isLoading={isInfoLoading}
+                sx={{ fontWeight: 'bold' }}
               >
                 {intl.formatNumber(info?.apies?.apr ?? 0, {
                   style: 'percent',
@@ -105,9 +105,9 @@ export const GlobalStatsCard = ({
         <Stack spacing={3}>
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'TVL' })}
-            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
+            labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
             labelInfoTooltip={intl.formatMessage(
               {
                 defaultMessage: 'Total value locked on {chainName}',
@@ -117,12 +117,12 @@ export const GlobalStatsCard = ({
               },
             )}
             value={`$${format(info?.tvlUsd ?? from(0), 2)}`}
-            valueProps={{ fontWeight: 'medium' }}
+            valueProps={{ sx: { fontWeight: 'medium' } }}
             isLoading={isInfoLoading}
           />
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'Price' })}
             labelInfoTooltip={intl.formatMessage(
               {
@@ -133,9 +133,9 @@ export const GlobalStatsCard = ({
                 chainName: supportedChainNames[token.chainId].short,
               },
             )}
-            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
+            labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
             value={`$${format(info?.price ?? from(0), 2)}`}
-            valueProps={{ fontWeight: 'medium' }}
+            valueProps={{ sx: { fontWeight: 'medium' } }}
             isLoading={isInfoLoading}
           />
         </Stack>

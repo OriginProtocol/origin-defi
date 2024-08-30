@@ -82,7 +82,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
             <LoadingLabel
               isLoading={isInfoLoading}
               variant="featured3"
-              fontWeight="bold"
+              sx={{ fontWeight: 'bold' }}
             >
               {formatAmount(
                 BigInt(info?.votingPower ?? '0'),
@@ -127,8 +127,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
             })}
             labelProps={{
               variant: 'body3',
-              color: 'text.secondary',
-              fontWeight: 'medium',
+              sx: { color: 'text.secondary', fontWeight: 'medium' },
             }}
             isLoading={isInfoLoading || isOgnInfoLoading}
             value={intl.formatMessage(

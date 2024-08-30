@@ -144,10 +144,10 @@ export const TokenCard = ({
             <LoadingLabel
               isLoading={isApyLoading && !isComingSoon}
               variant="featured2"
-              fontWeight="bold"
               sx={[
                 {
                   position: 'relative',
+                  fontWeight: 'bold',
                 },
                 isFancy
                   ? {
@@ -233,13 +233,15 @@ export const TokenCard = ({
           }}
         >
           <LoadingLabel
-            fontSize={(theme) => ({
-              xs: theme.typography.caption1.fontSize,
-              md: theme.typography.body3.fontSize,
-            })}
-            fontWeight="bold"
             isLoading={isInfoLoading && !isComingSoon}
             noWrap
+            sx={{
+              fontSize: (theme) => ({
+                xs: theme.typography.caption1.fontSize,
+                md: theme.typography.body3.fontSize,
+              }),
+              fontWeight: 'bold',
+            }}
           >
             {disabled
               ? '-'
@@ -259,8 +261,8 @@ export const TokenCard = ({
           {!disabled && (
             <LoadingLabel
               variant="caption2"
-              fontWeight="medium"
               isLoading={isInfoLoading}
+              sx={{ fontWeight: 'medium' }}
             >
               $&nbsp;
               {format(info?.tvlUsd ?? from(0), {

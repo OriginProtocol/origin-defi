@@ -78,8 +78,7 @@ export const AssetDepositedCard = (props: CardProps) => {
                 </Stack>
                 <LoadingLabel
                   isLoading={isLoading}
-                  fontWeight="medium"
-                  fontSize={16}
+                  sx={{ fontSize: 16, fontWeight: 'medium' }}
                 >
                   {formatAmount(data?.[i]?.result as unknown as bigint)}
                 </LoadingLabel>

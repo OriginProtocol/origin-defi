@@ -103,8 +103,10 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
               isLoading={isAmountLoading}
               sWidth={100}
               noWrap
-              flexGrow={1}
-              color={amount === 0n ? 'text.secondary' : 'text.primary'}
+              sx={{
+                flexGrow: 1,
+                color: amount === 0n ? 'text.secondary' : 'text.primary',
+              }}
             >
               {intl.formatNumber(+formatUnits(amount ?? 0n, decimals), {
                 roundingMode: 'floor',
@@ -162,7 +164,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
             <LoadingLabel
               isLoading={isPriceLoading}
               sWidth={50}
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
             >
               $
               {format(amountUsd, { digits: 2, decimalsRounding: 'ROUND_DOWN' })}

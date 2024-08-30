@@ -415,12 +415,10 @@ function BalanceRow({
           })}
           isLoading={isBalanceLoading}
           direction="row"
-          justifyContent="space-between"
+          sx={{ justifyContent: 'space-between' }}
           valueProps={{
             variant: 'body2',
-            fontWeight: 'bold',
-            color: 'text.primary',
-            textAlign: 'end',
+            sx: { fontWeight: 'bold', color: 'text.primary', textAlign: 'end' },
           }}
         />
 
@@ -429,14 +427,14 @@ function BalanceRow({
           value={`$${format(mul(balance, price), 2)}`}
           isLoading={isPriceLoading}
           direction="row"
+          sx={{ justifyContent: 'space-between' }}
           justifyContent="space-between"
           labelProps={{
             variant: 'body3',
           }}
           valueProps={{
             variant: 'caption1',
-            color: 'text.secondary',
-            textAlign: 'end',
+            sx: { color: 'text.secondary', textAlign: 'end' },
           }}
         />
       </Stack>

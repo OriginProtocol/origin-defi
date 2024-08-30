@@ -544,10 +544,9 @@ export const ExtendAddLockupModal = ({
           <CardContent>
             <LoadingLabel
               variant="featured3"
-              fontWeight="bold"
-              color="primary"
               sWidth={60}
               isLoading={isStakingLoading}
+              sx={{ color: 'primary.main', fontWeight: 'bold' }}
             >
               ~
               {intl.formatNumber(staking?.xOgnApyPercentage ?? 0, {
@@ -590,8 +589,7 @@ export const ExtendAddLockupModal = ({
               >
                 <LoadingLabel
                   variant="featured3"
-                  fontWeight="bold"
-                  color="primary"
+                  sx={{ color: 'primary.main', fontWeight: 'bold' }}
                   isLoading={isStakingLoading || isInfoLoading}
                   sWidth={60}
                 >

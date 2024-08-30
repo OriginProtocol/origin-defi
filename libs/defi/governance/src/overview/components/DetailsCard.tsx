@@ -147,13 +147,11 @@ const vl: Partial<ValueLabelProps> = {
   direction: 'row',
   labelProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    width: 0.25,
+    sx: { fontWeight: 'medium', width: 0.25 },
   },
   valueProps: {
     variant: 'body3',
-    fontWeight: 'medium',
-    width: 1,
+    sx: { fontWeight: 'medium', width: 1 },
   },
 };
 

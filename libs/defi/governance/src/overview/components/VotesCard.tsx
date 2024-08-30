@@ -111,7 +111,10 @@ export const VoteCard = (props: CardProps) => {
             p: 3,
           }}
         >
-          <LoadingLabel isLoading={isProposalLoading} color="text.secondary">
+          <LoadingLabel
+            isLoading={isProposalLoading}
+            sx={{ color: 'text.secondary' }}
+          >
             {intl.formatMessage(
               {
                 defaultMessage:
@@ -122,7 +125,7 @@ export const VoteCard = (props: CardProps) => {
           </LoadingLabel>
           <LoadingLabel
             isLoading={isProposalLoading || isProposalVotesLoading}
-            color="text.secondary"
+            sx={{ color: 'text.secondary' }}
           >
             {intl.formatMessage(
               {

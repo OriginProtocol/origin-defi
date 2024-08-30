@@ -139,7 +139,7 @@ export function SwapRouteAccordionItem({
             </LoadingLabel>
             <LoadingLabel
               variant="body2"
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
               isLoading={isSwapRoutesLoading}
             >
               (${format(convertedAmount, 2)})
@@ -172,9 +172,9 @@ export function SwapRouteAccordionItem({
           </Typography>
           <LoadingLabel
             variant="body2"
-            fontWeight={500}
             isLoading={isSwapRoutesLoading}
             sWidth={50}
+            sx={{ fontWeight: 'medium' }}
           >
             1:{format(from(route?.rate ?? 0), 3)}
           </LoadingLabel>
@@ -196,7 +196,7 @@ export function SwapRouteAccordionItem({
           </Typography>
           <LoadingLabel
             variant="body2"
-            fontWeight={500}
+            sx={{ fontWeight: 'medium' }}
             isLoading={isGasLoading}
             sWidth={40}
           >

@@ -335,9 +335,7 @@ export const ConvertModal = ({
                   label={tokens.mainnet.OGN.symbol}
                   labelProps={{
                     variant: 'caption1',
-                    fontWeight: 'medium',
-                    px: 3,
-                    py: 1,
+                    sx: { fontWeight: 'medium', px: 3, py: 1 },
                   }}
                   divider={<Divider orientation="horizontal" flexItem />}
                   value={
@@ -372,10 +370,8 @@ export const ConvertModal = ({
                   spacing={0}
                   label={tokens.mainnet.xOGN.symbol}
                   labelProps={{
-                    px: 3,
-                    py: 1,
+                    sx: { fontWeight: 'medium', px: 3, py: 1 },
                     variant: 'caption1',
-                    fontWeight: 'medium',
                   }}
                   divider={<Divider orientation="horizontal" flexItem />}
                   value={
@@ -396,7 +392,7 @@ export const ConvertModal = ({
                       />
                       <LoadingLabel
                         variant="body1"
-                        fontWeight="medium"
+                        sx={{ fontWeight: 'medium' }}
                         isLoading={isXOgnStakingLoading}
                         sWidth={80}
                       >
@@ -598,7 +594,7 @@ export const ConvertModal = ({
             {...cardStackProps}
             sx={[
               {
-                bgcolor: 'transparent',
+                backgroundColor: 'transparent',
               },
               ...(Array.isArray(cardStackProps.sx)
                 ? cardStackProps.sx
@@ -607,8 +603,7 @@ export const ConvertModal = ({
           >
             <LoadingLabel
               variant="featured3"
-              fontWeight="bold"
-              color="primary.main"
+              sx={{ color: 'primary.main', fontWeight: 'bold' }}
               isLoading={isXOgnStakingLoading}
             >
               {intl.formatNumber(xOgnStaking?.xOgnApyPercentage ?? 0, {
@@ -622,12 +617,14 @@ export const ConvertModal = ({
         <ValueLabel
           {...cardStackProps}
           direction="row"
-          justifyContent="space-between"
-          bgcolor="transparent"
           label={intl.formatMessage({ defaultMessage: 'Est. gas:' })}
           value={`$${format(gas ?? from(0), 2)}`}
           isLoading={isWriteGasLoading}
-          mt={3}
+          sx={{
+            justifyContent: 'space-between',
+            backgroundColor: 'transparent',
+            mt: 3,
+          }}
         />
       </DialogContent>
       <DialogActions>
@@ -688,10 +685,12 @@ export const ConvertButton = ({
 };
 
 const cardStackProps: StackProps = {
-  p: 3,
   spacing: 1,
-  border: '1px solid',
-  borderColor: 'divider',
-  borderRadius: 3,
-  bgcolor: 'background.default',
+  sx: {
+    p: 3,
+    border: '1px solid',
+    borderColor: 'divider',
+    borderRadius: 3,
+    backgroundColor: 'background.default',
+  },
 };

@@ -1,9 +1,9 @@
 import { Box, Stack, Typography } from '@mui/material';
 
-import type { BoxProps, StackProps, TypographyProps } from '@mui/material';
+import type { StackProps, TypographyProps } from '@mui/material';
 
 export type SectionTitleProps = {
-  dotColor: BoxProps['bgcolor'];
+  dotColor: string;
   label: string;
   labelProps?: TypographyProps;
 } & StackProps;

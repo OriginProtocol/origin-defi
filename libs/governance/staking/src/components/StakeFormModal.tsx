@@ -275,7 +275,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -382,7 +382,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -473,7 +473,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -500,9 +500,9 @@ export const StakeFormModal = (props: DialogProps) => {
                 />
                 <LoadingLabel
                   variant="h3"
-                  mr={0.5}
                   isLoading={isLoading && amount > 0n}
                   sWidth={60}
+                  sx={{ mr: 0.5 }}
                 >
                   {amount > 0n
                     ? formatQuantity(staking?.veOGVReceived)
@@ -534,7 +534,7 @@ export const StakeFormModal = (props: DialogProps) => {
                   })}
                 </Typography>
                 <LoadingLabel
-                  fontWeight={700}
+                  sx={{ fontWeight: 'bold' }}
                   isLoading={isLoading && amount > 0n}
                 >
                   {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
@@ -561,7 +561,7 @@ export const StakeFormModal = (props: DialogProps) => {
           <Stack
             spacing={1}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
               mt: 3,

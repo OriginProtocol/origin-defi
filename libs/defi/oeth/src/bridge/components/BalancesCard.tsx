@@ -115,7 +115,11 @@ export const BalanceRow = ({
         }}
       >
         <Stack direction={'row'} spacing={1}>
-          <LoadingLabel isLoading={isLoading} sWidth={60} fontWeight="medium">
+          <LoadingLabel
+            isLoading={isLoading}
+            sWidth={60}
+            sx={{ fontWeight: 'medium' }}
+          >
             {format(bal, {
               digits: getFormatPrecision(bal),
               decimalsRounding: 'ROUND_DOWN',

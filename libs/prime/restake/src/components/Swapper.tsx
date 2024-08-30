@@ -308,8 +308,7 @@ function SwapperWrapped({
                 <LoadingLabel
                   isLoading={isSwapRoutesLoading}
                   sWidth={60}
-                  fontWeight="medium"
-                  fontSize={16}
+                  sx={{ fontSize: 16, fontWeight: 'medium' }}
                 >
                   {intl.formatNumber(
                     +formatUnits(amountOut, tokenOut.decimals),
@@ -344,7 +343,7 @@ function SwapperWrapped({
               <LoadingLabel
                 isLoading={isSwapRoutesLoading || isDefaultExchangeRateLoading}
                 sWidth={140}
-                fontWeight="medium"
+                sx={{ fontWeight: 'medium' }}
               >
                 {intl.formatMessage(
                   {

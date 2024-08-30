@@ -424,7 +424,9 @@ function SwapperWrapped({
               isLoading={isSwapRoutesLoading}
               sWidth={60}
               variant="h6"
-              color={amountIn === 0n ? 'text.secondary' : 'text.primary'}
+              sx={{
+                color: amountIn === 0n ? 'text.secondary' : 'text.primary',
+              }}
             >
               {format([amountOut ?? 0n, tokenOut?.decimals ?? 18], {
                 digits: 18,
@@ -434,7 +436,7 @@ function SwapperWrapped({
             <LoadingLabel
               isLoading={isSwapRoutesLoading}
               sWidth={60}
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
             >
               ${amountIn === 0n ? '0.00' : format(amountOutUsd, 2)}
             </LoadingLabel>
@@ -459,12 +461,14 @@ function SwapperWrapped({
             }
             isLoading={isGasPriceLoading}
             direction="row"
-            justifyContent="space-between"
-            px={1}
-            mb={3}
             labelProps={{
               variant: 'body3',
-              fontWeight: 'medium',
+              sx: { fontWeight: 'medium' },
+            }}
+            sx={{
+              justifyContent: 'space-between',
+              px: 1,
+              mb: 3,
             }}
           />
         </Collapse>
@@ -548,12 +552,12 @@ const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
     >
       <Typography>${format(req, 2)}&nbsp;</Typography>
       <InfoTooltipLabel
-        fontWeight="medium"
+        sx={{ fontWeight: 'medium' }}
         tooltipLabel={intl.formatMessage({
           defaultMessage:
             'Claiming your withdrawal will incur this estimated additional gas fee',
         })}
-        labelProps={{ color: 'warning.dark' }}
+        labelProps={{ sx: { color: 'warning.dark' } }}
         infoTooltipProps={{ iconColor: 'warning.dark' }}
       >
         {`+ $${format(claim, 2)}`}

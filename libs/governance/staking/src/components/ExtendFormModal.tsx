@@ -278,7 +278,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -428,7 +428,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -520,7 +520,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           <Stack
             spacing={2}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}
@@ -547,9 +547,9 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                 />
                 <LoadingLabel
                   variant="h3"
-                  mr={0.5}
                   isLoading={isLoading}
                   sWidth={60}
+                  sx={{ mr: 0.5 }}
                 >
                   {formatQuantity(veOGVReceived)}
                 </LoadingLabel>
@@ -578,7 +578,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
                     defaultMessage: 'Voting Power:',
                   })}
                 </Typography>
-                <LoadingLabel fontWeight={700} isLoading={isLoading}>
+                <LoadingLabel sx={{ fontWeight: 'bold' }} isLoading={isLoading}>
                   {votingPowerPercent <= 1e-6 && votingPowerPercent > 0 && `~ `}
                   {intl.formatNumber(votingPowerPercent, {
                     style: 'percent',
@@ -601,7 +601,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
           <Stack
             spacing={1}
             sx={{
-              bgcolor: 'grey.900',
+              backgroundColor: 'grey.900',
               px: 3,
               py: 2,
             }}

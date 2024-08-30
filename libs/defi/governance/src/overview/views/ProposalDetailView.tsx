@@ -10,7 +10,7 @@ import { VoteCard } from '../components/VotesCard';
 
 export const ProposalDetailView = () => {
   return (
-    <Page bgcolor="background.paper">
+    <Page sx={{ backgroundColor: 'background.paper' }}>
       <Container maxWidth="lg">
         <ProposalDetailHeader />
         <Grid2 container spacing={3}>

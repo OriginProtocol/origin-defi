@@ -185,7 +185,10 @@ function FormView({
         >
           {intl.formatMessage({ defaultMessage: 'Gas:' })}
         </Typography>
-        <LoadingLabel fontWeight={500} isLoading={gasPrice === undefined}>
+        <LoadingLabel
+          sx={{ fontWeight: 'medium' }}
+          isLoading={gasPrice === undefined}
+        >
           ~{format(gasPrice?.gasCostUsd ?? from(0), 2)}
         </LoadingLabel>
       </Stack>
@@ -316,7 +319,7 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
           label={intl.formatMessage({
             defaultMessage: 'Current OGN Staking vAPY',
           })}
-          labelProps={{ textAlign: 'center' }}
+          labelProps={{ sx: { textAlign: 'center' } }}
           value={intl.formatNumber((ognApy?.ognApy ?? 0) / 100, {
             style: 'percent',
             maximumFractionDigits: 2,

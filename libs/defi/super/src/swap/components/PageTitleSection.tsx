@@ -34,9 +34,8 @@ export const PageTitleSection = (props: StackProps) => {
         <TokenIcon token={tokens.base.superOETHb} sx={{ fontSize: 24 }} />
         <LoadingLabel
           isLoading={isInfoLoading}
-          color="inherit"
-          fontWeight="bold"
           sWidth={90}
+          sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
           {intl.formatNumber(info?.bestApy?.value ?? 0, {
             minimumFractionDigits: 2,

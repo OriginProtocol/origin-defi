@@ -52,8 +52,7 @@ export const PageTitleSection = (props: StackProps) => {
       <ColorChip spacing={0.5} minHeight={40}>
         <LoadingLabel
           isLoading={isApiesLoading}
-          color="inherit"
-          fontWeight="bold"
+          sx={{ color: 'inherit', fontWeight: 'bold' }}
           sWidth={90}
         >
           {intl.formatNumber(apy ?? 0, {

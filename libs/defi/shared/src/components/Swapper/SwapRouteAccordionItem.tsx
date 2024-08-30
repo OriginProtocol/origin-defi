@@ -115,14 +115,17 @@ export function SwapRouteAccordionItem({
               alignItems: 'baseline',
             }}
           >
-            <LoadingLabel fontWeight="medium" isLoading={isSwapRoutesLoading}>
+            <LoadingLabel
+              sx={{ fontWeight: 'medium' }}
+              isLoading={isSwapRoutesLoading}
+            >
               {format(estimatedAmount, {
                 digits: getFormatPrecision(estimatedAmount),
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </LoadingLabel>
             <LoadingLabel
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
               isLoading={isSwapRoutesLoading}
             >
               (${format(convertedAmount, 2)})

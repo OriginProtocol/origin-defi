@@ -442,7 +442,7 @@ function SwapperWrapped({
               <LoadingLabel
                 isLoading={isSwapRoutesLoading}
                 sWidth={60}
-                fontWeight="medium"
+                sx={{ fontWeight: 'medium' }}
               >
                 {format(minReceived, {
                   digits: getFormatPrecision(minReceived),

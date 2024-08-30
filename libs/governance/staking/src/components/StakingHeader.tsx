@@ -142,7 +142,7 @@ export const StakingHeader = () => {
               direction="row"
               spacing={2}
               sx={{
-                bgcolor: 'background.paper',
+                backgroundColor: 'background.paper',
                 borderRadius: 2,
                 p: 3,
                 height: 1,
@@ -225,7 +225,7 @@ export const StakingHeader = () => {
               direction="row"
               spacing={2}
               sx={{
-                bgcolor: 'background.paper',
+                backgroundColor: 'background.paper',
                 borderRadius: 2,
                 p: 3,
                 height: 1,

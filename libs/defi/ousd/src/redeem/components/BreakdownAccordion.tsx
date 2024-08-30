@@ -120,7 +120,7 @@ function SplitRow({
         }}
       >
         <LoadingLabel
-          fontWeight={500}
+          sx={{ fontWeight: 'medium' }}
           isLoading={isEstimateLoading}
           sWidth={80}
         >
@@ -133,10 +133,12 @@ function SplitRow({
           isLoading={isPricesLoading || isEstimateLoading}
           sWidth={80}
           noWrap
-          fontWeight={500}
-          color="text.secondary"
-          textAlign="end"
-          minWidth={80}
+          sx={{
+            fontWeight: 'medium',
+            color: 'text.secondary',
+            textAlign: 'end',
+            minWidth: 80,
+          }}
         >
           ${format(converted, 2)}
         </LoadingLabel>

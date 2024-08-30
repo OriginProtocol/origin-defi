@@ -163,7 +163,7 @@ export function SwapRouteCard({
             }}
           >
             <LoadingLabel
-              fontWeight={500}
+              sx={{ fontWeight: 'medium' }}
               isLoading={isSwapRoutesLoading}
               sWidth={100}
             >
@@ -187,7 +187,7 @@ export function SwapRouteCard({
             }}
           >
             <LoadingLabel
-              color="text.secondary"
+              sx={{ color: 'text.secondary' }}
               variant="body2"
               noWrap
               isLoading={isSwapRoutesLoading}
@@ -204,8 +204,7 @@ export function SwapRouteCard({
           }}
         >
           <LoadingLabel
-            fontWeight={500}
-            sx={{ fontSize: 12, my: { xs: 1.5, md: 1 } }}
+            sx={{ fontWeight: 'medium', fontSize: 12, my: { xs: 1.5, md: 1 } }}
             isLoading={isSwapRoutesLoading}
             sWidth={80}
           >
@@ -234,7 +233,7 @@ export function SwapRouteCard({
               </Typography>
               <LoadingLabel
                 variant="body2"
-                fontWeight={500}
+                sx={{ fontWeight: 'medium' }}
                 isLoading={isSwapRoutesLoading}
                 sWidth={60}
               >
@@ -259,7 +258,7 @@ export function SwapRouteCard({
               </Typography>
               <LoadingLabel
                 variant="body2"
-                fontWeight={500}
+                sx={{ fontWeight: 'medium' }}
                 isLoading={isGasLoading}
               >
                 ~{format(gasPrice, 2)}

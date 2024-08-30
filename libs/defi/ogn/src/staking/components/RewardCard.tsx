@@ -69,7 +69,7 @@ export const RewardCard = (props: CardProps) => {
           >
             <LoadingLabel
               variant="featured3"
-              fontWeight="bold"
+              sx={{ fontWeight: 'bold' }}
               isLoading={isRewardsLoading}
             >
               {formatAmount(rewards ?? 0n, tokens.mainnet.OGN.decimals)}

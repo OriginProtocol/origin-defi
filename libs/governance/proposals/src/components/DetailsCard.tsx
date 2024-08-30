@@ -68,7 +68,7 @@ export const DetailsCard = (props: CardProps) => {
           <LoadingLabel
             isLoading={isProposalLoading}
             sWidth={200}
-            color="text.secondary"
+            sx={{ color: 'text.secondary' }}
           >
             {isNilOrEmpty(description)
               ? intl.formatMessage({ defaultMessage: 'No description' })
@@ -160,12 +160,16 @@ export const DetailsCard = (props: CardProps) => {
 const vl: Partial<ValueLabelProps> = {
   direction: 'row',
   labelProps: {
-    fontSize: 14,
-    width: 1,
+    sx: {
+      fontSize: 14,
+      width: 1,
+    },
   },
   valueProps: {
-    fontSize: 14,
-    width: 1,
+    sx: {
+      fontSize: 14,
+      width: 1,
+    },
   },
 };
 

@@ -78,9 +78,9 @@ export const ProposalDetailHeader = (props: StackProps) => {
       </Stack>
       <LoadingLabel
         variant="featured1"
-        fontWeight="bold"
         isLoading={isProposalLoading}
         sx={{
+          fontWeight: 'bold',
           maxWidth: 1,
           display: '-webkit-box',
           WebkitBoxOrient: 'vertical',

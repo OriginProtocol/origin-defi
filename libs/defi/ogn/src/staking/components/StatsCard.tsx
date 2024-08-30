@@ -28,9 +28,9 @@ export const StatsCard = (props: CardProps) => {
         <Stack spacing={3}>
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'Total OGN Staked' })}
-            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
+            labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
             value={intl.formatNumber(info?.ognTotalLockedPercent ?? 0, {
               style: 'percent',
               minimumFractionDigits: 2,
@@ -41,9 +41,9 @@ export const StatsCard = (props: CardProps) => {
           />
           <ValueLabel
             direction="row"
-            justifyContent="space-between"
+            sx={{ justifyContent: 'space-between' }}
             label={intl.formatMessage({ defaultMessage: 'xOGN holders' })}
-            labelProps={{ variant: 'body3', fontWeight: 'medium' }}
+            labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
             value={xognHolder}
             isLoading={isXognHolderLoading}
             sWidth={30}

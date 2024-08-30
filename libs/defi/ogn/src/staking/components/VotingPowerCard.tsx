@@ -127,8 +127,10 @@ export const VotingPowerCard = (props: CardProps) => {
             })}
             labelProps={{
               variant: 'body3',
-              color: 'text.secondary',
-              fontWeight: 'medium',
+              sx: {
+                color: 'text.secondary',
+                fontWeight: 'medium',
+              },
             }}
             isLoading={isInfoLoading || isUserLoading}
             value={intl.formatMessage(

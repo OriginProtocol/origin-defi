@@ -88,10 +88,10 @@ export const SuperOethbBanner = (props: StackProps) => {
                 <LoadingLabel
                   isLoading={isInfoLoading}
                   variant="featured2"
-                  fontWeight="bold"
                   sx={[
                     {
                       textUnderlineOffset: 4,
+                      fontWeight: 'bold',
                     },
                     isInfoLoading
                       ? {
