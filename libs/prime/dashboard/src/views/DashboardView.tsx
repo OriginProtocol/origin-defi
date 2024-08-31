@@ -40,8 +40,6 @@ export const DashboardView = () => {
         )
       : undefined;
 
-  console.log(points, percentTotalELPoints);
-
   return (
     <Stack
       sx={{
