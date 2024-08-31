@@ -45,34 +45,34 @@ export const NumberSpinner = ({
           color: 'inherit',
           backfaceVisibility: 'hidden',
         },
-        '.spinner-number:nth-child(1)': {
+        '.spinner-number:nth-of-type(1)': {
           transform: `rotateX(36deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(2)': {
+        '.spinner-number:nth-of-type(2)': {
           transform: `rotateX(72deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(3)': {
+        '.spinner-number:nth-of-type(3)': {
           transform: `rotateX(108deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(4)': {
+        '.spinner-number:nth-of-type(4)': {
           transform: `rotateX(144deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(5)': {
+        '.spinner-number:nth-of-type(5)': {
           transform: `rotateX(180deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(6)': {
+        '.spinner-number:nth-of-type(6)': {
           transform: `rotateX(216deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(7)': {
+        '.spinner-number:nth-of-type(7)': {
           transform: `rotateX(252deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(8)': {
+        '.spinner-number:nth-of-type(8)': {
           transform: `rotateX(288deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(9)': {
+        '.spinner-number:nth-of-type(9)': {
           transform: `rotateX(324deg) translateZ(1.75em)`,
         },
-        '.spinner-number:nth-child(10)': {
+        '.spinner-number:nth-of-type(10)': {
           transform: `rotateX(360deg) translateZ(1.75em)`,
         },
         ...rest?.sx,
