@@ -48,8 +48,6 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
       prev?.lrtWithdrawalRequests?.length < next?.lrtWithdrawalRequests?.length,
   });
 
-  console.log(status);
-
   useEffect(() => {
     if (rest.open) {
       startRefresh(data);

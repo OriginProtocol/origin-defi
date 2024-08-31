@@ -68,8 +68,6 @@ export const ClaimMigrateProgressModal = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log('claim progress', status);
-
   const icon = {
     idle: null,
     error: null,
