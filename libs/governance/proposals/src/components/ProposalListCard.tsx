@@ -193,13 +193,13 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 <Stack
                   direction="row"
                   spacing={0.75}
-                  sx={{
+                  sx={(theme) => ({
                     alignItems: 'center',
                     border: `1px solid ${alpha(theme.palette.warning.main, 0.2)}`,
                     borderRadius: 1,
                     px: 0.75,
                     py: 0.2,
-                  }}
+                  })}
                 >
                   <Snapshot color="warning" sx={{ fontSize: 14 }} />
                   <Typography
@@ -217,7 +217,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                 <Stack
                   direction="row"
                   spacing={0.75}
-                  sx={{
+                  sx={(theme) => ({
                     alignItems: 'center',
                     border: `1px solid ${alpha(theme.palette.secondary.light, 0.2)}`,
                     borderRadius: 1,
@@ -226,7 +226,7 @@ function ProposalRow({ proposal, ...rest }: ProposalRowProps) {
                     svg: {
                       color: 'secondary.light',
                     },
-                  }}
+                  })}
                 >
                   <FaLinkRegular sx={{ fontSize: 14 }} />
                   <Typography
