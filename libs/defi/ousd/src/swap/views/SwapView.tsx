@@ -32,7 +32,7 @@ export const SwapView = () => {
       </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
-          <Grid2 size={{ xs: 12, md: 6 }} offset={{ md: 2 }}>
+          <Grid2 size={{ xs: 12, md: 6 }} offset={{ md: 3 }}>
             <Swapper
               swapActions={ousdSwapActions}
               swapRoutes={ousdSwapRoutes}
@@ -40,7 +40,12 @@ export const SwapView = () => {
               trackEvent={trackEvent}
             />
           </Grid2>
-          <Grid2 size={12} offset={{ md: 3 }}>
+          <Grid2
+            size={{
+              xs: 12,
+              md: 3,
+            }}
+          >
             <Stack spacing={4}>
               <GlobalStatsCard token={tokens.mainnet.OUSD} />
               <AnalyticsCard
