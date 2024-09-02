@@ -11,7 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenIconUrl, tokens } from '@origin/shared/contracts';
 import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
@@ -49,7 +49,12 @@ export const TransactionProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const handleAddTokenToWallet = () => {
     walletClient?.watchAsset({
       type: 'ERC20',
-      options: tokens.mainnet.primeETH,
+      options: {
+        address: tokens.mainnet.primeETH.address,
+        decimals: tokens.mainnet.primeETH.decimals,
+        symbol: tokens.mainnet.primeETH.symbol,
+        image: getTokenIconUrl(tokens.mainnet.primeETH),
+      },
     });
   };
 

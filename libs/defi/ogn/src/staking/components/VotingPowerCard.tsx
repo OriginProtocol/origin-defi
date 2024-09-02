@@ -14,7 +14,7 @@ import {
   ValueLabel,
   WalletIcon,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenIconUrl, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
@@ -40,7 +40,12 @@ export const VotingPowerCard = (props: CardProps) => {
   const handleAddTokenToWallet = () => {
     walletClient?.watchAsset({
       type: 'ERC20',
-      options: tokens.mainnet.xOGN,
+      options: {
+        address: tokens.mainnet.xOGN.address,
+        decimals: tokens.mainnet.xOGN.decimals,
+        symbol: tokens.mainnet.xOGN.symbol,
+        image: getTokenIconUrl(tokens.mainnet.xOGN),
+      },
     });
   };
 

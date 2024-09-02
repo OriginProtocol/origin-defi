@@ -22,7 +22,7 @@ import {
   TokenIcon,
   WalletIcon,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { getTokenIconUrl, tokens } from '@origin/shared/contracts';
 import {
   EigenPoints,
   FaArrowUpRightRegular,
@@ -325,7 +325,12 @@ const AccountPopoverButton = () => {
   const handleAddTokenToWallet = () => {
     walletClient?.watchAsset({
       type: 'ERC20',
-      options: tokens.mainnet.primeETH,
+      options: {
+        address: tokens.mainnet.primeETH.address,
+        decimals: tokens.mainnet.primeETH.decimals,
+        symbol: tokens.mainnet.primeETH.symbol,
+        image: getTokenIconUrl(tokens.mainnet.primeETH),
+      },
     });
   };
 
