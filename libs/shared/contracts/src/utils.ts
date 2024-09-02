@@ -38,3 +38,6 @@ export const getTokenBySymbol = (symbol: string, chainId?: number) =>
   );
 
 export const getTokenById = (tokenId: TokenId) => tokenIdMap[tokenId];
+
+export const getTokenIconUrl = (token: Token) =>
+  `https://raw.githubusercontent.com/OriginProtocol/origin-defi/main/libs/shared/icons/src/tokens/${token.symbol}.svg`;

@@ -20,7 +20,11 @@ import {
   ValueLabel,
   WalletIcon,
 } from '@origin/shared/components';
-import { getTokenById, tokens } from '@origin/shared/contracts';
+import {
+  getTokenById,
+  getTokenIconUrl,
+  tokens,
+} from '@origin/shared/contracts';
 import {
   FaArrowRightFromBracketRegular,
   FaCopyRegular,
@@ -349,6 +353,7 @@ function BalanceRow({
         address: token.address ?? ZERO_ADDRESS,
         decimals: token.decimals,
         symbol: token.symbol,
+        image: getTokenIconUrl(token),
       },
     });
   };
