@@ -1,6 +1,12 @@
 import { useCallback } from 'react';
 
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
+import { Stack, Typography } from '@mui/material';
+import {
+  ActivityIcon,
+  NotificationSnack,
+  SeverityIcon,
+  TokenIcon,
+} from '@origin/shared/components';
 import {
   formatError,
   isNilOrEmpty,
@@ -12,11 +18,11 @@ import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { add, div, from, gt, mul } from 'dnum';
 import { produce } from 'immer';
 import { uniq } from 'ramda';
-import { useIntl } from 'react-intl';
+import { defineMessage, useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import {
-  RedeemNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
@@ -28,8 +34,13 @@ import { simulateContractWithTxTracker } from '../txTracker';
 import { MIX_TOKEN } from './constants';
 import { useRedeemState } from './state';
 
+import type { StackProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
+import type { MessageDescriptor } from 'react-intl';
 import type { TransactionReceipt } from 'viem';
+
+import type { GlobalActivityStatus } from '../activities';
 
 export const useHandleRedeemAmountInChange = () => {
   const [, setRedeemState] = useRedeemState();
@@ -240,4 +251,93 @@ export const useMixTokenPrice = () => {
         );
 
   return gt(total, from(0)) ? div(price, total) : from(0);
+};
+
+type RedeemNotificationProps = {
+  status: GlobalActivityStatus;
+  tokenIn?: Token;
+  tokenOut?: Token;
+  amountIn?: bigint;
+  amountOut?: bigint;
+  txReceipt?: TransactionReceipt;
+  error?: string;
+  sx?: StackProps['sx'];
+};
+
+const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+  pending: defineMessage({ defaultMessage: 'Redeeming' }),
+  success: defineMessage({ defaultMessage: 'Redeemed' }),
+  error: defineMessage({ defaultMessage: 'Error while redeeming' }),
+  idle: defineMessage({ defaultMessage: 'Redeem' }),
+};
+
+const RedeemNotification = ({
+  status,
+  tokenIn,
+  tokenOut,
+  amountIn,
+  amountOut,
+  txReceipt,
+  error,
+  sx,
+}: RedeemNotificationProps) => {
+  const intl = useIntl();
+
+  return (
+    <NotificationSnack
+      sx={sx}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      title={intl.formatMessage(title[status])}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {intl.formatMessage(
+              {
+                defaultMessage: '{amountIn} {symbolIn}',
+              },
+              {
+                amountIn: intl.formatNumber(
+                  +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18),
+                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                ),
+                symbolIn: tokenIn?.symbol,
+                amountOut: intl.formatNumber(
+                  +formatUnits(amountOut ?? 0n, tokenOut?.decimals ?? 18),
+                  { minimumFractionDigits: 4, maximumFractionDigits: 4 },
+                ),
+              },
+            )}
+          </Typography>
+        ) : (
+          <Typography
+            sx={{
+              color: 'error',
+            }}
+          >
+            {error}
+          </Typography>
+        )
+      }
+      endIcon={
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'center',
+          }}
+        >
+          <TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />
+        </Stack>
+      }
+    />
+  );
 };

@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { capitalize } from '@mui/material';
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
+import {
+  ActivityIcon,
+  ErrorTooltipLabel,
+  NotificationSnack,
+  SeverityIcon,
+} from '@origin/shared/components';
 import {
   formatError,
   isNilOrEmpty,
@@ -16,7 +21,6 @@ import {
 } from 'wagmi';
 
 import {
-  TransactionNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
@@ -27,11 +31,16 @@ import {
 } from '../../notifications';
 import { ConnectedButton } from './ConnectedButton';
 
+import type { NotificationSnackProps } from '@origin/shared/components';
 import type { Contract, Token } from '@origin/shared/contracts';
 import type { ReactNode } from 'react';
 import type { TransactionReceipt } from 'viem';
 
-import type { Activity, ActivityInput } from '../../activities';
+import type {
+  Activity,
+  ActivityInput,
+  GlobalActivityStatus,
+} from '../../activities';
 import type { ConnectedButtonProps } from './ConnectedButton';
 
 export type TransactionButtonProps = {
@@ -316,5 +325,37 @@ export const TransactionButton = ({
     <ConnectedButton {...rest} disabled={buttonDisabled} onClick={handleClick}>
       {buttonLabel}
     </ConnectedButton>
+  );
+};
+
+type TransactionNotificationProps = {
+  status: GlobalActivityStatus;
+  txReceipt?: TransactionReceipt;
+  error?: string;
+} & NotificationSnackProps;
+
+const TransactionNotification = ({
+  status,
+  txReceipt,
+  error,
+  ...rest
+}: TransactionNotificationProps) => {
+  return (
+    <NotificationSnack
+      {...rest}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          rest?.subtitle
+        ) : (
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
+        )
+      }
+    />
   );
 };

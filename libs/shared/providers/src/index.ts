@@ -11,7 +11,6 @@ export * from './notifications';
 export * from './prices';
 export * from './redeemer';
 export * from './refresher';
-export * from './settings';
 export * from './slippage';
 export * from './swapper';
 export * from './theme';

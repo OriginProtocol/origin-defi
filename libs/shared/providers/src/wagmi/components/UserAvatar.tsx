@@ -3,6 +3,7 @@ import { FaUserRegular } from '@origin/shared/icons';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { jsNumberForAddress } from 'react-jazzicon';
 import Jazzicon from 'react-jazzicon/dist/Jazzicon';
+import { mainnet } from 'viem/chains';
 import { useAccount, useEnsAvatar, useEnsName } from 'wagmi';
 
 import type { BoxProps } from '@mui/material';
@@ -18,12 +19,14 @@ export const UserAvatar = ({ address, ...rest }: UserAvatarProps) => {
   const adr = address ?? self;
   const { data: ensName } = useEnsName({
     address: adr,
+    chainId: mainnet.id,
     query: {
       enabled: !isNilOrEmpty(adr),
     },
   });
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName ?? undefined,
+    chainId: mainnet.id,
     query: {
       enabled: !!ensName,
     },

@@ -1,26 +1,23 @@
+import { Button, Divider, Popover, Stack, Typography } from '@mui/material';
 import {
-  Button,
-  Divider,
-  Popover,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
-import { isNilOrEmpty } from '@origin/shared/utils';
+  ActivityIcon,
+  ErrorTooltipLabel,
+  NotificationSnack,
+  TokenIcon,
+} from '@origin/shared/components';
+import { useActivityState } from '@origin/shared/providers';
+import { formatAmount, isNilOrEmpty } from '@origin/shared/utils';
 import { produce } from 'immer';
 import { descend, pipe, sort, take } from 'ramda';
-import { useIntl } from 'react-intl';
-
-import { useActivityState } from '../state';
-import { ApprovalNotification } from './ApprovalNotification';
-import { BridgeNotification } from './BridgeNotification';
-import { RedeemNotification } from './RedeemNotification';
-import { SwapNotification } from './SwapNotification';
-import { TransactionNotification } from './TransactionNotification';
+import { defineMessage, useIntl } from 'react-intl';
+import { formatUnits } from 'viem';
 
 import type { StackProps } from '@mui/material';
-
-import type { Activity } from '../types';
+import type { NotificationSnackProps } from '@origin/shared/components';
+import type { Token } from '@origin/shared/contracts';
+import type { Activity, GlobalActivityStatus } from '@origin/shared/providers';
+import type { MessageDescriptor } from 'react-intl';
+import type { TransactionReceipt } from 'viem';
 
 export type AcitivityPopoverProps = {
   anchor: HTMLElement | null;
@@ -32,7 +29,6 @@ export const ActivityPopover = ({
   setAnchor,
 }: AcitivityPopoverProps) => {
   const intl = useIntl();
-  const theme = useTheme();
   const [{ activities, maxVisible }, setActivityState] = useActivityState();
 
   const handleClose = () => {
@@ -111,29 +107,15 @@ export const ActivityPopover = ({
             sortedActivities.map(
               (a) =>
                 ({
+                  bridge: null,
+                  redeem: null,
+                  swap: null,
                   approval: (
                     <ApprovalNotification
                       key={a.id}
                       {...a}
                       sx={{ px: 3, py: 2 }}
                     />
-                  ),
-                  bridge: (
-                    <BridgeNotification
-                      key={a.id}
-                      {...a}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                  redeem: (
-                    <RedeemNotification
-                      key={a.id}
-                      {...a}
-                      sx={{ px: 3, py: 2 }}
-                    />
-                  ),
-                  swap: (
-                    <SwapNotification key={a.id} {...a} sx={{ px: 3, py: 2 }} />
                   ),
                   transaction: (
                     <TransactionNotification
@@ -179,3 +161,98 @@ function EmptyActivity(props: StackProps) {
     </Stack>
   );
 }
+
+type TransactionNotificationProps = {
+  status: GlobalActivityStatus;
+  txReceipt?: TransactionReceipt;
+  error?: string;
+} & NotificationSnackProps;
+
+const TransactionNotification = ({
+  status,
+  txReceipt,
+  error,
+  ...rest
+}: TransactionNotificationProps) => {
+  return (
+    <NotificationSnack
+      {...rest}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          rest?.subtitle
+        ) : (
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
+        )
+      }
+    />
+  );
+};
+
+type ApprovalNotificationProps = {
+  status: GlobalActivityStatus;
+  tokenIn?: Token;
+  amountIn?: bigint;
+  txReceipt?: TransactionReceipt;
+  error?: string;
+  sx?: StackProps['sx'];
+};
+
+const title: Record<GlobalActivityStatus, MessageDescriptor> = {
+  pending: defineMessage({ defaultMessage: 'Approving' }),
+  success: defineMessage({ defaultMessage: 'Approved' }),
+  error: defineMessage({ defaultMessage: 'Error while approving' }),
+  idle: defineMessage({ defaultMessage: 'Approve' }),
+};
+
+const ApprovalNotification = ({
+  status,
+  tokenIn,
+  amountIn,
+  txReceipt,
+  error,
+  sx,
+}: ApprovalNotificationProps) => {
+  const intl = useIntl();
+  const amount = +formatUnits(amountIn ?? 0n, tokenIn?.decimals ?? 18);
+
+  return (
+    <NotificationSnack
+      sx={sx}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      title={intl.formatMessage(title[status])}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          <Typography
+            sx={{
+              color: 'text.secondary',
+            }}
+          >
+            {intl.formatMessage(
+              {
+                defaultMessage: '{amountIn} {symbolIn}',
+              },
+              {
+                amountIn: formatAmount(amount),
+                symbolIn: tokenIn?.symbol,
+              },
+            )}
+          </Typography>
+        ) : (
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
+        )
+      }
+      endIcon={<TokenIcon token={tokenIn} sx={{ fontSize: 20 }} />}
+    />
+  );
+};

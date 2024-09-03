@@ -2,8 +2,8 @@ import { useState } from 'react';
 
 import { Button } from '@mui/material';
 import { ActivityIcon } from '@origin/shared/components';
+import { useActivitiesStatus } from '@origin/shared/providers';
 
-import { useActivitiesStatus } from '../hooks';
 import { ActivityPopover } from './ActivityPopover';
 
 import type { ButtonProps } from '@mui/material';

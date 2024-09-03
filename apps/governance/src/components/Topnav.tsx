@@ -10,11 +10,10 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { trackEvent } from '@origin/governance/shared';
+import { ActivityButton, trackEvent } from '@origin/governance/shared';
 import { tokens } from '@origin/shared/contracts';
 import {
   AccountPanel,
-  ActivityButton,
   BalanceList,
   OpenAccountModalButton,
 } from '@origin/shared/providers';

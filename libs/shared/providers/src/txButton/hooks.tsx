@@ -1,8 +1,14 @@
 import { useCallback, useMemo, useState } from 'react';
 
-import { NotificationSnack, SeverityIcon } from '@origin/shared/components';
+import {
+  ActivityIcon,
+  ErrorTooltipLabel,
+  NotificationSnack,
+  SeverityIcon,
+} from '@origin/shared/components';
 import {
   formatError,
+  isNilOrEmpty,
   jsonStringifyReplacer,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
@@ -11,7 +17,6 @@ import { useIntl } from 'react-intl';
 import { useAccount, useConfig, usePublicClient } from 'wagmi';
 
 import {
-  TransactionNotification,
   useDeleteActivity,
   usePushActivity,
   useUpdateActivity,
@@ -19,6 +24,7 @@ import {
 import { useGasPrice } from '../gas';
 import { useDeleteNotification, usePushNotification } from '../notifications';
 
+import type { NotificationSnackProps } from '@origin/shared/components';
 import type {
   SimulateContractErrorType,
   SimulateContractReturnType,
@@ -30,7 +36,11 @@ import type {
   TransactionReceipt,
 } from 'viem';
 
-import type { Activity, ActivityInput } from '../activities';
+import type {
+  Activity,
+  ActivityInput,
+  GlobalActivityStatus,
+} from '../activities';
 import type {
   WriteTransactionCallbacks,
   WriteTransactionParameters,
@@ -379,3 +389,35 @@ export const validateTxButtonParams = <
   params: UseTxButton<abi, functionName, args>['params'],
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 ) => params as any;
+
+type TransactionNotificationProps = {
+  status: GlobalActivityStatus;
+  txReceipt?: TransactionReceipt;
+  error?: string;
+} & NotificationSnackProps;
+
+const TransactionNotification = ({
+  status,
+  txReceipt,
+  error,
+  ...rest
+}: TransactionNotificationProps) => {
+  return (
+    <NotificationSnack
+      {...rest}
+      icon={<ActivityIcon status={status} sx={{ width: 20, height: 20 }} />}
+      href={
+        isNilOrEmpty(txReceipt?.transactionHash)
+          ? undefined
+          : `https://etherscan.io/tx/${txReceipt?.transactionHash}`
+      }
+      subtitle={
+        isNilOrEmpty(error) ? (
+          rest?.subtitle
+        ) : (
+          <ErrorTooltipLabel>{error}</ErrorTooltipLabel>
+        )
+      }
+    />
+  );
+};
