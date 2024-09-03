@@ -48,14 +48,20 @@ export const Topnav = () => {
   const { status, pendingCount } = useActivitiesStatus();
   const isNonRebasingOETH = useIsRebaseBannerVisible(tokens.mainnet.OETH);
   const isNonRebasingOUSD = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
+  const isNonRebasingSuperOETHb = useIsRebaseBannerVisible(
+    tokens.base.superOETHb,
+  );
   const once = useRef(true);
 
   useEffect(() => {
-    if (once.current && (isNonRebasingOETH || isNonRebasingOUSD)) {
+    if (
+      once.current &&
+      (isNonRebasingOETH || isNonRebasingOUSD || isNonRebasingSuperOETHb)
+    ) {
       setAlertMenuOpen(true);
       once.current = false;
     }
-  }, [isNonRebasingOETH, isNonRebasingOUSD]);
+  }, [isNonRebasingOETH, isNonRebasingOUSD, isNonRebasingSuperOETHb]);
 
   const isLoading = status === 'pending' && pendingCount > 0;
   const showRebaseMenu = isNonRebasingOETH || isNonRebasingOUSD;
