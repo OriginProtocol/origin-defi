@@ -1,4 +1,5 @@
 export * from './useIsContract';
+export * from './useIsRebaseDisabled';
 export * from './useTokenBalance';
 export * from './useTvl';
 export * from './useWriteTransaction';

@@ -22,7 +22,7 @@ import {
 import {
   ChainMenuButton,
   OpenAccountModalButton,
-  useIsRebaseBannerVisible,
+  useIsRebaseDisabled,
 } from '@origin/shared/providers';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -46,11 +46,9 @@ export const Topnav = () => {
   const [alertMenuOpen, setAlertMenuOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const { status, pendingCount } = useActivitiesStatus();
-  const isNonRebasingOETH = useIsRebaseBannerVisible(tokens.mainnet.OETH);
-  const isNonRebasingOUSD = useIsRebaseBannerVisible(tokens.mainnet.OUSD);
-  const isNonRebasingSuperOETHb = useIsRebaseBannerVisible(
-    tokens.base.superOETHb,
-  );
+  const isNonRebasingOETH = useIsRebaseDisabled(tokens.mainnet.OETH);
+  const isNonRebasingOUSD = useIsRebaseDisabled(tokens.mainnet.OUSD);
+  const isNonRebasingSuperOETHb = useIsRebaseDisabled(tokens.base.superOETHb);
   const once = useRef(true);
 
   useEffect(() => {
