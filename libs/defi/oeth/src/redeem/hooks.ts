@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { contracts } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
@@ -66,15 +66,24 @@ const fetcher: (
           address: (address as string) ?? ZERO_ADDRESS,
         }),
       }),
+      readContract(config, {
+        address: tokens.mainnet.WETH.address,
+        abi: tokens.mainnet.WETH.abi,
+        functionName: 'balanceOf',
+        chainId: tokens.mainnet.WETH.chainId,
+        args: [contracts.mainnet.OETHVault.address],
+      }),
     ]);
     const queueData = isFulfilled(res[0]) ? res[0].value : null;
     const requests = isFulfilled(res[1])
       ? (res[1].value?.oethWithdrawalRequests ?? [])
       : [];
+    const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
     return requests.map((r) => {
       const claimable =
         !r.claimed &&
-        BigInt(r.queued) <= BigInt(queueData?.[1] ?? 0) &&
+        wethBalance + BigInt(queueData?.[1] ?? 0) - BigInt(r?.queued ?? 0) >
+          0n &&
         isAfter(
           new Date(),
           addMinutes(new Date(r.timestamp), WITHDRAW_DELAY + 1),
