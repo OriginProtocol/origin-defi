@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import {
   alpha,
   Box,
@@ -21,6 +19,7 @@ import {
 } from '@origin/shared/icons';
 import { BlockExplorerLink, useRefresher } from '@origin/shared/providers';
 import { getFormatPrecision, ZERO_ADDRESS } from '@origin/shared/utils';
+import { useMountEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -41,6 +40,7 @@ export type WithdrawalRequestModalProps = {
   tokenIn?: Token;
   tokenOut?: Token;
   txReceipt?: TransactionReceipt;
+  initialRequests?: WithdrawalRequestsQuery;
 } & DialogProps;
 
 export const WithdrawalRequestModal = ({
@@ -48,6 +48,7 @@ export const WithdrawalRequestModal = ({
   tokenIn,
   tokenOut,
   txReceipt,
+  initialRequests,
   open,
   onClose,
   ...rest
@@ -58,9 +59,6 @@ export const WithdrawalRequestModal = ({
   const { update } = useViewSelect();
   const queryClient = useQueryClient();
   const { address } = useAccount();
-  const { data } = useWithdrawalRequestsQuery({
-    address: address ?? ZERO_ADDRESS,
-  });
   const { status, startRefresh } = useRefresher<WithdrawalRequestsQuery>({
     queryKey: useWithdrawalRequestsQuery.getKey({
       address: address ?? ZERO_ADDRESS,
@@ -72,12 +70,9 @@ export const WithdrawalRequestModal = ({
       prev.oethWithdrawalRequests.length < next.oethWithdrawalRequests.length,
   });
 
-  useEffect(() => {
-    if (open) {
-      startRefresh(data);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [open, startRefresh]);
+  useMountEffect(() => {
+    startRefresh(initialRequests);
+  });
 
   const handleClaimClick = () => {
     update('claim');
@@ -254,13 +249,7 @@ export const WithdrawalRequestModal = ({
             pt: 2,
           }}
         >
-          <Box
-            sx={{
-              mb: 3,
-            }}
-          >
-            {icon}
-          </Box>
+          <Box sx={{ mb: 3 }}>{icon}</Box>
           <Typography
             variant="featured2"
             sx={{

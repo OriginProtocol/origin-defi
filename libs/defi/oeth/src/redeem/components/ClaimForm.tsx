@@ -81,7 +81,7 @@ export const ClaimForm = (props: StackProps) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: args as any,
     callbacks: {
-      onWriteSuccess: () => {
+      onTxSigned: () => {
         startRefresh(data);
       },
     },

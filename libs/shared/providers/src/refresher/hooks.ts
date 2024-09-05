@@ -40,17 +40,19 @@ export const useRefresher = <QueryResult = any>({
 
   const startRefresh = useCallback(
     async (initialData: QueryResult | undefined) => {
-      if (initialData) {
-        prev.current = initialData;
-        setPollInterval(interval);
+      if (status !== 'polling') {
         setStatus('polling');
-      } else {
-        setTimeout(() => {
-          setStatus('processed');
-        }, 12000);
+        if (initialData) {
+          prev.current = initialData;
+          setPollInterval(interval);
+        } else {
+          setTimeout(() => {
+            setStatus('processed');
+          }, 12000);
+        }
       }
     },
-    [interval],
+    [interval, status],
   );
 
   const stopRefresh = useCallback(() => {
