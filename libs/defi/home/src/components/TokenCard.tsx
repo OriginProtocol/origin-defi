@@ -62,7 +62,12 @@ export const TokenCard = ({
     tokens.optimism.superOETHo.id,
   ]);
   const isOgn = token.id === tokens.mainnet.OGN.id;
-  const apy = isOgn ? staking?.xOgnApyPercentage : info?.bestApy.value;
+  const isSuperOethb = token.id === tokens.base.superOETHb.id;
+  const apy = isOgn
+    ? staking?.xOgnApyPercentage
+    : isSuperOethb
+      ? info?.apies.apy
+      : info?.bestApy.value;
   const isApyLoading = isOgn ? isStakingLoading : isInfoLoading;
   const apyLabel = isOgn
     ? intl.formatMessage({ defaultMessage: 'Max vAPY' })

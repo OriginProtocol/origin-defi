@@ -1,10 +1,6 @@
 import { Stack, Typography } from '@mui/material';
 import { ColorChip, useTokenInfo } from '@origin/defi/shared';
-import {
-  InfoTooltip,
-  LoadingLabel,
-  TokenIcon,
-} from '@origin/shared/components';
+import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -37,7 +33,7 @@ export const PageTitleSection = (props: StackProps) => {
           sWidth={90}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(info?.bestApy?.value ?? 0, {
+          {intl.formatNumber(info?.apies?.apy ?? 0, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'percent',
@@ -51,7 +47,7 @@ export const PageTitleSection = (props: StackProps) => {
         >
           {intl.formatMessage({ defaultMessage: 'APY' })}
         </Typography>
-        <InfoTooltip
+        {/* <InfoTooltip
           tooltipLabel={intl.formatMessage(
             {
               defaultMessage: '{trailingDays}-day trailing APY',
@@ -59,7 +55,7 @@ export const PageTitleSection = (props: StackProps) => {
             { trailingDays: info?.bestApy?.trailingDays },
           )}
           iconColor="primary.main"
-        />
+        /> */}
       </ColorChip>
     </Stack>
   );

@@ -78,11 +78,7 @@ export const LSTCard = (props: CardProps) => {
               height: 1,
             }}
           >
-            <TokenCard
-              token={tokens.base.superOETHb}
-              href="/super"
-              isComingSoon
-            />
+            <TokenCard token={tokens.base.superOETHb} href="/super" />
             <TokenCard
               token={tokens.optimism.superOETHo}
               href="/super"

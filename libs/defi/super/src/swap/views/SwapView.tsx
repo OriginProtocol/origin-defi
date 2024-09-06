@@ -14,6 +14,7 @@ import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { oethSwapActions } from '../actions';
+import { PageTitleSection } from '../components/PageTitleSection';
 import { superOethbSwapRoutes } from '../constants';
 
 export const SwapView = () => {
@@ -27,7 +28,9 @@ export const SwapView = () => {
           defaultMessage: 'Beyond liquid staking',
         })}
         icon={superOETH}
-      />
+      >
+        <PageTitleSection />
+      </PageTitle>
       <PageSection containerProps={{ maxWidth: 'lg' }}>
         <Grid2 container spacing={5}>
           <Grid2
