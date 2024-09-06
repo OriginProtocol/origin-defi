@@ -2,7 +2,6 @@ import {
   Card,
   CardHeader,
   CircularProgress,
-  Collapse,
   Divider,
   Stack,
 } from '@mui/material';
@@ -26,29 +25,31 @@ export const LockupsCard = (props: CardProps) => {
     },
   );
 
+  if (!isConnected || isNilOrEmpty(lockups)) {
+    return null;
+  }
+
   return (
-    <Collapse in={!isNilOrEmpty(lockups) && isConnected}>
-      <Card {...props}>
-        <CardHeader
-          title={intl.formatMessage({ defaultMessage: 'Your lockups' })}
-        />
-        <Divider />
-        {isLockupsFetching ? (
-          <Stack
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              height: '15rem',
-              width: 1,
-            }}
-          >
-            <CircularProgress />
-          </Stack>
-        ) : (
-          <LockupsTable />
-        )}
-      </Card>
-    </Collapse>
+    <Card {...props}>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Your lockups' })}
+      />
+      <Divider />
+      {isLockupsFetching ? (
+        <Stack
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '15rem',
+            width: 1,
+          }}
+        >
+          <CircularProgress />
+        </Stack>
+      ) : (
+        <LockupsTable />
+      )}
+    </Card>
   );
 };
