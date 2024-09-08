@@ -65,6 +65,7 @@ export const NetworkIcon = ({
       </Box>
     );
   }
+
   return (
     <Box
       {...rest}
@@ -93,7 +94,11 @@ export const NetworkIcon = ({
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <SvgIcon component={props.icon} inheritViewBox />
+      <SvgIcon
+        component={props.icon}
+        inheritViewBox
+        sx={{ fontSize: size * props.sizeRatio }}
+      />
     </Box>
   );
 };
