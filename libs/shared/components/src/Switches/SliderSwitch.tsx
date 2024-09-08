@@ -44,18 +44,20 @@ export const SliderSwitch = ({
     <Stack
       direction="row"
       {...rest}
-      sx={{
-        position: 'relative',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: 6,
-        border: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: 'background.paper',
-        cursor: 'pointer',
-        transition: 'all 0.2s ease',
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          position: 'relative',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          borderRadius: 6,
+          border: '1px solid',
+          borderColor: 'divider',
+          backgroundColor: 'background.paper',
+          cursor: 'pointer',
+          transition: 'all 0.2s ease',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {options.map((o, i) => (
         <SwitchButton
@@ -119,7 +121,7 @@ const SwitchButton = forwardRef<HTMLButtonElement, SwitchButtonProps>(
               backgroundColor: 'transparent',
               '.label': { color: textColor ?? 'text.primary' },
             },
-            ...rest?.sx,
+            ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
           },
           isSelected
             ? {

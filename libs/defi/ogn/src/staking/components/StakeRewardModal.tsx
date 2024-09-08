@@ -763,13 +763,15 @@ function LockupSelect({
   return (
     <Stack
       {...rest}
-      sx={{
-        border: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 3,
-        backgroundColor: 'background.highlight',
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 3,
+          backgroundColor: 'background.highlight',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Typography
         sx={{

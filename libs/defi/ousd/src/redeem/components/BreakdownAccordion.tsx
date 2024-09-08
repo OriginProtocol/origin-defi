@@ -28,11 +28,13 @@ export const BreakdownAccordion = (props: Omit<AccordionProps, 'children'>) => {
 
   return (
     <Accordion
-      sx={{
-        backgroundColor: 'background.highlight',
-        '&&&': { borderRadius: 3 },
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          backgroundColor: 'background.highlight',
+          '&&&': { borderRadius: 3 },
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <AccordionSummary
         expandIcon={<FaChevronDownRegular sx={{ color: 'text.secondary' }} />}

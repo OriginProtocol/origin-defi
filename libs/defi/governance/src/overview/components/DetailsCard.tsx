@@ -250,12 +250,14 @@ function Actions({ proposal, ...rest }: ActionsProps) {
               key={getKey(a.address, i)}
               expanded={expanded.includes(getKey(a.address, i))}
               onChange={handleToggleActionRow(getKey(a.address, i))}
-              sx={{
-                p: 0,
-                background: 'transparent',
-                border: 'none',
-                ...rest?.sx,
-              }}
+              sx={[
+                {
+                  p: 0,
+                  background: 'transparent',
+                  border: 'none',
+                },
+                ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+              ]}
               disableGutters
             >
               <AccordionSummary

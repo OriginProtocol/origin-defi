@@ -46,12 +46,14 @@ export function InfoTooltip(props: InfoTooltipProps) {
     >
       <SvgIcon
         {...rest}
-        sx={{
-          width: iconSize,
-          height: iconSize,
-          color: iconColor,
-          ...rest?.sx,
-        }}
+        sx={[
+          {
+            width: iconSize,
+            height: iconSize,
+            color: iconColor,
+          },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+        ]}
       >
         <CircleInfo />
       </SvgIcon>
@@ -82,7 +84,7 @@ function InfoPopover({
           width: iconSize,
           height: iconSize,
           color: iconColor,
-          ...rest?.sx,
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         }}
       >
         <CircleInfo />

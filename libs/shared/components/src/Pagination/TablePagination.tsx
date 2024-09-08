@@ -34,7 +34,6 @@ export const TablePagination = ({
           justifyContent: 'flex-end',
           px: { xs: 2, md: 3 },
           py: 2,
-          ...rest?.sx,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}

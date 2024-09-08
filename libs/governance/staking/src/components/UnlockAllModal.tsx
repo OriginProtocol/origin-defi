@@ -135,7 +135,14 @@ function FormView({
   return (
     <DialogContent
       {...rest}
-      sx={{ display: 'flex', flexDirection: 'column', gap: 3, ...rest?.sx }}
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 3,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <Stack sx={{ borderRadius: 1, backgroundColor: 'grey.900' }}>
         <Stack
@@ -220,7 +227,7 @@ function LockupRow({ lockup, ...rest }: LockupRowProps) {
           pb: 2,
           alignItems: 'center',
           '> *': { width: 1 },
-          ...rest?.sx,
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
@@ -288,7 +295,7 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        ...rest?.sx,
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       }}
     >
       <Stack

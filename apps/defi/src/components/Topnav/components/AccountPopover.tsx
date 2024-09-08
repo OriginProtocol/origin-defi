@@ -469,14 +469,16 @@ function ActivityList({ selectedChainId, ...rest }: ActivityListProps) {
   return (
     <Stack
       {...rest}
-      sx={{
-        pt: 3,
-        pb: 1.5,
-        maxHeight: '50dvh',
-        overflowY: 'auto',
-        overflowX: 'hidden',
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          pt: 3,
+          pb: 1.5,
+          maxHeight: '50dvh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       {sortedActivities.map((a) => (
         <ActivityTile

@@ -31,7 +31,6 @@ export const BridgeBanner = (props: StackProps) => {
           },
           backgroundPosition: 'right -100px center, center',
           p: 2,
-          ...props?.sx,
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}

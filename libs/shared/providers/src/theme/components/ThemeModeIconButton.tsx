@@ -12,7 +12,14 @@ export const ThemeModeIconButton = (
   const toggleTheme = useToggleThemeMode();
 
   return (
-    <Button {...props} onClick={toggleTheme} sx={{ minWidth: 0, ...props?.sx }}>
+    <Button
+      {...props}
+      onClick={toggleTheme}
+      sx={[
+        { minWidth: 0 },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       {mode === 'dark' ? <FaSunBrightRegular /> : <FaMoonRegular />}
     </Button>
   );

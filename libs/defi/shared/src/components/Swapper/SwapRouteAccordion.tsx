@@ -32,11 +32,13 @@ export function SwapRouteAccordion(props: Omit<AccordionProps, 'children'>) {
     <Accordion
       {...props}
       expanded={showMore}
-      sx={{
-        backgroundColor: 'background.default',
-        '&&&': { borderRadius: 3 },
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          backgroundColor: 'background.default',
+          '&&&': { borderRadius: 3 },
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
       disableGutters
     >
       <AccordionSummary

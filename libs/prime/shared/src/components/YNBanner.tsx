@@ -20,7 +20,6 @@ export const YNBanner = (props: StackProps) => {
           height: { xs: 300, md: 110 },
           pl: { xs: 2, md: 0 },
           pr: { xs: 2, md: 6 },
-          ...props?.sx,
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}

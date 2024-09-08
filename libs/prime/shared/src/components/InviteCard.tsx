@@ -25,7 +25,6 @@ export const InviteCard = (props: StackProps) => {
           borderColor: 'divider',
           borderRadius: 5,
           minHeight: 200,
-          ...props?.sx,
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}

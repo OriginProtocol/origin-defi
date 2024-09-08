@@ -28,7 +28,12 @@ export const WsuperOethbStats = (props: CardProps) => {
   return (
     <Card
       {...props}
-      sx={{ backgroundColor: 'background.default', ...props?.sx }}
+      sx={[
+        {
+          backgroundColor: 'background.default',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Stack
         direction="row"

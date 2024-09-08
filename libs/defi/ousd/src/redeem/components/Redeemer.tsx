@@ -342,22 +342,24 @@ function MixTokenButton({ tokens, label, ...rest }: MixTokenButtonProps) {
       color="inherit"
       size="small"
       {...rest}
-      sx={{
-        gap: 1,
-        minHeight: 32,
-        borderRadius: 8,
-        fontSize: '1rem',
-        fontWeight: 500,
-        border: 'none',
-        backgroundColor: 'background.default',
-        '&.Mui-disabled': {
-          color: 'text.primary',
+      sx={[
+        {
+          gap: 1,
+          minHeight: 32,
+          borderRadius: 8,
+          fontSize: '1rem',
+          fontWeight: 500,
           border: 'none',
           backgroundColor: 'background.default',
-          pr: 2,
+          '&.Mui-disabled': {
+            color: 'text.primary',
+            border: 'none',
+            backgroundColor: 'background.default',
+            pr: 2,
+          },
         },
-        ...rest?.sx,
-      }}
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <MultiTokenIcon tokens={tokens} spacing={1.8} size={1.75} />
       <Typography variant="inherit">{label}</Typography>

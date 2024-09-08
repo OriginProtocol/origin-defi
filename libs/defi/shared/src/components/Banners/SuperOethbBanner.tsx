@@ -18,12 +18,14 @@ export const SuperOethbBanner = (props: StackProps) => {
   return (
     <Stack
       {...props}
-      sx={{
-        borderRadius: 4,
-        background: `linear-gradient(90deg, rgba(34, 141, 239, 0.50) -28.99%, rgba(0, 82, 255, 0.50) 144.97%), #0B59A6`,
-        overflow: 'hidden',
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          borderRadius: 4,
+          background: `linear-gradient(90deg, rgba(34, 141, 239, 0.50) -28.99%, rgba(0, 82, 255, 0.50) 144.97%), #0B59A6`,
+          overflow: 'hidden',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Stack
         direction={{ xs: 'column', sm: 'row' }}

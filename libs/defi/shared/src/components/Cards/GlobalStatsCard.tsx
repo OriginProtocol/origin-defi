@@ -44,11 +44,13 @@ export const GlobalStatsCard = ({
     <Accordion
       defaultExpanded
       {...rest}
-      sx={{
-        backgroundColor: 'background.default',
-        '&&&': { borderRadius },
-        ...rest?.sx,
-      }}
+      sx={[
+        {
+          backgroundColor: 'background.default',
+          '&&&': { borderRadius },
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
     >
       <AccordionSummary
         expandIcon={<FaChevronDownRegular />}

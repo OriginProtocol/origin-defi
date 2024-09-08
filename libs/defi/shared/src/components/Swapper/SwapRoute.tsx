@@ -28,11 +28,13 @@ export function SwapRoute(
     <Accordion
       {...props}
       expanded={isExpanded}
-      sx={{
-        backgroundColor: 'background.default',
-        border: 'none',
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          backgroundColor: 'background.default',
+          border: 'none',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <AccordionSummary
         sx={{

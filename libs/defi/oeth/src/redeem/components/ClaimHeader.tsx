@@ -36,13 +36,15 @@ export const ClaimHeader = (props: StackProps) => {
   return (
     <Stack
       {...props}
-      sx={{
-        border: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 3,
-        backgroundColor: 'background.highlight',
-        ...props?.sx,
-      }}
+      sx={[
+        {
+          border: '1px solid',
+          borderColor: 'divider',
+          borderRadius: 3,
+          backgroundColor: 'background.highlight',
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
     >
       <Stack
         spacing={1}

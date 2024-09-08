@@ -25,7 +25,6 @@ export const MergerBanner = (props: StackProps) => {
             'linear-gradient(90deg, #8C66FC -28.99%, #0274F1 144.97%)',
           p: 3,
           rowGap: 3,
-          ...props?.sx,
         },
         ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
       ]}
