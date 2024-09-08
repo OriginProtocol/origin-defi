@@ -5,6 +5,6 @@ export const hasKey = <O extends object>(
   return key in obj;
 };
 
-export const isInArray = <T>(element: T, array: readonly T[]): boolean => {
+export const includes = <T>(array: readonly T[], element: T): boolean => {
   return array.includes(element);
 };

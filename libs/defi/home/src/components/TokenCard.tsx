@@ -14,7 +14,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { getFormatPrecision, isInArray } from '@origin/shared/utils';
+import { getFormatPrecision, includes } from '@origin/shared/utils';
 import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -57,10 +57,10 @@ export const TokenCard = ({
     },
   );
 
-  const isFancy = isInArray(token.id, [
-    tokens.base.superOETHb.id,
-    tokens.optimism.superOETHo.id,
-  ]);
+  const isFancy = includes(
+    [tokens.base.superOETHb.id, tokens.optimism.superOETHo.id],
+    token.id,
+  );
   const isOgn = token.id === tokens.mainnet.OGN.id;
   const isSuperOethb = token.id === tokens.base.superOETHb.id;
   const apy = isOgn

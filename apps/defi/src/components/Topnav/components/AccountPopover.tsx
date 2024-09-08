@@ -39,7 +39,7 @@ import {
 } from '@origin/shared/providers';
 import {
   getFormatPrecision,
-  isInArray,
+  includes,
   isNilOrEmpty,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
@@ -394,7 +394,7 @@ function BalanceRow({
               >
                 {token.symbol}
               </Typography>
-              {isInArray(token.id, tokensToAddToWallet) && isConnected && (
+              {includes(tokensToAddToWallet, token.id) && isConnected && (
                 <Tooltip
                   title={intl.formatMessage({
                     defaultMessage: 'Add to metamask',

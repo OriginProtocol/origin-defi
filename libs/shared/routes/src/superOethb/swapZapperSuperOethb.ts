@@ -2,7 +2,7 @@ import { contracts, tokens, whales } from '@origin/shared/contracts';
 import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   hasKey,
-  isInArray,
+  includes,
   isNilOrEmpty,
   subPercentage,
   ZERO_ADDRESS,
@@ -57,7 +57,7 @@ const estimateAmount: EstimateAmount = async (
 
   // ETH, WETH -> wsuperOETHb
   if (
-    isInArray(tokenIn.id, [tokens.base.ETH.id, tokens.base.WETH.id]) &&
+    includes([tokens.base.ETH.id, tokens.base.WETH.id], tokenIn.id) &&
     tokenOut.id === tokens.base.wsuperOETHb.id
   ) {
     return await readContract(config, {
