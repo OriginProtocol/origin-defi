@@ -279,8 +279,7 @@ const balanceTokens = [
   tokens.base.WETH,
   tokens.base.superOETHb,
   tokens.base.wsuperOETHb,
-  tokens.optimism.ETH,
-  tokens.optimism.WETH,
+  ...(import.meta.env.DEV ? [tokens.optimism.ETH, tokens.optimism.WETH] : []),
 ];
 
 type BalanceListProps = { selectedChainId: number } & StackProps;
