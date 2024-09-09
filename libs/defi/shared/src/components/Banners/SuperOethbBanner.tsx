@@ -138,6 +138,9 @@ export const SuperOethbBanner = (props: StackProps) => {
           </Button>
           <Button
             fullWidth
+            href="https://www.originprotocol.com/super-oeth-live-on-base"
+            target="_blank"
+            rel="noopener noreferrer nofollow"
             variant="outlined"
             color="secondary"
             size="large"
