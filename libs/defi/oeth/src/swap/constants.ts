@@ -35,16 +35,6 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
     action: 'redeem-arm-oeth',
   },
   {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.ETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
-    tokenIn: tokens.arbitrum.wOETH,
-    tokenOut: tokens.arbitrum.WETH,
-    action: 'swap-balancer-oeth',
-  },
-  {
     tokenIn: tokens.mainnet.OETH,
     tokenOut: tokens.mainnet.WETH,
     action: 'swap-curve-oeth',
@@ -77,6 +67,16 @@ export const oethSwapRoutes: SwapRoute<OethSwapAction>[] = [
   {
     tokenIn: tokens.arbitrum.WETH,
     tokenOut: tokens.arbitrum.wOETH,
+    action: 'swap-balancer-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.wOETH,
+    tokenOut: tokens.arbitrum.ETH,
+    action: 'swap-balancer-oeth',
+  },
+  {
+    tokenIn: tokens.arbitrum.wOETH,
+    tokenOut: tokens.arbitrum.WETH,
     action: 'swap-balancer-oeth',
   },
 ];

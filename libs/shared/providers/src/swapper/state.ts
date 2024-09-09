@@ -117,16 +117,24 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
 
       useEffect(() => {
         const routes = getFilteredSwapRoutes(swapRoutes, chain);
+        const available = getAvailableRoutes(
+          routes,
+          state.tokenIn,
+          state.tokenOut,
+        );
         setState((prev) => ({
           ...prev,
           swapRoutes: routes,
-          tokenIn: routes[0]?.tokenIn,
-          amountOut: 0n,
-          tokenOut: routes[0]?.tokenOut,
-          estimatedSwapRoutes: [],
-          selectedSwapRoute: null,
+          ...(isNilOrEmpty(available) && {
+            tokenIn: routes[0]?.tokenIn,
+            amountIn: 0n,
+            amountOut: 0n,
+            tokenOut: routes[0]?.tokenOut,
+            estimatedSwapRoutes: [],
+            selectedSwapRoute: null,
+          }),
         }));
-      }, [chain, swapRoutes]);
+      }, [chain, state.tokenIn, state.tokenOut, swapRoutes]);
 
       useDebouncedEffect(
         async () => {
