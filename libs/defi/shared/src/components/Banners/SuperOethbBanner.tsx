@@ -1,5 +1,9 @@
 import { Button, Stack, Typography } from '@mui/material';
-import { LoadingLabel, NetworkIcon } from '@origin/shared/components';
+import {
+  InfoTooltip,
+  LoadingLabel,
+  NetworkIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -109,6 +113,14 @@ export const SuperOethbBanner = (props: StackProps) => {
                   })}
                 </LoadingLabel>
                 <Typography>APY</Typography>
+                <InfoTooltip
+                  tooltipLabel={intl.formatMessage(
+                    {
+                      defaultMessage: '{trailingDays}-day trailing APY',
+                    },
+                    { trailingDays: info?.bestApy?.trailingDays },
+                  )}
+                />
               </Stack>
             </Stack>
           </Stack>
