@@ -49,6 +49,8 @@ import { useIntl } from 'react-intl';
 import { mainnet } from 'viem/chains';
 import { useAccount, useConfig, useDisconnect, useWalletClient } from 'wagmi';
 
+import { balanceTokens } from '../constants';
+
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
 import type { ClickAwayPopoverProps } from '@origin/shared/components';
@@ -265,22 +267,6 @@ function ChainSelector({
     </Stack>
   );
 }
-
-const balanceTokens = [
-  tokens.mainnet.ETH,
-  tokens.mainnet.WETH,
-  tokens.mainnet.OETH,
-  tokens.mainnet.OUSD,
-  tokens.mainnet.OGN,
-  tokens.arbitrum.ETH,
-  tokens.arbitrum.WETH,
-  tokens.arbitrum.wOETH,
-  tokens.base.ETH,
-  tokens.base.WETH,
-  tokens.base.superOETHb,
-  tokens.base.wsuperOETHb,
-  ...(import.meta.env.DEV ? [tokens.optimism.ETH, tokens.optimism.WETH] : []),
-];
 
 type BalanceListProps = { selectedChainId: number } & StackProps;
 
