@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import { useTokenInfo, useXOgnStakingApy } from '@origin/defi/shared';
 import {
+  InfoTooltip,
   LoadingLabel,
   NumberSpinner,
   TokenIcon,
@@ -187,25 +188,37 @@ export const TokenCard = ({
                   })}
             </LoadingLabel>
             {!disabled && (
-              <Typography
-                variant="caption1"
-                noWrap
-                sx={[
-                  {
-                    color: 'primary.contrastText',
-                  },
-                  isFancy
-                    ? {
-                        background: (theme) =>
-                          theme.palette.background.gradientBlueDark,
-                        backgroundClip: 'text',
-                        WebkitTextFillColor: 'transparent',
-                      }
-                    : { color: 'primary.main' },
-                ]}
-              >
-                {apyLabel}
-              </Typography>
+              <Stack direction="row" alignItems="center" spacing="0.5">
+                <Typography
+                  variant="caption1"
+                  noWrap
+                  sx={[
+                    {
+                      color: 'primary.contrastText',
+                    },
+                    isFancy
+                      ? {
+                          background: (theme) =>
+                            theme.palette.background.gradientBlueDark,
+                          backgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                        }
+                      : { color: 'primary.main' },
+                  ]}
+                >
+                  {apyLabel}
+                </Typography>
+                {!isOgn && (
+                  <InfoTooltip
+                    tooltipLabel={intl.formatMessage(
+                      {
+                        defaultMessage: '{trailingDays}-day trailing APY',
+                      },
+                      { trailingDays: info?.bestApy?.trailingDays },
+                    )}
+                  />
+                )}
+              </Stack>
             )}
           </Stack>
         )}
