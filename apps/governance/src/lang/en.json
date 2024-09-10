@@ -53,18 +53,6 @@
       "value": "End block"
     }
   ],
-  "/xvR4F": [
-    {
-      "type": 0,
-      "value": "Opt in"
-    }
-  ],
-  "024MfN": [
-    {
-      "type": 0,
-      "value": "Processing Approval"
-    }
-  ],
   "0AYOgf": [
     {
       "type": 0,
@@ -89,12 +77,6 @@
       "value": " in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
     }
   ],
-  "0Go4jI": [
-    {
-      "type": 0,
-      "value": "Swapped"
-    }
-  ],
   "0ICwq5": [
     {
       "type": 0,
@@ -105,12 +87,6 @@
     {
       "type": 0,
       "value": "My Wallet Balance"
-    }
-  ],
-  "0fR+fE": [
-    {
-      "type": 0,
-      "value": "Route"
     }
   ],
   "0kn7st": [
@@ -143,16 +119,6 @@
     {
       "type": 0,
       "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
-    }
-  ],
-  "1XVJUl": [
-    {
-      "type": 0,
-      "value": "Switch to "
-    },
-    {
-      "type": 1,
-      "value": "defaultChain"
     }
   ],
   "1hrrJK": [
@@ -217,20 +183,6 @@
       "value": "Unstake"
     }
   ],
-  "45EvZ3": [
-    {
-      "type": 0,
-      "value": "Minimum received with "
-    },
-    {
-      "type": 1,
-      "value": "slippage"
-    },
-    {
-      "type": 0,
-      "value": " slippage:"
-    }
-  ],
   "4OE2Tb": [
     {
       "type": 0,
@@ -241,12 +193,6 @@
     {
       "type": 0,
       "value": "3y"
-    }
-  ],
-  "5RMD2G": [
-    {
-      "type": 0,
-      "value": "Your transaction will revert if the price changes unfavorably by more than this percentage."
     }
   ],
   "5X3I7d": [
@@ -335,12 +281,6 @@
       "value": "Delegate on-chain voting power"
     }
   ],
-  "6GZbSi": [
-    {
-      "type": 0,
-      "value": "The selected network is not supported by the application."
-    }
-  ],
   "6WMuFp": [
     {
       "type": 0,
@@ -407,18 +347,6 @@
       "value": "Snapshot"
     }
   ],
-  "8YcGAy": [
-    {
-      "type": 0,
-      "value": "Bridge Started"
-    }
-  ],
-  "8cCxx8": [
-    {
-      "type": 0,
-      "value": "Redeem for mix via Origin Vault"
-    }
-  ],
   "8nvhZ9": [
     {
       "type": 0,
@@ -435,12 +363,6 @@
     {
       "type": 0,
       "value": "Discord support channel"
-    }
-  ],
-  "ASNc/h": [
-    {
-      "type": 0,
-      "value": "Enter an amount"
     }
   ],
   "AdvVFR": [
@@ -517,20 +439,6 @@
       "value": "Redeeming"
     }
   ],
-  "DRdgbZ": [
-    {
-      "type": 0,
-      "value": "Redeem "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    },
-    {
-      "type": 0,
-      "value": " for the basket of underlying assets"
-    }
-  ],
   "DupNoS": [
     {
       "type": 0,
@@ -547,36 +455,6 @@
     {
       "type": 0,
       "value": "No Lock-ups"
-    }
-  ],
-  "EEwopl": [
-    {
-      "type": 1,
-      "value": "amountIn"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolIn"
-    },
-    {
-      "type": 0,
-      "value": " for "
-    },
-    {
-      "type": 1,
-      "value": "amountOut"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolOut"
     }
   ],
   "EVmlnF": [
@@ -639,12 +517,6 @@
     {
       "type": 0,
       "value": "On-chain Transaction"
-    }
-  ],
-  "HyhkDr": [
-    {
-      "type": 0,
-      "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
     }
   ],
   "IAoEwp": [
@@ -751,12 +623,6 @@
       "value": "Abstain"
     }
   ],
-  "KaxXiQ": [
-    {
-      "type": 0,
-      "value": "Processing approval"
-    }
-  ],
   "KjK2z3": [
     {
       "type": 0,
@@ -803,12 +669,6 @@
     {
       "type": 0,
       "value": "Ooops..."
-    }
-  ],
-  "MZCNjq": [
-    {
-      "type": 0,
-      "value": "Bridge"
     }
   ],
   "N5g7Qy": [
@@ -863,12 +723,6 @@
       "value": "Ooops, something went wrong 😓"
     }
   ],
-  "NXI/XL": [
-    {
-      "type": 0,
-      "value": "Auto"
-    }
-  ],
   "NY6umm": [
     {
       "type": 0,
@@ -887,12 +741,6 @@
     {
       "type": 0,
       "value": " rewards OGV"
-    }
-  ],
-  "OBfWz0": [
-    {
-      "type": 0,
-      "value": "No available route"
     }
   ],
   "ORGv1Q": [
@@ -919,22 +767,10 @@
       "value": "Canceled"
     }
   ],
-  "PKgDoL": [
-    {
-      "type": 0,
-      "value": "Estimating..."
-    }
-  ],
   "PZc1jP": [
     {
       "type": 0,
       "value": "Max APY on OGN"
-    }
-  ],
-  "PmkP1H": [
-    {
-      "type": 0,
-      "value": "Unsupported Network"
     }
   ],
   "PqSAYk": [
@@ -947,12 +783,6 @@
     {
       "type": 0,
       "value": "Voted For"
-    }
-  ],
-  "PzlMqG": [
-    {
-      "type": 0,
-      "value": "Best"
     }
   ],
   "Q8Qw5B": [
@@ -1143,18 +973,6 @@
       "value": "."
     }
   ],
-  "V/q7w4": [
-    {
-      "type": 0,
-      "value": "Finding the best route..."
-    }
-  ],
-  "Vn/9nH": [
-    {
-      "type": 0,
-      "value": "Est gas:"
-    }
-  ],
   "VqXRJ4": [
     {
       "type": 0,
@@ -1269,18 +1087,6 @@
       "value": "symbol"
     }
   ],
-  "ZmLuI/": [
-    {
-      "type": 0,
-      "value": "Rate:"
-    }
-  ],
-  "aA9zvD": [
-    {
-      "type": 0,
-      "value": "The best swap route factors in the best price after transaction costs"
-    }
-  ],
   "aDYxXF": [
     {
       "type": 0,
@@ -1317,12 +1123,6 @@
     {
       "type": 0,
       "value": "Discord discussion"
-    }
-  ],
-  "c31Feo": [
-    {
-      "type": 0,
-      "value": "Swapping"
     }
   ],
   "cg1VJ2": [
@@ -1369,12 +1169,6 @@
     {
       "type": 0,
       "value": "Delegate to self"
-    }
-  ],
-  "dtJo4Y": [
-    {
-      "type": 0,
-      "value": "Exchange rate"
     }
   ],
   "e8UIVj": [
@@ -1589,18 +1383,6 @@
       "value": "Extend Stake"
     }
   ],
-  "jvnqxK": [
-    {
-      "type": 0,
-      "value": "Bridging"
-    }
-  ],
-  "k3YWIR": [
-    {
-      "type": 0,
-      "value": "Max slippage"
-    }
-  ],
   "kY4SP1": [
     {
       "type": 0,
@@ -1701,12 +1483,6 @@
     {
       "type": 1,
       "value": "delegatee"
-    }
-  ],
-  "pYbH7c": [
-    {
-      "type": 0,
-      "value": "Error while bridging"
     }
   ],
   "qGZxc4": [
@@ -1843,12 +1619,6 @@
       "value": "Wrong Network"
     }
   ],
-  "xZIm6b": [
-    {
-      "type": 0,
-      "value": "Your transaction may be frontrun"
-    }
-  ],
   "xwfunk": [
     {
       "type": 0,
@@ -1871,12 +1641,6 @@
     {
       "type": 0,
       "value": "Next Emissions Reduction Event:"
-    }
-  ],
-  "z1bu+z": [
-    {
-      "type": 0,
-      "value": "Error while swapping"
     }
   ],
   "zQvVDJ": [

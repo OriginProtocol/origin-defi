@@ -26,26 +26,14 @@
   "/Kr6f5": {
     "defaultMessage": "End block"
   },
-  "/xvR4F": {
-    "defaultMessage": "Opt in"
-  },
-  "024MfN": {
-    "defaultMessage": "Processing Approval"
-  },
   "0AYOgf": {
     "defaultMessage": "You have accrued <b>{reward} OGV</b> in staking rewards. This OGV will be transferred to your wallet immediately when you extend your stake."
-  },
-  "0Go4jI": {
-    "defaultMessage": "Swapped"
   },
   "0ICwq5": {
     "defaultMessage": "Last updated"
   },
   "0eghlt": {
     "defaultMessage": "My Wallet Balance"
-  },
-  "0fR+fE": {
-    "defaultMessage": "Route"
   },
   "0kn7st": {
     "defaultMessage": "No actions"
@@ -58,9 +46,6 @@
   },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
-  },
-  "1XVJUl": {
-    "defaultMessage": "Switch to {defaultChain}"
   },
   "1hrrJK": {
     "defaultMessage": "Snapshot delegate page"
@@ -89,17 +74,11 @@
   "3fTTLv": {
     "defaultMessage": "Unstake"
   },
-  "45EvZ3": {
-    "defaultMessage": "Minimum received with {slippage} slippage:"
-  },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
   },
   "4cSnUS": {
     "defaultMessage": "3y"
-  },
-  "5RMD2G": {
-    "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
   },
   "5X3I7d": {
     "defaultMessage": "Switch network"
@@ -118,9 +97,6 @@
   },
   "6+973y": {
     "defaultMessage": "Delegate on-chain voting power"
-  },
-  "6GZbSi": {
-    "defaultMessage": "The selected network is not supported by the application."
   },
   "6WMuFp": {
     "defaultMessage": "Proposals"
@@ -155,12 +131,6 @@
   "8Y0yUM": {
     "defaultMessage": "Snapshot"
   },
-  "8YcGAy": {
-    "defaultMessage": "Bridge Started"
-  },
-  "8cCxx8": {
-    "defaultMessage": "Redeem for mix via Origin Vault"
-  },
   "8nvhZ9": {
     "defaultMessage": "Last"
   },
@@ -169,9 +139,6 @@
   },
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
-  },
-  "ASNc/h": {
-    "defaultMessage": "Enter an amount"
   },
   "AdvVFR": {
     "defaultMessage": "{page} of {lastPage}"
@@ -206,9 +173,6 @@
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
-  "DRdgbZ": {
-    "defaultMessage": "Redeem {token} for the basket of underlying assets"
-  },
   "DupNoS": {
     "defaultMessage": "Go back home"
   },
@@ -217,9 +181,6 @@
   },
   "EBxIt1": {
     "defaultMessage": "No Lock-ups"
-  },
-  "EEwopl": {
-    "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
   "EVmlnF": {
     "defaultMessage": "OGV"
@@ -247,9 +208,6 @@
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
-  },
-  "HyhkDr": {
-    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
   "IAoEwp": {
     "defaultMessage": "Vote for"
@@ -290,9 +248,6 @@
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
-  "KaxXiQ": {
-    "defaultMessage": "Processing approval"
-  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
@@ -317,9 +272,6 @@
   "MW9FHt": {
     "defaultMessage": "Ooops..."
   },
-  "MZCNjq": {
-    "defaultMessage": "Bridge"
-  },
   "N5g7Qy": {
     "defaultMessage": "Staking rewards come from OETH and OUSD performance fees as well as OGV token emissions. Token emissions are scheduled to decrease over time."
   },
@@ -329,17 +281,11 @@
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
-  "NXI/XL": {
-    "defaultMessage": "Auto"
-  },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
   "O6UApS": {
     "defaultMessage": "Collect {rewards} rewards OGV"
-  },
-  "OBfWz0": {
-    "defaultMessage": "No available route"
   },
   "ORGv1Q": {
     "defaultMessage": "Created"
@@ -353,23 +299,14 @@
   "PFtMy9": {
     "defaultMessage": "Canceled"
   },
-  "PKgDoL": {
-    "defaultMessage": "Estimating..."
-  },
   "PZc1jP": {
     "defaultMessage": "Max APY on OGN"
-  },
-  "PmkP1H": {
-    "defaultMessage": "Unsupported Network"
   },
   "PqSAYk": {
     "defaultMessage": "Current APY"
   },
   "PuubxK": {
     "defaultMessage": "Voted For"
-  },
-  "PzlMqG": {
-    "defaultMessage": "Best"
   },
   "Q8Qw5B": {
     "defaultMessage": "Description"
@@ -434,12 +371,6 @@
   "UlMgTq": {
     "defaultMessage": "If the problem persists, contact us on our {support}."
   },
-  "V/q7w4": {
-    "defaultMessage": "Finding the best route..."
-  },
-  "Vn/9nH": {
-    "defaultMessage": "Est gas:"
-  },
   "VqXRJ4": {
     "defaultMessage": "Stake OGV"
   },
@@ -485,12 +416,6 @@
   "Zl7l7P": {
     "defaultMessage": "{count} {symbol}"
   },
-  "ZmLuI/": {
-    "defaultMessage": "Rate:"
-  },
-  "aA9zvD": {
-    "defaultMessage": "The best swap route factors in the best price after transaction costs"
-  },
   "aDYxXF": {
     "defaultMessage": "New transaction"
   },
@@ -505,9 +430,6 @@
   },
   "bqVPh2": {
     "defaultMessage": "Discord discussion"
-  },
-  "c31Feo": {
-    "defaultMessage": "Swapping"
   },
   "cg1VJ2": {
     "defaultMessage": "Connect Wallet"
@@ -526,9 +448,6 @@
   },
   "dm9FiM": {
     "defaultMessage": "Delegate to self"
-  },
-  "dtJo4Y": {
-    "defaultMessage": "Exchange rate"
   },
   "e8UIVj": {
     "defaultMessage": "4y"
@@ -602,12 +521,6 @@
   "jngAIm": {
     "defaultMessage": "Extend Stake"
   },
-  "jvnqxK": {
-    "defaultMessage": "Bridging"
-  },
-  "k3YWIR": {
-    "defaultMessage": "Max slippage"
-  },
   "kY4SP1": {
     "defaultMessage": "Unlock All"
   },
@@ -646,9 +559,6 @@
   },
   "pSYtOY": {
     "defaultMessage": "Delegate {votingPower} veOGV to {delegatee}"
-  },
-  "pYbH7c": {
-    "defaultMessage": "Error while bridging"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -710,9 +620,6 @@
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
-  "xZIm6b": {
-    "defaultMessage": "Your transaction may be frontrun"
-  },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
@@ -724,9 +631,6 @@
   },
   "yvxbM+": {
     "defaultMessage": "Next Emissions Reduction Event:"
-  },
-  "z1bu+z": {
-    "defaultMessage": "Error while swapping"
   },
   "zQvVDJ": {
     "defaultMessage": "All"

@@ -35,9 +35,6 @@
   "/6/sPX": {
     "defaultMessage": "Docs"
   },
-  "/GCoTA": {
-    "defaultMessage": "Clear"
-  },
   "/Kr6f5": {
     "defaultMessage": "End block"
   },
@@ -88,9 +85,6 @@
   },
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
-  },
-  "1XVJUl": {
-    "defaultMessage": "Switch to {defaultChain}"
   },
   "1bVNb4": {
     "defaultMessage": "{score} {symbol}"
@@ -199,9 +193,6 @@
   },
   "65BhO2": {
     "defaultMessage": "OGN Rewards Will be Collected"
-  },
-  "6GZbSi": {
-    "defaultMessage": "The selected network is not supported by the application."
   },
   "6Sj2lN": {
     "defaultMessage": "Claim"
@@ -356,9 +347,6 @@
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
-  "DRdgbZ": {
-    "defaultMessage": "Redeem {token} for the basket of underlying assets"
-  },
   "Dmb2/1": {
     "defaultMessage": "Unlock Stake"
   },
@@ -382,9 +370,6 @@
   },
   "E57VkO": {
     "defaultMessage": "Error while unlocking"
-  },
-  "EEwopl": {
-    "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
   "EJv8r2": {
     "defaultMessage": "Refresh the page"
@@ -473,9 +458,6 @@
   "HlkjJI": {
     "defaultMessage": "Snapshot vote"
   },
-  "HyhkDr": {
-    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-  },
   "I5NMJ8": {
     "defaultMessage": "More"
   },
@@ -529,9 +511,6 @@
   },
   "KXTAK8": {
     "defaultMessage": "Abstain"
-  },
-  "KaxXiQ": {
-    "defaultMessage": "Processing approval"
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
@@ -647,17 +626,11 @@
   "PFtMy9": {
     "defaultMessage": "Canceled"
   },
-  "PKgDoL": {
-    "defaultMessage": "Estimating..."
-  },
   "PdEKuc": {
     "defaultMessage": "{amtIn} {symbolIn} for {amtOut} {symbolOut}"
   },
   "Pkf9/r": {
     "defaultMessage": "This operation can take a few seconds to complete"
-  },
-  "PmkP1H": {
-    "defaultMessage": "Unsupported Network"
   },
   "PuubxK": {
     "defaultMessage": "Voted For"
@@ -788,9 +761,6 @@
   "Vlf1Wn": {
     "defaultMessage": "Get OGN"
   },
-  "Vn/9nH": {
-    "defaultMessage": "Est gas:"
-  },
   "W33FNz": {
     "defaultMessage": "Origin Ether"
   },
@@ -890,9 +860,6 @@
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
   },
-  "aDYxXF": {
-    "defaultMessage": "New transaction"
-  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -961,9 +928,6 @@
   },
   "djhXiy": {
     "defaultMessage": "{slippage} slippage"
-  },
-  "dtJo4Y": {
-    "defaultMessage": "Exchange rate"
   },
   "dx9Xxj": {
     "defaultMessage": "Claiming Rewards"
@@ -1171,9 +1135,6 @@
   },
   "nE87EV": {
     "defaultMessage": "{pendingCount} pending"
-  },
-  "nc8QpJ": {
-    "defaultMessage": "Recent Activity"
   },
   "nisJoJ": {
     "defaultMessage": "6m"

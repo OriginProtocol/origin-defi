@@ -47,12 +47,6 @@
       "value": "Docs"
     }
   ],
-  "/GCoTA": [
-    {
-      "type": 0,
-      "value": "Clear"
-    }
-  ],
   "/LAiSt": [
     {
       "type": 1,
@@ -73,34 +67,16 @@
       "value": "Get started"
     }
   ],
-  "/xvR4F": [
-    {
-      "type": 0,
-      "value": "Opt in"
-    }
-  ],
   "024MfN": [
     {
       "type": 0,
       "value": "Processing Approval"
     }
   ],
-  "0Go4jI": [
-    {
-      "type": 0,
-      "value": "Swapped"
-    }
-  ],
   "0ZAmW8": [
     {
       "type": 0,
       "value": "Swap with Uniswap"
-    }
-  ],
-  "0fR+fE": [
-    {
-      "type": 0,
-      "value": "Route"
     }
   ],
   "1+ROfp": [
@@ -133,16 +109,6 @@
     {
       "type": 0,
       "value": "The yield from the underlying LSTs, calculated daily."
-    }
-  ],
-  "1XVJUl": [
-    {
-      "type": 0,
-      "value": "Switch to "
-    },
-    {
-      "type": 1,
-      "value": "defaultChain"
     }
   ],
   "1hzUpu": [
@@ -191,20 +157,6 @@
       "value": "1.5 primeETH XP Boost"
     }
   ],
-  "45EvZ3": [
-    {
-      "type": 0,
-      "value": "Minimum received with "
-    },
-    {
-      "type": 1,
-      "value": "slippage"
-    },
-    {
-      "type": 0,
-      "value": " slippage:"
-    }
-  ],
   "4K1INe": [
     {
       "type": 0,
@@ -223,12 +175,6 @@
       "value": "Migrated"
     }
   ],
-  "5RMD2G": [
-    {
-      "type": 0,
-      "value": "Your transaction will revert if the price changes unfavorably by more than this percentage."
-    }
-  ],
   "5X3I7d": [
     {
       "type": 0,
@@ -245,18 +191,6 @@
     {
       "type": 0,
       "value": "Process Withdrawal"
-    }
-  ],
-  "6GZbSi": [
-    {
-      "type": 0,
-      "value": "The selected network is not supported by the application."
-    }
-  ],
-  "6XFO/C": [
-    {
-      "type": 0,
-      "value": "Approved"
     }
   ],
   "6cYAtm": [
@@ -281,18 +215,6 @@
     {
       "type": 0,
       "value": "There was an error while loading this component, you can try to reload."
-    }
-  ],
-  "8YcGAy": [
-    {
-      "type": 0,
-      "value": "Bridge Started"
-    }
-  ],
-  "8cCxx8": [
-    {
-      "type": 0,
-      "value": "Redeem for mix via Origin Vault"
     }
   ],
   "8nvhZ9": [
@@ -413,20 +335,6 @@
       "value": "Redeeming"
     }
   ],
-  "DRdgbZ": [
-    {
-      "type": 0,
-      "value": "Redeem "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    },
-    {
-      "type": 0,
-      "value": " for the basket of underlying assets"
-    }
-  ],
   "DUR59o": [
     {
       "type": 0,
@@ -449,36 +357,6 @@
     {
       "type": 0,
       "value": "Exit"
-    }
-  ],
-  "EEwopl": [
-    {
-      "type": 1,
-      "value": "amountIn"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolIn"
-    },
-    {
-      "type": 0,
-      "value": " for "
-    },
-    {
-      "type": 1,
-      "value": "amountOut"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolOut"
     }
   ],
   "EUPZOz": [
@@ -515,12 +393,6 @@
     {
       "type": 0,
       "value": "On-chain Transaction"
-    }
-  ],
-  "HyhkDr": [
-    {
-      "type": 0,
-      "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
     }
   ],
   "INlWvJ": [
@@ -571,12 +443,6 @@
       "value": "Error"
     }
   ],
-  "KaxXiQ": [
-    {
-      "type": 0,
-      "value": "Processing approval"
-    }
-  ],
   "Kbd7ui": [
     {
       "type": 0,
@@ -625,12 +491,6 @@
       "value": "Ooops..."
     }
   ],
-  "MZCNjq": [
-    {
-      "type": 0,
-      "value": "Bridge"
-    }
-  ],
   "Mgjww/": [
     {
       "type": 0,
@@ -647,12 +507,6 @@
     {
       "type": 0,
       "value": "Ooops, something went wrong 😓"
-    }
-  ],
-  "NXI/XL": [
-    {
-      "type": 0,
-      "value": "Auto"
     }
   ],
   "NY6umm": [
@@ -689,12 +543,6 @@
       "value": "Date"
     }
   ],
-  "PKgDoL": [
-    {
-      "type": 0,
-      "value": "Estimating..."
-    }
-  ],
   "PXAur5": [
     {
       "type": 0,
@@ -707,12 +555,6 @@
       "value": "This operation can take a few seconds to complete"
     }
   ],
-  "PmkP1H": [
-    {
-      "type": 0,
-      "value": "Unsupported Network"
-    }
-  ],
   "Pspetf": [
     {
       "type": 0,
@@ -723,12 +565,6 @@
     {
       "type": 0,
       "value": "Select the asset"
-    }
-  ],
-  "PzlMqG": [
-    {
-      "type": 0,
-      "value": "Best"
     }
   ],
   "QORRZ/": [
@@ -881,18 +717,6 @@
       "value": "Process Migration"
     }
   ],
-  "V/q7w4": [
-    {
-      "type": 0,
-      "value": "Finding the best route..."
-    }
-  ],
-  "Vn/9nH": [
-    {
-      "type": 0,
-      "value": "Est gas:"
-    }
-  ],
   "W87PYU": [
     {
       "type": 0,
@@ -901,12 +725,6 @@
     {
       "type": 1,
       "value": "name"
-    }
-  ],
-  "WCaf5C": [
-    {
-      "type": 0,
-      "value": "Approve"
     }
   ],
   "Wt2imN": [
@@ -969,34 +787,10 @@
       "value": "Rate:"
     }
   ],
-  "aA9zvD": [
-    {
-      "type": 0,
-      "value": "The best swap route factors in the best price after transaction costs"
-    }
-  ],
-  "aDYxXF": [
-    {
-      "type": 0,
-      "value": "New transaction"
-    }
-  ],
-  "aWpBzj": [
-    {
-      "type": 0,
-      "value": "Show more"
-    }
-  ],
   "aXTK45": [
     {
       "type": 0,
       "value": "primeETH XP"
-    }
-  ],
-  "c31Feo": [
-    {
-      "type": 0,
-      "value": "Swapping"
     }
   ],
   "cOKXho": [
@@ -1043,12 +837,6 @@
     {
       "type": 0,
       "value": "is not supported"
-    }
-  ],
-  "dtJo4Y": [
-    {
-      "type": 0,
-      "value": "Exchange rate"
     }
   ],
   "eWA3GW": [
@@ -1191,18 +979,6 @@
       "value": "claimed"
     }
   ],
-  "jvnqxK": [
-    {
-      "type": 0,
-      "value": "Bridging"
-    }
-  ],
-  "k3YWIR": [
-    {
-      "type": 0,
-      "value": "Max slippage"
-    }
-  ],
   "k4k+WY": [
     {
       "type": 0,
@@ -1245,18 +1021,6 @@
       "value": "YieldNest plans to distribute at least 60% of the total YND token supply to its community."
     }
   ],
-  "lozEho": [
-    {
-      "type": 0,
-      "value": "Error while approving"
-    }
-  ],
-  "m/L3sK": [
-    {
-      "type": 0,
-      "value": "Approving"
-    }
-  ],
   "mdkEkL": [
     {
       "type": 0,
@@ -1283,12 +1047,6 @@
       "value": "Copy Referral Link"
     }
   ],
-  "nc8QpJ": [
-    {
-      "type": 0,
-      "value": "Recent Activity"
-    }
-  ],
   "oAlAdy": [
     {
       "type": 0,
@@ -1311,12 +1069,6 @@
     {
       "type": 0,
       "value": "migration"
-    }
-  ],
-  "pYbH7c": [
-    {
-      "type": 0,
-      "value": "Error while bridging"
     }
   ],
   "paprll": [
@@ -1453,12 +1205,6 @@
       "value": "ynLSDe migration is live!"
     }
   ],
-  "vugtF7": [
-    {
-      "type": 0,
-      "value": "No Activity"
-    }
-  ],
   "w5VeGT": [
     {
       "type": 0,
@@ -1493,12 +1239,6 @@
       "value": "Wait time"
     }
   ],
-  "xZIm6b": [
-    {
-      "type": 0,
-      "value": "Your transaction may be frontrun"
-    }
-  ],
   "xwfunk": [
     {
       "type": 0,
@@ -1509,12 +1249,6 @@
     {
       "type": 0,
       "value": "Processing transaction"
-    }
-  ],
-  "z1bu+z": [
-    {
-      "type": 0,
-      "value": "Error while swapping"
     }
   ],
   "zO5VTT": [

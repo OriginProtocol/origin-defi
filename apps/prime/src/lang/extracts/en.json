@@ -23,29 +23,17 @@
   "/6/sPX": {
     "defaultMessage": "Docs"
   },
-  "/GCoTA": {
-    "defaultMessage": "Clear"
-  },
   "/LAiSt": {
     "defaultMessage": "{amount} {converted}"
   },
   "/aBLH2": {
     "defaultMessage": "Get started"
   },
-  "/xvR4F": {
-    "defaultMessage": "Opt in"
-  },
   "024MfN": {
     "defaultMessage": "Processing Approval"
   },
-  "0Go4jI": {
-    "defaultMessage": "Swapped"
-  },
   "0ZAmW8": {
     "defaultMessage": "Swap with Uniswap"
-  },
-  "0fR+fE": {
-    "defaultMessage": "Route"
   },
   "1+ROfp": {
     "defaultMessage": "Transaction"
@@ -58,9 +46,6 @@
   },
   "1VoYgy": {
     "defaultMessage": "The yield from the underlying LSTs, calculated daily."
-  },
-  "1XVJUl": {
-    "defaultMessage": "Switch to {defaultChain}"
   },
   "1hzUpu": {
     "defaultMessage": "{tvl} ETH"
@@ -83,9 +68,6 @@
   "3uuR4F": {
     "defaultMessage": "1.5 primeETH XP Boost"
   },
-  "45EvZ3": {
-    "defaultMessage": "Minimum received with {slippage} slippage:"
-  },
   "4K1INe": {
     "defaultMessage": "Your Balance"
   },
@@ -95,9 +77,6 @@
   "4WNsNT": {
     "defaultMessage": "Migrated"
   },
-  "5RMD2G": {
-    "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
-  },
   "5X3I7d": {
     "defaultMessage": "Switch network"
   },
@@ -106,12 +85,6 @@
   },
   "5mh8MJ": {
     "defaultMessage": "Process Withdrawal"
-  },
-  "6GZbSi": {
-    "defaultMessage": "The selected network is not supported by the application."
-  },
-  "6XFO/C": {
-    "defaultMessage": "Approved"
   },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
@@ -124,12 +97,6 @@
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
-  },
-  "8YcGAy": {
-    "defaultMessage": "Bridge Started"
-  },
-  "8cCxx8": {
-    "defaultMessage": "Redeem for mix via Origin Vault"
   },
   "8nvhZ9": {
     "defaultMessage": "Last"
@@ -182,9 +149,6 @@
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
-  "DRdgbZ": {
-    "defaultMessage": "Redeem {token} for the basket of underlying assets"
-  },
   "DUR59o": {
     "defaultMessage": "Total Value Locked"
   },
@@ -196,9 +160,6 @@
   },
   "E2sGaF": {
     "defaultMessage": "Exit"
-  },
-  "EEwopl": {
-    "defaultMessage": "{amountIn} {symbolIn} for {amountOut} {symbolOut}"
   },
   "EUPZOz": {
     "defaultMessage": "blocks left"
@@ -217,9 +178,6 @@
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
-  },
-  "HyhkDr": {
-    "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
   },
   "INlWvJ": {
     "defaultMessage": "OR"
@@ -245,9 +203,6 @@
   "KN7zKn": {
     "defaultMessage": "Error"
   },
-  "KaxXiQ": {
-    "defaultMessage": "Processing approval"
-  },
   "Kbd7ui": {
     "defaultMessage": "Claim OETH"
   },
@@ -272,9 +227,6 @@
   "MW9FHt": {
     "defaultMessage": "Ooops..."
   },
-  "MZCNjq": {
-    "defaultMessage": "Bridge"
-  },
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
   },
@@ -283,9 +235,6 @@
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
-  },
-  "NXI/XL": {
-    "defaultMessage": "Auto"
   },
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
@@ -302,26 +251,17 @@
   "P7PLVj": {
     "defaultMessage": "Date"
   },
-  "PKgDoL": {
-    "defaultMessage": "Estimating..."
-  },
   "PXAur5": {
     "defaultMessage": "Withdraw"
   },
   "Pkf9/r": {
     "defaultMessage": "This operation can take a few seconds to complete"
   },
-  "PmkP1H": {
-    "defaultMessage": "Unsupported Network"
-  },
   "Pspetf": {
     "defaultMessage": "Add primeETH"
   },
   "PwetLJ": {
     "defaultMessage": "Select the asset"
-  },
-  "PzlMqG": {
-    "defaultMessage": "Best"
   },
   "QORRZ/": {
     "defaultMessage": "Withdrawal Process Breakdown"
@@ -386,17 +326,8 @@
   "Usk4mK": {
     "defaultMessage": "Process Migration"
   },
-  "V/q7w4": {
-    "defaultMessage": "Finding the best route..."
-  },
-  "Vn/9nH": {
-    "defaultMessage": "Est gas:"
-  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
-  },
-  "WCaf5C": {
-    "defaultMessage": "Approve"
   },
   "Wt2imN": {
     "defaultMessage": "Native ETH Restaking is Live!"
@@ -422,20 +353,8 @@
   "ZmLuI/": {
     "defaultMessage": "Rate:"
   },
-  "aA9zvD": {
-    "defaultMessage": "The best swap route factors in the best price after transaction costs"
-  },
-  "aDYxXF": {
-    "defaultMessage": "New transaction"
-  },
-  "aWpBzj": {
-    "defaultMessage": "Show more"
-  },
   "aXTK45": {
     "defaultMessage": "primeETH XP"
-  },
-  "c31Feo": {
-    "defaultMessage": "Swapping"
   },
   "cOKXho": {
     "defaultMessage": "Claimable"
@@ -454,9 +373,6 @@
   },
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
-  },
-  "dtJo4Y": {
-    "defaultMessage": "Exchange rate"
   },
   "eWA3GW": {
     "defaultMessage": "Initiate withdrawal"
@@ -524,12 +440,6 @@
   "joOlUw": {
     "defaultMessage": "claimed"
   },
-  "jvnqxK": {
-    "defaultMessage": "Bridging"
-  },
-  "k3YWIR": {
-    "defaultMessage": "Max slippage"
-  },
   "k4k+WY": {
     "defaultMessage": "Go to claims"
   },
@@ -551,12 +461,6 @@
   "lgcLxH": {
     "defaultMessage": "YieldNest plans to distribute at least 60% of the total YND token supply to its community."
   },
-  "lozEho": {
-    "defaultMessage": "Error while approving"
-  },
-  "m/L3sK": {
-    "defaultMessage": "Approving"
-  },
   "mdkEkL": {
     "defaultMessage": "Your {type} is being processed"
   },
@@ -565,9 +469,6 @@
   },
   "nCbhFU": {
     "defaultMessage": "Copy Referral Link"
-  },
-  "nc8QpJ": {
-    "defaultMessage": "Recent Activity"
   },
   "oAlAdy": {
     "defaultMessage": "Withdraw your funds from Eigenlayer. If you plan to partially migrate to ynLSDe, please initiate one withdrawal request for the amount you wish to migrate and another for the amount you wish to claim."
@@ -580,9 +481,6 @@
   },
   "pAbH2A": {
     "defaultMessage": "migration"
-  },
-  "pYbH7c": {
-    "defaultMessage": "Error while bridging"
   },
   "paprll": {
     "defaultMessage": "You will receive:"
@@ -638,9 +536,6 @@
   "vns1w2": {
     "defaultMessage": "ynLSDe migration is live!"
   },
-  "vugtF7": {
-    "defaultMessage": "No Activity"
-  },
   "w5VeGT": {
     "defaultMessage": "Error while redeeming"
   },
@@ -656,17 +551,11 @@
   "xX7daI": {
     "defaultMessage": "Wait time"
   },
-  "xZIm6b": {
-    "defaultMessage": "Your transaction may be frontrun"
-  },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
-  },
-  "z1bu+z": {
-    "defaultMessage": "Error while swapping"
   },
   "zO5VTT": {
     "defaultMessage": "Transaction in progress"

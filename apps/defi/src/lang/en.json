@@ -71,12 +71,6 @@
       "value": "Docs"
     }
   ],
-  "/GCoTA": [
-    {
-      "type": 0,
-      "value": "Clear"
-    }
-  ],
   "/Kr6f5": [
     {
       "type": 0,
@@ -197,16 +191,6 @@
     {
       "type": 0,
       "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
-    }
-  ],
-  "1XVJUl": [
-    {
-      "type": 0,
-      "value": "Switch to "
-    },
-    {
-      "type": 1,
-      "value": "defaultChain"
     }
   ],
   "1bVNb4": [
@@ -521,12 +505,6 @@
     {
       "type": 0,
       "value": "OGN Rewards Will be Collected"
-    }
-  ],
-  "6GZbSi": [
-    {
-      "type": 0,
-      "value": "The selected network is not supported by the application."
     }
   ],
   "6Sj2lN": [
@@ -871,20 +849,6 @@
       "value": "Redeeming"
     }
   ],
-  "DRdgbZ": [
-    {
-      "type": 0,
-      "value": "Redeem "
-    },
-    {
-      "type": 1,
-      "value": "token"
-    },
-    {
-      "type": 0,
-      "value": " for the basket of underlying assets"
-    }
-  ],
   "Dmb2/1": [
     {
       "type": 0,
@@ -931,36 +895,6 @@
     {
       "type": 0,
       "value": "Error while unlocking"
-    }
-  ],
-  "EEwopl": [
-    {
-      "type": 1,
-      "value": "amountIn"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolIn"
-    },
-    {
-      "type": 0,
-      "value": " for "
-    },
-    {
-      "type": 1,
-      "value": "amountOut"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolOut"
     }
   ],
   "EJv8r2": [
@@ -1169,12 +1103,6 @@
       "value": "Snapshot vote"
     }
   ],
-  "HyhkDr": [
-    {
-      "type": 0,
-      "value": "It looks like you are minting from a contract and have not opted into yield. You must opt-in to receive yield."
-    }
-  ],
   "I5NMJ8": [
     {
       "type": 0,
@@ -1281,12 +1209,6 @@
     {
       "type": 0,
       "value": "Abstain"
-    }
-  ],
-  "KaxXiQ": [
-    {
-      "type": 0,
-      "value": "Processing approval"
     }
   ],
   "KjK2z3": [
@@ -1607,12 +1529,6 @@
       "value": "Canceled"
     }
   ],
-  "PKgDoL": [
-    {
-      "type": 0,
-      "value": "Estimating..."
-    }
-  ],
   "PdEKuc": [
     {
       "type": 1,
@@ -1647,12 +1563,6 @@
     {
       "type": 0,
       "value": "This operation can take a few seconds to complete"
-    }
-  ],
-  "PmkP1H": [
-    {
-      "type": 0,
-      "value": "Unsupported Network"
     }
   ],
   "PuubxK": [
@@ -2023,12 +1933,6 @@
       "value": "Get OGN"
     }
   ],
-  "Vn/9nH": [
-    {
-      "type": 0,
-      "value": "Est gas:"
-    }
-  ],
   "W33FNz": [
     {
       "type": 0,
@@ -2259,12 +2163,6 @@
       "value": "The best swap route factors in the best price after transaction costs"
     }
   ],
-  "aDYxXF": [
-    {
-      "type": 0,
-      "value": "New transaction"
-    }
-  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -2455,12 +2353,6 @@
     {
       "type": 0,
       "value": " slippage"
-    }
-  ],
-  "dtJo4Y": [
-    {
-      "type": 0,
-      "value": "Exchange rate"
     }
   ],
   "dx9Xxj": [
@@ -2963,12 +2855,6 @@
     {
       "type": 0,
       "value": " pending"
-    }
-  ],
-  "nc8QpJ": [
-    {
-      "type": 0,
-      "value": "Recent Activity"
     }
   ],
   "nisJoJ": [
