@@ -102,7 +102,7 @@ export const SuperOethbBanner = (props: StackProps) => {
                         },
                   ]}
                 >
-                  {intl.formatNumber(info?.apies?.apy ?? 0, {
+                  {intl.formatNumber(info?.bestApy.value ?? 0, {
                     style: 'percent',
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
