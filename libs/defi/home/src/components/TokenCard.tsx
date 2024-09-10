@@ -210,6 +210,16 @@ export const TokenCard = ({
                 </Typography>
                 {!isOgn && (
                   <InfoTooltip
+                    sx={[
+                      isFancy
+                        ? {
+                            background: (theme) =>
+                              theme.palette.background.gradientBlueDark,
+                            backgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                          }
+                        : { color: 'primary.main' },
+                    ]}
                     tooltipLabel={intl.formatMessage(
                       {
                         defaultMessage: '{trailingDays}-day trailing APY',

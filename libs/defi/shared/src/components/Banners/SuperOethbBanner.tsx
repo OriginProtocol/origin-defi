@@ -112,15 +112,23 @@ export const SuperOethbBanner = (props: StackProps) => {
                     minimumFractionDigits: 2,
                   })}
                 </LoadingLabel>
-                <Typography>APY</Typography>
-                <InfoTooltip
-                  tooltipLabel={intl.formatMessage(
-                    {
-                      defaultMessage: '{trailingDays}-day trailing APY',
-                    },
-                    { trailingDays: info?.bestApy?.trailingDays },
-                  )}
-                />
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  useFlexGap
+                  spacing={0.25}
+                >
+                  <Typography>APY</Typography>
+                  <InfoTooltip
+                    iconColor="inherit"
+                    tooltipLabel={intl.formatMessage(
+                      {
+                        defaultMessage: '{trailingDays}-day trailing APY',
+                      },
+                      { trailingDays: info?.bestApy?.trailingDays },
+                    )}
+                  />
+                </Stack>
               </Stack>
             </Stack>
           </Stack>
