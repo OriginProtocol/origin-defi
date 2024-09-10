@@ -226,7 +226,6 @@ const estimateGas: EstimateGas = async (
       functionName: 'execute',
       args: getArgs(tokenIn, tokenOut, amountIn, minAmountOut[0], address),
       ...(tokenIn.symbol === 'ETH' && { value: amountIn }),
-      ...(tokenOut.symbol === 'ETH' && { value: amountOut }),
     });
   } catch {}
 
@@ -368,7 +367,6 @@ const swap: Swap = async (
       address ?? ZERO_ADDRESS,
     ),
     ...(tokenIn.symbol === 'ETH' && { value: amountIn }),
-    ...(tokenOut.symbol === 'ETH' && { value: amountOut }),
   });
   const hash = await writeContract(config, request);
 
