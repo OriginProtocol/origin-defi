@@ -79,16 +79,6 @@ export const SuperOethbBanner = (props: StackProps) => {
                   alignItems: 'baseline',
                 }}
               >
-                <Typography
-                  variant="featured2"
-                  sx={{
-                    fontWeight: 'bold',
-                  }}
-                >
-                  {intl.formatMessage({
-                    defaultMessage: 'Earn',
-                  })}
-                </Typography>
                 <LoadingLabel
                   isLoading={isInfoLoading}
                   variant="featured2"

@@ -188,7 +188,7 @@ export const TokenCard = ({
                   })}
             </LoadingLabel>
             {!disabled && (
-              <Stack direction="row" alignItems="center" spacing="0.5">
+              <Stack direction="row" useFlexGap sx={{ alignItems: 'center' }}>
                 <Typography
                   variant="caption1"
                   noWrap
@@ -211,6 +211,7 @@ export const TokenCard = ({
                 {!isOgn && (
                   <InfoTooltip
                     sx={[
+                      { ml: 0.25 },
                       isFancy
                         ? {
                             background: (theme) =>
