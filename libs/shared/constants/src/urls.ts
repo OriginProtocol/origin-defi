@@ -1,6 +1,9 @@
 export const OETH_ANALYTICS_URL =
   'https://www.originprotocol.com/analytics/oeth ';
-export const OUSD_ANALYTICS_URL = ' https://www.ousd.com/analytics';
+export const OUSD_ANALYTICS_URL =
+  'https://www.originprotocol.com/analytics/ousd';
+export const SUPEROETHB_ANALYTICS_URL =
+  'https://www.originprotocol.com/analytics/superoethb';
 export const OUSD_DOCS_URL = 'https://docs.ousd.com';
 export const JOBS_URL = 'https://angel.co/company/originprotocol/jobs';
 export const TERMS_URL = 'https://originprotocol.com/tos';

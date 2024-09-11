@@ -8,7 +8,7 @@ import {
   Swapper,
   trackEvent,
 } from '@origin/defi/shared';
-import { OETH_ANALYTICS_URL } from '@origin/shared/constants';
+import { SUPEROETHB_ANALYTICS_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
@@ -60,7 +60,7 @@ export const SwapView = () => {
               <AnalyticsCard
                 token={tokens.base.superOETHb}
                 title="superOETH"
-                href={OETH_ANALYTICS_URL}
+                href={SUPEROETHB_ANALYTICS_URL}
               />
             </Stack>
           </Grid2>
