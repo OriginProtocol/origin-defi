@@ -227,6 +227,7 @@ const ClaimRow = ({
           alignItems: 'center',
           p: 2,
           justifyContent: 'space-between',
+          overflowX: 'hidden',
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}

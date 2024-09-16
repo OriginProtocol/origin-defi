@@ -1,4 +1,10 @@
-import { Divider, Stack, Typography } from '@mui/material';
+import {
+  Divider,
+  Stack,
+  Typography,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaCircleCheckRegular, FaClockRegular } from '@origin/shared/icons';
@@ -13,6 +19,8 @@ import type { StackProps } from '@mui/material';
 
 export const ClaimHeader = (props: StackProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const { data: requests, isLoading: isRequestsLoading } =
     useWithdrawalRequests({
       select: (data) => data?.filter((r) => !r.claimed),
@@ -81,7 +89,7 @@ export const ClaimHeader = (props: StackProps) => {
       </Stack>
       <Divider />
       <Stack
-        direction="row"
+        direction={{ xs: 'column', md: 'row' }}
         sx={{
           alignItems: 'center',
         }}
@@ -114,7 +122,11 @@ export const ClaimHeader = (props: StackProps) => {
             <IconChip claimable={false} amount={pending?.length ?? 0} />
           </Stack>
         </Stack>
-        <Divider orientation="vertical" flexItem />
+        {isSm ? (
+          <Divider orientation="horizontal" flexItem />
+        ) : (
+          <Divider orientation="vertical" flexItem />
+        )}
         <Stack
           spacing={1}
           sx={{
