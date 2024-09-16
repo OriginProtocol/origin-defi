@@ -403,6 +403,16 @@ export const priceOptions = {
     type: 'derived',
     dependsOn: ['8453:ETH_USD'],
   },
+  '8453:superOETHb_8453:ETH': {
+    id: '8453:superOETHb_8453:ETH',
+    type: 'rest',
+    config: async () => from(1),
+  },
+  '8453:wsuperOETHb_8453:ETH': {
+    id: '8453:wsuperOETHb_8453:ETH',
+    type: 'derived',
+    dependsOn: ['8453:superOETHb_8453:ETH'],
+  },
   '10:ETH_USD': {
     id: '10:ETH_USD',
     type: 'wagmi',

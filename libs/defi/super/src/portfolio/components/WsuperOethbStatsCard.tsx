@@ -7,7 +7,7 @@ import {
   useWatchBalance,
 } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from } from 'dnum';
+import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -19,11 +19,16 @@ export const WsuperOethbStats = (props: CardProps) => {
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
   const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    '8453:wsuperOETHb_USD',
+    '8453:wsuperOETHb_8453:ETH',
   );
   const { data: bal, isLoading: isBalLoading } = useWatchBalance({
     token: tokens.base.wsuperOETHb,
   });
+
+  const wSuperOethbEthValue = mul(
+    [bal ?? 0n, tokens.base.wsuperOETHb.decimals],
+    price ?? 0,
+  );
 
   return (
     <Card
@@ -53,11 +58,11 @@ export const WsuperOethbStats = (props: CardProps) => {
         />
         <ValueLabel
           {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'Current value (USD)' })}
+          label={intl.formatMessage({ defaultMessage: 'Current value (ETH)' })}
           value={
             isConnected
-              ? format(price ?? from(0), {
-                  digits: getFormatPrecision(price ?? from(0)),
+              ? format(wSuperOethbEthValue, {
+                  digits: getFormatPrecision(wSuperOethbEthValue),
                   decimalsRounding: 'ROUND_DOWN',
                 })
               : '-'

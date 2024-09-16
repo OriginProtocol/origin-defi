@@ -1,14 +1,23 @@
 # Origin Defi
 
-## Setup environment
+This is a monorepo for Origin's DeFi applications, built using React and Nx. It contains several apps and libraries that share common code and configurations.
 
-Duplicate `.env` file to `.env.local` and fill the variables with your secrets, they will take precedence over the defaults.
+## Setup
+
+1. Clone the repository
+2. Install dependencies with `pnpm install`
+3. Duplicate `.env` file to `.env.local` and fill in the required variables
+4. Start the development server with `pnpm nx serve <APP_NAME>`
 
 > We use multiple `.env` files in the project: at the root for global settings and in `/apps/<APP_NAME>` folders for app scoped variables. They can be nested to increase specificity, more info [here](https://nx.dev/recipes/tips-n-tricks/define-environment-variables)
 
-## Start the app
+## Development
 
-To start the development server run `pnpm nx serve <APP_NAME>`
+- To generate graphql files: `pnpm codegen`
+- To compile translations: `pnpm i18n`
+- To execute tasks with Nx: `pnpm nx <target> <project> <...options>`
+- To run multiple targets: `pnpm nx run-many -t <target1> <target2>`
+- To run targets for specific projects: `pnpm nx run-many -t <target1> <target2> -p <proj1> <proj2>`
 
 ## Apps
 
@@ -18,50 +27,47 @@ To start the development server run `pnpm nx serve <APP_NAME>`
 |   ✅   | `governance` | 4201 | [aws](https://governance.ousd.com/)   | [aws](https://next.d11mo0k0jspnpd.amplifyapp.com/)   
 |   ✅   | `prime`      | 4202 | [aws](https://app.primestaked.com/)   | [aws](https://next.d3ekvisba9ol3t.amplifyapp.com/#/restake)   
 
-## Storybook
+## Libraries
 
-There is a shared storybook aggregator that can run all the stories across all the libraries, run `pnpm storybook`. If you want to run storybook for one individual library (eg: ousd) simply run `pnpm nx storybook defi-oeth` (basically the command is `pnpm nx storybook name-of-the-lib`).
+The monorepo also includes several shared libraries, such as:
 
-## Translations
+- `shared/assets`: Shared assets to be copied to every public app folders
+- `shared/components`: Shared presentational components (only relying on theme and i18n contexts)
+- `shared/utils`: Shared utility functions
+- `shared/providers`: Shared context providers and components
+- `shared/icons`: Shared SVG icons
+- `shared/contracts`: Shared contracts constants and ABIs
+- `shared/constants`: Shared constants
+- `shared/routes`: Shared Swapper route configurations
 
-After modifying a library or a module, you should run the according `i18-compile` script on the application project. There's a convenient `i18n` script at the root of the repo for running this on all apps.
+## GraphQL
 
-## Running tasks
+The project uses `react-query` and `graphql-codegen` for interacting with GraphQL endpoints. To use:
 
-To execute tasks with Nx use the following syntax:
+1. Write `.graphql` files colocated with your components
+2. Run the codegen task: `pnpm nx run <APP_NAME>-shared:codegen-graphql`
+3. Use the generated hooks in your components
 
-```bash
-pnpm nx <target> <project> <...options>
-```
+> For convenience, there is a `pnpm codegen` script that generates all repository graphql documents.
 
-You can also run multiple targets:
+## Styling
 
-```bash
-pnpm nx run-many -t <target1> <target2>
-```
+The project uses Emotion and Material-UI for styling. Each app has its own theme library (e.g., `defi/theme`, `prime/theme`) that defines the app's color palette, typography, and other design tokens.
 
-..or add `-p` to filter specific projects
+## State Management
 
-```bash
-pnpm nx run-many -t <target1> <target2> -p <proj1> <proj2>
-```
+The project uses React context and hooks for state management. Shared providers are located in the `shared/providers` library, while app-specific providers are located in their respective app libraries.
 
-Targets are defined in the `apps/<APP_NAME>/projects.json` files. Learn more [in the docs](https://nx.dev/core-features/run-tasks).
+## Routing
 
-## graphQl
+The project uses React Router for client-side routing. Route configurations are defined in the `routes.tsx` file of each app. Routes can also be colocated in their modules (e.g., `defi/`)
 
-We use `react-query` in conjunction with `graphql-codegen` for interacting with graphQl endpoint. Here's how to use (this example is taken from oeth app):
+## Internationalization
 
-- write gql colocated to your components, in respective `queries|mutations|subscriptions|fragments.graphql` file
-- you get graphql autocompletion based on the schema located in `.graphqlconfig` at the root of the repo
-- run the graphql-codegen task with `pnpm nx run oeth-shared:codegen-graphql`, it will generate
-  - the global types in `libs/oeth/shared/src/generated/graphql.ts` and
-  - the generated hooks next to your graphql file (i.e. `/libs/oeth/history/src/queries.generated.tsx`)
-- use the generated hooks in your component with fully typed args and results
+The project uses `react-intl` for internationalization. Translation files are located in the `lang` directory of each app, and the `i18n` script compiles the translations for all apps.
 
-Couple of things to note:
+> For convenience, there is a `pnpm i18n` script that extracts and generates all repository translation files.
 
-- generated hooks receives args as first param, second param exposes all react-query api for controlling execution
-- react-query http client is automatically injected via codegen, it is defined here `libs/oeth/shared/src/clients/graphql.ts`
-- autocompletion is ensured by `.graphqlconfig`, you'll probably need the proper IDE plugin to handle it
-- there's a `--watch` flag that you can pass to the codegen if you want to autodetect changes
+## Deployment
+
+Each app is deployed to AWS and Fleek, with separate `main` and `next` deployments. The deployment process is automated using GitHub Actions.

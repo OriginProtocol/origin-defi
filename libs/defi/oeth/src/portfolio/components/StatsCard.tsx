@@ -19,7 +19,7 @@ export const WoethStats = (props: CardProps) => {
   const { formatAmount } = useFormat();
   const { isConnected } = useAccount();
   const { data: price, isLoading: isPriceLoading } =
-    useTokenPrice('1:wOETH_1:OETH');
+    useTokenPrice('1:wOETH_1:ETH');
   const { data: bals, isLoading: isBalsLoading } = useWatchBalances({
     tokens: [tokens.mainnet.wOETH, tokens.arbitrum.wOETH],
   });
@@ -61,7 +61,7 @@ export const WoethStats = (props: CardProps) => {
         />
         <ValueLabel
           {...valueLabelProps}
-          label={intl.formatMessage({ defaultMessage: 'Current value (OETH)' })}
+          label={intl.formatMessage({ defaultMessage: 'Current value (ETH)' })}
           value={
             isConnected
               ? format(woethOethValue, {
