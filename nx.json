@@ -13,6 +13,15 @@
         "{workspaceRoot}/.eslintignore"
       ],
       "cache": true
+    },
+    "@nx/vite:test": {
+      "cache": true,
+      "inputs": ["default", "^production"]
+    },
+    "@nx/vite:build": {
+      "cache": true,
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "namedInputs": {
@@ -31,10 +40,10 @@
   "generators": {
     "@nx/react": {
       "application": {
+        "babel": true,
         "style": "@emotion/styled",
         "linter": "eslint",
         "bundler": "vite",
-        "babel": true,
         "test": "none",
         "e2eTestRunner": "none",
         "unitTestRunner": "none",

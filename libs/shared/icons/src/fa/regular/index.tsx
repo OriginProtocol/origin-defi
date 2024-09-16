@@ -38,6 +38,7 @@ import CommentsSvg from './comments.svg?react';
 import CopySvg from './copy.svg?react';
 import EllipsisVerticalSvg from './ellipsis-vertical.svg?react';
 import ExclamationSvg from './exclamation.svg?react';
+import EyeSvg from './eye.svg?react';
 import FileLinesSvg from './file-lines.svg?react';
 import FilterSvg from './filter.svg?react';
 import GavelSvg from './gavel.svg?react';
@@ -321,6 +322,9 @@ export const FaEllipsisVerticalRegular = (props: SvgIconProps) => (
     component={EllipsisVerticalSvg}
     inheritViewBox
   />
+);
+export const FaEyeRegular = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={EyeSvg} inheritViewBox />
 );
 export const FaExclamationRegular = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ExclamationSvg} inheritViewBox />

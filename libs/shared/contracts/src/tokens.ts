@@ -265,7 +265,7 @@ export const tokens = {
     },
     superOETHb: {
       id: '8453:superOETHb',
-      address: '0xDBFeFD2e8460a6Ee4955A68582F85708BAEA60A3',
+      address: '0xdbfefd2e8460a6ee4955a68582f85708baea60a3',
       chainId: base.id,
       abi: OETHABI,
       name: 'Super OETH',

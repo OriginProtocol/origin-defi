@@ -465,6 +465,7 @@ export type Space = {
   categories?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   children?: Maybe<Array<Maybe<Space>>>;
   coingecko?: Maybe<Scalars['String']['output']>;
+  cover?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
   delegationPortal?: Maybe<DelegationPortal>;
   domain?: Maybe<Scalars['String']['output']>;

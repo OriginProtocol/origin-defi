@@ -1,0 +1,33 @@
+query oTokenStats(
+  $token: String!
+  $chainId: Int!
+  $limit: Int
+  $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+) {
+  oTokenDailyStats(
+    limit: $limit
+    orderBy: $orderBy
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+    }
+  ) {
+    id
+    timestamp
+    totalSupply
+    apy
+    apy7
+    apy14
+    apy30
+    rateETH
+    rateUSD
+    rebasingSupply
+    nonRebasingSupply
+    wrappedSupply
+    amoSupply
+    yield
+    fees
+  }
+}
