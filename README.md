@@ -13,6 +13,7 @@ This is a monorepo for Origin's DeFi applications, built using React and Nx. It 
 
 ## Development
 
+- To generate graphql files: `pnpm codegen`
 - To compile translations: `pnpm i18n`
 - To execute tasks with Nx: `pnpm nx <target> <project> <...options>`
 - To run multiple targets: `pnpm nx run-many -t <target1> <target2>`
@@ -30,6 +31,7 @@ This is a monorepo for Origin's DeFi applications, built using React and Nx. It 
 
 The monorepo also includes several shared libraries, such as:
 
+- `shared/assets`: Shared assets to be copied to every public app folders
 - `shared/components`: Shared presentational components (only relying on theme and i18n contexts)
 - `shared/utils`: Shared utility functions
 - `shared/providers`: Shared context providers and components
