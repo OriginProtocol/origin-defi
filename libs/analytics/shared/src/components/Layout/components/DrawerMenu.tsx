@@ -22,6 +22,7 @@ import {
   FaXmarkRegular,
   OriginLabel,
 } from '@origin/shared/icons';
+import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -47,7 +48,13 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
   );
 
   return (
-    <Stack {...rest}>
+    <Stack
+      {...rest}
+      sx={[
+        { height: 1, pb: 2 },
+        ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
+      ]}
+    >
       <Stack
         direction="row"
         sx={{
@@ -82,7 +89,7 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
           )}
         </IconButton>
       </Stack>
-      <Stack divider={<Divider />}>
+      <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
         {visibleRoutes?.map((route, i) => (
           <NavItem
             key={route?.path ?? `index-${i}}`}
@@ -93,6 +100,15 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
             }}
           />
         ))}
+      </Stack>
+      <Stack
+        sx={[
+          isDrawerOpen
+            ? { alignItems: 'flex-end', pr: 2 }
+            : { alignItems: 'center' },
+        ]}
+      >
+        <ThemeModeIconButton variant="outlined" />
       </Stack>
     </Stack>
   );
