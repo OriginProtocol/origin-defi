@@ -20,10 +20,7 @@ const closedMixin = (theme: Theme): CSSObject => ({
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: `calc(${theme.spacing(7)} + 1px)`,
-  [theme.breakpoints.up('sm')]: {
-    width: `calc(${theme.spacing(8)} + 1px)`,
-  },
+  width: 65,
 });
 
 export const LeftDrawer = ({ children }: Children) => {
@@ -42,7 +39,7 @@ export const LeftDrawer = ({ children }: Children) => {
       onClose={handleToggleDrawer}
       sx={[
         {
-          width: 300,
+          width: drawerWidth,
           flexShrink: 0,
           whiteSpace: 'nowrap',
           boxSizing: 'border-box',

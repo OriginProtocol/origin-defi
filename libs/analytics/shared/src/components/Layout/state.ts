@@ -11,7 +11,7 @@ export const { Provider: LayoutProvider, useTracked: useLayoutState } =
   createContainer(() => {
     const theme = useTheme();
     const { width, height } = useScreenSize({
-      debounceTime: theme.transitions.duration.short,
+      debounceTime: theme.transitions.duration.enteringScreen,
     });
     const [state, setState] = useState<LayoutState>({
       drawerWidth: 370,
