@@ -36,6 +36,8 @@ type Result = {
   apy14: number;
   apy30: number;
   totalSupply: number;
+  rebasingSupply: number;
+  nonRebasingSupply: number;
   wrappedSupply: number;
   pctWrappedSupply: number;
   protocolOwnedSupply: number;
@@ -45,6 +47,8 @@ type Result = {
   fees: number;
   feesMovingAvg7Days: number;
   feesMovingAvg30Days: number;
+  rateETH: number;
+  rateUSD: number;
 };
 
 const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
@@ -72,6 +76,17 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
       const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
       const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
       const fees = [BigInt(d?.fees ?? 0), token.decimals] as Dnum;
+      const rebasingSupply = [
+        BigInt(d?.rebasingSupply ?? 0),
+        token.decimals,
+      ] as Dnum;
+      const nonRebasingSupply = [
+        BigInt(d?.nonRebasingSupply ?? 0),
+        token.decimals,
+      ] as Dnum;
+      const rateETH = [BigInt(d?.rateETH ?? 0), 18] as Dnum;
+      const rateUSD = [BigInt(d?.rateUSD ?? 0), 18] as Dnum;
+
       const circulating = sub(totalSupply, protocolOwned);
       const pctWrapped = gt(circulating, 0)
         ? mul(div(wrapped, circulating), 100)
@@ -89,6 +104,14 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
         apy14: d.apy14 * 100,
         apy30: d.apy30 * 100,
         totalSupply: toNumber(totalSupply, {
+          decimalsRounding: 'ROUND_DOWN',
+          digits: 2,
+        }),
+        rebasingSupply: toNumber(rebasingSupply, {
+          decimalsRounding: 'ROUND_DOWN',
+          digits: 2,
+        }),
+        nonRebasingSupply: toNumber(nonRebasingSupply, {
           decimalsRounding: 'ROUND_DOWN',
           digits: 2,
         }),
@@ -119,6 +142,14 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
         fees: toNumber(fees, {
           decimalsRounding: 'ROUND_DOWN',
           digits: token.decimals,
+        }),
+        rateETH: toNumber(rateETH, {
+          decimalsRounding: 'ROUND_DOWN',
+          digits: 18,
+        }),
+        rateUSD: toNumber(rateUSD, {
+          decimalsRounding: 'ROUND_DOWN',
+          digits: 18,
         }),
       };
     });
@@ -153,6 +184,7 @@ export const useTokenChartStats = <TResult = Result[]>(
   const queryClient = useQueryClient();
 
   return useQuery({
+    staleTime: 60 * 60,
     ...options,
     queryKey: getKey(token, limit, from, orderBy),
     queryFn: fetcher(queryClient),
