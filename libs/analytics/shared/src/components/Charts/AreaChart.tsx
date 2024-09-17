@@ -13,7 +13,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 
-import { curveTypes } from './constants';
+import { curveTypes, margin } from './constants';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
@@ -28,10 +28,10 @@ export type AreaChartProps = {
   data: ChartData[];
   onHover?: (idx: number | null) => void;
   curveType?: keyof typeof curveTypes;
+  tickXFormat?: (value: NumberLike) => string;
+  tickYFormat?: (value: NumberLike) => string;
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
 } & Omit<BoxProps, 'ref' | 'key'>;
-
-const margin = { top: 10, left: 0, bottom: 50, right: 50 };
 
 export const AreaChart = ({
   width,
@@ -39,6 +39,8 @@ export const AreaChart = ({
   data,
   onHover,
   curveType = 'natural',
+  tickXFormat,
+  tickYFormat,
   Tooltip,
   ...rest
 }: AreaChartProps) => {
@@ -131,7 +133,7 @@ export const AreaChart = ({
         <AxisRight
           scale={yScale}
           left={width - margin.right}
-          tickFormat={(value: NumberLike) => `${(value as number) / 1000}k`}
+          tickFormat={tickYFormat}
           stroke={theme.palette.text.secondary}
           tickLabelProps={{
             fontSize: 11,
@@ -143,8 +145,9 @@ export const AreaChart = ({
         />
         <AxisBottom
           scale={xScale}
-          tickValues={bottomTicks.slice(bottomTicks.length > 6 ? 1 : 0)}
           top={height - margin.bottom}
+          tickFormat={tickXFormat}
+          stroke={theme.palette.text.secondary}
           tickLabelProps={{
             fontSize: 11,
             fontFamily: 'Inter',

@@ -1,9 +1,5 @@
 import { Stack, Typography } from '@mui/material';
-import {
-  ApyChartCard,
-  TotalSupplyChartCard,
-  useLayout,
-} from '@origin/analytics/shared';
+import { ApyCard, TotalSupplyCard, useLayout } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -16,8 +12,8 @@ export const OverviewView = () => {
       <Typography variant="h6">
         {intl.formatMessage({ defaultMessage: 'Super OETH overview' })}
       </Typography>
-      <ApyChartCard token={tokens.base.superOETHb} width={width} height={400} />
-      <TotalSupplyChartCard
+      <ApyCard token={tokens.base.superOETHb} width={width} height={400} />
+      <TotalSupplyCard
         token={tokens.base.superOETHb}
         width={width}
         height={200}

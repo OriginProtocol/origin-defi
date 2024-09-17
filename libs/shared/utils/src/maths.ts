@@ -20,3 +20,14 @@ export const subPercentage = (value = from(0), percent = 0) => {
 export const getFormatPrecision = (value: Dnum) => {
   return lt(value, 1) ? 6 : lt(value, 10) ? 4 : 2;
 };
+
+export const movingAverage = (values: number[], days: number): number[] => {
+  return values.map((_, index, array) => {
+    const start = Math.max(0, index - days + 1);
+    const lastXDays = array.slice(start, index + 1);
+    const average =
+      lastXDays.reduce((sum, record) => sum + record, 0) / lastXDays.length;
+
+    return average;
+  });
+};

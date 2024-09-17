@@ -14,7 +14,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 
-import { curveTypes } from './constants';
+import { curveTypes, margin } from './constants';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
@@ -29,10 +29,10 @@ export type LineChartProps = {
   data: ChartData[];
   onHover?: (idx: number | null) => void;
   curveType?: keyof typeof curveTypes;
+  tickXFormat?: (value: NumberLike) => string;
+  tickYFormat?: (value: NumberLike) => string;
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
 } & Omit<BoxProps, 'ref' | 'key'>;
-
-const margin = { top: 10, left: 0, bottom: 50, right: 50 };
 
 export const LineChart = ({
   width,
@@ -40,6 +40,8 @@ export const LineChart = ({
   data,
   onHover,
   curveType = 'natural',
+  tickXFormat,
+  tickYFormat,
   Tooltip,
   ...rest
 }: LineChartProps) => {
@@ -95,7 +97,6 @@ export const LineChart = ({
 
   if (!width || !height) return null;
 
-  const bottomTicks = xScale.ticks(width / 100);
   const activeItem = activeIdx === null ? null : data[activeIdx];
 
   return (
@@ -126,7 +127,7 @@ export const LineChart = ({
           scale={yScale}
           left={width - margin.right}
           stroke={theme.palette.text.secondary}
-          tickFormat={(value: NumberLike) => `${value}%`}
+          tickFormat={tickYFormat}
           tickLabelProps={{
             fontSize: 11,
             fontFamily: theme.typography.body1.fontFamily,
@@ -137,13 +138,13 @@ export const LineChart = ({
         />
         <AxisBottom
           scale={xScale}
-          tickValues={bottomTicks.slice(bottomTicks.length > 6 ? 1 : 0)}
           stroke={theme.palette.text.secondary}
           top={height - margin.bottom}
+          tickFormat={tickXFormat}
           tickLabelProps={{
             fontSize: 11,
-            fontFamily: 'Inter',
-            fill: '#828699',
+            fontFamily: theme.typography.body1.fontFamily,
+            fill: theme.palette.text.secondary,
           }}
         />
         <GridRows

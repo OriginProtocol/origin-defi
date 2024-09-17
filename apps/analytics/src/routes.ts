@@ -27,6 +27,32 @@ export const routes: RouteObject[] = [
       },
       {
         index: false,
+        path: 'super',
+        handle: {
+          title: defineMessage({ defaultMessage: 'Super OETH' }),
+          icon: superOETH,
+        },
+        children: [
+          {
+            index: true,
+            Component: superOeth.OverviewView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Overview' }),
+              icon: FaEyeRegular,
+            },
+          },
+          {
+            path: 'poy',
+            Component: superOeth.PoYView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Proof of Yield' }),
+              icon: FaClockRegular,
+            },
+          },
+        ],
+      },
+      {
+        index: false,
         path: 'oeth',
         handle: {
           title: defineMessage({ defaultMessage: 'OETH' }),
@@ -57,32 +83,6 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
-            },
-          },
-        ],
-      },
-      {
-        index: false,
-        path: 'super',
-        handle: {
-          title: defineMessage({ defaultMessage: 'Super OETH' }),
-          icon: superOETH,
-        },
-        children: [
-          {
-            index: true,
-            Component: superOeth.OverviewView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Overview' }),
-              icon: FaEyeRegular,
-            },
-          },
-          {
-            path: 'poy',
-            Component: superOeth.PoYView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Proof of Yield' }),
-              icon: FaClockRegular,
             },
           },
         ],

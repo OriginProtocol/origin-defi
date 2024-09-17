@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Card,
@@ -8,58 +8,40 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
-import { formatUnits } from 'viem';
 
-import { useOTokenStatsQuery } from '../../queries';
+import { useTokenChartStats } from '../../hooks';
 import { AreaChart } from '../Charts';
 import { LimitControls } from '../LimitControls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-import type { OTokenStatsQuery } from '../../queries';
 import type { ChartData } from '../Charts';
 
-export type TotalSupplyChartCardProps = {
+export type TotalSupplyCardProps = {
   token: Token;
   width: number;
   height: number;
   from?: string;
 } & CardProps;
 
-export const TotalSupplyChartCard = ({
+export const TotalSupplyCard = ({
   token,
   width,
   height,
   from,
   ...rest
-}: TotalSupplyChartCardProps) => {
+}: TotalSupplyCardProps) => {
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const { data, isLoading } = useOTokenStatsQuery(
+  const { data, isLoading } = useTokenChartStats(
+    { token, limit, from },
     {
-      token: token.address ?? ZERO_ADDRESS,
-      chainId: token.chainId,
-      limit,
-      from,
-    },
-    {
-      select: useCallback(
-        (data: OTokenStatsQuery) =>
-          data?.oTokenDailyStats?.toReversed().map((d) => ({
-            x: new Date(d.timestamp).getTime(),
-            y: +formatUnits(
-              BigInt(d.totalSupply),
-              tokens.mainnet.OETH.decimals,
-            ),
-          })) ?? [],
-        [],
-      ),
+      select: (data) => data.map((d) => ({ x: d.timestamp, y: d.totalSupply })),
     },
   );
 
@@ -80,7 +62,11 @@ export const TotalSupplyChartCard = ({
               {intl.formatNumber(activeItem?.y ?? 0)}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatDate(new Date(activeItem?.x ?? new Date()))}
+              {formatInTimeZone(
+                new Date(activeItem?.x ?? new Date().getTime()),
+                'UTC',
+                'dd/MM/yyyy',
+              )}
             </LoadingLabel>
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
@@ -101,6 +87,11 @@ export const TotalSupplyChartCard = ({
             setHoverIdx(idx ?? null);
           }}
           Tooltip={Tooltip}
+          tickYFormat={(value) =>
+            intl.formatNumber(Number(value), {
+              notation: 'compact',
+            })
+          }
         />
       )}
     </Card>

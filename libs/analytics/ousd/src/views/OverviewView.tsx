@@ -1,7 +1,8 @@
 import { Stack, Typography } from '@mui/material';
 import {
-  ApyChartCard,
-  TotalSupplyChartCard,
+  ApyCard,
+  ProtocolRevenueCard,
+  TotalSupplyCard,
   useLayout,
 } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
@@ -16,13 +17,19 @@ export const OverviewView = () => {
       <Typography variant="h6">
         {intl.formatMessage({ defaultMessage: 'OUSD overview' })}
       </Typography>
-      <ApyChartCard
+      <ApyCard
         token={tokens.mainnet.OUSD}
         width={width}
         height={400}
         from="2023-06-01T00:00:00.000000Z"
       />
-      <TotalSupplyChartCard
+      <TotalSupplyCard
+        token={tokens.mainnet.OUSD}
+        width={width}
+        height={200}
+        from="2023-06-01T00:00:00.000000Z"
+      />
+      <ProtocolRevenueCard
         token={tokens.mainnet.OUSD}
         width={width}
         height={200}

@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 
 import {
   Card,
@@ -8,57 +8,43 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
-import { ZERO_ADDRESS } from '@origin/shared/utils';
+import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useOTokenStatsQuery } from '../../queries';
+import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
 import { LimitControls } from '../LimitControls';
 import { TrailingControls } from '../TrailingControls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+import type { NumberLike } from '@visx/scale';
 
-import type { OTokenStatsQuery } from '../../queries';
 import type { ChartData } from '../Charts';
 import type { Trailing } from '../TrailingControls';
 
-export type ApyChartCardProps = {
+export type ApyCardProps = {
   token: Token;
   width: number;
   height: number;
   from?: string;
 } & CardProps;
 
-export const ApyChartCard = ({
+export const ApyCard = ({
   token,
   width,
   height,
   from,
   ...rest
-}: ApyChartCardProps) => {
+}: ApyCardProps) => {
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const { data, isLoading } = useOTokenStatsQuery(
-    {
-      token: token.address ?? ZERO_ADDRESS,
-      chainId: token.chainId,
-      limit,
-      from,
-    },
-    {
-      select: useCallback(
-        (data: OTokenStatsQuery) =>
-          data?.oTokenDailyStats?.toReversed().map((d) => ({
-            x: new Date(d.timestamp).getTime(),
-            y: d?.[trailing] * 100,
-          })) ?? [],
-        [trailing],
-      ),
-    },
+  const { data, isLoading } = useTokenChartStats(
+    { token, limit, from },
+    { select: (data) => data.map((d) => ({ x: d.timestamp, y: d[trailing] })) },
   );
 
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -78,7 +64,11 @@ export const ApyChartCard = ({
               {intl.formatNumber(activeItem?.y ?? 0)}%
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatDate(new Date(activeItem?.x ?? new Date()))}
+              {formatInTimeZone(
+                new Date(activeItem?.x ?? new Date().getTime()),
+                'UTC',
+                'dd/MM/yyyy',
+              )}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -103,6 +93,7 @@ export const ApyChartCard = ({
             setHoverIdx(idx ?? null);
           }}
           Tooltip={Tooltip}
+          tickYFormat={(value: NumberLike) => `${value}%`}
         />
       )}
     </Card>
