@@ -59,6 +59,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
       <Stack
         component="main"
         sx={{
+          alignItems: 'flex-end',
           flexGrow: 1,
           py: 3,
           px: 2,

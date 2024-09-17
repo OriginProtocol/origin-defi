@@ -16,7 +16,7 @@ export const OverviewView = () => {
   const [{ width }] = useLayout();
 
   return (
-    <Stack spacing={3} sx={{ alignItems: 'flex-end', flexGrow: 1 }}>
+    <Stack spacing={3}>
       <ApyCard
         token={tokens.mainnet.OETH}
         width={width}
