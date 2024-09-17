@@ -3,6 +3,7 @@ import {
   GOVERNANCE_OGN_SNAPSHOT_VOTES_URL,
   OETH_ANALYTICS_URL,
   OUSD_ANALYTICS_URL,
+  SUPEROETHB_ANALYTICS_URL,
 } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -15,6 +16,13 @@ import { defineMessage } from 'react-intl';
 import type { NavItem } from './types';
 
 export const additionalLinks: Record<string, NavItem[]> = {
+  super: [
+    {
+      title: defineMessage({ defaultMessage: 'Analytics' }),
+      icon: FaChartPieRegular,
+      href: SUPEROETHB_ANALYTICS_URL,
+    },
+  ],
   oeth: [
     {
       title: defineMessage({ defaultMessage: 'Analytics' }),
