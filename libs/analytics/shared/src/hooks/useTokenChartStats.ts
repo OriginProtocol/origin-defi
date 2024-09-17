@@ -1,6 +1,6 @@
 import { movingAverage, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { div, mul, sub, toNumber } from 'dnum';
+import { div, gt, mul, sub, toNumber } from 'dnum';
 import { pluck } from 'ramda';
 
 import { useOTokenStatsQuery } from '../queries';
@@ -71,10 +71,17 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
       const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
       const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
       const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
+      const fees = [BigInt(d?.fees ?? 0), token.decimals] as Dnum;
       const circulating = sub(totalSupply, protocolOwned);
-      const pctWrapped = mul(div(wrapped, circulating), 100);
-      const pctCirculating = mul(div(circulating, totalSupply), 100);
-      const pctProtocolOwned = mul(div(protocolOwned, totalSupply), 100);
+      const pctWrapped = gt(circulating, 0)
+        ? mul(div(wrapped, circulating), 100)
+        : ([0n, token.decimals] as Dnum);
+      const pctCirculating = gt(totalSupply, 0)
+        ? mul(div(circulating, totalSupply), 100)
+        : ([0n, token.decimals] as Dnum);
+      const pctProtocolOwned = gt(totalSupply, 0)
+        ? mul(div(protocolOwned, totalSupply), 100)
+        : ([0n, token.decimals] as Dnum);
 
       return {
         timestamp: new Date(d.timestamp).getTime(),
@@ -109,7 +116,7 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
           decimalsRounding: 'ROUND_DOWN',
           digits: 2,
         }),
-        fees: toNumber([BigInt(d?.fees ?? 0), token.decimals], {
+        fees: toNumber(fees, {
           decimalsRounding: 'ROUND_DOWN',
           digits: token.decimals,
         }),
