@@ -31,6 +31,7 @@ export type LineChartProps = {
   curveType?: keyof typeof curveTypes;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
@@ -42,6 +43,7 @@ export const LineChart = ({
   curveType = 'natural',
   tickXFormat,
   tickYFormat,
+  yScaleDomain,
   Tooltip,
   ...rest
 }: LineChartProps) => {
@@ -72,7 +74,7 @@ export const LineChart = ({
 
   const yScale = scaleLinear({
     range: [height - margin.bottom, margin.top],
-    domain: [0, Math.max(...data.map((d) => d.y))],
+    domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
   });
 
   const handlePointerMove = useCallback(

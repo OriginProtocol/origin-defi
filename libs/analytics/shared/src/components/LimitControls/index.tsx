@@ -1,4 +1,15 @@
-import { Button, ButtonGroup } from '@mui/material';
+import { useRef, useState } from 'react';
+
+import {
+  Button,
+  ButtonGroup,
+  MenuItem,
+  useMediaQuery,
+  useTheme,
+} from '@mui/material';
+import { ClickAwayMenu } from '@origin/shared/components';
+import { FaBarsRegular } from '@origin/shared/icons';
+import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { ButtonGroupProps } from '@mui/material';
@@ -16,41 +27,87 @@ export const LimitControls = ({
   ...rest
 }: LimitControlsProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const [open, setOpen] = useState(false);
+  const anchorEl = useRef(null);
 
-  return (
+  const options = [
+    { value: 7, label: intl.formatMessage({ defaultMessage: '1W' }) },
+    { value: 30, label: intl.formatMessage({ defaultMessage: '1M' }) },
+    {
+      value: Math.floor((365 / 12) * 6),
+      label: intl.formatMessage({ defaultMessage: '6M' }),
+    },
+    {
+      value: 365,
+      label: intl.formatMessage({ defaultMessage: '1YR' }),
+    },
+    ...(disableAll
+      ? []
+      : [
+          {
+            value: undefined,
+            label: intl.formatMessage({ defaultMessage: 'All' }),
+          },
+        ]),
+  ];
+
+  return isSm ? (
+    <>
+      <Button
+        variant="outlined"
+        color="secondary"
+        ref={anchorEl}
+        onClick={() => {
+          setOpen(not);
+        }}
+      >
+        <FaBarsRegular sx={{ fontSize: 14 }} />
+      </Button>
+      <ClickAwayMenu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        paperProps={{ sx: { p: 0 } }}
+      >
+        {options.map((o) => (
+          <MenuItem
+            key={o.value}
+            selected={o.value === limit}
+            onClick={() => {
+              setLimit(o.value);
+              setOpen(false);
+            }}
+            sx={[
+              (theme) => ({ typography: theme.typography.body3 }),
+              ...(o.value === limit
+                ? [{ backgroundColor: 'secondary.main' }]
+                : []),
+            ]}
+          >
+            {o.label}
+          </MenuItem>
+        ))}
+      </ClickAwayMenu>
+    </>
+  ) : (
     <ButtonGroup size="small" variant="outlined" color="secondary" {...rest}>
-      {[
-        { value: 7, label: intl.formatMessage({ defaultMessage: '1W' }) },
-        { value: 30, label: intl.formatMessage({ defaultMessage: '1M' }) },
-        {
-          value: Math.floor((365 / 12) * 6),
-          label: intl.formatMessage({ defaultMessage: '6M' }),
-        },
-        {
-          value: 365,
-          label: intl.formatMessage({ defaultMessage: '1YR' }),
-        },
-        ...(disableAll
-          ? []
-          : [
-              {
-                value: undefined,
-                label: intl.formatMessage({ defaultMessage: 'All' }),
-              },
-            ]),
-      ].map((b) => (
+      {options.map((o) => (
         <Button
-          key={b.value ?? 'all'}
+          key={o.value ?? 'all'}
           onClick={() => {
-            setLimit(b.value);
+            setLimit(o.value);
           }}
           sx={[
-            ...(b.value === limit
+            ...(o.value === limit
               ? [{ backgroundColor: 'secondary.main' }]
               : []),
           ]}
         >
-          {b.label}
+          {o.label}
         </Button>
       ))}
     </ButtonGroup>

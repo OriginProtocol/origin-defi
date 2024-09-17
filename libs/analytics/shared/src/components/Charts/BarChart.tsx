@@ -23,6 +23,7 @@ export type BarChartProps = {
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  yScaleDomain?: [number, number];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const BarChart = ({
@@ -33,6 +34,7 @@ export const BarChart = ({
   onHover,
   tickXFormat,
   tickYFormat,
+  yScaleDomain,
   ...rest
 }: BarChartProps) => {
   const theme = useTheme();
@@ -46,7 +48,7 @@ export const BarChart = ({
 
   const yScale = scaleLinear({
     range: [height - margin.bottom, margin.top],
-    domain: [0, Math.max(...barData.map((d) => d.y))],
+    domain: yScaleDomain ?? [0, Math.max(...barData.map((d) => d.y))],
   });
 
   if (!width || !height) return null;
@@ -55,10 +57,10 @@ export const BarChart = ({
     <Box
       {...rest}
       key={height + width}
-      style={{ height, width }}
+      style={{ height, width, position: 'relative' }}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { width, height, position: 'relative' },
+        { width, height },
       ]}
       onMouseLeave={() => {
         setActiveIdx(null);

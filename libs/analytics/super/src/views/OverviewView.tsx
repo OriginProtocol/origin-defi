@@ -1,22 +1,51 @@
-import { Stack, Typography } from '@mui/material';
-import { ApyCard, TotalSupplyCard, useLayout } from '@origin/analytics/shared';
+import { Stack } from '@mui/material';
+import {
+  ApyCard,
+  PercentWrappedCard,
+  RateCard,
+  TotalSupplyCard,
+  useLayout,
+  WrappedSupplyCard,
+} from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
-import { useIntl } from 'react-intl';
+
+import { superConfig } from '../constants';
 
 export const OverviewView = () => {
-  const intl = useIntl();
   const [{ width }] = useLayout();
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h6">
-        {intl.formatMessage({ defaultMessage: 'Super OETH overview' })}
-      </Typography>
-      <ApyCard token={tokens.base.superOETHb} width={width} height={400} />
+      <ApyCard
+        token={tokens.base.superOETHb}
+        width={width}
+        height={400}
+        from={superConfig.from}
+      />
       <TotalSupplyCard
         token={tokens.base.superOETHb}
         width={width}
         height={200}
+        from={superConfig.from}
+      />
+      <WrappedSupplyCard
+        token={tokens.base.superOETHb}
+        width={width}
+        height={200}
+        from={superConfig.from}
+      />
+      <PercentWrappedCard
+        token={tokens.base.superOETHb}
+        width={width}
+        height={200}
+        from={superConfig.from}
+      />
+      <RateCard
+        token={tokens.base.superOETHb}
+        currency="ETH"
+        width={width}
+        height={200}
+        from={superConfig.from}
       />
     </Stack>
   );

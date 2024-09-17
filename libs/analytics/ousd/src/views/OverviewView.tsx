@@ -1,39 +1,44 @@
-import { Stack, Typography } from '@mui/material';
+import { Stack } from '@mui/material';
 import {
   ApyCard,
   ProtocolRevenueCard,
+  RateCard,
   TotalSupplyCard,
   useLayout,
 } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
-import { useIntl } from 'react-intl';
+
+import { ousdConfig } from '../constants';
 
 export const OverviewView = () => {
-  const intl = useIntl();
   const [{ width }] = useLayout();
 
   return (
     <Stack spacing={3}>
-      <Typography variant="h6">
-        {intl.formatMessage({ defaultMessage: 'OUSD overview' })}
-      </Typography>
       <ApyCard
         token={tokens.mainnet.OUSD}
         width={width}
         height={400}
-        from="2023-06-01T00:00:00.000000Z"
+        from={ousdConfig.from}
       />
       <TotalSupplyCard
         token={tokens.mainnet.OUSD}
         width={width}
         height={200}
-        from="2023-06-01T00:00:00.000000Z"
+        from={ousdConfig.from}
       />
       <ProtocolRevenueCard
         token={tokens.mainnet.OUSD}
         width={width}
         height={200}
-        from="2023-06-01T00:00:00.000000Z"
+        from={ousdConfig.from}
+      />
+      <RateCard
+        token={tokens.mainnet.OUSD}
+        currency="USD"
+        width={width}
+        height={200}
+        from={ousdConfig.from}
       />
     </Stack>
   );

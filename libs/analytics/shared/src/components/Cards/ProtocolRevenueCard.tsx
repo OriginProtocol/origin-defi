@@ -1,16 +1,18 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 
 import {
+  Button,
   Card,
   CardContent,
   CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
-import { MenuItem, Select } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import { MenuItem } from '@mui/material';
+import { ClickAwayMenu, LoadingLabel } from '@origin/shared/components';
+import { FaChevronDownRegular } from '@origin/shared/icons';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last } from 'ramda';
+import { last, not } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 
 import { useTokenChartStats } from '../../hooks';
@@ -62,16 +64,13 @@ export const ProtocolRevenueCard = ({
         >
           <Stack spacing={0.5}>
             <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage(
-                { defaultMessage: 'Daily Protocol Revenue from {symbol}' },
-                { symbol: token.symbol },
-              )}
+              {intl.formatMessage({ defaultMessage: 'Daily protocol revenue' })}
             </Typography>
             <LoadingLabel
               isLoading={isFeesLoading || isFeesAvgLoading}
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatNumber(activeItem?.y ?? 0)}
+              Ξ{intl.formatNumber(activeItem?.y ?? 0)}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isFeesLoading || isFeesAvgLoading}
@@ -129,28 +128,55 @@ type MaControlsProps = {
 
 const MAControls = ({ ma, setMa, ...rest }: MaControlsProps) => {
   const intl = useIntl();
+  const [open, setOpen] = useState(false);
+  const anchorEl = useRef(null);
 
   return (
-    <Select
-      {...rest}
-      displayEmpty
-      size="small"
-      color="secondary"
-      variant="outlined"
-      value={ma}
-      onChange={(event) => {
-        setMa(event.target.value as MA);
-      }}
-      sx={[
-        { fontSize: 13, minWidth: 40 },
-        ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-      ]}
-    >
-      {Object.entries(maOptions).map(([avg, label]) => (
-        <MenuItem key={avg} value={avg}>
-          {intl.formatMessage(label)}
-        </MenuItem>
-      ))}
-    </Select>
+    <>
+      <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        ref={anchorEl}
+        onClick={() => {
+          setOpen(not);
+        }}
+      >
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          spacing={1}
+        >
+          <Typography>{intl.formatMessage(maOptions[ma])}</Typography>
+          <FaChevronDownRegular sx={{ fontSize: 12 }} />
+        </Stack>
+      </Button>
+      <ClickAwayMenu
+        anchorEl={anchorEl}
+        open={open}
+        onClose={() => {
+          setOpen(false);
+        }}
+        paperProps={{ sx: { p: 0 } }}
+      >
+        {Object.entries(maOptions).map(([avg, label]) => (
+          <MenuItem
+            key={avg}
+            value={avg}
+            onClick={() => {
+              setMa(avg as keyof typeof maOptions);
+              setOpen(false);
+            }}
+            sx={[
+              (theme) => ({ typography: theme.typography.body3 }),
+              ...(avg === ma ? [{ backgroundColor: 'secondary.main' }] : []),
+            ]}
+          >
+            {intl.formatMessage(label)}
+          </MenuItem>
+        ))}
+      </ClickAwayMenu>
+    </>
   );
 };

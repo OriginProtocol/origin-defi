@@ -19,25 +19,28 @@ import { TrailingControls } from '../TrailingControls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type { NumberLike } from '@visx/scale';
 
 import type { ChartData } from '../Charts';
 import type { Trailing } from '../TrailingControls';
 
-export type PercentWrappedCardProps = {
+type SupportedCurrency = 'ETH' | 'USD';
+
+export type RateCardProps = {
   token: Token;
+  currency: SupportedCurrency;
   width: number;
   height: number;
   from?: string;
 } & CardProps;
 
-export const PercentWrappedCard = ({
+export const RateCard = ({
   token,
+  currency,
   width,
   height,
   from,
   ...rest
-}: PercentWrappedCardProps) => {
+}: RateCardProps) => {
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
@@ -46,7 +49,10 @@ export const PercentWrappedCard = ({
     { token, limit, from },
     {
       select: (data) =>
-        data.map((d) => ({ x: d.timestamp, y: d.pctWrappedSupply })),
+        data.map((d) => ({
+          x: d.timestamp,
+          y: currency === 'ETH' ? d.rateETH : d.rateUSD,
+        })),
     },
   );
 
@@ -61,13 +67,18 @@ export const PercentWrappedCard = ({
         >
           <Stack spacing={0.5}>
             <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage(
-                { defaultMessage: '% wrapped {symbol}' },
-                { symbol: token.symbol },
-              )}
+              {intl.formatMessage({ defaultMessage: 'Exchange rate' })}
             </Typography>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.y ?? 0)}%
+              {intl.formatMessage(
+                { defaultMessage: '{currency}{rate}' },
+                {
+                  currency: currency === 'ETH' ? 'Ξ' : '$',
+                  rate: intl.formatNumber(activeItem?.y ?? 0, {
+                    maximumFractionDigits: 5,
+                  }),
+                },
+              )}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
               {formatInTimeZone(
@@ -94,13 +105,19 @@ export const PercentWrappedCard = ({
         <LineChart
           width={width}
           height={height}
-          curveType="base"
           data={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
+          curveType="linear"
           Tooltip={Tooltip}
-          tickYFormat={(value: NumberLike) => `${value}%`}
+          tickYFormat={(value) =>
+            intl.formatNumber(Number(value), {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          }
+          yScaleDomain={[0.95, 1.05]}
         />
       )}
     </Card>
@@ -122,8 +139,12 @@ const Tooltip = ({ data, ...rest }: TooltipProps) => {
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.primary' }}>
         {intl.formatMessage(
-          { defaultMessage: 'Apy: {apy}%' },
-          { apy: intl.formatNumber(data.y) },
+          { defaultMessage: 'Exchange rate: {rate}%' },
+          {
+            rate: intl.formatNumber(data.y, {
+              maximumFractionDigits: 5,
+            }),
+          },
         )}
       </Typography>
     </Stack>

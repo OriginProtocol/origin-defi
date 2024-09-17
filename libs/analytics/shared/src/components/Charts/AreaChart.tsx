@@ -30,6 +30,7 @@ export type AreaChartProps = {
   curveType?: keyof typeof curveTypes;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
@@ -41,6 +42,7 @@ export const AreaChart = ({
   curveType = 'natural',
   tickXFormat,
   tickYFormat,
+  yScaleDomain,
   Tooltip,
   ...rest
 }: AreaChartProps) => {
@@ -71,7 +73,7 @@ export const AreaChart = ({
 
   const yScale = scaleLinear({
     range: [height - margin.bottom, margin.top],
-    domain: [0, Math.max(...data.map((d) => d.y))],
+    domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
   });
 
   const handlePointerMove = useCallback(
@@ -96,7 +98,6 @@ export const AreaChart = ({
 
   if (!width || !height) return null;
 
-  const bottomTicks = xScale.ticks(width / 100);
   const activeItem = activeIdx === null ? null : data[activeIdx];
 
   return (
@@ -106,7 +107,7 @@ export const AreaChart = ({
       key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { position: 'relative', height, width },
+        { height, width, position: 'relative' },
       ]}
     >
       <svg width={width} height={height}>
