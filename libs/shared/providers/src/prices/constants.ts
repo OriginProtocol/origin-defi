@@ -203,8 +203,22 @@ export const priceOptions = {
       args: [parseUnits('1', tokens.mainnet.wOETH.decimals)],
       chainId: tokens.mainnet.wOETH.chainId,
     },
-    mapResult: (woeth_usd: bigint) => {
-      return [woeth_usd, tokens.mainnet.wOETH.decimals];
+    mapResult: (woeth_oeth: bigint) => {
+      return [woeth_oeth, tokens.mainnet.OETH.decimals];
+    },
+  },
+  '1:OETH_1:wOETH': {
+    type: 'wagmi',
+    id: '1:OETH_1:wOETH',
+    config: {
+      address: tokens.mainnet.wOETH.address,
+      abi: tokens.mainnet.wOETH.abi,
+      functionName: 'previewMint',
+      args: [parseUnits('1', tokens.mainnet.OETH.decimals)],
+      chainId: tokens.mainnet.wOETH.chainId,
+    },
+    mapResult: (oeth_woeth: bigint) => {
+      return [oeth_woeth, tokens.mainnet.wOETH.decimals];
     },
   },
   '1:wOETH_USD': {
@@ -222,8 +236,22 @@ export const priceOptions = {
       args: [parseUnits('1', tokens.mainnet.wOUSD.decimals)],
       chainId: tokens.mainnet.wOUSD.chainId,
     },
-    mapResult: (wousd_usd: bigint) => {
-      return [wousd_usd, tokens.mainnet.OUSD.decimals];
+    mapResult: (wousd_ousd: bigint) => {
+      return [wousd_ousd, tokens.mainnet.OUSD.decimals];
+    },
+  },
+  '1:OUSD_1:wOUSD': {
+    type: 'wagmi',
+    id: '1:OUSD_1:wOUSD',
+    config: {
+      address: tokens.mainnet.wOUSD.address,
+      abi: tokens.mainnet.wOUSD.abi,
+      functionName: 'previewMint',
+      args: [parseUnits('1', tokens.mainnet.OUSD.decimals)],
+      chainId: tokens.mainnet.wOUSD.chainId,
+    },
+    mapResult: (ousd_wousd: bigint) => {
+      return [ousd_wousd, tokens.mainnet.wOUSD.decimals];
     },
   },
   '1:wOUSD_USD': {
@@ -401,17 +429,45 @@ export const priceOptions = {
   '8453:wsuperOETHb_USD': {
     id: '8453:wsuperOETHb_USD',
     type: 'derived',
-    dependsOn: ['8453:ETH_USD'],
+    dependsOn: ['8453:wsuperOETHb_8453:superOETHb', '8453:superOETHb_USD'],
   },
   '8453:superOETHb_8453:ETH': {
     id: '8453:superOETHb_8453:ETH',
     type: 'rest',
     config: async () => from(1),
   },
+  '8453:superOETHb_8453:wsuperOETHb': {
+    id: '8453:superOETHb_8453:wsuperOETHb',
+    type: 'wagmi',
+    config: {
+      address: tokens.base.wsuperOETHb.address,
+      abi: tokens.base.wsuperOETHb.abi,
+      functionName: 'previewMint',
+      args: [parseUnits('1', tokens.base.superOETHb.decimals)],
+      chainId: tokens.base.wsuperOETHb.chainId,
+    },
+    mapResult: (super_wsuper: bigint) => {
+      return [super_wsuper, tokens.base.wsuperOETHb.decimals];
+    },
+  },
+  '8453:wsuperOETHb_8453:superOETHb': {
+    id: '8453:wsuperOETHb_8453:superOETHb',
+    type: 'wagmi',
+    config: {
+      address: tokens.base.wsuperOETHb.address,
+      abi: tokens.base.wsuperOETHb.abi,
+      functionName: 'previewRedeem',
+      args: [parseUnits('1', tokens.base.wsuperOETHb.decimals)],
+      chainId: tokens.base.wsuperOETHb.chainId,
+    },
+    mapResult: (wsuper_ssuper: bigint) => {
+      return [wsuper_ssuper, tokens.base.superOETHb.decimals];
+    },
+  },
   '8453:wsuperOETHb_8453:ETH': {
     id: '8453:wsuperOETHb_8453:ETH',
     type: 'derived',
-    dependsOn: ['8453:superOETHb_8453:ETH'],
+    dependsOn: ['8453:wsuperOETHb_8453:superOETHb', '8453:superOETHb_8453:ETH'],
   },
   '10:ETH_USD': {
     id: '10:ETH_USD',
