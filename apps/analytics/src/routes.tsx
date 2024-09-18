@@ -54,10 +54,6 @@ export const routes: RouteObject[] = [
           {
             path: 'poy/:id',
             element: <PoYDetail token={tokens.base.superOETHb} />,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Proof of Yield' }),
-              icon: FaClockRegular,
-            },
           },
         ],
       },
@@ -85,6 +81,10 @@ export const routes: RouteObject[] = [
               icon: FaClockRegular,
             },
           },
+          {
+            path: 'poy/:id',
+            element: <PoYDetail token={tokens.mainnet.OETH} />,
+          },
         ],
       },
       {
@@ -110,6 +110,10 @@ export const routes: RouteObject[] = [
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
             },
+          },
+          {
+            path: 'poy/:id',
+            element: <PoYDetail token={tokens.mainnet.OUSD} />,
           },
         ],
       },
