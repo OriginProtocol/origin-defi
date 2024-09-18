@@ -14,8 +14,10 @@ export type LayoutProps = { routes: RouteObject[] };
 const LayoutWrapped = ({ routes }: LayoutProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [{ drawerWidth, isDrawerOpen, width }, { handleToggleDrawer }] =
-    useLayout();
+  const [
+    { drawerWidth, isDrawerOpen, width },
+    { handleToggleDrawer, handleSetDrawer },
+  ] = useLayout();
 
   return (
     <Stack
@@ -44,6 +46,9 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
         {isSm ? (
           <Drawer
             open={isDrawerOpen}
+            onClose={() => {
+              handleSetDrawer(false);
+            }}
             sx={{
               '& .MuiDrawer-paper': {
                 boxSizing: 'border-box',

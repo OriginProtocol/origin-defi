@@ -14,6 +14,8 @@ import {
   Stack,
   SvgIcon,
   Typography,
+  useMediaQuery,
+  useTheme,
 } from '@mui/material';
 import { ExpandIcon } from '@origin/shared/components';
 import {
@@ -40,12 +42,16 @@ export type DrawerMenuProps = {
 } & StackProps;
 
 export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const [{ isDrawerOpen }, { handleSetDrawer, handleToggleDrawer }] =
     useLayout();
 
   const visibleRoutes = routes?.[0]?.children?.filter(
     (r) => !isNilOrEmpty(r?.handle?.title),
   );
+
+  const isWide = isSm || isDrawerOpen;
 
   return (
     <Stack
@@ -86,7 +92,7 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
             border: `1px solid ${theme.palette.divider}`,
           })}
         >
-          {isDrawerOpen ? (
+          {isWide ? (
             <FaXmarkRegular sx={{ fontSize: 16 }} />
           ) : (
             <FaChevronRightRegular sx={{ fontSize: 16 }} />
@@ -103,14 +109,13 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
             onClose={() => {
               handleSetDrawer(false);
             }}
+            isWide={isWide}
           />
         ))}
       </Stack>
       <Stack
         sx={[
-          isDrawerOpen
-            ? { alignItems: 'flex-end', pr: 2 }
-            : { alignItems: 'center' },
+          isWide ? { alignItems: 'flex-end', pr: 2 } : { alignItems: 'center' },
         ]}
       >
         <ThemeModeIconButton variant="outlined" color="secondary" />
@@ -123,15 +128,15 @@ type NavItemProps = {
   route: RouteObject;
   index: number;
   onClose: () => void;
+  isWide: boolean;
 };
 
-const NavItem = ({ route, index, onClose }: NavItemProps) => {
+const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
   const navigate = useNavigate();
   const [expanded, setExpanded] = useState<string[]>([]);
-  const [{ isDrawerOpen }] = useLayout();
 
   const handleToggle = (key: string) => () => {
     const idx = expanded.findIndex((a) => a === key);
@@ -159,10 +164,10 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
             px: 0,
             fontWeight: 'medium',
           },
-          isDrawerOpen ? { height: 36 } : { height: 64 },
+          isWide ? { height: 36 } : { height: 64 },
         ]}
       >
-        {isDrawerOpen ? (
+        {isWide ? (
           intl.formatMessage(route.handle.title)
         ) : (
           <SvgIcon component={route.handle.icon} />
@@ -194,7 +199,7 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
           px: 0,
           border: 'none',
         },
-        isDrawerOpen ? { py: 1 } : { py: 0 },
+        isWide ? { py: 1 } : { py: 0 },
       ]}
       disableGutters
     >
@@ -209,7 +214,7 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
                 ),
             },
           },
-          isDrawerOpen
+          isWide
             ? {
                 pl: 2,
                 pr: 3,
@@ -221,7 +226,7 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
               },
         ]}
       >
-        {isDrawerOpen ? (
+        {isWide ? (
           <Stack
             direction="row"
             spacing={1}
@@ -252,13 +257,14 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
         )}
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
-        <MenuList sx={[isDrawerOpen ? { py: 0, px: 2 } : { py: 1 }]}>
+        <MenuList sx={[isWide ? { py: 0, px: 2 } : { py: 1 }]}>
           {items.map((r) => (
             <ListMenuItem
               key={`${r?.path ?? r?.href}-${index}`}
               route={route}
               item={r}
               onClose={onClose}
+              isWide={isWide}
             />
           ))}
         </MenuList>
@@ -271,15 +277,21 @@ type ListMenuItemProps = {
   route: RouteObject;
   item: NavItem;
   onClose: () => void;
+  isWide: boolean;
 } & MenuItemProps;
 
-const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
+const ListMenuItem = ({
+  route,
+  item,
+  onClose,
+  isWide,
+  ...rest
+}: ListMenuItemProps) => {
   const intl = useIntl();
   const navigate = useNavigate();
   const match = useMatch({
     path: `${route.path}/${item?.path ?? ''}`,
   });
-  const [{ isDrawerOpen }] = useLayout();
 
   const handleMenuClick = (path: string) => () => {
     navigate(`${route.path}/${path ?? ''}`);
@@ -299,7 +311,7 @@ const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
             component: 'a',
           })}
       sx={[
-        isDrawerOpen
+        isWide
           ? {
               display: 'flex',
               flexDirection: 'row',
@@ -321,7 +333,7 @@ const ListMenuItem = ({ route, item, onClose, ...rest }: ListMenuItemProps) => {
             },
       ]}
     >
-      {isDrawerOpen ? (
+      {isWide ? (
         <Stack direction="row" alignItems="center">
           <Typography
             sx={{
