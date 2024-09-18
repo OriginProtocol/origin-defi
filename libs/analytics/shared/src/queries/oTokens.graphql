@@ -31,3 +31,30 @@ query oTokenStats(
     fees
   }
 }
+
+query oTokenStatsConnection(
+  $token: String!
+  $chainId: Int!
+  $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
+  $first: Int
+  $after: String
+) {
+  oTokenDailyStatsConnection(
+    orderBy: $orderBy
+    where: { otoken_containsInsensitive: $token, chainId_eq: $chainId }
+    first: $first
+    after: $after
+  ) {
+    edges {
+      node {
+        id
+        timestamp
+        rebasingSupply
+        yield
+        fees
+        apy
+      }
+    }
+    totalCount
+  }
+}

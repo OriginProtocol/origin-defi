@@ -6,6 +6,7 @@ export type LayoutState = {
   drawerWidth: number;
   isDrawerOpen: boolean;
   width: number;
+  cardWidth: number;
   height: number;
 };
 

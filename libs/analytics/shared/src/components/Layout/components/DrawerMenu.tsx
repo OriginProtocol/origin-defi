@@ -58,7 +58,8 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
       <Stack
         direction="row"
         sx={(theme) => ({
-          height: theme.mixins.toolbar.minHeight,
+          height: theme.mixins.toolbar.height,
+          alignItems: 'center',
           justifyContent: 'space-between',
           width: 1,
           px: 2,

@@ -1,8 +1,10 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
 import * as ousd from '@origin/analytics/ousd';
+import { ProofOfYield } from '@origin/analytics/shared';
 import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
   FaClockRegular,
   FaEyeRegular,
@@ -43,7 +45,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: 'poy',
-            Component: superOeth.PoYView,
+            element: <ProofOfYield token={tokens.base.superOETHb} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,

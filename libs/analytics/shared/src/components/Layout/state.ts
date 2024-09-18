@@ -5,9 +5,12 @@ import { useScreenSize } from '@visx/responsive';
 import { produce } from 'immer';
 import { createContainer } from 'react-tracked';
 
-import { DRAWER_WIDTH, MARGIN_WIDTH } from './constants';
-
 import type { LayoutState } from './types';
+
+const DRAWER_MD_OPEN_WIDTH = 300;
+const DRAWER_MD_COLLAPSED_WIDTH = 64;
+const MARGIN_ADJUST = 17;
+const MARGINS = 32;
 
 export const { Provider: LayoutProvider, useTracked: useLayoutState } =
   createContainer(() => {
@@ -17,22 +20,27 @@ export const { Provider: LayoutProvider, useTracked: useLayoutState } =
       debounceTime: theme.transitions.duration.enteringScreen,
     });
     const [state, setState] = useState<LayoutState>({
-      drawerWidth: DRAWER_WIDTH,
+      drawerWidth: isSm ? MARGIN_ADJUST : DRAWER_MD_OPEN_WIDTH,
       isDrawerOpen: !isSm,
-      width: Math.max(0, width - DRAWER_WIDTH),
+      width: Math.max(0, width - (isSm ? 0 : DRAWER_MD_OPEN_WIDTH)),
+      cardWidth: Math.max(
+        0,
+        width - (isSm ? MARGINS : DRAWER_MD_OPEN_WIDTH + MARGINS),
+      ),
       height,
     });
 
     useEffect(() => {
       const dWidth = isSm
-        ? 49
+        ? MARGIN_ADJUST
         : state.isDrawerOpen
-          ? DRAWER_WIDTH + 48
-          : MARGIN_WIDTH * 2;
+          ? DRAWER_MD_OPEN_WIDTH + MARGIN_ADJUST
+          : DRAWER_MD_COLLAPSED_WIDTH + MARGIN_ADJUST;
       setState(
         produce((draft) => {
           draft.width = Math.max(0, width - dWidth);
           draft.height = height;
+          draft.cardWidth = Math.max(0, width - (dWidth + MARGINS));
         }),
       );
     }, [height, isSm, state.isDrawerOpen, width]);

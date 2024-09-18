@@ -14,7 +14,8 @@ export type LayoutProps = { routes: RouteObject[] };
 const LayoutWrapped = ({ routes }: LayoutProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [{ drawerWidth, isDrawerOpen }, { handleToggleDrawer }] = useLayout();
+  const [{ drawerWidth, isDrawerOpen, width }, { handleToggleDrawer }] =
+    useLayout();
 
   return (
     <Stack
@@ -24,7 +25,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
     >
       <Stack
         sx={(theme) => ({
-          height: theme.mixins.toolbar.minHeight,
+          height: theme.mixins.toolbar.height,
           alignItems: 'flex-start',
           px: 2,
           py: 1,
@@ -39,34 +40,35 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
           <FaBarsRegular />
         </Button>
       </Stack>
-      {isSm ? (
-        <Drawer
-          open={isDrawerOpen}
+      <Stack direction="row" justifyContent="space-between">
+        {isSm ? (
+          <Drawer
+            open={isDrawerOpen}
+            sx={{
+              '& .MuiDrawer-paper': {
+                boxSizing: 'border-box',
+                width: drawerWidth,
+              },
+            }}
+          >
+            <DrawerMenu routes={routes} />
+          </Drawer>
+        ) : (
+          <LeftDrawer>
+            <DrawerMenu routes={routes} />
+          </LeftDrawer>
+        )}
+        <Stack
+          component="main"
           sx={{
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-            },
+            alignItems: 'center',
+            flexGrow: 1,
+            width,
+            overflowX: 'hidden',
           }}
         >
-          <DrawerMenu routes={routes} />
-        </Drawer>
-      ) : (
-        <LeftDrawer>
-          <DrawerMenu routes={routes} />
-        </LeftDrawer>
-      )}
-      <Stack
-        component="main"
-        sx={{
-          alignItems: 'flex-end',
-          flexGrow: 1,
-          py: 3,
-          px: 2,
-          overflowX: 'hidden',
-        }}
-      >
-        <Outlet />
+          <Outlet />
+        </Stack>
       </Stack>
     </Stack>
   );

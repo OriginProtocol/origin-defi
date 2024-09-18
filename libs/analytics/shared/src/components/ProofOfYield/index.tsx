@@ -1,0 +1,181 @@
+import { useMemo } from 'react';
+
+import {
+  Button,
+  CircularProgress,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+import { TablePagination } from '@origin/shared/components';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
+import {
+  createColumnHelper,
+  flexRender,
+  getCoreRowModel,
+  getPaginationRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import { formatInTimeZone } from 'date-fns-tz';
+import { toNumber } from 'dnum';
+import { useIntl } from 'react-intl';
+import { Link as RouterLink } from 'react-router-dom';
+
+import { useOTokenStatsConnectionQuery } from '../../queries';
+
+import type { StackProps } from '@mui/material';
+import type { Token } from '@origin/shared/contracts';
+
+import type { OTokenStatsConnectionQuery } from '../../queries';
+
+export type ProofOfYieldProps = { token: Token } & StackProps;
+
+const columnHelper =
+  createColumnHelper<
+    OTokenStatsConnectionQuery['oTokenDailyStatsConnection']['edges'][number]['node']
+  >();
+
+export const ProofOfYield = ({ token, ...rest }: ProofOfYieldProps) => {
+  const intl = useIntl();
+  const { data, isLoading } = useOTokenStatsConnectionQuery(
+    {
+      token: token.address ?? ZERO_ADDRESS,
+      chainId: token.chainId,
+      first: undefined,
+    },
+    {
+      select: (data) =>
+        data?.oTokenDailyStatsConnection?.edges?.map((n) => n.node) ?? [],
+    },
+  );
+
+  const columns = useMemo(
+    () => [
+      columnHelper.accessor('timestamp', {
+        cell: (info) =>
+          formatInTimeZone(new Date(info.getValue()), 'UTC', 'dd/MMM/yyyy'),
+        header: intl.formatMessage({ defaultMessage: 'Date' }),
+        size: 400,
+      }),
+      columnHelper.accessor('yield', {
+        cell: (info) =>
+          toNumber([BigInt(info.getValue() ?? 0), token.decimals], {
+            digits: 5,
+            decimalsRounding: 'ROUND_DOWN',
+          }),
+        header: intl.formatMessage({ defaultMessage: 'Yield distributed' }),
+        size: 200,
+      }),
+      columnHelper.accessor('apy', {
+        cell: (info) =>
+          intl.formatNumber(info.getValue(), { maximumFractionDigits: 5 }),
+        header: intl.formatMessage({ defaultMessage: 'Daily APY' }),
+        size: 200,
+      }),
+      columnHelper.accessor('rebasingSupply', {
+        cell: (info) =>
+          toNumber([BigInt(info.getValue() ?? 0), token.decimals], {
+            digits: 5,
+            decimalsRounding: 'ROUND_DOWN',
+          }),
+        header: intl.formatMessage({ defaultMessage: 'Yield' }),
+        size: 200,
+      }),
+      columnHelper.display({
+        id: 'link',
+        size: 10,
+        cell: (info) => (
+          <Button component={RouterLink} to={`/poy/${info.row.original.id}`}>
+            {intl.formatMessage({ defaultMessage: 'Detail' })}
+          </Button>
+        ),
+      }),
+    ],
+    [intl, token.decimals],
+  );
+
+  const table = useReactTable({
+    data: data ?? [],
+    columns,
+    initialState: {
+      pagination: {
+        pageIndex: 0,
+        pageSize: 10,
+      },
+    },
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    autoResetPageIndex: true,
+  });
+
+  if (isLoading) {
+    return (
+      <Stack
+        {...rest}
+        sx={[
+          { justifyContent: 'center', alignItems: 'center', minHeight: 400 },
+          ...(Array.isArray(rest?.sx) ? rest.sx : [rest.sx]),
+        ]}
+      >
+        <CircularProgress size={36} />
+      </Stack>
+    );
+  }
+
+  return (
+    <Stack {...rest}>
+      <TableContainer sx={{ overflowX: 'auto' }}>
+        <Table sx={{ '& .MuiTableCell-root': { px: { xs: 2, md: 3 } } }}>
+          <TableHead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableCell key={header.id} sx={{ width: header.getSize() }}>
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableHead>
+          <TableBody>
+            {table.getRowModel().rows.map((row) => (
+              <TableRow key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <TableCell
+                    key={cell.id}
+                    sx={{ width: cell.column.getSize() }}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {table.getPageCount() > 1 && (
+        <Stack
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <TablePagination
+            table={table}
+            buttonsProps={{
+              variant: 'outlined',
+              color: 'secondary',
+            }}
+          />
+        </Stack>
+      )}
+    </Stack>
+  );
+};

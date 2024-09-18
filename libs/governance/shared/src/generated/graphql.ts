@@ -18255,103 +18255,6 @@ export type LiquiditySourcesConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
-export type MakerDsrStrategiesConnection = {
-  __typename?: 'MakerDSRStrategiesConnection';
-  edges: Array<MakerDsrStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type MakerDsrStrategy = {
-  __typename?: 'MakerDSRStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-};
-
-export type MakerDsrStrategyEdge = {
-  __typename?: 'MakerDSRStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: MakerDsrStrategy;
-};
-
-export enum MakerDsrStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
-}
-
-export type MakerDsrStrategyWhereInput = {
-  AND?: InputMaybe<Array<MakerDsrStrategyWhereInput>>;
-  OR?: InputMaybe<Array<MakerDsrStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-};
-
 export type MaverickPool = {
   __typename?: 'MaverickPool';
   address: Scalars['String']['output'];
@@ -24049,6 +23952,191 @@ export type OTokenDailyStatsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type OTokenDripperState = {
+  __typename?: 'OTokenDripperState';
+  availableFunds: Scalars['BigInt']['output'];
+  blockNumber: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  dripDuration: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  lastCollect: Scalars['BigInt']['output'];
+  otoken: Scalars['String']['output'];
+  perBlock: Scalars['BigInt']['output'];
+  timestamp: Scalars['DateTime']['output'];
+};
+
+export type OTokenDripperStateEdge = {
+  __typename?: 'OTokenDripperStateEdge';
+  cursor: Scalars['String']['output'];
+  node: OTokenDripperState;
+};
+
+export enum OTokenDripperStateOrderByInput {
+  AvailableFundsAsc = 'availableFunds_ASC',
+  AvailableFundsAscNullsFirst = 'availableFunds_ASC_NULLS_FIRST',
+  AvailableFundsAscNullsLast = 'availableFunds_ASC_NULLS_LAST',
+  AvailableFundsDesc = 'availableFunds_DESC',
+  AvailableFundsDescNullsFirst = 'availableFunds_DESC_NULLS_FIRST',
+  AvailableFundsDescNullsLast = 'availableFunds_DESC_NULLS_LAST',
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  DripDurationAsc = 'dripDuration_ASC',
+  DripDurationAscNullsFirst = 'dripDuration_ASC_NULLS_FIRST',
+  DripDurationAscNullsLast = 'dripDuration_ASC_NULLS_LAST',
+  DripDurationDesc = 'dripDuration_DESC',
+  DripDurationDescNullsFirst = 'dripDuration_DESC_NULLS_FIRST',
+  DripDurationDescNullsLast = 'dripDuration_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  LastCollectAsc = 'lastCollect_ASC',
+  LastCollectAscNullsFirst = 'lastCollect_ASC_NULLS_FIRST',
+  LastCollectAscNullsLast = 'lastCollect_ASC_NULLS_LAST',
+  LastCollectDesc = 'lastCollect_DESC',
+  LastCollectDescNullsFirst = 'lastCollect_DESC_NULLS_FIRST',
+  LastCollectDescNullsLast = 'lastCollect_DESC_NULLS_LAST',
+  OtokenAsc = 'otoken_ASC',
+  OtokenAscNullsFirst = 'otoken_ASC_NULLS_FIRST',
+  OtokenAscNullsLast = 'otoken_ASC_NULLS_LAST',
+  OtokenDesc = 'otoken_DESC',
+  OtokenDescNullsFirst = 'otoken_DESC_NULLS_FIRST',
+  OtokenDescNullsLast = 'otoken_DESC_NULLS_LAST',
+  PerBlockAsc = 'perBlock_ASC',
+  PerBlockAscNullsFirst = 'perBlock_ASC_NULLS_FIRST',
+  PerBlockAscNullsLast = 'perBlock_ASC_NULLS_LAST',
+  PerBlockDesc = 'perBlock_DESC',
+  PerBlockDescNullsFirst = 'perBlock_DESC_NULLS_FIRST',
+  PerBlockDescNullsLast = 'perBlock_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST'
+}
+
+export type OTokenDripperStateWhereInput = {
+  AND?: InputMaybe<Array<OTokenDripperStateWhereInput>>;
+  OR?: InputMaybe<Array<OTokenDripperStateWhereInput>>;
+  availableFunds_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  availableFunds_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  availableFunds_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  availableFunds_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  dripDuration_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  dripDuration_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  dripDuration_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  dripDuration_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  lastCollect_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  lastCollect_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  lastCollect_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  lastCollect_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  otoken_contains?: InputMaybe<Scalars['String']['input']>;
+  otoken_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  otoken_endsWith?: InputMaybe<Scalars['String']['input']>;
+  otoken_eq?: InputMaybe<Scalars['String']['input']>;
+  otoken_gt?: InputMaybe<Scalars['String']['input']>;
+  otoken_gte?: InputMaybe<Scalars['String']['input']>;
+  otoken_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  otoken_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  otoken_lt?: InputMaybe<Scalars['String']['input']>;
+  otoken_lte?: InputMaybe<Scalars['String']['input']>;
+  otoken_not_contains?: InputMaybe<Scalars['String']['input']>;
+  otoken_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  otoken_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  otoken_not_eq?: InputMaybe<Scalars['String']['input']>;
+  otoken_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  otoken_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  otoken_startsWith?: InputMaybe<Scalars['String']['input']>;
+  perBlock_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  perBlock_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  perBlock_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  perBlock_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+};
+
+export type OTokenDripperStatesConnection = {
+  __typename?: 'OTokenDripperStatesConnection';
+  edges: Array<OTokenDripperStateEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type OTokenEdge = {
   __typename?: 'OTokenEdge';
   cursor: Scalars['String']['output'];
@@ -25209,135 +25297,6 @@ export type OTokensConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
-export type OusdAaveStrategiesConnection = {
-  __typename?: 'OUSDAaveStrategiesConnection';
-  edges: Array<OusdAaveStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdAaveStrategy = {
-  __typename?: 'OUSDAaveStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdAaveStrategyEdge = {
-  __typename?: 'OUSDAaveStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdAaveStrategy;
-};
-
-export enum OusdAaveStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdAaveStrategyWhereInput = {
-  AND?: InputMaybe<Array<OusdAaveStrategyWhereInput>>;
-  OR?: InputMaybe<Array<OusdAaveStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
 export type OusdCollateralDailyStat = {
   __typename?: 'OUSDCollateralDailyStat';
   amount: Scalars['BigInt']['output'];
@@ -25646,393 +25605,6 @@ export type OusdCollateralDailyStatsConnection = {
   edges: Array<OusdCollateralDailyStatEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
-};
-
-export type OusdCompoundStrategiesConnection = {
-  __typename?: 'OUSDCompoundStrategiesConnection';
-  edges: Array<OusdCompoundStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdCompoundStrategy = {
-  __typename?: 'OUSDCompoundStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdCompoundStrategyEdge = {
-  __typename?: 'OUSDCompoundStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdCompoundStrategy;
-};
-
-export enum OusdCompoundStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdCompoundStrategyWhereInput = {
-  AND?: InputMaybe<Array<OusdCompoundStrategyWhereInput>>;
-  OR?: InputMaybe<Array<OusdCompoundStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdConvexLusdPlus3Crv = {
-  __typename?: 'OUSDConvexLUSDPlus3Crv';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdConvexLusdPlus3CrvEdge = {
-  __typename?: 'OUSDConvexLUSDPlus3CrvEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdConvexLusdPlus3Crv;
-};
-
-export enum OusdConvexLusdPlus3CrvOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdConvexLusdPlus3CrvWhereInput = {
-  AND?: InputMaybe<Array<OusdConvexLusdPlus3CrvWhereInput>>;
-  OR?: InputMaybe<Array<OusdConvexLusdPlus3CrvWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdConvexLusdPlus3CrvsConnection = {
-  __typename?: 'OUSDConvexLUSDPlus3CrvsConnection';
-  edges: Array<OusdConvexLusdPlus3CrvEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdConvexStrategiesConnection = {
-  __typename?: 'OUSDConvexStrategiesConnection';
-  edges: Array<OusdConvexStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdConvexStrategy = {
-  __typename?: 'OUSDConvexStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdConvexStrategyEdge = {
-  __typename?: 'OUSDConvexStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdConvexStrategy;
-};
-
-export enum OusdConvexStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdConvexStrategyWhereInput = {
-  AND?: InputMaybe<Array<OusdConvexStrategyWhereInput>>;
-  OR?: InputMaybe<Array<OusdConvexStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
 export type OusdDailyStat = {
@@ -26584,522 +26156,6 @@ export type OusdDailyStatWhereInput = {
 export type OusdDailyStatsConnection = {
   __typename?: 'OUSDDailyStatsConnection';
   edges: Array<OusdDailyStatEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdFluxStrategiesConnection = {
-  __typename?: 'OUSDFluxStrategiesConnection';
-  edges: Array<OusdFluxStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdFluxStrategy = {
-  __typename?: 'OUSDFluxStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdFluxStrategyEdge = {
-  __typename?: 'OUSDFluxStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdFluxStrategy;
-};
-
-export enum OusdFluxStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdFluxStrategyWhereInput = {
-  AND?: InputMaybe<Array<OusdFluxStrategyWhereInput>>;
-  OR?: InputMaybe<Array<OusdFluxStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdMetaStrategiesConnection = {
-  __typename?: 'OUSDMetaStrategiesConnection';
-  edges: Array<OusdMetaStrategyEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdMetaStrategy = {
-  __typename?: 'OUSDMetaStrategy';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdMetaStrategyEdge = {
-  __typename?: 'OUSDMetaStrategyEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdMetaStrategy;
-};
-
-export enum OusdMetaStrategyOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdMetaStrategyWhereInput = {
-  AND?: InputMaybe<Array<OusdMetaStrategyWhereInput>>;
-  OR?: InputMaybe<Array<OusdMetaStrategyWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdMorphoAave = {
-  __typename?: 'OUSDMorphoAave';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdMorphoAaveEdge = {
-  __typename?: 'OUSDMorphoAaveEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdMorphoAave;
-};
-
-export enum OusdMorphoAaveOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdMorphoAaveWhereInput = {
-  AND?: InputMaybe<Array<OusdMorphoAaveWhereInput>>;
-  OR?: InputMaybe<Array<OusdMorphoAaveWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdMorphoAavesConnection = {
-  __typename?: 'OUSDMorphoAavesConnection';
-  edges: Array<OusdMorphoAaveEdge>;
-  pageInfo: PageInfo;
-  totalCount: Scalars['Int']['output'];
-};
-
-export type OusdMorphoCompound = {
-  __typename?: 'OUSDMorphoCompound';
-  blockNumber: Scalars['Int']['output'];
-  dai: Scalars['BigInt']['output'];
-  id: Scalars['String']['output'];
-  timestamp: Scalars['DateTime']['output'];
-  usdc: Scalars['BigInt']['output'];
-  usdt: Scalars['BigInt']['output'];
-};
-
-export type OusdMorphoCompoundEdge = {
-  __typename?: 'OUSDMorphoCompoundEdge';
-  cursor: Scalars['String']['output'];
-  node: OusdMorphoCompound;
-};
-
-export enum OusdMorphoCompoundOrderByInput {
-  BlockNumberAsc = 'blockNumber_ASC',
-  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
-  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
-  BlockNumberDesc = 'blockNumber_DESC',
-  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
-  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
-  DaiAsc = 'dai_ASC',
-  DaiAscNullsFirst = 'dai_ASC_NULLS_FIRST',
-  DaiAscNullsLast = 'dai_ASC_NULLS_LAST',
-  DaiDesc = 'dai_DESC',
-  DaiDescNullsFirst = 'dai_DESC_NULLS_FIRST',
-  DaiDescNullsLast = 'dai_DESC_NULLS_LAST',
-  IdAsc = 'id_ASC',
-  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
-  IdAscNullsLast = 'id_ASC_NULLS_LAST',
-  IdDesc = 'id_DESC',
-  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
-  IdDescNullsLast = 'id_DESC_NULLS_LAST',
-  TimestampAsc = 'timestamp_ASC',
-  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
-  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
-  TimestampDesc = 'timestamp_DESC',
-  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
-  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
-  UsdcAsc = 'usdc_ASC',
-  UsdcAscNullsFirst = 'usdc_ASC_NULLS_FIRST',
-  UsdcAscNullsLast = 'usdc_ASC_NULLS_LAST',
-  UsdcDesc = 'usdc_DESC',
-  UsdcDescNullsFirst = 'usdc_DESC_NULLS_FIRST',
-  UsdcDescNullsLast = 'usdc_DESC_NULLS_LAST',
-  UsdtAsc = 'usdt_ASC',
-  UsdtAscNullsFirst = 'usdt_ASC_NULLS_FIRST',
-  UsdtAscNullsLast = 'usdt_ASC_NULLS_LAST',
-  UsdtDesc = 'usdt_DESC',
-  UsdtDescNullsFirst = 'usdt_DESC_NULLS_FIRST',
-  UsdtDescNullsLast = 'usdt_DESC_NULLS_LAST'
-}
-
-export type OusdMorphoCompoundWhereInput = {
-  AND?: InputMaybe<Array<OusdMorphoCompoundWhereInput>>;
-  OR?: InputMaybe<Array<OusdMorphoCompoundWhereInput>>;
-  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
-  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
-  dai_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  dai_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  dai_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  dai_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  id_contains?: InputMaybe<Scalars['String']['input']>;
-  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_eq?: InputMaybe<Scalars['String']['input']>;
-  id_gt?: InputMaybe<Scalars['String']['input']>;
-  id_gte?: InputMaybe<Scalars['String']['input']>;
-  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  id_lt?: InputMaybe<Scalars['String']['input']>;
-  id_lte?: InputMaybe<Scalars['String']['input']>;
-  id_not_contains?: InputMaybe<Scalars['String']['input']>;
-  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
-  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
-  id_not_eq?: InputMaybe<Scalars['String']['input']>;
-  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
-  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
-  id_startsWith?: InputMaybe<Scalars['String']['input']>;
-  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
-  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  usdc_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdc_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdc_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdc_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_gte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-  usdt_isNull?: InputMaybe<Scalars['Boolean']['input']>;
-  usdt_lt?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_lte?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
-  usdt_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
-};
-
-export type OusdMorphoCompoundsConnection = {
-  __typename?: 'OUSDMorphoCompoundsConnection';
-  edges: Array<OusdMorphoCompoundEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -28040,9 +27096,6 @@ export type Query = {
   liquiditySourceById?: Maybe<LiquiditySource>;
   liquiditySources: Array<LiquiditySource>;
   liquiditySourcesConnection: LiquiditySourcesConnection;
-  makerDsrStrategies: Array<MakerDsrStrategy>;
-  makerDsrStrategiesConnection: MakerDsrStrategiesConnection;
-  makerDsrStrategyById?: Maybe<MakerDsrStrategy>;
   maverickPoolBalanceById?: Maybe<MaverickPoolBalance>;
   maverickPoolBalances: Array<MaverickPoolBalance>;
   maverickPoolBalancesConnection: MaverickPoolBalancesConnection;
@@ -28068,6 +27121,9 @@ export type Query = {
   oTokenDailyStatById?: Maybe<OTokenDailyStat>;
   oTokenDailyStats: Array<OTokenDailyStat>;
   oTokenDailyStatsConnection: OTokenDailyStatsConnection;
+  oTokenDripperStateById?: Maybe<OTokenDripperState>;
+  oTokenDripperStates: Array<OTokenDripperState>;
+  oTokenDripperStatesConnection: OTokenDripperStatesConnection;
   oTokenHistories: Array<OTokenHistory>;
   oTokenHistoriesConnection: OTokenHistoriesConnection;
   oTokenHistoryById?: Maybe<OTokenHistory>;
@@ -28146,36 +27202,12 @@ export type Query = {
   ogvProposalsConnection: OgvProposalsConnection;
   ogvs: Array<Ogv>;
   ogvsConnection: OgVsConnection;
-  ousdAaveStrategies: Array<OusdAaveStrategy>;
-  ousdAaveStrategiesConnection: OusdAaveStrategiesConnection;
-  ousdAaveStrategyById?: Maybe<OusdAaveStrategy>;
   ousdCollateralDailyStatById?: Maybe<OusdCollateralDailyStat>;
   ousdCollateralDailyStats: Array<OusdCollateralDailyStat>;
   ousdCollateralDailyStatsConnection: OusdCollateralDailyStatsConnection;
-  ousdCompoundStrategies: Array<OusdCompoundStrategy>;
-  ousdCompoundStrategiesConnection: OusdCompoundStrategiesConnection;
-  ousdCompoundStrategyById?: Maybe<OusdCompoundStrategy>;
-  ousdConvexLusdPlus3CrvById?: Maybe<OusdConvexLusdPlus3Crv>;
-  ousdConvexLusdPlus3Crvs: Array<OusdConvexLusdPlus3Crv>;
-  ousdConvexLusdPlus3CrvsConnection: OusdConvexLusdPlus3CrvsConnection;
-  ousdConvexStrategies: Array<OusdConvexStrategy>;
-  ousdConvexStrategiesConnection: OusdConvexStrategiesConnection;
-  ousdConvexStrategyById?: Maybe<OusdConvexStrategy>;
   ousdDailyStatById?: Maybe<OusdDailyStat>;
   ousdDailyStats: Array<OusdDailyStat>;
   ousdDailyStatsConnection: OusdDailyStatsConnection;
-  ousdFluxStrategies: Array<OusdFluxStrategy>;
-  ousdFluxStrategiesConnection: OusdFluxStrategiesConnection;
-  ousdFluxStrategyById?: Maybe<OusdFluxStrategy>;
-  ousdMetaStrategies: Array<OusdMetaStrategy>;
-  ousdMetaStrategiesConnection: OusdMetaStrategiesConnection;
-  ousdMetaStrategyById?: Maybe<OusdMetaStrategy>;
-  ousdMorphoAaveById?: Maybe<OusdMorphoAave>;
-  ousdMorphoAaves: Array<OusdMorphoAave>;
-  ousdMorphoAavesConnection: OusdMorphoAavesConnection;
-  ousdMorphoCompoundById?: Maybe<OusdMorphoCompound>;
-  ousdMorphoCompounds: Array<OusdMorphoCompound>;
-  ousdMorphoCompoundsConnection: OusdMorphoCompoundsConnection;
   ousdStrategyDailyStatById?: Maybe<OusdStrategyDailyStat>;
   ousdStrategyDailyStats: Array<OusdStrategyDailyStat>;
   ousdStrategyDailyStatsConnection: OusdStrategyDailyStatsConnection;
@@ -30141,27 +29173,6 @@ export type QueryLiquiditySourcesConnectionArgs = {
 };
 
 
-export type QueryMakerDsrStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<MakerDsrStrategyOrderByInput>>;
-  where?: InputMaybe<MakerDsrStrategyWhereInput>;
-};
-
-
-export type QueryMakerDsrStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<MakerDsrStrategyOrderByInput>;
-  where?: InputMaybe<MakerDsrStrategyWhereInput>;
-};
-
-
-export type QueryMakerDsrStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
 export type QueryMaverickPoolBalanceByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -30332,6 +29343,27 @@ export type QueryOTokenDailyStatsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<OTokenDailyStatOrderByInput>;
   where?: InputMaybe<OTokenDailyStatWhereInput>;
+};
+
+
+export type QueryOTokenDripperStateByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryOTokenDripperStatesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<OTokenDripperStateOrderByInput>>;
+  where?: InputMaybe<OTokenDripperStateWhereInput>;
+};
+
+
+export type QueryOTokenDripperStatesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<OTokenDripperStateOrderByInput>;
+  where?: InputMaybe<OTokenDripperStateWhereInput>;
 };
 
 
@@ -30876,27 +29908,6 @@ export type QueryOgvsConnectionArgs = {
 };
 
 
-export type QueryOusdAaveStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdAaveStrategyOrderByInput>>;
-  where?: InputMaybe<OusdAaveStrategyWhereInput>;
-};
-
-
-export type QueryOusdAaveStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdAaveStrategyOrderByInput>;
-  where?: InputMaybe<OusdAaveStrategyWhereInput>;
-};
-
-
-export type QueryOusdAaveStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
 export type QueryOusdCollateralDailyStatByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -30918,69 +29929,6 @@ export type QueryOusdCollateralDailyStatsConnectionArgs = {
 };
 
 
-export type QueryOusdCompoundStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdCompoundStrategyOrderByInput>>;
-  where?: InputMaybe<OusdCompoundStrategyWhereInput>;
-};
-
-
-export type QueryOusdCompoundStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdCompoundStrategyOrderByInput>;
-  where?: InputMaybe<OusdCompoundStrategyWhereInput>;
-};
-
-
-export type QueryOusdCompoundStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdConvexLusdPlus3CrvByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdConvexLusdPlus3CrvsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdConvexLusdPlus3CrvOrderByInput>>;
-  where?: InputMaybe<OusdConvexLusdPlus3CrvWhereInput>;
-};
-
-
-export type QueryOusdConvexLusdPlus3CrvsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdConvexLusdPlus3CrvOrderByInput>;
-  where?: InputMaybe<OusdConvexLusdPlus3CrvWhereInput>;
-};
-
-
-export type QueryOusdConvexStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdConvexStrategyOrderByInput>>;
-  where?: InputMaybe<OusdConvexStrategyWhereInput>;
-};
-
-
-export type QueryOusdConvexStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdConvexStrategyOrderByInput>;
-  where?: InputMaybe<OusdConvexStrategyWhereInput>;
-};
-
-
-export type QueryOusdConvexStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
 export type QueryOusdDailyStatByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -30999,90 +29947,6 @@ export type QueryOusdDailyStatsConnectionArgs = {
   first?: InputMaybe<Scalars['Int']['input']>;
   orderBy: Array<OusdDailyStatOrderByInput>;
   where?: InputMaybe<OusdDailyStatWhereInput>;
-};
-
-
-export type QueryOusdFluxStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdFluxStrategyOrderByInput>>;
-  where?: InputMaybe<OusdFluxStrategyWhereInput>;
-};
-
-
-export type QueryOusdFluxStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdFluxStrategyOrderByInput>;
-  where?: InputMaybe<OusdFluxStrategyWhereInput>;
-};
-
-
-export type QueryOusdFluxStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdMetaStrategiesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdMetaStrategyOrderByInput>>;
-  where?: InputMaybe<OusdMetaStrategyWhereInput>;
-};
-
-
-export type QueryOusdMetaStrategiesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdMetaStrategyOrderByInput>;
-  where?: InputMaybe<OusdMetaStrategyWhereInput>;
-};
-
-
-export type QueryOusdMetaStrategyByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdMorphoAaveByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdMorphoAavesArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdMorphoAaveOrderByInput>>;
-  where?: InputMaybe<OusdMorphoAaveWhereInput>;
-};
-
-
-export type QueryOusdMorphoAavesConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdMorphoAaveOrderByInput>;
-  where?: InputMaybe<OusdMorphoAaveWhereInput>;
-};
-
-
-export type QueryOusdMorphoCompoundByIdArgs = {
-  id: Scalars['String']['input'];
-};
-
-
-export type QueryOusdMorphoCompoundsArgs = {
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<OusdMorphoCompoundOrderByInput>>;
-  where?: InputMaybe<OusdMorphoCompoundWhereInput>;
-};
-
-
-export type QueryOusdMorphoCompoundsConnectionArgs = {
-  after?: InputMaybe<Scalars['String']['input']>;
-  first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<OusdMorphoCompoundOrderByInput>;
-  where?: InputMaybe<OusdMorphoCompoundWhereInput>;
 };
 
 
