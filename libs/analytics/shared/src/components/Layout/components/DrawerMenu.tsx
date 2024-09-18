@@ -13,7 +13,6 @@ import {
   MenuList,
   Stack,
   SvgIcon,
-  Toolbar,
   Typography,
 } from '@mui/material';
 import { ExpandIcon } from '@origin/shared/components';
@@ -56,43 +55,43 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
       ]}
     >
-      <Toolbar>
-        <Stack
-          direction="row"
+      <Stack
+        direction="row"
+        sx={(theme) => ({
+          height: theme.mixins.toolbar.minHeight,
+          justifyContent: 'space-between',
+          width: 1,
+          px: 2,
+          py: 1,
+        })}
+      >
+        <Box
+          component={RouterLink}
+          to="/"
           sx={{
-            justifyContent: 'space-between',
-            width: 1,
-            '&&&': { px: 0 },
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            svg: { height: { xs: 16, md: 24 }, width: 1 },
           }}
         >
-          <Box
-            component={RouterLink}
-            to="/"
-            sx={{
-              display: 'flex',
-              flexDirection: 'row',
-              alignItems: 'center',
-              svg: { height: { xs: 16, md: 24 }, width: 1 },
-            }}
-          >
-            <OriginLabel />
-          </Box>
-          <IconButton
-            onClick={handleToggleDrawer}
-            sx={(theme) => ({
-              width: 36,
-              height: 36,
-              border: `1px solid ${theme.palette.divider}`,
-            })}
-          >
-            {isDrawerOpen ? (
-              <FaXmarkRegular sx={{ fontSize: 16 }} />
-            ) : (
-              <FaChevronRightRegular sx={{ fontSize: 16 }} />
-            )}
-          </IconButton>
-        </Stack>
-      </Toolbar>
+          <OriginLabel />
+        </Box>
+        <IconButton
+          onClick={handleToggleDrawer}
+          sx={(theme) => ({
+            width: 36,
+            height: 36,
+            border: `1px solid ${theme.palette.divider}`,
+          })}
+        >
+          {isDrawerOpen ? (
+            <FaXmarkRegular sx={{ fontSize: 16 }} />
+          ) : (
+            <FaChevronRightRegular sx={{ fontSize: 16 }} />
+          )}
+        </IconButton>
+      </Stack>
 
       <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
         {visibleRoutes?.map((route, i) => (

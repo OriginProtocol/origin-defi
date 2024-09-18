@@ -1,11 +1,4 @@
-import {
-  Button,
-  Drawer,
-  Stack,
-  Toolbar,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { Button, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { FaBarsRegular } from '@origin/shared/icons';
 import { Outlet } from 'react-router-dom';
 
@@ -29,7 +22,14 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
         minWidth: 370,
       }}
     >
-      <Toolbar>
+      <Stack
+        sx={(theme) => ({
+          height: theme.mixins.toolbar.minHeight,
+          alignItems: 'flex-start',
+          px: 2,
+          py: 1,
+        })}
+      >
         <Button
           variant="outlined"
           color="secondary"
@@ -38,7 +38,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
         >
           <FaBarsRegular />
         </Button>
-      </Toolbar>
+      </Stack>
       {isSm ? (
         <Drawer
           open={isDrawerOpen}

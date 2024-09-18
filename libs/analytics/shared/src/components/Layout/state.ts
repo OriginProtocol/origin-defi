@@ -18,14 +18,14 @@ export const { Provider: LayoutProvider, useTracked: useLayoutState } =
     });
     const [state, setState] = useState<LayoutState>({
       drawerWidth: DRAWER_WIDTH,
-      isDrawerOpen: true,
+      isDrawerOpen: !isSm,
       width: Math.max(0, width - DRAWER_WIDTH),
       height,
     });
 
     useEffect(() => {
       const dWidth = isSm
-        ? MARGIN_WIDTH
+        ? 49
         : state.isDrawerOpen
           ? DRAWER_WIDTH + 48
           : MARGIN_WIDTH * 2;
