@@ -81,7 +81,16 @@ export type SupportedCurrency =
   | '42161:OETH'
   | Extract<
       TokenId,
-      '1:ETH' | '1:frxETH' | '1:OETH' | '1:OUSD' | '1:primeETH' | '42161:ETH'
+      | '1:ETH'
+      | '1:frxETH'
+      | '1:OETH'
+      | '1:wOETH'
+      | '1:OUSD'
+      | '1:wOUSD'
+      | '1:primeETH'
+      | '42161:ETH'
+      | '8453:superOETHb'
+      | '8453:wsuperOETHb'
     >;
 
 export type SupportedTokenPrice = keyof typeof priceOptions;
