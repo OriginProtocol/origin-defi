@@ -19,10 +19,23 @@ export type OTokenStatsConnectionQueryVariables = Types.Exact<{
   orderBy?: Types.InputMaybe<Array<Types.OTokenDailyStatOrderByInput> | Types.OTokenDailyStatOrderByInput>;
   first?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   after?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
 }>;
 
 
 export type OTokenStatsConnectionQuery = { __typename?: 'Query', oTokenDailyStatsConnection: { __typename?: 'OTokenDailyStatsConnection', totalCount: number, edges: Array<{ __typename?: 'OTokenDailyStatEdge', node: { __typename?: 'OTokenDailyStat', id: string, timestamp: string, rebasingSupply: string, yield: string, fees: string, apy: number } }> } };
+
+export type OTokenStatAndRebaseByIdQueryVariables = Types.Exact<{
+  id: Types.Scalars['String']['input'];
+  token: Types.Scalars['String']['input'];
+  chainId: Types.Scalars['Int']['input'];
+  orderBy?: Types.InputMaybe<Array<Types.OTokenRebaseOrderByInput> | Types.OTokenRebaseOrderByInput>;
+  from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  to?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+}>;
+
+
+export type OTokenStatAndRebaseByIdQuery = { __typename?: 'Query', oTokenDailyStatById?: { __typename?: 'OTokenDailyStat', rebasingSupply: string, timestamp: string, yield: string, apy: number, fees: string, amoSupply?: string | null, totalSupply: string, nonRebasingSupply: string } | null, oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, feeETH: string, totalSupply: string, txHash: string, yieldETH: string, timestamp: string }> };
 
 
 
@@ -74,10 +87,10 @@ useOTokenStatsQuery.getKey = (variables: OTokenStatsQueryVariables) => ['oTokenS
 useOTokenStatsQuery.fetcher = (variables: OTokenStatsQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatsQuery, OTokenStatsQueryVariables>(OTokenStatsDocument, variables, options);
 
 export const OTokenStatsConnectionDocument = `
-    query oTokenStatsConnection($token: String!, $chainId: Int!, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $first: Int, $after: String) {
+    query oTokenStatsConnection($token: String!, $chainId: Int!, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $first: Int, $after: String, $from: DateTime) {
   oTokenDailyStatsConnection(
     orderBy: $orderBy
-    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId}
+    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
     first: $first
     after: $after
   ) {
@@ -116,3 +129,50 @@ useOTokenStatsConnectionQuery.getKey = (variables: OTokenStatsConnectionQueryVar
 
 
 useOTokenStatsConnectionQuery.fetcher = (variables: OTokenStatsConnectionQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatsConnectionQuery, OTokenStatsConnectionQueryVariables>(OTokenStatsConnectionDocument, variables, options);
+
+export const OTokenStatAndRebaseByIdDocument = `
+    query oTokenStatAndRebaseById($id: String!, $token: String!, $chainId: Int!, $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime) {
+  oTokenDailyStatById(id: $id) {
+    rebasingSupply
+    timestamp
+    yield
+    apy
+    fees
+    amoSupply
+    totalSupply
+    nonRebasingSupply
+  }
+  oTokenRebases(
+    orderBy: $orderBy
+    where: {timestamp_gte: $from, timestamp_lt: $to, otoken_containsInsensitive: $token, chainId_eq: $chainId}
+  ) {
+    blockNumber
+    feeETH
+    totalSupply
+    txHash
+    yieldETH
+    timestamp
+  }
+}
+    `;
+
+export const useOTokenStatAndRebaseByIdQuery = <
+      TData = OTokenStatAndRebaseByIdQuery,
+      TError = unknown
+    >(
+      variables: OTokenStatAndRebaseByIdQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenStatAndRebaseByIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenStatAndRebaseByIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OTokenStatAndRebaseByIdQuery, TError, TData>(
+      {
+    queryKey: ['oTokenStatAndRebaseById', variables],
+    queryFn: graphqlClient<OTokenStatAndRebaseByIdQuery, OTokenStatAndRebaseByIdQueryVariables>(OTokenStatAndRebaseByIdDocument, variables),
+    ...options
+  }
+    )};
+
+useOTokenStatAndRebaseByIdQuery.getKey = (variables: OTokenStatAndRebaseByIdQueryVariables) => ['oTokenStatAndRebaseById', variables];
+
+
+useOTokenStatAndRebaseByIdQuery.fetcher = (variables: OTokenStatAndRebaseByIdQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatAndRebaseByIdQuery, OTokenStatAndRebaseByIdQueryVariables>(OTokenStatAndRebaseByIdDocument, variables, options);

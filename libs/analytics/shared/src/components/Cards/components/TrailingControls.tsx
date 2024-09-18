@@ -6,7 +6,7 @@ import { FaChevronDownRegular } from '@origin/shared/icons';
 import { not } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 
-import type { SelectProps } from '@mui/material';
+import type { ButtonProps } from '@mui/material';
 
 export const trailingOptions = {
   apy7: defineMessage({ defaultMessage: '7-Day' }),
@@ -19,7 +19,7 @@ export type Trailing = keyof typeof trailingOptions;
 export type TrailingControlsProps = {
   trailing: Trailing;
   setTrailing: (value: Trailing) => void;
-} & SelectProps;
+} & Omit<ButtonProps, 'ref' | 'onClick'>;
 
 export const TrailingControls = ({
   trailing,
@@ -40,6 +40,7 @@ export const TrailingControls = ({
         onClick={() => {
           setOpen(not);
         }}
+        {...rest}
       >
         <Stack
           direction="row"

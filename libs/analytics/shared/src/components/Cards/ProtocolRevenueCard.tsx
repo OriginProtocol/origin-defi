@@ -1,27 +1,27 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 import {
-  Button,
   Card,
   CardContent,
   CircularProgress,
   Stack,
   Typography,
 } from '@mui/material';
-import { MenuItem } from '@mui/material';
-import { ClickAwayMenu, LoadingLabel } from '@origin/shared/components';
-import { FaChevronDownRegular } from '@origin/shared/icons';
+import { LoadingLabel } from '@origin/shared/components';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last, not } from 'ramda';
-import { defineMessage, useIntl } from 'react-intl';
+import { last } from 'ramda';
+import { useIntl } from 'react-intl';
 
+import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { BarChart } from '../Charts/BarChart';
-import { LimitControls } from '../LimitControls';
+import { LimitControls } from './components/LimitControls';
+import { MAControls } from './components/MovingAvgControls';
 
-import type { SelectProps } from '@mui/material';
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+
+import type { MA } from './components/MovingAvgControls';
 
 export type ProtocolRevenueCardProps = {
   token: Token;
@@ -37,12 +37,14 @@ export const ProtocolRevenueCard = ({
   from,
   ...rest
 }: ProtocolRevenueCardProps) => {
+  const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [ma, setMa] = useState<MA>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
-    { token, limit, from },
+    { token, limit, from: from ?? config?.from },
     { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.fees })) },
   );
   const { data: feesAvgData, isLoading: isFeesAvgLoading } = useTokenChartStats(
@@ -111,72 +113,5 @@ export const ProtocolRevenueCard = ({
         />
       )}
     </Card>
-  );
-};
-
-const maOptions = {
-  feesMovingAvg7Days: defineMessage({ defaultMessage: '7-Day MA' }),
-  feesMovingAvg30Days: defineMessage({ defaultMessage: '30-Day MA' }),
-};
-
-type MA = keyof typeof maOptions;
-
-type MaControlsProps = {
-  ma: MA;
-  setMa: (value: MA) => void;
-} & SelectProps;
-
-const MAControls = ({ ma, setMa, ...rest }: MaControlsProps) => {
-  const intl = useIntl();
-  const [open, setOpen] = useState(false);
-  const anchorEl = useRef(null);
-
-  return (
-    <>
-      <Button
-        variant="outlined"
-        color="secondary"
-        size="small"
-        ref={anchorEl}
-        onClick={() => {
-          setOpen(not);
-        }}
-      >
-        <Stack
-          direction="row"
-          alignItems="center"
-          justifyContent="space-between"
-          spacing={1}
-        >
-          <Typography>{intl.formatMessage(maOptions[ma])}</Typography>
-          <FaChevronDownRegular sx={{ fontSize: 12 }} />
-        </Stack>
-      </Button>
-      <ClickAwayMenu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={() => {
-          setOpen(false);
-        }}
-        paperProps={{ sx: { p: 0 } }}
-      >
-        {Object.entries(maOptions).map(([avg, label]) => (
-          <MenuItem
-            key={avg}
-            value={avg}
-            onClick={() => {
-              setMa(avg as keyof typeof maOptions);
-              setOpen(false);
-            }}
-            sx={[
-              (theme) => ({ typography: theme.typography.body3 }),
-              ...(avg === ma ? [{ backgroundColor: 'secondary.main' }] : []),
-            ]}
-          >
-            {intl.formatMessage(label)}
-          </MenuItem>
-        ))}
-      </ClickAwayMenu>
-    </>
   );
 };

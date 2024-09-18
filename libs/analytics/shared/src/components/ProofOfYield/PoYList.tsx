@@ -25,6 +25,7 @@ import { toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
+import { oTokenConfig } from '../../constants';
 import { useOTokenStatsConnectionQuery } from '../../queries';
 
 import type { StackProps } from '@mui/material';
@@ -32,20 +33,23 @@ import type { Token } from '@origin/shared/contracts';
 
 import type { OTokenStatsConnectionQuery } from '../../queries';
 
-export type ProofOfYieldProps = { token: Token } & StackProps;
+export type PoYListProps = { token: Token; from?: string } & StackProps;
 
 const columnHelper =
   createColumnHelper<
     OTokenStatsConnectionQuery['oTokenDailyStatsConnection']['edges'][number]['node']
   >();
 
-export const ProofOfYield = ({ token, ...rest }: ProofOfYieldProps) => {
+export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
+  const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+
   const intl = useIntl();
   const { data, isLoading } = useOTokenStatsConnectionQuery(
     {
       token: token.address ?? ZERO_ADDRESS,
       chainId: token.chainId,
       first: undefined,
+      from: from ?? config?.from,
     },
     {
       select: (data) =>
@@ -89,7 +93,7 @@ export const ProofOfYield = ({ token, ...rest }: ProofOfYieldProps) => {
         id: 'link',
         size: 10,
         cell: (info) => (
-          <Button component={RouterLink} to={`/poy/${info.row.original.id}`}>
+          <Button component={RouterLink} to={info.row.original.id}>
             {intl.formatMessage({ defaultMessage: 'Detail' })}
           </Button>
         ),

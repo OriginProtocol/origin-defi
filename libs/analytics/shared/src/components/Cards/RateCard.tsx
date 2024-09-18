@@ -12,16 +12,17 @@ import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
+import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
-import { LimitControls } from '../LimitControls';
-import { TrailingControls } from '../TrailingControls';
+import { LimitControls } from './components/LimitControls';
+import { TrailingControls } from './components/TrailingControls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { ChartData } from '../Charts';
-import type { Trailing } from '../TrailingControls';
+import type { Trailing } from './components/TrailingControls';
 
 type SupportedCurrency = 'ETH' | 'USD';
 
@@ -41,12 +42,14 @@ export const RateCard = ({
   from,
   ...rest
 }: RateCardProps) => {
+  const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const { data, isLoading } = useTokenChartStats(
-    { token, limit, from },
+    { token, limit, from: from ?? config?.from },
     {
       select: (data) =>
         data.map((d) => ({

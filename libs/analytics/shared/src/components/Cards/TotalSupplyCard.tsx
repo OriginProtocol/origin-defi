@@ -12,9 +12,10 @@ import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
+import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { AreaChart } from '../Charts';
-import { LimitControls } from '../LimitControls';
+import { LimitControls } from './components/LimitControls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -35,11 +36,13 @@ export const TotalSupplyCard = ({
   from,
   ...rest
 }: TotalSupplyCardProps) => {
+  const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
+
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const { data, isLoading } = useTokenChartStats(
-    { token, limit, from },
+    { token, limit, from: from ?? config?.from },
     {
       select: (data) => data.map((d) => ({ x: d.timestamp, y: d.totalSupply })),
     },

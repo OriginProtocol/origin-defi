@@ -38,10 +38,15 @@ query oTokenStatsConnection(
   $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
   $first: Int
   $after: String
+  $from: DateTime
 ) {
   oTokenDailyStatsConnection(
     orderBy: $orderBy
-    where: { otoken_containsInsensitive: $token, chainId_eq: $chainId }
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+    }
     first: $first
     after: $after
   ) {
@@ -56,5 +61,41 @@ query oTokenStatsConnection(
       }
     }
     totalCount
+  }
+}
+
+query oTokenStatAndRebaseById(
+  $id: String!
+  $token: String!
+  $chainId: Int!
+  $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+  $to: DateTime
+) {
+  oTokenDailyStatById(id: $id) {
+    rebasingSupply
+    timestamp
+    yield
+    apy
+    fees
+    amoSupply
+    totalSupply
+    nonRebasingSupply
+  }
+  oTokenRebases(
+    orderBy: $orderBy
+    where: {
+      timestamp_gte: $from
+      timestamp_lt: $to
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+    }
+  ) {
+    blockNumber
+    feeETH
+    totalSupply
+    txHash
+    yieldETH
+    timestamp
   }
 }

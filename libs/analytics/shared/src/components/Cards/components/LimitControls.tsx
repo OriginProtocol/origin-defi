@@ -12,13 +12,11 @@ import { FaBarsRegular } from '@origin/shared/icons';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import type { ButtonGroupProps } from '@mui/material';
-
 export type LimitControlsProps = {
   limit: number | undefined;
   setLimit: (value: number | undefined) => void;
   disableAll?: boolean;
-} & ButtonGroupProps;
+};
 
 export const LimitControls = ({
   limit,

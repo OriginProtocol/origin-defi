@@ -184,7 +184,6 @@ export const useTokenChartStats = <TResult = Result[]>(
   const queryClient = useQueryClient();
 
   return useQuery({
-    staleTime: 60 * 60,
     ...options,
     queryKey: getKey(token, limit, from, orderBy),
     queryFn: fetcher(queryClient),
