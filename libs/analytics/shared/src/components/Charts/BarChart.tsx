@@ -57,10 +57,9 @@ export const BarChart = ({
     <Box
       {...rest}
       key={height + width}
-      style={{ height, width, position: 'relative' }}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { width, height },
+        { position: 'relative' },
       ]}
       onMouseLeave={() => {
         setActiveIdx(null);

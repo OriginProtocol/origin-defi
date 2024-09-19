@@ -3,11 +3,8 @@ import type { ComponentType } from 'react';
 import type { MessageDescriptor } from 'react-intl';
 
 export type LayoutState = {
-  drawerWidth: number;
   isDrawerOpen: boolean;
-  width: number;
-  cardWidth: number;
-  height: number;
+  contentWidth: number;
 };
 
 export type NavItem = {

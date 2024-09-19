@@ -108,7 +108,7 @@ export const LineChart = ({
       key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { width, height, position: 'relative' },
+        { position: 'relative' },
       ]}
     >
       <svg width={width} height={height}>

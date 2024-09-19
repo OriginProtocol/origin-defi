@@ -2,6 +2,7 @@ import { Button, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { FaBarsRegular } from '@origin/shared/icons';
 import { Outlet } from 'react-router-dom';
 
+import { DRAWER_SM_OPEN_WIDTH, VIEWPORT_MIN_WIDTH } from '../constants';
 import { useLayout } from '../hooks';
 import { LayoutProvider } from '../state';
 import { DrawerMenu } from './DrawerMenu';
@@ -15,14 +16,14 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const [
-    { drawerWidth, isDrawerOpen, width },
+    { isDrawerOpen, contentWidth },
     { handleToggleDrawer, handleSetDrawer },
   ] = useLayout();
 
   return (
     <Stack
       sx={{
-        minWidth: 370,
+        minWidth: VIEWPORT_MIN_WIDTH,
       }}
     >
       <Stack
@@ -52,7 +53,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
             sx={{
               '& .MuiDrawer-paper': {
                 boxSizing: 'border-box',
-                width: drawerWidth,
+                width: DRAWER_SM_OPEN_WIDTH,
               },
             }}
           >
@@ -66,10 +67,11 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
         <Stack
           component="main"
           sx={{
-            alignItems: 'center',
+            alignItems: 'stretch',
             flexGrow: 1,
-            width,
+            width: contentWidth,
             overflowX: 'hidden',
+            px: { xs: 1, md: 2 },
           }}
         >
           <Outlet />

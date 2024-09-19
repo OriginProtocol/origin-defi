@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -29,7 +30,6 @@ type SupportedCurrency = 'ETH' | 'USD';
 export type RateCardProps = {
   token: Token;
   currency: SupportedCurrency;
-  width: number;
   height: number;
   from?: string;
 } & CardProps;
@@ -37,7 +37,6 @@ export type RateCardProps = {
 export const RateCard = ({
   token,
   currency,
-  width,
   height,
   from,
   ...rest
@@ -48,6 +47,7 @@ export const RateCard = ({
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
     {
@@ -59,10 +59,11 @@ export const RateCard = ({
     },
   );
 
+  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest}>
+    <Card {...rest} ref={ref}>
       <CardContent>
         <Stack
           direction="row"
@@ -97,10 +98,14 @@ export const RateCard = ({
           </Stack>
         </Stack>
       </CardContent>
-
       {isLoading ? (
         <Stack
-          sx={{ width, height, justifyContent: 'center', alignItems: 'center' }}
+          sx={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <CircularProgress size={36} />
         </Stack>
@@ -142,7 +147,7 @@ const Tooltip = ({ data, ...rest }: TooltipProps) => {
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.primary' }}>
         {intl.formatMessage(
-          { defaultMessage: 'Exchange rate: {rate}%' },
+          { defaultMessage: 'Exchange rate: {rate}' },
           {
             rate: intl.formatNumber(data.y, {
               maximumFractionDigits: 5,

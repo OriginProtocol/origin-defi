@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -24,14 +25,12 @@ import type { ChartData } from '../Charts';
 
 export type WrappedSupplyCardProps = {
   token: Token;
-  width: number;
   height: number;
   from?: string;
 } & CardProps;
 
 export const WrappedSupplyCard = ({
   token,
-  width,
   height,
   from,
   ...rest
@@ -41,6 +40,7 @@ export const WrappedSupplyCard = ({
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
     {
@@ -49,10 +49,11 @@ export const WrappedSupplyCard = ({
     },
   );
 
+  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest}>
+    <Card {...rest} ref={ref}>
       <CardContent>
         <Stack
           direction="row"
@@ -78,7 +79,12 @@ export const WrappedSupplyCard = ({
       </CardContent>
       {isLoading ? (
         <Stack
-          sx={{ width, height, justifyContent: 'center', alignItems: 'center' }}
+          sx={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <CircularProgress size={36} />
         </Stack>

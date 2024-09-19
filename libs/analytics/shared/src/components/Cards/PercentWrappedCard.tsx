@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -27,14 +28,12 @@ import type { Trailing } from './components/TrailingControls';
 
 export type PercentWrappedCardProps = {
   token: Token;
-  width: number;
   height: number;
   from?: string;
 } & CardProps;
 
 export const PercentWrappedCard = ({
   token,
-  width,
   height,
   from,
   ...rest
@@ -45,6 +44,7 @@ export const PercentWrappedCard = ({
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
     {
@@ -53,10 +53,11 @@ export const PercentWrappedCard = ({
     },
   );
 
+  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest}>
+    <Card {...rest} ref={ref}>
       <CardContent>
         <Stack
           direction="row"
@@ -86,10 +87,14 @@ export const PercentWrappedCard = ({
           </Stack>
         </Stack>
       </CardContent>
-
       {isLoading ? (
         <Stack
-          sx={{ width, height, justifyContent: 'center', alignItems: 'center' }}
+          sx={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <CircularProgress size={36} />
         </Stack>

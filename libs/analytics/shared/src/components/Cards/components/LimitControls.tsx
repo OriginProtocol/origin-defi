@@ -26,20 +26,30 @@ export const LimitControls = ({
 }: LimitControlsProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const isSm = useMediaQuery(theme.breakpoints.down('sm'));
   const [open, setOpen] = useState(false);
   const anchorEl = useRef(null);
 
   const options = [
-    { value: 7, label: intl.formatMessage({ defaultMessage: '1W' }) },
-    { value: 30, label: intl.formatMessage({ defaultMessage: '1M' }) },
+    {
+      value: 7,
+      label: intl.formatMessage({ defaultMessage: '1W' }),
+      longLabel: intl.formatMessage({ defaultMessage: '1 week' }),
+    },
+    {
+      value: 30,
+      label: intl.formatMessage({ defaultMessage: '1M' }),
+      longLabel: intl.formatMessage({ defaultMessage: '1 month' }),
+    },
     {
       value: Math.floor((365 / 12) * 6),
       label: intl.formatMessage({ defaultMessage: '6M' }),
+      longLabel: intl.formatMessage({ defaultMessage: '6 months' }),
     },
     {
       value: 365,
       label: intl.formatMessage({ defaultMessage: '1YR' }),
+      longLabel: intl.formatMessage({ defaultMessage: '1 year' }),
     },
     ...(disableAll
       ? []
@@ -47,6 +57,7 @@ export const LimitControls = ({
           {
             value: undefined,
             label: intl.formatMessage({ defaultMessage: 'All' }),
+            longLabel: intl.formatMessage({ defaultMessage: 'All' }),
           },
         ]),
   ];
@@ -86,7 +97,7 @@ export const LimitControls = ({
                 : []),
             ]}
           >
-            {o.label}
+            {o.longLabel}
           </MenuItem>
         ))}
       </ClickAwayMenu>

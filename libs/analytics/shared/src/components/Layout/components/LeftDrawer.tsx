@@ -1,12 +1,13 @@
 import { Drawer, useTheme } from '@mui/material';
 
+import { DRAWER_MD_COLLAPSED_WIDTH, DRAWER_MD_OPEN_WIDTH } from '../constants';
 import { useLayout } from '../hooks';
 
 import type { CSSObject, Theme } from '@mui/material';
 import type { Children } from '@origin/shared/utils';
 
-const openedMixin = (width: number, theme: Theme): CSSObject => ({
-  width,
+const openedMixin = (theme: Theme): CSSObject => ({
+  width: DRAWER_MD_OPEN_WIDTH,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.enteringScreen,
@@ -15,21 +16,19 @@ const openedMixin = (width: number, theme: Theme): CSSObject => ({
 });
 
 const closedMixin = (theme: Theme): CSSObject => ({
+  width: DRAWER_MD_COLLAPSED_WIDTH,
   transition: theme.transitions.create('width', {
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen,
   }),
   overflowX: 'hidden',
-  width: 65,
 });
 
 export const LeftDrawer = ({ children }: Children) => {
   const theme = useTheme();
-  const [{ isDrawerOpen, drawerWidth }, { handleToggleDrawer }] = useLayout();
+  const [{ isDrawerOpen }, { handleToggleDrawer }] = useLayout();
 
-  const mixin = isDrawerOpen
-    ? openedMixin(drawerWidth, theme)
-    : closedMixin(theme);
+  const mixin = isDrawerOpen ? openedMixin(theme) : closedMixin(theme);
 
   return (
     <Drawer
@@ -39,7 +38,7 @@ export const LeftDrawer = ({ children }: Children) => {
       onClose={handleToggleDrawer}
       sx={[
         {
-          width: drawerWidth,
+          width: mixin.width,
           flexShrink: 0,
           whiteSpace: 'nowrap',
           boxSizing: 'border-box',

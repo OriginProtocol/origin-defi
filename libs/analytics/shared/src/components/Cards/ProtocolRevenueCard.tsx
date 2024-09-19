@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -25,14 +26,12 @@ import type { MA } from './components/MovingAvgControls';
 
 export type ProtocolRevenueCardProps = {
   token: Token;
-  width: number;
   height: number;
   from?: string;
 } & CardProps;
 
 export const ProtocolRevenueCard = ({
   token,
-  width,
   height,
   from,
   ...rest
@@ -43,6 +42,7 @@ export const ProtocolRevenueCard = ({
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [ma, setMa] = useState<MA>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
     { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.fees })) },
@@ -54,11 +54,12 @@ export const ProtocolRevenueCard = ({
     },
   );
 
+  const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(feesData ?? []) : feesData?.[hoverIdx];
 
   return (
-    <Card {...rest}>
+    <Card {...rest} ref={ref}>
       <CardContent>
         <Stack
           direction="row"
@@ -66,7 +67,7 @@ export const ProtocolRevenueCard = ({
         >
           <Stack spacing={0.5}>
             <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Daily protocol revenue' })}
+              {intl.formatMessage({ defaultMessage: 'Protocol revenue' })}
             </Typography>
             <LoadingLabel
               isLoading={isFeesLoading || isFeesAvgLoading}
@@ -93,7 +94,12 @@ export const ProtocolRevenueCard = ({
       </CardContent>
       {isFeesLoading || isFeesAvgLoading ? (
         <Stack
-          sx={{ width, height, justifyContent: 'center', alignItems: 'center' }}
+          sx={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <CircularProgress size={36} />
         </Stack>

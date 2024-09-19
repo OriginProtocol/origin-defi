@@ -107,7 +107,7 @@ export const AreaChart = ({
       key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { height, width, position: 'relative' },
+        { position: 'relative' },
       ]}
     >
       <svg width={width} height={height}>

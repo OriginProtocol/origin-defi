@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
+import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -27,33 +28,28 @@ import type { Trailing } from './components/TrailingControls';
 
 export type ApyCardProps = {
   token: Token;
-  width: number;
   height: number;
   from?: string;
 } & CardProps;
 
-export const ApyCard = ({
-  token,
-  width,
-  height,
-  from,
-  ...rest
-}: ApyCardProps) => {
+export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
   const [limit, setLimit] = useState<number | undefined>(undefined);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
     { select: (data) => data.map((d) => ({ x: d.timestamp, y: d[trailing] })) },
   );
 
+  const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
-    <Card {...rest}>
+    <Card {...rest} ref={ref}>
       <CardContent>
         <Stack
           direction="row"
@@ -61,7 +57,7 @@ export const ApyCard = ({
         >
           <Stack spacing={0.5}>
             <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Apy' })}
+              {intl.formatMessage({ defaultMessage: 'APY' })}
             </Typography>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
               {intl.formatNumber(activeItem?.y ?? 0)}%
@@ -83,7 +79,12 @@ export const ApyCard = ({
 
       {isLoading ? (
         <Stack
-          sx={{ width, height, justifyContent: 'center', alignItems: 'center' }}
+          sx={{
+            width,
+            height,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
         >
           <CircularProgress size={36} />
         </Stack>
@@ -97,6 +98,7 @@ export const ApyCard = ({
           }}
           Tooltip={Tooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
+          sx={{ width: 1 }}
         />
       )}
     </Card>
