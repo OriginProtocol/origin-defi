@@ -1,3 +1,23 @@
+fragment DailyStat on OTokenDailyStat {
+  id
+  blockNumber
+  timestamp
+  totalSupply
+  apy
+  apy7
+  apy14
+  apy30
+  rateETH
+  rateUSD
+  rebasingSupply
+  nonRebasingSupply
+  wrappedSupply
+  amoSupply
+  yield
+  fees
+  dripperWETH
+}
+
 query oTokenStats(
   $token: String!
   $chainId: Int!
@@ -14,21 +34,7 @@ query oTokenStats(
       timestamp_gte: $from
     }
   ) {
-    id
-    timestamp
-    totalSupply
-    apy
-    apy7
-    apy14
-    apy30
-    rateETH
-    rateUSD
-    rebasingSupply
-    nonRebasingSupply
-    wrappedSupply
-    amoSupply
-    yield
-    fees
+    ...DailyStat
   }
 }
 
@@ -52,36 +58,26 @@ query oTokenStatsConnection(
   ) {
     edges {
       node {
-        id
-        timestamp
-        rebasingSupply
-        yield
-        fees
-        apy
+        ...DailyStat
       }
     }
     totalCount
   }
 }
 
-query oTokenStatAndRebaseById(
-  $id: String!
+query oTokenDailyStatById($id: String!) {
+  oTokenDailyStatById(id: $id) {
+    ...DailyStat
+  }
+}
+
+query oTokenRebases(
   $token: String!
   $chainId: Int!
   $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC]
   $from: DateTime
   $to: DateTime
 ) {
-  oTokenDailyStatById(id: $id) {
-    rebasingSupply
-    timestamp
-    yield
-    apy
-    fees
-    amoSupply
-    totalSupply
-    nonRebasingSupply
-  }
   oTokenRebases(
     orderBy: $orderBy
     where: {

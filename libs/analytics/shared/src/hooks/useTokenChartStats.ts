@@ -1,9 +1,9 @@
 import { movingAverage, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { div, gt, mul, sub, toNumber } from 'dnum';
 import { pluck } from 'ramda';
 
 import { useOTokenStatsQuery } from '../queries';
+import { dailyStatMapper } from '../utils';
 
 import type { Token } from '@origin/shared/contracts';
 import type {
@@ -11,7 +11,6 @@ import type {
   QueryFunction,
   UseQueryOptions,
 } from '@tanstack/react-query';
-import type { Dnum } from 'dnum';
 
 import type { OTokenDailyStatOrderByInput } from '../generated/graphql';
 
@@ -71,88 +70,9 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
       }),
     });
 
-    const mapped = res?.oTokenDailyStats?.toReversed().map((d) => {
-      const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
-      const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
-      const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
-      const fees = [BigInt(d?.fees ?? 0), token.decimals] as Dnum;
-      const rebasingSupply = [
-        BigInt(d?.rebasingSupply ?? 0),
-        token.decimals,
-      ] as Dnum;
-      const nonRebasingSupply = [
-        BigInt(d?.nonRebasingSupply ?? 0),
-        token.decimals,
-      ] as Dnum;
-      const rateETH = [BigInt(d?.rateETH ?? 0), 18] as Dnum;
-      const rateUSD = [BigInt(d?.rateUSD ?? 0), 18] as Dnum;
-
-      const circulating = sub(totalSupply, protocolOwned);
-      const pctWrapped = gt(circulating, 0)
-        ? mul(div(wrapped, circulating), 100)
-        : ([0n, token.decimals] as Dnum);
-      const pctCirculating = gt(totalSupply, 0)
-        ? mul(div(circulating, totalSupply), 100)
-        : ([0n, token.decimals] as Dnum);
-      const pctProtocolOwned = gt(totalSupply, 0)
-        ? mul(div(protocolOwned, totalSupply), 100)
-        : ([0n, token.decimals] as Dnum);
-
-      return {
-        timestamp: new Date(d.timestamp).getTime(),
-        apy7: d.apy7 * 100,
-        apy14: d.apy14 * 100,
-        apy30: d.apy30 * 100,
-        totalSupply: toNumber(totalSupply, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        rebasingSupply: toNumber(rebasingSupply, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        nonRebasingSupply: toNumber(nonRebasingSupply, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        wrappedSupply: toNumber(wrapped, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        pctWrappedSupply: toNumber(pctWrapped, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        protocolOwnedSupply: toNumber(protocolOwned, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        pctProtocolOwnedSupply: toNumber(pctProtocolOwned, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        circulatingSupply: toNumber(circulating, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        pctCirculatingSupply: toNumber(pctCirculating, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 2,
-        }),
-        fees: toNumber(fees, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: token.decimals,
-        }),
-        rateETH: toNumber(rateETH, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 18,
-        }),
-        rateUSD: toNumber(rateUSD, {
-          decimalsRounding: 'ROUND_DOWN',
-          digits: 18,
-        }),
-      };
-    });
+    const mapped = res?.oTokenDailyStats
+      ?.toReversed()
+      .map((d) => dailyStatMapper(d, token, { isChartFormat: true }));
 
     const feesMovingAvg7Days = movingAverage(pluck('fees', mapped), 7);
     const feesMovingAvg30Days = movingAverage(pluck('fees', mapped), 30);

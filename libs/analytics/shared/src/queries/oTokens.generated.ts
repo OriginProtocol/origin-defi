@@ -2,6 +2,8 @@ import * as Types from '@origin/analytics/shared';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/analytics/shared';
+export type DailyStatFragment = { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string };
+
 export type OTokenStatsQueryVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
   chainId: Types.Scalars['Int']['input'];
@@ -11,7 +13,7 @@ export type OTokenStatsQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenStatsQuery = { __typename?: 'Query', oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', id: string, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string }> };
+export type OTokenStatsQuery = { __typename?: 'Query', oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string }> };
 
 export type OTokenStatsConnectionQueryVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
@@ -23,10 +25,16 @@ export type OTokenStatsConnectionQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenStatsConnectionQuery = { __typename?: 'Query', oTokenDailyStatsConnection: { __typename?: 'OTokenDailyStatsConnection', totalCount: number, edges: Array<{ __typename?: 'OTokenDailyStatEdge', node: { __typename?: 'OTokenDailyStat', id: string, timestamp: string, rebasingSupply: string, yield: string, fees: string, apy: number } }> } };
+export type OTokenStatsConnectionQuery = { __typename?: 'Query', oTokenDailyStatsConnection: { __typename?: 'OTokenDailyStatsConnection', totalCount: number, edges: Array<{ __typename?: 'OTokenDailyStatEdge', node: { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string } }> } };
 
-export type OTokenStatAndRebaseByIdQueryVariables = Types.Exact<{
+export type OTokenDailyStatByIdQueryVariables = Types.Exact<{
   id: Types.Scalars['String']['input'];
+}>;
+
+
+export type OTokenDailyStatByIdQuery = { __typename?: 'Query', oTokenDailyStatById?: { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string } | null };
+
+export type OTokenRebasesQueryVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
   chainId: Types.Scalars['Int']['input'];
   orderBy?: Types.InputMaybe<Array<Types.OTokenRebaseOrderByInput> | Types.OTokenRebaseOrderByInput>;
@@ -35,10 +43,30 @@ export type OTokenStatAndRebaseByIdQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenStatAndRebaseByIdQuery = { __typename?: 'Query', oTokenDailyStatById?: { __typename?: 'OTokenDailyStat', rebasingSupply: string, timestamp: string, yield: string, apy: number, fees: string, amoSupply?: string | null, totalSupply: string, nonRebasingSupply: string } | null, oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, feeETH: string, totalSupply: string, txHash: string, yieldETH: string, timestamp: string }> };
+export type OTokenRebasesQuery = { __typename?: 'Query', oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, feeETH: string, totalSupply: string, txHash: string, yieldETH: string, timestamp: string }> };
 
 
-
+export const DailyStatFragmentDoc = `
+    fragment DailyStat on OTokenDailyStat {
+  id
+  blockNumber
+  timestamp
+  totalSupply
+  apy
+  apy7
+  apy14
+  apy30
+  rateETH
+  rateUSD
+  rebasingSupply
+  nonRebasingSupply
+  wrappedSupply
+  amoSupply
+  yield
+  fees
+  dripperWETH
+}
+    `;
 export const OTokenStatsDocument = `
     query oTokenStats($token: String!, $chainId: Int!, $limit: Int, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime) {
   oTokenDailyStats(
@@ -46,24 +74,10 @@ export const OTokenStatsDocument = `
     orderBy: $orderBy
     where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
   ) {
-    id
-    timestamp
-    totalSupply
-    apy
-    apy7
-    apy14
-    apy30
-    rateETH
-    rateUSD
-    rebasingSupply
-    nonRebasingSupply
-    wrappedSupply
-    amoSupply
-    yield
-    fees
+    ...DailyStat
   }
 }
-    `;
+    ${DailyStatFragmentDoc}`;
 
 export const useOTokenStatsQuery = <
       TData = OTokenStatsQuery,
@@ -96,18 +110,13 @@ export const OTokenStatsConnectionDocument = `
   ) {
     edges {
       node {
-        id
-        timestamp
-        rebasingSupply
-        yield
-        fees
-        apy
+        ...DailyStat
       }
     }
     totalCount
   }
 }
-    `;
+    ${DailyStatFragmentDoc}`;
 
 export const useOTokenStatsConnectionQuery = <
       TData = OTokenStatsConnectionQuery,
@@ -130,18 +139,37 @@ useOTokenStatsConnectionQuery.getKey = (variables: OTokenStatsConnectionQueryVar
 
 useOTokenStatsConnectionQuery.fetcher = (variables: OTokenStatsConnectionQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatsConnectionQuery, OTokenStatsConnectionQueryVariables>(OTokenStatsConnectionDocument, variables, options);
 
-export const OTokenStatAndRebaseByIdDocument = `
-    query oTokenStatAndRebaseById($id: String!, $token: String!, $chainId: Int!, $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime) {
+export const OTokenDailyStatByIdDocument = `
+    query oTokenDailyStatById($id: String!) {
   oTokenDailyStatById(id: $id) {
-    rebasingSupply
-    timestamp
-    yield
-    apy
-    fees
-    amoSupply
-    totalSupply
-    nonRebasingSupply
+    ...DailyStat
   }
+}
+    ${DailyStatFragmentDoc}`;
+
+export const useOTokenDailyStatByIdQuery = <
+      TData = OTokenDailyStatByIdQuery,
+      TError = unknown
+    >(
+      variables: OTokenDailyStatByIdQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenDailyStatByIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenDailyStatByIdQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OTokenDailyStatByIdQuery, TError, TData>(
+      {
+    queryKey: ['oTokenDailyStatById', variables],
+    queryFn: graphqlClient<OTokenDailyStatByIdQuery, OTokenDailyStatByIdQueryVariables>(OTokenDailyStatByIdDocument, variables),
+    ...options
+  }
+    )};
+
+useOTokenDailyStatByIdQuery.getKey = (variables: OTokenDailyStatByIdQueryVariables) => ['oTokenDailyStatById', variables];
+
+
+useOTokenDailyStatByIdQuery.fetcher = (variables: OTokenDailyStatByIdQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenDailyStatByIdQuery, OTokenDailyStatByIdQueryVariables>(OTokenDailyStatByIdDocument, variables, options);
+
+export const OTokenRebasesDocument = `
+    query oTokenRebases($token: String!, $chainId: Int!, $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime) {
   oTokenRebases(
     orderBy: $orderBy
     where: {timestamp_gte: $from, timestamp_lt: $to, otoken_containsInsensitive: $token, chainId_eq: $chainId}
@@ -156,23 +184,23 @@ export const OTokenStatAndRebaseByIdDocument = `
 }
     `;
 
-export const useOTokenStatAndRebaseByIdQuery = <
-      TData = OTokenStatAndRebaseByIdQuery,
+export const useOTokenRebasesQuery = <
+      TData = OTokenRebasesQuery,
       TError = unknown
     >(
-      variables: OTokenStatAndRebaseByIdQueryVariables,
-      options?: Omit<UseQueryOptions<OTokenStatAndRebaseByIdQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenStatAndRebaseByIdQuery, TError, TData>['queryKey'] }
+      variables: OTokenRebasesQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenRebasesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenRebasesQuery, TError, TData>['queryKey'] }
     ) => {
     
-    return useQuery<OTokenStatAndRebaseByIdQuery, TError, TData>(
+    return useQuery<OTokenRebasesQuery, TError, TData>(
       {
-    queryKey: ['oTokenStatAndRebaseById', variables],
-    queryFn: graphqlClient<OTokenStatAndRebaseByIdQuery, OTokenStatAndRebaseByIdQueryVariables>(OTokenStatAndRebaseByIdDocument, variables),
+    queryKey: ['oTokenRebases', variables],
+    queryFn: graphqlClient<OTokenRebasesQuery, OTokenRebasesQueryVariables>(OTokenRebasesDocument, variables),
     ...options
   }
     )};
 
-useOTokenStatAndRebaseByIdQuery.getKey = (variables: OTokenStatAndRebaseByIdQueryVariables) => ['oTokenStatAndRebaseById', variables];
+useOTokenRebasesQuery.getKey = (variables: OTokenRebasesQueryVariables) => ['oTokenRebases', variables];
 
 
-useOTokenStatAndRebaseByIdQuery.fetcher = (variables: OTokenStatAndRebaseByIdQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatAndRebaseByIdQuery, OTokenStatAndRebaseByIdQueryVariables>(OTokenStatAndRebaseByIdDocument, variables, options);
+useOTokenRebasesQuery.fetcher = (variables: OTokenRebasesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenRebasesQuery, OTokenRebasesQueryVariables>(OTokenRebasesDocument, variables, options);

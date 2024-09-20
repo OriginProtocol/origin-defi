@@ -72,6 +72,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
             width: contentWidth,
             overflowX: 'hidden',
             px: { xs: 1, md: 2 },
+            pb: 4,
           }}
         >
           <Outlet />

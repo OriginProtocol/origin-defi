@@ -252,6 +252,9 @@ export const components = (base: Theme): ThemeOptions => ({
           ...theme.typography.body3,
           fontWeight: theme.typography.fontWeightMedium,
         }),
+        subheader: ({ theme }) => ({
+          ...theme.typography.body3,
+        }),
         action: ({ theme }) => ({
           margin: 0,
         }),
@@ -265,6 +268,11 @@ export const components = (base: Theme): ThemeOptions => ({
             padding: theme.spacing(1.5),
           },
         }),
+      },
+    },
+    MuiCircularProgress: {
+      defaultProps: {
+        color: 'secondary',
       },
     },
     MuiContainer: {
