@@ -42,7 +42,7 @@ export const LimitControls = ({
       longLabel: intl.formatMessage({ defaultMessage: '1 month' }),
     },
     {
-      value: Math.floor((365 / 12) * 6),
+      value: 182,
       label: intl.formatMessage({ defaultMessage: '6M' }),
       longLabel: intl.formatMessage({ defaultMessage: '6 months' }),
     },

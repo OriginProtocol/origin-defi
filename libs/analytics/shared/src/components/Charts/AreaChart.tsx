@@ -101,6 +101,8 @@ export const AreaChart = ({
   if (!width || !height) return null;
 
   const activeItem = activeIdx === null ? null : data[activeIdx];
+  const bottomTicks = xScale.ticks(width / 80);
+  const rightTicks = yScale.ticks(height / 40);
 
   return (
     <Box
@@ -144,12 +146,13 @@ export const AreaChart = ({
             fill: theme.palette.text.secondary,
             textAnchor: 'start',
           }}
-          numTicks={Math.floor(height / 40)}
+          numTicks={rightTicks.length}
         />
         <AxisBottom
           scale={xScale}
           top={height - margins.bottom}
           tickFormat={tickXFormat}
+          numTicks={bottomTicks.length}
           stroke={theme.palette.text.secondary}
           tickLabelProps={{
             fontSize: 11,
@@ -161,12 +164,12 @@ export const AreaChart = ({
           data={data}
           keys={['y']}
           curve={curveTypes[curveType]}
-          x={(d: any) => xScale(d.data.x)}
-          y0={(d: any[]) => yScale(d[1])}
-          y1={(d: any[]) => yScale(d[0])}
+          x={(d) => xScale(d.data.x)}
+          y0={(d) => yScale(d[1])}
+          y1={(d) => yScale(d[0])}
         >
           {({ stacks, path }) =>
-            stacks.map((stack: any, idx: any) => (
+            stacks.map((stack, idx) => (
               <Fragment key={`stack-${stack.key}`}>
                 <path d={path(stack) || ''} fill={`url(#gradient-${idx})`} />
               </Fragment>

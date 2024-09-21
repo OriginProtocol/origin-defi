@@ -38,7 +38,7 @@ export const ProtocolRevenueCard = ({
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
-  const [limit, setLimit] = useState<number | undefined>(undefined);
+  const [limit, setLimit] = useState<number | undefined>(182);
   const [ma, setMa] = useState<MA>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();

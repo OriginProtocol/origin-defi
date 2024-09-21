@@ -106,6 +106,8 @@ export const LineChart = ({
   const activeItem = activeIdx === null ? null : data[activeIdx];
   const colorFrom = lineColors?.[0] ?? theme.palette.chart5;
   const colorTo = lineColors?.[1] ?? lineColors?.[0] ?? theme.palette.chart4;
+  const bottomTicks = xScale.ticks(width / 80);
+  const rightTicks = yScale.ticks(height / 40);
 
   return (
     <Box
@@ -142,13 +144,14 @@ export const LineChart = ({
             fill: theme.palette.text.secondary,
             textAnchor: 'start',
           }}
-          numTicks={Math.floor(height / 40)}
+          numTicks={rightTicks.length}
         />
         <AxisBottom
           scale={xScale}
           stroke={theme.palette.text.secondary}
           top={height - margins.bottom}
           tickFormat={tickXFormat}
+          numTicks={bottomTicks.length}
           tickLabelProps={{
             fontSize: 11,
             fontFamily: theme.typography.body1.fontFamily,

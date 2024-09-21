@@ -32,7 +32,7 @@ export type OriginTvlCardProps = {
 export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const [limit, setLimit] = useState<number | undefined>(undefined);
+  const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useOriginStats(limit);
