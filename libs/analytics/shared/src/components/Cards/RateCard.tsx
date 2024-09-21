@@ -16,14 +16,13 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
-import { LimitControls } from './components/LimitControls';
-import { TrailingControls } from './components/TrailingControls';
+import { LimitControls, TrailingControls } from '../Controls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
 import type { ChartData } from '../Charts';
-import type { Trailing } from './components/TrailingControls';
+import type { Trailing } from '../Controls';
 
 type SupportedCurrency = 'ETH' | 'USD';
 

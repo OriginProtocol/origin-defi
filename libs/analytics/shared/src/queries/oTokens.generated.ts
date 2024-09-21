@@ -45,6 +45,15 @@ export type OTokenRebasesQueryVariables = Types.Exact<{
 
 export type OTokenRebasesQuery = { __typename?: 'Query', oTokenRebases: Array<{ __typename?: 'OTokenRebase', blockNumber: number, feeETH: string, totalSupply: string, txHash: string, yieldETH: string, timestamp: string }> };
 
+export type OTokenApyQueryVariables = Types.Exact<{
+  chainId: Types.Scalars['Int']['input'];
+  token: Types.Scalars['String']['input'];
+  orderBy?: Types.InputMaybe<Array<Types.OTokenApyOrderByInput> | Types.OTokenApyOrderByInput>;
+}>;
+
+
+export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy14DayAvg: number, apy30DayAvg: number, apr: number, apy: number }> };
+
 
 export const DailyStatFragmentDoc = `
     fragment DailyStat on OTokenDailyStat {
@@ -204,3 +213,40 @@ useOTokenRebasesQuery.getKey = (variables: OTokenRebasesQueryVariables) => ['oTo
 
 
 useOTokenRebasesQuery.fetcher = (variables: OTokenRebasesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenRebasesQuery, OTokenRebasesQueryVariables>(OTokenRebasesDocument, variables, options);
+
+export const OTokenApyDocument = `
+    query OTokenApy($chainId: Int!, $token: String!, $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]) {
+  oTokenApies(
+    limit: 1
+    orderBy: $orderBy
+    where: {chainId_eq: $chainId, otoken_containsInsensitive: $token}
+  ) {
+    apy7DayAvg
+    apy14DayAvg
+    apy30DayAvg
+    apr
+    apy
+  }
+}
+    `;
+
+export const useOTokenApyQuery = <
+      TData = OTokenApyQuery,
+      TError = unknown
+    >(
+      variables: OTokenApyQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenApyQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenApyQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OTokenApyQuery, TError, TData>(
+      {
+    queryKey: ['OTokenApy', variables],
+    queryFn: graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables),
+    ...options
+  }
+    )};
+
+useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['OTokenApy', variables];
+
+
+useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables, options);

@@ -3,86 +3,79 @@ import { useState } from 'react';
 import {
   Card,
   CardContent,
+  CardHeader,
   CircularProgress,
+  Divider,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
+import {
+  LimitControls,
+  LineChart,
+  useOriginStats,
+} from '@origin/analytics/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { oTokenConfig } from '../../constants';
-import { useTokenChartStats } from '../../hooks';
-import { LineChart } from '../Charts';
-import { LimitControls, TrailingControls } from '../Controls';
-
 import type { CardProps, StackProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
+import type { ChartData } from '@origin/analytics/shared';
 import type { NumberLike } from '@visx/scale';
 
-import type { ChartData } from '../Charts';
-import type { Trailing } from '../Controls';
-
-export type PercentWrappedCardProps = {
-  token: Token;
+export type OriginTvlCardProps = {
   height: number;
-  from?: string;
 } & CardProps;
 
-export const PercentWrappedCard = ({
-  token,
-  height,
-  from,
-  ...rest
-}: PercentWrappedCardProps) => {
-  const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
-
+export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(undefined);
-  const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from },
-    {
-      select: (data) =>
-        data.map((d) => ({ x: d.timestamp, y: d.pctWrappedSupply })),
-    },
-  );
+  const { data, isLoading } = useOriginStats(limit);
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Origin TVL' })}
+      />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
           <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage(
-                { defaultMessage: '% wrapped {symbol}' },
-                { symbol: token.symbol },
-              )}
-            </Typography>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.y ?? 0)}%
-            </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+            <LoadingLabel
+              isLoading={isLoading}
+              color="text.secondary"
+              sx={{ fontWeight: 'bold' }}
+            >
               {formatInTimeZone(
-                new Date(activeItem?.x ?? new Date().getTime()),
+                new Date(activeItem?.total.timestamp ?? new Date().getTime()),
                 'UTC',
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
+            </LoadingLabel>
+            <LoadingLabel
+              variant="body1"
+              isLoading={isLoading}
+              sx={{ fontWeight: 'bold' }}
+            >
+              $
+              {intl.formatNumber(activeItem?.total.tvlUSD ?? 0, {
+                maximumFractionDigits: 0,
+              })}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
-            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
           </Stack>
         </Stack>
       </CardContent>
@@ -99,15 +92,25 @@ export const PercentWrappedCard = ({
         </Stack>
       ) : (
         <LineChart
+          data={
+            data?.map((d) => ({
+              x: d.total.timestamp,
+              y: d.total.tvlUSD,
+            })) ?? []
+          }
           width={width}
           height={height}
-          curveType="base"
-          data={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           Tooltip={Tooltip}
-          tickYFormat={(value: NumberLike) => `${value}%`}
+          tickYFormat={(value: NumberLike) =>
+            intl.formatNumber(Number(value), {
+              notation: 'compact',
+            })
+          }
+          lineColors={[theme.palette.chart1, theme.palette.chart2]}
+          sx={{ width: 1 }}
         />
       )}
     </Card>
@@ -129,8 +132,13 @@ const Tooltip = ({ data, ...rest }: TooltipProps) => {
       </Typography>
       <Typography variant="body2" sx={{ color: 'text.primary' }}>
         {intl.formatMessage(
-          { defaultMessage: 'Apy: {apy}%' },
-          { apy: intl.formatNumber(data.y) },
+          { defaultMessage: 'TVL: ${totalSupply}' },
+          {
+            totalSupply: intl.formatNumber(data.y, {
+              notation: 'compact',
+              minimumFractionDigits: 2,
+            }),
+          },
         )}
       </Typography>
     </Stack>

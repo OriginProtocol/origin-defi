@@ -18,7 +18,7 @@ export const dailyStatMapper = (
   const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
   const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
   const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
-  const fees = [BigInt(d?.fees ?? 0), token.decimals] as Dnum;
+  const feesETH = [BigInt(d?.fees ?? 0), 18] as Dnum;
   const rebasingSupply = [
     BigInt(d?.rebasingSupply ?? 0),
     token.decimals,
@@ -29,9 +29,10 @@ export const dailyStatMapper = (
   ] as Dnum;
   const rateETH = [BigInt(d?.rateETH ?? 0), 18] as Dnum;
   const rateUSD = [BigInt(d?.rateUSD ?? 0), 18] as Dnum;
-  const yieldETH = [BigInt(d?.yield ?? 0), token.decimals] as Dnum;
+  const yieldETH = [BigInt(d?.yield ?? 0), 18] as Dnum;
   const dripperWETH = [BigInt(d?.dripperWETH ?? 0), 18] as Dnum;
 
+  const feesUSD = mul(feesETH, rateUSD);
   const yieldUSD = mul(yieldETH, rateUSD);
   const dripperUSD = mul(dripperWETH, rateUSD);
   const circulating = sub(totalSupply, protocolOwned);
@@ -44,6 +45,8 @@ export const dailyStatMapper = (
   const pctProtocolOwned = gt(totalSupply, 0)
     ? mul(div(protocolOwned, totalSupply), factor)
     : ([0n, token.decimals] as Dnum);
+  const tvlUSD = mul(totalSupply, rateUSD);
+  const tvlETH = mul(totalSupply, rateETH);
 
   const apies = {
     apy7: (d?.apy7 ?? 0) * factor,
@@ -65,7 +68,7 @@ export const dailyStatMapper = (
   );
 
   return {
-    id: d?.id,
+    id: d?.id ?? '',
     blockNumber: d?.blockNumber,
     timestamp: d?.timestamp
       ? new Date(d?.timestamp).getTime()
@@ -74,6 +77,14 @@ export const dailyStatMapper = (
     ...apies,
     bestApy,
     totalSupply: toNumber(totalSupply, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 2,
+    }),
+    tvlUSD: toNumber(tvlUSD, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 2,
+    }),
+    tvlETH: toNumber(tvlETH, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,
     }),
@@ -109,9 +120,13 @@ export const dailyStatMapper = (
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,
     }),
-    fees: toNumber(fees, {
+    feesETH: toNumber(feesETH, {
       decimalsRounding: 'ROUND_DOWN',
-      digits: token.decimals,
+      digits: 18,
+    }),
+    feesUSD: toNumber(feesUSD, {
+      decimalsRounding: 'ROUND_DOWN',
+      digits: 3,
     }),
     rateETH: toNumber(rateETH, {
       decimalsRounding: 'ROUND_DOWN',
@@ -123,11 +138,11 @@ export const dailyStatMapper = (
     }),
     yieldETH: toNumber(yieldETH, {
       decimalsRounding: 'ROUND_DOWN',
-      digits: token.decimals,
+      digits: 18,
     }),
     yieldUSD: toNumber(yieldUSD, {
       decimalsRounding: 'ROUND_DOWN',
-      digits: token.decimals,
+      digits: 3,
     }),
     dripperWETH: toNumber(dripperWETH, {
       decimalsRounding: 'ROUND_DOWN',
@@ -135,7 +150,7 @@ export const dailyStatMapper = (
     }),
     dripperUSD: toNumber(dripperUSD, {
       decimalsRounding: 'ROUND_DOWN',
-      digits: token.decimals,
+      digits: 3,
     }),
   };
 };

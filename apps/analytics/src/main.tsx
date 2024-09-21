@@ -1,7 +1,7 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { queryClient } from '@origin/analytics/shared';
+import { queryClient, wagmiConfig } from '@origin/analytics/shared';
 import { dark, light } from '@origin/analytics/theme';
 import {
   IntlProvider,
@@ -12,6 +12,7 @@ import { composeContexts } from '@origin/shared/utils';
 import { QueryClientProvider } from '@tanstack/react-query';
 import { setAutoFreeze } from 'immer';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { WagmiProvider } from 'wagmi';
 
 import { messages } from './lang';
 import { routes } from './routes';
@@ -32,6 +33,7 @@ root.render(
       [StrictMode],
       [IntlProvider, { messages }],
       [ThemeProvider, { dark, light }],
+      [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
     ],
     <RouterProvider router={router} />,

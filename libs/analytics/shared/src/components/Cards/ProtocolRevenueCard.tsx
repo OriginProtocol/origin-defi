@@ -16,13 +16,12 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { BarChart } from '../Charts/BarChart';
-import { LimitControls } from './components/LimitControls';
-import { MAControls } from './components/MovingAvgControls';
+import { LimitControls, MAControls } from '../Controls';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-import type { MA } from './components/MovingAvgControls';
+import type { MA } from '../Controls';
 
 export type ProtocolRevenueCardProps = {
   token: Token;
@@ -45,7 +44,7 @@ export const ProtocolRevenueCard = ({
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
     { token, limit, from: from ?? config?.from },
-    { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.fees })) },
+    { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.feesETH })) },
   );
   const { data: feesAvgData, isLoading: isFeesAvgLoading } = useTokenChartStats(
     { token, limit, from },

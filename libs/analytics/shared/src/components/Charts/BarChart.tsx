@@ -8,7 +8,7 @@ import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
 
-import { margin } from './constants';
+import { chartMargins } from './constants';
 
 import type { BoxProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';
@@ -24,6 +24,7 @@ export type BarChartProps = {
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
   yScaleDomain?: [number, number];
+  margins?: typeof chartMargins;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const BarChart = ({
@@ -35,19 +36,20 @@ export const BarChart = ({
   tickXFormat,
   tickYFormat,
   yScaleDomain,
+  margins = chartMargins,
   ...rest
 }: BarChartProps) => {
   const theme = useTheme();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const xScale = scaleBand({
-    range: [margin.left, width - margin.right],
+    range: [margins.left, width - margins.right],
     padding: 0.25,
     domain: barData.map((d) => d.x),
   });
 
   const yScale = scaleLinear({
-    range: [height - margin.bottom, margin.top],
+    range: [height - margins.bottom, margins.top],
     domain: yScaleDomain ?? [0, Math.max(...barData.map((d) => d.y))],
   });
 
@@ -82,7 +84,7 @@ export const BarChart = ({
         </defs>
         <AxisRight
           scale={yScale}
-          left={width - margin.right}
+          left={width - margins.right}
           stroke={theme.palette.text.secondary}
           tickFormat={tickYFormat}
           tickLabelProps={{
@@ -96,7 +98,7 @@ export const BarChart = ({
         <AxisBottom
           scale={xScale}
           stroke={theme.palette.text.secondary}
-          top={height - margin.bottom}
+          top={height - margins.bottom}
           tickFormat={tickXFormat}
           tickLabelProps={{
             fontSize: 11,
@@ -105,9 +107,9 @@ export const BarChart = ({
           }}
         />
         <GridRows
-          left={margin.left}
+          left={margins.left}
           scale={yScale}
-          width={width - margin.right}
+          width={width - margins.right}
           strokeDasharray="2,4"
           stroke="#ffffff"
           strokeOpacity={0.1}
@@ -126,7 +128,7 @@ export const BarChart = ({
                 x={barX}
                 y={barHeight}
                 width={barWidth}
-                height={height - margin.bottom - barHeight}
+                height={height - margins.bottom - barHeight}
                 fill={
                   activeIdx === idx
                     ? theme.palette.chart4
@@ -137,7 +139,7 @@ export const BarChart = ({
                 x={barX}
                 y={0}
                 width={barWidth}
-                height={height - margin.bottom}
+                height={height - margins.bottom}
                 fill="transparent"
                 onMouseOver={() => {
                   setActiveIdx(idx);

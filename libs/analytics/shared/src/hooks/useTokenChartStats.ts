@@ -29,12 +29,15 @@ const getKey = (
   orderBy?: OTokenDailyStatOrderByInput[],
 ): Key => ['useTokenChartStats', token, limit, from, orderBy];
 
-type Result = {
+export type ChartResult = {
+  id: string;
   timestamp: number;
   apy7: number;
   apy14: number;
   apy30: number;
   totalSupply: number;
+  tvlUSD: number;
+  tvlETH: number;
   rebasingSupply: number;
   nonRebasingSupply: number;
   wrappedSupply: number;
@@ -43,14 +46,17 @@ type Result = {
   pctProtocolOwnedSupply: number;
   circulatingSupply: number;
   pctCirculatingSupply: number;
-  fees: number;
+  feesETH: number;
+  feesUSD: number;
   feesMovingAvg7Days: number;
   feesMovingAvg30Days: number;
   rateETH: number;
   rateUSD: number;
 };
 
-const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
+const fetcher: (
+  queryClient: QueryClient,
+) => QueryFunction<ChartResult[], Key> =
   (queryClient) =>
   async ({ queryKey: [, token, limit, from, orderBy] }) => {
     const res = await queryClient.fetchQuery({
@@ -74,8 +80,8 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
       ?.toReversed()
       .map((d) => dailyStatMapper(d, token, { isChartFormat: true }));
 
-    const feesMovingAvg7Days = movingAverage(pluck('fees', mapped), 7);
-    const feesMovingAvg30Days = movingAverage(pluck('fees', mapped), 30);
+    const feesMovingAvg7Days = movingAverage(pluck('feesETH', mapped), 7);
+    const feesMovingAvg30Days = movingAverage(pluck('feesETH', mapped), 30);
 
     return mapped.map((m, i) => ({
       ...m,
@@ -84,7 +90,7 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
     }));
   };
 
-export const useTokenChartStats = <TResult = Result[]>(
+export const useTokenChartStats = <TResult = ChartResult[]>(
   {
     token,
     limit,
@@ -97,7 +103,7 @@ export const useTokenChartStats = <TResult = Result[]>(
     orderBy?: OTokenDailyStatOrderByInput[];
   },
   options?: Omit<
-    UseQueryOptions<Result[], Error, TResult, Key>,
+    UseQueryOptions<ChartResult[], Error, TResult, Key>,
     'queryKey' | 'queryFn'
   >,
 ) => {

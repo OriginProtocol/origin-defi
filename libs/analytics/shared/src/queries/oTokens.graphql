@@ -15,7 +15,7 @@ fragment DailyStat on OTokenDailyStat {
   amoSupply
   yield
   fees
-  dripperWETH
+  dripperWETH  
 }
 
 query oTokenStats(
@@ -93,5 +93,23 @@ query oTokenRebases(
     txHash
     yieldETH
     timestamp
+  }
+}
+
+query OTokenApy(
+  $chainId: Int!
+  $token: String!
+  $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]
+) {
+  oTokenApies(
+    limit: 1
+    orderBy: $orderBy
+    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+  ) {
+    apy7DayAvg
+    apy14DayAvg
+    apy30DayAvg
+    apr
+    apy
   }
 }

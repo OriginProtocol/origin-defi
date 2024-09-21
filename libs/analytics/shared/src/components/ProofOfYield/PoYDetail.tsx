@@ -247,7 +247,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                     label={intl.formatMessage({
                       defaultMessage: 'Fees generated',
                     })}
-                    value={intl.formatNumber(dailyStat?.fees ?? 0, {
+                    value={intl.formatNumber(dailyStat?.feesETH ?? 0, {
                       maximumFractionDigits: 1,
                     })}
                     isLoading={isDailyStatLoading}

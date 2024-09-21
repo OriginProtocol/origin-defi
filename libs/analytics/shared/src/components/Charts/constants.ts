@@ -7,4 +7,4 @@ export const curveTypes = {
   linear: curveLinear,
 };
 
-export const margin = { top: 10, left: 25, bottom: 50, right: 50 };
+export const chartMargins = { top: 10, left: 25, bottom: 50, right: 50 };

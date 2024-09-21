@@ -14,7 +14,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 
-import { curveTypes, margin } from './constants';
+import { chartMargins, curveTypes } from './constants';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
@@ -33,6 +33,8 @@ export type LineChartProps = {
   tickYFormat?: (value: NumberLike) => string;
   yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
+  margins?: typeof chartMargins;
+  lineColors?: [string] | [string, string];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const LineChart = ({
@@ -45,6 +47,8 @@ export const LineChart = ({
   tickYFormat,
   yScaleDomain,
   Tooltip,
+  margins = chartMargins,
+  lineColors,
   ...rest
 }: LineChartProps) => {
   const theme = useTheme();
@@ -65,7 +69,7 @@ export const LineChart = ({
   });
 
   const xScale = scaleUtc({
-    range: [margin.left, width - margin.right],
+    range: [margins.left, width - margins.right],
     domain: [
       Math.min(...data.map((d) => d.x)),
       Math.max(...data.map((d) => d.x)),
@@ -73,7 +77,7 @@ export const LineChart = ({
   });
 
   const yScale = scaleLinear({
-    range: [height - margin.bottom, margin.top],
+    range: [height - margins.bottom, margins.top],
     domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
   });
 
@@ -100,6 +104,8 @@ export const LineChart = ({
   if (!width || !height) return null;
 
   const activeItem = activeIdx === null ? null : data[activeIdx];
+  const colorFrom = lineColors?.[0] ?? theme.palette.chart5;
+  const colorTo = lineColors?.[1] ?? lineColors?.[0] ?? theme.palette.chart4;
 
   return (
     <Box
@@ -114,9 +120,9 @@ export const LineChart = ({
       <svg width={width} height={height}>
         <defs>
           <LinearGradient
-            id="gradient"
-            from={theme.palette.chart5}
-            to={theme.palette.chart4}
+            id="lineColor"
+            from={colorFrom}
+            to={colorTo}
             fromOffset="20%"
             toOffset="80%"
             x1="0%"
@@ -127,7 +133,7 @@ export const LineChart = ({
         </defs>
         <AxisRight
           scale={yScale}
-          left={width - margin.right}
+          left={width - margins.right}
           stroke={theme.palette.text.secondary}
           tickFormat={tickYFormat}
           tickLabelProps={{
@@ -141,7 +147,7 @@ export const LineChart = ({
         <AxisBottom
           scale={xScale}
           stroke={theme.palette.text.secondary}
-          top={height - margin.bottom}
+          top={height - margins.bottom}
           tickFormat={tickXFormat}
           tickLabelProps={{
             fontSize: 11,
@@ -150,9 +156,9 @@ export const LineChart = ({
           }}
         />
         <GridRows
-          left={margin.left}
+          left={margins.left}
           scale={yScale}
-          width={width - margin.right}
+          width={width - margins.right}
           strokeDasharray="2,4"
           stroke="#ffffff"
           strokeOpacity={0.1}
@@ -163,15 +169,15 @@ export const LineChart = ({
           curve={curveTypes[curveType]}
           x={(d) => xScale(d.x)}
           y={(d) => yScale(d.y)}
-          stroke="url(#gradient)"
+          stroke="url(#lineColor)"
           strokeWidth={1}
         />
         {width && height && (
           <rect
-            x={margin.left}
-            y={margin.top}
-            width={width - margin.right}
-            height={height - margin.bottom - margin.top}
+            x={margins.left}
+            y={margins.top}
+            width={width - margins.right}
+            height={height - margins.bottom - margins.top}
             fill="transparent"
             onTouchStart={handlePointerMove}
             onTouchMove={handlePointerMove}
@@ -186,8 +192,8 @@ export const LineChart = ({
           <line
             x1={xScale(activeItem.x)}
             x2={xScale(activeItem.x)}
-            y1={margin.top}
-            y2={height - margin.bottom}
+            y1={margins.top}
+            y2={height - margins.bottom}
             stroke="#0074F0"
             strokeWidth={0.5}
             strokeDasharray={2}

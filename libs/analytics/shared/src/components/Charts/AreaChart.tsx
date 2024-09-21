@@ -13,7 +13,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 
-import { curveTypes, margin } from './constants';
+import { chartMargins, curveTypes } from './constants';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
@@ -32,6 +32,7 @@ export type AreaChartProps = {
   tickYFormat?: (value: NumberLike) => string;
   yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
+  margins?: typeof chartMargins;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const AreaChart = ({
@@ -44,6 +45,7 @@ export const AreaChart = ({
   tickYFormat,
   yScaleDomain,
   Tooltip,
+  margins = chartMargins,
   ...rest
 }: AreaChartProps) => {
   const theme = useTheme();
@@ -64,7 +66,7 @@ export const AreaChart = ({
   });
 
   const xScale = scaleUtc({
-    range: [margin.left, width - margin.right],
+    range: [margins.left, width - margins.right],
     domain: [
       Math.min(...data.map((d) => d.x)),
       Math.max(...data.map((d) => d.x)),
@@ -72,7 +74,7 @@ export const AreaChart = ({
   });
 
   const yScale = scaleLinear({
-    range: [height - margin.bottom, margin.top],
+    range: [height - margins.bottom, margins.top],
     domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
   });
 
@@ -133,7 +135,7 @@ export const AreaChart = ({
         </defs>
         <AxisRight
           scale={yScale}
-          left={width - margin.right}
+          left={width - margins.right}
           tickFormat={tickYFormat}
           stroke={theme.palette.text.secondary}
           tickLabelProps={{
@@ -146,7 +148,7 @@ export const AreaChart = ({
         />
         <AxisBottom
           scale={xScale}
-          top={height - margin.bottom}
+          top={height - margins.bottom}
           tickFormat={tickXFormat}
           stroke={theme.palette.text.secondary}
           tickLabelProps={{
@@ -173,10 +175,10 @@ export const AreaChart = ({
         </AreaStack>
         {width && height && (
           <rect
-            x={margin.left}
-            y={margin.top}
-            width={width - margin.right}
-            height={height - margin.bottom - margin.top}
+            x={margins.left}
+            y={margins.top}
+            width={width - margins.right}
+            height={height - margins.bottom - margins.top}
             fill="transparent"
             onTouchStart={handlePointerMove}
             onTouchMove={handlePointerMove}
@@ -191,8 +193,8 @@ export const AreaChart = ({
           <line
             x1={xScale(activeItem.x)}
             x2={xScale(activeItem.x)}
-            y1={margin.top}
-            y2={height - margin.bottom}
+            y1={margins.top}
+            y2={height - margins.bottom}
             stroke="#ffffff"
             strokeWidth={0.5}
             strokeDasharray={2}

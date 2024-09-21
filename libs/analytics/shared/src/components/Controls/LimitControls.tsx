@@ -84,7 +84,7 @@ export const LimitControls = ({
       >
         {options.map((o) => (
           <MenuItem
-            key={o.value}
+            key={o.value ?? 'all'}
             selected={o.value === limit}
             onClick={() => {
               setLimit(o.value);

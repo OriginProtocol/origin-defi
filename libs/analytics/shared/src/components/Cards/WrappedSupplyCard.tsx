@@ -16,7 +16,7 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { AreaChart } from '../Charts';
-import { LimitControls } from './components/LimitControls';
+import { LimitControls } from '../Controls';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
