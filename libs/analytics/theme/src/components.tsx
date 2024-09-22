@@ -412,6 +412,20 @@ export const components = (base: Theme): ThemeOptions => ({
         }),
       },
     },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          svg: { fontSize: 24 },
+        }),
+      },
+    },
+    MuiListItemText: {
+      defaultProps: {
+        primaryTypographyProps: {
+          variant: 'body3',
+        },
+      },
+    },
     MuiMenu: {
       defaultProps: {
         transitionDuration: 0,

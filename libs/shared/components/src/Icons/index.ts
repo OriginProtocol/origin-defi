@@ -3,6 +3,7 @@ export * from './BadgeIcon';
 export * from './ExpandIcon';
 export * from './MultiTokenIcon';
 export * from './NetworkIcon';
+export * from './OriginProductIcon';
 export * from './SeverityIcon';
 export * from './SwapTokensIcon';
 export * from './TokenIcon';

@@ -8,6 +8,7 @@ import { tokens } from '@origin/shared/contracts';
 import {
   FaClockRegular,
   FaEyeRegular,
+  FaFileLinesRegular,
   OETH,
   OUSD,
   superOETH,
@@ -84,6 +85,14 @@ export const routes: RouteObject[] = [
           {
             path: 'poy/:id',
             element: <PoYDetail token={tokens.mainnet.OETH} />,
+          },
+          {
+            path: 'balance-sheet',
+            Component: oeth.BalanceSheet,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+            },
           },
         ],
       },

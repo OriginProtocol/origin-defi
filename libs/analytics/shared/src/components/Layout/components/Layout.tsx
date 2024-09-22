@@ -1,6 +1,8 @@
 import { Button, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
+import { OriginProductIcon } from '@origin/shared/components';
 import { FaBarsRegular } from '@origin/shared/icons';
 import { Outlet } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { DRAWER_SM_OPEN_WIDTH, VIEWPORT_MIN_WIDTH } from '../constants';
 import { useLayout } from '../hooks';
@@ -27,18 +29,29 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
       }}
     >
       <Stack
+        direction="row"
         sx={(theme) => ({
           height: theme.mixins.toolbar.height,
-          alignItems: 'flex-start',
+          alignItems: 'center',
+          justifyContent: 'space-between',
           px: 2,
           py: 1,
         })}
       >
+        {isSm && (
+          <RouterLink to="/" style={{ textDecoration: 'none' }}>
+            <OriginProductIcon
+              name="Analytics"
+              sx={{ display: { md: 'none' } }}
+            />
+          </RouterLink>
+        )}
+
         <Button
           variant="outlined"
           color="secondary"
           onClick={handleToggleDrawer}
-          sx={{ mr: 2, display: { md: 'none' } }}
+          sx={{ display: { md: 'none' } }}
         >
           <FaBarsRegular />
         </Button>
