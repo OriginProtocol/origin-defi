@@ -25,7 +25,7 @@ const totals = ['tvlUSD', 'tvlETH', 'feesETH', 'feesUSD'] as const;
 
 const getKey = (limit?: number): Key => ['useOriginStats', limit];
 
-type Result = {
+export type OriginChartResult = {
   oeth: ChartResult;
   ousd: ChartResult;
   superOeth: ChartResult;
@@ -35,7 +35,9 @@ type Result = {
   >;
 };
 
-const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
+const fetcher: (
+  queryClient: QueryClient,
+) => QueryFunction<OriginChartResult[], Key> =
   (queryClient) =>
   async ({ queryKey: [, limit] }) => {
     const charts = await Promise.all(
@@ -83,10 +85,10 @@ const fetcher: (queryClient: QueryClient) => QueryFunction<Result[], Key> =
     });
   };
 
-export const useOriginStats = <TResult = Result[]>(
+export const useOriginStats = <TResult = OriginChartResult[]>(
   limit?: number,
   options?: Omit<
-    UseQueryOptions<Result[], Error, TResult, Key>,
+    UseQueryOptions<OriginChartResult[], Error, TResult, Key>,
     'queryKey' | 'queryFn'
   >,
 ) => {

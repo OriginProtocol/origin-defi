@@ -23,6 +23,12 @@
       "value": "Total supply"
     }
   ],
+  "067ZAP": [
+    {
+      "type": 0,
+      "value": "Origin TVL"
+    }
+  ],
   "0FsXkn": [
     {
       "type": 0,
@@ -129,16 +135,6 @@
       "value": "Last"
     }
   ],
-  "9U3Xmb": [
-    {
-      "type": 0,
-      "value": "Wrapped supply: "
-    },
-    {
-      "type": 1,
-      "value": "supply"
-    }
-  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -193,6 +189,12 @@
       "value": "Theme:"
     }
   ],
+  "COIFLd": [
+    {
+      "type": 0,
+      "value": "Total protocol revenue"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -209,6 +211,12 @@
     {
       "type": 0,
       "value": "Exit"
+    }
+  ],
+  "EUdKC+": [
+    {
+      "type": 0,
+      "value": "View stats"
     }
   ],
   "FPMGr3": [
@@ -239,34 +247,10 @@
       "value": "On-chain Transaction"
     }
   ],
-  "IJvhCK": [
-    {
-      "type": 0,
-      "value": "Exchange rate: "
-    },
-    {
-      "type": 1,
-      "value": "rate"
-    }
-  ],
   "IU4zTP": [
     {
       "type": 0,
       "value": "Proof of Yield"
-    }
-  ],
-  "IY/NP5": [
-    {
-      "type": 0,
-      "value": "Apy: "
-    },
-    {
-      "type": 1,
-      "value": "apy"
-    },
-    {
-      "type": 0,
-      "value": "%"
     }
   ],
   "IeqnaT": [
@@ -337,6 +321,20 @@
     {
       "type": 0,
       "value": "Actual yield distributed"
+    }
+  ],
+  "NNFAc/": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
     }
   ],
   "NXFAgE": [
@@ -601,16 +599,6 @@
       "value": "30-Day"
     }
   ],
-  "epR7AH": [
-    {
-      "type": 0,
-      "value": "Total supply: "
-    },
-    {
-      "type": 1,
-      "value": "supply"
-    }
-  ],
   "fBhctx": [
     {
       "type": 0,
@@ -811,6 +799,12 @@
     {
       "type": 0,
       "value": "Yield Bonus"
+    }
+  ],
+  "xukzKg": [
+    {
+      "type": 0,
+      "value": "Networks"
     }
   ],
   "xwfunk": [

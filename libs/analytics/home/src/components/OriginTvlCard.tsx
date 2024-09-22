@@ -7,10 +7,10 @@ import {
   CircularProgress,
   Divider,
   Stack,
-  Typography,
   useTheme,
 } from '@mui/material';
 import {
+  ChartTooltip,
   LimitControls,
   LineChart,
   useOriginStats,
@@ -18,11 +18,10 @@ import {
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last } from 'ramda';
+import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import type { CardProps, StackProps } from '@mui/material';
-import type { ChartData } from '@origin/analytics/shared';
+import type { CardProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';
 
 export type OriginTvlCardProps = {
@@ -35,7 +34,9 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useOriginStats(limit);
+  const { data, isLoading } = useOriginStats(limit, {
+    select: (data) => pluck('total', data),
+  });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -46,10 +47,13 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
         title={intl.formatMessage({ defaultMessage: 'Origin TVL' })}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Stack
           direction="row"
-          sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+          sx={{
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
         >
           <Stack spacing={0.5}>
             <LoadingLabel
@@ -58,7 +62,7 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
               sx={{ fontWeight: 'bold' }}
             >
               {formatInTimeZone(
-                new Date(activeItem?.total.timestamp ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd MMM yyyy',
               )}
@@ -69,7 +73,7 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
               sx={{ fontWeight: 'bold' }}
             >
               $
-              {intl.formatNumber(activeItem?.total.tvlUSD ?? 0, {
+              {intl.formatNumber(activeItem?.tvlUSD ?? 0, {
                 maximumFractionDigits: 0,
               })}
             </LoadingLabel>
@@ -79,6 +83,7 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
           </Stack>
         </Stack>
       </CardContent>
+
       {isLoading ? (
         <Stack
           sx={{
@@ -92,55 +97,28 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
         </Stack>
       ) : (
         <LineChart
-          data={
-            data?.map((d) => ({
-              x: d.total.timestamp,
-              y: d.total.tvlUSD,
-            })) ?? []
-          }
+          series={[
+            {
+              label: 'TVL',
+              data: data ?? [],
+              xKey: 'timestamp',
+              yKey: 'tvlUSD',
+              color: [theme.palette.chart1, theme.palette.chart2],
+            },
+          ]}
           width={width}
           height={height}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={Tooltip}
+          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
-          lineColors={[theme.palette.chart1, theme.palette.chart2]}
-          sx={{ width: 1 }}
         />
       )}
     </Card>
-  );
-};
-
-type TooltipProps = { data: ChartData } & StackProps;
-
-const Tooltip = ({ data, ...rest }: TooltipProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest} sx={[{ backgroundColor: 'background.default' }]}>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          { date: intl.formatDate(new Date(data.x)) },
-        )}
-      </Typography>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'TVL: ${totalSupply}' },
-          {
-            totalSupply: intl.formatNumber(data.y, {
-              notation: 'compact',
-              minimumFractionDigits: 2,
-            }),
-          },
-        )}
-      </Typography>
-    </Stack>
   );
 };

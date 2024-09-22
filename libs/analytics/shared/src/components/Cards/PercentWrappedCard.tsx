@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
@@ -16,13 +17,13 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
+import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls, TrailingControls } from '../Controls';
 
-import type { CardProps, StackProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { NumberLike } from '@visx/scale';
 
-import type { ChartData } from '../Charts';
 import type { Trailing } from '../Controls';
 
 export type PercentWrappedCardProps = {
@@ -40,17 +41,16 @@ export const PercentWrappedCard = ({
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
+  const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from },
-    {
-      select: (data) =>
-        data.map((d) => ({ x: d.timestamp, y: d.pctWrappedSupply })),
-    },
-  );
+  const { data, isLoading } = useTokenChartStats({
+    token,
+    limit,
+    from: from ?? config?.from,
+  });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -70,11 +70,11 @@ export const PercentWrappedCard = ({
               )}
             </Typography>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.y ?? 0)}%
+              {intl.formatNumber(activeItem?.pctWrappedSupply ?? 0)}%
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
               {formatInTimeZone(
-                new Date(activeItem?.x ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
@@ -101,38 +101,23 @@ export const PercentWrappedCard = ({
         <LineChart
           width={width}
           height={height}
-          curveType="base"
-          data={data ?? []}
+          series={[
+            {
+              label: '% wrapped',
+              data: data ?? [],
+              xKey: 'timestamp',
+              yKey: 'pctWrappedSupply',
+              color: [theme.palette.chart1, theme.palette.chart2],
+              curveType: 'base',
+            },
+          ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={Tooltip}
+          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
         />
       )}
     </Card>
-  );
-};
-
-type TooltipProps = { data: ChartData } & StackProps;
-
-const Tooltip = ({ data, ...rest }: TooltipProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest} sx={[{ backgroundColor: 'background.default' }]}>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          { date: intl.formatDate(new Date(data.x)) },
-        )}
-      </Typography>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Apy: {apy}%' },
-          { apy: intl.formatNumber(data.y) },
-        )}
-      </Typography>
-    </Stack>
   );
 };

@@ -15,42 +15,39 @@ import {
 } from '@visx/tooltip';
 
 import { chartMargins, curveTypes } from './constants';
+import { getScaleDomains } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
 import type { ComponentType } from 'react';
 
-import type { ChartData } from './types';
+import type { ChartData, Serie } from './types';
 
-export type LineChartProps = {
+export type LineChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  data: ChartData[];
+  series: Serie<Datum>[];
   onHover?: (idx: number | null) => void;
-  curveType?: keyof typeof curveTypes;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
+  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
-  lineColors?: [string] | [string, string];
 } & Omit<BoxProps, 'ref' | 'key'>;
 
-export const LineChart = ({
+export const LineChart = <Datum,>({
   width,
   height,
-  data,
+  series,
   onHover,
-  curveType = 'natural',
   tickXFormat,
   tickYFormat,
   yScaleDomain,
   Tooltip,
   margins = chartMargins,
-  lineColors,
   ...rest
-}: LineChartProps) => {
+}: LineChartProps<Datum>) => {
   const theme = useTheme();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const { containerRef } = useTooltipInPortal({
@@ -68,17 +65,16 @@ export const LineChart = ({
     tooltipTop: height / 3,
   });
 
+  const { minX, maxX, minY, maxY } = getScaleDomains(series);
+
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
-    domain: [
-      Math.min(...data.map((d) => d.x)),
-      Math.max(...data.map((d) => d.x)),
-    ],
+    domain: [minX, maxX],
   });
 
   const yScale = scaleLinear({
     range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
+    domain: yScaleDomain ?? [minY, maxY],
   });
 
   const handlePointerMove = useCallback(
@@ -86,26 +82,34 @@ export const LineChart = ({
       const { x } = localPoint(event) || { x: 0 };
       const x0 = xScale.invert(x).getTime();
 
-      const closestIndex = data.reduce((prevIndex, curr, currIndex, array) => {
-        const prevDate = array[prevIndex].x;
-        const currDate = curr.x;
-        return Math.abs(currDate - x0) < Math.abs(prevDate - x0)
-          ? currIndex
-          : prevIndex;
-      }, 0);
+      const closestIndex = series[0].data.reduce(
+        (prevIndex, curr, currIndex, array) => {
+          const prevDate = array[prevIndex]?.[series[0].xKey] as number;
+          const currDate = curr?.[series[0].xKey] as number;
+          return Math.abs(currDate - x0) < Math.abs(prevDate - x0)
+            ? currIndex
+            : prevIndex;
+        },
+        0,
+      );
 
       setActiveIdx(closestIndex);
       onHover?.(closestIndex);
       showTooltip({ tooltipLeft: x, tooltipTop: 0 });
     },
-    [showTooltip, data, xScale, onHover],
+    [onHover, series, showTooltip, xScale],
   );
 
   if (!width || !height) return null;
 
-  const activeItem = activeIdx === null ? null : data[activeIdx];
-  const colorFrom = lineColors?.[0] ?? theme.palette.chart5;
-  const colorTo = lineColors?.[1] ?? lineColors?.[0] ?? theme.palette.chart4;
+  const activeSeries =
+    activeIdx === null
+      ? null
+      : series.map((s) => ({
+          ...s,
+          data: [s.data[activeIdx]],
+          yAccessor: s.yKey,
+        }));
   const bottomTicks = xScale.ticks(width / 80);
   const rightTicks = yScale.ticks(height / 40);
 
@@ -121,17 +125,20 @@ export const LineChart = ({
     >
       <svg width={width} height={height}>
         <defs>
-          <LinearGradient
-            id="lineColor"
-            from={colorFrom}
-            to={colorTo}
-            fromOffset="20%"
-            toOffset="80%"
-            x1="0%"
-            x2="100%"
-            y1="0%"
-            y2="0%"
-          />
+          {series.map((s, i) => (
+            <LinearGradient
+              key={`gradient-${i}`}
+              id={`gradient-${i}`}
+              from={s.color?.[0] ?? theme.palette.chart5}
+              to={s.color?.[1] ?? s.color?.[0] ?? theme.palette.chart4}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
+          ))}
         </defs>
         <AxisRight
           scale={yScale}
@@ -153,7 +160,7 @@ export const LineChart = ({
           tickFormat={tickXFormat}
           numTicks={bottomTicks.length}
           tickLabelProps={{
-            fontSize: 11,
+            fontSize: theme.typography.caption1.fontSize,
             fontFamily: theme.typography.body1.fontFamily,
             fill: theme.palette.text.secondary,
           }}
@@ -167,14 +174,17 @@ export const LineChart = ({
           strokeOpacity={0.1}
           numTicks={height / 80}
         />
-        <LinePath
-          data={data}
-          curve={curveTypes[curveType]}
-          x={(d) => xScale(d.x)}
-          y={(d) => yScale(d.y)}
-          stroke="url(#lineColor)"
-          strokeWidth={1}
-        />
+        {series.map((s, i) => (
+          <LinePath
+            key={`serie-${i}`}
+            data={s.data}
+            curve={curveTypes[s.curveType ?? 'natural']}
+            x={(d) => xScale(d?.[s.xKey] as number)}
+            y={(d) => yScale(d?.[s.yKey] as number)}
+            stroke={`url(#gradient-${i})`}
+            strokeWidth={1}
+          />
+        ))}
         {width && height && (
           <rect
             x={margins.left}
@@ -191,10 +201,10 @@ export const LineChart = ({
             }}
           />
         )}
-        {!activeItem ? null : (
+        {!activeIdx ? null : (
           <line
-            x1={xScale(activeItem.x)}
-            x2={xScale(activeItem.x)}
+            x1={xScale(activeIdx)}
+            x2={xScale(activeIdx)}
             y1={margins.top}
             y2={height - margins.bottom}
             stroke="#0074F0"
@@ -203,7 +213,7 @@ export const LineChart = ({
           />
         )}
       </svg>
-      {tooltipOpen && activeItem && Tooltip ? (
+      {tooltipOpen && activeIdx && Tooltip ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -212,7 +222,7 @@ export const LineChart = ({
             background: theme.palette.background.default,
           }}
         >
-          <Tooltip data={activeItem} />
+          <Tooltip series={activeSeries} />
         </TooltipWithBounds>
       ) : null}
     </Box>

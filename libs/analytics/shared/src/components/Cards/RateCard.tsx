@@ -6,6 +6,7 @@ import {
   CircularProgress,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
@@ -16,12 +17,12 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
+import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls, TrailingControls } from '../Controls';
 
-import type { CardProps, StackProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
-import type { ChartData } from '../Charts';
 import type { Trailing } from '../Controls';
 
 type SupportedCurrency = 'ETH' | 'USD';
@@ -43,20 +44,16 @@ export const RateCard = ({
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
+  const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from },
-    {
-      select: (data) =>
-        data.map((d) => ({
-          x: d.timestamp,
-          y: currency === 'ETH' ? d.rateETH : d.rateUSD,
-        })),
-    },
-  );
+  const { data, isLoading } = useTokenChartStats({
+    token,
+    limit,
+    from: from ?? config?.from,
+  });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -77,15 +74,20 @@ export const RateCard = ({
                 { defaultMessage: '{currency}{rate}' },
                 {
                   currency: currency === 'ETH' ? 'Ξ' : '$',
-                  rate: intl.formatNumber(activeItem?.y ?? 0, {
-                    maximumFractionDigits: 5,
-                  }),
+                  rate: intl.formatNumber(
+                    currency === 'ETH'
+                      ? (activeItem?.rateETH ?? 0)
+                      : (activeItem?.rateUSD ?? 0),
+                    {
+                      maximumFractionDigits: 5,
+                    },
+                  ),
                 },
               )}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
               {formatInTimeZone(
-                new Date(activeItem?.x ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
@@ -112,12 +114,20 @@ export const RateCard = ({
         <LineChart
           width={width}
           height={height}
-          data={data ?? []}
+          series={[
+            {
+              label: 'Exchange rate',
+              data: data ?? [],
+              xKey: 'timestamp',
+              yKey: currency === 'ETH' ? 'rateETH' : 'rateUSD',
+              color: [theme.palette.chart1, theme.palette.chart2],
+              curveType: 'linear',
+            },
+          ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          curveType="linear"
-          Tooltip={Tooltip}
+          Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               minimumFractionDigits: 2,
@@ -128,32 +138,5 @@ export const RateCard = ({
         />
       )}
     </Card>
-  );
-};
-
-type TooltipProps = { data: ChartData } & StackProps;
-
-const Tooltip = ({ data, ...rest }: TooltipProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest} sx={[{ backgroundColor: 'background.default' }]}>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          { date: intl.formatDate(new Date(data.x)) },
-        )}
-      </Typography>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Exchange rate: {rate}' },
-          {
-            rate: intl.formatNumber(data.y, {
-              maximumFractionDigits: 5,
-            }),
-          },
-        )}
-      </Typography>
-    </Stack>
   );
 };

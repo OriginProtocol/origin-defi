@@ -16,13 +16,13 @@ import { useIntl } from 'react-intl';
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
+import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls, TrailingControls } from '../Controls';
 
-import type { CardProps, StackProps } from '@mui/material';
+import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { NumberLike } from '@visx/scale';
 
-import type { ChartData } from '../Charts';
 import type { Trailing } from '../Controls';
 
 export type ApyCardProps = {
@@ -39,10 +39,11 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from },
-    { select: (data) => data.map((d) => ({ x: d.timestamp, y: d[trailing] })) },
-  );
+  const { data, isLoading } = useTokenChartStats({
+    token,
+    limit,
+    from: from ?? config?.from,
+  });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -59,11 +60,11 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
               {intl.formatMessage({ defaultMessage: 'APY' })}
             </Typography>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.y ?? 0)}%
+              {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
               {formatInTimeZone(
-                new Date(activeItem?.x ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
@@ -91,38 +92,22 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
         <LineChart
           width={width}
           height={height}
-          data={data ?? []}
+          series={[
+            {
+              label: 'APY',
+              data: data ?? [],
+              xKey: 'timestamp',
+              yKey: trailing,
+            },
+          ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={Tooltip}
+          Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
           sx={{ width: 1 }}
         />
       )}
     </Card>
-  );
-};
-
-type TooltipProps = { data: ChartData } & StackProps;
-
-const Tooltip = ({ data, ...rest }: TooltipProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest} sx={[{ backgroundColor: 'background.default' }]}>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          { date: intl.formatDate(new Date(data.x)) },
-        )}
-      </Typography>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Apy: {apy}%' },
-          { apy: intl.formatNumber(data.y) },
-        )}
-      </Typography>
-    </Stack>
   );
 };

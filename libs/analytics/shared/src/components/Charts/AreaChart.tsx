@@ -14,40 +14,51 @@ import {
 } from '@visx/tooltip';
 
 import { chartMargins, curveTypes } from './constants';
+import { getScaleDomains } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
+import type { SeriesPoint, StackKey } from '@visx/shape/lib/types';
 import type { ComponentType } from 'react';
 
-import type { ChartData } from './types';
+import type { ChartData, Serie } from './types';
 
-export type AreaChartProps = {
+export type AreaChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  data: ChartData[];
+  serie: Datum[];
+  xKey: keyof Datum;
+  yKeys: {
+    key: keyof Datum;
+    strokeColor?: [string] | [string, string];
+    fillColor?: [string] | [string, string];
+    label?: string;
+  }[];
   onHover?: (idx: number | null) => void;
-  curveType?: keyof typeof curveTypes;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<{ data: ChartData } & StackProps>;
+  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
+  curveType?: keyof typeof curveTypes;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
-export const AreaChart = ({
+export const AreaChart = <Datum,>({
   width,
   height,
-  data,
+  serie,
+  xKey,
+  yKeys,
   onHover,
-  curveType = 'natural',
   tickXFormat,
   tickYFormat,
   yScaleDomain,
   Tooltip,
   margins = chartMargins,
+  curveType = 'natural',
   ...rest
-}: AreaChartProps) => {
+}: AreaChartProps<Datum>) => {
   const theme = useTheme();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const { containerRef } = useTooltipInPortal({
@@ -65,17 +76,18 @@ export const AreaChart = ({
     tooltipTop: height / 3,
   });
 
+  const { minX, maxX, minY, maxY } = getScaleDomains(
+    yKeys.map((yKey) => ({ data: serie, xKey, yKey: yKey.key })),
+  );
+
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
-    domain: [
-      Math.min(...data.map((d) => d.x)),
-      Math.max(...data.map((d) => d.x)),
-    ],
+    domain: [minX, maxX],
   });
 
   const yScale = scaleLinear({
     range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [0, Math.max(...data.map((d) => d.y))],
+    domain: yScaleDomain ?? [minY, maxY],
   });
 
   const handlePointerMove = useCallback(
@@ -83,9 +95,9 @@ export const AreaChart = ({
       const { x } = localPoint(event) || { x: 0 };
       const x0 = xScale.invert(x).getTime();
 
-      const closestIndex = data.reduce((prevIndex, curr, currIndex, array) => {
-        const prevDate = array[prevIndex].x;
-        const currDate = curr.x;
+      const closestIndex = serie.reduce((prevIndex, curr, currIndex, array) => {
+        const prevDate = array[prevIndex]?.[xKey] as number;
+        const currDate = curr?.[xKey] as number;
         return Math.abs(currDate - x0) < Math.abs(prevDate - x0)
           ? currIndex
           : prevIndex;
@@ -95,12 +107,19 @@ export const AreaChart = ({
       onHover?.(closestIndex);
       showTooltip({ tooltipLeft: x, tooltipTop: 0 });
     },
-    [showTooltip, data, xScale, onHover],
+    [onHover, serie, showTooltip, xKey, xScale],
   );
 
   if (!width || !height) return null;
 
-  const activeItem = activeIdx === null ? null : data[activeIdx];
+  const activeSeries =
+    activeIdx === null
+      ? null
+      : yKeys.map((yKey) => ({
+          data: [serie[activeIdx]],
+          xKey,
+          yKey: yKey.key,
+        }));
   const bottomTicks = xScale.ticks(width / 80);
   const rightTicks = yScale.ticks(height / 40);
 
@@ -116,30 +135,44 @@ export const AreaChart = ({
     >
       <svg width={width} height={height}>
         <defs>
-          <LinearGradient
-            id="gradient-0"
-            from={theme.palette.chart6}
-            to={theme.palette.chart1}
-            x1="0%"
-            x2="100%"
-            y1="0%"
-            y2="0%"
-          />
-          <LinearGradient
-            id="gradient-1"
-            from={theme.palette.chart5}
-            to={theme.palette.chart4}
-            x1="0%"
-            x2="100%"
-            y1="0%"
-            y2="0%"
-          />
+          {yKeys.map((k) => (
+            <Fragment key={`gradient-${k.key as string}`}>
+              <LinearGradient
+                id={`gradient-stroke-${k.key as string}`}
+                from={k.strokeColor?.[0] ?? theme.palette.chart5}
+                to={
+                  k.strokeColor?.[1] ??
+                  k.strokeColor?.[0] ??
+                  theme.palette.chart4
+                }
+                fromOffset="20%"
+                toOffset="80%"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="0%"
+              />
+              <LinearGradient
+                id={`gradient-fill-${k.key as string}`}
+                from={k.fillColor?.[0] ?? theme.palette.chart5}
+                to={
+                  k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4
+                }
+                fromOffset="20%"
+                toOffset="80%"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="0%"
+              />
+            </Fragment>
+          ))}
         </defs>
         <AxisRight
           scale={yScale}
           left={width - margins.right}
-          tickFormat={tickYFormat}
           stroke={theme.palette.text.secondary}
+          tickFormat={tickYFormat}
           tickLabelProps={{
             fontSize: 11,
             fontFamily: theme.typography.body1.fontFamily,
@@ -155,25 +188,31 @@ export const AreaChart = ({
           numTicks={bottomTicks.length}
           stroke={theme.palette.text.secondary}
           tickLabelProps={{
-            fontSize: 11,
-            fontFamily: 'Inter',
+            fontSize: theme.typography.caption1.fontSize,
+            fontFamily: theme.typography.body1.fontFamily,
             fill: theme.palette.text.secondary,
           }}
         />
         <AreaStack
-          data={data}
-          keys={['y']}
+          data={serie}
+          keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
           curve={curveTypes[curveType]}
-          x={(d) => xScale(d.data.x)}
-          y0={(d) => yScale(d[1])}
-          y1={(d) => yScale(d[0])}
+          x={(d: SeriesPoint<Datum>) => xScale(d.data?.[xKey] as number)}
+          y0={(d: SeriesPoint<Datum>) => yScale(d[0])}
+          y1={(d: SeriesPoint<Datum>) => yScale(d[1])}
         >
           {({ stacks, path }) =>
-            stacks.map((stack, idx) => (
-              <Fragment key={`stack-${stack.key}`}>
-                <path d={path(stack) || ''} fill={`url(#gradient-${idx})`} />
-              </Fragment>
-            ))
+            stacks.map((stack) => {
+              return (
+                <Fragment key={`stack-${stack.key}`}>
+                  <path
+                    d={path(stack) || ''}
+                    fill={`url(#gradient-fill-${stack.key})`}
+                    stroke={`url(#gradient-stroke-${stack.key})`}
+                  />
+                </Fragment>
+              );
+            })
           }
         </AreaStack>
         {width && height && (
@@ -192,10 +231,10 @@ export const AreaChart = ({
             }}
           />
         )}
-        {!activeItem ? null : (
+        {!activeIdx ? null : (
           <line
-            x1={xScale(activeItem.x)}
-            x2={xScale(activeItem.x)}
+            x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
+            x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
             y1={margins.top}
             y2={height - margins.bottom}
             stroke="#ffffff"
@@ -204,7 +243,7 @@ export const AreaChart = ({
           />
         )}
       </svg>
-      {tooltipOpen && activeItem && Tooltip ? (
+      {tooltipOpen && activeIdx && Tooltip ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -213,7 +252,7 @@ export const AreaChart = ({
             background: theme.palette.background.default,
           }}
         >
-          <Tooltip data={activeItem} />
+          <Tooltip series={activeSeries ?? null} />
         </TooltipWithBounds>
       ) : null}
     </Box>

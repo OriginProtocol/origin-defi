@@ -22,7 +22,6 @@ export const LimitControls = ({
   limit,
   setLimit,
   disableAll,
-  ...rest
 }: LimitControlsProps) => {
   const intl = useIntl();
   const theme = useTheme();
@@ -103,7 +102,7 @@ export const LimitControls = ({
       </ClickAwayMenu>
     </>
   ) : (
-    <ButtonGroup size="small" variant="outlined" color="secondary" {...rest}>
+    <ButtonGroup size="small" variant="outlined" color="secondary">
       {options.map((o) => (
         <Button
           key={o.value ?? 'all'}

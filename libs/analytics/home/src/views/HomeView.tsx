@@ -1,6 +1,7 @@
 import { Grid2 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 
+import { OriginProtocolRevenueCard } from '../components/OriginProtocolRevenue';
 import { OriginTvlCard } from '../components/OriginTvlCard';
 import { TokenCard } from '../components/TokenCard';
 
@@ -15,7 +16,10 @@ export const HomeView = () => {
         ),
       )}
       <Grid2 size={{ xs: 12, md: 6 }}>
-        <OriginTvlCard height={300} />
+        <OriginTvlCard height={320} />
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: 6 }}>
+        <OriginProtocolRevenueCard height={300} />
       </Grid2>
     </Grid2>
   );

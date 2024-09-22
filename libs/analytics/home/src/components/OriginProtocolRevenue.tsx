@@ -7,12 +7,13 @@ import {
   CircularProgress,
   Divider,
   Stack,
-  Typography,
   useTheme,
 } from '@mui/material';
 import {
+  AreaChart,
+  ChartTooltip,
+  CurrencyControls,
   LimitControls,
-  LineChart,
   useOriginStats,
 } from '@origin/analytics/shared';
 import { LoadingLabel } from '@origin/shared/components';
@@ -21,9 +22,8 @@ import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import type { CardProps, StackProps } from '@mui/material';
-import type { ChartData } from '@origin/analytics/shared';
-import type { NumberLike } from '@visx/scale';
+import type { CardProps } from '@mui/material';
+import type { ChartResult } from '@origin/analytics/shared';
 
 export type OriginProtocolRevenueCardProps = {
   height: number;
@@ -36,9 +36,20 @@ export const OriginProtocolRevenueCard = ({
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
+  const [feesKey, setFeesKey] =
+    useState<Extract<keyof ChartResult, 'feesETH' | 'feesUSD'>>('feesETH');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useOriginStats(limit);
+  const { data, isLoading } = useOriginStats(limit, {
+    select: (data) =>
+      data.map((d) => ({
+        timestamp: d.total.timestamp,
+        total: d.total[feesKey],
+        oeth: d.oeth[feesKey],
+        ousd: d.ousd[feesKey],
+        superOeth: d.superOeth[feesKey],
+      })),
+  });
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -61,7 +72,7 @@ export const OriginProtocolRevenueCard = ({
               sx={{ fontWeight: 'bold' }}
             >
               {formatInTimeZone(
-                new Date(activeItem?.total.timestamp ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd MMM yyyy',
               )}
@@ -72,13 +83,19 @@ export const OriginProtocolRevenueCard = ({
               sx={{ fontWeight: 'bold' }}
             >
               $
-              {intl.formatNumber(activeItem?.total.feesETH ?? 0, {
+              {intl.formatNumber(activeItem?.total ?? 0, {
                 maximumFractionDigits: 0,
               })}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
+            <CurrencyControls
+              currency={feesKey === 'feesETH' ? 'ETH' : 'USD'}
+              setCurrency={(c) => {
+                setFeesKey(c === 'ETH' ? 'feesETH' : 'feesUSD');
+              }}
+            />
           </Stack>
         </Stack>
       </CardContent>
@@ -94,56 +111,45 @@ export const OriginProtocolRevenueCard = ({
           <CircularProgress size={36} />
         </Stack>
       ) : (
-        <LineChart
-          data={
-            data?.map((d) => ({
-              x: d.total.timestamp,
-              y: d.total.tvlUSD,
-            })) ?? []
-          }
+        <AreaChart
           width={width}
           height={height}
+          serie={data ?? []}
+          xKey="timestamp"
+          yKeys={[
+            {
+              key: 'ousd',
+              strokeColor: [theme.palette.chart1, theme.palette.chart3],
+              fillColor: [theme.palette.chart1, theme.palette.chart3],
+            },
+            {
+              key: 'oeth',
+              strokeColor: [theme.palette.chart2, theme.palette.chart5],
+              fillColor: [theme.palette.chart2, theme.palette.chart5],
+            },
+            {
+              key: 'superOeth',
+              strokeColor: [theme.palette.chart3, theme.palette.chart4],
+              fillColor: [theme.palette.chart3, theme.palette.chart4],
+            },
+            // {
+            //   key: 'total',
+            //   strokeColor: [theme.palette.chart6, theme.palette.chart7],
+            //   fillColor: [theme.palette.chart6, theme.palette.chart7],
+            // },
+          ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={Tooltip}
-          tickYFormat={(value: NumberLike) =>
+          Tooltip={ChartTooltip}
+          tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
-          lineColors={[theme.palette.chart1, theme.palette.chart2]}
-          sx={{ width: 1 }}
+          curveType="base"
         />
       )}
     </Card>
-  );
-};
-
-type TooltipProps = { data: ChartData } & StackProps;
-
-const Tooltip = ({ data, ...rest }: TooltipProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack {...rest} sx={[{ backgroundColor: 'background.default' }]}>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          { date: intl.formatDate(new Date(data.x)) },
-        )}
-      </Typography>
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'TVL: ${totalSupply}' },
-          {
-            totalSupply: intl.formatNumber(data.y, {
-              notation: 'compact',
-              minimumFractionDigits: 2,
-            }),
-          },
-        )}
-      </Typography>
-    </Stack>
   );
 };
