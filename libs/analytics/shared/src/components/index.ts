@@ -1,3 +1,4 @@
+export * from './Breadcrumbs';
 export * from './Cards';
 export * from './Charts';
 export * from './ChartTooltip';

@@ -1,7 +1,13 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { useState } from 'react';
 
-import { Card, Divider, Stack, Typography } from '@mui/material';
+import {
+  Card,
+  CircularProgress,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { CurrencyControls } from '@origin/analytics/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -34,7 +40,13 @@ export const BalanceSheet = () => {
   };
 
   if (!assets || !liabilities) {
-    return null;
+    return (
+      <Stack
+        sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 300 }}
+      >
+        <CircularProgress size={36} />
+      </Stack>
+    );
   }
 
   return (

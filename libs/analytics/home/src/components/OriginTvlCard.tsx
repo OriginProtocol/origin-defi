@@ -117,6 +117,7 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
               notation: 'compact',
             })
           }
+          yScaleDomain={[0, Math.max(...(data?.map((d) => d.tvlUSD) ?? []))]}
         />
       )}
     </Card>

@@ -24,11 +24,7 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { supportedChains } from '@origin/shared/constants';
-import {
-  FaArrowLeftRegular,
-  FaArrowRightRegular,
-  FaArrowUpRegular,
-} from '@origin/shared/icons';
+import { FaArrowLeftRegular, FaArrowRightRegular } from '@origin/shared/icons';
 import { middleTruncate, ZERO_ADDRESS } from '@origin/shared/utils';
 import { keepPreviousData } from '@tanstack/react-query';
 import {
@@ -438,16 +434,6 @@ const Controls = ({ token }: ControlsProps) => {
 
   return (
     <Stack direction="row" alignItems="center" spacing={2}>
-      <Button
-        component={RouterLink}
-        to=".."
-        relative="path"
-        variant="outlined"
-        color="secondary"
-        size="small"
-      >
-        <FaArrowUpRegular />
-      </Button>
       <Button
         component={RouterLink}
         to={`../${ids?.previous?.id}`}

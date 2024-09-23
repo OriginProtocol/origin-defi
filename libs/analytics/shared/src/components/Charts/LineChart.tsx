@@ -207,7 +207,7 @@ export const LineChart = <Datum,>({
             x2={xScale(activeIdx)}
             y1={margins.top}
             y2={height - margins.bottom}
-            stroke="#0074F0"
+            stroke={theme.palette.text.secondary}
             strokeWidth={0.5}
             strokeDasharray={2}
           />

@@ -286,11 +286,14 @@ const ListMenuItem = ({
             component: 'a',
           })}
       sx={[
-        {
-          transition: 'padding-left 0.3s ease',
+        (theme) => ({
+          transition: theme.transitions.create('padding-left', {
+            easing: theme.transitions.easing.sharp,
+            duration: theme.transitions.duration.enteringScreen,
+          }),
           pl: isWide ? 5 : '21px',
           py: 1.5,
-        },
+        }),
         isSelected
           ? {
               color: 'primary.main',

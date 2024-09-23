@@ -23,6 +23,9 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     Component: App,
+    handle: {
+      breadcrumb: defineMessage({ defaultMessage: 'Analytics' }),
+    },
     children: [
       {
         index: true,
@@ -34,6 +37,7 @@ export const routes: RouteObject[] = [
         handle: {
           title: defineMessage({ defaultMessage: 'Super OETH' }),
           icon: superOETH,
+          breadcrumb: defineMessage({ defaultMessage: 'Super OETH' }),
         },
         children: [
           {
@@ -42,19 +46,33 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
             },
           },
           {
             path: 'poy',
-            element: <PoYList token={tokens.base.superOETHb} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
+              breadcrumb: defineMessage({
+                defaultMessage: 'Proof of Yield',
+              }),
             },
-          },
-          {
-            path: 'poy/:id',
-            element: <PoYDetail token={tokens.base.superOETHb} />,
+            children: [
+              {
+                index: true,
+                element: <PoYList token={tokens.base.superOETHb} />,
+              },
+              {
+                path: ':id',
+                element: <PoYDetail token={tokens.base.superOETHb} />,
+                handle: {
+                  breadcrumb: defineMessage({
+                    defaultMessage: 'Details',
+                  }),
+                },
+              },
+            ],
           },
         ],
       },
@@ -64,6 +82,7 @@ export const routes: RouteObject[] = [
         handle: {
           title: defineMessage({ defaultMessage: 'OETH' }),
           icon: OETH,
+          breadcrumb: defineMessage({ defaultMessage: 'OETH' }),
         },
         children: [
           {
@@ -72,19 +91,29 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
             },
           },
           {
             path: 'poy',
-            element: <PoYList token={tokens.mainnet.OETH} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Proof of Yield' }),
             },
-          },
-          {
-            path: 'poy/:id',
-            element: <PoYDetail token={tokens.mainnet.OETH} />,
+            children: [
+              {
+                index: true,
+                element: <PoYList token={tokens.mainnet.OETH} />,
+              },
+              {
+                path: ':id',
+                element: <PoYDetail token={tokens.mainnet.OETH} />,
+                handle: {
+                  breadcrumb: defineMessage({ defaultMessage: 'Details' }),
+                },
+              },
+            ],
           },
           {
             path: 'balance-sheet',
@@ -92,6 +121,7 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Balance Sheet' }),
               icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
           },
         ],
@@ -102,6 +132,7 @@ export const routes: RouteObject[] = [
         handle: {
           title: defineMessage({ defaultMessage: 'OUSD' }),
           icon: OUSD,
+          breadcrumb: defineMessage({ defaultMessage: 'OUSD' }),
         },
         children: [
           {
@@ -110,19 +141,29 @@ export const routes: RouteObject[] = [
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
             },
           },
           {
             path: 'poy',
-            element: <PoYList token={tokens.mainnet.OUSD} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Proof of Yield' }),
               icon: FaClockRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Proof of Yield' }),
             },
-          },
-          {
-            path: 'poy/:id',
-            element: <PoYDetail token={tokens.mainnet.OUSD} />,
+            children: [
+              {
+                index: true,
+                element: <PoYList token={tokens.mainnet.OUSD} />,
+              },
+              {
+                path: ':id',
+                element: <PoYDetail token={tokens.mainnet.OUSD} />,
+                handle: {
+                  breadcrumb: defineMessage({ defaultMessage: 'Details' }),
+                },
+              },
+            ],
           },
         ],
       },

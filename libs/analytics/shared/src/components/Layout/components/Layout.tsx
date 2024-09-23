@@ -4,7 +4,13 @@ import { FaBarsRegular } from '@origin/shared/icons';
 import { Outlet } from 'react-router-dom';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { DRAWER_SM_OPEN_WIDTH, VIEWPORT_MIN_WIDTH } from '../constants';
+import { Breadcrumbs } from '../../Breadcrumbs';
+import {
+  DRAWER_MD_COLLAPSED_WIDTH,
+  DRAWER_MD_OPEN_WIDTH,
+  DRAWER_SM_OPEN_WIDTH,
+  VIEWPORT_MIN_WIDTH,
+} from '../constants';
 import { useLayout } from '../hooks';
 import { LayoutProvider } from '../state';
 import { DrawerMenu } from './DrawerMenu';
@@ -30,13 +36,24 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
     >
       <Stack
         direction="row"
-        sx={(theme) => ({
-          height: theme.mixins.toolbar.height,
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          px: 2,
-          py: 1,
-        })}
+        sx={[
+          (theme) => ({
+            height: theme.mixins.toolbar.height,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            pr: 2,
+            py: 1,
+            transition: theme.transitions.create('padding-left', {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+          }),
+          isDrawerOpen
+            ? { pl: `${DRAWER_MD_OPEN_WIDTH + 16}px` }
+            : isSm
+              ? { pl: 0 }
+              : { pl: `${DRAWER_MD_COLLAPSED_WIDTH + 16}px` },
+        ]}
       >
         {isSm && (
           <RouterLink to="/" style={{ textDecoration: 'none' }}>
@@ -46,7 +63,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
             />
           </RouterLink>
         )}
-
+        <Breadcrumbs />
         <Button
           variant="outlined"
           color="secondary"
