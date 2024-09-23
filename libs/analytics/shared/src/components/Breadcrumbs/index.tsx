@@ -5,6 +5,7 @@ import { Link as RouterLink, useMatches } from 'react-router-dom';
 
 export const Breadcrumbs = () => {
   const intl = useIntl();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const matches: Record<string, any>[] = useMatches();
 
   const crumbs = matches.filter(

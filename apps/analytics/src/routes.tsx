@@ -23,9 +23,6 @@ export const routes: RouteObject[] = [
   {
     path: '/',
     Component: App,
-    handle: {
-      breadcrumb: defineMessage({ defaultMessage: 'Analytics' }),
-    },
     children: [
       {
         index: true,

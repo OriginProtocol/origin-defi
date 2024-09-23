@@ -274,83 +274,80 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                   </Typography>
                 </Stack>
               </CardContent>
-              <Divider />
-              {isRebasesLoading ? (
-                <Stack
+              <TableContainer sx={{ overflowX: 'auto', minHeight: 200 }}>
+                <Table
                   sx={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 200,
+                    '& .MuiTableCell-root': {
+                      px: { xs: 2, md: 3 },
+                      py: { xs: 1.75, md: 1.5 },
+                    },
                   }}
                 >
-                  <CircularProgress size={36} />
-                </Stack>
-              ) : (
-                <>
-                  <TableContainer sx={{ overflowX: 'auto' }}>
-                    <Table
-                      sx={{
-                        '& .MuiTableCell-root': {
-                          px: { xs: 2, md: 3 },
-                          py: { xs: 1.75, md: 1.5 },
-                        },
-                      }}
-                    >
-                      <TableHead>
-                        {table.getHeaderGroups().map((headerGroup) => (
-                          <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => (
-                              <TableCell
-                                key={header.id}
-                                sx={{ width: header.getSize() }}
-                              >
-                                {flexRender(
-                                  header.column.columnDef.header,
-                                  header.getContext(),
-                                )}
-                              </TableCell>
-                            ))}
-                          </TableRow>
+                  <TableHead>
+                    {table.getHeaderGroups().map((headerGroup) => (
+                      <TableRow key={headerGroup.id}>
+                        {headerGroup.headers.map((header) => (
+                          <TableCell
+                            key={header.id}
+                            sx={{ width: header.getSize() }}
+                          >
+                            {flexRender(
+                              header.column.columnDef.header,
+                              header.getContext(),
+                            )}
+                          </TableCell>
                         ))}
-                      </TableHead>
-                      <TableBody>
-                        {table.getRowModel().rows.map((row) => (
-                          <TableRow key={row.id}>
-                            {row.getVisibleCells().map((cell) => (
-                              <TableCell
-                                key={cell.id}
-                                sx={{ width: cell.column.getSize() }}
-                              >
-                                {flexRender(
-                                  cell.column.columnDef.cell,
-                                  cell.getContext(),
-                                )}
-                              </TableCell>
-                            ))}
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                  {table.getPageCount() > 1 && (
+                      </TableRow>
+                    ))}
+                  </TableHead>
+                  {isRebasesLoading || isDailyStatLoading ? (
                     <Stack
                       sx={{
                         alignItems: 'center',
                         justifyContent: 'center',
+                        height: 1,
                       }}
                     >
-                      <TablePagination
-                        table={table}
-                        disableScrollToTop
-                        buttonsProps={{
-                          variant: 'outlined',
-                          color: 'secondary',
-                          size: 'small',
-                        }}
-                      />
+                      <CircularProgress size={36} />
                     </Stack>
+                  ) : (
+                    <TableBody>
+                      {table.getRowModel().rows.map((row) => (
+                        <TableRow key={row.id}>
+                          {row.getVisibleCells().map((cell) => (
+                            <TableCell
+                              key={cell.id}
+                              sx={{ width: cell.column.getSize() }}
+                            >
+                              {flexRender(
+                                cell.column.columnDef.cell,
+                                cell.getContext(),
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableBody>
                   )}
-                </>
+                </Table>
+              </TableContainer>
+              {table.getPageCount() > 1 && (
+                <Stack
+                  sx={{
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <TablePagination
+                    table={table}
+                    disableScrollToTop
+                    buttonsProps={{
+                      variant: 'outlined',
+                      color: 'secondary',
+                      size: 'small',
+                    }}
+                  />
+                </Stack>
               )}
             </Card>
           </Stack>
