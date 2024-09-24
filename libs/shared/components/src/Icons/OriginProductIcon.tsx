@@ -21,7 +21,7 @@ export const OriginProductIcon = ({
       sx={[
         {
           justifyContent: 'flex-start',
-          alignItems: 'center',
+          alignItems: 'baseline',
           flexWrap: 'nowrap',
           svg: { width: { xs: 80, md: 100 }, height: 1 },
           '.name': {
