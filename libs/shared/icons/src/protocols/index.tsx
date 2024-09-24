@@ -10,6 +10,7 @@ import ConvexFullSvg from './convex-full.svg?react';
 import CurveWebp from './curve.webp';
 import CurveFullWebp from './curve-full.webp';
 import FluxFullSvg from './flux-full.svg?react';
+import FraxSvg from './frax.svg?react';
 import FraxFullSvg from './frax-full.svg?react';
 import LidoFullSvg from './lido-full.svg?react';
 import MakerFullSvg from './maker-full.svg?react';
@@ -61,6 +62,9 @@ export const CurveFull = (props: SvgIconProps) => (
 );
 export const FluxFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={FluxFullSvg} inheritViewBox />
+);
+export const Frax = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={FraxSvg} inheritViewBox />
 );
 export const FraxFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={FraxFullSvg} inheritViewBox />
