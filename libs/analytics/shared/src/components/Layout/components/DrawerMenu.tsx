@@ -70,11 +70,11 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
           py: 1,
         })}
       >
-        {isWide && (
+        <Collapse in={isWide} orientation="horizontal">
           <RouterLink to="/" style={{ textDecoration: 'none' }}>
             <OriginProductIcon name="Analytics" />
           </RouterLink>
-        )}
+        </Collapse>
         <IconButton
           onClick={handleToggleDrawer}
           sx={(theme) => ({
@@ -90,7 +90,7 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
           )}
         </IconButton>
       </Stack>
-      <Stack divider={<Divider />} sx={{ flexGrow: 1, pt: 2 }}>
+      <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
         {visibleRoutes?.map((route, i) => (
           <NavItem
             key={route?.path ?? `index-${i}}`}
@@ -105,7 +105,10 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
       </Stack>
       <Stack
         sx={[
-          isWide ? { alignItems: 'flex-end', pr: 2 } : { alignItems: 'center' },
+          {
+            alignItems: 'flex-end',
+            pr: 2,
+          },
         ]}
       >
         <ThemeModeIconButton variant="outlined" color="secondary" />

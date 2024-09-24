@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import {
   Button,
@@ -34,6 +34,8 @@ import { dailyStatMapper } from '../../utils';
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 
+import type { OTokenStatsConnectionQuery } from '../../queries';
+
 export type PoYListProps = { token: Token; from?: string } & StackProps;
 
 const columnHelper = createColumnHelper<ReturnType<typeof dailyStatMapper>>();
@@ -51,10 +53,13 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
       from: from ?? config?.from,
     },
     {
-      select: (data) =>
-        data?.oTokenDailyStatsConnection?.edges?.map((n) =>
-          dailyStatMapper(n.node, token),
-        ) ?? [],
+      select: useCallback(
+        (data: OTokenStatsConnectionQuery) =>
+          data?.oTokenDailyStatsConnection?.edges?.map((n) =>
+            dailyStatMapper(n.node, token),
+          ) ?? [],
+        [token],
+      ),
     },
   );
 

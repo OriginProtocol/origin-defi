@@ -3,8 +3,7 @@ import {
   BalancerFull,
   CompoundStrategy,
   ConvexStrategy,
-  CurveFull,
-  FraxFull,
+  CurveFullColor,
   MakerStrategy,
   MorphoStrategy,
   OriginLabel,
@@ -66,23 +65,23 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     }),
     addresses: ['0x89eb88fedc50fc77ae8a18aad1ca0ac27f777a90'],
   },
-  curve: {
-    id: 'curve',
-    icon: CurveFull,
-    color: '#000',
-    title: defineMessage({ defaultMessage: 'Curve' }),
+  curveAMO: {
+    id: 'curveAMO',
+    icon: CurveFullColor,
+    color: '#0074F0',
+    title: defineMessage({ defaultMessage: 'Curve AMO' }),
     description: defineMessage({
-      defaultMessage: `Curve AMO`,
+      defaultMessage: `Curve is a stableswap AMM that offers efficient trading of stablecoins and volatile assets. The AMO strategy on Curve automates liquidity management and maximizes rewards by balancing assets in the pool. It deploys additional OETH or ETH to maintain the peg and doubles liquidity to increase earnings. Convex enhances this by boosting rewards from Curve pools. The LP tokens are staked on Convex to earn higher CRV and CVX rewards, which are then converted to OETH and distributed to holders, increasing their balances automatically through rebasing.`,
     }),
     addresses: ['0x1827f9ea98e0bf96550b2fc20f7233277fcd7e63'],
   },
-  frax: {
-    id: 'frax',
-    icon: FraxFull,
-    color: '#000',
-    title: defineMessage({ defaultMessage: 'Frax' }),
+  fraxStaking: {
+    id: 'fraxStaking',
+    icon: OriginLabel,
+    color: '#0074F0',
+    title: defineMessage({ defaultMessage: 'Frax Staking' }),
     description: defineMessage({
-      defaultMessage: `Frax staking`,
+      defaultMessage: `OETH Frax Staking`,
     }),
     addresses: ['0x3ff8654d633d4ea0fae24c52aec73b4a20d0d0e5'],
   },
@@ -96,6 +95,16 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     }),
     addresses: ['0x6b69b755c629590ed59618a2712d8a2957ca98fc'],
   },
+  metamorpho: {
+    id: 'metamorpho',
+    icon: MorphoStrategy,
+    color: '#0B43CB',
+    title: defineMessage({ defaultMessage: 'Morpho' }),
+    description: defineMessage({
+      defaultMessage: `Morpho Vaults (formerly MetaMorpho) is an open-source protocol for permissionless risk management on top of Morpho, a decentralized platform for overcollateralized lending and borrowing of ERC20 and ERC4626 tokens on Ethereum. The MetaMorpho Factory deploys ERC4626-compliant vaults that allocate deposits across multiple Morpho markets. These noncustodial, immutable vaults let users earn interest passively while the vault actively manages risk. Users retain full control and can withdraw anytime. Morpho Vaults offer tailored risk options, unlike traditional pools exposed to the riskiest assets.`,
+    }),
+    addresses: ['0x603cdeaec82a60e3c4a10da6ab546459e5f64fa0'],
+  },
   morpho: {
     id: 'morpho',
     icon: MorphoStrategy,
@@ -107,7 +116,6 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     addresses: [
       '0x5a4eee58744d1430876d5ca93cab5ccb763c037d',
       '0x79f2188ef9350a1dc11a062cca0abe90684b0197',
-      '0x603cdeaec82a60e3c4a10da6ab546459e5f64fa0',
       '0xc1fc9e5ec3058921ea5025d703cbe31764756319',
     ],
   },
@@ -117,7 +125,7 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     color: '#0074F0',
     title: defineMessage({ defaultMessage: 'Native staking' }),
     description: defineMessage({
-      defaultMessage: `Native Staking`,
+      defaultMessage: `SSV network acts as our native staking solution and is a decentralized, open-source ETH staking platform using Secret Shared Validator (SSV) technology, also known as Distributed Validator Technology (DVT). It splits a validator key into multiple KeyShares to run an Ethereum validator across multiple non-trusting nodes. This setup provides active-active redundancy, enhances validator key security, and supports the Ethereum network, staking pools, services, and solo stakers.`,
     }),
     addresses: [
       '0x34edb2ee25751ee67f68a45813b22811687c0238',
@@ -128,9 +136,9 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     id: 'origin',
     icon: OriginLabel,
     color: '#0074F0',
-    title: defineMessage({ defaultMessage: 'Origin' }),
+    title: defineMessage({ defaultMessage: 'Origin Vault' }),
     description: defineMessage({
-      defaultMessage: `Origin vault`,
+      defaultMessage: `OETH Vault (WETH)`,
     }),
     addresses: ['0x39254033945aa2e4809cc2977e7087bee48bd7ab'],
   },

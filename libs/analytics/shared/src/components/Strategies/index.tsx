@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import {
   Box,
   Card,
@@ -8,7 +10,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { TokenIcon } from '@origin/shared/components';
+import { CurrencyLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   getFormatPrecision,
@@ -18,15 +20,16 @@ import {
 import { add, compare, div, format, from, lt, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
+import { strategiesConfig } from '../../constants';
 import { useOTokenStrategiesQuery } from '../../queries';
 import { strategyMapper } from '../../utils/strategyMapper';
-import { strategiesConfig } from './constants';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
-import type { Strategy } from '../../utils/strategyMapper';
+import type { OTokenStrategiesQuery } from '../../queries';
+import type { StrategyMapped } from '../../utils/strategyMapper';
 
 export type StrategiesProps = {
   token: Token;
@@ -41,8 +44,11 @@ export const Strategies = ({ token, ...rest }: StrategiesProps) => {
     },
     {
       enabled: !!token?.address,
-      select: (data) =>
-        strategyMapper(data?.strategies ?? [], token, strategiesConfig),
+      select: useCallback(
+        (data: OTokenStrategiesQuery) =>
+          strategyMapper(data?.strategies ?? [], token, strategiesConfig),
+        [token],
+      ),
     },
   );
 
@@ -86,7 +92,7 @@ export const Strategies = ({ token, ...rest }: StrategiesProps) => {
 };
 
 type StrategyTileProps = {
-  strategy: Strategy;
+  strategy: StrategyMapped;
   total: Dnum;
   token: Token;
 } & CardProps;
@@ -99,7 +105,6 @@ const StrategyCard = ({
 }: StrategyTileProps) => {
   const intl = useIntl();
 
-  const currency = includes([tokens.mainnet.OUSD.id], token.id) ? '$' : 'Ξ';
   const percent = toNumber(div(strategy.total, total, { decimals: 18 }));
 
   return (
@@ -107,7 +112,14 @@ const StrategyCard = ({
       <CardContent>
         <Stack
           direction="row"
-          sx={{ alignItems: 'center', justifyContent: 'space-between', mb: 1 }}
+          sx={{
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            columnGap: 1,
+            rowGap: 1,
+            mb: 1,
+          }}
         >
           <Box>
             <SvgIcon
@@ -117,7 +129,11 @@ const StrategyCard = ({
           </Box>
           <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
             <Typography variant="featured2">
-              {currency}
+              <CurrencyLabel
+                currency={
+                  includes([tokens.mainnet.OUSD.id], token.id) ? 'USD' : 'ETH'
+                }
+              />
               {format(strategy.total, getFormatPrecision(strategy.total))}
             </Typography>
             <Typography sx={{ fontWeight: 'bold' }}>
@@ -147,8 +163,13 @@ const StrategyCard = ({
         />
         <Stack
           direction="row"
-          sx={{ alignItems: 'center', mb: 2 }}
-          spacing={2.5}
+          sx={{
+            alignItems: 'center',
+            mb: 2,
+            flexWrap: 'wrap',
+            columnGap: 2.5,
+            rowGap: 2,
+          }}
         >
           {strategy.balances
             .toSorted((a, b) => compare(b.amount, a.amount))

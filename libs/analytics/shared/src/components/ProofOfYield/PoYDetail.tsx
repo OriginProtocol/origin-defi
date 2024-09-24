@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import {
   Button,
@@ -49,12 +49,15 @@ import {
   useOTokenStatsQuery,
 } from '../../queries';
 import { dailyStatMapper } from '../../utils';
+import { useLayout } from '../Layout';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 import type { Hex } from 'viem';
+
+import type { OTokenDailyStatByIdQuery } from '../../queries';
 
 export type PoYDetailProps = { token: Token; from?: string } & StackProps;
 
@@ -69,13 +72,18 @@ const columnHelper = createColumnHelper<{
 export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
   const intl = useIntl();
   const params = useParams();
-
+  const [{ isDrawerOpen }] = useLayout();
   const { data: dailyStat, isLoading: isDailyStatLoading } =
     useOTokenDailyStatByIdQuery(
       { id: params?.id ?? '' },
       {
         enabled: !!params?.id,
-        select: (data) => dailyStatMapper(data?.oTokenDailyStatById, token),
+        placeholderData: keepPreviousData,
+        select: useCallback(
+          (data: OTokenDailyStatByIdQuery) =>
+            dailyStatMapper(data?.oTokenDailyStatById, token),
+          [token],
+        ),
       },
     );
   const day = new Date(dailyStat?.timestamp ?? 0).toISOString();
@@ -178,7 +186,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
             </CardContent>
           </Card>
         </Grid2>
-        <Grid2 size={{ xs: 12, md: 8 }}>
+        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
           <Stack spacing={3}>
             <Card>
               <CardContent>
@@ -352,7 +360,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
             </Card>
           </Stack>
         </Grid2>
-        <Grid2 size={{ xs: 12, md: 4 }}>
+        <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 4, lg: 4 }}>
           <BonusCard
             token={token}
             dailyStat={dailyStat}

@@ -1,124 +1,111 @@
 import { getTokenByAddress } from '@origin/shared/contracts';
 import { isAddressEqual, isNilOrEmpty } from '@origin/shared/utils';
 import { add, compare, from } from 'dnum';
-import { update } from 'ramda';
 
 import type { Token } from '@origin/shared/contracts';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Dnum } from 'dnum';
 
-import type { StrategyConfig } from '../components/Strategies/constants';
+import type { StrategyConfig } from '../constants';
 import type { StrategyFragment } from '../queries';
 
-type Balance = {
+export type StrategyBalanceMapped = {
   token: Token;
   amount: Dnum;
 };
 
-export type Strategy = {
-  balances: Balance[];
+export type StrategyMapped = {
+  balances: StrategyBalanceMapped[];
   total: Dnum;
 } & StrategyConfig;
 
 export const strategyMapper = (
-  d: StrategyFragment[] | undefined | null,
+  data: StrategyFragment[] | undefined | null,
   token: Token,
   strategyConfig: Record<string, StrategyConfig>,
-) => {
-  return d
-    ?.reduce((acc, curr) => {
-      if (
-        isNilOrEmpty(curr.balances) ||
-        curr.balances.every((b) => b.balance === '0')
-      ) {
-        return acc;
-      }
+): StrategyMapped[] => {
+  if (!data) return [];
 
-      const config = Object.values(strategyConfig).find((c) =>
-        c.addresses.some((a) => isAddressEqual(a, curr.address as HexAddress)),
+  const strategyMap = new Map<string, StrategyMapped>();
+
+  for (const curr of data) {
+    if (
+      isNilOrEmpty(curr.balances) ||
+      curr.balances.every((b) => b.balance === '0')
+    ) {
+      continue;
+    }
+
+    const config = Object.values(strategyConfig).find((c) =>
+      c.addresses.some((a) => isAddressEqual(a, curr.address as HexAddress)),
+    );
+
+    if (!config) continue;
+
+    let strategy = strategyMap.get(config.id);
+    if (!strategy) {
+      strategy = { ...config, balances: [], total: from(0, 18) };
+      strategyMap.set(config.id, strategy);
+    }
+
+    for (const balance of curr.balances) {
+      if (balance.balance === '0') continue;
+
+      const tok = getTokenByAddress(balance.asset, token.chainId);
+      if (!tok) continue;
+
+      const amount: Dnum = [BigInt(balance.balance), tok.decimals];
+      const existingBalance = strategy.balances.find(
+        (b) => b.token.id === tok.id,
       );
 
-      if (!config) {
-        return acc;
+      if (existingBalance) {
+        existingBalance.amount = add(existingBalance.amount, amount);
+      } else {
+        strategy.balances.push({ token: tok, amount });
       }
 
-      const idx = acc.findIndex((c) => c.id === config?.id);
-      if (idx === -1) {
-        const balances = curr.balances.reduce((a, c) => {
-          if (c.balance === '0') {
-            return a;
-          }
+      strategy.total = add(strategy.total, amount);
+    }
+  }
 
-          const tok = getTokenByAddress(c.asset, token.chainId);
+  return Array.from(strategyMap.values()).sort((a, b) =>
+    compare(b.total, a.total),
+  );
+};
 
-          if (!tok) {
-            return a;
-          }
+export const collateralMapper = (
+  data: StrategyFragment[] | undefined | null,
+  token: Token,
+): StrategyBalanceMapped[] => {
+  if (!data) return [];
 
-          return [
-            ...a,
-            {
-              token: tok,
-              amount: [BigInt(c.balance), tok?.decimals] as Dnum,
-            },
-          ];
-        }, [] as Balance[]);
+  const balanceMap = new Map<string, StrategyBalanceMapped>();
 
-        return [
-          ...acc,
-          {
-            ...config,
-            balances,
-            total: balances.reduce((a, c) => add(a, c.amount), from(0)),
-          },
-        ];
+  for (const strategy of data) {
+    if (
+      isNilOrEmpty(strategy.balances) ||
+      strategy.balances.every((b) => b.balance === '0')
+    ) {
+      continue;
+    }
+
+    for (const bal of strategy.balances) {
+      if (bal.balance === '0') continue;
+
+      const tok = getTokenByAddress(bal.asset, token.chainId);
+      if (!tok) continue;
+
+      const amount: Dnum = [BigInt(bal.balance), tok.decimals];
+      const existingBalance = balanceMap.get(tok.id);
+
+      if (existingBalance) {
+        existingBalance.amount = add(existingBalance.amount, amount);
+      } else {
+        balanceMap.set(tok.id, { token: tok, amount });
       }
+    }
+  }
 
-      const item = acc[idx];
-      const balances = curr.balances.reduce((a, c) => {
-        if (c.balance === '0') {
-          return a;
-        }
-
-        const toAdd = item.balances.find((t) =>
-          isAddressEqual(t.token.address, c.asset as HexAddress),
-        );
-
-        if (!toAdd) {
-          const tok = getTokenByAddress(c.asset, token.chainId);
-
-          if (!tok) {
-            return a;
-          }
-
-          return [
-            ...a,
-            {
-              token: tok,
-              amount: [BigInt(c.balance), tok?.decimals] as Dnum,
-            },
-          ];
-        }
-
-        return [
-          ...a,
-          {
-            ...toAdd,
-            amount: add(toAdd.amount, [
-              BigInt(c.balance),
-              toAdd.token.decimals,
-            ]),
-          },
-        ];
-      }, [] as Balance[]);
-
-      const newItem = {
-        ...item,
-        balances,
-        total: balances.reduce((a, c) => add(a, c.amount), from(0)),
-      };
-
-      return update(idx, newItem, acc);
-    }, [] as Strategy[])
-    ?.toSorted((a, b) => compare(b.total, a.total));
+  return Array.from(balanceMap.values());
 };
