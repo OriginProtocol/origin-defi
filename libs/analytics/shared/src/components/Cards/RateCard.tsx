@@ -8,7 +8,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -73,7 +73,7 @@ export const RateCard = ({
               {intl.formatMessage(
                 { defaultMessage: '{currency}{rate}' },
                 {
-                  currency: currency === 'ETH' ? 'Ξ' : '$',
+                  currency: <CurrencyLabel currency={currency} />,
                   rate: intl.formatNumber(
                     currency === 'ETH'
                       ? (activeItem?.rateETH ?? 0)

@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { CurrencyControls } from '@origin/analytics/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { formatInTimeZone } from 'date-fns-tz';
 import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -284,8 +284,6 @@ const BalanceSheetRow = ({
   currency,
   ...rest
 }: BalanceSheetRowProps) => {
-  const currencySymbol = currency ? (currency === 'USD' ? '$' : 'Ξ') : '';
-
   return (
     <Stack
       direction="row"
@@ -306,14 +304,14 @@ const BalanceSheetRow = ({
         isLoading={isLoading}
         sx={[cellSx, !today && { display: 'none' }]}
       >
-        {currencySymbol}&nbsp;
+        <CurrencyLabel currency={currency} />
         {today}
       </LoadingLabel>
       <LoadingLabel
         isLoading={isLoading}
         sx={[cellSx, !lastWeek && { display: 'none' }]}
       >
-        {currencySymbol}&nbsp;
+        <CurrencyLabel currency={currency} />
         {lastWeek}
       </LoadingLabel>
       <LoadingLabel

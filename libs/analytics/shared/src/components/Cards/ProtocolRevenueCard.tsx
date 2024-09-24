@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -72,7 +72,8 @@ export const ProtocolRevenueCard = ({
               isLoading={isFeesLoading || isFeesAvgLoading}
               sx={{ fontWeight: 'bold' }}
             >
-              Ξ{intl.formatNumber(activeItem?.y ?? 0)}
+              <CurrencyLabel currency="ETH" />
+              {intl.formatNumber(activeItem?.y ?? 0)}
             </LoadingLabel>
             <LoadingLabel
               isLoading={isFeesLoading || isFeesAvgLoading}

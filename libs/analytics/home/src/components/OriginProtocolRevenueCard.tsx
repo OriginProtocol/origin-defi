@@ -16,7 +16,7 @@ import {
   LimitControls,
   useOriginStats,
 } from '@origin/analytics/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -82,7 +82,7 @@ export const OriginProtocolRevenueCard = ({
               isLoading={isLoading}
               sx={{ fontWeight: 'bold' }}
             >
-              $
+              <CurrencyLabel currency={feesKey === 'feesETH' ? 'ETH' : 'USD'} />
               {intl.formatNumber(activeItem?.total ?? 0, {
                 maximumFractionDigits: 0,
               })}
@@ -119,18 +119,18 @@ export const OriginProtocolRevenueCard = ({
           yKeys={[
             {
               key: 'ousd',
-              strokeColor: [theme.palette.chart1, theme.palette.chart3],
-              fillColor: [theme.palette.chart1, theme.palette.chart3],
+              strokeColor: [theme.palette.chart1],
+              fillColor: [theme.palette.chart1],
             },
             {
               key: 'oeth',
-              strokeColor: [theme.palette.chart2, theme.palette.chart5],
-              fillColor: [theme.palette.chart2, theme.palette.chart5],
+              strokeColor: [theme.palette.chart6, theme.palette.chart2],
+              fillColor: [theme.palette.chart6, theme.palette.chart2],
             },
             {
               key: 'superOeth',
-              strokeColor: [theme.palette.chart3, theme.palette.chart4],
-              fillColor: [theme.palette.chart3, theme.palette.chart4],
+              strokeColor: [theme.palette.chart7, theme.palette.chart5],
+              fillColor: [theme.palette.chart7, theme.palette.chart5],
             },
             // {
             //   key: 'total',
