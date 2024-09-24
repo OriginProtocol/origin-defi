@@ -489,6 +489,7 @@ export type Space = {
   proposalsCount?: Maybe<Scalars['Int']['output']>;
   proposalsCount1d?: Maybe<Scalars['Int']['output']>;
   proposalsCount7d?: Maybe<Scalars['Int']['output']>;
+  proposalsCount30d?: Maybe<Scalars['Int']['output']>;
   rank?: Maybe<Scalars['Float']['output']>;
   skin?: Maybe<Scalars['String']['output']>;
   strategies?: Maybe<Array<Maybe<Strategy>>>;

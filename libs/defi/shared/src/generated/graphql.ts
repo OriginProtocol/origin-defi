@@ -18537,6 +18537,223 @@ export type MaverickPoolsConnection = {
   totalCount: Scalars['Int']['output'];
 };
 
+export type MorphoMarketState = {
+  __typename?: 'MorphoMarketState';
+  blockNumber: Scalars['Int']['output'];
+  chainId: Scalars['Int']['output'];
+  fee: Scalars['BigInt']['output'];
+  id: Scalars['String']['output'];
+  lastUpdate: Scalars['BigInt']['output'];
+  marketId: Scalars['String']['output'];
+  timestamp: Scalars['DateTime']['output'];
+  totalBorrowAssets: Scalars['BigInt']['output'];
+  totalBorrowShares: Scalars['BigInt']['output'];
+  totalSupplyAssets: Scalars['BigInt']['output'];
+  totalSupplyShares: Scalars['BigInt']['output'];
+};
+
+export type MorphoMarketStateEdge = {
+  __typename?: 'MorphoMarketStateEdge';
+  cursor: Scalars['String']['output'];
+  node: MorphoMarketState;
+};
+
+export enum MorphoMarketStateOrderByInput {
+  BlockNumberAsc = 'blockNumber_ASC',
+  BlockNumberAscNullsFirst = 'blockNumber_ASC_NULLS_FIRST',
+  BlockNumberAscNullsLast = 'blockNumber_ASC_NULLS_LAST',
+  BlockNumberDesc = 'blockNumber_DESC',
+  BlockNumberDescNullsFirst = 'blockNumber_DESC_NULLS_FIRST',
+  BlockNumberDescNullsLast = 'blockNumber_DESC_NULLS_LAST',
+  ChainIdAsc = 'chainId_ASC',
+  ChainIdAscNullsFirst = 'chainId_ASC_NULLS_FIRST',
+  ChainIdAscNullsLast = 'chainId_ASC_NULLS_LAST',
+  ChainIdDesc = 'chainId_DESC',
+  ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
+  ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  FeeAsc = 'fee_ASC',
+  FeeAscNullsFirst = 'fee_ASC_NULLS_FIRST',
+  FeeAscNullsLast = 'fee_ASC_NULLS_LAST',
+  FeeDesc = 'fee_DESC',
+  FeeDescNullsFirst = 'fee_DESC_NULLS_FIRST',
+  FeeDescNullsLast = 'fee_DESC_NULLS_LAST',
+  IdAsc = 'id_ASC',
+  IdAscNullsFirst = 'id_ASC_NULLS_FIRST',
+  IdAscNullsLast = 'id_ASC_NULLS_LAST',
+  IdDesc = 'id_DESC',
+  IdDescNullsFirst = 'id_DESC_NULLS_FIRST',
+  IdDescNullsLast = 'id_DESC_NULLS_LAST',
+  LastUpdateAsc = 'lastUpdate_ASC',
+  LastUpdateAscNullsFirst = 'lastUpdate_ASC_NULLS_FIRST',
+  LastUpdateAscNullsLast = 'lastUpdate_ASC_NULLS_LAST',
+  LastUpdateDesc = 'lastUpdate_DESC',
+  LastUpdateDescNullsFirst = 'lastUpdate_DESC_NULLS_FIRST',
+  LastUpdateDescNullsLast = 'lastUpdate_DESC_NULLS_LAST',
+  MarketIdAsc = 'marketId_ASC',
+  MarketIdAscNullsFirst = 'marketId_ASC_NULLS_FIRST',
+  MarketIdAscNullsLast = 'marketId_ASC_NULLS_LAST',
+  MarketIdDesc = 'marketId_DESC',
+  MarketIdDescNullsFirst = 'marketId_DESC_NULLS_FIRST',
+  MarketIdDescNullsLast = 'marketId_DESC_NULLS_LAST',
+  TimestampAsc = 'timestamp_ASC',
+  TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
+  TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
+  TimestampDesc = 'timestamp_DESC',
+  TimestampDescNullsFirst = 'timestamp_DESC_NULLS_FIRST',
+  TimestampDescNullsLast = 'timestamp_DESC_NULLS_LAST',
+  TotalBorrowAssetsAsc = 'totalBorrowAssets_ASC',
+  TotalBorrowAssetsAscNullsFirst = 'totalBorrowAssets_ASC_NULLS_FIRST',
+  TotalBorrowAssetsAscNullsLast = 'totalBorrowAssets_ASC_NULLS_LAST',
+  TotalBorrowAssetsDesc = 'totalBorrowAssets_DESC',
+  TotalBorrowAssetsDescNullsFirst = 'totalBorrowAssets_DESC_NULLS_FIRST',
+  TotalBorrowAssetsDescNullsLast = 'totalBorrowAssets_DESC_NULLS_LAST',
+  TotalBorrowSharesAsc = 'totalBorrowShares_ASC',
+  TotalBorrowSharesAscNullsFirst = 'totalBorrowShares_ASC_NULLS_FIRST',
+  TotalBorrowSharesAscNullsLast = 'totalBorrowShares_ASC_NULLS_LAST',
+  TotalBorrowSharesDesc = 'totalBorrowShares_DESC',
+  TotalBorrowSharesDescNullsFirst = 'totalBorrowShares_DESC_NULLS_FIRST',
+  TotalBorrowSharesDescNullsLast = 'totalBorrowShares_DESC_NULLS_LAST',
+  TotalSupplyAssetsAsc = 'totalSupplyAssets_ASC',
+  TotalSupplyAssetsAscNullsFirst = 'totalSupplyAssets_ASC_NULLS_FIRST',
+  TotalSupplyAssetsAscNullsLast = 'totalSupplyAssets_ASC_NULLS_LAST',
+  TotalSupplyAssetsDesc = 'totalSupplyAssets_DESC',
+  TotalSupplyAssetsDescNullsFirst = 'totalSupplyAssets_DESC_NULLS_FIRST',
+  TotalSupplyAssetsDescNullsLast = 'totalSupplyAssets_DESC_NULLS_LAST',
+  TotalSupplySharesAsc = 'totalSupplyShares_ASC',
+  TotalSupplySharesAscNullsFirst = 'totalSupplyShares_ASC_NULLS_FIRST',
+  TotalSupplySharesAscNullsLast = 'totalSupplyShares_ASC_NULLS_LAST',
+  TotalSupplySharesDesc = 'totalSupplyShares_DESC',
+  TotalSupplySharesDescNullsFirst = 'totalSupplyShares_DESC_NULLS_FIRST',
+  TotalSupplySharesDescNullsLast = 'totalSupplyShares_DESC_NULLS_LAST'
+}
+
+export type MorphoMarketStateWhereInput = {
+  AND?: InputMaybe<Array<MorphoMarketStateWhereInput>>;
+  OR?: InputMaybe<Array<MorphoMarketStateWhereInput>>;
+  blockNumber_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_gte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  blockNumber_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  blockNumber_lt?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_lte?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_gte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  chainId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  chainId_lt?: InputMaybe<Scalars['Int']['input']>;
+  chainId_lte?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
+  chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  fee_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  fee_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  fee_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  fee_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  id_contains?: InputMaybe<Scalars['String']['input']>;
+  id_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_eq?: InputMaybe<Scalars['String']['input']>;
+  id_gt?: InputMaybe<Scalars['String']['input']>;
+  id_gte?: InputMaybe<Scalars['String']['input']>;
+  id_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  id_lt?: InputMaybe<Scalars['String']['input']>;
+  id_lte?: InputMaybe<Scalars['String']['input']>;
+  id_not_contains?: InputMaybe<Scalars['String']['input']>;
+  id_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  id_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  id_not_eq?: InputMaybe<Scalars['String']['input']>;
+  id_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  id_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  id_startsWith?: InputMaybe<Scalars['String']['input']>;
+  lastUpdate_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  lastUpdate_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  lastUpdate_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  lastUpdate_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  marketId_contains?: InputMaybe<Scalars['String']['input']>;
+  marketId_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  marketId_endsWith?: InputMaybe<Scalars['String']['input']>;
+  marketId_eq?: InputMaybe<Scalars['String']['input']>;
+  marketId_gt?: InputMaybe<Scalars['String']['input']>;
+  marketId_gte?: InputMaybe<Scalars['String']['input']>;
+  marketId_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  marketId_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  marketId_lt?: InputMaybe<Scalars['String']['input']>;
+  marketId_lte?: InputMaybe<Scalars['String']['input']>;
+  marketId_not_contains?: InputMaybe<Scalars['String']['input']>;
+  marketId_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  marketId_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  marketId_not_eq?: InputMaybe<Scalars['String']['input']>;
+  marketId_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  marketId_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  marketId_startsWith?: InputMaybe<Scalars['String']['input']>;
+  timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  timestamp_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  timestamp_lt?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_lte?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_eq?: InputMaybe<Scalars['DateTime']['input']>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  totalBorrowAssets_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalBorrowAssets_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalBorrowAssets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowAssets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalBorrowShares_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalBorrowShares_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalBorrowShares_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalBorrowShares_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupplyAssets_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupplyAssets_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupplyAssets_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyAssets_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupplyShares_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  totalSupplyShares_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  totalSupplyShares_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  totalSupplyShares_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+};
+
+export type MorphoMarketStatesConnection = {
+  __typename?: 'MorphoMarketStatesConnection';
+  edges: Array<MorphoMarketStateEdge>;
+  pageInfo: PageInfo;
+  totalCount: Scalars['Int']['output'];
+};
+
 export type NativeBalance = {
   __typename?: 'NativeBalance';
   account: Scalars['String']['output'];
@@ -27102,6 +27319,9 @@ export type Query = {
   maverickPoolById?: Maybe<MaverickPool>;
   maverickPools: Array<MaverickPool>;
   maverickPoolsConnection: MaverickPoolsConnection;
+  morphoMarketStateById?: Maybe<MorphoMarketState>;
+  morphoMarketStates: Array<MorphoMarketState>;
+  morphoMarketStatesConnection: MorphoMarketStatesConnection;
   nativeBalanceById?: Maybe<NativeBalance>;
   nativeBalances: Array<NativeBalance>;
   nativeBalancesConnection: NativeBalancesConnection;
@@ -29215,6 +29435,27 @@ export type QueryMaverickPoolsConnectionArgs = {
 };
 
 
+export type QueryMorphoMarketStateByIdArgs = {
+  id: Scalars['String']['input'];
+};
+
+
+export type QueryMorphoMarketStatesArgs = {
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  orderBy?: InputMaybe<Array<MorphoMarketStateOrderByInput>>;
+  where?: InputMaybe<MorphoMarketStateWhereInput>;
+};
+
+
+export type QueryMorphoMarketStatesConnectionArgs = {
+  after?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
+  orderBy: Array<MorphoMarketStateOrderByInput>;
+  where?: InputMaybe<MorphoMarketStateWhereInput>;
+};
+
+
 export type QueryNativeBalanceByIdArgs = {
   id: Scalars['String']['input'];
 };
@@ -30035,6 +30276,8 @@ export type QueryProcessingStatusesConnectionArgs = {
 
 
 export type QueryStrategiesArgs = {
+  chainId?: InputMaybe<Scalars['Float']['input']>;
+  otoken?: InputMaybe<Scalars['String']['input']>;
   timestamp?: InputMaybe<Scalars['String']['input']>;
 };
 
