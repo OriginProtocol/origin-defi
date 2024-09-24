@@ -115,21 +115,21 @@ export const routes: RouteObject[] = [
             ],
           },
           {
-            path: 'balance-sheet',
-            Component: oeth.BalanceSheet,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
-              icon: FaFileLinesRegular,
-              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
-            },
-          },
-          {
             path: 'strategies',
             element: <Strategies token={tokens.mainnet.OETH} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Strategies' }),
               icon: FaChartPieRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
+          {
+            path: 'balance-sheet',
+            Component: oeth.BalanceSheet,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
           },
         ],
