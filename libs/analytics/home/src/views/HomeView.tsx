@@ -1,7 +1,7 @@
 import { Grid2 } from '@mui/material';
 import { tokens } from '@origin/shared/contracts';
 
-import { OriginProtocolRevenueCard } from '../components/OriginProtocolRevenue';
+import { OriginProtocolRevenueCard } from '../components/OriginProtocolRevenueCard';
 import { OriginTvlCard } from '../components/OriginTvlCard';
 import { TokenCard } from '../components/TokenCard';
 

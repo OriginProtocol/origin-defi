@@ -18,7 +18,7 @@ export const dailyStatMapper = (
   const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
   const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
   const wrapped = [BigInt(d?.wrappedSupply ?? 0), token.decimals] as Dnum;
-  const feesETH = [BigInt(d?.fees ?? 0), 18] as Dnum;
+  const fees = [BigInt(d?.fees ?? 0), 18] as Dnum;
   const rebasingSupply = [
     BigInt(d?.rebasingSupply ?? 0),
     token.decimals,
@@ -32,7 +32,8 @@ export const dailyStatMapper = (
   const yieldETH = [BigInt(d?.yield ?? 0), 18] as Dnum;
   const dripperWETH = [BigInt(d?.dripperWETH ?? 0), 18] as Dnum;
 
-  const feesUSD = mul(feesETH, rateUSD);
+  const feesETH = mul(fees, rateETH);
+  const feesUSD = mul(fees, rateUSD);
   const yieldUSD = mul(yieldETH, rateUSD);
   const dripperUSD = mul(dripperWETH, rateUSD);
   const circulating = sub(totalSupply, protocolOwned);

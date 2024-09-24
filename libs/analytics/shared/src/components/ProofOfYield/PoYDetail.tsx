@@ -274,43 +274,43 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                   </Typography>
                 </Stack>
               </CardContent>
-              <TableContainer sx={{ overflowX: 'auto', minHeight: 200 }}>
-                <Table
+              {isRebasesLoading || isDailyStatLoading ? (
+                <Stack
                   sx={{
-                    '& .MuiTableCell-root': {
-                      px: { xs: 2, md: 3 },
-                      py: { xs: 1.75, md: 1.5 },
-                    },
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    height: 200,
                   }}
                 >
-                  <TableHead>
-                    {table.getHeaderGroups().map((headerGroup) => (
-                      <TableRow key={headerGroup.id}>
-                        {headerGroup.headers.map((header) => (
-                          <TableCell
-                            key={header.id}
-                            sx={{ width: header.getSize() }}
-                          >
-                            {flexRender(
-                              header.column.columnDef.header,
-                              header.getContext(),
-                            )}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                  </TableHead>
-                  {isRebasesLoading || isDailyStatLoading ? (
-                    <Stack
-                      sx={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 1,
-                      }}
-                    >
-                      <CircularProgress size={36} />
-                    </Stack>
-                  ) : (
+                  <CircularProgress size={36} />
+                </Stack>
+              ) : (
+                <TableContainer sx={{ overflowX: 'auto', minHeight: 200 }}>
+                  <Table
+                    sx={{
+                      '& .MuiTableCell-root': {
+                        px: { xs: 2, md: 3 },
+                        py: { xs: 1.75, md: 1.5 },
+                      },
+                    }}
+                  >
+                    <TableHead>
+                      {table.getHeaderGroups().map((headerGroup) => (
+                        <TableRow key={headerGroup.id}>
+                          {headerGroup.headers.map((header) => (
+                            <TableCell
+                              key={header.id}
+                              sx={{ width: header.getSize() }}
+                            >
+                              {flexRender(
+                                header.column.columnDef.header,
+                                header.getContext(),
+                              )}
+                            </TableCell>
+                          ))}
+                        </TableRow>
+                      ))}
+                    </TableHead>
                     <TableBody>
                       {table.getRowModel().rows.map((row) => (
                         <TableRow key={row.id}>
@@ -328,9 +328,9 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                         </TableRow>
                       ))}
                     </TableBody>
-                  )}
-                </Table>
-              </TableContainer>
+                  </Table>
+                </TableContainer>
+              )}
               {table.getPageCount() > 1 && (
                 <Stack
                   sx={{

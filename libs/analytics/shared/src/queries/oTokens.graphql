@@ -15,7 +15,21 @@ fragment DailyStat on OTokenDailyStat {
   amoSupply
   yield
   fees
-  dripperWETH  
+  dripperWETH
+}
+
+fragment Strategy on Strategy {
+  name
+  contractName
+  address
+  oTokenAddress
+  kind
+  balances {
+    asset
+    timestamp
+    blockNumber
+    balance
+  }
 }
 
 query oTokenStats(
@@ -96,7 +110,7 @@ query oTokenRebases(
   }
 }
 
-query OTokenApy(
+query oTokenApy(
   $chainId: Int!
   $token: String!
   $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]
@@ -111,5 +125,11 @@ query OTokenApy(
     apy30DayAvg
     apr
     apy
+  }
+}
+
+query oTokenStrategies($chainId: Float!, $token: String!) {
+  strategies(otoken: $token, chainId: $chainId) {
+    ...Strategy
   }
 }

@@ -3,7 +3,9 @@ import { hasKey } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatches } from 'react-router-dom';
 
-export const Breadcrumbs = () => {
+import type { BreadcrumbsProps } from '@mui/material';
+
+export const Breadcrumbs = (props: BreadcrumbsProps) => {
   const intl = useIntl();
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const matches: Record<string, any>[] = useMatches();
@@ -13,7 +15,7 @@ export const Breadcrumbs = () => {
   );
 
   return (
-    <MuiBreadcrumbs aria-label="breadcrumb">
+    <MuiBreadcrumbs {...props}>
       {crumbs.map((value) => {
         return (
           <Link

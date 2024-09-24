@@ -48,22 +48,22 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
               duration: theme.transitions.duration.enteringScreen,
             }),
           }),
-          isDrawerOpen
-            ? { pl: `${DRAWER_MD_OPEN_WIDTH + 16}px` }
-            : isSm
-              ? { pl: 0 }
+          isSm
+            ? { pl: 2 }
+            : isDrawerOpen
+              ? { pl: `${DRAWER_MD_OPEN_WIDTH + 16}px` }
               : { pl: `${DRAWER_MD_COLLAPSED_WIDTH + 16}px` },
         ]}
       >
-        {isSm && (
-          <RouterLink to="/" style={{ textDecoration: 'none' }}>
-            <OriginProductIcon
-              name="Analytics"
-              sx={{ display: { md: 'none' } }}
-            />
-          </RouterLink>
-        )}
-        <Breadcrumbs />
+        <Stack direction="row" alignItems="center" spacing={2}>
+          {isSm ? (
+            <RouterLink to="/" style={{ textDecoration: 'none' }}>
+              <OriginProductIcon name="Analytics" />
+            </RouterLink>
+          ) : (
+            <Breadcrumbs />
+          )}
+        </Stack>
         <Button
           variant="outlined"
           color="secondary"

@@ -1,12 +1,14 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
 import * as ousd from '@origin/analytics/ousd';
-import { PoYDetail, PoYList } from '@origin/analytics/shared';
+import { PoYDetail, PoYList, Strategies } from '@origin/analytics/shared';
 import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
+  FaChartPieRegular,
   FaClockRegular,
+  FaCoinsRegular,
   FaEyeRegular,
   FaFileLinesRegular,
   OETH,
@@ -121,6 +123,15 @@ export const routes: RouteObject[] = [
               breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
           },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.mainnet.OETH} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
         ],
       },
       {
@@ -161,6 +172,24 @@ export const routes: RouteObject[] = [
                 },
               },
             ],
+          },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.mainnet.OUSD} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collaterals' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collaterals' }),
+            },
+            Component: ousd.OusdCollateralsView,
           },
         ],
       },

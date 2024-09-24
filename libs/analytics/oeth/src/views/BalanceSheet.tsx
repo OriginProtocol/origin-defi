@@ -39,12 +39,24 @@ export const BalanceSheet = () => {
     return value;
   };
 
-  if (!assets || !liabilities) {
+  if (isBalanceSheetLoading) {
     return (
       <Stack
         sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 300 }}
       >
         <CircularProgress size={36} />
+      </Stack>
+    );
+  }
+
+  if (!assets || !liabilities) {
+    return (
+      <Stack
+        sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 300 }}
+      >
+        <Typography color="text.secondary">
+          {intl.formatMessage({ defaultMessage: 'Empty balance sheet' })}
+        </Typography>
       </Stack>
     );
   }

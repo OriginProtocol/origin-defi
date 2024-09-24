@@ -4,6 +4,8 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/analytics/shared';
 export type DailyStatFragment = { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string };
 
+export type StrategyFragment = { __typename?: 'Strategy', name: string, contractName: string, address: string, oTokenAddress: string, kind: string, balances: Array<{ __typename?: 'Balance', asset: string, timestamp: string, blockNumber: number, balance: string }> };
+
 export type OTokenStatsQueryVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
   chainId: Types.Scalars['Int']['input'];
@@ -54,6 +56,14 @@ export type OTokenApyQueryVariables = Types.Exact<{
 
 export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __typename?: 'OTokenAPY', apy7DayAvg: number, apy14DayAvg: number, apy30DayAvg: number, apr: number, apy: number }> };
 
+export type OTokenStrategiesQueryVariables = Types.Exact<{
+  chainId: Types.Scalars['Float']['input'];
+  token: Types.Scalars['String']['input'];
+}>;
+
+
+export type OTokenStrategiesQuery = { __typename?: 'Query', strategies: Array<{ __typename?: 'Strategy', name: string, contractName: string, address: string, oTokenAddress: string, kind: string, balances: Array<{ __typename?: 'Balance', asset: string, timestamp: string, blockNumber: number, balance: string }> }> };
+
 
 export const DailyStatFragmentDoc = `
     fragment DailyStat on OTokenDailyStat {
@@ -74,6 +84,21 @@ export const DailyStatFragmentDoc = `
   yield
   fees
   dripperWETH
+}
+    `;
+export const StrategyFragmentDoc = `
+    fragment Strategy on Strategy {
+  name
+  contractName
+  address
+  oTokenAddress
+  kind
+  balances {
+    asset
+    timestamp
+    blockNumber
+    balance
+  }
 }
     `;
 export const OTokenStatsDocument = `
@@ -215,7 +240,7 @@ useOTokenRebasesQuery.getKey = (variables: OTokenRebasesQueryVariables) => ['oTo
 useOTokenRebasesQuery.fetcher = (variables: OTokenRebasesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenRebasesQuery, OTokenRebasesQueryVariables>(OTokenRebasesDocument, variables, options);
 
 export const OTokenApyDocument = `
-    query OTokenApy($chainId: Int!, $token: String!, $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]) {
+    query oTokenApy($chainId: Int!, $token: String!, $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]) {
   oTokenApies(
     limit: 1
     orderBy: $orderBy
@@ -240,13 +265,42 @@ export const useOTokenApyQuery = <
     
     return useQuery<OTokenApyQuery, TError, TData>(
       {
-    queryKey: ['OTokenApy', variables],
+    queryKey: ['oTokenApy', variables],
     queryFn: graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables),
     ...options
   }
     )};
 
-useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['OTokenApy', variables];
+useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['oTokenApy', variables];
 
 
 useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables, options);
+
+export const OTokenStrategiesDocument = `
+    query oTokenStrategies($chainId: Float!, $token: String!) {
+  strategies(otoken: $token, chainId: $chainId) {
+    ...Strategy
+  }
+}
+    ${StrategyFragmentDoc}`;
+
+export const useOTokenStrategiesQuery = <
+      TData = OTokenStrategiesQuery,
+      TError = unknown
+    >(
+      variables: OTokenStrategiesQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenStrategiesQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenStrategiesQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OTokenStrategiesQuery, TError, TData>(
+      {
+    queryKey: ['oTokenStrategies', variables],
+    queryFn: graphqlClient<OTokenStrategiesQuery, OTokenStrategiesQueryVariables>(OTokenStrategiesDocument, variables),
+    ...options
+  }
+    )};
+
+useOTokenStrategiesQuery.getKey = (variables: OTokenStrategiesQueryVariables) => ['oTokenStrategies', variables];
+
+
+useOTokenStrategiesQuery.fetcher = (variables: OTokenStrategiesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStrategiesQuery, OTokenStrategiesQueryVariables>(OTokenStrategiesDocument, variables, options);
