@@ -77,12 +77,6 @@ importers:
       buffer:
         specifier: ^6.0.3
         version: 6.0.3
-      chart.js:
-        specifier: ^4.4.4
-        version: 4.4.4
-      chartjs-adapter-date-fns:
-        specifier: ^3.0.0
-        version: 3.0.0(chart.js@4.4.4)(date-fns@3.6.0)
       date-fns:
         specifier: ^3.2.0
         version: 3.6.0
@@ -4636,12 +4630,6 @@ packages:
   chart.js@4.4.4:
     resolution: {integrity: sha512-emICKGBABnxhMjUjlYRR12PmOXhJ2eJjEHL2/dZlWjxRAZT1D8xplLFq5M0tMQK8ja+wBS/tuVEJB5C6r7VxJA==}
     engines: {pnpm: '>=8'}
-
-  chartjs-adapter-date-fns@3.0.0:
-    resolution: {integrity: sha512-Rs3iEB3Q5pJ973J93OBTpnP7qoGwvq3nUnoMdtxO+9aoJof7UFcRbWcIDteXuYd1fgAvct/32T9qaLyLuZVwCg==}
-    peerDependencies:
-      chart.js: '>=2.8.0'
-      date-fns: '>=2.0.0'
 
   check-error@1.0.3:
     resolution: {integrity: sha512-iKEoDYaRmd1mxM90a2OEfWhjsjPpYPuQ+lMYsoxB126+t8fw7ySEO48nmDg5COTjxDI65/Y2OWpeEHk3ZOe8zg==}
@@ -15649,11 +15637,6 @@ snapshots:
   chart.js@4.4.4:
     dependencies:
       '@kurkle/color': 0.3.2
-
-  chartjs-adapter-date-fns@3.0.0(chart.js@4.4.4)(date-fns@3.6.0):
-    dependencies:
-      chart.js: 4.4.4
-      date-fns: 3.6.0
 
   check-error@1.0.3:
     dependencies:
