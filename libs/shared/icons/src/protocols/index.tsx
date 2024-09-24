@@ -9,6 +9,7 @@ import CompoundFullSvg from './compound-full.svg?react';
 import ConvexFullSvg from './convex-full.svg?react';
 import CurveWebp from './curve.webp';
 import CurveFullWebp from './curve-full.webp';
+import CurveFullColorSvg from './curve-full-color.svg?react';
 import FluxFullSvg from './flux-full.svg?react';
 import FraxSvg from './frax.svg?react';
 import FraxFullSvg from './frax-full.svg?react';
@@ -59,6 +60,9 @@ export const CurveFull = (props: SvgIconProps) => (
   <SvgIcon {...props} viewBox="0 0 59.2 16">
     <image href={CurveFullWebp} height="16" width="59.2" />
   </SvgIcon>
+);
+export const CurveFullColor = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CurveFullColorSvg} inheritViewBox />
 );
 export const FluxFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={FluxFullSvg} inheritViewBox />
