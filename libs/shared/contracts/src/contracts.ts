@@ -1,14 +1,18 @@
 import { arbitrum, base, mainnet } from 'viem/chains';
 
+import { AaveStrategyABI } from './abis/AaveStrategy';
 import { AerodromePoolABI } from './abis/AerodromePool';
 import { AerodromeQuoterABI } from './abis/AerodromeQuoter';
 import { AerodromeUniversalRouterABI } from './abis/AerodromeUniversalRouter';
 import { ARMABI } from './abis/ARM';
+import { AuraStrategyABI } from './abis/AuraStrategy';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
 import { BalancerVaultABI } from './abis/BalancerVault';
 import { CCIPEvm2EvmOnRamp } from './abis/CCIPEvm2EvmOnRamp';
 import { CCIPRouterABI } from './abis/CCIPRouter';
 import { ChainlinkOracleABI } from './abis/ChainlinkOracle';
+import { ConvexEthMetaStrategyABI } from './abis/ConvexEthMetaStrategy';
+import { ConvexStrategyABI } from './abis/ConvexStrategy';
 import { CurveAddressProviderABI } from './abis/CurveAddressProvider';
 import { CurveMetaPoolABI } from './abis/CurveMetaPool';
 import { CurvePoolABI } from './abis/CurvePool';
@@ -16,12 +20,18 @@ import { CurveRouterABI } from './abis/CurveRouter';
 import { DIAOracleABI } from './abis/DIAOracle';
 import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
+import { FraxETHStrategyABI } from './abis/FraxETHStrategy';
+import { FraxRedemptionStrategyABI } from './abis/FraxRedemptionStrategy';
 import { IVaultABI } from './abis/IVault';
+import { LidoWithdrawStrategyABI } from './abis/LidoWithdrawStrategy';
 import { LrtConfigABI } from './abis/LrtConfig';
 import { LrtDepositPoolABI } from './abis/LrtDepositPool';
 import { LrtOracleABI } from './abis/LrtOracle';
 import { MigratorABI } from './abis/Migrator';
+import { MorphoAaveStrategyABI } from './abis/MorphoAaveStrategy';
+import { MorphoCompoundStrategyABI } from './abis/MorphoCompoundStrategy';
 import { OETHDripperABI } from './abis/OETHDripper';
+import { OETHNativeStakingABI } from './abis/OETHNativeStaking';
 import { OETHVaultABI } from './abis/OETHVault';
 import { OETHZapperABI } from './abis/OETHZapper';
 import { OGNFixedRateRewardSourceABI } from './abis/OGNFixedRateRewardSource';
@@ -29,7 +39,12 @@ import { OGVMandatoryDistibutorABI } from './abis/OGVMandatoryDistibutor';
 import { OGVOptionalDistibutorABI } from './abis/OGVOptionalDistibutor';
 import { OracleRouterABI } from './abis/OracleRouter';
 import { OUSDGovernanceABI } from './abis/OUSDGovernance';
+import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
+import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
+import { OUSDStrategyMetaMorphoABI } from './abis/OUSDStrategyMetaMorpho';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
+import { SuperOETHbStrategyAeroABI } from './abis/SuperOETHbStrategyAero';
+import { SuperOETHbStrategyBridgeABI } from './abis/SuperOETHbStrategyBridge';
 import { superOETHbZapperABI } from './abis/superOETHbZapper';
 import { UniswapV2RouterABI } from './abis/UniswapV2Router';
 import { UniswapV3QuoterABI } from './abis/UniswapV3Quoter';
@@ -119,10 +134,58 @@ export const contracts = {
       name: 'OETHDripper',
     },
     OETHOracleRouter: {
-      address: '0xbE19cC5654e30dAF04AD3B5E06213D70F4e882eE',
+      address: '0x468A68da3cefcDD644ce0Ea9B9564b246218aeeC',
       chainId: mainnet.id,
       abi: OracleRouterABI,
       name: 'OETHOracleRouter',
+    },
+    OETHStrategyAura: {
+      address: '0x49109629ac1deb03f2e9b2fe2ac4a623e0e7dfdc',
+      chainId: mainnet.id,
+      abi: AuraStrategyABI,
+      name: 'OETHStrategyAura',
+    },
+    OETHStrategyConvexAMO: {
+      address: '0x1827f9ea98e0bf96550b2fc20f7233277fcd7e63',
+      chainId: mainnet.id,
+      abi: ConvexStrategyABI,
+      name: 'OETHStrategyConvexAMO',
+    },
+    OETHStrategyFraxStaking: {
+      address: '0x3ff8654d633d4ea0fae24c52aec73b4a20d0d0e5',
+      chainId: mainnet.id,
+      abi: FraxETHStrategyABI,
+      name: 'OETHStrategyFraxStaking',
+    },
+    OETHStrategyFraxRedemption: {
+      address: '0x95a8e45afcfbfedd4a1d41836ed1897f3ef40a9e',
+      chainId: mainnet.id,
+      abi: FraxRedemptionStrategyABI,
+      name: 'OETHStrategyFraxRedemption',
+    },
+    OETHStrategyLidoWithdraw: {
+      address: '0xd9b488280d723338dd32d56b3900f379eb7a7af1',
+      chainId: mainnet.id,
+      abi: LidoWithdrawStrategyABI,
+      name: 'OETHStrategyLidoWithdraw',
+    },
+    OETHStrategyMorphoAave: {
+      address: '0xc1fc9e5ec3058921ea5025d703cbe31764756319',
+      chainId: mainnet.id,
+      abi: MorphoAaveStrategyABI,
+      name: 'OETHStrategyMorphoAave',
+    },
+    OETHStrategyNative1: {
+      address: '0x34edb2ee25751ee67f68a45813b22811687c0238',
+      chainId: mainnet.id,
+      abi: OETHNativeStakingABI,
+      name: 'OETHStrategyNative1',
+    },
+    OETHStrategyNative2: {
+      address: '0x4685db8bf2df743c861d71e6cfb5347222992076',
+      chainId: mainnet.id,
+      abi: OETHNativeStakingABI,
+      name: 'OETHStrategyNative2',
     },
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
@@ -170,7 +233,7 @@ export const contracts = {
       name: 'OUSDCurveMetaPool',
     },
     OUSDDripper: {
-      address: '0xc7068A35F9F5b77471BcFfBdf82D9531D52AFCdc',
+      address: '0x80C898ae5e56f888365E235CeB8CEa3EB726CB58',
       chainId: mainnet.id,
       abi: DripperABI,
       name: 'OUSDDripper',
@@ -192,6 +255,48 @@ export const contracts = {
       chainId: mainnet.id,
       abi: OracleRouterABI,
       name: 'OUSDOracleRouter',
+    },
+    OUSDStrategyAave: {
+      address: '0x5e3646a1db86993f73e6b74a57d8640b69f7e259',
+      chainId: mainnet.id,
+      abi: AaveStrategyABI,
+      name: 'OUSDStrategyAave',
+    },
+    OUSDStrategyConvex: {
+      address: '0x89eb88fedc50fc77ae8a18aad1ca0ac27f777a90',
+      chainId: mainnet.id,
+      abi: ConvexEthMetaStrategyABI,
+      name: 'OUSDStrategyConvex',
+    },
+    OUSDStrategyFlux: {
+      address: '0x76bf500b6305dc4ea851384d3d5502f1c7a0ed44',
+      chainId: mainnet.id,
+      abi: OUSDStrategyFluxABI,
+      name: 'OUSDStrategyFlux',
+    },
+    OUSDStrategyMaker: {
+      address: '0x6b69b755c629590ed59618a2712d8a2957ca98fc',
+      chainId: mainnet.id,
+      abi: OUSDStrategyMakerABI,
+      name: 'OUSDStrategyMaker',
+    },
+    OUSDStrategyMetaMorpho: {
+      address: '0x603cdeaec82a60e3c4a10da6ab546459e5f64fa0',
+      chainId: mainnet.id,
+      abi: OUSDStrategyMetaMorphoABI,
+      name: 'OUSDStrategyMetaMorpho',
+    },
+    OUSDStrategyMorphoAave: {
+      address: '0x79f2188ef9350a1dc11a062cca0abe90684b0197',
+      chainId: mainnet.id,
+      abi: MorphoAaveStrategyABI,
+      name: 'OUSDStrategyMorphoAave',
+    },
+    OUSDStrategyMorphoCompound: {
+      address: '0x5a4eee58744d1430876d5ca93cab5ccb763c037d',
+      chainId: mainnet.id,
+      abi: MorphoCompoundStrategyABI,
+      name: 'OUSDStrategyMorphoAave',
     },
     OUSDVault: {
       address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
@@ -306,6 +411,18 @@ export const contracts = {
       chainId: base.id,
       abi: DripperABI,
       name: 'superOETHbDripper',
+    },
+    superOETHbStrategyAero: {
+      address: '0xF611cC500eEE7E4e4763A05FE623E2363c86d2Af',
+      chainId: base.id,
+      abi: SuperOETHbStrategyAeroABI,
+      name: 'superOETHbStrategyAero',
+    },
+    superOETHbStrategyBridge: {
+      address: '0x80c864704DD06C3693ed5179190786EE38ACf835',
+      chainId: base.id,
+      abi: SuperOETHbStrategyBridgeABI,
+      name: 'superOETHbStrategyBridge',
     },
     superOETHbZapper: {
       address: '0x3b56c09543D3068f8488ED34e6F383c3854d2bC1',

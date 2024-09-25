@@ -1,4 +1,19 @@
-export const MorphoAaveStrategyABI = [
+export const FraxRedemptionStrategyABI = [
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'platformAddress', type: 'address' },
+          { internalType: 'address', name: 'vaultAddress', type: 'address' },
+        ],
+        internalType: 'struct InitializableAbstractStrategy.BaseStrategyConfig',
+        name: '_stratConfig',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
@@ -124,6 +139,38 @@ export const MorphoAaveStrategyABI = [
     inputs: [
       {
         indexed: false,
+        internalType: 'uint256',
+        name: '_nftId',
+        type: 'uint256',
+      },
+    ],
+    name: 'RedeemNFTBurned',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_nftId',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_amount',
+        type: 'uint256',
+      },
+    ],
+    name: 'RedeemNFTMinted',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
         internalType: 'address[]',
         name: '_oldAddresses',
         type: 'address[]',
@@ -189,34 +236,6 @@ export const MorphoAaveStrategyABI = [
     type: 'event',
   },
   {
-    inputs: [],
-    name: 'LENS',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'MORPHO',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardLiquidationThreshold',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardTokenAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'assetToPToken',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
@@ -246,8 +265,8 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     name: 'deposit',
     outputs: [],
@@ -259,13 +278,6 @@ export const MorphoAaveStrategyABI = [
     name: 'depositAll',
     outputs: [],
     stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'getPendingRewards',
-    outputs: [{ internalType: 'uint256', name: 'balance', type: 'uint256' }],
-    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -291,24 +303,6 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
-      {
-        internalType: 'address[]',
-        name: '_rewardTokenAddresses',
-        type: 'address[]',
-      },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_platformAddress', type: 'address' },
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
       {
         internalType: 'address[]',
         name: '_rewardTokenAddresses',
@@ -331,9 +325,45 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [],
+    name: 'maxRedeemTicket',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'address', name: 'operator', type: 'address' },
+      { internalType: 'address', name: 'from', type: 'address' },
+      { internalType: 'uint256', name: 'tokenId', type: 'uint256' },
+      { internalType: 'bytes', name: 'data', type: 'bytes' },
+    ],
+    name: 'onERC721Received',
+    outputs: [{ internalType: 'bytes4', name: '', type: 'bytes4' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'outstandingRedeems',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'platformAddress',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint256[]', name: '_nftIds', type: 'uint256[]' },
+      { internalType: 'uint256', name: 'expectedAmount', type: 'uint256' },
+    ],
+    name: 'redeemTickets',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -393,7 +423,7 @@ export const MorphoAaveStrategyABI = [
     inputs: [{ internalType: 'address', name: '_asset', type: 'address' }],
     name: 'supportsAsset',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
-    stateMutability: 'view',
+    stateMutability: 'pure',
     type: 'function',
   },
   {
@@ -440,4 +470,5 @@ export const MorphoAaveStrategyABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  { stateMutability: 'payable', type: 'receive' },
 ] as const;

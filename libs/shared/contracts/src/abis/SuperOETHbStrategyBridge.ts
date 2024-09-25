@@ -1,4 +1,22 @@
-export const MorphoAaveStrategyABI = [
+export const SuperOETHbStrategyBridgeABI = [
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'platformAddress', type: 'address' },
+          { internalType: 'address', name: 'vaultAddress', type: 'address' },
+        ],
+        internalType: 'struct InitializableAbstractStrategy.BaseStrategyConfig',
+        name: '_stratConfig',
+        type: 'tuple',
+      },
+      { internalType: 'address', name: '_weth', type: 'address' },
+      { internalType: 'address', name: '_bridgedWOETH', type: 'address' },
+      { internalType: 'address', name: '_oethb', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
@@ -60,6 +78,25 @@ export const MorphoAaveStrategyABI = [
       },
     ],
     name: 'HarvesterAddressesUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint128',
+        name: 'oldValue',
+        type: 'uint128',
+      },
+      {
+        indexed: false,
+        internalType: 'uint128',
+        name: 'newValue',
+        type: 'uint128',
+      },
+    ],
+    name: 'MaxPriceDiffBpsUpdated',
     type: 'event',
   },
   {
@@ -167,6 +204,25 @@ export const MorphoAaveStrategyABI = [
     anonymous: false,
     inputs: [
       {
+        indexed: false,
+        internalType: 'uint128',
+        name: 'oldValue',
+        type: 'uint128',
+      },
+      {
+        indexed: false,
+        internalType: 'uint128',
+        name: 'newValue',
+        type: 'uint128',
+      },
+    ],
+    name: 'WOETHPriceUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
         indexed: true,
         internalType: 'address',
         name: '_asset',
@@ -190,29 +246,8 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [],
-    name: 'LENS',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'MORPHO',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardLiquidationThreshold',
+    name: 'MAX_PRICE_STALENESS',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardTokenAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -220,6 +255,13 @@ export const MorphoAaveStrategyABI = [
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'assetToPToken',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'bridgedWOETH',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -246,8 +288,8 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'uint256', name: '_amount', type: 'uint256' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'uint256', name: '', type: 'uint256' },
     ],
     name: 'deposit',
     outputs: [],
@@ -262,9 +304,16 @@ export const MorphoAaveStrategyABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'getPendingRewards',
-    outputs: [{ internalType: 'uint256', name: 'balance', type: 'uint256' }],
+    inputs: [{ internalType: 'uint256', name: 'woethAmount', type: 'uint256' }],
+    name: 'depositBridgedWOETH',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'woethAmount', type: 'uint256' }],
+    name: 'getBridgedWOETHValue',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -291,31 +340,7 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
-      {
-        internalType: 'address[]',
-        name: '_rewardTokenAddresses',
-        type: 'address[]',
-      },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_platformAddress', type: 'address' },
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
-      {
-        internalType: 'address[]',
-        name: '_rewardTokenAddresses',
-        type: 'address[]',
-      },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
+      { internalType: 'uint128', name: '_maxPriceDiffBps', type: 'uint128' },
     ],
     name: 'initialize',
     outputs: [],
@@ -331,13 +356,34 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [],
+    name: 'lastOraclePrice',
+    outputs: [{ internalType: 'uint128', name: '', type: 'uint128' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'maxPriceDiffBps',
+    outputs: [{ internalType: 'uint128', name: '', type: 'uint128' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'oethb',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'platformAddress',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_assetIndex', type: 'uint256' }],
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'removePToken',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -362,6 +408,15 @@ export const MorphoAaveStrategyABI = [
       { internalType: 'address', name: '_harvesterAddress', type: 'address' },
     ],
     name: 'setHarvesterAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      { internalType: 'uint128', name: '_maxPriceDiffBps', type: 'uint128' },
+    ],
+    name: 'setMaxPriceDiffBps',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -417,8 +472,22 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [],
+    name: 'updateWOETHOraclePrice',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'vaultAddress',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'weth',
+    outputs: [{ internalType: 'contract IWETH9', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -436,6 +505,13 @@ export const MorphoAaveStrategyABI = [
   {
     inputs: [],
     name: 'withdrawAll',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: 'oethToBurn', type: 'uint256' }],
+    name: 'withdrawBridgedWOETH',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',

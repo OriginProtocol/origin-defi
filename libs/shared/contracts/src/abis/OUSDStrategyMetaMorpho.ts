@@ -1,4 +1,20 @@
-export const MorphoAaveStrategyABI = [
+export const OUSDStrategyMetaMorphoABI = [
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'platformAddress', type: 'address' },
+          { internalType: 'address', name: 'vaultAddress', type: 'address' },
+        ],
+        internalType: 'struct InitializableAbstractStrategy.BaseStrategyConfig',
+        name: '_baseConfig',
+        type: 'tuple',
+      },
+      { internalType: 'address', name: '_assetToken', type: 'address' },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
@@ -189,37 +205,16 @@ export const MorphoAaveStrategyABI = [
     type: 'event',
   },
   {
-    inputs: [],
-    name: 'LENS',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: 'MORPHO',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardLiquidationThreshold',
-    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardTokenAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [{ internalType: 'address', name: '', type: 'address' }],
     name: 'assetToPToken',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'assetToken',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -263,13 +258,6 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [],
-    name: 'getPendingRewards',
-    outputs: [{ internalType: 'uint256', name: 'balance', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
     name: 'getRewardTokenAddresses',
     outputs: [{ internalType: 'address[]', name: '', type: 'address[]' }],
     stateMutability: 'view',
@@ -290,33 +278,7 @@ export const MorphoAaveStrategyABI = [
     type: 'function',
   },
   {
-    inputs: [
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
-      {
-        internalType: 'address[]',
-        name: '_rewardTokenAddresses',
-        type: 'address[]',
-      },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
-    ],
-    name: 'initialize',
-    outputs: [],
-    stateMutability: 'nonpayable',
-    type: 'function',
-  },
-  {
-    inputs: [
-      { internalType: 'address', name: '_platformAddress', type: 'address' },
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
-      {
-        internalType: 'address[]',
-        name: '_rewardTokenAddresses',
-        type: 'address[]',
-      },
-      { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
-    ],
+    inputs: [],
     name: 'initialize',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -337,7 +299,7 @@ export const MorphoAaveStrategyABI = [
     type: 'function',
   },
   {
-    inputs: [{ internalType: 'uint256', name: '_assetIndex', type: 'uint256' }],
+    inputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     name: 'removePToken',
     outputs: [],
     stateMutability: 'nonpayable',
@@ -368,8 +330,8 @@ export const MorphoAaveStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
-      { internalType: 'address', name: '_pToken', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
+      { internalType: 'address', name: '', type: 'address' },
     ],
     name: 'setPTokenAddress',
     outputs: [],
@@ -387,6 +349,13 @@ export const MorphoAaveStrategyABI = [
     name: 'setRewardTokenAddresses',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'shareToken',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
