@@ -80,8 +80,6 @@ export const AreaChart = <Datum,>({
     yKeys.map((yKey) => ({ data: serie, xKey, yKey: yKey.key })),
   );
 
-  console.log(minX, maxX, minY, maxY);
-
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
     domain: [minX, maxX],
