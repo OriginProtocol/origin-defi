@@ -20,7 +20,6 @@ import {
 import { add, compare, div, format, from, lt, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
-import { strategiesConfig } from '../../constants';
 import { useOTokenStrategiesQuery } from '../../queries';
 import { strategyMapper } from '../../utils/strategyMapper';
 
@@ -46,7 +45,7 @@ export const Strategies = ({ token, ...rest }: StrategiesProps) => {
       enabled: !!token?.address,
       select: useCallback(
         (data: OTokenStrategiesQuery) =>
-          strategyMapper(data?.strategies ?? [], token, strategiesConfig),
+          strategyMapper(data?.strategies, token),
         [token],
       ),
     },

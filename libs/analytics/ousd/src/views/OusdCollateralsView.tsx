@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import {
   collateralMapper,
-  strategiesConfig,
   strategyMapper,
   useLayout,
   useOTokenStrategiesQuery,
@@ -40,11 +39,7 @@ export const OusdCollateralsView = () => {
       (acc, curr) => add(acc, curr.amount),
       from(0, 18),
     );
-    const strategies = strategyMapper(
-      data?.strategies,
-      tokens.mainnet.OUSD,
-      strategiesConfig,
-    );
+    const strategies = strategyMapper(data?.strategies, tokens.mainnet.OUSD);
 
     return {
       collaterals,

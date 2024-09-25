@@ -15,7 +15,7 @@ fragment DailyStat on OTokenDailyStat {
   amoSupply
   yield
   fees
-  dripperWETH
+  dripperWETH  
 }
 
 fragment Strategy on Strategy {
@@ -38,9 +38,11 @@ query oTokenStats(
   $limit: Int
   $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
   $from: DateTime
+  $offset: Int
 ) {
   oTokenDailyStats(
     limit: $limit
+    offset: $offset
     orderBy: $orderBy
     where: {
       otoken_containsInsensitive: $token
@@ -128,8 +130,8 @@ query oTokenApy(
   }
 }
 
-query oTokenStrategies($chainId: Float!, $token: String!) {
-  strategies(otoken: $token, chainId: $chainId) {
+query oTokenStrategies($chainId: Float!, $token: String!, $timestamp: String) {
+  strategies(otoken: $token, chainId: $chainId, timestamp: $timestamp) {
     ...Strategy
   }
 }

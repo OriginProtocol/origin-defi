@@ -1,7 +1,12 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
 import * as ousd from '@origin/analytics/ousd';
-import { PoYDetail, PoYList, Strategies } from '@origin/analytics/shared';
+import {
+  BalanceSheet,
+  PoYDetail,
+  PoYList,
+  Strategies,
+} from '@origin/analytics/shared';
 import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
@@ -125,7 +130,7 @@ export const routes: RouteObject[] = [
           },
           {
             path: 'balance-sheet',
-            Component: oeth.BalanceSheet,
+            element: <BalanceSheet token={tokens.mainnet.OETH} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Balance Sheet' }),
               icon: FaFileLinesRegular,

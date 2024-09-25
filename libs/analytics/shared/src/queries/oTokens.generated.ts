@@ -12,6 +12,7 @@ export type OTokenStatsQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   orderBy?: Types.InputMaybe<Array<Types.OTokenDailyStatOrderByInput> | Types.OTokenDailyStatOrderByInput>;
   from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -59,6 +60,7 @@ export type OTokenApyQuery = { __typename?: 'Query', oTokenApies: Array<{ __type
 export type OTokenStrategiesQueryVariables = Types.Exact<{
   chainId: Types.Scalars['Float']['input'];
   token: Types.Scalars['String']['input'];
+  timestamp?: Types.InputMaybe<Types.Scalars['String']['input']>;
 }>;
 
 
@@ -102,9 +104,10 @@ export const StrategyFragmentDoc = `
 }
     `;
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
   oTokenDailyStats(
     limit: $limit
+    offset: $offset
     orderBy: $orderBy
     where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
   ) {
@@ -277,8 +280,8 @@ useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['oTokenApy',
 useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables, options);
 
 export const OTokenStrategiesDocument = `
-    query oTokenStrategies($chainId: Float!, $token: String!) {
-  strategies(otoken: $token, chainId: $chainId) {
+    query oTokenStrategies($chainId: Float!, $token: String!, $timestamp: String) {
+  strategies(otoken: $token, chainId: $chainId, timestamp: $timestamp) {
     ...Strategy
   }
 }
