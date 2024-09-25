@@ -1,4 +1,4 @@
-import { eq, from, lt, mul, sub } from 'dnum';
+import { div, eq, from, lt, mul, sub } from 'dnum';
 
 import type { Dnum } from 'dnum';
 
@@ -30,4 +30,13 @@ export const movingAverage = (values: number[], days: number): number[] => {
 
     return average;
   });
+};
+
+export const getPercentageDifference = (left: Dnum, right: Dnum) => {
+  if (eq(left, right)) {
+    return from(0);
+  }
+
+  const diff = sub(left, right);
+  return eq(right, 0) ? from(0) : div(diff, right);
 };

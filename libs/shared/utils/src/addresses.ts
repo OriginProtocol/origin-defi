@@ -6,7 +6,10 @@ export const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 export const DEAD_ADDRESS = '0x000000000000000000000000000000000000dEaD';
 export const ETH_ADDRESS_CURVE = '0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE';
 
-export const isAddressEqual = (a?: HexAddress, b?: HexAddress) => {
+export const isAddressEqual = (
+  a?: HexAddress | string,
+  b?: HexAddress | string,
+) => {
   if (a === undefined && b === undefined) {
     return true;
   }
