@@ -203,8 +203,8 @@ export const LineChart = <Datum,>({
         )}
         {!activeIdx ? null : (
           <line
-            x1={xScale(activeIdx)}
-            x2={xScale(activeIdx)}
+            x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
+            x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
             y1={margins.top}
             y2={height - margins.bottom}
             stroke={theme.palette.text.secondary}

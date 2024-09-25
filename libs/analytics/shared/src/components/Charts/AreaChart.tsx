@@ -19,7 +19,7 @@ import { getScaleDomains } from './utils';
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
-import type { SeriesPoint, StackKey } from '@visx/shape/lib/types';
+import type { StackKey } from '@visx/shape/lib/types';
 import type { ComponentType } from 'react';
 
 import type { ChartData, Serie } from './types';
@@ -79,6 +79,8 @@ export const AreaChart = <Datum,>({
   const { minX, maxX, minY, maxY } = getScaleDomains(
     yKeys.map((yKey) => ({ data: serie, xKey, yKey: yKey.key })),
   );
+
+  console.log(minX, maxX, minY, maxY);
 
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
@@ -197,9 +199,9 @@ export const AreaChart = <Datum,>({
           data={serie}
           keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
           curve={curveTypes[curveType]}
-          x={(d: SeriesPoint<Datum>) => xScale(d.data?.[xKey] as number)}
-          y0={(d: SeriesPoint<Datum>) => yScale(d[0])}
-          y1={(d: SeriesPoint<Datum>) => yScale(d[1])}
+          x={(d) => xScale(d.data?.[xKey] as number)}
+          y0={(d) => yScale(d[1])}
+          y1={(d) => yScale(d[0])}
         >
           {({ stacks, path }) =>
             stacks.map((stack) => {
