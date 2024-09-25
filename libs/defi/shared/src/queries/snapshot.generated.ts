@@ -535,6 +535,7 @@ export type SpaceWhere = {
   created_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   created_lt?: InputMaybe<Scalars['Int']['input']>;
   created_lte?: InputMaybe<Scalars['Int']['input']>;
+  domain?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   plugin?: InputMaybe<Scalars['String']['input']>;
