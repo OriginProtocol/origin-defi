@@ -78,6 +78,24 @@ export const routes: RouteObject[] = [
               },
             ],
           },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.base.superOETHb} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
+          {
+            path: 'balance-sheet',
+            element: <BalanceSheet token={tokens.base.superOETHb} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
+            },
+          },
         ],
       },
       {
@@ -185,6 +203,15 @@ export const routes: RouteObject[] = [
               title: defineMessage({ defaultMessage: 'Strategies' }),
               icon: FaChartPieRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
+          {
+            path: 'balance-sheet',
+            element: <BalanceSheet token={tokens.mainnet.OUSD} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
           },
           {
