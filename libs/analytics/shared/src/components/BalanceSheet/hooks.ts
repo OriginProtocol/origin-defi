@@ -4,7 +4,7 @@ import { OriginLabel } from '@origin/shared/icons';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { getPercentageDifference, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { add, from, lt, toNumber } from 'dnum';
+import { add, from, lt, mul, toNumber } from 'dnum';
 import { defineMessage } from 'react-intl';
 import { useConfig } from 'wagmi';
 
@@ -96,7 +96,6 @@ export const useBalanceSheet = (token: Token) => {
         );
         const todayStrategies = strategyMapper(res[1].strategies, token);
         const ethPrice = res[2];
-
         const lastWeekStrategies = strategyMapper(
           lastWeekRes.strategies,
           token,
@@ -114,14 +113,17 @@ export const useBalanceSheet = (token: Token) => {
             (s) => s.id === strategy.id,
           );
           const balances = strategy.balances.reduce((acc, b) => {
-            const todayValue = b.amount;
+            const todayValue = mul(b.amount, todayDailyStat.rateETH);
 
-            if (lt(todayValue, 0.001)) return acc;
+            if (lt(todayValue, 0.01)) return acc;
 
             const lastWeekBalance = lastWeekStrategy?.balances.find(
               (lb) => lb.token.id === b.token.id,
             );
-            const lastWeekValue = lastWeekBalance?.amount ?? from(0);
+            const lastWeekValue = mul(
+              lastWeekBalance?.amount ?? from(0),
+              lastWeekDailyStat.rateETH,
+            );
             const pctDifference = toNumber(
               getPercentageDifference(todayValue, lastWeekValue),
             );
@@ -130,8 +132,8 @@ export const useBalanceSheet = (token: Token) => {
               ...acc,
               {
                 token: b.token,
-                todayValue: b.amount,
-                lastWeekValue: lastWeekBalance?.amount ?? from(0),
+                todayValue,
+                lastWeekValue,
                 pctDifference,
               },
             ];
@@ -140,10 +142,13 @@ export const useBalanceSheet = (token: Token) => {
             strategy,
             balances,
           });
-          totalAssets.todayValue = add(totalAssets.todayValue, strategy.total);
+          totalAssets.todayValue = add(
+            totalAssets.todayValue,
+            mul(strategy.total, todayDailyStat.rateETH),
+          );
           totalAssets.lastWeekValue = add(
             totalAssets.lastWeekValue,
-            lastWeekStrategy?.total ?? from(0),
+            mul(lastWeekStrategy?.total ?? from(0), lastWeekDailyStat.rateETH),
           );
           totalAssets.pctDifference = toNumber(
             getPercentageDifference(
@@ -155,11 +160,13 @@ export const useBalanceSheet = (token: Token) => {
 
         if (todayDailyStat.dripperWETH > 0) {
           const dripperToken = oTokenConfig[token.id].dripperToken;
-          const todayValue =
-            from(todayDailyStat.dripperWETH, dripperToken.decimals) ?? from(0);
-          const lastWeekValue = from(
-            lastWeekDailyStat.dripperWETH,
-            dripperToken.decimals,
+          const todayValue = mul(
+            from(todayDailyStat.dripperWETH, dripperToken.decimals) ?? from(0),
+            todayDailyStat.rateETH,
+          );
+          const lastWeekValue = mul(
+            from(lastWeekDailyStat.dripperWETH, dripperToken.decimals),
+            lastWeekDailyStat.rateETH,
           );
           const pctDifference = toNumber(
             getPercentageDifference(todayValue, lastWeekValue),
@@ -204,8 +211,14 @@ export const useBalanceSheet = (token: Token) => {
 
         const liabilities: BalanceSheetRow = {
           token,
-          todayValue: from(todayDailyStat.totalSupply, token.decimals),
-          lastWeekValue: from(lastWeekDailyStat.totalSupply, token.decimals),
+          todayValue: mul(
+            from(todayDailyStat.totalSupply, token.decimals),
+            todayDailyStat.rateETH,
+          ),
+          lastWeekValue: mul(
+            from(lastWeekDailyStat.totalSupply, token.decimals),
+            lastWeekDailyStat.rateETH,
+          ),
           pctDifference: toNumber(
             getPercentageDifference(
               from(todayDailyStat.totalSupply, token.decimals),

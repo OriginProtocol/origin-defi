@@ -1,6 +1,7 @@
 import { Skeleton, Stack, Typography } from '@mui/material';
 
 import { InfoTooltip } from '../InfoTooltip';
+import { CurrencyLabel } from './CurrencyLabel';
 
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ReactNode } from 'react';
@@ -13,6 +14,7 @@ export type ValueLabelProps = {
   labelInfoTooltip?: string;
   isLoading?: boolean;
   sWidth?: number;
+  currency?: 'ETH' | 'USD';
 } & StackProps;
 
 export const ValueLabel = ({
@@ -23,6 +25,7 @@ export const ValueLabel = ({
   labelInfoTooltip,
   isLoading,
   sWidth = 60,
+  currency,
   ...rest
 }: ValueLabelProps) => {
   return (
@@ -64,6 +67,7 @@ export const ValueLabel = ({
       )}
       {['string', 'number'].includes(typeof value) ? (
         <Typography {...valueProps}>
+          <CurrencyLabel currency={currency} />
           {isLoading ? <Skeleton width={sWidth} /> : value}
         </Typography>
       ) : (

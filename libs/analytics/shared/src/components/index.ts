@@ -5,6 +5,7 @@ export * from './Charts';
 export * from './ChartTooltip';
 export * from './Controls';
 export * from './Layout';
+export * from './Overview';
 export * from './ProofOfYield';
 export * from './Spinner';
 export * from './Strategies';

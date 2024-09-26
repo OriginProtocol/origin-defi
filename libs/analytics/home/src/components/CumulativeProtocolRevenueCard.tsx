@@ -14,56 +14,56 @@ import {
   CurrencyControls,
   LimitControls,
   Spinner,
-  useOriginStats,
 } from '@origin/analytics/shared';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last } from 'ramda';
+import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import type { CardProps } from '@mui/material';
-import type { ChartResult } from '@origin/analytics/shared';
+import { useCumulativeProtocolRevenue } from '../hooks';
 
-export type OriginProtocolRevenueCardProps = {
+import type { CardProps } from '@mui/material';
+
+export type CumulativeProtocolRevenueCardProps = {
   height: number;
 } & CardProps;
 
-export const OriginProtocolRevenueCard = ({
+export const CumulativeProtocolRevenueCard = ({
   height,
   ...rest
-}: OriginProtocolRevenueCardProps) => {
+}: CumulativeProtocolRevenueCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
-  const [feesKey, setFeesKey] =
-    useState<Extract<keyof ChartResult, 'feesETH' | 'feesUSD'>>('feesETH');
+  const [currency, setCurrency] = useState<'ETH' | 'USD'>('ETH');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useOriginStats(limit, {
-    select: (data) =>
-      data.map((d) => ({
-        timestamp: d.total.timestamp,
-        total: d.total[feesKey],
-        oeth: d.oeth[feesKey],
-        ousd: d.ousd[feesKey],
-        superOeth: d.superOeth[feesKey],
-      })),
-  });
+  const { data, isLoading } = useCumulativeProtocolRevenue();
 
+  const serie =
+    limit === undefined
+      ? (data?.serie ?? [])
+      : takeLast(limit, data?.serie ?? []);
   const width = measures?.width ?? 0;
-  const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
+  const activeItem =
+    hoverIdx === null ? last(data?.serie ?? []) : data?.serie?.[hoverIdx];
 
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Total protocol revenue' })}
+        title={intl.formatMessage({
+          defaultMessage: 'Cumulative protocol revenue',
+        })}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ flexGrow: 1 }}>
         <Stack
           direction="row"
-          sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
+          sx={{
+            alignItems: 'flex-start',
+            justifyContent: 'space-between',
+          }}
         >
           <Stack spacing={0.5}>
             <LoadingLabel
@@ -82,20 +82,15 @@ export const OriginProtocolRevenueCard = ({
               isLoading={isLoading}
               sx={{ fontWeight: 'bold' }}
             >
-              <CurrencyLabel currency={feesKey === 'feesETH' ? 'ETH' : 'USD'} />
-              {intl.formatNumber(activeItem?.total ?? 0, {
-                maximumFractionDigits: 0,
+              <CurrencyLabel currency={currency} />
+              {intl.formatNumber(activeItem?.totalCumulated ?? 0, {
+                maximumFractionDigits: 3,
               })}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
-            <CurrencyControls
-              currency={feesKey === 'feesETH' ? 'ETH' : 'USD'}
-              setCurrency={(c) => {
-                setFeesKey(c === 'ETH' ? 'feesETH' : 'feesUSD');
-              }}
-            />
+            <CurrencyControls currency={currency} setCurrency={setCurrency} />
           </Stack>
         </Stack>
       </CardContent>
@@ -105,29 +100,24 @@ export const OriginProtocolRevenueCard = ({
         <AreaChart
           width={width}
           height={height}
-          serie={data ?? []}
+          serie={serie}
           xKey="timestamp"
           yKeys={[
             {
-              key: 'ousd',
-              strokeColor: [theme.palette.chart1],
-              fillColor: [theme.palette.chart1],
+              key: 'ousdCumulated',
+              label: 'OUSD',
+              fillColor: [theme.palette.chart6, theme.palette.chart7],
             },
             {
-              key: 'oeth',
-              strokeColor: [theme.palette.chart6, theme.palette.chart2],
-              fillColor: [theme.palette.chart6, theme.palette.chart2],
+              key: 'oethCumulated',
+              label: 'OETH',
+              fillColor: [theme.palette.chart1, theme.palette.chart2],
             },
             {
-              key: 'superOeth',
-              strokeColor: [theme.palette.chart7, theme.palette.chart5],
-              fillColor: [theme.palette.chart7, theme.palette.chart5],
+              key: 'superOethCumulated',
+              label: 'SuperOETH',
+              fillColor: [theme.palette.chart6, theme.palette.chart5],
             },
-            // {
-            //   key: 'total',
-            //   strokeColor: [theme.palette.chart6, theme.palette.chart7],
-            //   fillColor: [theme.palette.chart6, theme.palette.chart7],
-            // },
           ]}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);

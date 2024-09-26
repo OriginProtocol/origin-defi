@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { Card, CardContent, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -54,31 +54,33 @@ export const ProtocolRevenueCard = ({
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Protocol revenue' })}
+      />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Protocol revenue' })}
-            </Typography>
+          <Stack spacing={1}>
             <LoadingLabel
               isLoading={isFeesLoading || isFeesAvgLoading}
-              sx={{ fontWeight: 'bold' }}
-            >
-              <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.y ?? 0)}
-            </LoadingLabel>
-            <LoadingLabel
-              isLoading={isFeesLoading || isFeesAvgLoading}
-              sx={{ fontWeight: 'bold' }}
+              color="text.secondary"
             >
               {formatInTimeZone(
                 new Date(activeItem?.x ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
+            </LoadingLabel>
+            <LoadingLabel
+              isLoading={isFeesLoading || isFeesAvgLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
+              <CurrencyLabel currency="ETH" />
+              {intl.formatNumber(activeItem?.y ?? 0)}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -98,7 +100,7 @@ export const ProtocolRevenueCard = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          tickYFormat={(value) => `Ξ ${value as number}`}
+          tickYFormat={(value) => `Ξ${value as number}`}
           tickXFormat={(value) =>
             formatInTimeZone(new Date(Number(value)), 'UTC', 'dd MM')
           }

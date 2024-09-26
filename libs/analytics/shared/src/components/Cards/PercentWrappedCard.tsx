@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { Card, CardContent, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  useTheme,
+} from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -51,27 +58,32 @@ export const PercentWrappedCard = ({
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader
+        title={intl.formatMessage(
+          { defaultMessage: 'Percentage of wrapped {symbol} (w{symbol})' },
+          { symbol: token.symbol },
+        )}
+      />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage(
-                { defaultMessage: '% wrapped {symbol}' },
-                { symbol: token.symbol },
-              )}
-            </Typography>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.pctWrappedSupply ?? 0)}%
-            </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+          <Stack spacing={1}>
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
+            </LoadingLabel>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
+              {intl.formatNumber(activeItem?.pctWrappedSupply ?? 0)}%
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useId, useState } from 'react';
 
 import { Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -40,6 +40,7 @@ export const BarChart = ({
   ...rest
 }: BarChartProps) => {
   const theme = useTheme();
+  const chartId = useId();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
 
   const xScale = scaleBand({
@@ -58,7 +59,6 @@ export const BarChart = ({
   return (
     <Box
       {...rest}
-      key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
         { position: 'relative' },
@@ -71,7 +71,7 @@ export const BarChart = ({
       <svg width={width} height={height}>
         <defs>
           <LinearGradient
-            id="gradient"
+            id={`gradient-${chartId}`}
             from={theme.palette.chart5}
             to={theme.palette.chart4}
             fromOffset="20%"
@@ -155,7 +155,7 @@ export const BarChart = ({
             curve={curveCatmullRom}
             x={(d) => (xScale(d.x) as number) + xScale.bandwidth() / 2}
             y={(d) => yScale(d.y)}
-            stroke="url(#gradient)"
+            stroke={`url(#gradient-${chartId})`}
             strokeWidth={2}
           />
         )}

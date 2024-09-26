@@ -227,7 +227,7 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           padding: 0,
           borderRadius: theme.shape.borderRadius * 4,
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.background.paper,
           border: '1px solid',
           borderColor: theme.palette.divider,
           boxShadow: 'none',

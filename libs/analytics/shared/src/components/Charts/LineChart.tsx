@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useId, useState } from 'react';
 
 import { Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -49,6 +49,7 @@ export const LineChart = <Datum,>({
   ...rest
 }: LineChartProps<Datum>) => {
   const theme = useTheme();
+  const chartId = useId();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const { containerRef } = useTooltipInPortal({
     scroll: true,
@@ -70,11 +71,13 @@ export const LineChart = <Datum,>({
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
     domain: [minX, maxX],
+    clamp: true,
   });
 
   const yScale = scaleLinear({
     range: [height - margins.bottom, margins.top],
     domain: yScaleDomain ?? [minY, maxY],
+    clamp: true,
   });
 
   const handlePointerMove = useCallback(
@@ -117,7 +120,6 @@ export const LineChart = <Datum,>({
     <Box
       {...rest}
       ref={containerRef}
-      key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
         { position: 'relative' },
@@ -127,8 +129,8 @@ export const LineChart = <Datum,>({
         <defs>
           {series.map((s, i) => (
             <LinearGradient
-              key={`gradient-${i}`}
-              id={`gradient-${i}`}
+              key={`gradient-${chartId}-${i}`}
+              id={`gradient-${chartId}-${i}`}
               from={s.color?.[0] ?? theme.palette.chart5}
               to={s.color?.[1] ?? s.color?.[0] ?? theme.palette.chart4}
               fromOffset="20%"
@@ -181,10 +183,21 @@ export const LineChart = <Datum,>({
             curve={curveTypes[s.curveType ?? 'natural']}
             x={(d) => xScale(d?.[s.xKey] as number)}
             y={(d) => yScale(d?.[s.yKey] as number)}
-            stroke={`url(#gradient-${i})`}
+            stroke={`url(#gradient-${chartId}-${i})`}
             strokeWidth={1}
           />
         ))}
+        {!activeIdx ? null : (
+          <line
+            x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
+            x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
+            y1={margins.top}
+            y2={height - margins.bottom}
+            stroke={theme.palette.text.secondary}
+            strokeWidth={0.5}
+            strokeDasharray={2}
+          />
+        )}
         {width && height && (
           <rect
             x={margins.left}
@@ -199,17 +212,6 @@ export const LineChart = <Datum,>({
               setActiveIdx(null);
               onHover?.(null);
             }}
-          />
-        )}
-        {!activeIdx ? null : (
-          <line
-            x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
-            x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
-            y1={margins.top}
-            y2={height - margins.bottom}
-            stroke={theme.palette.text.secondary}
-            strokeWidth={0.5}
-            strokeDasharray={2}
           />
         )}
       </svg>

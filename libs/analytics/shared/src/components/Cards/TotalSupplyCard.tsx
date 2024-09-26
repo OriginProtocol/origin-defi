@@ -1,7 +1,14 @@
 import { useState } from 'react';
 
-import { Card, CardContent, Stack, Typography, useTheme } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  useTheme,
+} from '@mui/material';
+import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -21,12 +28,14 @@ export type TotalSupplyCardProps = {
   token: Token;
   height: number;
   from?: string;
+  currency?: 'ETH' | 'USD';
 } & CardProps;
 
 export const TotalSupplyCard = ({
   token,
   height,
   from,
+  currency,
   ...rest
 }: TotalSupplyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
@@ -47,24 +56,26 @@ export const TotalSupplyCard = ({
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Total supply' })}
+      />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Total supply' })}
-            </Typography>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.totalSupply ?? 0)}
-            </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+          <Stack spacing={1}>
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
+            </LoadingLabel>
+            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+              <CurrencyLabel currency={currency} />
+              {intl.formatNumber(activeItem?.totalSupply ?? 0)}
             </LoadingLabel>
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
@@ -83,11 +94,15 @@ export const TotalSupplyCard = ({
           xKey="timestamp"
           yKeys={[
             {
-              key: 'totalSupply',
-              strokeColor: [theme.palette.chart1, theme.palette.chart2],
+              key: 'circulatingSupply',
               fillColor: [theme.palette.chart1, theme.palette.chart2],
             },
+            {
+              key: 'protocolOwnedSupply',
+              fillColor: [theme.palette.chart6, theme.palette.chart5],
+            },
           ]}
+          curveType="base"
           Tooltip={ChartTooltip}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {

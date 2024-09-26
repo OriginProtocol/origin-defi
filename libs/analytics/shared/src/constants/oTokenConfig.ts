@@ -5,9 +5,13 @@ import type { Token } from '@origin/shared/contracts';
 import type { Chain } from 'viem/chains';
 
 export type OTokenConfig = {
+  // minimum date for otoken queries
   from: string;
+  // display networks for ui chips
   availableNetworks: Chain[];
-  route: string;
+  // link to product page
+  pageHref?: string;
+  // token used by dripper contract
   dripperToken: Token;
 };
 
@@ -15,19 +19,24 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
   [tokens.mainnet.OETH.id]: {
     from: '2023-06-01T00:00:00.000000Z',
     availableNetworks: [mainnet, arbitrum],
-    route: 'oeth',
+    pageHref: 'oeth',
     dripperToken: tokens.mainnet.WETH,
+  },
+  [tokens.arbitrum.wOETH.id]: {
+    from: '2024-02-07T00:00:00.000000Z',
+    availableNetworks: [arbitrum],
+    dripperToken: tokens.arbitrum.WETH,
   },
   [tokens.mainnet.OUSD.id]: {
     from: '2023-06-01T00:00:00.000000Z',
     availableNetworks: [mainnet],
-    route: 'ousd',
+    pageHref: 'ousd',
     dripperToken: tokens.mainnet.USDT,
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
     availableNetworks: [base],
-    route: 'super',
+    pageHref: 'super',
     dripperToken: tokens.base.WETH,
   },
 };

@@ -1,13 +1,9 @@
 import { Fragment, useState } from 'react';
 
 import { Card, Chip, Divider, Stack, Typography } from '@mui/material';
-import {
-  CurrencyLabel,
-  LoadingLabel,
-  TokenIcon,
-} from '@origin/shared/components';
+import { CurrencyLabel, TokenIcon } from '@origin/shared/components';
 import { formatInTimeZone } from 'date-fns-tz';
-import { format, from, gt, mul } from 'dnum';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { CurrencyControls } from '../Controls';
@@ -90,16 +86,12 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
                   today={format(convertToUSD(b.todayValue), 2)}
                   lastWeek={format(convertToUSD(b.lastWeekValue), 2)}
                   difference={intl.formatNumber(b.pctDifference, {
-                    signDisplay: b.pctDifference > 0 ? 'always' : 'never',
+                    signDisplay: b.pctDifference !== 0 ? 'always' : 'never',
                     style: 'percent',
                     maximumFractionDigits: 2,
                   })}
                   currency={currency}
-                  colorizeDifference={
-                    b.todayValue[0] >= b.lastWeekValue[0]
-                      ? 'success.main'
-                      : 'error.main'
-                  }
+                  colorizeDifference={b.pctDifference}
                   sx={{ px: 3, py: 1.5 }}
                 />
               ))}
@@ -128,14 +120,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
               },
             )}
             currency={currency}
-            colorizeDifference={
-              gt(
-                balanceSheet.totalAssets.todayValue,
-                balanceSheet.totalAssets.lastWeekValue,
-              )
-                ? 'success.main'
-                : 'error.main'
-            }
+            colorizeDifference={balanceSheet.totalAssets.pctDifference}
           />
         </Stack>
       </Card>
@@ -183,14 +168,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
                 },
               )}
               currency={currency}
-              colorizeDifference={
-                gt(
-                  balanceSheet.liabilities.todayValue,
-                  balanceSheet.liabilities.lastWeekValue,
-                )
-                  ? 'success.main'
-                  : 'error.main'
-              }
+              colorizeDifference={balanceSheet.liabilities.pctDifference}
               sx={{ px: 3, py: 1.5 }}
             />
           </>
@@ -220,57 +198,32 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
               },
             )}
             currency={currency}
-            colorizeDifference={
-              gt(
-                balanceSheet.totalLiabilities.todayValue,
-                balanceSheet.totalLiabilities.lastWeekValue,
-              )
-                ? 'success.main'
-                : 'error.main'
-            }
+            colorizeDifference={balanceSheet.totalLiabilities.pctDifference}
           />
         </Stack>
       </Card>
-      <Footer
-        blocknumber={balanceSheet?.todayDailyStat?.blockNumber}
-        timestamp={balanceSheet?.todayDailyStat?.blockNumber}
-        ethPrice={balanceSheet?.ethPrice}
-      />
-    </Stack>
-  );
-};
-
-type FooterProps = {
-  timestamp?: number;
-  blocknumber?: number;
-  ethPrice?: Dnum;
-};
-
-const Footer = ({ blocknumber, timestamp, ethPrice }: FooterProps) => {
-  const intl = useIntl();
-
-  return (
-    <Stack>
-      <Typography variant="caption1" color="text.secondary">
-        {intl.formatMessage(
-          { defaultMessage: 'Last updated {last}, block #{block}' },
-          {
-            last: formatInTimeZone(
-              new Date(timestamp ?? 0),
-              'UTC',
-              'dd MMM yyyy',
-            ),
-            block: blocknumber ?? 0,
-          },
-        )}
-      </Typography>
-      <Typography variant="caption1" color="text.secondary">
-        {intl.formatMessage(
-          // eslint-disable-next-line no-template-curly-in-string
-          { defaultMessage: 'Using ETH price of ${price} from Chainlink' },
-          { price: format(ethPrice ?? from(0), 2) },
-        )}
-      </Typography>
+      <Stack>
+        <Typography variant="caption1" color="text.secondary">
+          {intl.formatMessage(
+            { defaultMessage: 'Last updated {last}, block #{block}' },
+            {
+              last: formatInTimeZone(
+                new Date(balanceSheet.todayDailyStat.timestamp),
+                'UTC',
+                'dd MMM yyyy',
+              ),
+              block: balanceSheet.todayDailyStat.blockNumber,
+            },
+          )}
+        </Typography>
+        <Typography variant="caption1" color="text.secondary">
+          {intl.formatMessage(
+            // eslint-disable-next-line no-template-curly-in-string
+            { defaultMessage: 'Using ETH price of ${price} from Chainlink' },
+            { price: format(balanceSheet.ethPrice ?? from(0), 2) },
+          )}
+        </Typography>
+      </Stack>
     </Stack>
   );
 };
@@ -281,8 +234,7 @@ type BalanceSheetRowProps = {
   today?: string;
   lastWeek?: string;
   difference?: string;
-  colorizeDifference?: string;
-  isLoading?: boolean;
+  colorizeDifference?: number;
   currency?: Currency;
 } & StackProps;
 
@@ -293,10 +245,16 @@ const BalanceSheetRow = ({
   lastWeek,
   difference,
   colorizeDifference,
-  isLoading,
   currency,
   ...rest
 }: BalanceSheetRowProps) => {
+  const color =
+    !colorizeDifference || colorizeDifference === 0
+      ? 'text.primary'
+      : colorizeDifference > 0
+        ? 'success.main'
+        : 'error.main';
+
   return (
     <Stack direction="row" spacing={2} {...rest}>
       {typeof titleElement === 'string' ? (
@@ -308,31 +266,23 @@ const BalanceSheetRow = ({
           {titleElement}
         </Stack>
       )}
-
-      <LoadingLabel
-        isLoading={isLoading}
-        sx={[cellSx, !today && { display: 'none' }]}
-      >
+      <Typography sx={[cellSx, !today && { display: 'none' }]}>
         <CurrencyLabel currency={currency} />
         {today}
-      </LoadingLabel>
-      <LoadingLabel
-        isLoading={isLoading}
-        sx={[cellSx, !lastWeek && { display: 'none' }]}
-      >
+      </Typography>
+      <Typography sx={[cellSx, !lastWeek && { display: 'none' }]}>
         <CurrencyLabel currency={currency} />
         {lastWeek}
-      </LoadingLabel>
-      <LoadingLabel
-        isLoading={isLoading}
+      </Typography>
+      <Typography
         sx={[
           cellSx,
           !difference && { display: 'none' },
-          ...(colorizeDifference ? [{ color: colorizeDifference }] : []),
+          ...(colorizeDifference ? [{ color }] : []),
         ]}
       >
         {difference}
-      </LoadingLabel>
+      </Typography>
     </Stack>
   );
 };

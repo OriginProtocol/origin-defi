@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useState } from 'react';
+import { Fragment, useCallback, useId, useState } from 'react';
 
 import { Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -14,7 +14,7 @@ import {
 } from '@visx/tooltip';
 
 import { chartMargins, curveTypes } from './constants';
-import { getScaleDomains } from './utils';
+import { getStackedScaleDomains } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { EventType } from '@visx/event/lib/types';
@@ -31,7 +31,6 @@ export type AreaChartProps<Datum = ChartData> = {
   xKey: keyof Datum;
   yKeys: {
     key: keyof Datum;
-    strokeColor?: [string] | [string, string];
     fillColor?: [string] | [string, string];
     label?: string;
   }[];
@@ -60,6 +59,7 @@ export const AreaChart = <Datum,>({
   ...rest
 }: AreaChartProps<Datum>) => {
   const theme = useTheme();
+  const chartId = useId();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const { containerRef } = useTooltipInPortal({
     scroll: true,
@@ -76,18 +76,22 @@ export const AreaChart = <Datum,>({
     tooltipTop: height / 3,
   });
 
-  const { minX, maxX, minY, maxY } = getScaleDomains(
-    yKeys.map((yKey) => ({ data: serie, xKey, yKey: yKey.key })),
+  const { minX, maxX, minY, maxY } = getStackedScaleDomains(
+    serie,
+    yKeys.map((yKey) => yKey.key),
+    xKey,
   );
 
   const xScale = scaleUtc({
     range: [margins.left, width - margins.right],
     domain: [minX, maxX],
+    clamp: true,
   });
 
   const yScale = scaleLinear({
     range: [height - margins.bottom, margins.top],
     domain: yScaleDomain ?? [minY, maxY],
+    clamp: true,
   });
 
   const handlePointerMove = useCallback(
@@ -117,6 +121,7 @@ export const AreaChart = <Datum,>({
       ? null
       : yKeys.map((yKey) => ({
           data: [serie[activeIdx]],
+          label: yKey.label,
           xKey,
           yKey: yKey.key,
         }));
@@ -127,7 +132,6 @@ export const AreaChart = <Datum,>({
     <Box
       {...rest}
       ref={containerRef}
-      key={height + width}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
         { position: 'relative' },
@@ -136,36 +140,18 @@ export const AreaChart = <Datum,>({
       <svg width={width} height={height}>
         <defs>
           {yKeys.map((k) => (
-            <Fragment key={`gradient-${k.key as string}`}>
-              <LinearGradient
-                id={`gradient-stroke-${k.key as string}`}
-                from={k.strokeColor?.[0] ?? theme.palette.chart5}
-                to={
-                  k.strokeColor?.[1] ??
-                  k.strokeColor?.[0] ??
-                  theme.palette.chart4
-                }
-                fromOffset="20%"
-                toOffset="80%"
-                x1="0%"
-                x2="100%"
-                y1="0%"
-                y2="0%"
-              />
-              <LinearGradient
-                id={`gradient-fill-${k.key as string}`}
-                from={k.fillColor?.[0] ?? theme.palette.chart5}
-                to={
-                  k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4
-                }
-                fromOffset="20%"
-                toOffset="80%"
-                x1="0%"
-                x2="100%"
-                y1="0%"
-                y2="0%"
-              />
-            </Fragment>
+            <LinearGradient
+              key={`gradient-fill-${chartId}-${k.key as string}`}
+              id={`gradient-fill-${chartId}-${k.key as string}`}
+              from={k.fillColor?.[0] ?? theme.palette.chart5}
+              to={k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
           ))}
         </defs>
         <AxisRight
@@ -193,13 +179,14 @@ export const AreaChart = <Datum,>({
             fill: theme.palette.text.secondary,
           }}
         />
+
         <AreaStack
           data={serie}
           keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
           curve={curveTypes[curveType]}
           x={(d) => xScale(d.data?.[xKey] as number)}
-          y0={(d) => yScale(d[1])}
-          y1={(d) => yScale(d[0])}
+          y0={(d) => yScale(d[0])}
+          y1={(d) => yScale(d[1])}
         >
           {({ stacks, path }) =>
             stacks.map((stack) => {
@@ -207,14 +194,24 @@ export const AreaChart = <Datum,>({
                 <Fragment key={`stack-${stack.key}`}>
                   <path
                     d={path(stack) || ''}
-                    fill={`url(#gradient-fill-${stack.key})`}
-                    stroke={`url(#gradient-stroke-${stack.key})`}
+                    fill={`url(#gradient-fill-${chartId}-${stack.key})`}
                   />
                 </Fragment>
               );
             })
           }
         </AreaStack>
+        {!activeIdx ? null : (
+          <line
+            x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
+            x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
+            y1={margins.top}
+            y2={height - margins.bottom}
+            stroke="#ffffff"
+            strokeWidth={0.5}
+            strokeDasharray={2}
+          />
+        )}
         {width && height && (
           <rect
             x={margins.left}
@@ -229,17 +226,6 @@ export const AreaChart = <Datum,>({
               setActiveIdx(null);
               onHover?.(null);
             }}
-          />
-        )}
-        {!activeIdx ? null : (
-          <line
-            x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
-            x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
-            y1={margins.top}
-            y2={height - margins.bottom}
-            stroke="#ffffff"
-            strokeWidth={0.5}
-            strokeDasharray={2}
           />
         )}
       </svg>

@@ -3,11 +3,11 @@ import * as oeth from '@origin/analytics/oeth';
 import * as ousd from '@origin/analytics/ousd';
 import {
   BalanceSheet,
+  Overview,
   PoYDetail,
   PoYList,
   Strategies,
 } from '@origin/analytics/shared';
-import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -46,7 +46,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: superOeth.OverviewView,
+            element: <Overview token={tokens.base.superOETHb} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
@@ -168,7 +168,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: ousd.OverviewView,
+            element: <Overview token={tokens.mainnet.OUSD} />,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,

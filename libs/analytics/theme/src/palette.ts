@@ -45,8 +45,8 @@ export const lightPalette: ThemeOptions = {
       error: '#FF4E4E',
     },
     background: {
-      default: '#F7F9FF',
-      paper: '#EDEFF5',
+      default: '#EDEFF5',
+      paper: '#F7F9FF',
       highlight: '#FFFFFF',
       faded: '#F3F4F6',
       gradientBlue:
@@ -115,8 +115,8 @@ export const darkPalette: ThemeOptions = {
       error: '#F36A6A',
     },
     background: {
-      default: '#1C1D22',
-      paper: '#16181D',
+      default: '#16181D',
+      paper: '#1C1D22',
       highlight: '#121316',
       faded: '#222835',
       gradientBlue:

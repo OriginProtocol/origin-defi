@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import {
   ApyCard,
   PercentWrappedCard,
-  RateCard,
+  PriceCard,
   TotalSupplyCard,
   WrappedSupplyCard,
 } from '@origin/analytics/shared';
@@ -15,7 +15,7 @@ export const OverviewView = () => {
       <TotalSupplyCard token={tokens.base.superOETHb} height={200} />
       <WrappedSupplyCard token={tokens.base.superOETHb} height={200} />
       <PercentWrappedCard token={tokens.base.superOETHb} height={200} />
-      <RateCard token={tokens.base.superOETHb} currency="ETH" height={200} />
+      <PriceCard token={tokens.base.superOETHb} currency="ETH" height={200} />
     </Stack>
   );
 };

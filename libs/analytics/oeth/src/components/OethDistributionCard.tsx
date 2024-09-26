@@ -9,34 +9,37 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  AreaChart,
   ChartTooltip,
   LimitControls,
-  LineChart,
   Spinner,
-  useOriginStats,
 } from '@origin/analytics/shared';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last, pluck } from 'ramda';
+import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import type { CardProps } from '@mui/material';
-import type { NumberLike } from '@visx/scale';
+import { useOethDistribution } from '../hooks';
 
-export type OriginTvlCardProps = {
+import type { CardProps } from '@mui/material';
+
+export type OethDistributionCardProps = {
   height: number;
+  from?: string;
 } & CardProps;
 
-export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
+export const OethDistributionCard = ({
+  height,
+  from,
+  ...rest
+}: OethDistributionCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useOriginStats(limit, {
-    select: (data) => pluck('total', data),
-  });
+  const { data, isLoading } = useOethDistribution(limit);
 
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -44,70 +47,59 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Origin TVL' })}
+        title={intl.formatMessage({ defaultMessage: 'Network distribution' })}
       />
       <Divider />
-      <CardContent sx={{ flexGrow: 1 }}>
+      <CardContent>
         <Stack
           direction="row"
-          sx={{
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-          }}
+          sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
           <Stack spacing={0.5}>
-            <LoadingLabel
-              isLoading={isLoading}
-              color="text.secondary"
-              sx={{ fontWeight: 'bold' }}
-            >
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
-                'dd MMM yyyy',
+                'dd/MM/yyyy',
               )}
             </LoadingLabel>
-            <LoadingLabel
-              variant="body1"
-              isLoading={isLoading}
-              sx={{ fontWeight: 'bold' }}
-            >
-              <CurrencyLabel currency="USD" />
-              {intl.formatNumber(activeItem?.tvlUSD ?? 0, {
-                maximumFractionDigits: 0,
-              })}
+            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+              <CurrencyLabel currency="ETH" />
+              {intl.formatNumber(activeItem?.total ?? 0)}
             </LoadingLabel>
           </Stack>
-          <Stack spacing={1} alignItems="flex-end">
-            <LimitControls limit={limit} setLimit={setLimit} />
-          </Stack>
+          <LimitControls limit={limit} setLimit={setLimit} />
         </Stack>
       </CardContent>
       {isLoading ? (
         <Spinner sx={{ width, height }} />
       ) : (
-        <LineChart
-          series={[
-            {
-              label: 'TVL',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: 'tvlUSD',
-              color: [theme.palette.chart1, theme.palette.chart2],
-            },
-          ]}
+        <AreaChart
           width={width}
           height={height}
+          serie={data ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
+          xKey="timestamp"
+          yKeys={[
+            {
+              key: 'mainnet',
+              fillColor: [theme.palette.chart1, theme.palette.chart2],
+            },
+            {
+              key: 'arbitrum',
+              fillColor: [theme.palette.chart6, theme.palette.chart5],
+            },
+          ]}
+          curveType="base"
           Tooltip={ChartTooltip}
-          tickYFormat={(value: NumberLike) =>
+          yScaleDomain={[20000, 42000]}
+          tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
             })
           }
-          yScaleDomain={[0, Math.max(...(data?.map((d) => d.tvlUSD) ?? []))]}
         />
       )}
     </Card>

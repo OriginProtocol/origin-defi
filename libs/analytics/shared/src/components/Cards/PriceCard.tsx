@@ -1,6 +1,13 @@
 import { useState } from 'react';
 
-import { Card, CardContent, Stack, Typography, useTheme } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  useTheme,
+} from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -21,20 +28,20 @@ import type { Trailing } from '../Controls';
 
 type SupportedCurrency = 'ETH' | 'USD';
 
-export type RateCardProps = {
+export type PriceCardProps = {
   token: Token;
   currency: SupportedCurrency;
   height: number;
   from?: string;
 } & CardProps;
 
-export const RateCard = ({
+export const PriceCard = ({
   token,
   currency,
   height,
   from,
   ...rest
-}: RateCardProps) => {
+}: PriceCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
@@ -54,19 +61,30 @@ export const RateCard = ({
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'Price' })} />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Exchange rate' })}
-            </Typography>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+          <Stack spacing={1}>
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
+              {formatInTimeZone(
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
+                'UTC',
+                'dd/MM/yyyy',
+              )}
+            </LoadingLabel>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
               {intl.formatMessage(
-                { defaultMessage: '{currency}{rate}' },
+                { defaultMessage: '1{symbol} = {currency}{rate}' },
                 {
+                  symbol: token.symbol,
                   currency: <CurrencyLabel currency={currency} />,
                   rate: intl.formatNumber(
                     currency === 'ETH'
@@ -77,13 +95,6 @@ export const RateCard = ({
                     },
                   ),
                 },
-              )}
-            </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {formatInTimeZone(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
-                'dd/MM/yyyy',
               )}
             </LoadingLabel>
           </Stack>

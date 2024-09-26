@@ -104,7 +104,7 @@ export const TokenCard = ({
           />
           <Button
             component={RouterLink}
-            to={config.route}
+            to={config?.pageHref ?? '.'}
             fullWidth
             size="large"
           >

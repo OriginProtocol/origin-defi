@@ -3,9 +3,10 @@ import { useState } from 'react';
 import {
   Card,
   CardContent,
-  CircularProgress,
+  CardHeader,
+  Divider,
   Stack,
-  Typography,
+  useTheme,
 } from '@mui/material';
 import { LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
@@ -18,6 +19,7 @@ import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
 import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls, TrailingControls } from '../Controls';
+import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -35,6 +37,7 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
+  const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
@@ -50,24 +53,27 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
 
   return (
     <Card {...rest} ref={ref}>
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
+      <Divider />
       <CardContent>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
-            <Typography variant="featured1" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'APY' })}
-            </Typography>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
-              {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
-            </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+          <Stack spacing={1}>
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
                 'dd/MM/yyyy',
               )}
+            </LoadingLabel>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
+              {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -76,18 +82,8 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
           </Stack>
         </Stack>
       </CardContent>
-
       {isLoading ? (
-        <Stack
-          sx={{
-            width,
-            height,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={36} />
-        </Stack>
+        <Spinner sx={{ height }} />
       ) : (
         <LineChart
           width={width}
@@ -98,6 +94,7 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
               data: data ?? [],
               xKey: 'timestamp',
               yKey: trailing,
+              color: [theme.palette.chart1, theme.palette.chart2],
             },
           ]}
           onHover={(idx) => {
@@ -105,7 +102,6 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
           }}
           Tooltip={ChartTooltip}
           tickYFormat={(value: NumberLike) => `${value}%`}
-          sx={{ width: 1 }}
         />
       )}
     </Card>

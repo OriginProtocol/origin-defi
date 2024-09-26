@@ -129,7 +129,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
 
   const intl = useIntl();
   const navigate = useNavigate();
-  const [expanded, setExpanded] = useState<string[]>([]);
+  const match = useMatch(key);
+  const [expanded, setExpanded] = useState<string[]>([...(match ? [key] : [])]);
 
   const handleToggle = (key: string) => () => {
     const idx = expanded.findIndex((a) => a === key);
