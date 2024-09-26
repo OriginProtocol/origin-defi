@@ -96,7 +96,6 @@ export const WrappedSupplyCard = ({
           yKeys={[
             {
               key: 'wrappedSupply',
-              strokeColor: [theme.palette.chart1, theme.palette.chart2],
               fillColor: [theme.palette.chart1, theme.palette.chart2],
             },
           ]}
