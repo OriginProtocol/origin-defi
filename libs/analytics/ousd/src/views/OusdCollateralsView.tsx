@@ -1,15 +1,9 @@
 import { useMemo } from 'react';
 
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  Grid2,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
 import {
   collateralMapper,
+  Spinner,
   strategyMapper,
   useLayout,
   useOTokenStrategiesQuery,
@@ -49,13 +43,7 @@ export const OusdCollateralsView = () => {
   }, [data]);
 
   if (isLoading) {
-    return (
-      <Stack
-        sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 300 }}
-      >
-        <CircularProgress size={36} />
-      </Stack>
-    );
+    return <Spinner sx={{ width: 1, height: 300 }} />;
   }
 
   if (!collaterals.length) {

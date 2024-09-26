@@ -1,13 +1,6 @@
 import { Fragment, useState } from 'react';
 
-import {
-  Card,
-  Chip,
-  CircularProgress,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, Chip, Divider, Stack, Typography } from '@mui/material';
 import {
   CurrencyLabel,
   LoadingLabel,
@@ -18,6 +11,7 @@ import { format, from, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { CurrencyControls } from '../Controls';
+import { Spinner } from '../Spinner';
 import { useBalanceSheet } from './hooks';
 
 import type { StackProps, TypographyProps } from '@mui/material';
@@ -43,13 +37,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
   };
 
   if (isBalanceSheetLoading) {
-    return (
-      <Stack
-        sx={{ justifyContent: 'center', alignItems: 'center', minHeight: 300 }}
-      >
-        <CircularProgress size={36} />
-      </Stack>
-    );
+    return <Spinner sx={{ width: 1, height: 300 }} />;
   }
 
   if (!balanceSheet?.assets || !balanceSheet?.liabilities) {

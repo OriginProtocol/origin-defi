@@ -1,12 +1,6 @@
 import { useState } from 'react';
 
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Card, CardContent, Stack, Typography } from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -17,6 +11,7 @@ import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { BarChart } from '../Charts/BarChart';
 import { LimitControls, MAControls } from '../Controls';
+import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -93,16 +88,7 @@ export const ProtocolRevenueCard = ({
         </Stack>
       </CardContent>
       {isFeesLoading || isFeesAvgLoading ? (
-        <Stack
-          sx={{
-            width,
-            height,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={36} />
-        </Stack>
+        <Spinner sx={{ width, height }} />
       ) : (
         <BarChart
           width={width}

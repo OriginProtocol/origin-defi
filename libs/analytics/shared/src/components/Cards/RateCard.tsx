@@ -1,13 +1,6 @@
 import { useState } from 'react';
 
-import {
-  Card,
-  CardContent,
-  CircularProgress,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Card, CardContent, Stack, Typography, useTheme } from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -19,6 +12,7 @@ import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
 import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls, TrailingControls } from '../Controls';
+import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -100,16 +94,7 @@ export const RateCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Stack
-          sx={{
-            width,
-            height,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={36} />
-        </Stack>
+        <Spinner sx={{ width, height }} />
       ) : (
         <LineChart
           width={width}

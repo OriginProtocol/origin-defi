@@ -4,7 +4,6 @@ import {
   Box,
   Card,
   CardContent,
-  CircularProgress,
   LinearProgress,
   Stack,
   SvgIcon,
@@ -22,6 +21,7 @@ import { useIntl } from 'react-intl';
 
 import { useOTokenStrategiesQuery } from '../../queries';
 import { strategyMapper } from '../../utils/strategyMapper';
+import { Spinner } from '../Spinner';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -53,14 +53,12 @@ export const Strategies = ({ token, ...rest }: StrategiesProps) => {
 
   if (isLoading) {
     return (
-      <Stack
+      <Spinner
         sx={[
-          { justifyContent: 'center', alignItems: 'center', minHeight: 300 },
+          { minHeight: 300 },
           ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
         ]}
-      >
-        <CircularProgress size={36} />
-      </Stack>
+      />
     );
   }
 

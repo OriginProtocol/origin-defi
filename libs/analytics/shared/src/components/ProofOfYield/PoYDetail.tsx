@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Divider,
   Grid2,
   Stack,
@@ -50,6 +49,7 @@ import {
 } from '../../queries';
 import { dailyStatMapper } from '../../utils';
 import { useLayout } from '../Layout';
+import { Spinner } from '../Spinner';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -283,15 +283,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                 </Stack>
               </CardContent>
               {isRebasesLoading || isDailyStatLoading ? (
-                <Stack
-                  sx={{
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    height: 200,
-                  }}
-                >
-                  <CircularProgress size={36} />
-                </Stack>
+                <Spinner sx={{ width: 1, height: 200 }} />
               ) : (
                 <TableContainer sx={{ overflowX: 'auto', minHeight: 200 }}>
                   <Table

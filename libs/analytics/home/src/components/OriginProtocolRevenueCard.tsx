@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Divider,
   Stack,
   useTheme,
@@ -14,6 +13,7 @@ import {
   ChartTooltip,
   CurrencyControls,
   LimitControls,
+  Spinner,
   useOriginStats,
 } from '@origin/analytics/shared';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
@@ -100,16 +100,7 @@ export const OriginProtocolRevenueCard = ({
         </Stack>
       </CardContent>
       {isLoading ? (
-        <Stack
-          sx={{
-            width,
-            height,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={36} />
-        </Stack>
+        <Spinner sx={{ width, height }} />
       ) : (
         <AreaChart
           width={width}

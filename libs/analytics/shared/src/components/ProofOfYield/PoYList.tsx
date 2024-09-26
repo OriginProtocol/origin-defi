@@ -3,7 +3,6 @@ import { useCallback, useMemo } from 'react';
 import {
   Button,
   Card,
-  CircularProgress,
   Stack,
   Table,
   TableBody,
@@ -30,6 +29,7 @@ import { useNavigate } from 'react-router-dom';
 import { oTokenConfig } from '../../constants';
 import { useOTokenStatsConnectionQuery } from '../../queries';
 import { dailyStatMapper } from '../../utils';
+import { Spinner } from '../Spinner';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -137,19 +137,7 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
       </Stack>
       <Card>
         {isLoading ? (
-          <Stack
-            {...rest}
-            sx={[
-              {
-                justifyContent: 'center',
-                alignItems: 'center',
-                minHeight: 400,
-              },
-              ...(Array.isArray(rest?.sx) ? rest.sx : [rest.sx]),
-            ]}
-          >
-            <CircularProgress size={36} />
-          </Stack>
+          <Spinner sx={{ width: 1, height: 400 }} />
         ) : (
           <>
             <TableContainer sx={{ overflowX: 'auto' }}>

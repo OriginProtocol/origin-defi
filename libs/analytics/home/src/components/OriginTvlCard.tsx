@@ -4,7 +4,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  CircularProgress,
   Divider,
   Stack,
   useTheme,
@@ -13,6 +12,7 @@ import {
   ChartTooltip,
   LimitControls,
   LineChart,
+  Spinner,
   useOriginStats,
 } from '@origin/analytics/shared';
 import { LoadingLabel } from '@origin/shared/components';
@@ -85,16 +85,7 @@ export const OriginTvlCard = ({ height, ...rest }: OriginTvlCardProps) => {
       </CardContent>
 
       {isLoading ? (
-        <Stack
-          sx={{
-            width,
-            height,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-        >
-          <CircularProgress size={36} />
-        </Stack>
+        <Spinner sx={{ width, height }} />
       ) : (
         <LineChart
           series={[
