@@ -1,4 +1,9 @@
-import { Breadcrumbs as MuiBreadcrumbs, Link } from '@mui/material';
+import {
+  Breadcrumbs as MuiBreadcrumbs,
+  Link,
+  Stack,
+  SvgIcon,
+} from '@mui/material';
 import { hasKey } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatches } from 'react-router-dom';
@@ -16,14 +21,32 @@ export const Breadcrumbs = (props: BreadcrumbsProps) => {
 
   return (
     <MuiBreadcrumbs {...props}>
-      {crumbs.map((value) => {
-        return (
+      {crumbs.map((value, i) => {
+        return i === 0 ? (
+          <Stack direction="row" sx={{ alignItems: 'center' }}>
+            <SvgIcon
+              component={value.handle.icon}
+              sx={{ fontSize: 24, mr: 1 }}
+            />
+            <Link
+              component={RouterLink}
+              underline="hover"
+              variant="body1"
+              to={value.pathname}
+              key={value.pathname}
+              sx={{ fontWeight: 'medium' }}
+            >
+              {intl.formatMessage(value.handle.breadcrumb)}
+            </Link>
+          </Stack>
+        ) : (
           <Link
             component={RouterLink}
             underline="hover"
-            color="inherit"
+            variant="body1"
             to={value.pathname}
             key={value.pathname}
+            sx={{ fontWeight: 'medium' }}
           >
             {intl.formatMessage(value.handle.breadcrumb)}
           </Link>
