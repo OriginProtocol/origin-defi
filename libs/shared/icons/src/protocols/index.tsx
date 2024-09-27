@@ -21,6 +21,7 @@ import MorphoFullWebp from './morpho-full.webp';
 import OriginSvg from './origin.svg?react';
 import RocketpoolFullWebp from './rocketpool-full.webp';
 import SnapshotSvg from './snapshot.svg?react';
+import SsvFullSvg from './ssv-full.svg?react';
 import UniswapSvg from './uniswap.svg?react';
 import YieldNestSvg from './yield-nest.svg?react';
 
@@ -102,6 +103,9 @@ export const RocketpoolFull = (props: SvgIconProps) => (
 );
 export const Snapshot = (props: SvgIconProps) => (
   <SvgIcon {...props} component={SnapshotSvg} inheritViewBox />
+);
+export const SsvFull = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={SsvFullSvg} inheritViewBox />
 );
 export const Uniswap = (props: SvgIconProps) => (
   <SvgIcon {...props} component={UniswapSvg} inheritViewBox />

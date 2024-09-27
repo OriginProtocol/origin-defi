@@ -16,7 +16,7 @@ import {
   includes,
   ZERO_ADDRESS,
 } from '@origin/shared/utils';
-import { add, compare, div, format, from, lt, toNumber } from 'dnum';
+import { add, compare, div, format, from, gt, lt, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import { useOTokenStrategiesQuery } from '../../queries';
@@ -169,6 +169,13 @@ const StrategyCard = ({
           }}
         >
           {strategy.balances
+            .filter((s) => {
+              const pct = toNumber(
+                div(s.amount, strategy.total, { decimals: 18 }),
+              );
+
+              return gt(pct, 0.01);
+            })
             .toSorted((a, b) => compare(b.amount, a.amount))
             .map((b) => {
               const pct = toNumber(
