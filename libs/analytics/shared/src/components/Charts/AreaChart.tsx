@@ -24,16 +24,18 @@ import type { ComponentType } from 'react';
 
 import type { ChartData, Serie } from './types';
 
+export type YKey<Datum = ChartData> = {
+  key: keyof Datum;
+  fillColor?: [string] | [string, string];
+  label?: string;
+};
+
 export type AreaChartProps<Datum = ChartData> = {
   width: number;
   height: number;
   serie: Datum[];
   xKey: keyof Datum;
-  yKeys: {
-    key: keyof Datum;
-    fillColor?: [string] | [string, string];
-    label?: string;
-  }[];
+  yKeys: YKey<Datum>[];
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;

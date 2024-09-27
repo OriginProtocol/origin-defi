@@ -53,6 +53,16 @@ export const PercentWrappedCard = ({
     from: from ?? config?.from,
   });
 
+  const series = [
+    {
+      label: '% wrapped',
+      data: data ?? [],
+      xKey: 'timestamp',
+      yKey: 'pctWrappedSupply',
+      color: [theme.palette.chart1, theme.palette.chart2],
+      curveType: 'base',
+    },
+  ];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 

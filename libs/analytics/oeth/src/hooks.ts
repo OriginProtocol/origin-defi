@@ -12,7 +12,7 @@ import type { ChartResult } from '@origin/analytics/shared';
 
 import type { WoethArbitrumByDayQuery } from './queries.generated';
 
-type TvlCombined = {
+export type TvlCombined = {
   mainnet: number;
   arbitrum: number;
   total: number;

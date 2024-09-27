@@ -1,11 +1,13 @@
 import { useState } from 'react';
 
 import {
+  Box,
   Card,
   CardContent,
   CardHeader,
   Divider,
   Stack,
+  Typography,
   useTheme,
 } from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
@@ -23,6 +25,9 @@ import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
+
+import type { ChartResult } from '../../hooks';
+import type { YKey } from '../Charts';
 
 export type TotalSupplyCardProps = {
   token: Token;
@@ -51,6 +56,18 @@ export const TotalSupplyCard = ({
     from: from ?? config?.from,
   });
 
+  const series = [
+    {
+      key: 'circulatingSupply',
+      label: intl.formatMessage({ defaultMessage: 'Circulating supply' }),
+      fillColor: [theme.palette.chart1, theme.palette.chart2],
+    },
+    {
+      key: 'protocolOwnedSupply',
+      label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
+      fillColor: [theme.palette.chart6, theme.palette.chart5],
+    },
+  ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
@@ -80,6 +97,58 @@ export const TotalSupplyCard = ({
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
         </Stack>
+        <Stack
+          direction="row"
+          sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, pt: 1 }}
+          useFlexGap
+        >
+          {series.map((s) => (
+            <Stack
+              key={s.key}
+              direction="row"
+              spacing={1}
+              sx={{ minWidth: 260 }}
+            >
+              <Box
+                sx={{
+                  width: 15,
+                  height: 15,
+                  borderRadius: '50%',
+                  background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
+                }}
+              />
+              <Typography
+                variant="caption1"
+                color="text.secondary"
+                sx={{ fontWeight: 'medimum' }}
+              >
+                {s?.label ?? 'Serie'}
+              </Typography>
+              <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+                {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
+                  notation: 'compact',
+                  minimumFractionDigits: 2,
+                })}
+              </Typography>
+              <Typography
+                variant="caption1"
+                color="text.secondary"
+                sx={{ fontWeight: 'medimum' }}
+              >
+                •
+              </Typography>
+              <Typography variant="caption1">
+                {intl.formatNumber(
+                  activeItem?.totalSupply === 0
+                    ? 0
+                    : (activeItem?.[s.key] as number) /
+                        (activeItem?.totalSupply as number),
+                  { style: 'percent', maximumFractionDigits: 2 },
+                )}
+              </Typography>
+            </Stack>
+          ))}
+        </Stack>
       </CardContent>
       {isLoading ? (
         <Spinner sx={{ width, height }} />
@@ -92,16 +161,7 @@ export const TotalSupplyCard = ({
             setHoverIdx(idx ?? null);
           }}
           xKey="timestamp"
-          yKeys={[
-            {
-              key: 'circulatingSupply',
-              fillColor: [theme.palette.chart1, theme.palette.chart2],
-            },
-            {
-              key: 'protocolOwnedSupply',
-              fillColor: [theme.palette.chart6, theme.palette.chart5],
-            },
-          ]}
+          yKeys={series}
           curveType="base"
           Tooltip={ChartTooltip}
           tickYFormat={(value) =>
