@@ -23,7 +23,11 @@ export const Breadcrumbs = (props: BreadcrumbsProps) => {
     <MuiBreadcrumbs {...props}>
       {crumbs.map((value, i) => {
         return i === 0 ? (
-          <Stack direction="row" sx={{ alignItems: 'center' }}>
+          <Stack
+            key={value.pathname}
+            direction="row"
+            sx={{ alignItems: 'center' }}
+          >
             <SvgIcon
               component={value.handle.icon}
               sx={{ fontSize: 24, mr: 1 }}

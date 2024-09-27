@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { isSameDay } from 'date-fns';
 import { toNumber } from 'dnum';
 
 import { useWoethArbitrumByDayQuery } from './queries.generated';
@@ -34,6 +33,7 @@ export const useOethDistribution = (limit?: number) => {
             tokens.mainnet.OETH,
             limit,
             oethMainnetConfig.from,
+            undefined,
           ),
           queryFn: useTokenChartStats.fetcher(queryClient),
         }),
@@ -52,10 +52,13 @@ export const useOethDistribution = (limit?: number) => {
 
       return data[0].reduce((acc, curr) => {
         const mainnet = curr.totalSupply;
+
         const arbTotalSupply =
-          data[1]?.erc20StateByDay.find((d) =>
-            isSameDay(new Date(d.day), new Date(curr.timestamp)),
-          )?.totalSupply ?? '0';
+          data[1]?.erc20StateByDay.find(
+            (d) =>
+              d.day.substring(0, 9) ===
+              new Date(curr.timestamp).toISOString().substring(0, 9),
+          )?.totalSupply ?? 0;
         const arbitrum = toNumber([
           BigInt(arbTotalSupply),
           tokens.arbitrum.wOETH.decimals,

@@ -20,6 +20,7 @@ type Key = [
   number | undefined,
   string | undefined,
   OTokenDailyStatOrderByInput[] | undefined,
+  number | undefined,
 ];
 
 const getKey = (
@@ -27,7 +28,8 @@ const getKey = (
   limit?: number,
   from?: string,
   orderBy?: OTokenDailyStatOrderByInput[],
-): Key => ['useTokenChartStats', token, limit, from, orderBy];
+  offset?: number,
+): Key => ['useTokenChartStats', token, limit, from, orderBy, offset];
 
 export type ChartResult = {
   id: string;
@@ -58,7 +60,7 @@ const fetcher: (
   queryClient: QueryClient,
 ) => QueryFunction<ChartResult[], Key> =
   (queryClient) =>
-  async ({ queryKey: [, token, limit, from, orderBy] }) => {
+  async ({ queryKey: [, token, limit, from, orderBy, offset] }) => {
     const res = await queryClient.fetchQuery({
       queryKey: useOTokenStatsQuery.getKey({
         token: token.address ?? ZERO_ADDRESS,
@@ -66,6 +68,7 @@ const fetcher: (
         from,
         limit,
         orderBy,
+        offset,
       }),
       queryFn: useOTokenStatsQuery.fetcher({
         token: token.address ?? ZERO_ADDRESS,
