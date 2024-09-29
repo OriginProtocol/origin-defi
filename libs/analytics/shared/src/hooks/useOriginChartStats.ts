@@ -26,9 +26,9 @@ const totals = ['tvlUSD', 'tvlETH', 'feesETH', 'feesUSD'] as const;
 const getKey = (limit?: number): Key => ['useOriginStats', limit];
 
 export type OriginChartResult = {
-  oeth: ChartResult;
-  ousd: ChartResult;
-  superOeth: ChartResult;
+  [tokens.mainnet.OETH.id]: ChartResult;
+  [tokens.mainnet.OUSD.id]: ChartResult;
+  [tokens.base.superOETHb.id]: ChartResult;
   total: Pick<
     ChartResult,
     'timestamp' | 'tvlUSD' | 'tvlETH' | 'feesETH' | 'feesUSD'
@@ -77,9 +77,9 @@ const fetcher: (
       );
 
       return {
-        oeth,
-        ousd,
-        superOeth,
+        [tokens.mainnet.OETH.id]: oeth,
+        [tokens.mainnet.OUSD.id]: ousd,
+        [tokens.base.superOETHb.id]: superOeth,
         total,
       };
     });

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Card,
   CardContent,
   CardHeader,
@@ -106,17 +107,20 @@ export const CumulativeProtocolRevenueCard = ({
             {
               key: 'ousdCumulated',
               label: 'OUSD',
-              fillColor: [theme.palette.chart6, theme.palette.chart7],
+              lineColor: theme.palette.chart1,
+              fillColor: alpha(theme.palette.chart1, 0.4),
             },
             {
               key: 'oethCumulated',
               label: 'OETH',
-              fillColor: [theme.palette.chart1, theme.palette.chart2],
+              lineColor: theme.palette.chart2,
+              fillColor: alpha(theme.palette.chart2, 0.4),
             },
             {
               key: 'superOethCumulated',
               label: 'SuperOETH',
-              fillColor: [theme.palette.chart6, theme.palette.chart5],
+              lineColor: theme.palette.chart3,
+              fillColor: alpha(theme.palette.chart3, 0.4),
             },
           ]}
           onHover={(idx) => {

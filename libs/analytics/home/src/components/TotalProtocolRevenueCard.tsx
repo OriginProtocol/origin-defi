@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Card,
   CardContent,
   CardHeader,
@@ -45,9 +46,9 @@ export const TotalProtocolRevenueCard = ({
       data.map((d) => ({
         timestamp: d.total.timestamp,
         total: d.total[feesKey],
-        oeth: d.oeth[feesKey],
-        ousd: d.ousd[feesKey],
-        superOeth: d.superOeth[feesKey],
+        oeth: d['1:OETH'][feesKey],
+        ousd: d['1:OUSD'][feesKey],
+        superOeth: d['8453:superOETHb'][feesKey],
       })),
   });
 
@@ -111,17 +112,20 @@ export const TotalProtocolRevenueCard = ({
             {
               key: 'ousd',
               label: 'OUSD',
-              fillColor: [theme.palette.chart6, theme.palette.chart7],
+              lineColor: theme.palette.chart1,
+              fillColor: alpha(theme.palette.chart1, 0.4),
             },
             {
               key: 'oeth',
               label: 'OETH',
-              fillColor: [theme.palette.chart1, theme.palette.chart2],
+              lineColor: theme.palette.chart2,
+              fillColor: alpha(theme.palette.chart2, 0.4),
             },
             {
               key: 'superOeth',
               label: 'SuperOETH',
-              fillColor: [theme.palette.chart6, theme.palette.chart5],
+              lineColor: theme.palette.chart3,
+              fillColor: alpha(theme.palette.chart3, 0.4),
             },
           ]}
           onHover={(idx) => {

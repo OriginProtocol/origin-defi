@@ -16,9 +16,15 @@ import type { ReactNode } from 'react';
 export type OverviewProps = {
   children?: ReactNode;
   token: Token;
+  currency: 'ETH' | 'USD';
 } & StackProps;
 
-export const Overview = ({ token, children, ...rest }: OverviewProps) => {
+export const Overview = ({
+  token,
+  children,
+  currency,
+  ...rest
+}: OverviewProps) => {
   const [{ isDrawerOpen }] = useLayout();
 
   return (
@@ -35,7 +41,7 @@ export const Overview = ({ token, children, ...rest }: OverviewProps) => {
           <ProtocolRevenueCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-          <PriceCard token={token} height={300} currency="ETH" />
+          <PriceCard token={token} height={300} currency={currency} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <PercentWrappedCard token={token} height={300} />

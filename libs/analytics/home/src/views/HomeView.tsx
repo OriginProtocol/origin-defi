@@ -6,6 +6,7 @@ import { CumulativeProtocolRevenueCard } from '../components/CumulativeProtocolR
 import { OriginTvlCard } from '../components/OriginTvlCard';
 import { TokenCard } from '../components/TokenCard';
 import { TotalProtocolRevenueCard } from '../components/TotalProtocolRevenueCard';
+import { TotalSupplySplitCard } from '../components/TotalSupplySplitCard';
 
 export const HomeView = () => {
   const [{ isDrawerOpen }] = useLayout();
@@ -14,7 +15,10 @@ export const HomeView = () => {
     <Grid2 container spacing={2}>
       {[tokens.base.superOETHb, tokens.mainnet.OETH, tokens.mainnet.OUSD].map(
         (t) => (
-          <Grid2 key={t.id} size={{ xs: 12, sm: 4 }}>
+          <Grid2
+            key={t.id}
+            size={{ xs: 12, sm: 4, md: isDrawerOpen ? 6 : 4, lg: 4 }}
+          >
             <TokenCard token={t} />
           </Grid2>
         ),
@@ -25,7 +29,10 @@ export const HomeView = () => {
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
         <TotalProtocolRevenueCard height={300} />
       </Grid2>
-      <Grid2 size={12}>
+      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        <TotalSupplySplitCard height={300} />
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
         <CumulativeProtocolRevenueCard height={300} />
       </Grid2>
     </Grid2>

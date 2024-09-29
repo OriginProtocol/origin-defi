@@ -46,7 +46,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Overview token={tokens.base.superOETHb} />,
+            element: <Overview token={tokens.base.superOETHb} currency="ETH" />,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
@@ -168,7 +168,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            element: <Overview token={tokens.mainnet.OUSD} />,
+            element: <Overview token={tokens.mainnet.OUSD} currency="USD" />,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,

@@ -18,14 +18,12 @@ import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
 import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls, TrailingControls } from '../Controls';
+import { LimitControls } from '../Controls';
 import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { NumberLike } from '@visx/scale';
-
-import type { Trailing } from '../Controls';
 
 export type PercentWrappedCardProps = {
   token: Token;
@@ -44,7 +42,6 @@ export const PercentWrappedCard = ({
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
-  const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
@@ -53,16 +50,6 @@ export const PercentWrappedCard = ({
     from: from ?? config?.from,
   });
 
-  const series = [
-    {
-      label: '% wrapped',
-      data: data ?? [],
-      xKey: 'timestamp',
-      yKey: 'pctWrappedSupply',
-      color: [theme.palette.chart1, theme.palette.chart2],
-      curveType: 'base',
-    },
-  ];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
@@ -98,7 +85,6 @@ export const PercentWrappedCard = ({
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
-            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
           </Stack>
         </Stack>
       </CardContent>

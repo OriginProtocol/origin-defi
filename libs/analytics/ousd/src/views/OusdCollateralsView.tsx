@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
 import {
   collateralMapper,
+  PieChart,
   Spinner,
   strategyMapper,
   useLayout,
@@ -10,6 +11,7 @@ import {
 } from '@origin/analytics/shared';
 import { CurrencyLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { useMeasure } from '@react-hookz/web';
 import { add, div, format, from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
@@ -20,8 +22,15 @@ import type {
 } from '@origin/analytics/shared';
 import type { Dnum } from 'dnum';
 
+const tokenColors = {
+  [tokens.mainnet.DAI.id]: '#F9B01E',
+  [tokens.mainnet.USDC.id]: '#2775CA',
+  [tokens.mainnet.USDT.id]: '#53AE94',
+};
+
 export const OusdCollateralsView = () => {
   const intl = useIntl();
+  const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
   const { data, isLoading } = useOTokenStrategiesQuery({
     token: tokens.mainnet.OUSD.address.toLowerCase(),
@@ -58,22 +67,39 @@ export const OusdCollateralsView = () => {
     );
   }
 
+  const collateralsData = collaterals.map((c, i) => ({
+    label: c.token.symbol,
+    value: toNumber(c.amount),
+    color: tokenColors[c.token.id as keyof typeof tokenColors],
+  }));
+  const width = measures?.width ?? 0;
+
   return (
     <Stack spacing={2}>
       <Grid2 container spacing={2}>
-        {collaterals.map((b) => (
-          <Grid2
-            key={b.token.id}
-            size={{
-              xs: 12,
-              sm: 6,
-              md: isDrawerOpen ? 6 : 4,
-              lg: 4,
-            }}
+        <Grid2 size={{ xs: 12, md: 6 }} ref={ref}>
+          <Stack
+            ref={ref}
+            sx={{ justifyContent: 'center', alignItems: 'center', height: 1 }}
           >
-            <Collateral balance={b} total={totalCollaterals} />
-          </Grid2>
-        ))}
+            <PieChart data={collateralsData} width={width} height={400} />
+          </Stack>
+        </Grid2>
+        <Grid2 size={{ xs: 12, md: 6 }}>
+          <Stack
+            direction={{ xs: 'row', md: 'column' }}
+            sx={{ flexWrap: 'wrap', rowGap: 2, columnGap: 2 }}
+          >
+            {collaterals.map((b) => (
+              <Collateral
+                key={b.token.id}
+                balance={b}
+                total={totalCollaterals}
+                sx={{ flexGrow: { xs: 1, md: 0 } }}
+              />
+            ))}
+          </Stack>
+        </Grid2>
       </Grid2>
       <Typography variant="featured2">
         {intl.formatMessage({ defaultMessage: 'Collateral distribution' })}
@@ -100,15 +126,15 @@ export const OusdCollateralsView = () => {
 type CollateralProps = {
   balance: StrategyBalanceMapped;
   total: Dnum;
-};
+} & CardProps;
 
-const Collateral = ({ balance, total }: CollateralProps) => {
+const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
   const intl = useIntl();
 
   const percentage = div(balance.amount, total);
 
   return (
-    <Card>
+    <Card {...rest}>
       <CardContent>
         <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
           <TokenIcon token={balance.token} sx={{ fontSize: 36 }} />

@@ -185,6 +185,7 @@ export const LineChart = <Datum,>({
             y={(d) => yScale(d?.[s.yKey] as number)}
             stroke={`url(#gradient-${chartId}-${i})`}
             strokeWidth={1}
+            strokeLinecap="round"
           />
         ))}
         {!activeIdx ? null : (
@@ -196,6 +197,7 @@ export const LineChart = <Datum,>({
             stroke={theme.palette.text.secondary}
             strokeWidth={0.5}
             strokeDasharray={2}
+            strokeLinecap="round"
           />
         )}
         {width && height && (

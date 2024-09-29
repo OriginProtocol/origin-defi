@@ -18,7 +18,7 @@ export const OverviewView = () => {
   );
 
   return (
-    <Overview token={tokens.mainnet.OETH}>
+    <Overview token={tokens.mainnet.OETH} currency="ETH">
       <Grid2 size={12}>
         <Stack
           sx={{

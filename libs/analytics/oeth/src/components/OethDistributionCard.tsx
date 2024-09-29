@@ -163,7 +163,7 @@ export const OethDistributionCard = ({
           ]}
           curveType="base"
           Tooltip={ChartTooltip}
-          yScaleDomain={[20000, 42000]}
+          yScaleDomain={[20000, 45000]}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',

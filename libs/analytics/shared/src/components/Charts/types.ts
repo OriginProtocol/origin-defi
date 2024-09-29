@@ -10,3 +10,5 @@ export type Serie<Datum> = {
 };
 
 export type ChartData = { x: number; y: number };
+
+export type ChartColor = string | [string] | [string, string];

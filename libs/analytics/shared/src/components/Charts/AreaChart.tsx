@@ -5,7 +5,7 @@ import { AxisBottom, AxisRight } from '@visx/axis';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
 import { scaleLinear, scaleUtc } from '@visx/scale';
-import { AreaStack } from '@visx/shape';
+import { AreaStack, LinePath } from '@visx/shape';
 import {
   defaultStyles,
   TooltipWithBounds,
@@ -22,11 +22,12 @@ import type { NumberLike } from '@visx/scale';
 import type { StackKey } from '@visx/shape/lib/types';
 import type { ComponentType } from 'react';
 
-import type { ChartData, Serie } from './types';
+import type { ChartColor, ChartData, Serie } from './types';
 
 export type YKey<Datum = ChartData> = {
   key: keyof Datum;
-  fillColor?: [string] | [string, string];
+  lineColor?: ChartColor;
+  fillColor?: ChartColor;
   label?: string;
 };
 
@@ -141,20 +142,45 @@ export const AreaChart = <Datum,>({
     >
       <svg width={width} height={height}>
         <defs>
-          {yKeys.map((k) => (
-            <LinearGradient
-              key={`gradient-fill-${chartId}-${k.key as string}`}
-              id={`gradient-fill-${chartId}-${k.key as string}`}
-              from={k.fillColor?.[0] ?? theme.palette.chart5}
-              to={k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4}
-              fromOffset="20%"
-              toOffset="80%"
-              x1="0%"
-              x2="100%"
-              y1="0%"
-              y2="0%"
-            />
-          ))}
+          {yKeys.map((k) => {
+            if (Array.isArray(k.fillColor)) {
+              return (
+                <LinearGradient
+                  key={`gradient-fill-${chartId}-${k.key as string}`}
+                  id={`gradient-fill-${chartId}-${k.key as string}`}
+                  from={k.fillColor?.[0] ?? theme.palette.chart5}
+                  to={
+                    k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4
+                  }
+                  fromOffset="20%"
+                  toOffset="80%"
+                  x1="0%"
+                  x2="100%"
+                  y1="0%"
+                  y2="0%"
+                />
+              );
+            }
+            if (Array.isArray(k.lineColor)) {
+              return (
+                <LinearGradient
+                  key={`gradient-line-${chartId}-${k.key as string}`}
+                  id={`gradient-line-${chartId}-${k.key as string}`}
+                  from={k.lineColor?.[0] ?? theme.palette.chart5}
+                  to={
+                    k.lineColor?.[1] ?? k.lineColor?.[0] ?? theme.palette.chart4
+                  }
+                  fromOffset="20%"
+                  toOffset="80%"
+                  x1="0%"
+                  x2="100%"
+                  y1="0%"
+                  y2="0%"
+                />
+              );
+            }
+            return null;
+          })}
         </defs>
         <AxisRight
           scale={yScale}
@@ -181,7 +207,6 @@ export const AreaChart = <Datum,>({
             fill: theme.palette.text.secondary,
           }}
         />
-
         <AreaStack
           data={serie}
           keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
@@ -191,13 +216,39 @@ export const AreaChart = <Datum,>({
           y1={(d) => yScale(d[1])}
         >
           {({ stacks, path }) =>
-            stacks.map((stack) => {
+            stacks.map((stack, index) => {
+              const yKey = yKeys[index];
+              const lineColor = Array.isArray(yKey.lineColor)
+                ? `url(#gradient-line-${chartId}-${stack.key})`
+                : (yKey.lineColor ?? theme.palette.primary.main);
+              const fillColor = Array.isArray(yKey.fillColor)
+                ? `url(#gradient-fill-${chartId}-${stack.key})`
+                : (yKey.fillColor ?? theme.palette.chart5);
+
               return (
                 <Fragment key={`stack-${stack.key}`}>
                   <path
                     d={path(stack) || ''}
-                    fill={`url(#gradient-fill-${chartId}-${stack.key})`}
+                    fill={fillColor}
+                    strokeLinecap="round"
                   />
+                  {!!yKey.lineColor && (
+                    <LinePath
+                      data={stack}
+                      x={(d) => xScale(d.data[xKey] as number)}
+                      y={(d) => yScale(d[1]) + 1}
+                      curve={curveTypes[curveType]}
+                    >
+                      {({ path }) => (
+                        <path
+                          d={path(stack) || ''}
+                          fill="none"
+                          stroke={lineColor}
+                          strokeWidth={2}
+                        />
+                      )}
+                    </LinePath>
+                  )}
                 </Fragment>
               );
             })
@@ -214,6 +265,7 @@ export const AreaChart = <Datum,>({
             strokeDasharray={2}
           />
         )}
+
         {width && height && (
           <rect
             x={margins.left}

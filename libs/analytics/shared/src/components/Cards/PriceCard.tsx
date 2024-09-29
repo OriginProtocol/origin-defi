@@ -18,13 +18,11 @@ import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
 import { LineChart } from '../Charts';
 import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls, TrailingControls } from '../Controls';
+import { LimitControls } from '../Controls';
 import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-
-import type { Trailing } from '../Controls';
 
 type SupportedCurrency = 'ETH' | 'USD';
 
@@ -47,7 +45,6 @@ export const PriceCard = ({
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
-  const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useTokenChartStats({
@@ -100,7 +97,6 @@ export const PriceCard = ({
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
-            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
           </Stack>
         </Stack>
       </CardContent>
