@@ -26,6 +26,7 @@ This is a monorepo for Origin's DeFi applications, built using React and Nx. It 
 |   ✅   | `defi`       | 4200 | [aws](https://main.drvhjg4vfr6lu.amplifyapp.com/) [fleek](https://originprotocol.eth.limo/)    | [aws](https://next.drvhjg4vfr6lu.amplifyapp.com/)    
 |   ✅   | `governance` | 4201 | [aws](https://governance.ousd.com/)   | [aws](https://next.d11mo0k0jspnpd.amplifyapp.com/)   
 |   ✅   | `prime`      | 4202 | [aws](https://app.primestaked.com/)   | [aws](https://next.d3ekvisba9ol3t.amplifyapp.com/#/restake)   
+|   🚧   | `analytics`  | 4203 |    | [aws](https://feat-spa-analytics.d3axj6qhmbseai.amplifyapp.com/)   
 
 ## Libraries
 
