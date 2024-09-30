@@ -397,28 +397,6 @@
       "value": "Sorry, we can't seem to find that page"
     }
   ],
-  "KljVVZ": [
-    {
-      "type": 0,
-      "value": "1"
-    },
-    {
-      "type": 1,
-      "value": "symbol"
-    },
-    {
-      "type": 0,
-      "value": " = "
-    },
-    {
-      "type": 1,
-      "value": "currency"
-    },
-    {
-      "type": 1,
-      "value": "rate"
-    }
-  ],
   "LTNKL8": [
     {
       "type": 0,
@@ -681,6 +659,12 @@
       "value": "OUSD"
     }
   ],
+  "Vn4j7i": [
+    {
+      "type": 0,
+      "value": "Base"
+    }
+  ],
   "W87PYU": [
     {
       "type": 0,
@@ -715,16 +699,14 @@
       "value": "Non-rebasing"
     }
   ],
-  "YVGaZX": [
+  "YqE/OA": [
     {
-      "type": 0,
-      "value": "Collaterals"
-    }
-  ],
-  "a/W9Oe": [
+      "type": 1,
+      "value": "currency"
+    },
     {
-      "type": 0,
-      "value": "Protocol revenue"
+      "type": 1,
+      "value": "rate"
     }
   ],
   "aDIJKp": [
@@ -733,22 +715,16 @@
       "value": "Curve AMO"
     }
   ],
-  "ak91fL": [
-    {
-      "type": 0,
-      "value": "Balance Sheet"
-    }
-  ],
   "am7TYR": [
     {
       "type": 0,
       "value": "Balancer"
     }
   ],
-  "b1zuN9": [
+  "bQtq8T": [
     {
       "type": 0,
-      "value": "Price"
+      "value": "Total Supply Split"
     }
   ],
   "cAoIE2": [
@@ -817,12 +793,6 @@
       "value": "is not supported"
     }
   ],
-  "eEOtmw": [
-    {
-      "type": 0,
-      "value": "Strategies"
-    }
-  ],
   "enDzGl": [
     {
       "type": 0,
@@ -833,6 +803,12 @@
     {
       "type": 0,
       "value": "Download CSV"
+    }
+  ],
+  "fgX9NF": [
+    {
+      "type": 0,
+      "value": "Launch App"
     }
   ],
   "fuV7zb": [
@@ -983,6 +959,16 @@
     {
       "type": 0,
       "value": "Mins"
+    }
+  ],
+  "ldRS9x": [
+    {
+      "type": 0,
+      "value": "Protocol revenue for "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
     }
   ],
   "lvvpno": [
@@ -1167,6 +1153,12 @@
       "value": "Cumulative protocol revenue"
     }
   ],
+  "wFgaex": [
+    {
+      "type": 0,
+      "value": "Moving avergage"
+    }
+  ],
   "wqlXwW": [
     {
       "type": 0,
@@ -1213,6 +1205,20 @@
     {
       "type": 0,
       "value": "Waiting for signature"
+    }
+  ],
+  "zo5wYY": [
+    {
+      "type": 0,
+      "value": "1 "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " equals"
     }
   ]
 }

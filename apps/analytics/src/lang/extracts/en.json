@@ -176,9 +176,6 @@
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
-  "KljVVZ": {
-    "defaultMessage": "1{symbol} = {currency}{rate}"
-  },
   "LTNKL8": {
     "defaultMessage": "1 week"
   },
@@ -284,6 +281,9 @@
   "VK+Ydv": {
     "defaultMessage": "OUSD"
   },
+  "Vn4j7i": {
+    "defaultMessage": "Base"
+  },
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
@@ -299,23 +299,17 @@
   "Y8Jqtj": {
     "defaultMessage": "Non-rebasing"
   },
-  "YVGaZX": {
-    "defaultMessage": "Collaterals"
-  },
-  "a/W9Oe": {
-    "defaultMessage": "Protocol revenue"
+  "YqE/OA": {
+    "defaultMessage": "{currency}{rate}"
   },
   "aDIJKp": {
     "defaultMessage": "Curve AMO"
   },
-  "ak91fL": {
-    "defaultMessage": "Balance Sheet"
-  },
   "am7TYR": {
     "defaultMessage": "Balancer"
   },
-  "b1zuN9": {
-    "defaultMessage": "Price"
+  "bQtq8T": {
+    "defaultMessage": "Total Supply Split"
   },
   "cAoIE2": {
     "defaultMessage": "Vault value"
@@ -341,14 +335,14 @@
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
   },
-  "eEOtmw": {
-    "defaultMessage": "Strategies"
-  },
   "enDzGl": {
     "defaultMessage": "30-Day"
   },
   "fBhctx": {
     "defaultMessage": "Download CSV"
+  },
+  "fgX9NF": {
+    "defaultMessage": "Launch App"
   },
   "fuV7zb": {
     "defaultMessage": "{amountIn} {symbolIn}"
@@ -412,6 +406,9 @@
   },
   "lb8m6m": {
     "defaultMessage": "Mins"
+  },
+  "ldRS9x": {
+    "defaultMessage": "Protocol revenue for {symbol}"
   },
   "lvvpno": {
     "defaultMessage": "Yield distributed"
@@ -491,6 +488,9 @@
   "w9mZym": {
     "defaultMessage": "Cumulative protocol revenue"
   },
+  "wFgaex": {
+    "defaultMessage": "Moving avergage"
+  },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
   },
@@ -514,5 +514,8 @@
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
+  },
+  "zo5wYY": {
+    "defaultMessage": "1 {symbol} equals"
   }
 }
