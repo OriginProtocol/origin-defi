@@ -92,6 +92,14 @@ export type Item = {
   spacesCount?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Label = {
+  __typename?: 'Label';
+  color?: Maybe<Scalars['String']['output']>;
+  description?: Maybe<Scalars['String']['output']>;
+  id?: Maybe<Scalars['String']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+};
+
 export type Leaderboard = {
   __typename?: 'Leaderboard';
   lastVote?: Maybe<Scalars['Int']['output']>;
@@ -478,6 +486,7 @@ export type Space = {
   guidelines?: Maybe<Scalars['String']['output']>;
   hibernated?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['String']['output'];
+  labels?: Maybe<Array<Maybe<Label>>>;
   location?: Maybe<Scalars['String']['output']>;
   members?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   moderators?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
