@@ -1,6 +1,8 @@
 import { SvgIcon } from '@mui/material';
 
 import AaveFullSvg from './aave-full.svg?react';
+import AerodromeSvg from './aerodrome.svg?react';
+import AerodromeFullSvg from './aerodrome-full.svg?react';
 import ArmSvg from './arm.svg?react';
 import AuraFullWebp from './aura-full.webp';
 import BalancerFullSvg from './balancer-full.svg?react';
@@ -9,7 +11,9 @@ import CompoundFullSvg from './compound-full.svg?react';
 import ConvexFullSvg from './convex-full.svg?react';
 import CurveWebp from './curve.webp';
 import CurveFullWebp from './curve-full.webp';
+import CurveFullColorSvg from './curve-full-color.svg?react';
 import FluxFullSvg from './flux-full.svg?react';
+import FraxSvg from './frax.svg?react';
 import FraxFullSvg from './frax-full.svg?react';
 import LidoFullSvg from './lido-full.svg?react';
 import MakerFullSvg from './maker-full.svg?react';
@@ -17,6 +21,7 @@ import MorphoFullWebp from './morpho-full.webp';
 import OriginSvg from './origin.svg?react';
 import RocketpoolFullWebp from './rocketpool-full.webp';
 import SnapshotSvg from './snapshot.svg?react';
+import SsvFullSvg from './ssv-full.svg?react';
 import UniswapSvg from './uniswap.svg?react';
 import YieldNestSvg from './yield-nest.svg?react';
 
@@ -24,6 +29,12 @@ import type { SvgIconProps } from '@mui/material';
 
 export const AaveFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={AaveFullSvg} inheritViewBox />
+);
+export const Aerodrome = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={AerodromeSvg} inheritViewBox />
+);
+export const AerodromeFull = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={AerodromeFullSvg} inheritViewBox />
 );
 export const ARM = (props: SvgIconProps) => (
   <SvgIcon {...props} component={ArmSvg} inheritViewBox />
@@ -59,8 +70,14 @@ export const CurveFull = (props: SvgIconProps) => (
     <image href={CurveFullWebp} height="16" width="59.2" />
   </SvgIcon>
 );
+export const CurveFullColor = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={CurveFullColorSvg} inheritViewBox />
+);
 export const FluxFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={FluxFullSvg} inheritViewBox />
+);
+export const Frax = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={FraxSvg} inheritViewBox />
 );
 export const FraxFull = (props: SvgIconProps) => (
   <SvgIcon {...props} component={FraxFullSvg} inheritViewBox />
@@ -86,6 +103,9 @@ export const RocketpoolFull = (props: SvgIconProps) => (
 );
 export const Snapshot = (props: SvgIconProps) => (
   <SvgIcon {...props} component={SnapshotSvg} inheritViewBox />
+);
+export const SsvFull = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={SsvFullSvg} inheritViewBox />
 );
 export const Uniswap = (props: SvgIconProps) => (
   <SvgIcon {...props} component={UniswapSvg} inheritViewBox />

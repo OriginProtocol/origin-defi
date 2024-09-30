@@ -1,0 +1,82 @@
+{
+  "name": "analytics",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/analytics/src",
+  "projectType": "application",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/vite:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "outputPath": "dist/apps/analytics"
+      },
+      "configurations": {
+        "development": {
+          "mode": "development"
+        },
+        "production": {
+          "mode": "production"
+        }
+      }
+    },
+    "serve": {
+      "executor": "@nx/vite:dev-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "analytics:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "analytics:build:development",
+          "hmr": true
+        },
+        "production": {
+          "buildTarget": "analytics:build:production",
+          "hmr": false
+        }
+      }
+    },
+    "preview": {
+      "dependsOn": ["build"],
+      "executor": "@nx/vite:preview-server",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "analytics:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "analytics:build:development"
+        },
+        "production": {
+          "buildTarget": "analytics:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build"],
+      "options": {
+        "buildTarget": "analytics:build",
+        "spa": true
+      }
+    },
+    "i18n-extract": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "pnpm formatjs extract '{apps/analytics,libs/analytics,libs/shared}/**/!(*.d).{ts,tsx}' --out-file apps/analytics/src/lang/extracts/en.json --flatten --id-interpolation-pattern '[sha512:contenthash:base64:6]'"
+      }
+    },
+    "i18n-compile": {
+      "executor": "nx:run-commands",
+      "dependsOn": ["i18n-extract"],
+      "options": {
+        "command": "pnpm formatjs compile-folder --ast apps/analytics/src/lang/extracts apps/analytics/src/lang"
+      }
+    }
+  }
+}

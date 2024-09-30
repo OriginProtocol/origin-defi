@@ -1,5 +1,43 @@
-// DO NOT EDIT - GENERATED
 export const ConvexStrategyABI = [
+  {
+    inputs: [
+      {
+        components: [
+          { internalType: 'address', name: 'platformAddress', type: 'address' },
+          { internalType: 'address', name: 'vaultAddress', type: 'address' },
+        ],
+        internalType: 'struct InitializableAbstractStrategy.BaseStrategyConfig',
+        name: '_baseConfig',
+        type: 'tuple',
+      },
+      {
+        components: [
+          {
+            internalType: 'address',
+            name: 'cvxDepositorAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'address',
+            name: 'cvxRewardStakerAddress',
+            type: 'address',
+          },
+          {
+            internalType: 'uint256',
+            name: 'cvxDepositorPTokenId',
+            type: 'uint256',
+          },
+          { internalType: 'address', name: 'oethAddress', type: 'address' },
+          { internalType: 'address', name: 'wethAddress', type: 'address' },
+        ],
+        internalType: 'struct ConvexEthMetaStrategy.ConvexEthMetaConfig',
+        name: '_convexConfig',
+        type: 'tuple',
+      },
+    ],
+    stateMutability: 'nonpayable',
+    type: 'constructor',
+  },
   {
     anonymous: false,
     inputs: [
@@ -191,22 +229,15 @@ export const ConvexStrategyABI = [
   },
   {
     inputs: [],
-    name: '_deprecated_cvxRewardTokenAddress',
+    name: 'ETH_ADDRESS',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
   {
     inputs: [],
-    name: '_deprecated_rewardLiquidationThreshold',
+    name: 'MAX_SLIPPAGE',
     outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
-    inputs: [],
-    name: '_deprecated_rewardTokenAddress',
-    outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -239,8 +270,40 @@ export const ConvexStrategyABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'curvePool',
+    outputs: [
+      { internalType: 'contract ICurveETHPoolV1', name: '', type: 'address' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cvxDepositorAddress',
+    outputs: [{ internalType: 'address', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cvxDepositorPTokenId',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'cvxRewardStaker',
+    outputs: [
+      { internalType: 'contract IRewardStaking', name: '', type: 'address' },
+    ],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
-      { internalType: 'address', name: '_asset', type: 'address' },
+      { internalType: 'address', name: '_weth', type: 'address' },
       { internalType: 'uint256', name: '_amount', type: 'uint256' },
     ],
     name: 'deposit',
@@ -253,6 +316,13 @@ export const ConvexStrategyABI = [
     name: 'depositAll',
     outputs: [],
     stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'ethCoinIndex',
+    outputs: [{ internalType: 'uint128', name: '', type: 'uint128' }],
+    stateMutability: 'view',
     type: 'function',
   },
   {
@@ -278,8 +348,6 @@ export const ConvexStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_platformAddress', type: 'address' },
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
       {
         internalType: 'address[]',
         name: '_rewardTokenAddresses',
@@ -295,30 +363,12 @@ export const ConvexStrategyABI = [
   },
   {
     inputs: [
-      { internalType: 'address', name: '_platformAddress', type: 'address' },
-      { internalType: 'address', name: '_vaultAddress', type: 'address' },
       {
         internalType: 'address[]',
         name: '_rewardTokenAddresses',
         type: 'address[]',
       },
       { internalType: 'address[]', name: '_assets', type: 'address[]' },
-      { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
-      {
-        internalType: 'address',
-        name: '_cvxDepositorAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'address',
-        name: '_cvxRewardStakerAddress',
-        type: 'address',
-      },
-      {
-        internalType: 'uint256',
-        name: '_cvxDepositorPTokenId',
-        type: 'uint256',
-      },
     ],
     name: 'initialize',
     outputs: [],
@@ -334,9 +384,51 @@ export const ConvexStrategyABI = [
   },
   {
     inputs: [],
+    name: 'lpToken',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_oTokens', type: 'uint256' }],
+    name: 'mintAndAddOTokens',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'oeth',
+    outputs: [{ internalType: 'contract IERC20', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'oethCoinIndex',
+    outputs: [{ internalType: 'uint128', name: '', type: 'uint128' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
     name: 'platformAddress',
     outputs: [{ internalType: 'address', name: '', type: 'address' }],
     stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_lpTokens', type: 'uint256' }],
+    name: 'removeAndBurnOTokens',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [{ internalType: 'uint256', name: '_lpTokens', type: 'uint256' }],
+    name: 'removeOnlyAssets',
+    outputs: [],
+    stateMutability: 'nonpayable',
     type: 'function',
   },
   {
@@ -426,9 +518,16 @@ export const ConvexStrategyABI = [
     type: 'function',
   },
   {
+    inputs: [],
+    name: 'weth',
+    outputs: [{ internalType: 'contract IWETH9', name: '', type: 'address' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
     inputs: [
       { internalType: 'address', name: '_recipient', type: 'address' },
-      { internalType: 'address', name: '_asset', type: 'address' },
+      { internalType: 'address', name: '_weth', type: 'address' },
       { internalType: 'uint256', name: '_amount', type: 'uint256' },
     ],
     name: 'withdraw',
@@ -443,4 +542,5 @@ export const ConvexStrategyABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
+  { stateMutability: 'payable', type: 'receive' },
 ] as const;

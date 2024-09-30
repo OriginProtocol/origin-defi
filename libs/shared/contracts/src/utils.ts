@@ -1,7 +1,9 @@
 import { supportedChains } from '@origin/shared/constants';
+import { ETH_ADDRESS_CURVE, isAddressEqual } from '@origin/shared/utils';
 
 import { tokenIdMap, tokenList } from './tokens';
 
+import type { HexAddress } from '@origin/shared/utils';
 import type { Chain } from 'viem/chains';
 
 import type { SupportedChainId, Token, TokenId } from './types';
@@ -24,13 +26,21 @@ export const getNativeTokenByChainId = (chainId: SupportedChainId): Token => {
 
 export const getTokenByAddress = (
   address: string | undefined,
-  chainId?: number,
-) =>
-  tokenList.find(
+  chainId: number,
+) => {
+  if (
+    address === undefined ||
+    isAddressEqual(ETH_ADDRESS_CURVE, address as HexAddress)
+  ) {
+    return getNativeTokenByChainId(chainId);
+  }
+
+  return tokenList.find(
     (t) =>
       t.address?.toLowerCase() === address?.toLowerCase() &&
-      (!chainId || t.chainId === chainId),
+      t.chainId === chainId,
   );
+};
 
 export const getTokenBySymbol = (symbol: string, chainId?: number) =>
   tokenList.find(

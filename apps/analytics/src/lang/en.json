@@ -1,0 +1,1218 @@
+{
+  "+LmzMn": [
+    {
+      "type": 0,
+      "value": "max"
+    }
+  ],
+  "+pSWp9": [
+    {
+      "type": 0,
+      "value": "Token Supply"
+    }
+  ],
+  "+vVZ/G": [
+    {
+      "type": 0,
+      "value": "Connect"
+    }
+  ],
+  "/0TOL5": [
+    {
+      "type": 0,
+      "value": "Amount"
+    }
+  ],
+  "/kI0V9": [
+    {
+      "type": 0,
+      "value": "Total supply"
+    }
+  ],
+  "/vNPAX": [
+    {
+      "type": 0,
+      "value": "Compound is an interest rate protocol allowing lenders to earn yield on digital assets by supplying them to borrowers. Each loan is over-collateralized to ensure repayment. OUSD deploys stablecoins to three of the Compound V2 markets and earns interest approximately every 12 seconds. Additional yield is generated from protocol token incentives (COMP), which are regularly sold for USDT on Uniswap and compounded."
+    }
+  ],
+  "/yqHMn": [
+    {
+      "type": 0,
+      "value": "Liabilities"
+    }
+  ],
+  "00AJDy": [
+    {
+      "type": 0,
+      "value": "Origin Vault"
+    }
+  ],
+  "067ZAP": [
+    {
+      "type": 0,
+      "value": "Origin TVL"
+    }
+  ],
+  "0FsXkn": [
+    {
+      "type": 0,
+      "value": "= "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " APY"
+    }
+  ],
+  "0eTRte": [
+    {
+      "type": 0,
+      "value": "Using ETH price of $"
+    },
+    {
+      "type": 1,
+      "value": "price"
+    },
+    {
+      "type": 0,
+      "value": " from Chainlink"
+    }
+  ],
+  "1+ROfp": [
+    {
+      "type": 0,
+      "value": "Transaction"
+    }
+  ],
+  "11nx/H": [
+    {
+      "type": 0,
+      "value": "7-Day MA"
+    }
+  ],
+  "1VDppm": [
+    {
+      "type": 0,
+      "value": "The "
+    },
+    {
+      "type": 1,
+      "value": "fullName"
+    },
+    {
+      "type": 0,
+      "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
+    }
+  ],
+  "1nxJrQ": [
+    {
+      "type": 0,
+      "value": "Return to Home Page"
+    }
+  ],
+  "1tl4iN": [
+    {
+      "type": 0,
+      "value": "AAVE"
+    }
+  ],
+  "1uz/I3": [
+    {
+      "type": 0,
+      "value": "1M"
+    }
+  ],
+  "2NfxfO": [
+    {
+      "type": 0,
+      "value": "Impossible to execute"
+    }
+  ],
+  "2nVHcu": [
+    {
+      "type": 0,
+      "value": "Protocol owned"
+    }
+  ],
+  "2qF6KB": [
+    {
+      "type": 0,
+      "value": "Arbitrum"
+    }
+  ],
+  "3yz9FT": [
+    {
+      "type": 0,
+      "value": "Aave is a liquidity protocol where users can participate as suppliers or borrowers. Each loan is over-collateralized to ensure repayment. OUSD deploys stablecoins to three of the Aave V2 markets and earns interest approximately every 12 seconds. Additional yield is generated from protocol token incentives (AAVE), which are regularly sold for USDT on Uniswap and compounded."
+    }
+  ],
+  "4OE2Tb": [
+    {
+      "type": 0,
+      "value": "Your transaction is being processed on-chain."
+    }
+  ],
+  "5X3I7d": [
+    {
+      "type": 0,
+      "value": "Switch network"
+    }
+  ],
+  "5h3TFE": [
+    {
+      "type": 0,
+      "value": "I agree"
+    }
+  ],
+  "6bJGds": [
+    {
+      "type": 0,
+      "value": "1W"
+    }
+  ],
+  "6u4hU2": [
+    {
+      "type": 0,
+      "value": "MakerDAO is the decentralized organization responsible for issuing DAI. The Dai Savings Rate (DSR) is a key mechanism of the Maker protocol designed to stabilize the value and supply of DAI by incentivizing users to hold and save it. OUSD utilizes the DSR as its base strategy for earning yield from DAI holdings."
+    }
+  ],
+  "6xl2v4": [
+    {
+      "type": 0,
+      "value": "Rebasing"
+    }
+  ],
+  "7CPiAt": [
+    {
+      "type": 0,
+      "value": "Redeemed"
+    }
+  ],
+  "84ZmIG": [
+    {
+      "type": 0,
+      "value": "Compound"
+    }
+  ],
+  "8XZjyW": [
+    {
+      "type": 0,
+      "value": "There was an error while loading this component, you can try to reload."
+    }
+  ],
+  "8nvhZ9": [
+    {
+      "type": 0,
+      "value": "Last"
+    }
+  ],
+  "9dGRyt": [
+    {
+      "type": 0,
+      "value": "Network distribution"
+    }
+  ],
+  "9ghOJK": [
+    {
+      "type": 0,
+      "value": "Unhandled Error!"
+    }
+  ],
+  "9lt7g1": [
+    {
+      "type": 0,
+      "value": "Discord support channel"
+    }
+  ],
+  "9uOFF3": [
+    {
+      "type": 0,
+      "value": "Overview"
+    }
+  ],
+  "AdvVFR": [
+    {
+      "type": 1,
+      "value": "page"
+    },
+    {
+      "type": 0,
+      "value": " of "
+    },
+    {
+      "type": 1,
+      "value": "lastPage"
+    }
+  ],
+  "AwuN57": [
+    {
+      "type": 0,
+      "value": "6 months"
+    }
+  ],
+  "BpVJIf": [
+    {
+      "type": 0,
+      "value": "Yield distributed: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "BuhEl+": [
+    {
+      "type": 0,
+      "value": "Theme:"
+    }
+  ],
+  "COIFLd": [
+    {
+      "type": 0,
+      "value": "Total protocol revenue"
+    }
+  ],
+  "DKaqyQ": [
+    {
+      "type": 0,
+      "value": "Redeeming"
+    }
+  ],
+  "Dqw2mE": [
+    {
+      "type": 0,
+      "value": "Bridged wOETH on Base"
+    }
+  ],
+  "DupNoS": [
+    {
+      "type": 0,
+      "value": "Go back home"
+    }
+  ],
+  "E2sGaF": [
+    {
+      "type": 0,
+      "value": "Exit"
+    }
+  ],
+  "EUdKC+": [
+    {
+      "type": 0,
+      "value": "View stats"
+    }
+  ],
+  "FPMGr3": [
+    {
+      "type": 0,
+      "value": "30-Day MA"
+    }
+  ],
+  "FX+wpZ": [
+    {
+      "type": 0,
+      "value": "Curve is a stableswap AMM that offers efficient trading of stablecoins and volatile assets. The AMO strategy on Curve automates liquidity management and maximizes rewards by balancing assets in the pool. It deploys additional OETH or ETH to maintain the peg and doubles liquidity to increase earnings. Convex enhances this by boosting rewards from Curve pools. The LP tokens are staked on Convex to earn higher CRV and CVX rewards, which are then converted to OETH and distributed to holders, increasing their balances automatically through rebasing."
+    }
+  ],
+  "FtUhr6": [
+    {
+      "type": 0,
+      "value": "Arbitrum TVL"
+    }
+  ],
+  "H/l7i6": [
+    {
+      "type": 0,
+      "value": "Aerodrome Finance is a next-generation AMM that combines the best of Curve, Convex and Uniswap, designed to serve as Base's central liquidity hub. Aerodrome NFTs vote on token emissions and receive incentives and fees generated by the protocol."
+    }
+  ],
+  "HNjIxZ": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
+    }
+  ],
+  "HQcrRS": [
+    {
+      "type": 0,
+      "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
+    }
+  ],
+  "Hiq4cG": [
+    {
+      "type": 0,
+      "value": "On-chain Transaction"
+    }
+  ],
+  "IM+e97": [
+    {
+      "type": 0,
+      "value": "No strategies"
+    }
+  ],
+  "IU4zTP": [
+    {
+      "type": 0,
+      "value": "Proof of Yield"
+    }
+  ],
+  "IeqnaT": [
+    {
+      "type": 0,
+      "value": "Date: "
+    },
+    {
+      "type": 1,
+      "value": "date"
+    }
+  ],
+  "JA3MsG": [
+    {
+      "type": 0,
+      "value": "Operation Cancelled"
+    }
+  ],
+  "KFFqTk": [
+    {
+      "type": 0,
+      "value": "Circulating supply"
+    }
+  ],
+  "KN7zKn": [
+    {
+      "type": 0,
+      "value": "Error"
+    }
+  ],
+  "KjK2z3": [
+    {
+      "type": 0,
+      "value": "Sorry, we can't seem to find that page"
+    }
+  ],
+  "KljVVZ": [
+    {
+      "type": 0,
+      "value": "1"
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " = "
+    },
+    {
+      "type": 1,
+      "value": "currency"
+    },
+    {
+      "type": 1,
+      "value": "rate"
+    }
+  ],
+  "LTNKL8": [
+    {
+      "type": 0,
+      "value": "1 week"
+    }
+  ],
+  "LZqvbG": [
+    {
+      "type": 0,
+      "value": "6M"
+    }
+  ],
+  "Lcraek": [
+    {
+      "type": 0,
+      "value": "Native staking"
+    }
+  ],
+  "Lv0zJu": [
+    {
+      "type": 0,
+      "value": "Details"
+    }
+  ],
+  "LzR7NR": [
+    {
+      "type": 0,
+      "value": "Morpho adds a peer-to-peer layer on top of Compound and Aave allowing lenders and borrowers to be matched more efficiently with better interest rates. When no matching opportunity exists, funds flow directly through to the underlying protocol. OUSD supplies stablecoins to three of Morpho's Compound markets to earn interest. Additional yield is generated from protocol token incentives, including both COMP (regularly sold for USDT) and MORPHO (currently locked)."
+    }
+  ],
+  "M8UUfZ": [
+    {
+      "type": 0,
+      "value": "Raw yield generated"
+    }
+  ],
+  "MLTKb6": [
+    {
+      "type": 0,
+      "value": "APY"
+    }
+  ],
+  "MSTVqC": [
+    {
+      "type": 0,
+      "value": "Reload Page"
+    }
+  ],
+  "MW9FHt": [
+    {
+      "type": 0,
+      "value": "Ooops..."
+    }
+  ],
+  "N2NlBB": [
+    {
+      "type": 0,
+      "value": "Actual yield distributed"
+    }
+  ],
+  "NNFAc/": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    }
+  ],
+  "NXFAgE": [
+    {
+      "type": 0,
+      "value": "Ooops, something went wrong 😓"
+    }
+  ],
+  "NY6umm": [
+    {
+      "type": 0,
+      "value": "Your operation has been executed"
+    }
+  ],
+  "NbAPMb": [
+    {
+      "type": 0,
+      "value": "Dripper"
+    }
+  ],
+  "O+rqDl": [
+    {
+      "type": 0,
+      "value": "Amount of "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " that gives up yield"
+    }
+  ],
+  "P7PLVj": [
+    {
+      "type": 0,
+      "value": "Date"
+    }
+  ],
+  "PBmSYG": [
+    {
+      "type": 0,
+      "value": "Daily APY"
+    }
+  ],
+  "QG6XaK": [
+    {
+      "type": 0,
+      "value": "Bridge wOETH"
+    }
+  ],
+  "QJJz+w": [
+    {
+      "type": 0,
+      "value": "Collateral distribution"
+    }
+  ],
+  "Qu49w7": [
+    {
+      "type": 0,
+      "value": "Morpho Vaults (formerly MetaMorpho) is an open-source protocol for permissionless risk management on top of Morpho, a decentralized platform for overcollateralized lending and borrowing of ERC20 and ERC4626 tokens on Ethereum. The MetaMorpho Factory deploys ERC4626-compliant vaults that allocate deposits across multiple Morpho markets. These noncustodial, immutable vaults let users earn interest passively while the vault actively manages risk. Users retain full control and can withdraw anytime. Morpho Vaults offer tailored risk options, unlike traditional pools exposed to the riskiest assets."
+    }
+  ],
+  "Qz1fcp": [
+    {
+      "type": 0,
+      "value": "Balance: "
+    },
+    {
+      "type": 1,
+      "value": "number"
+    }
+  ],
+  "RD6ePo": [
+    {
+      "type": 0,
+      "value": "Morpho"
+    }
+  ],
+  "S45aoc": [
+    {
+      "type": 0,
+      "value": "First"
+    }
+  ],
+  "SGXihn": [
+    {
+      "type": 0,
+      "value": "OETH"
+    }
+  ],
+  "TEZFSL": [
+    {
+      "type": 0,
+      "value": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
+    }
+  ],
+  "TrKxvg": [
+    {
+      "type": 0,
+      "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
+    }
+  ],
+  "TwyMau": [
+    {
+      "type": 0,
+      "value": "Account"
+    }
+  ],
+  "Txqb4s": [
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": "'s yield is transparent, real and 100% verifiable on-chain."
+    }
+  ],
+  "ULVduL": [
+    {
+      "type": 0,
+      "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+    }
+  ],
+  "Uiq/al": [
+    {
+      "type": 0,
+      "value": "1YR"
+    }
+  ],
+  "UkXeBW": [
+    {
+      "type": 0,
+      "value": "If the problem persists, you can contact us through our "
+    },
+    {
+      "type": 1,
+      "value": "support"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "UlMgTq": [
+    {
+      "type": 0,
+      "value": "If the problem persists, contact us on our "
+    },
+    {
+      "type": 1,
+      "value": "support"
+    },
+    {
+      "type": 0,
+      "value": "."
+    }
+  ],
+  "V0YC3P": [
+    {
+      "type": 0,
+      "value": "Last updated "
+    },
+    {
+      "type": 1,
+      "value": "last"
+    },
+    {
+      "type": 0,
+      "value": ", block #"
+    },
+    {
+      "type": 1,
+      "value": "block"
+    }
+  ],
+  "V0iuI9": [
+    {
+      "type": 0,
+      "value": "Total Assets"
+    }
+  ],
+  "VK+Ydv": [
+    {
+      "type": 0,
+      "value": "OUSD"
+    }
+  ],
+  "W87PYU": [
+    {
+      "type": 0,
+      "value": "View on "
+    },
+    {
+      "type": 1,
+      "value": "name"
+    }
+  ],
+  "WQ5X6K": [
+    {
+      "type": 0,
+      "value": "Super OETH"
+    }
+  ],
+  "XQz/tc": [
+    {
+      "type": 0,
+      "value": "Fees generated"
+    }
+  ],
+  "XSdWHA": [
+    {
+      "type": 0,
+      "value": "Redeem"
+    }
+  ],
+  "Y8Jqtj": [
+    {
+      "type": 0,
+      "value": "Non-rebasing"
+    }
+  ],
+  "YVGaZX": [
+    {
+      "type": 0,
+      "value": "Collaterals"
+    }
+  ],
+  "a/W9Oe": [
+    {
+      "type": 0,
+      "value": "Protocol revenue"
+    }
+  ],
+  "aDIJKp": [
+    {
+      "type": 0,
+      "value": "Curve AMO"
+    }
+  ],
+  "ak91fL": [
+    {
+      "type": 0,
+      "value": "Balance Sheet"
+    }
+  ],
+  "am7TYR": [
+    {
+      "type": 0,
+      "value": "Balancer"
+    }
+  ],
+  "b1zuN9": [
+    {
+      "type": 0,
+      "value": "Price"
+    }
+  ],
+  "cAoIE2": [
+    {
+      "type": 0,
+      "value": "Vault value"
+    }
+  ],
+  "cOB9Jx": [
+    {
+      "type": 0,
+      "value": "Yield"
+    }
+  ],
+  "cbwmZu": [
+    {
+      "type": 0,
+      "value": "Amount of "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " that earns yield"
+    }
+  ],
+  "cg1VJ2": [
+    {
+      "type": 0,
+      "value": "Connect Wallet"
+    }
+  ],
+  "d1uESJ": [
+    {
+      "type": 0,
+      "value": "Assets"
+    }
+  ],
+  "d8EqQY": [
+    {
+      "type": 0,
+      "value": "Days"
+    }
+  ],
+  "dUJwm/": [
+    {
+      "type": 0,
+      "value": "Processing Transaction"
+    }
+  ],
+  "di23JU": [
+    {
+      "type": 0,
+      "value": "Currently selected chain"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "is not supported"
+    }
+  ],
+  "eEOtmw": [
+    {
+      "type": 0,
+      "value": "Strategies"
+    }
+  ],
+  "enDzGl": [
+    {
+      "type": 0,
+      "value": "30-Day"
+    }
+  ],
+  "fBhctx": [
+    {
+      "type": 0,
+      "value": "Download CSV"
+    }
+  ],
+  "fuV7zb": [
+    {
+      "type": 1,
+      "value": "amountIn"
+    },
+    {
+      "type": 0,
+      "value": " "
+    },
+    {
+      "type": 1,
+      "value": "symbolIn"
+    }
+  ],
+  "g07wmk": [
+    {
+      "type": 0,
+      "value": "Empty balance sheet"
+    }
+  ],
+  "g1lboT": [
+    {
+      "type": 0,
+      "value": "1 week ago"
+    }
+  ],
+  "g9CY4h": [
+    {
+      "type": 0,
+      "value": "Percentage of wrapped "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": " (w"
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": ")"
+    }
+  ],
+  "gBm7FQ": [
+    {
+      "type": 0,
+      "value": "You agree not to use any VPN or other privacy or anonymization tools or techniques to attempt to circumvent these eligibility restrictions."
+    }
+  ],
+  "hCQDkn": [
+    {
+      "type": 0,
+      "value": "USD"
+    }
+  ],
+  "hKDOtL": [
+    {
+      "type": 0,
+      "value": "Wrapped supply"
+    }
+  ],
+  "hz1mQV": [
+    {
+      "type": 0,
+      "value": "No collaterals"
+    }
+  ],
+  "hzfM3P": [
+    {
+      "type": 0,
+      "value": "Transaction executed"
+    }
+  ],
+  "i2k/c+": [
+    {
+      "type": 0,
+      "value": "Total Value:"
+    }
+  ],
+  "iLgjES": [
+    {
+      "type": 0,
+      "value": "Error while estimating"
+    }
+  ],
+  "iVoUgg": [
+    {
+      "type": 0,
+      "value": "Maker"
+    }
+  ],
+  "iaS0YY": [
+    {
+      "type": 0,
+      "value": "I have read and agree to the above terms"
+    }
+  ],
+  "irzEgi": [
+    {
+      "type": 0,
+      "value": "Convex"
+    }
+  ],
+  "j/J0Wj": [
+    {
+      "type": 0,
+      "value": "Aerodrome"
+    }
+  ],
+  "j9Y9nu": [
+    {
+      "type": 0,
+      "value": "Hours"
+    }
+  ],
+  "jXJPfc": [
+    {
+      "type": 0,
+      "value": "Balancer meta stable pool"
+    }
+  ],
+  "jfp6m0": [
+    {
+      "type": 0,
+      "value": "Convex allows liquidity providers and stakers to earn greater rewards from Curve, a stablecoin-centric automated market maker (AMM). OUSD earns trading fees and protocol token incentives (both CRV and CVX). This strategy employs base pools and metapools, including the Origin Dollar factory pool, which enables OUSD to safely leverage its own deposits to multiply returns and maintain the pool's balance."
+    }
+  ],
+  "ksGqLq": [
+    {
+      "type": 0,
+      "value": "SSV network acts as our native staking solution and is a decentralized, open-source ETH staking platform using Secret Shared Validator (SSV) technology, also known as Distributed Validator Technology (DVT). It splits a validator key into multiple KeyShares to run an Ethereum validator across multiple non-trusting nodes. This setup provides active-active redundancy, enhances validator key security, and supports the Ethereum network, staking pools, services, and solo stakers."
+    }
+  ],
+  "ktrdXq": [
+    {
+      "type": 0,
+      "value": "OETH Frax Staking"
+    }
+  ],
+  "lb8m6m": [
+    {
+      "type": 0,
+      "value": "Mins"
+    }
+  ],
+  "lvvpno": [
+    {
+      "type": 0,
+      "value": "Yield distributed"
+    }
+  ],
+  "m83vWW": [
+    {
+      "type": 0,
+      "value": "See the evidence of "
+    },
+    {
+      "type": 1,
+      "value": "symbol"
+    },
+    {
+      "type": 0,
+      "value": "'s consistent performance."
+    }
+  ],
+  "mPncEL": [
+    {
+      "type": 0,
+      "value": "x "
+    },
+    {
+      "type": 1,
+      "value": "value"
+    },
+    {
+      "type": 0,
+      "value": " Boost"
+    }
+  ],
+  "n7chn1": [
+    {
+      "type": 0,
+      "value": "7-Day"
+    }
+  ],
+  "oRg1Ai": [
+    {
+      "type": 0,
+      "value": "Difference"
+    }
+  ],
+  "ohE0sW": [
+    {
+      "type": 0,
+      "value": "Ethereum"
+    }
+  ],
+  "p1dNds": [
+    {
+      "type": 0,
+      "value": "1 month"
+    }
+  ],
+  "p556q3": [
+    {
+      "type": 0,
+      "value": "Copied"
+    }
+  ],
+  "qGZxc4": [
+    {
+      "type": 0,
+      "value": "Connect your wallet to"
+    },
+    {
+      "children": [
+      ],
+      "type": 8,
+      "value": "br"
+    },
+    {
+      "type": 0,
+      "value": "select the network"
+    }
+  ],
+  "qQ/SRd": [
+    {
+      "type": 0,
+      "value": "User rejected operation"
+    }
+  ],
+  "qZbedW": [
+    {
+      "type": 0,
+      "value": "Fees"
+    }
+  ],
+  "qj1uhz": [
+    {
+      "type": 0,
+      "value": "Disconnect"
+    }
+  ],
+  "rwIPgH": [
+    {
+      "type": 0,
+      "value": "1 year"
+    }
+  ],
+  "s8BnAC": [
+    {
+      "type": 0,
+      "value": "Swap"
+    }
+  ],
+  "sGU9Dr": [
+    {
+      "type": 0,
+      "value": "ETH"
+    }
+  ],
+  "sOn8yG": [
+    {
+      "type": 0,
+      "value": "Origin Vault holds Origin Protocol treasury assets"
+    }
+  ],
+  "stTYBM": [
+    {
+      "type": 0,
+      "value": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
+    }
+  ],
+  "t1srBX": [
+    {
+      "type": 0,
+      "value": "Yield distribution events"
+    }
+  ],
+  "tFriEi": [
+    {
+      "type": 0,
+      "value": "Transaction error"
+    }
+  ],
+  "tT9W+2": [
+    {
+      "type": 0,
+      "value": "Asset Split:"
+    }
+  ],
+  "tjvHWF": [
+    {
+      "type": 0,
+      "value": "Total Liabilities"
+    }
+  ],
+  "uRHQPy": [
+    {
+      "type": 0,
+      "value": "Ethereum TVL"
+    }
+  ],
+  "v1Vi1d": [
+    {
+      "type": 0,
+      "value": "14-Day"
+    }
+  ],
+  "vetVa9": [
+    {
+      "type": 0,
+      "value": "Frax Staking"
+    }
+  ],
+  "w5VeGT": [
+    {
+      "type": 0,
+      "value": "Error while redeeming"
+    }
+  ],
+  "w9mZym": [
+    {
+      "type": 0,
+      "value": "Cumulative protocol revenue"
+    }
+  ],
+  "wqlXwW": [
+    {
+      "type": 0,
+      "value": "Wrong Network"
+    }
+  ],
+  "xN53iS": [
+    {
+      "type": 0,
+      "value": "Yield Bonus"
+    }
+  ],
+  "xukzKg": [
+    {
+      "type": 0,
+      "value": "Networks"
+    }
+  ],
+  "xwfunk": [
+    {
+      "type": 0,
+      "value": "Restricted Access"
+    }
+  ],
+  "yphS5C": [
+    {
+      "type": 0,
+      "value": "Processing transaction"
+    }
+  ],
+  "yuSYl4": [
+    {
+      "type": 0,
+      "value": "Circulating supply / yield-earning supply"
+    }
+  ],
+  "zQvVDJ": [
+    {
+      "type": 0,
+      "value": "All"
+    }
+  ],
+  "zmWQIG": [
+    {
+      "type": 0,
+      "value": "Waiting for signature"
+    }
+  ]
+}

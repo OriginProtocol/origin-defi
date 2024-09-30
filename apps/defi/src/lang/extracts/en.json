@@ -182,6 +182,9 @@
   "5lVaeB": {
     "defaultMessage": "No description"
   },
+  "5xroW1": {
+    "defaultMessage": "Current value (ETH)"
+  },
   "5yP3uI": {
     "defaultMessage": "Claim Withdrawal"
   },
@@ -256,9 +259,6 @@
   },
   "9/afiv": {
     "defaultMessage": "Signing"
-  },
-  "9GqOyW": {
-    "defaultMessage": "Current value (OETH)"
   },
   "9Pxh6J": {
     "defaultMessage": "Error while delegating"
@@ -770,9 +770,6 @@
   "W87PYU": {
     "defaultMessage": "View on {name}"
   },
-  "W9cTVS": {
-    "defaultMessage": "Earn"
-  },
   "WCaf5C": {
     "defaultMessage": "Approve"
   },
@@ -1243,9 +1240,6 @@
   },
   "tZtBsJ": {
     "defaultMessage": "Redeem to a mix of stablecoins"
-  },
-  "tcK6I+": {
-    "defaultMessage": "Current value (USD)"
   },
   "tkxBJL": {
     "defaultMessage": "Lockup Ends:"

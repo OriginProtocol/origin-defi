@@ -17,7 +17,6 @@ import {
   IntlProvider,
   logWelcomeMessage,
   NotificationsProvider,
-  registerChart,
   ThemeProvider,
 } from '@origin/shared/providers';
 import { composeContexts } from '@origin/shared/utils';
@@ -34,8 +33,6 @@ import { routes } from './routes';
 setAutoFreeze(false);
 
 logWelcomeMessage('Governance');
-
-registerChart();
 
 registerGoogleTagManager();
 

@@ -1,4 +1,3 @@
-// DO NOT EDIT - GENERATED
 export const MorphoCompoundStrategyABI = [
   {
     anonymous: false,

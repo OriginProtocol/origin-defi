@@ -1,0 +1,137 @@
+fragment DailyStat on OTokenDailyStat {
+  id
+  blockNumber
+  timestamp
+  totalSupply
+  apy
+  apy7
+  apy14
+  apy30
+  rateETH
+  rateUSD
+  rebasingSupply
+  nonRebasingSupply
+  wrappedSupply
+  amoSupply
+  yield
+  fees
+  dripperWETH  
+}
+
+fragment Strategy on Strategy {
+  name
+  contractName
+  address
+  oTokenAddress
+  kind
+  balances {
+    asset
+    timestamp
+    blockNumber
+    balance
+  }
+}
+
+query oTokenStats(
+  $token: String!
+  $chainId: Int!
+  $limit: Int
+  $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+  $offset: Int
+) {
+  oTokenDailyStats(
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+    }
+  ) {
+    ...DailyStat
+  }
+}
+
+query oTokenStatsConnection(
+  $token: String!
+  $chainId: Int!
+  $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
+  $first: Int
+  $after: String
+  $from: DateTime
+) {
+  oTokenDailyStatsConnection(
+    orderBy: $orderBy
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+    }
+    first: $first
+    after: $after
+  ) {
+    edges {
+      node {
+        ...DailyStat
+      }
+    }
+    totalCount
+  }
+}
+
+query oTokenDailyStatById($id: String!) {
+  oTokenDailyStatById(id: $id) {
+    ...DailyStat
+  }
+}
+
+query oTokenRebases(
+  $token: String!
+  $chainId: Int!
+  $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+  $to: DateTime
+) {
+  oTokenRebases(
+    orderBy: $orderBy
+    where: {
+      timestamp_gte: $from
+      timestamp_lt: $to
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+    }
+  ) {
+    blockNumber
+    feeETH
+    totalSupply
+    txHash
+    yieldETH
+    timestamp
+  }
+}
+
+query oTokenApy(
+  $chainId: Int!
+  $token: String!
+  $orderBy: [OTokenAPYOrderByInput!] = [timestamp_DESC]
+) {
+  oTokenApies(
+    limit: 1
+    orderBy: $orderBy
+    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+  ) {
+    apy7DayAvg
+    apy14DayAvg
+    apy30DayAvg
+    apr
+    apy
+  }
+}
+
+query oTokenStrategies($chainId: Float!, $token: String!, $timestamp: String) {
+  strategies(otoken: $token, chainId: $chainId, timestamp: $timestamp) {
+    ...Strategy
+  }
+}

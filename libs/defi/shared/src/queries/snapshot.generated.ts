@@ -465,6 +465,7 @@ export type Space = {
   categories?: Maybe<Array<Maybe<Scalars['String']['output']>>>;
   children?: Maybe<Array<Maybe<Space>>>;
   coingecko?: Maybe<Scalars['String']['output']>;
+  cover?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
   delegationPortal?: Maybe<DelegationPortal>;
   domain?: Maybe<Scalars['String']['output']>;
@@ -486,7 +487,9 @@ export type Space = {
   plugins?: Maybe<Scalars['Any']['output']>;
   private?: Maybe<Scalars['Boolean']['output']>;
   proposalsCount?: Maybe<Scalars['Int']['output']>;
+  proposalsCount1d?: Maybe<Scalars['Int']['output']>;
   proposalsCount7d?: Maybe<Scalars['Int']['output']>;
+  proposalsCount30d?: Maybe<Scalars['Int']['output']>;
   rank?: Maybe<Scalars['Float']['output']>;
   skin?: Maybe<Scalars['String']['output']>;
   strategies?: Maybe<Array<Maybe<Strategy>>>;
@@ -532,6 +535,7 @@ export type SpaceWhere = {
   created_in?: InputMaybe<Array<InputMaybe<Scalars['Int']['input']>>>;
   created_lt?: InputMaybe<Scalars['Int']['input']>;
   created_lte?: InputMaybe<Scalars['Int']['input']>;
+  domain?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<Scalars['String']['input']>;
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   plugin?: InputMaybe<Scalars['String']['input']>;

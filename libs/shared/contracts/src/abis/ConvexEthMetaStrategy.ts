@@ -1,4 +1,3 @@
-// DO NOT EDIT - GENERATED
 export const ConvexEthMetaStrategyABI = [
   {
     anonymous: false,
@@ -61,6 +60,25 @@ export const ConvexEthMetaStrategyABI = [
       },
     ],
     name: 'HarvesterAddressesUpdated',
+    type: 'event',
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_prevMaxSlippagePercentage',
+        type: 'uint256',
+      },
+      {
+        indexed: false,
+        internalType: 'uint256',
+        name: '_newMaxSlippagePercentage',
+        type: 'uint256',
+      },
+    ],
+    name: 'MaxWithdrawalSlippageUpdated',
     type: 'event',
   },
   {
@@ -232,17 +250,8 @@ export const ConvexEthMetaStrategyABI = [
     type: 'function',
   },
   {
-    inputs: [],
-    name: 'cvxRewardStaker',
-    outputs: [
-      { internalType: 'contract IRewardStaking', name: '', type: 'address' },
-    ],
-    stateMutability: 'view',
-    type: 'function',
-  },
-  {
     inputs: [
-      { internalType: 'address', name: '_weth', type: 'address' },
+      { internalType: 'address', name: '_asset', type: 'address' },
       { internalType: 'uint256', name: '_amount', type: 'uint256' },
     ],
     name: 'deposit',
@@ -306,36 +315,32 @@ export const ConvexEthMetaStrategyABI = [
       { internalType: 'address[]', name: '_pTokens', type: 'address[]' },
       {
         components: [
-          {
-            internalType: 'address',
-            name: 'curvePoolAddress',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'platformAddress', type: 'address' },
           { internalType: 'address', name: 'vaultAddress', type: 'address' },
           {
             internalType: 'address',
             name: 'cvxDepositorAddress',
             type: 'address',
           },
-          { internalType: 'address', name: 'oethAddress', type: 'address' },
-          { internalType: 'address', name: 'wethAddress', type: 'address' },
+          { internalType: 'address', name: 'metapoolAddress', type: 'address' },
+          {
+            internalType: 'address',
+            name: 'metapoolMainToken',
+            type: 'address',
+          },
           {
             internalType: 'address',
             name: 'cvxRewardStakerAddress',
             type: 'address',
           },
-          {
-            internalType: 'address',
-            name: 'curvePoolLpToken',
-            type: 'address',
-          },
+          { internalType: 'address', name: 'metapoolLPToken', type: 'address' },
           {
             internalType: 'uint256',
             name: 'cvxDepositorPTokenId',
             type: 'uint256',
           },
         ],
-        internalType: 'struct ConvexEthMetaStrategy.InitialiseConfig',
+        internalType: 'struct BaseConvexMetaStrategy.InitConfig',
         name: 'initConfig',
         type: 'tuple',
       },
@@ -349,6 +354,13 @@ export const ConvexEthMetaStrategyABI = [
     inputs: [],
     name: 'isGovernor',
     outputs: [{ internalType: 'bool', name: '', type: 'bool' }],
+    stateMutability: 'view',
+    type: 'function',
+  },
+  {
+    inputs: [],
+    name: 'maxWithdrawalSlippage',
+    outputs: [{ internalType: 'uint256', name: '', type: 'uint256' }],
     stateMutability: 'view',
     type: 'function',
   },
@@ -385,6 +397,19 @@ export const ConvexEthMetaStrategyABI = [
       { internalType: 'address', name: '_harvesterAddress', type: 'address' },
     ],
     name: 'setHarvesterAddress',
+    outputs: [],
+    stateMutability: 'nonpayable',
+    type: 'function',
+  },
+  {
+    inputs: [
+      {
+        internalType: 'uint256',
+        name: '_maxWithdrawalSlippage',
+        type: 'uint256',
+      },
+    ],
+    name: 'setMaxWithdrawalSlippage',
     outputs: [],
     stateMutability: 'nonpayable',
     type: 'function',
@@ -448,7 +473,7 @@ export const ConvexEthMetaStrategyABI = [
   {
     inputs: [
       { internalType: 'address', name: '_recipient', type: 'address' },
-      { internalType: 'address', name: '_weth', type: 'address' },
+      { internalType: 'address', name: '_asset', type: 'address' },
       { internalType: 'uint256', name: '_amount', type: 'uint256' },
     ],
     name: 'withdraw',
@@ -463,5 +488,4 @@ export const ConvexEthMetaStrategyABI = [
     stateMutability: 'nonpayable',
     type: 'function',
   },
-  { stateMutability: 'payable', type: 'receive' },
 ] as const;

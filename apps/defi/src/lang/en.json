@@ -483,6 +483,12 @@
       "value": "No description"
     }
   ],
+  "5xroW1": [
+    {
+      "type": 0,
+      "value": "Current value (ETH)"
+    }
+  ],
   "5yP3uI": [
     {
       "type": 0,
@@ -631,12 +637,6 @@
     {
       "type": 0,
       "value": "Signing"
-    }
-  ],
-  "9GqOyW": [
-    {
-      "type": 0,
-      "value": "Current value (OETH)"
     }
   ],
   "9Pxh6J": [
@@ -1955,12 +1955,6 @@
       "value": "name"
     }
   ],
-  "W9cTVS": [
-    {
-      "type": 0,
-      "value": "Earn"
-    }
-  ],
   "WCaf5C": [
     {
       "type": 0,
@@ -3101,12 +3095,6 @@
     {
       "type": 0,
       "value": "Redeem to a mix of stablecoins"
-    }
-  ],
-  "tcK6I+": [
-    {
-      "type": 0,
-      "value": "Current value (USD)"
     }
   ],
   "tkxBJL": [
