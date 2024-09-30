@@ -57,6 +57,11 @@ export const OethDistributionCard = ({
       label: intl.formatMessage({ defaultMessage: 'Arbitrum' }),
       fillColor: [theme.palette.chart6, theme.palette.chart5],
     },
+    {
+      key: 'base',
+      label: intl.formatMessage({ defaultMessage: 'Base' }),
+      fillColor: [theme.palette.chart7, theme.palette.chart3],
+    },
   ] as YKey<TvlCombined>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -151,19 +156,9 @@ export const OethDistributionCard = ({
             setHoverIdx(idx ?? null);
           }}
           xKey="timestamp"
-          yKeys={[
-            {
-              key: 'mainnet',
-              fillColor: [theme.palette.chart1, theme.palette.chart2],
-            },
-            {
-              key: 'arbitrum',
-              fillColor: [theme.palette.chart6, theme.palette.chart5],
-            },
-          ]}
+          yKeys={series}
           curveType="base"
           Tooltip={ChartTooltip}
-          yScaleDomain={[20000, 45000]}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',

@@ -1,6 +1,15 @@
 import { useState } from 'react';
 
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -33,6 +42,7 @@ export const ProtocolRevenueCard = ({
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
   const intl = useIntl();
+  const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
   const [ma, setMa] = useState<MA>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
@@ -51,11 +61,18 @@ export const ProtocolRevenueCard = ({
   const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(feesData ?? []) : feesData?.[hoverIdx];
+  const activeMAItem =
+    hoverIdx === null ? last(feesAvgData ?? []) : feesAvgData?.[hoverIdx];
 
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Protocol revenue' })}
+        title={intl.formatMessage(
+          {
+            defaultMessage: 'Protocol revenue for {symbol}',
+          },
+          { symbol: token.name },
+        )}
       />
       <Divider />
       <CardContent>
@@ -71,7 +88,7 @@ export const ProtocolRevenueCard = ({
               {formatInTimeZone(
                 new Date(activeItem?.x ?? new Date().getTime()),
                 'UTC',
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
             </LoadingLabel>
             <LoadingLabel
@@ -86,6 +103,36 @@ export const ProtocolRevenueCard = ({
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
             <MAControls ma={ma} setMa={setMa} />
+          </Stack>
+        </Stack>
+        <Stack
+          direction="row"
+          sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1 }}
+          useFlexGap
+        >
+          <Stack direction="row" spacing={1} sx={{ minWidth: 260 }}>
+            <Box
+              sx={{
+                width: 15,
+                height: 15,
+                borderRadius: '50%',
+                background: `linear-gradient(90deg, ${theme.palette.chart4}, ${theme.palette.chart5});`,
+              }}
+            />
+            <Typography
+              variant="caption1"
+              color="text.secondary"
+              sx={{ fontWeight: 'medimum' }}
+            >
+              {intl.formatMessage({ defaultMessage: 'Moving avergage' })}
+            </Typography>
+            <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+              <CurrencyLabel currency="ETH" />
+              {intl.formatNumber((activeMAItem?.y as number) ?? 0, {
+                notation: 'compact',
+                minimumFractionDigits: 2,
+              })}
+            </Typography>
           </Stack>
         </Stack>
       </CardContent>

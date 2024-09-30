@@ -20,7 +20,11 @@ import {
   useTheme,
 } from '@mui/material';
 import { OriginProductIcon } from '@origin/shared/components';
-import { FaChevronRightRegular, FaXmarkRegular } from '@origin/shared/icons';
+import {
+  FaChevronDownRegular,
+  FaChevronRightRegular,
+  FaXmarkRegular,
+} from '@origin/shared/icons';
 import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
@@ -195,6 +199,7 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
       disableGutters
     >
       <AccordionSummary
+        expandIcon={isWide ? <FaChevronDownRegular /> : null}
         sx={[
           {
             height: DRAWER_MD_COLLAPSED_WIDTH,
@@ -204,6 +209,9 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
                   theme.palette.primary.main,
                   theme.palette.action.hoverOpacity,
                 ),
+            },
+            '& .MuiAccordionSummary-expandIconWrapper': {
+              mr: 2,
             },
           },
         ]}

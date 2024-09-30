@@ -128,8 +128,8 @@ export const AreaChart = <Datum,>({
           xKey,
           yKey: yKey.key,
         }));
-  const bottomTicks = xScale.ticks(width / 80);
-  const rightTicks = yScale.ticks(height / 40);
+  const bottomTicks = xScale.ticks(Math.floor(width / 100));
+  const rightTicks = yScale.ticks(Math.floor(height / 40));
 
   return (
     <Box

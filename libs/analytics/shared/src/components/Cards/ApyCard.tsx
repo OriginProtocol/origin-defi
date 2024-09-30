@@ -65,7 +65,7 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
             </LoadingLabel>
             <LoadingLabel

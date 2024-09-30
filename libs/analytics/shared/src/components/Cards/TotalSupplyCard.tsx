@@ -87,7 +87,7 @@ export const TotalSupplyCard = ({
               {formatInTimeZone(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'UTC',
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
             </LoadingLabel>
             <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>

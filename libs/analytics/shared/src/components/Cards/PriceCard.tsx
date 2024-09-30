@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -58,7 +57,12 @@ export const PriceCard = ({
 
   return (
     <Card {...rest} ref={ref}>
-      <CardHeader title={intl.formatMessage({ defaultMessage: 'Price' })} />
+      <CardHeader
+        title={intl.formatMessage(
+          { defaultMessage: '1 {symbol} equals' },
+          { symbol: token.symbol },
+        )}
+      />
       <Divider />
       <CardContent>
         <Stack
@@ -66,22 +70,14 @@ export const PriceCard = ({
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
           <Stack spacing={1}>
-            <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
-                'dd/MM/yyyy',
-              )}
-            </LoadingLabel>
             <LoadingLabel
               isLoading={isLoading}
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
               {intl.formatMessage(
-                { defaultMessage: '1{symbol} = {currency}{rate}' },
+                { defaultMessage: '{currency}{rate}' },
                 {
-                  symbol: token.symbol,
                   currency: <CurrencyLabel currency={currency} />,
                   rate: intl.formatNumber(
                     currency === 'ETH'
