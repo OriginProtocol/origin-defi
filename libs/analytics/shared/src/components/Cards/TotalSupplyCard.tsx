@@ -10,7 +10,11 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+import {
+  AreaChart,
+  CurrencyLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -18,16 +22,15 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { AreaChart } from '../Charts';
 import { ChartTooltip } from '../ChartTooltip';
 import { LimitControls } from '../Controls';
 import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
+import type { YKey } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 import type { ChartResult } from '../../hooks';
-import type { YKey } from '../Charts';
 
 export type TotalSupplyCardProps = {
   token: Token;

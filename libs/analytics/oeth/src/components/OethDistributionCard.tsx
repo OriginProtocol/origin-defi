@@ -10,13 +10,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { ChartTooltip, LimitControls, Spinner } from '@origin/analytics/shared';
 import {
   AreaChart,
-  ChartTooltip,
-  LimitControls,
-  Spinner,
-} from '@origin/analytics/shared';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+  CurrencyLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -25,7 +24,7 @@ import { useIntl } from 'react-intl';
 import { useOethDistribution } from '../hooks';
 
 import type { CardProps } from '@mui/material';
-import type { YKey } from '@origin/analytics/shared';
+import type { YKey } from '@origin/shared/components';
 
 import type { TvlCombined } from '../hooks';
 

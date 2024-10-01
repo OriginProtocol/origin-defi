@@ -1,4 +1,5 @@
 export * from './Buttons';
+export * from './Charts';
 export * from './Countdown';
 export * from './Errors';
 export * from './InfoTooltip';

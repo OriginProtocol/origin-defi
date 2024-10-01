@@ -7,13 +7,14 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { PieChart, Spinner, useOriginStats } from '@origin/analytics/shared';
+import { Spinner, useOriginStats } from '@origin/analytics/shared';
+import { PieChart } from '@origin/shared/components';
 import { getTokenById, tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
-import type { PieChartData } from '@origin/analytics/shared';
+import type { PieChartData } from '@origin/shared/components';
 import type { TokenId } from '@origin/shared/contracts';
 
 export type TotalSupplySplitCardProps = {

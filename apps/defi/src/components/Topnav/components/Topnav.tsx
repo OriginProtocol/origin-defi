@@ -38,6 +38,7 @@ export const Topnav = () => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const theme = useTheme();
+  const isLg = useMediaQuery(theme.breakpoints.down('xl'));
   const isMd = useMediaQuery(theme.breakpoints.down('lg'));
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const accountMenuAnchorEl = useRef(null);
@@ -173,7 +174,7 @@ export const Topnav = () => {
             <ChainMenuButton
               variant="nav"
               color="secondary"
-              hideChainName={isMd}
+              hideChainName={isLg}
               sx={{ flexShrink: 0 }}
               iconSize={24}
               menuProps={{

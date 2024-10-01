@@ -10,7 +10,7 @@ import {
 import { BridgeBanner, MergerBanner } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { Link as RputerLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 import { TokenCard } from './TokenCard';
 
@@ -228,7 +228,7 @@ export const StakingCard = (props: CardProps) => {
         </Stack>
         <MergerBanner
           endSlot={
-            <Button component={RputerLink} to="/more/migration">
+            <Button component={RouterLink} to="/more/migration">
               {intl.formatMessage({ defaultMessage: 'Convert' })}
             </Button>
           }

@@ -1,7 +1,6 @@
 export * from './BalanceSheet';
 export * from './Breadcrumbs';
 export * from './Cards';
-export * from './Charts';
 export * from './ChartTooltip';
 export * from './Controls';
 export * from './Layout';

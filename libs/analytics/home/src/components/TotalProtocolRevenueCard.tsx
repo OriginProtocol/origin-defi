@@ -10,14 +10,17 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  AreaChart,
   ChartTooltip,
   CurrencyControls,
   LimitControls,
   Spinner,
   useOriginStats,
 } from '@origin/analytics/shared';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+import {
+  AreaChart,
+  CurrencyLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';

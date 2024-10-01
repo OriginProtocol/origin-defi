@@ -10,7 +10,11 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+import {
+  BarChart,
+  CurrencyLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -18,7 +22,6 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { BarChart } from '../Charts/BarChart';
 import { LimitControls, MAControls } from '../Controls';
 import { Spinner } from '../Spinner';
 
@@ -151,6 +154,9 @@ export const ProtocolRevenueCard = ({
           tickXFormat={(value) =>
             formatInTimeZone(new Date(Number(value)), 'UTC', 'dd MM')
           }
+          barColor={theme.palette.chart6}
+          activeBarColor={theme.palette.chart4}
+          lineColor={[theme.palette.chart5, theme.palette.chart4]}
         />
       )}
     </Card>

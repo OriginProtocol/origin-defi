@@ -11,11 +11,14 @@ import {
 import {
   ChartTooltip,
   LimitControls,
-  LineChart,
   Spinner,
   useOriginStats,
 } from '@origin/analytics/shared';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+import {
+  CurrencyLabel,
+  LineChart,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last, pluck } from 'ramda';
