@@ -7,8 +7,8 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { Spinner, useOriginStats } from '@origin/analytics/shared';
-import { PieChart } from '@origin/shared/components';
+import { useOriginStats } from '@origin/analytics/shared';
+import { PieChart, Spinner } from '@origin/shared/components';
 import { getTokenById, tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { useIntl } from 'react-intl';

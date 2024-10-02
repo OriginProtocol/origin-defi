@@ -12,8 +12,11 @@ import {
 } from '@mui/material';
 import {
   AreaChart,
+  ChartTooltip,
   CurrencyLabel,
+  LimitControls,
   LoadingLabel,
+  Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -22,9 +25,6 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls } from '../Controls';
-import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { YKey } from '@origin/shared/components';

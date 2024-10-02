@@ -9,17 +9,15 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import {
-  ChartTooltip,
-  CurrencyControls,
-  LimitControls,
-  Spinner,
-  useOriginStats,
-} from '@origin/analytics/shared';
+import { useOriginStats } from '@origin/analytics/shared';
 import {
   AreaChart,
+  ChartTooltip,
+  CurrencyControls,
   CurrencyLabel,
+  LimitControls,
   LoadingLabel,
+  Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';

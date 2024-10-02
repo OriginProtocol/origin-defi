@@ -31,7 +31,13 @@ export const useArmVault = () => {
   return useQuery({
     queryKey: ['useArmVault'],
     queryFn: async () => {
-      const res = await Promise.all([]);
+      const res = await Promise.all([
+        // readContract(config, {
+        //   address: contracts.mainnet.ARMstETHWETHPool.address,
+        //   abi: contracts.mainnet.ARMstETHWETHPool.abi,
+        //   functionName: 'name',
+        // }),
+      ]);
 
       return {
         balance: from(50.23, 18),
@@ -43,6 +49,17 @@ export const useArmVault = () => {
             requestId: 1n,
             timestamp: '1',
             queued: 1n,
+            claimed: false,
+            blockNumber: 1,
+            txHash: '1',
+          },
+          {
+            claimable: false,
+            amount: 10_000_000_000_000_000n,
+            id: '2',
+            requestId: 2n,
+            timestamp: '1',
+            queued: 2n,
             claimed: false,
             blockNumber: 1,
             txHash: '1',

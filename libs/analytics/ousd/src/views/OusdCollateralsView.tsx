@@ -3,12 +3,16 @@ import { useMemo } from 'react';
 import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
 import {
   collateralMapper,
-  Spinner,
   strategyMapper,
   useLayout,
   useOTokenStrategiesQuery,
 } from '@origin/analytics/shared';
-import { CurrencyLabel, PieChart, TokenIcon } from '@origin/shared/components';
+import {
+  CurrencyLabel,
+  PieChart,
+  Spinner,
+  TokenIcon,
+} from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { add, div, format, from, toNumber } from 'dnum';

@@ -8,7 +8,13 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { AreaChart, LoadingLabel } from '@origin/shared/components';
+import {
+  AreaChart,
+  ChartTooltip,
+  LimitControls,
+  LoadingLabel,
+  Spinner,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -16,9 +22,6 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls } from '../Controls';
-import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

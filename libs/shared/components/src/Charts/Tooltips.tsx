@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
 
-import type { Serie } from '../Charts';
+import type { Serie } from './types';
 
 export type ChartTooltipProps<ChartData> = {
   series: Serie<ChartData>[] | null;

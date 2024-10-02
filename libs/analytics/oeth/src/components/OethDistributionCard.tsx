@@ -10,11 +10,13 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip, LimitControls, Spinner } from '@origin/analytics/shared';
 import {
   AreaChart,
+  ChartTooltip,
   CurrencyLabel,
+  LimitControls,
   LoadingLabel,
+  Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';

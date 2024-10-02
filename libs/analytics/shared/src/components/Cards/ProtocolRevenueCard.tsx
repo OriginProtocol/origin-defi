@@ -13,7 +13,10 @@ import {
 import {
   BarChart,
   CurrencyLabel,
+  LimitControls,
   LoadingLabel,
+  MovingAvgControls,
+  Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
@@ -22,13 +25,10 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { LimitControls, MAControls } from '../Controls';
-import { Spinner } from '../Spinner';
 
 import type { CardProps } from '@mui/material';
+import type { MovingAvg } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
-
-import type { MA } from '../Controls';
 
 export type ProtocolRevenueCardProps = {
   token: Token;
@@ -47,7 +47,7 @@ export const ProtocolRevenueCard = ({
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
-  const [ma, setMa] = useState<MA>('feesMovingAvg30Days');
+  const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
@@ -105,7 +105,7 @@ export const ProtocolRevenueCard = ({
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
-            <MAControls ma={ma} setMa={setMa} />
+            <MovingAvgControls ma={ma} setMa={setMa} />
           </Stack>
         </Stack>
         <Stack

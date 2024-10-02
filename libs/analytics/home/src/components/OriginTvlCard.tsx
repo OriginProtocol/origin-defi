@@ -8,16 +8,14 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
+import { useOriginStats } from '@origin/analytics/shared';
 import {
   ChartTooltip,
-  LimitControls,
-  Spinner,
-  useOriginStats,
-} from '@origin/analytics/shared';
-import {
   CurrencyLabel,
+  LimitControls,
   LineChart,
   LoadingLabel,
+  Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';

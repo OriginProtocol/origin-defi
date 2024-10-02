@@ -9,7 +9,7 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import { CurrencyLabel, TokenIcon } from '@origin/shared/components';
+import { CurrencyLabel, Spinner, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
   getFormatPrecision,
@@ -21,7 +21,6 @@ import { useIntl } from 'react-intl';
 
 import { useOTokenStrategiesQuery } from '../../queries';
 import { strategyMapper } from '../../utils/strategyMapper';
-import { Spinner } from '../Spinner';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

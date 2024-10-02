@@ -12,7 +12,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { TablePagination } from '@origin/shared/components';
+import { Spinner, TablePagination } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import {
@@ -29,7 +29,6 @@ import { useNavigate } from 'react-router-dom';
 import { oTokenConfig } from '../../constants';
 import { useOTokenStatsConnectionQuery } from '../../queries';
 import { dailyStatMapper } from '../../utils';
-import { Spinner } from '../Spinner';
 
 import type { StackProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
