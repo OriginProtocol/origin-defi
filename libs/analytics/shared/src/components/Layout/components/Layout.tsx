@@ -1,6 +1,5 @@
 import { Button, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { OriginProductIcon } from '@origin/shared/components';
-import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { FaArrowUpRightRegular, FaBarsRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 import { Outlet } from 'react-router-dom';
@@ -13,7 +12,7 @@ import {
   DRAWER_SM_OPEN_WIDTH,
   VIEWPORT_MIN_WIDTH,
 } from '../constants';
-import { useLayout } from '../hooks';
+import { useDappHref, useLayout } from '../hooks';
 import { LayoutProvider } from '../state';
 import { DrawerMenu } from './DrawerMenu';
 import { LeftDrawer } from './LeftDrawer';
@@ -26,6 +25,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const dappHref = useDappHref();
   const [
     { isDrawerOpen, contentWidth },
     { handleToggleDrawer, handleSetDrawer },
@@ -79,7 +79,7 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
           <Button
             variant="outlined"
             color="secondary"
-            href={ORIGIN_DAPP_URL}
+            href={dappHref}
             target="_blank"
             rel="noopener noreferrer nofollow"
           >

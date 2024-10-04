@@ -22,6 +22,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -60,7 +61,7 @@ export const WrappedSupplyCard = ({
         title={intl.formatMessage({ defaultMessage: 'Wrapped supply' })}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}

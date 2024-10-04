@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Card,
   CardContent,
@@ -25,6 +26,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';
 import type { YKey } from '@origin/shared/components';
@@ -63,12 +65,17 @@ export const TotalSupplyCard = ({
     {
       key: 'circulatingSupply',
       label: intl.formatMessage({ defaultMessage: 'Circulating supply' }),
-      fillColor: [theme.palette.chart1, theme.palette.chart2],
+      fillColor: [
+        alpha(theme.palette.chart1, 0.4),
+        alpha(theme.palette.chart2, 0.4),
+      ],
+      lineColor: [theme.palette.chart1, theme.palette.chart2],
     },
     {
       key: 'protocolOwnedSupply',
       label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
-      fillColor: [theme.palette.chart6, theme.palette.chart5],
+      fillColor: alpha(theme.palette.chart5, 0.4),
+      lineColor: theme.palette.chart5,
     },
   ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
@@ -80,7 +87,7 @@ export const TotalSupplyCard = ({
         title={intl.formatMessage({ defaultMessage: 'Total supply' })}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
@@ -117,7 +124,9 @@ export const TotalSupplyCard = ({
                   width: 15,
                   height: 15,
                   borderRadius: '50%',
-                  background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
+                  background: Array.isArray(s.lineColor)
+                    ? `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`
+                    : s?.lineColor,
                 }}
               />
               <Typography

@@ -23,6 +23,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';
 import type { Trailing } from '@origin/shared/components';
@@ -57,7 +58,8 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
     <Card {...rest} ref={ref}>
       <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
       <Divider />
-      <CardContent>
+
+      <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
@@ -84,6 +86,7 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
           </Stack>
         </Stack>
       </CardContent>
+
       {isLoading ? (
         <Spinner sx={{ height }} />
       ) : (

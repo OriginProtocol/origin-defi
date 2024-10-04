@@ -1,4 +1,4 @@
-export const ORIGIN_DAPP_URL = 'https://originprotocol.eth.limo/';
+export const ORIGIN_DAPP_URL = 'https://originprotocol.eth.limo';
 export const OETH_ANALYTICS_URL =
   'https://www.originprotocol.com/analytics/oeth ';
 export const OUSD_ANALYTICS_URL =

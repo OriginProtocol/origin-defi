@@ -179,6 +179,9 @@ export const AreaChart = <Datum,>({
                 />
               );
             }
+            return null;
+          })}
+          {yKeys.map((k) => {
             if (Array.isArray(k.lineColor) && k.lineColor.length === 2) {
               return (
                 <LinearGradient
@@ -186,8 +189,8 @@ export const AreaChart = <Datum,>({
                   id={`gradient-line-${chartId}-${k.key as string}`}
                   from={k.lineColor[0]}
                   to={k.lineColor[1]}
-                  fromOffset="20%"
-                  toOffset="80%"
+                  fromOffset="0%"
+                  toOffset="100%"
                   x1="0%"
                   x2="100%"
                   y1="0%"
@@ -237,10 +240,10 @@ export const AreaChart = <Datum,>({
             stacks.map((stack, index) => {
               const yKey = yKeys[index];
               const lineColor = Array.isArray(yKey.lineColor)
-                ? `url(#gradient-line-${chartId}-${stack.key})`
+                ? `url(#gradient-line-${chartId}-${String(yKey.key)})`
                 : (yKey.lineColor ?? theme.palette.primary.main);
               const fillColor = Array.isArray(yKey.fillColor)
-                ? `url(#gradient-fill-${chartId}-${stack.key})`
+                ? `url(#gradient-fill-${chartId}-${String(yKey.key)})`
                 : (yKey.fillColor ?? alpha(theme.palette.primary.main, 0.4));
 
               return (
@@ -253,19 +256,13 @@ export const AreaChart = <Datum,>({
                   {!!yKey.lineColor && (
                     <LinePath
                       data={stack}
+                      curve={curveTypes[curveType ?? 'natural']}
                       x={(d) => xScale(d.data[xKey] as number)}
                       y={(d) => yScale(d[1]) + 1}
-                      curve={curveTypes[curveType]}
-                    >
-                      {({ path }) => (
-                        <path
-                          d={path(stack) || ''}
-                          fill="none"
-                          stroke={lineColor}
-                          strokeWidth={2}
-                        />
-                      )}
-                    </LinePath>
+                      stroke={lineColor}
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                    />
                   )}
                 </Fragment>
               );
