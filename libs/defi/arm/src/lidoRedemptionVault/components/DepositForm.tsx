@@ -28,14 +28,13 @@ import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { USER_WHITELIST_CAP_PER_WAVE } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { CardContentProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
-
-const USER_WHITELIST_CAP = 50;
 
 export const DepositForm = (props: CardContentProps) => {
   const intl = useIntl();
@@ -55,9 +54,10 @@ export const DepositForm = (props: CardContentProps) => {
   };
 
   const userCap = BigInt(
-    Math.max(0, USER_WHITELIST_CAP - toNumber([amount, 18])),
+    Math.max(0, USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18])),
   );
-  const showUserCapDisclaimer = USER_WHITELIST_CAP - toNumber([amount, 18]) < 0;
+  const showUserCapDisclaimer =
+    USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18]) < 0;
   const isDepositDisabled = showUserCapDisclaimer || amount === 0n;
 
   return (
@@ -204,7 +204,7 @@ export const DepositForm = (props: CardContentProps) => {
           endAdornment={<TokenButton token={tokens.mainnet.ETH} disabled />}
           sx={(theme) => ({
             px: 2,
-            py: 1,
+            py: 2,
             mb: 3,
             borderRadius: 3,
             backgroundColor: 'background.highlight',

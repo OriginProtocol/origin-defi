@@ -3,6 +3,7 @@ import { indexBy, prop } from 'ramda';
 import { erc20Abi } from 'viem';
 import { arbitrum, base, mainnet, optimism } from 'viem/chains';
 
+import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
 import { DAIABI } from './abis/DAI';
 import { OETHABI } from './abis/OETH';
 import { OUSDABI } from './abis/OUSD';
@@ -16,6 +17,15 @@ import { xOGNABI } from './abis/xOGN';
 
 export const tokens = {
   mainnet: {
+    'ARM-WETH-stETH': {
+      id: '1:ARM-WETH-stETH',
+      address: '0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6',
+      chainId: mainnet.id,
+      abi: ARMstETHWETHPoolABI,
+      name: 'stETH/WETH pool LP token',
+      decimals: 18,
+      symbol: 'ARM-WETH-stETH',
+    },
     DAI: {
       id: '1:DAI',
       address: '0x6b175474e89094c44da98b954eedeac495271d0f',

@@ -10,10 +10,19 @@ import {
 import { TokenChip } from '@origin/defi/shared';
 import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import {
+  useTokenBalance,
+  useTokenPrice,
+  useTvl,
+} from '@origin/shared/providers';
+import { getFormatPrecision } from '@origin/shared/utils';
+import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
@@ -40,6 +49,9 @@ export const ApyCard = (props: CardProps) => {
 
 export const TvlCard = (props: CardProps) => {
   const intl = useIntl();
+  const { data: tvl, isLoading: isTvlLoading } = useTvl(
+    tokens.mainnet['ARM-WETH-stETH'],
+  );
 
   return (
     <Card {...props}>
@@ -53,10 +65,11 @@ export const TvlCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={intl.formatNumber(1440, {
+          value={intl.formatNumber(toNumber(tvl ?? from(0)), {
             notation: 'compact',
             maximumFractionDigits: 2,
           })}
+          isLoading={isTvlLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -103,6 +116,23 @@ export const AboutCard = (props: CardProps) => {
 
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
+  const { isConnected } = useAccount();
+  const { data: balance, isLoading: isBalanceLoading } = useTokenBalance({
+    token: tokens.mainnet['ARM-WETH-stETH'],
+  });
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
+    '1:ARM-WETH-stETH_1:ETH',
+  );
+
+  if (!isConnected) {
+    return null;
+  }
+
+  const bal = [
+    balance ?? 0n,
+    tokens.mainnet['ARM-WETH-stETH'].decimals,
+  ] as Dnum;
+  const ethBal = mul(bal, price ?? from(0));
 
   return (
     <Card {...props}>
@@ -118,9 +148,10 @@ export const VaultBalanceCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={intl.formatNumber(50.23, {
-            maximumFractionDigits: 2,
+          value={format(ethBal, {
+            digits: getFormatPrecision(ethBal),
           })}
+          isLoading={isBalanceLoading || isPriceLoading}
           {...valueLabelProps}
         />
       </CardContent>
