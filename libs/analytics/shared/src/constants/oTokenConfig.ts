@@ -13,6 +13,8 @@ export type OTokenConfig = {
   pageHref?: string;
   // token used by dripper contract
   dripperToken: Token;
+  // display circulating/protocol owned split on TotalSupply chart
+  showCirculatingSplit?: boolean;
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -21,6 +23,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     availableNetworks: [mainnet, arbitrum],
     pageHref: 'oeth',
     dripperToken: tokens.mainnet.WETH,
+    showCirculatingSplit: true,
   },
   [tokens.arbitrum.wOETH.id]: {
     from: '2024-02-07T00:00:00.000000Z',
@@ -38,5 +41,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     availableNetworks: [base],
     pageHref: 'super',
     dripperToken: tokens.base.WETH,
+    showCirculatingSplit: true,
   },
 };

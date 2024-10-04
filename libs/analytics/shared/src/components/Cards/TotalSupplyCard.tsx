@@ -97,58 +97,60 @@ export const TotalSupplyCard = ({
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
         </Stack>
-        <Stack
-          direction="row"
-          sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, pt: 1 }}
-          useFlexGap
-        >
-          {series.map((s) => (
-            <Stack
-              key={s.key}
-              direction="row"
-              spacing={1}
-              sx={{ minWidth: 260 }}
-            >
-              <Box
-                sx={{
-                  width: 15,
-                  height: 15,
-                  borderRadius: '50%',
-                  background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
-                }}
-              />
-              <Typography
-                variant="caption1"
-                color="text.secondary"
-                sx={{ fontWeight: 'medimum' }}
+        {config?.showCirculatingSplit && (
+          <Stack
+            direction="row"
+            sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, pt: 1 }}
+            useFlexGap
+          >
+            {series.map((s) => (
+              <Stack
+                key={s.key}
+                direction="row"
+                spacing={1}
+                sx={{ minWidth: 260 }}
               >
-                {s?.label ?? 'Serie'}
-              </Typography>
-              <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
-                {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
-                  notation: 'compact',
-                  minimumFractionDigits: 2,
-                })}
-              </Typography>
-              <Typography
-                variant="caption1"
-                color="text.secondary"
-                sx={{ fontWeight: 'medimum' }}
-              >
-                •
-              </Typography>
-              <Typography variant="caption1">
-                {intl.formatNumber(
-                  activeItem?.totalSupply === 0
-                    ? 0
-                    : (activeItem?.[s.key] as number) /
-                        (activeItem?.totalSupply as number),
-                  { style: 'percent', maximumFractionDigits: 2 },
-                )}
-              </Typography>
-            </Stack>
-          ))}
-        </Stack>
+                <Box
+                  sx={{
+                    width: 15,
+                    height: 15,
+                    borderRadius: '50%',
+                    background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
+                  }}
+                />
+                <Typography
+                  variant="caption1"
+                  color="text.secondary"
+                  sx={{ fontWeight: 'medimum' }}
+                >
+                  {s?.label ?? 'Serie'}
+                </Typography>
+                <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+                  {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
+                    notation: 'compact',
+                    minimumFractionDigits: 2,
+                  })}
+                </Typography>
+                <Typography
+                  variant="caption1"
+                  color="text.secondary"
+                  sx={{ fontWeight: 'medimum' }}
+                >
+                  •
+                </Typography>
+                <Typography variant="caption1">
+                  {intl.formatNumber(
+                    activeItem?.totalSupply === 0
+                      ? 0
+                      : (activeItem?.[s.key] as number) /
+                          (activeItem?.totalSupply as number),
+                    { style: 'percent', maximumFractionDigits: 2 },
+                  )}
+                </Typography>
+              </Stack>
+            ))}
+          </Stack>
+        )}
       </CardContent>
       {isLoading ? (
         <Spinner sx={{ width, height }} />
