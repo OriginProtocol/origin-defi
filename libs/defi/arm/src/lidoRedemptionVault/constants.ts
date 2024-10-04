@@ -1,0 +1,1 @@
+export const USER_WHITELIST_CAP_PER_WAVE = 50;

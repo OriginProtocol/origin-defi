@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Card,
   CardContent,
@@ -10,7 +11,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+import {
+  AreaChart,
+  ChartTooltip,
+  CurrencyLabel,
+  LimitControls,
+  LoadingLabel,
+  Spinner,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -18,16 +26,13 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { AreaChart } from '../Charts';
-import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls } from '../Controls';
-import { Spinner } from '../Spinner';
+import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';
+import type { YKey } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 
 import type { ChartResult } from '../../hooks';
-import type { YKey } from '../Charts';
 
 export type TotalSupplyCardProps = {
   token: Token;
@@ -60,12 +65,17 @@ export const TotalSupplyCard = ({
     {
       key: 'circulatingSupply',
       label: intl.formatMessage({ defaultMessage: 'Circulating supply' }),
-      fillColor: [theme.palette.chart1, theme.palette.chart2],
+      fillColor: [
+        alpha(theme.palette.chart1, 0.4),
+        alpha(theme.palette.chart2, 0.4),
+      ],
+      lineColor: [theme.palette.chart1, theme.palette.chart2],
     },
     {
       key: 'protocolOwnedSupply',
       label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
-      fillColor: [theme.palette.chart6, theme.palette.chart5],
+      fillColor: alpha(theme.palette.chart5, 0.4),
+      lineColor: theme.palette.chart5,
     },
   ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
@@ -77,7 +87,7 @@ export const TotalSupplyCard = ({
         title={intl.formatMessage({ defaultMessage: 'Total supply' })}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}

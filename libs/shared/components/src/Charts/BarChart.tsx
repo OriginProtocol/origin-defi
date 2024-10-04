@@ -11,18 +11,24 @@ import { Bar, BarRounded, LinePath } from '@visx/shape';
 import { chartMargins } from './constants';
 
 import type { BoxProps } from '@mui/material';
+import type { TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
 
-import type { ChartData } from './types';
+import type { ChartColor, ChartData } from './types';
 
 export type BarChartProps = {
   width: number;
   height: number;
   barData: ChartData[];
+  barColor?: ChartColor;
+  activeBarColor?: ChartColor;
   lineData?: ChartData[];
+  lineColor?: ChartColor;
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  tickXLabelProps?: TickLabelProps<NumberLike>;
+  tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
   margins?: typeof chartMargins;
 } & Omit<BoxProps, 'ref' | 'key'>;
@@ -31,10 +37,15 @@ export const BarChart = ({
   width,
   height,
   barData,
+  barColor,
+  activeBarColor,
   lineData,
+  lineColor,
   onHover,
   tickXFormat,
   tickYFormat,
+  tickXLabelProps,
+  tickYLabelProps,
   yScaleDomain,
   margins = chartMargins,
   ...rest
@@ -56,6 +67,19 @@ export const BarChart = ({
 
   if (!width || !height) return null;
 
+  const tickXLabel = tickXLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
+  const tickYLabel = tickYLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
+
   return (
     <Box
       {...rest}
@@ -70,17 +94,45 @@ export const BarChart = ({
     >
       <svg width={width} height={height}>
         <defs>
-          <LinearGradient
-            id={`gradient-${chartId}`}
-            from={theme.palette.chart5}
-            to={theme.palette.chart4}
-            fromOffset="20%"
-            toOffset="80%"
-            x1="0%"
-            x2="100%"
-            y1="0%"
-            y2="0%"
-          />
+          {Array.isArray(lineColor) && lineColor.length === 2 ? (
+            <LinearGradient
+              id={`gradient-line-${chartId}`}
+              from={lineColor[0]}
+              to={lineColor[1]}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
+          ) : null}
+          {Array.isArray(barColor) && barColor.length === 2 ? (
+            <LinearGradient
+              id={`gradient-bar-${chartId}`}
+              from={barColor[0]}
+              to={barColor[1]}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
+          ) : null}
+          {Array.isArray(activeBarColor) && activeBarColor.length === 2 ? (
+            <LinearGradient
+              id={`gradient-active-${chartId}`}
+              from={activeBarColor[0]}
+              to={activeBarColor[1]}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
+          ) : null}
         </defs>
         <AxisRight
           scale={yScale}
@@ -131,8 +183,12 @@ export const BarChart = ({
                 height={height - margins.bottom - barHeight}
                 fill={
                   activeIdx === idx
-                    ? theme.palette.chart4
-                    : theme.palette.chart6
+                    ? Array.isArray(activeBarColor)
+                      ? `url(#gradient-active-${chartId})`
+                      : (activeBarColor ?? theme.palette.primary.light)
+                    : Array.isArray(barColor)
+                      ? `url(#gradient-bar-${chartId})`
+                      : (barColor ?? theme.palette.primary.main)
                 }
               />
               <Bar
@@ -155,7 +211,11 @@ export const BarChart = ({
             curve={curveCatmullRom}
             x={(d) => (xScale(d.x) as number) + xScale.bandwidth() / 2}
             y={(d) => yScale(d.y)}
-            stroke={`url(#gradient-${chartId})`}
+            stroke={
+              Array.isArray(lineColor)
+                ? `url(#gradient-line-${chartId})`
+                : (lineColor ?? theme.palette.primary.main)
+            }
             strokeWidth={2}
           />
         )}

@@ -22,6 +22,7 @@
       "@origin/analytics/ousd": ["libs/analytics/ousd/src/index.ts"],
       "@origin/analytics/shared": ["libs/analytics/shared/src/index.ts"],
       "@origin/analytics/theme": ["libs/analytics/theme/src/index.ts"],
+      "@origin/defi/arm": ["libs/defi/arm/src/index.ts"],
       "@origin/defi/governance": ["libs/defi/governance/src/index.ts"],
       "@origin/defi/home": ["libs/defi/home/src/index.ts"],
       "@origin/defi/oeth": ["libs/defi/oeth/src/index.ts"],

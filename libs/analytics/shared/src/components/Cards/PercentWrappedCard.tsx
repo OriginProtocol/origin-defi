@@ -8,7 +8,13 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { LoadingLabel } from '@origin/shared/components';
+import {
+  ChartTooltip,
+  LimitControls,
+  LineChart,
+  LoadingLabel,
+  Spinner,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -16,10 +22,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { LineChart } from '../Charts';
-import { ChartTooltip } from '../ChartTooltip';
-import { LimitControls } from '../Controls';
-import { Spinner } from '../Spinner';
+import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
@@ -62,7 +65,7 @@ export const PercentWrappedCard = ({
         )}
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}

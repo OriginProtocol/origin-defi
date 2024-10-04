@@ -18,6 +18,7 @@ import { chartMargins, curveTypes } from './constants';
 import { getScaleDomains } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
+import type { TickLabelProps } from '@visx/axis';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
 import type { ComponentType } from 'react';
@@ -31,9 +32,12 @@ export type LineChartProps<Datum = ChartData> = {
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  tickXLabelProps?: TickLabelProps<NumberLike>;
+  tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
+  showGrid?: boolean;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const LineChart = <Datum,>({
@@ -43,9 +47,12 @@ export const LineChart = <Datum,>({
   onHover,
   tickXFormat,
   tickYFormat,
+  tickXLabelProps,
+  tickYLabelProps,
   yScaleDomain,
   Tooltip,
   margins = chartMargins,
+  showGrid,
   ...rest
 }: LineChartProps<Datum>) => {
   const theme = useTheme();
@@ -115,6 +122,18 @@ export const LineChart = <Datum,>({
         }));
   const bottomTicks = xScale.ticks(width / 80);
   const rightTicks = yScale.ticks(height / 40);
+  const tickXLabel = tickXLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
+  const tickYLabel = tickYLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
 
   return (
     <Box
@@ -127,32 +146,29 @@ export const LineChart = <Datum,>({
     >
       <svg width={width} height={height}>
         <defs>
-          {series.map((s, i) => (
-            <LinearGradient
-              key={`gradient-${chartId}-${i}`}
-              id={`gradient-${chartId}-${i}`}
-              from={s.color?.[0] ?? theme.palette.chart5}
-              to={s.color?.[1] ?? s.color?.[0] ?? theme.palette.chart4}
-              fromOffset="20%"
-              toOffset="80%"
-              x1="0%"
-              x2="100%"
-              y1="0%"
-              y2="0%"
-            />
-          ))}
+          {series.map((s, i) =>
+            Array.isArray(s.color) && s.color.length === 2 ? (
+              <LinearGradient
+                key={`gradient-${chartId}-${i}`}
+                id={`gradient-${chartId}-${i}`}
+                from={s.color?.[0]}
+                to={s.color?.[1]}
+                fromOffset="0%"
+                toOffset="100%"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="0%"
+              />
+            ) : null,
+          )}
         </defs>
         <AxisRight
           scale={yScale}
           left={width - margins.right}
           stroke={theme.palette.text.secondary}
           tickFormat={tickYFormat}
-          tickLabelProps={{
-            fontSize: 11,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-            textAnchor: 'start',
-          }}
+          tickLabelProps={tickYLabel}
           numTicks={rightTicks.length}
         />
         <AxisBottom
@@ -161,21 +177,19 @@ export const LineChart = <Datum,>({
           top={height - margins.bottom}
           tickFormat={tickXFormat}
           numTicks={bottomTicks.length}
-          tickLabelProps={{
-            fontSize: theme.typography.caption1.fontSize,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-          }}
+          tickLabelProps={tickXLabel}
         />
-        <GridRows
-          left={margins.left}
-          scale={yScale}
-          width={width - margins.right}
-          strokeDasharray="2,4"
-          stroke="#ffffff"
-          strokeOpacity={0.1}
-          numTicks={height / 80}
-        />
+        {showGrid && (
+          <GridRows
+            left={margins.left}
+            scale={yScale}
+            width={width - margins.right}
+            strokeDasharray="2,4"
+            stroke="#ffffff"
+            strokeOpacity={0.1}
+            numTicks={height / 80}
+          />
+        )}
         {series.map((s, i) => (
           <LinePath
             key={`serie-${i}`}
@@ -183,7 +197,11 @@ export const LineChart = <Datum,>({
             curve={curveTypes[s.curveType ?? 'natural']}
             x={(d) => xScale(d?.[s.xKey] as number)}
             y={(d) => yScale(d?.[s.yKey] as number)}
-            stroke={`url(#gradient-${chartId}-${i})`}
+            stroke={
+              Array.isArray(s.color)
+                ? `url(#gradient-${chartId}-${i})`
+                : (s.color ?? theme.palette.primary.main)
+            }
             strokeWidth={1}
             strokeLinecap="round"
           />

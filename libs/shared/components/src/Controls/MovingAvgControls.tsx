@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 
 import { Button, MenuItem, Stack, Typography } from '@mui/material';
-import { ClickAwayMenu } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import { not } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
+
+import { ClickAwayMenu } from '../Menus';
 
 import type { ButtonProps } from '@mui/material';
 
@@ -13,14 +14,18 @@ const maOptions = {
   feesMovingAvg30Days: defineMessage({ defaultMessage: '30-Day MA' }),
 };
 
-export type MA = keyof typeof maOptions;
+export type MovingAvg = keyof typeof maOptions;
 
-export type MaControlsProps = {
-  ma: MA;
-  setMa: (value: MA) => void;
+export type MovingAvgControlsProps = {
+  ma: MovingAvg;
+  setMa: (value: MovingAvg) => void;
 } & Omit<ButtonProps, 'ref' | 'onClick'>;
 
-export const MAControls = ({ ma, setMa, ...rest }: MaControlsProps) => {
+export const MovingAvgControls = ({
+  ma,
+  setMa,
+  ...rest
+}: MovingAvgControlsProps) => {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
   const anchorEl = useRef(null);
@@ -64,8 +69,7 @@ export const MAControls = ({ ma, setMa, ...rest }: MaControlsProps) => {
               setOpen(false);
             }}
             sx={[
-              (theme) => ({ typography: theme.typography.body3 }),
-              ...(avg === ma ? [{ backgroundColor: 'secondary.main' }] : []),
+              ...(avg === ma ? [{ backgroundColor: 'action.selected' }] : []),
             ]}
           >
             {intl.formatMessage(label)}

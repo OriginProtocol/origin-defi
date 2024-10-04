@@ -7,10 +7,11 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { ClickAwayMenu } from '@origin/shared/components';
 import { FaBarsRegular } from '@origin/shared/icons';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
+
+import { ClickAwayMenu } from '../Menus';
 
 export type LimitControlsProps = {
   limit: number | undefined;
@@ -90,9 +91,8 @@ export const LimitControls = ({
               setOpen(false);
             }}
             sx={[
-              (theme) => ({ typography: theme.typography.body3 }),
               ...(o.value === limit
-                ? [{ backgroundColor: 'secondary.main' }]
+                ? [{ backgroundColor: 'action.selected' }]
                 : []),
             ]}
           >
@@ -111,7 +111,7 @@ export const LimitControls = ({
           }}
           sx={[
             ...(o.value === limit
-              ? [{ backgroundColor: 'secondary.main' }]
+              ? [{ backgroundColor: 'action.selected' }]
               : []),
           ]}
         >

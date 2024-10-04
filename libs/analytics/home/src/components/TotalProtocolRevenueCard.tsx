@@ -9,15 +9,16 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
+import { useOriginStats } from '@origin/analytics/shared';
 import {
   AreaChart,
   ChartTooltip,
   CurrencyControls,
+  CurrencyLabel,
   LimitControls,
+  LoadingLabel,
   Spinner,
-  useOriginStats,
-} from '@origin/analytics/shared';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';

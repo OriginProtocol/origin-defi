@@ -1,4 +1,6 @@
 export * from './Buttons';
+export * from './Charts';
+export * from './Controls';
 export * from './Countdown';
 export * from './Errors';
 export * from './InfoTooltip';
@@ -10,4 +12,5 @@ export * from './Menus';
 export * from './Notifications';
 export * from './NumberSpinner';
 export * from './Pagination';
+export * from './Spinner';
 export * from './Switches';

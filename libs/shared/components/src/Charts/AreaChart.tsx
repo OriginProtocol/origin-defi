@@ -1,9 +1,10 @@
 import { Fragment, useCallback, useId, useState } from 'react';
 
-import { Box, useTheme } from '@mui/material';
+import { alpha, Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
 import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
+import { GridRows } from '@visx/grid';
 import { scaleLinear, scaleUtc } from '@visx/scale';
 import { AreaStack, LinePath } from '@visx/shape';
 import {
@@ -17,6 +18,7 @@ import { chartMargins, curveTypes } from './constants';
 import { getStackedScaleDomains } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
+import type { TickLabelProps } from '@visx/axis';
 import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
 import type { StackKey } from '@visx/shape/lib/types';
@@ -40,10 +42,13 @@ export type AreaChartProps<Datum = ChartData> = {
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
+  tickXLabelProps?: TickLabelProps<NumberLike>;
+  tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
   Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   curveType?: keyof typeof curveTypes;
+  showGrid?: boolean;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const AreaChart = <Datum,>({
@@ -55,10 +60,13 @@ export const AreaChart = <Datum,>({
   onHover,
   tickXFormat,
   tickYFormat,
+  tickXLabelProps,
+  tickYLabelProps,
   yScaleDomain,
   Tooltip,
   margins = chartMargins,
   curveType = 'natural',
+  showGrid,
   ...rest
 }: AreaChartProps<Datum>) => {
   const theme = useTheme();
@@ -130,6 +138,18 @@ export const AreaChart = <Datum,>({
         }));
   const bottomTicks = xScale.ticks(Math.floor(width / 100));
   const rightTicks = yScale.ticks(Math.floor(height / 40));
+  const tickXLabel = tickXLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
+  const tickYLabel = tickYLabelProps ?? {
+    fontSize: 11,
+    fontFamily: theme.typography.body1.fontFamily,
+    fill: theme.palette.text.secondary,
+    textAnchor: 'start',
+  };
 
   return (
     <Box
@@ -143,17 +163,15 @@ export const AreaChart = <Datum,>({
       <svg width={width} height={height}>
         <defs>
           {yKeys.map((k) => {
-            if (Array.isArray(k.fillColor)) {
+            if (Array.isArray(k.fillColor) && k.fillColor.length === 2) {
               return (
                 <LinearGradient
                   key={`gradient-fill-${chartId}-${k.key as string}`}
                   id={`gradient-fill-${chartId}-${k.key as string}`}
-                  from={k.fillColor?.[0] ?? theme.palette.chart5}
-                  to={
-                    k.fillColor?.[1] ?? k.fillColor?.[0] ?? theme.palette.chart4
-                  }
-                  fromOffset="20%"
-                  toOffset="80%"
+                  from={k.fillColor[0]}
+                  to={k.fillColor[1]}
+                  fromOffset="0%"
+                  toOffset="100%"
                   x1="0%"
                   x2="100%"
                   y1="0%"
@@ -161,17 +179,18 @@ export const AreaChart = <Datum,>({
                 />
               );
             }
-            if (Array.isArray(k.lineColor)) {
+            return null;
+          })}
+          {yKeys.map((k) => {
+            if (Array.isArray(k.lineColor) && k.lineColor.length === 2) {
               return (
                 <LinearGradient
                   key={`gradient-line-${chartId}-${k.key as string}`}
                   id={`gradient-line-${chartId}-${k.key as string}`}
-                  from={k.lineColor?.[0] ?? theme.palette.chart5}
-                  to={
-                    k.lineColor?.[1] ?? k.lineColor?.[0] ?? theme.palette.chart4
-                  }
-                  fromOffset="20%"
-                  toOffset="80%"
+                  from={k.lineColor[0]}
+                  to={k.lineColor[1]}
+                  fromOffset="0%"
+                  toOffset="100%"
                   x1="0%"
                   x2="100%"
                   y1="0%"
@@ -187,12 +206,7 @@ export const AreaChart = <Datum,>({
           left={width - margins.right}
           stroke={theme.palette.text.secondary}
           tickFormat={tickYFormat}
-          tickLabelProps={{
-            fontSize: 11,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-            textAnchor: 'start',
-          }}
+          tickLabelProps={tickYLabel}
           numTicks={rightTicks.length}
         />
         <AxisBottom
@@ -201,12 +215,19 @@ export const AreaChart = <Datum,>({
           tickFormat={tickXFormat}
           numTicks={bottomTicks.length}
           stroke={theme.palette.text.secondary}
-          tickLabelProps={{
-            fontSize: theme.typography.caption1.fontSize,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-          }}
+          tickLabelProps={tickXLabel}
         />
+        {showGrid && (
+          <GridRows
+            left={margins.left}
+            scale={yScale}
+            width={width - margins.right}
+            strokeDasharray="2,4"
+            stroke="#ffffff"
+            strokeOpacity={0.1}
+            numTicks={height / 80}
+          />
+        )}
         <AreaStack
           data={serie}
           keys={yKeys.map((yKey) => yKey.key) as StackKey[]}
@@ -219,11 +240,11 @@ export const AreaChart = <Datum,>({
             stacks.map((stack, index) => {
               const yKey = yKeys[index];
               const lineColor = Array.isArray(yKey.lineColor)
-                ? `url(#gradient-line-${chartId}-${stack.key})`
+                ? `url(#gradient-line-${chartId}-${String(yKey.key)})`
                 : (yKey.lineColor ?? theme.palette.primary.main);
               const fillColor = Array.isArray(yKey.fillColor)
-                ? `url(#gradient-fill-${chartId}-${stack.key})`
-                : (yKey.fillColor ?? theme.palette.chart5);
+                ? `url(#gradient-fill-${chartId}-${String(yKey.key)})`
+                : (yKey.fillColor ?? alpha(theme.palette.primary.main, 0.4));
 
               return (
                 <Fragment key={`stack-${stack.key}`}>
@@ -235,19 +256,13 @@ export const AreaChart = <Datum,>({
                   {!!yKey.lineColor && (
                     <LinePath
                       data={stack}
+                      curve={curveTypes[curveType ?? 'natural']}
                       x={(d) => xScale(d.data[xKey] as number)}
                       y={(d) => yScale(d[1]) + 1}
-                      curve={curveTypes[curveType]}
-                    >
-                      {({ path }) => (
-                        <path
-                          d={path(stack) || ''}
-                          fill="none"
-                          stroke={lineColor}
-                          strokeWidth={2}
-                        />
-                      )}
-                    </LinePath>
+                      stroke={lineColor}
+                      strokeWidth={2}
+                      strokeLinecap="round"
+                    />
                   )}
                 </Fragment>
               );

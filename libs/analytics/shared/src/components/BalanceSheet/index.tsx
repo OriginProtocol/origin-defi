@@ -1,21 +1,23 @@
 import { Fragment, useState } from 'react';
 
 import { Card, Chip, Divider, Stack, Typography } from '@mui/material';
-import { CurrencyLabel, TokenIcon } from '@origin/shared/components';
+import {
+  CurrencyControls,
+  CurrencyLabel,
+  Spinner,
+  TokenIcon,
+} from '@origin/shared/components';
 import { formatInTimeZone } from 'date-fns-tz';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
-import { CurrencyControls } from '../Controls';
-import { Spinner } from '../Spinner';
 import { useBalanceSheet } from './hooks';
 
 import type { StackProps, TypographyProps } from '@mui/material';
+import type { Currency } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 import type { ReactNode } from 'react';
-
-import type { Currency } from '../Controls';
 
 export type BalanceSheetProps = { token: Token };
 

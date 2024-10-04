@@ -58,8 +58,6 @@ export const useOethDistribution = (limit?: number) => {
     },
     select: useCallback(
       (data: [ChartResult[], WoethArbitrumByDayQuery, ChartResult[]]) => {
-        console.log(data);
-
         if (!data[0]?.length) {
           return [];
         }

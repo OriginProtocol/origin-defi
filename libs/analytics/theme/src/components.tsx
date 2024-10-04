@@ -443,6 +443,7 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiMenuItem: {
       styleOverrides: {
         root: ({ theme }) => ({
+          ...theme.typography.body3,
           '&.Mui-selected': {
             background: alpha(theme.palette.primary.main, 0.15),
           },

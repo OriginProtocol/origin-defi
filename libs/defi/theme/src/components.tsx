@@ -421,6 +421,7 @@ export const components = (base: Theme): ThemeOptions => ({
     MuiMenuItem: {
       styleOverrides: {
         root: ({ theme }) => ({
+          ...theme.typography.body3,
           '&.Mui-selected': {
             background: alpha(theme.palette.primary.main, 0.15),
           },
@@ -494,7 +495,8 @@ export const components = (base: Theme): ThemeOptions => ({
         root: ({ theme }) => ({
           minHeight: 0,
           padding: theme.spacing(3, 2),
-          ...theme.typography.body2,
+          ...theme.typography.body3,
+          fontWeight: 'medium',
           textTransform: 'none',
           ':hover': {
             color: theme.palette.text.primary,

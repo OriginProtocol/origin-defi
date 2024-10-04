@@ -1,10 +1,11 @@
 import { useRef, useState } from 'react';
 
 import { Button, MenuItem, Stack, Typography } from '@mui/material';
-import { ClickAwayMenu } from '@origin/shared/components';
 import { FaChevronDownRegular } from '@origin/shared/icons';
 import { not } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
+
+import { ClickAwayMenu } from '../Menus';
 
 import type { ButtonProps } from '@mui/material';
 
@@ -71,9 +72,8 @@ export const TrailingControls = ({
               setOpen(false);
             }}
             sx={[
-              (theme) => ({ typography: theme.typography.body3 }),
               ...(trail === trailing
-                ? [{ backgroundColor: 'secondary.main' }]
+                ? [{ backgroundColor: 'action.selected' }]
                 : []),
             ]}
           >

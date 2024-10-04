@@ -19,6 +19,7 @@ import {
 import {
   ExternalLink,
   LoadingLabel,
+  Spinner,
   TablePagination,
   ValueLabel,
 } from '@origin/shared/components';
@@ -49,7 +50,6 @@ import {
 } from '../../queries';
 import { dailyStatMapper } from '../../utils';
 import { useLayout } from '../Layout';
-import { Spinner } from '../Spinner';
 
 import type { CardProps, StackProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';

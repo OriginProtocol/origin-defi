@@ -16,6 +16,7 @@ import CoinsLightSvg from './coinsLight.svg?react';
 import DropdownSvg from './dropdown.svg?react';
 import LoaderSvg from './loader.svg?react';
 import PendingSvg from './pending.svg?react';
+import PiggyBankSvg from './piggyBank.svg?react';
 import PoweredBySafeSvg from './poweredBySafe.svg?react';
 import ReceivedSvg from './received.svg?react';
 import RocketSvg from './rocket.svg?react';
@@ -79,6 +80,9 @@ export const Loader = (props: SvgIconProps) => (
 );
 export const Pending = (props: SvgIconProps) => (
   <SvgIcon {...props} component={PendingSvg} viewBox="0 0 16 16" />
+);
+export const PiggyBank = (props: SvgIconProps) => (
+  <SvgIcon {...props} component={PiggyBankSvg} inheritViewBox />
 );
 export const PoweredBySafe = (props: SvgIconProps) => (
   <SvgIcon {...props} component={PoweredBySafeSvg} viewBox="0 0 215 24" />

@@ -1,3 +1,23 @@
+fragment DailyStat on OTokenDailyStat {
+  id
+  blockNumber
+  timestamp
+  totalSupply
+  apy
+  apy7
+  apy14
+  apy30
+  rateETH
+  rateUSD
+  rebasingSupply
+  nonRebasingSupply
+  wrappedSupply
+  amoSupply
+  yield
+  fees
+  dripperWETH
+}
+
 query OTokenApy($chainId: Int!, $token: String!) {
   oTokenApies(
     limit: 1
@@ -50,5 +70,27 @@ query OTokenHistories(
     txHash
     timestamp
     balance
+  }
+}
+
+query oTokenStats(
+  $token: String!
+  $chainId: Int!
+  $limit: Int
+  $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+  $offset: Int
+) {
+  oTokenDailyStats(
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    where: {
+      otoken_containsInsensitive: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+    }
+  ) {
+    ...DailyStat
   }
 }

@@ -1,3 +1,4 @@
+import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { arbitrum, base, mainnet } from 'viem/chains';
 
@@ -11,6 +12,8 @@ export type OTokenConfig = {
   availableNetworks: Chain[];
   // link to product page
   pageHref?: string;
+  // link to unified dApp swap page
+  dappHref?: string;
   // token used by dripper contract
   dripperToken: Token;
   // display circulating/protocol owned split on TotalSupply chart
@@ -22,6 +25,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     from: '2023-06-01T00:00:00.000000Z',
     availableNetworks: [mainnet, arbitrum],
     pageHref: 'oeth',
+    dappHref: `${ORIGIN_DAPP_URL}/#/oeth`,
     dripperToken: tokens.mainnet.WETH,
     showCirculatingSplit: true,
   },
@@ -34,12 +38,14 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     from: '2023-06-01T00:00:00.000000Z',
     availableNetworks: [mainnet],
     pageHref: 'ousd',
+    dappHref: `${ORIGIN_DAPP_URL}/#/ousd`,
     dripperToken: tokens.mainnet.USDT,
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
     availableNetworks: [base],
     pageHref: 'super',
+    dappHref: `${ORIGIN_DAPP_URL}/#/super`,
     dripperToken: tokens.base.WETH,
     showCirculatingSplit: true,
   },

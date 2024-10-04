@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import {
+  alpha,
   Box,
   Card,
   CardContent,
@@ -13,10 +14,11 @@ import {
 import {
   AreaChart,
   ChartTooltip,
+  CurrencyLabel,
   LimitControls,
+  LoadingLabel,
   Spinner,
-} from '@origin/analytics/shared';
-import { CurrencyLabel, LoadingLabel } from '@origin/shared/components';
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { last } from 'ramda';
@@ -25,7 +27,7 @@ import { useIntl } from 'react-intl';
 import { useOethDistribution } from '../hooks';
 
 import type { CardProps } from '@mui/material';
-import type { YKey } from '@origin/analytics/shared';
+import type { YKey } from '@origin/shared/components';
 
 import type { TvlCombined } from '../hooks';
 
@@ -48,19 +50,29 @@ export const OethDistributionCard = ({
 
   const series = [
     {
-      key: 'mainnet',
-      label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
-      fillColor: [theme.palette.chart1, theme.palette.chart2],
-    },
-    {
       key: 'arbitrum',
       label: intl.formatMessage({ defaultMessage: 'Arbitrum' }),
-      fillColor: [theme.palette.chart6, theme.palette.chart5],
+      lineColor: theme.palette.chart5,
+      fillColor: alpha(theme.palette.chart5, 0.4),
     },
+    {
+      key: 'mainnet',
+      label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
+      lineColor: [theme.palette.chart1, theme.palette.chart2],
+      fillColor: [
+        alpha(theme.palette.chart1, 0.4),
+        alpha(theme.palette.chart2, 0.4),
+      ],
+    },
+
     {
       key: 'base',
       label: intl.formatMessage({ defaultMessage: 'Base' }),
-      fillColor: [theme.palette.chart7, theme.palette.chart3],
+      lineColor: [theme.palette.chart1, theme.palette.chart3],
+      fillColor: [
+        alpha(theme.palette.chart7, 0.4),
+        alpha(theme.palette.chart3, 0.4),
+      ],
     },
   ] as YKey<TvlCombined>[];
   const width = measures?.width ?? 0;
@@ -109,7 +121,7 @@ export const OethDistributionCard = ({
                   width: 15,
                   height: 15,
                   borderRadius: '50%',
-                  background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
+                  background: `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`,
                 }}
               />
               <Typography
@@ -159,6 +171,7 @@ export const OethDistributionCard = ({
           yKeys={series}
           curveType="base"
           Tooltip={ChartTooltip}
+          showGrid
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',

@@ -10914,7 +10914,9 @@ export type Balance = {
   __typename?: 'Balance';
   asset: Scalars['String']['output'];
   balance: Scalars['BigInt']['output'];
+  balanceETH: Scalars['BigInt']['output'];
   blockNumber: Scalars['Int']['output'];
+  symbol: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
 };
 
@@ -23802,6 +23804,8 @@ export type OTokenDailyStat = {
   apy30: Scalars['Float']['output'];
   blockNumber: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
+  cumulativeFees: Scalars['BigInt']['output'];
+  cumulativeYield: Scalars['BigInt']['output'];
   dripperWETH: Scalars['BigInt']['output'];
   fees: Scalars['BigInt']['output'];
   id: Scalars['String']['output'];
@@ -23872,6 +23876,18 @@ export enum OTokenDailyStatOrderByInput {
   ChainIdDesc = 'chainId_DESC',
   ChainIdDescNullsFirst = 'chainId_DESC_NULLS_FIRST',
   ChainIdDescNullsLast = 'chainId_DESC_NULLS_LAST',
+  CumulativeFeesAsc = 'cumulativeFees_ASC',
+  CumulativeFeesAscNullsFirst = 'cumulativeFees_ASC_NULLS_FIRST',
+  CumulativeFeesAscNullsLast = 'cumulativeFees_ASC_NULLS_LAST',
+  CumulativeFeesDesc = 'cumulativeFees_DESC',
+  CumulativeFeesDescNullsFirst = 'cumulativeFees_DESC_NULLS_FIRST',
+  CumulativeFeesDescNullsLast = 'cumulativeFees_DESC_NULLS_LAST',
+  CumulativeYieldAsc = 'cumulativeYield_ASC',
+  CumulativeYieldAscNullsFirst = 'cumulativeYield_ASC_NULLS_FIRST',
+  CumulativeYieldAscNullsLast = 'cumulativeYield_ASC_NULLS_LAST',
+  CumulativeYieldDesc = 'cumulativeYield_DESC',
+  CumulativeYieldDescNullsFirst = 'cumulativeYield_DESC_NULLS_FIRST',
+  CumulativeYieldDescNullsLast = 'cumulativeYield_DESC_NULLS_LAST',
   DripperWethAsc = 'dripperWETH_ASC',
   DripperWethAscNullsFirst = 'dripperWETH_ASC_NULLS_FIRST',
   DripperWethAscNullsLast = 'dripperWETH_ASC_NULLS_LAST',
@@ -24027,6 +24043,24 @@ export type OTokenDailyStatWhereInput = {
   chainId_lte?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_eq?: InputMaybe<Scalars['Int']['input']>;
   chainId_not_in?: InputMaybe<Array<Scalars['Int']['input']>>;
+  cumulativeFees_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  cumulativeFees_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  cumulativeFees_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeFees_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  cumulativeYield_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  cumulativeYield_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  cumulativeYield_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  cumulativeYield_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   dripperWETH_eq?: InputMaybe<Scalars['BigInt']['input']>;
   dripperWETH_gt?: InputMaybe<Scalars['BigInt']['input']>;
   dripperWETH_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -27451,6 +27485,7 @@ export type Query = {
   strategyYieldById?: Maybe<StrategyYield>;
   strategyYields: Array<StrategyYield>;
   strategyYieldsConnection: StrategyYieldsConnection;
+  symbols: Array<Symbol>;
 };
 
 
@@ -30369,11 +30404,13 @@ export type StrategyBalance = {
   __typename?: 'StrategyBalance';
   asset: Scalars['String']['output'];
   balance: Scalars['BigInt']['output'];
+  balanceETH: Scalars['BigInt']['output'];
   blockNumber: Scalars['Int']['output'];
   chainId: Scalars['Int']['output'];
   /** Format: 'chainId:strategy:asset:blockNumber' */
   id: Scalars['String']['output'];
   strategy: Scalars['String']['output'];
+  symbol: Scalars['String']['output'];
   timestamp: Scalars['DateTime']['output'];
 };
 
@@ -30390,6 +30427,12 @@ export enum StrategyBalanceOrderByInput {
   AssetDesc = 'asset_DESC',
   AssetDescNullsFirst = 'asset_DESC_NULLS_FIRST',
   AssetDescNullsLast = 'asset_DESC_NULLS_LAST',
+  BalanceEthAsc = 'balanceETH_ASC',
+  BalanceEthAscNullsFirst = 'balanceETH_ASC_NULLS_FIRST',
+  BalanceEthAscNullsLast = 'balanceETH_ASC_NULLS_LAST',
+  BalanceEthDesc = 'balanceETH_DESC',
+  BalanceEthDescNullsFirst = 'balanceETH_DESC_NULLS_FIRST',
+  BalanceEthDescNullsLast = 'balanceETH_DESC_NULLS_LAST',
   BalanceAsc = 'balance_ASC',
   BalanceAscNullsFirst = 'balance_ASC_NULLS_FIRST',
   BalanceAscNullsLast = 'balance_ASC_NULLS_LAST',
@@ -30420,6 +30463,12 @@ export enum StrategyBalanceOrderByInput {
   StrategyDesc = 'strategy_DESC',
   StrategyDescNullsFirst = 'strategy_DESC_NULLS_FIRST',
   StrategyDescNullsLast = 'strategy_DESC_NULLS_LAST',
+  SymbolAsc = 'symbol_ASC',
+  SymbolAscNullsFirst = 'symbol_ASC_NULLS_FIRST',
+  SymbolAscNullsLast = 'symbol_ASC_NULLS_LAST',
+  SymbolDesc = 'symbol_DESC',
+  SymbolDescNullsFirst = 'symbol_DESC_NULLS_FIRST',
+  SymbolDescNullsLast = 'symbol_DESC_NULLS_LAST',
   TimestampAsc = 'timestamp_ASC',
   TimestampAscNullsFirst = 'timestamp_ASC_NULLS_FIRST',
   TimestampAscNullsLast = 'timestamp_ASC_NULLS_LAST',
@@ -30448,6 +30497,15 @@ export type StrategyBalanceWhereInput = {
   asset_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   asset_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   asset_startsWith?: InputMaybe<Scalars['String']['input']>;
+  balanceETH_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_gt?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_gte?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
+  balanceETH_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  balanceETH_lt?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_lte?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_not_eq?: InputMaybe<Scalars['BigInt']['input']>;
+  balanceETH_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
   balance_eq?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gt?: InputMaybe<Scalars['BigInt']['input']>;
   balance_gte?: InputMaybe<Scalars['BigInt']['input']>;
@@ -30509,6 +30567,23 @@ export type StrategyBalanceWhereInput = {
   strategy_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
   strategy_not_startsWith?: InputMaybe<Scalars['String']['input']>;
   strategy_startsWith?: InputMaybe<Scalars['String']['input']>;
+  symbol_contains?: InputMaybe<Scalars['String']['input']>;
+  symbol_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  symbol_endsWith?: InputMaybe<Scalars['String']['input']>;
+  symbol_eq?: InputMaybe<Scalars['String']['input']>;
+  symbol_gt?: InputMaybe<Scalars['String']['input']>;
+  symbol_gte?: InputMaybe<Scalars['String']['input']>;
+  symbol_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  symbol_isNull?: InputMaybe<Scalars['Boolean']['input']>;
+  symbol_lt?: InputMaybe<Scalars['String']['input']>;
+  symbol_lte?: InputMaybe<Scalars['String']['input']>;
+  symbol_not_contains?: InputMaybe<Scalars['String']['input']>;
+  symbol_not_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
+  symbol_not_endsWith?: InputMaybe<Scalars['String']['input']>;
+  symbol_not_eq?: InputMaybe<Scalars['String']['input']>;
+  symbol_not_in?: InputMaybe<Array<Scalars['String']['input']>>;
+  symbol_not_startsWith?: InputMaybe<Scalars['String']['input']>;
+  symbol_startsWith?: InputMaybe<Scalars['String']['input']>;
   timestamp_eq?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gt?: InputMaybe<Scalars['DateTime']['input']>;
   timestamp_gte?: InputMaybe<Scalars['DateTime']['input']>;
@@ -30945,6 +31020,13 @@ export type StrategyYieldsConnection = {
   edges: Array<StrategyYieldEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
+};
+
+export type Symbol = {
+  __typename?: 'Symbol';
+  address: Scalars['String']['output'];
+  chainId: Scalars['String']['output'];
+  symbol: Scalars['String']['output'];
 };
 
 export type TokenAmount = {

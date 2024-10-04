@@ -373,6 +373,30 @@ export const priceOptions = {
     type: 'rest',
     config: async () => from(1 - OETH_REDEEM_FEE),
   },
+  '1:ARM-WETH-stETH_1:WETH': {
+    id: '1:ARM-WETH-stETH_1:WETH',
+    type: 'wagmi',
+    config: {
+      address: contracts.mainnet.ARMstETHWETHPool.address,
+      abi: contracts.mainnet.ARMstETHWETHPool.abi,
+      functionName: 'previewRedeem',
+      args: [parseUnits('1', tokens.mainnet['ARM-WETH-stETH'].decimals)],
+      chainId: contracts.mainnet.ARMstETHWETHPool.chainId,
+    },
+    mapResult: (arm_weth_steth: bigint) => {
+      return [arm_weth_steth, tokens.mainnet.WETH.decimals];
+    },
+  },
+  '1:ARM-WETH-stETH_1:ETH': {
+    id: '1:ARM-WETH-stETH_1:ETH',
+    type: 'derived',
+    dependsOn: ['1:ARM-WETH-stETH_1:WETH', '1:WETH_1:ETH'],
+  },
+  '1:ARM-WETH-stETH_USD': {
+    id: '1:ARM-WETH-stETH_USD',
+    type: 'derived',
+    dependsOn: ['1:ARM-WETH-stETH_1:WETH', '1:WETH_1:ETH', '1:ETH_USD'],
+  },
   '42161:ETH_USD': {
     id: '42161:ETH_USD',
     type: 'wagmi',
