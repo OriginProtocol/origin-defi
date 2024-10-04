@@ -1,4 +1,3 @@
-import * as arm from '@origin/defi/arm';
 import * as governance from '@origin/defi/governance';
 import { HomeView } from '@origin/defi/home';
 import * as oeth from '@origin/defi/oeth';
@@ -8,7 +7,6 @@ import * as ousd from '@origin/defi/ousd';
 import * as superOeth from '@origin/defi/super';
 import { NotFoundPage } from '@origin/shared/components';
 import {
-  ARM,
   Bridge,
   FaArrowDownFromArcRegular,
   FaArrowRightArrowLeftRegular,
@@ -156,21 +154,21 @@ export const routes: RouteObject[] = [
           },
         ],
       },
-      {
-        index: false,
-        path: 'arm',
-        handle: { title: defineMessage({ defaultMessage: 'ARM' }), icon: ARM },
-        children: [
-          {
-            path: 'steth-redemption-vault',
-            Component: arm.OverviewView,
-            handle: {
-              title: defineMessage({ defaultMessage: 'stETH Redemptions' }),
-              icon: FaArrowDownFromArcRegular,
-            },
-          },
-        ],
-      },
+      // {
+      //   index: false,
+      //   path: 'arm',
+      //   handle: { title: defineMessage({ defaultMessage: 'ARM' }), icon: ARM },
+      //   children: [
+      //     {
+      //       path: 'steth-redemption-vault',
+      //       Component: arm.OverviewView,
+      //       handle: {
+      //         title: defineMessage({ defaultMessage: 'stETH Redemptions' }),
+      //         icon: FaArrowDownFromArcRegular,
+      //       },
+      //     },
+      //   ],
+      // },
       {
         index: false,
         path: 'more',
