@@ -170,7 +170,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
         >
           {!isNilOrEmpty(tokenPriceUsd) ? (
             <LoadingLabel
-              isLoading={isPriceLoading}
+              isLoading={isPriceLoading && readOnly}
               sWidth={50}
               sx={{ color: 'text.secondary' }}
             >
