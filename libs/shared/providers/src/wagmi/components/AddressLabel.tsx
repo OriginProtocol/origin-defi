@@ -10,14 +10,12 @@ import type { HexAddress } from '@origin/shared/utils';
 type AddressLabelProps = {
   address?: HexAddress;
   enableEnsName?: boolean;
-  monospace?: boolean;
   short?: boolean;
 } & Omit<MiddleTruncatedLabelProps, 'children'>;
 
 export const AddressLabel = ({
   address,
   enableEnsName = false,
-  monospace = false,
   short = false,
   ...rest
 }: AddressLabelProps) => {

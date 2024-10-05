@@ -5,9 +5,11 @@ import { useTokenBalance, useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { from } from 'dnum';
+import { from, mul } from 'dnum';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
+
+import type { Dnum } from 'dnum';
 
 export const useOperation = () => {
   const [search, setSearch] = useSearchParams({
@@ -79,12 +81,20 @@ export const useArmVault = () => {
               tokens.mainnet['ARM-WETH-stETH'].decimals,
             ]
           : from(0);
-      const userBalance = [res[1], tokens.mainnet['ARM-WETH-stETH'].decimals];
-
-      console.log(res);
+      const userBalance = [
+        res?.[1] ?? 0n,
+        tokens.mainnet['ARM-WETH-stETH'].decimals,
+      ] as Dnum;
+      const ethPrice = res[2]['1:ARM-WETH-stETH_1:ETH'] ?? from(0);
+      const usdPrice = res[2]['1:ARM-WETH-stETH_USD'] ?? from(0);
 
       return {
-        balance: from(50.23, 18),
+        waveCap,
+        userCap,
+        userBalanceETH: mul(userBalance, ethPrice),
+        userBalanceUSD: mul(userBalance, usdPrice),
+        ethPrice,
+        usdPrice,
         requests: [
           {
             claimable: true,

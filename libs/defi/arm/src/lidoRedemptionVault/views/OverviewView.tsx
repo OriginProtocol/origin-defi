@@ -7,6 +7,7 @@ import { useIntl } from 'react-intl';
 import {
   AboutCard,
   ApyCard,
+  ContractInfoCard,
   TvlCard,
   VaultBalanceCard,
 } from '../components/Cards';
@@ -51,6 +52,7 @@ export const OverviewView = () => {
                 height={200}
                 from="2023-06-01T00:00:00.000000Z"
               />
+              <ContractInfoCard />
             </Stack>
           </Grid2>
           <Grid2 size={{ xs: 12, md: 5 }} order={{ xs: 0, md: 1 }}>

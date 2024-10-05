@@ -17,7 +17,10 @@ export const subPercentage = (value = from(0), percent = 0) => {
   return sub(value, mul(value, percent, { rounding: 'ROUND_DOWN' }));
 };
 
-export const getFormatPrecision = (value: Dnum) => {
+export const getFormatPrecision = (value: Dnum | undefined) => {
+  if (!value) {
+    return 2;
+  }
   return lt(value, 1) ? 6 : lt(value, 10) ? 4 : 2;
 };
 

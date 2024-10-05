@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -8,21 +9,19 @@ import {
   Typography,
 } from '@mui/material';
 import { TokenChip } from '@origin/defi/shared';
-import { ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import {
-  useTokenBalance,
-  useTokenPrice,
-  useTvl,
-} from '@origin/shared/providers';
+import { ClipboardButton, ValueLabel } from '@origin/shared/components';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
+import { AddressLabel, useTvl } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from, mul, toNumber } from 'dnum';
+import { format, from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { useArmVault } from '../hooks';
+
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
@@ -117,22 +116,11 @@ export const AboutCard = (props: CardProps) => {
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useTokenBalance({
-    token: tokens.mainnet['ARM-WETH-stETH'],
-  });
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    '1:ARM-WETH-stETH_1:ETH',
-  );
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
 
   if (!isConnected) {
     return null;
   }
-
-  const bal = [
-    balance ?? 0n,
-    tokens.mainnet['ARM-WETH-stETH'].decimals,
-  ] as Dnum;
-  const ethBal = mul(bal, price ?? from(0));
 
   return (
     <Card {...props}>
@@ -148,12 +136,63 @@ export const VaultBalanceCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={format(ethBal, {
-            digits: getFormatPrecision(ethBal),
+          value={format(info?.userBalanceETH ?? from(0), {
+            digits: getFormatPrecision(info?.userBalanceETH),
           })}
-          isLoading={isBalanceLoading || isPriceLoading}
+          isLoading={isInfoLoading}
           {...valueLabelProps}
         />
+      </CardContent>
+    </Card>
+  );
+};
+
+export const ContractInfoCard = (props: CardProps) => {
+  const intl = useIntl();
+
+  return (
+    <Card {...props}>
+      <CardContent>
+        <Stack spacing={2}>
+          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+            {intl.formatMessage({
+              defaultMessage: 'Contracts',
+            })}
+          </Typography>
+          <ValueLabel
+            direction="row"
+            label={intl.formatMessage({ defaultMessage: 'Pool' })}
+            value={
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <AddressLabel
+                  address={contracts.mainnet.ARMstETHWETHPool.address}
+                  sx={{ fontFamily: 'mono', maxWidth: 100 }}
+                />
+                <Button
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  href={`https://etherscan.io/address/${contracts.mainnet.ARMstETHWETHPool.address}`}
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  sx={{ p: 0.25 }}
+                >
+                  <FaArrowUpRightRegular />
+                </Button>
+                <ClipboardButton
+                  value={contracts.mainnet.ARMstETHWETHPool.address}
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  hideLabel
+                  sx={{ p: 0.25 }}
+                >
+                  <FaCopyRegular />
+                </ClipboardButton>
+              </Stack>
+            }
+          />
+        </Stack>
       </CardContent>
     </Card>
   );
