@@ -91,6 +91,7 @@ export const useArmVault = () => {
       return {
         waveCap,
         userCap,
+        userBalance,
         userBalanceETH: mul(userBalance, ethPrice),
         userBalanceUSD: mul(userBalance, usdPrice),
         ethPrice,

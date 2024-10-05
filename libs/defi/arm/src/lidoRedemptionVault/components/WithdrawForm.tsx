@@ -23,7 +23,7 @@ export const WithdrawForm = (props: CardContentProps) => {
   };
 
   const handleMaxClick = () => {
-    setAmount(data?.balance[0] ?? 0n);
+    setAmount(data?.userBalance[0] ?? 0n);
   };
 
   const isWithdrawDisabled = amount === 0n;
@@ -55,8 +55,8 @@ export const WithdrawForm = (props: CardContentProps) => {
                 fontWeight: 'medium',
               }}
             >
-              {format(data?.balance ?? from(0), {
-                digits: getFormatPrecision(data?.balance ?? from(0)),
+              {format(data?.userBalance ?? from(0), {
+                digits: getFormatPrecision(data?.userBalance ?? from(0)),
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </Typography>
