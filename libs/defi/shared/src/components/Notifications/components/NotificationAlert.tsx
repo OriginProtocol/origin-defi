@@ -75,115 +75,115 @@ export const NotificationAlert = forwardRef<
   };
 
   return (
-    <Alert
-      {...rest}
-      ref={ref}
-      severity={severity as AlertColor}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      sx={[
-        {
-          position: 'relative',
-          '.MuiAlert-message': {
-            width: 1,
-          },
-        },
-        hideDuration
-          ? {
-              borderTopRightRadius: (theme) => theme.shape.borderRadius,
-              borderTopLeftRadius: (theme) => theme.shape.borderRadius,
-              borderBottomRightRadius: 1,
-              borderBottomLeftRadius: 1,
-            }
-          : {
-              borderRadius: 1,
+    <Box sx={{ position: 'relative', borderRadius: 1, overflow: 'hidden' }}>
+      <Alert
+        {...rest}
+        ref={ref}
+        severity={severity as AlertColor}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        sx={[
+          {
+            borderRadius: 0,
+            '&.MuiAlert-message': {
+              width: 1,
             },
-        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
-      ]}
-      {...((!!content || !!icon) && { icon: false })}
-      onClose={handleCloseClick}
-    >
-      {isNilOrEmpty(content) ? (
-        <Stack spacing={1.5}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              alignItems: 'center',
-            }}
-          >
-            {!!notification?.icon && (
-              <Box
-                sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'flex-start',
-                  fontSize: 36,
-                }}
-              >
-                {icon}
-              </Box>
-            )}
-            <Stack spacing={1}>
-              {!isNilOrEmpty(title) && (
-                <AlertTitle
-                  sx={(theme) => ({
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 1,
-                    ...theme.typography.body3,
-                    fontWeight: 'medium',
-                  })}
-                >
-                  {!!icon && <SeverityIcon severity={severity} />}
-                  {title}
-                </AlertTitle>
-              )}
-              {!isNilOrEmpty(message) && (
-                <TooltipLabel
-                  maxChars={200}
-                  variant="caption1"
+          },
+          hideDuration
+            ? {
+                borderTopRightRadius: (theme) => theme.shape.borderRadius,
+                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+                borderBottomRightRadius: 0,
+                borderBottomLeftRadius: 0,
+              }
+            : {
+                borderRadius: 1,
+              },
+          ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+        ]}
+        {...((!!content || !!icon) && { icon: false })}
+        onClose={handleCloseClick}
+      >
+        {isNilOrEmpty(content) ? (
+          <Stack spacing={1.5}>
+            <Stack
+              direction="row"
+              spacing={2}
+              sx={{
+                alignItems: 'center',
+              }}
+            >
+              {!!notification?.icon && (
+                <Box
                   sx={{
-                    maxWidth: 1,
-                    display: '-webkit-box',
-                    WebkitBoxOrient: 'vertical',
-                    WebkitLineClamp: 3,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    fontSize: 36,
                   }}
                 >
-                  {message}
-                </TooltipLabel>
+                  {icon}
+                </Box>
               )}
+              <Stack spacing={1}>
+                {!isNilOrEmpty(title) && (
+                  <AlertTitle
+                    sx={(theme) => ({
+                      display: 'flex',
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      gap: 1,
+                      ...theme.typography.body3,
+                      fontWeight: 'medium',
+                    })}
+                  >
+                    {!!icon && <SeverityIcon severity={severity} />}
+                    {title}
+                  </AlertTitle>
+                )}
+                {!isNilOrEmpty(message) && (
+                  <TooltipLabel
+                    maxChars={200}
+                    variant="caption1"
+                    sx={{
+                      maxWidth: 1,
+                      display: '-webkit-box',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: 3,
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                    }}
+                  >
+                    {message}
+                  </TooltipLabel>
+                )}
+              </Stack>
             </Stack>
+            {!!blockExplorerLinkProps && (
+              <BlockExplorerLink
+                variant="caption1"
+                {...blockExplorerLinkProps}
+                sx={{ color: 'text.secondary' }}
+              />
+            )}
           </Stack>
-          {!!blockExplorerLinkProps && (
-            <BlockExplorerLink
-              variant="caption1"
-              {...blockExplorerLinkProps}
-              sx={{ color: 'text.secondary' }}
-            />
-          )}
-        </Stack>
-      ) : (
-        content
-      )}
+        ) : (
+          content
+        )}
+      </Alert>
       {!!hideDuration && (
         <CountDown
           value={countdown}
           color={severity === 'pending' ? 'primary' : (severity as AlertColor)}
-          sx={(theme) => ({
+          sx={{
             position: 'absolute',
-            bottom: 0,
-            left: 0,
+            bottom: 1,
+            left: 1,
             width: 1,
-            borderBottomRightRadius: theme.shape.borderRadius,
-            borderBottomLeftRadius: theme.shape.borderRadius,
-          })}
+          }}
         />
       )}
-    </Alert>
+    </Box>
   );
 });
 NotificationAlert.displayName = 'NotificationAlert';
