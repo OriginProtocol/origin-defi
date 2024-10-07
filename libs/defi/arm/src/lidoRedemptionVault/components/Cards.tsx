@@ -132,12 +132,12 @@ export const VaultBalanceCard = (props: CardProps) => {
         <ValueLabel
           label={
             <TokenChip
-              token={tokens.mainnet.ETH}
+              token={tokens.mainnet.WETH}
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={format(info?.userBalanceETH ?? from(0), {
-            digits: getFormatPrecision(info?.userBalanceETH),
+          value={format(info?.userBalance ?? from(0), {
+            digits: getFormatPrecision(info?.userBalance),
           })}
           isLoading={isInfoLoading}
           {...valueLabelProps}

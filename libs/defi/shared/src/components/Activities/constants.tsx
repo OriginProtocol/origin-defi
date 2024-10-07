@@ -264,7 +264,7 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
         {
           amount,
           symbolIn: tokenIn.symbol,
-          pool: middleTruncate(pool),
+          pool: middleTruncate(pool ?? ''),
         },
       );
     },
