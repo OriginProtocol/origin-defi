@@ -121,7 +121,9 @@ export const OethDistributionCard = ({
                   width: 15,
                   height: 15,
                   borderRadius: '50%',
-                  background: `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`,
+                  background: Array.isArray(s.lineColor)
+                    ? `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`
+                    : s.lineColor,
                 }}
               />
               <Typography
