@@ -1,32 +1,74 @@
 import { useState } from 'react';
 
 import { Button, CardContent, Stack, Typography } from '@mui/material';
-import { TokenButton } from '@origin/defi/shared';
-import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { TokenButton, useTxButton } from '@origin/defi/shared';
+import {
+  BigIntInput,
+  InfoTooltipLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { PiggyBank } from '@origin/shared/icons';
+import { TxButton } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from } from 'dnum';
+import { useQueryClient } from '@tanstack/react-query';
+import { format, from, gt } from 'dnum';
 import { useIntl } from 'react-intl';
+import { useAccount } from 'wagmi';
 
 import { useArmVault } from '../hooks';
 
 import type { CardContentProps } from '@mui/material';
+import type { Dnum } from 'dnum';
 
 export const WithdrawForm = (props: CardContentProps) => {
   const intl = useIntl();
-  const [amount, setAmount] = useState(0n);
-  const { data } = useArmVault();
+  const queryClient = useQueryClient();
+  const { address } = useAccount();
+  const [amount, setAmount] = useState(
+    from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
+  );
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { params, callbacks } = useTxButton({
+    params: {
+      contract: contracts.mainnet.ARMstETHWETHPool,
+      functionName: 'requestRedeem',
+      args: [amount[0]],
+    },
+    activity: {
+      type: 'redeem',
+      status: 'pending',
+      amountIn: amount[0],
+      tokenIdIn: tokens.mainnet['ARM-WETH-stETH'].id,
+      tokenIdOut: tokens.mainnet.WETH.id,
+    },
+    callbacks: {
+      onWriteSuccess: () => {
+        setAmount(from(0, tokens.mainnet['ARM-WETH-stETH'].decimals));
+        queryClient.invalidateQueries({
+          queryKey: useArmVault.getKey(address),
+        });
+      },
+    },
+  });
 
   const handleAmountChange = (val: bigint) => {
-    setAmount(val);
+    setAmount([val, tokens.mainnet['ARM-WETH-stETH'].decimals] as Dnum);
   };
 
   const handleMaxClick = () => {
-    setAmount(data?.userBalance[0] ?? 0n);
+    setAmount(
+      info?.userBalance ?? from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
+    );
   };
 
-  const isWithdrawDisabled = amount === 0n;
+  const isWithdrawDisabled =
+    isInfoLoading ||
+    gt(amount, info?.userBalance ?? from(0)) ||
+    amount[0] === 0n;
+  const withdrawButtonLabel = gt(amount, info?.userBalance ?? from(0))
+    ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+    : intl.formatMessage({ defaultMessage: 'Withdraw' });
 
   return (
     <CardContent {...props}>
@@ -49,22 +91,23 @@ export const WithdrawForm = (props: CardContentProps) => {
           </InfoTooltipLabel>
           <Button variant="link" onClick={handleMaxClick}>
             <PiggyBank sx={{ fontSize: 20, mr: 1 }} />
-            <Typography
+            <LoadingLabel
+              isLoading={isInfoLoading}
               noWrap
               sx={{
                 fontWeight: 'medium',
               }}
             >
-              {format(data?.userBalance ?? from(0), {
-                digits: getFormatPrecision(data?.userBalance ?? from(0)),
+              {format(info?.userBalance ?? from(0), {
+                digits: getFormatPrecision(info?.userBalance ?? from(0)),
                 decimalsRounding: 'ROUND_DOWN',
               })}
-            </Typography>
+            </LoadingLabel>
           </Button>
         </Stack>
         <BigIntInput
-          value={amount}
-          decimals={18}
+          value={amount[0]}
+          decimals={amount[1]}
           onChange={handleAmountChange}
           endAdornment={<TokenButton token={tokens.mainnet.WETH} disabled />}
           sx={(theme) => ({
@@ -109,9 +152,14 @@ export const WithdrawForm = (props: CardContentProps) => {
             })}
           </Typography>
         </Stack>
-        <Button variant="action" fullWidth disabled={isWithdrawDisabled}>
-          {intl.formatMessage({ defaultMessage: 'Withdraw' })}
-        </Button>
+        <TxButton
+          params={params}
+          callbacks={callbacks}
+          label={withdrawButtonLabel}
+          disabled={isWithdrawDisabled}
+          variant="action"
+          fullWidth
+        />
       </Stack>
     </CardContent>
   );

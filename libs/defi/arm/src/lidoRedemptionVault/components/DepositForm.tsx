@@ -133,9 +133,10 @@ export const DepositForm = (props: CardContentProps) => {
   const isDepositDisabled =
     isInfoLoading ||
     isAssetToDepositBalanceLoading ||
-    gt(amount, assetToDepositBalance?.[assetToDeposit.id] ?? 0n) ||
     gt(amount, userBalance) ||
-    showUserCapDisclaimer ||
+    lt([allowance ?? 0n, assetToDeposit.decimals] as Dnum, amount) ||
+    gt(amount, info?.userCap ?? from(0)) ||
+    gt(amount, info?.waveCap ?? from(0)) ||
     amount[0] === 0n;
   const depositButtonLabel = gt(amount, userBalance)
     ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
