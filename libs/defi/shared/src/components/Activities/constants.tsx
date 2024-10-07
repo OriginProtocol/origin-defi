@@ -11,6 +11,7 @@ import {
   FaArrowUpRegular,
   FaCircleCheckRegular,
 } from '@origin/shared/icons';
+import { middleTruncate } from '@origin/shared/utils';
 import { format } from 'dnum';
 
 import { wagmiConfig } from '../../clients';
@@ -26,6 +27,7 @@ import type {
   ClaimRewardsActivity,
   ClaimWithdrawalActivity,
   DelegateVoteActivity,
+  DepositActivity,
   ExtendStakeActivity,
   MigrateActivity,
   RebasingActivity,
@@ -231,6 +233,46 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
           <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />
         </BadgeIcon>
       );
+    },
+  },
+  deposit: {
+    title: (activity, intl) =>
+      ({
+        pending: intl.formatMessage({
+          defaultMessage: 'Depositing',
+        }),
+        signed: intl.formatMessage({
+          defaultMessage: 'Depositing',
+        }),
+        success: intl.formatMessage({
+          defaultMessage: 'Deposited',
+        }),
+        error: intl.formatMessage({
+          defaultMessage: 'Error while depositing',
+        }),
+        idle: intl.formatMessage({ defaultMessage: 'Deposit' }),
+      })[activity.status],
+    subtitle: (activity, intl) => {
+      const { amountIn, tokenIdIn, pool } = activity as DepositActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+      const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
+
+      return intl.formatMessage(
+        {
+          defaultMessage: 'Deposit {amountIn} {symbolIn} to {pool}',
+        },
+        {
+          amount,
+          symbolIn: tokenIn.symbol,
+          pool: middleTruncate(pool),
+        },
+      );
+    },
+    icon: (activity) => {
+      const { tokenIdIn } = activity as ClaimRewardsActivity;
+      const tokenIn = getTokenById(tokenIdIn);
+
+      return <TokenIcon token={tokenIn} sx={{ fontSize: 36 }} />;
     },
   },
   delegate: {

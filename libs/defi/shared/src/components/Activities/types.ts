@@ -107,11 +107,19 @@ export interface RebasingActivity extends ActivityBase {
   tokenIdIn: TokenId;
 }
 
+export interface DepositActivity extends ActivityBase {
+  type: 'deposit';
+  tokenIdIn: TokenId;
+  amountIn: bigint;
+  pool?: string;
+}
+
 export type Activity =
   | ApprovalActivity
   | BridgeActivity
   | ClaimRewardsActivity
   | ClaimWithdrawalActivity
+  | DepositActivity
   | DelegateVoteActivity
   | ExtendStakeActivity
   | MigrateActivity

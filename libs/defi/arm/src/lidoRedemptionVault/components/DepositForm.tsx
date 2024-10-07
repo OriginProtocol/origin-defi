@@ -15,20 +15,29 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenButton } from '@origin/defi/shared';
+import {
+  TokenButton,
+  useApprovalButton,
+  useTxButton,
+} from '@origin/defi/shared';
 import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
-import { useTokenPrice, useWatchBalance } from '@origin/shared/providers';
+import {
+  TxButton,
+  useSlippage,
+  useTokenPrice,
+  useWatchBalance,
+  useWatchBalances,
+} from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from, mul, toNumber } from 'dnum';
+import { format, from, gt, lt, mul, sub } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { USER_WHITELIST_CAP_PER_WAVE } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -36,29 +45,88 @@ import type { CardContentProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
+const supportedAssetToDeposit = [tokens.mainnet.WETH, tokens.mainnet.ETH];
+
 export const DepositForm = (props: CardContentProps) => {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
-  const [amount, setAmount] = useState(0n);
+  const { address, isConnected } = useAccount();
+  const { value: slippage } = useSlippage();
   const [assetToDeposit, setAssetToDeposit] = useState<Token>(
-    tokens.mainnet.ETH,
+    supportedAssetToDeposit[0],
   );
-  const { data } = useArmVault();
+  const [amount, setAmount] = useState([0n, assetToDeposit.decimals] as Dnum);
+  const {
+    data: assetToDepositBalance,
+    isLoading: isAssetToDepositBalanceLoading,
+  } = useWatchBalances({ tokens: supportedAssetToDeposit });
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const {
+    allowance,
+    params: approvalParams,
+    callbacks: approvalCallbacks,
+    label: approvalLabel,
+  } = useApprovalButton({
+    token: assetToDeposit,
+    spender: contracts.mainnet.ARMstETHWETHPool.address,
+    amount: amount[0],
+    enableAllowance: true,
+  });
+  const { params, callbacks } = useTxButton({
+    params: {
+      contract: contracts.mainnet.ARMstETHWETHPool,
+      functionName: 'deposit',
+      args: [amount[0]],
+    },
+    activity: {
+      type: 'deposit',
+      status: 'pending',
+      amountIn: amount[0],
+      tokenIdIn: assetToDeposit.id,
+      pool: contracts.mainnet.ARMstETHWETHPool.address,
+    },
+  });
 
   const handleAmountChange = (val: bigint) => {
-    setAmount(val);
+    setAmount([val, assetToDeposit.decimals] as Dnum);
   };
 
   const handleMaxClick = () => {
-    setAmount(data?.userBalance[0] ?? 0n);
+    setAmount([
+      assetToDepositBalance?.[assetToDeposit.id],
+      assetToDeposit.decimals,
+    ] as Dnum);
   };
 
-  const userCap = BigInt(
-    Math.max(0, USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18])),
+  const userBalance = [
+    assetToDepositBalance?.[assetToDeposit.id] ?? 0n,
+    assetToDeposit.decimals,
+  ] as Dnum;
+  const userCapEth = mul(
+    info?.userCap ?? from(0),
+    info?.prices['1:ARM-WETH-stETH_1:ETH'] ?? from(0),
   );
+  const userCap = sub(userCapEth, amount);
   const showUserCapDisclaimer =
-    USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18]) < 0;
-  const isDepositDisabled = showUserCapDisclaimer || amount === 0n;
+    isConnected && !isInfoLoading && lt(amount, userBalance) && lt(userCap, 0);
+  const showApprove =
+    isConnected &&
+    !isInfoLoading &&
+    lt(amount, userBalance) &&
+    lt(amount, userCap) &&
+    lt([allowance ?? 0n, assetToDeposit.decimals] as Dnum, amount);
+  const isDepositDisabled =
+    isInfoLoading ||
+    isAssetToDepositBalanceLoading ||
+    gt(amount, assetToDepositBalance?.[assetToDeposit.id] ?? 0n) ||
+    gt(amount, userBalance) ||
+    showUserCapDisclaimer ||
+    amount[0] === 0n;
+  const depositButtonLabel = gt(amount, userBalance)
+    ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+    : lt(userCap, 0)
+      ? intl.formatMessage({ defaultMessage: 'Cap exceeded' })
+      : intl.formatMessage({ defaultMessage: 'Deposit' });
 
   return (
     <CardContent {...props}>
@@ -87,16 +155,16 @@ export const DepositForm = (props: CardContentProps) => {
                 fontWeight: 'medium',
               }}
             >
-              {format(data?.userBalance ?? from(0), {
-                digits: getFormatPrecision(data?.userBalance ?? from(0)),
+              {format(userBalance, {
+                digits: getFormatPrecision(userBalance),
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </Typography>
           </Button>
         </Stack>
         <BigIntInput
-          value={amount}
-          decimals={18}
+          value={amount[0]}
+          decimals={amount[1]}
           onChange={handleAmountChange}
           endAdornment={
             <TokenButton token={assetToDeposit} onClick={() => setOpen(true)} />
@@ -125,7 +193,7 @@ export const DepositForm = (props: CardContentProps) => {
           {intl.formatMessage(
             { defaultMessage: 'Wave {waveNumber} TVL cap progress' },
             {
-              waveNumber: 1,
+              waveNumber: info?.waveNumber,
             },
           )}
         </InfoTooltipLabel>
@@ -199,8 +267,8 @@ export const DepositForm = (props: CardContentProps) => {
         </InfoTooltipLabel>
         <BigIntInput
           readOnly
-          value={userCap}
-          decimals={0}
+          value={userCap[0]}
+          decimals={userCap[1]}
           endAdornment={<TokenButton token={tokens.mainnet.ETH} disabled />}
           sx={(theme) => ({
             px: 2,
@@ -254,9 +322,25 @@ export const DepositForm = (props: CardContentProps) => {
             </Stack>
           </Stack>
         </Collapse>
-        <Button variant="action" fullWidth disabled={isDepositDisabled}>
-          {intl.formatMessage({ defaultMessage: 'Deposit' })}
-        </Button>
+        <Collapse in={showApprove}>
+          <TxButton
+            params={approvalParams}
+            callbacks={approvalCallbacks}
+            variant="action"
+            fullWidth
+            disabled={isInfoLoading}
+            label={approvalLabel}
+            sx={{ mb: 1.5 }}
+          />
+        </Collapse>
+        <TxButton
+          params={params}
+          callbacks={callbacks}
+          label={depositButtonLabel}
+          disabled={isDepositDisabled}
+          variant="action"
+          fullWidth
+        />
       </Stack>
       <TokenSelectModal
         open={open}
