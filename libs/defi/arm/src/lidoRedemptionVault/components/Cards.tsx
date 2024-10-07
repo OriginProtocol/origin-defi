@@ -12,16 +12,19 @@ import { TokenChip } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
-import { AddressLabel, useTvl } from '@origin/shared/providers';
+import {
+  AddressLabel,
+  useTvl,
+  useWatchBalance,
+} from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useArmVault } from '../hooks';
-
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
+import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
@@ -116,11 +119,18 @@ export const AboutCard = (props: CardProps) => {
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokens.mainnet['ARM-WETH-stETH'],
+  });
 
   if (!isConnected) {
     return null;
   }
+
+  const userBalance = [
+    balance ?? 0n,
+    tokens.mainnet['ARM-WETH-stETH'].decimals,
+  ] as Dnum;
 
   return (
     <Card {...props}>
@@ -136,10 +146,10 @@ export const VaultBalanceCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={format(info?.userBalance ?? from(0), {
-            digits: getFormatPrecision(info?.userBalance),
+          value={format(userBalance, {
+            digits: getFormatPrecision(userBalance),
           })}
-          isLoading={isInfoLoading}
+          isLoading={isBalanceLoading}
           {...valueLabelProps}
         />
       </CardContent>

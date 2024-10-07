@@ -27,13 +27,13 @@ import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
 import {
   TxButton,
-  useSlippage,
   useTokenPrice,
   useWatchBalance,
   useWatchBalances,
 } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { format, from, gt, lt, mul, sub } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
@@ -49,13 +49,15 @@ const supportedAssetToDeposit = [tokens.mainnet.WETH, tokens.mainnet.ETH];
 
 export const DepositForm = (props: CardContentProps) => {
   const intl = useIntl();
+  const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
-  const { address, isConnected } = useAccount();
-  const { value: slippage } = useSlippage();
+  const { isConnected, address } = useAccount();
   const [assetToDeposit, setAssetToDeposit] = useState<Token>(
     supportedAssetToDeposit[0],
   );
-  const [amount, setAmount] = useState([0n, assetToDeposit.decimals] as Dnum);
+  const [amount, setAmount] = useState(
+    from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
+  );
   const {
     data: assetToDepositBalance,
     isLoading: isAssetToDepositBalanceLoading,
@@ -85,6 +87,14 @@ export const DepositForm = (props: CardContentProps) => {
       tokenIdIn: assetToDeposit.id,
       pool: contracts.mainnet.ARMstETHWETHPool.address,
     },
+    callbacks: {
+      onWriteSuccess: () => {
+        setAmount(from(0, tokens.mainnet['ARM-WETH-stETH'].decimals));
+        queryClient.invalidateQueries({
+          queryKey: useArmVault.getKey(address),
+        });
+      },
+    },
   });
 
   const handleAmountChange = (val: bigint) => {
@@ -102,18 +112,23 @@ export const DepositForm = (props: CardContentProps) => {
     assetToDepositBalance?.[assetToDeposit.id] ?? 0n,
     assetToDeposit.decimals,
   ] as Dnum;
-  const userCapEth = mul(
-    info?.userCap ?? from(0),
-    info?.prices['1:ARM-WETH-stETH_1:ETH'] ?? from(0),
-  );
-  const userCap = sub(userCapEth, amount);
+  const userCapLeft = sub(info?.userCap ?? from(0), amount);
+  const waveCapLeft = sub(info?.waveCap ?? from(0), amount);
   const showUserCapDisclaimer =
-    isConnected && !isInfoLoading && lt(amount, userBalance) && lt(userCap, 0);
+    isConnected &&
+    !isInfoLoading &&
+    lt(amount, userBalance) &&
+    lt(userCapLeft, 0);
+  const showWaveCapDisclaimer =
+    isConnected &&
+    !isInfoLoading &&
+    lt(amount, userBalance) &&
+    lt(waveCapLeft, 0);
   const showApprove =
     isConnected &&
     !isInfoLoading &&
     lt(amount, userBalance) &&
-    lt(amount, userCap) &&
+    lt(amount, userCapLeft) &&
     lt([allowance ?? 0n, assetToDeposit.decimals] as Dnum, amount);
   const isDepositDisabled =
     isInfoLoading ||
@@ -124,9 +139,11 @@ export const DepositForm = (props: CardContentProps) => {
     amount[0] === 0n;
   const depositButtonLabel = gt(amount, userBalance)
     ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-    : lt(userCap, 0)
-      ? intl.formatMessage({ defaultMessage: 'Cap exceeded' })
-      : intl.formatMessage({ defaultMessage: 'Deposit' });
+    : lt(userCapLeft, 0)
+      ? intl.formatMessage({ defaultMessage: 'User cap reached' })
+      : lt(waveCapLeft, 0)
+        ? intl.formatMessage({ defaultMessage: 'Wave cap reached' })
+        : intl.formatMessage({ defaultMessage: 'Deposit' });
 
   return (
     <CardContent {...props}>
@@ -267,9 +284,11 @@ export const DepositForm = (props: CardContentProps) => {
         </InfoTooltipLabel>
         <BigIntInput
           readOnly
-          value={userCap[0]}
-          decimals={userCap[1]}
-          endAdornment={<TokenButton token={tokens.mainnet.ETH} disabled />}
+          value={info?.userCap[0] ?? 0n}
+          decimals={
+            info?.userCap[1] ?? tokens.mainnet['ARM-WETH-stETH'].decimals
+          }
+          endAdornment={<TokenButton token={tokens.mainnet.WETH} disabled />}
           sx={(theme) => ({
             px: 2,
             py: 2,
@@ -307,6 +326,45 @@ export const DepositForm = (props: CardContentProps) => {
               >
                 {intl.formatMessage({
                   defaultMessage: 'You have reached your whitelist cap',
+                })}
+              </Typography>
+              <Typography
+                sx={{
+                  color: 'text.secondary',
+                }}
+              >
+                {intl.formatMessage({
+                  defaultMessage:
+                    'Deposits will be disabled until further notice. Please check back later.',
+                })}
+              </Typography>
+            </Stack>
+          </Stack>
+        </Collapse>
+        <Collapse in={showWaveCapDisclaimer}>
+          <Stack
+            direction="row"
+            spacing={2}
+            sx={{
+              border: '1px solid',
+              borderColor: 'primary.main',
+              backgroundColor: 'primary.faded',
+              borderRadius: 3,
+              p: 3,
+              mb: 3,
+            }}
+          >
+            <FaCircleExclamationRegular
+              sx={{ fontSize: 20, color: 'primary.main' }}
+            />
+            <Stack>
+              <Typography
+                sx={{
+                  fontWeight: 'medium',
+                }}
+              >
+                {intl.formatMessage({
+                  defaultMessage: 'Wave cap has been reached',
                 })}
               </Typography>
               <Typography
