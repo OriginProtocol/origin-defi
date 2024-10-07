@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   Accordion,
   AccordionDetails,
@@ -19,48 +17,36 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { OriginProductIcon } from '@origin/shared/components';
-import {
-  FaChevronDownRegular,
-  FaChevronRightRegular,
-  FaXmarkRegular,
-} from '@origin/shared/icons';
+import { ExpandIcon, OriginProductIcon } from '@origin/shared/components';
+import { FaChevronRightRegular, FaXmarkRegular } from '@origin/shared/icons';
 import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
-import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
 
 import { DRAWER_MD_COLLAPSED_WIDTH } from '../constants';
 import { useLayout } from '../hooks';
+import { getWidthMixin } from '../styles';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
 import type { RouteObject } from 'react-router-dom';
 
 import type { NavItem } from '../types';
 
-export type DrawerMenuProps = {
-  routes: RouteObject[];
-} & StackProps;
-
-export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
+export const DrawerMenu = (props: StackProps) => {
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [{ isDrawerOpen }, { handleSetDrawer, handleToggleDrawer }] =
+  const [{ isDrawerOpen, routes }, { handleSetDrawer, handleToggleDrawer }] =
     useLayout();
-
-  const visibleRoutes = routes?.[0]?.children?.filter(
-    (r) => !isNilOrEmpty(r?.handle?.title),
-  );
 
   const isWide = isSm || isDrawerOpen;
 
   return (
     <Stack
-      {...rest}
+      {...props}
       sx={[
         { height: 1, pb: 2 },
-        ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
+        ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
       ]}
     >
       <Stack
@@ -70,7 +56,8 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
           alignItems: 'center',
           justifyContent: 'space-between',
           width: 1,
-          px: 2,
+          pl: 2,
+          pr: 1.5,
           py: 1,
         })}
       >
@@ -95,7 +82,7 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
         </IconButton>
       </Stack>
       <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
-        {visibleRoutes?.map((route, i) => (
+        {routes?.map((route, i) => (
           <NavItem
             key={route?.path ?? `index-${i}}`}
             route={route}
@@ -111,7 +98,7 @@ export const DrawerMenu = ({ routes, ...rest }: DrawerMenuProps) => {
         sx={[
           {
             alignItems: 'flex-end',
-            pr: 2,
+            pr: 1.5,
           },
         ]}
       >
@@ -132,18 +119,9 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
+  const theme = useTheme();
   const navigate = useNavigate();
-  const match = useMatch(key);
-  const [expanded, setExpanded] = useState<string[]>([...(match ? [key] : [])]);
-
-  const handleToggle = (key: string) => () => {
-    const idx = expanded.findIndex((a) => a === key);
-    if (idx > -1) {
-      setExpanded((prev) => remove(idx, 1, prev));
-    } else {
-      setExpanded((prev) => [...prev, key]);
-    }
-  };
+  const [{ expandedSections }, { handleToggleSection }] = useLayout();
 
   if (isNilOrEmpty(route?.children)) {
     return (
@@ -189,8 +167,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   return (
     <Accordion
       key={key}
-      expanded={expanded.includes(key)}
-      onChange={handleToggle(key)}
+      expanded={expandedSections.includes(key)}
+      onChange={() => handleToggleSection(key)}
       sx={{
         p: 0,
         border: 'none',
@@ -199,7 +177,6 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
       disableGutters
     >
       <AccordionSummary
-        expandIcon={isWide ? <FaChevronDownRegular /> : null}
         sx={[
           {
             height: DRAWER_MD_COLLAPSED_WIDTH,
@@ -210,9 +187,6 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
                   theme.palette.action.hoverOpacity,
                 ),
             },
-            '& .MuiAccordionSummary-expandIconWrapper': {
-              mr: 2,
-            },
           },
         ]}
       >
@@ -221,14 +195,22 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
           sx={[
             {
               pl: 2,
-              width: 1,
+              pr: 3,
+              ...getWidthMixin(isWide, theme),
               justifyContent: 'flex-start',
               alignItems: 'center',
             },
           ]}
         >
           <SvgIcon component={route.handle.icon} sx={{ fontSize: 36 }} />
-          <Collapse in={isWide} orientation="horizontal">
+          <Stack
+            direction="row"
+            sx={{
+              width: 1,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
             <Typography
               sx={{
                 pl: 2,
@@ -237,7 +219,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             >
               {intl.formatMessage(route.handle.title)}
             </Typography>
-          </Collapse>
+            <ExpandIcon isExpanded={expandedSections.includes(key)} />
+          </Stack>
         </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
@@ -275,6 +258,8 @@ const ListMenuItem = ({
   ...rest
 }: ListMenuItemProps) => {
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const match = useMatch({
     path: `${route.path}/${item?.path ? `${item.path}/*` : ''}`,
@@ -282,6 +267,9 @@ const ListMenuItem = ({
 
   const handleMenuClick = (path: string) => () => {
     navigate(`${route.path}/${path ?? ''}`);
+    if (isSm) {
+      onClose();
+    }
   };
 
   const isSelected = !isNilOrEmpty(match) && isNilOrEmpty(item?.href);

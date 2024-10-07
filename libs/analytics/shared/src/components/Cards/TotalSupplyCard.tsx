@@ -71,12 +71,16 @@ export const TotalSupplyCard = ({
       ],
       lineColor: [theme.palette.chart1, theme.palette.chart2],
     },
-    {
-      key: 'protocolOwnedSupply',
-      label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
-      fillColor: alpha(theme.palette.chart5, 0.4),
-      lineColor: theme.palette.chart5,
-    },
+    ...(config?.showCirculatingSplit
+      ? [
+          {
+            key: 'protocolOwnedSupply',
+            label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
+            fillColor: alpha(theme.palette.chart5, 0.4),
+            lineColor: theme.palette.chart5,
+          },
+        ]
+      : []),
   ] as YKey<ChartResult>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
@@ -125,7 +129,9 @@ export const TotalSupplyCard = ({
                     width: 15,
                     height: 15,
                     borderRadius: '50%',
-                    background: `linear-gradient(90deg, ${s?.fillColor?.[0] ?? theme.palette.chart1}, ${s?.fillColor?.[1] ?? s?.fillColor?.[0] ?? theme.palette.chart2});`,
+                    background: Array.isArray(s.lineColor)
+                      ? `linear-gradient(90deg, ${s?.lineColor?.[0] ?? theme.palette.chart1}, ${s?.lineColor?.[1] ?? s?.lineColor?.[0] ?? theme.palette.chart2});`
+                      : s.lineColor,
                   }}
                 />
                 <Typography

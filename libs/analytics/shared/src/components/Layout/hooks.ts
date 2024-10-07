@@ -31,6 +31,18 @@ export const useLayout = () => {
           }),
         );
       }, [setState]),
+      handleToggleSection: useCallback(
+        (section: string) => {
+          setState(
+            produce((draft) => {
+              draft.expandedSections = draft.expandedSections.includes(section)
+                ? draft.expandedSections.filter((s) => s !== section)
+                : [...draft.expandedSections, section];
+            }),
+          );
+        },
+        [setState],
+      ),
     },
   ] as const;
 };

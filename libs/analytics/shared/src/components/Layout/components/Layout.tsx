@@ -21,13 +21,13 @@ import type { RouteObject } from 'react-router-dom';
 
 export type LayoutProps = { routes: RouteObject[] };
 
-const LayoutWrapped = ({ routes }: LayoutProps) => {
+const LayoutWrapped = () => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const dappHref = useDappHref();
   const [
-    { isDrawerOpen, contentWidth },
+    { isDrawerOpen, contentWidth, routes },
     { handleToggleDrawer, handleSetDrawer },
   ] = useLayout();
 
@@ -102,11 +102,11 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
               },
             }}
           >
-            <DrawerMenu routes={routes} />
+            <DrawerMenu />
           </Drawer>
         ) : (
           <LeftDrawer>
-            <DrawerMenu routes={routes} />
+            <DrawerMenu />
           </LeftDrawer>
         )}
         <Stack
@@ -127,10 +127,10 @@ const LayoutWrapped = ({ routes }: LayoutProps) => {
   );
 };
 
-export const Layout = (props: LayoutProps) => {
+export const Layout = ({ routes }: LayoutProps) => {
   return (
-    <LayoutProvider>
-      <LayoutWrapped {...props} />
+    <LayoutProvider routes={routes}>
+      <LayoutWrapped />
     </LayoutProvider>
   );
 };

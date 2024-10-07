@@ -41,41 +41,6 @@ export type PriceOption =
   | CoingeckoOption
   | DerivedOption;
 
-export type SupportedToken = Extract<
-  TokenId,
-  | '1:DAI'
-  | '1:ETH'
-  | '1:ETHx'
-  | '1:FRAX'
-  | '1:frxETH'
-  | '1:mETH'
-  | '1:OETH'
-  | '1:OGN'
-  | '1:OUSD'
-  | '1:primeETH'
-  | '1:rETH'
-  | '1:sfrxETH'
-  | '1:stETH'
-  | '1:swETH'
-  | '1:USDC'
-  | '1:USDT'
-  | '1:WETH'
-  | '1:wOETH'
-  | '1:wOUSD'
-  | '42161:ETH'
-  | '42161:WETH'
-  | '42161:OETH'
-  | '42161:wOETH'
-  | '8453:ETH'
-  | '8453:WETH'
-  | '8453:superOETHb'
-  | '8453:wsuperOETHb'
-  | '10:ETH'
-  | '10:WETH'
-  | '10:superOETHo'
-  | '10:wsuperOETHo'
->;
-
 export type SupportedCurrency =
   | 'USD'
   | '42161:OETH'
