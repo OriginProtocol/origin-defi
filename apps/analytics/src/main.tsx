@@ -24,7 +24,7 @@ setAutoFreeze(false);
 
 logWelcomeMessage('Analytics');
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, { basename: '/analytics' });
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
