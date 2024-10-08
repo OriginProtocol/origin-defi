@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   CardContent,
+  CircularProgress,
   Collapse,
   Dialog,
   DialogTitle,
@@ -15,29 +16,33 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import {
-  TokenButton,
-  useApprovalButton,
-  useTxButton,
-} from '@origin/defi/shared';
+import { SwapProvider, TokenButton, trackEvent } from '@origin/defi/shared';
 import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
-import { contracts, tokens } from '@origin/shared/contracts';
+import { tokens } from '@origin/shared/contracts';
 import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
 import {
-  TxButton,
+  ConnectedButton,
+  useHandleAmountInChange,
+  useHandleApprove,
+  useHandleSwap,
+  useHandleTokenChange,
+  useSwapRouteAllowance,
+  useSwapState,
+  useTokenOptions,
   useTokenPrice,
   useWatchBalance,
   useWatchBalances,
 } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
-import { getFormatPrecision } from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { format, from, gt, lt, mul, sub } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { depositARMActions } from '../actions';
+import { armSwapRoutes } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -45,73 +50,52 @@ import type { CardContentProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
-const supportedAssetToDeposit = [tokens.mainnet.WETH, tokens.mainnet.ETH];
-
 export const DepositForm = (props: CardContentProps) => {
-  const intl = useIntl();
-  const queryClient = useQueryClient();
-  const [open, setOpen] = useState(false);
-  const { isConnected, address } = useAccount();
-  const [assetToDeposit, setAssetToDeposit] = useState<Token>(
-    supportedAssetToDeposit[0],
+  return (
+    <SwapProvider
+      swapActions={depositARMActions}
+      swapRoutes={armSwapRoutes}
+      trackEvent={trackEvent}
+    >
+      <DepositFormWrapped {...props} />
+    </SwapProvider>
   );
-  const [amount, setAmount] = useState(
-    from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
-  );
-  const {
-    data: assetToDepositBalance,
-    isLoading: isAssetToDepositBalanceLoading,
-  } = useWatchBalances({ tokens: supportedAssetToDeposit });
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
-  const {
-    allowance,
-    params: approvalParams,
-    callbacks: approvalCallbacks,
-    label: approvalLabel,
-  } = useApprovalButton({
-    token: assetToDeposit,
-    spender: contracts.mainnet.ARMstETHWETHPool.address,
-    amount: amount[0],
-    enableAllowance: true,
-  });
-  const { params, callbacks } = useTxButton({
-    params: {
-      contract: contracts.mainnet.ARMstETHWETHPool,
-      functionName: 'deposit',
-      args: [amount[0]],
-    },
-    activity: {
-      type: 'deposit',
-      status: 'pending',
-      amountIn: amount[0],
-      tokenIdIn: assetToDeposit.id,
-      pool: contracts.mainnet.ARMstETHWETHPool.address,
-    },
-    callbacks: {
-      onWriteSuccess: () => {
-        setAmount(from(0, tokens.mainnet['ARM-WETH-stETH'].decimals));
-        queryClient.invalidateQueries({
-          queryKey: useArmVault.getKey(address),
-        });
-      },
-    },
-  });
+};
 
-  const handleAmountChange = (val: bigint) => {
-    setAmount([val, assetToDeposit.decimals] as Dnum);
-  };
+const DepositFormWrapped = (props: CardContentProps) => {
+  const intl = useIntl();
+  const [open, setOpen] = useState(false);
+  const { isConnected, chainId } = useAccount();
+  const [
+    {
+      amountIn,
+      tokenIn,
+      tokenOut,
+      selectedSwapRoute,
+      isSwapLoading,
+      isSwapWaitingForSignature,
+      isSwapRoutesLoading,
+      isApprovalLoading,
+      isApprovalWaitingForSignature,
+    },
+  ] = useSwapState();
+  const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
+  const { tokensIn } = useTokenOptions();
+  const handleAmountInChange = useHandleAmountInChange();
+  const handleTokenChange = useHandleTokenChange();
+  const handleApprove = useHandleApprove();
+  const handleSwap = useHandleSwap();
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [tokenIn, tokenOut],
+  });
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
 
   const handleMaxClick = () => {
-    setAmount([
-      assetToDepositBalance?.[assetToDeposit.id],
-      assetToDeposit.decimals,
-    ] as Dnum);
+    handleAmountInChange(balances?.[tokenIn.id] ?? 0n);
   };
 
-  const userBalance = [
-    assetToDepositBalance?.[assetToDeposit.id] ?? 0n,
-    assetToDeposit.decimals,
-  ] as Dnum;
+  const amount = [amountIn, tokenIn.decimals] as Dnum;
+  const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
   const userCapLeft = sub(info?.userCap ?? from(0), amount);
   const waveCapLeft = sub(info?.waveCap ?? from(0), amount);
   const showUserCapDisclaimer =
@@ -124,17 +108,26 @@ export const DepositForm = (props: CardContentProps) => {
     !isInfoLoading &&
     lt(amount, userBalance) &&
     lt(waveCapLeft, 0);
+  const isApproveButtonDisabled =
+    isNilOrEmpty(selectedSwapRoute) ||
+    isSwapRoutesLoading ||
+    isApprovalLoading ||
+    isApprovalWaitingForSignature ||
+    amountIn > (balances?.[tokenIn.id] ?? 0n);
   const showApprove =
     isConnected &&
-    !isInfoLoading &&
-    lt(amount, userBalance) &&
-    lt(amount, userCapLeft) &&
-    lt([allowance ?? 0n, assetToDeposit.decimals] as Dnum, amount);
+    tokenIn.chainId === chainId &&
+    amountIn > 0n &&
+    !isBalancesLoading &&
+    (balances?.[tokenIn.id] ?? 0n) >= amountIn &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
+    (allowance ?? 0n) < amountIn;
   const isDepositDisabled =
     isInfoLoading ||
-    isAssetToDepositBalanceLoading ||
+    isBalancesLoading ||
     gt(amount, userBalance) ||
-    lt([allowance ?? 0n, assetToDeposit.decimals] as Dnum, amount) ||
+    lt([allowance ?? 0n, tokenIn.decimals] as Dnum, amount) ||
     gt(amount, info?.userCap ?? from(0)) ||
     gt(amount, info?.waveCap ?? from(0)) ||
     amount[0] === 0n;
@@ -183,9 +176,9 @@ export const DepositForm = (props: CardContentProps) => {
         <BigIntInput
           value={amount[0]}
           decimals={amount[1]}
-          onChange={handleAmountChange}
+          onChange={handleAmountInChange}
           endAdornment={
-            <TokenButton token={assetToDeposit} onClick={() => setOpen(true)} />
+            <TokenButton token={tokenIn} onClick={() => setOpen(true)} />
           }
           sx={(theme) => ({
             px: 2,
@@ -382,32 +375,51 @@ export const DepositForm = (props: CardContentProps) => {
           </Stack>
         </Collapse>
         <Collapse in={showApprove}>
-          <TxButton
-            params={approvalParams}
-            callbacks={approvalCallbacks}
+          <Button
             variant="action"
             fullWidth
-            disabled={isInfoLoading}
-            label={approvalLabel}
+            onClick={handleApprove}
+            disabled={isApproveButtonDisabled}
             sx={{ mb: 1.5 }}
-          />
+          >
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isApprovalWaitingForSignature ? (
+              intl.formatMessage({
+                defaultMessage: 'Waiting for signature',
+              })
+            ) : isApprovalLoading ? (
+              intl.formatMessage({ defaultMessage: 'Processing Approval' })
+            ) : (
+              intl.formatMessage({ defaultMessage: 'Approve' })
+            )}
+          </Button>
         </Collapse>
-        <TxButton
-          params={params}
-          callbacks={callbacks}
-          label={depositButtonLabel}
-          disabled={isDepositDisabled}
+        <ConnectedButton
           variant="action"
           fullWidth
-        />
+          disabled={isDepositDisabled}
+          onClick={handleSwap}
+          targetChainId={tokenIn.chainId}
+        >
+          {isSwapRoutesLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : isSwapWaitingForSignature ? (
+            intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+          ) : isSwapLoading ? (
+            intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+          ) : (
+            depositButtonLabel
+          )}
+        </ConnectedButton>
       </Stack>
       <TokenSelectModal
         open={open}
         onClose={() => setOpen(false)}
-        selectedToken={assetToDeposit}
-        tokens={[tokens.mainnet.ETH, tokens.mainnet.WETH]}
+        selectedToken={tokenIn}
+        tokens={tokensIn}
         onSelectToken={(token) => {
-          setAssetToDeposit(token);
+          handleTokenChange('tokenIn', token);
           setOpen(false);
         }}
       />

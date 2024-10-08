@@ -1,3 +1,5 @@
+import type { ARMRoute } from '@origin/shared/routes';
+
 export type WithdrawalRequest = {
   id: string;
   requestId: bigint;
@@ -9,3 +11,8 @@ export type WithdrawalRequest = {
   claimable: boolean;
   txHash: string;
 };
+
+export type DepositARMAction = Extract<
+  ARMRoute,
+  'deposit-arm-lido' | 'deposit-arm-zapper'
+>;
