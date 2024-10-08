@@ -196,6 +196,7 @@ export type Proposal = {
   flagged?: Maybe<Scalars['Boolean']['output']>;
   id: Scalars['String']['output'];
   ipfs?: Maybe<Scalars['String']['output']>;
+  labels: Array<Maybe<Scalars['String']['output']>>;
   link?: Maybe<Scalars['String']['output']>;
   network: Scalars['String']['output'];
   plugins: Scalars['Any']['output'];
@@ -207,7 +208,7 @@ export type Proposal = {
   scores_state?: Maybe<Scalars['String']['output']>;
   scores_total?: Maybe<Scalars['Float']['output']>;
   scores_updated?: Maybe<Scalars['Int']['output']>;
-  snapshot?: Maybe<Scalars['String']['output']>;
+  snapshot?: Maybe<Scalars['Int']['output']>;
   space?: Maybe<Space>;
   start: Scalars['Int']['output'];
   state?: Maybe<Scalars['String']['output']>;
