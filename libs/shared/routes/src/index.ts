@@ -1,3 +1,4 @@
+export * from './arm';
 export * from './oeth';
 export * from './ousd';
 export * from './prime';

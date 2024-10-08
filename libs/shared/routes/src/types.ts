@@ -33,3 +33,5 @@ export type PrimeRoute =
   | 'restake-prime'
   | 'swap-uniswap-prime'
   | 'swap-zapper-prime';
+
+export type ARMRoute = 'deposit-arm-lido' | 'deposit-arm-zapper';
