@@ -27,7 +27,7 @@ const LayoutWrapped = () => {
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const dappHref = useDappHref();
   const [
-    { isDrawerOpen, contentWidth, routes },
+    { isDrawerOpen, contentWidth },
     { handleToggleDrawer, handleSetDrawer },
   ] = useLayout();
 
