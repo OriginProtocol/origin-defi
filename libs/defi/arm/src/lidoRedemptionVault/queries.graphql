@@ -1,0 +1,19 @@
+fragment ArmDailyStat on ArmDailyState {
+  id
+  totalSupply
+  apy
+  totalAssets
+}
+
+query armDailyStats(
+  $limit: Int
+  $orderBy: [ArmDailyStateOrderByInput!] = [timestamp_DESC]
+) {
+  armDailyStates(limit: $limit, orderBy: $orderBy, where: {
+    address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6"
+    chainId_eq: 1
+  }) {
+    ...ArmDailyStat
+  }
+}
+
