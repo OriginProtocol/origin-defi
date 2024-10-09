@@ -185,7 +185,7 @@ export const LineChart = <Datum,>({
             scale={yScale}
             width={width - margins.right}
             strokeDasharray="2,4"
-            stroke="#ffffff"
+            stroke={theme.palette.text.secondary}
             strokeOpacity={0.1}
             numTicks={height / 80}
           />
