@@ -5,6 +5,7 @@ import {
   alpha,
   Button,
   Divider,
+  IconButton,
   MenuItem,
   MenuList,
   Stack,
@@ -27,6 +28,7 @@ import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
 import { useLayout } from '../hooks';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import type { NavItem } from '../types';
@@ -123,10 +125,10 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
-  const theme = useTheme();
   const navigate = useNavigate();
   const match = useMatch(`${route?.path ?? ''}/*`);
-  const [{ expandedSections }, { handleToggleSection }] = useLayout();
+  const [{ expandedSections }, { handleToggleSection, handleAddSection }] =
+    useLayout();
 
   if (isNilOrEmpty(route?.children)) {
     return (
@@ -173,7 +175,6 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
     <Accordion
       key={key}
       expanded={expandedSections.includes(key)}
-      onChange={() => handleToggleSection(key)}
       sx={{
         p: 0,
         border: 'none',
@@ -182,6 +183,10 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
       disableGutters
     >
       <AccordionSummary
+        onClick={() => {
+          navigate(`${route.path}/`);
+          handleAddSection(key);
+        }}
         sx={[
           {
             py: 1.5,
@@ -209,7 +214,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             direction="row"
             sx={{
               width: 1,
-              px: 3,
+              pl: 3,
+              pr: 1,
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
@@ -222,7 +228,17 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             >
               {intl.formatMessage(route.handle.title)}
             </Typography>
-            <ExpandIcon isExpanded={expandedSections.includes(key)} />
+            <IconButton
+              onClick={(evt: MouseEvent) => {
+                evt.stopPropagation();
+                handleToggleSection(key);
+              }}
+            >
+              <ExpandIcon
+                isExpanded={expandedSections.includes(key)}
+                sx={{ color: 'text.secondary', fontSize: 14 }}
+              />
+            </IconButton>
           </Stack>
         ) : (
           <Stack

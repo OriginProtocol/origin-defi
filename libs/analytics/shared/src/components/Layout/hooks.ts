@@ -41,6 +41,19 @@ export const useLayout = () => {
             }),
           );
         },
+
+        [setState],
+      ),
+      handleAddSection: useCallback(
+        (section: string) => {
+          setState(
+            produce((draft) => {
+              if (!draft.expandedSections.includes(section)) {
+                draft.expandedSections = [...draft.expandedSections, section];
+              }
+            }),
+          );
+        },
         [setState],
       ),
     },
