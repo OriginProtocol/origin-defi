@@ -199,9 +199,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             isWide && {
               borderTopLeftRadius: 0,
               borderBottomLeftRadius: 0,
-              borderLeft: '2px solid',
-              borderColor: 'primary.main',
-              borderLeftStyle: 'outset',
+              boxShadow: (theme) =>
+                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
             },
         ]}
       >
@@ -226,7 +225,12 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             <ExpandIcon isExpanded={expandedSections.includes(key)} />
           </Stack>
         ) : (
-          <SvgIcon component={route.handle.icon} sx={{ ml: 2, fontSize: 30 }} />
+          <Stack
+            direction="row"
+            sx={{ width: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <SvgIcon component={route.handle.icon} sx={{ fontSize: 28 }} />
+          </Stack>
         )}
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
@@ -302,13 +306,13 @@ const ListMenuItem = ({
               color: 'text.secondary',
               svg: { color: 'text.secondary' },
             },
-        isWide ? { pl: 4, py: 1.5 } : { pl: 2.5, py: 1.5 },
+        isWide ? { pl: 4, py: 1.5 } : { margin: 'auto', py: 1 },
       ]}
     >
       {isWide ? (
         <Typography>{intl.formatMessage(item.title)}</Typography>
       ) : (
-        <SvgIcon component={item.icon} sx={{ fontSize: 24 }} />
+        <SvgIcon component={item.icon} sx={{ fontSize: 20 }} />
       )}
     </MenuItem>
   );

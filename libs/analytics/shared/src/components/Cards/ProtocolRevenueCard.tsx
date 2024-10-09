@@ -47,7 +47,9 @@ export const ProtocolRevenueCard = ({
 
   const intl = useIntl();
   const theme = useTheme();
-  const [limit, setLimit] = useState<number | undefined>(182);
+  const [limit, setLimit] = useState<number | undefined>(
+    config?.protocolRevenueCardDefaultLimit ?? 182,
+  );
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();

@@ -17,11 +17,7 @@ export type TokenCardProps = {
   token: Token;
 } & CardProps;
 
-export const TokenCard = ({
-  token,
-
-  ...rest
-}: TokenCardProps) => {
+export const TokenCard = ({ token, ...rest }: TokenCardProps) => {
   const intl = useIntl();
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token);
 
