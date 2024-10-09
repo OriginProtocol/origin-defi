@@ -15,7 +15,7 @@ export const HomeView = () => {
             key={t.id}
             size={{ xs: 12, sm: 4, md: isDrawerOpen ? 6 : 4, lg: 4 }}
           >
-            <TokenCard token={t} />
+            <TokenCard token={t} sx={{ height: 1 }} />
           </Grid2>
         ),
       )}

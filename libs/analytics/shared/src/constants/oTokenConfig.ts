@@ -18,6 +18,8 @@ export type OTokenConfig = {
   dripperToken: Token;
   // display circulating/protocol owned split on TotalSupply chart
   showCirculatingSplit?: boolean;
+  // default chart limit for protocol revenue card (default 182 days)
+  protocolRevenueCardDefaultLimit?: number;
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -48,5 +50,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dappHref: `${ORIGIN_DAPP_URL}/#/super`,
     dripperToken: tokens.base.WETH,
     showCirculatingSplit: true,
+    protocolRevenueCardDefaultLimit: 30,
   },
 };

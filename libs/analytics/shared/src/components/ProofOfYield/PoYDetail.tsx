@@ -34,7 +34,6 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { subDays } from 'date-fns';
 import { millisecondsInHour } from 'date-fns/constants';
 import { formatInTimeZone } from 'date-fns-tz';
 import { sub, toNumber } from 'dnum';
@@ -86,15 +85,17 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
         ),
       },
     );
-  const day = new Date(dailyStat?.timestamp ?? 0).toISOString();
-  const dayBefore = subDays(new Date(day), 1).toISOString();
+  const morning = new Date(dailyStat?.timestamp ?? 0);
+  morning.setUTCHours(0, 0, 0, 0);
+  const evening = new Date(dailyStat?.timestamp ?? 0);
+  evening.setUTCHours(23, 59, 59, 999);
 
   const { data: rebases, isLoading: isRebasesLoading } = useOTokenRebasesQuery(
     {
       token: token.address ?? ZERO_ADDRESS,
       chainId: token.chainId,
-      from: dayBefore,
-      to: day,
+      from: morning.toISOString(),
+      to: evening.toISOString(),
     },
     {
       enabled: !!params.id,

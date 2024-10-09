@@ -4,11 +4,8 @@ import {
   AccordionSummary,
   alpha,
   Button,
-  Collapse,
   Divider,
   IconButton,
-  ListItemIcon,
-  ListItemText,
   MenuItem,
   MenuList,
   Stack,
@@ -18,17 +15,20 @@ import {
   useTheme,
 } from '@mui/material';
 import { ExpandIcon, OriginProductIcon } from '@origin/shared/components';
-import { FaChevronRightRegular, FaXmarkRegular } from '@origin/shared/icons';
+import {
+  FaChevronLeftRegular,
+  FaChevronRightRegular,
+  OriginLogo,
+} from '@origin/shared/icons';
 import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
 
-import { DRAWER_MD_COLLAPSED_WIDTH } from '../constants';
 import { useLayout } from '../hooks';
-import { getWidthMixin } from '../styles';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
+import type { MouseEvent } from 'react';
 import type { RouteObject } from 'react-router-dom';
 
 import type { NavItem } from '../types';
@@ -54,32 +54,21 @@ export const DrawerMenu = (props: StackProps) => {
         sx={(theme) => ({
           height: theme.mixins.toolbar.height,
           alignItems: 'center',
-          justifyContent: 'space-between',
           width: 1,
           pl: 2,
           pr: 1.5,
           py: 1,
         })}
       >
-        <Collapse in={isWide} orientation="horizontal">
+        {isWide ? (
           <RouterLink to="/" style={{ textDecoration: 'none' }}>
             <OriginProductIcon name="Analytics" />
           </RouterLink>
-        </Collapse>
-        <IconButton
-          onClick={handleToggleDrawer}
-          sx={(theme) => ({
-            width: 36,
-            height: 36,
-            border: `1px solid ${theme.palette.divider}`,
-          })}
-        >
-          {isWide ? (
-            <FaXmarkRegular sx={{ fontSize: 16 }} />
-          ) : (
-            <FaChevronRightRegular sx={{ fontSize: 16 }} />
-          )}
-        </IconButton>
+        ) : (
+          <RouterLink to="/" style={{ textDecoration: 'none' }}>
+            <OriginLogo sx={{ fontSize: 32 }} />
+          </RouterLink>
+        )}
       </Stack>
       <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
         {routes?.map((route, i) => (
@@ -95,13 +84,30 @@ export const DrawerMenu = (props: StackProps) => {
         ))}
       </Stack>
       <Stack
+        useFlexGap
         sx={[
           {
+            rowGap: 1,
+            columnGap: 1,
             alignItems: 'flex-end',
             pr: 1.5,
           },
+          isWide
+            ? {
+                flexDirection: 'row-reverse',
+              }
+            : {
+                flexDirection: 'column-reverse',
+              },
         ]}
       >
+        <Button
+          variant="outlined"
+          color="secondary"
+          onClick={handleToggleDrawer}
+        >
+          {isWide ? <FaChevronLeftRegular /> : <FaChevronRightRegular />}
+        </Button>
         <ThemeModeIconButton variant="outlined" color="secondary" />
       </Stack>
     </Stack>
@@ -119,9 +125,10 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
-  const theme = useTheme();
   const navigate = useNavigate();
-  const [{ expandedSections }, { handleToggleSection }] = useLayout();
+  const match = useMatch(`${route?.path ?? ''}/*`);
+  const [{ expandedSections }, { handleToggleSection, handleAddSection }] =
+    useLayout();
 
   if (isNilOrEmpty(route?.children)) {
     return (
@@ -168,7 +175,6 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
     <Accordion
       key={key}
       expanded={expandedSections.includes(key)}
-      onChange={() => handleToggleSection(key)}
       sx={{
         p: 0,
         border: 'none',
@@ -177,9 +183,15 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
       disableGutters
     >
       <AccordionSummary
+        onClick={() => {
+          navigate(`${route.path}/`);
+          handleAddSection(key);
+        }}
         sx={[
           {
-            height: DRAWER_MD_COLLAPSED_WIDTH,
+            py: 1.5,
+            justifyContent: 'flex-start',
+            alignItems: 'center',
             '&:hover': {
               backgroundColor: (theme) =>
                 alpha(
@@ -188,40 +200,54 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
                 ),
             },
           },
+          match &&
+            isWide && {
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              boxShadow: (theme) =>
+                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
+            },
         ]}
       >
-        <Stack
-          direction="row"
-          sx={[
-            {
-              pl: 2,
-              pr: 3,
-              ...getWidthMixin(isWide, theme),
-              justifyContent: 'flex-start',
-              alignItems: 'center',
-            },
-          ]}
-        >
-          <SvgIcon component={route.handle.icon} sx={{ fontSize: 36 }} />
+        {isWide ? (
           <Stack
             direction="row"
             sx={{
               width: 1,
+              pl: 3,
+              pr: 1,
               alignItems: 'center',
               justifyContent: 'space-between',
             }}
           >
             <Typography
+              variant="body2"
               sx={{
-                pl: 2,
                 fontWeight: 'medium',
               }}
             >
               {intl.formatMessage(route.handle.title)}
             </Typography>
-            <ExpandIcon isExpanded={expandedSections.includes(key)} />
+            <IconButton
+              onClick={(evt: MouseEvent) => {
+                evt.stopPropagation();
+                handleToggleSection(key);
+              }}
+            >
+              <ExpandIcon
+                isExpanded={expandedSections.includes(key)}
+                sx={{ color: 'text.secondary', fontSize: 14 }}
+              />
+            </IconButton>
           </Stack>
-        </Stack>
+        ) : (
+          <Stack
+            direction="row"
+            sx={{ width: 1, alignItems: 'center', justifyContent: 'center' }}
+          >
+            <SvgIcon component={route.handle.icon} sx={{ fontSize: 28 }} />
+          </Stack>
+        )}
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
         <MenuList
@@ -286,29 +312,24 @@ const ListMenuItem = ({
             component: 'a',
           })}
       sx={[
-        (theme) => ({
-          transition: theme.transitions.create('padding-left', {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-          }),
-          pl: isWide ? 5 : '21px',
-          py: 1.5,
-        }),
         isSelected
           ? {
               color: 'primary.main',
               svg: { color: 'primary.main' },
+              backgroundColor: 'primary.faded',
             }
           : {
-              color: 'text.primary',
-              svg: { color: 'text.primary' },
+              color: 'text.secondary',
+              svg: { color: 'text.secondary' },
             },
+        isWide ? { pl: 4, py: 1.5 } : { margin: 'auto', py: 1 },
       ]}
     >
-      <ListItemIcon>
-        <SvgIcon component={item.icon} fontSize="medium" />
-      </ListItemIcon>
-      {isWide && <ListItemText>{intl.formatMessage(item.title)}</ListItemText>}
+      {isWide ? (
+        <Typography>{intl.formatMessage(item.title)}</Typography>
+      ) : (
+        <SvgIcon component={item.icon} sx={{ fontSize: 20 }} />
+      )}
     </MenuItem>
   );
 };
