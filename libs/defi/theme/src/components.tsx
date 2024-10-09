@@ -68,6 +68,7 @@ export const components = (base: Theme): ThemeOptions => ({
           borderRadius: theme.shape.borderRadius * 3,
           color: theme.palette.text.primary,
           boxShadow: theme.shadows[2],
+          backgroundColor: theme.palette.background.highlight,
         }),
         colorInfo: ({ theme }) => ({
           backgroundColor: theme.palette.background.highlight,
