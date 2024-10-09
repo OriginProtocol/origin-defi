@@ -189,7 +189,7 @@ export const ExtendAddLockupModal = ({
     isConnected &&
     !isInfoLoading &&
     amountToAdd[0] <= (info?.ognBalance ?? 0n) &&
-    totalAmount[0] >= (allowance ?? 0n);
+    amountToAdd[0] > (allowance ?? 0n);
   const isStakeDisabled =
     !isConnected ||
     isInfoLoading ||
