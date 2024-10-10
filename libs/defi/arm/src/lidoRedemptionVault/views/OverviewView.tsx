@@ -1,6 +1,5 @@
 import { Grid2, Stack } from '@mui/material';
 import { Page, PageSection, PageTitle } from '@origin/defi/shared';
-import { tokens } from '@origin/shared/contracts';
 import { ARM } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
@@ -37,21 +36,9 @@ export const OverviewView = () => {
                 <TvlCard sx={{ width: 1 }} />
               </Stack>
               <AboutCard />
-              <ApyChart
-                token={tokens.mainnet.OETH}
-                height={200}
-                from="2023-06-01T00:00:00.000000Z"
-              />
-              <TvlChart
-                token={tokens.mainnet.OETH}
-                height={200}
-                from="2023-06-01T00:00:00.000000Z"
-              />
-              <OwnershipChart
-                token={tokens.mainnet.OETH}
-                height={200}
-                from="2023-06-01T00:00:00.000000Z"
-              />
+              <ApyChart height={200} />
+              <TvlChart height={200} />
+              <OwnershipChart height={200} />
               <ContractInfoCard />
             </Stack>
           </Grid2>

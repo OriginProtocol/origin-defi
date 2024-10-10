@@ -142,19 +142,20 @@ const fetcher: (
         : from(0);
     const claimableRes =
       res[0][3].status === 'success' ? BigInt(res[0][3].result ?? 0) : 0n;
-    const requests = res[2].armRedemptions.map((r) => {
-      const claimable =
-        !r.claimed &&
-        BigInt(r?.queued ?? 0) < claimableRes &&
-        isAfter(new Date(), addMinutes(new Date(r.timestamp), 11));
-      return {
-        ...r,
-        requestId: BigInt(r.requestId),
-        amount: BigInt(r.amount),
-        queued: BigInt(r.queued),
-        claimable,
-      };
-    });
+    const requests = res[2].armRedemptions
+      .filter((r) => !r.claimed)
+      .map((r) => {
+        const claimable =
+          BigInt(r?.queued ?? 0) < claimableRes &&
+          isAfter(new Date(), addMinutes(new Date(r.timestamp), 11));
+        return {
+          ...r,
+          requestId: BigInt(r.requestId),
+          amount: BigInt(r.amount),
+          queued: BigInt(r.queued),
+          claimable,
+        };
+      });
     const totalSupply = [
       BigInt(res?.[3]?.armDailyStats?.[0]?.totalSupply ?? 0),
       tokens.mainnet['ARM-WETH-stETH'].decimals,

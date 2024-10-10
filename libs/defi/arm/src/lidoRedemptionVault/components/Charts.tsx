@@ -25,15 +25,13 @@ import { useIntl } from 'react-intl';
 import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
-import type { Token } from '@origin/shared/contracts';
 import type { NumberLike } from '@visx/scale';
 
 export type ApyChartProps = {
-  token: Token;
   height: number;
 } & CardProps;
 
-export const ApyChart = ({ token, height, ...rest }: ApyChartProps) => {
+export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(30);
@@ -115,12 +113,10 @@ export const ApyChart = ({ token, height, ...rest }: ApyChartProps) => {
 };
 
 export type TvlChartProps = {
-  token: Token;
   height: number;
-  from?: string;
 } & CardProps;
 
-export const TvlChart = ({ token, height, from, ...rest }: TvlChartProps) => {
+export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
@@ -208,17 +204,10 @@ export const TvlChart = ({ token, height, from, ...rest }: TvlChartProps) => {
 };
 
 export type OwnershipChartProps = {
-  token: Token;
   height: number;
-  from?: string;
 } & CardProps;
 
-export const OwnershipChart = ({
-  token,
-  height,
-  from,
-  ...rest
-}: OwnershipChartProps) => {
+export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(182);
