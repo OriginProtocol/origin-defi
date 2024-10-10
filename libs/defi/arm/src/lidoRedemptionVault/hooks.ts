@@ -5,9 +5,15 @@ import { useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
+import { addMinutes, isAfter } from 'date-fns';
 import { from } from 'dnum';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
+
+import {
+  useArmDailyStatsQuery,
+  useArmWithdrawalRequestsQuery,
+} from './queries.generated';
 
 import type { SupportedTokenPrice } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
@@ -45,6 +51,8 @@ const getKey = (address: HexAddress | undefined): Key => [
 
 type ArmVault = {
   waveNumber: number;
+  totalSupply: Dnum;
+  totalAssets: Dnum;
   waveCap: Dnum;
   userCap: Dnum;
   userBalance: Dnum;
@@ -78,6 +86,11 @@ const fetcher: (
             functionName: 'balanceOf',
             args: [address ?? ZERO_ADDRESS],
           },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'claimable',
+          },
         ],
       }),
       queryClient.fetchQuery({
@@ -87,6 +100,22 @@ const fetcher: (
           '1:ARM-WETH-stETH_USD',
         ]),
         queryFn: useTokenPrices.fetcher(config),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useArmWithdrawalRequestsQuery.getKey({
+          address: address ?? ZERO_ADDRESS,
+        }),
+        queryFn: useArmWithdrawalRequestsQuery.fetcher({
+          address: address ?? ZERO_ADDRESS,
+        }),
+      }),
+      queryClient.fetchQuery({
+        queryKey: useArmDailyStatsQuery.getKey({
+          limit: 1,
+        }),
+        queryFn: useArmDailyStatsQuery.fetcher({
+          limit: 1,
+        }),
       }),
     ]);
 
@@ -111,37 +140,39 @@ const fetcher: (
             tokens.mainnet['ARM-WETH-stETH'].decimals,
           ] as Dnum)
         : from(0);
+    const claimableRes =
+      res[0][3].status === 'success' ? BigInt(res[0][3].result ?? 0) : 0n;
+    const requests = res[2].armRedemptions.map((r) => {
+      const claimable =
+        !r.claimed &&
+        BigInt(r?.queued ?? 0) < claimableRes &&
+        isAfter(new Date(), addMinutes(new Date(r.timestamp), 11));
+      return {
+        ...r,
+        requestId: BigInt(r.requestId),
+        amount: BigInt(r.amount),
+        queued: BigInt(r.queued),
+        claimable,
+      };
+    });
+    const totalSupply = [
+      BigInt(res?.[3]?.armDailyStats?.[0]?.totalSupply ?? 0),
+      tokens.mainnet['ARM-WETH-stETH'].decimals,
+    ] as Dnum;
+    const totalAssets = [
+      BigInt(res?.[3]?.armDailyStats?.[0]?.totalAssets ?? 0),
+      tokens.mainnet['ARM-WETH-stETH'].decimals,
+    ] as Dnum;
 
     return {
       waveNumber: 1,
+      totalSupply,
+      totalAssets,
       waveCap,
       userCap,
       userBalance,
       prices: res[1],
-      requests: [
-        {
-          claimable: true,
-          amount: 10_000_000_000_000_000n,
-          id: '1',
-          requestId: 1n,
-          timestamp: '1',
-          queued: 1n,
-          claimed: false,
-          blockNumber: 1,
-          txHash: '1',
-        },
-        {
-          claimable: false,
-          amount: 10_000_000_000_000_000n,
-          id: '2',
-          requestId: 2n,
-          timestamp: '1',
-          queued: 2n,
-          claimed: false,
-          blockNumber: 1,
-          txHash: '1',
-        },
-      ],
+      requests,
     };
   };
 

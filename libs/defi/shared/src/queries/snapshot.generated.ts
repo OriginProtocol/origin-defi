@@ -179,6 +179,12 @@ export type Metrics = {
   total?: Maybe<Scalars['Int']['output']>;
 };
 
+export type Option = {
+  __typename?: 'Option';
+  name?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
 export enum OrderDirection {
   Asc = 'asc',
   Desc = 'desc'
@@ -280,6 +286,7 @@ export type Query = {
   leaderboards?: Maybe<Array<Maybe<Leaderboard>>>;
   messages?: Maybe<Array<Maybe<Message>>>;
   networks?: Maybe<Array<Maybe<Item>>>;
+  options?: Maybe<Array<Maybe<Option>>>;
   plugins?: Maybe<Array<Maybe<Item>>>;
   proposal?: Maybe<Proposal>;
   proposals?: Maybe<Array<Maybe<Proposal>>>;

@@ -10922,8 +10922,8 @@ export type Arm = {
   token1: Scalars['String']['output'];
 };
 
-export type ArmDailyState = {
-  __typename?: 'ArmDailyState';
+export type ArmDailyStat = {
+  __typename?: 'ArmDailyStat';
   address: Scalars['String']['output'];
   apr: Scalars['Float']['output'];
   apy: Scalars['Float']['output'];
@@ -10941,13 +10941,13 @@ export type ArmDailyState = {
   totalSupply: Scalars['BigInt']['output'];
 };
 
-export type ArmDailyStateEdge = {
-  __typename?: 'ArmDailyStateEdge';
+export type ArmDailyStatEdge = {
+  __typename?: 'ArmDailyStatEdge';
   cursor: Scalars['String']['output'];
-  node: ArmDailyState;
+  node: ArmDailyStat;
 };
 
-export enum ArmDailyStateOrderByInput {
+export enum ArmDailyStatOrderByInput {
   AddressAsc = 'address_ASC',
   AddressAscNullsFirst = 'address_ASC_NULLS_FIRST',
   AddressAscNullsLast = 'address_ASC_NULLS_LAST',
@@ -11040,9 +11040,9 @@ export enum ArmDailyStateOrderByInput {
   TotalSupplyDescNullsLast = 'totalSupply_DESC_NULLS_LAST'
 }
 
-export type ArmDailyStateWhereInput = {
-  AND?: InputMaybe<Array<ArmDailyStateWhereInput>>;
-  OR?: InputMaybe<Array<ArmDailyStateWhereInput>>;
+export type ArmDailyStatWhereInput = {
+  AND?: InputMaybe<Array<ArmDailyStatWhereInput>>;
+  OR?: InputMaybe<Array<ArmDailyStatWhereInput>>;
   address_contains?: InputMaybe<Scalars['String']['input']>;
   address_containsInsensitive?: InputMaybe<Scalars['String']['input']>;
   address_endsWith?: InputMaybe<Scalars['String']['input']>;
@@ -11196,9 +11196,9 @@ export type ArmDailyStateWhereInput = {
   totalSupply_not_in?: InputMaybe<Array<Scalars['BigInt']['input']>>;
 };
 
-export type ArmDailyStatesConnection = {
-  __typename?: 'ArmDailyStatesConnection';
-  edges: Array<ArmDailyStateEdge>;
+export type ArmDailyStatsConnection = {
+  __typename?: 'ArmDailyStatsConnection';
+  edges: Array<ArmDailyStatEdge>;
   pageInfo: PageInfo;
   totalCount: Scalars['Int']['output'];
 };
@@ -28191,9 +28191,9 @@ export type Query = {
   aeroVoterVoteds: Array<AeroVoterVoted>;
   aeroVoterVotedsConnection: AeroVoterVotedsConnection;
   armById?: Maybe<Arm>;
-  armDailyStateById?: Maybe<ArmDailyState>;
-  armDailyStates: Array<ArmDailyState>;
-  armDailyStatesConnection: ArmDailyStatesConnection;
+  armDailyStatById?: Maybe<ArmDailyStat>;
+  armDailyStats: Array<ArmDailyStat>;
+  armDailyStatsConnection: ArmDailyStatsConnection;
   armRedemptionById?: Maybe<ArmRedemption>;
   armRedemptions: Array<ArmRedemption>;
   armRedemptionsConnection: ArmRedemptionsConnection;
@@ -29598,24 +29598,24 @@ export type QueryArmByIdArgs = {
 };
 
 
-export type QueryArmDailyStateByIdArgs = {
+export type QueryArmDailyStatByIdArgs = {
   id: Scalars['String']['input'];
 };
 
 
-export type QueryArmDailyStatesArgs = {
+export type QueryArmDailyStatsArgs = {
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  orderBy?: InputMaybe<Array<ArmDailyStateOrderByInput>>;
-  where?: InputMaybe<ArmDailyStateWhereInput>;
+  orderBy?: InputMaybe<Array<ArmDailyStatOrderByInput>>;
+  where?: InputMaybe<ArmDailyStatWhereInput>;
 };
 
 
-export type QueryArmDailyStatesConnectionArgs = {
+export type QueryArmDailyStatsConnectionArgs = {
   after?: InputMaybe<Scalars['String']['input']>;
   first?: InputMaybe<Scalars['Int']['input']>;
-  orderBy: Array<ArmDailyStateOrderByInput>;
-  where?: InputMaybe<ArmDailyStateWhereInput>;
+  orderBy: Array<ArmDailyStatOrderByInput>;
+  where?: InputMaybe<ArmDailyStatWhereInput>;
 };
 
 

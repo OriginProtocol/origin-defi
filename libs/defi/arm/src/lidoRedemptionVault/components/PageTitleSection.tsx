@@ -3,10 +3,16 @@ import { ColorChip } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
+import { useArmDailyStatsQuery } from '../queries.generated';
+
 import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
+  const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
+    { limit: 1 },
+    { select: (data) => data?.armDailyStats?.[0]?.apy ?? 0 },
+  );
 
   return (
     <Stack
@@ -26,10 +32,10 @@ export const PageTitleSection = (props: StackProps) => {
     >
       <ColorChip spacing={0.5} minHeight={40}>
         <LoadingLabel
-          isLoading={false}
+          isLoading={isApyLoading}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(0.274, {
+          {intl.formatNumber(apy ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
           })}

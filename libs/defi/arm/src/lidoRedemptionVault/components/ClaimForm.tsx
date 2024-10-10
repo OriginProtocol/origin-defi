@@ -13,17 +13,19 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SectionCard } from '@origin/defi/shared';
+import { SectionCard, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import {
   FaArrowUpRightRegular,
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
+import { TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import { useQueryClient } from '@tanstack/react-query';
 import { add, eq, format, from } from 'dnum';
-import { groupBy, remove } from 'ramda';
+import { groupBy } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useArmVault } from '../hooks';
@@ -37,22 +39,42 @@ export const ClaimForm = (props: CardContentProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
-  const [gasPrice, setGasPrice] = useState<bigint>(0n);
-  const { data, isLoading } = useArmVault();
+  const queryClient = useQueryClient();
+  const [selectedClaimId, setSelectedClaimId] = useState<bigint | null>(null);
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const selectedAmount =
+    info?.requests?.find((r) => r.requestId === selectedClaimId)?.amount ?? 0n;
+  const { params, callbacks, gasPrice } = useTxButton({
+    params: {
+      contract: contracts.mainnet.ARMstETHWETHPool,
+      functionName: 'claimRedeem',
+      args: [selectedClaimId ?? -1n],
+    },
+    callbacks: {
+      onTxSigned: () => {
+        queryClient.invalidateQueries();
+      },
+    },
+    activity: {
+      type: 'claim-withdrawal',
+      status: 'idle',
+      amountIn: selectedAmount,
+      tokenIdIn: tokens.mainnet.WETH.id,
+    },
+    enableGas: true,
+  });
 
   const handleClaimClick = (requestId: bigint) => () => {
-    const idx = selectedClaimIds.findIndex((id) => id === requestId);
-    if (idx === -1) {
-      setSelectedClaimIds((prev) => [...prev, requestId]);
+    if (selectedClaimId === requestId) {
+      setSelectedClaimId(null);
     } else {
-      setSelectedClaimIds((prev) => remove(idx, 1, prev));
+      setSelectedClaimId(requestId);
     }
   };
 
   const { claimable, pending } = groupBy(
     (r) => (r.claimable ? 'claimable' : 'pending'),
-    data?.requests ?? [],
+    info?.requests ?? [],
   );
 
   const availableToClaim =
@@ -104,7 +126,7 @@ export const ClaimForm = (props: CardContentProps) => {
               }}
             >
               <LoadingLabel
-                isLoading={isLoading}
+                isLoading={isInfoLoading}
                 variant="featured1"
                 sx={{ fontWeight: 'bold' }}
               >
@@ -184,7 +206,7 @@ export const ClaimForm = (props: CardContentProps) => {
                 }}
               >
                 <LoadingLabel
-                  isLoading={isLoading}
+                  isLoading={isInfoLoading}
                   variant="featured2"
                   sx={{ fontWeight: 'bold' }}
                 >
@@ -209,7 +231,7 @@ export const ClaimForm = (props: CardContentProps) => {
           mb={3}
         >
           <Stack divider={<Divider />}>
-            {isLoading ? (
+            {isInfoLoading ? (
               <Stack
                 sx={{
                   justifyContent: 'center',
@@ -219,7 +241,7 @@ export const ClaimForm = (props: CardContentProps) => {
               >
                 <CircularProgress size={24} />
               </Stack>
-            ) : isNilOrEmpty(data?.requests) ? (
+            ) : isNilOrEmpty(info?.requests) ? (
               <Stack
                 sx={{
                   justifyContent: 'center',
@@ -238,11 +260,11 @@ export const ClaimForm = (props: CardContentProps) => {
                 </Typography>
               </Stack>
             ) : (
-              data?.requests?.map((r) => (
+              info?.requests?.map((r) => (
                 <ClaimRow
                   key={r.id}
                   request={r}
-                  selected={selectedClaimIds.includes(r.requestId)}
+                  selected={selectedClaimId === r.requestId}
                   onSelect={handleClaimClick(r.requestId)}
                   isProcessing={false}
                 />
@@ -250,13 +272,13 @@ export const ClaimForm = (props: CardContentProps) => {
             )}
           </Stack>
         </SectionCard>
-        <Collapse in={!isNilOrEmpty(selectedClaimIds)}>
+        <Collapse in={!isNilOrEmpty(selectedClaimId)}>
           <ValueLabel
             label={intl.formatMessage({
               defaultMessage: 'Approximate gas cost:',
             })}
-            value={`$${format([132n, 3], 2)}`}
-            isLoading={isLoading}
+            value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+            isLoading={isInfoLoading}
             direction="row"
             sx={{ justifyContent: 'space-between', mb: 3 }}
             labelProps={{
@@ -265,9 +287,29 @@ export const ClaimForm = (props: CardContentProps) => {
             }}
           />
         </Collapse>
-        <Button variant="action" disabled={isNilOrEmpty(selectedClaimIds)}>
-          {intl.formatMessage({ defaultMessage: 'Claim' })}
-        </Button>
+        <TxButton
+          params={params}
+          callbacks={callbacks}
+          variant="action"
+          disabled={isNilOrEmpty(selectedClaimId)}
+          label={intl.formatMessage(
+            { defaultMessage: 'Claim{amount}' },
+            {
+              amount: eq(selectedAmount, 0)
+                ? ''
+                : ` ${format(
+                    [selectedAmount, tokens.mainnet['ARM-WETH-stETH'].decimals],
+                    {
+                      digits: getFormatPrecision([
+                        selectedAmount,
+                        tokens.mainnet['ARM-WETH-stETH'].decimals,
+                      ]),
+                      decimalsRounding: 'ROUND_DOWN',
+                    },
+                  )} ${tokens.mainnet.WETH.symbol}`,
+            },
+          )}
+        />
       </Stack>
     </CardContent>
   );

@@ -1,19 +1,45 @@
-fragment ArmDailyStat on ArmDailyState {
-  id
-  totalSupply
-  apy
-  totalAssets
-}
-
 query armDailyStats(
   $limit: Int
-  $orderBy: [ArmDailyStateOrderByInput!] = [timestamp_DESC]
+  $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]
 ) {
-  armDailyStates(limit: $limit, orderBy: $orderBy, where: {
-    address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6"
-    chainId_eq: 1
-  }) {
-    ...ArmDailyStat
+  armDailyStats(
+    limit: $limit
+    orderBy: $orderBy
+    where: {
+      address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6"
+      chainId_eq: 1
+    }
+  ) {
+    id
+    timestamp
+    outstandingAssets1
+    totalSupply
+    apy
+    totalAssets
   }
 }
 
+query armWithdrawalRequests(
+  $address: String!
+  $limit: Int
+  $orderBy: [ArmRedemptionOrderByInput!] = [timestamp_DESC]
+) {
+  armRedemptions(
+    limit: $limit
+    orderBy: $orderBy
+    where: {
+      account_containsInsensitive: $address
+      address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6"
+      chainId_eq: 1
+    }
+  ) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    txHash
+    blockNumber
+  }
+}

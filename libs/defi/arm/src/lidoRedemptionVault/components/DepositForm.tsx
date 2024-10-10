@@ -17,7 +17,11 @@ import {
   Typography,
 } from '@mui/material';
 import { SwapProvider, TokenButton, trackEvent } from '@origin/defi/shared';
-import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
+import {
+  BigIntInput,
+  InfoTooltipLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
@@ -37,12 +41,12 @@ import {
 } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
-import { format, from, gt, lt, mul, sub } from 'dnum';
+import { div, format, from, gt, lt, mul, sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { depositARMActions } from '../actions';
-import { armSwapRoutes } from '../constants';
+import { armSwapRoutes, WAVE_AMOUNT } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -94,10 +98,19 @@ const DepositFormWrapped = (props: CardContentProps) => {
     handleAmountInChange(balances?.[tokenIn.id] ?? 0n);
   };
 
+  console.log(info, toNumber(div(info?.waveCap ?? from(0), WAVE_AMOUNT)));
+
   const amount = [amountIn, tokenIn.decimals] as Dnum;
   const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
   const userCapLeft = sub(info?.userCap ?? from(0), amount);
   const waveCapLeft = sub(info?.waveCap ?? from(0), amount);
+  const pctWaveRemaining = toNumber(
+    div(info?.totalAssets ?? from(0, 18), info?.waveCap ?? from(1, 18)),
+    { digits: 2 },
+  );
+  const waveRemaining = toNumber(
+    sub(info?.waveCap ?? from(0), info?.totalAssets ?? from(0)),
+  );
   const showUserCapDisclaimer =
     isConnected &&
     !isInfoLoading &&
@@ -222,12 +235,13 @@ const DepositFormWrapped = (props: CardContentProps) => {
             direction="row"
             sx={{ alignItems: 'center', justifyContent: 'space-between' }}
           >
-            <Typography
+            <LoadingLabel
+              isLoading={isInfoLoading}
               variant="featured3"
               sx={{ fontWeight: 'bold', color: 'primary.main' }}
             >
-              {intl.formatNumber(0.75, { style: 'percent' })}
-            </Typography>
+              {intl.formatNumber(pctWaveRemaining, { style: 'percent' })}
+            </LoadingLabel>
             <Typography color="text.secondary">
               {intl.formatMessage(
                 {
@@ -236,14 +250,14 @@ const DepositFormWrapped = (props: CardContentProps) => {
                 },
                 {
                   waveNumber: 1,
-                  remaining: intl.formatNumber(1432.5),
+                  remaining: intl.formatNumber(waveRemaining),
                 },
               )}
             </Typography>
           </Stack>
           <LinearProgress
             variant="determinate"
-            value={75}
+            value={pctWaveRemaining * 100}
             sx={{
               borderRadius: 3,
               height: 4,

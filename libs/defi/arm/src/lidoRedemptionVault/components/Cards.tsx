@@ -12,15 +12,13 @@ import { TokenChip } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
-import {
-  AddressLabel,
-  useTvl,
-  useWatchBalance,
-} from '@origin/shared/providers';
+import { AddressLabel, useWatchBalance } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from, toNumber } from 'dnum';
+import { format, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
+
+import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -28,6 +26,10 @@ import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
+  const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
+    { limit: 1 },
+    { select: (data) => data?.armDailyStats?.[0]?.apy ?? 0 },
+  );
 
   return (
     <Card {...props}>
@@ -38,10 +40,11 @@ export const ApyCard = (props: CardProps) => {
           label={intl.formatMessage({
             defaultMessage: '30-day trailing',
           })}
-          value={intl.formatNumber(0.274, {
+          value={intl.formatNumber(apy ?? 0, {
             style: 'percent',
             maximumFractionDigits: 2,
           })}
+          isLoading={isApyLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -51,8 +54,9 @@ export const ApyCard = (props: CardProps) => {
 
 export const TvlCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(
-    tokens.mainnet['ARM-WETH-stETH'],
+  const { data: tvl, isLoading: isTvlLoading } = useArmDailyStatsQuery(
+    { limit: 1 },
+    { select: (data) => data?.armDailyStats?.[0]?.totalSupply },
   );
 
   return (
@@ -67,10 +71,16 @@ export const TvlCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={intl.formatNumber(toNumber(tvl ?? from(0)), {
-            notation: 'compact',
-            maximumFractionDigits: 2,
-          })}
+          value={intl.formatNumber(
+            toNumber([
+              BigInt(tvl ?? 0),
+              tokens.mainnet['ARM-WETH-stETH'].decimals,
+            ]),
+            {
+              notation: 'compact',
+              maximumFractionDigits: 2,
+            },
+          )}
           isLoading={isTvlLoading}
           {...valueLabelProps}
         />
