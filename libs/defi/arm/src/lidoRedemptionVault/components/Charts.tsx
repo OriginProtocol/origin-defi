@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import {
   ChartTooltip,
+  InfoTooltipLabel,
   LimitControls,
   LineChart,
   LoadingLabel,
@@ -238,9 +239,18 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({
-          defaultMessage: 'Discounted stETH ownership',
-        })}
+        title={
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'WETH liquidity available for withdrawals depends on how much WETH vs. stETH the vault owns. Most often, depositors can withdraw their ETH from the vault instantly. In some cases, they may need to wait for stETH to complete the withdrawal cycle.',
+            })}
+          >
+            {intl.formatMessage({
+              defaultMessage: 'Discounted stETH ownership',
+            })}
+          </InfoTooltipLabel>
+        }
       />
       <Divider />
       <CardContent>
