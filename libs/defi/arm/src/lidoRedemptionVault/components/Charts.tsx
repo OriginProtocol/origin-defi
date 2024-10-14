@@ -100,6 +100,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
               xKey: 'timestamp',
               yKey: 'apy',
               color: theme.palette.primary.main,
+              curveType: 'base',
             },
           ]}
           onHover={(idx) => {
@@ -187,6 +188,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
               xKey: 'timestamp',
               yKey: 'totalSupply',
               color: theme.palette.primary.main,
+              curveType: 'base',
             },
           ]}
           onHover={(idx) => {
