@@ -1,8 +1,11 @@
-import { capitalize, Stack, Typography } from '@mui/material';
+import { capitalize, Stack } from '@mui/material';
 import { useIntl } from 'react-intl';
+
+import { ValueLabel } from '../Labels';
 
 import type { StackProps } from '@mui/material';
 
+import type { ValueLabelProps } from '../Labels';
 import type { Serie } from './types';
 
 export type ChartTooltipProps<ChartData> = {
@@ -21,40 +24,48 @@ export const ChartTooltip = <ChartData,>({
 
   return (
     <Stack
+      spacing={0.5}
       {...rest}
       sx={[
         { backgroundColor: 'background.default' },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <Typography variant="body2" sx={{ color: 'text.primary' }}>
-        {intl.formatMessage(
-          { defaultMessage: 'Date: {date}' },
-          {
-            date: intl.formatDate(
-              new Date(series[0].data[0]?.[series[0].xKey] as number),
-            ),
-          },
+      <ValueLabel
+        label={intl.formatMessage({ defaultMessage: 'Date' })}
+        value={intl.formatDate(
+          new Date(series[0].data[0]?.[series[0].xKey] as number),
         )}
-      </Typography>
+        {...valueLabelProps}
+      />
       {series.map((s, i) => (
-        <Typography
+        <ValueLabel
           key={`tooltip-serie-${i}`}
-          variant="body2"
-          sx={{ color: 'text.primary' }}
-        >
-          {intl.formatMessage(
-            { defaultMessage: '{label}: {value}' },
-            {
-              label: s?.label ?? capitalize(s.yKey as string) ?? 'Serie',
-              value: intl.formatNumber(s.data?.[0]?.[s.yKey] as number, {
-                notation: 'compact',
-                minimumFractionDigits: 2,
-              }),
-            },
-          )}
-        </Typography>
+          label={s?.label ?? capitalize(s.yKey as string) ?? 'Serie'}
+          value={intl.formatNumber(s.data?.[0]?.[s.yKey] as number, {
+            notation: 'compact',
+            minimumFractionDigits: 2,
+          })}
+          {...valueLabelProps}
+        />
       ))}
     </Stack>
   );
+};
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  direction: 'row',
+  spacing: 1,
+  sx: {
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+  },
+  labelProps: {
+    sx: {
+      minWidth: 50,
+    },
+  },
+  valueProps: {
+    color: 'text.primary',
+  },
 };

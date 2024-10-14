@@ -185,7 +185,7 @@ export const LineChart = <Datum,>({
             scale={yScale}
             width={width - margins.right}
             strokeDasharray="2,4"
-            stroke="#ffffff"
+            stroke={theme.palette.text.secondary}
             strokeOpacity={0.1}
             numTicks={height / 80}
           />
@@ -206,7 +206,7 @@ export const LineChart = <Datum,>({
             strokeLinecap="round"
           />
         ))}
-        {!activeIdx ? null : (
+        {activeIdx ? (
           <line
             x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
             x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
@@ -217,7 +217,7 @@ export const LineChart = <Datum,>({
             strokeDasharray={2}
             strokeLinecap="round"
           />
-        )}
+        ) : null}
         {width && height && (
           <rect
             x={margins.left}

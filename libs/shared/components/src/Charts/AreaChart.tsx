@@ -223,7 +223,7 @@ export const AreaChart = <Datum,>({
             scale={yScale}
             width={width - margins.right}
             strokeDasharray="2,4"
-            stroke="#ffffff"
+            stroke={theme.palette.text.secondary}
             strokeOpacity={0.1}
             numTicks={height / 80}
           />
@@ -269,18 +269,17 @@ export const AreaChart = <Datum,>({
             })
           }
         </AreaStack>
-        {!activeIdx ? null : (
+        {activeIdx ? (
           <line
             x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
             x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
             y1={margins.top}
             y2={height - margins.bottom}
-            stroke="#ffffff"
+            stroke={theme.palette.text.secondary}
             strokeWidth={0.5}
             strokeDasharray={2}
           />
-        )}
-
+        ) : null}
         {width && height && (
           <rect
             x={margins.left}
