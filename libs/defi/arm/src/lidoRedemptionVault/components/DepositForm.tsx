@@ -46,7 +46,7 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { depositARMActions } from '../actions';
-import { armSwapRoutes, WAVE_AMOUNT } from '../constants';
+import { armSwapRoutes } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
@@ -98,8 +98,6 @@ const DepositFormWrapped = (props: CardContentProps) => {
     handleAmountInChange(balances?.[tokenIn.id] ?? 0n);
   };
 
-  console.log(info, toNumber(div(info?.waveCap ?? from(0), WAVE_AMOUNT)));
-
   const amount = [amountIn, tokenIn.decimals] as Dnum;
   const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
   const userCapLeft = sub(info?.userCap ?? from(0), amount);
@@ -138,9 +136,11 @@ const DepositFormWrapped = (props: CardContentProps) => {
     (allowance ?? 0n) < amountIn;
   const isDepositDisabled =
     isInfoLoading ||
+    isSwapWaitingForSignature ||
+    isSwapLoading ||
     isBalancesLoading ||
     gt(amount, userBalance) ||
-    lt([allowance ?? 0n, tokenIn.decimals] as Dnum, amount) ||
+    gt(amount, [allowance ?? 0n, tokenIn.decimals] as Dnum) ||
     gt(amount, info?.userCap ?? from(0)) ||
     gt(amount, info?.waveCap ?? from(0)) ||
     amount[0] === 0n;

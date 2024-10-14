@@ -13,11 +13,11 @@ export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ 
 export type ArmWithdrawalRequestsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
-  orderBy?: Types.InputMaybe<Array<Types.ArmRedemptionOrderByInput> | Types.ArmRedemptionOrderByInput>;
+  orderBy?: Types.InputMaybe<Array<Types.ArmWithdrawalRequestOrderByInput> | Types.ArmWithdrawalRequestOrderByInput>;
 }>;
 
 
-export type ArmWithdrawalRequestsQuery = { __typename?: 'Query', armRedemptions: Array<{ __typename?: 'ArmRedemption', id: string, requestId: string, timestamp: string, amount: string, queued: string, claimed: boolean, txHash: string, blockNumber: number }> };
+export type ArmWithdrawalRequestsQuery = { __typename?: 'Query', armWithdrawalRequests: Array<{ __typename?: 'ArmWithdrawalRequest', id: string, requestId: string, timestamp: string, amount: string, queued: string, claimed: boolean, txHash: string, blockNumber: number }> };
 
 
 
@@ -60,8 +60,8 @@ useArmDailyStatsQuery.getKey = (variables?: ArmDailyStatsQueryVariables) => vari
 useArmDailyStatsQuery.fetcher = (variables?: ArmDailyStatsQueryVariables, options?: RequestInit['headers']) => graphqlClient<ArmDailyStatsQuery, ArmDailyStatsQueryVariables>(ArmDailyStatsDocument, variables, options);
 
 export const ArmWithdrawalRequestsDocument = `
-    query armWithdrawalRequests($address: String!, $limit: Int, $orderBy: [ArmRedemptionOrderByInput!] = [timestamp_DESC]) {
-  armRedemptions(
+    query armWithdrawalRequests($address: String!, $limit: Int, $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]) {
+  armWithdrawalRequests(
     limit: $limit
     orderBy: $orderBy
     where: {account_containsInsensitive: $address, address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6", chainId_eq: 1}

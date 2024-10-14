@@ -142,7 +142,7 @@ const fetcher: (
         : from(0);
     const claimableRes =
       res[0][3].status === 'success' ? BigInt(res[0][3].result ?? 0) : 0n;
-    const requests = res[2].armRedemptions
+    const requests = res[2].armWithdrawalRequests
       .filter((r) => !r.claimed)
       .map((r) => {
         const claimable =

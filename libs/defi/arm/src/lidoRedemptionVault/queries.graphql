@@ -22,9 +22,9 @@ query armDailyStats(
 query armWithdrawalRequests(
   $address: String!
   $limit: Int
-  $orderBy: [ArmRedemptionOrderByInput!] = [timestamp_DESC]
+  $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]
 ) {
-  armRedemptions(
+  armWithdrawalRequests(
     limit: $limit
     orderBy: $orderBy
     where: {
