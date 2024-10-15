@@ -20,6 +20,8 @@ export type OTokenConfig = {
   showCirculatingSplit?: boolean;
   // default chart limit for protocol revenue card (default 182 days)
   protocolRevenueCardDefaultLimit?: number;
+  // default trailing days for apy display
+  defaultApyTrailing?: 'apy7DayAvg' | 'apy14DayAvg' | 'apy30DayAvg';
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -51,5 +53,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dripperToken: tokens.base.WETH,
     showCirculatingSplit: true,
     protocolRevenueCardDefaultLimit: 30,
+    defaultApyTrailing: 'apy7DayAvg',
   },
 };

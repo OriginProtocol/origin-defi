@@ -23,6 +23,10 @@ export const TokenCard = ({ token, ...rest }: TokenCardProps) => {
 
   const config = oTokenConfig[token.id as keyof typeof oTokenConfig];
 
+  const apy = config?.defaultApyTrailing
+    ? info?.apies[config.defaultApyTrailing]
+    : info?.bestApy?.value;
+
   return (
     <Card {...rest}>
       <CardContent>
@@ -69,7 +73,7 @@ export const TokenCard = ({ token, ...rest }: TokenCardProps) => {
             />
             <ValueLabel
               label={intl.formatMessage({ defaultMessage: 'APY' })}
-              value={intl.formatNumber(info?.bestApy?.value ?? 0, {
+              value={intl.formatNumber(apy ?? 0, {
                 style: 'percent',
                 maximumFractionDigits: 2,
                 minimumFractionDigits: 2,
