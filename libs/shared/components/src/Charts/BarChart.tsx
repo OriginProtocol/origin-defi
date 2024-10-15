@@ -67,11 +67,12 @@ export const BarChart = ({
 
   if (!width || !height) return null;
 
+  const rightTicks = yScale.ticks(Math.floor(height / 40));
   const tickXLabel = tickXLabelProps ?? {
     fontSize: 11,
     fontFamily: theme.typography.body1.fontFamily,
     fill: theme.palette.text.secondary,
-    textAnchor: 'start',
+    textAnchor: 'middle',
   };
   const tickYLabel = tickYLabelProps ?? {
     fontSize: 11,
@@ -139,24 +140,15 @@ export const BarChart = ({
           left={width - margins.right}
           stroke={theme.palette.text.secondary}
           tickFormat={tickYFormat}
-          tickLabelProps={{
-            fontSize: 11,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-            textAnchor: 'start',
-          }}
-          numTicks={Math.floor(height / 40)}
+          tickLabelProps={tickYLabel}
+          numTicks={rightTicks.length}
         />
         <AxisBottom
           scale={xScale}
           stroke={theme.palette.text.secondary}
           top={height - margins.bottom}
           tickFormat={tickXFormat}
-          tickLabelProps={{
-            fontSize: 11,
-            fontFamily: theme.typography.body1.fontFamily,
-            fill: theme.palette.text.secondary,
-          }}
+          tickLabelProps={tickXLabel}
         />
         <GridRows
           left={margins.left}
