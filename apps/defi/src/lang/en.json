@@ -77,6 +77,12 @@
       "value": "End block"
     }
   ],
+  "/LztlG": [
+    {
+      "type": 0,
+      "value": "The amount to withdraw"
+    }
+  ],
   "/jJLYy": [
     {
       "type": 0,
@@ -161,6 +167,12 @@
       "value": "Transaction"
     }
   ],
+  "11nx/H": [
+    {
+      "type": 0,
+      "value": "7-Day MA"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -225,6 +237,12 @@
       "value": "Return to Home Page"
     }
   ],
+  "1uz/I3": [
+    {
+      "type": 0,
+      "value": "1M"
+    }
+  ],
   "20KPDF": [
     {
       "type": 0,
@@ -283,6 +301,12 @@
     {
       "type": 0,
       "value": "Claiming your withdrawal will incur this estimated additional gas fee"
+    }
+  ],
+  "3eOG09": [
+    {
+      "type": 0,
+      "value": "The waiting time for the withdrawal to be processed"
     }
   ],
   "3lOoIq": [
@@ -447,6 +471,12 @@
       "value": "New Snapshot Proposal"
     }
   ],
+  "5KdaFB": [
+    {
+      "type": 0,
+      "value": "Discounted stETH ownership"
+    }
+  ],
   "5RMD2G": [
     {
       "type": 0,
@@ -529,6 +559,12 @@
     {
       "type": 0,
       "value": "Approved"
+    }
+  ],
+  "6bJGds": [
+    {
+      "type": 0,
+      "value": "1W"
     }
   ],
   "6cYAtm": [
@@ -669,6 +705,12 @@
       "value": "Discord support channel"
     }
   ],
+  "9nUTIO": [
+    {
+      "type": 0,
+      "value": "Deposits will be disabled until further notice. Please check back later."
+    }
+  ],
   "A7ewt8": [
     {
       "type": 0,
@@ -683,6 +725,12 @@
     {
       "type": 0,
       "value": "Est. time"
+    }
+  ],
+  "ABavuV": [
+    {
+      "type": 0,
+      "value": "The amount to deposit"
     }
   ],
   "ASNc/h": [
@@ -771,6 +819,12 @@
       "value": "Redeem via OETH Vault"
     }
   ],
+  "AwuN57": [
+    {
+      "type": 0,
+      "value": "6 months"
+    }
+  ],
   "B0mIqy": [
     {
       "type": 0,
@@ -837,6 +891,18 @@
       "value": "Stablecoin mix"
     }
   ],
+  "DBcUfI": [
+    {
+      "type": 0,
+      "value": "30-day trailing"
+    }
+  ],
+  "DBcj/1": [
+    {
+      "type": 0,
+      "value": "Amount to withdraw"
+    }
+  ],
   "DK7ein": [
     {
       "type": 0,
@@ -847,6 +913,12 @@
     {
       "type": 0,
       "value": "Redeeming"
+    }
+  ],
+  "DfnzFy": [
+    {
+      "type": 0,
+      "value": "stETH Redemption Vault"
     }
   ],
   "Dmb2/1": [
@@ -933,6 +1005,12 @@
       "value": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send converted to wOETH, plus the estimated bridge fee, minus the actual bridge fee."
     }
   ],
+  "EnSr55": [
+    {
+      "type": 0,
+      "value": "The total amount of ETH deposits for the current wave"
+    }
+  ],
   "F6lS59": [
     {
       "type": 0,
@@ -943,6 +1021,12 @@
     {
       "type": 0,
       "value": "Any unclaimed rewards will transferred to your wallet immediately when you extend your stake."
+    }
+  ],
+  "FPMGr3": [
+    {
+      "type": 0,
+      "value": "30-Day MA"
     }
   ],
   "FVYhKc": [
@@ -999,6 +1083,12 @@
     {
       "type": 0,
       "value": "Closed"
+    }
+  ],
+  "GAjAVk": [
+    {
+      "type": 0,
+      "value": "About this vault"
     }
   ],
   "GZJpDf": [
@@ -1103,6 +1193,12 @@
       "value": "Snapshot vote"
     }
   ],
+  "HyifTx": [
+    {
+      "type": 0,
+      "value": "~ 0-5 days"
+    }
+  ],
   "I5NMJ8": [
     {
       "type": 0,
@@ -1131,6 +1227,16 @@
     {
       "type": 0,
       "value": "Ready"
+    }
+  ],
+  "IeqnaT": [
+    {
+      "type": 0,
+      "value": "Date: "
+    },
+    {
+      "type": 1,
+      "value": "date"
     }
   ],
   "IfZsEo": [
@@ -1245,10 +1351,22 @@
       "value": "Succeeded"
     }
   ],
+  "LTNKL8": [
+    {
+      "type": 0,
+      "value": "1 week"
+    }
+  ],
   "LU9l68": [
     {
       "type": 0,
       "value": "Your balance"
+    }
+  ],
+  "LZqvbG": [
+    {
+      "type": 0,
+      "value": "6M"
     }
   ],
   "LpWMOQ": [
@@ -1293,6 +1411,12 @@
     {
       "type": 0,
       "value": "APY"
+    }
+  ],
+  "MLU2s2": [
+    {
+      "type": 0,
+      "value": "Your whitelist cap"
     }
   ],
   "MQq3X+": [
@@ -1375,6 +1499,20 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "NNFAc/": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
     }
   ],
   "NTfaBt": [
@@ -1529,6 +1667,12 @@
       "value": "Canceled"
     }
   ],
+  "PXAur5": [
+    {
+      "type": 0,
+      "value": "Withdraw"
+    }
+  ],
   "PdEKuc": [
     {
       "type": 1,
@@ -1619,6 +1763,12 @@
     {
       "type": 1,
       "value": "number"
+    }
+  ],
+  "R2bAs9": [
+    {
+      "type": 0,
+      "value": "Withdraw time estimate"
     }
   ],
   "RIV67a": [
@@ -1851,6 +2001,12 @@
       "value": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
     }
   ],
+  "Tvxw6X": [
+    {
+      "type": 0,
+      "value": "Your vault balance"
+    }
+  ],
   "TwyMau": [
     {
       "type": 0,
@@ -1861,6 +2017,12 @@
     {
       "type": 0,
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+    }
+  ],
+  "Uiq/al": [
+    {
+      "type": 0,
+      "value": "1YR"
     }
   ],
   "UjXhyn": [
@@ -1991,6 +2153,12 @@
       "value": "Redeem"
     }
   ],
+  "XqZwxI": [
+    {
+      "type": 0,
+      "value": "Amount to deposit"
+    }
+  ],
   "XrnF+v": [
     {
       "type": 0,
@@ -2029,6 +2197,12 @@
     {
       "type": 0,
       "value": "The amount of pending rewards allocated to you"
+    }
+  ],
+  "YZo94U": [
+    {
+      "type": 0,
+      "value": "You have reached your whitelist cap"
     }
   ],
   "Yl2sc/": [
@@ -2305,6 +2479,12 @@
       "value": "Snapshot proposals"
     }
   ],
+  "dIgBOz": [
+    {
+      "type": 0,
+      "value": "Deposit"
+    }
+  ],
   "dM+p3/": [
     {
       "type": 0,
@@ -2421,6 +2601,12 @@
       "value": "Swap via CurvePool"
     }
   ],
+  "enDzGl": [
+    {
+      "type": 0,
+      "value": "30-Day"
+    }
+  ],
   "ewhSbE": [
     {
       "type": 0,
@@ -2527,6 +2713,12 @@
     {
       "type": 0,
       "value": "Impossible to execute approval"
+    }
+  ],
+  "hCQDkn": [
+    {
+      "type": 0,
+      "value": "USD"
     }
   ],
   "hSpNEQ": [
@@ -2841,6 +3033,12 @@
       "value": "Receive amount"
     }
   ],
+  "n7chn1": [
+    {
+      "type": 0,
+      "value": "7-Day"
+    }
+  ],
   "nE87EV": [
     {
       "type": 1,
@@ -2849,6 +3047,12 @@
     {
       "type": 0,
       "value": " pending"
+    }
+  ],
+  "nRuawh": [
+    {
+      "type": 0,
+      "value": "This ETH vault funds Lido stETH redeems"
     }
   ],
   "nisJoJ": [
@@ -2881,6 +3085,28 @@
       "value": "Shape the future of Origin's products"
     }
   ],
+  "ovjtl6": [
+    {
+      "type": 0,
+      "value": "Wave "
+    },
+    {
+      "type": 1,
+      "value": "waveNumber"
+    },
+    {
+      "type": 0,
+      "value": " cap remaining: "
+    },
+    {
+      "type": 1,
+      "value": "remaining"
+    },
+    {
+      "type": 0,
+      "value": " ETH"
+    }
+  ],
   "oy7udF": [
     {
       "type": 0,
@@ -2899,6 +3125,12 @@
       "value": "Request"
     }
   ],
+  "p1dNds": [
+    {
+      "type": 0,
+      "value": "1 month"
+    }
+  ],
   "p556q3": [
     {
       "type": 0,
@@ -2915,6 +3147,20 @@
     {
       "type": 0,
       "value": "The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
+    }
+  ],
+  "pK0qqV": [
+    {
+      "type": 0,
+      "value": "Wave "
+    },
+    {
+      "type": 1,
+      "value": "waveNumber"
+    },
+    {
+      "type": 0,
+      "value": " TVL cap progress"
     }
   ],
   "pYbH7c": [
@@ -3039,10 +3285,22 @@
       "value": "Your Unclaimed OGV Rewards"
     }
   ],
+  "rwIPgH": [
+    {
+      "type": 0,
+      "value": "1 year"
+    }
+  ],
   "s8BnAC": [
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sGU9Dr": [
+    {
+      "type": 0,
+      "value": "ETH"
     }
   ],
   "sjKCFv": [
@@ -3207,6 +3465,12 @@
       "value": "Select a token"
     }
   ],
+  "uoaPWY": [
+    {
+      "type": 0,
+      "value": "The amount of ETH you can deposit for the current wave"
+    }
+  ],
   "utrdPr": [
     {
       "type": 0,
@@ -3217,6 +3481,12 @@
     {
       "type": 0,
       "value": "Enabling rebasing"
+    }
+  ],
+  "v1Vi1d": [
+    {
+      "type": 0,
+      "value": "14-Day"
     }
   ],
   "vKzI0S": [
@@ -3311,6 +3581,12 @@
     {
       "type": 0,
       "value": "Unwrap with Origin"
+    }
+  ],
+  "wqQuX7": [
+    {
+      "type": 0,
+      "value": "The ARM stETH Redemption Vault provides instant ETH liquidity for stETH users with zero slippage. It earns yield by buying discounted stETH from the market and then redeeming the stETH for ETH 1-1 using Lido’s withdrawal queue."
     }
   ],
   "wqlXwW": [

@@ -63,7 +63,8 @@ export const Topnav = () => {
   }, [isNonRebasingOETH, isNonRebasingOUSD, isNonRebasingSuperOETHb]);
 
   const isLoading = status === 'pending' && pendingCount > 0;
-  const showRebaseMenu = isNonRebasingOETH || isNonRebasingOUSD;
+  const showRebaseMenu =
+    isNonRebasingOETH || isNonRebasingOUSD || isNonRebasingSuperOETHb;
 
   return (
     <>
@@ -148,29 +149,26 @@ export const Topnav = () => {
               md: 2.5,
             }}
           >
-            {showRebaseMenu && (
-              <>
-                <Button
-                  variant="nav"
-                  color="secondary"
-                  ref={alertMenuAnchorEl}
-                  onClick={() => {
-                    setAlertMenuOpen(not);
-                  }}
-                >
-                  <FaCircleExclamationRegular
-                    sx={{ fontSize: 24, color: 'warning.main' }}
-                  />
-                </Button>
-                <AlertPopover
-                  open={alertMenuOpen}
-                  anchorEl={alertMenuAnchorEl}
-                  onClose={() => {
-                    setAlertMenuOpen(false);
-                  }}
-                />
-              </>
-            )}
+            <Button
+              variant="nav"
+              color="secondary"
+              ref={alertMenuAnchorEl}
+              onClick={() => {
+                setAlertMenuOpen(not);
+              }}
+              sx={[!showRebaseMenu && { display: 'none' }]}
+            >
+              <FaCircleExclamationRegular
+                sx={{ fontSize: 24, color: 'warning.main' }}
+              />
+            </Button>
+            <AlertPopover
+              open={alertMenuOpen}
+              anchorEl={alertMenuAnchorEl}
+              onClose={() => {
+                setAlertMenuOpen(false);
+              }}
+            />
             <ChainMenuButton
               variant="nav"
               color="secondary"

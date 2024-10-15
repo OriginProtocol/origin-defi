@@ -101,6 +101,12 @@
       "value": "Transaction"
     }
   ],
+  "11nx/H": [
+    {
+      "type": 0,
+      "value": "7-Day MA"
+    }
+  ],
   "17g+HZ": [
     {
       "type": 0,
@@ -151,6 +157,12 @@
     {
       "type": 0,
       "value": "Return to Home Page"
+    }
+  ],
+  "1uz/I3": [
+    {
+      "type": 0,
+      "value": "1M"
     }
   ],
   "20KPDF": [
@@ -293,6 +305,12 @@
       "value": "Approved"
     }
   ],
+  "6bJGds": [
+    {
+      "type": 0,
+      "value": "1W"
+    }
+  ],
   "6cYAtm": [
     {
       "type": 0,
@@ -391,6 +409,12 @@
       "value": "On-chain"
     }
   ],
+  "AwuN57": [
+    {
+      "type": 0,
+      "value": "6 months"
+    }
+  ],
   "BBCjbl": [
     {
       "type": 0,
@@ -475,6 +499,12 @@
       "value": "0 months"
     }
   ],
+  "FPMGr3": [
+    {
+      "type": 0,
+      "value": "30-Day MA"
+    }
+  ],
   "FVfYnP": [
     {
       "type": 0,
@@ -529,6 +559,16 @@
     {
       "type": 0,
       "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
+    }
+  ],
+  "IeqnaT": [
+    {
+      "type": 0,
+      "value": "Date: "
+    },
+    {
+      "type": 1,
+      "value": "date"
     }
   ],
   "IfZsEo": [
@@ -635,6 +675,18 @@
       "value": "Succeeded"
     }
   ],
+  "LTNKL8": [
+    {
+      "type": 0,
+      "value": "1 week"
+    }
+  ],
+  "LZqvbG": [
+    {
+      "type": 0,
+      "value": "6M"
+    }
+  ],
   "LsLfrw": [
     {
       "type": 0,
@@ -715,6 +767,20 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "count"
+    }
+  ],
+  "NNFAc/": [
+    {
+      "type": 1,
+      "value": "label"
+    },
+    {
+      "type": 0,
+      "value": ": "
+    },
+    {
+      "type": 1,
+      "value": "value"
     }
   ],
   "NXFAgE": [
@@ -943,6 +1009,12 @@
     {
       "type": 0,
       "value": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+    }
+  ],
+  "Uiq/al": [
+    {
+      "type": 0,
+      "value": "1YR"
     }
   ],
   "UkXeBW": [
@@ -1189,6 +1261,12 @@
       "value": "My Voting Power"
     }
   ],
+  "enDzGl": [
+    {
+      "type": 0,
+      "value": "30-Day"
+    }
+  ],
   "fBhctx": [
     {
       "type": 0,
@@ -1269,6 +1347,12 @@
     {
       "type": 0,
       "value": "Current OGN Staking vAPY"
+    }
+  ],
+  "hCQDkn": [
+    {
+      "type": 0,
+      "value": "USD"
     }
   ],
   "hZA4Ul": [
@@ -1433,6 +1517,12 @@
       "value": "symbol"
     }
   ],
+  "n7chn1": [
+    {
+      "type": 0,
+      "value": "7-Day"
+    }
+  ],
   "nPWAZD": [
     {
       "type": 0,
@@ -1459,6 +1549,12 @@
     {
       "type": 1,
       "value": "stake"
+    }
+  ],
+  "p1dNds": [
+    {
+      "type": 0,
+      "value": "1 month"
     }
   ],
   "p556q3": [
@@ -1537,10 +1633,22 @@
       "value": "Voted Against"
     }
   ],
+  "rwIPgH": [
+    {
+      "type": 0,
+      "value": "1 year"
+    }
+  ],
   "s8BnAC": [
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "sGU9Dr": [
+    {
+      "type": 0,
+      "value": "ETH"
     }
   ],
   "stTYBM": [
@@ -1571,6 +1679,12 @@
     {
       "type": 0,
       "value": "Percent of OGV staked out of the current total supply."
+    }
+  ],
+  "v1Vi1d": [
+    {
+      "type": 0,
+      "value": "14-Day"
     }
   ],
   "vEvTRL": [

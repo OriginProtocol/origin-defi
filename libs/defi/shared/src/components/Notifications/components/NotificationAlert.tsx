@@ -177,7 +177,7 @@ export const NotificationAlert = forwardRef<
           color={severity === 'pending' ? 'primary' : (severity as AlertColor)}
           sx={{
             position: 'absolute',
-            bottom: 1,
+            bottom: 0,
             left: 1,
             width: 1,
           }}

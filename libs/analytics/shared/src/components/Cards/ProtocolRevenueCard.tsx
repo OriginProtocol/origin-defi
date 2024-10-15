@@ -20,7 +20,7 @@ import {
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
-import { last } from 'ramda';
+import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
@@ -60,7 +60,11 @@ export const ProtocolRevenueCard = ({
   const { data: feesAvgData, isLoading: isFeesAvgLoading } = useTokenChartStats(
     { token, limit, from },
     {
-      select: (data) => data.map((d) => ({ x: d.timestamp, y: d?.[ma] })),
+      select: (data) =>
+        takeLast(
+          feesData?.length ?? 0,
+          data.map((d) => ({ x: d.timestamp, y: d?.[ma] ?? 0 })),
+        ),
     },
   );
 
@@ -155,7 +159,7 @@ export const ProtocolRevenueCard = ({
           }}
           tickYFormat={(value) => `Ξ${value as number}`}
           tickXFormat={(value) =>
-            formatInTimeZone(new Date(Number(value)), 'UTC', 'dd MM')
+            formatInTimeZone(new Date(Number(value)), 'UTC', 'dd MMM')
           }
           barColor={theme.palette.chart6}
           activeBarColor={theme.palette.chart4}
