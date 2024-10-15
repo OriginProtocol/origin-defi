@@ -72,13 +72,20 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
       }),
       columnHelper.accessor('yieldETH', {
         cell: (info) =>
-          intl.formatNumber(info.getValue(), { maximumFractionDigits: 5 }),
+          intl.formatNumber(info.getValue(), {
+            maximumFractionDigits: 3,
+            minimumFractionDigits: 3,
+          }),
         header: intl.formatMessage({ defaultMessage: 'Yield distributed' }),
         size: 200,
       }),
       columnHelper.accessor('apy', {
         cell: (info) =>
-          intl.formatNumber(info.getValue(), { maximumFractionDigits: 5 }),
+          intl.formatNumber(info.getValue(), {
+            style: 'percent',
+            maximumFractionDigits: 2,
+            minimumFractionDigits: 2,
+          }),
         header: intl.formatMessage({ defaultMessage: 'Daily APY' }),
         size: 200,
       }),
