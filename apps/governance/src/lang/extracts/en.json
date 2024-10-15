@@ -41,6 +41,9 @@
   "1+ROfp": {
     "defaultMessage": "Transaction"
   },
+  "11nx/H": {
+    "defaultMessage": "7-Day MA"
+  },
   "17g+HZ": {
     "defaultMessage": "No activity"
   },
@@ -58,6 +61,9 @@
   },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
+  },
+  "1uz/I3": {
+    "defaultMessage": "1M"
   },
   "20KPDF": {
     "defaultMessage": "Registered Voters"
@@ -104,6 +110,9 @@
   "6XFO/C": {
     "defaultMessage": "Approved"
   },
+  "6bJGds": {
+    "defaultMessage": "1W"
+  },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
   },
@@ -149,6 +158,9 @@
   "AozuFZ": {
     "defaultMessage": "On-chain"
   },
+  "AwuN57": {
+    "defaultMessage": "6 months"
+  },
   "BBCjbl": {
     "defaultMessage": "The additional share of Origin DeFi DAO voting power you will earn if you extend your lock-up."
   },
@@ -191,6 +203,9 @@
   "F6lS59": {
     "defaultMessage": "0 months"
   },
+  "FPMGr3": {
+    "defaultMessage": "30-Day MA"
+  },
   "FVfYnP": {
     "defaultMessage": "The variable APY currently being earned on staked OGV."
   },
@@ -214,6 +229,9 @@
   },
   "IPuH1g": {
     "defaultMessage": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
+  },
+  "IeqnaT": {
+    "defaultMessage": "Date: {date}"
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -254,6 +272,12 @@
   "LOghU6": {
     "defaultMessage": "Succeeded"
   },
+  "LTNKL8": {
+    "defaultMessage": "1 week"
+  },
+  "LZqvbG": {
+    "defaultMessage": "6M"
+  },
   "LsLfrw": {
     "defaultMessage": "The share of total Origin DeFi DAO voting power earned by my OGV lock-ups."
   },
@@ -277,6 +301,9 @@
   },
   "NND2zi": {
     "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
+  },
+  "NNFAc/": {
+    "defaultMessage": "{label}: {value}"
   },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
@@ -364,6 +391,9 @@
   },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
+  },
+  "Uiq/al": {
+    "defaultMessage": "1YR"
   },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
@@ -458,6 +488,9 @@
   "eOs6lG": {
     "defaultMessage": "My Voting Power"
   },
+  "enDzGl": {
+    "defaultMessage": "30-Day"
+  },
   "fBhctx": {
     "defaultMessage": "Download CSV"
   },
@@ -481,6 +514,9 @@
   },
   "gxLDKD": {
     "defaultMessage": "Current OGN Staking vAPY"
+  },
+  "hCQDkn": {
+    "defaultMessage": "USD"
   },
   "hZA4Ul": {
     "defaultMessage": "Current Lock-up Ends:"
@@ -542,6 +578,9 @@
   "mcotxc": {
     "defaultMessage": "{balance} {symbol}"
   },
+  "n7chn1": {
+    "defaultMessage": "7-Day"
+  },
   "nPWAZD": {
     "defaultMessage": "On-chain Vote Delegation"
   },
@@ -553,6 +592,9 @@
   },
   "ox/9Hn": {
     "defaultMessage": "Unstake lock-up {stake}"
+  },
+  "p1dNds": {
+    "defaultMessage": "1 month"
   },
   "p556q3": {
     "defaultMessage": "Copied"
@@ -581,8 +623,14 @@
   "rhQtuf": {
     "defaultMessage": "Voted Against"
   },
+  "rwIPgH": {
+    "defaultMessage": "1 year"
+  },
   "s8BnAC": {
     "defaultMessage": "Swap"
+  },
+  "sGU9Dr": {
+    "defaultMessage": "ETH"
   },
   "stTYBM": {
     "defaultMessage": "You confirm that you are not a resident of, citizen of, located in, incorporated in, or have a registered office in the United States or any country or region currently currently subject to sanctions by the United States."
@@ -598,6 +646,9 @@
   },
   "upcyvM": {
     "defaultMessage": "Percent of OGV staked out of the current total supply."
+  },
+  "v1Vi1d": {
+    "defaultMessage": "14-Day"
   },
   "vEvTRL": {
     "defaultMessage": "Snapshot post"

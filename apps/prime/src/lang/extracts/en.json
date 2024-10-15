@@ -38,6 +38,9 @@
   "1+ROfp": {
     "defaultMessage": "Transaction"
   },
+  "11nx/H": {
+    "defaultMessage": "7-Day MA"
+  },
   "1RqSR8": {
     "defaultMessage": "2x primeETH XP Boost"
   },
@@ -52,6 +55,9 @@
   },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
+  },
+  "1uz/I3": {
+    "defaultMessage": "1M"
   },
   "20X0BC": {
     "defaultMessage": "Transaction Cancelled"
@@ -85,6 +91,9 @@
   },
   "5mh8MJ": {
     "defaultMessage": "Process Withdrawal"
+  },
+  "6bJGds": {
+    "defaultMessage": "1W"
   },
   "6cYAtm": {
     "defaultMessage": "Insufficient funds"
@@ -125,6 +134,9 @@
   "Awi257": {
     "defaultMessage": "{amount} {symbol}"
   },
+  "AwuN57": {
+    "defaultMessage": "6 months"
+  },
   "BONcjO": {
     "defaultMessage": "Uniswap V3"
   },
@@ -164,6 +176,9 @@
   "EUPZOz": {
     "defaultMessage": "blocks left"
   },
+  "FPMGr3": {
+    "defaultMessage": "30-Day MA"
+  },
   "FrAoo9": {
     "defaultMessage": "7 days"
   },
@@ -181,6 +196,9 @@
   },
   "INlWvJ": {
     "defaultMessage": "OR"
+  },
+  "IeqnaT": {
+    "defaultMessage": "Date: {date}"
   },
   "IvIRrt": {
     "defaultMessage": "For each withdrawal request, you will have the option to claim your funds (in the form of OETH) or migrate them to ynLSDe."
@@ -209,8 +227,14 @@
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
+  "LTNKL8": {
+    "defaultMessage": "1 week"
+  },
   "LVRE3W": {
     "defaultMessage": "Swaps are eligible for bonus XP & EigenLayer points"
+  },
+  "LZqvbG": {
+    "defaultMessage": "6M"
   },
   "LmHsKL": {
     "defaultMessage": "migrated"
@@ -229,6 +253,9 @@
   },
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
+  },
+  "NNFAc/": {
+    "defaultMessage": "{label}: {value}"
   },
   "NVVad4": {
     "defaultMessage": "No withdrawal to claim"
@@ -317,6 +344,9 @@
   "UhG3Ds": {
     "defaultMessage": "Error while processing, try to refresh the page"
   },
+  "Uiq/al": {
+    "defaultMessage": "1YR"
+  },
   "UkXeBW": {
     "defaultMessage": "If the problem persists, you can contact us through our {support}."
   },
@@ -380,6 +410,9 @@
   "ej99BN": {
     "defaultMessage": "Please initiate two separate withdrawal requests if you plan to migrate some of your funds to ynLSDe and claim the rest."
   },
+  "enDzGl": {
+    "defaultMessage": "30-Day"
+  },
   "exq/WV": {
     "defaultMessage": "Migrate primeETH to ynSLDe and get whitelisted for the upcoming YieldNest airdrop."
   },
@@ -403,6 +436,9 @@
   },
   "h88CQM": {
     "defaultMessage": "sell primeETH on Uniswap."
+  },
+  "hCQDkn": {
+    "defaultMessage": "USD"
   },
   "hWyxI7": {
     "defaultMessage": "% of total"
@@ -464,6 +500,9 @@
   "mdkEkL": {
     "defaultMessage": "Your {type} is being processed"
   },
+  "n7chn1": {
+    "defaultMessage": "7-Day"
+  },
   "n9f17V": {
     "defaultMessage": "Become eligible for YieldNest’s YND airdrop based on primeETH XP earned."
   },
@@ -475,6 +514,9 @@
   },
   "oNwEq5": {
     "defaultMessage": "7-day retention period"
+  },
+  "p1dNds": {
+    "defaultMessage": "1 month"
   },
   "p556q3": {
     "defaultMessage": "Copied"
@@ -500,11 +542,17 @@
   "rbrahO": {
     "defaultMessage": "Close"
   },
+  "rwIPgH": {
+    "defaultMessage": "1 year"
+  },
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
   "sEtHlS": {
     "defaultMessage": "Withdrawal processed, check your claim"
+  },
+  "sGU9Dr": {
+    "defaultMessage": "ETH"
   },
   "sjPJxA": {
     "defaultMessage": "Migrate to ynLSDe"
@@ -533,6 +581,9 @@
   "ugjHU2": {
     "defaultMessage": "Select a token"
   },
+  "v1Vi1d": {
+    "defaultMessage": "14-Day"
+  },
   "vns1w2": {
     "defaultMessage": "ynLSDe migration is live!"
   },
@@ -559,6 +610,9 @@
   },
   "zO5VTT": {
     "defaultMessage": "Transaction in progress"
+  },
+  "zQvVDJ": {
+    "defaultMessage": "All"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
