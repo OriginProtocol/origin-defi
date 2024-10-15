@@ -96,7 +96,7 @@ export const SuperOethbBanner = (props: StackProps) => {
                         },
                   ]}
                 >
-                  {intl.formatNumber(info?.bestApy.value ?? 0, {
+                  {intl.formatNumber(info?.apy7 /* bestApy.value */ ?? 0, {
                     style: 'percent',
                     maximumFractionDigits: 2,
                     minimumFractionDigits: 2,
@@ -115,7 +115,7 @@ export const SuperOethbBanner = (props: StackProps) => {
                       {
                         defaultMessage: '{trailingDays}-day trailing APY',
                       },
-                      { trailingDays: info?.bestApy?.trailingDays },
+                      { trailingDays: 7 /* info?.bestApy?.trailingDays */ },
                     )}
                   />
                 </Stack>

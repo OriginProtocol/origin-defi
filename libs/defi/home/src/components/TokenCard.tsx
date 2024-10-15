@@ -63,11 +63,17 @@ export const TokenCard = ({
     token.id,
   );
   const isOgn = token.id === tokens.mainnet.OGN.id;
-  const apy = isOgn ? staking?.xOgnApyPercentage : info?.bestApy.value;
+  const isSuperOeth = token.id === tokens.base.superOETHb.id;
+  const apy = isOgn
+    ? staking?.xOgnApyPercentage
+    : isSuperOeth
+      ? info?.apy7
+      : info?.bestApy.value;
   const isApyLoading = isOgn ? isStakingLoading : isInfoLoading;
   const apyLabel = isOgn
     ? intl.formatMessage({ defaultMessage: 'Max vAPY' })
     : intl.formatMessage({ defaultMessage: 'APY' });
+  const trailingDays = isSuperOeth ? 7 : info?.bestApy?.trailingDays;
 
   return (
     <Stack
@@ -225,7 +231,7 @@ export const TokenCard = ({
                       {
                         defaultMessage: '{trailingDays}-day trailing APY',
                       },
-                      { trailingDays: info?.bestApy?.trailingDays },
+                      { trailingDays },
                     )}
                   />
                 )}

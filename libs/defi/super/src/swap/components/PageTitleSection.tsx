@@ -37,7 +37,7 @@ export const PageTitleSection = (props: StackProps) => {
           sWidth={90}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(info?.bestApy?.value ?? 0, {
+          {intl.formatNumber(info?.apy7 /* bestApy?.value */ ?? 0, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
             style: 'percent',
@@ -56,7 +56,7 @@ export const PageTitleSection = (props: StackProps) => {
             {
               defaultMessage: '{trailingDays}-day trailing APY',
             },
-            { trailingDays: info?.bestApy?.trailingDays },
+            { trailingDays: 7 /* info?.bestApy?.trailingDays */ },
           )}
           iconColor="primary.main"
         />
