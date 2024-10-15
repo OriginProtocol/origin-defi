@@ -42,6 +42,9 @@ type TokenInfo = {
     value: number;
     trailingDays: number;
   };
+  apy7: number;
+  apy14: number;
+  apy30: number;
   totalSupply: Dnum;
   tvlUsd: Dnum;
   price: Dnum;
@@ -133,7 +136,18 @@ const fetcher: (
     );
     const tvlUsd = mul(totalSupply, price);
 
-    return { apies, bestApy, totalSupply, tvlUsd, price, balance, yieldEarned };
+    return {
+      apies,
+      bestApy,
+      totalSupply,
+      tvlUsd,
+      price,
+      balance,
+      yieldEarned,
+      apy7: apies.apy7DayAvg,
+      apy14: apies.apy14DayAvg,
+      apy30: apies.apy30DayAvg,
+    };
   };
 
 export const useTokenInfo = (
