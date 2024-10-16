@@ -1,9 +1,15 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
-import { Overview, PoYDetail, PoYList } from '@origin/analytics/shared';
+import {
+  Overview,
+  PoYDetail,
+  PoYList,
+  Strategies,
+} from '@origin/analytics/shared';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
+  FaChartPieRegular,
   FaClockRegular,
   FaEyeRegular,
   OETH,
@@ -186,15 +192,15 @@ export const routes: RouteObject[] = [
               },
             ],
           },
-          // {
-          //   path: 'strategies',
-          //   element: <Strategies token={tokens.mainnet.OUSD} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Strategies' }),
-          //     icon: FaChartPieRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
-          //   },
-          // },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.mainnet.OUSD} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
           // {
           //   path: 'balance-sheet',
           //   element: <BalanceSheet token={tokens.mainnet.OUSD} />,
