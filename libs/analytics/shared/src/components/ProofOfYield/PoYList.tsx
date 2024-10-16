@@ -91,8 +91,11 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
       }),
       columnHelper.accessor('rebasingSupply', {
         cell: (info) =>
-          intl.formatNumber(info.getValue(), { maximumFractionDigits: 5 }),
-        header: intl.formatMessage({ defaultMessage: 'Yield' }),
+          intl.formatNumber(info.getValue(), {
+            maximumFractionDigits: 0,
+            roundingMode: 'floor',
+          }),
+        header: intl.formatMessage({ defaultMessage: 'Yield-earning supply' }),
         size: 200,
       }),
       columnHelper.display({

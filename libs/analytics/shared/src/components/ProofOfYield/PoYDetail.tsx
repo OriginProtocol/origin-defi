@@ -528,8 +528,7 @@ const BonusCard = ({
               defaultMessage: 'x {value} Boost',
             },
             {
-              value: intl.formatNumber(apyBoost, {
-                style: 'percent',
+              value: intl.formatNumber(apyBoost * 100, {
                 maximumFractionDigits: 2,
               }),
             },
