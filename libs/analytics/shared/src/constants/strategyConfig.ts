@@ -123,7 +123,7 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     id: 'metamorpho',
     icon: MorphoStrategy,
     color: '#0B43CB',
-    title: defineMessage({ defaultMessage: 'Morpho' }),
+    title: defineMessage({ defaultMessage: 'Morpho Vaults' }),
     description: defineMessage({
       defaultMessage: `Morpho Vaults (formerly MetaMorpho) is an open-source protocol for permissionless risk management on top of Morpho, a decentralized platform for overcollateralized lending and borrowing of ERC20 and ERC4626 tokens on Ethereum. The MetaMorpho Factory deploys ERC4626-compliant vaults that allocate deposits across multiple Morpho markets. These noncustodial, immutable vaults let users earn interest passively while the vault actively manages risk. Users retain full control and can withdraw anytime. Morpho Vaults offer tailored risk options, unlike traditional pools exposed to the riskiest assets.`,
     }),
@@ -133,7 +133,7 @@ export const strategiesConfig: Record<string, StrategyConfig> = {
     id: 'morpho',
     icon: MorphoStrategy,
     color: '#9bc3e9',
-    title: defineMessage({ defaultMessage: 'Morpho' }),
+    title: defineMessage({ defaultMessage: 'Morpho AAVE' }),
     description: defineMessage({
       defaultMessage: `Morpho adds a peer-to-peer layer on top of Compound and Aave allowing lenders and borrowers to be matched more efficiently with better interest rates. When no matching opportunity exists, funds flow directly through to the underlying protocol. OUSD supplies stablecoins to three of Morpho's Compound markets to earn interest. Additional yield is generated from protocol token incentives, including both COMP (regularly sold for USDT) and MORPHO (currently locked).`,
     }),

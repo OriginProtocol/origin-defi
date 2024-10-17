@@ -1,5 +1,6 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
+import * as ousd from '@origin/analytics/ousd';
 import {
   Overview,
   PoYDetail,
@@ -11,6 +12,7 @@ import { tokens } from '@origin/shared/contracts';
 import {
   FaChartPieRegular,
   FaClockRegular,
+  FaCoinsRegular,
   FaEyeRegular,
   OETH,
   OUSD,
@@ -210,15 +212,15 @@ export const routes: RouteObject[] = [
           //     breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
           //   },
           // },
-          // {
-          //   path: 'collateral',
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Collaterals' }),
-          //     icon: FaCoinsRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Collaterals' }),
-          //   },
-          //   Component: ousd.OusdCollateralsView,
-          // },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collaterals' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collaterals' }),
+            },
+            Component: ousd.OusdCollateralsView,
+          },
         ],
       },
     ],
