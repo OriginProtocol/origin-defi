@@ -296,7 +296,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
           height={height}
           series={[
             {
-              label: 'TVL',
+              label: 'Discounted stETH',
               data: data ?? [],
               xKey: 'timestamp',
               yKey: 'discounted',
