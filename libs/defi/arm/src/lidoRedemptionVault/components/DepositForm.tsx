@@ -9,7 +9,6 @@ import {
   Dialog,
   DialogTitle,
   Divider,
-  LinearProgress,
   MenuItem,
   MenuList,
   Skeleton,
@@ -23,8 +22,7 @@ import {
   LoadingLabel,
 } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
+import { WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
@@ -41,13 +39,12 @@ import {
 } from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
-import { div, format, from, gt, lt, mul, sub, toNumber } from 'dnum';
+import { format, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { depositARMActions } from '../actions';
 import { armSwapRoutes } from '../constants';
-import { useArmVault } from '../hooks';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { CardContentProps } from '@mui/material';
@@ -73,6 +70,7 @@ const DepositFormWrapped = (props: CardContentProps) => {
   const [
     {
       amountIn,
+      amountOut,
       tokenIn,
       tokenOut,
       selectedSwapRoute,
@@ -92,7 +90,6 @@ const DepositFormWrapped = (props: CardContentProps) => {
   const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
     tokens: [tokenIn, tokenOut],
   });
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
 
   const handleMaxClick = () => {
     handleAmountInChange(balances?.[tokenIn.id] ?? 0n);
@@ -100,25 +97,6 @@ const DepositFormWrapped = (props: CardContentProps) => {
 
   const amount = [amountIn, tokenIn.decimals] as Dnum;
   const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
-  const userCapLeft = sub(info?.userCap ?? from(0), amount);
-  const waveCapLeft = sub(info?.waveCap ?? from(0), amount);
-  const pctWaveRemaining = toNumber(
-    div(info?.totalAssets ?? from(0, 18), info?.waveCap ?? from(1, 18)),
-    { digits: 2 },
-  );
-  const waveRemaining = toNumber(
-    sub(info?.waveCap ?? from(0), info?.totalAssets ?? from(0)),
-  );
-  const showUserCapDisclaimer =
-    isConnected &&
-    !isInfoLoading &&
-    lt(amount, userBalance) &&
-    lt(userCapLeft, 0);
-  const showWaveCapDisclaimer =
-    isConnected &&
-    !isInfoLoading &&
-    lt(amount, userBalance) &&
-    lt(waveCapLeft, 0);
   const isApproveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
     isSwapRoutesLoading ||
@@ -135,22 +113,15 @@ const DepositFormWrapped = (props: CardContentProps) => {
     (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
     (allowance ?? 0n) < amountIn;
   const isDepositDisabled =
-    isInfoLoading ||
     isSwapWaitingForSignature ||
     isSwapLoading ||
     isBalancesLoading ||
     gt(amount, userBalance) ||
     gt(amount, [allowance ?? 0n, tokenIn.decimals] as Dnum) ||
-    gt(amount, info?.userCap ?? from(0)) ||
-    gt(amount, info?.waveCap ?? from(0)) ||
     amount[0] === 0n;
   const depositButtonLabel = gt(amount, userBalance)
     ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
-    : lt(userCapLeft, 0)
-      ? intl.formatMessage({ defaultMessage: 'User cap reached' })
-      : lt(waveCapLeft, 0)
-        ? intl.formatMessage({ defaultMessage: 'Wave cap reached' })
-        : intl.formatMessage({ defaultMessage: 'Deposit' });
+    : intl.formatMessage({ defaultMessage: 'Deposit' });
 
   return (
     <CardContent {...props}>
@@ -206,97 +177,17 @@ const DepositFormWrapped = (props: CardContentProps) => {
         />
         <InfoTooltipLabel
           tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'The total amount of ETH deposits for the current wave',
+            defaultMessage: 'The amount of LP token you get in return',
           })}
           sx={{
             fontWeight: 'medium',
             height: 36,
           }}
         >
-          {intl.formatMessage(
-            { defaultMessage: 'Wave {waveNumber} TVL cap progress' },
-            {
-              waveNumber: info?.waveNumber,
-            },
-          )}
+          {intl.formatMessage({ defaultMessage: 'You receive' })}
         </InfoTooltipLabel>
-        <Stack
-          spacing={1.5}
-          sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            p: 3,
-            borderRadius: 3,
-            mb: 3,
-          }}
-        >
-          <Stack
-            direction="row"
-            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-          >
-            <LoadingLabel
-              isLoading={isInfoLoading}
-              variant="featured3"
-              sx={{ fontWeight: 'bold', color: 'primary.main' }}
-            >
-              {intl.formatNumber(pctWaveRemaining, { style: 'percent' })}
-            </LoadingLabel>
-            <Typography color="text.secondary">
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    'Wave {waveNumber} cap remaining: {remaining} ETH',
-                },
-                {
-                  waveNumber: 1,
-                  remaining: intl.formatNumber(waveRemaining),
-                },
-              )}
-            </Typography>
-          </Stack>
-          <LinearProgress
-            variant="determinate"
-            value={pctWaveRemaining * 100}
-            sx={{
-              borderRadius: 3,
-              height: 4,
-            }}
-          />
-          <Stack
-            direction="row"
-            sx={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              color: 'text.secondary',
-            }}
-          >
-            {[0, 25, 50, 75, 100].map((value) => (
-              <Typography key={value} variant="caption1">
-                {value}%
-              </Typography>
-            ))}
-          </Stack>
-        </Stack>
-        <InfoTooltipLabel
-          tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'The amount of ETH you can deposit for the current wave',
-          })}
-          sx={{
-            fontWeight: 'medium',
-            height: 36,
-          }}
-        >
-          {intl.formatMessage({ defaultMessage: 'Your whitelist cap' })}
-        </InfoTooltipLabel>
-        <BigIntInput
-          readOnly
-          value={info?.userCap[0] ?? 0n}
-          decimals={
-            info?.userCap[1] ?? tokens.mainnet['ARM-WETH-stETH'].decimals
-          }
-          endAdornment={<TokenButton token={tokens.mainnet.WETH} disabled />}
+        <LoadingLabel
+          isLoading={isSwapRoutesLoading}
           sx={(theme) => ({
             px: 2,
             py: 2,
@@ -305,89 +196,12 @@ const DepositFormWrapped = (props: CardContentProps) => {
             backgroundColor: 'background.highlight',
             border: '1px solid',
             borderColor: 'divider',
-            color: 'primary.main',
             fontWeight: 'bold',
             ...theme.typography.featured3,
           })}
-        />
-        <Collapse in={showUserCapDisclaimer}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'primary.main',
-              backgroundColor: 'primary.faded',
-              borderRadius: 3,
-              p: 3,
-              mb: 3,
-            }}
-          >
-            <FaCircleExclamationRegular
-              sx={{ fontSize: 20, color: 'primary.main' }}
-            />
-            <Stack>
-              <Typography
-                sx={{
-                  fontWeight: 'medium',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage: 'You have reached your whitelist cap',
-                })}
-              </Typography>
-              <Typography
-                sx={{
-                  color: 'text.secondary',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage:
-                    'Deposits will be disabled until further notice. Please check back later.',
-                })}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Collapse>
-        <Collapse in={showWaveCapDisclaimer}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'primary.main',
-              backgroundColor: 'primary.faded',
-              borderRadius: 3,
-              p: 3,
-              mb: 3,
-            }}
-          >
-            <FaCircleExclamationRegular
-              sx={{ fontSize: 20, color: 'primary.main' }}
-            />
-            <Stack>
-              <Typography
-                sx={{
-                  fontWeight: 'medium',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage: 'Wave cap has been reached',
-                })}
-              </Typography>
-              <Typography
-                sx={{
-                  color: 'text.secondary',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage:
-                    'Deposits will be disabled until further notice. Please check back later.',
-                })}
-              </Typography>
-            </Stack>
-          </Stack>
-        </Collapse>
+        >
+          {format([amountOut, tokenOut.decimals])}
+        </LoadingLabel>
         <Collapse in={showApprove}>
           <Button
             variant="action"

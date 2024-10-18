@@ -53,8 +53,6 @@ type ArmVault = {
   waveNumber: number;
   totalSupply: Dnum;
   totalAssets: Dnum;
-  waveCap: Dnum;
-  userCap: Dnum;
   userBalance: Dnum;
   prices: Record<SupportedTokenPrice, Dnum>;
   requests: WithdrawalRequest[];
@@ -69,17 +67,6 @@ const fetcher: (
     const res = await Promise.all([
       readContracts(config, {
         contracts: [
-          {
-            address: contracts.mainnet.ARMPoolController.address,
-            abi: contracts.mainnet.ARMPoolController.abi,
-            functionName: 'totalAssetsCap',
-          },
-          {
-            address: contracts.mainnet.ARMPoolController.address,
-            abi: contracts.mainnet.ARMPoolController.abi,
-            functionName: 'liquidityProviderCaps',
-            args: [address ?? ZERO_ADDRESS],
-          },
           {
             address: contracts.mainnet.ARMstETHWETHPool.address,
             abi: contracts.mainnet.ARMstETHWETHPool.abi,
@@ -119,29 +106,15 @@ const fetcher: (
       }),
     ]);
 
-    const waveCap =
+    const userBalance =
       res[0][0].status === 'success'
         ? ([
             BigInt(res[0][0].result),
             tokens.mainnet['ARM-WETH-stETH'].decimals,
           ] as Dnum)
         : from(0);
-    const userCap =
-      !!address && res[0][1].status === 'success'
-        ? ([
-            BigInt(res[0][1].result),
-            tokens.mainnet['ARM-WETH-stETH'].decimals,
-          ] as Dnum)
-        : from(0);
-    const userBalance =
-      res[0][2].status === 'success'
-        ? ([
-            BigInt(res[0][2].result),
-            tokens.mainnet['ARM-WETH-stETH'].decimals,
-          ] as Dnum)
-        : from(0);
     const claimableRes =
-      res[0][3].status === 'success' ? BigInt(res[0][3].result ?? 0) : 0n;
+      res[0][1].status === 'success' ? BigInt(res[0][1].result ?? 0) : 0n;
     const requests = res[2].armWithdrawalRequests
       .filter((r) => !r.claimed)
       .map((r) => {
@@ -169,8 +142,6 @@ const fetcher: (
       waveNumber: 1,
       totalSupply,
       totalAssets,
-      waveCap,
-      userCap,
       userBalance,
       prices: res[1],
       requests,
