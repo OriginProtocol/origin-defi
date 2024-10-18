@@ -15,7 +15,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { add, div, format, from, toNumber } from 'dnum';
+import { add, compare, div, format, from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -203,34 +203,36 @@ const Strategy = ({ strategy, ...rest }: StrategyProps) => {
           <Typography fontWeight="bold">
             {intl.formatMessage({ defaultMessage: 'Asset Split:' })}
           </Typography>
-          {strategy.balances.map((balance) => (
-            <Stack
-              key={balance.token.id}
-              direction="row"
-              spacing={1}
-              sx={{ alignItems: 'center', justifyContent: 'space-between' }}
-            >
-              <TokenIcon token={balance.token} sx={{ fontSize: 24 }} />
-              <Typography>{balance.token.symbol}</Typography>
-              <Typography sx={{ textAlign: 'right', flexGrow: 1 }}>
-                {format(balance.amount, 2)}
-              </Typography>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ width: 60, textAlign: 'right' }}
+          {strategy.balances
+            .toSorted((a, b) => compare(b.amount, a.amount))
+            .map((balance) => (
+              <Stack
+                key={balance.token.id}
+                direction="row"
+                spacing={1}
+                sx={{ alignItems: 'center', justifyContent: 'space-between' }}
               >
-                {intl.formatNumber(
-                  toNumber(div(balance.amount, strategy.total)),
-                  {
-                    style: 'percent',
-                    minimumFractionDigits: 1,
-                    maximumFractionDigits: 1,
-                  },
-                )}
-              </Typography>
-            </Stack>
-          ))}
+                <TokenIcon token={balance.token} sx={{ fontSize: 24 }} />
+                <Typography>{balance.token.symbol}</Typography>
+                <Typography sx={{ textAlign: 'right', flexGrow: 1 }}>
+                  {format(balance.amount, 2)}
+                </Typography>
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{ width: 60, textAlign: 'right' }}
+                >
+                  {intl.formatNumber(
+                    toNumber(div(balance.amount, strategy.total)),
+                    {
+                      style: 'percent',
+                      minimumFractionDigits: 1,
+                      maximumFractionDigits: 1,
+                    },
+                  )}
+                </Typography>
+              </Stack>
+            ))}
         </Stack>
       </CardContent>
     </Card>

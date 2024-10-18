@@ -215,9 +215,9 @@ export const routes: RouteObject[] = [
           {
             path: 'collateral',
             handle: {
-              title: defineMessage({ defaultMessage: 'Collaterals' }),
+              title: defineMessage({ defaultMessage: 'Collateral' }),
               icon: FaCoinsRegular,
-              breadcrumb: defineMessage({ defaultMessage: 'Collaterals' }),
+              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
             Component: ousd.OusdCollateralsView,
           },
