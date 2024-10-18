@@ -71,13 +71,13 @@ export const contracts = {
       name: 'ARMstETHWETHPool',
     },
     ARMPoolController: {
-      address: '0x3817e247023B4f489352758397040b1fd33b300a',
+      address: '0xf54ebff575f699d281645c6F14Fe427dFFE629CF',
       chainId: mainnet.id,
       abi: ARMPoolControllerABI,
       name: 'ARMPoolController',
     },
     ARMZapperLido: {
-      address: '0xE93C385761D590bDFE35C8dc9910916C17F62649',
+      address: '0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680',
       chainId: mainnet.id,
       abi: ARMZapperLidoABI,
       name: 'ARMZapperLido',

@@ -1,14 +1,11 @@
 import { contracts, whales } from '@origin/shared/contracts';
-import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import {
   getAccount,
   getPublicClient,
   readContract,
-  readContracts,
   simulateContract,
   writeContract,
 } from '@wagmi/core';
-import { from, gt } from 'dnum';
 import { erc20Abi, formatUnits } from 'viem';
 
 import { GAS_BUFFER } from '../constants';
@@ -20,51 +17,9 @@ import type {
   EstimateApprovalGas,
   EstimateGas,
   EstimateRoute,
-  IsRouteAvailable,
   Swap,
 } from '@origin/shared/providers';
 import type { EstimateAmount } from '@origin/shared/providers';
-import type { Dnum } from 'dnum';
-
-const isRouteAvailable: IsRouteAvailable = async (
-  { config },
-  { amountIn, tokenIn },
-) => {
-  const { address } = getAccount(config);
-  try {
-    const caps = await readContracts(config, {
-      contracts: [
-        {
-          address: contracts.mainnet.ARMPoolController.address,
-          abi: contracts.mainnet.ARMPoolController.abi,
-          functionName: 'totalAssetsCap',
-        },
-        {
-          address: contracts.mainnet.ARMPoolController.address,
-          abi: contracts.mainnet.ARMPoolController.abi,
-          functionName: 'liquidityProviderCaps',
-          args: [address ?? ZERO_ADDRESS],
-        },
-      ],
-    });
-
-    const waveCap =
-      caps[0].status === 'success'
-        ? ([BigInt(caps[0].result), tokenIn.decimals] as Dnum)
-        : from(0);
-    const userCap =
-      !!address && caps[1].status === 'success'
-        ? ([BigInt(caps[1].result), tokenIn.decimals] as Dnum)
-        : from(0);
-
-    return isNilOrEmpty(address)
-      ? gt(waveCap, 0)
-      : gt(waveCap, 0) &&
-          gt(userCap, 0) &&
-          gt(userCap, [amountIn, tokenIn.decimals]);
-  } catch {}
-  return false;
-};
 
 const estimateAmount: EstimateAmount = async ({ config }, { amountIn }) => {
   const res = await readContract(config, {
@@ -245,7 +200,6 @@ const swap: Swap = async (
 
 export const depositARMLido = {
   ...defaultRoute,
-  isRouteAvailable,
   estimateAmount,
   estimateGas,
   estimateRoute,
