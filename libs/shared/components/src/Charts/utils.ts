@@ -13,7 +13,7 @@ export const getScaleDomains = <Datum>(series: Serie<Datum>[]) => {
       continue;
     }
 
-    for (let i = 0; i < serie.data.length - 1; i++) {
+    for (let i = 0; i < serie.data.length; i++) {
       const x = serie.data[i]?.[serie.xKey] as number;
       const y = serie.data[i]?.[serie.yKey] as number;
 
