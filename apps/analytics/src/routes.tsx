@@ -1,10 +1,18 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
-import { Overview, PoYDetail, PoYList } from '@origin/analytics/shared';
+import * as ousd from '@origin/analytics/ousd';
+import {
+  Overview,
+  PoYDetail,
+  PoYList,
+  Strategies,
+} from '@origin/analytics/shared';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
+  FaChartPieRegular,
   FaClockRegular,
+  FaCoinsRegular,
   FaEyeRegular,
   OETH,
   OUSD,
@@ -186,15 +194,15 @@ export const routes: RouteObject[] = [
               },
             ],
           },
-          // {
-          //   path: 'strategies',
-          //   element: <Strategies token={tokens.mainnet.OUSD} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Strategies' }),
-          //     icon: FaChartPieRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
-          //   },
-          // },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.mainnet.OUSD} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
           // {
           //   path: 'balance-sheet',
           //   element: <BalanceSheet token={tokens.mainnet.OUSD} />,
@@ -204,15 +212,15 @@ export const routes: RouteObject[] = [
           //     breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
           //   },
           // },
-          // {
-          //   path: 'collateral',
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Collaterals' }),
-          //     icon: FaCoinsRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Collaterals' }),
-          //   },
-          //   Component: ousd.OusdCollateralsView,
-          // },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collateral' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
+            },
+            Component: ousd.OusdCollateralsView,
+          },
         ],
       },
     ],
