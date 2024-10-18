@@ -19,7 +19,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
-import { toNumber } from 'dnum';
+import { div, toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -222,13 +222,20 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
       select: (data) => {
         return (
           data?.armDailyStats
-            ?.map((s) => ({
-              timestamp: new Date(s.timestamp).getTime(),
-              outstandingAssets1: toNumber([
-                BigInt(s?.outstandingAssets1 ?? 0),
-                tokens.mainnet.stETH.decimals,
-              ]),
-            }))
+            ?.map((s) => {
+              const value = div(
+                [
+                  BigInt(s?.outstandingAssets1 ?? 0),
+                  tokens.mainnet.stETH.decimals,
+                ],
+                [BigInt(s?.totalAssets ?? 0), tokens.mainnet.stETH.decimals],
+              );
+
+              return {
+                timestamp: new Date(s.timestamp).getTime(),
+                discounted: toNumber(value) * 100,
+              };
+            })
             .toReversed() ?? []
         );
       },
@@ -273,7 +280,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatNumber(activeItem?.outstandingAssets1 ?? 0)}
+              {intl.formatNumber(activeItem?.discounted ?? 0)}%
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -292,7 +299,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
               label: 'TVL',
               data: data ?? [],
               xKey: 'timestamp',
-              yKey: 'outstandingAssets1',
+              yKey: 'discounted',
               color: theme.palette.primary.main,
               curveType: 'step',
             },
@@ -301,6 +308,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
             setHoverIdx(idx ?? null);
           }}
           Tooltip={ChartTooltip}
+          yScaleDomain={[0, 100]}
           tickYFormat={(value) =>
             intl.formatNumber(Number(value), {
               notation: 'compact',
