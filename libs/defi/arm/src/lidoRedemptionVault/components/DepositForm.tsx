@@ -16,11 +16,7 @@ import {
   Typography,
 } from '@mui/material';
 import { SwapProvider, TokenButton, trackEvent } from '@origin/defi/shared';
-import {
-  BigIntInput,
-  InfoTooltipLabel,
-  LoadingLabel,
-} from '@origin/shared/components';
+import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
 import { WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
@@ -70,7 +66,6 @@ const DepositFormWrapped = (props: CardContentProps) => {
   const [
     {
       amountIn,
-      amountOut,
       tokenIn,
       tokenOut,
       selectedSwapRoute,
@@ -175,33 +170,6 @@ const DepositFormWrapped = (props: CardContentProps) => {
             ...theme.typography.h6,
           })}
         />
-        <InfoTooltipLabel
-          tooltipLabel={intl.formatMessage({
-            defaultMessage: 'The amount of LP token you get in return',
-          })}
-          sx={{
-            fontWeight: 'medium',
-            height: 36,
-          }}
-        >
-          {intl.formatMessage({ defaultMessage: 'You receive' })}
-        </InfoTooltipLabel>
-        <LoadingLabel
-          isLoading={isSwapRoutesLoading}
-          sx={(theme) => ({
-            px: 2,
-            py: 2,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: 'background.highlight',
-            border: '1px solid',
-            borderColor: 'divider',
-            fontWeight: 'bold',
-            ...theme.typography.featured3,
-          })}
-        >
-          {format([amountOut, tokenOut.decimals])}
-        </LoadingLabel>
         <Collapse in={showApprove}>
           <Button
             variant="action"
