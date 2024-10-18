@@ -50,6 +50,7 @@ export const ChartTooltip = <ChartData,>({
               value: intl.formatNumber(s.data?.[0]?.[s.yKey] as number, {
                 notation: 'compact',
                 minimumFractionDigits: 2,
+                maximumFractionDigits: 5,
               }),
             },
           )}
