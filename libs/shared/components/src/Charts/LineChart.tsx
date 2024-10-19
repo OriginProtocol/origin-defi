@@ -206,7 +206,7 @@ export const LineChart = <Datum,>({
             strokeLinecap="round"
           />
         ))}
-        {activeIdx ? (
+        {activeIdx !== null ? (
           <line
             x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
             x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
@@ -235,7 +235,7 @@ export const LineChart = <Datum,>({
           />
         )}
       </svg>
-      {tooltipOpen && activeIdx && Tooltip ? (
+      {tooltipOpen && activeIdx !== null && Tooltip ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}

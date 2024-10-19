@@ -269,7 +269,7 @@ export const AreaChart = <Datum,>({
             })
           }
         </AreaStack>
-        {activeIdx ? (
+        {activeIdx !== null ? (
           <line
             x1={xScale(activeSeries?.[0].data[0][xKey] as number)}
             x2={xScale(activeSeries?.[0].data[0][xKey] as number)}
@@ -297,7 +297,7 @@ export const AreaChart = <Datum,>({
           />
         )}
       </svg>
-      {tooltipOpen && activeIdx && Tooltip ? (
+      {tooltipOpen && activeIdx !== null && Tooltip ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
