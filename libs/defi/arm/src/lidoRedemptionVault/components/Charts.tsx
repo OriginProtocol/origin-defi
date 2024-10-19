@@ -167,7 +167,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              {intl.formatNumber(activeItem?.totalSupply ?? 0)}
+              {intl.formatNumber(activeItem?.totalSupply ?? 0)} ETH
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -309,11 +309,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
           }}
           Tooltip={ChartTooltip}
           yScaleDomain={[0, 100]}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
-          }
+          tickYFormat={(value) => `${value}%`}
         />
       )}
     </Card>

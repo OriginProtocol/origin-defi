@@ -1,18 +1,12 @@
 import { useState } from 'react';
 
-import { Button, CardContent, Stack, Typography } from '@mui/material';
-import { TokenButton, useTxButton } from '@origin/defi/shared';
-import {
-  BigIntInput,
-  InfoTooltipLabel,
-  LoadingLabel,
-} from '@origin/shared/components';
+import { CardContent, Stack, Typography } from '@mui/material';
+import { TokenInput, useTxButton } from '@origin/defi/shared';
+import { InfoTooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
-import { PiggyBank } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
-import { getFormatPrecision } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
-import { format, from, gt } from 'dnum';
+import { div, from, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
@@ -25,10 +19,12 @@ export const WithdrawForm = (props: CardContentProps) => {
   const intl = useIntl();
   const queryClient = useQueryClient();
   const { address } = useAccount();
-  const [amount, setAmount] = useState(
-    from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
-  );
+  const [amount, setAmount] = useState(from(0, tokens.mainnet.WETH.decimals));
   const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const lpAmount = div(
+    amount,
+    info?.prices['1:ARM-WETH-stETH_1:WETH'] ?? from(1, 18),
+  );
   const { params, callbacks } = useTxButton({
     params: {
       contract: contracts.mainnet.ARMstETHWETHPool,
@@ -38,7 +34,7 @@ export const WithdrawForm = (props: CardContentProps) => {
     activity: {
       type: 'redeem',
       status: 'pending',
-      amountIn: amount[0],
+      amountIn: lpAmount[0],
       tokenIdIn: tokens.mainnet['ARM-WETH-stETH'].id,
       tokenIdOut: tokens.mainnet.WETH.id,
     },
@@ -62,6 +58,11 @@ export const WithdrawForm = (props: CardContentProps) => {
     );
   };
 
+  const userWethBalance = mul(
+    info?.userBalance ?? from(0),
+    info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
+    { rounding: 'ROUND_DOWN' },
+  );
   const isWithdrawDisabled =
     isInfoLoading ||
     gt(amount, info?.userBalance ?? from(0)) ||
@@ -89,7 +90,7 @@ export const WithdrawForm = (props: CardContentProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Amount to withdraw' })}
           </InfoTooltipLabel>
-          <Button variant="link" onClick={handleMaxClick}>
+          {/* <Button variant="link" onClick={handleMaxClick}>
             <PiggyBank sx={{ fontSize: 20, mr: 1 }} />
             <LoadingLabel
               isLoading={isInfoLoading}
@@ -98,14 +99,34 @@ export const WithdrawForm = (props: CardContentProps) => {
                 fontWeight: 'medium',
               }}
             >
-              {format(info?.userBalance ?? from(0), {
-                digits: getFormatPrecision(info?.userBalance ?? from(0)),
-                decimalsRounding: 'ROUND_DOWN',
+              {format(userWethBalance, {
+                digits: getFormatPrecision(userWethBalance),
               })}
             </LoadingLabel>
-          </Button>
+          </Button> */}
         </Stack>
-        <BigIntInput
+        <TokenInput
+          amount={amount[0]}
+          decimals={amount[1]}
+          onAmountChange={handleAmountChange}
+          // hideMaxButton
+          balance={userWethBalance[0]}
+          isBalanceLoading={isInfoLoading}
+          token={tokens.mainnet.WETH}
+          tokenPriceUsd={info?.prices?.['1:WETH_USD']}
+          isPriceLoading={isInfoLoading}
+          isTokenClickDisabled
+          sx={(theme) => ({
+            p: 2,
+            mb: 3,
+            borderRadius: 3,
+            backgroundColor: 'background.highlight',
+            border: '1px solid',
+            borderColor: 'divider',
+            ...theme.typography.h6,
+          })}
+        />
+        {/* <BigIntInput
           value={amount[0]}
           decimals={amount[1]}
           onChange={handleAmountChange}
@@ -120,7 +141,7 @@ export const WithdrawForm = (props: CardContentProps) => {
             borderColor: 'divider',
             ...theme.typography.h6,
           })}
-        />
+        /> */}
         <InfoTooltipLabel
           tooltipLabel={intl.formatMessage({
             defaultMessage:

@@ -15,10 +15,9 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { SwapProvider, TokenButton, trackEvent } from '@origin/defi/shared';
-import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
+import { SwapProvider, TokenInput, trackEvent } from '@origin/defi/shared';
+import { InfoTooltipLabel } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
-import { WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
 import {
   ConnectedButton,
@@ -26,6 +25,7 @@ import {
   useHandleApprove,
   useHandleSwap,
   useHandleTokenChange,
+  useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
   useTokenOptions,
@@ -53,6 +53,7 @@ export const DepositForm = (props: CardContentProps) => {
       swapActions={depositARMActions}
       swapRoutes={armSwapRoutes}
       trackEvent={trackEvent}
+      activityType="deposit"
     >
       <DepositFormWrapped {...props} />
     </SwapProvider>
@@ -78,6 +79,7 @@ const DepositFormWrapped = (props: CardContentProps) => {
   ] = useSwapState();
   const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
   const { tokensIn } = useTokenOptions();
+  const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
   const handleAmountInChange = useHandleAmountInChange();
   const handleTokenChange = useHandleTokenChange();
   const handleApprove = useHandleApprove();
@@ -86,12 +88,9 @@ const DepositFormWrapped = (props: CardContentProps) => {
     tokens: [tokenIn, tokenOut],
   });
 
-  const handleMaxClick = () => {
-    handleAmountInChange(balances?.[tokenIn.id] ?? 0n);
-  };
-
   const amount = [amountIn, tokenIn.decimals] as Dnum;
   const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
+  const isAmountInInputDisabled = isSwapLoading || isApprovalLoading;
   const isApproveButtonDisabled =
     isNilOrEmpty(selectedSwapRoute) ||
     isSwapRoutesLoading ||
@@ -137,7 +136,7 @@ const DepositFormWrapped = (props: CardContentProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Amount to deposit' })}
           </InfoTooltipLabel>
-          <Button variant="link" onClick={handleMaxClick}>
+          {/* <Button variant="link" onClick={handleMaxClick}>
             <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
             <Typography
               noWrap
@@ -150,9 +149,9 @@ const DepositFormWrapped = (props: CardContentProps) => {
                 decimalsRounding: 'ROUND_DOWN',
               })}
             </Typography>
-          </Button>
+          </Button> */}
         </Stack>
-        <BigIntInput
+        {/* <BigIntInput
           value={amount[0]}
           decimals={amount[1]}
           onChange={handleAmountInChange}
@@ -162,6 +161,30 @@ const DepositFormWrapped = (props: CardContentProps) => {
           sx={(theme) => ({
             px: 2,
             py: 1,
+            mb: 3,
+            borderRadius: 3,
+            backgroundColor: 'background.highlight',
+            border: '1px solid',
+            borderColor: 'divider',
+            ...theme.typography.h6,
+          })}
+        /> */}
+        <TokenInput
+          amount={amountIn}
+          decimals={tokenIn.decimals}
+          onAmountChange={handleAmountInChange}
+          // hideMaxButton
+          balance={balances?.[tokenIn.id] ?? 0n}
+          isBalanceLoading={isBalancesLoading}
+          token={tokenIn}
+          onTokenClick={() => {
+            setOpen(true);
+          }}
+          tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+          isPriceLoading={isPriceLoading}
+          isAmountDisabled={isAmountInInputDisabled}
+          sx={(theme) => ({
+            p: 2,
             mb: 3,
             borderRadius: 3,
             backgroundColor: 'background.highlight',

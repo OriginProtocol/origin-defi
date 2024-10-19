@@ -85,6 +85,7 @@ const fetcher: (
           '1:ARM-WETH-stETH_1:WETH',
           '1:ARM-WETH-stETH_1:ETH',
           '1:ARM-WETH-stETH_USD',
+          '1:WETH_USD',
         ]),
         queryFn: useTokenPrices.fetcher(config),
       }),

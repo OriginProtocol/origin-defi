@@ -11,7 +11,6 @@ import {
   FaArrowUpRegular,
   FaCircleCheckRegular,
 } from '@origin/shared/icons';
-import { middleTruncate } from '@origin/shared/utils';
 import { format } from 'dnum';
 
 import { wagmiConfig } from '../../clients';
@@ -253,18 +252,17 @@ export const activityOptions: Record<ActivityType, ActivityOption> = {
         idle: intl.formatMessage({ defaultMessage: 'Deposit' }),
       })[activity.status],
     subtitle: (activity, intl) => {
-      const { amountIn, tokenIdIn, pool } = activity as DepositActivity;
+      const { amountIn, tokenIdIn } = activity as DepositActivity;
       const tokenIn = getTokenById(tokenIdIn);
       const amount = format([amountIn ?? 0n, tokenIn.decimals ?? 18], 4);
 
       return intl.formatMessage(
         {
-          defaultMessage: 'Deposit {amountIn} {symbolIn} to {pool}',
+          defaultMessage: 'Deposit {amount} {symbolIn}',
         },
         {
           amount,
           symbolIn: tokenIn.symbol,
-          pool: middleTruncate(pool ?? ''),
         },
       );
     },

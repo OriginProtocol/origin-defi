@@ -12,17 +12,17 @@ import { TokenChip } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
-import { AddressLabel, useWatchBalance } from '@origin/shared/providers';
+import { AddressLabel } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
-import { format, toNumber } from 'dnum';
+import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { useArmVault } from '../hooks';
 import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
@@ -54,9 +54,15 @@ export const ApyCard = (props: CardProps) => {
 
 export const TvlCard = (props: CardProps) => {
   const intl = useIntl();
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
   const { data: tvl, isLoading: isTvlLoading } = useArmDailyStatsQuery(
     { limit: 1 },
     { select: (data) => data?.armDailyStats?.[0]?.totalSupply },
+  );
+
+  const tvlUsd = mul(
+    [BigInt(tvl ?? 0), tokens.mainnet['ARM-WETH-stETH'].decimals],
+    info?.prices?.['1:ARM-WETH-stETH_USD'] ?? from(0),
   );
 
   return (
@@ -71,17 +77,30 @@ export const TvlCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={intl.formatNumber(
-            toNumber([
-              BigInt(tvl ?? 0),
-              tokens.mainnet['ARM-WETH-stETH'].decimals,
-            ]),
-            {
-              notation: 'compact',
-              maximumFractionDigits: 2,
-            },
-          )}
-          isLoading={isTvlLoading}
+          value={
+            <Stack>
+              <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+                {intl.formatNumber(
+                  toNumber([
+                    BigInt(tvl ?? 0),
+                    tokens.mainnet['ARM-WETH-stETH'].decimals,
+                  ]),
+                  {
+                    notation: 'compact',
+                    maximumFractionDigits: 2,
+                  },
+                )}
+              </Typography>
+              <Typography sx={{ color: 'text.secondary' }}>
+                $
+                {intl.formatNumber(toNumber(tvlUsd), {
+                  notation: 'compact',
+                  maximumFractionDigits: 2,
+                })}
+              </Typography>
+            </Stack>
+          }
+          isLoading={isTvlLoading || isInfoLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -129,18 +148,17 @@ export const AboutCard = (props: CardProps) => {
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet['ARM-WETH-stETH'],
-  });
+  const { data: info, isLoading: isInfoLoading } = useArmVault();
 
   if (!isConnected) {
     return null;
   }
 
-  const userBalance = [
-    balance ?? 0n,
-    tokens.mainnet['ARM-WETH-stETH'].decimals,
-  ] as Dnum;
+  const userBalance = mul(
+    info?.userBalance ?? from(0),
+    info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
+    { rounding: 'ROUND_DOWN' },
+  );
 
   return (
     <Card {...props}>
@@ -159,7 +177,7 @@ export const VaultBalanceCard = (props: CardProps) => {
           value={format(userBalance, {
             digits: getFormatPrecision(userBalance),
           })}
-          isLoading={isBalanceLoading}
+          isLoading={isInfoLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -186,7 +204,7 @@ export const ContractInfoCard = (props: CardProps) => {
               <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                 <AddressLabel
                   address={contracts.mainnet.ARMstETHWETHPool.address}
-                  sx={{ fontFamily: 'mono', maxWidth: 100 }}
+                  sx={{ fontFamily: 'mono', maxWidth: 180 }}
                 />
                 <Button
                   target="_blank"

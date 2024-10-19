@@ -21,7 +21,7 @@ export const OverviewView = () => {
       <PageTitle
         title={intl.formatMessage({ defaultMessage: 'stETH Redemption Vault' })}
         subtitle={intl.formatMessage({
-          defaultMessage: 'This ETH vault funds Lido stETH redeems',
+          defaultMessage: 'Passive earnings on ETH',
         })}
         icon={ARM}
       >
@@ -31,9 +31,13 @@ export const OverviewView = () => {
         <Grid2 container spacing={3}>
           <Grid2 size={{ xs: 12, md: 7 }} order={{ xs: 1, md: 0 }}>
             <Stack spacing={3}>
-              <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
-                <ApyCard sx={{ width: 1 }} />
-                <TvlCard sx={{ width: 1 }} />
+              <Stack
+                direction="row"
+                spacing={3}
+                sx={{ alignItems: 'flex-start' }}
+              >
+                <ApyCard sx={{ width: 1, height: 170 }} />
+                <TvlCard sx={{ width: 1, height: 170 }} />
               </Stack>
               <AboutCard />
               <ApyChart height={200} />

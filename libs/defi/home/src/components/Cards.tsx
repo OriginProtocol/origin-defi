@@ -7,7 +7,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { BridgeBanner, MergerBanner } from '@origin/defi/shared';
+import { MergerBanner } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
@@ -104,7 +104,7 @@ export const LSTCard = (props: CardProps) => {
               md: 'right top',
             },
             p: 3,
-            my: 3,
+            mt: 3,
           })}
         >
           <Stack
@@ -149,7 +149,6 @@ export const LSTCard = (props: CardProps) => {
             <TokenCard token={tokens.mainnet.OETH} href="/oeth" />
           </Stack>
         </Stack>
-        <BridgeBanner />
       </CardContent>
     </Card>
   );

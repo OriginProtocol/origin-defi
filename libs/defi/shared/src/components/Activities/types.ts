@@ -111,7 +111,6 @@ export interface DepositActivity extends ActivityBase {
   type: 'deposit';
   tokenIdIn: TokenId;
   amountIn: bigint;
-  pool?: string;
 }
 
 export type Activity =

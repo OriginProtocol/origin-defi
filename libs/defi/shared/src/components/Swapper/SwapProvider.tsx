@@ -16,13 +16,14 @@ import {
 import type { SwapState } from '@origin/shared/providers';
 import type { ReactNode } from 'react';
 
-import type { Activity } from '../Activities';
+import type { Activity, ActivityType } from '../Activities';
 
 export type SwapperProviderProps = Pick<
   SwapState,
   'swapActions' | 'swapRoutes' | 'trackEvent'
 > & {
   children: ReactNode;
+  activityType?: ActivityType;
 };
 
 export const SwapProvider = ({
@@ -30,6 +31,7 @@ export const SwapProvider = ({
   swapActions,
   swapRoutes,
   trackEvent,
+  activityType = 'swap',
 }: SwapperProviderProps) => {
   const intl = useIntl();
   const pushNotification = usePushNotification();
@@ -37,6 +39,8 @@ export const SwapProvider = ({
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
+
+  const actOptions = activityOptions[activityType];
 
   return (
     <SharedSwapProvider
@@ -113,30 +117,30 @@ export const SwapProvider = ({
         }
       }}
       onSwapStart={({ amountIn, amountOut, tokenIn, tokenOut }) => {
-        const activity = pushActivity({
-          type: 'swap',
+        const act = pushActivity({
+          type: activityType,
           status: 'pending',
           tokenIdIn: tokenIn.id,
           tokenIdOut: tokenOut.id,
           amountIn,
           amountOut,
-        });
+        } as Activity);
 
-        return activity.id;
+        return act.id;
       }}
       onSwapSigned={({ amountIn, amountOut, tokenIn, tokenOut }) => {
-        const activity: Activity = {
-          type: 'swap',
+        const act = {
+          type: activityType,
           status: 'pending',
           tokenIdIn: tokenIn.id,
           tokenIdOut: tokenOut.id,
           amountIn,
           amountOut,
-        };
+        } as Activity;
         const notifId = pushNotification({
-          title: activityOptions.swap.title(activity, intl),
-          message: activityOptions.swap.subtitle(activity, intl),
-          icon: activityOptions.swap.icon(activity),
+          title: actOptions.title(act, intl),
+          message: actOptions.subtitle(act, intl),
+          icon: actOptions.icon(act),
           severity: 'pending',
           hideDuration: undefined,
         });
@@ -153,9 +157,9 @@ export const SwapProvider = ({
         if (updated) {
           pushNotification({
             severity: 'success',
-            icon: activityOptions.swap.icon(updated),
-            title: activityOptions.swap.title(updated, intl),
-            message: activityOptions.swap.subtitle(updated, intl),
+            icon: actOptions.icon(updated),
+            title: actOptions.title(updated, intl),
+            message: actOptions.subtitle(updated, intl),
             blockExplorerLinkProps: {
               hash: txReceipt.transactionHash,
             },
@@ -182,8 +186,8 @@ export const SwapProvider = ({
         });
         if (updated) {
           pushNotification({
-            icon: activityOptions.swap.icon(updated),
-            title: activityOptions.swap.title(updated, intl),
+            icon: actOptions.icon(updated),
+            title: actOptions.title(updated, intl),
             message: formatError(error),
             severity: 'error',
           });
