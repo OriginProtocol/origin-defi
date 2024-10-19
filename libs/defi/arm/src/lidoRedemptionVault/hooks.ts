@@ -50,7 +50,6 @@ const getKey = (address: HexAddress | undefined): Key => [
 ];
 
 type ArmVault = {
-  waveNumber: number;
   totalSupply: Dnum;
   totalAssets: Dnum;
   userBalance: Dnum;
@@ -140,7 +139,6 @@ const fetcher: (
     ] as Dnum;
 
     return {
-      waveNumber: 1,
       totalSupply,
       totalAssets,
       userBalance,

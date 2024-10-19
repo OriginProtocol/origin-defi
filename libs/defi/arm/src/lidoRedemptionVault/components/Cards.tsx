@@ -12,7 +12,7 @@ import { TokenChip } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
-import { AddressLabel } from '@origin/shared/providers';
+import { AddressLabel, useWatchBalance } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -27,8 +27,12 @@ import type { ValueLabelProps } from '@origin/shared/components';
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
   const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
-    { limit: 1 },
-    { select: (data) => data?.armDailyStats?.[0]?.apy ?? 0 },
+    { limit: 30 },
+    {
+      select: (data) =>
+        data.armDailyStats.reduce((acc, curr) => acc + curr.apy, 0) /
+        Math.min(30, data.armDailyStats.length),
+    },
   );
 
   return (
@@ -149,13 +153,16 @@ export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokens.mainnet['ARM-WETH-stETH'],
+  });
 
   if (!isConnected) {
     return null;
   }
 
   const userBalance = mul(
-    info?.userBalance ?? from(0),
+    [BigInt(balance ?? 0), tokens.mainnet['ARM-WETH-stETH'].decimals],
     info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
     { rounding: 'ROUND_DOWN' },
   );
@@ -177,7 +184,7 @@ export const VaultBalanceCard = (props: CardProps) => {
           value={format(userBalance, {
             digits: getFormatPrecision(userBalance),
           })}
-          isLoading={isInfoLoading}
+          isLoading={isInfoLoading || isBalanceLoading}
           {...valueLabelProps}
         />
       </CardContent>

@@ -136,44 +136,11 @@ const DepositFormWrapped = (props: CardContentProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Amount to deposit' })}
           </InfoTooltipLabel>
-          {/* <Button variant="link" onClick={handleMaxClick}>
-            <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
-            <Typography
-              noWrap
-              sx={{
-                fontWeight: 'medium',
-              }}
-            >
-              {format(userBalance, {
-                digits: getFormatPrecision(userBalance),
-                decimalsRounding: 'ROUND_DOWN',
-              })}
-            </Typography>
-          </Button> */}
         </Stack>
-        {/* <BigIntInput
-          value={amount[0]}
-          decimals={amount[1]}
-          onChange={handleAmountInChange}
-          endAdornment={
-            <TokenButton token={tokenIn} onClick={() => setOpen(true)} />
-          }
-          sx={(theme) => ({
-            px: 2,
-            py: 1,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: 'background.highlight',
-            border: '1px solid',
-            borderColor: 'divider',
-            ...theme.typography.h6,
-          })}
-        /> */}
         <TokenInput
           amount={amountIn}
           decimals={tokenIn.decimals}
           onAmountChange={handleAmountInChange}
-          // hideMaxButton
           balance={balances?.[tokenIn.id] ?? 0n}
           isBalanceLoading={isBalancesLoading}
           token={tokenIn}

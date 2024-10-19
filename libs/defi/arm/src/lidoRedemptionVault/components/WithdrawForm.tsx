@@ -52,12 +52,6 @@ export const WithdrawForm = (props: CardContentProps) => {
     setAmount([val, tokens.mainnet['ARM-WETH-stETH'].decimals] as Dnum);
   };
 
-  const handleMaxClick = () => {
-    setAmount(
-      info?.userBalance ?? from(0, tokens.mainnet['ARM-WETH-stETH'].decimals),
-    );
-  };
-
   const userWethBalance = mul(
     info?.userBalance ?? from(0),
     info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
@@ -90,26 +84,11 @@ export const WithdrawForm = (props: CardContentProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Amount to withdraw' })}
           </InfoTooltipLabel>
-          {/* <Button variant="link" onClick={handleMaxClick}>
-            <PiggyBank sx={{ fontSize: 20, mr: 1 }} />
-            <LoadingLabel
-              isLoading={isInfoLoading}
-              noWrap
-              sx={{
-                fontWeight: 'medium',
-              }}
-            >
-              {format(userWethBalance, {
-                digits: getFormatPrecision(userWethBalance),
-              })}
-            </LoadingLabel>
-          </Button> */}
         </Stack>
         <TokenInput
           amount={amount[0]}
           decimals={amount[1]}
           onAmountChange={handleAmountChange}
-          // hideMaxButton
           balance={userWethBalance[0]}
           isBalanceLoading={isInfoLoading}
           token={tokens.mainnet.WETH}
@@ -126,22 +105,6 @@ export const WithdrawForm = (props: CardContentProps) => {
             ...theme.typography.h6,
           })}
         />
-        {/* <BigIntInput
-          value={amount[0]}
-          decimals={amount[1]}
-          onChange={handleAmountChange}
-          endAdornment={<TokenButton token={tokens.mainnet.WETH} disabled />}
-          sx={(theme) => ({
-            px: 2,
-            py: 1,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: 'background.highlight',
-            border: '1px solid',
-            borderColor: 'divider',
-            ...theme.typography.h6,
-          })}
-        /> */}
         <InfoTooltipLabel
           tooltipLabel={intl.formatMessage({
             defaultMessage:
