@@ -251,6 +251,7 @@ export type ProposalWhere = {
   id_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   ipfs?: InputMaybe<Scalars['String']['input']>;
   ipfs_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  labels_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   network?: InputMaybe<Scalars['String']['input']>;
   network_in?: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
   plugins_contains?: InputMaybe<Scalars['String']['input']>;
