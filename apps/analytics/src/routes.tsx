@@ -2,6 +2,7 @@ import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
 import * as ousd from '@origin/analytics/ousd';
 import {
+  BalanceSheet,
   Overview,
   PoYDetail,
   PoYList,
@@ -14,6 +15,7 @@ import {
   FaClockRegular,
   FaCoinsRegular,
   FaEyeRegular,
+  FaFileLinesRegular,
   OETH,
   OUSD,
   superOETH,
@@ -85,15 +87,15 @@ export const routes: RouteObject[] = [
           //     breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
           //   },
           // },
-          // {
-          //   path: 'balance-sheet',
-          //   element: <BalanceSheet token={tokens.base.superOETHb} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //     icon: FaFileLinesRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //   },
-          // },
+          {
+            path: 'balance-sheet',
+            element: <BalanceSheet token={tokens.base.superOETHb} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
+            },
+          },
         ],
       },
       {
@@ -135,24 +137,24 @@ export const routes: RouteObject[] = [
               },
             ],
           },
-          // {
-          //   path: 'strategies',
-          //   element: <Strategies token={tokens.mainnet.OETH} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Strategies' }),
-          //     icon: FaChartPieRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
-          //   },
-          // },
-          // {
-          //   path: 'balance-sheet',
-          //   element: <BalanceSheet token={tokens.mainnet.OETH} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //     icon: FaFileLinesRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //   },
-          // },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.mainnet.OETH} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
+          {
+            path: 'balance-sheet',
+            element: <BalanceSheet token={tokens.mainnet.OETH} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
+            },
+          },
         ],
       },
       {
@@ -203,15 +205,15 @@ export const routes: RouteObject[] = [
               breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
             },
           },
-          // {
-          //   path: 'balance-sheet',
-          //   element: <BalanceSheet token={tokens.mainnet.OUSD} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //     icon: FaFileLinesRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
-          //   },
-          // },
+          {
+            path: 'balance-sheet',
+            element: <BalanceSheet token={tokens.mainnet.OUSD} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Balance Sheet' }),
+              icon: FaFileLinesRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
+            },
+          },
           {
             path: 'collateral',
             handle: {
