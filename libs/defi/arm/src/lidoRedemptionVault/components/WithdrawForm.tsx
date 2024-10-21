@@ -6,9 +6,9 @@ import { InfoTooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { TxButton } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
-import { div, from, gt, mul } from 'dnum';
+import { from, gt, sub } from 'dnum';
 import { useIntl } from 'react-intl';
-import { useAccount } from 'wagmi';
+import { useAccount, useReadContract } from 'wagmi';
 
 import { useArmVault } from '../hooks';
 
@@ -21,9 +21,15 @@ export const WithdrawForm = (props: CardContentProps) => {
   const { address } = useAccount();
   const [amount, setAmount] = useState(from(0, tokens.mainnet.WETH.decimals));
   const { data: info, isLoading: isInfoLoading } = useArmVault();
-  const lpAmount = div(
-    amount,
-    info?.prices['1:ARM-WETH-stETH_1:WETH'] ?? from(1, 18),
+  const { data: lpAmount, isLoading: isLpAmountLoading } = useReadContract({
+    address: tokens.mainnet['ARM-WETH-stETH'].address,
+    abi: tokens.mainnet['ARM-WETH-stETH'].abi,
+    functionName: 'previewDeposit',
+    args: [amount[0]],
+  });
+  const input = sub(
+    [lpAmount ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
+    1,
   );
   const { params, callbacks } = useTxButton({
     params: {
@@ -34,7 +40,7 @@ export const WithdrawForm = (props: CardContentProps) => {
     activity: {
       type: 'redeem',
       status: 'pending',
-      amountIn: lpAmount[0],
+      amountIn: input[0],
       tokenIdIn: tokens.mainnet['ARM-WETH-stETH'].id,
       tokenIdOut: tokens.mainnet.WETH.id,
     },
@@ -52,16 +58,12 @@ export const WithdrawForm = (props: CardContentProps) => {
     setAmount([val, tokens.mainnet['ARM-WETH-stETH'].decimals] as Dnum);
   };
 
-  const userWethBalance = mul(
-    info?.userBalance ?? from(0),
-    info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
-    { rounding: 'ROUND_DOWN' },
-  );
   const isWithdrawDisabled =
     isInfoLoading ||
-    gt(amount, info?.userBalance ?? from(0)) ||
-    amount[0] === 0n;
-  const withdrawButtonLabel = gt(amount, info?.userBalance ?? from(0))
+    isLpAmountLoading ||
+    amount[0] === 0n ||
+    gt(amount, info?.userWethBalance ?? from(0));
+  const withdrawButtonLabel = gt(amount, info?.userWethBalance ?? from(0))
     ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
     : intl.formatMessage({ defaultMessage: 'Withdraw' });
 
@@ -89,7 +91,7 @@ export const WithdrawForm = (props: CardContentProps) => {
           amount={amount[0]}
           decimals={amount[1]}
           onAmountChange={handleAmountChange}
-          balance={userWethBalance[0]}
+          balance={info?.userWethBalance[0] ?? 0n}
           isBalanceLoading={isInfoLoading}
           token={tokens.mainnet.WETH}
           tokenPriceUsd={info?.prices?.['1:WETH_USD']}

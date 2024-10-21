@@ -4,7 +4,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { readContracts } from '@wagmi/core';
+import { readContract, readContracts } from '@wagmi/core';
 import { addMinutes, isAfter } from 'date-fns';
 import { from } from 'dnum';
 import { useSearchParams } from 'react-router-dom';
@@ -53,6 +53,7 @@ type ArmVault = {
   totalSupply: Dnum;
   totalAssets: Dnum;
   userBalance: Dnum;
+  userWethBalance: Dnum;
   prices: Record<SupportedTokenPrice, Dnum>;
   requests: WithdrawalRequest[];
 };
@@ -113,6 +114,15 @@ const fetcher: (
             tokens.mainnet['ARM-WETH-stETH'].decimals,
           ] as Dnum)
         : from(0);
+
+    const wethBalance = await readContract(config, {
+      address: tokens.mainnet['ARM-WETH-stETH'].address,
+      abi: tokens.mainnet['ARM-WETH-stETH'].abi,
+      functionName: 'previewRedeem',
+      args: [userBalance[0]],
+    });
+
+    const userWethBalance = [wethBalance, tokens.mainnet.WETH.decimals] as Dnum;
     const claimableRes =
       res[0][1].status === 'success' ? BigInt(res[0][1].result ?? 0) : 0n;
     const requests = res[2].armWithdrawalRequests
@@ -142,6 +152,7 @@ const fetcher: (
       totalSupply,
       totalAssets,
       userBalance,
+      userWethBalance,
       prices: res[1],
       requests,
     };

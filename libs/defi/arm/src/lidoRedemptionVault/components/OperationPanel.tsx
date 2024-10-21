@@ -1,7 +1,7 @@
 import { Card, Divider, Tab, Tabs } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { useOperation } from '../hooks';
+import { useArmVault, useOperation } from '../hooks';
 import { ClaimForm } from './ClaimForm';
 import { DepositForm } from './DepositForm';
 import { WithdrawForm } from './WithdrawForm';
@@ -9,6 +9,9 @@ import { WithdrawForm } from './WithdrawForm';
 export const OperationPanel = () => {
   const intl = useIntl();
   const { operation, update } = useOperation();
+  const { data: info } = useArmVault();
+
+  const requestCount = info?.requests?.filter((r) => r.claimable)?.length ?? 0;
 
   return (
     <Card>
@@ -30,7 +33,10 @@ export const OperationPanel = () => {
           value="withdraw"
         />
         <Tab
-          label={intl.formatMessage({ defaultMessage: 'Claim' })}
+          label={intl.formatMessage(
+            { defaultMessage: 'Claim{count}' },
+            { count: requestCount > 0 ? ` (${requestCount})` : '' },
+          )}
           value="claim"
         />
       </Tabs>

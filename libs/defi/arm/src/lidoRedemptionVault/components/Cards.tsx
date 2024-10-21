@@ -164,7 +164,6 @@ export const VaultBalanceCard = (props: CardProps) => {
   const userBalance = mul(
     [BigInt(balance ?? 0), tokens.mainnet['ARM-WETH-stETH'].decimals],
     info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
-    { rounding: 'ROUND_DOWN' },
   );
 
   return (
