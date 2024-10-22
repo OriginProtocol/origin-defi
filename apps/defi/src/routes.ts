@@ -165,7 +165,7 @@ export const routes: RouteObject[] = [
             path: 'steth-redemption-vault',
             Component: arm.OverviewView,
             handle: {
-              title: defineMessage({ defaultMessage: 'stETH Redemptions' }),
+              title: defineMessage({ defaultMessage: 'ETH Vault' }),
               icon: FaArrowDownFromArcRegular,
             },
           },

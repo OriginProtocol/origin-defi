@@ -470,7 +470,7 @@ export const ArmCard = (props: StackProps) => {
               fontWeight: 'bold',
             }}
           >
-            {intl.formatMessage({ defaultMessage: 'stETH Redemptions' })}
+            {intl.formatMessage({ defaultMessage: 'ETH Vault' })}
           </Typography>
           <Typography variant="caption1" noWrap>
             {intl.formatMessage({ defaultMessage: 'ETH Vaults' })}
