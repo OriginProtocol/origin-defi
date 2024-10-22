@@ -5,10 +5,11 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { readContract, readContracts } from '@wagmi/core';
+import { readContracts } from '@wagmi/core';
 import { addMinutes, isAfter } from 'date-fns';
-import { from } from 'dnum';
+import { from, mul } from 'dnum';
 import { useSearchParams } from 'react-router-dom';
+import { parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 
 import { useArmWithdrawalRequestsQuery } from './queries.generated';
@@ -52,6 +53,9 @@ type ArmVault = {
   totalAssets: Dnum;
   userBalance: Dnum;
   userWethBalance: Dnum;
+  claimable: Dnum;
+  lpToWeth: Dnum;
+  wethToLp: Dnum;
   prices: Record<SupportedTokenPrice, Dnum>;
   requests: WithdrawalRequest[];
 };
@@ -75,6 +79,18 @@ const fetcher: (
             address: contracts.mainnet.ARMstETHWETHPool.address,
             abi: contracts.mainnet.ARMstETHWETHPool.abi,
             functionName: 'claimable',
+          },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'previewRedeem',
+            args: [parseUnits('1', tokens.mainnet['ARM-WETH-stETH'].decimals)],
+          },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'previewDeposit',
+            args: [parseUnits('1', tokens.mainnet.WETH.decimals)],
           },
         ],
       }),
@@ -104,7 +120,6 @@ const fetcher: (
         }),
       }),
     ]);
-
     const userBalance =
       res[0][0].status === 'success'
         ? ([
@@ -112,17 +127,24 @@ const fetcher: (
             tokens.mainnet['ARM-WETH-stETH'].decimals,
           ] as Dnum)
         : from(0);
-
-    const wethBalance = await readContract(config, {
-      address: tokens.mainnet['ARM-WETH-stETH'].address,
-      abi: tokens.mainnet['ARM-WETH-stETH'].abi,
-      functionName: 'previewRedeem',
-      args: [userBalance[0]],
+    const lpToWeth =
+      res[0][2].status === 'success'
+        ? ([BigInt(res[0][2].result ?? 0), 18] as Dnum)
+        : from(0);
+    const wethToLp =
+      res[0][3].status === 'success'
+        ? ([BigInt(res[0][3].result ?? 0), 18] as Dnum)
+        : from(0);
+    const userWethBalance = mul(userBalance, lpToWeth, {
+      rounding: 'ROUND_DOWN',
     });
-
-    const userWethBalance = [wethBalance, tokens.mainnet.WETH.decimals] as Dnum;
     const claimableRes =
       res[0][1].status === 'success' ? BigInt(res[0][1].result ?? 0) : 0n;
+    const claimable = [
+      claimableRes,
+      tokens.mainnet['ARM-WETH-stETH'].decimals,
+    ] as Dnum;
+
     const requests = res[2].armWithdrawalRequests
       .filter((r) => !r.claimed)
       .map((r) => {
@@ -151,6 +173,9 @@ const fetcher: (
       totalAssets,
       userBalance,
       userWethBalance,
+      claimable,
+      lpToWeth,
+      wethToLp,
       prices: res[1],
       requests,
     };

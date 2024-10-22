@@ -12,7 +12,7 @@ import { TokenChip, useArmDailyStatsQuery } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
-import { AddressLabel, useWatchBalance } from '@origin/shared/providers';
+import { AddressLabel } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
@@ -152,18 +152,10 @@ export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useArmVault();
-  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
-    token: tokens.mainnet['ARM-WETH-stETH'],
-  });
 
   if (!isConnected) {
     return null;
   }
-
-  const userBalance = mul(
-    [BigInt(balance ?? 0), tokens.mainnet['ARM-WETH-stETH'].decimals],
-    info?.prices?.['1:ARM-WETH-stETH_1:WETH'] ?? from(0),
-  );
 
   return (
     <Card {...props}>
@@ -179,10 +171,11 @@ export const VaultBalanceCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={format(userBalance, {
-            digits: getFormatPrecision(userBalance),
+          value={format(info?.userWethBalance ?? from(0), {
+            digits: getFormatPrecision(info?.userWethBalance ?? from(0)),
+            decimalsRounding: 'ROUND_DOWN',
           })}
-          isLoading={isInfoLoading || isBalanceLoading}
+          isLoading={isInfoLoading}
           {...valueLabelProps}
         />
       </CardContent>

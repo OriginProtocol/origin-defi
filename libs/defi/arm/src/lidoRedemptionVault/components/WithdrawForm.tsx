@@ -6,9 +6,9 @@ import { InfoTooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { TxButton } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
-import { from, gt, sub } from 'dnum';
+import { from, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { useAccount, useReadContract } from 'wagmi';
+import { useAccount } from 'wagmi';
 
 import { useArmVault } from '../hooks';
 
@@ -21,21 +21,12 @@ export const WithdrawForm = (props: CardContentProps) => {
   const { address } = useAccount();
   const [amount, setAmount] = useState(from(0, tokens.mainnet.WETH.decimals));
   const { data: info, isLoading: isInfoLoading } = useArmVault();
-  const { data: lpAmount, isLoading: isLpAmountLoading } = useReadContract({
-    address: tokens.mainnet['ARM-WETH-stETH'].address,
-    abi: tokens.mainnet['ARM-WETH-stETH'].abi,
-    functionName: 'previewDeposit',
-    args: [amount[0]],
-  });
-  const input = sub(
-    [lpAmount ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
-    1,
-  );
+  const input = mul(amount, info?.wethToLp ?? 0, { rounding: 'ROUND_DOWN' });
   const { params, callbacks } = useTxButton({
     params: {
       contract: contracts.mainnet.ARMstETHWETHPool,
       functionName: 'requestRedeem',
-      args: [amount[0]],
+      args: [input[0]],
     },
     activity: {
       type: 'redeem',
@@ -60,7 +51,6 @@ export const WithdrawForm = (props: CardContentProps) => {
 
   const isWithdrawDisabled =
     isInfoLoading ||
-    isLpAmountLoading ||
     amount[0] === 0n ||
     gt(amount, info?.userWethBalance ?? from(0));
   const withdrawButtonLabel = gt(amount, info?.userWethBalance ?? from(0))
