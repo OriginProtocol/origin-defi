@@ -120,6 +120,7 @@ const fetcher: (
         }),
       }),
     ]);
+
     const userBalance =
       res[0][0].status === 'success'
         ? ([
@@ -144,7 +145,6 @@ const fetcher: (
       claimableRes,
       tokens.mainnet['ARM-WETH-stETH'].decimals,
     ] as Dnum;
-
     const requests = res[2].armWithdrawalRequests
       .filter((r) => !r.claimed)
       .map((r) => {

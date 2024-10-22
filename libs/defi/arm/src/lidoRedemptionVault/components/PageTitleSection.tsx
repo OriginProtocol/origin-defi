@@ -8,8 +8,12 @@ import type { StackProps } from '@mui/material';
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
   const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
-    { limit: 1 },
-    { select: (data) => data?.armDailyStats?.[0]?.apy ?? 0 },
+    { limit: 30 },
+    {
+      select: (data) =>
+        data.armDailyStats.reduce((acc, curr) => acc + curr.apy, 0) /
+        Math.min(30, data.armDailyStats.length),
+    },
   );
 
   return (
