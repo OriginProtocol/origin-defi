@@ -20,7 +20,13 @@ export const LSTCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={{
@@ -158,7 +164,13 @@ export const StakingCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={(theme) => ({
@@ -241,7 +253,13 @@ export const StableCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={(theme) => ({
@@ -314,7 +332,13 @@ export const ArmVaultCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={(theme) => ({
@@ -323,7 +347,7 @@ export const ArmVaultCard = (props: CardProps) => {
             borderColor: 'divider',
             color: 'text.primary',
             overflow: 'hidden',
-            background: `url('/images/armPattern.svg')`,
+            background: `url('/images/armPattern.svg'),${theme.palette.background.default}`,
             backgroundRepeat: 'no-repeat',
             backgroundSize: {
               xs: 'auto 200px',
