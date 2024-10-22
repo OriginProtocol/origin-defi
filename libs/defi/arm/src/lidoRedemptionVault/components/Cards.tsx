@@ -8,7 +8,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenChip, useArmDailyStatsQuery } from '@origin/defi/shared';
+import {
+  TokenChip,
+  useArmApy,
+  useArmDailyStatsQuery,
+} from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
@@ -18,6 +22,7 @@ import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { APY_TRAILING } from '../constants';
 import { useArmVault } from '../hooks';
 
 import type { CardProps } from '@mui/material';
@@ -25,14 +30,7 @@ import type { ValueLabelProps } from '@origin/shared/components';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
-    { limit: 30 },
-    {
-      select: (data) =>
-        data.armDailyStats.reduce((acc, curr) => acc + curr.apy, 0) /
-        Math.min(30, data.armDailyStats.length),
-    },
-  );
+  const { data: apy, isLoading: isApyLoading } = useArmApy(APY_TRAILING);
 
   return (
     <Card {...props}>
@@ -40,9 +38,14 @@ export const ApyCard = (props: CardProps) => {
       <Divider />
       <CardContent>
         <ValueLabel
-          label={intl.formatMessage({
-            defaultMessage: '30-day trailing',
-          })}
+          label={
+            APY_TRAILING > 1
+              ? intl.formatMessage(
+                  { defaultMessage: '{trailing}-day trailing APY' },
+                  { trailing: APY_TRAILING },
+                )
+              : 'APY'
+          }
           value={intl.formatNumber(apy ?? 0, {
             style: 'percent',
             maximumFractionDigits: 2,

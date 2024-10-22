@@ -1,20 +1,15 @@
 import { Stack, Typography } from '@mui/material';
-import { ColorChip, useArmDailyStatsQuery } from '@origin/defi/shared';
+import { ColorChip, useArmApy } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
+
+import { APY_TRAILING } from '../constants';
 
 import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
-  const { data: apy, isLoading: isApyLoading } = useArmDailyStatsQuery(
-    { limit: 30 },
-    {
-      select: (data) =>
-        data.armDailyStats.reduce((acc, curr) => acc + curr.apy, 0) /
-        Math.min(30, data.armDailyStats.length),
-    },
-  );
+  const { data: apy, isLoading: isApyLoading } = useArmApy(APY_TRAILING);
 
   return (
     <Stack
@@ -48,7 +43,12 @@ export const PageTitleSection = (props: StackProps) => {
             color: 'inherit',
           }}
         >
-          {intl.formatMessage({ defaultMessage: '30-day trailing APY' })}
+          {APY_TRAILING > 1
+            ? intl.formatMessage(
+                { defaultMessage: '{trailing}-day trailing APY' },
+                { trailing: APY_TRAILING },
+              )
+            : 'APY'}
         </Typography>
       </ColorChip>
     </Stack>

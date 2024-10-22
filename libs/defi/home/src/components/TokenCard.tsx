@@ -7,6 +7,7 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  useArmApy,
   useArmDailyStatsQuery,
   useTokenInfo,
   useXOgnStakingApy,
@@ -392,15 +393,17 @@ export const TokenCard = ({
   );
 };
 
+const APY_TRAILING = 1;
+
 export const ArmCard = (props: StackProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const { isConnected } = useAccount();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit: 30 },
+    { limit: 1 },
     {
-      select: (data) => data?.armDailyStats ?? [],
+      select: (data) => data?.armDailyStats?.[0],
     },
   );
   const { data: price, isLoading: isPriceLoading } = useTokenPrice(
@@ -409,15 +412,15 @@ export const ArmCard = (props: StackProps) => {
   const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
     token: tokens.mainnet['ARM-WETH-stETH'],
   });
+  const { data: apyTrailing, isLoading: isApyTrailingLoading } =
+    useArmApy(APY_TRAILING);
 
-  const apy30 =
-    (data?.reduce((acc, curr) => acc + curr.apy, 0) ?? 0) / (data?.length ?? 1);
   const tvl = [
-    BigInt(data?.[0]?.totalSupply ?? 0),
+    BigInt(data?.totalSupply ?? 0),
     tokens.mainnet['ARM-WETH-stETH'].decimals,
   ] as Dnum;
   const exchangeRate = [
-    BigInt(data?.[0]?.assetsPerShare ?? 0),
+    BigInt(data?.assetsPerShare ?? 0),
     tokens.mainnet['ARM-WETH-stETH'].decimals,
   ] as Dnum;
   const tvlUsd = mul(tvl, price ?? 0);
@@ -494,7 +497,7 @@ export const ArmCard = (props: StackProps) => {
           }}
         >
           <LoadingLabel
-            isLoading={isLoading}
+            isLoading={isApyTrailingLoading}
             variant="featured2"
             sx={[
               {
@@ -517,7 +520,7 @@ export const ArmCard = (props: StackProps) => {
               },
             ]}
           >
-            {intl.formatNumber(apy30 ?? 0, {
+            {intl.formatNumber(apyTrailing ?? 0, {
               style: 'percent',
               minimumFractionDigits: 2,
               maximumFractionDigits: 2,
@@ -531,15 +534,17 @@ export const ArmCard = (props: StackProps) => {
             >
               APY
             </Typography>
-            <InfoTooltip
-              sx={[{ ml: 0.25, color: 'primary.main' }]}
-              tooltipLabel={intl.formatMessage(
-                {
-                  defaultMessage: '{trailingDays}-day trailing APY',
-                },
-                { trailingDays: 30 },
-              )}
-            />
+            {APY_TRAILING > 1 && (
+              <InfoTooltip
+                sx={[{ ml: 0.25, color: 'primary.main' }]}
+                tooltipLabel={intl.formatMessage(
+                  {
+                    defaultMessage: '{trailingDays}-day trailing APY',
+                  },
+                  { trailingDays: APY_TRAILING },
+                )}
+              />
+            )}
           </Stack>
         </Stack>
       </Stack>
