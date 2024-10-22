@@ -19,7 +19,9 @@ export const OverviewView = () => {
   return (
     <Page>
       <PageTitle
-        title={intl.formatMessage({ defaultMessage: 'stETH Redemption Vault' })}
+        title={intl.formatMessage({
+          defaultMessage: 'ETH Vault: stETH Redemptions',
+        })}
         subtitle={intl.formatMessage({
           defaultMessage: 'Passive earnings on ETH',
         })}
