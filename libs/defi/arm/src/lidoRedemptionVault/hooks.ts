@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { useArmDailyStatsQuery } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useTokenPrices } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
@@ -10,10 +11,7 @@ import { from } from 'dnum';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
 
-import {
-  useArmDailyStatsQuery,
-  useArmWithdrawalRequestsQuery,
-} from './queries.generated';
+import { useArmWithdrawalRequestsQuery } from './queries.generated';
 
 import type { SupportedTokenPrice } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';

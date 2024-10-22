@@ -1,0 +1,21 @@
+query armDailyStats(
+  $limit: Int
+  $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]
+) {
+  armDailyStats(
+    limit: $limit
+    orderBy: $orderBy
+    where: {
+      address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6"
+      chainId_eq: 1
+    }
+  ) {
+    id
+    timestamp
+    outstandingAssets1
+    totalSupply
+    apy
+    totalAssets
+    assetsPerShare
+  }
+}

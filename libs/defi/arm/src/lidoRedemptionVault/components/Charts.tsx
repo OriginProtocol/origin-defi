@@ -8,6 +8,7 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
+import { useArmDailyStatsQuery } from '@origin/defi/shared';
 import {
   ChartTooltip,
   InfoTooltipLabel,
@@ -22,8 +23,6 @@ import { formatInTimeZone } from 'date-fns-tz';
 import { div, toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
-
-import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';

@@ -1,9 +1,7 @@
 import { Stack, Typography } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
+import { ColorChip, useArmDailyStatsQuery } from '@origin/defi/shared';
 import { LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
-
-import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { StackProps } from '@mui/material';
 

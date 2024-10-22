@@ -8,7 +8,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenChip } from '@origin/defi/shared';
+import { TokenChip, useArmDailyStatsQuery } from '@origin/defi/shared';
 import { ClipboardButton, ValueLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
@@ -19,7 +19,6 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useArmVault } from '../hooks';
-import { useArmDailyStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
