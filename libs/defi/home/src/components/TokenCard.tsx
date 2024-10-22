@@ -282,11 +282,20 @@ export const TokenCard = ({
               fontWeight: 'bold',
             }}
           >
-            {disabled
-              ? '-'
-              : ['OGN', 'OUSD'].includes(token.symbol)
-                ? `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
-                : `Ξ ${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })}`}
+            {disabled ? (
+              '-'
+            ) : ['OGN', 'OUSD'].includes(token.symbol) ? (
+              `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
+            ) : (
+              <>
+                <CurrencyLabel currency="ETH" />
+                &nbsp;
+                {format(info?.totalSupply ?? from(0), {
+                  compact: true,
+                  digits: 2,
+                })}
+              </>
+            )}
           </LoadingLabel>
           {!disabled && isSm && (
             <Box
@@ -610,7 +619,7 @@ export const ArmCard = (props: StackProps) => {
       >
         <Button
           component={RouterLink}
-          to="/arm"
+          to="/arm/steth-redemption-vault"
           sx={{ whiteSpace: 'nowrap' }}
           fullWidth
           size={isSm ? 'large' : 'medium'}
