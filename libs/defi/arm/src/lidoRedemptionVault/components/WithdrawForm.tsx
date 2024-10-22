@@ -4,6 +4,7 @@ import { CardContent, Stack, Typography } from '@mui/material';
 import { TokenInput, useTxButton } from '@origin/defi/shared';
 import { InfoTooltipLabel } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
+import { PiggyBank } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { from, gt, mul } from 'dnum';
@@ -87,6 +88,7 @@ export const WithdrawForm = (props: CardContentProps) => {
           tokenPriceUsd={info?.prices?.['1:WETH_USD']}
           isPriceLoading={isInfoLoading}
           isTokenClickDisabled
+          balanceIcon={<PiggyBank />}
           sx={(theme) => ({
             p: 2,
             mb: 3,

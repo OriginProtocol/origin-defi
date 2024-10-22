@@ -37,6 +37,7 @@ export type TokenInputProps = {
   tokenPriceUsd?: Dnum;
   isPriceLoading?: boolean;
   readOnly?: boolean;
+  balanceIcon?: ReactNode;
 } & StackProps;
 
 export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
@@ -59,6 +60,7 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
       tokenPriceUsd = 0,
       isPriceLoading,
       readOnly = false,
+      balanceIcon,
       ...rest
     },
     ref,
@@ -196,13 +198,14 @@ export const TokenInput = forwardRef<HTMLInputElement, TokenInputProps>(
                     sx={{
                       fontWeight: 'medium',
                       '&.Mui-disabled': { color: 'text.secondary', opacity: 1 },
+                      svg: { fontSize: 20, mr: 1 },
                     }}
                   >
                     {isBalanceLoading ? (
                       <Skeleton width={60} />
                     ) : (
                       <>
-                        <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
+                        {balanceIcon ?? <WalletFilled />}
                         {format(bal, {
                           digits: getFormatPrecision(bal),
                           decimalsRounding: 'ROUND_DOWN',
