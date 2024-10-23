@@ -61,10 +61,10 @@ export const WithdrawalRequestModal = ({
   const { address } = useAccount();
   const { status, startRefresh } = useRefresher<WithdrawalRequestsQuery>({
     queryKey: useWithdrawalRequestsQuery.getKey({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     queryFn: useWithdrawalRequestsQuery.fetcher({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     isResultProcessed: (prev, next) =>
       prev.oethWithdrawalRequests.length < next.oethWithdrawalRequests.length,

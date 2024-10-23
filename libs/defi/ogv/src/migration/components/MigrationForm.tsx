@@ -42,7 +42,7 @@ export const MigrationForm = (props: StackProps) => {
   const once = useRef(true);
   const { data: info, isLoading: isInfoLoading } = useOgvInfo();
   const { data: lockups, isLoading: isLockupsLoading } = useOgvLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     {
       enabled: !!address,
       select: (data) => data.ogvLockups,

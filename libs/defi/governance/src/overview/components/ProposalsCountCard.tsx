@@ -15,7 +15,7 @@ export const ProposalsCountCard = (props: CardProps) => {
   const { data: holdersCount, isLoading: isHoldersCountLoading } =
     useHolderCountQuery(
       {
-        token: tokens.mainnet.xOGN.address,
+        token: tokens.mainnet.xOGN.address.toLowerCase(),
         chainId: tokens.mainnet.xOGN.chainId,
       },
       { select: (data) => data?.erc20HoldersConnection?.totalCount ?? 0 },

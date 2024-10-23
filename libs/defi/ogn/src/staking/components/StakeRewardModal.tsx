@@ -684,7 +684,7 @@ function LockupSelect({
   const { address } = useAccount();
   const { data: govInfo } = useOgnInfo();
   const { data } = useOgnLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     {
       select: (data) => data?.esLockups,
       enabled: !!address,

@@ -60,10 +60,10 @@ const fetcher: (
       }),
       queryClient.fetchQuery({
         queryKey: useWithdrawalRequestsQuery.getKey({
-          address: (address as string) ?? ZERO_ADDRESS,
+          address: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
         queryFn: useWithdrawalRequestsQuery.fetcher({
-          address: (address as string) ?? ZERO_ADDRESS,
+          address: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
       readContract(config, {

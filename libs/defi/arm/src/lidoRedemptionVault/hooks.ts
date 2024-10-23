@@ -121,10 +121,10 @@ const fetcher: (
       }),
       queryClient.fetchQuery({
         queryKey: useArmWithdrawalRequestsQuery.getKey({
-          address: address ?? ZERO_ADDRESS,
+          address: address?.toLowerCase() ?? ZERO_ADDRESS,
         }),
         queryFn: useArmWithdrawalRequestsQuery.fetcher({
-          address: address ?? ZERO_ADDRESS,
+          address: address?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
       queryClient.fetchQuery({

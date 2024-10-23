@@ -24,8 +24,12 @@ export const { Provider: LockupPollingProvider, useTracked: useLockupPolling } =
     });
     const { address } = useAccount();
     const { data } = useQuery({
-      queryKey: useOgnLockupsQuery.getKey({ address: address ?? ZERO_ADDRESS }),
-      queryFn: useOgnLockupsQuery.fetcher({ address: address ?? ZERO_ADDRESS }),
+      queryKey: useOgnLockupsQuery.getKey({
+        address: address?.toLowerCase() ?? ZERO_ADDRESS,
+      }),
+      queryFn: useOgnLockupsQuery.fetcher({
+        address: address?.toLowerCase() ?? ZERO_ADDRESS,
+      }),
       refetchInterval: state.refetchInterval,
       enabled: !!state.refetchInterval,
       select: (data) => data?.esLockups ?? [],

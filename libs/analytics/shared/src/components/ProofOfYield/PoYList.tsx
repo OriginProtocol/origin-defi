@@ -46,7 +46,7 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
   const navigate = useNavigate();
   const { data, isLoading } = useOTokenStatsConnectionQuery(
     {
-      token: token.address ?? ZERO_ADDRESS,
+      token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
       chainId: token.chainId,
       first: undefined,
       from: from ?? config?.from,

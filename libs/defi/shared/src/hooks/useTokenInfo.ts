@@ -61,16 +61,16 @@ const fetcher: (
     const res = await Promise.allSettled([
       queryClient.fetchQuery({
         queryKey: useOTokenApyQuery.getKey({
-          token: token.address ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
         queryFn: useOTokenApyQuery.fetcher({
-          token: token.address ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
       }),
       readContract(config, {
-        address: token.address ?? ZERO_ADDRESS,
+        address: (token?.address?.toLowerCase() as HexAddress) ?? ZERO_ADDRESS,
         abi: token.abi,
         functionName: 'totalSupply',
         chainId: token.chainId,
@@ -85,13 +85,13 @@ const fetcher: (
       }),
       queryClient.fetchQuery({
         queryKey: useOTokenAddressQuery.getKey({
-          address: address ?? ZERO_ADDRESS,
-          token: token.address ?? ZERO_ADDRESS,
+          address: address?.toLowerCase() ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
         queryFn: useOTokenAddressQuery.fetcher({
-          address: address ?? ZERO_ADDRESS,
-          token: token.address ?? ZERO_ADDRESS,
+          address: address?.toLowerCase() ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
         }),
       }),

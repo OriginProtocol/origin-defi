@@ -37,12 +37,12 @@ export const VoteDelegationCard = (props: CardProps) => {
   const { address, isConnected } = useAccount();
   const queryClient = useQueryClient();
   const { data: userInfo, isLoading: isUserInfoLoading } = useUserInfoQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
   const { data: delegators, isLoading: isDelegatorsLoading } =
     useUserDelegatorsQuery(
-      { address: address ?? ZERO_ADDRESS },
+      { address: address?.toLowerCase() ?? ZERO_ADDRESS },
       { enabled: !!address },
     );
 
@@ -205,7 +205,7 @@ export const VoteDelegationCard = (props: CardProps) => {
                     queryClient.invalidateQueries({
                       queryKey: [
                         useUserInfoQuery.getKey({
-                          address: address ?? ZERO_ADDRESS,
+                          address: address?.toLowerCase() ?? ZERO_ADDRESS,
                         }),
                       ],
                     });

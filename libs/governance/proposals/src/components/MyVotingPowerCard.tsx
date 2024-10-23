@@ -16,7 +16,7 @@ export const MyVotingPowerCard = (props: CardProps) => {
   const { isConnected, address } = useAccount();
   const { data: info, isLoading: isInfoLoading } = useGovernanceInfo();
   const { data: user, isLoading: isUserLoading } = useUserInfoQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
 

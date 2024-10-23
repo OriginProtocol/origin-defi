@@ -48,7 +48,7 @@ export const LockupsTable = () => {
   const [{ lockupId, refetchInterval }] = useLockupPolling();
   const { data: govInfo, isLoading: isGovInfoLoading } = useOgnInfo();
   const { data, isLoading } = useOgnLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     {
       select: (data) => data?.esLockups,
       enabled: !!address,

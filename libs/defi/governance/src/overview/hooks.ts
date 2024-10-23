@@ -91,18 +91,18 @@ export const useUserVotes = () => {
       const res = await Promise.allSettled([
         queryClient.fetchQuery({
           queryKey: useUserVotesQuery.getKey({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
           queryFn: useUserVotesQuery.fetcher({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
         }),
         queryClient.fetchQuery({
           queryKey: snapshot.useSnapshotUserVotesQuery.getKey({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
           queryFn: snapshot.useSnapshotUserVotesQuery.fetcher({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
         }),
       ]);

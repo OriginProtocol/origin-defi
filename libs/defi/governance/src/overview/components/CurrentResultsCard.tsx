@@ -40,12 +40,12 @@ export const CurrentResultsCard = (props: CardProps) => {
   );
   const { data: proposalVotes, isLoading: isProposalVotesLoading } =
     useProposalVotesQuery(
-      { proposalId: proposalId ?? '' },
+      { proposalId: proposalId?.toLowerCase() ?? '' },
       { enabled: !!proposalId, select: (data) => data.governanceProposalVotes },
     );
   const { data: userVotingPower, isLoading: isUserVotingPowerLoading } =
     useUserVotingPowerQuery(
-      { address: address ?? '' },
+      { address: address?.toLowerCase() ?? '' },
       { enabled: isConnected, select: (data) => data?.esAccounts?.[0] },
     );
 

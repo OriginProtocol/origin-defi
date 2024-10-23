@@ -4,7 +4,7 @@ import { LoadingLabel, TokenIcon } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
-import { scale } from '@origin/shared/utils';
+import { scale, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 import { formatUnits } from 'viem';
@@ -20,7 +20,7 @@ export const DashboardView = () => {
   const { address, isConnected } = useAccount();
   const { data: points, isLoading: isPointsLoading } = usePoints();
   const { data: userPoints } = useUserPointsQuery(
-    { address },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     { enabled: isConnected },
   );
 

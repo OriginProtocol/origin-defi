@@ -30,13 +30,13 @@ export const CurrentResultsCard = (props: CardProps) => {
   const { proposalId } = useParams();
   const { data: user } = useUserInfoQuery(
     {
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     },
     { enabled: !!address, select: (data) => data?.ogvAddresses?.at?.(0) },
   );
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
-      proposalId: proposalId ?? '',
+      proposalId: proposalId?.toLowerCase() ?? '',
     },
     { enabled: !!proposalId },
   );
@@ -224,12 +224,16 @@ function VoteCard({
             onSuccess={() => {
               queryClient.invalidateQueries({
                 queryKey: [
-                  useProposalQuery.getKey({ proposalId: proposalId ?? '' }),
+                  useProposalQuery.getKey({
+                    proposalId: proposalId?.toLowerCase() ?? '',
+                  }),
                 ],
               });
               queryClient.invalidateQueries({
                 queryKey: [
-                  useUserInfoQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+                  useUserInfoQuery.getKey({
+                    address: address?.toLowerCase() ?? ZERO_ADDRESS,
+                  }),
                 ],
               });
             }}

@@ -17,7 +17,7 @@ export const useTotalLockedUp = () => {
   const { address } = useAccount();
 
   return useOgnLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     {
       select: (data) =>
         data?.esLockups?.reduce(
@@ -45,10 +45,10 @@ export const useMyVApy = () => {
       const data = await Promise.all([
         queryClient.fetchQuery<OgnLockupsQuery>({
           queryKey: useOgnLockupsQuery.getKey({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
           queryFn: useOgnLockupsQuery.fetcher({
-            address: address ?? ZERO_ADDRESS,
+            address: address?.toLowerCase() ?? ZERO_ADDRESS,
           }),
         }),
         queryClient.fetchQuery({
