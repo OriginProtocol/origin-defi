@@ -46,6 +46,10 @@ export const ApyCard = (props: CardProps) => {
             style: 'percent',
             maximumFractionDigits: 2,
           })}
+          labelInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'This APY will be displayed over an increasing period of time, up to 30 days, as that data is collected.',
+          })}
           isLoading={isApyLoading}
           {...valueLabelProps}
         />

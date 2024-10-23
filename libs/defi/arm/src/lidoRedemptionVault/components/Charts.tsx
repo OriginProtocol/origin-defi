@@ -11,6 +11,7 @@ import {
 import { useArmDailyStatsQuery } from '@origin/defi/shared';
 import {
   ChartTooltip,
+  InfoTooltip,
   InfoTooltipLabel,
   LimitControls,
   LineChart,
@@ -73,13 +74,22 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
-            <LoadingLabel
-              isLoading={isLoading}
-              variant="body1"
-              sx={{ fontWeight: 'bold' }}
-            >
-              {intl.formatNumber(activeItem?.apy ?? 0)}%
-            </LoadingLabel>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+              <LoadingLabel
+                isLoading={isLoading}
+                variant="body1"
+                sx={{ fontWeight: 'bold' }}
+              >
+                {intl.formatNumber(activeItem?.apy ?? 0)}%
+              </LoadingLabel>
+              <InfoTooltip
+                iconColor="text.primary"
+                tooltipLabel={intl.formatMessage({
+                  defaultMessage:
+                    'There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons.',
+                })}
+              />
+            </Stack>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
