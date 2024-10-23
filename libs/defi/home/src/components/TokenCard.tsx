@@ -393,7 +393,7 @@ export const TokenCard = ({
   );
 };
 
-const APY_TRAILING = 7;
+const APY_TRAILING = 1;
 
 export const ArmCard = (props: StackProps) => {
   const intl = useIntl();
@@ -534,17 +534,16 @@ export const ArmCard = (props: StackProps) => {
             >
               APY
             </Typography>
-            {APY_TRAILING > 1 && (
-              <InfoTooltip
-                sx={[{ ml: 0.25, color: 'primary.main' }]}
-                tooltipLabel={intl.formatMessage(
-                  {
-                    defaultMessage: '{trailingDays}-day trailing APY',
-                  },
-                  { trailingDays: APY_TRAILING },
-                )}
-              />
-            )}
+
+            <InfoTooltip
+              sx={[{ ml: 0.25, color: 'primary.main' }]}
+              tooltipLabel={intl.formatMessage(
+                {
+                  defaultMessage: '{trailing} trailing APY',
+                },
+                { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+              )}
+            />
           </Stack>
         </Stack>
       </Stack>

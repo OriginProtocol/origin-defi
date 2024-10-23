@@ -5,7 +5,7 @@ import type { Dnum } from 'dnum';
 
 import type { DepositARMAction } from './types';
 
-export const APY_TRAILING = 7;
+export const APY_TRAILING = 1;
 
 export const WAVE_AMOUNT = [
   1500n,

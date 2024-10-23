@@ -38,14 +38,10 @@ export const ApyCard = (props: CardProps) => {
       <Divider />
       <CardContent>
         <ValueLabel
-          label={
-            APY_TRAILING > 1
-              ? intl.formatMessage(
-                  { defaultMessage: '{trailing}-day trailing APY' },
-                  { trailing: APY_TRAILING },
-                )
-              : 'APY'
-          }
+          label={intl.formatMessage(
+            { defaultMessage: '{trailing} trailing APY' },
+            { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+          )}
           value={intl.formatNumber(apy ?? 0, {
             style: 'percent',
             maximumFractionDigits: 2,

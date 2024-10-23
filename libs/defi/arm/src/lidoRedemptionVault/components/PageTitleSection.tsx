@@ -43,12 +43,10 @@ export const PageTitleSection = (props: StackProps) => {
             color: 'inherit',
           }}
         >
-          {APY_TRAILING > 1
-            ? intl.formatMessage(
-                { defaultMessage: '{trailing}-day trailing APY' },
-                { trailing: APY_TRAILING },
-              )
-            : 'APY'}
+          {intl.formatMessage(
+            { defaultMessage: '{trailing} trailing APY' },
+            { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+          )}
         </Typography>
       </ColorChip>
     </Stack>
