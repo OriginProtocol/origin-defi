@@ -21,7 +21,7 @@ export type OgnLockupsQuery = { __typename?: 'Query', esLockups: Array<{ __typen
 export const OgnUserInfoDocument = `
     query OgnUserInfo($address: String!) {
   esAccounts(
-    where: {chainId_eq: 1, address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_containsInsensitive: $address}
+    where: {chainId_eq: 1, address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_eq: $address}
   ) {
     id
     balance
@@ -59,7 +59,7 @@ useOgnUserInfoQuery.fetcher = (variables: OgnUserInfoQueryVariables, options?: R
 export const OgnLockupsDocument = `
     query OgnLockups($address: String!) {
   esLockups(
-    where: {chainId_eq: 1, address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_containsInsensitive: $address, events_none: {event_eq: Unstaked}}
+    where: {chainId_eq: 1, address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_eq: $address, events_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id

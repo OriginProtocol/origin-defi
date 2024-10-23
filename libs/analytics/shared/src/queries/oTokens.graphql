@@ -45,7 +45,7 @@ query oTokenStats(
     offset: $offset
     orderBy: $orderBy
     where: {
-      otoken_containsInsensitive: $token
+      otoken_eq: $token
       chainId_eq: $chainId
       timestamp_gte: $from
     }
@@ -65,7 +65,7 @@ query oTokenStatsConnection(
   oTokenDailyStatsConnection(
     orderBy: $orderBy
     where: {
-      otoken_containsInsensitive: $token
+      otoken_eq: $token
       chainId_eq: $chainId
       timestamp_gte: $from
     }
@@ -99,7 +99,7 @@ query oTokenRebases(
     where: {
       timestamp_gte: $from
       timestamp_lt: $to
-      otoken_containsInsensitive: $token
+      otoken_eq: $token
       chainId_eq: $chainId
     }
   ) {
@@ -120,7 +120,7 @@ query oTokenApy(
   oTokenApies(
     limit: 1
     orderBy: $orderBy
-    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+    where: { chainId_eq: $chainId, otoken_eq: $token }
   ) {
     apy7DayAvg
     apy14DayAvg

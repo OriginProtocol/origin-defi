@@ -39,7 +39,7 @@ query Proposal($proposalId: String!) {
     }
   }
   ogvProposalVotes(
-    where: { proposal: { id_containsInsensitive: $proposalId } }
+    where: { proposal: { id_eq: $proposalId } }
   ) {
     id
     voter {
@@ -54,7 +54,7 @@ query Proposal($proposalId: String!) {
 
 query UserVotes($address: String!) {
   ogvProposalVotes(
-    where: { voter: { id_containsInsensitive: $address } }
+    where: { voter: { id_eq: $address } }
     orderBy: timestamp_DESC
   ) {
     id

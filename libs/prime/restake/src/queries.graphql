@@ -1,6 +1,6 @@
 query UserActiveRequests($address: String!) {
   lrtWithdrawalRequests(
-    where: { withdrawer_containsInsensitive: $address, status_in: [Requested] }
+    where: { withdrawer_eq: $address, status_in: [Requested] }
   ) {
     id
   }
@@ -8,7 +8,7 @@ query UserActiveRequests($address: String!) {
 
 query UserWithdrawals($address: String!) {
   lrtWithdrawalRequests(
-    where: { withdrawer_containsInsensitive: $address }
+    where: { withdrawer_eq: $address }
     orderBy: [timestamp_DESC]
   ) {
     id

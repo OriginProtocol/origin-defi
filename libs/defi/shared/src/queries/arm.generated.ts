@@ -17,7 +17,7 @@ export const ArmDailyStatsDocument = `
   armDailyStats(
     limit: $limit
     orderBy: $orderBy
-    where: {address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6", chainId_eq: 1}
+    where: {address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1}
   ) {
     id
     timestamp

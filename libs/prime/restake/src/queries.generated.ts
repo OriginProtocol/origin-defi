@@ -20,9 +20,7 @@ export type UserWithdrawalsQuery = { __typename?: 'Query', lrtWithdrawalRequests
 
 export const UserActiveRequestsDocument = `
     query UserActiveRequests($address: String!) {
-  lrtWithdrawalRequests(
-    where: {withdrawer_containsInsensitive: $address, status_in: [Requested]}
-  ) {
+  lrtWithdrawalRequests(where: {withdrawer_eq: $address, status_in: [Requested]}) {
     id
   }
 }
@@ -52,7 +50,7 @@ useUserActiveRequestsQuery.fetcher = (variables: UserActiveRequestsQueryVariable
 export const UserWithdrawalsDocument = `
     query UserWithdrawals($address: String!) {
   lrtWithdrawalRequests(
-    where: {withdrawer_containsInsensitive: $address}
+    where: {withdrawer_eq: $address}
     orderBy: [timestamp_DESC]
   ) {
     id

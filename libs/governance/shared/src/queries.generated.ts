@@ -54,7 +54,7 @@ useHoldersCountQuery.fetcher = (variables?: HoldersCountQueryVariables, options?
 
 export const UserInfoDocument = `
     query UserInfo($address: String!) {
-  ogvAddresses(where: {id_containsInsensitive: $address}) {
+  ogvAddresses(where: {id_eq: $address}) {
     id
     balance
     staked
@@ -90,7 +90,7 @@ useUserInfoQuery.fetcher = (variables: UserInfoQueryVariables, options?: Request
 
 export const UserDelegatorsDocument = `
     query UserDelegators($address: String!) {
-  ogvAddresses(where: {delegatee: {id_containsInsensitive: $address}}) {
+  ogvAddresses(where: {delegatee: {id_eq: $address}}) {
     id
     votingPower
   }

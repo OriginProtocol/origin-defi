@@ -87,7 +87,7 @@ export const ProposalDocument = `
       id
     }
   }
-  ogvProposalVotes(where: {proposal: {id_containsInsensitive: $proposalId}}) {
+  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
     id
     voter {
       id
@@ -123,10 +123,7 @@ useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: Request
 
 export const UserVotesDocument = `
     query UserVotes($address: String!) {
-  ogvProposalVotes(
-    where: {voter: {id_containsInsensitive: $address}}
-    orderBy: timestamp_DESC
-  ) {
+  ogvProposalVotes(where: {voter: {id_eq: $address}}, orderBy: timestamp_DESC) {
     id
     type
     timestamp

@@ -71,7 +71,7 @@ export const OTokenApyDocument = `
   oTokenApies(
     limit: 1
     orderBy: timestamp_DESC
-    where: {chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {chainId_eq: $chainId, otoken_eq: $token}
   ) {
     apy7DayAvg
     apy14DayAvg
@@ -106,7 +106,7 @@ useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: Reque
 export const OTokenAddressDocument = `
     query OTokenAddress($address: String!, $chainId: Int!, $token: String!) {
   oTokenAddresses(
-    where: {address_containsInsensitive: $address, chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {address_eq: $address, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     balance
     earned
@@ -143,7 +143,7 @@ export const OTokenHistoriesDocument = `
   oTokenHistories(
     orderBy: timestamp_DESC
     limit: $limit
-    where: {address: {id_containsInsensitive: $address}, type_in: $filters, chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {address: {id_eq: $address}, type_in: $filters, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     type
     value
@@ -181,7 +181,7 @@ export const OTokenStatsDocument = `
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from}
   ) {
     ...DailyStat
   }

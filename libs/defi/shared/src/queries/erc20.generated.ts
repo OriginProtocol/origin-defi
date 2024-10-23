@@ -33,7 +33,7 @@ export const HolderCountDocument = `
     query HolderCount($chainId: Int!, $token: String!) {
   erc20HoldersConnection(
     orderBy: id_ASC
-    where: {address_containsInsensitive: $token, chainId_eq: $chainId, balance_gt: 0}
+    where: {address_eq: $token, chainId_eq: $chainId, balance_gt: 0}
   ) {
     totalCount
   }
@@ -67,7 +67,7 @@ export const TransfersDocument = `
     orderBy: timestamp_DESC
     offset: 0
     limit: 2000
-    where: {OR: {address_in: $tokens, from_containsInsensitive: $account}, address_in: $tokens, to_containsInsensitive: $account}
+    where: {OR: {address_in: $tokens, from_eq: $account}, address_in: $tokens, to_eq: $account}
   ) {
     id
     chainId
@@ -108,7 +108,7 @@ useTransfersQuery.fetcher = (variables: TransfersQueryVariables, options?: Reque
 export const BalancesDocument = `
     query Balances($tokens: [String!], $account: String!, $blocks: [Int!]) {
   erc20Balances(
-    where: {address_in: $tokens, account_containsInsensitive: $account, blockNumber_in: $blocks}
+    where: {address_in: $tokens, account_eq: $account, blockNumber_in: $blocks}
   ) {
     id
     chainId

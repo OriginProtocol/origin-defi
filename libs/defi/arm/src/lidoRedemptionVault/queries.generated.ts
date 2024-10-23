@@ -18,7 +18,7 @@ export const ArmWithdrawalRequestsDocument = `
   armWithdrawalRequests(
     limit: $limit
     orderBy: $orderBy
-    where: {account_containsInsensitive: $address, address_containsInsensitive: "0x85B78AcA6Deae198fBF201c82DAF6Ca21942acc6", chainId_eq: 1}
+    where: {account_eq: $address, address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1}
   ) {
     id
     requestId

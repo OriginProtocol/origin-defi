@@ -54,7 +54,7 @@ useOgvHoldersCountQuery.fetcher = (variables?: OgvHoldersCountQueryVariables, op
 
 export const OgvUserInfoDocument = `
     query OgvUserInfo($address: String!) {
-  ogvAddresses(where: {id_containsInsensitive: $address}) {
+  ogvAddresses(where: {id_eq: $address}) {
     id
     balance
     staked
@@ -91,7 +91,7 @@ useOgvUserInfoQuery.fetcher = (variables: OgvUserInfoQueryVariables, options?: R
 export const OgvLockupsDocument = `
     query OgvLockups($address: String!) {
   ogvLockups(
-    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
+    where: {address: {id_eq: $address}, logs_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id

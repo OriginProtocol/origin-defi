@@ -3,10 +3,10 @@ query BridgeTransfers($address: String!, $limit: Int!) {
     limit: $limit
     orderBy: timestamp_DESC
     where: {
-      sender_containsInsensitive: $address
+      sender_eq: $address
       OR: {
-        transactor_containsInsensitive: $address
-        OR: { receiver_containsInsensitive: $address }
+        transactor_eq: $address
+        OR: { receiver_eq: $address }
       }
     }
   ) {

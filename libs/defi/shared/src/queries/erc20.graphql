@@ -2,7 +2,7 @@ query HolderCount($chainId: Int!, $token: String!) {
   erc20HoldersConnection(
     orderBy: id_ASC
     where: {
-      address_containsInsensitive: $token
+      address_eq: $token
       chainId_eq: $chainId
       balance_gt: 0
     }
@@ -17,9 +17,9 @@ query Transfers($tokens: [String!], $account: String!) {
     offset: 0
     limit: 2000
     where: {
-      OR: { address_in: $tokens, from_containsInsensitive: $account }
+      OR: { address_in: $tokens, from_eq: $account }
       address_in: $tokens
-      to_containsInsensitive: $account
+      to_eq: $account
     }
   ) {
     id
@@ -40,7 +40,7 @@ query Balances($tokens: [String!], $account: String!, $blocks: [Int!]) {
   erc20Balances(
     where: {
       address_in: $tokens
-      account_containsInsensitive: $account
+      account_eq: $account
       blockNumber_in: $blocks
     }
   ) {

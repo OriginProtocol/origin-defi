@@ -24,7 +24,7 @@ export const BridgeTransfersDocument = `
   bridgeTransfers(
     limit: $limit
     orderBy: timestamp_DESC
-    where: {sender_containsInsensitive: $address, OR: {transactor_containsInsensitive: $address, OR: {receiver_containsInsensitive: $address}}}
+    where: {sender_eq: $address, OR: {transactor_eq: $address, OR: {receiver_eq: $address}}}
   ) {
     id
     blockNumber

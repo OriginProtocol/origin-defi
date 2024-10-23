@@ -137,9 +137,7 @@ useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: Request
 
 export const ProposalVotesDocument = `
     query ProposalVotes($proposalId: String!) {
-  governanceProposalVotes(
-    where: {proposal: {id_containsInsensitive: $proposalId}}
-  ) {
+  governanceProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
     id
     address
     voter
@@ -181,10 +179,7 @@ useProposalVotesQuery.fetcher = (variables: ProposalVotesQueryVariables, options
 
 export const UserVotesDocument = `
     query UserVotes($address: String!) {
-  governanceProposalVotes(
-    where: {voter_containsInsensitive: $address}
-    orderBy: [timestamp_DESC]
-  ) {
+  governanceProposalVotes(where: {voter_eq: $address}, orderBy: [timestamp_DESC]) {
     id
     type
     timestamp
@@ -222,7 +217,7 @@ useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: Reque
 
 export const UserVotingPowerDocument = `
     query UserVotingPower($address: String!) {
-  esAccounts(where: {account_containsInsensitive: $address}) {
+  esAccounts(where: {account_eq: $address}) {
     id
     address
     balance
@@ -261,7 +256,7 @@ useUserVotingPowerQuery.fetcher = (variables: UserVotingPowerQueryVariables, opt
 
 export const UserDelegatorsDocument = `
     query UserDelegators($address: String!) {
-  esAccounts(where: {delegatesFrom_some: {account_containsInsensitive: $address}}) {
+  esAccounts(where: {delegatesFrom_some: {account_eq: $address}}) {
     id
     address
     votingPower

@@ -45,7 +45,7 @@ query Proposal($proposalId: String!) {
 
 query ProposalVotes($proposalId: String!) {
   governanceProposalVotes(
-    where: { proposal: { id_containsInsensitive: $proposalId } }
+    where: { proposal: { id_eq: $proposalId } }
   ) {
     id
     address
@@ -66,7 +66,7 @@ query ProposalVotes($proposalId: String!) {
 
 query UserVotes($address: String!) {
   governanceProposalVotes(
-    where: { voter_containsInsensitive: $address }
+    where: { voter_eq: $address }
     orderBy: [timestamp_DESC]
   ) {
     id
@@ -83,7 +83,7 @@ query UserVotes($address: String!) {
 }
 
 query UserVotingPower($address: String!) {
-  esAccounts(where: { account_containsInsensitive: $address }) {
+  esAccounts(where: { account_eq: $address }) {
     id
     address
     balance
@@ -100,7 +100,7 @@ query UserVotingPower($address: String!) {
 
 query UserDelegators($address: String!) {
   esAccounts(
-    where: { delegatesFrom_some: { account_containsInsensitive: $address } }
+    where: { delegatesFrom_some: { account_eq: $address } }
   ) {
     id
     address

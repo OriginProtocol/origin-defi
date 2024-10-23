@@ -13,7 +13,7 @@ export type WithdrawalRequestsQuery = { __typename?: 'Query', oethWithdrawalRequ
 
 export const WithdrawalRequestsDocument = `
     query WithdrawalRequests($address: String!) {
-  oethWithdrawalRequests(where: {withdrawer_containsInsensitive: $address}) {
+  oethWithdrawalRequests(where: {withdrawer_eq: $address}) {
     id
     requestId
     timestamp

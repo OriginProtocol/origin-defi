@@ -5,7 +5,7 @@ query OgvHoldersCount {
 }
 
 query OgvUserInfo($address: String!) {
-  ogvAddresses(where: { id_containsInsensitive: $address }) {
+  ogvAddresses(where: { id_eq: $address }) {
     id
     balance
     staked
@@ -20,7 +20,7 @@ query OgvUserInfo($address: String!) {
 query OgvLockups($address: String!) {
   ogvLockups(
     where: {
-      address: { id_containsInsensitive: $address }
+      address: { id_eq: $address }
       logs_none: { event_eq: Unstaked }
     }
     orderBy: end_ASC

@@ -14,7 +14,7 @@ export type UserLockupsQuery = { __typename?: 'Query', ogvLockups: Array<{ __typ
 export const UserLockupsDocument = `
     query UserLockups($address: String!) {
   ogvLockups(
-    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
+    where: {address: {id_eq: $address}, logs_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id

@@ -1,7 +1,7 @@
 query UserLockups($address: String!) {
   ogvLockups(
     where: {
-      address: { id_containsInsensitive: $address }
+      address: { id_eq: $address }
       logs_none: { event_eq: Unstaked }
     }
     orderBy: end_ASC

@@ -5,7 +5,7 @@ query HoldersCount {
 }
 
 query UserInfo($address: String!) {
-  ogvAddresses(where: { id_containsInsensitive: $address }) {
+  ogvAddresses(where: { id_eq: $address }) {
     id
     balance
     staked
@@ -18,7 +18,7 @@ query UserInfo($address: String!) {
 }
 
 query UserDelegators($address: String!) {
-  ogvAddresses(where: { delegatee: { id_containsInsensitive: $address } }) {
+  ogvAddresses(where: { delegatee: { id_eq: $address } }) {
     id
     votingPower
   }
