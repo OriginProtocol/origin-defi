@@ -7,11 +7,12 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { PiggyBank } from '@origin/shared/icons';
 import { TxButton } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
+import { formatDistanceStrict } from 'date-fns';
 import { from, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useArmVault } from '../hooks';
+import { useArmInfo } from '../hooks';
 
 import type { CardContentProps } from '@mui/material';
 import type { Dnum } from 'dnum';
@@ -21,7 +22,7 @@ export const WithdrawForm = (props: CardContentProps) => {
   const queryClient = useQueryClient();
   const { address } = useAccount();
   const [amount, setAmount] = useState(from(0, tokens.mainnet.WETH.decimals));
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
   const input = mul(amount, info?.wethToLp ?? 0, { rounding: 'ROUND_DOWN' });
   const { params, callbacks } = useTxButton({
     params: {
@@ -40,7 +41,7 @@ export const WithdrawForm = (props: CardContentProps) => {
       onWriteSuccess: () => {
         setAmount(from(0, tokens.mainnet['ARM-WETH-stETH'].decimals));
         queryClient.invalidateQueries({
-          queryKey: useArmVault.getKey(address),
+          queryKey: useArmInfo.getKey(address),
         });
       },
     },
@@ -50,6 +51,13 @@ export const WithdrawForm = (props: CardContentProps) => {
     setAmount([val, tokens.mainnet['ARM-WETH-stETH'].decimals] as Dnum);
   };
 
+  const nextQueued = (info?.withdrawsQueued ?? 0n) + input[0];
+  const waitTimeLabel =
+    nextQueued > (info?.claimable ?? 0n)
+      ? intl.formatMessage({ defaultMessage: '0~5 days' })
+      : formatDistanceStrict(0, Number(info?.claimDelay ?? 600) * 1000, {
+          unit: 'minute',
+        });
   const isWithdrawDisabled =
     isInfoLoading ||
     amount[0] === 0n ||
@@ -125,9 +133,7 @@ export const WithdrawForm = (props: CardContentProps) => {
             variant="featured3"
             sx={{ fontWeight: 'bold', color: 'primary.main' }}
           >
-            {intl.formatMessage({
-              defaultMessage: '~ 0-5 days',
-            })}
+            {waitTimeLabel}
           </Typography>
         </Stack>
         <TxButton

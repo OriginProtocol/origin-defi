@@ -16,7 +16,11 @@ import { useArmWithdrawalRequestsQuery } from './queries.generated';
 
 import type { SupportedTokenPrice } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
-import type { QueryClient, QueryFunction } from '@tanstack/react-query';
+import type {
+  QueryClient,
+  QueryFunction,
+  UseQueryOptions,
+} from '@tanstack/react-query';
 import type { Config } from '@wagmi/core';
 import type { Dnum } from 'dnum';
 
@@ -53,7 +57,9 @@ type ArmVault = {
   totalAssets: Dnum;
   userBalance: Dnum;
   userWethBalance: Dnum;
-  claimable: Dnum;
+  claimable: bigint;
+  claimDelay: bigint;
+  withdrawsQueued: bigint;
   lpToWeth: Dnum;
   wethToLp: Dnum;
   prices: Record<SupportedTokenPrice, Dnum>;
@@ -92,6 +98,16 @@ const fetcher: (
             functionName: 'previewDeposit',
             args: [parseUnits('1', tokens.mainnet.WETH.decimals)],
           },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'claimDelay',
+          },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'withdrawsQueued',
+          },
         ],
       }),
       queryClient.fetchQuery({
@@ -128,35 +144,36 @@ const fetcher: (
             tokens.mainnet['ARM-WETH-stETH'].decimals,
           ] as Dnum)
         : from(0);
+    const claimable = res[0][1].status === 'success' ? res[0][1].result : 0n;
     const lpToWeth =
       res[0][2].status === 'success'
-        ? ([BigInt(res[0][2].result ?? 0), 18] as Dnum)
+        ? ([
+            BigInt(res[0][2].result ?? 0),
+            tokens.mainnet['ARM-WETH-stETH'].decimals,
+          ] as Dnum)
         : from(0);
     const wethToLp =
       res[0][3].status === 'success'
-        ? ([BigInt(res[0][3].result ?? 0), 18] as Dnum)
+        ? ([
+            BigInt(res[0][3].result ?? 0),
+            tokens.mainnet['ARM-WETH-stETH'].decimals,
+          ] as Dnum)
         : from(0);
-    const userWethBalance = mul(userBalance, lpToWeth, {
-      rounding: 'ROUND_DOWN',
-    });
-    const claimableRes =
-      res[0][1].status === 'success' ? BigInt(res[0][1].result ?? 0) : 0n;
-    const claimable = [
-      claimableRes,
-      tokens.mainnet['ARM-WETH-stETH'].decimals,
-    ] as Dnum;
+    const claimDelay = res[0][4].status === 'success' ? res[0][4].result : 0n;
+    const withdrawsQueued =
+      res[0][5].status === 'success' ? res[0][5].result : 0n;
     const requests = res[2].armWithdrawalRequests
       .filter((r) => !r.claimed)
       .map((r) => {
-        const claimable =
-          BigInt(r?.queued ?? 0) < claimableRes &&
+        const isClaimable =
+          BigInt(r?.queued ?? 0) < claimable &&
           isAfter(new Date(), addMinutes(new Date(r.timestamp), 11));
         return {
           ...r,
           requestId: BigInt(r.requestId),
           amount: BigInt(r.amount),
           queued: BigInt(r.queued),
-          claimable,
+          claimable: isClaimable,
         };
       });
     const totalSupply = [
@@ -168,12 +185,18 @@ const fetcher: (
       tokens.mainnet['ARM-WETH-stETH'].decimals,
     ] as Dnum;
 
+    const userWethBalance = mul(userBalance, lpToWeth, {
+      rounding: 'ROUND_DOWN',
+    });
+
     return {
       totalSupply,
       totalAssets,
       userBalance,
       userWethBalance,
       claimable,
+      claimDelay,
+      withdrawsQueued,
       lpToWeth,
       wethToLp,
       prices: res[1],
@@ -181,7 +204,7 @@ const fetcher: (
     };
   };
 
-export const useArmVault = () => {
+export const useArmInfo = () => {
   const { address } = useAccount();
   const config = useConfig();
   const queryClient = useQueryClient();
@@ -191,5 +214,70 @@ export const useArmVault = () => {
     queryFn: fetcher(config, queryClient),
   });
 };
-useArmVault.getKey = getKey;
-useArmVault.fetcher = fetcher;
+useArmInfo.getKey = getKey;
+useArmInfo.fetcher = fetcher;
+
+type ClaimInfo = {
+  withdrawer: string;
+  claimed: boolean;
+  claimTimestamp: number;
+  assets: bigint;
+  queued: bigint;
+  claimable: bigint;
+};
+
+export const useClaimInfo = (
+  requestId: bigint,
+  options?: Omit<
+    UseQueryOptions<ClaimInfo, Error, ClaimInfo, ['useClaimInfo', bigint]>,
+    'queryFn' | 'queryKey'
+  >,
+) => {
+  const config = useConfig();
+
+  return useQuery({
+    ...options,
+    queryKey: ['useClaimInfo', requestId],
+    queryFn: async () => {
+      const res = await readContracts(config, {
+        contracts: [
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'withdrawalRequests',
+            args: [requestId],
+          },
+          {
+            address: contracts.mainnet.ARMstETHWETHPool.address,
+            abi: contracts.mainnet.ARMstETHWETHPool.abi,
+            functionName: 'claimable',
+          },
+        ],
+      });
+      const requestRes = res[0].status === 'success' ? res[0].result : null;
+
+      if (!requestRes) {
+        return {
+          withdrawer: ZERO_ADDRESS,
+          claimed: false,
+          claimTimestamp: 0,
+          assets: 0n,
+          queued: 0n,
+          claimable: 0n,
+        };
+      }
+
+      const [withdrawer, claimed, claimTimestamp, assets, queued] = requestRes;
+      const claimable = res[1].status === 'success' ? res[1].result : 0n;
+
+      return {
+        withdrawer,
+        claimed,
+        claimTimestamp,
+        assets,
+        queued,
+        claimable,
+      };
+    },
+  });
+};

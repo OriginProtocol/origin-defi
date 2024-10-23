@@ -24,11 +24,12 @@ import {
 import { TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
+import { formatDuration } from 'date-fns';
 import { add, eq, format, from } from 'dnum';
 import { groupBy } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useArmVault } from '../hooks';
+import { useArmInfo, useClaimInfo } from '../hooks';
 
 import type { CardContentProps, StackProps } from '@mui/material';
 import type { Dnum } from 'dnum';
@@ -41,7 +42,7 @@ export const ClaimForm = (props: CardContentProps) => {
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const queryClient = useQueryClient();
   const [selectedClaimId, setSelectedClaimId] = useState<bigint | null>(null);
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
   const selectedAmount =
     info?.requests?.find((r) => r.requestId === selectedClaimId)?.amount ?? 0n;
   const { params, callbacks, gasPrice } = useTxButton({
@@ -376,8 +377,35 @@ const ClaimRow = ({
   isProcessing,
   ...rest
 }: ClaimRowProps) => {
+  const intl = useIntl();
+  const { data: armInfo, isLoading: isArmInfoLoading } = useArmInfo();
+  const vaultHasMoney = (armInfo?.claimable ?? 0n) >= request.queued;
+  const { data: claimInfo, isLoading: isClaimInfoLoading } = useClaimInfo(
+    request.requestId,
+    {
+      structuralSharing: false,
+      refetchInterval:
+        !request.claimable && !request.claimed && vaultHasMoney
+          ? 10000
+          : undefined,
+    },
+  );
+
+  const now = Math.floor(Date.now() / 1000);
+  const claimEnd = claimInfo?.claimTimestamp ?? 0;
+  const diff = claimEnd - now;
+  const isClaimable =
+    !!claimInfo && claimInfo.claimable >= claimInfo.queued && diff < 0;
+  const timeLeft = vaultHasMoney
+    ? diff > 0
+      ? formatDuration(
+          { minutes: Math.floor(diff / 60), seconds: diff % 60 },
+          { format: diff > 60 ? ['minutes'] : ['seconds'] },
+        )
+      : ''
+    : intl.formatMessage({ defaultMessage: '0~5 days' });
   const amt = [request?.amount ?? 0n, tokens.mainnet.WETH.decimals] as Dnum;
-  const disabled = !request.claimable || isProcessing;
+  const disabled = !isClaimable || isClaimInfoLoading || isProcessing;
 
   return (
     <Stack
@@ -395,14 +423,14 @@ const ClaimRow = ({
       ]}
     >
       <FormControlLabel
-        control={<Checkbox checked={request.claimable && selected} />}
+        control={<Checkbox checked={isClaimable && selected} />}
         label={
           <Stack
             direction="row"
             spacing={0.5}
             sx={{
               alignItems: 'baseline',
-              color: request.claimable ? 'text.primary' : 'text.secondary',
+              color: isClaimable ? 'text.primary' : 'text.secondary',
             }}
           >
             <Typography
@@ -432,7 +460,12 @@ const ClaimRow = ({
           alignItems: 'center',
         }}
       >
-        <ClaimChip claimable={request.claimable} isProcessing={isProcessing} />
+        <ClaimChip
+          claimable={isClaimable}
+          isProcessing={isProcessing}
+          isLoading={isClaimInfoLoading || isArmInfoLoading}
+          timeLeft={timeLeft}
+        />
         <Button
           variant="outlined"
           color="secondary"
@@ -450,33 +483,46 @@ const ClaimRow = ({
 type ClaimChipProps = {
   claimable: boolean;
   isProcessing: boolean;
+  isLoading: boolean;
+  timeLeft?: string;
 } & StackProps;
 
-const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
+const ClaimChip = ({
+  claimable,
+  isProcessing,
+  isLoading,
+  timeLeft,
+  ...rest
+}: ClaimChipProps) => {
   const intl = useIntl();
 
-  const icon = isProcessing ? (
-    <CircularProgress size={16} />
-  ) : claimable ? (
-    <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
-  ) : (
-    <FaClockRegular sx={{ color: 'warning.dark' }} />
-  );
-  const label = isProcessing
-    ? intl.formatMessage({ defaultMessage: 'Processing' })
-    : claimable
-      ? intl.formatMessage({ defaultMessage: 'Ready' })
-      : intl.formatMessage({ defaultMessage: 'Pending' });
-  const color = isProcessing
-    ? 'primary.main'
-    : claimable
-      ? 'success.dark'
-      : 'warning.dark';
-  const backgroundColor = isProcessing
-    ? 'primary.faded'
-    : claimable
-      ? 'success.faded'
-      : 'warning.faded';
+  const icon =
+    isProcessing || isLoading ? (
+      <CircularProgress size={16} />
+    ) : claimable ? (
+      <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
+    ) : (
+      <FaClockRegular sx={{ color: 'warning.dark' }} />
+    );
+  const label = isLoading
+    ? intl.formatMessage({ defaultMessage: 'Loading' })
+    : isProcessing
+      ? intl.formatMessage({ defaultMessage: 'Processing' })
+      : claimable
+        ? intl.formatMessage({ defaultMessage: 'Ready' })
+        : timeLeft;
+  const color =
+    isProcessing || isLoading
+      ? 'primary.main'
+      : claimable
+        ? 'success.dark'
+        : 'warning.dark';
+  const backgroundColor =
+    isProcessing || isLoading
+      ? 'primary.faded'
+      : claimable
+        ? 'success.faded'
+        : 'warning.faded';
 
   return (
     <Stack

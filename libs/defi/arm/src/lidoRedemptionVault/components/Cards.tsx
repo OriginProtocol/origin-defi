@@ -23,7 +23,7 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { APY_TRAILING } from '../constants';
-import { useArmVault } from '../hooks';
+import { useArmInfo } from '../hooks';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -60,7 +60,7 @@ export const ApyCard = (props: CardProps) => {
 
 export const TvlCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
   const { data: tvl, isLoading: isTvlLoading } = useArmDailyStatsQuery(
     { limit: 1 },
     { select: (data) => data?.armDailyStats?.[0]?.totalSupply },
@@ -154,7 +154,7 @@ export const AboutCard = (props: CardProps) => {
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { data: info, isLoading: isInfoLoading } = useArmVault();
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
 
   if (!isConnected) {
     return null;

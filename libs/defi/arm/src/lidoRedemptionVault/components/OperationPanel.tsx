@@ -1,7 +1,7 @@
 import { Card, Divider, Tab, Tabs } from '@mui/material';
 import { useIntl } from 'react-intl';
 
-import { useArmVault, useOperation } from '../hooks';
+import { useArmInfo, useOperation } from '../hooks';
 import { ClaimForm } from './ClaimForm';
 import { DepositForm } from './DepositForm';
 import { WithdrawForm } from './WithdrawForm';
@@ -9,7 +9,7 @@ import { WithdrawForm } from './WithdrawForm';
 export const OperationPanel = () => {
   const intl = useIntl();
   const { operation, update } = useOperation();
-  const { data: info } = useArmVault();
+  const { data: info } = useArmInfo();
 
   const requestCount = info?.requests?.filter((r) => r.claimable)?.length ?? 0;
 
