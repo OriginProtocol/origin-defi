@@ -230,9 +230,6 @@
   "IPuH1g": {
     "defaultMessage": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
   },
-  "IeqnaT": {
-    "defaultMessage": "Date: {date}"
-  },
   "IfZsEo": {
     "defaultMessage": "Vote against"
   },
@@ -302,9 +299,6 @@
   "NND2zi": {
     "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
   },
-  "NNFAc/": {
-    "defaultMessage": "{label}: {value}"
-  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -322,6 +316,9 @@
   },
   "OmyPDW": {
     "defaultMessage": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
+  },
+  "P7PLVj": {
+    "defaultMessage": "Date"
   },
   "PFtMy9": {
     "defaultMessage": "Canceled"

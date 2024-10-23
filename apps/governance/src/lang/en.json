@@ -561,16 +561,6 @@
       "value": "veOGV holders may delegate their voting power for off-chain votes to themselves or to another wallet address. The delegatee receives the extra voting power only on the proposals the delegator has not voted on."
     }
   ],
-  "IeqnaT": [
-    {
-      "type": 0,
-      "value": "Date: "
-    },
-    {
-      "type": 1,
-      "value": "date"
-    }
-  ],
   "IfZsEo": [
     {
       "type": 0,
@@ -769,20 +759,6 @@
       "value": "count"
     }
   ],
-  "NNFAc/": [
-    {
-      "type": 1,
-      "value": "label"
-    },
-    {
-      "type": 0,
-      "value": ": "
-    },
-    {
-      "type": 1,
-      "value": "value"
-    }
-  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -825,6 +801,12 @@
     {
       "type": 0,
       "value": "The length of time you will lock up your OGV in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
+    }
+  ],
+  "P7PLVj": [
+    {
+      "type": 0,
+      "value": "Date"
     }
   ],
   "PFtMy9": [

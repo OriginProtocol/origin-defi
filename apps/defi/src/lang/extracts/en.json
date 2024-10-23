@@ -80,6 +80,9 @@
   "11nx/H": {
     "defaultMessage": "7-Day MA"
   },
+  "11oARw": {
+    "defaultMessage": "Pool"
+  },
   "17g+HZ": {
     "defaultMessage": "No activity"
   },
@@ -230,6 +233,9 @@
   "6fzXU+": {
     "defaultMessage": "Amount to Stake"
   },
+  "7BSUnP": {
+    "defaultMessage": "Depositing"
+  },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
@@ -293,9 +299,6 @@
   "9lt7g1": {
     "defaultMessage": "Discord support channel"
   },
-  "9nUTIO": {
-    "defaultMessage": "Deposits will be disabled until further notice. Please check back later."
-  },
   "A7ewt8": {
     "defaultMessage": "1:{value}"
   },
@@ -304,6 +307,9 @@
   },
   "ABavuV": {
     "defaultMessage": "The amount to deposit"
+  },
+  "AFsCmQ": {
+    "defaultMessage": "ARM Vaults"
   },
   "ASNc/h": {
     "defaultMessage": "Enter an amount"
@@ -344,6 +350,9 @@
   "BNFT1w": {
     "defaultMessage": "Global stats"
   },
+  "BQuFrc": {
+    "defaultMessage": "{duration} minutes"
+  },
   "BY343C": {
     "defaultMessage": "Change"
   },
@@ -368,9 +377,6 @@
   "DBP9Xf": {
     "defaultMessage": "Stablecoin mix"
   },
-  "DBcUfI": {
-    "defaultMessage": "30-day trailing"
-  },
   "DBcj/1": {
     "defaultMessage": "Amount to withdraw"
   },
@@ -379,9 +385,6 @@
   },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
-  },
-  "DfnzFy": {
-    "defaultMessage": "stETH Redemption Vault"
   },
   "Dmb2/1": {
     "defaultMessage": "Unlock Stake"
@@ -424,9 +427,6 @@
   },
   "EZcIYg": {
     "defaultMessage": "Exact amount received depends on a fluctuating bridge fee which cannot be guaranteed through the zapper. The amount you receive on the destination chain will be the amount you send converted to wOETH, plus the estimated bridge fee, minus the actual bridge fee."
-  },
-  "EnSr55": {
-    "defaultMessage": "The total amount of ETH deposits for the current wave"
   },
   "F6lS59": {
     "defaultMessage": "0 months"
@@ -503,9 +503,6 @@
   "HlkjJI": {
     "defaultMessage": "Snapshot vote"
   },
-  "HyifTx": {
-    "defaultMessage": "~ 0-5 days"
-  },
   "I5NMJ8": {
     "defaultMessage": "More"
   },
@@ -520,9 +517,6 @@
   },
   "IZFEUg": {
     "defaultMessage": "Ready"
-  },
-  "IeqnaT": {
-    "defaultMessage": "Date: {date}"
   },
   "IfZsEo": {
     "defaultMessage": "Vote against"
@@ -563,6 +557,9 @@
   "KXTAK8": {
     "defaultMessage": "Abstain"
   },
+  "KdjLYO": {
+    "defaultMessage": "ARM"
+  },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
   },
@@ -587,6 +584,9 @@
   "LZqvbG": {
     "defaultMessage": "6M"
   },
+  "LjNvmm": {
+    "defaultMessage": "Deposited"
+  },
   "LpWMOQ": {
     "defaultMessage": "No transaction"
   },
@@ -604,9 +604,6 @@
   },
   "MLTKb6": {
     "defaultMessage": "APY"
-  },
-  "MLU2s2": {
-    "defaultMessage": "Your whitelist cap"
   },
   "MQq3X+": {
     "defaultMessage": "Active Proposals"
@@ -629,11 +626,11 @@
   "MbygIJ": {
     "defaultMessage": "0"
   },
+  "N4nINA": {
+    "defaultMessage": "ETH Vault"
+  },
   "NND2zi": {
     "defaultMessage": "{count,plural,=1{Plus # more option...} other{Plus # more options...}}"
-  },
-  "NNFAc/": {
-    "defaultMessage": "{label}: {value}"
   },
   "NTfaBt": {
     "defaultMessage": "Amount to add"
@@ -680,6 +677,9 @@
   "P6EE/a": {
     "defaultMessage": "Tokens"
   },
+  "P7PLVj": {
+    "defaultMessage": "Date"
+  },
   "P9sirH": {
     "defaultMessage": "The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup"
   },
@@ -718,6 +718,9 @@
   },
   "QmssWc": {
     "defaultMessage": "Super OETH now available on BASE!"
+  },
+  "Qr/N+H": {
+    "defaultMessage": "Claim{count}"
   },
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
@@ -803,6 +806,9 @@
   "TwyMau": {
     "defaultMessage": "Account"
   },
+  "U/ep9f": {
+    "defaultMessage": "Deposit {amount} {symbolIn}"
+  },
   "ULVduL": {
     "defaultMessage": "You are lawfully permitted to access this site. You understand and accept the risks associated with using the products in this dapp (OETH, OUSD, etc.)"
   },
@@ -884,9 +890,6 @@
   "YGu9gd": {
     "defaultMessage": "The amount of pending rewards allocated to you"
   },
-  "YZo94U": {
-    "defaultMessage": "You have reached your whitelist cap"
-  },
   "Yl2sc/": {
     "defaultMessage": "Learn about governance"
   },
@@ -928,6 +931,9 @@
   },
   "ZmlNQ3": {
     "defaultMessage": "Activity"
+  },
+  "ZwpbZp": {
+    "defaultMessage": "Contracts"
   },
   "a/lxLY": {
     "defaultMessage": "~{gas}"
@@ -1088,6 +1094,9 @@
   "grhR82": {
     "defaultMessage": "OGV & OGN are merging. Conversion will be open for 1 year."
   },
+  "h32pmM": {
+    "defaultMessage": "ETH Vault: stETH Redemptions"
+  },
   "h9gJgF": {
     "defaultMessage": "Impossible to execute approval"
   },
@@ -1115,6 +1124,12 @@
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
   },
+  "i/wHQN": {
+    "defaultMessage": "Earn passively with low risk."
+  },
+  "iFsDVR": {
+    "defaultMessage": "Loading"
+  },
   "iLgjES": {
     "defaultMessage": "Error while estimating"
   },
@@ -1129,6 +1144,9 @@
   },
   "icM8PS": {
     "defaultMessage": "It looks like you are minting from a contract and have not opted into yield. Contracts must opt-in to receive yield."
+  },
+  "j1+qZ0": {
+    "defaultMessage": "Error while depositing"
   },
   "j8y+qc": {
     "defaultMessage": "{label}"
@@ -1199,6 +1217,9 @@
   "m2eUvr": {
     "defaultMessage": "Enable rebasing for {symbol}"
   },
+  "m3AcGD": {
+    "defaultMessage": "0~5 days"
+  },
   "m9XypM": {
     "defaultMessage": "Sending {amount} {symbolIn} to {chainOut}."
   },
@@ -1226,9 +1247,6 @@
   "nE87EV": {
     "defaultMessage": "{pendingCount} pending"
   },
-  "nRuawh": {
-    "defaultMessage": "This ETH vault funds Lido stETH redeems"
-  },
   "nisJoJ": {
     "defaultMessage": "6m"
   },
@@ -1243,9 +1261,6 @@
   },
   "ok8VIA": {
     "defaultMessage": "Shape the future of Origin's products"
-  },
-  "ovjtl6": {
-    "defaultMessage": "Wave {waveNumber} cap remaining: {remaining} ETH"
   },
   "oy7udF": {
     "defaultMessage": "Approval cancelled"
@@ -1268,14 +1283,14 @@
   "p9CMVC": {
     "defaultMessage": "The length of time you will lock up your OGN in order to receive yield and voting power. There is no way to unstake before your withdrawal date."
   },
-  "pK0qqV": {
-    "defaultMessage": "Wave {waveNumber} TVL cap progress"
-  },
   "pYbH7c": {
     "defaultMessage": "Error while bridging"
   },
   "phZMsU": {
     "defaultMessage": "Claim {amount} {symbolIn}"
+  },
+  "q1h7mQ": {
+    "defaultMessage": "Passive earnings on ETH"
   },
   "qGZxc4": {
     "defaultMessage": "Connect your wallet to<br></br>select the network"
@@ -1343,6 +1358,9 @@
   "tFriEi": {
     "defaultMessage": "Transaction error"
   },
+  "tIPQsm": {
+    "defaultMessage": "WETH liquidity available for withdrawals depends on how much WETH vs. stETH the vault owns. Most often, depositors can withdraw their ETH from the vault instantly. In some cases, they may need to wait for stETH to complete the withdrawal cycle."
+  },
   "tOS305": {
     "defaultMessage": "Detailed analytics on Origin products"
   },
@@ -1402,9 +1420,6 @@
   },
   "ugjHU2": {
     "defaultMessage": "Select a token"
-  },
-  "uoaPWY": {
-    "defaultMessage": "The amount of ETH you can deposit for the current wave"
   },
   "utrdPr": {
     "defaultMessage": "Casting vote"
@@ -1508,6 +1523,9 @@
   "zGckFA": {
     "defaultMessage": "Yield earned"
   },
+  "zIL25h": {
+    "defaultMessage": "{trailing}-day trailing APY"
+  },
   "zQvVDJ": {
     "defaultMessage": "All"
   },
@@ -1519,6 +1537,9 @@
   },
   "zdF6np": {
     "defaultMessage": "wOETH Transactions"
+  },
+  "zf/oYS": {
+    "defaultMessage": "ETH Vaults"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"

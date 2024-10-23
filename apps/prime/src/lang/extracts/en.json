@@ -197,9 +197,6 @@
   "INlWvJ": {
     "defaultMessage": "OR"
   },
-  "IeqnaT": {
-    "defaultMessage": "Date: {date}"
-  },
   "IvIRrt": {
     "defaultMessage": "For each withdrawal request, you will have the option to claim your funds (in the form of OETH) or migrate them to ynLSDe."
   },
@@ -253,9 +250,6 @@
   },
   "Mgjww/": {
     "defaultMessage": "Still cooking..."
-  },
-  "NNFAc/": {
-    "defaultMessage": "{label}: {value}"
   },
   "NVVad4": {
     "defaultMessage": "No withdrawal to claim"

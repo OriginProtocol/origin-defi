@@ -152,6 +152,9 @@
   "HQcrRS": {
     "defaultMessage": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
   },
+  "HVnARB": {
+    "defaultMessage": "Morpho AAVE"
+  },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
   },
@@ -160,9 +163,6 @@
   },
   "IU4zTP": {
     "defaultMessage": "Proof of Yield"
-  },
-  "IeqnaT": {
-    "defaultMessage": "Date: {date}"
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
@@ -206,9 +206,6 @@
   "N2NlBB": {
     "defaultMessage": "Actual yield distributed"
   },
-  "NNFAc/": {
-    "defaultMessage": "{label}: {value}"
-  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },
@@ -239,8 +236,8 @@
   "Qz1fcp": {
     "defaultMessage": "Balance: {number}"
   },
-  "RD6ePo": {
-    "defaultMessage": "Morpho"
+  "RoqJiX": {
+    "defaultMessage": "Collateral"
   },
   "S45aoc": {
     "defaultMessage": "First"
@@ -250,6 +247,9 @@
   },
   "TEZFSL": {
     "defaultMessage": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
+  },
+  "TUVBi3": {
+    "defaultMessage": "Morpho Vaults"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -314,9 +314,6 @@
   "cAoIE2": {
     "defaultMessage": "Vault value"
   },
-  "cOB9Jx": {
-    "defaultMessage": "Yield"
-  },
   "cbwmZu": {
     "defaultMessage": "Amount of {symbol} that earns yield"
   },
@@ -334,6 +331,9 @@
   },
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
+  "eEOtmw": {
+    "defaultMessage": "Strategies"
   },
   "enDzGl": {
     "defaultMessage": "30-Day"
@@ -463,6 +463,9 @@
   },
   "t1srBX": {
     "defaultMessage": "Yield distribution events"
+  },
+  "t8QWDR": {
+    "defaultMessage": "Yield-earning supply"
   },
   "tFriEi": {
     "defaultMessage": "Transaction error"

@@ -345,6 +345,12 @@
       "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
     }
   ],
+  "HVnARB": [
+    {
+      "type": 0,
+      "value": "Morpho AAVE"
+    }
+  ],
   "Hiq4cG": [
     {
       "type": 0,
@@ -361,16 +367,6 @@
     {
       "type": 0,
       "value": "Proof of Yield"
-    }
-  ],
-  "IeqnaT": [
-    {
-      "type": 0,
-      "value": "Date: "
-    },
-    {
-      "type": 1,
-      "value": "date"
     }
   ],
   "JA3MsG": [
@@ -457,20 +453,6 @@
       "value": "Actual yield distributed"
     }
   ],
-  "NNFAc/": [
-    {
-      "type": 1,
-      "value": "label"
-    },
-    {
-      "type": 0,
-      "value": ": "
-    },
-    {
-      "type": 1,
-      "value": "value"
-    }
-  ],
   "NXFAgE": [
     {
       "type": 0,
@@ -543,10 +525,10 @@
       "value": "number"
     }
   ],
-  "RD6ePo": [
+  "RoqJiX": [
     {
       "type": 0,
-      "value": "Morpho"
+      "value": "Collateral"
     }
   ],
   "S45aoc": [
@@ -565,6 +547,12 @@
     {
       "type": 0,
       "value": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
+    }
+  ],
+  "TUVBi3": [
+    {
+      "type": 0,
+      "value": "Morpho Vaults"
     }
   ],
   "TrKxvg": [
@@ -733,12 +721,6 @@
       "value": "Vault value"
     }
   ],
-  "cOB9Jx": [
-    {
-      "type": 0,
-      "value": "Yield"
-    }
-  ],
   "cbwmZu": [
     {
       "type": 0,
@@ -791,6 +773,12 @@
     {
       "type": 0,
       "value": "is not supported"
+    }
+  ],
+  "eEOtmw": [
+    {
+      "type": 0,
+      "value": "Strategies"
     }
   ],
   "enDzGl": [
@@ -1103,6 +1091,12 @@
     {
       "type": 0,
       "value": "Yield distribution events"
+    }
+  ],
+  "t8QWDR": [
+    {
+      "type": 0,
+      "value": "Yield-earning supply"
     }
   ],
   "tFriEi": [
