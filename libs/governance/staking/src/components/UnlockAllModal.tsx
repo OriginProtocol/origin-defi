@@ -49,7 +49,7 @@ export const UnlockAllModal = (props: DialogProps) => {
   const queryClient = useQueryClient();
   const [view, setView] = useState('form');
   const { data: lockups } = useUserLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     { enabled: !!address, select: (data) => data.ogvLockups },
   );
   const { gasPrice, callbacks, params } = useTxButton({
@@ -75,7 +75,9 @@ export const UnlockAllModal = (props: DialogProps) => {
         setView('success');
         queryClient.invalidateQueries({
           queryKey: [
-            useUserLockupsQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+            useUserLockupsQuery.getKey({
+              address: address?.toLowerCase() ?? ZERO_ADDRESS,
+            }),
           ],
         });
       },

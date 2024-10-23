@@ -45,14 +45,14 @@ export const ClaimMigrateProgressModal = ({
   const queryClient = useQueryClient();
   const { address } = useAccount();
   const { data } = useUserWithdrawalsQuery({
-    address: address ?? ZERO_ADDRESS,
+    address: address?.toLowerCase() ?? ZERO_ADDRESS,
   });
   const { status, startRefresh } = useRefresher<UserWithdrawalsQuery>({
     queryKey: useUserWithdrawalsQuery.getKey({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     queryFn: useUserWithdrawalsQuery.fetcher({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     isResultProcessed: (prev, next) =>
       prev.lrtWithdrawalRequests.filter(
