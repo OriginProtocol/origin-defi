@@ -25,14 +25,13 @@ import { TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatDuration } from 'date-fns';
-import { add, eq, format, from } from 'dnum';
+import { add, eq, format, from, mul } from 'dnum';
 import { groupBy } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useArmInfo, useClaimInfo } from '../hooks';
 
 import type { CardContentProps, StackProps } from '@mui/material';
-import type { Dnum } from 'dnum';
 
 import type { WithdrawalRequest } from '../types';
 
@@ -404,7 +403,11 @@ const ClaimRow = ({
         )
       : ''
     : intl.formatMessage({ defaultMessage: '0~5 days' });
-  const amt = [request?.amount ?? 0n, tokens.mainnet.WETH.decimals] as Dnum;
+  const amt = mul(
+    [claimInfo?.assets ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
+    armInfo?.lpToWeth ?? 0,
+    { rounding: 'ROUND_DOWN' },
+  );
   const disabled = !isClaimable || isClaimInfoLoading || isProcessing;
 
   return (
