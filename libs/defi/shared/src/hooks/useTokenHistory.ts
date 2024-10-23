@@ -31,9 +31,9 @@ export const useTokenHistory = (
 
   return useOTokenHistoriesQuery(
     {
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
       chainId: token.chainId,
-      token: token.address ?? ZERO_ADDRESS,
+      token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
       filters: isNilOrEmpty(filters) ? undefined : filters,
     },
     {

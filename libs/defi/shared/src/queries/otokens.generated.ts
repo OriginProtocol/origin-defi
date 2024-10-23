@@ -143,7 +143,7 @@ export const OTokenHistoriesDocument = `
   oTokenHistories(
     orderBy: timestamp_DESC
     limit: $limit
-    where: {address: {id_eq: $address}, type_in: $filters, chainId_eq: $chainId, otoken_eq: $token}
+    where: {address: {address_eq: $address}, type_in: $filters, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     type
     value
