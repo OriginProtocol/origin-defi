@@ -75,6 +75,7 @@ export const WithdrawForm = (props: CardContentProps) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: 36,
+            mb: 1.5,
           }}
         >
           <InfoTooltipLabel
@@ -115,6 +116,7 @@ export const WithdrawForm = (props: CardContentProps) => {
           sx={{
             fontWeight: 'medium',
             height: 36,
+            mb: 1.5,
           }}
         >
           {intl.formatMessage({ defaultMessage: 'Withdraw time estimate' })}

@@ -126,6 +126,7 @@ const DepositFormWrapped = (props: CardContentProps) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: 36,
+            mb: 1.5,
           }}
         >
           <InfoTooltipLabel
