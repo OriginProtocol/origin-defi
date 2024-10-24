@@ -31,7 +31,7 @@ export const OgnUserInfoDocument = `
     assetBalance
     stakedBalance
     votingPower
-    delegatesFrom {
+    delegatesFrom(limit: 1000) {
       account
     }
   }

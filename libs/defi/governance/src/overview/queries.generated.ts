@@ -234,7 +234,7 @@ export const UserVotingPowerDocument = `
     delegateTo {
       address
     }
-    delegatesFrom {
+    delegatesFrom(limit: 1000) {
       address
     }
   }

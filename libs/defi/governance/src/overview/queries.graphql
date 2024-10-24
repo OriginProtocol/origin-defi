@@ -94,7 +94,7 @@ query UserVotingPower($address: String!, $limit: Int = 5000) {
     delegateTo {
       address
     }
-    delegatesFrom {
+    delegatesFrom(limit: 1000) {
       address
     }
   }

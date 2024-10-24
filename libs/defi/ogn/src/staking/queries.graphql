@@ -12,7 +12,7 @@ query OgnUserInfo($address: String!, $limit: Int = 5000) {
     assetBalance
     stakedBalance
     votingPower
-    delegatesFrom {
+    delegatesFrom(limit: 1000) {
       account
     }
   }
