@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/prime/shared';
 export type UserActiveRequestsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -11,6 +12,7 @@ export type UserActiveRequestsQuery = { __typename?: 'Query', lrtWithdrawalReque
 
 export type UserWithdrawalsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -19,8 +21,11 @@ export type UserWithdrawalsQuery = { __typename?: 'Query', lrtWithdrawalRequests
 
 
 export const UserActiveRequestsDocument = `
-    query UserActiveRequests($address: String!) {
-  lrtWithdrawalRequests(where: {withdrawer_eq: $address, status_in: [Requested]}) {
+    query UserActiveRequests($address: String!, $limit: Int = 5000) {
+  lrtWithdrawalRequests(
+    limit: $limit
+    where: {withdrawer_eq: $address, status_in: [Requested]}
+  ) {
     id
   }
 }
@@ -48,8 +53,9 @@ useUserActiveRequestsQuery.getKey = (variables: UserActiveRequestsQueryVariables
 useUserActiveRequestsQuery.fetcher = (variables: UserActiveRequestsQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserActiveRequestsQuery, UserActiveRequestsQueryVariables>(UserActiveRequestsDocument, variables, options);
 
 export const UserWithdrawalsDocument = `
-    query UserWithdrawals($address: String!) {
+    query UserWithdrawals($address: String!, $limit: Int = 5000) {
   lrtWithdrawalRequests(
+    limit: $limit
     where: {withdrawer_eq: $address}
     orderBy: [timestamp_DESC]
   ) {

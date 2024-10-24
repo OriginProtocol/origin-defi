@@ -1,13 +1,10 @@
-query BridgeTransfers($address: String!, $limit: Int!) {
+query BridgeTransfers($address: String!, $limit: Int! = 5000) {
   bridgeTransfers(
     limit: $limit
     orderBy: timestamp_DESC
     where: {
       sender_eq: $address
-      OR: {
-        transactor_eq: $address
-        OR: { receiver_eq: $address }
-      }
+      OR: { transactor_eq: $address, OR: { receiver_eq: $address } }
     }
   ) {
     id
@@ -30,8 +27,8 @@ query BridgeTransfers($address: String!, $limit: Int!) {
   }
 }
 
-query BridgeTransferStates($messageIds: [String!]) {
-  bridgeTransferStates(where: { id_in: $messageIds }) {
+query BridgeTransferStates($messageIds: [String!], $limit: Int = 5000) {
+  bridgeTransferStates(limit: $limit, where: { id_in: $messageIds }) {
     id
     state
   }

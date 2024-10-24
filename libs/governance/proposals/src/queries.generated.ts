@@ -16,6 +16,7 @@ export type ProposalQuery = { __typename?: 'Query', ogvProposalById?: { __typena
 
 export type UserVotesQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -122,8 +123,12 @@ useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', va
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
 
 export const UserVotesDocument = `
-    query UserVotes($address: String!) {
-  ogvProposalVotes(where: {voter: {id_eq: $address}}, orderBy: timestamp_DESC) {
+    query UserVotes($address: String!, $limit: Int = 5000) {
+  ogvProposalVotes(
+    limit: $limit
+    where: {voter: {id_eq: $address}}
+    orderBy: timestamp_DESC
+  ) {
     id
     type
     timestamp

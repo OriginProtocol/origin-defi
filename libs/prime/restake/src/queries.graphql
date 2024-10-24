@@ -1,13 +1,15 @@
-query UserActiveRequests($address: String!) {
+query UserActiveRequests($address: String!, $limit: Int = 5000) {
   lrtWithdrawalRequests(
+    limit: $limit
     where: { withdrawer_eq: $address, status_in: [Requested] }
   ) {
     id
   }
 }
 
-query UserWithdrawals($address: String!) {
+query UserWithdrawals($address: String!, $limit: Int = 5000) {
   lrtWithdrawalRequests(
+    limit: $limit
     where: { withdrawer_eq: $address }
     orderBy: [timestamp_DESC]
   ) {

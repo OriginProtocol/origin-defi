@@ -1,9 +1,7 @@
-query UserLockups($address: String!) {
+query UserLockups($address: String!, $limit: Int = 5000) {
   ogvLockups(
-    where: {
-      address: { id_eq: $address }
-      logs_none: { event_eq: Unstaked }
-    }
+    limit: $limit
+    where: { address: { id_eq: $address }, logs_none: { event_eq: Unstaked } }
     orderBy: end_ASC
   ) {
     id

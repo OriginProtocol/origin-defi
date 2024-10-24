@@ -5,6 +5,6 @@ query UserPoints($address: String) {
     points
     pointsDate
     referralPoints
-    elPoints    
+    elPoints
   }
 }

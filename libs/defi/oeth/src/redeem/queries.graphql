@@ -1,5 +1,5 @@
-query WithdrawalRequests($address: String!) {
-  oethWithdrawalRequests(where: { withdrawer_eq: $address }) {
+query WithdrawalRequests($address: String!, $limit: Int = 5000) {
+  oethWithdrawalRequests(limit: $limit, where: { withdrawer_eq: $address }) {
     id
     requestId
     timestamp

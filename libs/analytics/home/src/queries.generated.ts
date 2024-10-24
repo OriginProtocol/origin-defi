@@ -2,7 +2,9 @@ import * as Types from '@origin/analytics/shared';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/analytics/shared';
-export type CumulativeRevenueQueryVariables = Types.Exact<{ [key: string]: never; }>;
+export type CumulativeRevenueQueryVariables = Types.Exact<{
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+}>;
 
 
 export type CumulativeRevenueQuery = { __typename?: 'Query', oeth: Array<{ __typename?: 'OTokenDailyStat', timestamp: string, blockNumber: number, fees: string, rateETH: string }>, ousd: Array<{ __typename?: 'OTokenDailyStat', timestamp: string, blockNumber: number, fees: string, rateETH: string }>, super: Array<{ __typename?: 'OTokenDailyStat', timestamp: string, blockNumber: number, fees: string, rateETH: string }> };
@@ -10,8 +12,9 @@ export type CumulativeRevenueQuery = { __typename?: 'Query', oeth: Array<{ __typ
 
 
 export const CumulativeRevenueDocument = `
-    query CumulativeRevenue {
+    query CumulativeRevenue($limit: Int = 5000) {
   oeth: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3", chainId_eq: 1, timestamp_gte: "2023-06-01T00:00:00.000000Z"}
   ) {
@@ -21,6 +24,7 @@ export const CumulativeRevenueDocument = `
     rateETH
   }
   ousd: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86", chainId_eq: 1, timestamp_gte: "2023-06-01T00:00:00.000000Z"}
   ) {
@@ -30,6 +34,7 @@ export const CumulativeRevenueDocument = `
     rateETH
   }
   super: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {otoken_eq: "0xdbfefd2e8460a6ee4955a68582f85708baea60a3", chainId_eq: 8453, timestamp_gte: "2024-08-28T00:00:00.000000Z"}
   ) {

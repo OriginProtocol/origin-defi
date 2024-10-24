@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/prime/shared';
 export type PointRecipientStatsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -12,12 +13,12 @@ export type PointRecipientStatsQuery = { __typename?: 'Query', totalEigenLayerPo
 
 
 export const PointRecipientStatsDocument = `
-    query PointRecipientStats($address: String!) {
+    query PointRecipientStats($address: String!, $limit: Int = 1) {
   lrtPointRecipientStats(address: $address) {
     elPoints
     points
   }
-  lrtSummaries(limit: 1, orderBy: id_DESC) {
+  lrtSummaries(limit: $limit, orderBy: id_DESC) {
     points
   }
   totalEigenLayerPoints

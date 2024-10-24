@@ -16,6 +16,7 @@ export type ProposalQuery = { __typename?: 'Query', governanceProposalById?: { _
 
 export type ProposalVotesQueryVariables = Types.Exact<{
   proposalId: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -23,6 +24,7 @@ export type ProposalVotesQuery = { __typename?: 'Query', governanceProposalVotes
 
 export type UserVotesQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -30,6 +32,7 @@ export type UserVotesQuery = { __typename?: 'Query', governanceProposalVotes: Ar
 
 export type UserVotingPowerQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -37,6 +40,7 @@ export type UserVotingPowerQuery = { __typename?: 'Query', esAccounts: Array<{ _
 
 export type UserDelegatorsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -136,8 +140,8 @@ useProposalQuery.getKey = (variables: ProposalQueryVariables) => ['Proposal', va
 useProposalQuery.fetcher = (variables: ProposalQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalQuery, ProposalQueryVariables>(ProposalDocument, variables, options);
 
 export const ProposalVotesDocument = `
-    query ProposalVotes($proposalId: String!) {
-  governanceProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
+    query ProposalVotes($proposalId: String!, $limit: Int = 5000) {
+  governanceProposalVotes(limit: $limit, where: {proposal: {id_eq: $proposalId}}) {
     id
     address
     voter
@@ -178,8 +182,12 @@ useProposalVotesQuery.getKey = (variables: ProposalVotesQueryVariables) => ['Pro
 useProposalVotesQuery.fetcher = (variables: ProposalVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<ProposalVotesQuery, ProposalVotesQueryVariables>(ProposalVotesDocument, variables, options);
 
 export const UserVotesDocument = `
-    query UserVotes($address: String!) {
-  governanceProposalVotes(where: {voter_eq: $address}, orderBy: [timestamp_DESC]) {
+    query UserVotes($address: String!, $limit: Int = 5000) {
+  governanceProposalVotes(
+    limit: $limit
+    where: {voter_eq: $address}
+    orderBy: [timestamp_DESC]
+  ) {
     id
     type
     timestamp
@@ -216,8 +224,8 @@ useUserVotesQuery.getKey = (variables: UserVotesQueryVariables) => ['UserVotes',
 useUserVotesQuery.fetcher = (variables: UserVotesQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotesQuery, UserVotesQueryVariables>(UserVotesDocument, variables, options);
 
 export const UserVotingPowerDocument = `
-    query UserVotingPower($address: String!) {
-  esAccounts(where: {account_eq: $address}) {
+    query UserVotingPower($address: String!, $limit: Int = 5000) {
+  esAccounts(limit: $limit, where: {account_eq: $address}) {
     id
     address
     balance
@@ -255,8 +263,8 @@ useUserVotingPowerQuery.getKey = (variables: UserVotingPowerQueryVariables) => [
 useUserVotingPowerQuery.fetcher = (variables: UserVotingPowerQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserVotingPowerQuery, UserVotingPowerQueryVariables>(UserVotingPowerDocument, variables, options);
 
 export const UserDelegatorsDocument = `
-    query UserDelegators($address: String!) {
-  esAccounts(where: {delegatesFrom_some: {account_eq: $address}}) {
+    query UserDelegators($address: String!, $limit: Int = 5000) {
+  esAccounts(limit: $limit, where: {delegatesFrom_some: {account_eq: $address}}) {
     id
     address
     votingPower

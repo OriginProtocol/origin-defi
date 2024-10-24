@@ -38,9 +38,7 @@ query Proposal($proposalId: String!) {
       id
     }
   }
-  ogvProposalVotes(
-    where: { proposal: { id_eq: $proposalId } }
-  ) {
+  ogvProposalVotes(where: { proposal: { id_eq: $proposalId } }) {
     id
     voter {
       id
@@ -52,8 +50,9 @@ query Proposal($proposalId: String!) {
   }
 }
 
-query UserVotes($address: String!) {
+query UserVotes($address: String!, $limit: Int = 5000) {
   ogvProposalVotes(
+    limit: $limit
     where: { voter: { id_eq: $address } }
     orderBy: timestamp_DESC
   ) {

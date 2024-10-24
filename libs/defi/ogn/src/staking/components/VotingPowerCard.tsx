@@ -33,7 +33,7 @@ export const VotingPowerCard = (props: CardProps) => {
   const { data: walletClient } = useWalletClient();
   const { data: info, isLoading: isInfoLoading } = useOgnInfo();
   const { data: user, isLoading: isUserLoading } = useOgnUserInfoQuery(
-    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS, limit: 1 },
     { enabled: !!address, select: (data) => data?.esAccounts?.at?.(0) },
   );
 

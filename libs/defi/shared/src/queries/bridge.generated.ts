@@ -4,7 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type BridgeTransfersQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
-  limit: Types.Scalars['Int']['input'];
+  limit?: Types.Scalars['Int']['input'];
 }>;
 
 
@@ -12,6 +12,7 @@ export type BridgeTransfersQuery = { __typename?: 'Query', bridgeTransfers: Arra
 
 export type BridgeTransferStatesQueryVariables = Types.Exact<{
   messageIds?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -20,7 +21,7 @@ export type BridgeTransferStatesQuery = { __typename?: 'Query', bridgeTransferSt
 
 
 export const BridgeTransfersDocument = `
-    query BridgeTransfers($address: String!, $limit: Int!) {
+    query BridgeTransfers($address: String!, $limit: Int! = 5000) {
   bridgeTransfers(
     limit: $limit
     orderBy: timestamp_DESC
@@ -69,8 +70,8 @@ useBridgeTransfersQuery.getKey = (variables: BridgeTransfersQueryVariables) => [
 useBridgeTransfersQuery.fetcher = (variables: BridgeTransfersQueryVariables, options?: RequestInit['headers']) => graphqlClient<BridgeTransfersQuery, BridgeTransfersQueryVariables>(BridgeTransfersDocument, variables, options);
 
 export const BridgeTransferStatesDocument = `
-    query BridgeTransferStates($messageIds: [String!]) {
-  bridgeTransferStates(where: {id_in: $messageIds}) {
+    query BridgeTransferStates($messageIds: [String!], $limit: Int = 5000) {
+  bridgeTransferStates(limit: $limit, where: {id_in: $messageIds}) {
     id
     state
   }

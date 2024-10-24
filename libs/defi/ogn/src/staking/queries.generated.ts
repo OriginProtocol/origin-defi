@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type OgnUserInfoQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -11,6 +12,7 @@ export type OgnUserInfoQuery = { __typename?: 'Query', esAccounts: Array<{ __typ
 
 export type OgnLockupsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -19,8 +21,9 @@ export type OgnLockupsQuery = { __typename?: 'Query', esLockups: Array<{ __typen
 
 
 export const OgnUserInfoDocument = `
-    query OgnUserInfo($address: String!) {
+    query OgnUserInfo($address: String!, $limit: Int = 5000) {
   esAccounts(
+    limit: $limit
     where: {chainId_eq: 1, address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_eq: $address}
   ) {
     id
@@ -57,8 +60,9 @@ useOgnUserInfoQuery.getKey = (variables: OgnUserInfoQueryVariables) => ['OgnUser
 useOgnUserInfoQuery.fetcher = (variables: OgnUserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<OgnUserInfoQuery, OgnUserInfoQueryVariables>(OgnUserInfoDocument, variables, options);
 
 export const OgnLockupsDocument = `
-    query OgnLockups($address: String!) {
+    query OgnLockups($address: String!, $limit: Int = 5000) {
   esLockups(
+    limit: $limit
     where: {chainId_eq: 1, address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57", account_eq: $address, events_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {

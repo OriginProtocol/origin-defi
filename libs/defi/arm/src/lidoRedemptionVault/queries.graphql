@@ -1,6 +1,6 @@
 query armWithdrawalRequests(
   $address: String!
-  $limit: Int
+  $limit: Int = 5000
   $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]
 ) {
   armWithdrawalRequests(

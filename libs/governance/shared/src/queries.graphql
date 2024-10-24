@@ -4,8 +4,8 @@ query HoldersCount {
   }
 }
 
-query UserInfo($address: String!) {
-  ogvAddresses(where: { id_eq: $address }) {
+query UserInfo($address: String!, $limit: Int = 5000) {
+  ogvAddresses(limit: $limit, where: { id_eq: $address }) {
     id
     balance
     staked
@@ -17,8 +17,8 @@ query UserInfo($address: String!) {
   }
 }
 
-query UserDelegators($address: String!) {
-  ogvAddresses(where: { delegatee: { id_eq: $address } }) {
+query UserDelegators($address: String!, $limit: Int = 5000) {
+  ogvAddresses(limit: $limit, where: { delegatee: { id_eq: $address } }) {
     id
     votingPower
   }

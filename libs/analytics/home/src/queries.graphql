@@ -1,5 +1,6 @@
-query CumulativeRevenue {
+query CumulativeRevenue($limit: Int = 5000) {
   oeth: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {
       otoken_eq: "0x856c4efb76c1d1ae02e20ceb03a2a6a08b0b8dc3"
@@ -13,6 +14,7 @@ query CumulativeRevenue {
     rateETH
   }
   ousd: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {
       otoken_eq: "0x2a8e1e676ec238d8a992307b495b45b3feaa5e86"
@@ -26,6 +28,7 @@ query CumulativeRevenue {
     rateETH
   }
   super: oTokenDailyStats(
+    limit: $limit
     orderBy: [timestamp_ASC]
     where: {
       otoken_eq: "0xdbfefd2e8460a6ee4955a68582f85708baea60a3"
@@ -37,6 +40,5 @@ query CumulativeRevenue {
     blockNumber
     fees
     rateETH
-    
   }
 }

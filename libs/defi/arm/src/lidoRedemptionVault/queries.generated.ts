@@ -14,7 +14,7 @@ export type ArmWithdrawalRequestsQuery = { __typename?: 'Query', armWithdrawalRe
 
 
 export const ArmWithdrawalRequestsDocument = `
-    query armWithdrawalRequests($address: String!, $limit: Int, $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]) {
+    query armWithdrawalRequests($address: String!, $limit: Int = 5000, $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]) {
   armWithdrawalRequests(
     limit: $limit
     orderBy: $orderBy
