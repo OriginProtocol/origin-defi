@@ -1,0 +1,13 @@
+query WithdrawalRequests($address: String!, $limit: Int = 5000) {
+  oethWithdrawalRequests(limit: $limit, where: { withdrawer_eq: $address }) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    blockNumber
+    requestId
+    txHash
+  }
+}
