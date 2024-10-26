@@ -539,7 +539,7 @@ type GasPriceLabelProps = {
   gasPrice?: GasPrice;
 };
 
-const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
+const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
   const intl = useIntl();
 
   if (!gasPrice || !route || isNilOrEmpty(gasPrice?.gasCostUsd)) {
