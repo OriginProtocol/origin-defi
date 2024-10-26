@@ -11,7 +11,7 @@ import type { SuperOethRedeemAction } from './types';
 export const redeemActions: Record<SuperOethRedeemAction, SwapApi> = {
   'redeem-vault-async-superOethb': {
     ...redeemVaultAsyncSuperOethb,
-    routeLabel: defineMessage({ defaultMessage: 'Redeem via the vault' }),
+    routeLabel: defineMessage({ defaultMessage: 'Redeem via Origin Vault' }),
     buttonLabel: defineMessage({ defaultMessage: 'Request withdrawal' }),
   },
   'swap-aerodrome-superOethb': {

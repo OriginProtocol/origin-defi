@@ -293,6 +293,7 @@ function SwapperWrapped({
   });
   const { data: gasPrice, isLoading: isGasPriceLoading } = useGasPrice(
     selectedSwapRoute?.gas,
+    tokenIn.chainId,
   );
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
@@ -542,14 +543,14 @@ type GasPriceLabelProps = {
   gasPrice?: GasPrice;
 };
 
-const GasPriceLabel = ({ route, gasPrice, ...rest }: GasPriceLabelProps) => {
+const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
   const intl = useIntl();
 
   if (!gasPrice || !route || isNilOrEmpty(gasPrice?.gasCostUsd)) {
     return `$0.00`;
   }
 
-  if (route.action !== 'redeem-vault-async-oeth') {
+  if (route.action !== 'redeem-vault-async-superOethb') {
     return `$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`;
   }
 

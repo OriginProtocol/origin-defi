@@ -160,6 +160,7 @@ export const RedeemActionCard = ({
               {
                 rate: intl.formatNumber(estimatedRoute?.rate ?? 1, {
                   maximumFractionDigits: 3,
+                  roundingMode: 'floor',
                 }),
               },
             )}

@@ -6,7 +6,7 @@ import {
   trackSentryError,
 } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { superOETH } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
 
 import { ViewSwitch } from '../components/ViewSwitch';
@@ -25,7 +25,7 @@ export const RedeemView = () => {
         subtitle={intl.formatMessage({
           defaultMessage: '1:1 WETH redemptions via the Super OETH vault',
         })}
-        token={tokens.base.superOETHb}
+        icon={superOETH}
       />
 
       <PageSection containerProps={{ maxWidth: 'sm' }}>
