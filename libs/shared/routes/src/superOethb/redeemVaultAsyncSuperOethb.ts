@@ -51,10 +51,10 @@ const estimateGas: EstimateGas = async ({ config }, { tokenIn, amountIn }) => {
       account: whales.base.superOETHb,
     });
   } catch {
-    requestGasEstimate = 161_000n;
+    requestGasEstimate = 1360n;
   }
 
-  return requestGasEstimate + 113_010n;
+  return requestGasEstimate + 980n;
 };
 
 const allowance: Allowance = async (config, { tokenIn }) => {

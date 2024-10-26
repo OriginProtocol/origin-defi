@@ -271,7 +271,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       account: address,
     });
   } catch {
-    approvalEstimate = 200000n;
+    approvalEstimate = 51_700n;
   }
 
   return approvalEstimate;
