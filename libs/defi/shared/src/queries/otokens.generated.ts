@@ -45,6 +45,19 @@ export type OTokenStatsQueryVariables = Types.Exact<{
 
 export type OTokenStatsQuery = { __typename?: 'Query', oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string }> };
 
+export type OTokenWithdrawalRequestsQueryVariables = Types.Exact<{
+  token: Types.Scalars['String']['input'];
+  chainId: Types.Scalars['Int']['input'];
+  withdrawer?: Types.InputMaybe<Types.Scalars['String']['input']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+  orderBy?: Types.InputMaybe<Array<Types.OTokenWithdrawalRequestOrderByInput> | Types.OTokenWithdrawalRequestOrderByInput>;
+  from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
+}>;
+
+
+export type OTokenWithdrawalRequestsQuery = { __typename?: 'Query', oTokenWithdrawalRequests: Array<{ __typename?: 'OTokenWithdrawalRequest', id: string, requestId: string, timestamp: string, amount: string, queued: string, claimed: boolean, blockNumber: number, txHash: string }> };
+
 
 export const DailyStatFragmentDoc = `
     fragment DailyStat on OTokenDailyStat {
@@ -210,3 +223,45 @@ useOTokenStatsQuery.getKey = (variables: OTokenStatsQueryVariables) => ['oTokenS
 
 
 useOTokenStatsQuery.fetcher = (variables: OTokenStatsQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenStatsQuery, OTokenStatsQueryVariables>(OTokenStatsDocument, variables, options);
+
+export const OTokenWithdrawalRequestsDocument = `
+    query oTokenWithdrawalRequests($token: String!, $chainId: Int!, $withdrawer: String, $limit: Int = 5000, $orderBy: [OTokenWithdrawalRequestOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
+  oTokenWithdrawalRequests(
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from, withdrawer_eq: $withdrawer}
+  ) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    blockNumber
+    requestId
+    txHash
+  }
+}
+    `;
+
+export const useOTokenWithdrawalRequestsQuery = <
+      TData = OTokenWithdrawalRequestsQuery,
+      TError = unknown
+    >(
+      variables: OTokenWithdrawalRequestsQueryVariables,
+      options?: Omit<UseQueryOptions<OTokenWithdrawalRequestsQuery, TError, TData>, 'queryKey'> & { queryKey?: UseQueryOptions<OTokenWithdrawalRequestsQuery, TError, TData>['queryKey'] }
+    ) => {
+    
+    return useQuery<OTokenWithdrawalRequestsQuery, TError, TData>(
+      {
+    queryKey: ['oTokenWithdrawalRequests', variables],
+    queryFn: graphqlClient<OTokenWithdrawalRequestsQuery, OTokenWithdrawalRequestsQueryVariables>(OTokenWithdrawalRequestsDocument, variables),
+    ...options
+  }
+    )};
+
+useOTokenWithdrawalRequestsQuery.getKey = (variables: OTokenWithdrawalRequestsQueryVariables) => ['oTokenWithdrawalRequests', variables];
+
+
+useOTokenWithdrawalRequestsQuery.fetcher = (variables: OTokenWithdrawalRequestsQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenWithdrawalRequestsQuery, OTokenWithdrawalRequestsQueryVariables>(OTokenWithdrawalRequestsDocument, variables, options);

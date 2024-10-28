@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { useOTokenWithdrawalRequestsQuery } from '@origin/defi/shared';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -9,7 +10,6 @@ import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
 
 import { WITHDRAW_DELAY } from './constants';
-import { useWithdrawalRequestsQuery } from './queries.generated';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type {
@@ -59,11 +59,15 @@ const fetcher: (
         chainId: contracts.mainnet.OETHVault.chainId,
       }),
       queryClient.fetchQuery({
-        queryKey: useWithdrawalRequestsQuery.getKey({
-          address: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
+        queryKey: useOTokenWithdrawalRequestsQuery.getKey({
+          token: tokens.mainnet.OETH.address.toLowerCase(),
+          chainId: tokens.mainnet.OETH.chainId,
+          withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
-        queryFn: useWithdrawalRequestsQuery.fetcher({
-          address: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
+        queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
+          token: tokens.mainnet.OETH.address.toLowerCase(),
+          chainId: tokens.mainnet.OETH.chainId,
+          withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
       readContract(config, {
@@ -76,7 +80,7 @@ const fetcher: (
     ]);
     const queueData = isFulfilled(res[0]) ? res[0].value : null;
     const requests = isFulfilled(res[1])
-      ? (res[1].value?.oethWithdrawalRequests ?? [])
+      ? (res[1].value?.oTokenWithdrawalRequests ?? [])
       : [];
     const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
     return requests.map((r) => {

@@ -12,6 +12,7 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
+import { useOTokenWithdrawalRequestsQuery } from '@origin/defi/shared';
 import {
   FaCheckRegular,
   FaExclamationRegular,
@@ -26,21 +27,19 @@ import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { useViewSelect } from '../hooks';
-import { useWithdrawalRequestsQuery } from '../queries.generated';
 
 import type { DialogProps } from '@mui/material';
+import type { OTokenWithdrawalRequestsQuery } from '@origin/defi/shared';
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 import type { TransactionReceipt } from 'viem';
-
-import type { WithdrawalRequestsQuery } from '../queries.generated';
 
 export type WithdrawalRequestModalProps = {
   amountOut?: bigint;
   tokenIn?: Token;
   tokenOut?: Token;
   txReceipt?: TransactionReceipt;
-  initialRequests?: WithdrawalRequestsQuery;
+  initialRequests?: OTokenWithdrawalRequestsQuery;
 } & DialogProps;
 
 export const WithdrawalRequestModal = ({
@@ -59,15 +58,20 @@ export const WithdrawalRequestModal = ({
   const { update } = useViewSelect();
   const queryClient = useQueryClient();
   const { address } = useAccount();
-  const { status, startRefresh } = useRefresher<WithdrawalRequestsQuery>({
-    queryKey: useWithdrawalRequestsQuery.getKey({
-      address: address?.toLowerCase() ?? ZERO_ADDRESS,
+  const { status, startRefresh } = useRefresher<OTokenWithdrawalRequestsQuery>({
+    queryKey: useOTokenWithdrawalRequestsQuery.getKey({
+      token: tokenIn?.address?.toLowerCase() ?? ZERO_ADDRESS,
+      chainId: tokenIn?.chainId ?? 1,
+      withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     }),
-    queryFn: useWithdrawalRequestsQuery.fetcher({
-      address: address?.toLowerCase() ?? ZERO_ADDRESS,
+    queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
+      token: tokenIn?.address?.toLowerCase() ?? ZERO_ADDRESS,
+      chainId: tokenIn?.chainId ?? 1,
+      withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     isResultProcessed: (prev, next) =>
-      prev.oethWithdrawalRequests.length < next.oethWithdrawalRequests.length,
+      prev.oTokenWithdrawalRequests.length <
+      next.oTokenWithdrawalRequests.length,
   });
 
   useMountEffect(() => {

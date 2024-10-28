@@ -3,6 +3,7 @@ import * as Types from '@origin/defi/shared';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type ArmDailyStatsQueryVariables = Types.Exact<{
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   orderBy?: Types.InputMaybe<Array<Types.ArmDailyStatOrderByInput> | Types.ArmDailyStatOrderByInput>;
 }>;
@@ -13,10 +14,11 @@ export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ 
 
 
 export const ArmDailyStatsDocument = `
-    query armDailyStats($limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]) {
+    query armDailyStats($offset: Int, $limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]) {
   armDailyStats(
     limit: $limit
     orderBy: $orderBy
+    offset: $offset
     where: {address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1}
   ) {
     id

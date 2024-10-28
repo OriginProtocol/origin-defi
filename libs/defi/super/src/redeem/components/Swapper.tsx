@@ -16,6 +16,7 @@ import {
   TokenButton,
   TokenInput,
   useDeleteActivity,
+  useOTokenWithdrawalRequestsQuery,
   usePushActivity,
   useUpdateActivity,
 } from '@origin/defi/shared';
@@ -24,6 +25,7 @@ import {
   LoadingLabel,
   ValueLabel,
 } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
   getTokenPriceKey,
@@ -44,7 +46,6 @@ import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { useWithdrawalRequestsQuery } from '../queries.generated';
 import { RedeemActionCard } from './RedeemActionCard';
 import { WithdrawalRequestModal } from './WithdrawalRequestModal';
 
@@ -81,9 +82,11 @@ export const Swapper = ({
   const deleteActivity = useDeleteActivity();
   const [open, setOpen] = useState(false);
   const [info, setInfo] = useState<Partial<WithdrawalRequestModalProps>>();
-  const { data, refetch } = useWithdrawalRequestsQuery(
+  const { data, refetch } = useOTokenWithdrawalRequestsQuery(
     {
-      address: address?.toLowerCase() ?? ZERO_ADDRESS,
+      token: tokens.base.superOETHb.address.toLowerCase(),
+      chainId: tokens.base.superOETHb.chainId,
+      withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     },
     { enabled: false },
   );
