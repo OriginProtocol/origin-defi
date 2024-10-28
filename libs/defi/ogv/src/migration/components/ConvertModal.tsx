@@ -159,7 +159,7 @@ export const ConvertModal = ({
     approvalGas?.gasCostUsd ?? from(0),
     writeGas?.gasCostUsd ?? from(0),
   );
-  const gasLimit = mul(gas, 1.5);
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const isApprovalNeeded =
     !isAllowanceLoading &&
     !isNilOrEmpty(allowance) &&

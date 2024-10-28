@@ -56,7 +56,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { addMonths, formatDuration } from 'date-fns';
-import { add, mul } from 'dnum';
+import { from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -95,7 +95,6 @@ export const StakeRewardModal = (props: DialogProps) => {
     allowance,
     params: approvalParams,
     callbacks: approvalCallbacks,
-    gasPrice: approvalGas,
     label: approvalLabel,
   } = useApprovalButton({
     token: tokens.mainnet.OGN,
@@ -105,7 +104,6 @@ export const StakeRewardModal = (props: DialogProps) => {
       parseUnits('1', tokens.mainnet.OGN.decimals),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
-    enableGas: true,
   });
   const {
     params: writeParams,
@@ -200,8 +198,7 @@ export const StakeRewardModal = (props: DialogProps) => {
     }
   };
 
-  const gas = add(approvalGas?.gasCostWei ?? 0n, writeGas?.gasCostWei ?? 0n);
-  const gasLimit = mul(gas, 1.5);
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const showOgnInput =
     !isInfoLoading && !!info?.ognBalance && info?.ognBalance > 0n;
   const votingPowerPercent =

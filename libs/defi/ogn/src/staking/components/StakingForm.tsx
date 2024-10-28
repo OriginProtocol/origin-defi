@@ -38,7 +38,7 @@ import {
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
-import { add, format, mul } from 'dnum';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -152,8 +152,7 @@ export const StakingForm = () => {
     setAmount(info?.ognBalance ?? 0n);
   };
 
-  const gas = add(approvalGas?.gasCostWei ?? 0n, writeGas?.gasCostWei ?? 0n);
-  const gasLimit = mul(gas, 1.5);
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const bal = [info?.ognBalance ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const votingPowerPercent = Math.min(
     1,

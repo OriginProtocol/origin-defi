@@ -16,18 +16,17 @@ import type { Config } from '@wagmi/core';
 import type { Dnum } from 'dnum';
 
 export type GasPrice = {
+  gasAmount: bigint;
   gasPrice: Dnum;
   gasCostUsd: Dnum;
-  gasCostWei: Dnum;
-  gasCostGwei: Dnum;
   gasCostEther: Dnum;
 };
 
-type Key = ['useGasPrice', string, number];
+type Key = ['useGasPrice', bigint, number];
 
 const getKey = (gasAmount: bigint, chainId: number): Key => [
   'useGasPrice',
-  gasAmount.toString(),
+  gasAmount,
   chainId,
 ];
 
@@ -55,18 +54,15 @@ const fetcher: (
       rounding: 'ROUND_UP',
       decimals: 18,
     });
-    const gasCostGwei = mul(gasCostEther, 1e9);
-    const gasCostWei = mul(gasCostEther, 1e18);
     const gasCostUsd = mul(gasCostEther, from(price), {
       rounding: 'ROUND_UP',
       decimals: 6,
     });
 
     return {
+      gasAmount,
       gasPrice,
       gasCostUsd,
-      gasCostWei,
-      gasCostGwei,
       gasCostEther,
     };
   };

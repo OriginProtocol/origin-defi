@@ -117,13 +117,11 @@ export const ExtendAddLockupModal = ({
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
-    gasPrice: approvalGas,
   } = useApprovalButton({
     token: tokens.mainnet.OGN,
     spender: tokens.mainnet.xOGN.address,
     amount: add(totalAmount, [1n, tokens.mainnet.OGN.decimals])[0],
     enableAllowance: true,
-    enableGas: true,
   });
   const {
     params: writeParams,
@@ -177,8 +175,7 @@ export const ExtendAddLockupModal = ({
     }
   };
 
-  const gas = add(approvalGas?.gasCostWei ?? 0n, writeGas?.gasCostWei ?? 0n);
-  const gasLimit = mul(gas, 1.5);
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const bal = [info?.ognBalance ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const xOgnReceived = from(
     staking?.xOgnPreview ?? 0,
