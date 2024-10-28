@@ -48,7 +48,7 @@ import {
   formatDuration,
   isPast,
 } from 'date-fns';
-import { add, eq, format, from, toNumber } from 'dnum';
+import { add, eq, format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -123,7 +123,11 @@ export const ExtendAddLockupModal = ({
     amount: add(totalAmount, [1n, tokens.mainnet.OGN.decimals])[0],
     enableAllowance: true,
   });
-  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+  const {
+    params: writeParams,
+    callbacks: writeCallbacks,
+    gasPrice: writeGas,
+  } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
@@ -149,6 +153,7 @@ export const ExtendAddLockupModal = ({
         rest?.onClose?.({}, 'backdropClick');
       },
     },
+    enableGas: true,
   });
 
   const handleMaxClick = () => {
@@ -170,6 +175,7 @@ export const ExtendAddLockupModal = ({
     }
   };
 
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const bal = [info?.ognBalance ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const xOgnReceived = from(
     staking?.xOgnPreview ?? 0,
@@ -659,6 +665,7 @@ export const ExtendAddLockupModal = ({
           disabled={isStakeDisabled}
           variant="action"
           fullWidth
+          gasLimit={gasLimit[0]}
         />
       </DialogActions>
     </Dialog>
