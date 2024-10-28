@@ -56,6 +56,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import { addMonths, formatDuration } from 'date-fns';
+import { add, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits, parseUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -94,6 +95,7 @@ export const StakeRewardModal = (props: DialogProps) => {
     allowance,
     params: approvalParams,
     callbacks: approvalCallbacks,
+    gasPrice: approvalGas,
     label: approvalLabel,
   } = useApprovalButton({
     token: tokens.mainnet.OGN,
@@ -103,8 +105,13 @@ export const StakeRewardModal = (props: DialogProps) => {
       parseUnits('1', tokens.mainnet.OGN.decimals),
     spender: tokens.mainnet.xOGN.address,
     enableAllowance: true,
+    enableGas: true,
   });
-  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+  const {
+    params: writeParams,
+    callbacks: writeCallbacks,
+    gasPrice: writeGas,
+  } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
@@ -129,6 +136,7 @@ export const StakeRewardModal = (props: DialogProps) => {
       amountIn: amount + (info?.xOgnRewards ?? 0n),
       monthDuration: duration,
     },
+    enableGas: true,
   });
 
   useDebouncedEffect(
@@ -192,6 +200,8 @@ export const StakeRewardModal = (props: DialogProps) => {
     }
   };
 
+  const gas = add(approvalGas?.gasCostWei ?? 0n, writeGas?.gasCostWei ?? 0n);
+  const gasLimit = mul(gas, 1.5);
   const showOgnInput =
     !isInfoLoading && !!info?.ognBalance && info?.ognBalance > 0n;
   const votingPowerPercent =
@@ -662,6 +672,7 @@ export const StakeRewardModal = (props: DialogProps) => {
           fullWidth
           label={intl.formatMessage({ defaultMessage: 'Stake rewards' })}
           disabled={isStakeDisabled}
+          gasLimit={gasLimit[0]}
         />
       </DialogActions>
     </Dialog>

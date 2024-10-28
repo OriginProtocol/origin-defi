@@ -308,7 +308,7 @@ function RedeemerWrapped({
             variant="action"
             params={params}
             callbacks={callbacks}
-            gas={gas + (gas * gasBuffer) / 100n}
+            gasLimit={gas + (gas * gasBuffer) / 100n}
             fullWidth
             disabled={redeemButtonDisabled}
             label={

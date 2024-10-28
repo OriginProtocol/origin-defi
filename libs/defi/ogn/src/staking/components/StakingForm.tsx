@@ -38,7 +38,7 @@ import {
 } from '@origin/shared/utils';
 import { useDebouncedEffect, useMountEffect } from '@react-hookz/web';
 import { addMonths, formatDuration } from 'date-fns';
-import { format } from 'dnum';
+import { add, format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
@@ -69,13 +69,19 @@ export const StakingForm = () => {
     params: approvalParams,
     callbacks: approvalCallbacks,
     label: approvalLabel,
+    gasPrice: approvalGas,
   } = useApprovalButton({
     token: tokens.mainnet.OGN,
     spender: tokens.mainnet.xOGN.address,
     amount,
     enableAllowance: true,
+    enableGas: true,
   });
-  const { params: writeParams, callbacks: writeCallbacks } = useTxButton({
+  const {
+    params: writeParams,
+    callbacks: writeCallbacks,
+    gasPrice: writeGas,
+  } = useTxButton({
     params: {
       contract: tokens.mainnet.xOGN,
       functionName: 'stake',
@@ -101,6 +107,7 @@ export const StakingForm = () => {
         setDuration(1);
       },
     },
+    enableGas: true,
   });
 
   useMountEffect(() => {
@@ -145,6 +152,8 @@ export const StakingForm = () => {
     setAmount(info?.ognBalance ?? 0n);
   };
 
+  const gas = add(approvalGas?.gasCostWei ?? 0n, writeGas?.gasCostWei ?? 0n);
+  const gasLimit = mul(gas, 1.5);
   const bal = [info?.ognBalance ?? 0n, tokens.mainnet.OGN.decimals] as Dnum;
   const votingPowerPercent = Math.min(
     1,
@@ -534,6 +543,7 @@ export const StakingForm = () => {
           disabled={stakeDisabled}
           variant="action"
           fullWidth
+          gasLimit={gasLimit[0]}
           label={
             amount > (info?.ognBalance ?? 0n)
               ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
