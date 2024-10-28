@@ -39,7 +39,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit },
+    { limit: limit === undefined ? undefined : limit + 1, offset: 1 },
     {
       select: (data) => {
         return (
@@ -134,7 +134,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit },
+    { limit: limit === undefined ? undefined : limit + 1, offset: 1 },
     {
       select: (data) => {
         return (
@@ -226,7 +226,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit },
+    { limit: limit === undefined ? undefined : limit + 1, offset: 1 },
     {
       select: (data) => {
         return (

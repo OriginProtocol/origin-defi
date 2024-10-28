@@ -5,6 +5,7 @@ import { graphqlClient } from '@origin/defi/shared';
 export type ArmDailyStatsQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   orderBy?: Types.InputMaybe<Array<Types.ArmDailyStatOrderByInput> | Types.ArmDailyStatOrderByInput>;
+  offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -13,10 +14,11 @@ export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ 
 
 
 export const ArmDailyStatsDocument = `
-    query armDailyStats($limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC]) {
+    query armDailyStats($limit: Int = 5000, $orderBy: [ArmDailyStatOrderByInput!] = [timestamp_DESC], $offset: Int) {
   armDailyStats(
     limit: $limit
     orderBy: $orderBy
+    offset: $offset
     where: {address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6", chainId_eq: 1}
   ) {
     id
