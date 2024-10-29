@@ -37,6 +37,7 @@ export type AreaChartProps<Datum = ChartData> = {
   width: number;
   height: number;
   serie: Datum[];
+  series?: Serie<Datum>[];
   xKey: keyof Datum;
   yKeys: YKey<Datum>[];
   onHover?: (idx: number | null) => void;
@@ -55,6 +56,7 @@ export const AreaChart = <Datum,>({
   width,
   height,
   serie,
+  series,
   xKey,
   yKeys,
   onHover,
@@ -200,6 +202,22 @@ export const AreaChart = <Datum,>({
             }
             return null;
           })}
+          {series?.map((s, i) =>
+            Array.isArray(s.color) && s.color.length === 2 ? (
+              <LinearGradient
+                key={`gradient-${chartId}-${i}`}
+                id={`gradient-${chartId}-${i}`}
+                from={s.color?.[0]}
+                to={s.color?.[1]}
+                fromOffset="0%"
+                toOffset="100%"
+                x1="0%"
+                x2="100%"
+                y1="0%"
+                y2="0%"
+              />
+            ) : null,
+          )}
         </defs>
         <AxisRight
           scale={yScale}
@@ -269,6 +287,22 @@ export const AreaChart = <Datum,>({
             })
           }
         </AreaStack>
+        {series?.map((s, i) => (
+          <LinePath
+            key={`serie-${i}`}
+            data={s.data}
+            curve={curveTypes[s.curveType ?? 'natural']}
+            x={(d) => xScale(d?.[s.xKey] as number)}
+            y={(d) => yScale(d?.[s.yKey] as number)}
+            stroke={
+              Array.isArray(s.color)
+                ? `url(#gradient-${chartId}-${i})`
+                : (s.color ?? theme.palette.primary.main)
+            }
+            strokeWidth={s.strokeWidth ?? 1}
+            strokeLinecap="round"
+          />
+        ))}
         {activeIdx !== null ? (
           <line
             x1={xScale(activeSeries?.[0].data[0][xKey] as number)}

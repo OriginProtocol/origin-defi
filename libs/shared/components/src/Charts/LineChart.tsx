@@ -202,7 +202,7 @@ export const LineChart = <Datum,>({
                 ? `url(#gradient-${chartId}-${i})`
                 : (s.color ?? theme.palette.primary.main)
             }
-            strokeWidth={1}
+            strokeWidth={s.strokeWidth ?? 1}
             strokeLinecap="round"
           />
         ))}

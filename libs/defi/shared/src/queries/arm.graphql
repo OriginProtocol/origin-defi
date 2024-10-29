@@ -19,5 +19,7 @@ query armDailyStats(
     apy
     totalAssets
     assetsPerShare
+    assets0
+    assets1
   }
 }

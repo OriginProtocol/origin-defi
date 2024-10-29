@@ -7,6 +7,7 @@ export type Serie<Datum> = {
   color?: ChartColor;
   label?: string;
   curveType?: keyof typeof curveTypes;
+  strokeWidth?: number;
 };
 
 export type ChartData = { x: number; y: number };

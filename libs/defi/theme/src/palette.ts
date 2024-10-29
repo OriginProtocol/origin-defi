@@ -66,7 +66,7 @@ export const lightPalette: ThemeOptions = {
     chart2: '#48E4DB',
     chart3: '#D0246A',
     chart4: '#E85BFF',
-    chart5: '#FFC298',
+    chart5: '#E89156',
     chart6: '#8EA7FF',
     chart7: '#66C8FF',
   },
