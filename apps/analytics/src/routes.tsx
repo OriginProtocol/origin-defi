@@ -103,7 +103,9 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: <Collaterals token={tokens.base.superOETHb} />,
+            element: (
+              <Collaterals token={tokens.base.superOETHb} currency="ETH" />
+            ),
           },
         ],
       },
@@ -171,7 +173,7 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: <Collaterals token={tokens.mainnet.OETH} />,
+            element: <Collaterals token={tokens.mainnet.OETH} currency="ETH" />,
           },
         ],
       },
@@ -239,7 +241,7 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: <Collaterals token={tokens.mainnet.OUSD} />,
+            element: <Collaterals token={tokens.mainnet.OUSD} currency="USD" />,
           },
         ],
       },

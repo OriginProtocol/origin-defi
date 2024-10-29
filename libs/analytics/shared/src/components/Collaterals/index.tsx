@@ -33,9 +33,9 @@ const tokenColors = {
   [tokens.base.WETH.id]: '#618ECE',
 };
 
-export type CollateralsProps = { token: Token };
+export type CollateralsProps = { token: Token; currency?: 'ETH' | 'USD' };
 
-export const Collaterals = ({ token }: CollateralsProps) => {
+export const Collaterals = ({ token, currency }: CollateralsProps) => {
   const intl = useIntl();
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
@@ -44,15 +44,17 @@ export const Collaterals = ({ token }: CollateralsProps) => {
     chainId: token.chainId,
   });
   const { collaterals, totalCollaterals, strategies } = useMemo(() => {
-    const collaterals = collateralMapper(data?.strategies, token)?.filter((c) =>
-      gt(c.amount, from(1, c.token.decimals)),
-    );
+    const collaterals = collateralMapper(data?.strategies, token, {
+      showEmptyBalances: false,
+    })?.filter((c) => gt(c.amount, from(1, c.token.decimals)));
 
     const totalCollaterals = collaterals.reduce(
       (acc, curr) => add(acc, curr.amount),
       from(0, 18),
     );
-    const strategies = strategyMapper(data?.strategies, token);
+    const strategies = strategyMapper(data?.strategies, token, {
+      showEmptyBalances: false,
+    });
 
     return {
       collaterals,
@@ -105,6 +107,7 @@ export const Collaterals = ({ token }: CollateralsProps) => {
                 key={b.token.id}
                 balance={b}
                 total={totalCollaterals}
+                currency={currency}
                 sx={{ flexGrow: { xs: 1, md: 0 } }}
               />
             ))}
@@ -125,7 +128,7 @@ export const Collaterals = ({ token }: CollateralsProps) => {
               lg: 4,
             }}
           >
-            <Strategy strategy={s} sx={{ width: 1 }} />
+            <Strategy strategy={s} currency={currency} sx={{ width: 1 }} />
           </Grid2>
         ))}
       </Grid2>
@@ -136,9 +139,10 @@ export const Collaterals = ({ token }: CollateralsProps) => {
 type CollateralProps = {
   balance: StrategyBalanceMapped;
   total: Dnum;
+  currency?: 'ETH' | 'USD';
 } & CardProps;
 
-const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
+const Collateral = ({ balance, total, currency, ...rest }: CollateralProps) => {
   const intl = useIntl();
 
   const percentage = div(balance.amount, total);
@@ -156,6 +160,7 @@ const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
               </Typography>
             </Stack>
             <Typography variant="featured2">
+              {currency && <CurrencyLabel currency={currency} />}
               {intl.formatNumber(toNumber(balance.amount))}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -180,9 +185,10 @@ const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
 
 type StrategyProps = {
   strategy: StrategyMapped;
+  currency?: 'ETH' | 'USD';
 } & CardProps;
 
-const Strategy = ({ strategy, ...rest }: StrategyProps) => {
+const Strategy = ({ strategy, currency, ...rest }: StrategyProps) => {
   const intl = useIntl();
 
   return (
@@ -201,7 +207,7 @@ const Strategy = ({ strategy, ...rest }: StrategyProps) => {
               {intl.formatMessage({ defaultMessage: 'Total Value:' })}
             </Typography>
             <Typography variant="body2">
-              <CurrencyLabel currency="USD" />
+              {currency && <CurrencyLabel currency={currency} />}
               {intl.formatNumber(toNumber(strategy.total), {
                 maximumFractionDigits: 2,
               })}
