@@ -45,9 +45,8 @@ export const Collaterals = ({ token }: CollateralsProps) => {
   });
   const { collaterals, totalCollaterals, strategies } = useMemo(() => {
     const collaterals = collateralMapper(data?.strategies, token)?.filter((c) =>
-      gt(c.amount, from(1, 18)),
+      gt(c.amount, from(1, c.token.decimals)),
     );
-    console.log(collaterals);
 
     const totalCollaterals = collaterals.reduce(
       (acc, curr) => add(acc, curr.amount),
@@ -212,6 +211,7 @@ const Strategy = ({ strategy, ...rest }: StrategyProps) => {
             {intl.formatMessage({ defaultMessage: 'Asset Split:' })}
           </Typography>
           {strategy.balances
+            .filter((b) => gt(b.amount, from(1, b.token.decimals)))
             .toSorted((a, b) => compare(b.amount, a.amount))
             .map((balance) => (
               <Stack
