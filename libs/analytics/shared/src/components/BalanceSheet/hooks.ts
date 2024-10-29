@@ -40,23 +40,23 @@ export const useBalanceSheet = (token: Token) => {
       const res = await Promise.all([
         queryClient.fetchQuery({
           queryKey: useOTokenStatsQuery.getKey({
-            token: token.address ?? ZERO_ADDRESS,
+            token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
             chainId: token.chainId,
             limit: 7,
           }),
           queryFn: useOTokenStatsQuery.fetcher({
-            token: token.address ?? ZERO_ADDRESS,
+            token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
             chainId: token.chainId,
             limit: 7,
           }),
         }),
         queryClient.fetchQuery({
           queryKey: useOTokenStrategiesQuery.getKey({
-            token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
+            token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
             chainId: token.chainId,
           }),
           queryFn: useOTokenStrategiesQuery.fetcher({
-            token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
+            token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
             chainId: token.chainId,
           }),
         }),
@@ -67,12 +67,12 @@ export const useBalanceSheet = (token: Token) => {
       ]);
       const lastWeekRes = await queryClient.fetchQuery({
         queryKey: useOTokenStrategiesQuery.getKey({
-          token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
           timestamp: res[0].oTokenDailyStats?.[6]?.timestamp,
         }),
         queryFn: useOTokenStrategiesQuery.fetcher({
-          token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
+          token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
           chainId: token.chainId,
           timestamp: res[0].oTokenDailyStats?.[6]?.timestamp,
         }),

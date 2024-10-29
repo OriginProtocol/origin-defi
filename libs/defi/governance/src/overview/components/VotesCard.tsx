@@ -43,7 +43,7 @@ export const VoteCard = (props: CardProps) => {
   );
   const { data: proposalVotes, isLoading: isProposalVotesLoading } =
     useProposalVotesQuery(
-      { proposalId: proposalId ?? '' },
+      { proposalId: proposalId?.toLowerCase() ?? '' },
       {
         enabled: !!proposalId,
         select: (data) =>

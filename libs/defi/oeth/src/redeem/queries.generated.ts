@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
 export type WithdrawalRequestsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -12,8 +13,8 @@ export type WithdrawalRequestsQuery = { __typename?: 'Query', oethWithdrawalRequ
 
 
 export const WithdrawalRequestsDocument = `
-    query WithdrawalRequests($address: String!) {
-  oethWithdrawalRequests(where: {withdrawer_containsInsensitive: $address}) {
+    query WithdrawalRequests($address: String!, $limit: Int = 5000) {
+  oethWithdrawalRequests(limit: $limit, where: {withdrawer_eq: $address}) {
     id
     requestId
     timestamp

@@ -43,6 +43,7 @@ export type OTokenRebasesQueryVariables = Types.Exact<{
   orderBy?: Types.InputMaybe<Array<Types.OTokenRebaseOrderByInput> | Types.OTokenRebaseOrderByInput>;
   from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
   to?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -104,12 +105,12 @@ export const StrategyFragmentDoc = `
 }
     `;
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from}
   ) {
     ...DailyStat
   }
@@ -141,7 +142,7 @@ export const OTokenStatsConnectionDocument = `
     query oTokenStatsConnection($token: String!, $chainId: Int!, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $first: Int, $after: String, $from: DateTime) {
   oTokenDailyStatsConnection(
     orderBy: $orderBy
-    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from}
     first: $first
     after: $after
   ) {
@@ -206,10 +207,11 @@ useOTokenDailyStatByIdQuery.getKey = (variables: OTokenDailyStatByIdQueryVariabl
 useOTokenDailyStatByIdQuery.fetcher = (variables: OTokenDailyStatByIdQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenDailyStatByIdQuery, OTokenDailyStatByIdQueryVariables>(OTokenDailyStatByIdDocument, variables, options);
 
 export const OTokenRebasesDocument = `
-    query oTokenRebases($token: String!, $chainId: Int!, $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime) {
+    query oTokenRebases($token: String!, $chainId: Int!, $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime, $limit: Int = 5000) {
   oTokenRebases(
+    limit: $limit
     orderBy: $orderBy
-    where: {timestamp_gte: $from, timestamp_lt: $to, otoken_containsInsensitive: $token, chainId_eq: $chainId}
+    where: {timestamp_gte: $from, timestamp_lt: $to, otoken_eq: $token, chainId_eq: $chainId}
   ) {
     blockNumber
     feeETH
@@ -247,7 +249,7 @@ export const OTokenApyDocument = `
   oTokenApies(
     limit: 1
     orderBy: $orderBy
-    where: {chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {chainId_eq: $chainId, otoken_eq: $token}
   ) {
     apy7DayAvg
     apy14DayAvg

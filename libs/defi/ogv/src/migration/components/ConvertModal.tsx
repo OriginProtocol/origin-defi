@@ -159,6 +159,7 @@ export const ConvertModal = ({
     approvalGas?.gasCostUsd ?? from(0),
     writeGas?.gasCostUsd ?? from(0),
   );
+  const gasLimit = mul(from(writeGas?.gasAmount ?? 0), 1.2);
   const isApprovalNeeded =
     !isAllowanceLoading &&
     !isNilOrEmpty(allowance) &&
@@ -640,6 +641,7 @@ export const ConvertModal = ({
         <TxButton
           params={writeParams}
           callbacks={writeCallbacks}
+          gasLimit={gasLimit[0]}
           variant="action"
           fullWidth
           label={intl.formatMessage({ defaultMessage: 'Convert' })}

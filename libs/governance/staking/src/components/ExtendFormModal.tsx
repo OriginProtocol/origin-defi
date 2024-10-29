@@ -664,7 +664,7 @@ export const ExtendFormModal = ({ lockup, ...rest }: ExtendFormModalProps) => {
             queryClient.invalidateQueries({
               queryKey: [
                 useUserLockupsQuery.getKey({
-                  address: address ?? ZERO_ADDRESS,
+                  address: address?.toLowerCase() ?? ZERO_ADDRESS,
                 }),
               ],
             });

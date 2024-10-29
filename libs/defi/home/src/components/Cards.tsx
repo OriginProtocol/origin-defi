@@ -7,12 +7,12 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { BridgeBanner, MergerBanner } from '@origin/defi/shared';
+import { MergerBanner } from '@origin/defi/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 
-import { TokenCard } from './TokenCard';
+import { ArmCard, TokenCard } from './TokenCard';
 
 import type { CardProps } from '@mui/material';
 
@@ -20,7 +20,13 @@ export const LSTCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={{
@@ -104,7 +110,7 @@ export const LSTCard = (props: CardProps) => {
               md: 'right top',
             },
             p: 3,
-            my: 3,
+            mt: 3,
           })}
         >
           <Stack
@@ -149,7 +155,6 @@ export const LSTCard = (props: CardProps) => {
             <TokenCard token={tokens.mainnet.OETH} href="/oeth" />
           </Stack>
         </Stack>
-        <BridgeBanner />
       </CardContent>
     </Card>
   );
@@ -159,7 +164,13 @@ export const StakingCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={(theme) => ({
@@ -242,7 +253,13 @@ export const StableCard = (props: CardProps) => {
   const intl = useIntl();
 
   return (
-    <Card {...props} sx={{ backgroundColor: 'background.highlight' }}>
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
       <CardContent>
         <Stack
           sx={(theme) => ({
@@ -304,6 +321,85 @@ export const StableCard = (props: CardProps) => {
             }}
           >
             <TokenCard token={tokens.mainnet.OUSD} href="/ousd" />
+          </Stack>
+        </Stack>
+      </CardContent>
+    </Card>
+  );
+};
+
+export const ArmVaultCard = (props: CardProps) => {
+  const intl = useIntl();
+
+  return (
+    <Card
+      {...props}
+      sx={[
+        { backgroundColor: 'background.highlight' },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <CardContent>
+        <Stack
+          sx={(theme) => ({
+            borderRadius: 4,
+            border: '1px solid',
+            borderColor: 'divider',
+            color: 'text.primary',
+            overflow: 'hidden',
+            background: `url('/images/armPattern.svg'),${theme.palette.background.default}`,
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: {
+              xs: 'auto 200px',
+              md: 'auto',
+            },
+            backgroundPosition: {
+              xs: 'right bottom',
+              md: 'right center',
+            },
+            p: 3,
+          })}
+        >
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{
+              alignItems: 'center',
+              mb: 1,
+            }}
+          >
+            <Box
+              sx={{
+                borderRadius: '50%',
+                backgroundColor: 'primary.main',
+                width: 10,
+                height: 10,
+              }}
+            />
+            <Typography variant="mono">
+              {intl.formatMessage({ defaultMessage: 'ARM Vaults' })}
+            </Typography>
+          </Stack>
+          <Typography
+            variant="caption1"
+            sx={{
+              mb: 3,
+            }}
+          >
+            {intl.formatMessage({
+              defaultMessage: `Earn passively with low risk.`,
+            })}
+          </Typography>
+          <Stack
+            divider={<Divider flexItem />}
+            sx={{
+              border: '1px solid',
+              borderColor: 'divider',
+              borderRadius: 4,
+              overflow: 'hidden',
+            }}
+          >
+            <ArmCard />
           </Stack>
         </Stack>
       </CardContent>

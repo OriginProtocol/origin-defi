@@ -9,6 +9,7 @@ export type HoldersCountQuery = { __typename?: 'Query', ogvAddressesConnection: 
 
 export type UserInfoQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -16,6 +17,7 @@ export type UserInfoQuery = { __typename?: 'Query', ogvAddresses: Array<{ __type
 
 export type UserDelegatorsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -53,8 +55,8 @@ useHoldersCountQuery.getKey = (variables?: HoldersCountQueryVariables) => variab
 useHoldersCountQuery.fetcher = (variables?: HoldersCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HoldersCountQuery, HoldersCountQueryVariables>(HoldersCountDocument, variables, options);
 
 export const UserInfoDocument = `
-    query UserInfo($address: String!) {
-  ogvAddresses(where: {id_containsInsensitive: $address}) {
+    query UserInfo($address: String!, $limit: Int = 5000) {
+  ogvAddresses(limit: $limit, where: {id_eq: $address}) {
     id
     balance
     staked
@@ -89,8 +91,8 @@ useUserInfoQuery.getKey = (variables: UserInfoQueryVariables) => ['UserInfo', va
 useUserInfoQuery.fetcher = (variables: UserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<UserInfoQuery, UserInfoQueryVariables>(UserInfoDocument, variables, options);
 
 export const UserDelegatorsDocument = `
-    query UserDelegators($address: String!) {
-  ogvAddresses(where: {delegatee: {id_containsInsensitive: $address}}) {
+    query UserDelegators($address: String!, $limit: Int = 5000) {
+  ogvAddresses(limit: $limit, where: {delegatee: {id_eq: $address}}) {
     id
     votingPower
   }

@@ -31,7 +31,7 @@ export const StatusCard = (props: CardProps) => {
   const intl = useIntl();
   const { proposalId } = useParams();
   const { data: logs, isLoading: isLogsLoading } = useProposalQuery(
-    { proposalId: proposalId ?? '' },
+    { proposalId: proposalId?.toLowerCase() ?? '' },
     {
       enabled: !!proposalId,
       select: (data) =>

@@ -9,6 +9,7 @@ export type OgvHoldersCountQuery = { __typename?: 'Query', ogvAddressesConnectio
 
 export type OgvUserInfoQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -16,6 +17,7 @@ export type OgvUserInfoQuery = { __typename?: 'Query', ogvAddresses: Array<{ __t
 
 export type OgvLockupsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -53,8 +55,8 @@ useOgvHoldersCountQuery.getKey = (variables?: OgvHoldersCountQueryVariables) => 
 useOgvHoldersCountQuery.fetcher = (variables?: OgvHoldersCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<OgvHoldersCountQuery, OgvHoldersCountQueryVariables>(OgvHoldersCountDocument, variables, options);
 
 export const OgvUserInfoDocument = `
-    query OgvUserInfo($address: String!) {
-  ogvAddresses(where: {id_containsInsensitive: $address}) {
+    query OgvUserInfo($address: String!, $limit: Int = 5000) {
+  ogvAddresses(limit: $limit, where: {id_eq: $address}) {
     id
     balance
     staked
@@ -89,9 +91,10 @@ useOgvUserInfoQuery.getKey = (variables: OgvUserInfoQueryVariables) => ['OgvUser
 useOgvUserInfoQuery.fetcher = (variables: OgvUserInfoQueryVariables, options?: RequestInit['headers']) => graphqlClient<OgvUserInfoQuery, OgvUserInfoQueryVariables>(OgvUserInfoDocument, variables, options);
 
 export const OgvLockupsDocument = `
-    query OgvLockups($address: String!) {
+    query OgvLockups($address: String!, $limit: Int = 5000) {
   ogvLockups(
-    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
+    limit: $limit
+    where: {address: {id_eq: $address}, logs_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id

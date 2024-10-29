@@ -13,11 +13,7 @@ export type UserPointsQuery = { __typename?: 'Query', lrtPointRecipients: Array<
 
 export const UserPointsDocument = `
     query UserPoints($address: String) {
-  lrtPointRecipients(
-    limit: 1
-    orderBy: pointsDate_DESC
-    where: {id_containsInsensitive: $address}
-  ) {
+  lrtPointRecipients(limit: 1, orderBy: pointsDate_DESC, where: {id_eq: $address}) {
     id
     balance
     points

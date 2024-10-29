@@ -202,11 +202,11 @@ export const LineChart = <Datum,>({
                 ? `url(#gradient-${chartId}-${i})`
                 : (s.color ?? theme.palette.primary.main)
             }
-            strokeWidth={1}
+            strokeWidth={s.strokeWidth ?? 1}
             strokeLinecap="round"
           />
         ))}
-        {!activeIdx ? null : (
+        {activeIdx !== null ? (
           <line
             x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
             x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
@@ -217,7 +217,7 @@ export const LineChart = <Datum,>({
             strokeDasharray={2}
             strokeLinecap="round"
           />
-        )}
+        ) : null}
         {width && height && (
           <rect
             x={margins.left}
@@ -235,7 +235,7 @@ export const LineChart = <Datum,>({
           />
         )}
       </svg>
-      {tooltipOpen && activeIdx && Tooltip ? (
+      {tooltipOpen && activeIdx !== null && Tooltip ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}

@@ -10,7 +10,7 @@ export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
   const { data: apies, isLoading: isApiesLoading } = useOTokenApyQuery(
     {
-      token: tokens.mainnet.OUSD.address,
+      token: tokens.mainnet.OUSD.address.toLowerCase(),
       chainId: tokens.mainnet.OUSD.chainId,
     },
     {

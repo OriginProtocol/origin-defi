@@ -46,7 +46,7 @@ export type TxButtonProps<
   validatingTxLabel?: string;
   params: WriteTransactionParameters<abi, functionName, args>;
   callbacks?: WriteTransactionCallbacks;
-  gas?: bigint;
+  gasLimit?: bigint;
 } & Omit<
   ConnectedButtonProps,
   'onClick' | 'value' | 'children' | 'targetChainId'
@@ -71,7 +71,7 @@ export const TxButton = <
   params,
   callbacks,
   disabled,
-  gas,
+  gasLimit,
   ...rest
 }: TxButtonProps<abi, functionName, args>) => {
   const intl = useIntl();
@@ -170,7 +170,10 @@ export const TxButton = <
     if (simulateError) {
       callbacks?.onSimulateError?.(simulateError);
     } else if (simulateData?.request) {
-      writeContract({ ...simulateData.request, ...(!!gas && { gas }) });
+      writeContract({
+        ...simulateData.request,
+        ...(!!gasLimit && { gas: gasLimit }),
+      });
       callbacks?.onWrite?.();
     }
   };

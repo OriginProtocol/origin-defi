@@ -16,6 +16,7 @@ export type OTokenAddressQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
   chainId: Types.Scalars['Int']['input'];
   token: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -71,7 +72,7 @@ export const OTokenApyDocument = `
   oTokenApies(
     limit: 1
     orderBy: timestamp_DESC
-    where: {chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {chainId_eq: $chainId, otoken_eq: $token}
   ) {
     apy7DayAvg
     apy14DayAvg
@@ -104,9 +105,10 @@ useOTokenApyQuery.getKey = (variables: OTokenApyQueryVariables) => ['OTokenApy',
 useOTokenApyQuery.fetcher = (variables: OTokenApyQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenApyQuery, OTokenApyQueryVariables>(OTokenApyDocument, variables, options);
 
 export const OTokenAddressDocument = `
-    query OTokenAddress($address: String!, $chainId: Int!, $token: String!) {
+    query OTokenAddress($address: String!, $chainId: Int!, $token: String!, $limit: Int = 5000) {
   oTokenAddresses(
-    where: {address_containsInsensitive: $address, chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    limit: $limit
+    where: {address_eq: $address, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     balance
     earned
@@ -143,7 +145,7 @@ export const OTokenHistoriesDocument = `
   oTokenHistories(
     orderBy: timestamp_DESC
     limit: $limit
-    where: {address: {id_containsInsensitive: $address}, type_in: $filters, chainId_eq: $chainId, otoken_containsInsensitive: $token}
+    where: {address: {address_eq: $address}, type_in: $filters, chainId_eq: $chainId, otoken_eq: $token}
   ) {
     type
     value
@@ -176,12 +178,12 @@ useOTokenHistoriesQuery.getKey = (variables: OTokenHistoriesQueryVariables) => [
 useOTokenHistoriesQuery.fetcher = (variables: OTokenHistoriesQueryVariables, options?: RequestInit['headers']) => graphqlClient<OTokenHistoriesQuery, OTokenHistoriesQueryVariables>(OTokenHistoriesDocument, variables, options);
 
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {otoken_containsInsensitive: $token, chainId_eq: $chainId, timestamp_gte: $from}
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from}
   ) {
     ...DailyStat
   }

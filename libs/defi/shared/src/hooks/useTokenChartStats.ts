@@ -63,7 +63,7 @@ const fetcher: (
   async ({ queryKey: [, token, limit, from, orderBy, offset] }) => {
     const res = await queryClient.fetchQuery({
       queryKey: useOTokenStatsQuery.getKey({
-        token: token.address ?? ZERO_ADDRESS,
+        token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
         chainId: token.chainId,
         from,
         limit,
@@ -71,7 +71,7 @@ const fetcher: (
         offset,
       }),
       queryFn: useOTokenStatsQuery.fetcher({
-        token: token.address ?? ZERO_ADDRESS,
+        token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
         chainId: token.chainId,
         from,
         limit,

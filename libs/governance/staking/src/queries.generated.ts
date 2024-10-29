@@ -4,6 +4,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/governance/shared';
 export type UserLockupsQueryVariables = Types.Exact<{
   address: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -12,9 +13,10 @@ export type UserLockupsQuery = { __typename?: 'Query', ogvLockups: Array<{ __typ
 
 
 export const UserLockupsDocument = `
-    query UserLockups($address: String!) {
+    query UserLockups($address: String!, $limit: Int = 5000) {
   ogvLockups(
-    where: {address: {id_containsInsensitive: $address}, logs_none: {event_eq: Unstaked}}
+    limit: $limit
+    where: {address: {id_eq: $address}, logs_none: {event_eq: Unstaked}}
     orderBy: end_ASC
   ) {
     id

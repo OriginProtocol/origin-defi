@@ -6,8 +6,14 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { useTokenInfo, useXOgnStakingApy } from '@origin/defi/shared';
 import {
+  useArmApy,
+  useArmDailyStatsQuery,
+  useTokenInfo,
+  useXOgnStakingApy,
+} from '@origin/defi/shared';
+import {
+  CurrencyLabel,
   InfoTooltip,
   LoadingLabel,
   NumberSpinner,
@@ -15,8 +21,14 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { ARM } from '@origin/shared/icons';
+import {
+  getTokenPriceKey,
+  useTokenPrice,
+  useWatchBalance,
+} from '@origin/shared/providers';
 import { getFormatPrecision, includes } from '@origin/shared/utils';
-import { format, from } from 'dnum';
+import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink } from 'react-router-dom';
 import { useAccount } from 'wagmi';
@@ -24,6 +36,7 @@ import { useAccount } from 'wagmi';
 import type { StackProps, TypographyProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
+import type { Dnum } from 'dnum';
 
 export type TokenCardProps = {
   token: Token;
@@ -270,11 +283,20 @@ export const TokenCard = ({
               fontWeight: 'bold',
             }}
           >
-            {disabled
-              ? '-'
-              : ['OGN', 'OUSD'].includes(token.symbol)
-                ? `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
-                : `Ξ ${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })}`}
+            {disabled ? (
+              '-'
+            ) : ['OGN', 'OUSD'].includes(token.symbol) ? (
+              `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
+            ) : (
+              <>
+                <CurrencyLabel currency="ETH" />
+                &nbsp;
+                {format(info?.totalSupply ?? from(0), {
+                  compact: true,
+                  digits: 2,
+                })}
+              </>
+            )}
           </LoadingLabel>
           {!disabled && isSm && (
             <Box
@@ -366,6 +388,248 @@ export const TokenCard = ({
               )}
           </Button>
         )}
+      </Stack>
+    </Stack>
+  );
+};
+
+const APY_TRAILING = 7;
+
+export const ArmCard = (props: StackProps) => {
+  const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
+  const { isConnected } = useAccount();
+  const { data, isLoading } = useArmDailyStatsQuery(
+    { limit: 1 },
+    {
+      select: (data) => data?.armDailyStats?.[0],
+    },
+  );
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
+    getTokenPriceKey(tokens.mainnet['ARM-WETH-stETH']),
+  );
+  const { data: balance, isLoading: isBalanceLoading } = useWatchBalance({
+    token: tokens.mainnet['ARM-WETH-stETH'],
+  });
+  const { data: apyTrailing, isLoading: isApyTrailingLoading } =
+    useArmApy(APY_TRAILING);
+
+  const tvl = [
+    BigInt(data?.totalSupply ?? 0),
+    tokens.mainnet['ARM-WETH-stETH'].decimals,
+  ] as Dnum;
+  const exchangeRate = [
+    BigInt(data?.assetsPerShare ?? 0),
+    tokens.mainnet['ARM-WETH-stETH'].decimals,
+  ] as Dnum;
+  const tvlUsd = mul(tvl, price ?? 0);
+  const wethBalance = mul(
+    [balance ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
+    exchangeRate,
+  );
+
+  return (
+    <Stack
+      {...props}
+      direction={{ xs: 'column', md: 'row' }}
+      spacing={{ xs: 1, md: 3 }}
+      sx={[
+        {
+          alignItems: { xs: 'stretch', md: 'center' },
+          justifyContent: { xs: 'stretch', md: 'space-between' },
+          py: 2,
+          px: 3,
+          color: 'text.primary',
+          backgroundColor: 'background.highlight',
+          [theme.breakpoints.up('md')]: {
+            '>*': {
+              width: 1,
+            },
+          },
+        },
+        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
+      ]}
+    >
+      <Stack
+        direction={{ xs: 'row-reverse', md: 'row' }}
+        spacing={2}
+        sx={{
+          justifyContent: { xs: 'space-between', md: 'flex-start' },
+          alignItems: 'center',
+        }}
+      >
+        <ARM sx={{ fontSize: 40 }} />
+        <Stack
+          sx={{
+            height: 1,
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="body2"
+            noWrap
+            sx={{
+              fontWeight: 'bold',
+            }}
+          >
+            {intl.formatMessage({ defaultMessage: 'ETH Vault' })}
+          </Typography>
+          <Typography variant="caption1" noWrap>
+            {intl.formatMessage({ defaultMessage: 'stETH Redemptions' })}
+          </Typography>
+        </Stack>
+      </Stack>
+      <Stack
+        direction="row"
+        sx={{
+          alignItems: 'center',
+          mb: { xs: 0.5, md: 0 },
+          pl: { xs: 0, md: 2 },
+          minWidth: 140,
+        }}
+      >
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{
+            alignItems: 'baseline',
+          }}
+        >
+          <LoadingLabel
+            isLoading={isApyTrailingLoading}
+            variant="featured2"
+            sx={[
+              {
+                position: 'relative',
+                fontWeight: 'bold',
+                color: 'primary.main',
+                '::after': {
+                  background: theme.palette.primary.main,
+                },
+              },
+              !isLoading && {
+                '::after': {
+                  content: '""',
+                  position: 'absolute',
+                  left: 0,
+                  right: 2,
+                  bottom: 1,
+                  height: 2,
+                },
+              },
+            ]}
+          >
+            {intl.formatNumber(apyTrailing ?? 0, {
+              style: 'percent',
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })}
+          </LoadingLabel>
+          <Stack direction="row" useFlexGap sx={{ alignItems: 'center' }}>
+            <Typography
+              variant="caption1"
+              noWrap
+              sx={[{ color: 'primary.main' }]}
+            >
+              APY
+            </Typography>
+
+            <InfoTooltip
+              sx={[{ ml: 0.25, color: 'primary.main' }]}
+              tooltipLabel={intl.formatMessage(
+                {
+                  defaultMessage: '{trailing} trailing APY',
+                },
+                { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+              )}
+            />
+          </Stack>
+        </Stack>
+      </Stack>
+      <Stack
+        direction={{ xs: 'row', md: 'column' }}
+        spacing={{ xs: 1, md: 0 }}
+        sx={{
+          alignItems: { xs: 'baseline', md: 'flex-start' },
+        }}
+      >
+        <Typography variant="caption1">
+          {intl.formatMessage({ defaultMessage: 'TVL' })}
+          {isSm && `: `}
+        </Typography>
+        <Stack
+          direction={{ xs: 'row', md: 'column' }}
+          spacing={{ xs: 0.5, md: 0 }}
+          sx={{
+            alignItems: { xs: 'baseline', md: 'flex-start' },
+            flexWrap: 'nowrap',
+          }}
+        >
+          <LoadingLabel
+            isLoading={isLoading}
+            noWrap
+            sx={{
+              fontSize: (theme) => ({
+                xs: theme.typography.caption1.fontSize,
+                md: theme.typography.body3.fontSize,
+              }),
+              fontWeight: 'bold',
+            }}
+          >
+            <CurrencyLabel currency="ETH" />
+            &nbsp;{format(tvl, { compact: true, digits: 2 })}
+          </LoadingLabel>
+          {isSm && (
+            <Box
+              sx={{
+                width: '1px',
+                height: 10,
+                backgroundColor: 'divider',
+              }}
+            />
+          )}
+          <LoadingLabel
+            variant="caption2"
+            isLoading={isLoading || isPriceLoading}
+            sx={{ fontWeight: 'medium' }}
+          >
+            $&nbsp;
+            {format(tvlUsd ?? from(0), {
+              compact: true,
+              digits: 2,
+            })}
+          </LoadingLabel>
+        </Stack>
+      </Stack>
+      <ValueLabel
+        label={intl.formatMessage({ defaultMessage: 'Your balance' })}
+        value={`${
+          !isConnected
+            ? '-'
+            : format(wethBalance, {
+                digits: getFormatPrecision(wethBalance),
+              })
+        }`}
+        {...valueLabelProps}
+        isLoading={isBalanceLoading}
+        pt={{ xs: 1, md: 0 }}
+      />
+      <Stack
+        sx={{
+          justifyContent: 'center',
+          pt: { xs: 2, md: 0 },
+        }}
+      >
+        <Button
+          component={RouterLink}
+          to="/arm/steth-redemption-vault"
+          sx={{ whiteSpace: 'nowrap' }}
+          fullWidth
+          size={isSm ? 'large' : 'medium'}
+        >
+          {intl.formatMessage({ defaultMessage: 'Deposit' })}
+        </Button>
       </Stack>
     </Stack>
   );

@@ -7,6 +7,7 @@ import { AerodromeUniversalRouterABI } from './abis/AerodromeUniversalRouter';
 import { ARMABI } from './abis/ARM';
 import { ARMPoolControllerABI } from './abis/ARMPoolController';
 import { ARMstETHWETHPoolABI } from './abis/ARMstETHWETHPool';
+import { ARMZapperLidoABI } from './abis/ARMZapperLido';
 import { AuraStrategyABI } from './abis/AuraStrategy';
 import { BalancerQueriesABI } from './abis/BalancerQueries';
 import { BalancerVaultABI } from './abis/BalancerVault';
@@ -70,10 +71,16 @@ export const contracts = {
       name: 'ARMstETHWETHPool',
     },
     ARMPoolController: {
-      address: '0x3817e247023B4f489352758397040b1fd33b300a',
+      address: '0xf54ebff575f699d281645c6F14Fe427dFFE629CF',
       chainId: mainnet.id,
       abi: ARMPoolControllerABI,
       name: 'ARMPoolController',
+    },
+    ARMZapperLido: {
+      address: '0x01F30B7358Ba51f637d1aa05D9b4A60f76DAD680',
+      chainId: mainnet.id,
+      abi: ARMZapperLidoABI,
+      name: 'ARMZapperLido',
     },
     // Chainlink CCIP
     ccipRouter: {

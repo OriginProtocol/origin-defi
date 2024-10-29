@@ -15,7 +15,7 @@ fragment DailyStat on OTokenDailyStat {
   amoSupply
   yield
   fees
-  dripperWETH  
+  dripperWETH
 }
 
 fragment Strategy on Strategy {
@@ -35,7 +35,7 @@ fragment Strategy on Strategy {
 query oTokenStats(
   $token: String!
   $chainId: Int!
-  $limit: Int
+  $limit: Int = 5000
   $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
   $from: DateTime
   $offset: Int
@@ -44,11 +44,7 @@ query oTokenStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {
-      otoken_containsInsensitive: $token
-      chainId_eq: $chainId
-      timestamp_gte: $from
-    }
+    where: { otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from }
   ) {
     ...DailyStat
   }
@@ -64,11 +60,7 @@ query oTokenStatsConnection(
 ) {
   oTokenDailyStatsConnection(
     orderBy: $orderBy
-    where: {
-      otoken_containsInsensitive: $token
-      chainId_eq: $chainId
-      timestamp_gte: $from
-    }
+    where: { otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from }
     first: $first
     after: $after
   ) {
@@ -93,13 +85,15 @@ query oTokenRebases(
   $orderBy: [OTokenRebaseOrderByInput!] = [timestamp_DESC]
   $from: DateTime
   $to: DateTime
+  $limit: Int = 5000
 ) {
   oTokenRebases(
+    limit: $limit
     orderBy: $orderBy
     where: {
       timestamp_gte: $from
       timestamp_lt: $to
-      otoken_containsInsensitive: $token
+      otoken_eq: $token
       chainId_eq: $chainId
     }
   ) {
@@ -120,7 +114,7 @@ query oTokenApy(
   oTokenApies(
     limit: 1
     orderBy: $orderBy
-    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+    where: { chainId_eq: $chainId, otoken_eq: $token }
   ) {
     apy7DayAvg
     apy14DayAvg

@@ -22,7 +22,7 @@ export const DelegationPanel = (props: StackProps) => {
   });
   const { data: delegators, isLoading: isDelegatorsLoading } =
     useUserDelegatorsQuery(
-      { address: address ?? ZERO_ADDRESS },
+      { address: address?.toLowerCase() ?? ZERO_ADDRESS },
       { enabled: !!address },
     );
   const { params, callbacks } = useTxButton({

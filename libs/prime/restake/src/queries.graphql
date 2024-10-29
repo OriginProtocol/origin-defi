@@ -1,14 +1,16 @@
-query UserActiveRequests($address: String!) {
+query UserActiveRequests($address: String!, $limit: Int = 5000) {
   lrtWithdrawalRequests(
-    where: { withdrawer_containsInsensitive: $address, status_in: [Requested] }
+    limit: $limit
+    where: { withdrawer_eq: $address, status_in: [Requested] }
   ) {
     id
   }
 }
 
-query UserWithdrawals($address: String!) {
+query UserWithdrawals($address: String!, $limit: Int = 5000) {
   lrtWithdrawalRequests(
-    where: { withdrawer_containsInsensitive: $address }
+    limit: $limit
+    where: { withdrawer_eq: $address }
     orderBy: [timestamp_DESC]
   ) {
     id

@@ -75,7 +75,7 @@ export const NotificationAlert = forwardRef<
   };
 
   return (
-    <Box sx={{ position: 'relative', borderRadius: 1, overflow: 'hidden' }}>
+    <Box sx={{ position: 'relative', borderRadius: 3, overflow: 'hidden' }}>
       <Alert
         {...rest}
         ref={ref}
@@ -84,20 +84,20 @@ export const NotificationAlert = forwardRef<
         onMouseLeave={handleMouseLeave}
         sx={[
           {
-            borderRadius: 0,
+            borderRadius: 3,
             '&.MuiAlert-message': {
               width: 1,
             },
           },
           hideDuration
             ? {
-                borderTopRightRadius: (theme) => theme.shape.borderRadius,
-                borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+                borderTopRightRadius: (theme) => theme.shape.borderRadius * 3,
+                borderTopLeftRadius: (theme) => theme.shape.borderRadius * 3,
                 borderBottomRightRadius: 0,
                 borderBottomLeftRadius: 0,
               }
             : {
-                borderRadius: 1,
+                borderRadius: 3,
               },
           ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
         ]}

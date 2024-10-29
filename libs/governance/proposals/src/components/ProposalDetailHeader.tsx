@@ -27,7 +27,7 @@ export const ProposalDetailHeader = (props: StackProps) => {
   const { proposalId } = useParams();
   const { data: proposal, isLoading: isProposalLoading } = useProposalQuery(
     {
-      proposalId: proposalId ?? '',
+      proposalId: proposalId?.toLowerCase() ?? '',
     },
     { enabled: !!proposalId },
   );

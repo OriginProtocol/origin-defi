@@ -1,12 +1,15 @@
 import { Stack, Typography } from '@mui/material';
-import { ColorChip } from '@origin/defi/shared';
-import { LoadingLabel } from '@origin/shared/components';
+import { ColorChip, useArmApy } from '@origin/defi/shared';
+import { InfoTooltip, LoadingLabel } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
+
+import { APY_TRAILING } from '../constants';
 
 import type { StackProps } from '@mui/material';
 
 export const PageTitleSection = (props: StackProps) => {
   const intl = useIntl();
+  const { data: apy, isLoading: isApyLoading } = useArmApy(APY_TRAILING);
 
   return (
     <Stack
@@ -26,10 +29,10 @@ export const PageTitleSection = (props: StackProps) => {
     >
       <ColorChip spacing={0.5} minHeight={40}>
         <LoadingLabel
-          isLoading={false}
+          isLoading={isApyLoading}
           sx={{ color: 'inherit', fontWeight: 'bold' }}
         >
-          {intl.formatNumber(0.274, {
+          {intl.formatNumber(apy ?? 0, {
             style: 'percent',
             minimumFractionDigits: 2,
           })}
@@ -40,8 +43,18 @@ export const PageTitleSection = (props: StackProps) => {
             color: 'inherit',
           }}
         >
-          {intl.formatMessage({ defaultMessage: '30-day trailing APY' })}
+          {intl.formatMessage(
+            { defaultMessage: '{trailing} trailing APY' },
+            { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+          )}
         </Typography>
+        <InfoTooltip
+          tooltipLabel={intl.formatMessage({
+            defaultMessage:
+              'This APY will be displayed over an increasing period of time, up to 30 days, as that data is collected.',
+          })}
+          iconColor="primary.main"
+        />
       </ColorChip>
     </Stack>
   );

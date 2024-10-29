@@ -13,6 +13,7 @@ export type HolderCountQuery = { __typename?: 'Query', erc20HoldersConnection: {
 export type TransfersQueryVariables = Types.Exact<{
   tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
   account: Types.Scalars['String']['input'];
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -22,6 +23,7 @@ export type BalancesQueryVariables = Types.Exact<{
   tokens?: Types.InputMaybe<Array<Types.Scalars['String']['input']> | Types.Scalars['String']['input']>;
   account: Types.Scalars['String']['input'];
   blocks?: Types.InputMaybe<Array<Types.Scalars['Int']['input']> | Types.Scalars['Int']['input']>;
+  limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
 
@@ -33,7 +35,7 @@ export const HolderCountDocument = `
     query HolderCount($chainId: Int!, $token: String!) {
   erc20HoldersConnection(
     orderBy: id_ASC
-    where: {address_containsInsensitive: $token, chainId_eq: $chainId, balance_gt: 0}
+    where: {address_eq: $token, chainId_eq: $chainId, balance_gt: 0}
   ) {
     totalCount
   }
@@ -62,12 +64,12 @@ useHolderCountQuery.getKey = (variables: HolderCountQueryVariables) => ['HolderC
 useHolderCountQuery.fetcher = (variables: HolderCountQueryVariables, options?: RequestInit['headers']) => graphqlClient<HolderCountQuery, HolderCountQueryVariables>(HolderCountDocument, variables, options);
 
 export const TransfersDocument = `
-    query Transfers($tokens: [String!], $account: String!) {
+    query Transfers($tokens: [String!], $account: String!, $limit: Int = 2000) {
   erc20Transfers(
     orderBy: timestamp_DESC
     offset: 0
-    limit: 2000
-    where: {OR: {address_in: $tokens, from_containsInsensitive: $account}, address_in: $tokens, to_containsInsensitive: $account}
+    limit: $limit
+    where: {OR: {address_in: $tokens, from_eq: $account}, address_in: $tokens, to_eq: $account}
   ) {
     id
     chainId
@@ -106,9 +108,10 @@ useTransfersQuery.getKey = (variables: TransfersQueryVariables) => ['Transfers',
 useTransfersQuery.fetcher = (variables: TransfersQueryVariables, options?: RequestInit['headers']) => graphqlClient<TransfersQuery, TransfersQueryVariables>(TransfersDocument, variables, options);
 
 export const BalancesDocument = `
-    query Balances($tokens: [String!], $account: String!, $blocks: [Int!]) {
+    query Balances($tokens: [String!], $account: String!, $blocks: [Int!], $limit: Int = 5000) {
   erc20Balances(
-    where: {address_in: $tokens, account_containsInsensitive: $account, blockNumber_in: $blocks}
+    limit: $limit
+    where: {address_in: $tokens, account_eq: $account, blockNumber_in: $blocks}
   ) {
     id
     chainId

@@ -23,9 +23,9 @@ export const StatsCard = ({ token, ...rest }: StatsCardProps) => {
   });
   const { data: earned, isLoading: isEarnedLoading } = useOTokenAddressQuery(
     {
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
       chainId: token.chainId,
-      token: token.address ?? ZERO_ADDRESS,
+      token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
     },
     {
       enabled: !!address,

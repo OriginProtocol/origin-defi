@@ -1,4 +1,9 @@
-import { alpha, CircularProgress, emphasize } from '@mui/material';
+import {
+  alertClasses,
+  alpha,
+  CircularProgress,
+  emphasize,
+} from '@mui/material';
 import {
   FaCircleCheckRegular,
   FaCircleExclamationRegular,
@@ -69,18 +74,18 @@ export const components = (base: Theme): ThemeOptions => ({
           color: theme.palette.text.primary,
           boxShadow: theme.shadows[2],
           backgroundColor: theme.palette.background.highlight,
-        }),
-        colorInfo: ({ theme }) => ({
-          backgroundColor: theme.palette.background.highlight,
-        }),
-        colorWarning: ({ theme }) => ({
-          backgroundColor: theme.palette.background.highlight,
-        }),
-        colorError: ({ theme }) => ({
-          backgroundColor: theme.palette.error.faded,
-        }),
-        colorSuccess: ({ theme }) => ({
-          backgroundColor: theme.palette.success.faded,
+          [`&.${alertClasses.standard}.${alertClasses.colorSuccess}`]: {
+            backgroundColor: theme.palette.success.faded,
+          },
+          [`&.${alertClasses.standard}.${alertClasses.colorError}`]: {
+            backgroundColor: theme.palette.error.faded,
+          },
+          [`&.${alertClasses.standard}.${alertClasses.colorInfo}`]: {
+            backgroundColor: theme.palette.background.highlight,
+          },
+          [`&.${alertClasses.standard}.${alertClasses.colorWarning}`]: {
+            backgroundColor: theme.palette.background.highlight,
+          },
         }),
       },
     },

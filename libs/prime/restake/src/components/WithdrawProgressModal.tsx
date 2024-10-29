@@ -35,14 +35,14 @@ export const WithdrawProgressModal = ({ onClose, ...rest }: DialogProps) => {
   const { address } = useAccount();
   const queryClient = useQueryClient();
   const { data } = useUserActiveRequestsQuery({
-    address: address ?? ZERO_ADDRESS,
+    address: address?.toLowerCase() ?? ZERO_ADDRESS,
   });
   const { status, startRefresh } = useRefresher<UserActiveRequestsQuery>({
     queryKey: useUserActiveRequestsQuery.getKey({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     queryFn: useUserActiveRequestsQuery.fetcher({
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     isResultProcessed: (prev, next) =>
       prev?.lrtWithdrawalRequests?.length < next?.lrtWithdrawalRequests?.length,

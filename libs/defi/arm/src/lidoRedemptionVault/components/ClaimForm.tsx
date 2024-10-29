@@ -13,23 +13,25 @@ import {
   useMediaQuery,
   useTheme,
 } from '@mui/material';
-import { SectionCard } from '@origin/defi/shared';
+import { SectionCard, useTxButton } from '@origin/defi/shared';
 import { LoadingLabel, ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
+import { contracts, tokens } from '@origin/shared/contracts';
 import {
   FaArrowUpRightRegular,
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
+import { TxButton } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
-import { add, eq, format, from } from 'dnum';
-import { groupBy, remove } from 'ramda';
+import { useQueryClient } from '@tanstack/react-query';
+import { formatDuration } from 'date-fns';
+import { add, eq, format, from, mul } from 'dnum';
+import { groupBy } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useArmVault } from '../hooks';
+import { useArmInfo, useClaimInfo } from '../hooks';
 
 import type { CardContentProps, StackProps } from '@mui/material';
-import type { Dnum } from 'dnum';
 
 import type { WithdrawalRequest } from '../types';
 
@@ -37,22 +39,42 @@ export const ClaimForm = (props: CardContentProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
-  const [gasPrice, setGasPrice] = useState<bigint>(0n);
-  const { data, isLoading } = useArmVault();
+  const queryClient = useQueryClient();
+  const [selectedClaimId, setSelectedClaimId] = useState<bigint | null>(null);
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
+  const selectedAmount =
+    info?.requests?.find((r) => r.requestId === selectedClaimId)?.amount ?? 0n;
+  const { params, callbacks, gasPrice } = useTxButton({
+    params: {
+      contract: contracts.mainnet.ARMstETHWETHPool,
+      functionName: 'claimRedeem',
+      args: [selectedClaimId ?? -1n],
+    },
+    callbacks: {
+      onTxSigned: () => {
+        queryClient.invalidateQueries();
+      },
+    },
+    activity: {
+      type: 'claim-withdrawal',
+      status: 'idle',
+      amountIn: selectedAmount,
+      tokenIdIn: tokens.mainnet.WETH.id,
+    },
+    enableGas: true,
+  });
 
   const handleClaimClick = (requestId: bigint) => () => {
-    const idx = selectedClaimIds.findIndex((id) => id === requestId);
-    if (idx === -1) {
-      setSelectedClaimIds((prev) => [...prev, requestId]);
+    if (selectedClaimId === requestId) {
+      setSelectedClaimId(null);
     } else {
-      setSelectedClaimIds((prev) => remove(idx, 1, prev));
+      setSelectedClaimId(requestId);
     }
   };
 
   const { claimable, pending } = groupBy(
     (r) => (r.claimable ? 'claimable' : 'pending'),
-    data?.requests ?? [],
+    info?.requests ?? [],
   );
 
   const availableToClaim =
@@ -104,7 +126,7 @@ export const ClaimForm = (props: CardContentProps) => {
               }}
             >
               <LoadingLabel
-                isLoading={isLoading}
+                isLoading={isInfoLoading}
                 variant="featured1"
                 sx={{ fontWeight: 'bold' }}
               >
@@ -184,7 +206,7 @@ export const ClaimForm = (props: CardContentProps) => {
                 }}
               >
                 <LoadingLabel
-                  isLoading={isLoading}
+                  isLoading={isInfoLoading}
                   variant="featured2"
                   sx={{ fontWeight: 'bold' }}
                 >
@@ -209,7 +231,7 @@ export const ClaimForm = (props: CardContentProps) => {
           mb={3}
         >
           <Stack divider={<Divider />}>
-            {isLoading ? (
+            {isInfoLoading ? (
               <Stack
                 sx={{
                   justifyContent: 'center',
@@ -219,7 +241,7 @@ export const ClaimForm = (props: CardContentProps) => {
               >
                 <CircularProgress size={24} />
               </Stack>
-            ) : isNilOrEmpty(data?.requests) ? (
+            ) : isNilOrEmpty(info?.requests) ? (
               <Stack
                 sx={{
                   justifyContent: 'center',
@@ -238,11 +260,11 @@ export const ClaimForm = (props: CardContentProps) => {
                 </Typography>
               </Stack>
             ) : (
-              data?.requests?.map((r) => (
+              info?.requests?.map((r) => (
                 <ClaimRow
                   key={r.id}
                   request={r}
-                  selected={selectedClaimIds.includes(r.requestId)}
+                  selected={selectedClaimId === r.requestId}
                   onSelect={handleClaimClick(r.requestId)}
                   isProcessing={false}
                 />
@@ -250,13 +272,13 @@ export const ClaimForm = (props: CardContentProps) => {
             )}
           </Stack>
         </SectionCard>
-        <Collapse in={!isNilOrEmpty(selectedClaimIds)}>
+        <Collapse in={!isNilOrEmpty(selectedClaimId)}>
           <ValueLabel
             label={intl.formatMessage({
               defaultMessage: 'Approximate gas cost:',
             })}
-            value={`$${format([132n, 3], 2)}`}
-            isLoading={isLoading}
+            value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+            isLoading={isInfoLoading}
             direction="row"
             sx={{ justifyContent: 'space-between', mb: 3 }}
             labelProps={{
@@ -265,9 +287,29 @@ export const ClaimForm = (props: CardContentProps) => {
             }}
           />
         </Collapse>
-        <Button variant="action" disabled={isNilOrEmpty(selectedClaimIds)}>
-          {intl.formatMessage({ defaultMessage: 'Claim' })}
-        </Button>
+        <TxButton
+          params={params}
+          callbacks={callbacks}
+          variant="action"
+          disabled={isNilOrEmpty(selectedClaimId)}
+          label={intl.formatMessage(
+            { defaultMessage: 'Claim{amount}' },
+            {
+              amount: eq(selectedAmount, 0)
+                ? ''
+                : ` ${format(
+                    [selectedAmount, tokens.mainnet['ARM-WETH-stETH'].decimals],
+                    {
+                      digits: getFormatPrecision([
+                        selectedAmount,
+                        tokens.mainnet['ARM-WETH-stETH'].decimals,
+                      ]),
+                      decimalsRounding: 'ROUND_DOWN',
+                    },
+                  )} ${tokens.mainnet.WETH.symbol}`,
+            },
+          )}
+        />
       </Stack>
     </CardContent>
   );
@@ -334,8 +376,39 @@ const ClaimRow = ({
   isProcessing,
   ...rest
 }: ClaimRowProps) => {
-  const amt = [request?.amount ?? 0n, tokens.mainnet.WETH.decimals] as Dnum;
-  const disabled = !request.claimable || isProcessing;
+  const intl = useIntl();
+  const { data: armInfo, isLoading: isArmInfoLoading } = useArmInfo();
+  const vaultHasMoney = (armInfo?.claimable ?? 0n) >= request.queued;
+  const { data: claimInfo, isLoading: isClaimInfoLoading } = useClaimInfo(
+    request.requestId,
+    {
+      structuralSharing: false,
+      refetchInterval:
+        !request.claimable && !request.claimed && vaultHasMoney
+          ? 10000
+          : undefined,
+    },
+  );
+
+  const now = Math.floor(Date.now() / 1000);
+  const claimEnd = claimInfo?.claimTimestamp ?? 0;
+  const diff = claimEnd - now;
+  const isClaimable =
+    !!claimInfo && claimInfo.claimable >= claimInfo.queued && diff < 0;
+  const timeLeft = vaultHasMoney
+    ? diff > 0
+      ? formatDuration(
+          { minutes: Math.floor(diff / 60), seconds: diff % 60 },
+          { format: diff > 60 ? ['minutes'] : ['seconds'] },
+        )
+      : ''
+    : intl.formatMessage({ defaultMessage: '0~5 days' });
+  const amt = mul(
+    [claimInfo?.assets ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
+    armInfo?.lpToWeth ?? 0,
+    { rounding: 'ROUND_DOWN' },
+  );
+  const disabled = !isClaimable || isClaimInfoLoading || isProcessing;
 
   return (
     <Stack
@@ -353,14 +426,14 @@ const ClaimRow = ({
       ]}
     >
       <FormControlLabel
-        control={<Checkbox checked={request.claimable && selected} />}
+        control={<Checkbox checked={isClaimable && selected} />}
         label={
           <Stack
             direction="row"
             spacing={0.5}
             sx={{
               alignItems: 'baseline',
-              color: request.claimable ? 'text.primary' : 'text.secondary',
+              color: isClaimable ? 'text.primary' : 'text.secondary',
             }}
           >
             <Typography
@@ -390,7 +463,12 @@ const ClaimRow = ({
           alignItems: 'center',
         }}
       >
-        <ClaimChip claimable={request.claimable} isProcessing={isProcessing} />
+        <ClaimChip
+          claimable={isClaimable}
+          isProcessing={isProcessing}
+          isLoading={isClaimInfoLoading || isArmInfoLoading}
+          timeLeft={timeLeft}
+        />
         <Button
           variant="outlined"
           color="secondary"
@@ -408,33 +486,46 @@ const ClaimRow = ({
 type ClaimChipProps = {
   claimable: boolean;
   isProcessing: boolean;
+  isLoading: boolean;
+  timeLeft?: string;
 } & StackProps;
 
-const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
+const ClaimChip = ({
+  claimable,
+  isProcessing,
+  isLoading,
+  timeLeft,
+  ...rest
+}: ClaimChipProps) => {
   const intl = useIntl();
 
-  const icon = isProcessing ? (
-    <CircularProgress size={16} />
-  ) : claimable ? (
-    <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
-  ) : (
-    <FaClockRegular sx={{ color: 'warning.dark' }} />
-  );
-  const label = isProcessing
-    ? intl.formatMessage({ defaultMessage: 'Processing' })
-    : claimable
-      ? intl.formatMessage({ defaultMessage: 'Ready' })
-      : intl.formatMessage({ defaultMessage: 'Pending' });
-  const color = isProcessing
-    ? 'primary.main'
-    : claimable
-      ? 'success.dark'
-      : 'warning.dark';
-  const backgroundColor = isProcessing
-    ? 'primary.faded'
-    : claimable
-      ? 'success.faded'
-      : 'warning.faded';
+  const icon =
+    isProcessing || isLoading ? (
+      <CircularProgress size={16} />
+    ) : claimable ? (
+      <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
+    ) : (
+      <FaClockRegular sx={{ color: 'warning.dark' }} />
+    );
+  const label = isLoading
+    ? intl.formatMessage({ defaultMessage: 'Loading' })
+    : isProcessing
+      ? intl.formatMessage({ defaultMessage: 'Processing' })
+      : claimable
+        ? intl.formatMessage({ defaultMessage: 'Ready' })
+        : timeLeft;
+  const color =
+    isProcessing || isLoading
+      ? 'primary.main'
+      : claimable
+        ? 'success.dark'
+        : 'warning.dark';
+  const backgroundColor =
+    isProcessing || isLoading
+      ? 'primary.faded'
+      : claimable
+        ? 'success.faded'
+        : 'warning.faded';
 
   return (
     <Stack

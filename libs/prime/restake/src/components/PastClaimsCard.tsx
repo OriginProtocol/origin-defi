@@ -33,7 +33,7 @@ export const PastClaimsCard = (props: CardProps) => {
     useTokenPrice('1:OETH_USD');
   const { data: withdrawals, isLoading: iswithdrawalsLoading } =
     useUserWithdrawalsQuery(
-      { address: address ?? ZERO_ADDRESS },
+      { address: address?.toLowerCase() ?? ZERO_ADDRESS },
       {
         enabled: isConnected,
         select: (data) =>

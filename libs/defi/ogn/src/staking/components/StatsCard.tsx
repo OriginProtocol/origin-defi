@@ -12,7 +12,7 @@ export const StatsCard = (props: CardProps) => {
   const { data: xognHolder, isLoading: isXognHolderLoading } =
     useHolderCountQuery(
       {
-        token: tokens.mainnet.xOGN.address,
+        token: tokens.mainnet.xOGN.address.toLowerCase(),
         chainId: tokens.mainnet.xOGN.chainId,
       },
       { select: (data) => data?.erc20HoldersConnection?.totalCount },

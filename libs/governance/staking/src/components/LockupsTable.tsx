@@ -46,7 +46,7 @@ export const LockupsTable = () => {
   const { address } = useAccount();
   const { data: govInfo, isLoading: isGovInfoLoading } = useGovernanceInfo();
   const { data: lockups, isLoading: isLockupsLoading } = useUserLockupsQuery(
-    { address: address ?? ZERO_ADDRESS },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS },
     {
       select: (data) => data?.ogvLockups,
       enabled: !!address,

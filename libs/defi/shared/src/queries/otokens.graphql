@@ -22,7 +22,7 @@ query OTokenApy($chainId: Int!, $token: String!) {
   oTokenApies(
     limit: 1
     orderBy: timestamp_DESC
-    where: { chainId_eq: $chainId, otoken_containsInsensitive: $token }
+    where: { chainId_eq: $chainId, otoken_eq: $token }
   ) {
     apy7DayAvg
     apy14DayAvg
@@ -32,13 +32,15 @@ query OTokenApy($chainId: Int!, $token: String!) {
   }
 }
 
-query OTokenAddress($address: String!, $chainId: Int!, $token: String!) {
+query OTokenAddress(
+  $address: String!
+  $chainId: Int!
+  $token: String!
+  $limit: Int = 5000
+) {
   oTokenAddresses(
-    where: {
-      address_containsInsensitive: $address
-      chainId_eq: $chainId
-      otoken_containsInsensitive: $token
-    }
+    limit: $limit
+    where: { address_eq: $address, chainId_eq: $chainId, otoken_eq: $token }
   ) {
     balance
     earned
@@ -59,10 +61,10 @@ query OTokenHistories(
     orderBy: timestamp_DESC
     limit: $limit
     where: {
-      address: { id_containsInsensitive: $address }
+      address: { address_eq: $address }
       type_in: $filters
       chainId_eq: $chainId
-      otoken_containsInsensitive: $token
+      otoken_eq: $token
     }
   ) {
     type
@@ -76,7 +78,7 @@ query OTokenHistories(
 query oTokenStats(
   $token: String!
   $chainId: Int!
-  $limit: Int
+  $limit: Int = 5000
   $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
   $from: DateTime
   $offset: Int
@@ -85,11 +87,7 @@ query oTokenStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {
-      otoken_containsInsensitive: $token
-      chainId_eq: $chainId
-      timestamp_gte: $from
-    }
+    where: { otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from }
   ) {
     ...DailyStat
   }

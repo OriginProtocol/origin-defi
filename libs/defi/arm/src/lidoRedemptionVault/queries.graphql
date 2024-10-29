@@ -1,0 +1,24 @@
+query armWithdrawalRequests(
+  $address: String!
+  $limit: Int = 5000
+  $orderBy: [ArmWithdrawalRequestOrderByInput!] = [timestamp_DESC]
+) {
+  armWithdrawalRequests(
+    limit: $limit
+    orderBy: $orderBy
+    where: {
+      account_eq: $address
+      address_eq: "0x85b78aca6deae198fbf201c82daf6ca21942acc6"
+      chainId_eq: 1
+    }
+  ) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    txHash
+    blockNumber
+  }
+}

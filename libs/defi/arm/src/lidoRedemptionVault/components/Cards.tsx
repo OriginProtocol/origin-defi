@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   CardContent,
   CardHeader,
@@ -7,25 +8,29 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenChip } from '@origin/defi/shared';
-import { ValueLabel } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import {
-  useTokenBalance,
-  useTokenPrice,
-  useTvl,
-} from '@origin/shared/providers';
+  TokenChip,
+  useArmApy,
+  useArmDailyStatsQuery,
+} from '@origin/defi/shared';
+import { ClipboardButton, ValueLabel } from '@origin/shared/components';
+import { contracts, tokens } from '@origin/shared/contracts';
+import { FaArrowUpRightRegular, FaCopyRegular } from '@origin/shared/icons';
+import { AddressLabel } from '@origin/shared/providers';
 import { getFormatPrecision } from '@origin/shared/utils';
 import { format, from, mul, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
+import { APY_TRAILING } from '../constants';
+import { useArmInfo } from '../hooks';
+
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
-import type { Dnum } from 'dnum';
 
 export const ApyCard = (props: CardProps) => {
   const intl = useIntl();
+  const { data: apy, isLoading: isApyLoading } = useArmApy(APY_TRAILING);
 
   return (
     <Card {...props}>
@@ -33,13 +38,19 @@ export const ApyCard = (props: CardProps) => {
       <Divider />
       <CardContent>
         <ValueLabel
-          label={intl.formatMessage({
-            defaultMessage: '30-day trailing',
-          })}
-          value={intl.formatNumber(0.274, {
+          label={intl.formatMessage(
+            { defaultMessage: '{trailing} trailing APY' },
+            { trailing: APY_TRAILING > 1 ? `${APY_TRAILING}-day` : '24h' },
+          )}
+          value={intl.formatNumber(apy ?? 0, {
             style: 'percent',
             maximumFractionDigits: 2,
           })}
+          labelInfoTooltip={intl.formatMessage({
+            defaultMessage:
+              'This APY will be displayed over an increasing period of time, up to 30 days, as that data is collected.',
+          })}
+          isLoading={isApyLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -49,8 +60,15 @@ export const ApyCard = (props: CardProps) => {
 
 export const TvlCard = (props: CardProps) => {
   const intl = useIntl();
-  const { data: tvl, isLoading: isTvlLoading } = useTvl(
-    tokens.mainnet['ARM-WETH-stETH'],
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
+  const { data: tvl, isLoading: isTvlLoading } = useArmDailyStatsQuery(
+    { limit: 1 },
+    { select: (data) => data?.armDailyStats?.[0]?.totalSupply },
+  );
+
+  const tvlUsd = mul(
+    [BigInt(tvl ?? 0), tokens.mainnet['ARM-WETH-stETH'].decimals],
+    info?.prices?.['1:ARM-WETH-stETH_USD'] ?? from(0),
   );
 
   return (
@@ -65,11 +83,30 @@ export const TvlCard = (props: CardProps) => {
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={intl.formatNumber(toNumber(tvl ?? from(0)), {
-            notation: 'compact',
-            maximumFractionDigits: 2,
-          })}
-          isLoading={isTvlLoading}
+          value={
+            <Stack>
+              <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+                {intl.formatNumber(
+                  toNumber([
+                    BigInt(tvl ?? 0),
+                    tokens.mainnet['ARM-WETH-stETH'].decimals,
+                  ]),
+                  {
+                    notation: 'compact',
+                    maximumFractionDigits: 2,
+                  },
+                )}
+              </Typography>
+              <Typography sx={{ color: 'text.secondary' }}>
+                $
+                {intl.formatNumber(toNumber(tvlUsd), {
+                  notation: 'compact',
+                  maximumFractionDigits: 2,
+                })}
+              </Typography>
+            </Stack>
+          }
+          isLoading={isTvlLoading || isInfoLoading}
           {...valueLabelProps}
         />
       </CardContent>
@@ -117,22 +154,11 @@ export const AboutCard = (props: CardProps) => {
 export const VaultBalanceCard = (props: CardProps) => {
   const intl = useIntl();
   const { isConnected } = useAccount();
-  const { data: balance, isLoading: isBalanceLoading } = useTokenBalance({
-    token: tokens.mainnet['ARM-WETH-stETH'],
-  });
-  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
-    '1:ARM-WETH-stETH_1:ETH',
-  );
+  const { data: info, isLoading: isInfoLoading } = useArmInfo();
 
   if (!isConnected) {
     return null;
   }
-
-  const bal = [
-    balance ?? 0n,
-    tokens.mainnet['ARM-WETH-stETH'].decimals,
-  ] as Dnum;
-  const ethBal = mul(bal, price ?? from(0));
 
   return (
     <Card {...props}>
@@ -144,16 +170,68 @@ export const VaultBalanceCard = (props: CardProps) => {
         <ValueLabel
           label={
             <TokenChip
-              token={tokens.mainnet.ETH}
+              token={tokens.mainnet.WETH}
               iconProps={{ sx: { fontSize: 24 } }}
             />
           }
-          value={format(ethBal, {
-            digits: getFormatPrecision(ethBal),
+          value={format(info?.userWethBalance ?? from(0), {
+            digits: getFormatPrecision(info?.userWethBalance ?? from(0)),
+            decimalsRounding: 'ROUND_DOWN',
           })}
-          isLoading={isBalanceLoading || isPriceLoading}
+          isLoading={isInfoLoading}
           {...valueLabelProps}
         />
+      </CardContent>
+    </Card>
+  );
+};
+
+export const ContractInfoCard = (props: CardProps) => {
+  const intl = useIntl();
+
+  return (
+    <Card {...props}>
+      <CardContent>
+        <Stack spacing={2}>
+          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>
+            {intl.formatMessage({
+              defaultMessage: 'Contracts',
+            })}
+          </Typography>
+          <ValueLabel
+            direction="row"
+            label={intl.formatMessage({ defaultMessage: 'Pool' })}
+            value={
+              <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                <AddressLabel
+                  address={contracts.mainnet.ARMstETHWETHPool.address}
+                  sx={{ fontFamily: 'mono', maxWidth: 180 }}
+                />
+                <Button
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  href={`https://etherscan.io/address/${contracts.mainnet.ARMstETHWETHPool.address}`}
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  sx={{ p: 0.25 }}
+                >
+                  <FaArrowUpRightRegular />
+                </Button>
+                <ClipboardButton
+                  value={contracts.mainnet.ARMstETHWETHPool.address}
+                  variant="outlined"
+                  color="secondary"
+                  size="small"
+                  hideLabel
+                  sx={{ p: 0.25 }}
+                >
+                  <FaCopyRegular />
+                </ClipboardButton>
+              </Stack>
+            }
+          />
+        </Stack>
       </CardContent>
     </Card>
   );

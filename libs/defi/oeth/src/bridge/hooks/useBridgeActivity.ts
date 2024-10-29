@@ -23,7 +23,7 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
 
   // Query via GraphQL!
   const bridgeTransfers = useBridgeTransfersQuery(
-    { address: address ?? ZERO_ADDRESS, limit },
+    { address: address?.toLowerCase() ?? ZERO_ADDRESS, limit },
     {
       enabled: !!address,
       refetchInterval: waitForTransfer

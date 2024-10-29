@@ -4,32 +4,43 @@ import {
   Box,
   Button,
   CardContent,
+  CircularProgress,
   Collapse,
   Dialog,
   DialogTitle,
   Divider,
-  LinearProgress,
   MenuItem,
   MenuList,
   Skeleton,
   Stack,
   Typography,
 } from '@mui/material';
-import { TokenButton } from '@origin/defi/shared';
-import { BigIntInput, InfoTooltipLabel } from '@origin/shared/components';
+import { SwapProvider, TokenInput, trackEvent } from '@origin/defi/shared';
+import { InfoTooltipLabel } from '@origin/shared/components';
 import { TokenIcon } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
-import { FaCircleExclamationRegular, WalletFilled } from '@origin/shared/icons';
 import { FaCheckRegular } from '@origin/shared/icons';
-import { useTokenPrice, useWatchBalance } from '@origin/shared/providers';
+import {
+  ConnectedButton,
+  useHandleAmountInChange,
+  useHandleApprove,
+  useHandleSwap,
+  useHandleTokenChange,
+  useSwapperPrices,
+  useSwapRouteAllowance,
+  useSwapState,
+  useTokenOptions,
+  useTokenPrice,
+  useWatchBalance,
+  useWatchBalances,
+} from '@origin/shared/providers';
 import { getTokenPriceKey } from '@origin/shared/providers';
-import { getFormatPrecision } from '@origin/shared/utils';
-import { format, from, mul, toNumber } from 'dnum';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
+import { format, gt, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
-import { USER_WHITELIST_CAP_PER_WAVE } from '../constants';
-import { useArmVault } from '../hooks';
+import { depositARMActions } from '../actions';
+import { armSwapRoutes } from '../constants';
 
 import type { DialogProps, MenuItemProps } from '@mui/material';
 import type { CardContentProps } from '@mui/material';
@@ -37,28 +48,74 @@ import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
 export const DepositForm = (props: CardContentProps) => {
+  return (
+    <SwapProvider
+      swapActions={depositARMActions}
+      swapRoutes={armSwapRoutes}
+      trackEvent={trackEvent}
+      activityType="deposit"
+    >
+      <DepositFormWrapped {...props} />
+    </SwapProvider>
+  );
+};
+
+const DepositFormWrapped = (props: CardContentProps) => {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
-  const [amount, setAmount] = useState(0n);
-  const [assetToDeposit, setAssetToDeposit] = useState<Token>(
-    tokens.mainnet.ETH,
-  );
-  const { data } = useArmVault();
+  const { isConnected, chainId } = useAccount();
+  const [
+    {
+      amountIn,
+      tokenIn,
+      tokenOut,
+      selectedSwapRoute,
+      isSwapLoading,
+      isSwapWaitingForSignature,
+      isSwapRoutesLoading,
+      isApprovalLoading,
+      isApprovalWaitingForSignature,
+    },
+  ] = useSwapState();
+  const { data: allowance } = useSwapRouteAllowance(selectedSwapRoute);
+  const { tokensIn } = useTokenOptions();
+  const { data: prices, isLoading: isPriceLoading } = useSwapperPrices();
+  const handleAmountInChange = useHandleAmountInChange();
+  const handleTokenChange = useHandleTokenChange();
+  const handleApprove = useHandleApprove();
+  const handleSwap = useHandleSwap();
+  const { data: balances, isLoading: isBalancesLoading } = useWatchBalances({
+    tokens: [tokenIn, tokenOut],
+  });
 
-  const handleAmountChange = (val: bigint) => {
-    setAmount(val);
-  };
-
-  const handleMaxClick = () => {
-    setAmount(data?.balance[0] ?? 0n);
-  };
-
-  const userCap = BigInt(
-    Math.max(0, USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18])),
-  );
-  const showUserCapDisclaimer =
-    USER_WHITELIST_CAP_PER_WAVE - toNumber([amount, 18]) < 0;
-  const isDepositDisabled = showUserCapDisclaimer || amount === 0n;
+  const amount = [amountIn, tokenIn.decimals] as Dnum;
+  const userBalance = [balances?.[tokenIn.id] ?? 0n, tokenIn.decimals] as Dnum;
+  const isAmountInInputDisabled = isSwapLoading || isApprovalLoading;
+  const isApproveButtonDisabled =
+    isNilOrEmpty(selectedSwapRoute) ||
+    isSwapRoutesLoading ||
+    isApprovalLoading ||
+    isApprovalWaitingForSignature ||
+    amountIn > (balances?.[tokenIn.id] ?? 0n);
+  const showApprove =
+    isConnected &&
+    tokenIn.chainId === chainId &&
+    amountIn > 0n &&
+    !isBalancesLoading &&
+    (balances?.[tokenIn.id] ?? 0n) >= amountIn &&
+    !isNilOrEmpty(selectedSwapRoute) &&
+    (selectedSwapRoute?.allowanceAmount ?? 0n) < amountIn &&
+    (allowance ?? 0n) < amountIn;
+  const isDepositDisabled =
+    isSwapWaitingForSignature ||
+    isSwapLoading ||
+    isBalancesLoading ||
+    gt(amount, userBalance) ||
+    gt(amount, [allowance ?? 0n, tokenIn.decimals] as Dnum) ||
+    amount[0] === 0n;
+  const depositButtonLabel = gt(amount, userBalance)
+    ? intl.formatMessage({ defaultMessage: 'Insufficient funds' })
+    : intl.formatMessage({ defaultMessage: 'Deposit' });
 
   return (
     <CardContent {...props}>
@@ -69,6 +126,7 @@ export const DepositForm = (props: CardContentProps) => {
             alignItems: 'center',
             justifyContent: 'space-between',
             height: 36,
+            mb: 1.5,
           }}
         >
           <InfoTooltipLabel
@@ -79,31 +137,22 @@ export const DepositForm = (props: CardContentProps) => {
           >
             {intl.formatMessage({ defaultMessage: 'Amount to deposit' })}
           </InfoTooltipLabel>
-          <Button variant="link" onClick={handleMaxClick}>
-            <WalletFilled sx={{ fontSize: 20, mr: 1 }} />
-            <Typography
-              noWrap
-              sx={{
-                fontWeight: 'medium',
-              }}
-            >
-              {format(data?.balance ?? from(0), {
-                digits: getFormatPrecision(data?.balance ?? from(0)),
-                decimalsRounding: 'ROUND_DOWN',
-              })}
-            </Typography>
-          </Button>
         </Stack>
-        <BigIntInput
-          value={amount}
-          decimals={18}
-          onChange={handleAmountChange}
-          endAdornment={
-            <TokenButton token={assetToDeposit} onClick={() => setOpen(true)} />
-          }
+        <TokenInput
+          amount={amountIn}
+          decimals={tokenIn.decimals}
+          onAmountChange={handleAmountInChange}
+          balance={balances?.[tokenIn.id] ?? 0n}
+          isBalanceLoading={isBalancesLoading}
+          token={tokenIn}
+          onTokenClick={() => {
+            setOpen(true);
+          }}
+          tokenPriceUsd={prices?.[getTokenPriceKey(tokenIn)]}
+          isPriceLoading={isPriceLoading}
+          isAmountDisabled={isAmountInInputDisabled}
           sx={(theme) => ({
-            px: 2,
-            py: 1,
+            p: 2,
             mb: 3,
             borderRadius: 3,
             backgroundColor: 'background.highlight',
@@ -112,159 +161,52 @@ export const DepositForm = (props: CardContentProps) => {
             ...theme.typography.h6,
           })}
         />
-        <InfoTooltipLabel
-          tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'The total amount of ETH deposits for the current wave',
-          })}
-          sx={{
-            fontWeight: 'medium',
-            height: 36,
-          }}
-        >
-          {intl.formatMessage(
-            { defaultMessage: 'Wave {waveNumber} TVL cap progress' },
-            {
-              waveNumber: 1,
-            },
-          )}
-        </InfoTooltipLabel>
-        <Stack
-          spacing={1.5}
-          sx={{
-            border: '1px solid',
-            borderColor: 'divider',
-            p: 3,
-            borderRadius: 3,
-            mb: 3,
-          }}
-        >
-          <Stack
-            direction="row"
-            sx={{ alignItems: 'center', justifyContent: 'space-between' }}
+        <Collapse in={showApprove}>
+          <Button
+            variant="action"
+            fullWidth
+            onClick={handleApprove}
+            disabled={isApproveButtonDisabled}
+            sx={{ mb: 1.5 }}
           >
-            <Typography
-              variant="featured3"
-              sx={{ fontWeight: 'bold', color: 'primary.main' }}
-            >
-              {intl.formatNumber(0.75, { style: 'percent' })}
-            </Typography>
-            <Typography color="text.secondary">
-              {intl.formatMessage(
-                {
-                  defaultMessage:
-                    'Wave {waveNumber} cap remaining: {remaining} ETH',
-                },
-                {
-                  waveNumber: 1,
-                  remaining: intl.formatNumber(1432.5),
-                },
-              )}
-            </Typography>
-          </Stack>
-          <LinearProgress
-            variant="determinate"
-            value={75}
-            sx={{
-              borderRadius: 3,
-              height: 4,
-            }}
-          />
-          <Stack
-            direction="row"
-            sx={{
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              color: 'text.secondary',
-            }}
-          >
-            {[0, 25, 50, 75, 100].map((value) => (
-              <Typography key={value} variant="caption1">
-                {value}%
-              </Typography>
-            ))}
-          </Stack>
-        </Stack>
-        <InfoTooltipLabel
-          tooltipLabel={intl.formatMessage({
-            defaultMessage:
-              'The amount of ETH you can deposit for the current wave',
-          })}
-          sx={{
-            fontWeight: 'medium',
-            height: 36,
-          }}
-        >
-          {intl.formatMessage({ defaultMessage: 'Your whitelist cap' })}
-        </InfoTooltipLabel>
-        <BigIntInput
-          readOnly
-          value={userCap}
-          decimals={0}
-          endAdornment={<TokenButton token={tokens.mainnet.ETH} disabled />}
-          sx={(theme) => ({
-            px: 2,
-            py: 2,
-            mb: 3,
-            borderRadius: 3,
-            backgroundColor: 'background.highlight',
-            border: '1px solid',
-            borderColor: 'divider',
-            color: 'primary.main',
-            fontWeight: 'bold',
-            ...theme.typography.featured3,
-          })}
-        />
-        <Collapse in={showUserCapDisclaimer}>
-          <Stack
-            direction="row"
-            spacing={2}
-            sx={{
-              border: '1px solid',
-              borderColor: 'primary.main',
-              backgroundColor: 'primary.faded',
-              borderRadius: 3,
-              p: 3,
-              mb: 3,
-            }}
-          >
-            <FaCircleExclamationRegular
-              sx={{ fontSize: 20, color: 'primary.main' }}
-            />
-            <Stack>
-              <Typography
-                sx={{
-                  fontWeight: 'medium',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage: 'You have reached your whitelist cap',
-                })}
-              </Typography>
-              <Typography
-                sx={{
-                  color: 'text.secondary',
-                }}
-              >
-                {intl.formatMessage({
-                  defaultMessage:
-                    'Deposits will be disabled until further notice. Please check back later.',
-                })}
-              </Typography>
-            </Stack>
-          </Stack>
+            {isSwapRoutesLoading ? (
+              <CircularProgress size={32} color="inherit" />
+            ) : isApprovalWaitingForSignature ? (
+              intl.formatMessage({
+                defaultMessage: 'Waiting for signature',
+              })
+            ) : isApprovalLoading ? (
+              intl.formatMessage({ defaultMessage: 'Processing Approval' })
+            ) : (
+              intl.formatMessage({ defaultMessage: 'Approve' })
+            )}
+          </Button>
         </Collapse>
-        <Button variant="action" fullWidth disabled={isDepositDisabled}>
-          {intl.formatMessage({ defaultMessage: 'Deposit' })}
-        </Button>
+        <ConnectedButton
+          variant="action"
+          fullWidth
+          disabled={isDepositDisabled}
+          onClick={handleSwap}
+          targetChainId={tokenIn.chainId}
+        >
+          {isSwapRoutesLoading ? (
+            <CircularProgress size={32} color="inherit" />
+          ) : isSwapWaitingForSignature ? (
+            intl.formatMessage({ defaultMessage: 'Waiting for signature' })
+          ) : isSwapLoading ? (
+            intl.formatMessage({ defaultMessage: 'Processing Transaction' })
+          ) : (
+            depositButtonLabel
+          )}
+        </ConnectedButton>
       </Stack>
       <TokenSelectModal
         open={open}
         onClose={() => setOpen(false)}
-        selectedToken={assetToDeposit}
-        tokens={[tokens.mainnet.ETH, tokens.mainnet.WETH]}
+        selectedToken={tokenIn}
+        tokens={tokensIn}
         onSelectToken={(token) => {
-          setAssetToDeposit(token);
+          handleTokenChange('tokenIn', token);
           setOpen(false);
         }}
       />

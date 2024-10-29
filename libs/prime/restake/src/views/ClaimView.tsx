@@ -40,7 +40,7 @@ export const ClaimView = () => {
   const { address, isConnected } = useAccount();
   const { data: withdrawals, isLoading: iswithdrawalsLoading } =
     useUserWithdrawalsQuery(
-      { address: address ?? ZERO_ADDRESS },
+      { address: address?.toLowerCase() ?? ZERO_ADDRESS },
       {
         enabled: isConnected,
         select: (data) =>

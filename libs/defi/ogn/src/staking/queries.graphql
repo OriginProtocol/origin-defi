@@ -1,27 +1,31 @@
-query OgnUserInfo($address: String!) {
-  esAccounts(where: {
-    chainId_eq: 1
-    address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
-    account_containsInsensitive: $address
-  }) {
+query OgnUserInfo($address: String!, $limit: Int = 5000) {
+  esAccounts(
+    limit: $limit
+    where: {
+      chainId_eq: 1
+      address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
+      account_eq: $address
+    }
+  ) {
     id
     balance
     assetBalance
     stakedBalance
     votingPower
-    delegatesFrom {
+    delegatesFrom(limit: 1000) {
       account
     }
   }
 }
 
-query OgnLockups($address: String!) {
+query OgnLockups($address: String!, $limit: Int = 5000) {
   esLockups(
+    limit: $limit
     where: {
       chainId_eq: 1
-      address_containsInsensitive: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
-      account_containsInsensitive: $address
-      events_none: {event_eq: Unstaked}
+      address_eq: "0x63898b3b6ef3d39332082178656e9862bee45c57" # xOGN Address
+      account_eq: $address
+      events_none: { event_eq: Unstaked }
     }
     orderBy: end_ASC
   ) {

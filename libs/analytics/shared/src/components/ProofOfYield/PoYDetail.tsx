@@ -92,7 +92,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
 
   const { data: rebases, isLoading: isRebasesLoading } = useOTokenRebasesQuery(
     {
-      token: token.address ?? ZERO_ADDRESS,
+      token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
       chainId: token.chainId,
       from: morning.toISOString(),
       to: evening.toISOString(),
@@ -400,7 +400,7 @@ const Controls = ({ token }: ControlsProps) => {
   const params = useParams();
   const { data: ids, isLoading: isIdsLoading } = useOTokenStatsQuery(
     {
-      token: token.address ?? ZERO_ADDRESS,
+      token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
       chainId: token.chainId,
       from: config?.from,
       orderBy: [OTokenDailyStatOrderByInput.TimestampAsc],

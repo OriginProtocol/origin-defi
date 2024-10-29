@@ -83,7 +83,7 @@ export const Swapper = ({
   const [info, setInfo] = useState<Partial<WithdrawalRequestModalProps>>();
   const { data, refetch } = useWithdrawalRequestsQuery(
     {
-      address: address ?? ZERO_ADDRESS,
+      address: address?.toLowerCase() ?? ZERO_ADDRESS,
     },
     { enabled: false },
   );

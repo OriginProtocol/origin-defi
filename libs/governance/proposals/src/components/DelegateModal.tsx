@@ -183,7 +183,9 @@ export const DelegateModal = (props: DialogProps) => {
             });
             queryClient.invalidateQueries({
               queryKey: [
-                useUserInfoQuery.getKey({ address: address ?? ZERO_ADDRESS }),
+                useUserInfoQuery.getKey({
+                  address: address?.toLowerCase() ?? ZERO_ADDRESS,
+                }),
               ],
             });
           }}
