@@ -83,6 +83,7 @@ const fetcher: (
       ? (res[1].value?.oTokenWithdrawalRequests ?? [])
       : [];
     const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
+
     return requests.map((r) => {
       const claimable =
         !r.claimed &&

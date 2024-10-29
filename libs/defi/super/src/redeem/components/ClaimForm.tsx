@@ -59,12 +59,12 @@ export const ClaimForm = (props: StackProps) => {
   const args =
     selectedClaimIds.length === 1
       ? {
-          contract: contracts.mainnet.OETHVault,
+          contract: contracts.base.superOETHbVault,
           functionName: 'claimWithdrawal',
           args: [selectedClaimIds[0]],
         }
       : {
-          contract: contracts.mainnet.OETHVault,
+          contract: contracts.base.superOETHbVault,
           functionName: 'claimWithdrawals',
           args: [selectedClaimIds],
         };

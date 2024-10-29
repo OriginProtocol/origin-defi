@@ -13,6 +13,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useOTokenWithdrawalRequestsQuery } from '@origin/defi/shared';
+import { tokens } from '@origin/shared/contracts';
 import {
   FaCheckRegular,
   FaExclamationRegular,
@@ -60,13 +61,13 @@ export const WithdrawalRequestModal = ({
   const { address } = useAccount();
   const { status, startRefresh } = useRefresher<OTokenWithdrawalRequestsQuery>({
     queryKey: useOTokenWithdrawalRequestsQuery.getKey({
-      token: tokenIn?.address?.toLowerCase() ?? ZERO_ADDRESS,
-      chainId: tokenIn?.chainId ?? 1,
+      token: tokens.base.superOETHb.address.toLowerCase(),
+      chainId: tokens.base.superOETHb.chainId,
       withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
-      token: tokenIn?.address?.toLowerCase() ?? ZERO_ADDRESS,
-      chainId: tokenIn?.chainId ?? 1,
+      token: tokens.base.superOETHb.address.toLowerCase(),
+      chainId: tokens.base.superOETHb.chainId,
       withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     }),
     isResultProcessed: (prev, next) =>
