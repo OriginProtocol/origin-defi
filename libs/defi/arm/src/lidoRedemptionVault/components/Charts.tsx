@@ -44,7 +44,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit },
+    { limit, offset: 1 },
     {
       select: (data) => {
         return (
@@ -139,7 +139,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit },
+    { limit, offset: 1 },
     {
       select: (data) => {
         return (
