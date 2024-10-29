@@ -1,8 +1,8 @@
 import { HomeView } from '@origin/analytics/home';
 import * as oeth from '@origin/analytics/oeth';
-import * as ousd from '@origin/analytics/ousd';
 import {
   BalanceSheet,
+  Collaterals,
   Overview,
   PoYDetail,
   PoYList,
@@ -78,15 +78,15 @@ export const routes: RouteObject[] = [
               },
             ],
           },
-          // {
-          //   path: 'strategies',
-          //   element: <Strategies token={tokens.base.superOETHb} />,
-          //   handle: {
-          //     title: defineMessage({ defaultMessage: 'Strategies' }),
-          //     icon: FaChartPieRegular,
-          //     breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
-          //   },
-          // },
+          {
+            path: 'strategies',
+            element: <Strategies token={tokens.base.superOETHb} />,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Strategies' }),
+              icon: FaChartPieRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
+            },
+          },
           {
             path: 'balance-sheet',
             element: <BalanceSheet token={tokens.base.superOETHb} />,
@@ -95,6 +95,15 @@ export const routes: RouteObject[] = [
               icon: FaFileLinesRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
+          },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collateral' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
+            },
+            element: <Collaterals token={tokens.base.superOETHb} />,
           },
         ],
       },
@@ -154,6 +163,15 @@ export const routes: RouteObject[] = [
               icon: FaFileLinesRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Balance Sheet' }),
             },
+          },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collateral' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
+            },
+            element: <Collaterals token={tokens.mainnet.OETH} />,
           },
         ],
       },
@@ -221,7 +239,7 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            Component: ousd.OusdCollateralsView,
+            element: <Collaterals token={tokens.mainnet.OUSD} />,
           },
         ],
       },
