@@ -107,7 +107,6 @@ export const Collaterals = ({ token, currency }: CollateralsProps) => {
                 key={b.token.id}
                 balance={b}
                 total={totalCollaterals}
-                currency={currency}
                 sx={{ flexGrow: { xs: 1, md: 0 } }}
               />
             ))}
@@ -139,10 +138,9 @@ export const Collaterals = ({ token, currency }: CollateralsProps) => {
 type CollateralProps = {
   balance: StrategyBalanceMapped;
   total: Dnum;
-  currency?: 'ETH' | 'USD';
 } & CardProps;
 
-const Collateral = ({ balance, total, currency, ...rest }: CollateralProps) => {
+const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
   const intl = useIntl();
 
   const percentage = div(balance.amount, total);
@@ -160,7 +158,6 @@ const Collateral = ({ balance, total, currency, ...rest }: CollateralProps) => {
               </Typography>
             </Stack>
             <Typography variant="featured2">
-              {currency && <CurrencyLabel currency={currency} />}
               {intl.formatNumber(toNumber(balance.amount))}
             </Typography>
             <Typography variant="body2" color="text.secondary">
