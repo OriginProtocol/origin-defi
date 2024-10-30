@@ -24,6 +24,13 @@ export const OverviewView = () => {
       chainId: tokens.arbitrum.wOETH.chainId,
       functionName: 'totalSupply',
     });
+  const { data: baseTotalSupply, isLoading: isBaseTotalSupplyLoading } =
+    useReadContract({
+      address: tokens.base.wOETH.address,
+      abi: tokens.base.wOETH.abi,
+      chainId: tokens.base.wOETH.chainId,
+      functionName: 'totalSupply',
+    });
 
   return (
     <Overview token={tokens.mainnet.OETH} currency="ETH">
@@ -70,6 +77,24 @@ export const OverviewView = () => {
                       2,
                     )}
                     isLoading={isArbTotalSupplyLoading}
+                    currency="ETH"
+                  />
+                </CardContent>
+              </Card>
+              <Card sx={{ width: 1 }}>
+                <CardContent>
+                  <ValueLabel
+                    label={intl.formatMessage({
+                      defaultMessage: 'Base TVL',
+                    })}
+                    value={format(
+                      [
+                        BigInt(baseTotalSupply ?? 0n),
+                        tokens.base.wOETH.decimals,
+                      ],
+                      2,
+                    )}
+                    isLoading={isBaseTotalSupplyLoading}
                     currency="ETH"
                   />
                 </CardContent>

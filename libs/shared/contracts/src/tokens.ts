@@ -291,6 +291,15 @@ export const tokens = {
       decimals: 18,
       symbol: 'wsuperOETHb',
     },
+    wOETH: {
+      id: '8453:wOETH',
+      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
+      chainId: base.id,
+      abi: WOETHABI,
+      name: 'Wrapped OETH',
+      decimals: 18,
+      symbol: 'wOETH',
+    },
   },
   optimism: {
     ETH: {

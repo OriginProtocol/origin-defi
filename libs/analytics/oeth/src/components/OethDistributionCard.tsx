@@ -64,16 +64,6 @@ export const OethDistributionCard = ({
         alpha(theme.palette.chart2, 0.4),
       ],
     },
-
-    {
-      key: 'base',
-      label: intl.formatMessage({ defaultMessage: 'Base' }),
-      lineColor: [theme.palette.chart1, theme.palette.chart3],
-      fillColor: [
-        alpha(theme.palette.chart7, 0.4),
-        alpha(theme.palette.chart3, 0.4),
-      ],
-    },
   ] as YKey<TvlCombined>[];
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];

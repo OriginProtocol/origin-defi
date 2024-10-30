@@ -66,7 +66,19 @@ export const ValueLabel = ({
         label
       )}
       {['string', 'number'].includes(typeof value) ? (
-        <Typography {...valueProps}>
+        <Typography
+          {...valueProps}
+          sx={[
+            {
+              display: 'flex',
+              alignItems: 'baseline',
+              gap: 0.5,
+            },
+            ...(Array.isArray(valueProps?.sx)
+              ? valueProps.sx
+              : [valueProps?.sx]),
+          ]}
+        >
           <CurrencyLabel currency={currency} />
           {isLoading ? <Skeleton width={sWidth} /> : value}
         </Typography>

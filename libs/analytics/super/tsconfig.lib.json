@@ -9,7 +9,7 @@
       "@nx/react/typings/image.d.ts"
     ]
   },
-  "files": [ "../theme/src/theme.d.ts" ],
+  "files": ["../theme/src/theme.d.ts"],
   "exclude": [
     "jest.config.ts",
     "src/**/*.spec.ts",

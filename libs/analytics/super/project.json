@@ -1,7 +1,7 @@
 {
-  "name": "analytics-ousd",
+  "name": "analytics-super",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/analytics/ousd/src",
+  "sourceRoot": "libs/analytics/super/src",
   "projectType": "library",
   "tags": [],
   "targets": {

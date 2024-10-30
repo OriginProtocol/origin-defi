@@ -2,57 +2,66 @@ import { useMemo } from 'react';
 
 import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
 import {
-  collateralMapper,
-  strategyMapper,
-  useLayout,
-  useOTokenStrategiesQuery,
-} from '@origin/analytics/shared';
-import {
   CurrencyLabel,
   PieChart,
   Spinner,
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { add, compare, div, format, from, toNumber } from 'dnum';
+import { add, compare, div, format, from, gt, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 
+import { useOTokenStrategiesQuery } from '../../queries';
+import { collateralMapper, strategyMapper } from '../../utils';
+import { useLayout } from '../Layout';
+
 import type { CardProps } from '@mui/material';
-import type {
-  StrategyBalanceMapped,
-  StrategyMapped,
-} from '@origin/analytics/shared';
+import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
 
+import type { StrategyBalanceMapped, StrategyMapped } from '../../utils';
+
 const tokenColors = {
+  [tokens.mainnet.ETH.id]: '#8C8C8C',
+  [tokens.mainnet.WETH.id]: '#618ECE',
+  [tokens.mainnet.OETH.id]: '#0074F0',
   [tokens.mainnet.DAI.id]: '#F9B01E',
   [tokens.mainnet.USDC.id]: '#2775CA',
   [tokens.mainnet.USDT.id]: '#53AE94',
+  [tokens.base.WETH.id]: '#618ECE',
 };
 
-export const OusdCollateralsView = () => {
+export type CollateralsProps = { token: Token; currency?: 'ETH' | 'USD' };
+
+export const Collaterals = ({ token, currency }: CollateralsProps) => {
   const intl = useIntl();
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
   const { data, isLoading } = useOTokenStrategiesQuery({
-    token: tokens.mainnet.OUSD.address.toLowerCase(),
-    chainId: tokens.mainnet.OUSD.chainId,
+    token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
+    chainId: token.chainId,
   });
   const { collaterals, totalCollaterals, strategies } = useMemo(() => {
-    const collaterals = collateralMapper(data?.strategies, tokens.mainnet.OUSD);
+    const collaterals = collateralMapper(data?.strategies, token, {
+      showEmptyBalances: false,
+    })?.filter((c) => gt(c.amount, from(1, c.token.decimals)));
+
     const totalCollaterals = collaterals.reduce(
       (acc, curr) => add(acc, curr.amount),
       from(0, 18),
     );
-    const strategies = strategyMapper(data?.strategies, tokens.mainnet.OUSD);
+    const strategies = strategyMapper(data?.strategies, token, {
+      showEmptyBalances: false,
+    });
 
     return {
       collaterals,
       totalCollaterals,
       strategies,
     };
-  }, [data]);
+  }, [data?.strategies, token]);
 
   if (isLoading) {
     return <Spinner sx={{ width: 1, height: 300 }} />;
@@ -70,7 +79,7 @@ export const OusdCollateralsView = () => {
     );
   }
 
-  const collateralsData = collaterals.map((c, i) => ({
+  const collateralsData = collaterals.map((c) => ({
     label: c.token.symbol,
     value: toNumber(c.amount),
     color: tokenColors[c.token.id as keyof typeof tokenColors],
@@ -118,7 +127,7 @@ export const OusdCollateralsView = () => {
               lg: 4,
             }}
           >
-            <Strategy strategy={s} sx={{ width: 1 }} />
+            <Strategy strategy={s} currency={currency} sx={{ width: 1 }} />
           </Grid2>
         ))}
       </Grid2>
@@ -173,9 +182,10 @@ const Collateral = ({ balance, total, ...rest }: CollateralProps) => {
 
 type StrategyProps = {
   strategy: StrategyMapped;
+  currency?: 'ETH' | 'USD';
 } & CardProps;
 
-const Strategy = ({ strategy, ...rest }: StrategyProps) => {
+const Strategy = ({ strategy, currency, ...rest }: StrategyProps) => {
   const intl = useIntl();
 
   return (
@@ -194,7 +204,7 @@ const Strategy = ({ strategy, ...rest }: StrategyProps) => {
               {intl.formatMessage({ defaultMessage: 'Total Value:' })}
             </Typography>
             <Typography variant="body2">
-              <CurrencyLabel currency="USD" />
+              {currency && <CurrencyLabel currency={currency} />}
               {intl.formatNumber(toNumber(strategy.total), {
                 maximumFractionDigits: 2,
               })}
@@ -204,6 +214,7 @@ const Strategy = ({ strategy, ...rest }: StrategyProps) => {
             {intl.formatMessage({ defaultMessage: 'Asset Split:' })}
           </Typography>
           {strategy.balances
+            .filter((b) => gt(b.amount, from(1, b.token.decimals)))
             .toSorted((a, b) => compare(b.amount, a.amount))
             .map((balance) => (
               <Stack
