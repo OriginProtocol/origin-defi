@@ -5,11 +5,9 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
-import { addMinutes, isAfter } from 'date-fns';
+import { addSeconds, isAfter } from 'date-fns';
 import { useSearchParams } from 'react-router-dom';
 import { useAccount, useConfig } from 'wagmi';
-
-import { WITHDRAW_DELAY } from './constants';
 
 import type { HexAddress } from '@origin/shared/utils';
 import type {
@@ -53,10 +51,10 @@ const fetcher: (
   async ({ queryKey: [, address] }) => {
     const res = await Promise.allSettled([
       readContract(config, {
-        address: contracts.mainnet.OETHVault.address,
-        abi: contracts.mainnet.OETHVault.abi,
+        address: contracts.base.superOETHbVault.address,
+        abi: contracts.base.superOETHbVault.abi,
         functionName: 'withdrawalQueueMetadata',
-        chainId: contracts.mainnet.OETHVault.chainId,
+        chainId: contracts.base.superOETHbVault.chainId,
       }),
       queryClient.fetchQuery({
         queryKey: useOTokenWithdrawalRequestsQuery.getKey({
@@ -71,11 +69,17 @@ const fetcher: (
         }),
       }),
       readContract(config, {
-        address: tokens.mainnet.WETH.address,
-        abi: tokens.mainnet.WETH.abi,
+        address: tokens.base.WETH.address,
+        abi: tokens.base.WETH.abi,
         functionName: 'balanceOf',
-        chainId: tokens.mainnet.WETH.chainId,
-        args: [contracts.mainnet.OETHVault.address],
+        chainId: tokens.base.WETH.chainId,
+        args: [contracts.base.superOETHbVault.address],
+      }),
+      readContract(config, {
+        address: contracts.base.superOETHbVault.address,
+        abi: contracts.base.superOETHbVault.abi,
+        functionName: 'withdrawalClaimDelay',
+        chainId: contracts.base.superOETHbVault.chainId,
       }),
     ]);
     const queueData = isFulfilled(res[0]) ? res[0].value : null;
@@ -83,16 +87,14 @@ const fetcher: (
       ? (res[1].value?.oTokenWithdrawalRequests ?? [])
       : [];
     const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
+    const delay = isFulfilled(res[3]) ? res[3].value : 0;
 
     return requests.map((r) => {
       const claimable =
         !r.claimed &&
         wethBalance + BigInt(queueData?.[1] ?? 0) - BigInt(r?.queued ?? 0) >
           0n &&
-        isAfter(
-          new Date(),
-          addMinutes(new Date(r.timestamp), WITHDRAW_DELAY + 1),
-        );
+        isAfter(new Date(), addSeconds(new Date(r.timestamp), Number(delay)));
 
       return {
         ...r,
