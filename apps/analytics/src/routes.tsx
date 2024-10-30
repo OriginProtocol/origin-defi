@@ -5,12 +5,11 @@ import {
   Overview,
   PoYDetail,
   PoYList,
-  Strategies,
 } from '@origin/analytics/shared';
+import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
-  FaChartPieRegular,
   FaClockRegular,
   FaCoinsRegular,
   FaEyeRegular,
@@ -77,24 +76,13 @@ export const routes: RouteObject[] = [
             ],
           },
           {
-            path: 'strategies',
-            element: <Strategies token={tokens.base.superOETHb} />,
-            handle: {
-              title: defineMessage({ defaultMessage: 'Strategies' }),
-              icon: FaChartPieRegular,
-              breadcrumb: defineMessage({ defaultMessage: 'Strategies' }),
-            },
-          },
-          {
             path: 'collateral',
             handle: {
               title: defineMessage({ defaultMessage: 'Collateral' }),
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: (
-              <Collaterals token={tokens.base.superOETHb} currency="ETH" />
-            ),
+            Component: superOeth.CollateralsView,
           },
         ],
       },

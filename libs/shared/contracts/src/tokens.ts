@@ -293,7 +293,7 @@ export const tokens = {
     },
     wOETH: {
       id: '8453:wOETH',
-      address: '0x80c864704DD06C3693ed5179190786EE38ACf835',
+      address: '0xD8724322f44E5c58D7A815F542036fb17DbbF839',
       chainId: base.id,
       abi: WOETHABI,
       name: 'Wrapped OETH',
