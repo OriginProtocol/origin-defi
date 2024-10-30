@@ -10,12 +10,7 @@ import {
   useTheme,
 } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
-import {
-  CurrencyLabel,
-  PieChart,
-  Spinner,
-  TokenIcon,
-} from '@origin/shared/components';
+import { PieChart, Spinner, TokenIcon } from '@origin/shared/components';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { add, from, sub, toNumber } from 'dnum';
@@ -195,7 +190,6 @@ const CollateralCard = ({
               </Typography>
             </Stack>
             <Typography variant="featured2">
-              <CurrencyLabel currency="ETH" />
               {intl.formatNumber(value, { maximumFractionDigits: 2 })}
             </Typography>
             <Typography variant="body2" color="text.secondary">

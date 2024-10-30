@@ -6,7 +6,6 @@ import {
   PoYDetail,
   PoYList,
 } from '@origin/analytics/shared';
-import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
@@ -75,15 +74,6 @@ export const routes: RouteObject[] = [
               },
             ],
           },
-          {
-            path: 'collateral',
-            handle: {
-              title: defineMessage({ defaultMessage: 'Collateral' }),
-              icon: FaCoinsRegular,
-              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
-            },
-            Component: superOeth.CollateralsView,
-          },
         ],
       },
       {
@@ -124,15 +114,6 @@ export const routes: RouteObject[] = [
                 },
               },
             ],
-          },
-          {
-            path: 'collateral',
-            handle: {
-              title: defineMessage({ defaultMessage: 'Collateral' }),
-              icon: FaCoinsRegular,
-              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
-            },
-            element: <Collaterals token={tokens.mainnet.OETH} currency="ETH" />,
           },
         ],
       },
