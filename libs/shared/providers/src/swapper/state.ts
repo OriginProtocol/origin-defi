@@ -200,8 +200,8 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
               queryClient.fetchQuery({
                 queryKey: [
                   'estimateRoute',
-                  state.tokenIn.symbol,
-                  state.tokenOut.symbol,
+                  state.tokenIn.id,
+                  state.tokenOut.id,
                   route.action,
                   slippage,
                   state.amountIn.toString(),
@@ -238,7 +238,7 @@ export const { Provider: SwapProvider, useTracked: useSwapState } =
           const sortedRoutes = routes
             .filter(isFulfilled)
             .map((r) => r.value)
-            .sort((a, b) => {
+            .toSorted((a, b) => {
               const valA =
                 scale(a.estimatedAmount, a.tokenOut.decimals, 18) -
                 (a.gas +

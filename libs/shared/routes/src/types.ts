@@ -14,6 +14,7 @@ export type OethRoute =
 
 export type SuperOethbRoute =
   | 'mint-vault-oeth'
+  | 'redeem-vault-async-superOethb'
   | 'swap-aerodrome-superOethb'
   | 'swap-zapper-superOethb'
   | 'unwrap-oeth-woeth'

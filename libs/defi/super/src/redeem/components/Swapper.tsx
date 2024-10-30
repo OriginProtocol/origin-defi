@@ -84,8 +84,8 @@ export const Swapper = ({
   const [info, setInfo] = useState<Partial<WithdrawalRequestModalProps>>();
   const { data, refetch } = useOTokenWithdrawalRequestsQuery(
     {
-      token: tokens.mainnet.OETH.address.toLowerCase(),
-      chainId: tokens.mainnet.OETH.chainId,
+      token: tokens.base.superOETHb.address.toLowerCase(),
+      chainId: tokens.base.superOETHb.chainId,
       withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
     },
     { enabled: false },
@@ -296,6 +296,7 @@ function SwapperWrapped({
   });
   const { data: gasPrice, isLoading: isGasPriceLoading } = useGasPrice(
     selectedSwapRoute?.gas,
+    tokenIn.chainId,
   );
   const handleAmountInChange = useHandleAmountInChange();
   const handleApprove = useHandleApprove();
@@ -395,9 +396,12 @@ function SwapperWrapped({
             mb: 3,
           }}
         >
-          <RedeemActionCard action="redeem-arm-oeth" sx={{ width: 1 }} />
           <RedeemActionCard
-            action="redeem-vault-async-oeth"
+            action="redeem-vault-async-superOethb"
+            sx={{ width: 1 }}
+          />
+          <RedeemActionCard
+            action="swap-aerodrome-superOethb"
             sx={{ width: 1 }}
           />
         </Stack>
@@ -549,7 +553,7 @@ const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
     return `$0.00`;
   }
 
-  if (route.action !== 'redeem-vault-async-oeth') {
+  if (route.action !== 'redeem-vault-async-superOethb') {
     return `$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`;
   }
 

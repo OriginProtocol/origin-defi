@@ -60,13 +60,13 @@ const fetcher: (
       }),
       queryClient.fetchQuery({
         queryKey: useOTokenWithdrawalRequestsQuery.getKey({
-          token: tokens.mainnet.OETH.address.toLowerCase(),
-          chainId: tokens.mainnet.OETH.chainId,
+          token: tokens.base.superOETHb.address.toLowerCase(),
+          chainId: tokens.base.superOETHb.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
         queryFn: useOTokenWithdrawalRequestsQuery.fetcher({
-          token: tokens.mainnet.OETH.address.toLowerCase(),
-          chainId: tokens.mainnet.OETH.chainId,
+          token: tokens.base.superOETHb.address.toLowerCase(),
+          chainId: tokens.base.superOETHb.chainId,
           withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
         }),
       }),
@@ -83,6 +83,7 @@ const fetcher: (
       ? (res[1].value?.oTokenWithdrawalRequests ?? [])
       : [];
     const wethBalance = isFulfilled(res[2]) ? res[2].value : 0n;
+
     return requests.map((r) => {
       const claimable =
         !r.claimed &&

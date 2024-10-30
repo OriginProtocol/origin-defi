@@ -10,7 +10,7 @@ import { defineMessage } from 'react-intl';
 import type { SwapApi } from '@origin/shared/providers';
 import type { SuperOethbRoute } from '@origin/shared/routes';
 
-export const oethSwapActions: Record<SuperOethbRoute, SwapApi> = {
+export const oethSwapActions: Partial<Record<SuperOethbRoute, SwapApi>> = {
   'mint-vault-oeth': {
     ...mintVaultOeth,
     routeLabel: defineMessage({ defaultMessage: 'Mint with Vault' }),

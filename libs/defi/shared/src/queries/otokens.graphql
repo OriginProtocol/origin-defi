@@ -92,3 +92,35 @@ query oTokenStats(
     ...DailyStat
   }
 }
+
+query oTokenWithdrawalRequests(
+  $token: String!
+  $chainId: Int!
+  $withdrawer: String
+  $limit: Int = 5000
+  $orderBy: [OTokenWithdrawalRequestOrderByInput!] = [timestamp_DESC]
+  $from: DateTime
+  $offset: Int
+) {
+  oTokenWithdrawalRequests(
+    limit: $limit
+    offset: $offset
+    orderBy: $orderBy
+    where: {
+      otoken_eq: $token
+      chainId_eq: $chainId
+      timestamp_gte: $from
+      withdrawer_eq: $withdrawer
+    }
+  ) {
+    id
+    requestId
+    timestamp
+    amount
+    queued
+    claimed
+    blockNumber
+    requestId
+    txHash
+  }
+}

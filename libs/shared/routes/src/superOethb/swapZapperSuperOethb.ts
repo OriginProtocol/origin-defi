@@ -1,5 +1,4 @@
 import { contracts, tokens, whales } from '@origin/shared/contracts';
-import { simulateContractWithTxTracker } from '@origin/shared/providers';
 import {
   hasKey,
   includes,
@@ -17,7 +16,6 @@ import {
 import { erc20Abi, formatUnits, maxUint256 } from 'viem';
 import { base } from 'viem/chains';
 
-import { GAS_BUFFER } from '../constants';
 import { defaultRoute } from '../defaultRoute';
 
 import type {
@@ -200,7 +198,7 @@ const estimateApprovalGas: EstimateApprovalGas = async (
       account,
     });
   } catch {
-    approvalEstimate = 200000n;
+    approvalEstimate = 51_700n;
   }
 
   return approvalEstimate;
@@ -283,16 +281,6 @@ const swap: Swap = async (
     throw new Error(`Swap zapper is not approved`);
   }
 
-  const estimatedGas = await estimateGas(
-    { config, queryClient },
-    {
-      tokenIn,
-      tokenOut,
-      amountIn,
-      slippage,
-    },
-  );
-  const gas = estimatedGas + (estimatedGas * GAS_BUFFER) / 100n;
   const minAmountOut = subPercentage(
     [amountOut ?? 0n, tokenOut.decimals],
     slippage,
@@ -303,7 +291,7 @@ const swap: Swap = async (
     tokenIn.id === tokens.base.ETH.id &&
     tokenOut.id === tokens.base.superOETHb.id
   ) {
-    const { request } = await simulateContractWithTxTracker(config, {
+    const { request } = await simulateContract(config, {
       address: zappers[tokenIn.chainId].address,
       abi: zappers[tokenIn.chainId].abi,
       functionName: 'deposit',
@@ -318,7 +306,7 @@ const swap: Swap = async (
     tokenIn.id === tokens.base.ETH.id &&
     tokenOut.id === tokens.base.wsuperOETHb.id
   ) {
-    const { request } = await simulateContractWithTxTracker(config, {
+    const { request } = await simulateContract(config, {
       address: zappers[tokenIn.chainId].address,
       abi: zappers[tokenIn.chainId].abi,
       functionName: 'depositETHForWrappedTokens',
@@ -334,7 +322,7 @@ const swap: Swap = async (
     tokenIn.id === tokens.base.WETH.id &&
     tokenOut.id === tokens.base.wsuperOETHb.id
   ) {
-    const { request } = await simulateContractWithTxTracker(config, {
+    const { request } = await simulateContract(config, {
       address: zappers[tokenIn.chainId].address,
       abi: zappers[tokenIn.chainId].abi,
       functionName: 'depositWETHForWrappedTokens',

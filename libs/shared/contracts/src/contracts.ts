@@ -46,6 +46,7 @@ import { OUSDStrategyFluxABI } from './abis/OUSDStrategyFlux';
 import { OUSDStrategyMakerABI } from './abis/OUSDStrategyMaker';
 import { OUSDStrategyMetaMorphoABI } from './abis/OUSDStrategyMetaMorpho';
 import { PrimeETHZapperABI } from './abis/PrimeETHZapper';
+import { SuperOETHbABI } from './abis/SuperOETHbABI';
 import { SuperOETHbStrategyAeroABI } from './abis/SuperOETHbStrategyAero';
 import { SuperOETHbStrategyBridgeABI } from './abis/SuperOETHbStrategyBridge';
 import { superOETHbZapperABI } from './abis/superOETHbZapper';
@@ -424,7 +425,7 @@ export const contracts = {
     superOETHbVault: {
       address: '0x98a0CbeF61bD2D21435f433bE4CD42B56B38CC93',
       chainId: base.id,
-      abi: OETHVaultABI,
+      abi: SuperOETHbABI,
       name: 'superOETHbVault',
     },
     superOETHbDripper: {

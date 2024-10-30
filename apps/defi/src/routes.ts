@@ -53,6 +53,14 @@ export const routes: RouteObject[] = [
             },
           },
           {
+            path: 'redeem',
+            Component: superOeth.RedeemView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Redeem' }),
+              icon: FaArrowDownFromArcRegular,
+            },
+          },
+          {
             path: 'history',
             Component: superOeth.PortfolioView,
             handle: {
