@@ -269,12 +269,6 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const series = [
     {
-      key: 'redeemingSteth',
-      label: 'Redeeming stETH',
-      lineColor: theme.palette.chart1,
-      fillColor: alpha(theme.palette.chart1, 0.6),
-    },
-    {
       key: 'weth',
       label: 'WETH',
       lineColor: theme.palette.chart4,
@@ -285,6 +279,12 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
       label: 'stETH',
       lineColor: theme.palette.chart5,
       fillColor: alpha(theme.palette.chart5, 0.6),
+    },
+    {
+      key: 'redeemingSteth',
+      label: 'Redeeming stETH',
+      lineColor: theme.palette.chart1,
+      fillColor: alpha(theme.palette.chart1, 0.6),
     },
   ] as YKey<{
     timestamp: number;
