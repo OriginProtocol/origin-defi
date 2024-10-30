@@ -6,8 +6,6 @@ import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useReadContract } from 'wagmi';
 
-import { OethDistributionCard } from '../components/OethDistributionCard';
-
 export const OverviewView = () => {
   const intl = useIntl();
   const { data: mainnetTotalSupply, isLoading: isMainnetTotalSupplyLoading } =
@@ -100,7 +98,7 @@ export const OverviewView = () => {
                 </CardContent>
               </Card>
             </Stack>
-            <OethDistributionCard height={300} />
+            {/* <OethDistributionCard height={300} /> */}
           </Stack>
         </Stack>
       </Grid2>

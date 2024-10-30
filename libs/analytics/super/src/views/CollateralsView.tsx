@@ -66,7 +66,6 @@ export const CollateralsView = () => {
       : from(0);
 
   const width = measures?.width ?? 0;
-  const height = measures?.height ?? 0;
   const unallocatedBalance = sub(totalValue, add(balanceAero, balanceBridge));
   const pieData = [
     {
