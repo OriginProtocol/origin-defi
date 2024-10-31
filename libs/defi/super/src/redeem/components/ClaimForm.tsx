@@ -274,7 +274,7 @@ const ClaimRow = ({
         <Button
           variant="outlined"
           color="secondary"
-          href={`https://etherscan.io/tx/${request.txHash}`}
+          href={`https://basescan.org/tx/${request.txHash}`}
           target="_blank"
           rel="noopener noreferrer nofollow"
         >
