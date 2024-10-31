@@ -1,5 +1,4 @@
 import { HomeView } from '@origin/analytics/home';
-import * as oeth from '@origin/analytics/oeth';
 import {
   Collaterals,
   Overview,
@@ -87,7 +86,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             index: true,
-            Component: oeth.OverviewView,
+            element: <Overview token={tokens.mainnet.OETH} currency="ETH" />,
             handle: {
               title: defineMessage({ defaultMessage: 'Overview' }),
               icon: FaEyeRegular,
