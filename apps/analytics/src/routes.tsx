@@ -72,16 +72,16 @@ export const routes: RouteObject[] = [
                   }),
                 },
               },
-              {
-                path: 'collateral',
-                handle: {
-                  title: defineMessage({ defaultMessage: 'Collateral' }),
-                  icon: FaCoinsRegular,
-                  breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
-                },
-                Component: superOeth.CollateralsView,
-              },
             ],
+          },
+          {
+            path: 'collateral',
+            handle: {
+              title: defineMessage({ defaultMessage: 'Collateral' }),
+              icon: FaCoinsRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
+            },
+            Component: superOeth.CollateralsView,
           },
         ],
       },
