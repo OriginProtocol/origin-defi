@@ -7,7 +7,6 @@ import {
   Grid2,
   Stack,
   Typography,
-  useTheme,
 } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
 import {
@@ -16,95 +15,21 @@ import {
   Spinner,
   TokenIcon,
 } from '@origin/shared/components';
-import { contracts, tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { add, from, sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
-import { useReadContracts } from 'wagmi';
+
+import { useSuperCollaterals } from '../hooks';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';
-import type { Dnum } from 'dnum';
 
 export const CollateralsView = () => {
   const intl = useIntl();
-  const theme = useTheme();
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
-
-  const { data, isLoading } = useReadContracts({
-    contracts: [
-      {
-        address: contracts.base.superOETHbVault.address,
-        abi: contracts.base.superOETHbVault.abi,
-        chainId: contracts.base.superOETHbVault.chainId,
-        functionName: 'totalValue',
-      },
-      {
-        address: contracts.base.superOETHbStrategyBridge.address,
-        abi: contracts.base.superOETHbStrategyBridge.abi,
-        chainId: contracts.base.superOETHbStrategyBridge.chainId,
-        functionName: 'checkBalance',
-        args: [tokens.base.WETH.address],
-      },
-      {
-        address: contracts.base.superOETHbStrategyAero.address,
-        abi: contracts.base.superOETHbStrategyAero.abi,
-        chainId: contracts.base.superOETHbStrategyAero.chainId,
-        functionName: 'checkBalance',
-        args: [tokens.base.WETH.address],
-      },
-    ],
-  });
-
-  const totalValue =
-    data?.[0]?.status === 'success'
-      ? ([data[0].result, tokens.base.WETH.decimals] as Dnum)
-      : from(0);
-  const balanceBridge =
-    data?.[1]?.status === 'success'
-      ? ([data[1].result, tokens.base.WETH.decimals] as Dnum)
-      : from(0);
-  const balanceAero =
-    data?.[2]?.status === 'success'
-      ? ([data[2].result, tokens.base.WETH.decimals] as Dnum)
-      : from(0);
+  const { data, isLoading } = useSuperCollaterals();
 
   const width = measures?.width ?? 0;
-  const height = measures?.height ?? 0;
-  const unallocatedBalance = sub(totalValue, add(balanceAero, balanceBridge));
-  const pieData = [
-    {
-      label: intl.formatMessage({
-        defaultMessage: 'Liquid Staking',
-      }),
-      value: toNumber(balanceBridge),
-      color: theme.palette.primary.main,
-      token: tokens.mainnet.wOETH,
-      total: toNumber(totalValue),
-      href: '',
-    },
-    {
-      label: intl.formatMessage({
-        defaultMessage: 'Aerodrome AMO',
-      }),
-      value: toNumber(balanceAero),
-      color: theme.palette.chart3,
-      token: tokens.mainnet.ETH,
-      total: toNumber(totalValue),
-      href: '',
-    },
-    {
-      label: intl.formatMessage({
-        defaultMessage: 'Unallocated',
-      }),
-      value: toNumber(unallocatedBalance),
-      color: theme.palette.chart6,
-      token: tokens.mainnet.ETH,
-      total: toNumber(totalValue),
-      href: '',
-    },
-  ];
 
   return (
     <Stack>
@@ -127,9 +52,15 @@ export const CollateralsView = () => {
               >
                 {isLoading ? (
                   <Spinner />
+                ) : !data ? (
+                  <Typography>
+                    {intl.formatMessage({
+                      defaultMessage: 'No available data',
+                    })}
+                  </Typography>
                 ) : (
                   <PieChart
-                    data={pieData}
+                    data={data}
                     width={width}
                     height={width}
                     hideLabels
@@ -137,7 +68,7 @@ export const CollateralsView = () => {
                 )}
               </Stack>
             </Grid2>
-            {pieData.map((d) => (
+            {data?.map((d) => (
               <Grid2
                 key={d.label}
                 size={{ xs: 12, sm: 6, md: isDrawerOpen ? 6 : 3, lg: 3 }}
