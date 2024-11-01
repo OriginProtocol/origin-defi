@@ -95,6 +95,9 @@
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
+  "1ZtOLr": {
+    "defaultMessage": "1:1 WETH redemptions via the Super OETH vault"
+  },
   "1bVNb4": {
     "defaultMessage": "{score} {symbol}"
   },
@@ -109,6 +112,9 @@
   },
   "1uz/I3": {
     "defaultMessage": "1M"
+  },
+  "1xDZvL": {
+    "defaultMessage": "Vault Assets"
   },
   "20KPDF": {
     "defaultMessage": "Registered Voters"
@@ -178,9 +184,6 @@
   },
   "56jhQz": {
     "defaultMessage": "New Snapshot Proposal"
-  },
-  "5KdaFB": {
-    "defaultMessage": "Discounted stETH ownership"
   },
   "5RMD2G": {
     "defaultMessage": "Your transaction will revert if the price changes unfavorably by more than this percentage."
@@ -290,6 +293,9 @@
   "9W24c9": {
     "defaultMessage": "wOETH Balance"
   },
+  "9eLCqd": {
+    "defaultMessage": "stETH Redemptions"
+  },
   "9ghOJK": {
     "defaultMessage": "Unhandled Error!"
   },
@@ -349,9 +355,6 @@
   },
   "BNFT1w": {
     "defaultMessage": "Global stats"
-  },
-  "BQuFrc": {
-    "defaultMessage": "{duration} minutes"
   },
   "BY343C": {
     "defaultMessage": "Change"
@@ -464,6 +467,9 @@
   "GAjAVk": {
     "defaultMessage": "About this vault"
   },
+  "GMgiw/": {
+    "defaultMessage": "There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons."
+  },
   "GZJpDf": {
     "defaultMessage": "Analytics"
   },
@@ -538,6 +544,9 @@
   },
   "JNuVd0": {
     "defaultMessage": "No votes"
+  },
+  "JQ3jaP": {
+    "defaultMessage": "{trailing} trailing APY"
   },
   "JX703+": {
     "defaultMessage": "Your voting history"
@@ -923,6 +932,9 @@
   "ZSn0uO": {
     "defaultMessage": "migrate OGV to OGN/xOGN"
   },
+  "ZX00gk": {
+    "defaultMessage": "This APY will be displayed over an increasing period of time, up to 30 days, as that data is collected."
+  },
   "Zl7l7P": {
     "defaultMessage": "{count} {symbol}"
   },
@@ -955,6 +967,9 @@
   },
   "b1zuN9": {
     "defaultMessage": "Price"
+  },
+  "bB3w25": {
+    "defaultMessage": "Swap via Aerodrome"
   },
   "bKZdsq": {
     "defaultMessage": "3m"
@@ -1037,6 +1052,9 @@
   "eHOGMW": {
     "defaultMessage": "Send wOETH between Ethereum Mainnet and Arbitrum using Chainlink CCIP."
   },
+  "eHguE+": {
+    "defaultMessage": "The amount of Vault-owned assets currently held in WETH, stETH, or Lido's stETH redemption queue."
+  },
   "eJNRiB": {
     "defaultMessage": "Est. bridge fee"
   },
@@ -1045,6 +1063,9 @@
   },
   "eerX6M": {
     "defaultMessage": "Swap via CurvePool"
+  },
+  "egoEtz": {
+    "defaultMessage": "instant"
   },
   "enDzGl": {
     "defaultMessage": "30-Day"
@@ -1168,6 +1189,9 @@
   },
   "jvnqxK": {
     "defaultMessage": "Bridging"
+  },
+  "jxuJxq": {
+    "defaultMessage": "Redeem via Origin Vault"
   },
   "k0U99R": {
     "defaultMessage": "Better yield. Everywhere."
@@ -1358,9 +1382,6 @@
   "tFriEi": {
     "defaultMessage": "Transaction error"
   },
-  "tIPQsm": {
-    "defaultMessage": "WETH liquidity available for withdrawals depends on how much WETH vs. stETH the vault owns. Most often, depositors can withdraw their ETH from the vault instantly. In some cases, they may need to wait for stETH to complete the withdrawal cycle."
-  },
   "tOS305": {
     "defaultMessage": "Detailed analytics on Origin products"
   },
@@ -1523,9 +1544,6 @@
   "zGckFA": {
     "defaultMessage": "Yield earned"
   },
-  "zIL25h": {
-    "defaultMessage": "{trailing}-day trailing APY"
-  },
   "zQvVDJ": {
     "defaultMessage": "All"
   },
@@ -1537,9 +1555,6 @@
   },
   "zdF6np": {
     "defaultMessage": "wOETH Transactions"
-  },
-  "zf/oYS": {
-    "defaultMessage": "ETH Vaults"
   },
   "zmWQIG": {
     "defaultMessage": "Waiting for signature"
