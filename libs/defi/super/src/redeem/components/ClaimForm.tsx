@@ -165,7 +165,7 @@ export const ClaimForm = (props: StackProps) => {
           label={intl.formatMessage({
             defaultMessage: 'Approximate gas cost:',
           })}
-          value={`$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`}
+          value={`$${format(gasPrice?.gasCostUsd ?? from(0), { digits: 3, decimalsRounding: 'ROUND_UP' })}`}
           isLoading={isWriteGasLoading}
           direction="row"
           sx={{ justifyContent: 'space-between', mb: 3 }}
