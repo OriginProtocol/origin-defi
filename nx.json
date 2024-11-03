@@ -63,5 +63,6 @@
         "strict": true
       }
     }
-  }
+  },
+  "useLegacyCache": true
 }
