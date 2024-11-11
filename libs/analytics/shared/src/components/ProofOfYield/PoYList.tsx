@@ -12,7 +12,11 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
-import { Spinner, TablePagination } from '@origin/shared/components';
+import {
+  InfoTooltipLabel,
+  Spinner,
+  TablePagination,
+} from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import {
@@ -81,11 +85,26 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
       }),
       columnHelper.accessor('apy', {
         cell: (info) =>
-          intl.formatNumber(info.getValue(), {
-            style: 'percent',
-            maximumFractionDigits: 2,
-            minimumFractionDigits: 2,
-          }),
+          info.row.index === 0 ? (
+            <InfoTooltipLabel
+              tooltipLabel={intl.formatMessage({
+                defaultMessage:
+                  'The daily APY of the current day is usually lower because yield can be dripped multiple times per day',
+              })}
+            >
+              {intl.formatNumber(info.getValue(), {
+                style: 'percent',
+                maximumFractionDigits: 2,
+                minimumFractionDigits: 2,
+              })}
+            </InfoTooltipLabel>
+          ) : (
+            intl.formatNumber(info.getValue(), {
+              style: 'percent',
+              maximumFractionDigits: 2,
+              minimumFractionDigits: 2,
+            })
+          ),
         header: intl.formatMessage({ defaultMessage: 'Daily APY' }),
         size: 200,
       }),

@@ -59,6 +59,7 @@ export const TotalSupplyCard = ({
     token,
     limit,
     from: from ?? config?.from,
+    offset: 1,
   });
 
   const series = [

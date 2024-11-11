@@ -23,14 +23,6 @@ type Key = [
   number | undefined,
 ];
 
-const getKey = (
-  token: Token,
-  limit?: number,
-  from?: string,
-  orderBy?: OTokenDailyStatOrderByInput[],
-  offset?: number,
-): Key => ['useTokenChartStats', token, limit, from, orderBy, offset];
-
 export type ChartResult = {
   id: string;
   timestamp: number;
@@ -56,6 +48,14 @@ export type ChartResult = {
   rateUSD: number;
 };
 
+const getKey = (
+  token: Token,
+  limit?: number,
+  from?: string,
+  orderBy?: OTokenDailyStatOrderByInput[],
+  offset?: number,
+): Key => ['useTokenChartStats', token, limit, from, orderBy, offset];
+
 const fetcher: (
   queryClient: QueryClient,
 ) => QueryFunction<ChartResult[], Key> =
@@ -76,6 +76,7 @@ const fetcher: (
         from,
         limit,
         orderBy,
+        offset,
       }),
     });
 
@@ -99,11 +100,13 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
     limit,
     from,
     orderBy,
+    offset,
   }: {
     token: Token;
     limit?: number;
     from?: string;
     orderBy?: OTokenDailyStatOrderByInput[];
+    offset?: number;
   },
   options?: Omit<
     UseQueryOptions<ChartResult[], Error, TResult, Key>,
@@ -114,7 +117,7 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
 
   return useQuery({
     ...options,
-    queryKey: getKey(token, limit, from, orderBy),
+    queryKey: getKey(token, limit, from, orderBy, offset),
     queryFn: fetcher(queryClient),
   });
 };

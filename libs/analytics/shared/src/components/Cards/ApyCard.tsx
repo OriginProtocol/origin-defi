@@ -54,6 +54,7 @@ export const ApyCard = ({ token, height, from, ...rest }: ApyCardProps) => {
     token,
     limit,
     from: from ?? config?.from,
+    offset: 1,
   });
 
   const width = measures?.width ?? 0;

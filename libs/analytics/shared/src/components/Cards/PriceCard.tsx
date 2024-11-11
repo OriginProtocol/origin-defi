@@ -54,6 +54,7 @@ export const PriceCard = ({
     token,
     limit,
     from: from ?? config?.from,
+    offset: 1,
   });
 
   const width = measures?.width ?? 0;

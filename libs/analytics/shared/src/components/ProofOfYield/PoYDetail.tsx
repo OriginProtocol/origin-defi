@@ -24,7 +24,11 @@ import {
   ValueLabel,
 } from '@origin/shared/components';
 import { supportedChains } from '@origin/shared/constants';
-import { FaArrowLeftRegular, FaArrowRightRegular } from '@origin/shared/icons';
+import {
+  FaArrowLeftRegular,
+  FaArrowRightRegular,
+  FaCircleExclamationRegular,
+} from '@origin/shared/icons';
 import { middleTruncate, ZERO_ADDRESS } from '@origin/shared/utils';
 import { keepPreviousData } from '@tanstack/react-query';
 import {
@@ -34,6 +38,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
+import { isToday } from 'date-fns';
 import { millisecondsInHour } from 'date-fns/constants';
 import { formatInTimeZone } from 'date-fns-tz';
 import { sub, toNumber } from 'dnum';
@@ -89,6 +94,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
   morning.setUTCHours(0, 0, 0, 0);
   const evening = new Date(dailyStat?.timestamp ?? 0);
   evening.setUTCHours(23, 59, 59, 999);
+  const isCurrentDay = isToday(morning);
 
   const { data: rebases, isLoading: isRebasesLoading } = useOTokenRebasesQuery(
     {
@@ -183,7 +189,10 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
         <Grid2 size={12}>
           <Card>
             <CardContent>
-              <Controls token={token} />
+              <Stack direction="row" spacing={3} sx={{ alignItems: 'center' }}>
+                <Controls token={token} />
+                {isCurrentDay && <CurrentDayDisclaimer />}
+              </Stack>
             </CardContent>
           </Card>
         </Grid2>
@@ -595,6 +604,23 @@ const BonusCard = ({
         />
       </Stack>
     </Card>
+  );
+};
+
+const CurrentDayDisclaimer = () => {
+  const intl = useIntl();
+
+  return (
+    <Stack direction="row" spacing={1} sx={{ alignItems: 'center ' }}>
+      <FaCircleExclamationRegular
+        sx={{ color: 'warning.main', fontSize: 24 }}
+      />
+      <Typography variant="caption1" color="text.secondary">
+        {intl.formatMessage({
+          defaultMessage: `The daily APY of the current day is usually lower because yield can be dripped multiple times per day`,
+        })}
+      </Typography>
+    </Stack>
   );
 };
 

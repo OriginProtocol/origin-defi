@@ -54,11 +54,11 @@ export const ProtocolRevenueCard = ({
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from },
+    { token, limit, from: from ?? config?.from, offset: 1 },
     { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.feesETH })) },
   );
   const { data: feesAvgData, isLoading: isFeesAvgLoading } = useTokenChartStats(
-    { token, limit, from },
+    { token, limit, offset: 1 },
     {
       select: (data) =>
         takeLast(
