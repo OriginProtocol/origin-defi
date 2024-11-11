@@ -23,6 +23,12 @@
       "value": "Amount"
     }
   ],
+  "/0u98f": [
+    {
+      "type": 0,
+      "value": "No available data"
+    }
+  ],
   "/kI0V9": [
     {
       "type": 0,
@@ -281,6 +287,12 @@
       "value": "Redeeming"
     }
   ],
+  "DqeIg/": [
+    {
+      "type": 0,
+      "value": "Unallocated"
+    }
+  ],
   "Dqw2mE": [
     {
       "type": 0,
@@ -315,12 +327,6 @@
     {
       "type": 0,
       "value": "Curve is a stableswap AMM that offers efficient trading of stablecoins and volatile assets. The AMO strategy on Curve automates liquidity management and maximizes rewards by balancing assets in the pool. It deploys additional OETH or ETH to maintain the peg and doubles liquidity to increase earnings. Convex enhances this by boosting rewards from Curve pools. The LP tokens are staked on Convex to earn higher CRV and CVX rewards, which are then converted to OETH and distributed to holders, increasing their balances automatically through rebasing."
-    }
-  ],
-  "FtUhr6": [
-    {
-      "type": 0,
-      "value": "Arbitrum TVL"
     }
   ],
   "H/l7i6": [
@@ -647,12 +653,6 @@
       "value": "OUSD"
     }
   ],
-  "Vn4j7i": [
-    {
-      "type": 0,
-      "value": "Base"
-    }
-  ],
   "W87PYU": [
     {
       "type": 0,
@@ -741,6 +741,12 @@
       "value": "Connect Wallet"
     }
   ],
+  "czeyhe": [
+    {
+      "type": 0,
+      "value": "Liquid Staking"
+    }
+  ],
   "d1uESJ": [
     {
       "type": 0,
@@ -773,12 +779,6 @@
     {
       "type": 0,
       "value": "is not supported"
-    }
-  ],
-  "eEOtmw": [
-    {
-      "type": 0,
-      "value": "Strategies"
     }
   ],
   "enDzGl": [
@@ -1117,12 +1117,6 @@
       "value": "Total Liabilities"
     }
   ],
-  "uRHQPy": [
-    {
-      "type": 0,
-      "value": "Ethereum TVL"
-    }
-  ],
   "v1Vi1d": [
     {
       "type": 0,
@@ -1187,6 +1181,12 @@
     {
       "type": 0,
       "value": "Circulating supply / yield-earning supply"
+    }
+  ],
+  "zEuvjU": [
+    {
+      "type": 0,
+      "value": "Aerodrome AMO"
     }
   ],
   "zQvVDJ": [

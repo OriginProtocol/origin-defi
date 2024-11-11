@@ -211,6 +211,12 @@
       "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
     }
   ],
+  "1ZtOLr": [
+    {
+      "type": 0,
+      "value": "1:1 WETH redemptions via the Super OETH vault"
+    }
+  ],
   "1bVNb4": [
     {
       "type": 1,
@@ -247,6 +253,12 @@
     {
       "type": 0,
       "value": "1M"
+    }
+  ],
+  "1xDZvL": [
+    {
+      "type": 0,
+      "value": "Vault Assets"
     }
   ],
   "20KPDF": [
@@ -477,12 +489,6 @@
       "value": "New Snapshot Proposal"
     }
   ],
-  "5KdaFB": [
-    {
-      "type": 0,
-      "value": "Discounted stETH ownership"
-    }
-  ],
   "5RMD2G": [
     {
       "type": 0,
@@ -699,6 +705,12 @@
       "value": "wOETH Balance"
     }
   ],
+  "9eLCqd": [
+    {
+      "type": 0,
+      "value": "stETH Redemptions"
+    }
+  ],
   "9ghOJK": [
     {
       "type": 0,
@@ -853,16 +865,6 @@
     {
       "type": 0,
       "value": "Global stats"
-    }
-  ],
-  "BQuFrc": [
-    {
-      "type": 1,
-      "value": "duration"
-    },
-    {
-      "type": 0,
-      "value": " minutes"
     }
   ],
   "BY343C": [
@@ -1095,6 +1097,12 @@
       "value": "About this vault"
     }
   ],
+  "GMgiw/": [
+    {
+      "type": 0,
+      "value": "There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons."
+    }
+  ],
   "GZJpDf": [
     {
       "type": 0,
@@ -1267,6 +1275,16 @@
     {
       "type": 0,
       "value": "No votes"
+    }
+  ],
+  "JQ3jaP": [
+    {
+      "type": 1,
+      "value": "trailing"
+    },
+    {
+      "type": 0,
+      "value": " trailing APY"
     }
   ],
   "JX703+": [
@@ -2297,6 +2315,12 @@
       "value": "migrate OGV to OGN/xOGN"
     }
   ],
+  "ZX00gk": [
+    {
+      "type": 0,
+      "value": "This APY will be displayed over an increasing period of time, up to 30 days, as that data is collected."
+    }
+  ],
   "Zl7l7P": [
     {
       "type": 1,
@@ -2381,6 +2405,12 @@
     {
       "type": 0,
       "value": "Price"
+    }
+  ],
+  "bB3w25": [
+    {
+      "type": 0,
+      "value": "Swap via Aerodrome"
     }
   ],
   "bKZdsq": [
@@ -2603,6 +2633,12 @@
       "value": "Send wOETH between Ethereum Mainnet and Arbitrum using Chainlink CCIP."
     }
   ],
+  "eHguE+": [
+    {
+      "type": 0,
+      "value": "The amount of Vault-owned assets currently held in WETH, stETH, or Lido's stETH redemption queue."
+    }
+  ],
   "eJNRiB": [
     {
       "type": 0,
@@ -2619,6 +2655,12 @@
     {
       "type": 0,
       "value": "Swap via CurvePool"
+    }
+  ],
+  "egoEtz": [
+    {
+      "type": 0,
+      "value": "instant"
     }
   ],
   "enDzGl": [
@@ -2901,6 +2943,12 @@
     {
       "type": 0,
       "value": "Bridging"
+    }
+  ],
+  "jxuJxq": [
+    {
+      "type": 0,
+      "value": "Redeem via Origin Vault"
     }
   ],
   "k0U99R": [
@@ -3351,12 +3399,6 @@
       "value": "Transaction error"
     }
   ],
-  "tIPQsm": [
-    {
-      "type": 0,
-      "value": "WETH liquidity available for withdrawals depends on how much WETH vs. stETH the vault owns. Most often, depositors can withdraw their ETH from the vault instantly. In some cases, they may need to wait for stETH to complete the withdrawal cycle."
-    }
-  ],
   "tOS305": [
     {
       "type": 0,
@@ -3797,16 +3839,6 @@
       "value": "Yield earned"
     }
   ],
-  "zIL25h": [
-    {
-      "type": 1,
-      "value": "trailing"
-    },
-    {
-      "type": 0,
-      "value": "-day trailing APY"
-    }
-  ],
   "zQvVDJ": [
     {
       "type": 0,
@@ -3837,12 +3869,6 @@
     {
       "type": 0,
       "value": "wOETH Transactions"
-    }
-  ],
-  "zf/oYS": [
-    {
-      "type": 0,
-      "value": "ETH Vaults"
     }
   ],
   "zmWQIG": [

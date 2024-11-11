@@ -554,10 +554,9 @@ const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
   }
 
   if (route.action !== 'redeem-vault-async-superOethb') {
-    return `$${format(gasPrice?.gasCostUsd ?? from(0), 2)}`;
+    return `$${format(gasPrice?.gasCostUsd ?? from(0), { digits: 3, decimalsRounding: 'ROUND_UP' })}`;
   }
 
-  const req = mul(gasPrice.gasCostUsd, 0.6);
   const claim = mul(gasPrice.gasCostUsd, 0.4);
 
   return (
@@ -568,7 +567,14 @@ const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
         alignItems: 'center',
       }}
     >
-      <Typography>${format(req, 2)}&nbsp;</Typography>
+      <Typography>
+        $
+        {format(gasPrice.gasCostUsd, {
+          digits: 3,
+          decimalsRounding: 'ROUND_UP',
+        })}
+        &nbsp;
+      </Typography>
       <InfoTooltipLabel
         sx={{ fontWeight: 'medium' }}
         tooltipLabel={intl.formatMessage({
@@ -578,7 +584,7 @@ const GasPriceLabel = ({ route, gasPrice }: GasPriceLabelProps) => {
         labelProps={{ sx: { color: 'warning.dark' } }}
         infoTooltipProps={{ iconColor: 'warning.dark' }}
       >
-        {`+ $${format(claim, 2)}`}
+        {`+ $${format(claim, { digits: 3, decimalsRounding: 'ROUND_UP' })}`}
       </InfoTooltipLabel>
     </Stack>
   );
