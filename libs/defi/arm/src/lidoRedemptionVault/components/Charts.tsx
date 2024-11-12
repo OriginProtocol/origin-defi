@@ -21,8 +21,11 @@ import {
   LineChart,
   LoadingLabel,
   Spinner,
+  TrailingControls,
+  trailingToDays,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { movingAverage } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone } from 'date-fns-tz';
 import { toNumber } from 'dnum';
@@ -30,7 +33,7 @@ import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
-import type { YKey } from '@origin/shared/components';
+import type { Trailing, YKey } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 
 export type ApyChartProps = {
@@ -41,20 +44,27 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(30);
+  const [trailing, setTrailing] = useState<Trailing>('apy7');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
+
   const { data, isLoading } = useArmDailyStatsQuery(
     { limit, offset: 1 },
     {
       select: (data) => {
-        return (
-          data?.armDailyStats
-            ?.map((s) => ({
-              timestamp: new Date(s.timestamp).getTime(),
-              apy: s.apy * 100,
-            }))
-            .toReversed() ?? []
+        const dailyStats = data?.armDailyStats ?? [];
+        const apyValues = dailyStats.map((s) => s.apy * 100);
+        const movingAverageData = movingAverage(
+          apyValues,
+          trailingToDays[trailing],
         );
+
+        return dailyStats
+          .map((s, idx) => ({
+            timestamp: new Date(s.timestamp).getTime(),
+            apy: movingAverageData[idx] || 0,
+          }))
+          .toReversed();
       },
     },
   );
@@ -98,6 +108,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
+            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
           </Stack>
         </Stack>
       </CardContent>

@@ -15,6 +15,12 @@ export const trailingOptions = {
   apy30: defineMessage({ defaultMessage: '30-Day' }),
 } as const;
 
+export const trailingToDays = {
+  apy7: 7,
+  apy14: 14,
+  apy30: 30,
+} as const;
+
 export type Trailing = keyof typeof trailingOptions;
 
 export type TrailingControlsProps = {
