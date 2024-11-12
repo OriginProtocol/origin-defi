@@ -13,6 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
+import { formatInTimeZone } from 'date-fns-tz';
 
 import { chartMargins, curveTypes } from './constants';
 import { getScaleDomains } from './utils';
@@ -134,6 +135,13 @@ export const LineChart = <Datum,>({
     fill: theme.palette.text.secondary,
     textAnchor: 'start',
   };
+  const xFormat =
+    tickXFormat ??
+    ((value: NumberLike) => {
+      const date = new Date(value as number);
+
+      return formatInTimeZone(date, 'UTC', 'dd MMM');
+    });
 
   return (
     <Box
@@ -175,7 +183,7 @@ export const LineChart = <Datum,>({
           scale={xScale}
           stroke={theme.palette.text.secondary}
           top={height - margins.bottom}
-          tickFormat={tickXFormat}
+          tickFormat={xFormat}
           numTicks={bottomTicks.length}
           tickLabelProps={tickXLabel}
         />

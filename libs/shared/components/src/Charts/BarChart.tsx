@@ -7,6 +7,7 @@ import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
+import { formatInTimeZone } from 'date-fns-tz';
 
 import { chartMargins } from './constants';
 
@@ -80,6 +81,13 @@ export const BarChart = ({
     fill: theme.palette.text.secondary,
     textAnchor: 'start',
   };
+  const xFormat =
+    tickXFormat ??
+    ((value: NumberLike) => {
+      const date = new Date(value as number);
+
+      return formatInTimeZone(date, 'UTC', 'dd MMM');
+    });
 
   return (
     <Box
@@ -147,7 +155,7 @@ export const BarChart = ({
           scale={xScale}
           stroke={theme.palette.text.secondary}
           top={height - margins.bottom}
-          tickFormat={tickXFormat}
+          tickFormat={xFormat}
           tickLabelProps={tickXLabel}
         />
         <GridRows

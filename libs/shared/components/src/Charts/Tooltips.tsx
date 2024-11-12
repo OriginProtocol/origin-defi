@@ -1,4 +1,5 @@
 import { capitalize, Stack } from '@mui/material';
+import { formatInTimeZone } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import { ValueLabel } from '../Labels';
@@ -33,8 +34,10 @@ export const ChartTooltip = <ChartData,>({
     >
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Date' })}
-        value={intl.formatDate(
+        value={formatInTimeZone(
           new Date(series[0].data[0]?.[series[0].xKey] as number),
+          'UTC',
+          'dd MMM yyyy',
         )}
         {...valueLabelProps}
       />

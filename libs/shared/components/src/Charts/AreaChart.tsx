@@ -13,6 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
+import { formatInTimeZone } from 'date-fns-tz';
 
 import { chartMargins, curveTypes } from './constants';
 import { getStackedScaleDomains } from './utils';
@@ -152,6 +153,13 @@ export const AreaChart = <Datum,>({
     fill: theme.palette.text.secondary,
     textAnchor: 'start',
   };
+  const xFormat =
+    tickXFormat ??
+    ((value: NumberLike) => {
+      const date = new Date(value as number);
+
+      return formatInTimeZone(date, 'UTC', 'dd MMM');
+    });
 
   return (
     <Box
@@ -230,7 +238,7 @@ export const AreaChart = <Datum,>({
         <AxisBottom
           scale={xScale}
           top={height - margins.bottom}
-          tickFormat={tickXFormat}
+          tickFormat={xFormat}
           numTicks={bottomTicks.length}
           stroke={theme.palette.text.secondary}
           tickLabelProps={tickXLabel}
