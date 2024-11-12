@@ -27,7 +27,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { movingAverage } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -61,7 +61,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
 
         return dailyStats
           .map((s, idx) => ({
-            timestamp: new Date(s.timestamp).getTime(),
+            timestamp: new Date(s.date).getTime(),
             apy: movingAverageData[idx] || 0,
           }))
           .toReversed();
@@ -83,9 +83,8 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
@@ -156,7 +155,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         return (
           data?.armDailyStats
             ?.map((s) => ({
-              timestamp: new Date(s.timestamp).getTime(),
+              timestamp: new Date(s.date).getTime(),
               totalSupply: toNumber([
                 BigInt(s?.totalSupply ?? 0),
                 tokens.mainnet['ARM-WETH-stETH'].decimals,
@@ -181,9 +180,8 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
@@ -263,7 +261,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
               const total = weth + steth + redeemingSteth;
 
               return {
-                timestamp: new Date(s.timestamp).getTime(),
+                timestamp: new Date(s.date).getTime(),
                 weth,
                 steth,
                 redeemingSteth,
@@ -328,9 +326,8 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

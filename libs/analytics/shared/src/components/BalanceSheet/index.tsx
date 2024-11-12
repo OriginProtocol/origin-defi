@@ -7,7 +7,7 @@ import {
   Spinner,
   TokenIcon,
 } from '@origin/shared/components';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format as dateFormat } from 'date-fns';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
@@ -59,9 +59,8 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
             titleElement={intl.formatMessage({ defaultMessage: 'Assets' })}
             titleProps={{ variant: 'body1', sx: { fontWeight: 'bold' } }}
             sx={{ px: 3, py: 2 }}
-            today={formatInTimeZone(
-              new Date(balanceSheet?.todayDailyStat?.timestamp),
-              'UTC',
+            today={dateFormat(
+              new Date(balanceSheet?.todayDailyStat?.date),
               'dd MMM yyyy',
             )}
             lastWeek={intl.formatMessage({ defaultMessage: '1 week ago' })}
@@ -209,9 +208,8 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
           {intl.formatMessage(
             { defaultMessage: 'Last updated {last}, block #{block}' },
             {
-              last: formatInTimeZone(
-                new Date(balanceSheet.todayDailyStat.timestamp),
-                'UTC',
+              last: dateFormat(
+                new Date(balanceSheet.todayDailyStat.date),
                 'dd MMM yyyy',
               ),
               block: balanceSheet.todayDailyStat.blockNumber,

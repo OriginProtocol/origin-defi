@@ -13,7 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 
 import { chartMargins, curveTypes } from './constants';
 import { getScaleDomains } from './utils';
@@ -127,7 +127,7 @@ export const LineChart = <Datum,>({
     fontSize: 11,
     fontFamily: theme.typography.body1.fontFamily,
     fill: theme.palette.text.secondary,
-    textAnchor: 'start',
+    textAnchor: 'middle',
   };
   const tickYLabel = tickYLabelProps ?? {
     fontSize: 11,
@@ -140,7 +140,7 @@ export const LineChart = <Datum,>({
     ((value: NumberLike) => {
       const date = new Date(value as number);
 
-      return formatInTimeZone(date, 'UTC', 'dd MMM');
+      return format(date, 'dd MMM');
     });
 
   return (

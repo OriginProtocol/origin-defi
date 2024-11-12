@@ -2,6 +2,7 @@ fragment DailyStat on OTokenDailyStat {
   id
   blockNumber
   timestamp
+  date
   totalSupply
   apy
   apy7
@@ -26,7 +27,7 @@ fragment Strategy on Strategy {
   kind
   balances {
     asset
-    timestamp
+    timestamp    
     blockNumber
     balance
   }

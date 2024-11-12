@@ -26,6 +26,7 @@ type Key = [
 export type ChartResult = {
   id: string;
   timestamp: number;
+  date: string;
   apy7: number;
   apy14: number;
   apy30: number;

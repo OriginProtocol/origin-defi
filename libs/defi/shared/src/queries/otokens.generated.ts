@@ -2,7 +2,7 @@ import * as Types from '@origin/defi/shared';
 
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { graphqlClient } from '@origin/defi/shared';
-export type DailyStatFragment = { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string };
+export type DailyStatFragment = { __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, date: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string };
 
 export type OTokenApyQueryVariables = Types.Exact<{
   chainId: Types.Scalars['Int']['input'];
@@ -43,7 +43,7 @@ export type OTokenStatsQueryVariables = Types.Exact<{
 }>;
 
 
-export type OTokenStatsQuery = { __typename?: 'Query', oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string }> };
+export type OTokenStatsQuery = { __typename?: 'Query', oTokenDailyStats: Array<{ __typename?: 'OTokenDailyStat', id: string, blockNumber: number, timestamp: string, date: string, totalSupply: string, apy: number, apy7: number, apy14: number, apy30: number, rateETH: string, rateUSD: string, rebasingSupply: string, nonRebasingSupply: string, wrappedSupply: string, amoSupply?: string | null, yield: string, fees: string, dripperWETH: string }> };
 
 export type OTokenWithdrawalRequestsQueryVariables = Types.Exact<{
   token: Types.Scalars['String']['input'];
@@ -64,6 +64,7 @@ export const DailyStatFragmentDoc = `
   id
   blockNumber
   timestamp
+  date
   totalSupply
   apy
   apy7

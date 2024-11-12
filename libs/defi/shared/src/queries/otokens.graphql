@@ -2,6 +2,7 @@ fragment DailyStat on OTokenDailyStat {
   id
   blockNumber
   timestamp
+  date
   totalSupply
   apy
   apy7

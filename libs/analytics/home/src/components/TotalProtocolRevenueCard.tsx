@@ -20,7 +20,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -73,9 +73,8 @@ export const TotalProtocolRevenueCard = ({
               color="text.secondary"
               sx={{ fontWeight: 'bold' }}
             >
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

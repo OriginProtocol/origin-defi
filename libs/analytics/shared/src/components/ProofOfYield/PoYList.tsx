@@ -26,7 +26,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router-dom';
 
@@ -68,9 +68,8 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('timestamp', {
-        cell: (info) =>
-          formatInTimeZone(new Date(info.getValue()), 'UTC', 'dd MMM yyyy'),
+      columnHelper.accessor('date', {
+        cell: (info) => format(new Date(info.getValue()), 'dd MMM yyyy'),
         header: intl.formatMessage({ defaultMessage: 'Date' }),
         size: 400,
       }),

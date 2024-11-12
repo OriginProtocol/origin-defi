@@ -19,7 +19,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -95,9 +95,8 @@ export const ProtocolRevenueCard = ({
               isLoading={isFeesLoading || isFeesAvgLoading}
               color="text.secondary"
             >
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.x ?? new Date().getTime()),
-                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
@@ -158,9 +157,6 @@ export const ProtocolRevenueCard = ({
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value) => `Ξ${value as number}`}
-          tickXFormat={(value) =>
-            formatInTimeZone(new Date(Number(value)), 'UTC', 'dd MMM')
-          }
           barColor={theme.palette.chart6}
           activeBarColor={theme.palette.chart4}
           lineColor={[theme.palette.chart5, theme.palette.chart4]}

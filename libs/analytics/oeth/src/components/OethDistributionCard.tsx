@@ -20,7 +20,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -81,9 +81,8 @@ export const OethDistributionCard = ({
         >
           <Stack spacing={0.5}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {formatInTimeZone(
+              {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'UTC',
                 'dd/MM/yyyy',
               )}
             </LoadingLabel>

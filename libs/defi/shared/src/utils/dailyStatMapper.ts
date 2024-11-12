@@ -74,6 +74,7 @@ export const dailyStatMapper = (
     timestamp: d?.timestamp
       ? new Date(d?.timestamp).getTime()
       : new Date().getTime(),
+    date: d?.date ?? '',
     apy: (d?.apy ?? 0) * factor,
     ...apies,
     bestApy,

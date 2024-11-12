@@ -9,7 +9,7 @@ export type ArmDailyStatsQueryVariables = Types.Exact<{
 }>;
 
 
-export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ __typename?: 'ArmDailyStat', id: string, timestamp: string, outstandingAssets1: string, totalSupply: string, apy: number, totalAssets: string, assetsPerShare: string, assets0: string, assets1: string }> };
+export type ArmDailyStatsQuery = { __typename?: 'Query', armDailyStats: Array<{ __typename?: 'ArmDailyStat', id: string, timestamp: string, date: string, outstandingAssets1: string, totalSupply: string, apy: number, totalAssets: string, assetsPerShare: string, assets0: string, assets1: string }> };
 
 
 
@@ -23,6 +23,7 @@ export const ArmDailyStatsDocument = `
   ) {
     id
     timestamp
+    date
     outstandingAssets1
     totalSupply
     apy

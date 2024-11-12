@@ -7,7 +7,7 @@ import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
-import { formatInTimeZone } from 'date-fns-tz';
+import { format } from 'date-fns';
 
 import { chartMargins } from './constants';
 
@@ -86,7 +86,7 @@ export const BarChart = ({
     ((value: NumberLike) => {
       const date = new Date(value as number);
 
-      return formatInTimeZone(date, 'UTC', 'dd MMM');
+      return format(date, 'dd MMM');
     });
 
   return (

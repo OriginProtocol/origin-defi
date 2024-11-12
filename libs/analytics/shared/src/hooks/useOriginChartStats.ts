@@ -1,6 +1,5 @@
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { takeLast } from 'ramda';
 
 import { oTokenConfig } from '../constants';
 import { useTokenChartStats } from './useTokenChartStats';
@@ -60,7 +59,7 @@ const fetcher: (
 
     return largestSet.map((curr) => {
       const getChartData = (chartSet: ChartResult[]) =>
-        chartSet.find((d) => takeLast(10, d.id) === takeLast(10, curr.id)) ??
+        chartSet.find((d) => d.date === curr.date) ??
         emptyChartResult(curr.timestamp);
 
       const [oeth, ousd, superOeth] = charts.map(getChartData);
@@ -106,6 +105,7 @@ useOriginStats.fetcher = fetcher;
 const emptyChartResult = (timestamp: number): ChartResult => ({
   id: '',
   timestamp,
+  date: '',
   apy7: 0,
   apy14: 0,
   apy30: 0,
