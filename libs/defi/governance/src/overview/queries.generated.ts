@@ -107,7 +107,7 @@ export const ProposalDocument = `
     choices
     scores
     quorum
-    events {
+    events(limit: 1000) {
       id
       txHash
       event

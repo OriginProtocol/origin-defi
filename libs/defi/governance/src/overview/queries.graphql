@@ -33,7 +33,7 @@ query Proposal($proposalId: String!) {
     choices
     scores
     quorum
-    events {
+    events(limit: 1000) {
       id
       txHash
       event
