@@ -393,7 +393,7 @@ export const TokenCard = ({
   );
 };
 
-const APY_TRAILING = 7;
+const APY_TRAILING = 30;
 
 export const ArmCard = (props: StackProps) => {
   const intl = useIntl();
