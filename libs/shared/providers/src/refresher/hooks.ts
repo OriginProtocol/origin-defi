@@ -100,7 +100,7 @@ export const useRefresher = <QueryResult = any>({
 };
 
 export const useIdlePollInterval = (pollInterval = 12e3) => {
-  const idle = useIdle(pollInterval + 1e3);
+  const idle = useIdle();
 
   return idle ? undefined : pollInterval;
 };
