@@ -18,17 +18,11 @@ import {
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
-import { TxButton, useRefresher } from '@origin/shared/providers';
-import {
-  getFormatPrecision,
-  isNilOrEmpty,
-  ZERO_ADDRESS,
-} from '@origin/shared/utils';
-import { useQueryClient } from '@tanstack/react-query';
+import { TxButton } from '@origin/shared/providers';
+import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { add, eq, format, from } from 'dnum';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useAccount, useConfig } from 'wagmi';
 
 import { useWithdrawalRequests } from '../hooks';
 
@@ -39,23 +33,13 @@ import type { WithdrawalRequest } from '../types';
 
 export const ClaimForm = (props: StackProps) => {
   const intl = useIntl();
-  const { address } = useAccount();
-  const config = useConfig();
-  const queryClient = useQueryClient();
   const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
-  const { data, isLoading: isRequestsLoading } = useWithdrawalRequests();
-  const requests = data?.filter((r) => !r.claimed);
-  const { startRefresh, status } = useRefresher<WithdrawalRequest[]>({
-    queryKey: useWithdrawalRequests.getKey(address ?? ZERO_ADDRESS),
-    queryFn: useWithdrawalRequests.fetcher(config, queryClient),
-    isResultProcessed: (prev, next) =>
-      prev.filter((r) => r.claimed).length <
-      next.filter((r) => r.claimed).length,
-    onSettled: () => {
-      setSelectedClaimIds([]);
-      queryClient.invalidateQueries();
-    },
-  });
+  const { data: requests, isLoading: isRequestsLoading } =
+    useWithdrawalRequests({
+      select: (data) => data?.filter((r) => !r.claimed),
+      refetchInterval: 12000,
+    });
+
   const args =
     selectedClaimIds.length === 1
       ? {
@@ -80,11 +64,6 @@ export const ClaimForm = (props: StackProps) => {
   const { params, callbacks, gasPrice, isWriteGasLoading } = useTxButton({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     params: args as any,
-    callbacks: {
-      onTxSigned: () => {
-        startRefresh(data);
-      },
-    },
     activity: {
       type: 'claim-withdrawal',
       status: 'idle',
@@ -107,6 +86,10 @@ export const ClaimForm = (props: StackProps) => {
     <Stack {...props}>
       <SectionCard
         title={intl.formatMessage({ defaultMessage: 'Your claims' })}
+        titleInfoTooltip={intl.formatMessage({
+          defaultMessage:
+            'It might take approximately 15 seconds for a newly created request to appear in this list',
+        })}
         titleProps={{ fontWeight: 'medium' }}
         cardProps={{
           sx: {
@@ -152,9 +135,6 @@ export const ClaimForm = (props: StackProps) => {
                 request={r}
                 selected={selectedClaimIds.includes(r.requestId)}
                 onSelect={handleClaimClick(r.requestId)}
-                isProcessing={
-                  selectedClaimIds.includes(r.requestId) && status === 'polling'
-                }
               />
             ))
           )}
@@ -179,22 +159,18 @@ export const ClaimForm = (props: StackProps) => {
         params={params}
         callbacks={callbacks}
         variant="action"
-        disabled={isNilOrEmpty(selectedClaimIds) || status === 'polling'}
-        label={
-          status === 'polling'
-            ? intl.formatMessage({ defaultMessage: 'Processing' })
-            : intl.formatMessage(
-                { defaultMessage: 'Claim{amount}' },
-                {
-                  amount: eq(selectedAmount, 0)
-                    ? ''
-                    : ` ${format(selectedAmount, {
-                        digits: getFormatPrecision(selectedAmount),
-                        decimalsRounding: 'ROUND_DOWN',
-                      })} ${tokens.mainnet.WETH.symbol}`,
-                },
-              )
-        }
+        disabled={isNilOrEmpty(selectedClaimIds)}
+        label={intl.formatMessage(
+          { defaultMessage: 'Claim{amount}' },
+          {
+            amount: eq(selectedAmount, 0)
+              ? ''
+              : ` ${format(selectedAmount, {
+                  digits: getFormatPrecision(selectedAmount),
+                  decimalsRounding: 'ROUND_DOWN',
+                })} ${tokens.mainnet.WETH.symbol}`,
+          },
+        )}
       />
     </Stack>
   );
@@ -204,18 +180,11 @@ type ClaimRowProps = {
   request: WithdrawalRequest;
   selected: boolean;
   onSelect: () => void;
-  isProcessing: boolean;
 } & StackProps;
 
-const ClaimRow = ({
-  request,
-  selected,
-  onSelect,
-  isProcessing,
-  ...rest
-}: ClaimRowProps) => {
+const ClaimRow = ({ request, selected, onSelect, ...rest }: ClaimRowProps) => {
   const amt = [request?.amount ?? 0n, tokens.mainnet.WETH.decimals] as Dnum;
-  const disabled = !request.claimable || isProcessing;
+  const disabled = !request.claimable;
 
   return (
     <Stack
@@ -270,7 +239,7 @@ const ClaimRow = ({
           alignItems: 'center',
         }}
       >
-        <ClaimChip claimable={request.claimable} isProcessing={isProcessing} />
+        <ClaimChip claimable={request.claimable} />
         <Button
           variant="outlined"
           color="secondary"
@@ -287,34 +256,21 @@ const ClaimRow = ({
 
 type ClaimChipProps = {
   claimable: boolean;
-  isProcessing: boolean;
 } & StackProps;
 
-const ClaimChip = ({ claimable, isProcessing, ...rest }: ClaimChipProps) => {
+const ClaimChip = ({ claimable, ...rest }: ClaimChipProps) => {
   const intl = useIntl();
 
-  const icon = isProcessing ? (
-    <CircularProgress size={16} />
-  ) : claimable ? (
+  const icon = claimable ? (
     <FaCircleCheckRegular sx={{ color: 'success.dark' }} />
   ) : (
     <FaClockRegular sx={{ color: 'warning.dark' }} />
   );
-  const label = isProcessing
-    ? intl.formatMessage({ defaultMessage: 'Processing' })
-    : claimable
-      ? intl.formatMessage({ defaultMessage: 'Ready' })
-      : intl.formatMessage({ defaultMessage: 'Pending' });
-  const color = isProcessing
-    ? 'primary.main'
-    : claimable
-      ? 'success.dark'
-      : 'warning.dark';
-  const backgroundColor = isProcessing
-    ? 'primary.faded'
-    : claimable
-      ? 'success.faded'
-      : 'warning.faded';
+  const label = claimable
+    ? intl.formatMessage({ defaultMessage: 'Ready' })
+    : intl.formatMessage({ defaultMessage: 'Pending' });
+  const color = claimable ? 'success.dark' : 'warning.dark';
+  const backgroundColor = claimable ? 'success.faded' : 'warning.faded';
 
   return (
     <Stack

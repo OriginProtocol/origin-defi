@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import {
   Button,
   Card,
@@ -16,7 +14,6 @@ import {
   TokenButton,
   TokenInput,
   useDeleteActivity,
-  useOTokenWithdrawalRequestsQuery,
   usePushActivity,
   useUpdateActivity,
 } from '@origin/defi/shared';
@@ -25,7 +22,6 @@ import {
   LoadingLabel,
   ValueLabel,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import {
   ConnectedButton,
   getTokenPriceKey,
@@ -41,13 +37,12 @@ import {
   useSwapState,
   useWatchBalance,
 } from '@origin/shared/providers';
-import { formatError, isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
+import { formatError, isNilOrEmpty } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useAccount } from 'wagmi';
 
 import { RedeemActionCard } from './RedeemActionCard';
-import { WithdrawalRequestModal } from './WithdrawalRequestModal';
 
 import type { StackProps } from '@mui/material';
 import type { Activity } from '@origin/defi/shared';
@@ -57,8 +52,6 @@ import type {
   SwapState,
 } from '@origin/shared/providers';
 import type { Dnum } from 'dnum';
-
-import type { WithdrawalRequestModalProps } from './WithdrawalRequestModal';
 
 export type SwapperProps = Pick<
   SwapState,
@@ -74,22 +67,11 @@ export const Swapper = ({
   ...rest
 }: SwapperProps) => {
   const intl = useIntl();
-  const { address } = useAccount();
   const pushNotification = usePushNotification();
   const deleteNotification = useDeleteNotification();
   const pushActivity = usePushActivity();
   const updateActivity = useUpdateActivity();
   const deleteActivity = useDeleteActivity();
-  const [open, setOpen] = useState(false);
-  const [info, setInfo] = useState<Partial<WithdrawalRequestModalProps>>();
-  const { data, refetch } = useOTokenWithdrawalRequestsQuery(
-    {
-      token: tokens.mainnet.OETH.address.toLowerCase(),
-      chainId: tokens.mainnet.OETH.chainId,
-      withdrawer: (address as string)?.toLowerCase() ?? ZERO_ADDRESS,
-    },
-    { enabled: false },
-  );
 
   return (
     <SwapProvider
@@ -177,7 +159,6 @@ export const Swapper = ({
           tokenIdOut: tokenOut.id,
           amountIn,
         });
-        refetch();
 
         return activity.id;
       }}
@@ -196,20 +177,10 @@ export const Swapper = ({
           severity: 'pending',
           hideDuration: undefined,
         });
-        setInfo({
-          tokenIn,
-          tokenOut,
-          amountOut,
-          initialRequests: data,
-        });
-        setOpen(true);
 
         return notifId;
       }}
       onSwapSuccess={({ trackId, txReceipt, notifId }) => {
-        setInfo({
-          txReceipt,
-        });
         deleteNotification(notifId);
         const updated = updateActivity({
           id: trackId,
@@ -256,15 +227,6 @@ export const Swapper = ({
       }}
     >
       <SwapperWrapped {...rest} />
-      {open && (
-        <WithdrawalRequestModal
-          open
-          onClose={() => {
-            setOpen(false);
-          }}
-          {...info}
-        />
-      )}
     </SwapProvider>
   );
 };
