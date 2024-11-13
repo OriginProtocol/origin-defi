@@ -18,7 +18,7 @@ import {
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
-import { TxButton } from '@origin/shared/providers';
+import { TxButton, useIdlePollInterval } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { add, eq, format, from } from 'dnum';
 import { remove } from 'ramda';
@@ -34,10 +34,11 @@ import type { WithdrawalRequest } from '../types';
 export const ClaimForm = (props: StackProps) => {
   const intl = useIntl();
   const [selectedClaimIds, setSelectedClaimIds] = useState<bigint[]>([]);
+  const refetchInterval = useIdlePollInterval(12000);
   const { data: requests, isLoading: isRequestsLoading } =
     useWithdrawalRequests({
       select: (data) => data?.filter((r) => !r.claimed),
-      refetchInterval: 12000,
+      refetchInterval,
     });
 
   const args =

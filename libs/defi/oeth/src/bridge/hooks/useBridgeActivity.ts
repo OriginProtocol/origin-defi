@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 
 import { useBridgeTransfersQuery } from '@origin/defi/shared';
+import { useIdlePollInterval } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { keepPreviousData } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
@@ -19,18 +20,16 @@ export const useBridgeActivity = ({ limit }: { limit: number }) => {
   const { address } = useAccount();
   const [hasPendingTransfers, setHasPendingTransfers] = useState(false);
   const [{ waitForTransfer }, setBridgeState] = useBridgeState();
-  // TODO: Add a max retry limit?
-
-  // Query via GraphQL!
+  const interval = useIdlePollInterval(5000);
   const bridgeTransfers = useBridgeTransfersQuery(
     { address: address?.toLowerCase() ?? ZERO_ADDRESS, limit },
     {
       enabled: !!address,
       refetchInterval: waitForTransfer
-        ? 5000
+        ? interval
         : hasPendingTransfers
-          ? 5000
-          : false,
+          ? interval
+          : undefined,
       placeholderData: keepPreviousData,
     },
   );

@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 
 import { useIntervalEffect } from '@react-hookz/web';
 import { useQueryClient } from '@tanstack/react-query';
+import useIdle from 'react-use/lib/useIdle';
 
 import type { QueryFunction, QueryKey } from '@tanstack/react-query';
 
@@ -96,4 +97,10 @@ export const useRefresher = <QueryResult = any>({
     startRefresh,
     stopRefresh,
   };
+};
+
+export const useIdlePollInterval = (pollInterval = 12e3) => {
+  const idle = useIdle(pollInterval + 1e3);
+
+  return useMemo(() => (idle ? 0 : pollInterval), [idle, pollInterval]);
 };

@@ -1,5 +1,6 @@
 import { contracts, tokens } from '@origin/shared/contracts';
 import {
+  useIdlePollInterval,
   useTokenPrices,
   validateTxButtonParams,
 } from '@origin/shared/providers';
@@ -7,7 +8,6 @@ import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { div } from 'dnum';
-import useIdle from 'react-use/lib/useIdle';
 import { encodeAbiParameters, keccak256, toHex } from 'viem';
 import { arbitrum, mainnet } from 'viem/chains';
 import { useAccount, useConfig } from 'wagmi';
@@ -33,9 +33,9 @@ export const useCcipTxParams = ({
   amount: bigint;
 }) => {
   const config = useConfig();
-  const isIdle = useIdle();
   const { address: userAddress } = useAccount();
   const queryClient = useQueryClient();
+  const refetchInterval = useIdlePollInterval(30000);
 
   return useQuery({
     queryKey: [
@@ -132,7 +132,6 @@ export const useCcipTxParams = ({
         };
       }
     },
-    refetchInterval: 30000,
-    enabled: !isIdle,
+    refetchInterval,
   });
 };

@@ -21,7 +21,7 @@ import {
   FaCircleCheckRegular,
   FaClockRegular,
 } from '@origin/shared/icons';
-import { TxButton } from '@origin/shared/providers';
+import { TxButton, useIdlePollInterval } from '@origin/shared/providers';
 import { getFormatPrecision, isNilOrEmpty } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { formatDuration } from 'date-fns';
@@ -379,13 +379,14 @@ const ClaimRow = ({
   const intl = useIntl();
   const { data: armInfo, isLoading: isArmInfoLoading } = useArmInfo();
   const vaultHasMoney = (armInfo?.claimable ?? 0n) >= request.queued;
+  const interval = useIdlePollInterval(10000);
   const { data: claimInfo, isLoading: isClaimInfoLoading } = useClaimInfo(
     request.requestId,
     {
       structuralSharing: false,
       refetchInterval:
         !request.claimable && !request.claimed && vaultHasMoney
-          ? 10000
+          ? interval
           : undefined,
     },
   );

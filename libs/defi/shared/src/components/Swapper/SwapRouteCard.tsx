@@ -3,6 +3,7 @@ import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
 import {
   getTokenPriceKey,
   useGasPrice,
+  useIdlePollInterval,
   useSwapperPrices,
   useSwapRouteAllowance,
   useSwapState,
@@ -34,12 +35,13 @@ export function SwapRouteCard({
   const [{ amountIn, tokenOut, isSwapRoutesLoading, swapActions }] =
     useSwapState();
   const { data: prices } = useSwapperPrices();
+  const refetchInterval = useIdlePollInterval(30000);
   const {
     data: swapGasPrice,
     isLoading: swapGasPriceLoading,
     isFetching: swapGasPriceFetching,
   } = useGasPrice(route.gas, route.tokenIn.chainId, {
-    refetchInterval: 30e3,
+    refetchInterval,
     enabled: route.gas > 0n,
   });
   const {
@@ -47,7 +49,7 @@ export function SwapRouteCard({
     isLoading: approvalGasPriceLoading,
     isFetching: approvalGasPriceFetching,
   } = useGasPrice(route.approvalGas, route.tokenIn.chainId, {
-    refetchInterval: 30e3,
+    refetchInterval,
     enabled: route.approvalGas > 0n,
   });
   const { data: allowance } = useSwapRouteAllowance(route);
