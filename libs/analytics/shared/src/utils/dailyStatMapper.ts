@@ -1,5 +1,6 @@
 import { hasKey } from '@origin/shared/utils';
 import { div, gt, mul, sub, toNumber } from 'dnum';
+import { omit } from 'ramda';
 
 import type { Token } from '@origin/shared/contracts';
 import type { Dnum } from 'dnum';
@@ -9,7 +10,7 @@ import type { DailyStatFragment } from '../queries';
 const apiesTrailing = { apy14: 14, apy7: 7, apy30: 30 };
 
 export const dailyStatMapper = (
-  d: DailyStatFragment | undefined | null,
+  d: Partial<DailyStatFragment> | undefined | null,
   token: Token,
   { isChartFormat }: { isChartFormat?: boolean } = {},
 ) => {
@@ -78,6 +79,7 @@ export const dailyStatMapper = (
     apy: (d?.apy ?? 0) * factor,
     ...apies,
     bestApy,
+    token: omit(['abi'], token),
     totalSupply: toNumber(totalSupply, {
       decimalsRounding: 'ROUND_DOWN',
       digits: 2,

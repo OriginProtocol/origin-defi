@@ -1,3 +1,3 @@
-export * from './useOriginChartStats';
+export * from './useTokensChartStats';
 export * from './useTokenChartStats';
 export * from './useTokenInfo';
