@@ -24,15 +24,24 @@ export const getFormatPrecision = (value: Dnum | undefined) => {
   return lt(value, 1) ? 6 : lt(value, 10) ? 4 : 2;
 };
 
-export const movingAverage = (values: number[], days: number): number[] => {
-  return values.map((_, index, array) => {
-    const start = Math.max(0, index - days + 1);
-    const lastXDays = array.slice(start, index + 1);
-    const average =
-      lastXDays.reduce((sum, record) => sum + record, 0) / lastXDays.length;
+export const movingAverages = (
+  values: number[],
+  days: number[],
+): number[][] => {
+  const averages: number[][] = Array.from({ length: days.length }, () => []);
 
-    return average;
+  values.forEach((_, index, array) => {
+    days.forEach((day, dayIndex) => {
+      const start = Math.max(0, index - day + 1);
+      const lastXDays = array.slice(start, index + 1);
+      const average =
+        lastXDays.reduce((sum, record) => sum + record, 0) / lastXDays.length;
+
+      averages[dayIndex][index] = average;
+    });
   });
+
+  return averages;
 };
 
 export const getPercentageDifference = (left: Dnum, right: Dnum) => {

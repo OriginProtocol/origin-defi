@@ -22,10 +22,9 @@ import {
   LoadingLabel,
   Spinner,
   TrailingControls,
-  trailingToDays,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { movingAverage } from '@origin/shared/utils';
+import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toNumber } from 'dnum';
@@ -52,19 +51,17 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
     { limit, offset: 1 },
     {
       select: (data) => {
-        const dailyStats = data?.armDailyStats ?? [];
-        const apyValues = dailyStats.map((s) => s.apy * 100);
-        const movingAverageData = movingAverage(
-          apyValues,
-          trailingToDays[trailing],
-        );
+        const dailyStats = data?.armDailyStats?.toReversed() ?? [];
+        const apy = dailyStats.map((s) => s.apy * 100);
+        const apies = movingAverages(apy, [7, 14, 30]);
 
-        return dailyStats
-          .map((s, idx) => ({
-            timestamp: new Date(s.date).getTime(),
-            apy: movingAverageData[idx] || 0,
-          }))
-          .toReversed();
+        return dailyStats.map((s, idx) => ({
+          timestamp: new Date(s.date).getTime(),
+          apy: apy[idx],
+          apy7: apies[0][idx],
+          apy14: apies[1][idx],
+          apy30: apies[2][idx],
+        }));
       },
     },
   );
@@ -94,7 +91,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
                 variant="body1"
                 sx={{ fontWeight: 'bold' }}
               >
-                {intl.formatNumber(activeItem?.apy ?? 0)}%
+                {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
               </LoadingLabel>
               <InfoTooltip
                 iconColor="text.primary"
@@ -122,7 +119,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
               label: 'APY',
               data: data ?? [],
               xKey: 'timestamp',
-              yKey: 'apy',
+              yKey: trailing,
               color: theme.palette.primary.main,
               curveType: 'base',
             },

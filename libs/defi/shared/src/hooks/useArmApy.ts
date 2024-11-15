@@ -3,7 +3,11 @@ import { useArmDailyStatsQuery } from '../queries';
 
 export const useArmApy = (trailing = 1) => {
   return useArmDailyStatsQuery(
-    { limit: trailing, orderBy: ArmDailyStatOrderByInput.TimestampDesc },
+    {
+      limit: trailing,
+      orderBy: ArmDailyStatOrderByInput.TimestampDesc,
+      offset: 1,
+    },
     {
       select: (data) => {
         if (!data?.armDailyStats || data.armDailyStats.length === 0) {

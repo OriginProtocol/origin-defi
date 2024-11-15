@@ -1,4 +1,4 @@
-import { movingAverage, ZERO_ADDRESS } from '@origin/shared/utils';
+import { movingAverages, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { pluck } from 'ramda';
 
@@ -82,14 +82,12 @@ const fetcher: (
     const mapped = res?.oTokenDailyStats
       ?.toReversed()
       .map((d) => dailyStatMapper(d, token, { isChartFormat: true }));
-
-    const feesMovingAvg7Days = movingAverage(pluck('feesETH', mapped), 7);
-    const feesMovingAvg30Days = movingAverage(pluck('feesETH', mapped), 30);
+    const feesAverages = movingAverages(pluck('feesETH', mapped), [7, 30]);
 
     return mapped.map((m, i) => ({
       ...m,
-      feesMovingAvg7Days: feesMovingAvg7Days[i],
-      feesMovingAvg30Days: feesMovingAvg30Days[i],
+      feesMovingAvg7Days: feesAverages[0][i],
+      feesMovingAvg30Days: feesAverages[1][i],
     }));
   };
 
