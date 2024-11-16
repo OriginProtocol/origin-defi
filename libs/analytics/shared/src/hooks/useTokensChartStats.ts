@@ -1,6 +1,6 @@
 import { tokens } from '@origin/shared/contracts';
 import { hasKey } from '@origin/shared/utils';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
 import { omit } from 'ramda';
 
 import { oTokenConfig } from '../constants';
@@ -20,7 +20,14 @@ const DEFAULT_OTOKENS = [
   tokens.mainnet.OUSD,
   tokens.base.superOETHb,
 ];
-const DEFAULT_TOTALS = ['tvlUSD', 'tvlETH', 'feesETH', 'feesUSD'] as const;
+const DEFAULT_TOTALS = [
+  'tvlUSD',
+  'tvlETH',
+  'feesETH',
+  'feesUSD',
+  'circulatingSupplyETH',
+  'circulatingSupplyUSD',
+] as const;
 
 type Key = [
   'useTokensChartStats',
@@ -43,6 +50,8 @@ export type Totals = {
   tvlETH: number;
   feesETH: number;
   feesUSD: number;
+  circulatingSupplyETH: number;
+  circulatingSupplyUSD: number;
   timestamp: number;
   date: string;
 };
@@ -90,14 +99,15 @@ const fetcher =
         feesUSD: 0,
         tvlUSD: 0,
         tvlETH: 0,
+        circulatingSupplyETH: 0,
+        circulatingSupplyUSD: 0,
         timestamp,
         date,
       };
 
-      for (let i = 0; i < oTokens.length; i++) {
-        const oToken = oTokens[i];
+      oTokens.forEach((oToken, i) => {
         const data =
-          (charts[i].find((d) => d.date === date) as ChartResult) ??
+          charts[i].find((d) => d.date === date) ??
           emptyChartResult(timestamp, date, oToken);
 
         totals.forEach((key) => {
@@ -109,13 +119,23 @@ const fetcher =
         if (hasKey(result, oToken.id)) {
           result[oToken.id].push(data);
         }
-      }
+      });
 
       result.totals.push(total);
     }
 
     return result;
   };
+
+export const tokensChartStatsOptions = (
+  queryClient: QueryClient,
+  limit?: number,
+  offset?: number,
+) =>
+  queryOptions({
+    queryKey: getKey(limit, offset),
+    queryFn: fetcher(queryClient),
+  });
 
 export const useTokensChartStats = (
   limit?: number,
@@ -129,8 +149,7 @@ export const useTokensChartStats = (
 
   return useQuery({
     ...options,
-    queryKey: getKey(limit, offset),
-    queryFn: fetcher(queryClient),
+    ...tokensChartStatsOptions(queryClient, limit, offset),
   });
 };
 useTokensChartStats.getKey = getKey;
@@ -156,6 +175,8 @@ const emptyChartResult = (
   protocolOwnedSupply: 0,
   pctProtocolOwnedSupply: 0,
   circulatingSupply: 0,
+  circulatingSupplyETH: 0,
+  circulatingSupplyUSD: 0,
   pctCirculatingSupply: 0,
   feesETH: 0,
   feesUSD: 0,

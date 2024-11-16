@@ -126,6 +126,7 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
 
   const intl = useIntl();
   const navigate = useNavigate();
+  const routeMatch = useMatch('/');
   const match = useMatch(`${route?.path ?? ''}/*`);
   const [{ expandedSections }, { handleToggleSection, handleAddSection }] =
     useLayout();
@@ -134,25 +135,45 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
     return (
       <Button
         variant="text"
+        color="secondary"
         key={key}
         onClick={() => {
           navigate(`${route?.path ?? ''}/`);
-          onClose();
         }}
         sx={[
           {
             display: 'flex',
             justifyContent: 'flex-start',
             alignItems: 'center',
-            px: 0,
-            fontWeight: 'medium',
+            borderRadius: 0,
+            width: 1,
+            px: isWide ? 3 : 2.75,
+            py: 2,
+            '&:hover': {
+              boxShadow: (theme) =>
+                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
+            },
           },
+          routeMatch &&
+            isWide && {
+              borderTopLeftRadius: 0,
+              borderBottomLeftRadius: 0,
+              boxShadow: (theme) =>
+                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
+            },
         ]}
       >
         {isWide ? (
-          intl.formatMessage(route.handle.title)
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 'medium',
+            }}
+          >
+            {intl.formatMessage(route.handle.title)}
+          </Typography>
         ) : (
-          <SvgIcon component={route.handle.icon} />
+          <SvgIcon component={route.handle.icon} sx={{ fontSize: 20 }} />
         )}
       </Button>
     );

@@ -22,6 +22,8 @@ export type OTokenConfig = {
   protocolRevenueCardDefaultLimit?: number;
   // default trailing days for apy display
   defaultApyTrailing?: 'apy7DayAvg' | 'apy14DayAvg' | 'apy30DayAvg';
+  // token color for charts
+  lineChartColor?: string;
 };
 
 export const oTokenConfig: Record<string, OTokenConfig> = {
@@ -32,6 +34,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     dappHref: `${ORIGIN_DAPP_URL}/#/oeth`,
     dripperToken: tokens.mainnet.WETH,
     showCirculatingSplit: true,
+    lineChartColor: '#586CF8',
   },
   [tokens.arbitrum.wOETH.id]: {
     from: '2024-02-07T00:00:00.000000Z',
@@ -44,6 +47,7 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     pageHref: 'ousd',
     dappHref: `${ORIGIN_DAPP_URL}/#/ousd`,
     dripperToken: tokens.mainnet.USDT,
+    lineChartColor: '#14C4BA',
   },
   [tokens.base.superOETHb.id]: {
     from: '2024-08-28T00:00:00.000000Z',
@@ -54,5 +58,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     showCirculatingSplit: true,
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy7DayAvg',
+    lineChartColor: '#D0246A',
   },
 };

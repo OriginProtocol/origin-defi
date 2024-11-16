@@ -1,13 +1,47 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { isSameDay } from 'date-fns';
 import { add, from, mul, toNumber } from 'dnum';
+import { useSearchParams } from 'react-router-dom';
 
 import { useCumulativeRevenueQuery } from './queries.generated';
 
+import type { Currency } from '@origin/shared/components';
 import type { Dnum } from 'dnum';
 
 import type { CumulativeRevenueQuery } from './queries.generated';
+
+export const useHomeView = () => {
+  const [search, setSearch] = useSearchParams({ o: '1', l: '30', c: 'ETH' });
+
+  return useMemo(
+    () => ({
+      offset: Number(search.get('o') ?? '1'),
+      limit:
+        search.get('l') === 'all' ? undefined : Number(search.get('l') ?? '30'),
+      currency: (search.get('c') ?? 'ETH') as Currency,
+      handleSetOffset: (newVal: number) => {
+        setSearch((params) => {
+          params.set('o', newVal.toString());
+          return params;
+        });
+      },
+      handleSetLimit: (newVal: number | undefined) => {
+        setSearch((params) => {
+          params.set('l', newVal?.toString() ?? 'all');
+          return params;
+        });
+      },
+      handleSetCurrency: (newVal: Currency) => {
+        setSearch((params) => {
+          params.set('c', newVal);
+          return params;
+        });
+      },
+    }),
+    [search, setSearch],
+  );
+};
 
 export const useCumulativeProtocolRevenue = () =>
   useCumulativeRevenueQuery(undefined, {

@@ -41,6 +41,8 @@ export type ChartResult = {
   protocolOwnedSupply: number;
   pctProtocolOwnedSupply: number;
   circulatingSupply: number;
+  circulatingSupplyETH: number;
+  circulatingSupplyUSD: number;
   pctCirculatingSupply: number;
   feesETH: number;
   feesUSD: number;
