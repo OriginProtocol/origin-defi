@@ -39,6 +39,7 @@ export type LineChartProps<Datum = ChartData> = {
   Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   showGrid?: boolean;
+  hideHoverLine?: boolean;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
 export const LineChart = <Datum,>({
@@ -54,6 +55,7 @@ export const LineChart = <Datum,>({
   Tooltip,
   margins = chartMargins,
   showGrid,
+  hideHoverLine,
   ...rest
 }: LineChartProps<Datum>) => {
   const theme = useTheme();
@@ -214,7 +216,7 @@ export const LineChart = <Datum,>({
             strokeLinecap="round"
           />
         ))}
-        {activeIdx !== null ? (
+        {activeIdx !== null && !hideHoverLine ? (
           <line
             x1={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}
             x2={xScale(series[0].data[activeIdx]?.[series[0].xKey] as number)}

@@ -5,7 +5,11 @@ import { useIntl } from 'react-intl';
 import { CirculatingSupplyCard } from '../components/CirculatingSupplyCard';
 import { Controls } from '../components/Controls';
 import { NetAssetsCard } from '../components/NetAssetsCard';
-import { OgnPriceCard, OgnStatsCard } from '../components/OgnCards';
+import {
+  OgnPerformanceCard,
+  OgnPriceCard,
+  OgnStatsCard,
+} from '../components/OgnCards';
 import { ProtocolRevenueCard } from '../components/ProtocolRevenueCard';
 import { TvlCard } from '../components/TvlCard';
 import { CHART_HEIGHT } from '../constants';
@@ -42,6 +46,7 @@ export const HomeView = () => {
           </Typography>
           <OgnPriceCard />
           <OgnStatsCard />
+          <OgnPerformanceCard />
         </Stack>
       </Grid2>
     </Grid2>

@@ -228,6 +228,20 @@ export const components = (base: Theme): ThemeOptions => ({
         disableTouchRipple: true,
       },
     },
+    MuiButtonGroup: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          '> .MuiButton-root': {
+            '&:hover': {
+              borderRightColor: 'transparent',
+              '&:not(:last-child)': {
+                borderRightColor: 'transparent',
+              },
+            },
+          },
+        }),
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: ({ theme }) => ({
