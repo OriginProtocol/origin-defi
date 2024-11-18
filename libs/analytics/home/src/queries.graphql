@@ -1,3 +1,33 @@
+query OgnStats {
+  ognDailyStats(limit: 1, orderBy: [timestamp_DESC]) {
+    timestamp
+    totalSupply
+    totalSupplyUSD
+    totalStaked
+    tradingVolumeUSD
+    marketCapUSD
+    priceUSD
+    holdersOverThreshold
+  }
+  ognStats {
+    circulatingSupply
+    totalSupply
+  }
+}
+
+query OgnDailyStats(
+  $limit: Int = 1000
+  $offset: Int
+  $orderBy: [OGNDailyStatOrderByInput!] = [timestamp_DESC]
+) {
+  ognDailyStats(limit: $limit, offset: $offset, orderBy: $orderBy) {
+    id
+    timestamp
+    priceUSD
+    marketCapUSD
+  }
+}
+
 query CumulativeRevenue($limit: Int = 5000) {
   oeth: oTokenDailyStats(
     limit: $limit

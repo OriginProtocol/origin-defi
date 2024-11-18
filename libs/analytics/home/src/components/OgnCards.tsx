@@ -1,5 +1,8 @@
 import { Card, Divider, Stack } from '@mui/material';
 import { ValueLabel } from '@origin/shared/components';
+import { tokens } from '@origin/shared/contracts';
+import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
+import { format, from } from 'dnum';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -7,6 +10,9 @@ import type { ValueLabelProps } from '@origin/shared/components';
 
 export const OgnPriceCard = (props: CardProps) => {
   const intl = useIntl();
+  const { data: price, isLoading: isPriceLoading } = useTokenPrice(
+    getTokenPriceKey(tokens.mainnet.OGN),
+  );
 
   return (
     <Card {...props}>
@@ -18,7 +24,8 @@ export const OgnPriceCard = (props: CardProps) => {
       >
         <ValueLabel
           label={intl.formatMessage({ defaultMessage: 'Price' })}
-          value={0.112}
+          value={format(price ?? from(0), 3)}
+          isLoading={isPriceLoading}
           currency="USD"
           {...ognPriceCardValueLabelProps}
         />
