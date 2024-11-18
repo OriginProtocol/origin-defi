@@ -51,3 +51,6 @@ export const getStackedScaleDomains = <Datum>(
 
   return { minX, maxX, minY, maxY };
 };
+
+export const getBarChartBottomTicks = (width: number) =>
+  width < 300 ? 4 : width < 400 ? 6 : width < 600 ? 8 : 10;

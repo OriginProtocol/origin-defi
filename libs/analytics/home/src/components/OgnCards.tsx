@@ -45,7 +45,11 @@ export const OgnPriceCard = (props: CardProps) => {
       <Stack
         direction="row"
         spacing={0.5}
-        sx={{ justifyContent: 'space-between' }}
+        sx={{
+          height: 1,
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
         divider={<Divider orientation="vertical" flexItem />}
       >
         <ValueLabel
@@ -74,7 +78,7 @@ export const OgnPriceCard = (props: CardProps) => {
 };
 
 const ognPriceCardValueLabelProps: Partial<ValueLabelProps> = {
-  sx: { alignItems: 'flex-start', width: 1, p: 1.5 },
+  sx: { alignItems: 'flex-start', flexGrow: 1, p: 2 },
   labelProps: { variant: 'body3', sx: { fontWeight: 'medium' } },
   valueProps: { variant: 'body1', sx: { fontWeight: 'medium' } },
 };
@@ -95,6 +99,11 @@ export const OgnStatsCard = (props: CardProps) => {
           direction="row"
           spacing={0.5}
           divider={<Divider orientation="vertical" flexItem />}
+          sx={{
+            height: 1,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Holders' })}
@@ -127,6 +136,11 @@ export const OgnStatsCard = (props: CardProps) => {
           direction="row"
           spacing={0.5}
           divider={<Divider orientation="vertical" flexItem />}
+          sx={{
+            height: 1,
+            justifyContent: 'space-between',
+            alignItems: 'center',
+          }}
         >
           <ValueLabel
             label={intl.formatMessage({ defaultMessage: 'Staking Max vAPY' })}
@@ -156,7 +170,7 @@ export const OgnStatsCard = (props: CardProps) => {
 
 const ognStatsCardValueLabelProps: Partial<ValueLabelProps> = {
   spacing: 0.5,
-  sx: { alignItems: 'flex-start', width: 1, p: 1.5 },
+  sx: { alignItems: 'flex-start', width: 1, p: 2 },
   labelProps: { variant: 'caption1' },
   valueProps: { variant: 'caption1' },
 };
@@ -188,7 +202,11 @@ export const OgnPerformanceCard = (props: CardProps) => {
         <Stack
           direction="row"
           spacing={2}
-          sx={{ justifyContent: 'space-between', alignItems: 'center' }}
+          sx={{
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            pb: 0.5,
+          }}
         >
           <ButtonGroup size="small" variant="outlined" color="secondary">
             {[
@@ -213,7 +231,7 @@ export const OgnPerformanceCard = (props: CardProps) => {
               </Button>
             ))}
           </ButtonGroup>
-          <LimitControls limit={limit} setLimit={setLimit} />
+          <LimitControls limit={limit} setLimit={setLimit} disableAll />
         </Stack>
       </CardContent>
       {isDailyStatsLoading ? (
@@ -221,7 +239,7 @@ export const OgnPerformanceCard = (props: CardProps) => {
       ) : (
         <LineChart
           width={width}
-          height={412}
+          height={400}
           series={[
             {
               label: metric === 'price' ? 'Price' : 'Market Cap',

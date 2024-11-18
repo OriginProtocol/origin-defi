@@ -19,7 +19,7 @@ export const HomeView = () => {
   const [{ isDrawerOpen }] = useLayout();
 
   return (
-    <Grid2 container spacing={4}>
+    <Grid2 container spacing={2}>
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
         <Stack spacing={2}>
           <Controls />
@@ -44,8 +44,19 @@ export const HomeView = () => {
           <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
             {intl.formatMessage({ defaultMessage: 'OGN Token Metrics' })}
           </Typography>
-          <OgnPriceCard />
-          <OgnStatsCard />
+          <Stack
+            direction={{
+              xs: 'column',
+              sm: 'row',
+              md: isDrawerOpen ? 'row' : 'column',
+              lg: 'column',
+            }}
+            spacing={2}
+            sx={{ '> *': { width: 1 } }}
+          >
+            <OgnPriceCard />
+            <OgnStatsCard />
+          </Stack>
           <OgnPerformanceCard />
         </Stack>
       </Grid2>

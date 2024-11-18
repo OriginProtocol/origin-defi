@@ -10,6 +10,7 @@ import { Bar, BarRounded, LinePath } from '@visx/shape';
 import { format } from 'date-fns';
 
 import { chartMargins } from './constants';
+import { getBarChartBottomTicks } from './utils';
 
 import type { BoxProps } from '@mui/material';
 import type { TickLabelProps } from '@visx/axis';
@@ -89,7 +90,7 @@ export const BarChart = ({
       return format(date, 'dd MMM');
     });
 
-  const bottomTicks = Math.ceil(width / (barData.length * 2));
+  const bottomTicks = getBarChartBottomTicks(width);
 
   return (
     <Box

@@ -12,6 +12,7 @@ import { defaultStyles, TooltipWithBounds, useTooltip } from '@visx/tooltip';
 import { format } from 'date-fns';
 
 import { chartMargins } from './constants';
+import { getBarChartBottomTicks } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { TickFormatter, TickLabelProps } from '@visx/axis';
@@ -128,7 +129,7 @@ export const StackedBarChart = <Datum,>({
     });
 
   const rightTicks = yScale.ticks(height / 40);
-  const bottomTicks = Math.ceil(width / (barData.length * 2));
+  const bottomTicks = getBarChartBottomTicks(width);
   const activeItem = activeIdx !== null ? barData[activeIdx] : null;
 
   return (
