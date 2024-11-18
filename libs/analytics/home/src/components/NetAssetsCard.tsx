@@ -1,12 +1,29 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  useTheme,
+} from '@mui/material';
+import { useTokensChartStats } from '@origin/analytics/shared';
+import {
+  BarChart,
+  CurrencyLabel,
+  LoadingLabel,
+} from '@origin/shared/components';
+import { Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
+import { format } from 'date-fns';
+import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
 
 import type { CardProps } from '@mui/material';
+import type { NumberLike } from '@visx/scale';
 
 export type NetAssetsCardProps = {
   height: number;
@@ -14,10 +31,23 @@ export type NetAssetsCardProps = {
 
 export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const intl = useIntl();
+  const theme = useTheme();
   const { limit, offset, currency } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
+  const { data, isLoading } = useTokensChartStats(limit, offset);
+  const series = useMemo(
+    () =>
+      data?.totals?.map((d) => ({
+        x: d.timestamp,
+        y: currency === 'USD' ? d.circulatingSupplyUSD : d.circulatingSupplyETH,
+      })),
 
+    [data, currency],
+  );
+
+  const activeItem =
+    hoverIdx === null ? last(data?.totals ?? []) : data?.totals?.[hoverIdx];
   const width = measures?.width ?? 0;
 
   return (
@@ -33,7 +63,7 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
             alignItems: 'flex-start',
           }}
         >
-          {/* <LoadingLabel
+          <LoadingLabel
             isLoading={isLoading}
             color="text.secondary"
             sx={{ fontWeight: 'bold' }}
@@ -49,24 +79,26 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
             sx={{ fontWeight: 'bold' }}
           >
             <CurrencyLabel currency={currency} />
-            {intl.formatNumber(totalTvl ?? 0, {
-              maximumFractionDigits: 0,
-            })}
-          </LoadingLabel> */}
+            {intl.formatNumber(
+              activeItem?.[currency === 'ETH' ? 'tvlETH' : 'tvlUSD'] ?? 0,
+              {
+                maximumFractionDigits: 0,
+              },
+            )}
+          </LoadingLabel>
         </Stack>
       </CardContent>
-      {/* {isLoading ? (
+      {isLoading ? (
         <Spinner sx={{ width, height }} />
       ) : (
-        <LineChart
-          series={series}
+        <BarChart
           width={width}
           height={height}
-          margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
+          barData={series ?? []}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={ChartTooltip}
+          margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
           tickYFormat={(value: NumberLike) =>
             `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
               Number(value),
@@ -75,8 +107,11 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
               },
             )}`
           }
+          barColor={theme.palette.chart6}
+          activeBarColor={theme.palette.chart4}
+          lineColor={[theme.palette.chart5, theme.palette.chart4]}
         />
-      )} */}
+      )}
     </Card>
   );
 };

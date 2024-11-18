@@ -10,8 +10,12 @@ import {
   useTheme,
 } from '@mui/material';
 import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
-import { LoadingLabel, Spinner, ValueLabel } from '@origin/shared/components';
-import { CurrencyLabel } from '@origin/shared/components';
+import {
+  CurrencyLabel,
+  LoadingLabel,
+  Spinner,
+  ValueLabel,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { AxisRight } from '@visx/axis';
 import { AxisBottom } from '@visx/axis';
@@ -75,7 +79,7 @@ export const ProtocolRevenueCard = ({
     return serie;
   }, [currency, data]);
 
-  const margins = { top: 0, left: 30, bottom: 50, right: 50 };
+  const margins = { top: 5, left: 25, right: 60, bottom: 50 };
   const keys = ['oeth', 'ousd', 'superOeth'];
 
   const xScale = scaleBand({
@@ -127,16 +131,15 @@ export const ProtocolRevenueCard = ({
     <Card {...rest} ref={ref}>
       <CardHeader
         title={intl.formatMessage({
-          defaultMessage: 'Cumulative protocol revenue',
+          defaultMessage: 'Protocol Revenue',
         })}
       />
       <Divider />
       <CardContent sx={{ flexGrow: 1 }}>
         <Stack
-          direction="row"
+          spacing={0.5}
           sx={{
             alignItems: 'flex-start',
-            justifyContent: 'space-between',
           }}
         >
           <LoadingLabel
@@ -258,8 +261,6 @@ export const ProtocolRevenueCard = ({
               scale={xScale}
               stroke={theme.palette.text.secondary}
               tickStroke="transparent"
-              strokeWidth="2"
-              tickLength={18}
               top={height - margins.bottom}
               tickFormat={xFormat}
               tickLabelProps={tickXLabel}

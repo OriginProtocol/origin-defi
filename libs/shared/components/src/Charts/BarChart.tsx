@@ -157,6 +157,7 @@ export const BarChart = ({
           top={height - margins.bottom}
           tickFormat={xFormat}
           tickLabelProps={tickXLabel}
+          numTicks={6}
         />
         <GridRows
           left={margins.left}
