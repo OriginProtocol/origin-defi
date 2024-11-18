@@ -31738,6 +31738,7 @@ export type QueryErc20HoldersConnectionArgs = {
 
 export type QueryErc20StateByDayArgs = {
   address: Scalars['String']['input'];
+  chainId: Scalars['Float']['input'];
   from: Scalars['String']['input'];
   to?: InputMaybe<Scalars['String']['input']>;
 };
