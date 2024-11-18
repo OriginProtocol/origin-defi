@@ -14,6 +14,7 @@ export const WoethArbitrumByDayDocument = `
   erc20StateByDay(
     address: "0xd8724322f44e5c58d7a815f542036fb17dbbf839"
     from: "2024-02-07"
+    chainId: 42161
   ) {
     day
     totalSupply
