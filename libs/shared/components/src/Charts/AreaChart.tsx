@@ -347,7 +347,7 @@ export const AreaChart = <Datum,>({
             background: theme.palette.background.default,
           }}
         >
-          <Tooltip series={activeSeries ?? null} />
+          <Tooltip series={activeSeries} />
         </TooltipWithBounds>
       ) : null}
     </Box>

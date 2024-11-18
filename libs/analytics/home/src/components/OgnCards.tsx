@@ -21,10 +21,13 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { useMeasure } from '@react-hookz/web';
+import { useQuery } from '@tanstack/react-query';
 import { format, from } from 'dnum';
+import { drop } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 
-import { useOgnDailyStatsQuery, useOgnStatsQuery } from '../queries.generated';
+import { ognDailyQueryOptions } from '../hooks';
+import { useOgnStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -164,16 +167,14 @@ export const OgnPerformanceCard = (props: CardProps) => {
   const [metric, setMetric] = useState<'price' | 'mc'>('price');
   const [limit, setLimit] = useState<number | undefined>(182);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data: dailyStats, isLoading: isDailyStatsLoading } =
-    useOgnDailyStatsQuery(
-      {
-        limit,
-        offset: 1,
-      },
-      {
-        select: (data) => data?.ognDailyStats,
-      },
-    );
+  const { data: dailyStats, isLoading: isDailyStatsLoading } = useQuery({
+    ...ognDailyQueryOptions,
+    select: (data) =>
+      drop(
+        365 - (limit ?? 365),
+        metric === 'price' ? data?.prices : data?.marketCaps,
+      ),
+  });
 
   const width = measures?.width ?? 0;
 
@@ -220,14 +221,13 @@ export const OgnPerformanceCard = (props: CardProps) => {
       ) : (
         <LineChart
           width={width}
-          height={400}
-          hideHoverLine
+          height={412}
           series={[
             {
               label: metric === 'price' ? 'Price' : 'Market Cap',
               data: dailyStats ?? [],
               xKey: 'timestamp',
-              yKey: metric === 'price' ? 'priceUSD' : 'marketCapUSD',
+              yKey: 'value',
               color: [theme.palette.chart1, theme.palette.chart2],
             },
           ]}

@@ -2,10 +2,13 @@ import { isNilOrEmpty } from '@origin/shared/utils';
 
 import type { Serie } from './types';
 
-export const getScaleDomains = <Datum>(series: Serie<Datum>[]) => {
+export const getScaleDomains = <Datum>(
+  series: Serie<Datum>[],
+  yCoeff = [0.9, 1.1],
+) => {
   let minX = Infinity;
   let maxX = -Infinity;
-  let minY = 0;
+  let minY = Infinity;
   let maxY = -Infinity;
 
   for (const serie of series) {
@@ -24,7 +27,7 @@ export const getScaleDomains = <Datum>(series: Serie<Datum>[]) => {
     }
   }
 
-  return { minX, maxX, minY, maxY };
+  return { minX, maxX, minY: minY * yCoeff[0], maxY: maxY * yCoeff[1] };
 };
 
 export const getStackedScaleDomains = <Datum>(

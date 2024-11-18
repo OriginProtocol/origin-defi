@@ -89,6 +89,8 @@ export const BarChart = ({
       return format(date, 'dd MMM');
     });
 
+  const bottomTicks = Math.ceil(width / (barData.length * 2));
+
   return (
     <Box
       {...rest}
@@ -157,7 +159,7 @@ export const BarChart = ({
           top={height - margins.bottom}
           tickFormat={xFormat}
           tickLabelProps={tickXLabel}
-          numTicks={6}
+          numTicks={bottomTicks}
         />
         <GridRows
           left={margins.left}
