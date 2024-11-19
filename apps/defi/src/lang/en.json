@@ -1,10 +1,4 @@
 {
-  "+0NTt9": [
-    {
-      "type": 0,
-      "value": "Withdrawal request is taking a long time to process"
-    }
-  ],
   "+14VoL": [
     {
       "type": 0,
@@ -981,12 +975,6 @@
       "value": "Error while unlocking"
     }
   ],
-  "EJv8r2": [
-    {
-      "type": 0,
-      "value": "Refresh the page"
-    }
-  ],
   "EMU/OA": [
     {
       "type": 0,
@@ -1449,12 +1437,6 @@
       "value": "Reload Page"
     }
   ],
-  "MTN/Zf": [
-    {
-      "type": 0,
-      "value": "Try to refresh the page and go to the Claim tab to see your withdrawal request"
-    }
-  ],
   "MW9FHt": [
     {
       "type": 0,
@@ -1713,12 +1695,6 @@
       "value": "symbolOut"
     }
   ],
-  "Pkf9/r": [
-    {
-      "type": 0,
-      "value": "This operation can take a few seconds to complete"
-    }
-  ],
   "PuubxK": [
     {
       "type": 0,
@@ -1867,12 +1843,6 @@
     {
       "type": 0,
       "value": "Custom"
-    }
-  ],
-  "SsufnP": [
-    {
-      "type": 0,
-      "value": "Withdrawal request successfully sent"
     }
   ],
   "SzA4oV": [
@@ -2139,6 +2109,12 @@
       "value": "Origin Ether"
     }
   ],
+  "W5YaLt": [
+    {
+      "type": 0,
+      "value": "It might take approximately 15 seconds for a newly created request to appear in this list"
+    }
+  ],
   "W7LOXq": [
     {
       "type": 0,
@@ -2195,12 +2171,6 @@
     {
       "type": 0,
       "value": "Amount to deposit"
-    }
-  ],
-  "XrnF+v": [
-    {
-      "type": 0,
-      "value": "Processing withdrawal request"
     }
   ],
   "Y/oE4U": [
@@ -2463,36 +2433,6 @@
     {
       "type": 0,
       "value": "Add to stake"
-    }
-  ],
-  "cXVyuA": [
-    {
-      "type": 0,
-      "value": "Your request to withdraw "
-    },
-    {
-      "type": 1,
-      "value": "amountOut"
-    },
-    {
-      "type": 0,
-      "value": " "
-    },
-    {
-      "type": 1,
-      "value": "symbolOut"
-    },
-    {
-      "type": 0,
-      "value": " from "
-    },
-    {
-      "type": 1,
-      "value": "symbolIn"
-    },
-    {
-      "type": 0,
-      "value": " has been sent. Check the Claim tab to view your withdrawal requests."
     }
   ],
   "cg1VJ2": [
@@ -2999,12 +2939,6 @@
       "value": "Connect wallet to view"
     }
   ],
-  "lN55fl": [
-    {
-      "type": 0,
-      "value": "Your withdrawal is being processed"
-    }
-  ],
   "lQmZjB": [
     {
       "type": 0,
@@ -3469,12 +3403,6 @@
     {
       "type": 0,
       "value": "Redeem amount"
-    }
-  ],
-  "uD4xKE": [
-    {
-      "type": 0,
-      "value": "View withdrawal requests"
     }
   ],
   "uEFsHG": [

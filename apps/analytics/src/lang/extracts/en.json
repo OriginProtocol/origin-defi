@@ -209,6 +209,9 @@
   "N2NlBB": {
     "defaultMessage": "Actual yield distributed"
   },
+  "NHPvJD": {
+    "defaultMessage": "The daily APY of the current day is usually lower because yield can be dripped multiple times per day"
+  },
   "NXFAgE": {
     "defaultMessage": "Ooops, something went wrong 😓"
   },

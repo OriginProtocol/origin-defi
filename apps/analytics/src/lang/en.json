@@ -459,6 +459,12 @@
       "value": "Actual yield distributed"
     }
   ],
+  "NHPvJD": [
+    {
+      "type": 0,
+      "value": "The daily APY of the current day is usually lower because yield can be dripped multiple times per day"
+    }
+  ],
   "NXFAgE": [
     {
       "type": 0,
