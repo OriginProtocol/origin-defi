@@ -44,6 +44,7 @@ declare module '@mui/material/styles' {
     chart5: string;
     chart6: string;
     chart7: string;
+    chart8: string;
   }
 
   interface PaletteOptions {
@@ -54,6 +55,7 @@ declare module '@mui/material/styles' {
     chart5?: string;
     chart6?: string;
     chart7?: string;
+    chart8?: string;
   }
 
   interface PaletteColor {

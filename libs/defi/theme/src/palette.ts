@@ -64,11 +64,11 @@ export const lightPalette: ThemeOptions = {
     divider: '#D8DEE5',
     chart1: '#586CF8',
     chart2: '#48E4DB',
-    chart3: '#D0246A',
+    chart3: '#426EF7',
     chart4: '#E85BFF',
     chart5: '#E89156',
-    chart6: '#8EA7FF',
-    chart7: '#66C8FF',
+    chart6: '#D0246A',
+    chart7: '#C4CEDB',
   },
 };
 
@@ -134,10 +134,10 @@ export const darkPalette: ThemeOptions = {
     divider: '#282A32',
     chart1: '#586CF8',
     chart2: '#48E4DB',
-    chart3: '#D0246A',
+    chart3: '#426EF7',
     chart4: '#E85BFF',
     chart5: '#FFC298',
-    chart6: '#8EA7FF',
-    chart7: '#66C8FF',
+    chart6: '#D0246A',
+    chart7: '#4E5967',
   },
 };

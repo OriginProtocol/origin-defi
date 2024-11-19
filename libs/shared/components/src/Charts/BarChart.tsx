@@ -1,6 +1,6 @@
 import { Fragment, useId, useState } from 'react';
 
-import { Box, useTheme } from '@mui/material';
+import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
 import { curveCatmullRom } from '@visx/curve';
 import { LinearGradient } from '@visx/gradient';
@@ -176,6 +176,16 @@ export const BarChart = ({
           const barHeight = yScale(d.y);
           const barX = xScale(d.x) as number;
           const barWidth = xScale.bandwidth();
+          const inactiveBarColor = Array.isArray(barColor)
+            ? `url(#gradient-bar-${chartId})`
+            : (barColor ?? theme.palette.primary.main);
+          const actBarColor = activeBarColor
+            ? Array.isArray(activeBarColor)
+              ? `url(#gradient-active-${chartId})`
+              : activeBarColor
+            : theme.palette.mode === 'light'
+              ? darken(inactiveBarColor, 0.3)
+              : lighten(inactiveBarColor, 0.2);
 
           return (
             <Fragment key={`bar-${idx}`}>
@@ -185,15 +195,7 @@ export const BarChart = ({
                 y={barHeight}
                 width={barWidth}
                 height={height - margins.bottom - barHeight}
-                fill={
-                  activeIdx === idx
-                    ? Array.isArray(activeBarColor)
-                      ? `url(#gradient-active-${chartId})`
-                      : (activeBarColor ?? theme.palette.primary.light)
-                    : Array.isArray(barColor)
-                      ? `url(#gradient-bar-${chartId})`
-                      : (barColor ?? theme.palette.primary.main)
-                }
+                fill={activeIdx === idx ? actBarColor : inactiveBarColor}
               />
               <Bar
                 x={barX}

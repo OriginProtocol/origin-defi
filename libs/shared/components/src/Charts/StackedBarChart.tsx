@@ -1,6 +1,6 @@
 import { Fragment, useId, useState } from 'react';
 
-import { alpha, Box, useTheme } from '@mui/material';
+import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisRight } from '@visx/axis';
 import { AxisBottom } from '@visx/axis';
 import { localPoint } from '@visx/event';
@@ -191,7 +191,9 @@ export const StackedBarChart = <Datum,>({
                   theme.palette.primary.main;
                 const activeFillColor =
                   yKeys.find((y) => y.key === bar.key)?.hoverFillColor ??
-                  alpha(fillColor, 0.5) ??
+                  (theme.palette.mode === 'dark'
+                    ? lighten(fillColor, 0.3)
+                    : darken(fillColor, 0.2)) ??
                   theme.palette.primary.light;
 
                 return (

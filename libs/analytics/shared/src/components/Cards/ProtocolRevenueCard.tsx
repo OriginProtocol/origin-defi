@@ -157,9 +157,9 @@ export const ProtocolRevenueCard = ({
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value) => `Ξ${value as number}`}
-          barColor={theme.palette.chart6}
-          activeBarColor={theme.palette.chart4}
-          lineColor={[theme.palette.chart5, theme.palette.chart4]}
+          barColor={theme.palette.chart7}
+          activeBarColor={theme.palette.chart3}
+          lineColor={[theme.palette.chart5, theme.palette.chart2]}
         />
       )}
     </Card>

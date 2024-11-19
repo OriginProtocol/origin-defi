@@ -58,6 +58,6 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     showCirculatingSplit: true,
     protocolRevenueCardDefaultLimit: 30,
     defaultApyTrailing: 'apy7DayAvg',
-    lineChartColor: '#D0246A',
+    lineChartColor: '#7A26F3',
   },
 };

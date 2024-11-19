@@ -107,8 +107,8 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
               },
             )}`
           }
-          barColor={theme.palette.chart6}
-          activeBarColor={theme.palette.chart4}
+          barColor={theme.palette.chart3}
+          activeBarColor={theme.palette.chart8}
           lineColor={[theme.palette.chart5, theme.palette.chart4]}
         />
       )}

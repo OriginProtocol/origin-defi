@@ -247,6 +247,7 @@ export const OgnPerformanceCard = (props: CardProps) => {
               xKey: 'timestamp',
               yKey: 'value',
               color: [theme.palette.chart1, theme.palette.chart2],
+              strokeWidth: 2,
             },
           ]}
           Tooltip={ChartTooltip}

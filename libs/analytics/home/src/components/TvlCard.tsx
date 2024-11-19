@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react';
 
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  emphasize,
+  Stack,
+} from '@mui/material';
 import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
 import {
   ChartTooltip,
@@ -46,7 +53,11 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
               data: value as ChartResult[],
               xKey: 'timestamp',
               yKey: currency === 'ETH' ? 'tvlETH' : 'tvlUSD',
-              color: oTokenConfig[key].lineChartColor,
+              color: [
+                oTokenConfig[key].lineChartColor ?? '#fff',
+                emphasize(oTokenConfig[key].lineChartColor ?? '#fff', 0.5),
+              ],
+              strokeWidth: 2,
             },
           ];
         },
