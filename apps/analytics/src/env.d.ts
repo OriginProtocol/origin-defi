@@ -13,6 +13,8 @@ interface ImportMetaEnv {
   readonly VITE_CUSTOM_ARBITRUM_RPC?: string;
   readonly VITE_CUSTOM_BASE_RPC?: string;
   readonly VITE_CUSTOM_OP_MAINNET_RPC?: string;
+  readonly VITE_STRAPI_URL: string;
+  readonly VITE_STRAPI_API_KEY: string;
 }
 
 interface ImportMeta {

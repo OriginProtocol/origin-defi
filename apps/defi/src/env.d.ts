@@ -15,6 +15,8 @@ interface ImportMetaEnv {
   readonly VITE_CUSTOM_OP_MAINNET_RPC?: string;
   readonly VITE_GTM_CONTAINER_ID?: string;
   readonly VITE_SENTRY_DSN?: string;
+  readonly VITE_STRAPI_URL: string;
+  readonly VITE_STRAPI_API_KEY: string;
 }
 
 interface ImportMeta {

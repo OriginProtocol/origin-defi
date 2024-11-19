@@ -8,6 +8,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { useStrategiesConfig } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { add, compare, div, format, from, gt, toNumber } from 'dnum';
@@ -39,6 +40,11 @@ export const Collaterals = ({ token, currency }: CollateralsProps) => {
   const intl = useIntl();
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const [{ isDrawerOpen }] = useLayout();
+  const { data: strategiesConfigs } = useStrategiesConfig({
+    apiKey: import.meta.env.VITE_STRAPI_API_KEY,
+    url: import.meta.env.VITE_STRAPI_URL,
+  });
+
   const { data, isLoading } = useOTokenStrategiesQuery({
     token: token.address?.toLowerCase() ?? ZERO_ADDRESS,
     chainId: token.chainId,
@@ -52,16 +58,21 @@ export const Collaterals = ({ token, currency }: CollateralsProps) => {
       (acc, curr) => add(acc, curr.amount),
       from(0, 18),
     );
-    const strategies = strategyMapper(data?.strategies, token, {
-      showEmptyBalances: false,
-    });
+    const strategies = strategyMapper(
+      data?.strategies,
+      token,
+      strategiesConfigs,
+      {
+        showEmptyBalances: false,
+      },
+    );
 
     return {
       collaterals,
       totalCollaterals,
       strategies,
     };
-  }, [data?.strategies, token]);
+  }, [data?.strategies, token, strategiesConfigs]);
 
   if (isLoading) {
     return <Spinner sx={{ width: 1, height: 300 }} />;
@@ -127,7 +138,11 @@ export const Collaterals = ({ token, currency }: CollateralsProps) => {
               lg: 4,
             }}
           >
-            <Strategy strategy={s} currency={currency} sx={{ width: 1 }} />
+            <Strategy
+              strategy={s}
+              currency={currency}
+              sx={{ width: 1, height: 1 }}
+            />
           </Grid2>
         ))}
       </Grid2>
@@ -192,9 +207,7 @@ const Strategy = ({ strategy, currency, ...rest }: StrategyProps) => {
     <Card {...rest}>
       <CardContent>
         <Stack spacing={2}>
-          <Typography variant="h6">
-            {intl.formatMessage(strategy.title)}
-          </Typography>
+          <Typography variant="h6">{strategy.title}</Typography>
           <Stack
             direction="row"
             spacing={2}

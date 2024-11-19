@@ -2,13 +2,11 @@ import { getTokenByAddress } from '@origin/shared/contracts';
 import { isAddressEqual, isNilOrEmpty } from '@origin/shared/utils';
 import { add, compare, from } from 'dnum';
 
-import { strategiesConfig } from '../constants';
-
 import type { Token } from '@origin/shared/contracts';
+import type { StrategyConfig } from '@origin/shared/providers';
 import type { HexAddress } from '@origin/shared/utils';
 import type { Dnum } from 'dnum';
 
-import type { StrategyConfig } from '../constants';
 import type { StrategyFragment } from '../queries';
 
 export type StrategyBalanceMapped = {
@@ -25,15 +23,14 @@ export type StrategyMapped = {
 export const strategyMapper = (
   data: StrategyFragment[] | undefined | null,
   token: Token,
+  strategyConfigs?: StrategyConfig[],
   options?: {
-    strategyConfig?: Record<string, StrategyConfig>;
     showEmptyBalances?: boolean;
   },
 ): StrategyMapped[] => {
-  if (!data) return [];
+  if (!data || !strategyConfigs) return [];
 
-  const { strategyConfig = strategiesConfig, showEmptyBalances = false } =
-    options ?? {};
+  const { showEmptyBalances = false } = options ?? {};
 
   const strategyMap = new Map<string, StrategyMapped>();
 
@@ -46,16 +43,16 @@ export const strategyMapper = (
       continue;
     }
 
-    const config = Object.values(strategyConfig).find((c) =>
+    const config = strategyConfigs.find((c) =>
       c.addresses.some((a) => isAddressEqual(a, curr.address as HexAddress)),
     );
 
     if (!config) continue;
 
-    let strategy = strategyMap.get(config.id);
+    let strategy = strategyMap.get(config.id.toString());
     if (!strategy) {
       strategy = { ...config, ...curr, balances: [], total: from(0, 18) };
-      strategyMap.set(config.id, strategy);
+      strategyMap.set(config.id.toString(), strategy);
     }
 
     for (const balance of curr.balances) {
