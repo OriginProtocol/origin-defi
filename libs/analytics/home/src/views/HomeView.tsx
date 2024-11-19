@@ -2,11 +2,7 @@ import { Grid2 } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 
-import { CumulativeProtocolRevenueCard } from '../components/CumulativeProtocolRevenueCard';
-import { OriginTvlCard } from '../components/OriginTvlCard';
 import { TokenCard } from '../components/TokenCard';
-import { TotalProtocolRevenueCard } from '../components/TotalProtocolRevenueCard';
-import { TotalSupplySplitCard } from '../components/TotalSupplySplitCard';
 
 export const HomeView = () => {
   const [{ isDrawerOpen }] = useLayout();
@@ -23,7 +19,7 @@ export const HomeView = () => {
           </Grid2>
         ),
       )}
-      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+      {/* <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
         <OriginTvlCard height={320} />
       </Grid2>
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
@@ -34,7 +30,7 @@ export const HomeView = () => {
       </Grid2>
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
         <CumulativeProtocolRevenueCard height={300} />
-      </Grid2>
+      </Grid2> */}
     </Grid2>
   );
 };
