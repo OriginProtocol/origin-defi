@@ -38,7 +38,15 @@ registerGoogleTagManager();
 
 registerSentry();
 
-const router = createHashRouter(routes);
+const router = createHashRouter(routes, {
+  future: {
+    v7_fetcherPersist: true,
+    v7_relativeSplatPath: true,
+    v7_normalizeFormMethod: true,
+    v7_partialHydration: true,
+    v7_skipActionErrorRevalidation: true,
+  },
+});
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
@@ -63,6 +71,11 @@ root.render(
         },
       ],
     ],
-    <RouterProvider router={router} />,
+    <RouterProvider
+      router={router}
+      future={{
+        v7_startTransition: true,
+      }}
+    />,
   ),
 );

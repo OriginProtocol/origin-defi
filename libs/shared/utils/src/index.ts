@@ -13,3 +13,4 @@ export * from './isNilOrEmpty';
 export * from './maths';
 export * from './types';
 export * from './typescript';
+export * from './url';

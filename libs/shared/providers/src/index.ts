@@ -11,6 +11,7 @@ export * from './prices';
 export * from './redeemer';
 export * from './refresher';
 export * from './slippage';
+export * from './strapi';
 export * from './swapper';
 export * from './theme';
 export * from './txButton';
