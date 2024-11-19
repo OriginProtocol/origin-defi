@@ -1,11 +1,9 @@
 import { useCallback } from 'react';
 
-import { OriginLabel } from '@origin/shared/icons';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { getPercentageDifference, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { add, from, lt, mul, toNumber } from 'dnum';
-import { defineMessage } from 'react-intl';
 import { useConfig } from 'wagmi';
 
 import { oTokenConfig } from '../../constants';
@@ -173,14 +171,15 @@ export const useBalanceSheet = (token: Token) => {
           );
           assets.push({
             strategy: {
-              id: 'dripper',
+              id: 0,
               name: 'Dripper',
-              title: defineMessage({ defaultMessage: 'Dripper' }),
+              title: 'Dripper',
               total: from(todayDailyStat.dripperWETH),
               balances: [],
-              icon: OriginLabel,
+              chainId: 1,
+              icon: '',
               color: '#000',
-              description: defineMessage({ defaultMessage: 'Dripper' }),
+              description: 'Dripper',
               addresses: [],
               contractName: '',
               address: '',

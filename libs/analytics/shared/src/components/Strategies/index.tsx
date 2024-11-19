@@ -6,7 +6,6 @@ import {
   CardContent,
   LinearProgress,
   Stack,
-  SvgIcon,
   Typography,
 } from '@mui/material';
 import { CurrencyLabel, Spinner, TokenIcon } from '@origin/shared/components';
@@ -117,12 +116,12 @@ const StrategyCard = ({
             mb: 1,
           }}
         >
-          <Box>
-            <SvgIcon
-              component={strategy.icon}
-              sx={{ height: 36, width: 1, color: 'text.primary' }}
-            />
-          </Box>
+          <Box
+            component="img"
+            src={strategy.icon}
+            alt={strategy.title}
+            sx={{ height: 36, width: 1, color: 'text.primary' }}
+          />
           <Stack direction="row" spacing={1} sx={{ alignItems: 'baseline' }}>
             <Typography variant="featured2">
               <CurrencyLabel
@@ -209,9 +208,7 @@ const StrategyCard = ({
               );
             })}
         </Stack>
-        <Typography color="text.secondary">
-          {intl.formatMessage(strategy.description)}
-        </Typography>
+        <Typography color="text.secondary">{strategy.description}</Typography>
       </CardContent>
     </Card>
   );

@@ -69,7 +69,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
           {balanceSheet.assets.map((s) => (
             <Stack key={s.strategy.id} sx={{ py: 0.5 }}>
               <BalanceSheetRow
-                titleElement={intl.formatMessage(s.strategy.title)}
+                titleElement={s.strategy.title}
                 titleProps={{ variant: 'body2', sx: { fontWeight: 'bold' } }}
                 sx={{ px: 3, py: 2 }}
               />
