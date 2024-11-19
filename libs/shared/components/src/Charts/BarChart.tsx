@@ -26,6 +26,7 @@ export type BarChartProps = {
   activeBarColor?: ChartColor;
   lineData?: ChartData[];
   lineColor?: ChartColor;
+  lineWidth?: number;
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
@@ -43,6 +44,7 @@ export const BarChart = ({
   activeBarColor,
   lineData,
   lineColor,
+  lineWidth = 3,
   onHover,
   tickXFormat,
   tickYFormat,
@@ -222,7 +224,7 @@ export const BarChart = ({
                 ? `url(#gradient-line-${chartId})`
                 : (lineColor ?? theme.palette.primary.main)
             }
-            strokeWidth={2}
+            strokeWidth={lineWidth}
           />
         )}
       </svg>
