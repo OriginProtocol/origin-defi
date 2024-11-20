@@ -74,7 +74,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Total Value Locked' })}
+        title={intl.formatMessage({ defaultMessage: 'Total Supply' })}
       />
       <Divider />
       <CardContent>
