@@ -78,7 +78,7 @@ export const ProposalDocument = `
     choices
     scores
     quorum
-    logs {
+    logs(limit: 100) {
       id
       hash
       event
@@ -88,7 +88,7 @@ export const ProposalDocument = `
       id
     }
   }
-  ogvProposalVotes(where: {proposal: {id_eq: $proposalId}}) {
+  ogvProposalVotes(limit: 1000, where: {proposal: {id_eq: $proposalId}}) {
     id
     voter {
       id
