@@ -17,6 +17,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
+import { format } from 'date-fns';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -75,6 +76,12 @@ export const PriceCard = ({
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
           <Stack spacing={1}>
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
+              {format(
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
+                'dd MMM yyyy',
+              )}
+            </LoadingLabel>
             <LoadingLabel
               isLoading={isLoading}
               variant="body1"

@@ -85,16 +85,20 @@ export const OethDistributionCard = ({
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
+          <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
             </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
               <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.total ?? 0)}
+              {intl.formatNumber(activeItem?.total ?? 0)}%
             </LoadingLabel>
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
