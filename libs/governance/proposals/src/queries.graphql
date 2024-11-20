@@ -28,7 +28,7 @@ query Proposal($proposalId: String!) {
     choices
     scores
     quorum
-    logs {
+    logs(limit: 100) {
       id
       hash
       event
@@ -38,7 +38,7 @@ query Proposal($proposalId: String!) {
       id
     }
   }
-  ogvProposalVotes(where: { proposal: { id_eq: $proposalId } }) {
+  ogvProposalVotes(limit: 1000, where: { proposal: { id_eq: $proposalId } }) {
     id
     voter {
       id
