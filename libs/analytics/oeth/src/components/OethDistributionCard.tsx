@@ -56,6 +56,12 @@ export const OethDistributionCard = ({
       fillColor: alpha(theme.palette.chart5, 0.4),
     },
     {
+      key: 'base',
+      label: intl.formatMessage({ defaultMessage: 'Base' }),
+      lineColor: theme.palette.chart3,
+      fillColor: alpha(theme.palette.chart3, 0.4),
+    },
+    {
       key: 'mainnet',
       label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
       lineColor: [theme.palette.chart1, theme.palette.chart2],

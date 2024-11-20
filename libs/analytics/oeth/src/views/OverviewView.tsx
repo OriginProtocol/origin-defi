@@ -1,7 +1,12 @@
+import { Card, CardContent, Grid2, Stack } from '@mui/material';
 import { Overview } from '@origin/analytics/shared';
+import { ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
+import { format } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useReadContract } from 'wagmi';
+
+import { OethDistributionCard } from '../components/OethDistributionCard';
 
 export const OverviewView = () => {
   const intl = useIntl();
@@ -29,7 +34,7 @@ export const OverviewView = () => {
 
   return (
     <Overview token={tokens.mainnet.OETH} currency="ETH">
-      {/* <Grid2 size={12}>
+      <Grid2 size={12}>
         <Stack
           sx={{
             border: '1px solid',
@@ -98,7 +103,7 @@ export const OverviewView = () => {
             <OethDistributionCard height={300} />
           </Stack>
         </Stack>
-      </Grid2> */}
+      </Grid2>
     </Overview>
   );
 };
