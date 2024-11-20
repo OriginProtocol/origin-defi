@@ -22,7 +22,12 @@ export const HomeView = () => {
     <Grid2 container spacing={2}>
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
         <Stack spacing={2}>
-          <Controls />
+          <Stack spacing={2}>
+            <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+              {intl.formatMessage({ defaultMessage: 'Protocol Metrics' })}
+            </Typography>
+            <Controls />
+          </Stack>
           <Grid2 container spacing={2}>
             <Grid2 size={{ xs: 12, md: 6 }}>
               <NetAssetsCard height={CHART_HEIGHT} />
