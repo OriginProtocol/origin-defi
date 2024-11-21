@@ -10,9 +10,12 @@ import {
   Stack,
   useTheme,
 } from '@mui/material';
-import { useOgnInfo, useXOgnStakingApy } from '@origin/analytics/shared';
 import {
   ChartTooltip,
+  useOgnInfo,
+  useXOgnStakingApy,
+} from '@origin/analytics/shared';
+import {
   LimitControls,
   LineChart,
   Spinner,

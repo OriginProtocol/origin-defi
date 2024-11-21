@@ -3,6 +3,7 @@ import { useMemo, useState } from 'react';
 import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
 import {
+  ColorLabel,
   CurrencyLabel,
   LoadingLabel,
   Spinner,
@@ -151,24 +152,31 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
 
   if (!activeItem) return null;
 
-  const { timestamp, oeth, ousd, superOeth, total } = activeItem;
+  const { timestamp, oeth, ousd, superOeth } = activeItem;
 
   return (
     <Stack
       spacing={0.5}
       {...rest}
       sx={[
-        { backgroundColor: 'background.default' },
+        { backgroundColor: 'background.default', p: 1 },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Date' })}
+        labelProps={{ variant: 'caption1' }}
         value={format(new Date(timestamp ?? 0), 'dd MMM yyyy')}
         {...valueLabelProps}
       />
       <ValueLabel
-        label={tokens.mainnet.OETH.name}
+        label={
+          <ColorLabel
+            label={tokens.mainnet.OETH.name}
+            color={oTokenConfig['1:OETH'].lineChartColor}
+            labelProps={{ variant: 'caption1' }}
+          />
+        }
         value={intl.formatNumber(oeth ?? 0, {
           notation: 'compact',
           minimumFractionDigits: 2,
@@ -177,7 +185,13 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
         {...valueLabelProps}
       />
       <ValueLabel
-        label={tokens.mainnet.OUSD.name}
+        label={
+          <ColorLabel
+            label={tokens.mainnet.OUSD.name}
+            color={oTokenConfig['1:OUSD'].lineChartColor}
+            labelProps={{ variant: 'caption1' }}
+          />
+        }
         value={intl.formatNumber(ousd ?? 0, {
           notation: 'compact',
           minimumFractionDigits: 2,
@@ -186,17 +200,14 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
         {...valueLabelProps}
       />
       <ValueLabel
-        label={tokens.base.superOETHb.name}
+        label={
+          <ColorLabel
+            label={tokens.base.superOETHb.name}
+            color={oTokenConfig['8453:superOETHb'].lineChartColor}
+            labelProps={{ variant: 'caption1' }}
+          />
+        }
         value={intl.formatNumber(superOeth ?? 0, {
-          notation: 'compact',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: 'Total' })}
-        value={intl.formatNumber(total ?? 0, {
           notation: 'compact',
           minimumFractionDigits: 2,
           maximumFractionDigits: 5,
@@ -211,15 +222,18 @@ const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
   spacing: 1,
   sx: {
-    alignItems: 'baseline',
+    py: 0.25,
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   labelProps: {
+    variant: 'caption1',
     sx: {
       minWidth: 50,
     },
   },
   valueProps: {
+    variant: 'caption1',
     color: 'text.primary',
   },
 };

@@ -11,9 +11,9 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
+import { ChartTooltip } from '@origin/analytics/shared';
 import {
   AreaChart,
-  ChartTooltip,
   CurrencyLabel,
   LimitControls,
   LoadingLabel,

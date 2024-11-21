@@ -9,7 +9,6 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  ChartTooltip,
   LimitControls,
   LineChart,
   LoadingLabel,
@@ -22,6 +21,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { ChartTooltip } from '../Tooltips';
 import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';

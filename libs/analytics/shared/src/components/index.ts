@@ -6,3 +6,4 @@ export * from './Layout';
 export * from './Overview';
 export * from './ProofOfYield';
 export * from './Strategies';
+export * from './Tooltips';

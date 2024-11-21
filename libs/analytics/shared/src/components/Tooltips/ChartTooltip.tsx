@@ -1,13 +1,14 @@
 import { Box, capitalize, Stack, Typography } from '@mui/material';
+import { ValueLabel } from '@origin/shared/components';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { ValueLabel } from '../Labels';
-
 import type { StackProps, TypographyProps } from '@mui/material';
-
-import type { ValueLabelProps } from '../Labels';
-import type { ChartColor, Serie } from './types';
+import type {
+  ChartColor,
+  Serie,
+  ValueLabelProps,
+} from '@origin/shared/components';
 
 export type ChartTooltipProps<ChartData> = {
   series: Serie<ChartData>[] | null;
@@ -30,7 +31,7 @@ export const ChartTooltip = <ChartData,>({
       spacing={0.5}
       {...rest}
       sx={[
-        { backgroundColor: 'background.default' },
+        { backgroundColor: 'background.default', p: 1 },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
@@ -111,15 +112,18 @@ const valueLabelProps: Partial<ValueLabelProps> = {
   direction: 'row',
   spacing: 1,
   sx: {
-    alignItems: 'baseline',
+    py: 0.25,
+    alignItems: 'center',
     justifyContent: 'space-between',
   },
   labelProps: {
+    variant: 'caption1',
     sx: {
       minWidth: 50,
     },
   },
   valueProps: {
+    variant: 'caption1',
     color: 'text.primary',
   },
 };

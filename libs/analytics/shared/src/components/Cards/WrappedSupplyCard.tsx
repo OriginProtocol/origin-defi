@@ -10,7 +10,6 @@ import {
 } from '@mui/material';
 import {
   AreaChart,
-  ChartTooltip,
   LimitControls,
   LoadingLabel,
   Spinner,
@@ -22,6 +21,7 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { ChartTooltip } from '../Tooltips';
 import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps } from '@mui/material';

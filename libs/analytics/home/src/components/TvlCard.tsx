@@ -8,9 +8,12 @@ import {
   emphasize,
   Stack,
 } from '@mui/material';
-import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
 import {
   ChartTooltip,
+  oTokenConfig,
+  useTokensChartStats,
+} from '@origin/analytics/shared';
+import {
   CurrencyLabel,
   LineChart,
   LoadingLabel,
