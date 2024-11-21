@@ -69,7 +69,7 @@ export const AreaChart = <Datum,>({
   Tooltip,
   margins = chartMargins,
   curveType = 'natural',
-  showGrid,
+  showGrid = true,
   ...rest
 }: AreaChartProps<Datum>) => {
   const theme = useTheme();

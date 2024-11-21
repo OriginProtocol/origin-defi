@@ -54,7 +54,7 @@ export const LineChart = <Datum,>({
   yScaleDomain,
   Tooltip,
   margins = chartMargins,
-  showGrid,
+  showGrid = true,
   hideHoverLine,
   ...rest
 }: LineChartProps<Datum>) => {
@@ -148,6 +148,7 @@ export const LineChart = <Datum,>({
   return (
     <Box
       {...rest}
+      key={chartId}
       ref={containerRef}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),

@@ -39,11 +39,12 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const series = useMemo(
     () =>
       data?.totals?.map((d) => ({
-        x: d.timestamp,
-        y: currency === 'USD' ? d.circulatingSupplyUSD : d.circulatingSupplyETH,
+        timestamp: d.timestamp,
+        circulatingSupplyUSD: d.circulatingSupplyUSD,
+        circulatingSupplyETH: d.circulatingSupplyETH,
       })),
 
-    [data, currency],
+    [data?.totals],
   );
 
   const activeItem =
@@ -95,6 +96,10 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
           width={width}
           height={height}
           barData={series ?? []}
+          xKey="timestamp"
+          yKey={
+            currency === 'USD' ? 'circulatingSupplyUSD' : 'circulatingSupplyETH'
+          }
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
@@ -109,7 +114,6 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
           }
           barColor={theme.palette.chart3}
           activeBarColor={theme.palette.chart8}
-          lineColor={[theme.palette.chart5, theme.palette.chart4]}
         />
       )}
     </Card>

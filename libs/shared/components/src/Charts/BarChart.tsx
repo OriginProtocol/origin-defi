@@ -2,76 +2,105 @@ import { Fragment, useId, useState } from 'react';
 
 import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
-import { curveCatmullRom } from '@visx/curve';
+import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleBand, scaleLinear } from '@visx/scale';
 import { Bar, BarRounded, LinePath } from '@visx/shape';
+import {
+  defaultStyles,
+  TooltipWithBounds,
+  useTooltip,
+  useTooltipInPortal,
+} from '@visx/tooltip';
 import { format } from 'date-fns';
 
-import { chartMargins } from './constants';
+import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
 
-import type { BoxProps } from '@mui/material';
+import type { BoxProps, StackProps } from '@mui/material';
 import type { TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
+import type { ComponentType } from 'react';
 
-import type { ChartColor, ChartData } from './types';
+import type { ChartColor, ChartData, Serie } from './types';
 
-export type BarChartProps = {
+export type BarChartProps<Datum = ChartData> = {
   width: number;
   height: number;
-  barData: ChartData[];
+  barData: Datum[];
+  xKey: keyof Datum;
+  yKey: keyof Datum;
   barColor?: ChartColor;
   activeBarColor?: ChartColor;
-  lineData?: ChartData[];
-  lineColor?: ChartColor;
-  lineWidth?: number;
+  lineData?: Serie<Datum>;
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
   tickXLabelProps?: TickLabelProps<NumberLike>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
+  Tooltip?: ComponentType<
+    {
+      activeItem: Datum | null;
+    } & StackProps
+  >;
   margins?: typeof chartMargins;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
-export const BarChart = ({
+export const BarChart = <Datum,>({
   width,
   height,
   barData,
+  xKey,
+  yKey,
   barColor,
   activeBarColor,
   lineData,
-  lineColor,
-  lineWidth = 3,
   onHover,
   tickXFormat,
   tickYFormat,
   tickXLabelProps,
   tickYLabelProps,
   yScaleDomain,
+  Tooltip,
   margins = chartMargins,
   ...rest
-}: BarChartProps) => {
+}: BarChartProps<Datum>) => {
   const theme = useTheme();
   const chartId = useId();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const { containerRef } = useTooltipInPortal({
+    scroll: true,
+    detectBounds: true,
+  });
+  const {
+    showTooltip,
+    tooltipOpen,
+    tooltipLeft = 0,
+    tooltipTop = 0,
+  } = useTooltip<string>({
+    tooltipOpen: true,
+    tooltipLeft: width / 3,
+    tooltipTop: height / 3,
+  });
 
   const xScale = scaleBand({
     range: [margins.left, width - margins.right],
     padding: 0.25,
-    domain: barData.map((d) => d.x),
+    domain: barData.map((d) => d[xKey] as number),
   });
 
   const yScale = scaleLinear({
     range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [0, Math.max(...barData.map((d) => d.y))],
+    domain: yScaleDomain ?? [
+      0,
+      Math.max(...barData.map((d) => d[yKey] as number)),
+    ],
   });
 
   if (!width || !height) return null;
 
-  const rightTicks = yScale.ticks(Math.floor(height / 40));
   const tickXLabel = tickXLabelProps ?? {
     fontSize: 11,
     fontFamily: theme.typography.body1.fontFamily,
@@ -92,11 +121,23 @@ export const BarChart = ({
       return format(date, 'dd MMM');
     });
 
+  const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
+  const activeItem = activeIdx !== null ? barData[activeIdx] : null;
+  const curveLine =
+    curveTypes[
+      lineData?.curveType
+        ? lineData.curveType === 'base'
+          ? 'curveCatmullRom'
+          : lineData.curveType
+        : 'curveCatmullRom'
+    ];
 
   return (
     <Box
       {...rest}
+      key={chartId}
+      ref={containerRef}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
         { position: 'relative' },
@@ -108,11 +149,13 @@ export const BarChart = ({
     >
       <svg width={width} height={height}>
         <defs>
-          {Array.isArray(lineColor) && lineColor.length === 2 ? (
+          {lineData &&
+          Array.isArray(lineData.color) &&
+          lineData.color.length === 2 ? (
             <LinearGradient
               id={`gradient-line-${chartId}`}
-              from={lineColor[0]}
-              to={lineColor[1]}
+              from={lineData.color[0]}
+              to={lineData.color[1]}
               fromOffset="20%"
               toOffset="80%"
               x1="0%"
@@ -175,8 +218,8 @@ export const BarChart = ({
         />
 
         {barData.map((d, idx) => {
-          const barHeight = yScale(d.y);
-          const barX = xScale(d.x) as number;
+          const barHeight = yScale(d[yKey] as number) ?? 0;
+          const barX = xScale(d[xKey] as number) ?? 0;
           const barWidth = xScale.bandwidth();
           const inactiveBarColor = Array.isArray(barColor)
             ? `url(#gradient-bar-${chartId})`
@@ -215,19 +258,58 @@ export const BarChart = ({
         })}
         {lineData && (
           <LinePath
-            data={lineData}
-            curve={curveCatmullRom}
-            x={(d) => (xScale(d.x) as number) + xScale.bandwidth() / 2}
-            y={(d) => yScale(d.y)}
-            stroke={
-              Array.isArray(lineColor)
-                ? `url(#gradient-line-${chartId})`
-                : (lineColor ?? theme.palette.primary.main)
+            data={lineData.data}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            curve={curveLine as any}
+            x={(d) =>
+              (xScale(d[lineData.xKey] as number) ?? 0) + xScale.bandwidth() / 2
             }
-            strokeWidth={lineWidth}
+            y={(d) => yScale(d[lineData.yKey] as number) ?? 0}
+            stroke={
+              Array.isArray(lineData.color)
+                ? `url(#gradient-line-${chartId})`
+                : (lineData.color ?? theme.palette.primary.main)
+            }
+            strokeWidth={lineData.strokeWidth}
           />
         )}
+        {barData.map((d, idx) => {
+          const barX = xScale(d[xKey] as number) ?? 0;
+          const barWidth = xScale.bandwidth();
+
+          return (
+            <Bar
+              key={`bar-${idx}`}
+              x={barX}
+              y={0}
+              width={barWidth}
+              height={height - margins.bottom}
+              fill="transparent"
+              onMouseMove={(event) => {
+                const eventSvgCoords = localPoint(event);
+                setActiveIdx(idx);
+                onHover?.(idx);
+                showTooltip({
+                  tooltipLeft: barX,
+                  tooltipTop: eventSvgCoords?.y,
+                });
+              }}
+            />
+          );
+        })}
       </svg>
+      {Tooltip && tooltipOpen && activeIdx !== null ? (
+        <TooltipWithBounds
+          left={tooltipLeft}
+          top={tooltipTop}
+          style={{
+            ...defaultStyles,
+            background: theme.palette.background.default,
+          }}
+        >
+          <Tooltip activeItem={activeItem} />
+        </TooltipWithBounds>
+      ) : null}
     </Box>
   );
 };

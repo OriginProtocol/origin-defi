@@ -146,7 +146,7 @@ type TooltipContentProps = {
   activeItem: Item | null;
 } & StackProps;
 
-const TooltipContent = ({ activeItem }: TooltipContentProps) => {
+const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
   const intl = useIntl();
 
   if (!activeItem) return null;
@@ -154,7 +154,14 @@ const TooltipContent = ({ activeItem }: TooltipContentProps) => {
   const { timestamp, oeth, ousd, superOeth, total } = activeItem;
 
   return (
-    <Stack>
+    <Stack
+      spacing={0.5}
+      {...rest}
+      sx={[
+        { backgroundColor: 'background.default' },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
       <ValueLabel
         label={intl.formatMessage({ defaultMessage: 'Date' })}
         value={format(new Date(timestamp ?? 0), 'dd MMM yyyy')}

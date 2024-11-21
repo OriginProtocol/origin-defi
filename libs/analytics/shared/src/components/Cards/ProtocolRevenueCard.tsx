@@ -20,7 +20,7 @@ import {
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
-import { last, takeLast } from 'ramda';
+import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
@@ -53,26 +53,16 @@ export const ProtocolRevenueCard = ({
   const [ma, setMa] = useState<MovingAvg>('feesMovingAvg30Days');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats(
-    { token, limit, from: from ?? config?.from, offset: 1 },
-    { select: (data) => data.map((d) => ({ x: d.timestamp, y: d.feesETH })) },
-  );
-  const { data: feesAvgData, isLoading: isFeesAvgLoading } = useTokenChartStats(
-    { token, limit, offset: 1 },
-    {
-      select: (data) =>
-        takeLast(
-          feesData?.length ?? 0,
-          data.map((d) => ({ x: d.timestamp, y: d?.[ma] ?? 0 })),
-        ),
-    },
-  );
+  const { data: feesData, isLoading: isFeesLoading } = useTokenChartStats({
+    token,
+    limit,
+    from: from ?? config?.from,
+    offset: 1,
+  });
 
   const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(feesData ?? []) : feesData?.[hoverIdx];
-  const activeMAItem =
-    hoverIdx === null ? last(feesAvgData ?? []) : feesAvgData?.[hoverIdx];
 
   return (
     <Card {...rest} ref={ref}>
@@ -91,22 +81,19 @@ export const ProtocolRevenueCard = ({
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
           <Stack spacing={1}>
-            <LoadingLabel
-              isLoading={isFeesLoading || isFeesAvgLoading}
-              color="text.secondary"
-            >
+            <LoadingLabel isLoading={isFeesLoading} color="text.secondary">
               {format(
-                new Date(activeItem?.x ?? new Date().getTime()),
+                new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
             <LoadingLabel
-              isLoading={isFeesLoading || isFeesAvgLoading}
+              isLoading={isFeesLoading}
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
               <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.y ?? 0)}
+              {intl.formatNumber(activeItem?.feesETH ?? 0)}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
@@ -137,7 +124,7 @@ export const ProtocolRevenueCard = ({
             </Typography>
             <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
               <CurrencyLabel currency="ETH" />
-              {intl.formatNumber((activeMAItem?.y as number) ?? 0, {
+              {intl.formatNumber((activeItem?.[ma] as number) ?? 0, {
                 notation: 'compact',
                 minimumFractionDigits: 2,
               })}
@@ -145,21 +132,28 @@ export const ProtocolRevenueCard = ({
           </Stack>
         </Stack>
       </CardContent>
-      {isFeesLoading || isFeesAvgLoading ? (
+      {isFeesLoading ? (
         <Spinner sx={{ width, height }} />
       ) : (
         <BarChart
           width={width}
           height={height}
           barData={feesData ?? []}
-          lineData={feesAvgData ?? []}
+          xKey="timestamp"
+          yKey="feesETH"
+          lineData={{
+            data: feesData ?? [],
+            xKey: 'timestamp',
+            yKey: ma,
+            color: [theme.palette.chart5, theme.palette.chart2],
+            strokeWidth: 3,
+          }}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           tickYFormat={(value) => `Ξ${value as number}`}
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
-          lineColor={[theme.palette.chart5, theme.palette.chart2]}
         />
       )}
     </Card>

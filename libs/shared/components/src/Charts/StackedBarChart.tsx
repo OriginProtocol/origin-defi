@@ -4,14 +4,20 @@ import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisRight } from '@visx/axis';
 import { AxisBottom } from '@visx/axis';
 import { localPoint } from '@visx/event';
+import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleLinear, scaleOrdinal } from '@visx/scale';
 import { scaleBand } from '@visx/scale';
-import { Bar, BarRounded, BarStack } from '@visx/shape';
-import { defaultStyles, TooltipWithBounds, useTooltip } from '@visx/tooltip';
+import { Bar, BarRounded, BarStack, LinePath } from '@visx/shape';
+import {
+  defaultStyles,
+  TooltipWithBounds,
+  useTooltip,
+  useTooltipInPortal,
+} from '@visx/tooltip';
 import { format } from 'date-fns';
 
-import { chartMargins } from './constants';
+import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
@@ -19,7 +25,7 @@ import type { TickFormatter, TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
 import type { ComponentType } from 'react';
 
-import type { ChartData } from './types';
+import type { ChartData, Serie } from './types';
 
 export type YKeyStackedBar<Datum = ChartData> = {
   key: keyof Datum;
@@ -40,6 +46,7 @@ export type StackedBarChartProps<Datum = ChartData> = {
   tickXLabelProps?: TickLabelProps<string>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
+  lineData?: Serie<Datum>;
   Tooltip?: ComponentType<
     {
       activeItem: Datum | null;
@@ -64,6 +71,7 @@ export const StackedBarChart = <Datum,>({
   tickXLabelProps,
   tickYLabelProps,
   yScaleDomain,
+  lineData,
   Tooltip,
   margins = chartMargins,
   barPadding = 0.25,
@@ -73,6 +81,10 @@ export const StackedBarChart = <Datum,>({
   const theme = useTheme();
   const chartId = useId();
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
+  const { containerRef } = useTooltipInPortal({
+    scroll: true,
+    detectBounds: true,
+  });
   const {
     showTooltip,
     tooltipOpen,
@@ -131,14 +143,23 @@ export const StackedBarChart = <Datum,>({
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
   const activeItem = activeIdx !== null ? barData[activeIdx] : null;
+  const curveLine =
+    curveTypes[
+      lineData?.curveType
+        ? lineData.curveType === 'base'
+          ? 'curveCatmullRom'
+          : lineData.curveType
+        : 'curveCatmullRom'
+    ];
 
   return (
     <Box
       {...rest}
       key={chartId}
+      ref={containerRef}
       sx={[
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
-        { height, width, position: 'relative' },
+        { position: 'relative' },
       ]}
       onMouseLeave={() => {
         setActiveIdx(null);
@@ -146,6 +167,23 @@ export const StackedBarChart = <Datum,>({
       }}
     >
       <svg width={width} height={height}>
+        <defs>
+          {lineData &&
+          Array.isArray(lineData.color) &&
+          lineData.color.length === 2 ? (
+            <LinearGradient
+              id={`gradient-line-${chartId}`}
+              from={lineData.color[0]}
+              to={lineData.color[1]}
+              fromOffset="20%"
+              toOffset="80%"
+              x1="0%"
+              x2="100%"
+              y1="0%"
+              y2="0%"
+            />
+          ) : null}
+        </defs>
         <AxisRight
           scale={yScale}
           left={width - margins.right}
@@ -213,43 +251,60 @@ export const StackedBarChart = <Datum,>({
             )
           }
         </BarStack>
+        {lineData && (
+          <LinePath
+            data={lineData.data}
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            curve={curveLine as any}
+            x={(d) =>
+              (xScale(d[lineData.xKey] as string) ?? 0) + xScale.bandwidth() / 2
+            }
+            y={(d) => yScale(d[lineData.yKey] as number) ?? 0}
+            stroke={
+              Array.isArray(lineData.color)
+                ? `url(#gradient-line-${chartId})`
+                : (lineData.color ?? theme.palette.primary.main)
+            }
+            strokeWidth={lineData.strokeWidth}
+          />
+        )}
         {barData.map((d, idx) => {
           const barX = xScale(d[xKey] as string) as number;
           const barWidth = xScale.bandwidth();
 
           return (
-            <Fragment key={`bar-${idx}`}>
-              <Bar
-                x={barX}
-                y={0}
-                width={barWidth}
-                height={height - margins.bottom}
-                fill="transparent"
-                onMouseMove={(event) => {
-                  const eventSvgCoords = localPoint(event);
-                  setActiveIdx(idx);
-                  showTooltip({
-                    tooltipLeft: barX,
-                    tooltipTop: eventSvgCoords?.y,
-                  });
-                }}
-              />
-            </Fragment>
+            <Bar
+              key={`bar-${idx}`}
+              x={barX}
+              y={0}
+              width={barWidth}
+              height={height - margins.bottom}
+              fill="transparent"
+              onMouseMove={(event) => {
+                const eventSvgCoords = localPoint(event);
+                setActiveIdx(idx);
+                onHover?.(idx);
+                showTooltip({
+                  tooltipLeft: barX,
+                  tooltipTop: eventSvgCoords?.y,
+                });
+              }}
+            />
           );
         })}
-        {Tooltip && tooltipOpen && activeIdx !== null ? (
-          <TooltipWithBounds
-            left={tooltipLeft}
-            top={tooltipTop}
-            style={{
-              ...defaultStyles,
-              background: theme.palette.background.default,
-            }}
-          >
-            <Tooltip activeItem={activeItem} xKey={xKey} yKeys={yKeys} />
-          </TooltipWithBounds>
-        ) : null}
       </svg>
+      {Tooltip && tooltipOpen && activeIdx !== null ? (
+        <TooltipWithBounds
+          left={tooltipLeft}
+          top={tooltipTop}
+          style={{
+            ...defaultStyles,
+            background: theme.palette.background.default,
+          }}
+        >
+          <Tooltip activeItem={activeItem} xKey={xKey} yKeys={yKeys} />
+        </TooltipWithBounds>
+      ) : null}
     </Box>
   );
 };
