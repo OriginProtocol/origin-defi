@@ -1,4 +1,4 @@
-import { capitalize, Stack } from '@mui/material';
+import { capitalize, Stack, Typography } from '@mui/material';
 import { ColorLabel, ValueLabel } from '@origin/shared/components';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
@@ -22,8 +22,8 @@ export const ChartTooltip = <ChartData,>({
 
   return (
     <Stack
-      spacing={0.5}
       {...rest}
+      useFlexGap
       sx={[
         {
           backgroundColor: 'background.default',
@@ -31,19 +31,17 @@ export const ChartTooltip = <ChartData,>({
           border: '1px solid',
           borderColor: 'common.white',
           borderRadius: 3,
+          gap: 0.5,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: 'Date' })}
-        labelProps={valueLabelProps.labelProps}
-        value={format(
+      <Typography variant="caption1" color="text.secondary" gutterBottom>
+        {format(
           new Date(series[0].data[0]?.[series[0].xKey] as number),
           'dd MMM yyyy',
         )}
-        {...valueLabelProps}
-      />
+      </Typography>
       {series.map((s, i) => (
         <ValueLabel
           key={`tooltip-serie-${i}`}

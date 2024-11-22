@@ -1,6 +1,13 @@
 import { useMemo, useState } from 'react';
 
-import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { oTokenConfig, useTokensChartStats } from '@origin/analytics/shared';
 import {
   ColorLabel,
@@ -156,8 +163,8 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
 
   return (
     <Stack
-      spacing={0.5}
       {...rest}
+      useFlexGap
       sx={[
         {
           backgroundColor: 'background.default',
@@ -165,16 +172,14 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
           border: '1px solid',
           borderColor: 'common.white',
           borderRadius: 3,
+          gap: 0.5,
         },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: 'Date' })}
-        labelProps={{ variant: 'caption1' }}
-        value={format(new Date(timestamp ?? 0), 'dd MMM yyyy')}
-        {...valueLabelProps}
-      />
+      <Typography variant="caption1" color="text.secondary" gutterBottom>
+        {format(new Date(timestamp ?? 0), 'dd MMM yyyy')}
+      </Typography>
       <ValueLabel
         label={
           <ColorLabel
