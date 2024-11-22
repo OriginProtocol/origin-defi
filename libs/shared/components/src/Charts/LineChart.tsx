@@ -252,7 +252,7 @@ export const LineChart = <Datum,>({
           top={tooltipTop}
           style={{
             ...defaultStyles,
-            background: theme.palette.background.default,
+            background: 'transparent',
           }}
         >
           <Tooltip series={activeSeries} />

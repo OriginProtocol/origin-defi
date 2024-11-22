@@ -299,7 +299,7 @@ export const StackedBarChart = <Datum,>({
           top={tooltipTop}
           style={{
             ...defaultStyles,
-            background: theme.palette.background.default,
+            background: 'transparent',
           }}
         >
           <Tooltip activeItem={activeItem} xKey={xKey} yKeys={yKeys} />

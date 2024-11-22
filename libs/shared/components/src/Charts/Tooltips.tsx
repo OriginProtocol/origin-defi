@@ -1,13 +1,13 @@
-import { Box, capitalize, Stack, Typography } from '@mui/material';
+import { capitalize, Stack } from '@mui/material';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { ValueLabel } from '../Labels';
+import { ColorLabel, ValueLabel } from '../Labels';
 
 import type { StackProps, TypographyProps } from '@mui/material';
 
 import type { ValueLabelProps } from '../Labels';
-import type { ChartColor, Serie } from './types';
+import type { Serie } from './types';
 
 export type ChartTooltipProps<ChartData> = {
   series: Serie<ChartData>[] | null;
@@ -30,7 +30,13 @@ export const ChartTooltip = <ChartData,>({
       spacing={0.5}
       {...rest}
       sx={[
-        { backgroundColor: 'background.default' },
+        {
+          backgroundColor: 'background.default',
+          p: 1,
+          border: '1px solid',
+          borderColor: 'common.white',
+          borderRadius: 3,
+        },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
@@ -61,48 +67,6 @@ export const ChartTooltip = <ChartData,>({
           {...valueLabelProps}
         />
       ))}
-    </Stack>
-  );
-};
-
-export type ColorLabelProps = {
-  color?: ChartColor;
-  label: string;
-  labelProps?: TypographyProps;
-  colorMarkSize?: number;
-} & StackProps;
-
-export const ColorLabel = ({
-  color,
-  label,
-  labelProps,
-  colorMarkSize = 15,
-  ...rest
-}: ColorLabelProps) => {
-  return (
-    <Stack
-      direction="row"
-      spacing={1}
-      {...rest}
-      sx={[
-        { alignItems: 'center' },
-        ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-      ]}
-    >
-      {color && (
-        <Box
-          sx={{
-            width: colorMarkSize,
-            height: colorMarkSize,
-            borderRadius: '50%',
-            background:
-              Array.isArray(color) && color.length === 2
-                ? `linear-gradient(90deg, ${color?.[0]}, ${color[1]});`
-                : color,
-          }}
-        />
-      )}
-      <Typography {...labelProps}>{label}</Typography>
     </Stack>
   );
 };

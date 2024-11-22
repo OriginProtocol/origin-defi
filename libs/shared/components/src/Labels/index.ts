@@ -1,3 +1,4 @@
+export * from './ColorLabel';
 export * from './CurrencyLabel';
 export * from './ErrorTooltipLabel';
 export * from './InfoTooltipLabel';

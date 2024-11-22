@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import {
   BarChart,
+  ColorLabel,
   CurrencyLabel,
   LimitControls,
   LoadingLabel,
@@ -26,7 +27,6 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
-import { ColorLabel } from '../Tooltips';
 import { CHART_HEADER_HEIGHT } from './constants';
 
 import type { CardProps, StackProps } from '@mui/material';
@@ -175,15 +175,20 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
 
   if (!activeItem) return null;
 
-  const { timestamp, feesETH, feesMovingAvg7Days, feesMovingAvg30Days } =
-    activeItem;
+  const { timestamp, feesETH } = activeItem;
 
   return (
     <Stack
       spacing={0.5}
       {...rest}
       sx={[
-        { backgroundColor: 'background.default', p: 1 },
+        {
+          backgroundColor: 'background.default',
+          p: 1,
+          border: '1px solid',
+          borderColor: 'common.white',
+          borderRadius: 3,
+        },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
@@ -202,22 +207,6 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
           />
         }
         value={intl.formatNumber(feesETH ?? 0, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: '7 day avg' })}
-        value={intl.formatNumber(feesMovingAvg7Days ?? 0, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={intl.formatMessage({ defaultMessage: '30 day avg' })}
-        value={intl.formatNumber(feesMovingAvg30Days ?? 0, {
           minimumFractionDigits: 2,
           maximumFractionDigits: 5,
         })}

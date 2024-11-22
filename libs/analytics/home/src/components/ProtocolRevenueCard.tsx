@@ -159,7 +159,13 @@ const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
       spacing={0.5}
       {...rest}
       sx={[
-        { backgroundColor: 'background.default', p: 1 },
+        {
+          backgroundColor: 'background.default',
+          p: 1,
+          border: '1px solid',
+          borderColor: 'common.white',
+          borderRadius: 3,
+        },
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
