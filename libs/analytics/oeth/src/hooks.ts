@@ -14,6 +14,7 @@ import type { WoethArbitrumByDayQuery } from './queries.generated';
 export type TvlCombined = {
   mainnet: number;
   arbitrum: number;
+  base: number;
   total: number;
   timestamp: number;
 };
@@ -54,7 +55,7 @@ export const useOethDistribution = (limit?: number) => {
         const mainnet = curr.totalSupply;
 
         const arbTotalSupply =
-          data[1]?.erc20StateByDay.find(
+          data[1]?.arbitrum.find(
             (d) =>
               d.day.substring(0, 9) ===
               new Date(curr.timestamp).toISOString().substring(0, 9),
@@ -63,13 +64,24 @@ export const useOethDistribution = (limit?: number) => {
           BigInt(arbTotalSupply),
           tokens.arbitrum.wOETH.decimals,
         ]);
+        const baseTotalSupply =
+          data[1]?.base.find(
+            (d) =>
+              d.day.substring(0, 9) ===
+              new Date(curr.timestamp).toISOString().substring(0, 9),
+          )?.totalSupply ?? 0;
+        const base = toNumber([
+          BigInt(baseTotalSupply),
+          tokens.arbitrum.wOETH.decimals,
+        ]);
 
         return [
           ...acc,
           {
             mainnet,
             arbitrum,
-            total: mainnet + arbitrum,
+            base,
+            total: mainnet + arbitrum + base,
             timestamp: curr.timestamp,
           },
         ];

@@ -56,6 +56,12 @@ export const OethDistributionCard = ({
       fillColor: alpha(theme.palette.chart5, 0.4),
     },
     {
+      key: 'base',
+      label: intl.formatMessage({ defaultMessage: 'Base' }),
+      lineColor: theme.palette.chart3,
+      fillColor: alpha(theme.palette.chart3, 0.4),
+    },
+    {
       key: 'mainnet',
       label: intl.formatMessage({ defaultMessage: 'Ethereum' }),
       lineColor: [theme.palette.chart1, theme.palette.chart2],
@@ -79,16 +85,20 @@ export const OethDistributionCard = ({
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
         >
-          <Stack spacing={0.5}>
+          <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd/MM/yyyy',
+                'dd MMM yyyy',
               )}
             </LoadingLabel>
-            <LoadingLabel isLoading={isLoading} sx={{ fontWeight: 'bold' }}>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
               <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.total ?? 0)}
+              {intl.formatNumber(activeItem?.total ?? 0)}%
             </LoadingLabel>
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />

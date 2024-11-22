@@ -4,7 +4,7 @@ import type { SwapRoute } from '@origin/shared/providers';
 
 import type { DepositARMAction } from './types';
 
-export const APY_TRAILING = 7;
+export const APY_TRAILING = 30;
 
 export const armSwapRoutes: SwapRoute<DepositARMAction>[] = [
   {
