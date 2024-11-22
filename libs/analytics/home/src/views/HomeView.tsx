@@ -1,5 +1,6 @@
 import { Grid2, Stack, Typography } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
+import { ExternalLink } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { CirculatingSupplyCard } from '../components/CirculatingSupplyCard';
@@ -23,9 +24,23 @@ export const HomeView = () => {
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 8, lg: 8 }}>
         <Stack spacing={2}>
           <Stack spacing={2}>
-            <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
-              {intl.formatMessage({ defaultMessage: 'Protocol Metrics' })}
-            </Typography>
+            <Stack
+              direction="row"
+              sx={{ alignItems: 'baseline', justifyContent: 'space-between' }}
+            >
+              <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+                {intl.formatMessage({ defaultMessage: 'Protocol Metrics' })}
+              </Typography>
+              <ExternalLink
+                href="https://www.originprotocol.com/#mailing"
+                color="primary.main"
+                iconType="arrow"
+              >
+                {intl.formatMessage({
+                  defaultMessage: 'Subscribe to our weekly analytics email',
+                })}
+              </ExternalLink>
+            </Stack>
             <Controls />
           </Stack>
           <Grid2 container spacing={2}>
