@@ -60,4 +60,13 @@ export const oTokenConfig: Record<string, OTokenConfig> = {
     defaultApyTrailing: 'apy7DayAvg',
     lineChartColor: '#7A26F3',
   },
+  [tokens.mainnet['ARM-WETH-stETH'].id]: {
+    from: '2024-08-28T00:00:00.000000Z',
+    availableNetworks: [mainnet],
+    dappHref: `${ORIGIN_DAPP_URL}/#/arm/steth-redemption-vault`,
+    dripperToken: tokens.base.WETH,
+    protocolRevenueCardDefaultLimit: 30,
+    defaultApyTrailing: 'apy30DayAvg',
+    lineChartColor: '#E85BFF',
+  },
 };
