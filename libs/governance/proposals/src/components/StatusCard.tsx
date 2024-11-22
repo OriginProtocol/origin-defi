@@ -19,7 +19,7 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { ascend, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 import { useProposalQuery } from '../queries.generated';
 

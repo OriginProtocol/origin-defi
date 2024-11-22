@@ -7,7 +7,7 @@ import {
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { useCurve } from '@origin/shared/providers';
 import { TrackingProvider } from '@origin/shared/providers';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import { Topnav } from './components/Topnav';
 

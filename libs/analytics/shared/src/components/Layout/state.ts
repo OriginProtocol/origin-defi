@@ -12,7 +12,7 @@ import {
   VIEWPORT_MIN_WIDTH,
 } from './constants';
 
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 import type { LayoutState } from './types';
 

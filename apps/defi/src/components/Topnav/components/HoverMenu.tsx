@@ -17,14 +17,14 @@ import {
 } from '@origin/shared/icons';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link, useMatch, useNavigate } from 'react-router-dom';
+import { Link, useMatch, useNavigate } from 'react-router';
 
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
 import type { ButtonProps, MenuItemProps } from '@mui/material';
 import type { Dispatch, KeyboardEvent, SetStateAction } from 'react';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 

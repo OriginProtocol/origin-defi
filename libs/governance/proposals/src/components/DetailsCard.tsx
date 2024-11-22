@@ -26,7 +26,7 @@ import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useReadContract } from 'wagmi';
 
 import { useProposalQuery } from '../queries.generated';

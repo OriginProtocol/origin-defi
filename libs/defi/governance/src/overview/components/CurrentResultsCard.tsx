@@ -15,7 +15,7 @@ import { contracts, tokens } from '@origin/shared/contracts';
 import { TxButton, useFormat } from '@origin/shared/providers';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { governanceChoices, governanceSupport } from '../constants';

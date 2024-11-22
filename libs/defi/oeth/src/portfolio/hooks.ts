@@ -9,7 +9,7 @@ import { tokens } from '@origin/shared/contracts';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { sortBy, uniq } from 'ramda';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import type {

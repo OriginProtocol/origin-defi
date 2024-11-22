@@ -34,14 +34,14 @@ import { AddressLabel, OpenAccountModalButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useMatch } from 'react-router-dom';
+import { Link as RouterLink, useMatch } from 'react-router';
 import { formatUnits } from 'viem';
 import { useAccount, useDisconnect, useWalletClient } from 'wagmi';
 
 import { routes } from '../routes';
 
 import type { BoxProps, StackProps } from '@mui/material';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export function Topnav(props: BoxProps) {
   const theme = useTheme();

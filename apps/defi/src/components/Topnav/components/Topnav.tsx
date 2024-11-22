@@ -26,7 +26,7 @@ import {
 } from '@origin/shared/providers';
 import { not } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { AccountPopover } from './AccountPopover';

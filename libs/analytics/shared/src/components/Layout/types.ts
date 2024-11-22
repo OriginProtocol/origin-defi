@@ -1,7 +1,7 @@
 import type { SvgIconProps } from '@mui/material';
 import type { ComponentType } from 'react';
 import type { MessageDescriptor } from 'react-intl';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export type LayoutState = {
   isDrawerOpen: boolean;

@@ -23,7 +23,7 @@ import { useFormat } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { descend, sort, take, zip } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router';
 
 import { useProposals } from '../hooks';
 import { ProposalTypeBadge } from './ProposalTypeBadge';

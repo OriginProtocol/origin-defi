@@ -21,7 +21,7 @@ import { defineMessage } from 'react-intl';
 
 import { App } from './App';
 
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export const routes: RouteObject[] = [
   {

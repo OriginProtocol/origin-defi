@@ -6,7 +6,7 @@ import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { addMinutes, isAfter } from 'date-fns';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAccount, useConfig } from 'wagmi';
 
 import { WITHDRAW_DELAY } from './constants';

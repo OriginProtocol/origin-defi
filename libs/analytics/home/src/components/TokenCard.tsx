@@ -8,7 +8,7 @@ import {
 } from '@origin/shared/components';
 import { from, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 import type { CardProps } from '@mui/material';
 import type { Token } from '@origin/shared/contracts';

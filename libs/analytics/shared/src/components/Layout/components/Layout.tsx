@@ -2,8 +2,8 @@ import { Button, Drawer, Stack, useMediaQuery, useTheme } from '@mui/material';
 import { OriginProductIcon } from '@origin/shared/components';
 import { FaArrowUpRightRegular, FaBarsRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
-import { Outlet } from 'react-router-dom';
-import { Link as RouterLink } from 'react-router-dom';
+import { Outlet } from 'react-router';
+import { Link as RouterLink } from 'react-router';
 
 import { Breadcrumbs } from '../../Breadcrumbs';
 import {
@@ -17,7 +17,7 @@ import { LayoutProvider } from '../state';
 import { DrawerMenu } from './DrawerMenu';
 import { LeftDrawer } from './LeftDrawer';
 
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export type LayoutProps = { routes: RouteObject[] };
 

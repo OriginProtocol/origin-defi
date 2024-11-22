@@ -12,7 +12,7 @@ import {
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
 import { ascend, last, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { useProposalQuery } from '../queries.generated';
 import { parseProposalContent } from '../utils';

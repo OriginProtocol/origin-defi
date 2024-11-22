@@ -1,12 +1,12 @@
 import { Card, Divider, Link, Stack } from '@mui/material';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, Outlet, useMatch } from 'react-router-dom';
+import { Link as RouterLink, Outlet, useMatch } from 'react-router';
 
 import { PastClaimsCard } from '../components/PastClaimsCard';
 import { restakeRoute } from '../routes';
 
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export const RestakeView = () => {
   return (

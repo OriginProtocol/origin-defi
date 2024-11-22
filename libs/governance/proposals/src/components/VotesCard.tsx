@@ -17,7 +17,7 @@ import { AddressLabel, useFormat, UserAvatar } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { groupBy, prop, take } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { formatUnits } from 'viem';
 
 import { governanceChoices } from '../constants';

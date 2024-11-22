@@ -8,7 +8,7 @@ import {
 } from '@origin/prime/shared';
 import { ErrorBoundary, ErrorCard, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider, useReferrerTracker } from '@origin/shared/providers';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import { Topnav } from './components/Topnav';
 
