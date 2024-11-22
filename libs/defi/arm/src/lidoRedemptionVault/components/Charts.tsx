@@ -43,7 +43,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(30);
-  const [trailing, setTrailing] = useState<Trailing>('apy7');
+  const [trailing, setTrailing] = useState<Trailing>('apy30');
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
 
