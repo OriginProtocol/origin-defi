@@ -2,7 +2,7 @@ import { Box, Button, Divider, Stack, Typography } from '@mui/material';
 import { ExternalLink } from '@origin/shared/components';
 import { YieldNestInverted } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 import type { StackProps } from '@mui/material';
 

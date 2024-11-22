@@ -6,7 +6,7 @@ import { isFulfilled, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContract } from '@wagmi/core';
 import { addSeconds, isAfter } from 'date-fns';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { useAccount, useConfig } from 'wagmi';
 
 import type { HexAddress } from '@origin/shared/utils';

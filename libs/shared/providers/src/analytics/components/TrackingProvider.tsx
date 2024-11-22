@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import type { Children, HexAddress } from '@origin/shared/utils';

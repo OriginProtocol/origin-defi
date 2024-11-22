@@ -17,7 +17,7 @@ import { useTokenPrice } from '@origin/shared/providers';
 import { isNilOrEmpty, ZERO_ADDRESS } from '@origin/shared/utils';
 import { format, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { useMatch } from 'react-router-dom';
+import { useMatch } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { useUserWithdrawalsQuery } from '../queries.generated';

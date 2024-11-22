@@ -3,7 +3,7 @@ import { useCallback } from 'react';
 import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { produce } from 'immer';
-import { useMatch } from 'react-router-dom';
+import { useMatch } from 'react-router';
 
 import { oTokenConfig } from '../../constants';
 import { useLayoutState } from './state';

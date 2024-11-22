@@ -8,7 +8,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
 import { addMinutes, isAfter } from 'date-fns';
 import { from, mul } from 'dnum';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { parseUnits } from 'viem';
 import { useAccount, useConfig } from 'wagmi';
 

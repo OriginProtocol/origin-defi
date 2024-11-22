@@ -5,7 +5,7 @@ import { ClaimView } from './views/ClaimView';
 import { RestakeView } from './views/RestakeView';
 import { WithdrawView } from './views/WithdrawView';
 
-import type { NonIndexRouteObject } from 'react-router-dom';
+import type { NonIndexRouteObject } from 'react-router';
 
 export const restakeRoute: NonIndexRouteObject = {
   path: '/restake',

@@ -21,7 +21,7 @@ import { useRefresher } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { useUserActiveRequestsQuery } from '../queries.generated';

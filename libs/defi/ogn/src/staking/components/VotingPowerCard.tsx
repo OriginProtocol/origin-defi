@@ -18,7 +18,7 @@ import { getTokenIconUrl, tokens } from '@origin/shared/contracts';
 import { useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { formatUnits } from 'viem';
 import { useAccount, useWalletClient } from 'wagmi';
 

@@ -28,7 +28,7 @@ import {
 } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 import { oTokenConfig } from '../../constants';
 import { useOTokenStatsConnectionQuery } from '../../queries';

@@ -30,7 +30,7 @@ import {
 import { getFormatPrecision, includes } from '@origin/shared/utils';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import type { StackProps, TypographyProps } from '@mui/material';

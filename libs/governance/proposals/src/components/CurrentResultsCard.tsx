@@ -15,7 +15,7 @@ import { TransactionButton, useFormat } from '@origin/shared/providers';
 import { ZERO_ADDRESS } from '@origin/shared/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { useIntl } from 'react-intl';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 

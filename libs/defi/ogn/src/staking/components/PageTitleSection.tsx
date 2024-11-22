@@ -8,7 +8,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 
 import type { StackProps } from '@mui/material';
 

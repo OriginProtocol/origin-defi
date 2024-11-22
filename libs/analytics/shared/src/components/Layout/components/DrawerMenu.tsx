@@ -23,13 +23,13 @@ import {
 import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useMatch, useNavigate } from 'react-router';
 
 import { useLayout } from '../hooks';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
 import type { MouseEvent } from 'react';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 

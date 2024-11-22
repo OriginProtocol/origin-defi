@@ -2,7 +2,7 @@ import { Stack } from '@mui/material';
 import { trackEvent, trackPage, trackSentryError } from '@origin/defi/shared';
 import { ErrorBoundary, ErrorPage } from '@origin/shared/components';
 import { TrackingProvider } from '@origin/shared/providers';
-import { Outlet } from 'react-router-dom';
+import { Outlet } from 'react-router';
 
 import { Topnav } from './components/Topnav';
 

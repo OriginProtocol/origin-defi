@@ -2,11 +2,11 @@ import { DashboardView } from '@origin/prime/dashboard';
 import { restakeRoute } from '@origin/prime/restake';
 import { NotFoundPage } from '@origin/shared/components';
 import { defineMessage } from 'react-intl';
-import { Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router';
 
 import { App } from './App';
 
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 export const routes: RouteObject[] = [
   {

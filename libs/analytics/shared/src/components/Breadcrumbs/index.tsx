@@ -6,7 +6,7 @@ import {
 } from '@mui/material';
 import { hasKey } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useMatches } from 'react-router-dom';
+import { Link as RouterLink, useMatches } from 'react-router';
 
 import type { BreadcrumbsProps } from '@mui/material';
 

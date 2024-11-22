@@ -43,7 +43,7 @@ import { millisecondsInHour } from 'date-fns/constants';
 import { formatInTimeZone } from 'date-fns-tz';
 import { sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useParams } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router';
 
 import { oTokenConfig } from '../../constants';
 import { OTokenDailyStatOrderByInput } from '../../generated/graphql';

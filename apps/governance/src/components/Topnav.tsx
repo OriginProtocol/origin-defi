@@ -19,7 +19,7 @@ import {
 } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { routes } from '../routes';

@@ -20,7 +20,7 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { take } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link, useSearchParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router';
 import { useAccount } from 'wagmi';
 
 import { useUserVotes } from '../hooks';

@@ -6,7 +6,7 @@ import {
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router';
 import { base } from 'viem/chains';
 
 import { useTokenInfo } from '../../hooks';

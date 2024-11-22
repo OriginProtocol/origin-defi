@@ -9,7 +9,7 @@ import { FaChevronLeftRegular } from '@origin/shared/icons';
 import { AddressLabel, UserAvatar } from '@origin/shared/providers';
 import { ascend, last, prop, sort } from 'ramda';
 import { useIntl } from 'react-intl';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router';
 
 import { useProposal } from '../hooks';
 import { ProposalTypeBadge } from './ProposalTypeBadge';

@@ -2,7 +2,7 @@ import { Button, Card, CardContent, Stack, Typography } from '@mui/material';
 import { NetworkIcon } from '@origin/shared/components';
 import { FaArrowRightRegular } from '@origin/shared/icons';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { arbitrum, mainnet } from 'viem/chains';
 
 import type { CardProps } from '@mui/material';

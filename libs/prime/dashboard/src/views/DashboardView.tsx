@@ -6,7 +6,7 @@ import { EigenPoints, PrimePoints } from '@origin/shared/icons';
 import { useFormat } from '@origin/shared/providers';
 import { scale, ZERO_ADDRESS } from '@origin/shared/utils';
 import { useIntl } from 'react-intl';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import { formatUnits } from 'viem';
 import { useAccount } from 'wagmi';
 

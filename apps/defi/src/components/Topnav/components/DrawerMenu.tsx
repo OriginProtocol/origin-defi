@@ -23,13 +23,13 @@ import {
 import { isNilOrEmpty } from '@origin/shared/utils';
 import { remove } from 'ramda';
 import { useIntl } from 'react-intl';
-import { Link as RouterLink, useMatch, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useMatch, useNavigate } from 'react-router';
 
 import { routes } from '../../../routes';
 import { additionalLinks } from '../constants';
 
 import type { MenuItemProps, StackProps } from '@mui/material';
-import type { RouteObject } from 'react-router-dom';
+import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 

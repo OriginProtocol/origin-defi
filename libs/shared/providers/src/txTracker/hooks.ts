@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useLocalStorageValue } from '@react-hookz/web';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 import { keccak256, toBytes } from 'viem';
 
 import { referrerRegex } from './utils';
