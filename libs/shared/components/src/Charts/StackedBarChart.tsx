@@ -3,7 +3,6 @@ import { Fragment, useId, useState } from 'react';
 import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisRight } from '@visx/axis';
 import { AxisBottom } from '@visx/axis';
-import { localPoint } from '@visx/event';
 import { LinearGradient } from '@visx/gradient';
 import { GridRows } from '@visx/grid';
 import { scaleLinear, scaleOrdinal } from '@visx/scale';
@@ -281,12 +280,11 @@ export const StackedBarChart = <Datum,>({
               height={height - margins.bottom}
               fill="transparent"
               onMouseMove={(event) => {
-                const eventSvgCoords = localPoint(event);
                 setActiveIdx(idx);
                 onHover?.(idx);
                 showTooltip({
                   tooltipLeft: barX,
-                  tooltipTop: eventSvgCoords?.y,
+                  tooltipTop: 0,
                 });
               }}
             />
