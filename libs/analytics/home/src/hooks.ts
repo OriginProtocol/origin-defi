@@ -4,7 +4,7 @@ import { queryOptions } from '@tanstack/react-query';
 import axios from 'axios';
 import { isSameDay } from 'date-fns';
 import { add, from, mul, toNumber } from 'dnum';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router';
 
 import { useCumulativeRevenueQuery } from './queries.generated';
 
