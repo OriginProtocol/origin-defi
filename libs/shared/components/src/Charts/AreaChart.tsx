@@ -138,6 +138,7 @@ export const AreaChart = <Datum,>({
           label: yKey.label,
           xKey,
           yKey: yKey.key,
+          color: yKey?.lineColor ?? yKey?.fillColor,
         }));
   const bottomTicks = xScale.ticks(Math.floor(width / 100));
   const rightTicks = yScale.ticks(Math.floor(height / 40));
