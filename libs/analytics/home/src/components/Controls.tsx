@@ -49,7 +49,8 @@ export const Controls = (props: StackProps) => {
             onChange={handleSetFrom}
             disableFuture
             formatDensity="dense"
-            minDate={new Date('2023-01-01')}
+            minDate={new Date('2023-06-01')}
+            maxDate={to ?? new Date()}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'Start date' }),
@@ -63,7 +64,8 @@ export const Controls = (props: StackProps) => {
             onChange={handleSetTo}
             disableFuture
             formatDensity="dense"
-            minDate={from ?? undefined}
+            minDate={from ?? new Date('2023-06-01')}
+            maxDate={new Date()}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'End date' }),

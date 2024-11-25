@@ -139,7 +139,7 @@ const fetcher =
 export const useTokensChartStats = (
   limit?: number,
   offset?: number,
-  from?: string,
+  from = new Date('2023-01-01').toISOString(),
   to?: string,
   options?: Omit<
     UseQueryOptions<TokensChartResult, Error, TokensChartResult, Key>,
