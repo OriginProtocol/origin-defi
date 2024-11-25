@@ -79,7 +79,7 @@ const fetcher =
         queryClient.fetchQuery({
           queryKey: useTokenChartStats.getKey(
             token,
-            limit,
+            from && to ? undefined : limit,
             from,
             to,
             undefined,

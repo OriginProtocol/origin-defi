@@ -66,6 +66,7 @@ export const Controls = (props: StackProps) => {
             disableFuture
             formatDensity="dense"
             minDate={from ?? minFrom}
+            maxDate={new Date()}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'End date' }),

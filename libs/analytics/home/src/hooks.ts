@@ -42,9 +42,9 @@ export const useHomeView = () => {
       },
       handleSetLimit: (newVal: number | undefined) => {
         setSearch((params) => {
-          params.set('l', newVal?.toString() ?? 'all');
           params.delete('f');
           params.delete('t');
+          params.set('l', newVal?.toString() ?? 'all');
           return params;
         });
       },
@@ -57,8 +57,11 @@ export const useHomeView = () => {
       handleSetFrom: (newVal: Date | null) => {
         setSearch((params) => {
           if (newVal && !isNaN(newVal.getTime())) {
-            params.set('f', newVal.toISOString());
             params.delete('l');
+            params.set('f', newVal.toISOString());
+            if (params.get('t') === null) {
+              params.set('t', new Date().toISOString());
+            }
           } else {
             params.delete('f');
           }
@@ -69,8 +72,8 @@ export const useHomeView = () => {
       handleSetTo: (newVal: Date | null) => {
         setSearch((params) => {
           if (newVal && !isNaN(newVal.getTime())) {
-            params.set('t', newVal.toISOString());
             params.delete('l');
+            params.set('t', newVal.toISOString());
           } else {
             params.delete('t');
           }
