@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 
+import { oTokenConfig } from '@origin/analytics/shared';
 import { queryOptions } from '@tanstack/react-query';
 import axios from 'axios';
+import { isBefore } from 'date-fns';
 import { useSearchParams } from 'react-router';
 
 import type { Currency } from '@origin/shared/components';
@@ -12,9 +14,14 @@ export const useHomeView = () => {
     l: '30',
     c: 'ETH',
   });
+  const minFrom = Object.values(oTokenConfig).reduce((acc, curr) => {
+    const from = new Date(curr.from);
+
+    return isBefore(acc, from) ? acc : from;
+  }, new Date('2023-06-01T00:00:00.000000Z'));
 
   return useMemo(() => {
-    const from = search.get('f') ? new Date(search.get('f') ?? 0) : null;
+    const from = search.get('f') ? new Date(search.get('f') ?? minFrom) : null;
     from?.setHours(0, 0, 0, 0);
     const to = search.get('t') ? new Date(search.get('t') ?? 0) : null;
     to?.setHours(23, 59, 59, 999);
@@ -24,6 +31,7 @@ export const useHomeView = () => {
       limit:
         search.get('l') === 'all' ? undefined : Number(search.get('l') ?? null),
       currency: (search.get('c') ?? 'ETH') as Currency,
+      minFrom,
       from,
       to,
       handleSetOffset: (newVal: number) => {
@@ -48,7 +56,7 @@ export const useHomeView = () => {
       },
       handleSetFrom: (newVal: Date | null) => {
         setSearch((params) => {
-          if (newVal) {
+          if (newVal && !isNaN(newVal.getTime())) {
             params.set('f', newVal.toISOString());
             params.delete('l');
           } else {
@@ -60,7 +68,7 @@ export const useHomeView = () => {
       },
       handleSetTo: (newVal: Date | null) => {
         setSearch((params) => {
-          if (newVal) {
+          if (newVal && !isNaN(newVal.getTime())) {
             params.set('t', newVal.toISOString());
             params.delete('l');
           } else {
@@ -70,7 +78,7 @@ export const useHomeView = () => {
         });
       },
     };
-  }, [search, setSearch]);
+  }, [minFrom, search, setSearch]);
 };
 
 export type OgnDailyResult = { timestamp: number; value: number };

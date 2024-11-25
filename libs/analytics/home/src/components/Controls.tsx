@@ -18,6 +18,7 @@ export const Controls = (props: StackProps) => {
     currency,
     limit,
     from,
+    minFrom,
     to,
     handleSetLimit,
     handleSetCurrency,
@@ -49,7 +50,7 @@ export const Controls = (props: StackProps) => {
             onChange={handleSetFrom}
             disableFuture
             formatDensity="dense"
-            minDate={new Date('2023-06-01')}
+            minDate={minFrom}
             maxDate={to ?? new Date()}
             slotProps={{
               textField: textFieldProps(
@@ -64,8 +65,7 @@ export const Controls = (props: StackProps) => {
             onChange={handleSetTo}
             disableFuture
             formatDensity="dense"
-            minDate={from ?? new Date('2023-06-01')}
-            maxDate={new Date()}
+            minDate={from ?? minFrom}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'End date' }),
@@ -82,22 +82,18 @@ export const Controls = (props: StackProps) => {
 
 const textFieldProps = (placeholder: string) =>
   ({
-    variant: 'standard' as TextFieldVariants,
-    InputProps: {
-      disableUnderline: true,
-    },
+    variant: 'outlined' as TextFieldVariants,
     placeholder,
     sx: {
       border: '1px solid',
       borderColor: 'divider',
       borderRadius: 1,
-      offset: 'none',
       '.MuiInputBase-input': {
         fontSize: 11,
         pl: 1,
         py: 1,
         pr: 0,
-        width: 70,
+        width: 75,
         '::placeholder': {
           fontSize: 11,
           color: 'text.secondary',
@@ -110,7 +106,6 @@ const openPickerButtonProps = {
   sx: (theme: Theme) => ({
     p: 0,
     m: 0,
-    mr: 1,
     color: theme.palette.text.secondary,
     svg: {
       width: 16,
