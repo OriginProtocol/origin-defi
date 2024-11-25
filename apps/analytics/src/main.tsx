@@ -3,12 +3,11 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 import { queryClient, wagmiConfig } from '@origin/analytics/shared';
 import { dark, light } from '@origin/analytics/theme';
 import {
   IntlProvider,
+  LocalizationProvider,
   logWelcomeMessage,
   ThemeProvider,
 } from '@origin/shared/providers';
@@ -39,7 +38,7 @@ root.render(
       [ThemeProvider, { dark, light }],
       [WagmiProvider, { config: wagmiConfig }],
       [QueryClientProvider, { client: queryClient }],
-      [LocalizationProvider, { dateAdapter: AdapterDateFns }],
+      [LocalizationProvider],
     ],
     <RouterProvider router={router} />,
   ),

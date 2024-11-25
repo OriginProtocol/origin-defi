@@ -6,6 +6,7 @@ export * from './fonts';
 export * from './gas';
 export * from './geoFence';
 export * from './intl';
+export * from './localization';
 export * from './notifications';
 export * from './prices';
 export * from './redeemer';
