@@ -173,6 +173,12 @@
       "value": "Redeemed"
     }
   ],
+  "8WKgF6": [
+    {
+      "type": 0,
+      "value": "Revenue"
+    }
+  ],
   "8XZjyW": [
     {
       "type": 0,
@@ -287,6 +293,18 @@
       "value": "30-Day MA"
     }
   ],
+  "FtUhr6": [
+    {
+      "type": 0,
+      "value": "Arbitrum TVL"
+    }
+  ],
+  "HIM+US": [
+    {
+      "type": 0,
+      "value": "Base TVL"
+    }
+  ],
   "HNjIxZ": [
     {
       "type": 1,
@@ -307,6 +325,12 @@
     {
       "type": 0,
       "value": "On-chain Transaction"
+    }
+  ],
+  "Humfno": [
+    {
+      "type": 0,
+      "value": "End date"
     }
   ],
   "IM+e97": [
@@ -367,12 +391,6 @@
     {
       "type": 0,
       "value": "Raw yield generated"
-    }
-  ],
-  "MJ2jZQ": [
-    {
-      "type": 0,
-      "value": "Total"
     }
   ],
   "MLTKb6": [
@@ -597,6 +615,12 @@
     {
       "type": 0,
       "value": "OUSD"
+    }
+  ],
+  "Vn4j7i": [
+    {
+      "type": 0,
+      "value": "Base"
     }
   ],
   "W87PYU": [
@@ -915,6 +939,12 @@
       "value": " Boost"
     }
   ],
+  "n5QvJy": [
+    {
+      "type": 0,
+      "value": "Start date"
+    }
+  ],
   "n7chn1": [
     {
       "type": 0,
@@ -1039,6 +1069,12 @@
       "value": "Total Liabilities"
     }
   ],
+  "uRHQPy": [
+    {
+      "type": 0,
+      "value": "Ethereum TVL"
+    }
+  ],
   "v1Vi1d": [
     {
       "type": 0,
@@ -1061,6 +1097,12 @@
     {
       "type": 0,
       "value": "Wrong Network"
+    }
+  ],
+  "wxPMp2": [
+    {
+      "type": 0,
+      "value": "Subscribe to our weekly analytics email"
     }
   ],
   "xN53iS": [

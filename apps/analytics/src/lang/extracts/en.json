@@ -74,6 +74,9 @@
   "7CPiAt": {
     "defaultMessage": "Redeemed"
   },
+  "8WKgF6": {
+    "defaultMessage": "Revenue"
+  },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
   },
@@ -125,6 +128,12 @@
   "FPMGr3": {
     "defaultMessage": "30-Day MA"
   },
+  "FtUhr6": {
+    "defaultMessage": "Arbitrum TVL"
+  },
+  "HIM+US": {
+    "defaultMessage": "Base TVL"
+  },
   "HNjIxZ": {
     "defaultMessage": "{symbol} wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
@@ -133,6 +142,9 @@
   },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
+  },
+  "Humfno": {
+    "defaultMessage": "End date"
   },
   "IM+e97": {
     "defaultMessage": "No strategies"
@@ -163,9 +175,6 @@
   },
   "M8UUfZ": {
     "defaultMessage": "Raw yield generated"
-  },
-  "MJ2jZQ": {
-    "defaultMessage": "Total"
   },
   "MLTKb6": {
     "defaultMessage": "APY"
@@ -256,6 +265,9 @@
   },
   "VK+Ydv": {
     "defaultMessage": "OUSD"
+  },
+  "Vn4j7i": {
+    "defaultMessage": "Base"
   },
   "W87PYU": {
     "defaultMessage": "View on {name}"
@@ -380,6 +392,9 @@
   "mPncEL": {
     "defaultMessage": "x {value} Boost"
   },
+  "n5QvJy": {
+    "defaultMessage": "Start date"
+  },
   "n7chn1": {
     "defaultMessage": "7-Day"
   },
@@ -437,6 +452,9 @@
   "tjvHWF": {
     "defaultMessage": "Total Liabilities"
   },
+  "uRHQPy": {
+    "defaultMessage": "Ethereum TVL"
+  },
   "v1Vi1d": {
     "defaultMessage": "14-Day"
   },
@@ -448,6 +466,9 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
+  },
+  "wxPMp2": {
+    "defaultMessage": "Subscribe to our weekly analytics email"
   },
   "xN53iS": {
     "defaultMessage": "Yield Bonus"

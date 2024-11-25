@@ -677,9 +677,6 @@
   "P6EE/a": {
     "defaultMessage": "Tokens"
   },
-  "P7PLVj": {
-    "defaultMessage": "Date"
-  },
   "P9sirH": {
     "defaultMessage": "The length of time you will lock up your OGN in order to receive yield and voting power. Unstaking early carries a penalty relative to the remaining duration of the lockup"
   },
