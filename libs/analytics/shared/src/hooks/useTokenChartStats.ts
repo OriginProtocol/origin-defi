@@ -19,6 +19,7 @@ type Key = [
   Token,
   number | undefined,
   string | undefined,
+  string | undefined,
   OTokenDailyStatOrderByInput[] | undefined,
   number | undefined,
 ];
@@ -56,20 +57,22 @@ const getKey = (
   token: Token,
   limit?: number,
   from?: string,
+  to?: string,
   orderBy?: OTokenDailyStatOrderByInput[],
   offset?: number,
-): Key => ['useTokenChartStats', token, limit, from, orderBy, offset];
+): Key => ['useTokenChartStats', token, limit, from, to, orderBy, offset];
 
 const fetcher: (
   queryClient: QueryClient,
 ) => QueryFunction<ChartResult[], Key> =
   (queryClient) =>
-  async ({ queryKey: [, token, limit, from, orderBy, offset] }) => {
+  async ({ queryKey: [, token, limit, from, to, orderBy, offset] }) => {
     const res = await queryClient.fetchQuery({
       queryKey: useOTokenStatsQuery.getKey({
         token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
         chainId: token.chainId,
         from,
+        to,
         limit,
         orderBy,
         offset,
@@ -78,6 +81,7 @@ const fetcher: (
         token: token?.address?.toLowerCase() ?? ZERO_ADDRESS,
         chainId: token.chainId,
         from,
+        to,
         limit,
         orderBy,
         offset,
@@ -101,12 +105,14 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
     token,
     limit,
     from,
+    to,
     orderBy,
     offset,
   }: {
     token: Token;
     limit?: number;
     from?: string;
+    to?: string;
     orderBy?: OTokenDailyStatOrderByInput[];
     offset?: number;
   },
@@ -119,7 +125,7 @@ export const useTokenChartStats = <TResult = ChartResult[]>(
 
   return useQuery({
     ...options,
-    queryKey: getKey(token, limit, from, orderBy, offset),
+    queryKey: getKey(token, limit, from, to, orderBy, offset),
     queryFn: fetcher(queryClient),
   });
 };

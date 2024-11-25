@@ -35,6 +35,8 @@ export const useOethDistribution = (limit?: number) => {
             limit,
             oethMainnetConfig.from,
             undefined,
+            undefined,
+            undefined,
           ),
           queryFn: useTokenChartStats.fetcher(queryClient),
         }),

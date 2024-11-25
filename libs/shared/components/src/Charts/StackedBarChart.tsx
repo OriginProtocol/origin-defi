@@ -49,8 +49,6 @@ export type StackedBarChartProps<Datum = ChartData> = {
   Tooltip?: ComponentType<
     {
       activeItem: Datum | null;
-      xKey: keyof Datum;
-      yKeys: YKeyStackedBar<Datum>[];
     } & StackProps
   >;
   margins?: typeof chartMargins;
@@ -300,7 +298,7 @@ export const StackedBarChart = <Datum,>({
             background: 'transparent',
           }}
         >
-          <Tooltip activeItem={activeItem} xKey={xKey} yKeys={yKeys} />
+          <Tooltip activeItem={activeItem} />
         </TooltipWithBounds>
       ) : null}
     </Box>

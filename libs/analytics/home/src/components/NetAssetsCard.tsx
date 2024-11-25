@@ -32,10 +32,15 @@ export type NetAssetsCardProps = {
 export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
-  const { limit, offset, currency } = useHomeView();
+  const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokensChartStats(limit, offset);
+  const { data, isLoading } = useTokensChartStats(
+    limit,
+    offset,
+    from?.toISOString(),
+    to?.toISOString(),
+  );
   const series = useMemo(
     () =>
       data?.totals?.map((d) => ({

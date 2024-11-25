@@ -40,15 +40,20 @@ export const CirculatingSupplyCard = ({
   ...rest
 }: CirculatingSupplyCardProps) => {
   const intl = useIntl();
-  const { limit, offset, currency } = useHomeView();
+  const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useTokensChartStats(limit, offset);
+  const { data, isLoading } = useTokensChartStats(
+    limit,
+    offset,
+    from?.toISOString(),
+    to?.toISOString(),
+  );
   const series = useMemo(
     () =>
       Object.entries(data ?? {}).reduce<Serie<ChartResult>[]>(
         (acc, [key, value]) => {
-          if (!(value[0] as ChartResult).token) {
+          if (!(value[0] as ChartResult)?.token) {
             return acc;
           }
 

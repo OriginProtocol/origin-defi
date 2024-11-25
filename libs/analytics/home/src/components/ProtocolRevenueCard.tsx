@@ -53,13 +53,15 @@ export const ProtocolRevenueCard = ({
   ...rest
 }: ProtocolRevenueCardProps) => {
   const intl = useIntl();
-  const { limit, offset, currency } = useHomeView();
+  const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const width = measures?.width ?? 0;
   const { data: tokens, isLoading: isTokensLoading } = useTokensChartStats(
     limit,
     offset,
+    from?.toISOString(),
+    to?.toISOString(),
   );
   const { data: arms, isLoading: isArmLoading } = useArmDailyStatsQuery(
     {

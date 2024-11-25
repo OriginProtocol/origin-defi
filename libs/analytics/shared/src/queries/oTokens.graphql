@@ -27,7 +27,7 @@ fragment Strategy on Strategy {
   kind
   balances {
     asset
-    timestamp    
+    timestamp
     blockNumber
     balance
   }
@@ -39,13 +39,14 @@ query oTokenStats(
   $limit: Int = 5000
   $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC]
   $from: DateTime
+  $to: DateTime
   $offset: Int
 ) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: { otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from }
+    where: { otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from, timestamp_lte: $to }
   ) {
     ...DailyStat
   }

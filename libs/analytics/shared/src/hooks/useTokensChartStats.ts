@@ -1,9 +1,8 @@
 import { tokens } from '@origin/shared/contracts';
 import { hasKey } from '@origin/shared/utils';
-import { queryOptions, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { omit } from 'ramda';
 
-import { oTokenConfig } from '../constants';
 import { useTokenChartStats } from './useTokenChartStats';
 
 import type { Token } from '@origin/shared/contracts';
@@ -35,14 +34,23 @@ type Key = [
   typeof DEFAULT_TOTALS,
   number | undefined,
   number | undefined,
+  string | undefined,
+  string | undefined,
 ];
 
-const getKey = (limit?: number, offset?: number): Key => [
+const getKey = (
+  limit?: number,
+  offset?: number,
+  from?: string,
+  to?: string,
+): Key => [
   'useTokensChartStats',
   DEFAULT_OTOKENS,
   DEFAULT_TOTALS,
   limit,
   offset,
+  from,
+  to,
 ];
 
 export type Totals = {
@@ -65,14 +73,15 @@ export type TokensChartResult = {
 
 const fetcher =
   (queryClient: QueryClient): QueryFunction<TokensChartResult, Key> =>
-  async ({ queryKey: [, oTokens, totals, limit, offset] }) => {
+  async ({ queryKey: [, oTokens, totals, limit, offset, from, to] }) => {
     const charts = await Promise.all(
       oTokens.map((token) =>
         queryClient.fetchQuery({
           queryKey: useTokenChartStats.getKey(
             token,
             limit,
-            oTokenConfig[token.id].from,
+            from,
+            to,
             undefined,
             offset,
           ),
@@ -127,19 +136,11 @@ const fetcher =
     return result;
   };
 
-export const tokensChartStatsOptions = (
-  queryClient: QueryClient,
-  limit?: number,
-  offset?: number,
-) =>
-  queryOptions({
-    queryKey: getKey(limit, offset),
-    queryFn: fetcher(queryClient),
-  });
-
 export const useTokensChartStats = (
   limit?: number,
   offset?: number,
+  from?: string,
+  to?: string,
   options?: Omit<
     UseQueryOptions<TokensChartResult, Error, TokensChartResult, Key>,
     'queryKey' | 'queryFn'
@@ -149,7 +150,8 @@ export const useTokensChartStats = (
 
   return useQuery({
     ...options,
-    ...tokensChartStatsOptions(queryClient, limit, offset),
+    queryKey: getKey(limit, offset, from, to),
+    queryFn: fetcher(queryClient),
   });
 };
 useTokensChartStats.getKey = getKey;

@@ -12,6 +12,7 @@ export type OTokenStatsQueryVariables = Types.Exact<{
   limit?: Types.InputMaybe<Types.Scalars['Int']['input']>;
   orderBy?: Types.InputMaybe<Array<Types.OTokenDailyStatOrderByInput> | Types.OTokenDailyStatOrderByInput>;
   from?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
+  to?: Types.InputMaybe<Types.Scalars['DateTime']['input']>;
   offset?: Types.InputMaybe<Types.Scalars['Int']['input']>;
 }>;
 
@@ -106,12 +107,12 @@ export const StrategyFragmentDoc = `
 }
     `;
 export const OTokenStatsDocument = `
-    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $offset: Int) {
+    query oTokenStats($token: String!, $chainId: Int!, $limit: Int = 5000, $orderBy: [OTokenDailyStatOrderByInput!] = [timestamp_DESC], $from: DateTime, $to: DateTime, $offset: Int) {
   oTokenDailyStats(
     limit: $limit
     offset: $offset
     orderBy: $orderBy
-    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from}
+    where: {otoken_eq: $token, chainId_eq: $chainId, timestamp_gte: $from, timestamp_lte: $to}
   ) {
     ...DailyStat
   }
