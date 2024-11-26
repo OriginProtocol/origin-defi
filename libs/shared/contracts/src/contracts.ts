@@ -209,6 +209,12 @@ export const contracts = {
       abi: OETHNativeStakingABI,
       name: 'OETHStrategyNative2',
     },
+    OETHStrategyNative3: {
+      address: '0xE98538A0e8C2871C2482e1Be8cC6bd9F8E8fFD63',
+      chainId: mainnet.id,
+      abi: OETHNativeStakingABI,
+      name: 'OETHStrategyNative3',
+    },
     OETHVault: {
       address: '0x39254033945AA2E4809Cc2977E7087BEE48bd7Ab',
       chainId: mainnet.id,
