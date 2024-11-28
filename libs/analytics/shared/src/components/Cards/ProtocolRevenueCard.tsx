@@ -12,13 +12,11 @@ import {
 } from '@mui/material';
 import {
   BarChart,
-  ColorLabel,
   CurrencyLabel,
   LimitControls,
   LoadingLabel,
   MovingAvgControls,
   Spinner,
-  ValueLabel,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
@@ -27,13 +25,12 @@ import { useIntl } from 'react-intl';
 
 import { oTokenConfig } from '../../constants';
 import { useTokenChartStats } from '../../hooks';
+import { ChartTooltip } from '../Tooltips';
 import { CHART_HEADER_HEIGHT } from './constants';
 
-import type { CardProps, StackProps } from '@mui/material';
-import type { MovingAvg, ValueLabelProps } from '@origin/shared/components';
+import type { CardProps } from '@mui/material';
+import type { MovingAvg } from '@origin/shared/components';
 import type { Token } from '@origin/shared/contracts';
-
-import type { ChartResult } from '../../hooks';
 
 export type ProtocolRevenueCardProps = {
   token: Token;
@@ -158,78 +155,9 @@ export const ProtocolRevenueCard = ({
           tickYFormat={(value) => `Ξ${value as number}`}
           barColor={theme.palette.chart7}
           activeBarColor={theme.palette.chart3}
-          Tooltip={TooltipContent}
+          Tooltip={ChartTooltip}
         />
       )}
     </Card>
   );
-};
-
-type TooltipContentProps = {
-  activeItem: ChartResult | null;
-} & StackProps;
-
-const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
-  const intl = useIntl();
-  const theme = useTheme();
-
-  if (!activeItem) return null;
-
-  const { timestamp, feesETH } = activeItem;
-
-  return (
-    <Stack
-      {...rest}
-      useFlexGap
-      sx={[
-        {
-          backgroundColor: 'background.default',
-          p: 1,
-          border: '1px solid',
-          borderColor: 'common.white',
-          borderRadius: 3,
-          gap: 0.5,
-        },
-        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
-      ]}
-    >
-      <Typography variant="caption1" color="text.secondary" gutterBottom>
-        {format(new Date(timestamp ?? 0), 'dd MMM yyyy')}
-      </Typography>
-      <ValueLabel
-        label={
-          <ColorLabel
-            label={intl.formatMessage({ defaultMessage: 'Revenue' })}
-            color={theme.palette.chart3}
-            labelProps={{ variant: 'caption1' }}
-          />
-        }
-        value={intl.formatNumber(feesETH ?? 0, {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-    </Stack>
-  );
-};
-
-const valueLabelProps: Partial<ValueLabelProps> = {
-  direction: 'row',
-  spacing: 1,
-  sx: {
-    py: 0.25,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  labelProps: {
-    variant: 'caption1',
-    sx: {
-      minWidth: 50,
-    },
-  },
-  valueProps: {
-    variant: 'caption1',
-    color: 'text.primary',
-  },
 };

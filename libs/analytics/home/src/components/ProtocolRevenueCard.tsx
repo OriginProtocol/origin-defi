@@ -1,27 +1,18 @@
 import { useMemo, useState } from 'react';
 
+import { Card, CardContent, CardHeader, Divider, Stack } from '@mui/material';
 import {
-  Card,
-  CardContent,
-  CardHeader,
-  Divider,
-  Stack,
-  Typography,
-} from '@mui/material';
-import {
+  ChartTooltip,
   oTokenConfig,
   useArmDailyStatsQuery,
   useTokensChartStats,
 } from '@origin/analytics/shared';
 import {
-  ColorLabel,
   CurrencyLabel,
   LoadingLabel,
   Spinner,
   StackedBarChart,
-  ValueLabel,
 } from '@origin/shared/components';
-import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { mul, toNumber } from 'dnum';
@@ -30,8 +21,7 @@ import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
 
-import type { CardProps, StackProps } from '@mui/material';
-import type { ValueLabelProps } from '@origin/shared/components';
+import type { CardProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';
 import type { Dnum } from 'dnum';
 
@@ -165,14 +155,24 @@ export const ProtocolRevenueCard = ({
           barData={serie}
           xKey="timestamp"
           yKeys={[
-            { key: 'oeth', fillColor: oTokenConfig['1:OETH'].lineChartColor },
-            { key: 'ousd', fillColor: oTokenConfig['1:OUSD'].lineChartColor },
+            {
+              key: 'oeth',
+              label: 'Origin Ether',
+              fillColor: oTokenConfig['1:OETH'].lineChartColor,
+            },
+            {
+              key: 'ousd',
+              label: 'Origin Dollar',
+              fillColor: oTokenConfig['1:OUSD'].lineChartColor,
+            },
             {
               key: 'superOeth',
+              label: 'Super OETH',
               fillColor: oTokenConfig['8453:superOETHb'].lineChartColor,
             },
             {
               key: 'arm',
+              label: 'ARM',
               fillColor: oTokenConfig['1:ARM-WETH-stETH'].lineChartColor,
             },
           ]}
@@ -193,125 +193,9 @@ export const ProtocolRevenueCard = ({
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
-          Tooltip={TooltipContent}
+          Tooltip={ChartTooltip}
         />
       )}
     </Card>
   );
-};
-
-type TooltipContentProps = {
-  activeItem: Item | null;
-} & StackProps;
-
-const TooltipContent = ({ activeItem, ...rest }: TooltipContentProps) => {
-  const intl = useIntl();
-
-  if (!activeItem) return null;
-
-  const { timestamp, oeth, ousd, superOeth, arm } = activeItem;
-
-  return (
-    <Stack
-      {...rest}
-      useFlexGap
-      sx={[
-        {
-          backgroundColor: 'background.default',
-          p: 1,
-          border: '1px solid',
-          borderColor: 'common.white',
-          borderRadius: 3,
-          gap: 0.5,
-        },
-        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
-      ]}
-    >
-      <Typography variant="caption1" color="text.secondary" gutterBottom>
-        {format(new Date(timestamp ?? 0), 'dd MMM yyyy')}
-      </Typography>
-      <ValueLabel
-        label={
-          <ColorLabel
-            label={tokens.mainnet.OETH.name}
-            color={oTokenConfig['1:OETH'].lineChartColor}
-            labelProps={{ variant: 'caption1' }}
-          />
-        }
-        value={intl.formatNumber(oeth ?? 0, {
-          notation: 'compact',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={
-          <ColorLabel
-            label={tokens.mainnet.OUSD.name}
-            color={oTokenConfig['1:OUSD'].lineChartColor}
-            labelProps={{ variant: 'caption1' }}
-          />
-        }
-        value={intl.formatNumber(ousd ?? 0, {
-          notation: 'compact',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={
-          <ColorLabel
-            label={tokens.base.superOETHb.name}
-            color={oTokenConfig['8453:superOETHb'].lineChartColor}
-            labelProps={{ variant: 'caption1' }}
-          />
-        }
-        value={intl.formatNumber(superOeth ?? 0, {
-          notation: 'compact',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-      <ValueLabel
-        label={
-          <ColorLabel
-            label="ARM"
-            color={
-              oTokenConfig[tokens.mainnet['ARM-WETH-stETH'].id].lineChartColor
-            }
-            labelProps={{ variant: 'caption1' }}
-          />
-        }
-        value={intl.formatNumber(arm ?? 0, {
-          notation: 'compact',
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 5,
-        })}
-        {...valueLabelProps}
-      />
-    </Stack>
-  );
-};
-
-const valueLabelProps: Partial<ValueLabelProps> = {
-  direction: 'row',
-  spacing: 1,
-  sx: {
-    py: 0.25,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  labelProps: {
-    variant: 'caption1',
-    sx: {
-      minWidth: 50,
-    },
-  },
-  valueProps: {
-    variant: 'caption1',
-    color: 'text.primary',
-  },
 };

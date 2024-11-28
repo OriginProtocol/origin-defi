@@ -1,9 +1,10 @@
 import { useMemo } from 'react';
 
 import { oTokenConfig } from '@origin/analytics/shared';
-import { queryOptions } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { isBefore } from 'date-fns';
+import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
 import type { Currency } from '@origin/shared/components';
@@ -84,30 +85,77 @@ export const useHomeView = () => {
   }, [minFrom, search, setSearch]);
 };
 
-export type OgnDailyResult = { timestamp: number; value: number };
+type DuneData = {
+  aero_usd: number;
+  balance_usd: number;
+  day: string;
+  incentives_usd: number;
+  locked_aero: number;
+  locks_usd: number;
+  lp_usd: number;
+  total_usd: number;
+};
 
-export const ognDailyQueryOptions = queryOptions({
-  staleTime: Infinity,
-  queryKey: ['useOgnDaily'],
-  queryFn: async () => {
-    const res = await axios.get(
-      `https://api.coingecko.com/api/v3/coins/origin-protocol/market_chart?vs_currency=usd&days=365&interval=daily&precision=18`,
-    );
+type NetAssetValue = {
+  timestamp: number;
+  totalUSD: number;
+};
 
-    const prices: OgnDailyResult[] = res.data.prices.map(
-      (item: [number, number]) => ({
-        timestamp: item[0],
-        value: item[1],
-      }),
-    );
+export const useNetAssetValue = () => {
+  const { from, to, limit, minFrom } = useHomeView();
 
-    const marketCaps: OgnDailyResult[] = res.data.market_caps.map(
-      (item: [number, number]) => ({
-        timestamp: item[0],
-        value: item[1],
-      }),
-    );
+  return useQuery<NetAssetValue[], Error, NetAssetValue[], ['netAssetValue']>({
+    staleTime: Infinity,
+    queryKey: ['netAssetValue'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
+      );
 
-    return { prices, marketCaps };
-  },
-});
+      const nav = pathOr([], ['data', 'result', 'rows'], res) as DuneData[];
+      const result: NetAssetValue[] = [];
+      const dailyMap: Record<string, number> = {};
+
+      nav.forEach((item: DuneData) => {
+        const date = new Date(item.day).toISOString().split('T')[0];
+        dailyMap[date] = item.total_usd;
+      });
+
+      const endDate = new Date();
+      const currentDate = minFrom;
+
+      while (currentDate <= endDate) {
+        const dateKey = currentDate.toISOString().split('T')[0];
+        const totalUSD =
+          dailyMap[dateKey] ?? result[result.length - 1]?.totalUSD ?? 0;
+        result.push({ timestamp: currentDate.getTime(), totalUSD });
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+
+      return result;
+    },
+    select: (data) => {
+      let filteredData = data;
+      if (limit) {
+        filteredData = takeLast(limit, filteredData);
+      }
+
+      if (from || to) {
+        filteredData = filteredData.filter(({ timestamp }) => {
+          const isAfterFrom =
+            !from ||
+            new Date(timestamp).toISOString().split('T')[0] >
+              from.toISOString().split('T')[0];
+          const isBeforeTo =
+            !to ||
+            new Date(timestamp).toISOString().split('T')[0] <=
+              to.toISOString().split('T')[0];
+
+          return isAfterFrom && isBeforeTo;
+        });
+      }
+
+      return filteredData;
+    },
+  });
+};

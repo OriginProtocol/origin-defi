@@ -46,11 +46,7 @@ export type StackedBarChartProps<Datum = ChartData> = {
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
   lineData?: Serie<Datum>;
-  Tooltip?: ComponentType<
-    {
-      activeItem: Datum | null;
-    } & StackProps
-  >;
+  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   barPadding?: number;
   showGrid?: boolean;
@@ -139,7 +135,20 @@ export const StackedBarChart = <Datum,>({
 
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
-  const activeItem = activeIdx !== null ? barData[activeIdx] : null;
+  const activeItem = activeIdx === null ? null : barData[activeIdx];
+  const activeSeries =
+    activeIdx === null
+      ? null
+      : yKeys.map(
+          (y) =>
+            ({
+              data: [activeItem],
+              xKey,
+              yKey: y.key,
+              color: y.fillColor,
+              label: y.label,
+            }) as Serie<Datum>,
+        );
   const curveLine =
     curveTypes[
       lineData?.curveType
@@ -298,7 +307,7 @@ export const StackedBarChart = <Datum,>({
             background: 'transparent',
           }}
         >
-          <Tooltip activeItem={activeItem} />
+          <Tooltip series={activeSeries} />
         </TooltipWithBounds>
       ) : null}
     </Box>

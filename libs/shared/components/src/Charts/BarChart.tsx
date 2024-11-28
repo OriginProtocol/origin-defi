@@ -40,11 +40,7 @@ export type BarChartProps<Datum = ChartData> = {
   tickXLabelProps?: TickLabelProps<NumberLike>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<
-    {
-      activeItem: Datum | null;
-    } & StackProps
-  >;
+  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
 } & Omit<BoxProps, 'ref' | 'key'>;
 
@@ -123,7 +119,30 @@ export const BarChart = <Datum,>({
 
   const rightTicks = yScale.ticks(height / 40);
   const bottomTicks = getBarChartBottomTicks(width);
-  const activeItem = activeIdx !== null ? barData[activeIdx] : null;
+  const activeItem = activeIdx === null ? null : barData[activeIdx];
+  const activeLineData =
+    lineData && activeIdx !== null
+      ? {
+          data: [lineData.data[activeIdx]],
+          xKey: lineData.xKey,
+          yKey: lineData.yKey,
+          color: lineData.color,
+          label: lineData.label,
+        }
+      : null;
+  const activeSeries =
+    activeIdx === null
+      ? null
+      : [
+          {
+            data: [activeItem],
+            xKey,
+            yKey,
+            color: barColor,
+            label: yKey,
+          } as Serie<Datum>,
+          ...(activeLineData ? [activeLineData] : []),
+        ];
   const curveLine =
     curveTypes[
       lineData?.curveType
@@ -307,7 +326,7 @@ export const BarChart = <Datum,>({
             background: 'transparent',
           }}
         >
-          <Tooltip activeItem={activeItem} />
+          <Tooltip series={activeSeries} />
         </TooltipWithBounds>
       ) : null}
     </Box>

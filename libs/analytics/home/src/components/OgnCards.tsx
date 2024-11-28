@@ -29,7 +29,7 @@ import { format, from } from 'dnum';
 import { drop } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 
-import { ognDailyQueryOptions } from '../hooks';
+import { ognDailyQueryOptions } from '../options';
 import { useOgnStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
