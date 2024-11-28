@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
@@ -158,28 +158,31 @@ export const useNetAssetValue = () => {
 
       return result;
     },
-    select: (data) => {
-      let filteredData = data;
-      if (limit) {
-        filteredData = takeLast(limit, filteredData);
-      }
+    select: useCallback(
+      (data: NetAssetValue[]) => {
+        let filteredData = data;
+        if (limit) {
+          filteredData = takeLast(limit, filteredData);
+        }
 
-      if (from || to) {
-        filteredData = filteredData.filter(({ timestamp }) => {
-          const isAfterFrom =
-            !from ||
-            new Date(timestamp).toISOString().split('T')[0] >
-              from.toISOString().split('T')[0];
-          const isBeforeTo =
-            !to ||
-            new Date(timestamp).toISOString().split('T')[0] <=
-              to.toISOString().split('T')[0];
+        if (from || to) {
+          filteredData = filteredData.filter(({ timestamp }) => {
+            const isAfterFrom =
+              !from ||
+              new Date(timestamp).toISOString().split('T')[0] >
+                from.toISOString().split('T')[0];
+            const isBeforeTo =
+              !to ||
+              new Date(timestamp).toISOString().split('T')[0] <=
+                to.toISOString().split('T')[0];
 
-          return isAfterFrom && isBeforeTo;
-        });
-      }
+            return isAfterFrom && isBeforeTo;
+          });
+        }
 
-      return filteredData;
-    },
+        return filteredData;
+      },
+      [from, to, limit],
+    ),
   });
 };

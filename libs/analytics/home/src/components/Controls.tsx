@@ -85,7 +85,7 @@ const textFieldProps = (placeholder: string) =>
   ({
     variant: 'outlined' as TextFieldVariants,
     placeholder,
-    sx: {
+    sx: (theme) => ({
       border: '1px solid',
       borderColor: 'divider',
       borderRadius: 1,
@@ -97,10 +97,11 @@ const textFieldProps = (placeholder: string) =>
         width: 75,
         '::placeholder': {
           fontSize: 11,
-          color: 'text.secondary',
+          fontWeight: 'normal',
+          color: theme.palette.text.secondary,
         },
       },
-    },
+    }),
   }) as TextFieldProps;
 
 const openPickerButtonProps = {
