@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 
-import { oTokenConfig } from '@origin/analytics/shared';
-import { useQuery } from '@tanstack/react-query';
+import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
+import { tokens } from '@origin/shared/contracts';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { isBefore } from 'date-fns';
 import { pathOr, takeLast } from 'ramda';
@@ -99,26 +100,43 @@ type DuneData = {
 type NetAssetValue = {
   timestamp: number;
   totalUSD: number;
+  totalETH: number;
 };
 
 export const useNetAssetValue = () => {
   const { from, to, limit, minFrom } = useHomeView();
+  const queryClient = useQueryClient();
 
   return useQuery<NetAssetValue[], Error, NetAssetValue[], ['netAssetValue']>({
     staleTime: Infinity,
     queryKey: ['netAssetValue'],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
-      );
+      const res = await Promise.all([
+        axios.get(
+          `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
+        ),
+        queryClient.fetchQuery({
+          queryKey: useTokenChartStats.getKey(
+            tokens.mainnet.OUSD,
+            undefined,
+            minFrom.toISOString(),
+          ),
+          queryFn: useTokenChartStats.fetcher(queryClient),
+        }),
+      ]);
 
-      const nav = pathOr([], ['data', 'result', 'rows'], res) as DuneData[];
+      const nav = pathOr([], [0, 'data', 'result', 'rows'], res) as DuneData[];
       const result: NetAssetValue[] = [];
-      const dailyMap: Record<string, number> = {};
+      const dailyMap: Record<string, { totalUSD: number; totalETH: number }> =
+        {};
 
       nav.forEach((item: DuneData) => {
         const date = new Date(item.day).toISOString().split('T')[0];
-        dailyMap[date] = item.total_usd;
+        const ousdStat = res[1].find((stat) => stat.date === date);
+        dailyMap[date] = {
+          totalETH: item.total_usd * (ousdStat?.rateETH ?? 0),
+          totalUSD: item.total_usd,
+        };
       });
 
       const endDate = new Date();
@@ -127,8 +145,14 @@ export const useNetAssetValue = () => {
       while (currentDate <= endDate) {
         const dateKey = currentDate.toISOString().split('T')[0];
         const totalUSD =
-          dailyMap[dateKey] ?? result[result.length - 1]?.totalUSD ?? 0;
-        result.push({ timestamp: currentDate.getTime(), totalUSD });
+          dailyMap[dateKey]?.totalUSD ??
+          result[result.length - 1]?.totalUSD ??
+          0;
+        const totalETH =
+          dailyMap[dateKey]?.totalETH ??
+          result[result.length - 1]?.totalETH ??
+          0;
+        result.push({ timestamp: currentDate.getTime(), totalUSD, totalETH });
         currentDate.setDate(currentDate.getDate() + 1);
       }
 

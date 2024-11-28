@@ -20,7 +20,7 @@ import { format } from 'date-fns';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
-import { useNetAssetValue } from '../hooks';
+import { useHomeView, useNetAssetValue } from '../hooks';
 
 import type { CardProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';
@@ -32,12 +32,15 @@ export type NetAssetsCardProps = {
 export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   const intl = useIntl();
   const theme = useTheme();
+  const { currency } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useNetAssetValue();
 
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
   const width = measures?.width ?? 0;
+  const totalNAV =
+    currency === 'ETH' ? activeItem?.totalETH : activeItem?.totalUSD;
 
   return (
     <Card {...rest} ref={ref}>
@@ -67,8 +70,8 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
             isLoading={isLoading}
             sx={{ fontWeight: 'bold' }}
           >
-            <CurrencyLabel currency={'USD'} />
-            {intl.formatNumber(activeItem?.totalUSD ?? 0, {
+            <CurrencyLabel currency={currency} />
+            {intl.formatNumber(totalNAV ?? 0, {
               maximumFractionDigits: 0,
             })}
           </LoadingLabel>
@@ -82,15 +85,18 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
           height={height}
           barData={data ?? []}
           xKey="timestamp"
-          yKey="totalUSD"
+          yKey={currency === 'ETH' ? 'totalETH' : 'totalUSD'}
           onHover={(idx) => {
             setHoverIdx(idx ?? null);
           }}
           margins={{ top: 5, left: 25, right: 60, bottom: 50 }}
           tickYFormat={(value: NumberLike) =>
-            `$ ${intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })}`
+            `${currency === 'ETH' ? 'Ξ' : '$'} ${intl.formatNumber(
+              Number(value),
+              {
+                notation: 'compact',
+              },
+            )}`
           }
           barColor={theme.palette.chart3}
           activeBarColor={theme.palette.chart8}
