@@ -370,7 +370,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
             isDailyStatLoading={isDailyStatLoading}
           />
         </Grid2>
-        <Grid2 size={12}>
+        {/* <Grid2 size={12}>
           <Card>
             <CardContent>
               <Stack spacing={1}>
@@ -396,7 +396,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
               </Stack>
             </CardContent>
           </Card>
-        </Grid2>
+        </Grid2> */}
       </Grid2>
     </Stack>
   );
