@@ -5,10 +5,7 @@ import { waitForTransactionReceipt, writeContract } from '@wagmi/core';
 import { useAccount, useConfig, useSimulateContract } from 'wagmi';
 
 import type { HexAddress } from '@origin/shared/utils';
-import type {
-  SimulateContractErrorType,
-  SimulateContractReturnType,
-} from '@wagmi/core';
+import type { SimulateContractReturnType } from '@wagmi/core';
 import type {
   Abi,
   ContractFunctionArgs,
@@ -44,7 +41,8 @@ export type WriteTransactionCallbacks = {
   onTxSigned?: () => void;
   onUserReject?: () => void;
   onSimulateSuccess?: (data: SimulateContractReturnType) => void;
-  onSimulateError?: (error: SimulateContractErrorType) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSimulateError?: (error: any) => void;
   onWriteSuccess?: (txReceipt: TransactionReceipt) => void;
   onWriteError?: (error: Error) => void;
 };
