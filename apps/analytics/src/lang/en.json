@@ -131,12 +131,6 @@
       "value": "MC"
     }
   ],
-  "3poLF8": [
-    {
-      "type": 0,
-      "value": "Net Assets"
-    }
-  ],
   "4OE2Tb": [
     {
       "type": 0,
@@ -171,12 +165,6 @@
     {
       "type": 0,
       "value": "Redeemed"
-    }
-  ],
-  "8WKgF6": [
-    {
-      "type": 0,
-      "value": "Revenue"
     }
   ],
   "8XZjyW": [
@@ -315,12 +303,6 @@
       "value": " wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
     }
   ],
-  "HQcrRS": [
-    {
-      "type": 0,
-      "value": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
-    }
-  ],
   "Hiq4cG": [
     {
       "type": 0,
@@ -435,12 +417,6 @@
       "value": "Your operation has been executed"
     }
   ],
-  "NbAPMb": [
-    {
-      "type": 0,
-      "value": "Dripper"
-    }
-  ],
   "O+rqDl": [
     {
       "type": 0,
@@ -517,12 +493,6 @@
     {
       "type": 0,
       "value": "OETH"
-    }
-  ],
-  "TEZFSL": [
-    {
-      "type": 0,
-      "value": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
     }
   ],
   "TrKxvg": [
@@ -911,6 +881,12 @@
       "value": "Yield distributed"
     }
   ],
+  "lwrkXS": [
+    {
+      "type": 0,
+      "value": "Total assets minus liabilities"
+    }
+  ],
   "m83vWW": [
     {
       "type": 0,
@@ -1115,6 +1091,12 @@
     {
       "type": 0,
       "value": "Restricted Access"
+    }
+  ],
+  "y5+gGS": [
+    {
+      "type": 0,
+      "value": "Net Asset Value"
     }
   ],
   "yphS5C": [

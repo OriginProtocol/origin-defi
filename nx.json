@@ -65,6 +65,5 @@
         "strict": true
       }
     }
-  },
-  "useLegacyCache": true
+  }
 }

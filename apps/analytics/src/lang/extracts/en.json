@@ -53,9 +53,6 @@
   "3TTmje": {
     "defaultMessage": "MC"
   },
-  "3poLF8": {
-    "defaultMessage": "Net Assets"
-  },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
   },
@@ -73,9 +70,6 @@
   },
   "7CPiAt": {
     "defaultMessage": "Redeemed"
-  },
-  "8WKgF6": {
-    "defaultMessage": "Revenue"
   },
   "8XZjyW": {
     "defaultMessage": "There was an error while loading this component, you can try to reload."
@@ -137,9 +131,6 @@
   "HNjIxZ": {
     "defaultMessage": "{symbol} wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain."
   },
-  "HQcrRS": {
-    "defaultMessage": "Proof of Yield is shown as two distinct categories of information. Above, yield is measured from the perspective of an OETH holder after it leaves the Dripper. Below, yield from various sources is measured for the same time period prior to entering the Dripper."
-  },
   "Hiq4cG": {
     "defaultMessage": "On-chain Transaction"
   },
@@ -197,9 +188,6 @@
   "NY6umm": {
     "defaultMessage": "Your operation has been executed"
   },
-  "NbAPMb": {
-    "defaultMessage": "Dripper"
-  },
   "O+rqDl": {
     "defaultMessage": "Amount of {symbol} that gives up yield"
   },
@@ -232,9 +220,6 @@
   },
   "SGXihn": {
     "defaultMessage": "OETH"
-  },
-  "TEZFSL": {
-    "defaultMessage": "When yield is generated, it does not immediately get distributed to users’ wallets. It first goes through the Dripper, which releases the yield steadily over time. Raw yield is often generated at irregular intervals and in unpredictable amounts. The Dripper streams this yield gradually for a smoother and more predictable APY."
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -386,6 +371,9 @@
   "lvvpno": {
     "defaultMessage": "Yield distributed"
   },
+  "lwrkXS": {
+    "defaultMessage": "Total assets minus liabilities"
+  },
   "m83vWW": {
     "defaultMessage": "See the evidence of {symbol}''s consistent performance."
   },
@@ -475,6 +463,9 @@
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"
+  },
+  "y5+gGS": {
+    "defaultMessage": "Net Asset Value"
   },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
