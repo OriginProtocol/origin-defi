@@ -12,6 +12,7 @@ import { ChartTooltip } from '@origin/analytics/shared';
 import {
   BarChart,
   CurrencyLabel,
+  InfoTooltipLabel,
   LoadingLabel,
 } from '@origin/shared/components';
 import { Spinner } from '@origin/shared/components';
@@ -45,7 +46,15 @@ export const NetAssetsCard = ({ height, ...rest }: NetAssetsCardProps) => {
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Net Assets' })}
+        title={
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage: 'Total assets minus liabilities',
+            })}
+          >
+            {intl.formatMessage({ defaultMessage: 'Net Asset Value' })}
+          </InfoTooltipLabel>
+        }
       />
       <Divider />
       <CardContent>
