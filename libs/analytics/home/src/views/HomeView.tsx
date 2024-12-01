@@ -26,7 +26,14 @@ export const HomeView = () => {
           <Stack spacing={2}>
             <Stack
               direction="row"
-              sx={{ alignItems: 'baseline', justifyContent: 'space-between' }}
+              useFlexGap
+              sx={{
+                alignItems: 'baseline',
+                justifyContent: 'space-between',
+                flexWrap: 'wrap',
+                rowGap: 2,
+                columnGap: 2,
+              }}
             >
               <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
                 {intl.formatMessage({ defaultMessage: 'Protocol Metrics' })}

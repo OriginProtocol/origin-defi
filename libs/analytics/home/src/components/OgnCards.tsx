@@ -24,13 +24,10 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { useMeasure } from '@react-hookz/web';
-import { useQuery } from '@tanstack/react-query';
 import { format, from } from 'dnum';
-import { drop } from 'ramda';
 import { defineMessage, useIntl } from 'react-intl';
 
-import { ognDailyQueryOptions } from '../options';
-import { useOgnStatsQuery } from '../queries.generated';
+import { useOgnDailyStatsQuery, useOgnStatsQuery } from '../queries.generated';
 
 import type { CardProps } from '@mui/material';
 import type { ValueLabelProps } from '@origin/shared/components';
@@ -184,14 +181,18 @@ export const OgnPerformanceCard = (props: CardProps) => {
   const [metric, setMetric] = useState<'price' | 'mc'>('price');
   const [limit, setLimit] = useState<number | undefined>(182);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data: dailyStats, isLoading: isDailyStatsLoading } = useQuery({
-    ...ognDailyQueryOptions,
-    select: (data) =>
-      drop(
-        365 - (limit ?? 365),
-        metric === 'price' ? data?.prices : data?.marketCaps,
-      ),
-  });
+  const { data: dailyStats, isLoading: isDailyStatsLoading } =
+    useOgnDailyStatsQuery(
+      { limit },
+      {
+        select: (data) =>
+          data.ognDailyStats.toReversed().map((d) => ({
+            timestamp: new Date(d?.timestamp).getTime(),
+            price: d.priceUSD,
+            mc: d.marketCapUSD,
+          })),
+      },
+    );
 
   const width = measures?.width ?? 0;
 
@@ -248,7 +249,7 @@ export const OgnPerformanceCard = (props: CardProps) => {
               label: metric === 'price' ? 'Price' : 'Market Cap',
               data: dailyStats ?? [],
               xKey: 'timestamp',
-              yKey: 'value',
+              yKey: metric,
               color: [theme.palette.chart1, theme.palette.chart2],
               strokeWidth: 2,
             },
