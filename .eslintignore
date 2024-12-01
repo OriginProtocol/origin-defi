@@ -1,4 +1,0 @@
-node_modules
-dist
-*.generated.ts
-**/generated/graphql.ts

@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 import { Card, Chip, Divider, Stack, Typography } from '@mui/material';
 import {
@@ -218,7 +218,6 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
         </Typography>
         <Typography variant="caption1" color="text.secondary">
           {intl.formatMessage(
-            // eslint-disable-next-line no-template-curly-in-string
             { defaultMessage: 'Using ETH price of ${price} from Chainlink' },
             { price: format(balanceSheet.ethPrice ?? from(0), 2) },
           )}

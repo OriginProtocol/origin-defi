@@ -98,7 +98,9 @@ export const OethDistributionCard = ({
               sx={{ fontWeight: 'bold' }}
             >
               <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.total ?? 0)}%
+              {intl.formatNumber(
+                activeItem?.total ?? 0,
+              )}%
             </LoadingLabel>
           </Stack>
           <LimitControls limit={limit} setLimit={setLimit} />
