@@ -4,7 +4,7 @@ import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { isBefore } from 'date-fns';
+import { addDays, format, isBefore } from 'date-fns';
 import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
@@ -131,7 +131,7 @@ export const useNetAssetValue = () => {
         {};
 
       nav.forEach((item: DuneData) => {
-        const date = new Date(item.day).toISOString().split('T')[0];
+        const date = item.day.substring(0, 10);
         const ousdStat = res[1].find((stat) => stat.date === date);
         dailyMap[date] = {
           totalETH: item.total_usd * (ousdStat?.rateETH ?? 0),
@@ -140,10 +140,10 @@ export const useNetAssetValue = () => {
       });
 
       const endDate = new Date();
-      const currentDate = minFrom;
+      let currentDate = minFrom;
 
       while (currentDate <= endDate) {
-        const dateKey = currentDate.toISOString().split('T')[0];
+        const dateKey = format(currentDate, 'yyyy-MM-dd');
         const totalUSD =
           dailyMap[dateKey]?.totalUSD ??
           result[result.length - 1]?.totalUSD ??
@@ -153,7 +153,7 @@ export const useNetAssetValue = () => {
           result[result.length - 1]?.totalETH ??
           0;
         result.push({ timestamp: currentDate.getTime(), totalUSD, totalETH });
-        currentDate.setDate(currentDate.getDate() + 1);
+        currentDate = addDays(currentDate, 1);
       }
 
       return result;
