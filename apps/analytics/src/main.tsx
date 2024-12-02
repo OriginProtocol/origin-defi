@@ -3,7 +3,11 @@ import './polyfills';
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom/client';
 
-import { queryClient, wagmiConfig } from '@origin/analytics/shared';
+import {
+  queryClient,
+  registerSentry,
+  wagmiConfig,
+} from '@origin/analytics/shared';
 import { dark, light } from '@origin/analytics/theme';
 import {
   IntlProvider,
@@ -24,6 +28,8 @@ import { routes } from './routes';
 setAutoFreeze(false);
 
 logWelcomeMessage('Analytics');
+
+registerSentry();
 
 const router = createBrowserRouter(routes);
 

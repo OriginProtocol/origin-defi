@@ -1,6 +1,10 @@
 import { Grid2, Stack, Typography } from '@mui/material';
-import { useLayout } from '@origin/analytics/shared';
-import { ExternalLink } from '@origin/shared/components';
+import { trackSentryError, useLayout } from '@origin/analytics/shared';
+import {
+  ErrorBoundary,
+  ErrorCard,
+  ExternalLink,
+} from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { CirculatingSupplyCard } from '../components/CirculatingSupplyCard';
@@ -52,16 +56,36 @@ export const HomeView = () => {
           </Stack>
           <Grid2 container spacing={2}>
             <Grid2 size={{ xs: 12, md: 6 }}>
-              <NetAssetsCard height={CHART_HEIGHT} />
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <NetAssetsCard height={CHART_HEIGHT} />
+              </ErrorBoundary>
             </Grid2>
             <Grid2 size={{ xs: 12, md: 6 }}>
-              <ProtocolRevenueCard height={CHART_HEIGHT} />
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <ProtocolRevenueCard height={CHART_HEIGHT} />
+              </ErrorBoundary>
             </Grid2>
             <Grid2 size={{ xs: 12, md: 6 }}>
-              <TvlCard height={CHART_HEIGHT} />
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <TvlCard height={CHART_HEIGHT} />
+              </ErrorBoundary>
             </Grid2>
             <Grid2 size={{ xs: 12, md: 6 }}>
-              <CirculatingSupplyCard height={CHART_HEIGHT} />
+              <ErrorBoundary
+                ErrorComponent={<ErrorCard />}
+                onError={trackSentryError}
+              >
+                <CirculatingSupplyCard height={CHART_HEIGHT} />
+              </ErrorBoundary>
             </Grid2>
           </Grid2>
         </Stack>
@@ -81,8 +105,18 @@ export const HomeView = () => {
             spacing={2}
             sx={{ '> *': { width: 1 } }}
           >
-            <OgnPriceCard />
-            <OgnStatsCard />
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <OgnPriceCard />
+            </ErrorBoundary>
+            <ErrorBoundary
+              ErrorComponent={<ErrorCard />}
+              onError={trackSentryError}
+            >
+              <OgnStatsCard />
+            </ErrorBoundary>
           </Stack>
           <OgnPerformanceCard />
         </Stack>
