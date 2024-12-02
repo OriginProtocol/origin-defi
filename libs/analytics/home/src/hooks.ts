@@ -12,6 +12,7 @@ import {
   isSameDay,
   subDays,
 } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
@@ -148,8 +149,8 @@ export const useNetAssetValue = () => {
         };
       });
 
-      const endDate = new Date();
-      let currentDate = minFrom;
+      const endDate = toZonedTime(new Date(), 'UTC');
+      let currentDate = toZonedTime(minFrom, 'UTC');
 
       while (currentDate <= endDate) {
         const dateKey = format(currentDate, 'yyyy-MM-dd');
