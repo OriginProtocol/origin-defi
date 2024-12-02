@@ -39,7 +39,7 @@ export const useViewSelect = () => {
 };
 
 const getKey = (address: HexAddress | undefined) => [
-  'useClaimableRequests',
+  'useSuperOethbClaimableRequests',
   address,
 ];
 
