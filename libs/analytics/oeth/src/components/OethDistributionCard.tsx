@@ -134,20 +134,20 @@ export const OethDistributionCard = ({
               >
                 {s?.label ?? 'Serie'}
               </Typography>
-              <Typography variant="caption1" sx={{ fontWeight: 'bold' }}>
+              <LoadingLabel variant="caption1" sx={{ fontWeight: 'bold' }}>
                 {intl.formatNumber((activeItem?.[s.key] as number) ?? 0, {
                   notation: 'compact',
                   minimumFractionDigits: 2,
                 })}
-              </Typography>
+              </LoadingLabel>
               <Typography
                 variant="caption1"
                 color="text.secondary"
-                sx={{ fontWeight: 'medimum' }}
+                sx={{ fontWeight: 'medium' }}
               >
                 •
               </Typography>
-              <Typography variant="caption1">
+              <LoadingLabel isLoading={isLoading} variant="caption1">
                 {intl.formatNumber(
                   activeItem?.total === 0
                     ? 0
@@ -155,7 +155,7 @@ export const OethDistributionCard = ({
                         (activeItem?.total as number),
                   { style: 'percent', maximumFractionDigits: 2 },
                 )}
-              </Typography>
+              </LoadingLabel>
             </Stack>
           ))}
         </Stack>
