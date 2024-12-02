@@ -125,6 +125,8 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
+  const theme = useTheme();
+  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const routeMatch = useMatch('/');
   const match = useMatch(`${route?.path ?? ''}/*`);
@@ -139,6 +141,9 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
         key={key}
         onClick={() => {
           navigate(`${route?.path ?? ''}/`);
+          if (isSm) {
+            onClose?.();
+          }
         }}
         sx={[
           {
