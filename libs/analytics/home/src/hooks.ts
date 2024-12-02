@@ -4,7 +4,14 @@ import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import { addDays, format, isBefore } from 'date-fns';
+import {
+  addDays,
+  format,
+  isAfter,
+  isBefore,
+  isSameDay,
+  subDays,
+} from 'date-fns';
 import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
@@ -152,8 +159,12 @@ export const useNetAssetValue = () => {
           dailyMap[dateKey]?.totalETH ??
           result[result.length - 1]?.totalETH ??
           0;
-        result.push({ timestamp: currentDate.getTime(), totalUSD, totalETH });
-        currentDate = addDays(currentDate, 1);
+        result.push({
+          timestamp: new Date(dateKey).getTime(),
+          totalUSD,
+          totalETH,
+        });
+        currentDate = addDays(dateKey, 1);
       }
 
       return result;
@@ -161,23 +172,23 @@ export const useNetAssetValue = () => {
     select: useCallback(
       (data: NetAssetValue[]) => {
         let filteredData = data;
-        if (limit) {
-          filteredData = takeLast(limit, filteredData);
-        }
 
         if (from || to) {
-          filteredData = filteredData.filter(({ timestamp }) => {
-            const isAfterFrom =
-              !from ||
-              new Date(timestamp).toISOString().split('T')[0] >
-                from.toISOString().split('T')[0];
-            const isBeforeTo =
-              !to ||
-              new Date(timestamp).toISOString().split('T')[0] <=
-                to.toISOString().split('T')[0];
-
-            return isAfterFrom && isBeforeTo;
-          });
+          if (from) {
+            filteredData = filteredData.filter(({ timestamp }) => {
+              return (
+                isSameDay(new Date(timestamp), from) ||
+                isAfter(new Date(timestamp), from)
+              );
+            });
+          }
+          if (to) {
+            filteredData = filteredData.filter(({ timestamp }) => {
+              return isBefore(new Date(timestamp), subDays(to, 1));
+            });
+          }
+        } else if (limit) {
+          filteredData = takeLast(limit, filteredData);
         }
 
         return filteredData;

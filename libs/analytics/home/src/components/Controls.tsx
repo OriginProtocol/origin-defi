@@ -35,9 +35,6 @@ export const Controls = (props: StackProps) => {
         {
           justifyContent: 'space-between',
           alignItems: 'center',
-          flexWrap: 'wrap',
-          rowGap: 1,
-          columnGap: 2,
         },
         ...(Array.isArray(props?.sx) ? props.sx : [props?.sx]),
       ]}
