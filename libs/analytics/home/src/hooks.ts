@@ -116,6 +116,7 @@ export const useNetAssetValue = () => {
 
   return useQuery<NetAssetValue[], Error, NetAssetValue[], ['netAssetValue']>({
     staleTime: Infinity,
+    retry: false,
     queryKey: ['netAssetValue'],
     queryFn: async () => {
       const res = await Promise.all([
