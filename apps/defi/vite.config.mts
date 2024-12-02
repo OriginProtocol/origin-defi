@@ -2,9 +2,10 @@
 import { nxViteTsPaths } from '@nx/vite/plugins/nx-tsconfig-paths.plugin';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import { defineConfig, searchForWorkspaceRoot } from 'vite';
+import { defineConfig } from 'vite';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
 import svgr from 'vite-plugin-svgr';
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 export default defineConfig({
   root: __dirname,
@@ -15,6 +16,7 @@ export default defineConfig({
     commonjsOptions: {
       transformMixedEsModules: true,
     },
+    sourcemap: true,
   },
   cacheDir: '../../node_modules/.vite/defi',
 
@@ -64,6 +66,16 @@ export default defineConfig({
           dest: './',
         },
       ],
+    }),
+    sentryVitePlugin({
+      org: "origin-protocol",
+      project: "origin-unified-defi",
+      authToken: process.env.SENTRY_AUTH_TOKEN,
+      telemetry: false,
+      silent: true,
+      sourcemaps: {
+        filesToDeleteAfterUpload: [path.resolve(__dirname, '../../dist/apps/defi/assets/*.map')]
+      }
     }),
   ],
 
