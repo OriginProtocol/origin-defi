@@ -119,56 +119,70 @@ export const useNetAssetValue = () => {
     retry: false,
     queryKey: ['netAssetValue'],
     queryFn: async () => {
-      const res = await Promise.all([
-        axios.get(
-          `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
-        ),
-        queryClient.fetchQuery({
-          queryKey: useTokenChartStats.getKey(
-            tokens.mainnet.OUSD,
-            undefined,
-            minFrom.toISOString(),
+      try {
+        const res = await Promise.all([
+          axios.get(
+            `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
           ),
-          queryFn: useTokenChartStats.fetcher(queryClient),
-        }),
-      ]);
+          queryClient.fetchQuery({
+            queryKey: useTokenChartStats.getKey(
+              tokens.mainnet.OUSD,
+              undefined,
+              minFrom.toISOString(),
+            ),
+            queryFn: useTokenChartStats.fetcher(queryClient),
+          }),
+        ]);
 
-      const nav = pathOr([], [0, 'data', 'result', 'rows'], res) as DuneData[];
-      const result: NetAssetValue[] = [];
-      const dailyMap: Record<string, { totalUSD: number; totalETH: number }> =
-        {};
+        if (!res || !res?.[0]?.data?.length) {
+          return [];
+        }
 
-      nav.forEach((item: DuneData) => {
-        const date = item.day.substring(0, 10);
-        const ousdStat = res[1].find((stat) => stat.date === date);
-        dailyMap[date] = {
-          totalETH: item.total_usd * (ousdStat?.rateETH ?? 0),
-          totalUSD: item.total_usd,
-        };
-      });
+        const nav = pathOr(
+          [],
+          [0, 'data', 'result', 'rows'],
+          res,
+        ) as DuneData[];
+        const result: NetAssetValue[] = [];
+        const dailyMap: Record<string, { totalUSD: number; totalETH: number }> =
+          {};
 
-      const endDate = new Date();
-      let currentDate = minFrom;
-
-      while (currentDate <= endDate) {
-        const dateKey = format(currentDate, 'yyyy-MM-dd');
-        const totalUSD =
-          dailyMap[dateKey]?.totalUSD ??
-          result[result.length - 1]?.totalUSD ??
-          0;
-        const totalETH =
-          dailyMap[dateKey]?.totalETH ??
-          result[result.length - 1]?.totalETH ??
-          0;
-        result.push({
-          timestamp: new Date(dateKey).getTime(),
-          totalUSD,
-          totalETH,
+        nav.forEach((item: DuneData) => {
+          const date = item.day.substring(0, 10);
+          const ousdStat = res[1].find((stat) => stat.date === date);
+          dailyMap[date] = {
+            totalETH: item.total_usd * (ousdStat?.rateETH ?? 0),
+            totalUSD: item.total_usd,
+          };
         });
-        currentDate = addDays(dateKey, 1);
+
+        const endDate = new Date();
+        let currentDate = minFrom;
+
+        while (currentDate <= endDate) {
+          const dateKey = format(currentDate, 'yyyy-MM-dd');
+          const totalUSD =
+            dailyMap[dateKey]?.totalUSD ??
+            result[result.length - 1]?.totalUSD ??
+            0;
+          const totalETH =
+            dailyMap[dateKey]?.totalETH ??
+            result[result.length - 1]?.totalETH ??
+            0;
+          result.push({
+            timestamp: new Date(dateKey).getTime(),
+            totalUSD,
+            totalETH,
+          });
+          currentDate = addDays(dateKey, 1);
+        }
+
+        return result;
+      } catch (e) {
+        console.log('Error NAV query ', e);
       }
 
-      return result;
+      return [];
     },
     select: useCallback(
       (data: NetAssetValue[]) => {
@@ -194,8 +208,9 @@ export const useNetAssetValue = () => {
           }
 
           return filteredData;
-        } catch {}
-
+        } catch (e) {
+          console.log('Error NAV mapping ', e);
+        }
         return [];
       },
       [from, to, limit],
