@@ -20,6 +20,8 @@ export const ChartTooltip = <ChartData,>({
     return null;
   }
 
+  const timestamp = series?.[0]?.data?.[0]?.[series?.[0]?.xKey] as number;
+
   return (
     <Stack
       {...rest}
@@ -36,12 +38,11 @@ export const ChartTooltip = <ChartData,>({
         ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
       ]}
     >
-      <Typography variant="caption1" color="text.secondary" gutterBottom>
-        {format(
-          new Date(series[0].data[0]?.[series[0].xKey] as number),
-          'dd MMM yyyy',
-        )}
-      </Typography>
+      {timestamp && (
+        <Typography variant="caption1" color="text.secondary" gutterBottom>
+          {format(new Date(timestamp), 'dd MMM yyyy')}
+        </Typography>
+      )}
       {series.map((s, i) => (
         <ValueLabel
           key={`tooltip-serie-${i}`}

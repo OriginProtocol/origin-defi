@@ -172,27 +172,31 @@ export const useNetAssetValue = () => {
     },
     select: useCallback(
       (data: NetAssetValue[]) => {
-        let filteredData = data;
+        try {
+          let filteredData = data;
 
-        if (from || to) {
-          if (from) {
-            filteredData = filteredData.filter(({ timestamp }) => {
-              return (
-                isSameDay(new Date(timestamp), from) ||
-                isAfter(new Date(timestamp), from)
-              );
-            });
+          if (from || to) {
+            if (from) {
+              filteredData = filteredData.filter(({ timestamp }) => {
+                return (
+                  isSameDay(new Date(timestamp), from) ||
+                  isAfter(new Date(timestamp), from)
+                );
+              });
+            }
+            if (to) {
+              filteredData = filteredData.filter(({ timestamp }) => {
+                return isBefore(new Date(timestamp), subDays(to, 1));
+              });
+            }
+          } else if (limit) {
+            filteredData = takeLast(limit, filteredData);
           }
-          if (to) {
-            filteredData = filteredData.filter(({ timestamp }) => {
-              return isBefore(new Date(timestamp), subDays(to, 1));
-            });
-          }
-        } else if (limit) {
-          filteredData = takeLast(limit, filteredData);
-        }
 
-        return filteredData;
+          return filteredData;
+        } catch {}
+
+        return [];
       },
       [from, to, limit],
     ),
