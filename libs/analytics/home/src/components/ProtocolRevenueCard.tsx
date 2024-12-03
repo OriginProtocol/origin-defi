@@ -14,7 +14,7 @@ import {
   StackedBarChart,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
+import { format, isDate } from 'date-fns';
 import { mul, toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -50,8 +50,8 @@ export const ProtocolRevenueCard = ({
   const { data: tokens, isLoading: isTokensLoading } = useTokensChartStats(
     limit,
     offset,
-    from?.toISOString(),
-    to?.toISOString(),
+    !!from && isDate(from) ? from.toISOString() : undefined,
+    !!to && isDate(to) ? to.toISOString() : undefined,
   );
   const { data: arms, isLoading: isArmLoading } = useArmDailyStatsQuery(
     {

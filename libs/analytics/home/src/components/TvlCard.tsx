@@ -20,7 +20,7 @@ import {
   Spinner,
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
+import { format, isDate } from 'date-fns';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -43,8 +43,8 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   const { data, isLoading } = useTokensChartStats(
     limit,
     offset,
-    from?.toISOString(),
-    to?.toISOString(),
+    !!from && isDate(from) ? from.toISOString() : undefined,
+    !!to && isDate(to) ? to.toISOString() : undefined,
   );
   const series = useMemo(
     () =>
