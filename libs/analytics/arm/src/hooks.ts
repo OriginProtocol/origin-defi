@@ -3,10 +3,11 @@ import { useCallback } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { addDays, format, isSameDay, subDays } from 'date-fns';
+import { secondsInDay } from 'date-fns/constants';
 import { toZonedTime } from 'date-fns-tz';
-import { pathOr } from 'ramda';
+import { ascend, groupBy, pathOr, prop } from 'ramda';
 
-type TradingVolumeData = {
+export type ArmTradingVolumeData = {
   day: string;
   cumulative_volume: number;
   swap_volume: number;
@@ -14,7 +15,8 @@ type TradingVolumeData = {
 
 export const useArmTradingVolume = (limit?: number) => {
   return useQuery({
-    queryKey: ['useArmTradingVolume', limit],
+    staleTime: secondsInDay,
+    queryKey: ['useArmTradingVolume'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         limit: '5000',
@@ -30,19 +32,25 @@ export const useArmTradingVolume = (limit?: number) => {
     select: useCallback(
       (data: {
         result: {
-          rows: TradingVolumeData[];
+          rows: ArmTradingVolumeData[];
         };
       }) => {
-        const rows = pathOr<TradingVolumeData[]>([], ['result', 'rows'], data);
+        const rows = pathOr<ArmTradingVolumeData[]>(
+          [],
+          ['result', 'rows'],
+          data,
+        );
 
         const result = [];
         const endDate = toZonedTime(subDays(new Date(), 1), 'UTC');
+        const findByDay =
+          (currentDate: Date) => (data: ArmTradingVolumeData) => {
+            return isSameDay(new Date(data.day.substring(0, 10)), currentDate);
+          };
         let currentDate = toZonedTime(subDays(new Date(), limit ?? 365), 'UTC');
 
         while (currentDate <= endDate) {
-          const item = rows.find((r) =>
-            isSameDay(new Date(r.day.substring(0, 10)), currentDate),
-          );
+          const item = rows.find(findByDay(currentDate));
 
           result.push({
             timestamp: currentDate.getTime(),
@@ -54,6 +62,66 @@ export const useArmTradingVolume = (limit?: number) => {
         }
 
         return result;
+      },
+      [limit],
+    ),
+  });
+};
+
+export type ArmTradeData = {
+  timestamp: number;
+  amountIn: number;
+  amountOut: number;
+  amountOutMin: string;
+  block_number: number;
+  block_time: string;
+  day: string;
+  exactIn: boolean;
+  inSymbol: string;
+  inToken: string;
+  outSymbol: string;
+  outToken: string;
+  output_amounts: string[];
+  path: string[];
+  price: number;
+  swapType: string;
+  to: string;
+  tx_hash: string;
+  uniswap: boolean;
+};
+
+export const useArmTrades = (limit?: number) => {
+  return useQuery({
+    // staleTime: secondsInDay,
+    queryKey: ['useArmTrades'],
+    queryFn: async () => {
+      const queryParams = new URLSearchParams({
+        api_key: import.meta.env.VITE_DUNE_API_KEY,
+        filters: `day >= '${format(
+          toZonedTime(subDays(new Date(), 7), 'UTC'),
+          'yyyy-MM-dd',
+        )}'`,
+      });
+      const res = await axios.get(
+        `https://api.dune.com/api/v1/query/3282263/results?${queryParams.toString()}`,
+      );
+
+      return res.data;
+    },
+    select: useCallback(
+      (data: { result: { rows: ArmTradeData[] } }) => {
+        const rows = pathOr<ArmTradeData[]>([], ['result', 'rows'], data);
+        const limitDate = toZonedTime(subDays(new Date(), limit ?? 7), 'UTC');
+        const mapped: ArmTradeData[] = rows
+          .map((row) => ({
+            ...row,
+            timestamp: new Date(row.block_time).getTime(),
+            day: row.day.substring(0, 10),
+          }))
+          .toSorted(ascend(prop('timestamp')))
+          .filter((r) => r.timestamp >= limitDate.getTime());
+
+        return groupBy(prop('swapType'), mapped);
       },
       [limit],
     ),

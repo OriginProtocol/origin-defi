@@ -3,6 +3,7 @@ import { useLayout } from '@origin/analytics/shared';
 
 import { ApyChart } from '../components/ApyChart';
 import { ProtocolRevenueChart } from '../components/ProtocolRevenueChart';
+/* import { TradesChart } from '../components/TradesChart'; */
 import { TradingVolumeChart } from '../components/TradingVolumeChart';
 import { TvlChart } from '../components/TvlChart';
 import { VaultAssetsChart } from '../components/VaultAssetsChart';
@@ -27,6 +28,9 @@ export const OverviewView = () => {
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
         <TradingVolumeChart height={300} />
       </Grid2>
+      {/*       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        <TradesChart height={300} />
+      </Grid2> */}
     </Grid2>
   );
 };
