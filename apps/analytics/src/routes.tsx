@@ -1,3 +1,4 @@
+import * as arm from '@origin/analytics/arm';
 import { HomeView } from '@origin/analytics/home';
 import { OverviewView } from '@origin/analytics/oeth';
 import {
@@ -10,6 +11,7 @@ import * as superOeth from '@origin/analytics/super';
 import { NotFoundPage } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import {
+  ARM,
   FaClockRegular,
   FaCoinsRegular,
   FaEyeRegular,
@@ -178,6 +180,26 @@ export const routes: RouteObject[] = [
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
             element: <Collaterals token={tokens.mainnet.OUSD} currency="USD" />,
+          },
+        ],
+      },
+      {
+        index: false,
+        path: 'arm',
+        handle: {
+          title: defineMessage({ defaultMessage: 'ARM' }),
+          icon: ARM,
+          breadcrumb: defineMessage({ defaultMessage: 'ARM' }),
+        },
+        children: [
+          {
+            index: true,
+            Component: arm.OverviewView,
+            handle: {
+              title: defineMessage({ defaultMessage: 'Overview' }),
+              icon: FaEyeRegular,
+              breadcrumb: defineMessage({ defaultMessage: 'Overview' }),
+            },
           },
         ],
       },
