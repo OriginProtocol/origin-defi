@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useId, useState } from 'react';
+import { Fragment, useCallback, useId, useMemo, useState } from 'react';
 
 import { alpha, Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -96,17 +96,25 @@ export const AreaChart = <Datum,>({
     xKey,
   );
 
-  const xScale = scaleUtc({
-    range: [margins.left, width - margins.right],
-    domain: [minX, maxX],
-    clamp: true,
-  });
+  const xScale = useMemo(
+    () =>
+      scaleUtc({
+        range: [margins.left, width - margins.right],
+        domain: [minX, maxX],
+        clamp: true,
+      }),
+    [margins.left, width, margins.right, minX, maxX],
+  );
 
-  const yScale = scaleLinear({
-    range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [minY, maxY],
-    clamp: true,
-  });
+  const yScale = useMemo(
+    () =>
+      scaleLinear({
+        range: [height - margins.bottom, margins.top],
+        domain: yScaleDomain ?? [minY, maxY],
+        clamp: true,
+      }),
+    [height, margins.bottom, margins.top, yScaleDomain, minY, maxY],
+  );
 
   const handlePointerMove = useCallback(
     (event: EventType) => {

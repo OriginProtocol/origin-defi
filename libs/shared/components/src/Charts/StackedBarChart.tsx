@@ -1,4 +1,4 @@
-import { Fragment, useId, useState } from 'react';
+import { Fragment, useId, useMemo, useState } from 'react';
 
 import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisRight } from '@visx/axis';
@@ -89,26 +89,41 @@ export const StackedBarChart = <Datum,>({
     tooltipTop: height / 3,
   });
 
-  const xScale = scaleBand({
-    range: [margins.left, width - margins.right],
-    padding: barPadding,
-    domain: barData.map((d) => d[xKey] as string),
-  });
-  const yScale = scaleLinear({
-    range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [
-      0,
-      Math.max(
-        ...barData.reduce((acc, curr) => {
-          return [...acc, yKeys.reduce((a, c) => a + Number(curr[c.key]), 0)];
-        }, [] as number[]),
-      ),
-    ],
-  });
-  const colorScale = scaleOrdinal<string, string>({
-    domain: yKeys.map((y) => y.key as string),
-    range: yKeys.map((y) => y?.fillColor ?? theme.palette.primary.main),
-  });
+  const xScale = useMemo(
+    () =>
+      scaleBand({
+        range: [margins.left, width - margins.right],
+        padding: barPadding,
+        domain: barData.map((d) => d[xKey] as string),
+      }),
+    [margins.left, width, margins.right, barData, xKey, barPadding],
+  );
+  const yScale = useMemo(
+    () =>
+      scaleLinear({
+        range: [height - margins.bottom, margins.top],
+        domain: yScaleDomain ?? [
+          0,
+          Math.max(
+            ...barData.reduce((acc, curr) => {
+              return [
+                ...acc,
+                yKeys.reduce((a, c) => a + Number(curr[c.key]), 0),
+              ];
+            }, [] as number[]),
+          ),
+        ],
+      }),
+    [height, margins.bottom, margins.top, yScaleDomain, barData, yKeys],
+  );
+  const colorScale = useMemo(
+    () =>
+      scaleOrdinal<string, string>({
+        domain: yKeys.map((y) => y.key as string),
+        range: yKeys.map((y) => y?.fillColor ?? theme.palette.primary.main),
+      }),
+    [yKeys, theme.palette.primary.main],
+  );
   const tickXLabel =
     tickXLabelProps ??
     ({

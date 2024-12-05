@@ -92,11 +92,7 @@ export const ProtocolRevenueChart = ({
               alignItems: 'flex-start',
             }}
           >
-            <LoadingLabel
-              isLoading={isLoading}
-              color="text.secondary"
-              sx={{ fontWeight: 'bold' }}
-            >
+            <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
                 new Date(activeItem?.timestamp ?? new Date().getTime()),
                 'dd MMM yyyy',
