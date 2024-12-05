@@ -415,14 +415,18 @@ export const ArmCard = (props: StackProps) => {
   const { data: apyTrailing, isLoading: isApyTrailingLoading } =
     useArmApy(APY_TRAILING);
 
-  const tvl = [
-    BigInt(data?.totalSupply ?? 0),
-    tokens.mainnet['ARM-WETH-stETH'].decimals,
-  ] as Dnum;
-  const exchangeRate = [
-    BigInt(data?.assetsPerShare ?? 0),
-    tokens.mainnet['ARM-WETH-stETH'].decimals,
-  ] as Dnum;
+  const tvl = data?.totalSupply
+    ? ([
+        BigInt(data.totalSupply),
+        tokens.mainnet['ARM-WETH-stETH'].decimals,
+      ] as Dnum)
+    : from(0);
+  const exchangeRate = data?.assetsPerShare
+    ? ([
+        BigInt(data.assetsPerShare),
+        tokens.mainnet['ARM-WETH-stETH'].decimals,
+      ] as Dnum)
+    : from(0);
   const tvlUsd = mul(tvl, price ?? 0);
   const wethBalance = mul(
     [balance ?? 0n, tokens.mainnet['ARM-WETH-stETH'].decimals],
