@@ -17,12 +17,14 @@ export type LimitControlsProps = {
   limit: number | undefined;
   setLimit: (value: number | undefined) => void;
   disableAll?: boolean;
+  span?: 'all' | 'week';
 };
 
 export const LimitControls = ({
   limit,
   setLimit,
   disableAll,
+  span = 'all',
 }: LimitControlsProps) => {
   const intl = useIntl();
   const theme = useTheme();
@@ -31,35 +33,63 @@ export const LimitControls = ({
   const anchorEl = useRef(null);
 
   const options = [
+    ...(span === 'week'
+      ? [
+          {
+            value: 1,
+            label: intl.formatMessage({ defaultMessage: '1D' }),
+            longLabel: intl.formatMessage({ defaultMessage: '1 day' }),
+          },
+          {
+            value: 3,
+            label: intl.formatMessage({ defaultMessage: '3D' }),
+            longLabel: intl.formatMessage({ defaultMessage: '3 days' }),
+          },
+          {
+            value: 5,
+            label: intl.formatMessage({ defaultMessage: '5D' }),
+            longLabel: intl.formatMessage({ defaultMessage: '5 days' }),
+          },
+          {
+            value: 6,
+            label: intl.formatMessage({ defaultMessage: '6D' }),
+            longLabel: intl.formatMessage({ defaultMessage: '6 days' }),
+          },
+        ]
+      : []),
     {
       value: 7,
       label: intl.formatMessage({ defaultMessage: '1W' }),
       longLabel: intl.formatMessage({ defaultMessage: '1 week' }),
     },
-    {
-      value: 30,
-      label: intl.formatMessage({ defaultMessage: '1M' }),
-      longLabel: intl.formatMessage({ defaultMessage: '1 month' }),
-    },
-    {
-      value: 182,
-      label: intl.formatMessage({ defaultMessage: '6M' }),
-      longLabel: intl.formatMessage({ defaultMessage: '6 months' }),
-    },
-    {
-      value: 365,
-      label: intl.formatMessage({ defaultMessage: '1YR' }),
-      longLabel: intl.formatMessage({ defaultMessage: '1 year' }),
-    },
-    ...(disableAll
-      ? []
-      : [
+    ...(span === 'all'
+      ? [
           {
-            value: undefined,
-            label: intl.formatMessage({ defaultMessage: 'All' }),
-            longLabel: intl.formatMessage({ defaultMessage: 'All' }),
+            value: 30,
+            label: intl.formatMessage({ defaultMessage: '1M' }),
+            longLabel: intl.formatMessage({ defaultMessage: '1 month' }),
           },
-        ]),
+          {
+            value: 182,
+            label: intl.formatMessage({ defaultMessage: '6M' }),
+            longLabel: intl.formatMessage({ defaultMessage: '6 months' }),
+          },
+          {
+            value: 365,
+            label: intl.formatMessage({ defaultMessage: '1YR' }),
+            longLabel: intl.formatMessage({ defaultMessage: '1 year' }),
+          },
+          ...(disableAll
+            ? []
+            : [
+                {
+                  value: undefined,
+                  label: intl.formatMessage({ defaultMessage: 'All' }),
+                  longLabel: intl.formatMessage({ defaultMessage: 'All' }),
+                },
+              ]),
+        ]
+      : []),
   ];
 
   return isSm ? (
