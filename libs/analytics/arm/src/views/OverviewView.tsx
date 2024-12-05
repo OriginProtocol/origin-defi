@@ -1,7 +1,10 @@
 import { Grid2 } from '@mui/material';
 import { useLayout } from '@origin/analytics/shared';
 
-import { ApyChart, OwnershipChart, TvlChart } from '../components/Charts';
+import { ApyChart } from '../components/ApyChart';
+import { ProtocolRevenueChart } from '../components/ProtocolRevenueChart';
+import { TvlChart } from '../components/TvlChart';
+import { VaultAssetsChart } from '../components/VaultAssetsChart';
 
 export const OverviewView = () => {
   const [{ isDrawerOpen }] = useLayout();
@@ -15,7 +18,10 @@ export const OverviewView = () => {
         <TvlChart height={300} />
       </Grid2>
       <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-        <OwnershipChart height={300} />
+        <VaultAssetsChart height={300} />
+      </Grid2>
+      <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
+        <ProtocolRevenueChart height={300} />
       </Grid2>
     </Grid2>
   );

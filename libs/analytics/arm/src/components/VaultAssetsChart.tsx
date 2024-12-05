@@ -11,20 +11,15 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useArmDailyStatsQuery } from '@origin/analytics/shared';
+import { ChartTooltip, useArmDailyStatsQuery } from '@origin/analytics/shared';
 import {
   AreaChart,
-  ChartTooltip,
-  InfoTooltip,
   InfoTooltipLabel,
   LimitControls,
-  LineChart,
   LoadingLabel,
   Spinner,
-  TrailingControls,
 } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
-import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
 import { toNumber } from 'dnum';
@@ -32,205 +27,16 @@ import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
-import type { Trailing, YKey } from '@origin/shared/components';
-import type { NumberLike } from '@visx/scale';
+import type { YKey } from '@origin/shared/components';
 
-export type ApyChartProps = {
+export type VaultAssetsChartProps = {
   height: number;
 } & CardProps;
 
-export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
-  const intl = useIntl();
-  const theme = useTheme();
-  const [limit, setLimit] = useState<number | undefined>(30);
-  const [trailing, setTrailing] = useState<Trailing>('apy30');
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
-
-  const { data, isLoading } = useArmDailyStatsQuery(
-    { limit, offset: 1 },
-    {
-      select: (data) => {
-        const dailyStats = data?.armDailyStats?.toReversed() ?? [];
-        const apy = dailyStats.map((s) => s.apy * 100);
-        const apies = movingAverages(apy, [7, 14, 30]);
-
-        return dailyStats.map((s, idx) => ({
-          timestamp: new Date(s.date).getTime(),
-          apy: apy[idx],
-          apy7: apies[0][idx],
-          apy14: apies[1][idx],
-          apy30: apies[2][idx],
-        }));
-      },
-    },
-  );
-
-  const width = measures?.width ?? 0;
-  const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
-
-  return (
-    <Card {...rest} ref={ref}>
-      <CardHeader title={intl.formatMessage({ defaultMessage: 'APY' })} />
-      <Divider />
-      <CardContent>
-        <Stack
-          direction="row"
-          sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
-        >
-          <Stack spacing={1}>
-            <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd MMM yyyy',
-              )}
-            </LoadingLabel>
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-              <LoadingLabel
-                isLoading={isLoading}
-                variant="body1"
-                sx={{ fontWeight: 'bold' }}
-              >
-                {intl.formatNumber(activeItem?.[trailing] ?? 0)}%
-              </LoadingLabel>
-              <InfoTooltip
-                iconColor="text.primary"
-                tooltipLabel={intl.formatMessage({
-                  defaultMessage:
-                    'There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons.',
-                })}
-              />
-            </Stack>
-          </Stack>
-          <Stack spacing={1} alignItems="flex-end">
-            <LimitControls limit={limit} setLimit={setLimit} />
-            <TrailingControls trailing={trailing} setTrailing={setTrailing} />
-          </Stack>
-        </Stack>
-      </CardContent>
-      {isLoading ? (
-        <Spinner sx={{ height }} />
-      ) : (
-        <LineChart
-          width={width}
-          height={height}
-          series={[
-            {
-              label: 'APY',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: trailing,
-              color: theme.palette.primary.main,
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          Tooltip={ChartTooltip}
-          tickYFormat={(value: NumberLike) => `${value}%`}
-        />
-      )}
-    </Card>
-  );
-};
-
-export type TvlChartProps = {
-  height: number;
-} & CardProps;
-
-export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
-  const intl = useIntl();
-  const theme = useTheme();
-  const [limit, setLimit] = useState<number | undefined>(30);
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useArmDailyStatsQuery(
-    { limit, offset: 1 },
-    {
-      select: (data) => {
-        return (
-          data?.armDailyStats
-            ?.map((s) => ({
-              timestamp: new Date(s.date).getTime(),
-              totalSupply: toNumber([
-                BigInt(s?.totalSupply ?? 0),
-                tokens.mainnet['ARM-WETH-stETH'].decimals,
-              ]),
-            }))
-            .toReversed() ?? []
-        );
-      },
-    },
-  );
-  const width = measures?.width ?? 0;
-  const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
-
-  return (
-    <Card {...rest} ref={ref}>
-      <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
-      <Divider />
-      <CardContent>
-        <Stack
-          direction="row"
-          sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
-        >
-          <Stack spacing={1}>
-            <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
-                'dd MMM yyyy',
-              )}
-            </LoadingLabel>
-            <LoadingLabel
-              isLoading={isLoading}
-              variant="body1"
-              sx={{ fontWeight: 'bold' }}
-            >
-              {intl.formatNumber(activeItem?.totalSupply ?? 0)} ETH
-            </LoadingLabel>
-          </Stack>
-          <Stack spacing={1} alignItems="flex-end">
-            <LimitControls limit={limit} setLimit={setLimit} />
-          </Stack>
-        </Stack>
-      </CardContent>
-      {isLoading ? (
-        <Spinner sx={{ height }} />
-      ) : (
-        <LineChart
-          width={width}
-          height={height}
-          series={[
-            {
-              label: 'TVL',
-              data: data ?? [],
-              xKey: 'timestamp',
-              yKey: 'totalSupply',
-              color: theme.palette.primary.main,
-              curveType: 'base',
-            },
-          ]}
-          onHover={(idx) => {
-            setHoverIdx(idx ?? null);
-          }}
-          Tooltip={ChartTooltip}
-          tickYFormat={(value) =>
-            intl.formatNumber(Number(value), {
-              notation: 'compact',
-            })
-          }
-        />
-      )}
-    </Card>
-  );
-};
-
-export type OwnershipChartProps = {
-  height: number;
-} & CardProps;
-
-export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
+export const VaultAssetsChart = ({
+  height,
+  ...rest
+}: VaultAssetsChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(7);
@@ -301,7 +107,11 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
   }>[];
 
   return (
-    <Card {...rest} ref={ref}>
+    <Card
+      {...rest}
+      ref={ref}
+      sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
+    >
       <CardHeader
         title={
           <InfoTooltipLabel
@@ -316,7 +126,7 @@ export const OwnershipChart = ({ height, ...rest }: OwnershipChartProps) => {
         }
       />
       <Divider />
-      <CardContent>
+      <CardContent sx={{ minHeight: 150 }}>
         <Stack
           direction="row"
           sx={{ alignItems: 'flex-start', justifyContent: 'space-between' }}
