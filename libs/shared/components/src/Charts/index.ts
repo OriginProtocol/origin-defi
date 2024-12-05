@@ -1,5 +1,6 @@
 export * from './AreaChart';
 export * from './BarChart';
+export * from './BubbleChart';
 export * from './constants';
 export * from './LineChart';
 export * from './PieChart';
