@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { ChartTooltip } from '@origin/analytics/shared';
 import {
-  InfoTooltip,
+  CurrencyLabel,
   LimitControls,
   LineChart,
   LoadingLabel,
@@ -39,7 +39,7 @@ export const TradingVolumeChart = ({
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmTradingVolume(limit);
-  console.log(data);
+
   const width = measures?.width ?? 0;
   const activeItem = hoverIdx === null ? last(data ?? []) : data?.[hoverIdx];
 
@@ -65,22 +65,14 @@ export const TradingVolumeChart = ({
                 'dd MMM yyyy',
               )}
             </LoadingLabel>
-            <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
-              <LoadingLabel
-                isLoading={isLoading}
-                variant="body1"
-                sx={{ fontWeight: 'bold' }}
-              >
-                {intl.formatNumber(activeItem?.tradingVolumeETH ?? 0)}
-              </LoadingLabel>
-              <InfoTooltip
-                iconColor="text.primary"
-                tooltipLabel={intl.formatMessage({
-                  defaultMessage:
-                    'There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons.',
-                })}
-              />
-            </Stack>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="body1"
+              sx={{ fontWeight: 'bold' }}
+            >
+              <CurrencyLabel currency="ETH" />
+              {intl.formatNumber(activeItem?.tradingVolumeETH ?? 0)}
+            </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
