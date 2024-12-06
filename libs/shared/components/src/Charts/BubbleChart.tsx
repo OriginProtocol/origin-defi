@@ -1,9 +1,10 @@
-import { useCallback, useId, useMemo, useState } from 'react';
+import { useId, useMemo, useRef, useState } from 'react';
 
-import { Box, useTheme } from '@mui/material';
+import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
+import { RectClipPath } from '@visx/clip-path';
 import { localPoint } from '@visx/event';
-import { LinearGradient } from '@visx/gradient';
+import { Group } from '@visx/group';
 import { scaleLinear, scaleUtc } from '@visx/scale';
 import {
   defaultStyles,
@@ -13,44 +14,44 @@ import {
 } from '@visx/tooltip';
 import { voronoi } from '@visx/voronoi';
 import { format } from 'date-fns';
+import { useIntl } from 'react-intl';
 
+import { ColorLabel, ValueLabel } from '../Labels';
 import { chartMargins } from './constants';
-import { getScaleDomains } from './utils';
+import { getBubbleScaleDomain } from './utils';
 
 import type { BoxProps, StackProps } from '@mui/material';
 import type { TickLabelProps } from '@visx/axis';
-import type { EventType } from '@visx/event/lib/types';
 import type { NumberLike } from '@visx/scale';
-import type { ComponentType } from 'react';
 
-import type { ChartColor, Serie } from './types';
+import type { ValueLabelProps } from '../Labels';
 
 type BubbleChartData = {
+  id: string;
   x: number;
   y: number;
   r: number;
 };
 
 export type BubbleSerie<Datum> = {
-  data: Datum[];
   xKey: keyof Datum;
   yKey: keyof Datum;
   rKey: keyof Datum;
-  color?: ChartColor;
-  label?: string;
+  colorFn?: (d: Datum) => string;
+  label?: (d: Datum) => string;
 };
 
 export type BubbleChartProps<Datum = BubbleChartData> = {
   width: number;
   height: number;
-  series: BubbleSerie<Datum>[];
+  data: Datum[];
+  serie: BubbleSerie<Datum>;
   onHover?: (idx: number | null) => void;
   tickXFormat?: (value: NumberLike) => string;
   tickYFormat?: (value: NumberLike) => string;
   tickXLabelProps?: TickLabelProps<NumberLike>;
   tickYLabelProps?: TickLabelProps<NumberLike>;
   yScaleDomain?: [number, number];
-  Tooltip?: ComponentType<{ series: Serie<Datum>[] | null } & StackProps>;
   margins?: typeof chartMargins;
   showGrid?: boolean;
 } & BoxProps;
@@ -58,20 +59,21 @@ export type BubbleChartProps<Datum = BubbleChartData> = {
 export const BubbleChart = <Datum,>({
   width,
   height,
-  series,
+  data,
+  serie,
   onHover,
   tickXFormat,
   tickYFormat,
   tickXLabelProps,
   tickYLabelProps,
   yScaleDomain,
-  Tooltip,
   margins = chartMargins,
   showGrid = true,
   ...rest
 }: BubbleChartProps<Datum>) => {
   const theme = useTheme();
   const chartId = useId();
+  const svgRef = useRef<SVGSVGElement>(null);
   const [activeIdx, setActiveIdx] = useState<number | null>(null);
   const { containerRef } = useTooltipInPortal({
     scroll: true,
@@ -88,8 +90,9 @@ export const BubbleChart = <Datum,>({
     tooltipTop: height / 3,
   });
 
-  const { minX, maxX, minY, maxY } = getScaleDomains(
-    series,
+  const { minX, maxX, minY, maxY } = getBubbleScaleDomain(
+    data,
+    [serie],
     [1, 1.000001],
     [0.9999, 1.0001],
   );
@@ -114,50 +117,22 @@ export const BubbleChart = <Datum,>({
     [margins.bottom, height, margins.top, yScaleDomain, minY, maxY],
   );
 
-  const allData = series.flatMap((s) => s.data);
-
   const voronoiLayout = useMemo(
     () =>
       voronoi<Datum>({
-        x: (d) => xScale(d[series[0].xKey] as number) ?? 0,
-        y: (d) => yScale(d[series[0].yKey] as number) ?? 0,
+        x: (d) => xScale(d[serie.xKey] as number) ?? 0,
+        y: (d) => yScale(d[serie.yKey] as number) ?? 0,
         width,
         height,
-      })(allData),
-    [width, height, allData, xScale, series, yScale],
-  );
-
-  const handlePointerMove = useCallback(
-    (event: EventType) => {
-      const point = localPoint(event);
-      if (!point) return;
-      const neighborRadius = 100;
-      const closest = voronoiLayout.find(point.x, point.y, neighborRadius);
-
-      if (closest) {
-        showTooltip({
-          tooltipLeft: xScale(closest.data[series[0].xKey] as number),
-          tooltipTop: yScale(closest.data[series[0].yKey] as number),
-        });
-      }
-
-      // setActiveIdx(closestIndex);
-      // onHover?.(closestIndex);
-      // showTooltip({ tooltipLeft: x, tooltipTop: y });
-    },
-    [series, showTooltip, voronoiLayout, xScale, yScale],
+      })(data),
+    [width, height, data, xScale, serie, yScale],
   );
 
   if (!width || !height) return null;
 
-  const activeSeries =
-    activeIdx === null
-      ? null
-      : series.map((s) => ({
-          ...s,
-          data: [s.data[activeIdx]],
-          yAccessor: s.yKey,
-        }));
+  const innerWidth = width - margins.left - margins.right;
+  const innerHeight = height - margins.top - margins.bottom;
+  const activeItem = activeIdx === null ? null : data[activeIdx];
   const bottomTicks = xScale.ticks(width / 100);
   const rightTicks = yScale.ticks(height / 40);
   const tickXLabel = tickXLabelProps ?? {
@@ -190,31 +165,12 @@ export const BubbleChart = <Datum,>({
         {
           position: 'relative',
           '.circle': {
-            cursor: 'pointer',
             '&:hover': { opacity: 0.5 },
           },
         },
       ]}
     >
-      <svg width={width} height={height}>
-        <defs>
-          {series.map((s, i) =>
-            Array.isArray(s.color) && s.color.length === 2 ? (
-              <LinearGradient
-                key={`gradient-${chartId}-${i}`}
-                id={`gradient-${chartId}-${i}`}
-                from={s.color?.[0]}
-                to={s.color?.[1]}
-                fromOffset="0%"
-                toOffset="100%"
-                x1="0%"
-                x2="100%"
-                y1="0%"
-                y2="0%"
-              />
-            ) : null,
-          )}
-        </defs>
+      <svg width={width} height={height} ref={svgRef}>
         <AxisRight
           scale={yScale}
           left={width - margins.right}
@@ -231,51 +187,60 @@ export const BubbleChart = <Datum,>({
           numTicks={bottomTicks.length}
           tickLabelProps={tickXLabel}
         />
-        {series.map((serie, i) => {
-          const fillColor = serie?.color
-            ? Array.isArray(serie.color)
-              ? serie.color.length === 2
-                ? `url(#gradient-${chartId}-${i})`
-                : serie.color[0]
-              : serie.color
-            : theme.palette.primary.main;
+        <RectClipPath
+          id="voronoi_clip"
+          width={innerWidth}
+          height={innerHeight}
+        />
+        <Group
+          top={margins.top}
+          left={margins.left}
+          clipPath="url(#voronoi_clip)"
+          onMouseMove={(event) => {
+            if (!svgRef.current) return;
 
-          return serie.data.map((d, j) => {
+            const point = localPoint(svgRef.current, event);
+            if (!point) return;
+
+            const closest = voronoiLayout.find(
+              point.x - margins.left,
+              point.y - margins.top,
+              75,
+            );
+            if (closest && closest.index !== activeIdx) {
+              setActiveIdx(closest.index);
+              showTooltip({
+                tooltipTop: yScale(closest.data[serie.yKey] as number),
+                tooltipLeft: xScale(closest.data[serie.xKey] as number),
+              });
+            }
+          }}
+          onMouseLeave={() => {
+            setActiveIdx(null);
+          }}
+        >
+          {data.map((d, i) => {
             const cx = xScale(d[serie.xKey] as number);
             const cy = yScale(d[serie.yKey] as number);
             const r = Math.log((d[serie.rKey] as number) + 5) * 5;
+            const color =
+              i === activeIdx
+                ? (serie?.colorFn?.(d) ?? theme.palette.primary.main)
+                : alpha(serie?.colorFn?.(d) ?? theme.palette.primary.main, 0.2);
 
             return (
               <circle
-                key={`${String(serie.yKey)}}-${String(serie?.label ?? i)}-${j}`}
+                key={`${String(serie.yKey)}}-${String(serie?.label ?? i)}-${i}`}
                 cx={cx}
                 cy={cy}
                 r={r}
-                fill={fillColor}
-                fillOpacity={0.9}
-                className="circle"
+                fill={color}
               />
             );
-          });
-        })}
-        {/* {width && height && (
-          <rect
-            x={margins.left}
-            y={margins.top}
-            width={width - margins.right}
-            height={height - margins.bottom - margins.top}
-            fill="transparent"
-            onTouchStart={handlePointerMove}
-            onTouchMove={handlePointerMove}
-            onMouseMove={handlePointerMove}
-            onMouseLeave={() => {
-              setActiveIdx(null);
-              onHover?.(null);
-            }}
-          />
-        )} */}
+          })}
+        </Group>
       </svg>
-      {tooltipOpen && activeIdx !== null && Tooltip ? (
+      {tooltipOpen && activeIdx !== null ? (
         <TooltipWithBounds
           left={tooltipLeft}
           top={tooltipTop}
@@ -284,9 +249,98 @@ export const BubbleChart = <Datum,>({
             background: 'transparent',
           }}
         >
-          <Tooltip series={activeSeries} />
+          <ChartTooltip activeItem={activeItem} serie={serie} />
         </TooltipWithBounds>
       ) : null}
     </Box>
   );
+};
+
+type ChartTooltipProps<ChartData> = {
+  activeItem: ChartData | null;
+  serie: BubbleSerie<ChartData>;
+} & StackProps;
+
+const ChartTooltip = <ChartData,>({
+  activeItem,
+  serie,
+  ...rest
+}: ChartTooltipProps<ChartData>) => {
+  const intl = useIntl();
+  const theme = useTheme();
+
+  if (!activeItem) {
+    return null;
+  }
+
+  const timestamp = activeItem[serie.xKey] as number;
+
+  return (
+    <Stack
+      {...rest}
+      useFlexGap
+      sx={[
+        {
+          backgroundColor: 'background.default',
+          p: 1,
+          border: '1px solid',
+          borderColor: 'common.white',
+          borderRadius: 3,
+          gap: 0.5,
+        },
+        ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx]),
+      ]}
+    >
+      {timestamp && (
+        <Typography variant="caption" color="text.secondary" gutterBottom>
+          {format(new Date(timestamp), 'dd MMM yyyy')}
+        </Typography>
+      )}
+
+      <ColorLabel
+        label={serie?.label?.(activeItem) ?? ''}
+        color={serie.colorFn?.(activeItem) ?? theme.palette.primary.main}
+        labelProps={valueLabelProps.labelProps}
+      />
+      <Stack spacing={0.5}>
+        <ValueLabel
+          label={String(serie.yKey)}
+          value={intl.formatNumber(activeItem?.[serie.yKey] as number, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 5,
+          })}
+          {...valueLabelProps}
+        />
+        <ValueLabel
+          label={String(serie.rKey)}
+          value={intl.formatNumber(activeItem?.[serie.rKey] as number, {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 5,
+          })}
+          currency="ETH"
+          {...valueLabelProps}
+        />
+      </Stack>
+    </Stack>
+  );
+};
+
+const valueLabelProps: Partial<ValueLabelProps> = {
+  direction: 'row',
+  spacing: 1,
+  sx: {
+    py: 0.25,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  labelProps: {
+    variant: 'caption',
+    sx: {
+      minWidth: 50,
+    },
+  },
+  valueProps: {
+    variant: 'caption',
+    color: 'text.primary',
+  },
 };

@@ -9,7 +9,6 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ChartTooltip } from '@origin/analytics/shared';
 import { BubbleChart, LimitControls, Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format, subDays } from 'date-fns';
@@ -19,9 +18,8 @@ import { useIntl } from 'react-intl';
 import { useArmTrades } from '../hooks';
 
 import type { CardProps } from '@mui/material';
-import type { BubbleSerie } from '@origin/shared/components';
+import type { NumberLike } from '@visx/scale';
 
-import type { ArmTradeData } from '../hooks';
 export type TradesChartProps = {
   height: number;
 } & CardProps;
@@ -30,28 +28,8 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
   const [limit, setLimit] = useState<number | undefined>(3);
-  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
-  const { data, isLoading } = useArmTrades();
-
-  const series: BubbleSerie<ArmTradeData>[] = [
-    {
-      data: data?.buy ?? [],
-      label: intl.formatMessage({ defaultMessage: 'Buy' }),
-      xKey: 'timestamp',
-      yKey: 'price',
-      rKey: 'amountIn',
-      color: [theme.palette.chart5, theme.palette.chart4],
-    },
-    {
-      data: data?.sell ?? [],
-      label: intl.formatMessage({ defaultMessage: 'Sell' }),
-      xKey: 'timestamp',
-      yKey: 'price',
-      rKey: 'amountIn',
-      color: [theme.palette.chart1, theme.palette.chart2],
-    },
-  ];
+  const { data, isLoading } = useArmTrades(limit);
 
   const width = measures?.width ?? 0;
 
@@ -91,9 +69,23 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
         <BubbleChart
           width={width}
           height={height}
-          series={series}
-          onHover={(idx) => setHoverIdx(idx)}
-          Tooltip={ChartTooltip}
+          data={data ?? []}
+          serie={{
+            label: (d) =>
+              d?.swapType === 'buy'
+                ? intl.formatMessage({ defaultMessage: 'Buy' })
+                : intl.formatMessage({ defaultMessage: 'Sell' }),
+            xKey: 'timestamp',
+            yKey: 'price',
+            rKey: 'amountIn',
+            colorFn: (d) =>
+              d?.swapType === 'buy'
+                ? theme.palette.chart1
+                : theme.palette.chart4,
+          }}
+          tickYFormat={(d: NumberLike) =>
+            intl.formatNumber(Number(d), { maximumFractionDigits: 4 })
+          }
         />
       )}
     </Card>

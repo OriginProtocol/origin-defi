@@ -1,5 +1,6 @@
 import { isNilOrEmpty } from '@origin/shared/utils';
 
+import type { BubbleSerie } from './BubbleChart';
 import type { Serie } from './types';
 
 export const getScaleDomains = <Datum>(
@@ -56,6 +57,48 @@ export const getStackedScaleDomains = <Datum>(
   const maxY = Math.max(...totalY);
 
   return { minX, maxX, minY, maxY };
+};
+
+export const getBubbleScaleDomain = <Datum>(
+  data: Datum[],
+  series: BubbleSerie<Datum>[],
+  xCoeff = [1, 1],
+  yCoeff = [0.9, 1.1],
+) => {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  let minR = 0;
+  let maxR = -Infinity;
+
+  for (const d of data) {
+    const xs = [];
+    const ys = [];
+    const rs = [];
+
+    for (const s of series) {
+      xs.push(d[s.xKey] as number);
+      ys.push(d[s.yKey] as number);
+      rs.push(d[s.rKey] as number);
+    }
+
+    minX = Math.min(minX, ...xs);
+    maxX = Math.max(maxX, ...xs);
+    minY = Math.min(minY, ...ys);
+    maxY = Math.max(maxY, ...ys);
+    minR = Math.min(minR, ...rs);
+    maxR = Math.max(maxR, ...rs);
+  }
+
+  return {
+    minX: minX * xCoeff[0],
+    maxX: maxX * xCoeff[1],
+    minY: minY * yCoeff[0],
+    maxY: maxY * yCoeff[1],
+    minR,
+    maxR,
+  };
 };
 
 export const getBarChartBottomTicks = (width: number) =>

@@ -5,7 +5,7 @@ import axios from 'axios';
 import { addDays, format, isSameDay, subDays } from 'date-fns';
 import { secondsInDay } from 'date-fns/constants';
 import { toZonedTime } from 'date-fns-tz';
-import { ascend, groupBy, pathOr, prop } from 'ramda';
+import { ascend, pathOr, prop } from 'ramda';
 
 export type ArmTradingVolumeData = {
   day: string;
@@ -97,6 +97,9 @@ export const useArmTrades = (limit?: number) => {
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         api_key: import.meta.env.VITE_DUNE_API_KEY,
+        limit: '5000',
+        // from_date: '2024-11-01',
+        sort_by: 'block_time',
         filters: `day >= '${format(
           toZonedTime(subDays(new Date(), 7), 'UTC'),
           'yyyy-MM-dd',
@@ -112,7 +115,8 @@ export const useArmTrades = (limit?: number) => {
       (data: { result: { rows: ArmTradeData[] } }) => {
         const rows = pathOr<ArmTradeData[]>([], ['result', 'rows'], data);
         const limitDate = toZonedTime(subDays(new Date(), limit ?? 7), 'UTC');
-        const mapped: ArmTradeData[] = rows
+
+        return rows
           .map((row) => ({
             ...row,
             timestamp: new Date(row.block_time).getTime(),
@@ -120,8 +124,6 @@ export const useArmTrades = (limit?: number) => {
           }))
           .toSorted(ascend(prop('timestamp')))
           .filter((r) => r.timestamp >= limitDate.getTime());
-
-        return groupBy(prop('swapType'), mapped);
       },
       [limit],
     ),
