@@ -5,6 +5,12 @@
       "value": "Staking"
     }
   ],
+  "+7PjfV": [
+    {
+      "type": 0,
+      "value": "1 day"
+    }
+  ],
   "+LhIwA": [
     {
       "type": 0,
@@ -45,6 +51,12 @@
     {
       "type": 0,
       "value": "Connect"
+    }
+  ],
+  "+zcMhk": [
+    {
+      "type": 0,
+      "value": "5D"
     }
   ],
   "/0TOL5": [
@@ -1785,6 +1797,12 @@
       "value": "Expired"
     }
   ],
+  "Rwc39n": [
+    {
+      "type": 0,
+      "value": "6 days"
+    }
+  ],
   "RxMChd": [
     {
       "type": 0,
@@ -2339,6 +2357,12 @@
       "value": "The best swap route factors in the best price after transaction costs"
     }
   ],
+  "aTX7LJ": [
+    {
+      "type": 0,
+      "value": "1D"
+    }
+  ],
   "aWpBzj": [
     {
       "type": 0,
@@ -2757,6 +2781,12 @@
     {
       "type": 1,
       "value": "symbolLiquid"
+    }
+  ],
+  "hZS2DW": [
+    {
+      "type": 0,
+      "value": "5 days"
     }
   ],
   "hjWYtP": [
@@ -3287,6 +3317,12 @@
       "value": "Swap"
     }
   ],
+  "s9xNrU": [
+    {
+      "type": 0,
+      "value": "3D"
+    }
+  ],
   "sGU9Dr": [
     {
       "type": 0,
@@ -3665,6 +3701,12 @@
       "value": "Executed"
     }
   ],
+  "ycFUIp": [
+    {
+      "type": 0,
+      "value": "6D"
+    }
+  ],
   "yphS5C": [
     {
       "type": 0,
@@ -3753,6 +3795,12 @@
       "pluralType": "cardinal",
       "type": 6,
       "value": "monthDuration"
+    }
+  ],
+  "zFk9rm": [
+    {
+      "type": 0,
+      "value": "3 days"
     }
   ],
   "zGckFA": [

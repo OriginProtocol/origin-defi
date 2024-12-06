@@ -8,6 +8,9 @@
   "+4uVEp": {
     "defaultMessage": "Origin DeFi Staking"
   },
+  "+7PjfV": {
+    "defaultMessage": "1 day"
+  },
   "+7UEXM": {
     "defaultMessage": "My Lock-ups"
   },
@@ -19,6 +22,9 @@
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "+zcMhk": {
+    "defaultMessage": "5D"
   },
   "/GCoTA": {
     "defaultMessage": "Clear"
@@ -341,6 +347,9 @@
   "RahCRH": {
     "defaultMessage": "Expired"
   },
+  "Rwc39n": {
+    "defaultMessage": "6 days"
+  },
   "RxMChd": {
     "defaultMessage": "On-chain proposal"
   },
@@ -443,6 +452,9 @@
   "aDYxXF": {
     "defaultMessage": "New transaction"
   },
+  "aTX7LJ": {
+    "defaultMessage": "1D"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -514,6 +526,9 @@
   },
   "hZA4Ul": {
     "defaultMessage": "Current Lock-up Ends:"
+  },
+  "hZS2DW": {
+    "defaultMessage": "5 days"
   },
   "hzfM3P": {
     "defaultMessage": "Transaction executed"
@@ -623,6 +638,9 @@
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
+  "s9xNrU": {
+    "defaultMessage": "3D"
+  },
   "sGU9Dr": {
     "defaultMessage": "ETH"
   },
@@ -671,11 +689,17 @@
   "yWtbSZ": {
     "defaultMessage": "Executed"
   },
+  "ycFUIp": {
+    "defaultMessage": "6D"
+  },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
   },
   "yvxbM+": {
     "defaultMessage": "Next Emissions Reduction Event:"
+  },
+  "zFk9rm": {
+    "defaultMessage": "3 days"
   },
   "zQvVDJ": {
     "defaultMessage": "All"
