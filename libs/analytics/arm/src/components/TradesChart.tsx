@@ -9,13 +9,14 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { BubbleChart, LimitControls, Spinner } from '@origin/shared/components';
+import { LimitControls, Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format, subDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import { useArmTrades } from '../hooks';
+import { BubbleChart } from './BubbleChart';
 
 import type { CardProps } from '@mui/material';
 import type { NumberLike } from '@visx/scale';

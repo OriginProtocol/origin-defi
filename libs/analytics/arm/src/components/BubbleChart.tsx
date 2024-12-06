@@ -1,6 +1,11 @@
 import { useId, useMemo, useRef, useState } from 'react';
 
 import { alpha, Box, Stack, Typography, useTheme } from '@mui/material';
+import {
+  chartMargins,
+  ColorLabel,
+  ValueLabel,
+} from '@origin/shared/components';
 import { AxisBottom, AxisRight } from '@visx/axis';
 import { RectClipPath } from '@visx/clip-path';
 import { localPoint } from '@visx/event';
@@ -16,15 +21,10 @@ import { voronoi } from '@visx/voronoi';
 import { format } from 'date-fns';
 import { useIntl } from 'react-intl';
 
-import { ColorLabel, ValueLabel } from '../Labels';
-import { chartMargins } from './constants';
-import { getBubbleScaleDomain } from './utils';
-
 import type { BoxProps, StackProps } from '@mui/material';
+import type { ValueLabelProps } from '@origin/shared/components';
 import type { TickLabelProps } from '@visx/axis';
 import type { NumberLike } from '@visx/scale';
-
-import type { ValueLabelProps } from '../Labels';
 
 type BubbleChartData = {
   id: string;
@@ -292,7 +292,7 @@ const ChartTooltip = <ChartData,>({
       ]}
     >
       {timestamp && (
-        <Typography variant="caption" color="text.secondary" gutterBottom>
+        <Typography variant="caption1" color="text.secondary" gutterBottom>
           {format(new Date(timestamp), 'dd MMM yyyy')}
         </Typography>
       )}
@@ -334,13 +334,55 @@ const valueLabelProps: Partial<ValueLabelProps> = {
     justifyContent: 'space-between',
   },
   labelProps: {
-    variant: 'caption',
+    variant: 'caption1',
     sx: {
       minWidth: 50,
     },
   },
   valueProps: {
-    variant: 'caption',
+    variant: 'caption1',
     color: 'text.primary',
   },
+};
+
+export const getBubbleScaleDomain = <Datum = object,>(
+  data: Datum[],
+  series: BubbleSerie<Datum>[],
+  xCoeff = [1, 1],
+  yCoeff = [0.9, 1.1],
+) => {
+  let minX = Infinity;
+  let maxX = -Infinity;
+  let minY = Infinity;
+  let maxY = -Infinity;
+  let minR = 0;
+  let maxR = -Infinity;
+
+  for (const d of data) {
+    const xs = [];
+    const ys = [];
+    const rs = [];
+
+    for (const s of series) {
+      xs.push(d[s.xKey] as number);
+      ys.push(d[s.yKey] as number);
+      rs.push(d[s.rKey] as number);
+    }
+
+    minX = Math.min(minX, ...xs);
+    maxX = Math.max(maxX, ...xs);
+    minY = Math.min(minY, ...ys);
+    maxY = Math.max(maxY, ...ys);
+    minR = Math.min(minR, ...rs);
+    maxR = Math.max(maxR, ...rs);
+  }
+
+  return {
+    minX: minX * xCoeff[0],
+    maxX: maxX * xCoeff[1],
+    minY: minY * yCoeff[0],
+    maxY: maxY * yCoeff[1],
+    minR,
+    maxR,
+  };
 };
