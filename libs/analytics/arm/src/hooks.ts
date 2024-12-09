@@ -105,7 +105,7 @@ export const useArmTrades = (limit?: number) => {
         )}'`,
       });
       const res = await axios.get(
-        `https://api.dune.com/api/v1/query/3282263/results?${queryParams.toString()}`,
+        `https://api.dune.com/api/v1/query/4397678/results?${queryParams.toString()}`,
       );
 
       return res.data;
