@@ -24,6 +24,7 @@ export const AddressLabel = ({
     chainId: mainnet.id,
     query: {
       enabled: enableEnsName,
+      retry: false,
     },
   });
 
