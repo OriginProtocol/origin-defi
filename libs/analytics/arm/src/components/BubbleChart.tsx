@@ -152,7 +152,7 @@ export const BubbleChart = <Datum,>({
     ((value: NumberLike) => {
       const date = new Date(value as number);
 
-      return format(date, 'dd MMM hh:mm');
+      return format(date, 'dd MMM');
     });
 
   return (
@@ -293,7 +293,7 @@ const ChartTooltip = <ChartData,>({
     >
       {timestamp && (
         <Typography variant="caption1" color="text.secondary" gutterBottom>
-          {format(new Date(timestamp), 'dd MMM yyyy')}
+          {format(new Date(timestamp), 'dd MMM yyyy hh:mm')}
         </Typography>
       )}
 

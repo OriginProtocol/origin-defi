@@ -92,13 +92,12 @@ export type ArmTradeData = {
 
 export const useArmTrades = (limit?: number) => {
   return useQuery({
-    // staleTime: secondsInDay,
+    staleTime: secondsInDay,
     queryKey: ['useArmTrades'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
         api_key: import.meta.env.VITE_DUNE_API_KEY,
         limit: '5000',
-        // from_date: '2024-11-01',
         sort_by: 'block_time',
         filters: `day >= '${format(
           toZonedTime(subDays(new Date(), 7), 'UTC'),

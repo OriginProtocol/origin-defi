@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { LimitControls, Spinner } from '@origin/shared/components';
+import { ColorLabel, LimitControls, Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format, subDays } from 'date-fns';
 import { toZonedTime } from 'date-fns-tz';
@@ -51,17 +51,29 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
       />
       <Divider />
       <CardContent sx={{ minHeight: 120 }}>
-        <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
-          <Typography color="text.secondary">
-            {intl.formatMessage(
-              { defaultMessage: '{dateStart} - {dateEnd}' },
-              {
-                dateStart,
-                dateEnd,
-              },
-            )}
-          </Typography>
-          <LimitControls limit={limit} setLimit={setLimit} span="week" />
+        <Stack>
+          <Stack direction="row" sx={{ justifyContent: 'space-between' }}>
+            <Typography color="text.secondary">
+              {intl.formatMessage(
+                { defaultMessage: '{dateStart} - {dateEnd}' },
+                {
+                  dateStart,
+                  dateEnd,
+                },
+              )}
+            </Typography>
+            <LimitControls limit={limit} setLimit={setLimit} span="week" />
+          </Stack>
+          <Stack direction="row" spacing={1}>
+            <ColorLabel
+              label={intl.formatMessage({ defaultMessage: 'Buy' })}
+              color={theme.palette.chart1}
+            />
+            <ColorLabel
+              label={intl.formatMessage({ defaultMessage: 'Sell' })}
+              color={theme.palette.chart4}
+            />
+          </Stack>
         </Stack>
       </CardContent>
       {isLoading ? (
