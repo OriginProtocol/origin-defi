@@ -35,10 +35,10 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
   const width = measures?.width ?? 0;
 
   const dateStart = format(
-    toZonedTime(subDays(new Date(), limit ?? 365), 'UTC'),
+    toZonedTime(subDays(Date.now(), limit ?? 365), 'UTC'),
     'dd MMM yyyy',
   );
-  const dateEnd = format(toZonedTime(new Date(), 'UTC'), 'dd MMM yyyy');
+  const dateEnd = format(toZonedTime(Date.now(), 'UTC'), 'dd MMM yyyy');
 
   return (
     <Card

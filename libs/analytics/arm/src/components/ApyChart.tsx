@@ -20,6 +20,7 @@ import {
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -47,7 +48,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         const apies = movingAverages(apy, [7, 14, 30]);
 
         return dailyStats.map((s, idx) => ({
-          timestamp: new Date(s.date).getTime(),
+          timestamp: toZonedTime(s.date, 'UTC').getTime(),
           apy: apy[idx],
           apy7: apies[0][idx],
           apy14: apies[1][idx],
@@ -76,7 +77,7 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
+                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

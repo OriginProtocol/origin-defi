@@ -24,17 +24,22 @@ export const useHomeView = () => {
     l: '30',
     c: 'ETH',
   });
-  const minFrom = Object.values(oTokenConfig).reduce((acc, curr) => {
-    const from = new Date(curr.from);
+  const minFrom = Object.values(oTokenConfig).reduce(
+    (acc, curr) => {
+      const from = toZonedTime(curr.from, 'UTC');
 
-    return isBefore(acc, from) ? acc : from;
-  }, new Date('2023-06-01T00:00:00.000000Z'));
+      return isBefore(acc, from) ? acc : from;
+    },
+    toZonedTime('2023-06-01T00:00:00.000000Z', 'UTC'),
+  );
 
   return useMemo(() => {
-    const from = search.get('f') ? new Date(search.get('f') ?? minFrom) : null;
-    from?.setHours(0, 0, 0, 0);
-    const to = search.get('t') ? new Date(search.get('t') ?? 0) : null;
-    to?.setHours(23, 59, 59, 999);
+    const from = search.get('f')
+      ? toZonedTime(search.get('f') ?? minFrom, 'UTC')
+      : null;
+    const to = search.get('t')
+      ? toZonedTime(search.get('t') ?? 0, 'UTC')
+      : null;
 
     return {
       offset: Number(search.get('o') ?? '1'),
@@ -70,7 +75,7 @@ export const useHomeView = () => {
             params.delete('l');
             params.set('f', newVal.toISOString());
             if (params.get('t') === null) {
-              params.set('t', new Date().toISOString());
+              params.set('t', toZonedTime(Date.now(), 'UTC').toISOString());
             }
           } else {
             params.delete('f');
@@ -112,7 +117,7 @@ type NetAssetValue = {
 };
 
 export const useNetAssetValue = () => {
-  const { from, to, limit, minFrom } = useHomeView();
+  const { from, to, limit, minFrom, offset } = useHomeView();
   const queryClient = useQueryClient();
 
   return useQuery<NetAssetValue[], Error, NetAssetValue[], ['netAssetValue']>({
@@ -149,7 +154,7 @@ export const useNetAssetValue = () => {
         };
       });
 
-      const endDate = toZonedTime(new Date(), 'UTC');
+      const endDate = toZonedTime(Date.now(), 'UTC');
       let currentDate = toZonedTime(minFrom, 'UTC');
 
       while (currentDate <= endDate) {
@@ -180,14 +185,17 @@ export const useNetAssetValue = () => {
           if (from) {
             filteredData = filteredData.filter(({ timestamp }) => {
               return (
-                isSameDay(new Date(timestamp), from) ||
-                isAfter(new Date(timestamp), from)
+                isSameDay(toZonedTime(timestamp, 'UTC'), from) ||
+                isAfter(toZonedTime(timestamp, 'UTC'), from)
               );
             });
           }
           if (to) {
             filteredData = filteredData.filter(({ timestamp }) => {
-              return isBefore(new Date(timestamp), subDays(to, 1));
+              return isBefore(
+                toZonedTime(timestamp, 'UTC'),
+                subDays(to, offset),
+              );
             });
           }
         } else if (limit) {
@@ -196,7 +204,7 @@ export const useNetAssetValue = () => {
 
         return filteredData;
       },
-      [from, to, limit],
+      [from, to, limit, offset],
     ),
   });
 };

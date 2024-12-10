@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CurrencyControls, LimitControls } from '@origin/shared/components';
+import { toZonedTime } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
@@ -48,7 +49,7 @@ export const Controls = (props: StackProps) => {
             disableFuture
             formatDensity="dense"
             minDate={minFrom}
-            maxDate={to ?? new Date()}
+            maxDate={to ?? toZonedTime(Date.now(), 'UTC')}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'Start date' }),
@@ -63,7 +64,7 @@ export const Controls = (props: StackProps) => {
             disableFuture
             formatDensity="dense"
             minDate={from ?? minFrom}
-            maxDate={new Date()}
+            maxDate={toZonedTime(Date.now(), 'UTC')}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'End date' }),

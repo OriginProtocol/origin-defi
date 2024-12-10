@@ -15,6 +15,7 @@ import {
   useTooltipInPortal,
 } from '@visx/tooltip';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 
 import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
@@ -143,9 +144,7 @@ export const StackedBarChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: string) => {
-      const date = new Date(Number(value));
-
-      return format(date, 'dd MMM');
+      return format(toZonedTime(Number(value), 'UTC'), 'dd MMM');
     });
 
   const rightTicks = yScale.ticks(height / 40);

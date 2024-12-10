@@ -42,12 +42,15 @@ export const useArmTradingVolume = (limit?: number) => {
         );
 
         const result = [];
-        const endDate = toZonedTime(subDays(new Date(), 1), 'UTC');
+        const endDate = toZonedTime(subDays(Date.now(), 1), 'UTC');
         const findByDay =
           (currentDate: Date) => (data: ArmTradingVolumeData) => {
-            return isSameDay(new Date(data.day.substring(0, 10)), currentDate);
+            return isSameDay(
+              toZonedTime(data.day.substring(0, 10), 'UTC'),
+              currentDate,
+            );
           };
-        let currentDate = toZonedTime(subDays(new Date(), limit ?? 365), 'UTC');
+        let currentDate = toZonedTime(subDays(Date.now(), limit ?? 365), 'UTC');
 
         while (currentDate <= endDate) {
           const item = rows.find(findByDay(currentDate));
@@ -100,7 +103,7 @@ export const useArmTrades = (limit?: number) => {
         limit: '5000',
         sort_by: 'block_time',
         filters: `day >= '${format(
-          toZonedTime(subDays(new Date(), 7), 'UTC'),
+          toZonedTime(subDays(Date.now(), 7), 'UTC'),
           'yyyy-MM-dd',
         )}'`,
       });
@@ -113,12 +116,12 @@ export const useArmTrades = (limit?: number) => {
     select: useCallback(
       (data: { result: { rows: ArmTradeData[] } }) => {
         const rows = pathOr<ArmTradeData[]>([], ['result', 'rows'], data);
-        const limitDate = toZonedTime(subDays(new Date(), limit ?? 7), 'UTC');
+        const limitDate = toZonedTime(subDays(Date.now(), limit ?? 7), 'UTC');
 
         return rows
           .map((row) => ({
             ...row,
-            timestamp: new Date(row.block_time).getTime(),
+            timestamp: toZonedTime(row.block_time, 'UTC').getTime(),
             day: row.day.substring(0, 10),
           }))
           .toSorted(ascend(prop('timestamp')))

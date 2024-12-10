@@ -18,6 +18,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { toNumber } from 'dnum';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -41,7 +42,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
         return (
           data?.armDailyStats
             ?.map((s) => ({
-              timestamp: new Date(s.date).getTime(),
+              timestamp: toZonedTime(s.date, 'UTC').getTime(),
               totalSupply: toNumber([
                 BigInt(s?.totalSupply ?? 0),
                 tokens.mainnet['ARM-WETH-stETH'].decimals,
@@ -72,7 +73,7 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
+                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

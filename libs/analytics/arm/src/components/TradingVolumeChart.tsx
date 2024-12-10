@@ -18,6 +18,7 @@ import {
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -61,7 +62,7 @@ export const TradingVolumeChart = ({
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
               {format(
-                new Date(activeItem?.timestamp ?? new Date().getTime()),
+                toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

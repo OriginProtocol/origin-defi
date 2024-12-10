@@ -21,6 +21,7 @@ import {
 } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { format, isDate } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { last } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -98,7 +99,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
             sx={{ fontWeight: 'bold' }}
           >
             {format(
-              new Date(activeItem?.timestamp ?? new Date().getTime()),
+              toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
               'dd MMM yyyy',
             )}
           </LoadingLabel>

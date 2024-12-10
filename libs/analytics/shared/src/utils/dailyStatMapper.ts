@@ -1,4 +1,5 @@
 import { hasKey } from '@origin/shared/utils';
+import { toZonedTime } from 'date-fns-tz';
 import { div, gt, mul, sub, toNumber } from 'dnum';
 import { omit } from 'ramda';
 
@@ -75,8 +76,8 @@ export const dailyStatMapper = (
     id: d?.id ?? '',
     blockNumber: d?.blockNumber,
     timestamp: d?.timestamp
-      ? new Date(d?.timestamp).getTime()
-      : new Date().getTime(),
+      ? toZonedTime(d?.timestamp, 'UTC').getTime()
+      : Date.now(),
     date: d?.date ?? '',
     apy: (d?.apy ?? 0) * factor,
     ...apies,
