@@ -131,7 +131,7 @@ export const LineChart = <Datum,>({
           data: [s.data[activeIdx]],
           yAccessor: s.yKey,
         }));
-  const bottomTicks = xScale.ticks(width / 80);
+  const bottomTicks = xScale.ticks(Math.floor(width / 100));
   const rightTicks = yScale.ticks(height / 40);
   const tickXLabel = tickXLabelProps ?? {
     fontSize: 11,
