@@ -59,7 +59,7 @@ export const VaultAssetsChart = ({
             data?.armStates.reduce(
               (acc, curr) => {
                 const dateHour = format(
-                  new Date(curr.timestamp),
+                  toZonedTime(curr.timestamp, 'UTC'),
                   'yyyy-MM-dd HH',
                 );
 
@@ -291,7 +291,7 @@ export const ChartTooltip = <ChartData,>({
     >
       {timestamp && (
         <Typography variant="caption1" color="text.secondary" gutterBottom>
-          {format(new Date(timestamp), 'dd MMM yyyy HH:mm')}
+          {format(toZonedTime(timestamp, 'UTC'), 'dd MMM yyyy HH:mm')}
         </Typography>
       )}
       {series.map((s, i) => (
