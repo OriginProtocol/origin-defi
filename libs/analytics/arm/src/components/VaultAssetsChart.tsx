@@ -181,7 +181,7 @@ export const VaultAssetsChart = ({
                     key={s.key}
                     direction="row"
                     spacing={1}
-                    sx={{ minWidth: 260 }}
+                    sx={{ minWidth: 260, alignItems: 'center' }}
                   >
                     <Box
                       sx={{
