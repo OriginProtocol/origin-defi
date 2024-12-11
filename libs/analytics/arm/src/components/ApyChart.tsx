@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   Card,
@@ -20,10 +20,11 @@ import {
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { format } from 'date-fns';
-import { last } from 'ramda';
+import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
+import type { ArmDailyStatsQuery } from '@origin/analytics/shared';
 import type { Trailing } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 
@@ -39,21 +40,25 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit, offset: 1 },
+    { offset: 1 },
     {
-      select: (data) => {
-        const dailyStats = data?.armDailyStats?.toReversed() ?? [];
-        const apy = dailyStats.map((s) => s.apy * 100);
-        const apies = movingAverages(apy, [7, 14, 30]);
+      select: useCallback(
+        (data: ArmDailyStatsQuery) => {
+          const dailyStats = data?.armDailyStats?.toReversed() ?? [];
+          const apy = dailyStats.map((s) => s.apy * 100);
+          const apies = movingAverages(apy, [7, 14, 30]);
+          const mapped = dailyStats.map((s, idx) => ({
+            timestamp: new Date(s.date).getTime(),
+            apy: apy[idx],
+            apy7: apies[0][idx],
+            apy14: apies[1][idx],
+            apy30: apies[2][idx],
+          }));
 
-        return dailyStats.map((s, idx) => ({
-          timestamp: new Date(s.date).getTime(),
-          apy: apy[idx],
-          apy7: apies[0][idx],
-          apy14: apies[1][idx],
-          apy30: apies[2][idx],
-        }));
-      },
+          return limit ? takeLast(limit ?? 365, mapped) : mapped;
+        },
+        [limit],
+      ),
     },
   );
 

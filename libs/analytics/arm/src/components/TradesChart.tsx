@@ -47,7 +47,7 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Trades Buy/Sell' })}
+        title={intl.formatMessage({ defaultMessage: 'Trader Buy v. Sell' })}
       />
       <Divider />
       <CardContent sx={{ minHeight: 120 }}>
