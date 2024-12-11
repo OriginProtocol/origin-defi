@@ -53,6 +53,9 @@
   "3TTmje": {
     "defaultMessage": "MC"
   },
+  "47/XEC": {
+    "defaultMessage": "Weekly Analytics Email"
+  },
   "4OE2Tb": {
     "defaultMessage": "Your transaction is being processed on-chain."
   },
@@ -454,9 +457,6 @@
   },
   "wqlXwW": {
     "defaultMessage": "Wrong Network"
-  },
-  "wxPMp2": {
-    "defaultMessage": "Subscribe to our weekly analytics email"
   },
   "xN53iS": {
     "defaultMessage": "Yield Bonus"

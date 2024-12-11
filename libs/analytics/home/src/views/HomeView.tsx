@@ -1,10 +1,6 @@
-import { Grid2, Stack, Typography } from '@mui/material';
+import { Box, Grid2, Stack, Typography } from '@mui/material';
 import { trackSentryError, useLayout } from '@origin/analytics/shared';
-import {
-  ErrorBoundary,
-  ErrorCard,
-  ExternalLink,
-} from '@origin/shared/components';
+import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
 import { CirculatingSupplyCard } from '../components/CirculatingSupplyCard';
@@ -42,15 +38,19 @@ export const HomeView = () => {
               <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
                 {intl.formatMessage({ defaultMessage: 'Protocol Metrics' })}
               </Typography>
-              <ExternalLink
-                href="https://www.originprotocol.com/#mailing"
-                color="primary.main"
-                iconType="arrow"
+              <Box
+                component="a"
+                sx={{
+                  color: 'primary.main',
+                  textDecoration: 'none',
+                }}
+                data-eo-form-toggle-id="e4ae2b76-b74f-11ef-8609-9d9db35fed7a"
+                href="#"
               >
                 {intl.formatMessage({
-                  defaultMessage: 'Subscribe to our weekly analytics email',
+                  defaultMessage: 'Weekly Analytics Email',
                 })}
-              </ExternalLink>
+              </Box>
             </Stack>
             <Controls />
           </Stack>

@@ -131,6 +131,12 @@
       "value": "MC"
     }
   ],
+  "47/XEC": [
+    {
+      "type": 0,
+      "value": "Weekly Analytics Email"
+    }
+  ],
   "4OE2Tb": [
     {
       "type": 0,
@@ -1073,12 +1079,6 @@
     {
       "type": 0,
       "value": "Wrong Network"
-    }
-  ],
-  "wxPMp2": [
-    {
-      "type": 0,
-      "value": "Subscribe to our weekly analytics email"
     }
   ],
   "xN53iS": [
