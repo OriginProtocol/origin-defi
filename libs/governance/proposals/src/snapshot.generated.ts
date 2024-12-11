@@ -485,6 +485,8 @@ export type Space = {
   cover?: Maybe<Scalars['String']['output']>;
   created: Scalars['Int']['output'];
   delegationPortal?: Maybe<DelegationPortal>;
+  discourseCategory?: Maybe<Scalars['Int']['output']>;
+  discussions?: Maybe<Scalars['String']['output']>;
   domain?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   filters?: Maybe<SpaceFilters>;

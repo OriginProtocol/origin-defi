@@ -303,7 +303,9 @@ const ChartTooltip = <ChartData,>({
       />
       <Stack spacing={0.5}>
         <ValueLabel
-          label={String(serie.yKey)}
+          label={intl.formatMessage({
+            defaultMessage: 'Price',
+          })}
           value={intl.formatNumber(activeItem?.[serie.yKey] as number, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 5,
@@ -311,7 +313,9 @@ const ChartTooltip = <ChartData,>({
           {...valueLabelProps}
         />
         <ValueLabel
-          label={String(serie.rKey)}
+          label={intl.formatMessage({
+            defaultMessage: 'Amount',
+          })}
           value={intl.formatNumber(activeItem?.[serie.rKey] as number, {
             minimumFractionDigits: 2,
             maximumFractionDigits: 5,
