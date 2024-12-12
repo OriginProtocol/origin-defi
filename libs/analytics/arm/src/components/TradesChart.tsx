@@ -9,7 +9,12 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { ColorLabel, LimitControls, Spinner } from '@origin/shared/components';
+import {
+  ColorLabel,
+  InfoTooltipLabel,
+  LimitControls,
+  Spinner,
+} from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
 import { subDays } from 'date-fns';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
@@ -52,7 +57,16 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
       sx={[{ height: 1 }, ...(Array.isArray(rest.sx) ? rest.sx : [rest.sx])]}
     >
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Trader Buy v. Sell' })}
+        title={
+          <InfoTooltipLabel
+            tooltipLabel={intl.formatMessage({
+              defaultMessage:
+                'The price at which users are selling stETH to the ARM vs. buying it from the ARM.',
+            })}
+          >
+            {intl.formatMessage({ defaultMessage: 'Trader Buy v. Sell' })}
+          </InfoTooltipLabel>
+        }
       />
       <Divider />
       <CardContent sx={{ minHeight: 120 }}>
