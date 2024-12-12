@@ -5,6 +5,7 @@ import * as ReactDOM from 'react-dom/client';
 
 import {
   queryClient,
+  registerDayjsPlugins,
   registerSentry,
   wagmiConfig,
 } from '@origin/analytics/shared';
@@ -30,6 +31,8 @@ setAutoFreeze(false);
 logWelcomeMessage('Analytics');
 
 registerSentry();
+
+registerDayjsPlugins();
 
 const router = createBrowserRouter(routes);
 
