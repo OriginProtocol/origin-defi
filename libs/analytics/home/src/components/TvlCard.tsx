@@ -80,8 +80,6 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
     hoverIdx === null ? last(data?.totals ?? []) : data?.totals?.[hoverIdx];
   const totalTvl = currency === 'ETH' ? activeItem?.tvlETH : activeItem?.tvlUSD;
 
-  console.log(series);
-
   return (
     <Card {...rest} ref={ref}>
       <CardHeader

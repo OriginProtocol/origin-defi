@@ -21,8 +21,7 @@ import {
 import { LoadingLabel } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { mul, toNumber } from 'dnum';
 import { last, pluck } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -116,8 +115,9 @@ export const ProtocolRevenueChart = ({
             }}
           >
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
+              {formatInTimeZone(
                 toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
+                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

@@ -23,8 +23,7 @@ import {
 import { ColorLabel, ValueLabel } from '@origin/shared/components';
 import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { toNumber } from 'dnum';
 import { ascend, last, prop, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
@@ -58,8 +57,9 @@ export const VaultAssetsChart = ({
           const mapped = Object.values(
             data?.armStates.reduce(
               (acc, curr) => {
-                const dateHour = format(
+                const dateHour = formatInTimeZone(
                   toZonedTime(curr.timestamp, 'UTC'),
+                  'UTC',
                   'yyyy-MM-dd HH',
                 );
 
@@ -165,8 +165,9 @@ export const VaultAssetsChart = ({
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
+              {formatInTimeZone(
                 toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
+                'UTC',
                 'dd MMM yyyy HH:mm',
               )}
             </LoadingLabel>
@@ -291,7 +292,11 @@ export const ChartTooltip = <ChartData,>({
     >
       {timestamp && (
         <Typography variant="caption1" color="text.secondary" gutterBottom>
-          {format(toZonedTime(timestamp, 'UTC'), 'dd MMM yyyy HH:mm')}
+          {formatInTimeZone(
+            toZonedTime(timestamp, 'UTC'),
+            'UTC',
+            'dd MMM yyyy HH:mm',
+          )}
         </Typography>
       )}
       {series.map((s, i) => (

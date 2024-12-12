@@ -19,8 +19,7 @@ import {
 } from '@origin/shared/components';
 import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
@@ -81,8 +80,9 @@ export const ApyChart = ({ height, ...rest }: ApyChartProps) => {
         >
           <Stack spacing={1}>
             <LoadingLabel isLoading={isLoading} color="text.secondary">
-              {format(
+              {formatInTimeZone(
                 toZonedTime(activeItem?.timestamp ?? Date.now(), 'UTC'),
+                'UTC',
                 'dd MMM yyyy',
               )}
             </LoadingLabel>

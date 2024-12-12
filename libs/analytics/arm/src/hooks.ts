@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { addDays, format, isSameDay, subDays } from 'date-fns';
 import { secondsInDay } from 'date-fns/constants';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { ascend, pathOr, prop } from 'ramda';
 
 export type ArmTradingVolumeData = {
@@ -102,8 +102,9 @@ export const useArmTrades = (limit?: number) => {
         api_key: import.meta.env.VITE_DUNE_API_KEY,
         limit: '5000',
         sort_by: 'block_time',
-        filters: `day >= '${format(
+        filters: `day >= '${formatInTimeZone(
           toZonedTime(subDays(Date.now(), 7), 'UTC'),
+          'UTC',
           'yyyy-MM-dd',
         )}'`,
       });

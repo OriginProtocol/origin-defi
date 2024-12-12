@@ -1,7 +1,6 @@
 import { capitalize, Stack, Typography } from '@mui/material';
 import { ColorLabel, ValueLabel } from '@origin/shared/components';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import type { StackProps } from '@mui/material';
@@ -41,7 +40,11 @@ export const ChartTooltip = <ChartData,>({
     >
       {timestamp && (
         <Typography variant="caption1" color="text.secondary" gutterBottom>
-          {format(toZonedTime(timestamp, 'UTC'), 'dd MMM yyyy')}
+          {formatInTimeZone(
+            toZonedTime(timestamp, 'UTC'),
+            'UTC',
+            'dd MMM yyyy',
+          )}
         </Typography>
       )}
       {series.map((s, i) => (

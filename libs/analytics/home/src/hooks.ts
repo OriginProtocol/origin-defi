@@ -6,13 +6,13 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import {
   addDays,
-  format,
   isAfter,
   isBefore,
+  isDate,
   isSameDay,
   subDays,
 } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
@@ -34,18 +34,21 @@ export const useHomeView = () => {
   );
 
   return useMemo(() => {
-    const from = search.get('f')
-      ? toZonedTime(search.get('f') ?? minFrom, 'UTC')
-      : null;
-    const to = search.get('t')
-      ? toZonedTime(search.get('t') ?? 0, 'UTC')
-      : null;
+    const o = search.get('o');
+    const f = search.get('f');
+    const t = search.get('t');
+    const l = search.get('l');
+    const c = search.get('c');
+    const offset = o ? Number(o) : 1;
+    const from = f ? new Date(f) : null;
+    const to = t ? new Date(t) : null;
+    const limit = l === 'all' ? undefined : Number(l);
+    const currency = (c ?? 'ETH') as Currency;
 
     return {
-      offset: Number(search.get('o') ?? '1'),
-      limit:
-        search.get('l') === 'all' ? undefined : Number(search.get('l') ?? null),
-      currency: (search.get('c') ?? 'ETH') as Currency,
+      offset,
+      limit,
+      currency,
       minFrom,
       from,
       to,
@@ -71,11 +74,11 @@ export const useHomeView = () => {
       },
       handleSetFrom: (newVal: Date | null) => {
         setSearch((params) => {
-          if (newVal && !isNaN(newVal.getTime())) {
+          if (newVal && isDate(newVal)) {
             params.delete('l');
-            params.set('f', newVal.toISOString());
+            params.set('f', new Date(newVal).toISOString());
             if (params.get('t') === null) {
-              params.set('t', toZonedTime(Date.now(), 'UTC').toISOString());
+              params.set('t', new Date().toISOString());
             }
           } else {
             params.delete('f');
@@ -158,7 +161,7 @@ export const useNetAssetValue = () => {
       let currentDate = toZonedTime(minFrom, 'UTC');
 
       while (currentDate <= endDate) {
-        const dateKey = format(currentDate, 'yyyy-MM-dd');
+        const dateKey = formatInTimeZone(currentDate, 'UTC', 'yyyy-MM-dd');
         const totalUSD =
           dailyMap[dateKey]?.totalUSD ??
           result[result.length - 1]?.totalUSD ??

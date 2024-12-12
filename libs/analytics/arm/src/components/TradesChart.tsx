@@ -11,8 +11,8 @@ import {
 } from '@mui/material';
 import { ColorLabel, LimitControls, Spinner } from '@origin/shared/components';
 import { useMeasure } from '@react-hookz/web';
-import { format, subDays } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { subDays } from 'date-fns';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import { useArmTrades } from '../hooks';
@@ -34,11 +34,16 @@ export const TradesChart = ({ height, ...rest }: TradesChartProps) => {
 
   const width = measures?.width ?? 0;
 
-  const dateStart = format(
+  const dateStart = formatInTimeZone(
     toZonedTime(subDays(Date.now(), limit ?? 365), 'UTC'),
+    'UTC',
     'dd MMM yyyy',
   );
-  const dateEnd = format(toZonedTime(Date.now(), 'UTC'), 'dd MMM yyyy');
+  const dateEnd = formatInTimeZone(
+    toZonedTime(Date.now(), 'UTC'),
+    'UTC',
+    'dd MMM yyyy',
+  );
 
   return (
     <Card

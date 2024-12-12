@@ -13,8 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
-import { format } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 
 import { chartMargins, curveTypes } from './constants';
 import { getStackedScaleDomains } from './utils';
@@ -166,7 +165,11 @@ export const AreaChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: NumberLike) => {
-      return format(toZonedTime(value as number, 'UTC'), 'dd MMM');
+      return formatInTimeZone(
+        toZonedTime(value as number, 'UTC'),
+        'UTC',
+        'dd MMM',
+      );
     });
 
   return (
