@@ -23,7 +23,7 @@ import { movingAverages } from '@origin/shared/utils';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { mul, toNumber } from 'dnum';
-import { last, pluck } from 'ramda';
+import { last, pluck, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
@@ -49,40 +49,44 @@ export const ProtocolRevenueChart = ({
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
     {
-      limit,
       offset: 1,
     },
     {
-      select: useCallback((data: ArmDailyStatsQuery) => {
-        const mapped = data.armDailyStats.toReversed().map((d) => {
-          const rateUSD = d.rateUSD;
-          const feesETH = [BigInt(d?.fees ?? 0), 18] as Dnum;
+      select: useCallback(
+        (data: ArmDailyStatsQuery) => {
+          const mapped = data.armDailyStats.toReversed().map((d) => {
+            const rateUSD = d.rateUSD;
+            const feesETH = [BigInt(d?.fees ?? 0), 18] as Dnum;
 
-          return {
-            timestamp: d.timestamp,
-            date: d.date,
-            feesETH: toNumber(feesETH),
-            feesUSD: toNumber(mul(feesETH, rateUSD)),
-          };
-        });
+            return {
+              timestamp: d.timestamp,
+              date: d.date,
+              feesETH: toNumber(feesETH),
+              feesUSD: toNumber(mul(feesETH, rateUSD)),
+            };
+          });
 
-        const feesAveragesETH = movingAverages(
-          pluck('feesETH', mapped),
-          [7, 30],
-        );
-        const feesAveragesUSD = movingAverages(
-          pluck('feesUSD', mapped),
-          [7, 30],
-        );
+          const feesAveragesETH = movingAverages(
+            pluck('feesETH', mapped),
+            [7, 30],
+          );
+          const feesAveragesUSD = movingAverages(
+            pluck('feesUSD', mapped),
+            [7, 30],
+          );
 
-        return mapped.map((m, i) => ({
-          ...m,
-          feesMovingAvg7DaysETH: feesAveragesETH[0][i],
-          feesMovingAvg30DaysETH: feesAveragesETH[1][i],
-          feesMovingAvg7DaysUSD: feesAveragesUSD[0][i],
-          feesMovingAvg30DaysUSD: feesAveragesUSD[1][i],
-        }));
-      }, []),
+          const res = mapped.map((m, i) => ({
+            ...m,
+            feesMovingAvg7DaysETH: feesAveragesETH[0][i],
+            feesMovingAvg30DaysETH: feesAveragesETH[1][i],
+            feesMovingAvg7DaysUSD: feesAveragesUSD[0][i],
+            feesMovingAvg30DaysUSD: feesAveragesUSD[1][i],
+          }));
+
+          return limit ? takeLast(limit ?? 365, res) : res;
+        },
+        [limit],
+      ),
     },
   );
 

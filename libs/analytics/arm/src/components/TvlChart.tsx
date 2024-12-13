@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import {
   Card,
@@ -19,10 +19,11 @@ import { tokens } from '@origin/shared/contracts';
 import { useMeasure } from '@react-hookz/web';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { toNumber } from 'dnum';
-import { last } from 'ramda';
+import { last, takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 
 import type { CardProps } from '@mui/material';
+import type { ArmDailyStatsQuery } from '@origin/analytics/shared';
 
 export type TvlChartProps = {
   height: number;
@@ -35,21 +36,25 @@ export const TvlChart = ({ height, ...rest }: TvlChartProps) => {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
   const { data, isLoading } = useArmDailyStatsQuery(
-    { limit, offset: 1 },
+    { offset: 1 },
     {
-      select: (data) => {
-        return (
-          data?.armDailyStats
-            ?.map((s) => ({
-              timestamp: toZonedTime(s.date, 'UTC').getTime(),
-              totalSupply: toNumber([
-                BigInt(s?.totalSupply ?? 0),
-                tokens.mainnet['ARM-WETH-stETH'].decimals,
-              ]),
-            }))
-            .toReversed() ?? []
-        );
-      },
+      select: useCallback(
+        (data: ArmDailyStatsQuery) => {
+          const mapped =
+            data?.armDailyStats
+              ?.map((s) => ({
+                timestamp: toZonedTime(s.date, 'UTC').getTime(),
+                totalSupply: toNumber([
+                  BigInt(s?.totalSupply ?? 0),
+                  tokens.mainnet['ARM-WETH-stETH'].decimals,
+                ]),
+              }))
+              .toReversed() ?? [];
+
+          return limit ? takeLast(limit ?? 365, mapped) : mapped;
+        },
+        [limit],
+      ),
     },
   );
 
