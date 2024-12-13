@@ -2,10 +2,13 @@ import { useCallback } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { addDays, format, isSameDay, subDays } from 'date-fns';
+import { subDays } from 'date-fns';
 import { secondsInDay } from 'date-fns/constants';
 import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { ascend, pathOr, prop } from 'ramda';
+
+import type { Dayjs } from 'dayjs';
 
 export type ArmTradingVolumeData = {
   day: string;
@@ -42,26 +45,23 @@ export const useArmTradingVolume = (limit?: number) => {
         );
 
         const result = [];
-        const endDate = toZonedTime(subDays(Date.now(), 1), 'UTC');
+        const endDate = dayjs.utc();
         const findByDay =
-          (currentDate: Date) => (data: ArmTradingVolumeData) => {
-            return isSameDay(
-              toZonedTime(data.day.substring(0, 10), 'UTC'),
-              currentDate,
-            );
+          (currentDate: Dayjs) => (data: ArmTradingVolumeData) => {
+            return dayjs.utc(data.day).isSame(currentDate, 'day');
           };
-        let currentDate = toZonedTime(subDays(Date.now(), limit ?? 365), 'UTC');
+        let currentDate = dayjs.utc().subtract(limit ?? 365, 'day');
 
-        while (currentDate <= endDate) {
+        while (currentDate.isBefore(endDate)) {
           const item = rows.find(findByDay(currentDate));
 
           result.push({
-            timestamp: currentDate.getTime(),
-            day: format(currentDate, 'yyyy-MM-dd'),
+            timestamp: +currentDate.hour(0).minute(0).second(0).millisecond(0),
+            day: currentDate.format('YYYY-MM-DD'),
             tradingVolumeETH: item?.cumulative_volume ?? 0,
             swapVolumeETH: item?.swap_volume ?? 0,
           });
-          currentDate = addDays(currentDate, 1);
+          currentDate = currentDate.add(1, 'day');
         }
 
         return result;
