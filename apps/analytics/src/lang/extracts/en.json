@@ -92,6 +92,9 @@
   "8nvhZ9": {
     "defaultMessage": "Last"
   },
+  "9AgXoz": {
+    "defaultMessage": "Sell"
+  },
   "9Mp3OY": {
     "defaultMessage": "Market Cap"
   },
@@ -125,6 +128,9 @@
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
+  "DOyKgT": {
+    "defaultMessage": "Moving Average"
+  },
   "DqeIg/": {
     "defaultMessage": "Unallocated"
   },
@@ -145,9 +151,6 @@
   },
   "GMgiw/": {
     "defaultMessage": "There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons."
-  },
-  "Gn8W10": {
-    "defaultMessage": "Trades Buy/Sell"
   },
   "HIM+US": {
     "defaultMessage": "Base TVL"
@@ -407,6 +410,9 @@
   "lARTMh": {
     "defaultMessage": "Trading Volume"
   },
+  "lGAAMv": {
+    "defaultMessage": "The price at which users are selling stETH to the ARM vs. buying it from the ARM."
+  },
   "lb8m6m": {
     "defaultMessage": "Mins"
   },
@@ -457,6 +463,9 @@
   },
   "qj1uhz": {
     "defaultMessage": "Disconnect"
+  },
+  "rQjFsm": {
+    "defaultMessage": "Trader Buy v. Sell"
   },
   "rwIPgH": {
     "defaultMessage": "1 year"
