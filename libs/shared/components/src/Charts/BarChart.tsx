@@ -1,4 +1,4 @@
-import { Fragment, useId, useState } from 'react';
+import { Fragment, useId, useMemo, useState } from 'react';
 
 import { Box, darken, lighten, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -13,7 +13,7 @@ import {
   useTooltip,
   useTooltipInPortal,
 } from '@visx/tooltip';
-import { format } from 'date-fns';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 
 import { chartMargins, curveTypes } from './constants';
 import { getBarChartBottomTicks } from './utils';
@@ -81,19 +81,27 @@ export const BarChart = <Datum,>({
     tooltipTop: height / 3,
   });
 
-  const xScale = scaleBand({
-    range: [margins.left, width - margins.right],
-    padding: 0.25,
-    domain: barData.map((d) => d[xKey] as number),
-  });
+  const xScale = useMemo(
+    () =>
+      scaleBand({
+        range: [margins.left, width - margins.right],
+        padding: 0.25,
+        domain: barData.map((d) => d[xKey] as number),
+      }),
+    [margins.left, width, margins.right, barData, xKey],
+  );
 
-  const yScale = scaleLinear({
-    range: [height - margins.bottom, margins.top],
-    domain: yScaleDomain ?? [
-      0,
-      Math.max(...barData.map((d) => d[yKey] as number)),
-    ],
-  });
+  const yScale = useMemo(
+    () =>
+      scaleLinear({
+        range: [height - margins.bottom, margins.top],
+        domain: yScaleDomain ?? [
+          0,
+          Math.max(...barData.map((d) => d[yKey] as number)),
+        ],
+      }),
+    [height, margins.bottom, margins.top, yScaleDomain, barData, yKey],
+  );
 
   if (!width || !height) return null;
 
@@ -112,9 +120,11 @@ export const BarChart = <Datum,>({
   const xFormat =
     tickXFormat ??
     ((value: NumberLike) => {
-      const date = new Date(value as number);
-
-      return format(date, 'dd MMM');
+      return formatInTimeZone(
+        toZonedTime(value as number, 'UTC'),
+        'UTC',
+        'dd MMM',
+      );
     });
 
   const rightTicks = yScale.ticks(height / 40);

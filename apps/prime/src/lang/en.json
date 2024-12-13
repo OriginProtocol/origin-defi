@@ -11,6 +11,12 @@
       "value": "PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below."
     }
   ],
+  "+7PjfV": [
+    {
+      "type": 0,
+      "value": "1 day"
+    }
+  ],
   "+HMSZw": [
     {
       "type": 0,
@@ -33,6 +39,12 @@
     {
       "type": 0,
       "value": "Connect"
+    }
+  ],
+  "+zcMhk": [
+    {
+      "type": 0,
+      "value": "5D"
     }
   ],
   "/0TOL5": [
@@ -659,6 +671,12 @@
       "value": "Transaction Failure"
     }
   ],
+  "Rwc39n": [
+    {
+      "type": 0,
+      "value": "6 days"
+    }
+  ],
   "S45aoc": [
     {
       "type": 0,
@@ -835,6 +853,12 @@
       "value": "Rate:"
     }
   ],
+  "aTX7LJ": [
+    {
+      "type": 0,
+      "value": "1D"
+    }
+  ],
   "aXTK45": [
     {
       "type": 0,
@@ -971,6 +995,12 @@
     {
       "type": 0,
       "value": "% of total"
+    }
+  ],
+  "hZS2DW": [
+    {
+      "type": 0,
+      "value": "5 days"
     }
   ],
   "hzSNj4": [
@@ -1201,6 +1231,12 @@
       "value": "Swap"
     }
   ],
+  "s9xNrU": [
+    {
+      "type": 0,
+      "value": "3D"
+    }
+  ],
   "sEtHlS": [
     {
       "type": 0,
@@ -1335,10 +1371,22 @@
       "value": "Restricted Access"
     }
   ],
+  "ycFUIp": [
+    {
+      "type": 0,
+      "value": "6D"
+    }
+  ],
   "yphS5C": [
     {
       "type": 0,
       "value": "Processing transaction"
+    }
+  ],
+  "zFk9rm": [
+    {
+      "type": 0,
+      "value": "3 days"
     }
   ],
   "zO5VTT": [

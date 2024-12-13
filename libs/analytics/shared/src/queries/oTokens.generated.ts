@@ -213,7 +213,7 @@ export const OTokenRebasesDocument = `
   oTokenRebases(
     limit: $limit
     orderBy: $orderBy
-    where: {timestamp_gte: $from, timestamp_lt: $to, otoken_eq: $token, chainId_eq: $chainId}
+    where: {timestamp_gte: $from, timestamp_lte: $to, otoken_eq: $token, chainId_eq: $chainId}
   ) {
     blockNumber
     feeETH

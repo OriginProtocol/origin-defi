@@ -136,7 +136,7 @@ export const GlobalStatsCard = ({
               },
             )}
             labelProps={{ variant: 'body3', sx: { fontWeight: 'medium' } }}
-            value={`$${format(info?.price ?? from(0), 2)}`}
+            value={`$${info?.price ? format(info.price, 2) : '0.00'}`}
             valueProps={{ sx: { fontWeight: 'medium' } }}
             isLoading={isInfoLoading}
           />

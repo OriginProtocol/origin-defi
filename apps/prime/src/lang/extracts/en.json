@@ -5,6 +5,9 @@
   "+3PfZP": {
     "defaultMessage": "PrimeStaked is merging with YieldNest’s ynLSDe. You can now migrate primeETH to ynLSDe. The process to migrate or withdraw your funds is outlined below."
   },
+  "+7PjfV": {
+    "defaultMessage": "1 day"
+  },
   "+HMSZw": {
     "defaultMessage": "Enter amount"
   },
@@ -16,6 +19,9 @@
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "+zcMhk": {
+    "defaultMessage": "5D"
   },
   "/0TOL5": {
     "defaultMessage": "Amount"
@@ -305,6 +311,9 @@
   "Rt3X+n": {
     "defaultMessage": "Transaction Failure"
   },
+  "Rwc39n": {
+    "defaultMessage": "6 days"
+  },
   "S45aoc": {
     "defaultMessage": "First"
   },
@@ -377,6 +386,9 @@
   "ZmLuI/": {
     "defaultMessage": "Rate:"
   },
+  "aTX7LJ": {
+    "defaultMessage": "1D"
+  },
   "aXTK45": {
     "defaultMessage": "primeETH XP"
   },
@@ -436,6 +448,9 @@
   },
   "hWyxI7": {
     "defaultMessage": "% of total"
+  },
+  "hZS2DW": {
+    "defaultMessage": "5 days"
   },
   "hzSNj4": {
     "defaultMessage": "Dashboard"
@@ -542,6 +557,9 @@
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
+  "s9xNrU": {
+    "defaultMessage": "3D"
+  },
   "sEtHlS": {
     "defaultMessage": "Withdrawal processed, check your claim"
   },
@@ -599,8 +617,14 @@
   "xwfunk": {
     "defaultMessage": "Restricted Access"
   },
+  "ycFUIp": {
+    "defaultMessage": "6D"
+  },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
+  },
+  "zFk9rm": {
+    "defaultMessage": "3 days"
   },
   "zO5VTT": {
     "defaultMessage": "Transaction in progress"

@@ -1,4 +1,5 @@
 import { hasKey } from '@origin/shared/utils';
+import { toZonedTime } from 'date-fns-tz';
 import { div, gt, mul, sub, toNumber } from 'dnum';
 import { omit } from 'ramda';
 
@@ -15,6 +16,10 @@ export const dailyStatMapper = (
   { isChartFormat }: { isChartFormat?: boolean } = {},
 ) => {
   const factor = isChartFormat ? 100 : 1;
+
+  const timestamp = d?.timestamp
+    ? toZonedTime(d?.timestamp, 'UTC').getTime()
+    : Date.now();
 
   const protocolOwned = [BigInt(d?.amoSupply ?? 0), token.decimals] as Dnum;
   const totalSupply = [BigInt(d?.totalSupply ?? 0), token.decimals] as Dnum;
@@ -74,9 +79,7 @@ export const dailyStatMapper = (
   return {
     id: d?.id ?? '',
     blockNumber: d?.blockNumber,
-    timestamp: d?.timestamp
-      ? new Date(d?.timestamp).getTime()
-      : new Date().getTime(),
+    timestamp,
     date: d?.date ?? '',
     apy: (d?.apy ?? 0) * factor,
     ...apies,

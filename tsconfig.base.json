@@ -17,6 +17,7 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
+      "@origin/analytics/arm": ["libs/analytics/arm/src/index.ts"],
       "@origin/analytics/home": ["libs/analytics/home/src/index.ts"],
       "@origin/analytics/oeth": ["libs/analytics/oeth/src/index.ts"],
       "@origin/analytics/shared": ["libs/analytics/shared/src/index.ts"],

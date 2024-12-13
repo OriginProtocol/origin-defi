@@ -1,4 +1,10 @@
 {
+  "+7PjfV": [
+    {
+      "type": 0,
+      "value": "1 day"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -15,6 +21,12 @@
     {
       "type": 0,
       "value": "Connect"
+    }
+  ],
+  "+zcMhk": [
+    {
+      "type": 0,
+      "value": "5D"
     }
   ],
   "/0TOL5": [
@@ -95,6 +107,12 @@
       "value": " dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
     }
   ],
+  "1drkeF": [
+    {
+      "type": 0,
+      "value": "Total Trading Volume"
+    }
+  ],
   "1nxJrQ": [
     {
       "type": 0,
@@ -105,6 +123,12 @@
     {
       "type": 0,
       "value": "1M"
+    }
+  ],
+  "1xDZvL": [
+    {
+      "type": 0,
+      "value": "Vault Assets"
     }
   ],
   "2NfxfO": [
@@ -281,6 +305,12 @@
       "value": "Exit"
     }
   ],
+  "EnCOBJ": [
+    {
+      "type": 0,
+      "value": "Buy"
+    }
+  ],
   "FPMGr3": [
     {
       "type": 0,
@@ -291,6 +321,18 @@
     {
       "type": 0,
       "value": "Arbitrum TVL"
+    }
+  ],
+  "GMgiw/": [
+    {
+      "type": 0,
+      "value": "There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons."
+    }
+  ],
+  "Gn8W10": [
+    {
+      "type": 0,
+      "value": "Trades Buy/Sell"
     }
   ],
   "HIM+US": [
@@ -349,6 +391,12 @@
     {
       "type": 0,
       "value": "Error"
+    }
+  ],
+  "KdjLYO": [
+    {
+      "type": 0,
+      "value": "ARM"
     }
   ],
   "KjK2z3": [
@@ -489,6 +537,12 @@
       "value": "Circ. Supply"
     }
   ],
+  "Rwc39n": [
+    {
+      "type": 0,
+      "value": "6 days"
+    }
+  ],
   "S45aoc": [
     {
       "type": 0,
@@ -499,6 +553,12 @@
     {
       "type": 0,
       "value": "OETH"
+    }
+  ],
+  "SKB/G9": [
+    {
+      "type": 0,
+      "value": "TVL"
     }
   ],
   "TrKxvg": [
@@ -649,6 +709,12 @@
       "value": "Staking Max vAPY"
     }
   ],
+  "aTX7LJ": [
+    {
+      "type": 0,
+      "value": "1D"
+    }
+  ],
   "b1zuN9": [
     {
       "type": 0,
@@ -719,6 +785,12 @@
     {
       "type": 0,
       "value": "is not supported"
+    }
+  ],
+  "eHguE+": [
+    {
+      "type": 0,
+      "value": "The amount of Vault-owned assets currently held in WETH, stETH, or Lido's stETH redemption queue."
     }
   ],
   "em2DzM": [
@@ -817,6 +889,12 @@
       "value": "Wrapped supply"
     }
   ],
+  "hZS2DW": [
+    {
+      "type": 0,
+      "value": "5 days"
+    }
+  ],
   "hvCfek": [
     {
       "type": 0,
@@ -863,6 +941,12 @@
     {
       "type": 0,
       "value": "Hours"
+    }
+  ],
+  "lARTMh": [
+    {
+      "type": 0,
+      "value": "Trading Volume"
     }
   ],
   "lb8m6m": [
@@ -979,6 +1063,20 @@
       "value": "User rejected operation"
     }
   ],
+  "qRV+z5": [
+    {
+      "type": 1,
+      "value": "dateStart"
+    },
+    {
+      "type": 0,
+      "value": " - "
+    },
+    {
+      "type": 1,
+      "value": "dateEnd"
+    }
+  ],
   "qZbedW": [
     {
       "type": 0,
@@ -1001,6 +1099,12 @@
     {
       "type": 0,
       "value": "Swap"
+    }
+  ],
+  "s9xNrU": [
+    {
+      "type": 0,
+      "value": "3D"
     }
   ],
   "sGU9Dr": [
@@ -1099,6 +1203,12 @@
       "value": "Net Asset Value"
     }
   ],
+  "ycFUIp": [
+    {
+      "type": 0,
+      "value": "6D"
+    }
+  ],
   "yphS5C": [
     {
       "type": 0,
@@ -1115,6 +1225,12 @@
     {
       "type": 0,
       "value": "Aerodrome AMO"
+    }
+  ],
+  "zFk9rm": [
+    {
+      "type": 0,
+      "value": "3 days"
     }
   ],
   "zQvVDJ": [

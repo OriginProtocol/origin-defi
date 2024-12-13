@@ -1,4 +1,7 @@
 {
+  "+7PjfV": {
+    "defaultMessage": "1 day"
+  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -7,6 +10,9 @@
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "+zcMhk": {
+    "defaultMessage": "5D"
   },
   "/0TOL5": {
     "defaultMessage": "Amount"
@@ -35,11 +41,17 @@
   "1VDppm": {
     "defaultMessage": "The {fullName} dApp is not available to restricted jurisdictions. Before proceeding, please carefully read the following:"
   },
+  "1drkeF": {
+    "defaultMessage": "Total Trading Volume"
+  },
   "1nxJrQ": {
     "defaultMessage": "Return to Home Page"
   },
   "1uz/I3": {
     "defaultMessage": "1M"
+  },
+  "1xDZvL": {
+    "defaultMessage": "Vault Assets"
   },
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
@@ -122,11 +134,20 @@
   "E2sGaF": {
     "defaultMessage": "Exit"
   },
+  "EnCOBJ": {
+    "defaultMessage": "Buy"
+  },
   "FPMGr3": {
     "defaultMessage": "30-Day MA"
   },
   "FtUhr6": {
     "defaultMessage": "Arbitrum TVL"
+  },
+  "GMgiw/": {
+    "defaultMessage": "There are expected daily fluctuations in APY due to the way the vault earns yield. These will average out over longer time horizons."
+  },
+  "Gn8W10": {
+    "defaultMessage": "Trades Buy/Sell"
   },
   "HIM+US": {
     "defaultMessage": "Base TVL"
@@ -154,6 +175,9 @@
   },
   "KN7zKn": {
     "defaultMessage": "Error"
+  },
+  "KdjLYO": {
+    "defaultMessage": "ARM"
   },
   "KjK2z3": {
     "defaultMessage": "Sorry, we can't seem to find that page"
@@ -218,11 +242,17 @@
   "RwXr/1": {
     "defaultMessage": "Circ. Supply"
   },
+  "Rwc39n": {
+    "defaultMessage": "6 days"
+  },
   "S45aoc": {
     "defaultMessage": "First"
   },
   "SGXihn": {
     "defaultMessage": "OETH"
+  },
+  "SKB/G9": {
+    "defaultMessage": "TVL"
   },
   "TrKxvg": {
     "defaultMessage": "You affirm that you are not a subject of economic or trade sanctions administered or enforced by any governmental authority or otherwise designated on any list of prohibited or restricted parties, including the list maintained by the Office of Foreign Assets Control of the U.S. Department of the Treasury."
@@ -278,6 +308,9 @@
   "aD585J": {
     "defaultMessage": "Staking Max vAPY"
   },
+  "aTX7LJ": {
+    "defaultMessage": "1D"
+  },
   "b1zuN9": {
     "defaultMessage": "Price"
   },
@@ -304,6 +337,9 @@
   },
   "di23JU": {
     "defaultMessage": "Currently selected chain<br></br>is not supported"
+  },
+  "eHguE+": {
+    "defaultMessage": "The amount of Vault-owned assets currently held in WETH, stETH, or Lido's stETH redemption queue."
   },
   "em2DzM": {
     "defaultMessage": "Protocol Revenue"
@@ -341,6 +377,9 @@
   "hKDOtL": {
     "defaultMessage": "Wrapped supply"
   },
+  "hZS2DW": {
+    "defaultMessage": "5 days"
+  },
   "hvCfek": {
     "defaultMessage": "Circulating Supply"
   },
@@ -364,6 +403,9 @@
   },
   "j9Y9nu": {
     "defaultMessage": "Hours"
+  },
+  "lARTMh": {
+    "defaultMessage": "Trading Volume"
   },
   "lb8m6m": {
     "defaultMessage": "Mins"
@@ -407,6 +449,9 @@
   "qQ/SRd": {
     "defaultMessage": "User rejected operation"
   },
+  "qRV+z5": {
+    "defaultMessage": "{dateStart} - {dateEnd}"
+  },
   "qZbedW": {
     "defaultMessage": "Fees"
   },
@@ -418,6 +463,9 @@
   },
   "s8BnAC": {
     "defaultMessage": "Swap"
+  },
+  "s9xNrU": {
+    "defaultMessage": "3D"
   },
   "sGU9Dr": {
     "defaultMessage": "ETH"
@@ -467,6 +515,9 @@
   "y5+gGS": {
     "defaultMessage": "Net Asset Value"
   },
+  "ycFUIp": {
+    "defaultMessage": "6D"
+  },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
   },
@@ -475,6 +526,9 @@
   },
   "zEuvjU": {
     "defaultMessage": "Aerodrome AMO"
+  },
+  "zFk9rm": {
+    "defaultMessage": "3 days"
   },
   "zQvVDJ": {
     "defaultMessage": "All"

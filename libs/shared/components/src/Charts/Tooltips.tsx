@@ -1,5 +1,5 @@
 import { capitalize, Stack, Typography } from '@mui/material';
-import { format } from 'date-fns';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
 import { useIntl } from 'react-intl';
 
 import { ColorLabel, ValueLabel } from '../Labels';
@@ -42,8 +42,9 @@ export const ChartTooltip = <ChartData,>({
       ]}
     >
       <Typography {...labelProps} gutterBottom>
-        {format(
-          new Date(series[0].data[0]?.[series[0].xKey] as number),
+        {formatInTimeZone(
+          toZonedTime(series[0].data[0]?.[series[0].xKey] as number, 'UTC'),
+          'UTC',
           'dd MMM yyyy',
         )}
       </Typography>

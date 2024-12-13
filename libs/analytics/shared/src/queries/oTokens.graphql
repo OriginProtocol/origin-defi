@@ -94,7 +94,7 @@ query oTokenRebases(
     orderBy: $orderBy
     where: {
       timestamp_gte: $from
-      timestamp_lt: $to
+      timestamp_lte: $to
       otoken_eq: $token
       chainId_eq: $chainId
     }

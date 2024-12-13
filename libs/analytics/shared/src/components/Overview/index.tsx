@@ -31,7 +31,7 @@ export const Overview = ({
     <Stack {...rest}>
       <Grid2 container spacing={2}>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
-          <ApyCard token={token} height={300} sx={{ height: 1 }} />
+          <ApyCard token={token} height={300} />
         </Grid2>
         <Grid2 size={{ xs: 12, md: isDrawerOpen ? 12 : 6, lg: 6 }}>
           <TotalSupplyCard token={token} height={300} />

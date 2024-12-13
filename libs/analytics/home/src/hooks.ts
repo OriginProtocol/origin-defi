@@ -4,15 +4,9 @@ import { oTokenConfig, useTokenChartStats } from '@origin/analytics/shared';
 import { tokens } from '@origin/shared/contracts';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import {
-  addDays,
-  format,
-  isAfter,
-  isBefore,
-  isSameDay,
-  subDays,
-} from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { addDays, isAfter, isBefore, isDate, isSameDay } from 'date-fns';
+import { formatInTimeZone, toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { pathOr, takeLast } from 'ramda';
 import { useSearchParams } from 'react-router';
 
@@ -24,23 +18,30 @@ export const useHomeView = () => {
     l: '30',
     c: 'ETH',
   });
-  const minFrom = Object.values(oTokenConfig).reduce((acc, curr) => {
-    const from = new Date(curr.from);
+  const minFrom = Object.values(oTokenConfig)
+    .reduce((acc, curr) => {
+      const from = dayjs.utc(curr.from);
 
-    return isBefore(acc, from) ? acc : from;
-  }, new Date('2023-06-01T00:00:00.000000Z'));
+      return acc.isBefore(from) ? acc : from;
+    }, dayjs.utc('2023-06-01T00:00:00.000000Z'))
+    .toDate();
 
   return useMemo(() => {
-    const from = search.get('f') ? new Date(search.get('f') ?? minFrom) : null;
-    from?.setHours(0, 0, 0, 0);
-    const to = search.get('t') ? new Date(search.get('t') ?? 0) : null;
-    to?.setHours(23, 59, 59, 999);
+    const o = search.get('o');
+    const f = search.get('f');
+    const t = search.get('t');
+    const l = search.get('l');
+    const c = search.get('c');
+    const offset = o ? Number(o) : 1;
+    const from = f ? new Date(f) : null;
+    const to = t ? new Date(t) : null;
+    const limit = l === 'all' ? undefined : Number(l);
+    const currency = (c ?? 'ETH') as Currency;
 
     return {
-      offset: Number(search.get('o') ?? '1'),
-      limit:
-        search.get('l') === 'all' ? undefined : Number(search.get('l') ?? null),
-      currency: (search.get('c') ?? 'ETH') as Currency,
+      offset,
+      limit,
+      currency,
       minFrom,
       from,
       to,
@@ -66,9 +67,9 @@ export const useHomeView = () => {
       },
       handleSetFrom: (newVal: Date | null) => {
         setSearch((params) => {
-          if (newVal && !isNaN(newVal.getTime())) {
+          if (newVal && isDate(newVal)) {
             params.delete('l');
-            params.set('f', newVal.toISOString());
+            params.set('f', new Date(newVal).toISOString());
             if (params.get('t') === null) {
               params.set('t', new Date().toISOString());
             }
@@ -81,9 +82,9 @@ export const useHomeView = () => {
       },
       handleSetTo: (newVal: Date | null) => {
         setSearch((params) => {
-          if (newVal && !isNaN(newVal.getTime())) {
+          if (newVal && isDate(newVal)) {
             params.delete('l');
-            params.set('t', newVal.toISOString());
+            params.set('t', new Date(newVal).toISOString());
           } else {
             params.delete('t');
           }
@@ -107,6 +108,7 @@ type DuneData = {
 
 type NetAssetValue = {
   timestamp: number;
+  day: string;
   totalUSD: number;
   totalETH: number;
 };
@@ -149,21 +151,18 @@ export const useNetAssetValue = () => {
         };
       });
 
-      const endDate = toZonedTime(new Date(), 'UTC');
+      const endDate = toZonedTime(Date.now(), 'UTC');
       let currentDate = toZonedTime(minFrom, 'UTC');
 
       while (currentDate <= endDate) {
-        const dateKey = format(currentDate, 'yyyy-MM-dd');
+        const day = formatInTimeZone(currentDate, 'UTC', 'yyyy-MM-dd');
         const totalUSD =
-          dailyMap[dateKey]?.totalUSD ??
-          result[result.length - 1]?.totalUSD ??
-          0;
+          dailyMap[day]?.totalUSD ?? result[result.length - 1]?.totalUSD ?? 0;
         const totalETH =
-          dailyMap[dateKey]?.totalETH ??
-          result[result.length - 1]?.totalETH ??
-          0;
+          dailyMap[day]?.totalETH ?? result[result.length - 1]?.totalETH ?? 0;
         result.push({
           timestamp: currentDate.getTime(),
+          day,
           totalUSD,
           totalETH,
         });
@@ -180,14 +179,14 @@ export const useNetAssetValue = () => {
           if (from) {
             filteredData = filteredData.filter(({ timestamp }) => {
               return (
-                isSameDay(new Date(timestamp), from) ||
-                isAfter(new Date(timestamp), from)
+                isSameDay(toZonedTime(timestamp, 'UTC'), from) ||
+                isAfter(toZonedTime(timestamp, 'UTC'), from)
               );
             });
           }
           if (to) {
             filteredData = filteredData.filter(({ timestamp }) => {
-              return isBefore(new Date(timestamp), subDays(to, 1));
+              return isBefore(toZonedTime(timestamp, 'UTC'), to);
             });
           }
         } else if (limit) {

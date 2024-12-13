@@ -8,6 +8,7 @@ import {
   TokenIcon,
 } from '@origin/shared/components';
 import { format as dateFormat } from 'date-fns';
+import { toZonedTime } from 'date-fns-tz';
 import { format, from, mul } from 'dnum';
 import { useIntl } from 'react-intl';
 
@@ -60,7 +61,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
             titleProps={{ variant: 'body1', sx: { fontWeight: 'bold' } }}
             sx={{ px: 3, py: 2 }}
             today={dateFormat(
-              new Date(balanceSheet?.todayDailyStat?.date),
+              toZonedTime(balanceSheet?.todayDailyStat?.date, 'UTC'),
               'dd MMM yyyy',
             )}
             lastWeek={intl.formatMessage({ defaultMessage: '1 week ago' })}
@@ -209,7 +210,7 @@ export const BalanceSheet = ({ token }: BalanceSheetProps) => {
             { defaultMessage: 'Last updated {last}, block #{block}' },
             {
               last: dateFormat(
-                new Date(balanceSheet.todayDailyStat.date),
+                toZonedTime(balanceSheet.todayDailyStat.date, 'UTC'),
                 'dd MMM yyyy',
               ),
               block: balanceSheet.todayDailyStat.blockNumber,

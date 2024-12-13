@@ -1,6 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { CurrencyControls, LimitControls } from '@origin/shared/components';
+import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 
 import { useHomeView } from '../hooks';
@@ -43,12 +44,17 @@ export const Controls = (props: StackProps) => {
       <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
         <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
           <DatePicker
-            value={from}
-            onChange={handleSetFrom}
+            value={from ? dayjs.utc(from) : null}
+            onChange={(d) => {
+              if (d?.isValid()) {
+                handleSetFrom(d?.toDate());
+              }
+            }}
             disableFuture
+            timezone="UTC"
             formatDensity="dense"
-            minDate={minFrom}
-            maxDate={to ?? new Date()}
+            minDate={dayjs.utc(minFrom)}
+            maxDate={dayjs.utc(to)}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'Start date' }),
@@ -58,12 +64,17 @@ export const Controls = (props: StackProps) => {
           />
           <Typography>-</Typography>
           <DatePicker
-            value={to}
-            onChange={handleSetTo}
+            value={to ? dayjs.utc(to) : null}
+            onChange={(d) => {
+              if (d?.isValid()) {
+                handleSetTo(d.toDate());
+              }
+            }}
             disableFuture
             formatDensity="dense"
-            minDate={from ?? minFrom}
-            maxDate={new Date()}
+            timezone="UTC"
+            minDate={dayjs.utc(from ?? minFrom)}
+            maxDate={dayjs.utc()}
             slotProps={{
               textField: textFieldProps(
                 intl.formatMessage({ defaultMessage: 'End date' }),

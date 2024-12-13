@@ -29,6 +29,7 @@ export const OriginProductIcon = ({
             fontSize: { xs: 16, md: 18 },
             fontWeight: 'medium',
             color: textColor ?? 'text.primary',
+            transform: 'translateY(-1px)',
           },
         },
       ]}

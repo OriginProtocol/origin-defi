@@ -4,6 +4,7 @@ import type { Serie } from './types';
 
 export const getScaleDomains = <Datum>(
   series: Serie<Datum>[],
+  xCoeff = [1, 1],
   yCoeff = [0.9, 1.1],
 ) => {
   let minX = Infinity;
@@ -27,7 +28,12 @@ export const getScaleDomains = <Datum>(
     }
   }
 
-  return { minX, maxX, minY: minY * yCoeff[0], maxY: maxY * yCoeff[1] };
+  return {
+    minX: minX * xCoeff[0],
+    maxX: maxX * xCoeff[1],
+    minY: minY * yCoeff[0],
+    maxY: maxY * yCoeff[1],
+  };
 };
 
 export const getStackedScaleDomains = <Datum>(
@@ -53,4 +59,4 @@ export const getStackedScaleDomains = <Datum>(
 };
 
 export const getBarChartBottomTicks = (width: number) =>
-  width < 300 ? 4 : width < 400 ? 6 : width < 600 ? 8 : 10;
+  width < 400 ? 4 : width < 600 ? 8 : 10;

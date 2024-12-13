@@ -2,6 +2,9 @@
   "+14VoL": {
     "defaultMessage": "Staking"
   },
+  "+7PjfV": {
+    "defaultMessage": "1 day"
+  },
   "+LhIwA": {
     "defaultMessage": "The share of total Origin DAO voting power earned by your OGN lockups"
   },
@@ -22,6 +25,9 @@
   },
   "+vVZ/G": {
     "defaultMessage": "Connect"
+  },
+  "+zcMhk": {
+    "defaultMessage": "5D"
   },
   "/0TOL5": {
     "defaultMessage": "Amount"
@@ -734,6 +740,9 @@
   "RahCRH": {
     "defaultMessage": "Expired"
   },
+  "Rwc39n": {
+    "defaultMessage": "6 days"
+  },
   "RxMChd": {
     "defaultMessage": "On-chain proposal"
   },
@@ -938,6 +947,9 @@
   "aA9zvD": {
     "defaultMessage": "The best swap route factors in the best price after transaction costs"
   },
+  "aTX7LJ": {
+    "defaultMessage": "1D"
+  },
   "aWpBzj": {
     "defaultMessage": "Show more"
   },
@@ -1108,6 +1120,9 @@
   },
   "hVu1NB": {
     "defaultMessage": "{amount} {symbolIn} for {amountLiquid} {symbolLiquid}"
+  },
+  "hZS2DW": {
+    "defaultMessage": "5 days"
   },
   "hjWYtP": {
     "defaultMessage": "Gas"
@@ -1340,6 +1355,9 @@
   "s8BnAC": {
     "defaultMessage": "Swap"
   },
+  "s9xNrU": {
+    "defaultMessage": "3D"
+  },
   "sGU9Dr": {
     "defaultMessage": "ETH"
   },
@@ -1502,6 +1520,9 @@
   "yWtbSZ": {
     "defaultMessage": "Executed"
   },
+  "ycFUIp": {
+    "defaultMessage": "6D"
+  },
   "yphS5C": {
     "defaultMessage": "Processing transaction"
   },
@@ -1513,6 +1534,9 @@
   },
   "z7DIYb": {
     "defaultMessage": "{monthDuration,plural,=1{Lock {amount} {symbolIn} for # month} other{Lock {amount} {symbolIn} for # months}}"
+  },
+  "zFk9rm": {
+    "defaultMessage": "3 days"
   },
   "zGckFA": {
     "defaultMessage": "Yield earned"
