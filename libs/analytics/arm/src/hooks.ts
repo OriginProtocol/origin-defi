@@ -22,12 +22,12 @@ export const useArmTradingVolume = (limit?: number) => {
     queryKey: ['useArmTradingVolume'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
+        queryId: '4224357',
         limit: '5000',
-        api_key: import.meta.env.VITE_DUNE_API_KEY,
         sort_by: 'day',
       });
       const res = await axios.get(
-        `https://api.dune.com/api/v1/endpoints/originprotocol/arm-volume/results?${queryParams.toString()}`,
+        `${import.meta.env.VITE_DEFI_ANALYTICS_URL}/api/v2/dune/?${queryParams.toString()}`,
       );
 
       return res.data;
@@ -99,7 +99,7 @@ export const useArmTrades = (limit?: number) => {
     queryKey: ['useArmTrades'],
     queryFn: async () => {
       const queryParams = new URLSearchParams({
-        api_key: import.meta.env.VITE_DUNE_API_KEY,
+        queryId: '4397678',
         limit: '5000',
         sort_by: 'block_time',
         filters: `day >= '${formatInTimeZone(
@@ -109,7 +109,7 @@ export const useArmTrades = (limit?: number) => {
         )}'`,
       });
       const res = await axios.get(
-        `https://api.dune.com/api/v1/query/4397678/results?${queryParams.toString()}`,
+        `${import.meta.env.VITE_DEFI_ANALYTICS_URL}/api/v2/dune/?${queryParams.toString()}`,
       );
 
       return res.data;

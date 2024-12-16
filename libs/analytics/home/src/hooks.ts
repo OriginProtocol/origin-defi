@@ -123,9 +123,12 @@ export const useNetAssetValue = () => {
     throwOnError: true,
     queryKey: ['netAssetValue'],
     queryFn: async () => {
+      const queryParams = new URLSearchParams({
+        queryId: '4125829',
+      });
       const res = await Promise.all([
         axios.get(
-          `https://api.dune.com/api/v1/query/4125829/results?api_key=${import.meta.env.VITE_DUNE_API_KEY}`,
+          `${import.meta.env.VITE_DEFI_ANALYTICS_URL}/api/v2/dune/?${queryParams.toString()}`,
         ),
         queryClient.fetchQuery({
           queryKey: useTokenChartStats.getKey(
