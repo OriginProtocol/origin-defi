@@ -24,7 +24,7 @@ import {
 import { tokens } from '@origin/shared/contracts';
 import { getTokenPriceKey, useTokenPrice } from '@origin/shared/providers';
 import { useMeasure } from '@react-hookz/web';
-import { toZonedTime } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { format, from } from 'dnum';
 import { defineMessage, useIntl } from 'react-intl';
 
@@ -188,7 +188,7 @@ export const OgnPerformanceCard = (props: CardProps) => {
       {
         select: (data) =>
           data.ognDailyStats.toReversed().map((d) => ({
-            timestamp: toZonedTime(d?.timestamp, 'UTC').getTime(),
+            timestamp: +dayjs.utc(d.timestamp),
             price: d.priceUSD,
             mc: d.marketCapUSD,
           })),
