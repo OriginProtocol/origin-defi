@@ -14,6 +14,7 @@ export type ArmTradingVolumeData = {
   day: string;
   cumulative_volume: number;
   swap_volume: number;
+  eth_price: number;
 };
 
 export const useArmTradingVolume = (limit?: number) => {
@@ -54,12 +55,15 @@ export const useArmTradingVolume = (limit?: number) => {
 
         while (currentDate.isBefore(endDate)) {
           const item = rows.find(findByDay(currentDate));
+          const ethPrice = item?.eth_price ?? 0;
 
           result.push({
             timestamp: +currentDate.hour(0).minute(0).second(0).millisecond(0),
             day: currentDate.format('YYYY-MM-DD'),
             tradingVolumeETH: item?.cumulative_volume ?? 0,
+            tradingVolumeUSD: (item?.cumulative_volume ?? 0) * ethPrice,
             swapVolumeETH: item?.swap_volume ?? 0,
+            swapVolumeUSD: (item?.swap_volume ?? 0) * ethPrice,
           });
           currentDate = currentDate.add(1, 'day');
         }

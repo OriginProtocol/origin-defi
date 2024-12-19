@@ -10,6 +10,7 @@ import {
 } from '@mui/material';
 import { ChartTooltip } from '@origin/analytics/shared';
 import {
+  CurrencyControls,
   CurrencyLabel,
   LimitControls,
   LineChart,
@@ -35,6 +36,7 @@ export const TradingVolumeChart = ({
 }: TradingVolumeChartProps) => {
   const intl = useIntl();
   const theme = useTheme();
+  const [currency, setCurrency] = useState<'ETH' | 'USD'>('ETH');
   const [limit, setLimit] = useState<number | undefined>(30);
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const [measures, ref] = useMeasure<HTMLDivElement>();
@@ -71,12 +73,17 @@ export const TradingVolumeChart = ({
               variant="body1"
               sx={{ fontWeight: 'bold' }}
             >
-              <CurrencyLabel currency="ETH" />
-              {intl.formatNumber(activeItem?.tradingVolumeETH ?? 0)}
+              <CurrencyLabel currency={currency} />
+              {intl.formatNumber(
+                activeItem?.[
+                  currency === 'ETH' ? 'tradingVolumeETH' : 'tradingVolumeUSD'
+                ] ?? 0,
+              )}
             </LoadingLabel>
           </Stack>
           <Stack spacing={1} alignItems="flex-end">
             <LimitControls limit={limit} setLimit={setLimit} />
+            <CurrencyControls currency={currency} setCurrency={setCurrency} />
           </Stack>
         </Stack>
       </CardContent>
@@ -93,7 +100,8 @@ export const TradingVolumeChart = ({
               }),
               data: data ?? [],
               xKey: 'timestamp',
-              yKey: 'tradingVolumeETH',
+              yKey:
+                currency === 'ETH' ? 'tradingVolumeETH' : 'tradingVolumeUSD',
               color: [theme.palette.chart1, theme.palette.chart2],
               curveType: 'linear',
             },
