@@ -2,7 +2,7 @@ import { Grid2, Stack } from '@mui/material';
 import {
   AnalyticsCard,
   BridgePromoCard,
-  GlobalStatsCard,
+  DailyStatCard,
   Page,
   PageSection,
   PageTitle,
@@ -81,7 +81,10 @@ export const SwapView = () => {
             }}
           >
             <Stack spacing={4}>
-              <GlobalStatsCard token={token} />
+              <DailyStatCard
+                token={token}
+                stats={['supply_distribution', 'price']}
+              />
               <AnalyticsCard token={token} href={OETH_ANALYTICS_URL} />
             </Stack>
           </Grid2>

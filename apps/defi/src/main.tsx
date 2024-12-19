@@ -8,6 +8,7 @@ import {
   ActivityProvider,
   NotificationsProvider,
   queryClient,
+  registerDayjsPlugins,
   registerGoogleTagManager,
   registerSentry,
   wagmiConfig,
@@ -37,6 +38,8 @@ logWelcomeMessage('DeFi');
 registerGoogleTagManager();
 
 registerSentry();
+
+registerDayjsPlugins();
 
 const router = createHashRouter(routes);
 

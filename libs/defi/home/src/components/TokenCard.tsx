@@ -7,8 +7,11 @@ import {
   useTheme,
 } from '@mui/material';
 import {
+  dailyStatMapper,
+  OTokenDailyStatOrderByInput,
   useArmApy,
   useArmDailyStatsQuery,
+  useOTokenStatsQuery,
   useTokenInfo,
   useXOgnStakingApy,
 } from '@origin/defi/shared';
@@ -63,6 +66,25 @@ export const TokenCard = ({
   const { data: info, isLoading: isInfoLoading } = useTokenInfo(token, {
     enabled: !disabled,
   });
+  const { data: stats, isLoading: isStatsLoading } = useOTokenStatsQuery(
+    {
+      chainId: token.chainId,
+      token: token.address?.toLowerCase() ?? '',
+      limit: 1,
+      orderBy: [OTokenDailyStatOrderByInput.TimestampDesc],
+    },
+    {
+      select: (data) => dailyStatMapper(data.oTokenDailyStats?.[0], token),
+      enabled: includes(
+        [
+          tokens.mainnet.OETH.id,
+          tokens.mainnet.OUSD.id,
+          tokens.base.superOETHb.id,
+        ],
+        token.id,
+      ),
+    },
+  );
   const { data: staking, isLoading: isStakingLoading } = useXOgnStakingApy(
     undefined,
     12,
@@ -87,6 +109,30 @@ export const TokenCard = ({
     ? intl.formatMessage({ defaultMessage: 'Max vAPY' })
     : intl.formatMessage({ defaultMessage: 'APY' });
   const trailingDays = isSuperOeth ? 7 : info?.bestApy?.trailingDays;
+  const tvlETH = ['OGN', 'OUSD'].includes(token.symbol) ? (
+    `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
+  ) : includes(
+      [tokens.mainnet.OETH.id, tokens.base.superOETHb.id],
+      token.id,
+    ) ? (
+    <>
+      <CurrencyLabel currency="ETH" />
+      &nbsp;
+      {intl.formatNumber(stats?.circulatingSupplyETH ?? 0, {
+        notation: 'compact',
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })}
+    </>
+  ) : (
+    '-'
+  );
+  const tvlUSD = includes(
+    [tokens.mainnet.OETH.id, tokens.base.superOETHb.id],
+    token.id,
+  )
+    ? from(stats?.circulatingSupplyUSD ?? 0)
+    : info?.tvlUsd;
 
   return (
     <Stack
@@ -273,7 +319,7 @@ export const TokenCard = ({
           }}
         >
           <LoadingLabel
-            isLoading={isInfoLoading && !isComingSoon}
+            isLoading={(isInfoLoading || isStatsLoading) && !isComingSoon}
             noWrap
             sx={{
               fontSize: (theme) => ({
@@ -283,20 +329,7 @@ export const TokenCard = ({
               fontWeight: 'bold',
             }}
           >
-            {disabled ? (
-              '-'
-            ) : ['OGN', 'OUSD'].includes(token.symbol) ? (
-              `${format(info?.totalSupply ?? from(0), { compact: true, digits: 2 })} ${token.symbol}`
-            ) : (
-              <>
-                <CurrencyLabel currency="ETH" />
-                &nbsp;
-                {format(info?.totalSupply ?? from(0), {
-                  compact: true,
-                  digits: 2,
-                })}
-              </>
-            )}
+            {disabled ? '-' : tvlETH}
           </LoadingLabel>
           {!disabled && isSm && (
             <Box
@@ -310,11 +343,11 @@ export const TokenCard = ({
           {!disabled && (
             <LoadingLabel
               variant="caption2"
-              isLoading={isInfoLoading}
+              isLoading={isInfoLoading || isStatsLoading}
               sx={{ fontWeight: 'medium' }}
             >
               $&nbsp;
-              {format(info?.tvlUsd ?? from(0), {
+              {format(tvlUSD ?? from(0), {
                 compact: true,
                 digits: 2,
               })}

@@ -1,7 +1,7 @@
 import { Grid2, Stack } from '@mui/material';
 import {
   AnalyticsCard,
-  GlobalStatsCard,
+  DailyStatCard,
   Page,
   PageSection,
   PageTitle,
@@ -56,7 +56,10 @@ export const SwapView = () => {
             }}
           >
             <Stack spacing={4}>
-              <GlobalStatsCard token={tokens.base.superOETHb} showTokenHeader />
+              <DailyStatCard
+                token={tokens.base.superOETHb}
+                stats={['supply_distribution', 'price']}
+              />
               <AnalyticsCard
                 token={tokens.base.superOETHb}
                 title="superOETH"
