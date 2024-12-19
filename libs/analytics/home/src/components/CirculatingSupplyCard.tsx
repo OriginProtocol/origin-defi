@@ -91,9 +91,7 @@ export const CirculatingSupplyCard = ({
 
   return (
     <Card {...rest} ref={ref}>
-      <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Circulating Supply' })}
-      />
+      <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
       <Divider />
       <CardContent>
         <Stack

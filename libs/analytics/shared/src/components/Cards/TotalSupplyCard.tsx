@@ -66,7 +66,7 @@ export const TotalSupplyCard = ({
   const series = [
     {
       key: 'circulatingSupply',
-      label: intl.formatMessage({ defaultMessage: 'Circulating supply' }),
+      label: intl.formatMessage({ defaultMessage: 'TVL' }),
       fillColor: [
         alpha(theme.palette.chart1, 0.4),
         alpha(theme.palette.chart2, 0.4),
@@ -77,7 +77,9 @@ export const TotalSupplyCard = ({
       ? [
           {
             key: 'protocolOwnedSupply',
-            label: intl.formatMessage({ defaultMessage: 'Protocol owned' }),
+            label: intl.formatMessage({
+              defaultMessage: 'Protocol owned liquidity',
+            }),
             fillColor: alpha(theme.palette.chart5, 0.4),
             lineColor: theme.palette.chart5,
           },
@@ -90,7 +92,11 @@ export const TotalSupplyCard = ({
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Total supply' })}
+        title={
+          config?.showCirculatingSplit
+            ? intl.formatMessage({ defaultMessage: 'Token supply' })
+            : intl.formatMessage({ defaultMessage: 'Total supply' })
+        }
       />
       <Divider />
       <CardContent sx={{ minHeight: CHART_HEADER_HEIGHT }}>
@@ -115,16 +121,11 @@ export const TotalSupplyCard = ({
         {config?.showCirculatingSplit && (
           <Stack
             direction="row"
-            sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 1, pt: 1 }}
+            sx={{ alignItems: 'center', flexWrap: 'wrap', gap: 2, pt: 1 }}
             useFlexGap
           >
             {series.map((s) => (
-              <Stack
-                key={s.key}
-                direction="row"
-                spacing={1}
-                sx={{ minWidth: 260 }}
-              >
+              <Stack key={s.key} direction="row" spacing={0.75}>
                 <Box
                   sx={{
                     width: 15,

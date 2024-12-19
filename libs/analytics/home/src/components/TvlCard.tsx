@@ -83,7 +83,7 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   return (
     <Card {...rest} ref={ref}>
       <CardHeader
-        title={intl.formatMessage({ defaultMessage: 'Total Supply' })}
+        title={intl.formatMessage({ defaultMessage: 'Token Supply' })}
       />
       <Divider />
       <CardContent>
