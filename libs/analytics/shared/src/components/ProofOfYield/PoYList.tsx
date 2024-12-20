@@ -26,7 +26,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { format } from 'date-fns';
+import dayjs from 'dayjs';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
 
@@ -69,7 +69,7 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('date', {
-        cell: (info) => format(new Date(info.getValue()), 'dd MMM yyyy'),
+        cell: (info) => dayjs.utc(info.getValue()).format('DD MMM YYYY'),
         header: intl.formatMessage({ defaultMessage: 'Date' }),
         size: 400,
       }),

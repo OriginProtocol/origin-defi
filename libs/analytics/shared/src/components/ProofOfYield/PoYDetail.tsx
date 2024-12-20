@@ -38,9 +38,7 @@ import {
   getPaginationRowModel,
   useReactTable,
 } from '@tanstack/react-table';
-import { isToday } from 'date-fns';
-import { millisecondsInHour } from 'date-fns/constants';
-import { formatInTimeZone } from 'date-fns-tz';
+import dayjs from 'dayjs';
 import { sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { Link as RouterLink, useParams } from 'react-router';
@@ -90,11 +88,10 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
         ),
       },
     );
-  const morning = new Date(dailyStat?.timestamp ?? 0);
-  morning.setUTCHours(0, 0, 0, 0);
-  const evening = new Date(dailyStat?.timestamp ?? 0);
-  evening.setUTCHours(23, 59, 59, 999);
-  const isCurrentDay = isToday(morning);
+  const ts = dayjs.utc(dailyStat?.timestamp);
+  const morning = ts.hour(0).minute(0).second(0).millisecond(0);
+  const evening = ts.hour(23).minute(59).second(59).millisecond(999);
+  const isCurrentDay = dayjs.utc().isSame(morning, 'day');
 
   const { data: rebases, isLoading: isRebasesLoading } = useOTokenRebasesQuery(
     {
@@ -131,12 +128,7 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('timestamp', {
-        cell: (info) =>
-          formatInTimeZone(
-            new Date(info.getValue()),
-            'UTC',
-            'dd MMM yyyy HH:mm',
-          ),
+        cell: (info) => dayjs.utc(info.getValue()).format('DD MMM YYYY hh:mm'),
         header: intl.formatMessage({ defaultMessage: 'Date' }),
         size: 200,
       }),
@@ -210,11 +202,9 @@ export const PoYDetail = ({ token, from, ...rest }: PoYDetailProps) => {
                         defaultMessage: 'Yield distributed: {date}',
                       },
                       {
-                        date: formatInTimeZone(
-                          new Date(dailyStat?.timestamp ?? 0),
-                          'UTC',
-                          'dd MMM yyyy',
-                        ),
+                        date: dayjs
+                          .utc(dailyStat?.timestamp)
+                          .format('DD MMM YYYY'),
                       },
                     )}
                   </Typography>
@@ -416,7 +406,7 @@ const Controls = ({ token }: ControlsProps) => {
     },
     {
       enabled: !!params.id,
-      staleTime: millisecondsInHour,
+      staleTime: 1000 * 60 * 60,
       select: (data) => {
         if (!data?.oTokenDailyStats)
           return {
@@ -454,11 +444,7 @@ const Controls = ({ token }: ControlsProps) => {
         <FaArrowLeftRegular />
       </Button>
       <LoadingLabel isLoading={isIdsLoading} variant="caption1">
-        {formatInTimeZone(
-          new Date(ids?.current?.timestamp ?? 0),
-          'UTC',
-          'dd MMM yyyy',
-        )}
+        {dayjs.utc(ids?.current?.timestamp).format('DD MMM YYYY')}
       </LoadingLabel>
       <Button
         component={RouterLink}
