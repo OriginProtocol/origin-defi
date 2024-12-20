@@ -27,6 +27,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table';
 import dayjs from 'dayjs';
+import { takeLast } from 'ramda';
 import { useIntl } from 'react-intl';
 import { useNavigate } from 'react-router';
 
@@ -68,8 +69,9 @@ export const PoYList = ({ token, from, ...rest }: PoYListProps) => {
 
   const columns = useMemo(
     () => [
-      columnHelper.accessor('date', {
-        cell: (info) => dayjs.utc(info.getValue()).format('DD MMM YYYY'),
+      columnHelper.accessor('id', {
+        cell: (info) =>
+          dayjs(takeLast(10, info.getValue())).format('DD MMM YYYY'),
         header: intl.formatMessage({ defaultMessage: 'Date' }),
         size: 400,
       }),
