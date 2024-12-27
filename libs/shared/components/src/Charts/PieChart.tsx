@@ -1,10 +1,10 @@
-import { Box } from '@mui/material';
+import { alpha, Box } from '@mui/material';
 import { Group } from '@visx/group';
 import { Pie } from '@visx/shape';
 
-import { chartMargins } from './constants';
-
 import type { BoxProps } from '@mui/material';
+
+import type { chartMargins } from './constants';
 
 export type PieChartData = { label: string; value: number; color: string };
 
@@ -14,14 +14,20 @@ export type PieChartProps = {
   data: PieChartData[];
   margins?: typeof chartMargins;
   hideLabels?: boolean;
+  variant?: 'full' | 'donut';
+  cornerRadius?: number;
+  padAngle?: number;
 } & BoxProps;
 
 export const PieChart = ({
   width,
   height,
   data,
-  margins = chartMargins,
+  margins = { top: 10, left: 10, bottom: 10, right: 10 },
   hideLabels = false,
+  cornerRadius = 0,
+  variant = 'donut',
+  padAngle = 0.005,
   ...rest
 }: PieChartProps) => {
   const innerWidth = width - margins.left - margins.right;
@@ -31,6 +37,7 @@ export const PieChart = ({
   const centerX = innerWidth / 2;
   const top = centerY + margins.top;
   const left = centerX + margins.left;
+  const thickness = Math.min(Math.max(10, width / 7), 70);
 
   return (
     <Box
@@ -46,8 +53,11 @@ export const PieChart = ({
             data={data}
             pieValue={(d) => d.value}
             outerRadius={radius}
-            cornerRadius={3}
-            padAngle={0.005}
+            {...(variant === 'donut'
+              ? { innerRadius: radius - thickness }
+              : {})}
+            cornerRadius={cornerRadius}
+            padAngle={padAngle}
           >
             {(pie) => {
               return pie.arcs.map((arc, index) => {
@@ -78,6 +88,29 @@ export const PieChart = ({
               });
             }}
           </Pie>
+          {variant === 'donut' && (
+            <Pie
+              data={data}
+              pieValue={(d) => d.value}
+              outerRadius={radius - thickness}
+              innerRadius={radius - thickness - thickness / 2}
+              cornerRadius={cornerRadius}
+              padAngle={padAngle}
+            >
+              {(pie) => {
+                return pie.arcs.map((arc, index) => {
+                  const { label, color } = arc.data;
+                  const arcPath = pie.path(arc);
+                  const arcFill = alpha(color, 0.5);
+                  return (
+                    <g key={`arc-${label}-${index}`}>
+                      <path d={arcPath ?? ''} fill={arcFill ?? ''} />
+                    </g>
+                  );
+                });
+              }}
+            </Pie>
+          )}
         </Group>
       </svg>
     </Box>

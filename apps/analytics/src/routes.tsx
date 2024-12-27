@@ -2,7 +2,7 @@ import * as arm from '@origin/analytics/arm';
 import { HomeView } from '@origin/analytics/home';
 import { OverviewView } from '@origin/analytics/oeth';
 import {
-  Collaterals,
+  CollateralsPage,
   Overview,
   PoYDetail,
   PoYList,
@@ -179,7 +179,7 @@ export const routes: RouteObject[] = [
               icon: FaCoinsRegular,
               breadcrumb: defineMessage({ defaultMessage: 'Collateral' }),
             },
-            element: <Collaterals token={tokens.mainnet.OUSD} currency="USD" />,
+            element: <CollateralsPage token={tokens.mainnet.OUSD} />,
           },
         ],
       },

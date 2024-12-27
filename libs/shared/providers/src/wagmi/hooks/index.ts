@@ -1,6 +1,7 @@
 export * from './useIsContract';
 export * from './useIsRebaseDisabled';
 export * from './useTokenBalance';
+export * from './useTokenBlockExplorerLink';
 export * from './useTvl';
 export * from './useWriteTransaction';
 export * from './useWatchBalance';

@@ -2,7 +2,7 @@ import { useTheme } from '@mui/material';
 import { contracts, tokens } from '@origin/shared/contracts';
 import { useQuery } from '@tanstack/react-query';
 import { readContracts } from '@wagmi/core';
-import { add, from, sub, toNumber } from 'dnum';
+import { add, from, gt, sub, toNumber } from 'dnum';
 import { useIntl } from 'react-intl';
 import { useConfig } from 'wagmi';
 
@@ -47,7 +47,7 @@ export const useSuperCollaterals = () => {
         ],
       });
 
-      const totalValue =
+      const superOethVaultTotalValue =
         data?.[0]?.status === 'success'
           ? ([data[0].result, tokens.base.WETH.decimals] as Dnum)
           : from(0);
@@ -80,11 +80,18 @@ export const useSuperCollaterals = () => {
         (acc, curr) => add(acc, curr),
         from(0, tokens.base.WETH.decimals),
       );
-      const unallocatedBalance = sub(
-        totalValue,
-        add(fullAmoBalanceWeth, balanceBridge),
-      );
-      const computedTotal = sub(totalValue, balanceAmoSuper);
+      const circulating = add(fullAmoBalanceWeth, balanceBridge);
+      const unallocatedBalance = gt(
+        sub(superOethVaultTotalValue, circulating),
+        0,
+      )
+        ? sub(superOethVaultTotalValue, circulating)
+        : from(0, 18);
+      const computedTotal = [
+        balanceAmo,
+        balanceBridge,
+        unallocatedBalance,
+      ].reduce((acc, curr) => add(acc, curr), from(0, 18));
 
       return [
         {
@@ -95,24 +102,24 @@ export const useSuperCollaterals = () => {
           color: theme.palette.primary.main,
           token: tokens.mainnet.wOETH,
           total: toNumber(computedTotal),
-          href: '',
+          href: `https://basescan.org/address/0x8aF48Aa50e4F7ed67e7d654FE51A4EDA3395123b`,
         },
         {
           label: intl.formatMessage({
             defaultMessage: 'Aerodrome AMO',
           }),
           value: toNumber(balanceAmo),
-          color: theme.palette.chart3,
+          color: theme.palette.chart6,
           token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),
-          href: '',
+          href: 'https://basescan.org/address/0xcDD21c5544A5B07fab409284cEE6c6097091B589',
         },
         {
           label: intl.formatMessage({
             defaultMessage: 'Unallocated',
           }),
-          value: toNumber(unallocatedBalance),
-          color: theme.palette.chart6,
+          value: Math.max(toNumber(unallocatedBalance), 0),
+          color: theme.palette.chart1,
           token: tokens.mainnet.ETH,
           total: toNumber(computedTotal),
           href: '',
