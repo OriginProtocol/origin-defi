@@ -138,10 +138,14 @@ export const TvlCard = ({ height, ...rest }: TvlCardProps) => {
   const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(data?.totals ?? []) : data?.totals?.[hoverIdx];
+  const armItem =
+    hoverIdx === null ? last(series[0].data) : series[0].data[hoverIdx];
   const totalCirculatingSupply =
     currency === 'ETH'
-      ? activeItem?.circulatingSupplyETH
-      : activeItem?.circulatingSupplyUSD;
+      ? (activeItem?.circulatingSupplyETH ?? 0) +
+        (armItem?.circulatingSupplyETH ?? 0)
+      : (activeItem?.circulatingSupplyUSD ?? 0) +
+        (armItem?.circulatingSupplyUSD ?? 0);
 
   return (
     <Card {...rest} ref={ref}>
