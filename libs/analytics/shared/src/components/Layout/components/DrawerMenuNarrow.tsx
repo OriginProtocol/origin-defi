@@ -143,7 +143,11 @@ const NavItem = ({ route, index }: NavItemProps) => {
       >
         <SvgIcon
           component={route.handle.icon}
-          sx={{ fontSize: 24, transform: 'translateX(-12px)' }}
+          sx={{
+            '--icon-size': '28px',
+            fontSize: 'var(--icon-size)',
+            transform: 'translateX(calc(var(--icon-size) / -2))',
+          }}
         />
       </Button>
       <Popper
