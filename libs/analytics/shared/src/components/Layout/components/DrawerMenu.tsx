@@ -6,10 +6,8 @@ import {
   Button,
   Divider,
   IconButton,
-  MenuItem,
   MenuList,
   Stack,
-  SvgIcon,
   Typography,
   useMediaQuery,
   useTheme,
@@ -18,7 +16,6 @@ import { ExpandIcon, OriginProductIcon } from '@origin/shared/components';
 import {
   FaChevronLeftRegular,
   FaChevronRightRegular,
-  OriginLogo,
 } from '@origin/shared/icons';
 import { ThemeModeIconButton } from '@origin/shared/providers';
 import { isNilOrEmpty } from '@origin/shared/utils';
@@ -26,20 +23,17 @@ import { useIntl } from 'react-intl';
 import { Link as RouterLink, useMatch, useNavigate } from 'react-router';
 
 import { useLayout } from '../hooks';
+import { ListMenuItem } from './ListMenuItem';
 
-import type { MenuItemProps, StackProps } from '@mui/material';
+import type { StackProps } from '@mui/material';
 import type { MouseEvent } from 'react';
 import type { RouteObject } from 'react-router';
 
 import type { NavItem } from '../types';
 
 export const DrawerMenu = (props: StackProps) => {
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
   const [{ isDrawerOpen, routes }, { handleSetDrawer, handleToggleDrawer }] =
     useLayout();
-
-  const isWide = isSm || isDrawerOpen;
 
   return (
     <Stack
@@ -60,15 +54,9 @@ export const DrawerMenu = (props: StackProps) => {
           py: 1,
         })}
       >
-        {isWide ? (
-          <RouterLink to="/" style={{ textDecoration: 'none' }}>
-            <OriginProductIcon name="Analytics" />
-          </RouterLink>
-        ) : (
-          <RouterLink to="/" style={{ textDecoration: 'none' }}>
-            <OriginLogo sx={{ fontSize: 32 }} />
-          </RouterLink>
-        )}
+        <RouterLink to="/" style={{ textDecoration: 'none' }}>
+          <OriginProductIcon name="Analytics" />
+        </RouterLink>
       </Stack>
       <Stack divider={<Divider />} sx={{ flexGrow: 1 }}>
         {routes?.map((route, i) => (
@@ -79,36 +67,22 @@ export const DrawerMenu = (props: StackProps) => {
             onClose={() => {
               handleSetDrawer(false);
             }}
-            isWide={isWide}
           />
         ))}
       </Stack>
       <Stack
-        useFlexGap
-        sx={[
-          {
-            rowGap: 1,
-            columnGap: 1,
-            alignItems: 'flex-end',
-            pr: 1.5,
-          },
-          isWide
-            ? {
-                flexDirection: 'row-reverse',
-              }
-            : {
-                flexDirection: 'column-reverse',
-              },
-        ]}
+        direction="row"
+        spacing={1}
+        sx={{ justifyContent: 'flex-end', pr: 1.5 }}
       >
+        <ThemeModeIconButton variant="outlined" color="secondary" />
         <Button
           variant="outlined"
           color="secondary"
           onClick={handleToggleDrawer}
         >
-          {isWide ? <FaChevronLeftRegular /> : <FaChevronRightRegular />}
+          {isDrawerOpen ? <FaChevronLeftRegular /> : <FaChevronRightRegular />}
         </Button>
-        <ThemeModeIconButton variant="outlined" color="secondary" />
       </Stack>
     </Stack>
   );
@@ -118,10 +92,9 @@ type NavItemProps = {
   route: RouteObject;
   index: number;
   onClose: () => void;
-  isWide: boolean;
 };
 
-const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
+const NavItem = ({ route, index, onClose }: NavItemProps) => {
   const key = route?.path ?? `index-${index}}`;
 
   const intl = useIntl();
@@ -130,8 +103,16 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
   const navigate = useNavigate();
   const routeMatch = useMatch('/');
   const match = useMatch(`${route?.path ?? ''}/*`);
-  const [{ expandedSections }, { handleToggleSection, handleAddSection }] =
-    useLayout();
+  const [
+    { expandedSections },
+    { handleToggleSection, handleAddSection, handleSetDrawer },
+  ] = useLayout();
+
+  const handleClick = () => {
+    if (isSm) {
+      handleSetDrawer(false);
+    }
+  };
 
   if (isNilOrEmpty(route?.children)) {
     return (
@@ -139,12 +120,7 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
         variant="text"
         color="secondary"
         key={key}
-        onClick={() => {
-          navigate(`${route?.path ?? ''}/`);
-          if (isSm) {
-            onClose?.();
-          }
-        }}
+        onClick={handleClick}
         sx={[
           {
             display: 'flex',
@@ -152,34 +128,29 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
             alignItems: 'center',
             borderRadius: 0,
             width: 1,
-            px: isWide ? 3 : 2.75,
+            px: 3,
             py: 2,
             '&:hover': {
               boxShadow: (theme) =>
                 `inset 2px 0 0 0 ${theme.palette.primary.main}`,
             },
           },
-          routeMatch &&
-            isWide && {
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-              boxShadow: (theme) =>
-                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
-            },
+          routeMatch && {
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            boxShadow: (theme) =>
+              `inset 2px 0 0 0 ${theme.palette.primary.main}`,
+          },
         ]}
       >
-        {isWide ? (
-          <Typography
-            variant="body2"
-            sx={{
-              fontWeight: 'medium',
-            }}
-          >
-            {intl.formatMessage(route.handle.title)}
-          </Typography>
-        ) : (
-          <SvgIcon component={route.handle.icon} sx={{ fontSize: 20 }} />
-        )}
+        <Typography
+          variant="body2"
+          sx={{
+            fontWeight: 'medium',
+          }}
+        >
+          {intl.formatMessage(route.handle.title)}
+        </Typography>
       </Button>
     );
   }
@@ -226,54 +197,44 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
                 ),
             },
           },
-          match &&
-            isWide && {
-              borderTopLeftRadius: 0,
-              borderBottomLeftRadius: 0,
-              boxShadow: (theme) =>
-                `inset 2px 0 0 0 ${theme.palette.primary.main}`,
-            },
+          match && {
+            borderTopLeftRadius: 0,
+            borderBottomLeftRadius: 0,
+            boxShadow: (theme) =>
+              `inset 2px 0 0 0 ${theme.palette.primary.main}`,
+          },
         ]}
       >
-        {isWide ? (
-          <Stack
-            direction="row"
+        <Stack
+          direction="row"
+          sx={{
+            width: 1,
+            pl: 3,
+            pr: 1,
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Typography
+            variant="body2"
             sx={{
-              width: 1,
-              pl: 3,
-              pr: 1,
-              alignItems: 'center',
-              justifyContent: 'space-between',
+              fontWeight: 'medium',
             }}
           >
-            <Typography
-              variant="body2"
-              sx={{
-                fontWeight: 'medium',
-              }}
-            >
-              {intl.formatMessage(route.handle.title)}
-            </Typography>
-            <IconButton
-              onClick={(evt: MouseEvent) => {
-                evt.stopPropagation();
-                handleToggleSection(key);
-              }}
-            >
-              <ExpandIcon
-                isExpanded={expandedSections.includes(key)}
-                sx={{ color: 'text.secondary', fontSize: 14 }}
-              />
-            </IconButton>
-          </Stack>
-        ) : (
-          <Stack
-            direction="row"
-            sx={{ width: 1, alignItems: 'center', justifyContent: 'center' }}
+            {intl.formatMessage(route.handle.title)}
+          </Typography>
+          <IconButton
+            onClick={(evt: MouseEvent) => {
+              evt.stopPropagation();
+              handleToggleSection(key);
+            }}
           >
-            <SvgIcon component={route.handle.icon} sx={{ fontSize: 28 }} />
-          </Stack>
-        )}
+            <ExpandIcon
+              isExpanded={expandedSections.includes(key)}
+              sx={{ color: 'text.secondary', fontSize: 14 }}
+            />
+          </IconButton>
+        </Stack>
       </AccordionSummary>
       <AccordionDetails sx={{ p: 0 }}>
         <MenuList
@@ -285,77 +246,11 @@ const NavItem = ({ route, index, onClose, isWide }: NavItemProps) => {
               key={`${r?.path ?? r?.href}-${index}`}
               route={route}
               item={r}
-              onClose={onClose}
-              isWide={isWide}
+              onClick={handleClick}
             />
           ))}
         </MenuList>
       </AccordionDetails>
     </Accordion>
-  );
-};
-
-type ListMenuItemProps = {
-  route: RouteObject;
-  item: NavItem;
-  onClose: () => void;
-  isWide: boolean;
-} & MenuItemProps;
-
-const ListMenuItem = ({
-  route,
-  item,
-  onClose,
-  isWide,
-  ...rest
-}: ListMenuItemProps) => {
-  const intl = useIntl();
-  const theme = useTheme();
-  const isSm = useMediaQuery(theme.breakpoints.down('md'));
-  const navigate = useNavigate();
-  const match = useMatch({
-    path: `${route.path}/${item?.path ? `${item.path}/*` : ''}`,
-  });
-
-  const handleMenuClick = (path: string) => () => {
-    navigate(`${route.path}/${path ?? ''}`);
-    if (isSm) {
-      onClose();
-    }
-  };
-
-  const isSelected = !isNilOrEmpty(match) && isNilOrEmpty(item?.href);
-
-  return (
-    <MenuItem
-      {...rest}
-      {...(isNilOrEmpty(item.href)
-        ? { onClick: handleMenuClick(item?.path ?? '') }
-        : {
-            href: item.href,
-            target: '_blank',
-            rel: 'noopener noreferrer nofollow',
-            component: 'a',
-          })}
-      sx={[
-        isSelected
-          ? {
-              color: 'primary.main',
-              svg: { color: 'primary.main' },
-              backgroundColor: 'primary.faded',
-            }
-          : {
-              color: 'text.secondary',
-              svg: { color: 'text.secondary' },
-            },
-        isWide ? { pl: 4, py: 1.5 } : { margin: 'auto', py: 1 },
-      ]}
-    >
-      {isWide ? (
-        <Typography>{intl.formatMessage(item.title)}</Typography>
-      ) : (
-        <SvgIcon component={item.icon} sx={{ fontSize: 20 }} />
-      )}
-    </MenuItem>
   );
 };
