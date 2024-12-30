@@ -4,6 +4,7 @@ import {
   ExternalLink,
   MultiTokenIcon,
 } from '@origin/shared/components';
+import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import { useIntl } from 'react-intl';
 
@@ -94,7 +95,7 @@ export const MergerBanner = (props: StackProps) => {
           }}
         />
         <Button
-          href="https://originprotocol.eth.limo/#/more/migration"
+          href={`${ORIGIN_DAPP_URL}/#/more/migration`}
           color="secondary"
           sx={{ height: 44 }}
           target="_blank"

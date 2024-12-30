@@ -11,6 +11,7 @@ import {
   Typography,
 } from '@mui/material';
 import { LoadingLabel, TokenIcon, ValueLabel } from '@origin/shared/components';
+import { ORIGIN_DAPP_URL } from '@origin/shared/constants';
 import { tokens } from '@origin/shared/contracts';
 import {
   CheckCircle,
@@ -373,7 +374,7 @@ function SuccessView({ onClose, ...rest }: SuccessViewProps) {
           {intl.formatMessage({ defaultMessage: 'Done' })}
         </Button>
         <Button
-          href="https://originprotocol.eth.limo/#/more/migration"
+          href={`${ORIGIN_DAPP_URL}/#/more/migration`}
           target="_blank"
           rel="noopener noreferrer nofollow"
           fullWidth
