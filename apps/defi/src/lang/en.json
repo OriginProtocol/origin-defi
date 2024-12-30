@@ -47,6 +47,12 @@
       "value": "Convert OGV to OGN now!"
     }
   ],
+  "+pSWp9": [
+    {
+      "type": 0,
+      "value": "Token Supply"
+    }
+  ],
   "+vVZ/G": [
     {
       "type": 0,
@@ -1311,6 +1317,12 @@
       "value": "Lockup Duration"
     }
   ],
+  "K80kEp": [
+    {
+      "type": 0,
+      "value": "Circulating token supply"
+    }
+  ],
   "KN7zKn": [
     {
       "type": 0,
@@ -1855,6 +1867,12 @@
     {
       "type": 0,
       "value": "Custom"
+    }
+  ],
+  "SyV/s6": [
+    {
+      "type": 0,
+      "value": "Protocol Owned Liquidity"
     }
   ],
   "SzA4oV": [
@@ -2433,6 +2451,12 @@
     {
       "type": 0,
       "value": "Swapping"
+    }
+  ],
+  "cK+Fyl": [
+    {
+      "type": 0,
+      "value": "POL"
     }
   ],
   "cOB9Jx": [

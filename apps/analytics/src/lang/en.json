@@ -5,6 +5,12 @@
       "value": "1 day"
     }
   ],
+  "+FEAvB": [
+    {
+      "type": 0,
+      "value": "Protocol owned liquidity"
+    }
+  ],
   "+LmzMn": [
     {
       "type": 0,
@@ -33,12 +39,6 @@
     {
       "type": 0,
       "value": "Amount"
-    }
-  ],
-  "/0u98f": [
-    {
-      "type": 0,
-      "value": "No available data"
     }
   ],
   "/kI0V9": [
@@ -135,12 +135,6 @@
     {
       "type": 0,
       "value": "Impossible to execute"
-    }
-  ],
-  "2nVHcu": [
-    {
-      "type": 0,
-      "value": "Protocol owned"
     }
   ],
   "2qF6KB": [
@@ -287,6 +281,12 @@
       "value": "Theme:"
     }
   ],
+  "CJ19p3": [
+    {
+      "type": 0,
+      "value": "Strategy allocation"
+    }
+  ],
   "DKaqyQ": [
     {
       "type": 0,
@@ -385,12 +385,6 @@
     {
       "type": 0,
       "value": "Operation Cancelled"
-    }
-  ],
-  "KFFqTk": [
-    {
-      "type": 0,
-      "value": "Circulating supply"
     }
   ],
   "KN7zKn": [
@@ -889,6 +883,12 @@
       "value": "USD"
     }
   ],
+  "hCxM9L": [
+    {
+      "type": 0,
+      "value": "Token supply"
+    }
+  ],
   "hKDOtL": [
     {
       "type": 0,
@@ -899,12 +899,6 @@
     {
       "type": 0,
       "value": "5 days"
-    }
-  ],
-  "hvCfek": [
-    {
-      "type": 0,
-      "value": "Circulating Supply"
     }
   ],
   "hz1mQV": [
@@ -1207,6 +1201,12 @@
     {
       "type": 0,
       "value": "Yield Bonus"
+    }
+  ],
+  "xqEnWz": [
+    {
+      "type": 0,
+      "value": "No strategy allocations"
     }
   ],
   "xwfunk": [

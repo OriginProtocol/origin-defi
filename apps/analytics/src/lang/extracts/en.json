@@ -2,6 +2,9 @@
   "+7PjfV": {
     "defaultMessage": "1 day"
   },
+  "+FEAvB": {
+    "defaultMessage": "Protocol owned liquidity"
+  },
   "+LmzMn": {
     "defaultMessage": "max"
   },
@@ -16,9 +19,6 @@
   },
   "/0TOL5": {
     "defaultMessage": "Amount"
-  },
-  "/0u98f": {
-    "defaultMessage": "No available data"
   },
   "/kI0V9": {
     "defaultMessage": "Total supply"
@@ -55,9 +55,6 @@
   },
   "2NfxfO": {
     "defaultMessage": "Impossible to execute"
-  },
-  "2nVHcu": {
-    "defaultMessage": "Protocol owned"
   },
   "2qF6KB": {
     "defaultMessage": "Arbitrum"
@@ -125,6 +122,9 @@
   "BuhEl+": {
     "defaultMessage": "Theme:"
   },
+  "CJ19p3": {
+    "defaultMessage": "Strategy allocation"
+  },
   "DKaqyQ": {
     "defaultMessage": "Redeeming"
   },
@@ -172,9 +172,6 @@
   },
   "JA3MsG": {
     "defaultMessage": "Operation Cancelled"
-  },
-  "KFFqTk": {
-    "defaultMessage": "Circulating supply"
   },
   "KN7zKn": {
     "defaultMessage": "Error"
@@ -377,14 +374,14 @@
   "hCQDkn": {
     "defaultMessage": "USD"
   },
+  "hCxM9L": {
+    "defaultMessage": "Token supply"
+  },
   "hKDOtL": {
     "defaultMessage": "Wrapped supply"
   },
   "hZS2DW": {
     "defaultMessage": "5 days"
-  },
-  "hvCfek": {
-    "defaultMessage": "Circulating Supply"
   },
   "hz1mQV": {
     "defaultMessage": "No collaterals"
@@ -517,6 +514,9 @@
   },
   "xN53iS": {
     "defaultMessage": "Yield Bonus"
+  },
+  "xqEnWz": {
+    "defaultMessage": "No strategy allocations"
   },
   "xwfunk": {
     "defaultMessage": "Restricted Access"

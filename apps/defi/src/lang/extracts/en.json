@@ -23,6 +23,9 @@
   "+b8PXT": {
     "defaultMessage": "Convert OGV to OGN now!"
   },
+  "+pSWp9": {
+    "defaultMessage": "Token Supply"
+  },
   "+vVZ/G": {
     "defaultMessage": "Connect"
   },
@@ -560,6 +563,9 @@
   "K/psnI": {
     "defaultMessage": "Lockup Duration"
   },
+  "K80kEp": {
+    "defaultMessage": "Circulating token supply"
+  },
   "KN7zKn": {
     "defaultMessage": "Error"
   },
@@ -770,6 +776,9 @@
   "Sjo1P4": {
     "defaultMessage": "Custom"
   },
+  "SyV/s6": {
+    "defaultMessage": "Protocol Owned Liquidity"
+  },
   "SzA4oV": {
     "defaultMessage": "{count,plural,=0{No address} =1{# address} other{# addresses}}"
   },
@@ -979,6 +988,9 @@
   },
   "c31Feo": {
     "defaultMessage": "Swapping"
+  },
+  "cK+Fyl": {
+    "defaultMessage": "POL"
   },
   "cOB9Jx": {
     "defaultMessage": "Yield"
