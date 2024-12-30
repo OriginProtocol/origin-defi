@@ -32,14 +32,17 @@ import type { ChartResult } from '@origin/analytics/shared';
 import type { Serie } from '@origin/shared/components';
 import type { NumberLike } from '@visx/scale';
 
-export type CirculatingSupplyCardProps = {
+export type TokenSupplyCardProps = {
   height: number;
 } & CardProps;
 
-export const CirculatingSupplyCard = ({
-  height,
-  ...rest
-}: CirculatingSupplyCardProps) => {
+type ChartData = {
+  timestamp: number;
+  tvlETH: number;
+  tvlUSD: number;
+};
+
+export const TokenSupplyCard = ({ height, ...rest }: TokenSupplyCardProps) => {
   const intl = useIntl();
   const { limit, offset, currency, from, to } = useHomeView();
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
@@ -50,48 +53,43 @@ export const CirculatingSupplyCard = ({
     !!from && isDate(from) ? from.toISOString() : undefined,
     !!to && isDate(to) ? to.toISOString() : undefined,
   );
-  const series = useMemo(
-    () =>
-      Object.entries(data ?? {}).reduce<Serie<ChartResult>[]>(
-        (acc, [key, value]) => {
-          if (!(value[0] as ChartResult)?.token) {
-            return acc;
-          }
 
-          return [
-            ...acc,
-            {
-              label: (value[0] as ChartResult).token.name,
-              data: value as ChartResult[],
-              xKey: 'timestamp',
-              yKey:
-                currency === 'ETH'
-                  ? 'circulatingSupplyETH'
-                  : 'circulatingSupplyUSD',
-              color: [
-                oTokenConfig[key].lineChartColor ?? '#fff',
-                emphasize(oTokenConfig[key].lineChartColor ?? '#fff', 0.5),
-              ],
-              strokeWidth: 2,
-            },
-          ];
-        },
-        [],
-      ),
-    [data, currency],
-  );
+  const series = useMemo(() => {
+    return Object.entries(data ?? {}).reduce<Serie<ChartData>[]>(
+      (acc, [key, value]) => {
+        if (!(value[0] as ChartResult)?.token) {
+          return acc;
+        }
+
+        return [
+          ...acc,
+          {
+            label: (value[0] as ChartResult).token.name,
+            data: value as ChartData[],
+            xKey: 'timestamp',
+            yKey: currency === 'ETH' ? 'tvlETH' : 'tvlUSD',
+            color: [
+              oTokenConfig[key].lineChartColor ?? '#fff',
+              emphasize(oTokenConfig[key].lineChartColor ?? '#fff', 0.5),
+            ],
+            strokeWidth: 2,
+          },
+        ];
+      },
+      [],
+    );
+  }, [data, currency]);
 
   const width = measures?.width ?? 0;
   const activeItem =
     hoverIdx === null ? last(data?.totals ?? []) : data?.totals?.[hoverIdx];
-  const totalCirculatingSupply =
-    currency === 'ETH'
-      ? activeItem?.circulatingSupplyETH
-      : activeItem?.circulatingSupplyUSD;
+  const totalTvl = currency === 'ETH' ? activeItem?.tvlETH : activeItem?.tvlUSD;
 
   return (
     <Card {...rest} ref={ref}>
-      <CardHeader title={intl.formatMessage({ defaultMessage: 'TVL' })} />
+      <CardHeader
+        title={intl.formatMessage({ defaultMessage: 'Token Supply' })}
+      />
       <Divider />
       <CardContent>
         <Stack
@@ -116,7 +114,7 @@ export const CirculatingSupplyCard = ({
             sx={{ fontWeight: 'bold' }}
           >
             <CurrencyLabel currency={currency} />
-            {intl.formatNumber(totalCirculatingSupply ?? 0, {
+            {intl.formatNumber(totalTvl ?? 0, {
               maximumFractionDigits: 0,
             })}
           </LoadingLabel>

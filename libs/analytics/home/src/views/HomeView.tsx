@@ -3,7 +3,6 @@ import { trackSentryError, useLayout } from '@origin/analytics/shared';
 import { ErrorBoundary, ErrorCard } from '@origin/shared/components';
 import { useIntl } from 'react-intl';
 
-import { CirculatingSupplyCard } from '../components/CirculatingSupplyCard';
 import { Controls } from '../components/Controls';
 import { NetAssetsCard } from '../components/NetAssetsCard';
 import {
@@ -12,6 +11,7 @@ import {
   OgnStatsCard,
 } from '../components/OgnCards';
 import { ProtocolRevenueCard } from '../components/ProtocolRevenueCard';
+import { TokenSupplyCard } from '../components/TokenSupplyCard';
 import { TvlCard } from '../components/TvlCard';
 import { CHART_HEIGHT } from '../constants';
 
@@ -76,7 +76,7 @@ export const HomeView = () => {
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <TvlCard height={CHART_HEIGHT} />
+                <TokenSupplyCard height={CHART_HEIGHT} />
               </ErrorBoundary>
             </Grid2>
             <Grid2 size={{ xs: 12, md: 6 }}>
@@ -84,7 +84,7 @@ export const HomeView = () => {
                 ErrorComponent={<ErrorCard />}
                 onError={trackSentryError}
               >
-                <CirculatingSupplyCard height={CHART_HEIGHT} />
+                <TvlCard height={CHART_HEIGHT} />
               </ErrorBoundary>
             </Grid2>
           </Grid2>
