@@ -126,7 +126,7 @@ module.exports = [
     })
     .map((config) => ({
       ...config,
-      files: ['**/*.js', '**/*.jsx'],
+      files: ['**/*.js', '**/*.jsx', '**/*.cjs', '**/*.mjs'],
       rules: {
         ...config.rules,
         'no-extra-semi': 'error',
