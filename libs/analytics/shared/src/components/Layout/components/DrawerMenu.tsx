@@ -120,7 +120,10 @@ const NavItem = ({ route, index, onClose }: NavItemProps) => {
         variant="text"
         color="secondary"
         key={key}
-        onClick={handleClick}
+        onClick={() => {
+          navigate(`${route?.path ?? ''}/`);
+          handleClick();
+        }}
         sx={[
           {
             display: 'flex',
