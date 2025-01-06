@@ -28,7 +28,7 @@ export const StrategyAllocationsCard = ({
   const [{ isDrawerOpen }] = useLayout();
 
   return (
-    <Stack>
+    <Stack {...rest}>
       <Typography variant="featured3" sx={{ fontWeight: 'bold', mb: 2 }}>
         {intl.formatMessage({ defaultMessage: 'Strategy allocation' })}
       </Typography>

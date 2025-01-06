@@ -25,6 +25,7 @@ import { DripperABI } from './abis/Dripper';
 import { FlipperABI } from './abis/Flipper';
 import { FraxETHStrategyABI } from './abis/FraxETHStrategy';
 import { FraxRedemptionStrategyABI } from './abis/FraxRedemptionStrategy';
+import { Generalized4626StrategyABI } from './abis/Generalized4626Strategy';
 import { IVaultABI } from './abis/IVault';
 import { LidoWithdrawStrategyABI } from './abis/LidoWithdrawStrategy';
 import { LrtConfigABI } from './abis/LrtConfig';
@@ -325,6 +326,18 @@ export const contracts = {
       chainId: mainnet.id,
       abi: MorphoCompoundStrategyABI,
       name: 'OUSDStrategyMorphoAave',
+    },
+    OUSDStrategyMorphoGauntletUSDC: {
+      address: '0x2B8f37893EE713A4E9fF0cEb79F27539f20a32a1',
+      chainId: mainnet.id,
+      abi: Generalized4626StrategyABI,
+      name: 'OUSDStrategyMorphoGauntletUSDC',
+    },
+    OUSDStrategyMorphoGauntletPrimeUSDT: {
+      address: '0xe3ae7C80a1B02Ccd3FB0227773553AEB14e32F26',
+      chainId: mainnet.id,
+      abi: Generalized4626StrategyABI,
+      name: 'OUSDStrategyMorphoGauntletPrimeUSDT',
     },
     OUSDVault: {
       address: '0xE75D77B1865Ae93c7eaa3040B038D7aA7BC02F70',
