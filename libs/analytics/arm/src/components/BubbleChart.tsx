@@ -249,6 +249,8 @@ export const BubbleChart = <Datum,>({
           style={{
             ...defaultStyles,
             background: 'transparent',
+            border: 'none',
+            boxShadow: 'none',
           }}
         >
           <ChartTooltip activeItem={activeItem} serie={serie} />

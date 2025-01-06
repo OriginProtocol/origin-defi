@@ -357,6 +357,8 @@ export const AreaChart = <Datum,>({
           style={{
             ...defaultStyles,
             background: 'transparent',
+            border: 'none',
+            boxShadow: 'none',
           }}
         >
           <Tooltip series={activeSeries} />
