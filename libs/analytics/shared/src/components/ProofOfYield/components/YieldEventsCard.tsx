@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 
 import {
   Card,
-  CardHeader,
+  CardContent,
   Divider,
   Stack,
   Table,
@@ -11,6 +11,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import {
   ExternalLink,
@@ -86,8 +87,26 @@ export const YieldEventsCard = (props: CardProps) => {
   const columns = useMemo(
     () => [
       columnHelper.accessor('timestamp', {
-        cell: (info) => dayjs.utc(info.getValue()).format('DD MMM YYYY hh:mm'),
-        header: intl.formatMessage({ defaultMessage: 'Date' }),
+        cell: (info) => (
+          <Stack
+            direction="row"
+            useFlexGap
+            sx={{
+              alignItems: 'baseline',
+              flexWrap: 'wrap',
+              rowGap: 0.5,
+              columnGap: 2,
+            }}
+          >
+            <Typography sx={{ fontVariantNumeric: 'tabular-nums' }}>
+              {info.row.original.blocknumber}
+            </Typography>
+            <Typography variant="caption1" color="text.secondary">
+              {dayjs.utc(info.getValue()).format('hh:mm:ss')}
+            </Typography>
+          </Stack>
+        ),
+        header: intl.formatMessage({ defaultMessage: 'Block / Time' }),
         size: 200,
       }),
       columnHelper.accessor('amount', {
@@ -134,11 +153,21 @@ export const YieldEventsCard = (props: CardProps) => {
 
   return (
     <Card {...props}>
-      <CardHeader
-        title={intl.formatMessage({
-          defaultMessage: 'Yield distribution events',
-        })}
-      />
+      <CardContent>
+        <Stack spacing={2}>
+          <Typography variant="featured3" sx={{ fontWeight: 'bold' }}>
+            {intl.formatMessage({
+              defaultMessage: 'Yield distribution events',
+            })}
+          </Typography>
+          <Typography color="text.secondary">
+            {intl.formatMessage({
+              defaultMessage:
+                'OETH wallet balances increase at least once per day. Anyone can trigger yield distribution at any time. Each time yield is distributed, there is one corresponding transaction on the blockchain.',
+            })}
+          </Typography>
+        </Stack>
+      </CardContent>
       <Divider />
       {isRebasesLoading ? (
         <Spinner sx={{ width: 1, height: 200 }} />

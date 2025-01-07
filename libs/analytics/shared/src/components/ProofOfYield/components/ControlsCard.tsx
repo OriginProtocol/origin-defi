@@ -49,22 +49,10 @@ export const ControlsCard = (props: CardProps) => {
             </Typography>
           </Stack>
           <Stack direction="row" spacing={2} sx={{ alignItems: 'center' }}>
-            <Button
-              onClick={handleNext}
-              disabled={!hasNext}
-              variant="outlined"
-              color="secondary"
-              size="small"
-            >
+            <Button onClick={handleNext} disabled={!hasNext} color="secondary">
               <FaArrowLeftRegular />
             </Button>
-            <Button
-              onClick={handlePrev}
-              disabled={!hasPrev}
-              variant="outlined"
-              color="secondary"
-              size="small"
-            >
+            <Button onClick={handlePrev} disabled={!hasPrev} color="secondary">
               <FaArrowRightRegular />
             </Button>
           </Stack>

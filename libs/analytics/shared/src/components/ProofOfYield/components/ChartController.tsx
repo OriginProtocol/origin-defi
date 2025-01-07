@@ -1,4 +1,4 @@
-import { Fragment, useId, useMemo, useState } from 'react';
+import { useId, useMemo, useState } from 'react';
 
 import { alpha, Box, useTheme } from '@mui/material';
 import { AxisBottom, AxisRight } from '@visx/axis';
@@ -127,7 +127,7 @@ export const ChartController = ({
       }}
       sx={[
         ...(Array.isArray(rest?.sx) ? rest.sx : [rest?.sx]),
-        { position: 'relative' },
+        { position: 'relative', '.bar': { cursor: 'pointer' } },
       ]}
     >
       <svg width={width} height={height}>
@@ -176,30 +176,19 @@ export const ChartController = ({
           const barWidth = xScale.bandwidth();
           const barColor =
             selectedId === d.id
-              ? alpha(theme.palette.chart3, hoverIdx === idx ? 0.5 : 1)
+              ? theme.palette.chart3
               : alpha(theme.palette.chart7, hoverIdx === idx ? 1 : 0.5);
 
           return (
-            <Fragment key={`bar-${idx}`}>
-              <BarRounded
-                radius={1}
-                x={barX}
-                y={barHeight}
-                width={barWidth}
-                height={height - chartMargins.bottom - barHeight}
-                fill={barColor}
-              />
-              <Bar
-                x={barX}
-                y={0}
-                width={barWidth}
-                height={height - chartMargins.bottom}
-                fill="transparent"
-                onMouseOver={() => {
-                  setHoverIdx(idx);
-                }}
-              />
-            </Fragment>
+            <BarRounded
+              key={`bar-${idx}`}
+              radius={1}
+              x={barX}
+              y={barHeight}
+              width={barWidth}
+              height={height - chartMargins.bottom - barHeight}
+              fill={barColor}
+            />
           );
         })}
         <LinePath
@@ -217,6 +206,7 @@ export const ChartController = ({
           return (
             <Bar
               key={`bar-${idx}`}
+              className="bar"
               x={barX}
               y={0}
               width={barWidth}

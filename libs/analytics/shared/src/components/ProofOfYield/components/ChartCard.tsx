@@ -44,8 +44,8 @@ export const ChartCard = ({ height, ...rest }: ChartCardProps) => {
       <CardContent sx={{ display: 'flex', justifyContent: 'flex-end' }}>
         <LimitControls limit={limit} setLimit={handleLimitChange} />
       </CardContent>
-      {isLoading ? (
-        <Spinner sx={{ width, height }} />
+      {isLoading || !width ? (
+        <Spinner sx={{ width: 1, height }} />
       ) : (
         <ChartController width={width} height={height} />
       )}

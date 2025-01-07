@@ -4,6 +4,7 @@ import { BonusCard } from '../components/BonusCard';
 import { ChartCard } from '../components/ChartCard';
 import { ControlsCard } from '../components/ControlsCard';
 import { DailyYieldCard } from '../components/DailyYieldCard';
+import { DripperCard } from '../components/DripperCard';
 import { YieldEventsCard } from '../components/YieldEventsCard';
 import { PoYProvider } from '../state';
 
@@ -14,7 +15,7 @@ export type PoYViewProps = { token: Token } & StackProps;
 
 export const PoYView = ({ token, ...rest }: PoYViewProps) => {
   return (
-    <PoYProvider token={token}>
+    <PoYProvider key={token.id} token={token}>
       <Stack spacing={2} {...rest}>
         <ControlsCard />
         <ChartCard height={300} />
@@ -29,6 +30,7 @@ export const PoYView = ({ token, ...rest }: PoYViewProps) => {
             <BonusCard />
           </Grid2>
         </Grid2>
+        <DripperCard />
       </Stack>
     </PoYProvider>
   );

@@ -4,6 +4,7 @@ export const OETH_ANALYTICS_URL = 'https://analytics.originprotocol.com/oeth/';
 export const OUSD_ANALYTICS_URL = 'https://analytics.originprotocol.com/ousd/';
 export const SUPEROETHB_ANALYTICS_URL =
   'https://analytics.originprotocol.com/super/';
+export const ORIGIN_DOCS_URL = 'https://docs.originprotocol.com';
 export const OUSD_DOCS_URL = 'https://docs.ousd.com';
 export const JOBS_URL = 'https://angel.co/company/originprotocol/jobs';
 export const TERMS_URL = 'https://originprotocol.com/tos';
@@ -23,7 +24,7 @@ export const EMAIL_LIST_URL =
   'https://www.originprotocol.com/mailing-list/join';
 export const AIRDROP_URL = 'https://governance.ousd.com/claim';
 export const GOVERNANCE_DISCUSSION_FORUM_URL =
-  'https://discord.com/channels/404673842007506945/1025438212908396564/';
+  'https://governance.originprotocol.com';
 export const GOVERNANCE_OGV_SNAPSHOT_VOTES_URL = 'https://vote.ousd.com';
 export const GOVERNANCE_OGN_SNAPSHOT_VOTES_URL =
   'https://snapshot.org/#/origingov.eth';

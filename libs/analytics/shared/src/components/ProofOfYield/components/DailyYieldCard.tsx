@@ -14,7 +14,7 @@ export const DailyYieldCard = (props: CardProps) => {
   return (
     <Card {...props}>
       <CardContent>
-        <Stack spacing={1}>
+        <Stack spacing={2}>
           <Typography color="text.secondary" sx={{ fontWeight: 'medium' }}>
             {intl.formatMessage(
               {
@@ -26,7 +26,12 @@ export const DailyYieldCard = (props: CardProps) => {
             )}
           </Typography>
           <Stack direction="row" alignItems="baseline" spacing={1}>
-            <LoadingLabel isLoading={isLoading} variant="h6" sWidth={120}>
+            <LoadingLabel
+              isLoading={isLoading}
+              variant="featured1"
+              sWidth={120}
+              sx={{ fontWeight: 'medium' }}
+            >
               {intl.formatNumber((selectedItem?.[yKey] as number) ?? 0, {
                 maximumFractionDigits: 4,
               })}
@@ -43,33 +48,41 @@ export const DailyYieldCard = (props: CardProps) => {
           justifyContent="space-around"
           divider={<Divider orientation="vertical" flexItem />}
         >
-          <ValueLabel
-            label={intl.formatMessage({ defaultMessage: 'APY' })}
-            value={intl.formatNumber(selectedItem?.apy ?? 0, {
-              style: 'percent',
-              maximumFractionDigits: 2,
-            })}
-            isLoading={isLoading}
-          />
-          <ValueLabel
-            label={intl.formatMessage({
-              defaultMessage: 'Vault value',
-            })}
-            value={intl.formatNumber(selectedItem?.totalSupply ?? 0, {
-              maximumFractionDigits: 1,
-            })}
-            isLoading={isLoading}
-          />
-          <ValueLabel
-            label={intl.formatMessage({
-              defaultMessage: 'Fees generated',
-            })}
-            value={intl.formatNumber(selectedItem?.feesETH ?? 0, {
-              maximumFractionDigits: 3,
-              minimumFractionDigits: 3,
-            })}
-            isLoading={isLoading}
-          />
+          {[
+            {
+              label: intl.formatMessage({ defaultMessage: 'APY' }),
+              value: intl.formatNumber(selectedItem?.apy ?? 0, {
+                style: 'percent',
+                maximumFractionDigits: 2,
+              }),
+            },
+            {
+              label: intl.formatMessage({ defaultMessage: 'Vault value' }),
+              value: intl.formatNumber(selectedItem?.totalSupply ?? 0, {
+                maximumFractionDigits: 1,
+              }),
+            },
+            {
+              label: intl.formatMessage({ defaultMessage: 'Fees generated' }),
+              value: intl.formatNumber(selectedItem?.feesETH ?? 0, {
+                maximumFractionDigits: 3,
+                minimumFractionDigits: 3,
+              }),
+            },
+          ].map(({ label, value }) => (
+            <ValueLabel
+              key={label}
+              label={label}
+              value={value}
+              isLoading={isLoading}
+              valueProps={{
+                variant: 'body1',
+                sx: {
+                  fontWeight: 'bold',
+                },
+              }}
+            />
+          ))}
         </Stack>
       </CardContent>
     </Card>
